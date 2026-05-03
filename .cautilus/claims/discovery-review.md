@@ -275,7 +275,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 ### Agent and skill workflow (20)
 
-#### Cautilus eval / dev/skill / ready-to-verify / evidence satisfied (4)
+#### Cautilus eval / dev/skill / ready-to-verify / evidence satisfied (5)
 
 ##### claim-docs-specs-user-evaluation-spec-md-11
 
@@ -322,6 +322,21 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; README.md:151
 
+##### claim-readme-md-155
+
+- Summary: The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`.
+- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep covered by dev/skill episode fixtures whenever `turns` normalization or episode audit runners change.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; README.md:155
+
 ##### claim-readme-md-219
 
 - Summary: Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.
@@ -336,23 +351,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; README.md:219
-
-#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (1)
-
-##### claim-readme-md-155
-
-- Summary: The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`.
-- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/skill fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; README.md:155
 
 #### Deterministic gate / ready-to-verify / evidence satisfied (6)
 
@@ -1148,24 +1146,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/evaluation.spec.md:7
 
-#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (1)
-
-##### claim-docs-guides-evaluation-process-md-269
-
-- Summary: `eval evaluate` remains the first-class packet boundary for skill trigger and execution quality.
-- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/skill fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/guides/evaluation-process.md:269
-
-#### Deterministic gate / ready-to-verify / evidence satisfied (5)
+#### Deterministic gate / ready-to-verify / evidence satisfied (6)
 
 ##### claim-docs-guides-consumer-adoption-md-20
 
@@ -1208,6 +1189,20 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/guides/consumer-adoption.md:67
+
+##### claim-docs-guides-evaluation-process-md-269
+
+- Summary: `eval evaluate` remains the first-class packet boundary for skill trigger and execution quality.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep covered by `eval evaluate` skill observed-packet tests and skill summary tests.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/guides/evaluation-process.md:269
 
 ##### claim-docs-guides-evaluation-process-md-52
 
@@ -1273,97 +1268,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 ### Adapter and portability (41)
 
-#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (9)
-
-##### claim-docs-contracts-adapter-contract-md-208
-
-- Summary: When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:208
-
-##### claim-docs-contracts-adapter-contract-md-220
-
-- Summary: If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:220
-
-##### claim-docs-contracts-adapter-contract-md-3
-
-- Summary: `Cautilus` stays portable by loading repo-specific evaluation commands from an adapter instead of hardcoding benchmark runners into the workflow.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/adapter-contract.md:3
-
-##### claim-docs-contracts-claim-discovery-workflow-md-178
-
-- Summary: When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:178
-
-##### claim-docs-contracts-reporting-md-111
-
-- Summary: Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/reporting.md:111
-
-##### claim-docs-contracts-runner-readiness-md-44
-
-- Summary: `eval` runs bounded behavior evaluations through adapter-declared runners.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:44
+#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (2)
 
 ##### claim-docs-contracts-scenario-proposal-sources-md-152
 
@@ -1394,53 +1299,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/contracts/workbench-instance-discovery.md:99
-
-##### claim-docs-specs-maintainer-adapter-host-ownership-spec-md-19
-
-- Summary: Repo-specific behavior should stay in adapters and fixtures, not in product logic.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/specs/maintainer/adapter-host-ownership.spec.md:19
-
-#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (2)
-
-##### claim-docs-contracts-runner-readiness-md-117
-
-- Summary: It should combine binary health, skill surface readiness, adapter state, claim state, and runner readiness status.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/skill fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:117
-
-##### claim-docs-contracts-runtime-fingerprint-optimization-md-50
-
-- Summary: It should not directly auto-edit consumer-owned prompts, skills, or instruction files.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/skill fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/runtime-fingerprint-optimization.md:50
 
 #### Cautilus eval / surface undecided / needs-scenario / evidence unknown (1)
 
@@ -1687,7 +1545,121 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/adapter-host-ownership.spec.md:18
 
-#### Human-auditable / blocked / evidence unknown (5)
+#### Deterministic gate / ready-to-verify / evidence unknown (8)
+
+##### claim-docs-contracts-adapter-contract-md-208
+
+- Summary: When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Attach or extend deterministic fixture-runtime proof showing `runtime=fixture` yields `proofClass=fixture-smoke` while preserving the adapter-declared proof class only as metadata.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:208
+
+##### claim-docs-contracts-adapter-contract-md-220
+
+- Summary: If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Attach a claim-discovery or adapter-normalization test proving omitted semantic groups produce `General product behavior` instead of a Cautilus-specific taxonomy.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:220
+
+##### claim-docs-contracts-adapter-contract-md-3
+
+- Summary: `Cautilus` stays portable by loading repo-specific evaluation commands from an adapter instead of hardcoding benchmark runners into the workflow.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Attach adapter resolve/eval-test deterministic proof showing repo-specific command templates are loaded from adapter files rather than hardcoded benchmark runners.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/adapter-contract.md:3
+
+##### claim-docs-contracts-claim-discovery-workflow-md-178
+
+- Summary: When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Attach the same deterministic fallback-group discovery proof used for the adapter-contract fallback claim.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:178
+
+##### claim-docs-contracts-reporting-md-111
+
+- Summary: Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Attach deterministic report-packet tests proving model and provider fields come only from explicit runner output, adapter metadata, or checked-in wrappers.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/reporting.md:111
+
+##### claim-docs-contracts-runner-readiness-md-117
+
+- Summary: It should combine binary health, skill surface readiness, adapter state, claim state, and runner readiness status.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Add or link deterministic CLI/golden coverage for `cautilus agent status` showing binary health, skill surface readiness, adapter state, claim state, and runner readiness status.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:117
+
+##### claim-docs-contracts-runner-readiness-md-44
+
+- Summary: `eval` runs bounded behavior evaluations through adapter-declared runners.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Attach deterministic eval-test runner-dispatch proof showing bounded evaluation runs use adapter-declared command templates.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:44
+
+##### claim-docs-contracts-runtime-fingerprint-optimization-md-50
+
+- Summary: It should not directly auto-edit consumer-owned prompts, skills, or instruction files.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Prove with a deterministic fixture repo or command test that optimization/runtime-fingerprint paths emit proposals or packets without modifying consumer-owned prompts, skills, or instruction files.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/runtime-fingerprint-optimization.md:50
+
+#### Human-auditable / blocked / evidence unknown (6)
 
 ##### claim-agents-md-12
 
@@ -1758,6 +1730,20 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/contracts/workbench-instance-discovery.md:100
+
+##### claim-docs-specs-maintainer-adapter-host-ownership-spec-md-19
+
+- Summary: Repo-specific behavior should stay in adapters and fixtures, not in product logic.
+- Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
+- Suggested next action: Decompose into concrete checks such as adapter-owned fixtures, command templates, and absence of host-specific prompts in product logic, or keep as maintainer-audited architecture policy.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/specs/maintainer/adapter-host-ownership.spec.md:19
 
 #### Human-auditable / needs-alignment / evidence unknown (7)
 
@@ -1877,114 +1863,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 ### Agent and skill workflow (53)
 
-#### Cautilus eval / app/prompt / ready-to-verify / evidence unknown (1)
-
-##### claim-docs-contracts-claim-discovery-workflow-md-60
-
-- Summary: The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=app/prompt; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned app/prompt fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:60
-
-#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (10)
-
-##### claim-docs-contracts-claim-discovery-workflow-md-196
-
-- Summary: After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:196
-
-##### claim-docs-contracts-claim-discovery-workflow-md-310
-
-- Summary: Agents and validators must read the split fields directly instead of deriving a compatibility label.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:310
-
-##### claim-docs-contracts-claim-discovery-workflow-md-461
-
-- Summary: The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:461
-
-##### claim-docs-contracts-claim-discovery-workflow-md-520
-
-- Summary: Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:520
-
-##### claim-docs-contracts-claim-discovery-workflow-md-78
-
-- Summary: This keeps the product agent-first without making the binary a host-specific agent runtime.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:78
-
-##### claim-docs-contracts-runner-readiness-md-397
-
-- Summary: Treating `agent status` branch labels as a fourth product workflow is over-worry once the branch ordering keeps ownership visible and status remains read-only.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:397
+#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (3)
 
 ##### claim-docs-contracts-scenario-proposal-sources-md-236
 
@@ -2000,21 +1879,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/contracts/scenario-proposal-sources.md:236
-
-##### claim-docs-master-plan-md-31
-
-- Summary: The product surface should keep following the same discipline as `charness`: expose the user's intent at the public command boundary, keep tool-specific mechanics underneath it, and preserve durable artifacts that another agent can resume.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/master-plan.md:31
 
 ##### claim-docs-specs-maintainer-active-run-workspace-spec-md-19
 
@@ -2397,6 +2261,22 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:683
 
+#### Deterministic gate / blocked / evidence unknown (1)
+
+##### claim-docs-contracts-claim-discovery-workflow-md-310
+
+- Summary: Agents and validators must read the split fields directly instead of deriving a compatibility label.
+- Current labels: audience=developer; proof=deterministic; readiness=blocked; evidence=unknown
+- Suggested next action: Split into a deterministic validator/packet-consumer check and a separate human-auditable bundled-skill instruction check; avoid planning dev/repo eval for the mixed claim as written.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:310
+
 #### Deterministic gate / ready-to-verify / evidence satisfied (6)
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-553
@@ -2483,7 +2363,51 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; skills/cautilus/SKILL.md:11
 
-#### Human-auditable / blocked / evidence unknown (7)
+#### Deterministic gate / ready-to-verify / evidence unknown (3)
+
+##### claim-docs-contracts-claim-discovery-workflow-md-196
+
+- Summary: After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Add or link deterministic CLI/packet regression proving confirmed discovery scope is serialized with enough entries, depth, bounds, exclusions, and dirty-state detail to reproduce or refresh the run.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:196
+
+##### claim-docs-contracts-claim-discovery-workflow-md-461
+
+- Summary: The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Add or link a deterministic `claim discover --previous ... --refresh-plan` fixture or test checking status, summary, counts, changed sources, and nextActions.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:461
+
+##### claim-docs-contracts-claim-discovery-workflow-md-520
+
+- Summary: Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Add or link a deterministic status-summary or claim-show packet test proving each action bucket includes `byReviewStatus` and `byEvidenceStatus` counts.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:520
+
+#### Human-auditable / blocked / evidence unknown (10)
 
 ##### claim-agents-md-61
 
@@ -2569,6 +2493,48 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:65
 
+##### claim-docs-contracts-claim-discovery-workflow-md-78
+
+- Summary: This keeps the product agent-first without making the binary a host-specific agent runtime.
+- Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
+- Suggested next action: Either exclude as rationale or decompose into auditable ownership claims: binary excludes provider/subagent/prompt policy, bundled skill owns orchestration, and host runtime owns execution.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:78
+
+##### claim-docs-contracts-runner-readiness-md-397
+
+- Summary: Treating `agent status` branch labels as a fourth product workflow is over-worry once the branch ordering keeps ownership visible and status remains read-only.
+- Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
+- Suggested next action: Exclude from eval planning or rewrite as a concrete acceptance claim about `agent status` branch ordering and read-only behavior.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:397
+
+##### claim-docs-master-plan-md-31
+
+- Summary: The product surface should keep following the same discipline as `charness`: expose the user's intent at the public command boundary, keep tool-specific mechanics underneath it, and preserve durable artifacts that another agent can resume.
+- Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
+- Suggested next action: Decompose into concrete claims for command naming/help intent language, tool-specific mechanics placement, and resumable artifact packets; then route each decomposed claim to deterministic or human-auditable proof.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/master-plan.md:31
+
 ##### claim-skills-cautilus-skill-md-22
 
 - Summary: The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts.
@@ -2583,7 +2549,21 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; skills/cautilus/SKILL.md:22
 
-#### Human-auditable / needs-alignment / evidence unknown (3)
+#### Human-auditable / needs-alignment / evidence unknown (4)
+
+##### claim-docs-contracts-claim-discovery-workflow-md-60
+
+- Summary: The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation.
+- Current labels: audience=developer; proof=human-auditable; readiness=needs-alignment; evidence=unknown
+- Suggested next action: Audit the binary command surface, bundled skill instructions, and host-agent responsibilities, then split enforceable pieces into deterministic checks such as no provider-selection flags, no prompt ownership in binary output, and skill-owned review orchestration.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:60
 
 ##### claim-docs-specs-maintainer-binary-skill-boundary-spec-md-14
 

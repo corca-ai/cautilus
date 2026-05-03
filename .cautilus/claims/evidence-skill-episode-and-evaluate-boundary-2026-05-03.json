@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-skill-episode-and-evaluate-boundary-2026-05-03",
+  "createdForClaimIds": [
+    "claim-readme-md-155",
+    "claim-docs-guides-evaluation-process-md-269"
+  ],
+  "repoCommit": "51d9a4dc81579cb6bf15f9955a5ed7b1c0913833",
+  "summary": "Current dev/skill dogfood and packet tests prove that the dev/skill preset can evaluate multi-turn agent episodes when fixtures provide turns, and that `eval evaluate` remains the deterministic packet boundary for already-observed skill trigger and execution quality.",
+  "evidenceScope": {
+    "targetSurface": "dev/skill episode turns and skill evaluation packet boundary",
+    "claimBoundary": "This bundle supports only multi-turn dev/skill episode handling and the packet-level `eval evaluate` skill summary boundary. It does not prove every possible skill prompt, Claude parity for the new episode, or app/product behavior.",
+    "notClaimed": [
+      "Every skill fixture with turns is semantically good",
+      "Claude runtime parity for the canonical spec curation episode",
+      "Fixture runtime is valid for episode adapters without fixture results",
+      "Any app/chat or app/prompt behavior",
+      "HITL review or claim review prepare-input execution"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run dogfood:cautilus-canonical-spec-curation-flow:eval:codex",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+        "recommendation": "accept-now",
+        "evaluationId": "episode-cautilus-canonical-spec-curation-flow",
+        "status": "passed",
+        "summary": "Execution consensus reached passed in 1/1 run(s). Audit passed: 0 finding(s).",
+        "fixtureUsesTurns": true
+      }
+    },
+    {
+      "command": "node --test scripts/agent-runtime/evaluate-skill.test.mjs scripts/agent-runtime/run-local-skill-test.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 19,
+        "pass": 19,
+        "protectedBehaviors": [
+          "skill evaluation summaries normalize trigger and execution quality",
+          "fixture-backed skill test results materialize `cautilus.skill_evaluation_inputs.v1` observed packets",
+          "audit-backed episode turns round-trip through skill case suite normalization",
+          "canonical spec curation audit episodes are accepted"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIEvalEvaluateAcceptsSkillObservedPacket|TestCLIEvalEvaluateDoesNotLaunchAdapterRunner' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "`eval evaluate` accepts skill observed packets",
+          "`eval evaluate` consumes observed packets without launching adapter runners"
+        ]
+      }
+    }
+  ],
+  "relatedEvidence": [
+    {
+      "path": ".cautilus/claims/evidence-canonical-spec-curation-flow-2026-05-03.json",
+      "kind": "cautilus-claim-evidence-bundle",
+      "contentHash": "sha256:99fc54622eea06129c8c58d31b1743dc7451a43c8b1e2897484d227dfb610b15",
+      "reason": "Provides the Codex-backed dev/skill episode run whose fixture uses multi-turn `turns`."
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "artifacts/self-dogfood/cautilus-canonical-spec-curation-flow-eval-codex/latest/eval-summary.json",
+      "kind": "dev-skill-eval-summary",
+      "contentHash": "sha256:860069722cd08a16622a78e0b46a979498b328cc7884ec94827edb7ba8d5b6ea",
+      "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+      "recommendation": "accept-now"
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-canonical-spec-curation-flow-eval-codex/latest/eval-observed.json",
+      "kind": "dev-skill-eval-observed",
+      "contentHash": "sha256:6c624d73e4bda86713abce894ccfbaa0bae7f6f18ce439f4499433d1d7c456c5",
+      "schemaVersion": "cautilus.skill_evaluation_inputs.v1"
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-canonical-spec-curation-flow.fixture.json",
+      "kind": "dev-skill-episode-fixture-with-turns",
+      "contentHash": "sha256:04aedee8b94aeda96d6cf101439468f7ed75037027a265a65ce6e09b45f8ced8"
+    },
+    {
+      "path": "scripts/agent-runtime/evaluate-skill.test.mjs",
+      "kind": "skill-evaluate-packet-tests",
+      "contentHash": "sha256:f497ab12278b8e238c5b9485d1fc3c6928e915c759b20ec484c6f9fbaafd121d"
+    },
+    {
+      "path": "scripts/agent-runtime/run-local-skill-test.test.mjs",
+      "kind": "skill-test-runner-tests",
+      "contentHash": "sha256:f2b56e905e527dfc55ad06252c8d669446e62920e54f972334dacdfabfc7850d"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "eval-evaluate-cli-tests",
+      "contentHash": "sha256:15c235ebe58a9e23da494628348e4b6b3449d5dcfa5ee079e64d4f63a10817df"
+    },
+    {
+      "path": "README.md",
+      "kind": "readme-skill-agent-execution-regression-doc",
+      "contentHash": "sha256:ea1fea4f6a83e0ef1d8bfd8cc2cf75eebb1af79be43cb89610fe16de4a444c90"
+    },
+    {
+      "path": "docs/guides/evaluation-process.md",
+      "kind": "evaluation-process-guide",
+      "contentHash": "sha256:0d0577a9c6f683507024c8570de6303d164b7044f81914293d3931c697888f3e"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The current checked-in dev/skill episode fixture with `turns` passed through eval-test, and the deterministic skill evaluation tests prove `eval evaluate` remains the packet-level boundary for skill trigger and execution quality."
+  }
+}

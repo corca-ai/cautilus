@@ -3,20 +3,20 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 150
+          "unknown": 131
         },
         "byReviewStatus": {
-          "heuristic": 150
+          "heuristic": 131
         },
-        "count": 150,
+        "count": 131,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-75",
-          "claim-readme-md-155",
           "claim-readme-md-161",
           "claim-readme-md-179",
-          "claim-readme-md-200"
+          "claim-readme-md-200",
+          "claim-docs-contracts-adapter-contract-md-405"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
       }
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 122
+          "satisfied": 124
         },
         "byReviewStatus": {
-          "agent-reviewed": 122
+          "agent-reviewed": 124
         },
-        "count": 122,
+        "count": 124,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,20 +43,39 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 97
+          "unknown": 11
         },
         "byReviewStatus": {
-          "heuristic": 97
+          "agent-reviewed": 11
         },
-        "count": 97,
-        "id": "agent-plan-cautilus-eval",
+        "count": 11,
+        "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-readme-md-155",
           "claim-docs-contracts-adapter-contract-md-3",
           "claim-docs-contracts-adapter-contract-md-208",
           "claim-docs-contracts-adapter-contract-md-220",
-          "claim-docs-contracts-adapter-contract-md-430"
+          "claim-docs-contracts-claim-discovery-workflow-md-178",
+          "claim-docs-contracts-claim-discovery-workflow-md-196"
+        ],
+        "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
+      },
+      {
+        "byEvidenceStatus": {
+          "unknown": 78
+        },
+        "byReviewStatus": {
+          "heuristic": 78
+        },
+        "count": 78,
+        "id": "agent-plan-cautilus-eval",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-docs-contracts-adapter-contract-md-430",
+          "claim-docs-contracts-adapter-contract-md-476",
+          "claim-docs-contracts-review-packet-md-3",
+          "claim-docs-contracts-active-run-md-59",
+          "claim-docs-contracts-active-run-md-186"
         ],
         "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
       },
@@ -82,13 +101,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 34
+          "unknown": 35
         },
         "byReviewStatus": {
-          "agent-reviewed": 15,
+          "agent-reviewed": 16,
           "heuristic": 19
         },
-        "count": 34,
+        "count": 35,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -121,13 +140,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 38
+          "unknown": 43
         },
         "byReviewStatus": {
-          "agent-reviewed": 33,
+          "agent-reviewed": 38,
           "heuristic": 5
         },
-        "count": 38,
+        "count": 43,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -174,26 +193,26 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 122,
-      "unknown": 200
+      "satisfied": 124,
+      "unknown": 198
     },
     "byLifecycle": {
       "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 106,
-      "human-auditable": 93
+      "cautilus-eval": 105,
+      "deterministic": 119,
+      "human-auditable": 98
     },
     "byReviewStatus": {
-      "agent-reviewed": 172,
-      "heuristic": 150
+      "agent-reviewed": 191,
+      "heuristic": 131
     },
     "byVerificationReadiness": {
-      "blocked": 38,
-      "needs-alignment": 34,
+      "blocked": 43,
+      "needs-alignment": 35,
       "needs-scenario": 10,
-      "ready-to-verify": 240
+      "ready-to-verify": 234
     }
   },
   "discoveryBoundary": {
@@ -360,7 +379,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 122,
+    "satisfiedClaimCount": 124,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -538,6 +557,26 @@
         "recommendedProof": "cautilus-eval",
         "reviewStatus": "agent-reviewed",
         "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing."
+      },
+      {
+        "claimId": "claim-readme-md-155",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:1144c7344aef35da821c28184a12be601240e26fee39012ffc58096e8ed1b50d",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-skill-episode-and-evaluate-boundary-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-readme-md-155",
+              "claim-docs-guides-evaluation-process-md-269"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`."
       },
       {
         "claimId": "claim-readme-md-157",
@@ -1192,6 +1231,26 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "When repeated workflow failures should become durable scenario coverage, prefer the checked-in `skill` normalization helper over repo-local one-off shapers:"
+      },
+      {
+        "claimId": "claim-docs-guides-evaluation-process-md-269",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:1144c7344aef35da821c28184a12be601240e26fee39012ffc58096e8ed1b50d",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-skill-episode-and-evaluate-boundary-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-readme-md-155",
+              "claim-docs-guides-evaluation-process-md-269"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`eval evaluate` remains the first-class packet boundary for skill trigger and execution quality."
       },
       {
         "claimId": "claim-docs-guides-evaluation-process-md-289",
@@ -2712,7 +2771,7 @@
   },
   "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "gitState": {
-    "changedFileCount": 37,
+    "changedFileCount": 39,
     "changedFiles": [
       ".agents/cautilus-adapters/self-dogfood-canonical-spec-curation-flow.yaml",
       ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
@@ -2720,6 +2779,7 @@
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
+      ".cautilus/claims/evidence-canonical-spec-curation-flow-2026-05-03.json",
       ".cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json",
       ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
@@ -2728,6 +2788,7 @@
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-adapter-gate-split-2026-05-03.json",
+      ".cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json",
       ".cautilus/claims/review-result-claim-packet-next-work-grouping-2026-05-03.json",
       ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json",
@@ -2760,7 +2821,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "f8b22ea1dcb1902baa6c4d379954c4b1bac1adbb",
+    "currentGitCommit": "51d9a4dc81579cb6bf15f9955a5ed7b1c0913833",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
@@ -2787,8 +2848,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 123,
-    "needsAlignment": 34,
+    "heuristicClaimsReadyForReview": 104,
+    "needsAlignment": 35,
     "needsScenario": 10
   },
   "sampleClaims": [

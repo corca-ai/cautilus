@@ -2876,16 +2876,20 @@ func claimEvalPlanZeroReason(plans []any, skipped []any) string {
 
 func skippedClaimEvalPlan(candidate map[string]any, reason string) map[string]any {
 	entry := map[string]any{
-		"claimId":                stringFromAny(candidate["claimId"]),
-		"claimFingerprint":       candidate["claimFingerprint"],
-		"reason":                 reason,
-		"recommendedProof":       candidate["recommendedProof"],
-		"verificationReadiness":  candidate["verificationReadiness"],
-		"recommendedEvalSurface": claimEvalPlanSurface(candidate),
-		"evidenceStatus":         candidate["evidenceStatus"],
-		"reviewStatus":           candidate["reviewStatus"],
+		"claimId":               stringFromAny(candidate["claimId"]),
+		"claimFingerprint":      candidate["claimFingerprint"],
+		"reason":                reason,
+		"recommendedProof":      candidate["recommendedProof"],
+		"verificationReadiness": candidate["verificationReadiness"],
+		"evidenceStatus":        candidate["evidenceStatus"],
+		"reviewStatus":          candidate["reviewStatus"],
 	}
-	if reason == "already-satisfied" {
+	if stringFromAny(candidate["recommendedProof"]) == "cautilus-eval" {
+		entry["recommendedEvalSurface"] = claimEvalPlanSurface(candidate)
+	} else if surface := stringFromAny(candidate["recommendedEvalSurface"]); surface != "" {
+		entry["recommendedEvalSurface"] = surface
+	}
+	if reason == "already-satisfied" || stringFromAny(candidate["evidenceStatus"]) == "satisfied" {
 		entry["sourceRefs"] = arrayOrEmpty(candidate["sourceRefs"])
 		entry["evidenceRefs"] = arrayOrEmpty(candidate["evidenceRefs"])
 		entry["unresolvedQuestions"] = arrayOrEmpty(candidate["unresolvedQuestions"])

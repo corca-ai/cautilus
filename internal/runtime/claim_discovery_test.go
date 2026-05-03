@@ -2020,6 +2020,55 @@ func TestBuildClaimEvalPlanSkipsSatisfiedEvalClaims(t *testing.T) {
 	}
 }
 
+func TestBuildClaimEvalPlanSkipsSatisfiedNonEvalClaimsWithEvidenceContext(t *testing.T) {
+	reviewed := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"sourceRoot":    ".",
+		"sourceInventory": []any{
+			map[string]any{"path": "README.md", "kind": "markdown", "status": "read", "depth": 0},
+		},
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               "claim-readme-md-2",
+				"claimFingerprint":      "sha256:satisfied-deterministic",
+				"summary":               "The packet boundary is already covered.",
+				"recommendedProof":      "deterministic",
+				"verificationReadiness": "ready-to-verify",
+				"evidenceStatus":        "satisfied",
+				"reviewStatus":          "agent-reviewed",
+				"lifecycle":             "new",
+				"groupHints":            []any{"deterministic"},
+				"evidenceRefs": []any{map[string]any{
+					"path":             ".cautilus/claims/evidence-deterministic.json",
+					"kind":             "cautilus-claim-evidence-bundle",
+					"matchKind":        "verified",
+					"contentHash":      "sha256:test",
+					"supportsClaimIds": []any{"claim-readme-md-2"},
+				}},
+				"sourceRefs": []any{map[string]any{"path": "README.md", "line": 2, "excerpt": "The packet boundary is already covered."}},
+			},
+		},
+	}
+	evalPlan, err := BuildClaimEvalPlan(reviewed, ClaimEvalPlanOptions{ClaimsPath: "reviewed-claims.json"})
+	if err != nil {
+		t.Fatalf("BuildClaimEvalPlan returned error: %v", err)
+	}
+	skipped := arrayOrEmpty(evalPlan["skippedClaims"])
+	if len(skipped) != 1 {
+		t.Fatalf("expected one skipped claim, got %#v", skipped)
+	}
+	firstSkipped := asMap(skipped[0])
+	if firstSkipped["reason"] != "not-cautilus-eval" || firstSkipped["evidenceStatus"] != "satisfied" {
+		t.Fatalf("expected satisfied non-eval skip, got %#v", firstSkipped)
+	}
+	if len(arrayOrEmpty(firstSkipped["evidenceRefs"])) != 1 || len(arrayOrEmpty(firstSkipped["sourceRefs"])) != 1 {
+		t.Fatalf("expected skipped satisfied non-eval claim to retain evidence context, got %#v", firstSkipped)
+	}
+	if _, exists := firstSkipped["recommendedEvalSurface"]; exists {
+		t.Fatalf("expected non-eval skipped claim not to synthesize an eval surface, got %#v", firstSkipped)
+	}
+}
+
 func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
 	packet := map[string]any{
 		"schemaVersion": contracts.ClaimProofPlanSchema,

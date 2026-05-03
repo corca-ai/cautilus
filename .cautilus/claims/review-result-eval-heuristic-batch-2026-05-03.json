@@ -1,0 +1,316 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-with-subagent-eval-heuristic-batch",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T23:59:00+09:00",
+    "evidencePolicy": "Review heuristic eval candidates before spending fixture budget. Mark satisfied only when direct current evidence exists; otherwise reclassify product-owned packet, CLI, schema, ownership, and rationale claims out of Cautilus eval planning."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-eval-heuristic-batch-2026-05-03",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-155",
+          "claimFingerprint": "sha256:afaff338e3a44ec8eeb8b39d25319e27d26e908ac17a00c2f46c5af9979e5e1f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current dev/skill dogfood: the canonical spec curation fixture provides multi-turn `turns`, eval-test ran it through the Codex backend, and the resulting skill evaluation summary was accept-now.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-skill-episode-and-evaluate-boundary-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:1144c7344aef35da821c28184a12be601240e26fee39012ffc58096e8ed1b50d",
+              "supportsClaimIds": [
+                "claim-readme-md-155",
+                "claim-docs-guides-evaluation-process-md-269"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by dev/skill episode fixtures whenever `turns` normalization or episode audit runners change.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-269",
+          "claimFingerprint": "sha256:6b5f627200b50a7707f96c32d7a64e3244f7b3701dcfb153006454b68e1ad489",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by deterministic skill evaluation packet tests and CLI smoke: `eval evaluate` accepts `cautilus.skill_evaluation_inputs.v1` observed packets and evaluates skill trigger/execution quality without launching adapter runners.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-skill-episode-and-evaluate-boundary-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:1144c7344aef35da821c28184a12be601240e26fee39012ffc58096e8ed1b50d",
+              "supportsClaimIds": [
+                "claim-readme-md-155",
+                "claim-docs-guides-evaluation-process-md-269"
+              ]
+            }
+          ],
+          "nextAction": "Keep covered by `eval evaluate` skill observed-packet tests and skill summary tests.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-208",
+          "claimFingerprint": "sha256:99c684dbda2accf4db9b5a114cb2259804c721b6a3d4e59f3720af41a6964b31",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached in this review result. The claim is a proof-class normalization rule for fixture runtime, not a new dev/repo behavior eval target.",
+          "evidenceRefs": [],
+          "nextAction": "Attach or extend deterministic fixture-runtime proof showing `runtime=fixture` yields `proofClass=fixture-smoke` while preserving the adapter-declared proof class only as metadata.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "Proof-class downgrade is product-owned packet normalization and should be checked by unit/CLI tests."
+        },
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-220",
+          "claimFingerprint": "sha256:e072f1310848f030f869ee7e1ccd5ee2da5b858d9bf1278729f22c0e47cc1b0b",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim concerns fallback semantic-group classification when adapter groups are omitted, which is deterministic discovery behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Attach a claim-discovery or adapter-normalization test proving omitted semantic groups produce `General product behavior` instead of a Cautilus-specific taxonomy.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "Adapter fallback taxonomy is binary classification logic, not an LLM eval scenario."
+        },
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-3",
+          "claimFingerprint": "sha256:91bf63bed1f252b0849096cb1ec6ab5b1453c2f60329227a39b11d7c92cdd08b",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim is about adapter-loaded command ownership and can be proven by adapter resolution and eval-test command-template execution.",
+          "evidenceRefs": [],
+          "nextAction": "Attach adapter resolve/eval-test deterministic proof showing repo-specific command templates are loaded from adapter files rather than hardcoded benchmark runners.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "Adapter command loading is a product-owned deterministic contract."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-178",
+          "claimFingerprint": "sha256:931bf4f719385b85ea297bcc3cdd8b56c29eb2d9ca43e3d57acbe2a3c85a9734",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. This duplicates the portable fallback semantic-group behavior and should not consume eval fixture budget.",
+          "evidenceRefs": [],
+          "nextAction": "Attach the same deterministic fallback-group discovery proof used for the adapter-contract fallback claim.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "This is binary discovery output behavior."
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-111",
+          "claimFingerprint": "sha256:6a5975f5be8ff5f08f378525aa1963dc684e6d1d50395f4326e2788cdb47521f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. Model/provider truth provenance is report packet normalization, not model behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Attach deterministic report-packet tests proving model and provider fields come only from explicit runner output, adapter metadata, or checked-in wrappers.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "Provenance constraints are packet and schema assertions."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-44",
+          "claimFingerprint": "sha256:f10d9bd6fab59f1aab0554881c0e39bd41cdaf669e8abe2056655c4f31009d92",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim is about eval-test runner dispatch through adapter-declared runners, which can be checked with CLI tests.",
+          "evidenceRefs": [],
+          "nextAction": "Attach deterministic eval-test runner-dispatch proof showing bounded evaluation runs use adapter-declared command templates.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "Runner dispatch is deterministic CLI behavior."
+        },
+        {
+          "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-19",
+          "claimFingerprint": "sha256:cd19dcd50f48defb627cd4240219b47848b9e552bf3ca377393f51a0b0ea85a0",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim is a broad ownership principle; one dev/repo eval would overclaim product logic versus adapter/fixture ownership.",
+          "evidenceRefs": [],
+          "nextAction": "Decompose into concrete checks such as adapter-owned fixtures, command templates, and absence of host-specific prompts in product logic, or keep as maintainer-audited architecture policy.",
+          "unresolvedQuestions": [
+            "Which ownership subclaims should become deterministic product gates versus maintained architecture notes?"
+          ],
+          "whyThisLayer": "Broad ownership principles need decomposition before proof."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-117",
+          "claimFingerprint": "sha256:8fe51f062991ce657831e0fad6218ae8064d3f2b64317e2b7727b4e305a59a21",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim is about `agent status` packet composition and readiness fields, not model or skill behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link deterministic CLI/golden coverage for `cautilus agent status` showing binary health, skill surface readiness, adapter state, claim state, and runner readiness status.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "Command, packet, runner, and readiness statements should prefer deterministic proof unless they depend on model or agent behavior."
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
+          "claimFingerprint": "sha256:5b4aa826a977bd6abed0596d72f0a3bba779e7c5d880765a0bd1e59d1439d44d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. This is a negative side-effect boundary about not auto-editing consumer-owned files, not a dev/skill eval target.",
+          "evidenceRefs": [],
+          "nextAction": "Prove with a deterministic fixture repo or command test that optimization/runtime-fingerprint paths emit proposals or packets without modifying consumer-owned prompts, skills, or instruction files.",
+          "unresolvedQuestions": [
+            "Which concrete command path currently exercises this optimization boundary?"
+          ],
+          "whyThisLayer": "The claim can be checked by filesystem side-effect assertions and packet inspection."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-60",
+          "claimFingerprint": "sha256:42108608e1cf924bd44556729ee33c68d1819d7b6828b8ada5bc68efeabb4ad7",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim is a binary-versus-skill ownership boundary, not an app prompt behavior claim.",
+          "evidenceRefs": [],
+          "nextAction": "Audit the binary command surface, bundled skill instructions, and host-agent responsibilities, then split enforceable pieces into deterministic checks such as no provider-selection flags, no prompt ownership in binary output, and skill-owned review orchestration.",
+          "unresolvedQuestions": [
+            "Which parts of this ownership boundary are intended to be enforced by binary tests versus maintained as architecture policy?"
+          ],
+          "whyThisLayer": "Ownership-boundary explanations should stay human-auditable and needs-alignment until docs, code, adapters, and tests are reconciled."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-196",
+          "claimFingerprint": "sha256:c8771569879ff2560b316b4ba714639e8cbf8c21156e0729a47ed22979780a64",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim is a `claim discover` packet reproducibility contract, not dev/repo model behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link deterministic CLI/packet regression proving confirmed discovery scope is serialized with enough entries, depth, bounds, exclusions, and dirty-state detail to reproduce or refresh the run.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "Packet field presence and reproducibility metadata are deterministic binary behavior."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-310",
+          "claimFingerprint": "sha256:4a7ed1cd52c43528fd327f34e1db3925267ec53e1ebd68c70726c5310947dd20",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim mixes validators and agents in one sentence; the enforceable validator portion and instruction-surface portion need separate proof routes.",
+          "evidenceRefs": [],
+          "nextAction": "Split into a deterministic validator/packet-consumer check and a separate human-auditable bundled-skill instruction check; avoid planning dev/repo eval for the mixed claim as written.",
+          "unresolvedQuestions": [
+            "Should the agent-instruction portion become a separate human-auditable or dev/skill claim?"
+          ],
+          "whyThisLayer": "The enforceable part is schema/validator behavior; agent reading discipline is instruction-surface audit unless a concrete skill scenario is defined."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-461",
+          "claimFingerprint": "sha256:d04d8eb163d803e2a529f013956a4a4cb5102b5eaf3da8c9dc592c131c78228f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim is about refresh-plan packet summary fields and coordinator-facing counts, not model behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a deterministic `claim discover --previous ... --refresh-plan` fixture or test checking status, summary, counts, changed sources, and nextActions.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "A packet schema/output assertion is deterministic and should not consume a Cautilus eval slot."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-520",
+          "claimFingerprint": "sha256:a9943885f769ffe5d334af18d6d6402ccc92d0e356e348f91cc3428c920f80ff",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. The claim is about `actionSummary.primaryBuckets` packet structure.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a deterministic status-summary or claim-show packet test proving each action bucket includes `byReviewStatus` and `byEvidenceStatus` counts.",
+          "unresolvedQuestions": [],
+          "whyThisLayer": "The layer is product-owned packet structure, not AI development-agent behavior."
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-78",
+          "claimFingerprint": "sha256:4755325a9090d9e679305b3a06a1b7a3f122c44037faed7396ff609ac753d572",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. This is architecture rationale, not a ready dev/repo eval candidate.",
+          "evidenceRefs": [],
+          "nextAction": "Either exclude as rationale or decompose into auditable ownership claims: binary excludes provider/subagent/prompt policy, bundled skill owns orchestration, and host runtime owns execution.",
+          "unresolvedQuestions": [
+            "Should rationale sentences like this remain in proof queues, or only their decomposed ownership bullets?"
+          ],
+          "whyThisLayer": "The claim is best checked by source/docs architecture audit after decomposition."
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-397",
+          "claimFingerprint": "sha256:8fa0494ebce3835b7746dfe891883393d5f4537e803da2d1fcdddd080a1304f5",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. This is a premortem/counterweight judgment rather than a concrete behavior claim.",
+          "evidenceRefs": [],
+          "nextAction": "Exclude from eval planning or rewrite as a concrete acceptance claim about `agent status` branch ordering and read-only behavior.",
+          "unresolvedQuestions": [
+            "Should counterweight notes be filtered out of claim discovery unless converted into acceptance criteria?"
+          ],
+          "whyThisLayer": "Human audit can decide whether the rationale is valid; a model eval would not prove the product contract."
+        },
+        {
+          "claimId": "claim-docs-master-plan-md-31",
+          "claimFingerprint": "sha256:27088f34eb9c48b3c5789e94cd05c086c20c6358c95cee2977a7a0a965e54655",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "blocked",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct evidence ref is attached. This is a broad product-surface discipline statement and should not be treated as one dev/repo eval target.",
+          "evidenceRefs": [],
+          "nextAction": "Decompose into concrete claims for command naming/help intent language, tool-specific mechanics placement, and resumable artifact packets; then route each decomposed claim to deterministic or human-auditable proof.",
+          "unresolvedQuestions": [
+            "Which command families must be included before this broad master-plan statement can be considered covered?"
+          ],
+          "whyThisLayer": "As written this is architecture/product narrative, not a ready dev/repo eval."
+        }
+      ]
+    }
+  ]
+}
