@@ -1366,6 +1366,49 @@ func TestApplyClaimReviewResultCanUpdateClaimAudience(t *testing.T) {
 	}
 }
 
+func TestApplyClaimReviewResultCanUpdateWhyThisLayer(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := stringFromAny(asMap(arrayOrEmpty(plan["claimCandidates"])[0])["claimId"])
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-reclassified",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":               claimID,
+						"recommendedProof":      "human-auditable",
+						"verificationReadiness": "blocked",
+						"whyThisLayer":          "The claim is a broad operating principle and must be split before proof.",
+						"evidenceStatus":        "unknown",
+						"evidenceStatusReason":  "No direct evidence should be attached before decomposition.",
+						"nextAction":            "Split into concrete checkable subclaims.",
+						"unresolvedQuestions":   []any{"Which subclaims are concrete enough?"},
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result-reclassified.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult returned error: %v", err)
+	}
+	candidate := asMap(arrayOrEmpty(updated["claimCandidates"])[0])
+	if candidate["recommendedProof"] != "human-auditable" || candidate["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected reclassified candidate, got %#v", candidate)
+	}
+	if candidate["whyThisLayer"] != "The claim is a broad operating principle and must be split before proof." {
+		t.Fatalf("expected whyThisLayer to update with review result, got %#v", candidate)
+	}
+}
+
 func TestApplyClaimReviewResultCanClearUnresolvedQuestions(t *testing.T) {
 	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})

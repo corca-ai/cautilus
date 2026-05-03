@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-strict-reclassification",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Do not attach deterministic evidence to broad operating principles unless the claim names a concrete checkable product surface."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-operating-principles-need-decomposition",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-12",
+          "claimFingerprint": "sha256:0bae4dba5995735432a7ab4cf307999b1c1a2dda82841939daff988c016548a5",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "whyThisLayer": "The claim is a broad operating principle; a single deterministic check would overclaim until the principle is split into concrete proof obligations.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a broad repo operating principle, not a directly checkable behavior claim. A deterministic gate can prove one concrete surface, but it cannot prove that all deterministic behavior belongs in the named artifact classes.",
+          "evidenceRefs": [],
+          "nextAction": "Split this principle into concrete checkable subclaims, such as specific CLI behavior covered by tests, adapter schema rules, specdown assertions, or script-owned validation gates.",
+          "unresolvedQuestions": [
+            "Which concrete deterministic behavior surfaces should be listed as proof obligations rather than kept as a general operating principle?"
+          ]
+        },
+        {
+          "claimId": "claim-agents-md-61",
+          "claimFingerprint": "sha256:15e5fbc575df9af76ba40b6ba314c6fe604ab6b50f792524416b12e01e871e42",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "whyThisLayer": "The claim is an instruction-surface organization rule with subjective length and routing-ownership parts; split it before attaching deterministic proof.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is an instruction-surface organization rule. Existing lint can enforce some disclosure boundaries, but the full claim combines a subjective length judgment with routing ownership policy.",
+          "evidenceRefs": [],
+          "nextAction": "Either keep this as a maintainer operating principle or split it into concrete checks: AGENTS skill-routing section length, skill metadata availability, and find-skills inventory coverage.",
+          "unresolvedQuestions": [
+            "Should Cautilus add a narrow instruction-surface lint for this repo, or is this sufficiently covered as a maintainer-facing operating rule?"
+          ]
+        }
+      ]
+    }
+  ]
+}

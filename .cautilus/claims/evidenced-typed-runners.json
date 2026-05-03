@@ -9,15 +9,15 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as a broad repo operating-policy claim. Existing tests and scripts show many deterministic behaviors are encoded, but the claim is wider than a single gate and needs either decomposition or a policy inventory.",
+      "evidenceStatusReason": "This is a broad repo operating principle, not a directly checkable behavior claim. A deterministic gate can prove one concrete surface, but it cannot prove that all deterministic behavior belongs in the named artifact classes.",
       "groupHints": [
         "audience:developer",
-        "deterministic",
+        "human-auditable",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Decompose into concrete deterministic surfaces or create a policy inventory that maps deterministic behavior claims to code, scripts, adapters, tests, and specs.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Split this principle into concrete checkable subclaims, such as specific CLI behavior covered by tests, adapter schema rules, specdown assertions, or script-owned validation gates.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -27,9 +27,11 @@
         }
       ],
       "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "unresolvedQuestions": [
+        "Which concrete deterministic behavior surfaces should be listed as proof obligations rather than kept as a general operating principle?"
+      ],
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim is a broad operating principle; a single deterministic check would overclaim until the principle is split into concrete proof obligations."
     },
     {
       "claimAudience": "developer",
@@ -103,15 +105,15 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as an instruction-surface structure claim. It needs deterministic evidence that AGENTS stays short and detailed routing remains in installed skill metadata and find-skills output.",
+      "evidenceStatusReason": "This is an instruction-surface organization rule. Existing lint can enforce some disclosure boundaries, but the full claim combines a subjective length judgment with routing ownership policy.",
       "groupHints": [
         "audience:developer",
-        "deterministic",
+        "human-auditable",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Add a small instruction-surface lint or evidence bundle that checks AGENTS length and verifies detailed routing is discoverable through skill metadata and find-skills artifacts.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Either keep this as a maintainer operating principle or split it into concrete checks: AGENTS skill-routing section length, skill metadata availability, and find-skills inventory coverage.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -121,9 +123,11 @@
         }
       ],
       "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "unresolvedQuestions": [
+        "Should Cautilus add a narrow instruction-surface lint for this repo, or is this sufficiently covered as a maintainer-facing operating rule?"
+      ],
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim is an instruction-surface organization rule with subjective length and routing-ownership parts; split it before attaching deterministic proof."
     },
     {
       "claimAudience": "developer",
@@ -10039,8 +10043,8 @@
     },
     "byRecommendedProof": {
       "cautilus-eval": 128,
-      "deterministic": 128,
-      "human-auditable": 66
+      "deterministic": 126,
+      "human-auditable": 68
     },
     "byReviewStatus": {
       "agent-reviewed": 65,
@@ -10048,10 +10052,10 @@
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
-      "blocked": 13,
+      "blocked": 15,
       "needs-alignment": 30,
       "needs-scenario": 8,
-      "ready-to-verify": 271
+      "ready-to-verify": 269
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -10413,6 +10417,12 @@
         "reviewer": "codex-lane-b",
         "scope": "clusters 3-5 only"
       },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}
     },

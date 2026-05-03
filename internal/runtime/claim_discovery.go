@@ -2935,7 +2935,7 @@ func validateClaimUpdateFields(update map[string]any, field string) error {
 func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, error) {
 	applied := []any{}
 	protectSatisfiedEvidence := shouldProtectSatisfiedEvidence(candidate, update)
-	for _, field := range []string{"recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle"} {
+	for _, field := range []string{"recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle", "whyThisLayer"} {
 		if value := stringFromAny(update[field]); value != "" {
 			if field == "evidenceStatus" && protectSatisfiedEvidence {
 				continue

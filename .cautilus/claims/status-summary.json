@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 106
+          "unknown": 104
         },
         "byReviewStatus": {
-          "agent-reviewed": 21,
+          "agent-reviewed": 19,
           "heuristic": 82,
           "human-reviewed": 3
         },
-        "count": 106,
+        "count": 104,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-agents-md-12",
-          "claim-agents-md-61",
           "claim-readme-md-101",
           "claim-docs-cli-reference-md-32",
-          "claim-docs-cli-reference-md-110"
+          "claim-docs-cli-reference-md-110",
+          "claim-docs-cli-reference-md-115",
+          "claim-docs-cli-reference-md-128"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -142,21 +142,21 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 13
+          "unknown": 15
         },
         "byReviewStatus": {
-          "agent-reviewed": 9,
+          "agent-reviewed": 11,
           "heuristic": 4
         },
-        "count": 13,
+        "count": 15,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
+          "claim-agents-md-12",
           "claim-agents-md-26",
           "claim-agents-md-29",
-          "claim-agents-md-73",
-          "claim-readme-md-3",
-          "claim-readme-md-160"
+          "claim-agents-md-61",
+          "claim-agents-md-73"
         ],
         "summary": "Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification."
       }
@@ -203,8 +203,8 @@
     },
     "byRecommendedProof": {
       "cautilus-eval": 128,
-      "deterministic": 128,
-      "human-auditable": 66
+      "deterministic": 126,
+      "human-auditable": 68
     },
     "byReviewStatus": {
       "agent-reviewed": 65,
@@ -212,10 +212,10 @@
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
-      "blocked": 13,
+      "blocked": 15,
       "needs-alignment": 30,
       "needs-scenario": 8,
-      "ready-to-verify": 271
+      "ready-to-verify": 269
     }
   },
   "discoveryBoundary": {
@@ -830,12 +830,13 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 25,
+    "changedFileCount": 31,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
+      ".cautilus/claims/evidence-fixture-runtime-proof-2026-05-03.json",
       ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
       ".cautilus/claims/evidence-machine-readable-packets-2026-05-03.json",
       ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-03.json",
@@ -843,20 +844,25 @@
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-fixture-runtime-proof-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-machine-readable-packets-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
+      "charness-artifacts/debug/debug-2026-05-03-claim-gitstate-scope.md",
       "charness-artifacts/debug/debug-2026-05-03-review-application-temp-paths.md",
       "charness-artifacts/debug/debug-2026-05-03-verified-evidence-downgrade.md",
       "charness-artifacts/debug/latest.md",
       "internal/app/app_test.go",
+      "internal/app/cli_smoke_test.go",
       "internal/runtime/claim_discovery.go",
       "internal/runtime/claim_discovery_test.go",
       "scripts/agent-runtime/apply-current-review-results.mjs",
-      "scripts/agent-runtime/apply-current-review-results.test.mjs"
+      "scripts/agent-runtime/apply-current-review-results.test.mjs",
+      "scripts/agent-runtime/render-claim-status-report.mjs",
+      "scripts/agent-runtime/render-claim-status-report.test.mjs"
     ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
@@ -866,7 +872,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "c7ae36509e8ad4a98cc82a0ae7aecd572b63da5d",
+    "currentGitCommit": "23ac47ea151b0bb9ed432f31e495073f1c75393e",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
@@ -905,12 +911,12 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "deterministic",
+        "human-auditable",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Decompose into concrete deterministic surfaces or create a policy inventory that maps deterministic behavior claims to code, scripts, adapters, tests, and specs.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Split this principle into concrete checkable subclaims, such as specific CLI behavior covered by tests, adapter schema rules, specdown assertions, or script-owned validation gates.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -919,7 +925,7 @@
         }
       ],
       "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "blocked"
     },
     {
       "claimAudience": "developer",
@@ -976,12 +982,12 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "deterministic",
+        "human-auditable",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Add a small instruction-surface lint or evidence bundle that checks AGENTS length and verifies detailed routing is discoverable through skill metadata and find-skills artifacts.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Either keep this as a maintainer operating principle or split it into concrete checks: AGENTS skill-routing section length, skill metadata availability, and find-skills inventory coverage.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -990,7 +996,7 @@
         }
       ],
       "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "blocked"
     },
     {
       "claimAudience": "developer",
