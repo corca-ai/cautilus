@@ -194,6 +194,7 @@
       "groupHints": [
         "audience:developer",
         "deterministic",
+        "needs-alignment",
         "repo-instructions"
       ],
       "lifecycle": "new",
@@ -210,7 +211,7 @@
       "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "developer",
@@ -4035,7 +4036,8 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
       "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first.",
@@ -4053,7 +4055,7 @@
         "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
       ],
       "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "developer",
@@ -4068,7 +4070,8 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
       "nextAction": "Audit the binary command surface, bundled skill instructions, and host-agent responsibilities, then split enforceable pieces into deterministic checks such as no provider-selection flags, no prompt ownership in binary output, and skill-owned review orchestration.",
@@ -4101,7 +4104,8 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
       "nextAction": "Do not satisfy directly; split into narrower checkable subclaims, keep as positioning, or resolve the documented alignment/deferred decision first.",
@@ -4119,7 +4123,7 @@
         "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
       ],
       "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "developer",
@@ -4517,7 +4521,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4530,7 +4534,7 @@
       ],
       "summary": "Before running a first broad scan, the skill should say which entries and depth it will use.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
       "claimAudience": "developer",
@@ -4577,7 +4581,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4590,7 +4594,7 @@
       ],
       "summary": "The skill should ask the user to confirm or adjust that scope.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
       "claimAudience": "developer",
@@ -4633,13 +4637,15 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
+        "cautilus-eval",
         "contract",
-        "deterministic",
+        "dev/skill",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -4650,7 +4656,7 @@
       ],
       "summary": "After the deterministic pass, the skill should show a separate review plan:",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
       "claimAudience": "developer",
@@ -4668,7 +4674,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4681,7 +4687,7 @@
       ],
       "summary": "The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
       "claimAudience": "developer",
@@ -4874,12 +4880,12 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "dev/repo",
+        "dev/skill",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
+      "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -4891,7 +4897,7 @@
       ],
       "summary": "Agents and validators must read the split fields directly instead of deriving a compatibility label.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
       "claimAudience": "developer",
@@ -5021,12 +5027,13 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic readiness, preflight, or command-contract proof for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5036,8 +5043,8 @@
         }
       ],
       "summary": "The binary can do cheap deterministic preflight, but the skill owns final interpretation.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names readiness, preflight, or command-contract behavior that should be protected by deterministic checks."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "developer",
@@ -5231,13 +5238,15 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
+        "cautilus-eval",
         "contract",
-        "deterministic",
+        "dev/skill",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet, provenance, ranked-output, or renderer proof for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5248,7 +5257,7 @@
       ],
       "summary": "The parent skill should merge results and keep review provenance in the packet.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names provenance, ranked-output, or view projection behavior that should be protected by deterministic packet or renderer checks."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
       "claimAudience": "developer",
@@ -5451,7 +5460,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -5464,7 +5473,7 @@
       ],
       "summary": "The skill should then ask the user which branch to take.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
       "claimAudience": "developer",
@@ -5482,7 +5491,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -5495,7 +5504,7 @@
       ],
       "summary": "The skill should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
       "claimAudience": "developer",
@@ -5661,12 +5670,13 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Reword or split this into current deterministic packet/CLI contracts and separate behavior claims before verification.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5676,8 +5686,8 @@
         }
       ],
       "summary": "The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned."
     },
     {
       "claimAudience": "developer",
@@ -5780,13 +5790,14 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
+        "blocked",
         "contract",
-        "deterministic",
+        "human-auditable",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Keep this as review-process context or promote a concrete skill behavior scenario before proof planning.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5796,8 +5807,8 @@
         }
       ],
       "summary": "Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim is sequencing guidance for future review tuning, not a current deterministic product contract."
     },
     {
       "claimAudience": "developer",
@@ -5869,12 +5880,13 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Reword or split this into current deterministic packet/CLI contracts and separate behavior claims before verification.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5884,8 +5896,8 @@
         }
       ],
       "summary": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned."
     },
     {
       "claimAudience": "developer",
@@ -6481,7 +6493,8 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/contracts/adapter-contract.md"
+        "linked-from:docs/contracts/adapter-contract.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
       "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface.",
@@ -6497,7 +6510,7 @@
       "summary": "The adapter still owns backend selection and provider-specific flags through the simulator command template.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "developer",
@@ -7940,7 +7953,7 @@
         "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Reconcile the matching skill guidance, code paths, adapter contracts, packets, and tests before treating this as satisfied.",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -7952,7 +7965,7 @@
       ],
       "summary": "The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests.",
       "verificationReadiness": "needs-alignment",
-      "whyThisLayer": "The claim describes where reusable behavior should live across skill, code, adapters, packets, and tests, so it needs boundary alignment before proof."
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "developer",
@@ -8853,6 +8866,7 @@
         "audience:developer",
         "human-auditable",
         "linked-from:docs/specs/maintainer/index.spec.md",
+        "needs-alignment",
         "spec"
       ],
       "lifecycle": "new",
@@ -8871,7 +8885,7 @@
         "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
       ],
       "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "developer",
@@ -9019,7 +9033,7 @@
       "summary": "The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
       "claimAudience": "developer",
@@ -10986,6 +11000,7 @@
         "audience:developer",
         "human-auditable",
         "linked-from:docs/contracts/scenario-history.md",
+        "needs-alignment",
         "skill-doc"
       ],
       "lifecycle": "new",
@@ -11004,7 +11019,7 @@
         "Should this source sentence remain as broad positioning, or should it be decomposed into concrete proof obligations?"
       ],
       "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
       "claimAudience": "developer",
@@ -11269,13 +11284,15 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "deterministic",
+        "cautilus-eval",
+        "dev/skill",
         "linked-from:docs/contracts/scenario-history.md",
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -11286,7 +11303,7 @@
       ],
       "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     }
   ],
   "claimState": {
@@ -11328,23 +11345,23 @@
       "new": 323
     },
     "byRecommendedProof": {
-      "cautilus-eval": 99,
-      "deterministic": 131,
-      "human-auditable": 93
+      "cautilus-eval": 102,
+      "deterministic": 124,
+      "human-auditable": 97
     },
     "byReviewStatus": {
       "agent-reviewed": 168,
       "heuristic": 155
     },
     "byVerificationReadiness": {
-      "blocked": 34,
-      "needs-alignment": 41,
+      "blocked": 35,
+      "needs-alignment": 44,
       "needs-scenario": 9,
-      "ready-to-verify": 239
+      "ready-to-verify": 235
     }
   },
   "discoveryEngine": {
-    "implementationHash": "sha256:7d6c46eace33309b55e09ecb7160f79a8d83f20e7260c4bed0e6d8c8be50e138",
+    "implementationHash": "sha256:066fc82bad08193d27a849c0a2ce9658799d42ea8ca78765d12b9cd94934348e",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v4"
@@ -11499,7 +11516,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "6dd5ea175a7216e68b9e31cec4f9407ccfb9e598",
+  "gitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {

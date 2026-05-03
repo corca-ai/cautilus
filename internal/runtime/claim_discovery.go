@@ -1214,6 +1214,20 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target.",
 			next:                  "Keep this as human-auditable context or promote a concrete regression scenario if the caveat should block releases.",
 		}, true
+	case ownershipBoundaryClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "needs-alignment",
+			why:                   "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof.",
+			next:                  "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+		}, true
+	case prematureReviewTuningClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "blocked",
+			why:                   "The claim is sequencing guidance for future review tuning, not a current deterministic product contract.",
+			next:                  "Keep this as review-process context or promote a concrete skill behavior scenario before proof planning.",
+		}, true
 	case deterministicReadinessOrPreflightContract(lower):
 		return claimClassification{
 			recommendedProof:      "deterministic",
@@ -1257,6 +1271,21 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim describes where reusable behavior should live across skill, code, adapters, packets, and tests, so it needs boundary alignment before proof.",
 			next:                  "Reconcile the matching skill guidance, code paths, adapter contracts, packets, and tests before treating this as satisfied.",
 		}, true
+	case futureOrMixedWorkflowBoundaryClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "needs-alignment",
+			why:                   "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned.",
+			next:                  "Reword or split this into current deterministic packet/CLI contracts and separate behavior claims before verification.",
+		}, true
+	case skillOrAgentBehaviorClaim(lower):
+		return claimClassification{
+			recommendedProof:       "cautilus-eval",
+			verificationReadiness:  "ready-to-verify",
+			recommendedEvalSurface: "dev/skill",
+			why:                    "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence.",
+			next:                   "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
+		}, true
 	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " executable test", " executable check", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
@@ -1277,13 +1306,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "blocked",
 			why:                   "The claim is an operator-policy rule; a single eval fixture cannot prove every future agent will follow it.",
 			next:                  "Keep this as an operating rule or narrow it into an audited process claim with concrete incident evidence.",
-		}, true
-	case ownershipBoundaryClaim(lower):
-		return claimClassification{
-			recommendedProof:      "human-auditable",
-			verificationReadiness: "needs-alignment",
-			why:                   "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof.",
-			next:                  "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
 		}, true
 	case containsAny(lower, []string{" align", " aligned", " alignment", " drift", " reconcile", " mismatch", " consistent with", " consistency"}):
 		return claimClassification{
@@ -1319,13 +1341,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim names provenance, ranked-output, or view projection behavior that should be protected by deterministic packet or renderer checks.",
 			next:                  "Keep or add deterministic packet, provenance, ranked-output, or renderer proof for this claim.",
-		}, true
-	case futureOrMixedWorkflowBoundaryClaim(lower):
-		return claimClassification{
-			recommendedProof:      "human-auditable",
-			verificationReadiness: "needs-alignment",
-			why:                   "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned.",
-			next:                  "Reword or split this into current deterministic packet/CLI contracts and separate behavior claims before verification.",
 		}, true
 	case containsAny(lower, []string{" in-editor agent ", " drive the same contracts conversationally", " conversationally "}) && containsAny(lower, []string{" agent", " skill", " codex", " claude"}):
 		return claimClassification{
@@ -1426,7 +1441,28 @@ func explicitHumanAuditableReadinessDirective(lower string) bool {
 		containsAny(lower, []string{"blocked", "needs-alignment", "need alignment", "needs alignment", "decomposed", "split", "promoted"})
 }
 
+func prematureReviewTuningClaim(lower string) bool {
+	return containsAny(lower, []string{"perfect subagent batch sizing", "should wait until"}) &&
+		containsAny(lower, []string{"dogfooded", "deterministic packet", "skill control flow", "review tuning", "batch sizing"})
+}
+
+func skillOrAgentBehaviorClaim(lower string) bool {
+	if futureOrMixedWorkflowBoundaryClaim(lower) {
+		return false
+	}
+	if operatorPolicyClaim(lower) {
+		return false
+	}
+	return containsAny(lower, []string{" skill ", " parent skill ", " bundled skill ", " agent ", " agents ", " subagent ", " subagents "}) &&
+		containsAny(lower, []string{" should ", " may ", " must ", " can "}) &&
+		containsAny(lower, []string{" show ", " say ", " ask ", " confirm ", " launch ", " merge ", " select ", " read ", " cite ", " choose ", " proceed ", " sequence "})
+}
+
 func ownershipBoundaryClaim(lower string) bool {
+	if containsAny(lower, []string{" should own ", " must own ", " must not own ", " should not own ", " does not own ", " do not own ", " belongs to the skill", " belongs to the binary", " belong to the skill", " belong to the binary"}) &&
+		containsAny(lower, []string{" skill", " binary", " cautilus", " host", " adapter", " runner", " runtime"}) {
+		return true
+	}
 	if containsAny(lower, []string{" belongs in adapters", " belongs in adapter", " belongs in code, adapters", " reusable deterministic behavior belongs", " belongs in installed skill metadata", " belongs in skill metadata", " host-specific behavior belongs"}) {
 		return true
 	}
@@ -1581,6 +1617,11 @@ func futureOrMixedWorkflowBoundaryClaim(lower string) bool {
 		return true
 	}
 	if containsAny(lower, []string{" already delegated autonomous continuation", " budget still must be written to the packet", " budget still must be written"}) {
+		return true
+	}
+	if containsAny(lower, []string{" skill ", " subagent ", " llm "}) &&
+		containsAny(lower, []string{" deterministic ", " refresh-plan", " packet", " output", " payload", " schema"}) &&
+		containsAny(lower, []string{" must record", " must include", " must emit", " must write", " should record", " should include", " should emit", " should write", " owns the state transition", " owns final interpretation"}) {
 		return true
 	}
 	return false

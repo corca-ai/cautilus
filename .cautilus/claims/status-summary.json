@@ -43,12 +43,12 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 21
+          "unknown": 14
         },
         "byReviewStatus": {
-          "heuristic": 21
+          "heuristic": 14
         },
-        "count": 21,
+        "count": 14,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -56,18 +56,18 @@
           "claim-docs-contracts-adapter-contract-md-278",
           "claim-docs-contracts-adapter-contract-md-317",
           "claim-docs-contracts-claim-discovery-workflow-md-188",
-          "claim-docs-contracts-claim-discovery-workflow-md-202"
+          "claim-docs-contracts-claim-discovery-workflow-md-261"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 75
+          "unknown": 78
         },
         "byReviewStatus": {
-          "heuristic": 75
+          "heuristic": 78
         },
-        "count": 75,
+        "count": 78,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -101,13 +101,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 41
+          "unknown": 44
         },
         "byReviewStatus": {
           "agent-reviewed": 18,
-          "heuristic": 23
+          "heuristic": 26
         },
-        "count": 41,
+        "count": 44,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -140,13 +140,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 34
+          "unknown": 35
         },
         "byReviewStatus": {
           "agent-reviewed": 26,
-          "heuristic": 8
+          "heuristic": 9
         },
-        "count": 34,
+        "count": 35,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -200,19 +200,19 @@
       "new": 323
     },
     "byRecommendedProof": {
-      "cautilus-eval": 99,
-      "deterministic": 131,
-      "human-auditable": 93
+      "cautilus-eval": 102,
+      "deterministic": 124,
+      "human-auditable": 97
     },
     "byReviewStatus": {
       "agent-reviewed": 168,
       "heuristic": 155
     },
     "byVerificationReadiness": {
-      "blocked": 34,
-      "needs-alignment": 41,
+      "blocked": 35,
+      "needs-alignment": 44,
       "needs-scenario": 9,
-      "ready-to-verify": 239
+      "ready-to-verify": 235
     }
   },
   "discoveryBoundary": {
@@ -2764,7 +2764,7 @@
       }
     ]
   },
-  "gitCommit": "6dd5ea175a7216e68b9e31cec4f9407ccfb9e598",
+  "gitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -2776,10 +2776,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "6dd5ea175a7216e68b9e31cec4f9407ccfb9e598",
+    "currentGitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "6dd5ea175a7216e68b9e31cec4f9407ccfb9e598",
+    "packetGitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -2803,8 +2803,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 125,
-    "needsAlignment": 41,
+    "heuristicClaimsReadyForReview": 122,
+    "needsAlignment": 44,
     "needsScenario": 9
   },
   "sampleClaims": [

@@ -590,6 +590,22 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Whether Cautilus emits durable packet state is recorded as a deterministic command contract.",
 		"",
+		"After the deterministic pass, the skill should show a separate review plan:",
+		"",
+		"The binary can do cheap deterministic preflight, but the skill owns final interpretation.",
+		"",
+		"The parent skill should merge results and keep review provenance in the packet.",
+		"",
+		"Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded.",
+		"",
+		"Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
+		"",
+		"The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.",
+		"",
+		"The bundled skill should own orchestration that depends on an agent.",
+		"",
+		"The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation.",
+		"",
 		"## Deferred Decisions",
 		"",
 		"- Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
@@ -880,6 +896,38 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	whetherClaim := bySummary["Whether Cautilus emits durable packet state is recorded as a deterministic command contract."]
 	if whetherClaim == nil || whetherClaim["recommendedProof"] != "deterministic" || whetherClaim["verificationReadiness"] != "ready-to-verify" {
 		t.Fatalf("expected non-deferred whether claim to remain discoverable, got %#v", whetherClaim)
+	}
+	skillReviewPlan := bySummary["After the deterministic pass, the skill should show a separate review plan:"]
+	if skillReviewPlan == nil || skillReviewPlan["recommendedProof"] != "cautilus-eval" || skillReviewPlan["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected skill review-plan behavior to route to dev/skill eval, got %#v", skillReviewPlan)
+	}
+	skillInterpretationBoundary := bySummary["The binary can do cheap deterministic preflight, but the skill owns final interpretation."]
+	if skillInterpretationBoundary == nil || skillInterpretationBoundary["recommendedProof"] != "human-auditable" || skillInterpretationBoundary["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected binary/skill interpretation boundary to need alignment, got %#v", skillInterpretationBoundary)
+	}
+	parentSkillMerge := bySummary["The parent skill should merge results and keep review provenance in the packet."]
+	if parentSkillMerge == nil || parentSkillMerge["recommendedProof"] != "cautilus-eval" || parentSkillMerge["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected parent-skill merge behavior to route to dev/skill eval, got %#v", parentSkillMerge)
+	}
+	batchSizing := bySummary["Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded."]
+	if batchSizing == nil || batchSizing["recommendedProof"] != "human-auditable" || batchSizing["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected premature review tuning claim to stay blocked, got %#v", batchSizing)
+	}
+	agentPacketFirst := bySummary["Agents should read the packet first, then cite HTML only when a browser view is the deliverable."]
+	if agentPacketFirst == nil || agentPacketFirst["recommendedProof"] != "cautilus-eval" || agentPacketFirst["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected agent packet-first behavior to route to dev/skill eval, got %#v", agentPacketFirst)
+	}
+	refreshPlanBoundary := bySummary["The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment."]
+	if refreshPlanBoundary == nil || refreshPlanBoundary["recommendedProof"] != "human-auditable" || refreshPlanBoundary["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected mixed skill/refresh-plan packet obligation to need alignment, got %#v", refreshPlanBoundary)
+	}
+	bundledSkillOwnership := bySummary["The bundled skill should own orchestration that depends on an agent."]
+	if bundledSkillOwnership == nil || bundledSkillOwnership["recommendedProof"] != "human-auditable" || bundledSkillOwnership["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected bundled-skill ownership claim to need alignment, got %#v", bundledSkillOwnership)
+	}
+	binaryProviderOwnership := bySummary["The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation."]
+	if binaryProviderOwnership == nil || binaryProviderOwnership["recommendedProof"] != "human-auditable" || binaryProviderOwnership["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected binary negative-ownership claim to need alignment, got %#v", binaryProviderOwnership)
 	}
 	skillBranch := bySummary["The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer."]
 	if skillBranch == nil || skillBranch["recommendedProof"] != "cautilus-eval" || skillBranch["recommendedEvalSurface"] != "dev/skill" {
