@@ -7228,9 +7228,19 @@
       "claimFingerprint": "sha256:7b016906f7b4a987bed48fb072f9e7938a2045041b4ce989e1d00c4c4b59a310",
       "claimId": "claim-docs-contracts-runner-readiness-md-349",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is a concrete downstream packet/report field visibility claim and should be tested deterministically.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c02e9e1c45d17968bcb2dd2edd66179d2b280ba63ea5c20a58b4503875f6e94b",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-proof-class-downstream-summary-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-349"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused runtime tests: evaluation summaries preserve proof.proofClass, and report proof summaries expose proofClassCounts alongside product-runner readiness.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7238,7 +7248,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or connect deterministic summary/report tests proving proof class stays visible downstream.",
+      "nextAction": "Keep evaluation summary and report proof-summary tests current when proof metadata changes.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -7251,7 +7261,7 @@
       "summary": "Proof class must remain visible in downstream summaries and reports.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "whyThisLayer": "The claim names proof-class visibility in downstream summaries and reports, which is deterministic packet projection behavior."
     },
     {
       "claimAudience": "developer",
@@ -10121,8 +10131,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 47,
-      "unknown": 268
+      "satisfied": 48,
+      "unknown": 267
     },
     "byLifecycle": {
       "new": 315

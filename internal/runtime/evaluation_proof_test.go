@@ -241,6 +241,10 @@ func TestReportPacketSummarizesBlockedProductRunnerProof(t *testing.T) {
 	if proofSummary["productRunnerProofReadiness"] != "blocked" {
 		t.Fatalf("expected blocked product proof summary, got %#v", proofSummary)
 	}
+	proofClassCounts := asMap(proofSummary["proofClassCounts"])
+	if proofClassCounts["declared-eval-runner"] != 1 {
+		t.Fatalf("expected report proof summary to preserve proof class counts, got %#v", proofSummary)
+	}
 }
 
 func TestOptimizeInputRejectsBlockedProductRunnerProof(t *testing.T) {

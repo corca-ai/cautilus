@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T09:02:59Z",
+    "evidencePolicy": "Only mark downstream proof-class visibility satisfied; keep broader runner-readiness completeness and product-runner honesty claims separate."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-proof-class-downstream-summary",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-349",
+          "claimFingerprint": "sha256:7b016906f7b4a987bed48fb072f9e7938a2045041b4ce989e1d00c4c4b59a310",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names proof-class visibility in downstream summaries and reports, which is deterministic packet projection behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused runtime tests: evaluation summaries preserve proof.proofClass, and report proof summaries expose proofClassCounts alongside product-runner readiness.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-proof-class-downstream-summary-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c02e9e1c45d17968bcb2dd2edd66179d2b280ba63ea5c20a58b4503875f6e94b",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-349"
+              ]
+            }
+          ],
+          "nextAction": "Keep evaluation summary and report proof-summary tests current when proof metadata changes.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

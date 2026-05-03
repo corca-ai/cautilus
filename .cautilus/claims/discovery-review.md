@@ -4192,7 +4192,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/reporting-review-variants.spec.md:19
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (2)
+#### Deterministic gate / ready-to-verify / evidence satisfied (3)
 
 ##### claim-docs-contracts-reporting-md-124
 
@@ -4222,7 +4222,21 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/runner-readiness.md:134
 
-#### Deterministic gate / ready-to-verify / evidence unknown (11)
+##### claim-docs-contracts-runner-readiness-md-349
+
+- Summary: Proof class must remain visible in downstream summaries and reports.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep evaluation summary and report proof-summary tests current when proof metadata changes.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/runner-readiness.md:349
+
+#### Deterministic gate / ready-to-verify / evidence unknown (10)
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-100
 
@@ -4307,20 +4321,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/contracts/reporting.md:48
-
-##### claim-docs-contracts-runner-readiness-md-349
-
-- Summary: Proof class must remain visible in downstream summaries and reports.
-- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Add or connect deterministic summary/report tests proving proof class stays visible downstream.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/runner-readiness.md:349
 
 ##### claim-docs-contracts-scenario-proposal-sources-md-28
 
