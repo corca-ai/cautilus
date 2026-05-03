@@ -9546,9 +9546,19 @@
       "claimFingerprint": "sha256:93b8c3284cda9f97c3bba18688a2a6e8be0942582eb8e07799244fccce78a67a",
       "claimId": "claim-docs-specs-user-claim-discovery-spec-md-14",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Fresh-eye review found that deterministic packet tests prove grouping data, but not that the bundled skill consumes the packet to group next work.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:9de64fce71ec25cc5371515c83e658d37d9310cecd31253c911922a2ad6d1d1e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-claim-discovery-spec-md-14"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by current packet-first dogfood: after reading the evidenced claim packet, the skill summarized next work by heuristic review, deterministic proof, Cautilus eval planning, scenario design, alignment, human confirm/decompose, and split/defer buckets.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -9556,7 +9566,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Use a bundled-skill eval or audit-backed fixture to prove the skill reads the claim packet and groups review, deterministic proof, Cautilus eval, alignment, and deferred work.",
+      "nextAction": "Keep this covered by packet-reading dogfood or a focused claim-status grouping fixture when actionSummary buckets, skill status guidance, or claim status summaries change.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -11255,8 +11265,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 118,
-      "unknown": 204
+      "satisfied": 119,
+      "unknown": 203
     },
     "byLifecycle": {
       "new": 322

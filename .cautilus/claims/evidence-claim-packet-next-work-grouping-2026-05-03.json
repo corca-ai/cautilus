@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-claim-packet-next-work-grouping-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-specs-user-claim-discovery-spec-md-14"
+  ],
+  "repoCommit": "7c3cf6323cef7934414564a4e607f7a3a913e4e9",
+  "summary": "Current packet-first Codex dogfood shows the bundled Cautilus skill using the evidenced claim packet to group next work by review, deterministic proof, Cautilus eval planning, alignment, and split/defer action buckets.",
+  "evidenceScope": {
+    "targetSurface": "dev/skill Cautilus claim-packet next-work grouping",
+    "claimBoundary": "Only the user-facing claim that the bundled skill can use a claim packet to group next work is marked satisfied.",
+    "notClaimed": [
+      "Canonical specdown index curation before HITL",
+      "Human approval of every grouped action bucket",
+      "Optimal prioritization of every remaining unknown claim",
+      "Fresh LLM claim review over heuristic-only claims",
+      "Eval fixture authoring for every ready eval claim"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-packet-first-flow --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest",
+      "exitCode": 0,
+      "reason": "The same current dev/skill dogfood that proved packet-first reading also produced an agent-facing summary grouped by the claim packet's action buckets."
+    },
+    {
+      "command": "./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 8 --output .cautilus/claims/status-summary.json",
+      "exitCode": 0,
+      "reason": "The status packet contains the actionSummary buckets the skill used to separate already-satisfied, eval planning, scenario design, alignment, confirm/decompose, and split/defer work."
+    }
+  ],
+  "dogfoodEvidence": [
+    {
+      "id": "packet-first-flow-codex",
+      "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/eval-summary.json",
+      "kind": "skill-evaluation-summary",
+      "contentHash": "sha256:29229edb740354f366cea25029a10a123c8553d33d818d3136d8878bf14f7135",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "supportsClaimIds": [
+        "claim-docs-specs-user-claim-discovery-spec-md-14"
+      ]
+    },
+    {
+      "id": "packet-first-flow-transcript",
+      "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/packet-first-flow/episode-cautilus-packet-first-flow/combined.jsonl",
+      "kind": "skill-transcript",
+      "contentHash": "sha256:a98edc319d16ef889af8fd1d0a6c3acdb600a622c7ffbbdf1158ef705e58b6e8",
+      "observedGrouping": [
+        "heuristic review before proof/eval budget",
+        "deterministic proof",
+        "Cautilus eval planning",
+        "scenario decomposition",
+        "alignment work",
+        "human confirm/decompose",
+        "split-or-defer broad claims"
+      ],
+      "supportsClaimIds": [
+        "claim-docs-specs-user-claim-discovery-spec-md-14"
+      ]
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": ".cautilus/claims/status-summary.json",
+      "kind": "claim-status-summary",
+      "contentHash": "sha256:cadae51b01cef3d326a00d9d5ab681561f65effb846f0a70f92b187fd539afca",
+      "schemaVersion": "cautilus.claim_status_summary.v1",
+      "actionBuckets": [
+        "already-satisfied",
+        "agent-plan-cautilus-eval",
+        "agent-design-scenario",
+        "human-align-surfaces",
+        "human-confirm-or-decompose",
+        "split-or-defer"
+      ],
+      "supportsClaimIds": [
+        "claim-docs-specs-user-claim-discovery-spec-md-14"
+      ]
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "user-facing-claim-discovery-spec",
+      "contentHash": "sha256:db961dcd96fa1c0ff99ac84d4eaa783c3df4c83c52f23543272d985d7b54d4ac"
+    },
+    {
+      "path": "skills/cautilus/SKILL.md",
+      "kind": "bundled-skill-source",
+      "contentHash": "sha256:b945d2543891dd8eaba10325f7a4c322c53c99887fc891d73f32d23ac15cdfce"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
+      "kind": "dev-skill-adapter",
+      "contentHash": "sha256:5b7c8ef74a0ee2c82251c2ad818fa88439cb16d47658d39c00142550e5f89b27"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The transcript and status packet show the skill using machine-readable claim-packet buckets to produce a grouped next-work map for the agent."
+  }
+}

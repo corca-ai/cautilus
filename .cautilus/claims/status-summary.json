@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 118
+          "satisfied": 119
         },
         "byReviewStatus": {
-          "agent-reviewed": 118
+          "agent-reviewed": 119
         },
-        "count": 118,
+        "count": 119,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,13 +43,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 102
+          "unknown": 101
         },
         "byReviewStatus": {
-          "agent-reviewed": 5,
+          "agent-reviewed": 4,
           "heuristic": 97
         },
-        "count": 102,
+        "count": 101,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -175,8 +175,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 118,
-      "unknown": 204
+      "satisfied": 119,
+      "unknown": 203
     },
     "byLifecycle": {
       "new": 322
@@ -361,7 +361,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 118,
+    "satisfiedClaimCount": 119,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -2324,6 +2324,25 @@
         "summary": "This area should absorb `docs/contracts/scenario-history.md`, `docs/contracts/scenario-proposal-sources.md`, and scenario normalizer claims."
       },
       {
+        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-14",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:9de64fce71ec25cc5371515c83e658d37d9310cecd31253c911922a2ad6d1d1e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-claim-discovery-spec-md-14"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The bundled skill can use the claim packet to group next work: review wording, add deterministic proof, plan Cautilus evals, align docs and adapters, or defer broad claims."
+      },
+      {
         "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2635,7 +2654,7 @@
   },
   "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "gitState": {
-    "changedFileCount": 25,
+    "changedFileCount": 27,
     "changedFiles": [
       ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
       ".cautilus/claims/canonical-claim-map.json",
@@ -2644,10 +2663,12 @@
       ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
       ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+      ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json",
+      ".cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json",
       ".cautilus/claims/review-result-skill-packet-first-reclass-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       "charness-artifacts/debug/debug-2026-05-03-eval-surface-related-evidence-ref.md",
@@ -2671,7 +2692,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "7c3cf6323cef7934414564a4e607f7a3a913e4e9",
+    "currentGitCommit": "a063a8af6944b451a15a6411cacfb3b4da0cb3d2",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",

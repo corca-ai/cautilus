@@ -200,79 +200,6 @@
       "unresolvedQuestions": []
     },
     {
-      "claimFingerprint": "sha256:93b8c3284cda9f97c3bba18688a2a6e8be0942582eb8e07799244fccce78a67a",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-14",
-      "draftIntent": "Verify that The bundled skill can use the claim packet to group next work: review wording, add deterministic proof, plan Cautilus evals, align docs and adapters, or defer broad claims.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-specs-user-claim-discovery-spec-md-14",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "The bundled skill can use the claim packet to group next work: review wording, add deterministic proof, plan Cautilus evals, align docs and adapters, or defer broad claims.",
-          "line": 14,
-          "path": "docs/specs/user/claim-discovery.spec.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": []
-    },
-    {
       "claimFingerprint": "sha256:83fa3e6e882c6c28e2b6cf839c4ff47f4f272cf38f986edf1089322ad45215bf",
       "claimId": "claim-docs-specs-user-optimization-spec-md-3",
       "draftIntent": "Verify that `Cautilus optimize` improves selected behavior without losing the proof surface that makes the improvement believable.",
@@ -340,14 +267,14 @@
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 5,
+    "evalPlanCount": 4,
     "skippedByReason": {
-      "already-satisfied": 12,
+      "already-satisfied": 13,
       "not-cautilus-eval": 198,
       "not-ready-to-verify": 10,
       "not-reviewed": 97
     },
-    "skippedClaimCount": 317,
+    "skippedClaimCount": 318,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
     "zeroPlanReason": ""
   },
@@ -3272,6 +3199,35 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:93b8c3284cda9f97c3bba18688a2a6e8be0942582eb8e07799244fccce78a67a",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-14",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:9de64fce71ec25cc5371515c83e658d37d9310cecd31253c911922a2ad6d1d1e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-claim-discovery-spec-md-14"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The bundled skill can use the claim packet to group next work: review wording, add deterministic proof, plan Cautilus evals, align docs and adapters, or defer broad claims.",
+          "line": 14,
+          "path": "docs/specs/user/claim-discovery.spec.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {

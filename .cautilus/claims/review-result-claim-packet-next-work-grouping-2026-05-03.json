@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-claim-packet-next-work-grouping-evidence",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T23:40:00+09:00",
+    "evidencePolicy": "Only mark the claim-packet next-work grouping claim satisfied when current dogfood transcript and packet evidence directly show the skill using the claim packet to group next work. Do not use this result for canonical specdown curation or HITL workflow claims."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-claim-packet-next-work-grouping-2026-05-03",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-14",
+          "claimFingerprint": "sha256:93b8c3284cda9f97c3bba18688a2a6e8be0942582eb8e07799244fccce78a67a",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current packet-first dogfood: after reading the evidenced claim packet, the skill summarized next work by heuristic review, deterministic proof, Cautilus eval planning, scenario design, alignment, human confirm/decompose, and split/defer buckets.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:9de64fce71ec25cc5371515c83e658d37d9310cecd31253c911922a2ad6d1d1e",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-claim-discovery-spec-md-14"
+              ]
+            }
+          ],
+          "nextAction": "Keep this covered by packet-reading dogfood or a focused claim-status grouping fixture when actionSummary buckets, skill status guidance, or claim status summaries change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
