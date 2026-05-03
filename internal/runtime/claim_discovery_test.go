@@ -1062,6 +1062,158 @@ func TestApplyClaimReviewResultUpdatesLabelsWithVerifiedEvidence(t *testing.T) {
 	}
 }
 
+func TestApplyClaimReviewResultDoesNotDowngradeSatisfiedEvidenceWithOlderUnknownReview(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := stringFromAny(asMap(arrayOrEmpty(plan["claimCandidates"])[0])["claimId"])
+	satisfiedResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-evidence",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":              claimID,
+						"reviewStatus":         "agent-reviewed",
+						"evidenceStatus":       "satisfied",
+						"evidenceStatusReason": "Verified by checked-in evidence.",
+						"nextAction":           "Keep evidence current.",
+						"evidenceRefs": []any{
+							map[string]any{
+								"kind":             "test",
+								"path":             "internal/runtime/claim_discovery_test.go",
+								"matchKind":        "verified",
+								"contentHash":      "sha256:test",
+								"supportsClaimIds": []any{claimID},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	reviewed, err := ApplyClaimReviewResult(plan, satisfiedResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result-satisfied.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult satisfied returned error: %v", err)
+	}
+	unknownResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-older-review",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":              claimID,
+						"reviewStatus":         "agent-reviewed",
+						"evidenceStatus":       "unknown",
+						"evidenceStatusReason": "This earlier review did not inspect evidence.",
+						"nextAction":           "Attach evidence later.",
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(reviewed, unknownResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "reviewed-claims.json",
+		ReviewResultPath: "review-result-unknown.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult unknown returned error: %v", err)
+	}
+	candidate := asMap(arrayOrEmpty(updated["claimCandidates"])[0])
+	if candidate["evidenceStatus"] != "satisfied" {
+		t.Fatalf("expected satisfied evidence to survive older unknown review, got %#v", candidate)
+	}
+	if candidate["evidenceStatusReason"] != "Verified by checked-in evidence." {
+		t.Fatalf("expected satisfied evidence reason to survive, got %#v", candidate)
+	}
+	if candidate["nextAction"] != "Keep evidence current." {
+		t.Fatalf("expected satisfied next action to survive, got %#v", candidate)
+	}
+}
+
+func TestApplyClaimReviewResultAllowsStaleToRevokeSatisfiedEvidence(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := stringFromAny(asMap(arrayOrEmpty(plan["claimCandidates"])[0])["claimId"])
+	satisfiedResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-evidence",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":              claimID,
+						"reviewStatus":         "agent-reviewed",
+						"evidenceStatus":       "satisfied",
+						"evidenceStatusReason": "Verified by checked-in evidence.",
+						"nextAction":           "Keep evidence current.",
+						"evidenceRefs": []any{
+							map[string]any{
+								"kind":             "test",
+								"path":             "internal/runtime/claim_discovery_test.go",
+								"matchKind":        "verified",
+								"contentHash":      "sha256:test",
+								"supportsClaimIds": []any{claimID},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	reviewed, err := ApplyClaimReviewResult(plan, satisfiedResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result-satisfied.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult satisfied returned error: %v", err)
+	}
+	staleResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-stale-review",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":              claimID,
+						"reviewStatus":         "agent-reviewed",
+						"evidenceStatus":       "stale",
+						"evidenceStatusReason": "Evidence file hash changed.",
+						"nextAction":           "Refresh evidence.",
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(reviewed, staleResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "reviewed-claims.json",
+		ReviewResultPath: "review-result-stale.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult stale returned error: %v", err)
+	}
+	candidate := asMap(arrayOrEmpty(updated["claimCandidates"])[0])
+	if candidate["evidenceStatus"] != "stale" {
+		t.Fatalf("expected stale evidence update to revoke satisfied state, got %#v", candidate)
+	}
+	if candidate["evidenceStatusReason"] != "Evidence file hash changed." {
+		t.Fatalf("expected stale evidence reason to apply, got %#v", candidate)
+	}
+	if candidate["nextAction"] != "Refresh evidence." {
+		t.Fatalf("expected stale next action to apply, got %#v", candidate)
+	}
+}
+
 func TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence(t *testing.T) {
 	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})

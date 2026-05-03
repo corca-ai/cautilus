@@ -70,7 +70,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/ownership.spec.md:14
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (7)
+#### Deterministic gate / ready-to-verify / evidence satisfied (9)
 
 ##### claim-docs-cli-reference-md-108
 
@@ -170,7 +170,35 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/guides/consumer-adoption.md:49
 
-#### Deterministic gate / ready-to-verify / evidence unknown (4)
+##### claim-readme-md-13
+
+- Summary: They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep host-owned checked-in skill materialization covered by install smoke and packaged skill sync tests.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; README.md:13
+
+##### claim-readme-md-7
+
+- Summary: Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this claim covered by distribution-surface tests plus install command smoke whenever install.sh, packaged plugins, or bundled skill materialization changes.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; README.md:7
+
+#### Deterministic gate / ready-to-verify / evidence unknown (2)
 
 ##### claim-docs-specs-user-claim-discovery-spec-md-14
 
@@ -186,20 +214,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/claim-discovery.spec.md:14
 
-##### claim-readme-md-13
-
-- Summary: They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Prove with deterministic adoption or adapter-materialization coverage that host repos keep evaluation behavior checked in and reviewable.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; README.md:13
-
 ##### claim-readme-md-156
 
 - Summary: When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.
@@ -213,20 +227,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; README.md:156
-
-##### claim-readme-md-7
-
-- Summary: Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Prove with deterministic install or doctor-readiness coverage that the standalone binary and bundled skill can be installed without copying a scaffold first.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; README.md:7
 
 #### Human-auditable / needs-alignment / evidence unknown (3)
 
@@ -291,7 +291,24 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/reviewable-artifacts.spec.md:7
 
-#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (6)
+#### Cautilus eval / dev/skill / ready-to-verify / evidence satisfied (1)
+
+##### claim-readme-md-144
+
+- Summary: CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: "Run a chatbot regression with these logs and my new system prompt." You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.
+- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this claim covered by rerunning self-dogfood-eval-skill when bundled skill routing, eval skill fixtures, install behavior, or static skill validation changes.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; README.md:144
+
+#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (5)
 
 ##### claim-docs-specs-user-claim-discovery-spec-md-21
 
@@ -338,21 +355,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/evaluation.spec.md:11
 
-##### claim-readme-md-144
-
-- Summary: CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: "Run a chatbot regression with these logs and my new system prompt." You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.
-- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep this claim covered by rerunning self-dogfood-eval-skill when bundled skill routing, eval skill fixtures, install behavior, or static skill validation changes.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; README.md:144
-
 ##### claim-readme-md-151
 
 - Summary: Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.
@@ -383,7 +385,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; README.md:218
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (2)
+#### Deterministic gate / ready-to-verify / evidence satisfied (3)
 
 ##### claim-docs-cli-reference-md-505
 
@@ -413,13 +415,11 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/guides/evaluation-process.md:253
 
-#### Deterministic gate / ready-to-verify / evidence unknown (4)
-
 ##### claim-readme-md-10
 
 - Summary: `Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Rerun install and consumer onboarding smoke when binary provenance or installed skill materialization changes.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep binary-install and repo-local skill-install proof together when changing install.sh, update, or `cautilus install`.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -428,6 +428,8 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; README.md:10
+
+#### Deterministic gate / ready-to-verify / evidence unknown (3)
 
 ##### claim-readme-md-101
 

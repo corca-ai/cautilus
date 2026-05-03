@@ -313,24 +313,26 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+          "contentHash": "sha256:c88f0c73760598a8a17de02ae95389986b072c69a15b5ebfcb2fcd84de539f13",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-readme-md-7"
+            "claim-readme-md-7",
+            "claim-readme-md-10",
+            "claim-readme-md-13"
           ]
         }
       ],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as a standalone binary and bundled-skill distribution claim; this lane did not run an install smoke.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in install/packaging evidence bundle: distribution tests protect the standalone binary installer and packaged skill sync, and a temp-repo install smoke materializes the bundled skill without requiring another scaffold.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Prove with deterministic install or doctor-readiness coverage that the standalone binary and bundled skill can be installed without copying a scaffold first.",
+      "nextAction": "Keep this claim covered by distribution-surface tests plus install command smoke whenever install.sh, packaged plugins, or bundled skill materialization changes.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -385,24 +387,26 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+          "contentHash": "sha256:c88f0c73760598a8a17de02ae95389986b072c69a15b5ebfcb2fcd84de539f13",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-readme-md-10"
+            "claim-readme-md-7",
+            "claim-readme-md-10",
+            "claim-readme-md-13"
           ]
         }
       ],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is an install and repo-local surface claim that should be covered by deterministic install or doctor checks; the review input itself does not provide verified evidence.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in install/packaging evidence bundle: install.sh is protected as the machine-level binary install surface, while `cautilus install` writes the agent-facing skill into the selected repo.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Rerun install and consumer onboarding smoke when binary provenance or installed skill materialization changes.",
+      "nextAction": "Keep binary-install and repo-local skill-install proof together when changing install.sh, update, or `cautilus install`.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -423,16 +427,28 @@
       "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
       "claimId": "claim-readme-md-13",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as a host-repo ownership and reproducibility claim; this lane did not verify direct adapter or checked-in host artifact evidence.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c88f0c73760598a8a17de02ae95389986b072c69a15b5ebfcb2fcd84de539f13",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-readme-md-7",
+            "claim-readme-md-10",
+            "claim-readme-md-13"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in install/packaging evidence bundle: temp-repo install writes `.agents/skills/cautilus/SKILL.md` plus references into the host repo, and tests protect canonical repo-local skill creation.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Prove with deterministic adoption or adapter-materialization coverage that host repos keep evaluation behavior checked in and reviewable.",
+      "nextAction": "Keep host-owned checked-in skill materialization covered by install smoke and packaged skill sync tests.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -552,8 +568,8 @@
           ]
         }
       ],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The claim describes skill or agent execution behavior after edits, so dev/skill evaluation is the right proof route; the review input itself does not provide verified evidence.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: the self-dogfood-eval-skill Codex run passed one trigger case and two execution cases after install and agent-surface doctor preflight.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -9973,8 +9989,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 15,
-      "unknown": 307
+      "satisfied": 19,
+      "unknown": 303
     },
     "byLifecycle": {
       "new": 322
@@ -10175,6 +10191,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

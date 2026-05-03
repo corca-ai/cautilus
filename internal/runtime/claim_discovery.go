@@ -2929,8 +2929,12 @@ func validateClaimUpdateFields(update map[string]any, field string) error {
 
 func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, error) {
 	applied := []any{}
+	protectSatisfiedEvidence := shouldProtectSatisfiedEvidence(candidate, update)
 	for _, field := range []string{"recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle"} {
 		if value := stringFromAny(update[field]); value != "" {
+			if field == "evidenceStatus" && protectSatisfiedEvidence {
+				continue
+			}
 			candidate[field] = value
 			applied = append(applied, field)
 		}
@@ -2957,14 +2961,16 @@ func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, e
 		}
 	}
 	if refs := arrayOrEmpty(update["evidenceRefs"]); len(refs) > 0 {
-		candidate["evidenceRefs"] = refs
-		applied = append(applied, "evidenceRefs")
+		if !protectSatisfiedEvidence {
+			candidate["evidenceRefs"] = refs
+			applied = append(applied, "evidenceRefs")
+		}
 	}
-	if nextAction := stringFromAny(update["nextAction"]); nextAction != "" {
+	if nextAction := stringFromAny(update["nextAction"]); nextAction != "" && !protectSatisfiedEvidence {
 		candidate["nextAction"] = nextAction
 		applied = append(applied, "nextAction")
 	}
-	if reason := stringFromAny(update["evidenceStatusReason"]); reason != "" {
+	if reason := stringFromAny(update["evidenceStatusReason"]); reason != "" && !protectSatisfiedEvidence {
 		candidate["evidenceStatusReason"] = reason
 		applied = append(applied, "evidenceStatusReason")
 	}
@@ -2979,6 +2985,18 @@ func applyClaimUpdate(candidate map[string]any, update map[string]any) ([]any, e
 		return nil, err
 	}
 	return applied, nil
+}
+
+func shouldProtectSatisfiedEvidence(candidate map[string]any, update map[string]any) bool {
+	if stringFromAny(candidate["evidenceStatus"]) != "satisfied" {
+		return false
+	}
+	switch stringFromAny(update["evidenceStatus"]) {
+	case "unknown", "missing", "partial":
+		return true
+	default:
+		return false
+	}
 }
 
 func syncClaimGroupHints(candidate map[string]any) bool {

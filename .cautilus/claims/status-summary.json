@@ -24,61 +24,61 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 15
+          "satisfied": 19
         },
         "byReviewStatus": {
-          "agent-reviewed": 15
+          "agent-reviewed": 19
         },
-        "count": 15,
+        "count": 19,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
           "claim-agents-md-78",
           "claim-agents-md-123",
-          "claim-docs-cli-reference-md-108",
-          "claim-docs-cli-reference-md-114",
-          "claim-docs-cli-reference-md-173"
+          "claim-readme-md-7",
+          "claim-readme-md-10",
+          "claim-readme-md-13"
         ],
         "summary": "Proof is already attached and valid under packet semantics."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 113
+          "unknown": 110
         },
         "byReviewStatus": {
-          "agent-reviewed": 25,
+          "agent-reviewed": 22,
           "heuristic": 85,
           "human-reviewed": 3
         },
-        "count": 113,
+        "count": 110,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-12",
           "claim-agents-md-61",
-          "claim-readme-md-7",
           "claim-readme-md-9",
-          "claim-readme-md-10"
+          "claim-readme-md-101",
+          "claim-readme-md-156"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 120
+          "unknown": 119
         },
         "byReviewStatus": {
-          "agent-reviewed": 2,
+          "agent-reviewed": 1,
           "heuristic": 118
         },
-        "count": 120,
+        "count": 119,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-79",
           "claim-readme-md-129",
-          "claim-readme-md-144",
           "claim-readme-md-151",
-          "claim-readme-md-155"
+          "claim-readme-md-155",
+          "claim-readme-md-218"
         ],
         "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 15,
-      "unknown": 307
+      "satisfied": 19,
+      "unknown": 303
     },
     "byLifecycle": {
       "new": 322
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 15,
+    "satisfiedClaimCount": 19,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -420,6 +420,88 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests."
+      },
+      {
+        "claimId": "claim-readme-md-7",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c88f0c73760598a8a17de02ae95389986b072c69a15b5ebfcb2fcd84de539f13",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-readme-md-7",
+              "claim-readme-md-10",
+              "claim-readme-md-13"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first."
+      },
+      {
+        "claimId": "claim-readme-md-10",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c88f0c73760598a8a17de02ae95389986b072c69a15b5ebfcb2fcd84de539f13",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-readme-md-7",
+              "claim-readme-md-10",
+              "claim-readme-md-13"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local."
+      },
+      {
+        "claimId": "claim-readme-md-13",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c88f0c73760598a8a17de02ae95389986b072c69a15b5ebfcb2fcd84de539f13",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-readme-md-7",
+              "claim-readme-md-10",
+              "claim-readme-md-13"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it."
+      },
+      {
+        "claimId": "claim-readme-md-144",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+            "supportsClaimIds": [
+              "claim-readme-md-144"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks."
       },
       {
         "claimId": "claim-docs-cli-reference-md-108",
@@ -672,20 +754,26 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 7,
+    "changedFileCount": 13,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-specdown-prerequisite-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
-      ".cautilus/claims/validation-evidenced-typed-runners.json"
+      ".cautilus/claims/validation-evidenced-typed-runners.json",
+      "charness-artifacts/debug/debug-2026-05-03-review-application-temp-paths.md",
+      "charness-artifacts/debug/latest.md",
+      "scripts/agent-runtime/apply-current-review-results.mjs",
+      "scripts/agent-runtime/apply-current-review-results.test.mjs"
     ],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "06167b07886ebde4cc06a930a9308d48b8737438",
+    "currentGitCommit": "7819d3f0f4a666470dad1dbd48fb8ab01e917593",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-install-packaging",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-7",
+          "claimFingerprint": "sha256:320919049969c4267f56feeb209110e44d822f29703dc1fdd362d2f120d5484a",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in install/packaging evidence bundle: distribution tests protect the standalone binary installer and packaged skill sync, and a temp-repo install smoke materializes the bundled skill without requiring another scaffold.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c88f0c73760598a8a17de02ae95389986b072c69a15b5ebfcb2fcd84de539f13",
+              "supportsClaimIds": [
+                "claim-readme-md-7",
+                "claim-readme-md-10",
+                "claim-readme-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by distribution-surface tests plus install command smoke whenever install.sh, packaged plugins, or bundled skill materialization changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-10",
+          "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in install/packaging evidence bundle: install.sh is protected as the machine-level binary install surface, while `cautilus install` writes the agent-facing skill into the selected repo.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c88f0c73760598a8a17de02ae95389986b072c69a15b5ebfcb2fcd84de539f13",
+              "supportsClaimIds": [
+                "claim-readme-md-7",
+                "claim-readme-md-10",
+                "claim-readme-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Keep binary-install and repo-local skill-install proof together when changing install.sh, update, or `cautilus install`.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-13",
+          "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in install/packaging evidence bundle: temp-repo install writes `.agents/skills/cautilus/SKILL.md` plus references into the host repo, and tests protect canonical repo-local skill creation.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c88f0c73760598a8a17de02ae95389986b072c69a15b5ebfcb2fcd84de539f13",
+              "supportsClaimIds": [
+                "claim-readme-md-7",
+                "claim-readme-md-10",
+                "claim-readme-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Keep host-owned checked-in skill materialization covered by install smoke and packaged skill sync tests.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

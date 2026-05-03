@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-install-packaging-2026-05-03",
+  "createdForClaimIds": [
+    "claim-readme-md-7",
+    "claim-readme-md-10",
+    "claim-readme-md-13"
+  ],
+  "repoCommit": "7819d3f0f4a666470dad1dbd48fb8ab01e917593",
+  "summary": "This bundle records deterministic proof that Cautilus exposes a standalone binary install surface while `cautilus install` materializes the repo-local bundled skill and agent/plugin surface into a host repo.",
+  "evidenceScope": {
+    "targetSurface": "standalone binary distribution plus repo-local bundled skill install",
+    "claimBoundary": "Only the README claims about standalone binary packaging, repo-local agent-facing skill installation, and host-owned checked-in skill surface are marked satisfied.",
+    "notClaimed": [
+      "A live GitHub release asset was downloaded during this run",
+      "Every external host repo can install without local environment issues",
+      "Conversational Claude/Codex runtime parity was executed by this bundle"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test scripts/release/distribution-surface.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 15,
+        "pass": 15,
+        "notableSubtests": [
+          "install.sh remains syntactically valid shell",
+          "install.sh downloads a tagged binary asset and writes a wrapper that preserves caller context",
+          "packaged cautilus skill stays in sync with the repo-bundled skill source",
+          "repo marketplace points Codex at the packaged cautilus plugin subtree",
+          "repo marketplace points Claude at the packaged cautilus plugin subtree"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIInstallCreatesRepoLocalCanonicalSkill|TestCLIInstallCreatesRepoLocalCanonicalSkillAndReportsCurrentCLI|TestRunInstallDoesNotRequireToolRoot'",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok"
+      }
+    },
+    {
+      "command": "./bin/cautilus install --repo-root <temp-repo> --json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.install_summary.v1",
+        "status": "installed",
+        "current": {
+          "version": "0.13.0",
+          "installKind": "source_checkout",
+          "toolRoot": "/home/hwidong/codes/cautilus"
+        },
+        "skill": {
+          "destinationSkill": "<temp-repo>/.agents/skills/cautilus/SKILL.md",
+          "claudeSkillsLink": "<temp-repo>/.claude/skills",
+          "requiresBinaryOnPath": true,
+          "overwrote": false
+        },
+        "createdFilesSample": [
+          ".agents/skills/cautilus/SKILL.md",
+          ".agents/skills/cautilus/references/adapter-contract.md",
+          ".agents/skills/cautilus/references/evaluation-process.md",
+          ".agents/skills/cautilus/references/reporting.md"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "install.sh",
+      "kind": "standalone-binary-installer",
+      "contentHash": "sha256:9663da76306992a157fbf693f30bef9648a2494dde6ef1e4bfa5bf94d5d048f7"
+    },
+    {
+      "path": "scripts/release/distribution-surface.test.mjs",
+      "kind": "distribution-surface-test",
+      "contentHash": "sha256:b27b51d93071bf0c3a7925813e788ef70f36b143b2d4118000f8f6ddd4c33964"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "repo-local-install-smoke-tests",
+      "contentHash": "sha256:4bd08efc3f27d6f3613c8e78b839830e9113a837e635b24faac3a49055908328"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "tool-root-independent-install-test",
+      "contentHash": "sha256:200a16e4380769ceb785587a0145f9fac589ec6d68fbca72cbb2f24cd237d507"
+    },
+    {
+      "path": "skills/cautilus/SKILL.md",
+      "kind": "repo-bundled-skill-source",
+      "contentHash": "sha256:15231ae6dc060dfcfb25e32a5e5a45b4940426a902718491003aec2b5aa71989"
+    },
+    {
+      "path": "plugins/cautilus/skills/cautilus/SKILL.md",
+      "kind": "packaged-skill-copy",
+      "contentHash": "sha256:15231ae6dc060dfcfb25e32a5e5a45b4940426a902718491003aec2b5aa71989"
+    },
+    {
+      "path": "plugins/cautilus/.codex-plugin/plugin.json",
+      "kind": "codex-plugin-manifest",
+      "contentHash": "sha256:397ee8e6f2c4965789fcfe0ad2e18ac937fbe5e675b9bb4161bef5ab25de6a78"
+    },
+    {
+      "path": ".agents/plugins/marketplace.json",
+      "kind": "repo-marketplace-entry",
+      "contentHash": "sha256:243da35cfff71dbc3fc55fee6e4b19984a45e35a3f444b557a33923a888abdc7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The distribution tests protect the standalone binary installer and packaged skill/plugin sync, while install command tests and a temp-repo smoke prove that the agent-facing skill is materialized into the host repo instead of being used as a hidden global scaffold."
+  }
+}
