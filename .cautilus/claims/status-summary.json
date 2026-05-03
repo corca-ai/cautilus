@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 56
+          "satisfied": 58
         },
         "byReviewStatus": {
-          "agent-reviewed": 56
+          "agent-reviewed": 58
         },
-        "count": 56,
+        "count": 58,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 66
+          "unknown": 63
         },
         "byReviewStatus": {
-          "agent-reviewed": 3,
           "heuristic": 60,
           "human-reviewed": 3
         },
-        "count": 66,
+        "count": 63,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -142,13 +141,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 17
+          "unknown": 18
         },
         "byReviewStatus": {
-          "agent-reviewed": 12,
+          "agent-reviewed": 13,
           "heuristic": 5
         },
-        "count": 17,
+        "count": 18,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -195,8 +194,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 56,
-      "unknown": 256
+      "satisfied": 58,
+      "unknown": 254
     },
     "byLifecycle": {
       "new": 312
@@ -212,10 +211,10 @@
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
-      "blocked": 17,
+      "blocked": 18,
       "needs-alignment": 31,
       "needs-scenario": 8,
-      "ready-to-verify": 256
+      "ready-to-verify": 255
     }
   },
   "discoveryBoundary": {
@@ -381,7 +380,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 56,
+    "satisfiedClaimCount": 58,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1411,6 +1410,46 @@
         "summary": "Proof class must remain visible in downstream summaries and reports."
       },
       {
+        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-25",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-workbench-instance-discovery-md-25",
+              "claim-docs-contracts-workbench-instance-discovery-md-101"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Every instance must expose a stable `instanceId` and a human-facing `displayLabel`."
+      },
+      {
+        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-101",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-workbench-instance-discovery-md-25",
+              "claim-docs-contracts-workbench-instance-discovery-md-101"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The product can read scenario-adjacent paths from typed packet fields instead of hardcoded route templates."
+      },
+      {
         "claimId": "claim-docs-specs-user-proof-debt-spec-md-7",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1475,8 +1514,25 @@
   },
   "gitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 16,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidence-agent-status-safe-branch-catalog-2026-05-03.json",
+      ".cautilus/claims/evidence-runner-readiness-branch-shape-2026-05-03.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-agent-status-safe-branch-catalog-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-runner-readiness-branch-shape-2026-05-03.json",
+      ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/debug-2026-05-03-agent-status-branch-catalog-claim.md",
+      "charness-artifacts/debug/latest.md",
+      "docs/contracts/runner-readiness.md",
+      "internal/runtime/agent_status.go",
+      "internal/runtime/runner_readiness.go",
+      "internal/runtime/runner_readiness_test.go"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -1484,12 +1540,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "9de4af0c2ab1a1815f084b5a6e5e23d9153b3c11",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",

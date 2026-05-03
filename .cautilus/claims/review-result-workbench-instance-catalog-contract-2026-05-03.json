@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-workbench-instance-catalog-review",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Mark workbench instance catalog claims satisfied only for shipped packet and CLI discovery behavior; keep future GUI chooser claims unresolved."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-workbench-instance-catalog-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-workbench-instance-discovery-md-25",
+          "claimFingerprint": "sha256:9aa67d9d960873c3babfef7757cc09598c422c34c2ee669d1b412995289b98ca",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names required catalog packet fields and adapter validation behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by adapter validation, eval live discover, and catalog schema tests: each discovered instance must carry stable instanceId and human-facing displayLabel fields.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+              "supportsClaimIds": [
+                "claim-docs-contracts-workbench-instance-discovery-md-25",
+                "claim-docs-contracts-workbench-instance-discovery-md-101"
+              ]
+            }
+          ],
+          "nextAction": "Keep adapter validation and catalog schema tests current when changing instance discovery fields.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-workbench-instance-discovery-md-100",
+          "claimFingerprint": "sha256:54a51cdc72f76d3d9714c0f3b87a4d83f8b95d55bc9fd0d34b5d5030c2f45389",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "blocked",
+          "whyThisLayer": "The claim says render a human-facing chooser, but the shipped surface is currently a catalog packet rather than a chooser UI.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The catalog packet carries displayLabel values, but no distinct instance chooser rendering surface is implemented yet. Treat this as future UI/workbench work rather than satisfied packet proof.",
+          "evidenceRefs": [],
+          "nextAction": "Defer until a shipped chooser or review surface exists, or reword the contract to claim only that eval live discover emits display labels in the catalog packet.",
+          "unresolvedQuestions": [
+            "Should this success criterion be reworded from chooser rendering to packet-level label presentation?"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-workbench-instance-discovery-md-101",
+          "claimFingerprint": "sha256:9c1f075135cb7ca08c49b052194f720c714186b4f3df03aeb9bc3b399aa47e34",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names packet-field routing behavior for scenario-adjacent paths.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by eval live discover tests and the catalog schema: adapter path fields normalize into typed packet fields such as scenarioStore rather than product-owned hardcoded route templates.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+              "supportsClaimIds": [
+                "claim-docs-contracts-workbench-instance-discovery-md-25",
+                "claim-docs-contracts-workbench-instance-discovery-md-101"
+              ]
+            }
+          ],
+          "nextAction": "Keep typed path normalization and catalog schema tests current when adding scenario-adjacent path keys.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

@@ -7687,9 +7687,20 @@
       "claimFingerprint": "sha256:9aa67d9d960873c3babfef7757cc09598c422c34c2ee669d1b412995289b98ca",
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-25",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Stable `instanceId` and `displayLabel` are adapter/packet contract fields and should be validated deterministically.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-workbench-instance-discovery-md-25",
+            "claim-docs-contracts-workbench-instance-discovery-md-101"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by adapter validation, eval live discover, and catalog schema tests: each discovered instance must carry stable instanceId and human-facing displayLabel fields.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7697,7 +7708,7 @@
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or connect adapter/packet validation for stable `instanceId` and human-facing `displayLabel` fields.",
+      "nextAction": "Keep adapter validation and catalog schema tests current when changing instance discovery fields.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -7710,7 +7721,7 @@
       "summary": "Every instance must expose a stable `instanceId` and a human-facing `displayLabel`.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "whyThisLayer": "The claim names required catalog packet fields and adapter validation behavior."
     },
     {
       "claimAudience": "developer",
@@ -7781,7 +7792,7 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is an observable workbench/instance packet rendering capability. It should be proven by deterministic packet or renderer tests once the surface is implemented.",
+      "evidenceStatusReason": "The catalog packet carries displayLabel values, but no distinct instance chooser rendering surface is implemented yet. Treat this as future UI/workbench work rather than satisfied packet proof.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7789,7 +7800,7 @@
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or connect deterministic instance-chooser rendering proof, or defer the claim if the workbench UI remains future work.",
+      "nextAction": "Defer until a shipped chooser or review surface exists, or reword the contract to claim only that eval live discover emits display labels in the catalog packet.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -7800,9 +7811,11 @@
         }
       ],
       "summary": "The product can render a human-facing instance chooser without learning consumer-native labels itself.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "unresolvedQuestions": [
+        "Should this success criterion be reworded from chooser rendering to packet-level label presentation?"
+      ],
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim says render a human-facing chooser, but the shipped surface is currently a catalog packet rather than a chooser UI."
     },
     {
       "claimAudience": "developer",
@@ -7810,9 +7823,20 @@
       "claimFingerprint": "sha256:9c1f075135cb7ca08c49b052194f720c714186b4f3df03aeb9bc3b399aa47e34",
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-101",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is a packet-field routing claim and should be tested deterministically instead of confirmed manually.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-workbench-instance-discovery-md-25",
+            "claim-docs-contracts-workbench-instance-discovery-md-101"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by eval live discover tests and the catalog schema: adapter path fields normalize into typed packet fields such as scenarioStore rather than product-owned hardcoded route templates.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7820,7 +7844,7 @@
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or connect deterministic tests proving scenario-adjacent paths come from typed packet fields rather than hardcoded route templates.",
+      "nextAction": "Keep typed path normalization and catalog schema tests current when adding scenario-adjacent path keys.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -7833,7 +7857,7 @@
       "summary": "The product can read scenario-adjacent paths from typed packet fields instead of hardcoded route templates.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "whyThisLayer": "The claim names packet-field routing behavior for scenario-adjacent paths."
     },
     {
       "claimAudience": "developer",
@@ -10124,8 +10148,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 56,
-      "unknown": 256
+      "satisfied": 58,
+      "unknown": 254
     },
     "byLifecycle": {
       "new": 312
@@ -10141,10 +10165,10 @@
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
-      "blocked": 17,
+      "blocked": 18,
       "needs-alignment": 31,
       "needs-scenario": 8,
-      "ready-to-verify": 256
+      "ready-to-verify": 255
     }
   },
   "discoveryEngine": {
@@ -10306,7 +10330,7 @@
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 2,
+    "appliedUpdateCount": 3,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -10320,8 +10344,22 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
-        "clusterId": "cluster-reviewable-artifacts-current-proof-gap"
+        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-25",
+        "clusterId": "cluster-workbench-instance-catalog-contract"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "whyThisLayer",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-100",
+        "clusterId": "cluster-workbench-instance-catalog-contract"
       },
       {
         "appliedFields": [
@@ -10335,13 +10373,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
-        "clusterId": "cluster-reviewable-artifacts-current-proof-gap"
+        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-101",
+        "clusterId": "cluster-workbench-instance-catalog-contract"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json",
+    "reviewResultPath": ".cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "provenanceMode": "aggregate-current-review-results"

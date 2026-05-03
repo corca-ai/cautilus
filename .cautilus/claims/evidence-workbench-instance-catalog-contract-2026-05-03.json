@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-workbench-instance-catalog-contract-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-workbench-instance-discovery-md-25",
+    "claim-docs-contracts-workbench-instance-discovery-md-101"
+  ],
+  "repoCommit": "9de4af0ce3f825ed56eaed87e1a9309c0d610b9b",
+  "summary": "This bundle records deterministic proof that live eval instance discovery normalizes stable instance ids, human-facing labels, and typed scenario-adjacent paths through the workbench instance catalog packet.",
+  "evidenceScope": {
+    "targetSurface": "cautilus.workbench_instance_catalog.v1 and eval live discover",
+    "claimBoundary": "Only the instance catalog packet fields and live discovery normalization are marked satisfied. This does not prove a future GUI chooser or any consumer-specific storage layout.",
+    "notClaimed": [
+      "The future GUI workbench exists",
+      "Cautilus owns consumer-native labels",
+      "Cautilus hardcodes Ceal route layouts",
+      "Scenario-adjacent paths are interpreted beyond the typed catalog fields"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestValidateAdapterDataAcceptsExplicitInstanceDiscovery|TestValidateAdapterDataAcceptsCommandInstanceDiscovery|TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "explicit instance_discovery validates id and display_label",
+          "explicit instance_discovery rejects instances without data_root or paths",
+          "command-backed instance_discovery preserves the bounded command template"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIEvalLiveDiscoverNormalizesExplicitInstances|TestCLILiveEvalDiscoverExecutesConsumerProbeCommand|TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr|TestFixtureExamplesValidateAgainstPublishedSchemas' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "eval live discover emits cautilus.workbench_instance_catalog.v1 for explicit adapters",
+          "explicit adapter id/display_label normalize to instanceId/displayLabel",
+          "typed scenario-adjacent paths such as scenario_store normalize to scenarioStore in the packet",
+          "command-backed discovery output is validated as the same catalog packet",
+          "probe warnings on stderr do not corrupt the stdout catalog packet",
+          "checked-in catalog example validates against the published schema"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/workbench-instance-discovery.md",
+      "kind": "workbench-instance-discovery-contract",
+      "contentHash": "sha256:366450d81705bf430c5273eec7454c4d10968b936d17aecf9b3a712b0b37f85e"
+    },
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "adapter-instance-discovery-validation",
+      "contentHash": "sha256:3c1ea7ca8956160057ea252be8f98253e841d664a37ee228395ae723638c8616"
+    },
+    {
+      "path": "internal/runtime/adapter_test.go",
+      "kind": "adapter-instance-discovery-tests",
+      "contentHash": "sha256:8df1d34c92ca15195c275aee9b3db0af35786d9448ef5293ac31c156ee67b464"
+    },
+    {
+      "path": "internal/app/workbench_commands.go",
+      "kind": "eval-live-discover-runtime",
+      "contentHash": "sha256:46acc0773b9a1ad1871709d124dfa979580f91ad20a4b3c879eb961006075f0d"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "eval-live-discover-cli-tests",
+      "contentHash": "sha256:c064a9f22ee194ef5438dde712d8b4fb5bdf10f7d40713268f7df04a39320ec6"
+    },
+    {
+      "path": "internal/app/examples_schema_test.go",
+      "kind": "catalog-schema-example-tests",
+      "contentHash": "sha256:19bc0846340538f0871ea7b919f55a5a25f899c797da957b8b6c055ff47ad823"
+    },
+    {
+      "path": "fixtures/workbench-instance-discovery/example-catalog.json",
+      "kind": "workbench-instance-catalog-example",
+      "contentHash": "sha256:e737e5bcdeedb6f18a5d93aa5685a513119219158ecf5085ddce9768cc46f221"
+    },
+    {
+      "path": "fixtures/workbench-instance-discovery/catalog.schema.json",
+      "kind": "workbench-instance-catalog-schema",
+      "contentHash": "sha256:c8bb124a1cf07df0528ef4b9147a4d5cf63f7ee6b67e2b424d8a88fb99305558"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Adapter validation, CLI discovery tests, and schema fixture tests prove that the catalog carries stable instanceId/displayLabel fields and typed scenario-adjacent paths without product-owned layout hardcoding."
+  }
+}
