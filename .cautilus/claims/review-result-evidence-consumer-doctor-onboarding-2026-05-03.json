@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for deterministic doctor CLI behavior; do not overclaim consumer workflow completeness."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-consumer-doctor-onboarding",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-20",
+          "claimFingerprint": "sha256:aae5fa6c0eeb4ee6edb98897c455b1e005bcbe79b4489e2545b5835fbe02cee5",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is a deterministic doctor branch contract: incomplete wiring either selects the adapter-init next action and loop guidance or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI tests: doctor --next-action prints the adapter-init branch while wiring is incomplete, and the structured doctor payload exposes the same next_action command.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c51d53a5fc7b344e3d650d605b1af4e9528ab10ade365568db0495baa8a21bf1",
+              "supportsClaimIds": [
+                "claim-docs-guides-consumer-adoption-md-20",
+                "claim-docs-guides-consumer-adoption-md-67"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing doctor next-action branch ordering, missing-adapter guidance, or text-mode --next-action output.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-67",
+          "claimFingerprint": "sha256:8aac208866396b84c450be1369558a4a9accf00000d8711dc7e1a69c5467915d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is a deterministic doctor precondition contract: repo scope either blocks missing git and empty git repositories or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI tests: doctor --scope repo returns missing_git for non-git directories and no_commits with a failing git_has_commits check for empty git repositories.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c51d53a5fc7b344e3d650d605b1af4e9528ab10ade365568db0495baa8a21bf1",
+              "supportsClaimIds": [
+                "claim-docs-guides-consumer-adoption-md-20",
+                "claim-docs-guides-consumer-adoption-md-67"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing repo-scope doctor git checks, missing_git status, no_commits status, or git_has_commits check naming.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

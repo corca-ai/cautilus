@@ -228,6 +228,40 @@ func TestCLIAdapterResolveDelegatesToBundledResolver(t *testing.T) {
 	}
 }
 
+func TestCLIDoctorRepoScopeRequiresGitRepositoryWithCommit(t *testing.T) {
+	nonGitRoot := t.TempDir()
+	stdout, stderr, exitCode := runCLI(t, nonGitRoot, "doctor", "--repo-root", nonGitRoot, "--scope", "repo")
+	if exitCode != 1 {
+		t.Fatalf("expected non-git doctor to fail, got exit=%d stderr=%s", exitCode, stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["ready"] != false || payload["status"] != "missing_git" {
+		t.Fatalf("expected missing_git payload, got %#v", payload)
+	}
+	if !strings.Contains(anyToString(payload["summary"]), "Not a git repository") {
+		t.Fatalf("expected not-git summary, got %#v", payload["summary"])
+	}
+
+	emptyGitRoot := t.TempDir()
+	runGit(t, emptyGitRoot, "init")
+	stdout, stderr, exitCode = runCLI(t, emptyGitRoot, "doctor", "--repo-root", emptyGitRoot, "--scope", "repo")
+	if exitCode != 1 {
+		t.Fatalf("expected no-commit doctor to fail, got exit=%d stderr=%s", exitCode, stderr)
+	}
+	payload = parseJSONObject(t, stdout)
+	if payload["ready"] != false || payload["status"] != "no_commits" {
+		t.Fatalf("expected no_commits payload, got %#v", payload)
+	}
+	checks, ok := payload["checks"].([]any)
+	if !ok || len(checks) < 2 {
+		t.Fatalf("expected git_has_commits failing check, got %#v", payload["checks"])
+	}
+	gitHasCommits := checks[1].(map[string]any)
+	if gitHasCommits["id"] != "git_has_commits" || gitHasCommits["ok"] != false {
+		t.Fatalf("expected git_has_commits failing check, got %#v", payload["checks"])
+	}
+}
+
 func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	root := t.TempDir()
 	initGitRepo(t, root)

@@ -11,21 +11,21 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Source count: 44
 - Packet source commit: ad0eddc13490c72dcd5bf7ee6b3630a435a2e12a
 - Snapshot notice: gitState is computed when this status packet is generated; rerun claim show for live checkout state.
-- Git state snapshot: fresh; stale=no
+- Git state snapshot: fresh-with-head-drift; stale=no
 - Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded
-- Snapshot recommendation: The claim packet commit matches the inspected checkout.
+- Snapshot recommendation: The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.
 
 ## Scoreboard
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 34, unknown: 288 |
-| Review | agent-reviewed: 69, heuristic: 250, human-reviewed: 3 |
+| Evidence | satisfied: 36, unknown: 286 |
+| Review | agent-reviewed: 71, heuristic: 248, human-reviewed: 3 |
 | Recommended proof | cautilus-eval: 128, deterministic: 123, human-auditable: 71 |
 | Verification readiness | blocked: 17, needs-alignment: 31, needs-scenario: 8, ready-to-verify: 266 |
 | Audience | developer: 240, user: 82 |
 
-Review readiness: heuristicClaimsReadyForReview: 222, needsAlignment: 31, needsScenario: 8.
+Review readiness: heuristicClaimsReadyForReview: 220, needsAlignment: 31, needsScenario: 8.
 
 ## Canonical Claim Map
 
@@ -41,10 +41,10 @@ Review readiness: heuristicClaimsReadyForReview: 222, needsAlignment: 31, needsS
 
 | User claim | Title | Raw claims | Evidence | Review |
 | --- | --- | --- | --- | --- |
-| U1 | Claim Discovery | 22 | satisfied: 10, unknown: 12 | agent-reviewed: 15, heuristic: 6, human-reviewed: 1 |
+| U1 | Claim Discovery | 21 | satisfied: 11, unknown: 10 | agent-reviewed: 16, heuristic: 4, human-reviewed: 1 |
 | U2 | Evaluation | 29 | satisfied: 6, unknown: 23 | agent-reviewed: 15, heuristic: 14 |
 | U3 | Optimization | 5 | satisfied: 1, unknown: 4 | agent-reviewed: 1, heuristic: 4 |
-| U4 | Doctor And Readiness | 6 | satisfied: 4, unknown: 2 | agent-reviewed: 4, heuristic: 2 |
+| U4 | Doctor And Readiness | 7 | satisfied: 5, unknown: 2 | agent-reviewed: 5, heuristic: 2 |
 | U5 | Product And Host Ownership | 10 | satisfied: 5, unknown: 5 | agent-reviewed: 7, heuristic: 3 |
 | U6 | Reviewable Artifacts | 5 | satisfied: 1, unknown: 4 | agent-reviewed: 1, heuristic: 4 |
 | U7 | Proof Debt | 5 | unknown: 5 | heuristic: 5 |
@@ -84,7 +84,7 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=31, human-confirm-or-decompose=23, split-or-defer=17.
-- Agent next proof work: connect deterministic gates for 90 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 88 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 119 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -92,15 +92,15 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 34 | agent-reviewed: 34 | satisfied: 34 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 90 | agent-reviewed: 11, heuristic: 76, human-reviewed: 3 | unknown: 90 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 36 | agent-reviewed: 36 | satisfied: 36 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 88 | agent-reviewed: 11, heuristic: 74, human-reviewed: 3 | unknown: 88 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 119 | agent-reviewed: 1, heuristic: 118 | unknown: 119 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | heuristic: 8 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 31 | agent-reviewed: 11, heuristic: 20 | unknown: 31 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 23 | heuristic: 23 | unknown: 23 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 17 | agent-reviewed: 12, heuristic: 5 | unknown: 17 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
-Cross-cutting signal: heuristic-review-needed (250) - Review heuristic labels before spending proof or eval budget.
+Cross-cutting signal: heuristic-review-needed (248) - Review heuristic labels before spending proof or eval budget.
 
 ### agent-add-deterministic-proof
 
@@ -110,9 +110,9 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 | --- | --- | --- | --- | --- | --- | --- |
 | claim-docs-contracts-adapter-contract-md-424 | docs/contracts/adapter-contract.md:424 | deterministic | ready-to-verify | human-reviewed | unknown | A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers. |
 | claim-docs-gepa-md-15 | docs/gepa.md:15 | deterministic | ready-to-verify | heuristic | unknown | Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates. |
-| claim-docs-guides-consumer-adoption-md-20 | docs/guides/consumer-adoption.md:20 | deterministic | ready-to-verify | heuristic | unknown | `cautilus doctor --next-action` returning the smallest honest next step while wiring remains incomplete |
-| claim-docs-guides-consumer-adoption-md-67 | docs/guides/consumer-adoption.md:67 | deterministic | ready-to-verify | heuristic | unknown | `cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit. |
 | claim-docs-guides-consumer-adoption-md-107 | docs/guides/consumer-adoption.md:107 | deterministic | ready-to-verify | heuristic | unknown | The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene. |
+| claim-docs-guides-evaluation-process-md-52 | docs/guides/evaluation-process.md:52 | deterministic | ready-to-verify | heuristic | unknown | The helper emits machine-readable baseline and candidate paths you can pass back into `eval test` or `review variants`. |
+| claim-docs-guides-evaluation-process-md-289 | docs/guides/evaluation-process.md:289 | deterministic | ready-to-verify | agent-reviewed | unknown | Use a checked-in JSON schema file and a fixed output file path so the loop can detect `blocker`, `concern`, and `pass` without guessing. |
 
 ### agent-plan-cautilus-eval
 
@@ -182,6 +182,7 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 | .cautilus/claims/review-result-evidence-adapter-discovery-contracts-2026-05-03.json | - | - | 1 | 2 | deterministic: 2 | ready-to-verify: 2 |
 | .cautilus/claims/review-result-evidence-claim-discover-proof-routing-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-claim-review-prepare-input-boundary-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
+| .cautilus/claims/review-result-evidence-consumer-doctor-onboarding-2026-05-03.json | - | - | 1 | 2 | deterministic: 2 | ready-to-verify: 2 |
 | .cautilus/claims/review-result-evidence-dev-skill-routing-install.json | - | - | 1 | 1 | cautilus-eval: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-doctor-runner-readiness-next-action-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |

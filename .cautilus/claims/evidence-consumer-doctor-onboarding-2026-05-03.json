@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-consumer-doctor-onboarding-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-guides-consumer-adoption-md-20",
+    "claim-docs-guides-consumer-adoption-md-67"
+  ],
+  "repoCommit": "91a10054b1f0832be5edef7957e4869b1ad74414",
+  "summary": "This bundle records deterministic proof for consumer doctor onboarding next-action and repo git precondition behavior.",
+  "evidenceScope": {
+    "targetSurface": "consumer doctor onboarding",
+    "claimBoundary": "Only the consumer-adoption claims about doctor next-action during incomplete wiring and repo-scope git preconditions are marked satisfied.",
+    "notClaimed": [
+      "The generated next action is sufficient for every possible consumer repo",
+      "The doctor loop proves a real consumer workflow is complete without a runnable evaluation path",
+      "Agent-surface doctor, install, or adapter init preconditions are fully proven by this bundle",
+      "The human wording 'smallest honest next step' is proven beyond the deterministic branch selected by the current doctor status"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIDoctorRepoScopeRequiresGitRepositoryWithCommit|TestCLIDoctorNextActionPrintsLoopPrompt|TestCLIDoctorFailsWithoutCheckedInAdapter' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "doctor --scope repo returns status missing_git and ready=false outside a git repository",
+          "doctor --scope repo returns status no_commits and a failing git_has_commits check inside an empty git repository",
+          "doctor --next-action exits nonzero while wiring is incomplete and prints the adapter-init command plus loop guidance",
+          "structured doctor payload for a committed repo without an adapter exposes next_action.command as cautilus adapter init"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "doctor-onboarding-cli-tests",
+      "contentHash": "sha256:ef8cb7903e46f154734c25693c971cc23040aa20b3d8f8e955733a3743f747b3"
+    },
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "doctor-repo-precondition-implementation",
+      "contentHash": "sha256:3c1ea7ca8956160057ea252be8f98253e841d664a37ee228395ae723638c8616"
+    },
+    {
+      "path": "internal/runtime/doctor_next_action.go",
+      "kind": "doctor-next-action-implementation",
+      "contentHash": "sha256:ff89a067457f7ece96b1a7cbde31f08d6c92bd18374121d2e3d1a010c32c635c"
+    },
+    {
+      "path": "docs/guides/consumer-adoption.md",
+      "kind": "consumer-adoption-guidance",
+      "contentHash": "sha256:061b87bab1dec62dfdc702ed6443b9a62468e22f476dfe750b0a933014fd8733"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused CLI tests verify the concrete doctor next-action branch for incomplete wiring and the repo-scope git repository plus initial-commit preconditions described by the consumer adoption guide."
+  }
+}

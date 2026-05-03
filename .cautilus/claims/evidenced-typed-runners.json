@@ -2092,8 +2092,20 @@
       "claimFingerprint": "sha256:aae5fa6c0eeb4ee6edb98897c455b1e005bcbe79b4489e2545b5835fbe02cee5",
       "claimId": "claim-docs-guides-consumer-adoption-md-20",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c51d53a5fc7b344e3d650d605b1af4e9528ab10ade365568db0495baa8a21bf1",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-consumer-adoption-md-20",
+            "claim-docs-guides-consumer-adoption-md-67"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI tests: doctor --next-action prints the adapter-init branch while wiring is incomplete, and the structured doctor payload exposes the same next_action command.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -2101,9 +2113,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep this claim covered when changing doctor next-action branch ordering, missing-adapter guidance, or text-mode --next-action output.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`cautilus doctor --next-action` returning the smallest honest next step while wiring remains incomplete",
@@ -2112,8 +2124,9 @@
         }
       ],
       "summary": "`cautilus doctor --next-action` returning the smallest honest next step while wiring remains incomplete",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim is a deterministic doctor branch contract: incomplete wiring either selects the adapter-init next action and loop guidance or it does not."
     },
     {
       "claimAudience": "user",
@@ -2266,8 +2279,20 @@
       "claimFingerprint": "sha256:8aac208866396b84c450be1369558a4a9accf00000d8711dc7e1a69c5467915d",
       "claimId": "claim-docs-guides-consumer-adoption-md-67",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c51d53a5fc7b344e3d650d605b1af4e9528ab10ade365568db0495baa8a21bf1",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-consumer-adoption-md-20",
+            "claim-docs-guides-consumer-adoption-md-67"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI tests: doctor --scope repo returns missing_git for non-git directories and no_commits with a failing git_has_commits check for empty git repositories.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -2275,9 +2300,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep this claim covered when changing repo-scope doctor git checks, missing_git status, no_commits status, or git_has_commits check naming.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit.",
@@ -2286,8 +2311,9 @@
         }
       ],
       "summary": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim is a deterministic doctor precondition contract: repo scope either blocks missing git and empty git repositories or it does not."
     },
     {
       "claimAudience": "user",
@@ -10174,8 +10200,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 34,
-      "unknown": 288
+      "satisfied": 36,
+      "unknown": 286
     },
     "byLifecycle": {
       "new": 322
@@ -10186,8 +10212,8 @@
       "human-auditable": 71
     },
     "byReviewStatus": {
-      "agent-reviewed": 69,
-      "heuristic": 250,
+      "agent-reviewed": 71,
+      "heuristic": 248,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {

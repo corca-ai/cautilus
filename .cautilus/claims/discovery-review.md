@@ -1184,13 +1184,13 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/guides/evaluation-process.md:269
 
-#### Deterministic gate / ready-to-verify / evidence unknown (5)
+#### Deterministic gate / ready-to-verify / evidence satisfied (2)
 
 ##### claim-docs-guides-consumer-adoption-md-20
 
 - Summary: `cautilus doctor --next-action` returning the smallest honest next step while wiring remains incomplete
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this claim covered when changing doctor next-action branch ordering, missing-adapter guidance, or text-mode --next-action output.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -1203,8 +1203,8 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 ##### claim-docs-guides-consumer-adoption-md-67
 
 - Summary: `cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this claim covered when changing repo-scope doctor git checks, missing_git status, no_commits status, or git_has_commits check naming.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -1213,6 +1213,8 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/guides/consumer-adoption.md:67
+
+#### Deterministic gate / ready-to-verify / evidence unknown (3)
 
 ##### claim-docs-guides-evaluation-process-md-52
 
