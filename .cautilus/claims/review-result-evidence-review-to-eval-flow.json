@@ -1,6 +1,7 @@
 {
   "schemaVersion": "cautilus.claim_review_result.v1",
   "reviewRun": {
+    "createdAt": "2026-05-01T15:02:52+09:00",
     "reviewer": "codex-current-agent-evidence-review",
     "backend": "codex_exec",
     "mode": "direct-evidence-application",

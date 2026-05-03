@@ -1,5 +1,15 @@
 {
   "candidateCount": 312,
+  "carryForward": {
+    "changedEvidenceRefCount": 0,
+    "evidenceSupportIdRewriteCount": 0,
+    "matchedClaimCount": 312,
+    "missingEvidenceRefCount": 0,
+    "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
+    "staleEvidenceClaimCount": 0,
+    "strategy": "claimFingerprint",
+    "unsupportedEvidenceRefCount": 0
+  },
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -1061,12 +1071,12 @@
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
-          "excerpt": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
+          "excerpt": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
           "line": 114,
           "path": "docs/cli-reference.md"
         }
       ],
-      "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
+      "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
@@ -2227,12 +2237,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -\u003e eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
+          "excerpt": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
           "line": 48,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
-      "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -\u003e eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
+      "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -2267,12 +2277,12 @@
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
-          "excerpt": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation.",
+          "excerpt": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.",
           "line": 49,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
-      "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation.",
+      "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
@@ -3594,12 +3604,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` \u003e `CAUTILUS_RUN_DIR` \u003e auto-materialize under `./.cautilus/runs/`) and emits `Active run: \u003cabs path\u003e` once only when it auto-materializes.",
+          "excerpt": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and emits `Active run: <abs path>` once only when it auto-materializes.",
           "line": 221,
           "path": "docs/contracts/active-run.md"
         }
       ],
-      "summary": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` \u003e `CAUTILUS_RUN_DIR` \u003e auto-materialize under `./.cautilus/runs/`) and emits `Active run: \u003cabs path\u003e` once only when it auto-materializes.",
+      "summary": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and emits `Active run: <abs path>` once only when it auto-materializes.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -5001,12 +5011,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The binary may provide helper flags such as `claim discover --previous \u003cpacket\u003e --refresh-plan`, but the public user-level workflow remains `discover`.",
+          "excerpt": "The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
           "line": 454,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "The binary may provide helper flags such as `claim discover --previous \u003cpacket\u003e --refresh-plan`, but the public user-level workflow remains `discover`.",
+      "summary": "The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -5032,12 +5042,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "When the skill runs `claim discover --previous \u003cpacket\u003e` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
+          "excerpt": "When the skill runs `claim discover --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
           "line": 456,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "When the skill runs `claim discover --previous \u003cpacket\u003e` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
+      "summary": "When the skill runs `claim discover --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -6096,7 +6106,7 @@
         }
       ],
       "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by CLI smoke tests: the product-owned scripted loop creates \u003coutput_file\u003e.d/workspace, runs the prepare hook once before turns, and reuses that same workspace for each turn.",
+      "evidenceStatusReason": "Verified by CLI smoke tests: the product-owned scripted loop creates <output_file>.d/workspace, runs the prepare hook once before turns, and reuses that same workspace for each turn.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6110,12 +6120,12 @@
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
-          "excerpt": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `\u003coutput_file\u003e.d/workspace/` and may run one optional prepare hook before the first turn.",
+          "excerpt": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `<output_file>.d/workspace/` and may run one optional prepare hook before the first turn.",
           "line": 12,
           "path": "docs/contracts/live-run-invocation.md"
         }
       ],
-      "summary": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `\u003coutput_file\u003e.d/workspace/` and may run one optional prepare hook before the first turn.",
+      "summary": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `<output_file>.d/workspace/` and may run one optional prepare hook before the first turn.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names live-run workspace allocation and prepare-hook timing, which are deterministic CLI/runtime behavior."
@@ -10727,6 +10737,7 @@
       "artifacts/**",
       "charness-artifacts/**",
       "docs/specs/old/**",
+      "docs/claims/**",
       "docs/maintainers/**",
       "docs/internal/handoff.md",
       "docs/internal/research/**"
@@ -10833,11 +10844,11 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
+  "gitCommit": "384671a8979867f6446fa9ad1ac8708250be7e8c",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 5,
+    "appliedUpdateCount": 1,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -10845,76 +10856,22 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-adapter-contract-md-424",
-        "clusterId": "cluster-final-deterministic-proof-debt"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
+          "whyThisLayer",
           "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-live-run-invocation-md-58",
-        "clusterId": "cluster-final-deterministic-proof-debt"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-reporting-md-120",
-        "clusterId": "cluster-final-deterministic-proof-debt"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-runner-readiness-md-198",
-        "clusterId": "cluster-final-deterministic-proof-debt"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-19",
-        "clusterId": "cluster-final-deterministic-proof-debt"
+        "claimId": "claim-docs-contracts-runner-readiness-md-273",
+        "clusterId": "cluster-runner-readiness-schema-fields"
       }
     ],
-    "claimsPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
+    "claimsPath": ".cautilus/claims/evidenced-typed-runners.json",
     "mergeDecisions": [],
-    "reviewResultPath": "/home/hwidong/codes/cautilus/.cautilus/claims/review-result-final-deterministic-proof-debt-2026-05-03.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-runner-readiness-schema-fields-2026-05-03.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
-    "unresolvedQuestions": []
+    "unresolvedQuestions": [],
+    "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
     {
@@ -11011,6 +10968,75 @@
         "lane": "b",
         "reviewer": "codex-lane-b",
         "scope": "clusters 3-5 only"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
+    },
+    {
+      "clusterCount": 2,
+      "reviewRun": {
+        "assignedClusterIndexes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "createdAt": "2026-04-30T19:42:00+09:00",
+        "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown.",
+        "inputPath": ".cautilus/claims/review-input-loop1.json",
+        "lane": "lane-a",
+        "reviewer": "codex"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
+    },
+    {
+      "clusterCount": 3,
+      "reviewRun": {
+        "assignedClusterIndexes": [
+          0,
+          1,
+          2
+        ],
+        "createdAt": "2026-04-30T20:20:11+09:00",
+        "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown.",
+        "inputPath": ".cautilus/claims/review-input-loop2.json",
+        "lane": "lane-a",
+        "reviewer": "codex"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
+    },
+    {
+      "clusterCount": 2,
+      "reviewRun": {
+        "createdAt": "2026-04-30T20:20:11+09:00",
+        "evidencePolicy": "No satisfied evidence labels were emitted because this lane did not attach direct or verified evidence refs.",
+        "inputPath": ".cautilus/claims/review-input-loop2.json",
+        "lane": "b",
+        "reviewer": "codex-lane-b",
+        "scope": "clusters 3-5 only"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
+    },
+    {
+      "clusterCount": 3,
+      "reviewRun": {
+        "backend": "same-agent-review",
+        "createdAt": "2026-05-02T07:16:05+09:00",
+        "mode": "action-bucket-focused-review",
+        "reviewInputPath": ".cautilus/claims/review-input-human-align-action-bucket.json",
+        "reviewPolicy": "Review the human-align-surfaces queue for whether each claim truly needs human alignment, deterministic proof, human confirmation, or decomposition. Keep evidenceStatus unknown unless direct evidence is present.",
+        "reviewer": "codex-current-agent"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
+    },
+    {
+      "clusterCount": 3,
+      "reviewRun": {
+        "backend": "same-agent-review",
+        "createdAt": "2026-05-02T07:17:22+09:00",
+        "mode": "action-bucket-focused-review",
+        "reviewInputPath": ".cautilus/claims/review-input-human-confirm-action-bucket.json",
+        "reviewPolicy": "Review the human-confirm-or-decompose queue for claims that should instead become deterministic proof, split/defer policy, or actual human confirmation. Keep evidenceStatus unknown unless direct evidence is present.",
+        "reviewer": "codex-current-agent"
       },
       "schemaVersion": "cautilus.claim_review_result.v1"
     }

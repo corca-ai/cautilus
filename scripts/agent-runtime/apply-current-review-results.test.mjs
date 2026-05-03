@@ -1,13 +1,18 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
 
 import {
 	claimIndexForPacket,
 	claimIdsForPacket,
+	compareReviewResultPaths,
 	filterReviewResultForCurrentClaims,
 	filterReviewResultForClaimIds,
 	normalizeAggregateReviewApplication,
 	reviewResultPaths,
+	reviewResultTimestamp,
 } from "./apply-current-review-results.mjs";
 
 test("filterReviewResultForClaimIds drops stale updates before replay", () => {
@@ -50,6 +55,46 @@ test("reviewResultPaths keeps explicit review-result order deterministic", () =>
 		reviewResultPaths({ reviewResults: ["z.json", "a.json"], claimsDir: "unused" }),
 		["a.json", "z.json"],
 	);
+});
+
+test("reviewResultPaths replays older dated review results before newer overrides", () => {
+	const dir = mkdtempSync(join(tmpdir(), "cautilus-review-result-order-"));
+	const olderHitl = join(dir, "review-result-hitl-audience-2026-05-02.json");
+	const sameDayHitl = join(dir, "review-result-hitl-priority-reset-2026-05-03.json");
+	const newerFinal = join(dir, "review-result-final-deterministic-proof-debt-2026-05-03.json");
+	writeFileSync(
+		olderHitl,
+		JSON.stringify({
+			schemaVersion: "cautilus.claim_review_result.v1",
+			reviewRun: { reviewer: "human-maintainer" },
+			clusterResults: [],
+		}),
+	);
+	writeFileSync(
+		sameDayHitl,
+		JSON.stringify({
+			schemaVersion: "cautilus.claim_review_result.v1",
+			reviewRun: { reviewer: "human-maintainer" },
+			clusterResults: [],
+		}),
+	);
+	writeFileSync(
+		newerFinal,
+		JSON.stringify({
+			schemaVersion: "cautilus.claim_review_result.v1",
+			reviewer: { id: "final-synthesis", reviewedAt: "2026-05-03T00:00:00Z" },
+			clusterResults: [],
+		}),
+	);
+
+	assert.deepEqual(reviewResultPaths({ reviewResults: [sameDayHitl, olderHitl, newerFinal], claimsDir: "unused" }), [
+		olderHitl,
+		sameDayHitl,
+		newerFinal,
+	]);
+	assert.equal(compareReviewResultPaths(newerFinal, olderHitl) > 0, true);
+	assert.equal(compareReviewResultPaths(newerFinal, sameDayHitl) > 0, true);
+	assert.equal(reviewResultTimestamp(olderHitl), Date.parse("2026-05-02T00:00:00Z"));
 });
 
 test("filterReviewResultForCurrentClaims drops reused ids with mismatched fingerprints", () => {

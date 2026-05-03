@@ -3469,7 +3469,7 @@
   "skippedClusters": [],
   "sourceClaimPacket": {
     "candidateCount": 312,
-    "gitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
+    "gitCommit": "384671a8979867f6446fa9ad1ac8708250be7e8c",
     "schemaVersion": "cautilus.claim_proof_plan.v1"
   },
   "sourceRoot": "."

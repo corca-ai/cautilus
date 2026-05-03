@@ -1,6 +1,7 @@
 {
   "schemaVersion": "cautilus.claim_review_result.v1",
   "reviewRun": {
+    "createdAt": "2026-04-30T19:42:00+09:00",
     "reviewer": "codex-lane-b",
     "lane": "b",
     "inputPath": ".cautilus/claims/review-input-loop1.json",

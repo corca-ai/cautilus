@@ -1,6 +1,7 @@
 {
   "schemaVersion": "cautilus.claim_review_result.v1",
   "reviewRun": {
+    "createdAt": "2026-05-02T07:17:22+09:00",
     "reviewer": "codex-current-agent",
     "backend": "same-agent-review",
     "mode": "action-bucket-focused-review",

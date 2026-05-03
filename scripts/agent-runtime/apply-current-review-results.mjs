@@ -76,17 +76,86 @@ export function normalizeAggregateReviewApplication(packet, { claims, reviewResu
 }
 
 export function reviewResultPaths({ claimsDir, reviewResults = [] }) {
+	const sortPaths = (paths) => [...paths].sort(compareReviewResultPaths);
 	if (reviewResults.length > 0) {
-		return [...reviewResults].sort((left, right) => left.localeCompare(right));
+		return sortPaths(reviewResults);
 	}
 	if (!claimsDir || !fs.existsSync(claimsDir)) {
 		return [];
 	}
-	return fs
-		.readdirSync(claimsDir)
-		.filter((name) => name.startsWith("review-result-") && name.endsWith(".json"))
-		.map((name) => path.join(claimsDir, name))
-		.sort((left, right) => left.localeCompare(right));
+	return sortPaths(
+		fs
+			.readdirSync(claimsDir)
+			.filter((name) => name.startsWith("review-result-") && name.endsWith(".json"))
+			.map((name) => path.join(claimsDir, name)),
+	);
+}
+
+function parseTimestamp(value) {
+	if (typeof value !== "string" || !value.trim()) {
+		return Number.NEGATIVE_INFINITY;
+	}
+	const parsed = Date.parse(value);
+	return Number.isFinite(parsed) ? parsed : Number.NEGATIVE_INFINITY;
+}
+
+function dateFromPath(filePath) {
+	const match = path.basename(filePath).match(/\b(20\d{2}-\d{2}-\d{2})\b/);
+	return match ? `${match[1]}T00:00:00Z` : "";
+}
+
+function timestampCandidate(value, sourceRank) {
+	return { sourceRank, value };
+}
+
+function reviewResultTimestampCandidates(reviewResult, filePath) {
+	if (!reviewResult || typeof reviewResult !== "object") {
+		return [timestampCandidate(dateFromPath(filePath), 0)];
+	}
+	return [
+		timestampCandidate(reviewResult.reviewer?.reviewedAt, 1),
+		timestampCandidate(reviewResult.reviewRun?.reviewedAt, 1),
+		timestampCandidate(reviewResult.reviewRun?.createdAt, 1),
+		timestampCandidate(reviewResult.metadata?.reviewedAt, 1),
+		timestampCandidate(reviewResult.metadata?.createdAt, 1),
+		timestampCandidate(dateFromPath(filePath), 0),
+	];
+}
+
+function firstParseableTimestamp(candidates) {
+	for (const candidate of candidates) {
+		const timestamp = parseTimestamp(candidate.value);
+		if (timestamp !== Number.NEGATIVE_INFINITY) {
+			return { sourceRank: candidate.sourceRank, timestamp };
+		}
+	}
+	return { sourceRank: 0, timestamp: Number.NEGATIVE_INFINITY };
+}
+
+function reviewResultTimeKey(filePath) {
+	let reviewResult = null;
+	try {
+		reviewResult = readJSON(filePath);
+	} catch {
+		// Fall back to filename dates for stale, partial, or test-only paths.
+	}
+	return firstParseableTimestamp(reviewResultTimestampCandidates(reviewResult, filePath));
+}
+
+export function reviewResultTimestamp(filePath) {
+	return reviewResultTimeKey(filePath).timestamp;
+}
+
+export function compareReviewResultPaths(left, right) {
+	const leftKey = reviewResultTimeKey(left);
+	const rightKey = reviewResultTimeKey(right);
+	if (leftKey.timestamp !== rightKey.timestamp) {
+		return leftKey.timestamp - rightKey.timestamp;
+	}
+	if (leftKey.sourceRank !== rightKey.sourceRank) {
+		return leftKey.sourceRank - rightKey.sourceRank;
+	}
+	return left.localeCompare(right);
 }
 
 export function claimIdsForPacket(claimPacket) {
