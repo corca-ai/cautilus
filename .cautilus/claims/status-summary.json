@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 233
+          "unknown": 237
         },
         "byReviewStatus": {
-          "heuristic": 233
+          "heuristic": 237
         },
-        "count": 233,
+        "count": 237,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -64,14 +64,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 108
+          "unknown": 110
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 104,
-          "human-reviewed": 2
+          "heuristic": 107,
+          "human-reviewed": 1
         },
-        "count": 108,
+        "count": 110,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -95,22 +95,22 @@
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-175",
-          "claim-docs-claims-user-facing-md-106",
+          "claim-docs-claims-user-facing-md-48",
           "claim-docs-master-plan-md-88",
-          "claim-docs-contracts-claim-discovery-workflow-md-255",
-          "claim-docs-contracts-claim-discovery-workflow-md-677"
+          "claim-docs-contracts-claim-discovery-workflow-md-259",
+          "claim-docs-contracts-claim-discovery-workflow-md-681"
         ],
         "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 28
+          "unknown": 30
         },
         "byReviewStatus": {
-          "agent-reviewed": 13,
+          "agent-reviewed": 15,
           "heuristic": 15
         },
-        "count": 28,
+        "count": 30,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -118,27 +118,27 @@
           "claim-docs-claims-maintainer-facing-md-38",
           "claim-docs-claims-maintainer-facing-md-116",
           "claim-docs-claims-maintainer-facing-md-141",
-          "claim-docs-claims-user-facing-md-9"
+          "claim-docs-claims-user-facing-md-12"
         ],
         "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 21
+          "unknown": 22
         },
         "byReviewStatus": {
-          "heuristic": 20,
+          "heuristic": 21,
           "human-reviewed": 1
         },
-        "count": 21,
+        "count": 22,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-73",
           "claim-docs-claims-maintainer-facing-md-101",
           "claim-docs-claims-maintainer-facing-md-203",
-          "claim-docs-claims-user-facing-md-22",
-          "claim-docs-claims-user-facing-md-37"
+          "claim-docs-claims-user-facing-md-25",
+          "claim-docs-claims-user-facing-md-40"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
       },
@@ -164,7 +164,7 @@
       }
     ]
   },
-  "candidateCount": 305,
+  "candidateCount": 310,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -181,43 +181,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 224,
-      "user": 81
+      "developer": 226,
+      "user": 84
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 51,
-      "Agent and skill workflow": 74,
+      "Adapter and portability": 53,
+      "Agent and skill workflow": 75,
       "Claim discovery and review": 24,
-      "Documentation and contracts": 74,
+      "Documentation and contracts": 76,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and optimization": 18,
-      "Packets and reporting": 34,
-      "Quality gates": 26,
+      "Improvement and optimization": 17,
+      "Packets and reporting": 33,
+      "Quality gates": 28,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 15,
-      "unknown": 290
+      "unknown": 295
     },
     "byLifecycle": {
-      "new": 305
+      "new": 310
     },
     "byRecommendedProof": {
-      "cautilus-eval": 116,
+      "cautilus-eval": 118,
       "deterministic": 126,
-      "human-auditable": 63
+      "human-auditable": 66
     },
     "byReviewStatus": {
-      "agent-reviewed": 65,
-      "heuristic": 233,
-      "human-reviewed": 7
+      "agent-reviewed": 67,
+      "heuristic": 237,
+      "human-reviewed": 6
     },
     "byVerificationReadiness": {
       "blocked": 14,
-      "needs-alignment": 28,
+      "needs-alignment": 30,
       "needs-scenario": 8,
-      "ready-to-verify": 255
+      "ready-to-verify": 258
     }
   },
   "discoveryBoundary": {
@@ -672,17 +672,17 @@
       }
     ]
   },
-  "gitCommit": "b21a7fe1bbf802bacb59a1192e5f4ca2d1f9eab6",
+  "gitCommit": "cf91bf29b47a9b6a2a439659e283773436e6ec18",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "b21a7fe1bbf802bacb59a1192e5f4ca2d1f9eab6",
+    "currentGitCommit": "cf91bf29b47a9b6a2a439659e283773436e6ec18",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "b21a7fe1bbf802bacb59a1192e5f4ca2d1f9eab6",
+    "packetGitCommit": "cf91bf29b47a9b6a2a439659e283773436e6ec18",
     "recommendedAction": "The claim packet commit matches the current checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -705,8 +705,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 210,
-    "needsAlignment": 28,
+    "heuristicClaimsReadyForReview": 214,
+    "needsAlignment": 30,
     "needsScenario": 8
   },
   "sampleClaims": [
