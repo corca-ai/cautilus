@@ -36,7 +36,7 @@ function defaultVersion() {
 	return `v${readPackageVersion()}`;
 }
 
-function parseArgs(argv = process.argv.slice(2)) {
+export function parseArgs(argv = process.argv.slice(2)) {
 	const targets = resolveReleaseTargets();
 	const options = {
 		channel: "",

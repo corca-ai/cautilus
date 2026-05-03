@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
 	normalizeVersion,
+	parseArgs,
 	renderInstallerUrl,
 	runInstallSmoke,
 } from "./run-install-smoke.mjs";
@@ -66,6 +67,13 @@ test("runInstallSmoke drives the install.sh channel through an isolated workspac
 	assert.equal(calls[0].options.env.CAUTILUS_VERSION, "v1.2.3");
 	assert.match(calls[0].options.env.CAUTILUS_INSTALL_ROOT, /install-root$/);
 	assert.match(calls[0].options.env.CAUTILUS_BIN_DIR, /bin$/);
+});
+
+test("parseArgs rejects legacy Homebrew as an install smoke channel", () => {
+	assert.throws(
+		() => parseArgs(["--channel", "homebrew"]),
+		/--channel must be install_sh/,
+	);
 });
 
 test("runInstallSmoke can skip update for the install.sh channel", async () => {

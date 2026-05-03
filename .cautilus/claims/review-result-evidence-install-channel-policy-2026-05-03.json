@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when checked-in tests and docs directly support the install-channel boundary without claiming live migration."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cli-reference-install-channel-policy",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-32",
+          "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is install-channel policy backed by release smoke tests and user-facing migration guidance.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in install-channel evidence bundle: release smoke accepts only install_sh, a focused test rejects homebrew, and docs direct legacy Homebrew users to uninstall and reinstall through install.sh.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-install-channel-policy-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a2c49e4849923a73c41fb9c22657b47b9d28491bd7c4429367ae2d1d1245e383",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-32"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when adding install channels, update behavior, release smoke channels, or migration guidance.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

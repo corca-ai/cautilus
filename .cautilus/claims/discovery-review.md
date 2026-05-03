@@ -1256,13 +1256,13 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 ### Release and packaging (2)
 
-#### Deterministic gate / ready-to-verify / evidence unknown (2)
+#### Deterministic gate / ready-to-verify / evidence satisfied (1)
 
 ##### claim-docs-cli-reference-md-32
 
 - Summary: Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this claim covered when adding install channels, update behavior, release smoke channels, or migration guidance.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -1271,6 +1271,8 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/cli-reference.md:32
+
+#### Deterministic gate / ready-to-verify / evidence unknown (1)
 
 ##### claim-docs-guides-consumer-adoption-md-107
 

@@ -911,8 +911,19 @@
       "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
       "claimId": "claim-docs-cli-reference-md-32",
       "claimSemanticGroup": "Release and packaging",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a2c49e4849923a73c41fb9c22657b47b9d28491bd7c4429367ae2d1d1245e383",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-install-channel-policy-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-32"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in install-channel evidence bundle: release smoke accepts only install_sh, a focused test rejects homebrew, and docs direct legacy Homebrew users to uninstall and reinstall through install.sh.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -920,9 +931,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+      "nextAction": "Keep this claim covered when adding install channels, update behavior, release smoke channels, or migration guidance.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.",
@@ -931,8 +942,9 @@
         }
       ],
       "summary": "Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim is install-channel policy backed by release smoke tests and user-facing migration guidance."
     },
     {
       "claimAudience": "user",
@@ -10039,8 +10051,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 23,
-      "unknown": 299
+      "satisfied": 24,
+      "unknown": 298
     },
     "byLifecycle": {
       "new": 322
@@ -10051,8 +10063,8 @@
       "human-auditable": 69
     },
     "byReviewStatus": {
-      "agent-reviewed": 66,
-      "heuristic": 253,
+      "agent-reviewed": 67,
+      "heuristic": 252,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -10241,6 +10253,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

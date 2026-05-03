@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:114162f4b6d569b694a4ca333117f20a5ea6d74583d1afb075d61e0a0b46364c"
+      "contentHash": "sha256:40add4616254307620c6c929b80d50174f3819666e5a5c1cea3cfac63331b71a"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -309,8 +309,8 @@
       "U1": 22,
       "U2": 29,
       "U3": 4,
-      "U4": 8,
-      "U5": 8,
+      "U4": 7,
+      "U5": 9,
       "U6": 5,
       "U7": 6
     },
@@ -1057,10 +1057,9 @@
     {
       "canonicalClaimId": "U4",
       "title": "Doctor And Readiness",
-      "absorbedRawClaimCount": 8,
+      "absorbedRawClaimCount": 7,
       "absorbedRawClaimIds": [
         "claim-readme-md-218",
-        "claim-docs-cli-reference-md-32",
         "claim-docs-cli-reference-md-108",
         "claim-docs-cli-reference-md-110",
         "claim-docs-cli-reference-md-114",
@@ -1073,12 +1072,6 @@
           "claimId": "claim-readme-md-218",
           "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
           "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-cli-reference-md-32",
-          "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
-          "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
@@ -1120,29 +1113,30 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 3,
-        "unknown": 5
+        "unknown": 4
       },
       "byReviewStatus": {
         "agent-reviewed": 5,
-        "heuristic": 3
+        "heuristic": 2
       },
       "byRecommendedProof": {
         "cautilus-eval": 2,
-        "deterministic": 6
+        "deterministic": 5
       },
       "byMappingConfidence": {
         "high": 2,
-        "low": 3,
+        "low": 2,
         "medium": 3
       }
     },
     {
       "canonicalClaimId": "U5",
       "title": "Product And Host Ownership",
-      "absorbedRawClaimCount": 8,
+      "absorbedRawClaimCount": 9,
       "absorbedRawClaimIds": [
         "claim-readme-md-156",
         "claim-readme-md-160",
+        "claim-docs-cli-reference-md-32",
         "claim-docs-cli-reference-md-173",
         "claim-docs-cli-reference-md-185",
         "claim-docs-guides-consumer-adoption-md-83",
@@ -1161,6 +1155,12 @@
           "claimId": "claim-readme-md-160",
           "claimFingerprint": "sha256:9bada1ab213276f56664107bebda9322010ab42d914bbc27bd0c1e1937c171b3",
           "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-32",
+          "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
+          "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
@@ -1201,21 +1201,21 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 3,
+        "satisfied": 4,
         "unknown": 5
       },
       "byReviewStatus": {
-        "agent-reviewed": 5,
+        "agent-reviewed": 6,
         "heuristic": 3
       },
       "byRecommendedProof": {
         "cautilus-eval": 1,
-        "deterministic": 3,
+        "deterministic": 4,
         "human-auditable": 4
       },
       "byMappingConfidence": {
         "high": 3,
-        "low": 1,
+        "low": 2,
         "medium": 4
       }
     },
@@ -4336,24 +4336,22 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
-      "canonicalClaimId": "U4",
-      "score": 6,
-      "runnerUpCanonicalClaimId": "U5",
-      "runnerUpScore": 6,
-      "scoreMargin": 0,
+      "canonicalClaimId": "U5",
+      "score": 4,
+      "runnerUpCanonicalClaimId": "U4",
+      "runnerUpScore": 3,
+      "scoreMargin": 1,
       "mappingConfidence": "low",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "adapter",
-        "doctor",
-        "install",
+        "behavior",
         "instead",
-        "proof",
-        "readines"
+        "keep",
+        "thi"
       ]
     },
     {
