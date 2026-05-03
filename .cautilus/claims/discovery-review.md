@@ -1063,7 +1063,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 - Summary: Markdown and HTML views should explain the same state without becoming a separate truth source.
 - Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.
+- Suggested next action: Add a renderer parity matrix proving each Markdown or HTML view declares or derives from its packet source and cannot mutate that packet, or decompose the claim by artifact family.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -1077,7 +1077,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 - Summary: Cautilus writes machine-readable packets first and readable views over those packets.
 - Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.
+- Suggested next action: Add an aggregate reviewable-artifacts invariant, or split this spec claim into narrower packet-first claims for claim status, report HTML, self-dogfood HTML, review packets, evidence bundles, and scenario review artifacts.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:

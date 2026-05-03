@@ -124,7 +124,8 @@ test("createReviewServer requires token and writes comment packet", async () => 
 	try {
 		const reportPath = path.join(root, "report.md");
 		const commentsPath = path.join(root, "comments.json");
-		writeFileSync(reportPath, "# Report\n\n## Next Work\n\n- Continue\n");
+		const reportMarkdown = "# Report\n\n## Next Work\n\n- Continue\n";
+		writeFileSync(reportPath, reportMarkdown);
 		const server = createReviewServer({ reportPath, commentsPath, token: "secret" });
 		await listen(server);
 		try {
@@ -134,7 +135,10 @@ test("createReviewServer requires token and writes comment packet", async () => 
 			assert.equal(forbidden.status, 403);
 			const state = await requestJSON(`${base}/api/state?token=secret`);
 			assert.equal(state.status, 200);
+			assert.equal(state.body.reportPath, reportPath);
+			assert.equal(state.body.commentsPath, commentsPath);
 			assert.equal(state.body.sections.some((section) => section.id === "next-work"), true);
+			assert.match(state.body.sections.find((section) => section.id === "next-work").html, /<li>Continue<\/li>/);
 			assert.equal(state.body.reviewQueue.length, 5);
 			assert.equal(state.body.reviewQueue[0].id, "decision-refresh-stale-claims");
 			const saved = await requestJSON(`${base}/api/comments?token=secret`, {
@@ -145,7 +149,10 @@ test("createReviewServer requires token and writes comment packet", async () => 
 			});
 			assert.equal(saved.status, 200);
 			const packet = JSON.parse(fs.readFileSync(commentsPath, "utf8"));
+			assert.equal(packet.reportPath, reportPath);
+			assert.equal(packet.reportFingerprint, state.body.reportFingerprint);
 			assert.equal(packet.comments[0].comment, "Looks good.");
+			assert.equal(fs.readFileSync(reportPath, "utf8"), reportMarkdown);
 		} finally {
 			await close(server);
 		}

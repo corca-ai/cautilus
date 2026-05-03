@@ -199,6 +199,8 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	const report = renderStatusReport({ claimsPacket, statusPacket, digests, args });
 
 	assert.match(report, /# Cautilus Claim Status Report/);
+	assert.match(report, /human-readable projection over the current claim packet, status summary, review results, validation reports, and eval plans/);
+	assert.match(report, /Use the JSON packets as the audit source; use this report to decide what to inspect or do next/);
 	assert.match(report, /Snapshot notice: git state is a generated status snapshot/);
 	assert.match(report, /Git state snapshot: fresh; stale=no/);
 	assert.match(report, /Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded/);

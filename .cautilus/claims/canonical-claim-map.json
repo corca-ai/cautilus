@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:a141ae100ab9d0b228ffaad94e37a03e4b3090915bfc5a936ab13b26768f4db1"
+      "contentHash": "sha256:ec84f2d22ce5f7219024f1a35ebf31a82f0ad1c82ebedc9861218c420157419e"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -1285,8 +1285,8 @@
         "unknown": 4
       },
       "byReviewStatus": {
-        "agent-reviewed": 1,
-        "heuristic": 4
+        "agent-reviewed": 3,
+        "heuristic": 2
       },
       "byRecommendedProof": {
         "cautilus-eval": 1,
@@ -6837,30 +6837,31 @@
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:e3899b096e94f29ab48e81c4c735843e228abbbd14b836134054a60e75f126f5",
       "canonicalClaimId": "U6",
-      "score": 17,
-      "runnerUpCanonicalClaimId": "U5",
-      "runnerUpScore": 6,
-      "scoreMargin": 11,
+      "score": 21,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 8,
+      "scoreMargin": 13,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
         "docs/specs/user/reviewable-artifacts.spec.md"
       ],
       "matchedKeywords": [
+        "artifact",
         "cautilu",
+        "evidence",
         "first",
+        "html",
         "machine-readable",
         "over",
         "packet",
-        "proof",
         "readable",
-        "thi",
-        "those",
-        "view",
-        "write"
+        "report",
+        "spec",
+        "thi"
       ]
     },
     {
@@ -6922,31 +6923,31 @@
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:7bb0e7d89091719d433f466125d09d4fa00ba6bacc3e1381eebe23e09915a499",
       "canonicalClaimId": "U6",
-      "score": 20,
-      "runnerUpCanonicalClaimId": "U5",
-      "runnerUpScore": 6,
-      "scoreMargin": 14,
+      "score": 19,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 7,
+      "scoreMargin": 12,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
         "docs/specs/user/reviewable-artifacts.spec.md"
       ],
       "matchedKeywords": [
+        "artifact",
         "becoming",
         "explain",
         "html",
         "markdown",
         "packet",
-        "proof",
         "same",
         "separate",
         "source",
         "state",
-        "thi",
-        "truth"
+        "truth",
+        "view"
       ]
     },
     {

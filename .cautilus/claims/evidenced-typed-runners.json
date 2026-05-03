@@ -3323,6 +3323,7 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Focused tests now cover claim-status Markdown and browser-review projection behavior, but this broad user-facing claim still needs an aggregate invariant or decomposition across the readable artifact surfaces before it can be marked satisfied.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -3330,9 +3331,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Add an aggregate reviewable-artifacts invariant, or split this spec claim into narrower packet-first claims for claim status, report HTML, self-dogfood HTML, review packets, evidence bundles, and scenario review artifacts.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Cautilus writes machine-readable packets first and readable views over those packets.",
@@ -3341,8 +3342,11 @@
         }
       ],
       "summary": "Cautilus writes machine-readable packets first and readable views over those packets.",
+      "unresolvedQuestions": [
+        "Should the user-facing spec remain a broad product promise, or should it be decomposed into surface-specific spec pages?"
+      ],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names a cross-workflow packet-first artifact contract that should be protected by deterministic renderer and packet-generation tests."
     },
     {
       "claimAudience": "user",
@@ -3383,6 +3387,7 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Claim-status report and browser-review tests now assert JSON/Markdown source boundaries and comment-packet separation, but there is not yet a parity invariant across all Markdown and HTML views.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -3390,9 +3395,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+      "nextAction": "Add a renderer parity matrix proving each Markdown or HTML view declares or derives from its packet source and cannot mutate that packet, or decompose the claim by artifact family.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Markdown and HTML views should explain the same state without becoming a separate truth source.",
@@ -3401,8 +3406,11 @@
         }
       ],
       "summary": "Markdown and HTML views should explain the same state without becoming a separate truth source.",
+      "unresolvedQuestions": [
+        "Which readable views must be included in the first parity matrix for this broad user-facing claim?"
+      ],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
+      "whyThisLayer": "The claim names view truth-source boundaries that should be protected by deterministic renderer and server tests rather than human interpretation."
     },
     {
       "claimAudience": "user",
@@ -10083,8 +10091,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 76,
-      "heuristic": 236,
+      "agent-reviewed": 78,
+      "heuristic": 234,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -10247,7 +10255,7 @@
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 1,
+    "appliedUpdateCount": 2,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -10260,13 +10268,27 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-101",
-        "clusterId": "cluster-readme-scenario-next-step-needs-split"
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+        "clusterId": "cluster-reviewable-artifacts-current-proof-gap"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "whyThisLayer",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
+        "clusterId": "cluster-reviewable-artifacts-current-proof-gap"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-readme-scenario-next-step-reclassification-2026-05-03.json",
+    "reviewResultPath": ".cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "provenanceMode": "aggregate-current-review-results"

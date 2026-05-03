@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-proof-gap-review",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Do not mark broad reviewable-artifact claims satisfied from focused claim-status report tests alone."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-reviewable-artifacts-current-proof-gap",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+          "claimFingerprint": "sha256:e3899b096e94f29ab48e81c4c735843e228abbbd14b836134054a60e75f126f5",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names a cross-workflow packet-first artifact contract that should be protected by deterministic renderer and packet-generation tests.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Focused tests now cover claim-status Markdown and browser-review projection behavior, but this broad user-facing claim still needs an aggregate invariant or decomposition across the readable artifact surfaces before it can be marked satisfied.",
+          "nextAction": "Add an aggregate reviewable-artifacts invariant, or split this spec claim into narrower packet-first claims for claim status, report HTML, self-dogfood HTML, review packets, evidence bundles, and scenario review artifacts.",
+          "unresolvedQuestions": [
+            "Should the user-facing spec remain a broad product promise, or should it be decomposed into surface-specific spec pages?"
+          ]
+        },
+        {
+          "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
+          "claimFingerprint": "sha256:7bb0e7d89091719d433f466125d09d4fa00ba6bacc3e1381eebe23e09915a499",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names view truth-source boundaries that should be protected by deterministic renderer and server tests rather than human interpretation.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Claim-status report and browser-review tests now assert JSON/Markdown source boundaries and comment-packet separation, but there is not yet a parity invariant across all Markdown and HTML views.",
+          "nextAction": "Add a renderer parity matrix proving each Markdown or HTML view declares or derives from its packet source and cannot mutate that packet, or decompose the claim by artifact family.",
+          "unresolvedQuestions": [
+            "Which readable views must be included in the first parity matrix for this broad user-facing claim?"
+          ]
+        }
+      ]
+    }
+  ]
+}

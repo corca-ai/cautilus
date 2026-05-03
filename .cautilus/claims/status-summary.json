@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 236
+          "unknown": 234
         },
         "byReviewStatus": {
-          "heuristic": 236
+          "heuristic": 234
         },
-        "count": 236,
+        "count": 234,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -46,8 +46,8 @@
           "unknown": 78
         },
         "byReviewStatus": {
-          "agent-reviewed": 9,
-          "heuristic": 66,
+          "agent-reviewed": 11,
+          "heuristic": 64,
           "human-reviewed": 3
         },
         "count": 78,
@@ -207,8 +207,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 76,
-      "heuristic": 236,
+      "agent-reviewed": 78,
+      "heuristic": 234,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -1218,17 +1218,19 @@
   },
   "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "gitState": {
-    "changedFileCount": 18,
+    "changedFileCount": 21,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+      ".cautilus/claims/evidence-consumer-surface-alias-2026-05-03.json",
       ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/evidence-gepa-sparse-evidence-block-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-consumer-surface-alias-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-gepa-sparse-evidence-block-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
@@ -1237,7 +1239,8 @@
       "charness-artifacts/debug/latest.md",
       "internal/app/cli_smoke_test.go",
       "internal/runtime/claim_discovery.go",
-      "internal/runtime/claim_discovery_test.go"
+      "internal/runtime/claim_discovery_test.go",
+      "internal/runtime/proposals_test.go"
     ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
@@ -1247,7 +1250,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a815639a974b38549ef5afd360d9d4f8e8288c7f",
+    "currentGitCommit": "50c29c534b744bccf693b681490780b312c2d03a",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
@@ -1274,7 +1277,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 208,
+    "heuristicClaimsReadyForReview": 206,
     "needsAlignment": 31,
     "needsScenario": 8
   },
