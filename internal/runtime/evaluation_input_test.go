@@ -127,6 +127,29 @@ func TestNormalizeEvaluationInputAcceptsDevSkillEpisodeTurns(t *testing.T) {
 	}
 }
 
+func TestNormalizeEvaluationInputAcceptsPacketFirstAuditKind(t *testing.T) {
+	fixture := validDevSkillFixture()
+	cases := fixture["cases"].([]any)
+	cases[0] = map[string]any{
+		"caseId":         "episode-packet-first",
+		"evaluationKind": "execution",
+		"turns": []any{
+			map[string]any{"input": "$demo", "injectSkill": true},
+			map[string]any{"input": "Summarize packets without browser output."},
+		},
+		"auditKind": "cautilus_packet_first_flow",
+	}
+	result, err := NormalizeEvaluationInput(fixture)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	casesOut := result.TranslatedCases["cases"].([]any)
+	first := casesOut[0].(map[string]any)
+	if first["auditKind"] != "cautilus_packet_first_flow" {
+		t.Fatalf("expected packet-first auditKind to round-trip, got %#v", first)
+	}
+}
+
 func TestNormalizeEvaluationInputRejectsDevSkillTurnsOnTrigger(t *testing.T) {
 	fixture := validDevSkillFixture()
 	cases := fixture["cases"].([]any)

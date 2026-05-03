@@ -101,6 +101,26 @@ test("skill case suites preserve audit-backed episode turns", () => {
 	assert.equal(suite.cases[0].auditKind, "cautilus_refresh_flow");
 });
 
+test("skill case suites accept packet-first audit episodes", () => {
+	const suite = normalizeSkillTestCaseSuite({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "cautilus",
+		cases: [
+			{
+				caseId: "episode-cautilus-packet-first-flow",
+				evaluationKind: "execution",
+				turns: [
+					{ input: "$cautilus", injectSkill: true },
+					{ input: "Summarize the current claim packet without browser output." },
+				],
+				auditKind: "cautilus_packet_first_flow",
+			},
+		],
+	});
+	assert.equal(suite.cases[0].auditKind, "cautilus_packet_first_flow");
+	assert.equal(suite.cases[0].turns.length, 2);
+});
+
 test("fixture-backed episode cases still materialize skill evaluation packets", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-test-episode-"));
 	const casesFile = join(root, "cases.json");

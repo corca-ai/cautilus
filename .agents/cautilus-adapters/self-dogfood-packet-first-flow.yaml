@@ -1,0 +1,23 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - local bundled cautilus skill reads packets before browser or HTML artifacts
+required_prerequisites:
+  - materialize the local cautilus skill surface before running the episode fixture
+preflight_commands:
+  - ./bin/cautilus install --repo-root . --overwrite
+  - ./bin/cautilus doctor --repo-root . --scope agent-surface
+evaluation_input_default: fixtures/eval/dev/skill/cautilus-packet-first-flow.fixture.json
+eval_test_command_templates:
+  - node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox workspace-write --timeout-ms 300000 --claim-state present --artifact-subdir packet-first-flow --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(*)'
+artifact_paths:
+  - skills/cautilus/SKILL.md
+  - fixtures/eval/dev/skill/cautilus-packet-first-flow.fixture.json
+  - scripts/run-self-dogfood-skill-refresh-flow-eval.mjs
+  - scripts/agent-runtime/run-local-skill-test.mjs
+  - scripts/agent-runtime/audit-cautilus-packet-first-flow-log.mjs
+comparison_questions:
+  - Can the bundled cautilus skill summarize current claim state for an agent by reading packets first and without citing HTML when no browser deliverable is requested?
+human_review_prompts:
+  - id: packet-first-flow-episode
+    prompt: Where would an operator still conclude that the packet-first episode overuses browser or HTML artifacts before reading machine-readable Cautilus packets?

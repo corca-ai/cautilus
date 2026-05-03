@@ -28,6 +28,8 @@
     "dogfood:cautilus-reviewer-launch-flow:eval:claude": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-reviewer-launch-flow --runtime claude --output-dir ./artifacts/self-dogfood/cautilus-reviewer-launch-flow-eval-claude/latest",
     "dogfood:cautilus-review-to-eval-flow:eval:codex": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-review-to-eval-flow --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest",
     "dogfood:cautilus-review-to-eval-flow:eval:claude": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-review-to-eval-flow --runtime claude --output-dir ./artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-claude/latest",
+    "dogfood:cautilus-packet-first-flow:eval:codex": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-packet-first-flow --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest",
+    "dogfood:cautilus-packet-first-flow:eval:claude": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-packet-first-flow --runtime claude --output-dir ./artifacts/self-dogfood/cautilus-packet-first-flow-eval-claude/latest",
     "dogfood:self:html": "./bin/cautilus self-dogfood render-html",
     "consumer:onboard:smoke": "node scripts/on-demand/smoke-external-consumer.mjs",
     "skills:sync-packaged": "node scripts/release/sync-packaged-skill.mjs",
