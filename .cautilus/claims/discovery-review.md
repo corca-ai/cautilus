@@ -690,24 +690,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; README.md:129
 
-#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (1)
-
-##### claim-docs-specs-user-proof-debt-spec-md-14
-
-- Summary: Unknown or missing evidence should stay visible in the public claim workflow.
-- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a host-owned dev/repo fixture and run it through cautilus eval test.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/specs/user/proof-debt.spec.md:14
-
-#### Deterministic gate / ready-to-verify / evidence satisfied (7)
+#### Deterministic gate / ready-to-verify / evidence satisfied (9)
 
 ##### claim-docs-cli-reference-md-110
 
@@ -807,13 +790,25 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/index.spec.md:24
 
-#### Deterministic gate / ready-to-verify / evidence unknown (1)
+##### claim-docs-specs-user-proof-debt-spec-md-14
+
+- Summary: Unknown or missing evidence should stay visible in the public claim workflow.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep validation and status-report tests current so unknown or missing evidence remains visible.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/specs/user/proof-debt.spec.md:14
 
 ##### claim-docs-specs-user-proof-debt-spec-md-7
 
 - Summary: Cautilus makes proof debt visible so maintainers can decide whether to add deterministic proof, plan evals, align docs, split broad claims, or defer work.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep status-report proof-debt buckets current when changing claim status summaries or review result application.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -997,7 +992,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/index.spec.md:25
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (2)
+#### Deterministic gate / ready-to-verify / evidence satisfied (3)
 
 ##### claim-docs-cli-reference-md-256
 
@@ -1012,6 +1007,20 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/cli-reference.md:256
+
+##### claim-docs-specs-user-reviewable-artifacts-spec-md-13
+
+- Summary: Report views should make stale, blocked, or missing evidence visible.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep status-report stale/currentness and proof-debt visibility tests current.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/specs/user/reviewable-artifacts.spec.md:13
 
 ##### claim-readme-md-166
 
@@ -1073,7 +1082,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/cli-reference.md:180
 
-#### Human-auditable / ready-to-verify / evidence unknown (2)
+#### Human-auditable / ready-to-verify / evidence unknown (1)
 
 ##### claim-docs-specs-user-claim-discovery-spec-md-16
 
@@ -1088,20 +1097,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/claim-discovery.spec.md:16
-
-##### claim-docs-specs-user-reviewable-artifacts-spec-md-13
-
-- Summary: Report views should make stale, blocked, or missing evidence visible.
-- Current labels: audience=user; proof=human-auditable; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/specs/user/reviewable-artifacts.spec.md:13
 
 ### Quality gates (7)
 

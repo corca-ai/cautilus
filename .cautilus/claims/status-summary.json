@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 229
+          "unknown": 226
         },
         "byReviewStatus": {
-          "heuristic": 229
+          "heuristic": 226
         },
-        "count": 229,
+        "count": 226,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 50
+          "satisfied": 53
         },
         "byReviewStatus": {
-          "agent-reviewed": 50
+          "agent-reviewed": 53
         },
-        "count": 50,
+        "count": 53,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 70
+          "unknown": 69
         },
         "byReviewStatus": {
           "agent-reviewed": 6,
-          "heuristic": 61,
+          "heuristic": 60,
           "human-reviewed": 3
         },
-        "count": 70,
+        "count": 69,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -64,13 +64,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 114
+          "unknown": 113
         },
         "byReviewStatus": {
           "agent-reviewed": 1,
-          "heuristic": 113
+          "heuristic": 112
         },
-        "count": 114,
+        "count": 113,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -123,20 +123,20 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 22
+          "unknown": 21
         },
         "byReviewStatus": {
-          "heuristic": 22
+          "heuristic": 21
         },
-        "count": 22,
+        "count": 21,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-75",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
           "claim-docs-contracts-claim-discovery-workflow-md-92",
           "claim-docs-contracts-claim-discovery-workflow-md-181",
-          "claim-docs-contracts-claim-discovery-workflow-md-254"
+          "claim-docs-contracts-claim-discovery-workflow-md-254",
+          "claim-docs-contracts-claim-discovery-workflow-md-320"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
       },
@@ -195,20 +195,20 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 50,
-      "unknown": 262
+      "satisfied": 53,
+      "unknown": 259
     },
     "byLifecycle": {
       "new": 312
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 119,
-      "human-auditable": 70
+      "cautilus-eval": 122,
+      "deterministic": 121,
+      "human-auditable": 69
     },
     "byReviewStatus": {
-      "agent-reviewed": 80,
-      "heuristic": 229,
+      "agent-reviewed": 83,
+      "heuristic": 226,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 50,
+    "satisfiedClaimCount": 53,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1158,6 +1158,27 @@
         "summary": "Cautilus requires specdown for public executable claim documentation."
       },
       {
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:f8a1e95bf04487ce52b273596a9bf061759370a57087184431ecdc845d7a1b6e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+              "claim-docs-specs-user-proof-debt-spec-md-7",
+              "claim-docs-specs-user-proof-debt-spec-md-14"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Report views should make stale, blocked, or missing evidence visible."
+      },
+      {
         "claimId": "claim-docs-contracts-active-run-md-3",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1331,6 +1352,48 @@
         "summary": "Proof class must remain visible in downstream summaries and reports."
       },
       {
+        "claimId": "claim-docs-specs-user-proof-debt-spec-md-7",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:f8a1e95bf04487ce52b273596a9bf061759370a57087184431ecdc845d7a1b6e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+              "claim-docs-specs-user-proof-debt-spec-md-7",
+              "claim-docs-specs-user-proof-debt-spec-md-14"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Cautilus makes proof debt visible so maintainers can decide whether to add deterministic proof, plan evals, align docs, split broad claims, or defer work."
+      },
+      {
+        "claimId": "claim-docs-specs-user-proof-debt-spec-md-14",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:f8a1e95bf04487ce52b273596a9bf061759370a57087184431ecdc845d7a1b6e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+              "claim-docs-specs-user-proof-debt-spec-md-7",
+              "claim-docs-specs-user-proof-debt-spec-md-14"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Unknown or missing evidence should stay visible in the public claim workflow."
+      },
+      {
         "claimId": "claim-skills-cautilus-skill-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1353,8 +1416,26 @@
   },
   "gitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 17,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/refresh-plan-after-future-proof-placeholder-filter.json",
+      ".cautilus/claims/status-summary.json",
+      ".cautilus/claims/validation-evidenced-typed-runners.json",
+      "charness-artifacts/debug/debug-2026-05-03-claim-discovery-engine-freshness.md",
+      "charness-artifacts/debug/debug-2026-05-03-status-report-max-lines.md",
+      "charness-artifacts/debug/latest.md",
+      "internal/runtime/claim_discovery.go",
+      "internal/runtime/claim_discovery_test.go",
+      "scripts/agent-runtime/claim-status-refresh-currentness.mjs",
+      "scripts/agent-runtime/claim-status-refresh-plans.mjs",
+      "scripts/agent-runtime/render-claim-status-report.mjs",
+      "scripts/agent-runtime/render-claim-status-report.test.mjs"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -1362,12 +1443,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "20217811435ce1e7b0cf29bb9f815f14afc40ff0",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -1390,7 +1471,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 201,
+    "heuristicClaimsReadyForReview": 198,
     "needsAlignment": 31,
     "needsScenario": 8
   },

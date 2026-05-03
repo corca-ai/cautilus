@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-reviewable-proof-debt-reports",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+          "claimFingerprint": "sha256:0e02ed9d14628673771e5a239e29ab5700fdb3d69a30870125e9d81f77f86590",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by status-report tests covering stale refresh-plan handling, action buckets, validation summaries, and unknown evidence visibility.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:f8a1e95bf04487ce52b273596a9bf061759370a57087184431ecdc845d7a1b6e",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+                "claim-docs-specs-user-proof-debt-spec-md-7",
+                "claim-docs-specs-user-proof-debt-spec-md-14"
+              ]
+            }
+          ],
+          "nextAction": "Keep status-report stale/currentness and proof-debt visibility tests current.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-proof-debt-spec-md-7",
+          "claimFingerprint": "sha256:16155d7a86d2048fb6bca84210717dc0ca9c5396495dbad3a301c83c5f749273",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the claim status report tests and current dogfood status packet: proof debt is surfaced by evidence status, action buckets, validation reports, eval plans, and refresh summaries.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:f8a1e95bf04487ce52b273596a9bf061759370a57087184431ecdc845d7a1b6e",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+                "claim-docs-specs-user-proof-debt-spec-md-7",
+                "claim-docs-specs-user-proof-debt-spec-md-14"
+              ]
+            }
+          ],
+          "nextAction": "Keep status-report proof-debt buckets current when changing claim status summaries or review result application.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-proof-debt-spec-md-14",
+          "claimFingerprint": "sha256:a541795d739f3f1195e1a52ac1f6d16a18146c7bd0a2fa85cd1881c6559d4cdb",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the public claim status workflow: current packets and reports keep unknown evidence counts and action buckets visible instead of treating review comments as proof.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:f8a1e95bf04487ce52b273596a9bf061759370a57087184431ecdc845d7a1b6e",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+                "claim-docs-specs-user-proof-debt-spec-md-7",
+                "claim-docs-specs-user-proof-debt-spec-md-14"
+              ]
+            }
+          ],
+          "nextAction": "Keep validation and status-report tests current so unknown or missing evidence remains visible.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

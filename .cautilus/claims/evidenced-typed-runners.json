@@ -3408,18 +3408,31 @@
       "claimFingerprint": "sha256:0e02ed9d14628673771e5a239e29ab5700fdb3d69a30870125e9d81f77f86590",
       "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:f8a1e95bf04487ce52b273596a9bf061759370a57087184431ecdc845d7a1b6e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+            "claim-docs-specs-user-proof-debt-spec-md-7",
+            "claim-docs-specs-user-proof-debt-spec-md-14"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by status-report tests covering stale refresh-plan handling, action buckets, validation summaries, and unknown evidence visibility.",
       "groupHints": [
         "audience:user",
-        "human-auditable",
+        "deterministic",
         "linked-from:README.md",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
+      "nextAction": "Keep status-report stale/currentness and proof-debt visibility tests current.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Report views should make stale, blocked, or missing evidence visible.",
@@ -3428,6 +3441,7 @@
         }
       ],
       "summary": "Report views should make stale, blocked, or missing evidence visible.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
@@ -8847,8 +8861,21 @@
       "claimFingerprint": "sha256:16155d7a86d2048fb6bca84210717dc0ca9c5396495dbad3a301c83c5f749273",
       "claimId": "claim-docs-specs-user-proof-debt-spec-md-7",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:f8a1e95bf04487ce52b273596a9bf061759370a57087184431ecdc845d7a1b6e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+            "claim-docs-specs-user-proof-debt-spec-md-7",
+            "claim-docs-specs-user-proof-debt-spec-md-14"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the claim status report tests and current dogfood status packet: proof debt is surfaced by evidence status, action buckets, validation reports, eval plans, and refresh summaries.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -8856,9 +8883,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep status-report proof-debt buckets current when changing claim status summaries or review result application.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Cautilus makes proof debt visible so maintainers can decide whether to add deterministic proof, plan evals, align docs, split broad claims, or defer work.",
@@ -8867,6 +8894,7 @@
         }
       ],
       "summary": "Cautilus makes proof debt visible so maintainers can decide whether to add deterministic proof, plan evals, align docs, split broad claims, or defer work.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -8876,20 +8904,32 @@
       "claimFingerprint": "sha256:a541795d739f3f1195e1a52ac1f6d16a18146c7bd0a2fa85cd1881c6559d4cdb",
       "claimId": "claim-docs-specs-user-proof-debt-spec-md-14",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:f8a1e95bf04487ce52b273596a9bf061759370a57087184431ecdc845d7a1b6e",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+            "claim-docs-specs-user-proof-debt-spec-md-7",
+            "claim-docs-specs-user-proof-debt-spec-md-14"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the public claim status workflow: current packets and reports keep unknown evidence counts and action buckets visible instead of treating review comments as proof.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "dev/repo",
         "linked-from:docs/specs/user/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Keep validation and status-report tests current so unknown or missing evidence remains visible.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Unknown or missing evidence should stay visible in the public claim workflow.",
@@ -8898,6 +8938,7 @@
         }
       ],
       "summary": "Unknown or missing evidence should stay visible in the public claim workflow.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -10054,20 +10095,20 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 50,
-      "unknown": 262
+      "satisfied": 53,
+      "unknown": 259
     },
     "byLifecycle": {
       "new": 312
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 119,
-      "human-auditable": 70
+      "cautilus-eval": 122,
+      "deterministic": 121,
+      "human-auditable": 69
     },
     "byReviewStatus": {
-      "agent-reviewed": 80,
-      "heuristic": 229,
+      "agent-reviewed": 83,
+      "heuristic": 226,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {

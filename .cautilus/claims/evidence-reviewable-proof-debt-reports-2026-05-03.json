@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-reviewable-proof-debt-reports-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-specs-user-reviewable-artifacts-spec-md-13",
+    "claim-docs-specs-user-proof-debt-spec-md-7",
+    "claim-docs-specs-user-proof-debt-spec-md-14"
+  ],
+  "repoCommit": "20217811435ce1e7b0cf29bb9f815f14afc40ff0",
+  "summary": "This bundle records deterministic proof that Cautilus report views make stale, blocked, and missing evidence visible, and that the public claim workflow keeps proof debt visible.",
+  "evidenceScope": {
+    "targetSurface": "claim status Markdown report and browser review surface",
+    "claimBoundary": "Only stale/blocked/missing-evidence visibility in claim status reports and public proof-debt visibility are marked satisfied.",
+    "notClaimed": [
+      "Every future report renderer has feature parity",
+      "Every HTML artifact family in Cautilus is covered by this bundle",
+      "All Cautilus readable views are packet-backed",
+      "All Markdown and HTML views explain the same state",
+      "Human review comments prove behavior claims",
+      "Unknown claims are resolved by the report itself"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/render-claim-status-report.test.mjs scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 10,
+        "pass": 10,
+        "protectedBehaviors": [
+          "claim status Markdown is a human-readable projection over current JSON packets",
+          "status report tells readers to use JSON packets as the audit source",
+          "scoreboard, action buckets, validation, eval plans, and refresh plans make proof debt and stale state visible",
+          "refresh-plan actions are treated as historical after the selected claim packet has been regenerated",
+          "browser review server renders Markdown sections without mutating the source report",
+          "browser review comments are saved to a separate JSON packet",
+          "stale saved comments are ignored when the report fingerprint changes"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "kind": "status-report-tests",
+      "contentHash": "sha256:5e2ac3dcdee47aef20cc6a22f73e54a87caa1ccb5249bff8c53df6e97d60b3e9"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.mjs",
+      "kind": "status-report-renderer",
+      "contentHash": "sha256:7dd58b5da7ea39c23551af30e2fdb9603829f3824475d98d2655b550c8cfd244"
+    },
+    {
+      "path": "scripts/agent-runtime/claim-status-refresh-plans.mjs",
+      "kind": "refresh-plan-report-currentness",
+      "contentHash": "sha256:61becc228b50b2f6c9f1db3149e5c9030a3adc8b506c42cb2a88490e4d0d42e3"
+    },
+    {
+      "path": "scripts/agent-runtime/claim-status-refresh-currentness.mjs",
+      "kind": "refresh-plan-currentness-helper",
+      "contentHash": "sha256:1ceb38e5a8253a9ab3c40bf9ce3812dc59575cda7a0e2c6aa3552c820851c187"
+    },
+    {
+      "path": "scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "kind": "browser-review-tests",
+      "contentHash": "sha256:1f367cab721891ed5079b6ad6c1580674e8ebf900fa9505788a8d0fb66ac807a"
+    },
+    {
+      "path": "scripts/agent-runtime/serve-claim-status-review.mjs",
+      "kind": "browser-review-server",
+      "contentHash": "sha256:dc1f97602b86eb147b8069ec3c07d1ec3925e2de95d8fce7e6a874f7bbe18739"
+    },
+    {
+      "path": "scripts/agent-runtime/claim-status-review-page.mjs",
+      "kind": "browser-review-page",
+      "contentHash": "sha256:8fb8b14e14dc1117e48f6183bf922d9c03cfbbdd70043f639bfa005fbf3e219e"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused status-report and browser-review tests prove packet-backed readable views, separate comment packets, stale comment rejection, visible proof-debt buckets, validation summaries, and refresh-plan currentness."
+  }
+}
