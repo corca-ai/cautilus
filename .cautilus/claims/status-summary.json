@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 121
+          "satisfied": 122
         },
         "byReviewStatus": {
-          "agent-reviewed": 121
+          "agent-reviewed": 122
         },
-        "count": 121,
+        "count": 122,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,13 +43,12 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 22
+          "unknown": 21
         },
         "byReviewStatus": {
-          "agent-reviewed": 1,
           "heuristic": 21
         },
-        "count": 22,
+        "count": 21,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -194,8 +193,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 121,
-      "unknown": 202
+      "satisfied": 122,
+      "unknown": 201
     },
     "byLifecycle": {
       "new": 323
@@ -380,7 +379,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 121,
+    "satisfiedClaimCount": 122,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -2688,6 +2687,25 @@
         "summary": "Those helpers should sit between source-port ingestion and proposal packet generation."
       },
       {
+        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:eddc88e932569dd0e82b2ea18d72536832f44e421f660b2596f9b266717e2347",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-scenario-proposal-portable-provenance-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-scenario-proposal-sources-md-152"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product."
+      },
+      {
         "claimId": "claim-docs-contracts-scenario-proposal-sources-md-235",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2746,7 +2764,7 @@
       }
     ]
   },
-  "gitCommit": "1a983fdbc81de89c22215fea806fd612ce8a51a9",
+  "gitCommit": "6dd5ea175a7216e68b9e31cec4f9407ccfb9e598",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -2758,10 +2776,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "1a983fdbc81de89c22215fea806fd612ce8a51a9",
+    "currentGitCommit": "6dd5ea175a7216e68b9e31cec4f9407ccfb9e598",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "1a983fdbc81de89c22215fea806fd612ce8a51a9",
+    "packetGitCommit": "6dd5ea175a7216e68b9e31cec4f9407ccfb9e598",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-scenario-proposal-portable-provenance-2026-05-04",
+  "createdForClaimIds": [
+    "claim-docs-contracts-scenario-proposal-sources-md-152"
+  ],
+  "repoCommit": "6dd5ea175a7216e68b9e31cec4f9407ccfb9e598",
+  "summary": "This bundle records deterministic proof that scenario proposal evidence preserves portable source provenance without requiring host-specific storage fields.",
+  "evidenceScope": {
+    "targetSurface": "scenario proposal input and output evidence schema",
+    "claimBoundary": "Only the portable provenance shape for scenario proposal evidence is marked satisfied. This does not prove proposal mining quality, host log ingestion, or every future source kind.",
+    "notClaimed": [
+      "Host repos can ingest every raw storage layout without adapters",
+      "Scenario proposals are semantically good for every source packet",
+      "The bundled skill always selects the best scenario proposal workflow"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test scripts/agent-runtime/scenario-proposal-schemas.test.mjs scripts/agent-runtime/scenario-proposals.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 10,
+        "pass": 10,
+        "protectedBehaviors": [
+          "scenario proposal input and output schemas accept generated fixtures",
+          "evidence sourceKind is bounded to portable source ports",
+          "evidence schema requires only sourceKind, title, and observedAt as portable provenance fields",
+          "host-specific path and storage fields are not required by the evidence schema",
+          "generated proposal packets preserve evidence while ranking and merging candidates"
+        ]
+      }
+    },
+    {
+      "command": "npm run verify",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "note": "Full repo verification passed after the scenario proposal evidence schema and test changes."
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "fixtures/scenario-proposals/input.schema.json",
+      "kind": "scenario-proposal-input-schema",
+      "contentHash": "sha256:d5d52f34cc561559261458807313f7c66ee7fa4d8f335018ca34f757472ab0ee"
+    },
+    {
+      "path": "fixtures/scenario-proposals/proposals.schema.json",
+      "kind": "scenario-proposal-output-schema",
+      "contentHash": "sha256:b7f88a6b178294468e3b0e864237c70a97691e92fb6a1cc032c32c831a722cc2"
+    },
+    {
+      "path": "scripts/agent-runtime/scenario-proposal-schemas.test.mjs",
+      "kind": "scenario-proposal-schema-tests",
+      "contentHash": "sha256:e9704a1aed0b68fa670555f5e4251d24d3cf242d74853a8a903f614dc0d60cf7"
+    }
+  ]
+}

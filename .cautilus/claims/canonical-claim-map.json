@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:62452cfddc4e6badd3654b1d7185dfd8f21c96ff46e0c68638b33914d32f1fe6"
+      "contentHash": "sha256:c36d05ede807ec1d7eb1ce336a91904f2d25b30fb44e35366f03871f8cce92ee"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:882064b19bb1f53a7f5d0bdbe653b53c33f2ff4ca8186e056538ca7e2eff76a8"
     }
   },
-  "claimsPacketGitCommit": "1a983fdbc81de89c22215fea806fd612ce8a51a9",
+  "claimsPacketGitCommit": "6dd5ea175a7216e68b9e31cec4f9407ccfb9e598",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 323,
   "catalogs": {
@@ -290,7 +290,7 @@
     "userRawClaimCount": 81,
     "userMappedToCanonicalCount": 81,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 262,
+    "semanticReviewRecommendedCount": 263,
     "userSemanticReviewRecommendedCount": 60,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 242,
@@ -301,9 +301,9 @@
       "user": 81
     },
     "byMappingConfidence": {
-      "high": 61,
+      "high": 60,
       "low": 65,
-      "medium": 197
+      "medium": 198
     },
     "byUserCanonicalClaimId": {
       "U1": 23,
@@ -578,6 +578,7 @@
       "claim-docs-contracts-runtime-fingerprint-optimization-md-261",
       "claim-docs-contracts-scenario-proposal-sources-md-28",
       "claim-docs-contracts-scenario-proposal-sources-md-40",
+      "claim-docs-contracts-scenario-proposal-sources-md-152",
       "claim-docs-contracts-scenario-proposal-sources-md-216",
       "claim-docs-contracts-scenario-proposal-sources-md-235",
       "claim-docs-contracts-scenario-proposal-sources-md-236",
@@ -2336,8 +2337,8 @@
         {
           "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
           "claimFingerprint": "sha256:16f88f4564c52531f8082d5bf96244f70ef8c7f96002ca5f2affbfddacea06ea",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-contracts-scenario-proposal-sources-md-216",
@@ -2347,8 +2348,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 7,
-        "unknown": 46
+        "satisfied": 8,
+        "unknown": 45
       },
       "byReviewStatus": {
         "agent-reviewed": 15,
@@ -2360,9 +2361,9 @@
         "human-auditable": 20
       },
       "byMappingConfidence": {
-        "high": 8,
+        "high": 7,
         "low": 11,
-        "medium": 34
+        "medium": 35
       }
     },
     {
@@ -15976,29 +15977,28 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:16f88f4564c52531f8082d5bf96244f70ef8c7f96002ca5f2affbfddacea06ea",
       "canonicalClaimId": "M3",
-      "score": 12,
+      "score": 11,
       "runnerUpCanonicalClaimId": "M9",
       "runnerUpScore": 7,
-      "scoreMargin": 5,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
+      "scoreMargin": 4,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
         "deterministic",
         "evidence",
-        "fixture",
         "host",
-        "host-specific",
         "model",
         "one",
         "product",
         "repo",
         "schema",
+        "test",
         "without"
       ],
       "alignedUserClaimIds": [

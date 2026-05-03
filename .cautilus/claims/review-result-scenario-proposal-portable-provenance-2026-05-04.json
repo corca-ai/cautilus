@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-scenario-proposal-portable-provenance-2026-05-04",
+    "type": "agent",
+    "reviewedAt": "2026-05-04T05:42:00+09:00",
+    "evidencePolicy": "Mark a claim satisfied only when deterministic schema tests and checked-in schema files directly prove the narrow packet contract."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-scenario-proposal-portable-provenance",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
+          "claimFingerprint": "sha256:16f88f4564c52531f8082d5bf96244f70ef8c7f96002ca5f2affbfddacea06ea",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by scenario proposal input/output schemas and schema tests that bound evidence sourceKind to portable source ports while requiring only sourceKind, title, and observedAt as provenance fields, with no required host storage path fields.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-scenario-proposal-portable-provenance-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:eddc88e932569dd0e82b2ea18d72536832f44e421f660b2596f9b266717e2347",
+              "supportsClaimIds": [
+                "claim-docs-contracts-scenario-proposal-sources-md-152"
+              ]
+            }
+          ],
+          "nextAction": "Keep scenario proposal evidence sourceKind enum and host-storage non-requirement tests in place when changing proposal schemas.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
