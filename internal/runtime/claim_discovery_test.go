@@ -567,6 +567,14 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
 		"",
+		"Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
+		"",
+		"The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.",
+		"",
+		"Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.",
+		"",
+		"The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests.",
+		"",
 		"The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer.",
 		"",
 		"Before running a first broad scan, the skill should say which entries and depth it will use.",
@@ -579,6 +587,14 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"- Should `run.json` carry workflow metadata so HTML views can present richer summaries?",
 		"- Is `review variants` a workflow-creating command that mints runDirs?",
+		"",
+		"Whether Cautilus emits durable packet state is recorded as a deterministic command contract.",
+		"",
+		"## Deferred Decisions",
+		"",
+		"- Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
+		"1. Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.",
+		"> Whether adapter configuration should support non-Markdown truth surfaces beyond explicit `--source` paths in the next slice.",
 		"> Does this repo have a headless runner for selected behavior?",
 		"",
 	}, "\n"))
@@ -600,6 +616,9 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	for _, question := range []string{
 		"Should `run.json` carry workflow metadata so HTML views can present richer summaries?",
 		"Is `review variants` a workflow-creating command that mints runDirs?",
+		"Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
+		"Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.",
+		"Whether adapter configuration should support non-Markdown truth surfaces beyond explicit `--source` paths in the next slice.",
 		"Does this repo have a headless runner for selected behavior?",
 	} {
 		if bySummary[question] != nil {
@@ -841,6 +860,26 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	reviewPrepare := bySummary["`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."]
 	if reviewPrepare == nil || reviewPrepare["recommendedProof"] != "deterministic" || reviewPrepare["verificationReadiness"] != "ready-to-verify" {
 		t.Fatalf("expected claim review prepare-input packet contract to be deterministic, got %#v", reviewPrepare)
+	}
+	broadDirective := bySummary["Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims."]
+	if broadDirective == nil || broadDirective["recommendedProof"] != "human-auditable" || broadDirective["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected explicit blocked human-auditable directive to outrank deterministic tokens, got %#v", broadDirective)
+	}
+	visibleButNotFixture := bySummary["The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise."]
+	if visibleButNotFixture == nil || visibleButNotFixture["recommendedProof"] != "human-auditable" || visibleButNotFixture["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected visible-but-not-fixture policy to stay blocked, got %#v", visibleButNotFixture)
+	}
+	ownershipDirective := bySummary["Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled."]
+	if ownershipDirective == nil || ownershipDirective["recommendedProof"] != "human-auditable" || ownershipDirective["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected explicit needs-alignment directive to outrank deterministic tokens, got %#v", ownershipDirective)
+	}
+	reusableBehaviorOwnership := bySummary["The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests."]
+	if reusableBehaviorOwnership == nil || reusableBehaviorOwnership["recommendedProof"] != "human-auditable" || reusableBehaviorOwnership["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected reusable behavior ownership claim to require alignment, got %#v", reusableBehaviorOwnership)
+	}
+	whetherClaim := bySummary["Whether Cautilus emits durable packet state is recorded as a deterministic command contract."]
+	if whetherClaim == nil || whetherClaim["recommendedProof"] != "deterministic" || whetherClaim["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected non-deferred whether claim to remain discoverable, got %#v", whetherClaim)
 	}
 	skillBranch := bySummary["The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer."]
 	if skillBranch == nil || skillBranch["recommendedProof"] != "cautilus-eval" || skillBranch["recommendedEvalSurface"] != "dev/skill" {

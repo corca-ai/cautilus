@@ -1,9 +1,9 @@
 {
-  "candidateCount": 325,
+  "candidateCount": 323,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 324,
+    "matchedClaimCount": 323,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 0,
@@ -4723,13 +4723,14 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
+        "blocked",
         "contract",
-        "deterministic",
+        "human-auditable",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Keep this visible as human-auditable context, then split or promote concrete subclaims before attaching proof.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -4739,8 +4740,8 @@
         }
       ],
       "summary": "Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim explicitly says this surface is human-auditable context until it is split or promoted into concrete proof."
     },
     {
       "claimAudience": "developer",
@@ -4752,12 +4753,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
+        "blocked",
         "contract",
         "human-auditable",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "nextAction": "Keep this as packet-policy context or split concrete visibility and fixture-planning behavior before attaching proof.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -4768,8 +4770,8 @@
         }
       ],
       "summary": "The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim describes visibility and fixture-planning policy for a broader claim, not a standalone proof target."
     },
     {
       "claimAudience": "developer",
@@ -4782,12 +4784,13 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Reconcile the named docs, code, adapter, skill, or test surfaces before treating this as a proof target.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -4797,8 +4800,8 @@
         }
       ],
       "summary": "Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim explicitly says this surface needs alignment before proof would be honest."
     },
     {
       "claimAudience": "developer",
@@ -4839,14 +4842,14 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
+        "blocked",
         "contract",
-        "linked-from:docs/master-plan.md",
-        "needs-scenario"
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep this visible as human-auditable context, then split or promote concrete subclaims before attaching proof.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -4856,8 +4859,8 @@
         }
       ],
       "summary": "Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim explicitly says this surface is human-auditable context until it is split or promoted into concrete proof."
     },
     {
       "claimAudience": "developer",
@@ -5883,66 +5886,6 @@
       "summary": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:c0c7d0f38d477c81974441fe12254d670a3a1fc6fb362622769dc305a89dcb8f",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-612",
-      "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
-          "line": 612,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "summary": "Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:6fd233d3ffafd0f2392f61109f17dd94ba308f158d01a415610d25adf4e7c2cd",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-613",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "dev/repo",
-        "linked-from:docs/master-plan.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.",
-          "line": 613,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "summary": "Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -7992,12 +7935,13 @@
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
-        "linked-from:docs/master-plan.md"
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Reconcile the matching skill guidance, code paths, adapter contracts, packets, and tests before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -8007,8 +7951,8 @@
         }
       ],
       "summary": "The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes where reusable behavior should live across skill, code, adapters, packets, and tests, so it needs boundary alignment before proof."
     },
     {
       "claimAudience": "developer",
@@ -11351,46 +11295,46 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 244,
+      "developer": 242,
       "user": 81
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 58,
       "Agent and skill workflow": 73,
       "Claim discovery and review": 22,
-      "Documentation and contracts": 73,
+      "Documentation and contracts": 72,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
-      "Packets and reporting": 47,
+      "Packets and reporting": 46,
       "Quality gates": 28,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 121,
-      "unknown": 204
+      "unknown": 202
     },
     "byLifecycle": {
-      "new": 325
+      "new": 323
     },
     "byRecommendedProof": {
-      "cautilus-eval": 101,
-      "deterministic": 135,
-      "human-auditable": 89
+      "cautilus-eval": 99,
+      "deterministic": 131,
+      "human-auditable": 93
     },
     "byReviewStatus": {
       "agent-reviewed": 168,
-      "heuristic": 157
+      "heuristic": 155
     },
     "byVerificationReadiness": {
-      "blocked": 31,
-      "needs-alignment": 39,
-      "needs-scenario": 10,
-      "ready-to-verify": 245
+      "blocked": 34,
+      "needs-alignment": 41,
+      "needs-scenario": 9,
+      "ready-to-verify": 239
     }
   },
   "discoveryEngine": {
-    "implementationHash": "sha256:18a986743bb0f13a92d4ba95eb5dca33cfbfca6917568af95e05d6542a1103fd",
+    "implementationHash": "sha256:7d6c46eace33309b55e09ecb7160f79a8d83f20e7260c4bed0e6d8c8be50e138",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v4"
@@ -11545,7 +11489,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "0f605d6f678aadaa18cf82f8c44d07cb14119fea",
+  "gitCommit": "1a983fdbc81de89c22215fea806fd612ce8a51a9",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {

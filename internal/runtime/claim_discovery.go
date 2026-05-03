@@ -101,8 +101,9 @@ type claimExtraction struct {
 }
 
 type claimTextBlock struct {
-	line int
-	text string
+	line    int
+	text    string
+	heading string
 }
 
 type claimClassification struct {
@@ -965,7 +966,7 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int, config c
 	}
 	candidates := make([]claimCandidate, 0)
 	for _, block := range claimTextBlocks(string(content)) {
-		if !claimLineLooksUseful(block.text) {
+		if !claimLineLooksUseful(block.text, block.heading) {
 			continue
 		}
 		classification, ok := classifyClaimLine(block.text)
@@ -1011,13 +1012,15 @@ func claimTextBlocks(content string) []claimTextBlock {
 	startLine := 0
 	inFence := false
 	inFrontmatter := false
+	currentHeading := ""
 	flush := func() {
 		if len(buffer) == 0 {
 			return
 		}
 		blocks = append(blocks, claimTextBlock{
-			line: startLine,
-			text: strings.Join(buffer, " "),
+			line:    startLine,
+			text:    strings.Join(buffer, " "),
+			heading: currentHeading,
 		})
 		buffer = []string{}
 		startLine = 0
@@ -1047,6 +1050,10 @@ func claimTextBlocks(content string) []claimTextBlock {
 			flush()
 			continue
 		}
+		if strings.HasPrefix(trimmed, "#") {
+			flush()
+			currentHeading = normalizeMarkdownHeading(trimmed)
+		}
 		if startsNewClaimBlock(trimmed) || previousLineEndsClaimBlock(buffer) {
 			flush()
 		}
@@ -1057,6 +1064,10 @@ func claimTextBlocks(content string) []claimTextBlock {
 	}
 	flush()
 	return blocks
+}
+
+func normalizeMarkdownHeading(line string) string {
+	return strings.TrimSpace(strings.TrimLeft(strings.TrimSpace(line), "#"))
 }
 
 func startsNewClaimBlock(line string) bool {
@@ -1074,7 +1085,7 @@ func previousLineEndsClaimBlock(buffer []string) bool {
 	return strings.HasSuffix(previous, ".") || strings.HasSuffix(previous, "?") || strings.HasSuffix(previous, "!")
 }
 
-func claimLineLooksUseful(line string) bool {
+func claimLineLooksUseful(line string, heading string) bool {
 	if line == "" || strings.HasPrefix(line, "|") || strings.HasPrefix(line, "---") {
 		return false
 	}
@@ -1083,6 +1094,9 @@ func claimLineLooksUseful(line string) bool {
 		return false
 	}
 	if claimLineLooksLikeOpenQuestion(normalized) {
+		return false
+	}
+	if claimLineLooksLikeDeferredDecision(normalized, heading) {
 		return false
 	}
 	if claimLineLooksLikeDefinitionLabel(normalized) {
@@ -1158,9 +1172,41 @@ func claimLineLooksLikeOpenQuestion(summary string) bool {
 	})
 }
 
+func claimLineLooksLikeDeferredDecision(summary string, heading string) bool {
+	if !strings.EqualFold(strings.TrimSpace(heading), "Deferred Decisions") {
+		return false
+	}
+	trimmed := strings.TrimSpace(summary)
+	trimmed = strings.TrimPrefix(trimmed, ">")
+	trimmed = strings.TrimSpace(trimmed)
+	trimmed = strings.TrimPrefix(trimmed, "- ")
+	trimmed = strings.TrimPrefix(trimmed, "* ")
+	trimmed = strings.TrimSpace(trimmed)
+	trimmed = regexp.MustCompile(`^\d+\.\s+`).ReplaceAllString(trimmed, "")
+	trimmed = strings.TrimPrefix(trimmed, "[ ] ")
+	trimmed = strings.TrimPrefix(trimmed, "[x] ")
+	trimmed = strings.TrimSpace(trimmed)
+	return strings.HasPrefix(strings.ToLower(trimmed), "whether ")
+}
+
 func classifyClaimLine(line string) (claimClassification, bool) {
 	lower := " " + strings.ToLower(line) + " "
 	switch {
+	case explicitHumanAuditableReadinessDirective(lower):
+		readiness := "blocked"
+		why := "The claim explicitly says this surface is human-auditable context until it is split or promoted into concrete proof."
+		next := "Keep this visible as human-auditable context, then split or promote concrete subclaims before attaching proof."
+		if containsAny(lower, []string{"needs-alignment", "need alignment", "needs alignment"}) {
+			readiness = "needs-alignment"
+			why = "The claim explicitly says this surface needs alignment before proof would be honest."
+			next = "Reconcile the named docs, code, adapter, skill, or test surfaces before treating this as a proof target."
+		}
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: readiness,
+			why:                   why,
+			next:                  next,
+		}, true
 	case providerCaveatClaim(lower):
 		return claimClassification{
 			recommendedProof:      "human-auditable",
@@ -1196,6 +1242,20 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "needs-alignment",
 			why:                   "The claim explains a design rationale; proof needs aligned examples or narrower subclaims rather than a single deterministic assertion.",
 			next:                  "Keep this as rationale, or decompose it into concrete adapter, docs, and test surfaces before attaching proof.",
+		}, true
+	case metaVisibleButNotFixtureClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "blocked",
+			why:                   "The claim describes visibility and fixture-planning policy for a broader claim, not a standalone proof target.",
+			next:                  "Keep this as packet-policy context or split concrete visibility and fixture-planning behavior before attaching proof.",
+		}, true
+	case reusableBehaviorOwnershipClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "needs-alignment",
+			why:                   "The claim describes where reusable behavior should live across skill, code, adapters, packets, and tests, so it needs boundary alignment before proof.",
+			next:                  "Reconcile the matching skill guidance, code paths, adapter contracts, packets, and tests before treating this as satisfied.",
 		}, true
 	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " executable test", " executable check", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
 		return claimClassification{
@@ -1360,8 +1420,14 @@ func operatorPolicyClaim(lower string) bool {
 		containsAny(lower, []string{" routes ", " route ", " through debug", " debug"})
 }
 
+func explicitHumanAuditableReadinessDirective(lower string) bool {
+	return containsAny(lower, []string{"should stay", "should remain", "remain visible", "should not become"}) &&
+		containsAny(lower, []string{"human-auditable", "human auditable"}) &&
+		containsAny(lower, []string{"blocked", "needs-alignment", "need alignment", "needs alignment", "decomposed", "split", "promoted"})
+}
+
 func ownershipBoundaryClaim(lower string) bool {
-	if containsAny(lower, []string{" belongs in adapters", " belongs in adapter", " belongs in installed skill metadata", " belongs in skill metadata", " host-specific behavior belongs"}) {
+	if containsAny(lower, []string{" belongs in adapters", " belongs in adapter", " belongs in code, adapters", " reusable deterministic behavior belongs", " belongs in installed skill metadata", " belongs in skill metadata", " host-specific behavior belongs"}) {
 		return true
 	}
 	return containsAny(lower, []string{" product-owned", " adapter-owned", " host-owned", " repo-owned", " consumer-owned", " backend selection", " boundary", " skill owns", " binary owns", " cautilus owns", " host still owns", " seam owns"}) &&
@@ -1410,6 +1476,17 @@ func designRationaleClaim(lower string) bool {
 	return strings.HasPrefix(trimmed, "this keeps ") &&
 		strings.Contains(trimmed, " from ") &&
 		containsAny(trimmed, []string{" collapsing ", " drifting ", " becoming ", " turning into ", " depending on "})
+}
+
+func metaVisibleButNotFixtureClaim(lower string) bool {
+	return containsAny(lower, []string{" should remain visible", " remain visible "}) &&
+		containsAny(lower, []string{" should not become", " not become "}) &&
+		containsAny(lower, []string{" fixture plan", " eval target", " proof target"})
+}
+
+func reusableBehaviorOwnershipClaim(lower string) bool {
+	return containsAny(lower, []string{" reusable deterministic behavior belongs", " belongs in code, adapters"}) &&
+		containsAny(lower, []string{" skill", " code", " adapter", " adapters", " packet", " packets", " tests"})
 }
 
 func broadPositioningClaim(lower string) bool {
