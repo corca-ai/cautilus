@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark the guide's deterministic artifact handoff claims satisfied; do not infer external executor availability or reviewer quality."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-evaluation-process-artifacts",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-52",
+          "claimFingerprint": "sha256:2e44beec35c85dd627fae37b0b475d42f08d844df9e71ad828bfc0d581aa36e4",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names machine-readable compare-worktree path output, which is deterministic command behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by prepare-compare tests: the helper emits JSON containing outputDir, baseline.path, and candidate.path, and those paths point at the materialized worktrees.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:cba79b585c33674af91b679ee65bc005d3be0235d6e1a9603a7df8848327bae3",
+              "supportsClaimIds": [
+                "claim-docs-guides-evaluation-process-md-52"
+              ]
+            }
+          ],
+          "nextAction": "Keep prepare-compare output-path tests current when changing active-run, worktree, or compare workspace behavior.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-289",
+          "claimFingerprint": "sha256:ac0749ddbadbea1b37adc45edffbb9643b37e248147a2fe5097cf8abbf9577ee",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names schema/output-file driven executor variant behavior that can be proven with CLI smoke tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by review-variants CLI tests: executor templates receive output/schema files, default schema files can flow from review prompt input, and pass, concern, blocked, and failed outcomes are classified as structured packets.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:cba79b585c33674af91b679ee65bc005d3be0235d6e1a9603a7df8848327bae3",
+              "supportsClaimIds": [
+                "claim-docs-guides-evaluation-process-md-289"
+              ]
+            }
+          ],
+          "nextAction": "Keep review-variant schema/output-file tests current when changing executor template substitution or verdict classification.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

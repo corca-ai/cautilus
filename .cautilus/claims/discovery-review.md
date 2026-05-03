@@ -722,7 +722,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/proof-debt.spec.md:14
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (6)
+#### Deterministic gate / ready-to-verify / evidence satisfied (7)
 
 ##### claim-docs-cli-reference-md-110
 
@@ -794,6 +794,20 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/cli-reference.md:431
 
+##### claim-docs-guides-evaluation-process-md-289
+
+- Summary: Use a checked-in JSON schema file and a fixed output file path so the loop can detect `blocker`, `concern`, and `pass` without guessing.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep review-variant schema/output-file tests current when changing executor template substitution or verdict classification.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/guides/evaluation-process.md:289
+
 ##### claim-docs-specs-user-index-spec-md-24
 
 - Summary: Cautilus requires specdown for public executable claim documentation.
@@ -808,21 +822,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/user/index.spec.md:24
 
-#### Deterministic gate / ready-to-verify / evidence unknown (2)
-
-##### claim-docs-guides-evaluation-process-md-289
-
-- Summary: Use a checked-in JSON schema file and a fixed output file path so the loop can detect `blocker`, `concern`, and `pass` without guessing.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Attach review variant JSON schema or parser evidence.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/guides/evaluation-process.md:289
+#### Deterministic gate / ready-to-verify / evidence unknown (1)
 
 ##### claim-docs-specs-user-proof-debt-spec-md-7
 
@@ -1184,7 +1184,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/guides/evaluation-process.md:269
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (2)
+#### Deterministic gate / ready-to-verify / evidence satisfied (3)
 
 ##### claim-docs-guides-consumer-adoption-md-20
 
@@ -1214,13 +1214,11 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/guides/consumer-adoption.md:67
 
-#### Deterministic gate / ready-to-verify / evidence unknown (3)
-
 ##### claim-docs-guides-evaluation-process-md-52
 
 - Summary: The helper emits machine-readable baseline and candidate paths you can pass back into `eval test` or `review variants`.
-- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.
+- Current labels: audience=user; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep prepare-compare output-path tests current when changing active-run, worktree, or compare workspace behavior.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -1229,6 +1227,8 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/guides/evaluation-process.md:52
+
+#### Deterministic gate / ready-to-verify / evidence unknown (2)
 
 ##### claim-docs-specs-user-evaluation-spec-md-7
 

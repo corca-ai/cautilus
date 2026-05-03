@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-evaluation-process-artifacts-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-guides-evaluation-process-md-52",
+    "claim-docs-guides-evaluation-process-md-289"
+  ],
+  "repoCommit": "780188316516182763751f431049853adb019ca9",
+  "summary": "This bundle records deterministic proof for the evaluation-process guide's compare-worktree and executor-variant artifact contracts.",
+  "evidenceScope": {
+    "targetSurface": "evaluation-process artifact handoff",
+    "claimBoundary": "Only the machine-readable baseline/candidate path handoff and structured review variant schema/output-file handling are marked satisfied.",
+    "notClaimed": [
+      "Every human reviewer actually uses the emitted paths",
+      "Every external executor is available in every environment",
+      "Every possible review schema is semantically correct"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test scripts/agent-runtime/prepare-compare-worktrees.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "testCount": 6,
+        "notableAssertions": [
+          "the helper emits JSON with outputDir, baseline.path, and candidate.path",
+          "baseline and candidate worktrees contain the expected checked-out files",
+          "CAUTILUS_RUN_DIR and explicit output-dir precedence are visible in the emitted paths"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIReviewVariantsSupportsOutputUnderTest|TestCLIReviewVariantsUsesDefaultSchemaFromReviewPromptInput|TestCLIReviewVariantsClassifiesUnavailableExecutorAsBlockedPartialSuccess|TestCLIReviewVariantsReturnsFailedSummaryWhenVariantEmitsFailedPayload|TestCLIReviewVariantsPreservesConcernVerdictAndFindings' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "review variants accepts prompt/schema/output-file driven executor templates",
+          "default schema files can flow from review prompt input into variant execution",
+          "pass, concern, blocked, and failed executor outcomes are classified without prose-only guessing",
+          "successful variant outputs are lifted when a mixed executor set has partial success"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "scripts/agent-runtime/prepare-compare-worktrees.test.mjs",
+      "kind": "compare-worktree-path-test",
+      "contentHash": "sha256:ffe5966fe7240dab4c6bd5560d040b77cb9db3f9bf6032103ccd54eea7487f1c"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "review-variants-cli-test",
+      "contentHash": "sha256:7659f1b26fcd892764ad3f0687efb8087eddc4471c66475bd0faa15e57488c89"
+    },
+    {
+      "path": "docs/guides/evaluation-process.md",
+      "kind": "operator-guide-claim-source",
+      "contentHash": "sha256:0d0577a9c6f683507024c8570de6303d164b7044f81914293d3931c697888f3e"
+    },
+    {
+      "path": "fixtures/review/review-verdict.schema.json",
+      "kind": "review-verdict-schema-fixture",
+      "contentHash": "sha256:f778da536ad5c8e50ce54775ff6c4538f2972dc7cb3bad3402dca37ca959aa06"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The cited tests prove the guide's artifact handoff contract: compare worktrees emit machine-readable paths, and review variants consume schema/output-file driven executor contracts into structured pass, concern, blocked, or failed packets."
+  }
+}

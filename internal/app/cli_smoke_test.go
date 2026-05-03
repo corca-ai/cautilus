@@ -759,6 +759,76 @@ EOF
 	}
 }
 
+func TestCLIReviewVariantsPreservesConcernVerdictAndFindings(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	writeExecutableFile(t, root, "variant.sh", `#!/bin/sh
+output_file="$1"
+cat > "$output_file" <<'EOF'
+{
+  "status": "completed",
+  "verdict": "concern",
+  "summary": "The candidate is usable but still ambiguous.",
+  "findings": [
+    {"severity": "concern", "message": "Recovery wording is still ambiguous.", "path": "docs/recovery.md"}
+  ]
+}
+EOF
+`)
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.prompt.md"), []byte("review\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.schema.json"), []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	adapterText := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"default_prompt_file: fixtures/review.prompt.md",
+		"default_schema_file: fixtures/review.schema.json",
+		"executor_variants:",
+		"  - id: standalone",
+		"    tool: command",
+		"    purpose: standalone concern variant",
+		"    command_template: sh {candidate_repo}/variant.sh {output_file}",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(adapterText), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	outputDir := filepath.Join(root, "outputs")
+	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("review variants failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["status"] != "passed" {
+		t.Fatalf("expected passed execution summary, got %#v", summary["status"])
+	}
+	if summary["reviewVerdict"] != "concern" {
+		t.Fatalf("expected concern review verdict, got %#v", summary["reviewVerdict"])
+	}
+	findings := summary["humanReviewFindings"].([]any)
+	if len(findings) != 1 || findings[0].(map[string]any)["severity"] != "concern" {
+		t.Fatalf("expected concern finding, got %#v", findings)
+	}
+	variant := summary["variants"].([]any)[0].(map[string]any)
+	output := variant["output"].(map[string]any)
+	if output["verdict"] != "concern" {
+		t.Fatalf("expected variant concern output, got %#v", output)
+	}
+}
+
 func TestCLIReviewVariantsClassifiesUnavailableExecutorAsBlockedPartialSuccess(t *testing.T) {
 	root := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {

@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 239
+          "unknown": 238
         },
         "byReviewStatus": {
-          "heuristic": 239
+          "heuristic": 238
         },
-        "count": 239,
+        "count": 238,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 39
+          "satisfied": 41
         },
         "byReviewStatus": {
-          "agent-reviewed": 39
+          "agent-reviewed": 41
         },
-        "count": 39,
+        "count": 41,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 82
+          "unknown": 80
         },
         "byReviewStatus": {
-          "agent-reviewed": 10,
-          "heuristic": 69,
+          "agent-reviewed": 9,
+          "heuristic": 68,
           "human-reviewed": 3
         },
-        "count": 82,
+        "count": 80,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-contracts-adapter-contract-md-424",
           "claim-docs-gepa-md-15",
           "claim-docs-guides-consumer-adoption-md-107",
-          "claim-docs-guides-evaluation-process-md-52",
-          "claim-docs-guides-evaluation-process-md-289"
+          "claim-docs-specs-user-evaluation-spec-md-7",
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-3"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 39,
-      "unknown": 276
+      "satisfied": 41,
+      "unknown": 274
     },
     "byLifecycle": {
       "new": 315
@@ -207,8 +207,8 @@
       "human-auditable": 70
     },
     "byReviewStatus": {
-      "agent-reviewed": 73,
-      "heuristic": 239,
+      "agent-reviewed": 74,
+      "heuristic": 238,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 39,
+    "satisfiedClaimCount": 41,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -987,6 +987,25 @@
         "summary": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit."
       },
       {
+        "claimId": "claim-docs-guides-evaluation-process-md-52",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:cba79b585c33674af91b679ee65bc005d3be0235d6e1a9603a7df8848327bae3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-evaluation-process-md-52"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The helper emits machine-readable baseline and candidate paths you can pass back into `eval test` or `review variants`."
+      },
+      {
         "claimId": "claim-docs-guides-evaluation-process-md-253",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1004,6 +1023,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "When repeated workflow failures should become durable scenario coverage, prefer the checked-in `skill` normalization helper over repo-local one-off shapers:"
+      },
+      {
+        "claimId": "claim-docs-guides-evaluation-process-md-289",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:cba79b585c33674af91b679ee65bc005d3be0235d6e1a9603a7df8848327bae3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-evaluation-process-md-289"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Use a checked-in JSON schema file and a fixed output file path so the loop can detect `blocker`, `concern`, and `pass` without guessing."
       },
       {
         "claimId": "claim-docs-master-plan-md-56",
@@ -1142,8 +1180,20 @@
   },
   "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 11,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json",
+      ".cautilus/claims/status-summary.json",
+      ".cautilus/claims/validation-evidenced-typed-runners.json",
+      "internal/runtime/claim_discovery.go",
+      "internal/runtime/claim_discovery_test.go"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -1151,12 +1201,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "780188316516182763751f431049853adb019ca9",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -1179,7 +1229,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 211,
+    "heuristicClaimsReadyForReview": 210,
     "needsAlignment": 31,
     "needsScenario": 8
   },
