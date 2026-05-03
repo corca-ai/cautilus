@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the inventory and proof-routing behavior; do not treat this as proof that the binary enforces human workflow order or writes fixtures."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cli-reference-claim-discover-proof-routing",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-115",
+          "claimFingerprint": "sha256:677531528b5130a8cb2c449a6df5177abb7ee7d925262299b9123f87c1e7e60c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is deterministic claim-discovery packet behavior plus workflow guidance: the CLI either emits inventory-backed proof routing before fixture authoring or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in claim-discover CLI test and direct CLI smoke: claim discover emits a proof-plan packet with source inventory and human-auditable, deterministic, and cautilus-eval proof routes without invoking fixture writing.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8c8cf01d447044090ad5fa5c1649066cfe006963f47f1d1a5a6ff09ab6df5aa4",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-115"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing claim discovery output shape, proof routing heuristics, or fixture-authoring workflow guidance.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

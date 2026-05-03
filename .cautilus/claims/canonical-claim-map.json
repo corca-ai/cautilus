@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:e8ff7992e17a51007272366980ec9d4701ffa5aa78f63a9842de47c9d6a2fbce"
+      "contentHash": "sha256:f70fde7fea20a45d28919f5a61f5a894a6b1e741fe800c908f7bf2a01acad12b"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -755,8 +755,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 6,
-        "unknown": 16
+        "satisfied": 7,
+        "unknown": 15
       },
       "byReviewStatus": {
         "agent-reviewed": 15,
@@ -4484,30 +4484,30 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:677531528b5130a8cb2c449a6df5177abb7ee7d925262299b9123f87c1e7e60c",
       "canonicalClaimId": "U1",
-      "score": 13,
+      "score": 12,
       "runnerUpCanonicalClaimId": "U7",
-      "runnerUpScore": 12,
+      "runnerUpScore": 11,
       "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "add",
         "behavior",
         "cautilu",
-        "claim-discovery",
         "declared",
         "deterministic",
         "discover",
         "discovery",
         "eval",
+        "output",
         "proof",
         "review",
-        "whether"
+        "whether",
+        "work"
       ]
     },
     {

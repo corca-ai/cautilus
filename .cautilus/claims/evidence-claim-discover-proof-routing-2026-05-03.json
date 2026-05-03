@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-claim-discover-proof-routing-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-115"
+  ],
+  "repoCommit": "dc15550fa8b4b44bfe65724c8dff6040e9647759",
+  "summary": "This bundle records deterministic proof that `cautilus claim discover` inventories declared behavior claims and assigns proof routes before any eval fixture writer is involved.",
+  "evidenceScope": {
+    "targetSurface": "claim discovery proof planning",
+    "claimBoundary": "Only the CLI reference workflow claim that `claim discover` can be used to inventory declared behavior and route claims into proof categories before fixture authoring is marked satisfied.",
+    "notClaimed": [
+      "The binary enforces that every operator runs claim discovery before manually writing fixtures",
+      "The claim discovery command writes eval fixtures",
+      "The tiny fixture repo proves production app behavior"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run TestRunClaimDiscoverWritesProofPlanFromTinyRepo -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "claim discover writes cautilus.claim_proof_plan.v1",
+          "the output contains source-ref-backed claim candidates",
+          "the proof plan includes human-auditable, deterministic, and cautilus-eval recommendedProof routes"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus claim discover --repo-root fixtures/claim-discovery/tiny-repo --output /tmp/cautilus-claim-discover-proof/claims.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.claim_proof_plan.v1",
+        "candidateCount": 3,
+        "sourceInventory": [
+          "AGENTS.md",
+          "README.md"
+        ],
+        "byRecommendedProof": {
+          "human-auditable": 1,
+          "deterministic": 1,
+          "cautilus-eval": 1
+        },
+        "byVerificationReadiness": {
+          "ready-to-verify": 3
+        }
+      }
+    },
+    {
+      "command": "./bin/cautilus claim show --input /tmp/cautilus-claim-discover-proof/claims.json --output /tmp/cautilus-claim-discover-proof/status.json --sample-claims 3",
+      "exitCode": 0,
+      "observed": {
+        "summaryPacket": "cautilus.claim_status_summary.v1",
+        "sampleClaims": 3
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "claim-discover-cli-test",
+      "contentHash": "sha256:b73cbb527258b91b8dba7b6779268fc2ff748651aea58e33cd57eb4f7700f074"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-implementation",
+      "contentHash": "sha256:8ca60b160ffa5d003ee5ef64b26b3c29ce555cbe9ab6931da8500514c7a5e8f1"
+    },
+    {
+      "path": "fixtures/claim-discovery/tiny-repo/README.md",
+      "kind": "fixture-user-claim-source",
+      "contentHash": "sha256:13810a8a42411c0c34b1acf9c6c4792b96a7f2d613c515a4dee6aad12c831645"
+    },
+    {
+      "path": "fixtures/claim-discovery/tiny-repo/AGENTS.md",
+      "kind": "fixture-developer-claim-source",
+      "contentHash": "sha256:fccf75be1e88cefe806b7da605ec8f7df5393d75317d032033d04a1e35f29f00"
+    },
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "operator-facing-claim-discovery-guidance",
+      "contentHash": "sha256:31f70c226b312f2292e3e317a8dd45d6f1e4bd71d2c8f3f555b2174a15303f05"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The CLI and test evidence show `claim discover` emits an inventory-backed proof plan with human, deterministic, and Cautilus-eval routing, while no fixture writer or eval planner is invoked."
+  }
+}

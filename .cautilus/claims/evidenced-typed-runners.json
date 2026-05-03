@@ -1076,9 +1076,19 @@
       "claimFingerprint": "sha256:677531528b5130a8cb2c449a6df5177abb7ee7d925262299b9123f87c1e7e60c",
       "claimId": "claim-docs-cli-reference-md-115",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Deterministic command-ordering documentation claim. It was not satisfied in this pass because no evidence bundle was added for `claim discover` before fixture-writing workflow.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:8c8cf01d447044090ad5fa5c1649066cfe006963f47f1d1a5a6ff09ab6df5aa4",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-115"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in claim-discover CLI test and direct CLI smoke: claim discover emits a proof-plan packet with source inventory and human-auditable, deterministic, and cautilus-eval proof routes without invoking fixture writing.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1086,7 +1096,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or link a claim-discovery workflow proof showing `claim discover` inventories declared behavior before eval fixtures are written.",
+      "nextAction": "Keep this claim covered when changing claim discovery output shape, proof routing heuristics, or fixture-authoring workflow guidance.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1099,7 +1109,7 @@
       "summary": "Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim is deterministic claim-discovery packet behavior plus workflow guidance: the CLI either emits inventory-backed proof routing before fixture authoring or it does not."
     },
     {
       "claimAudience": "user",
@@ -10061,8 +10071,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 25,
-      "unknown": 297
+      "satisfied": 26,
+      "unknown": 296
     },
     "byLifecycle": {
       "new": 322
@@ -10263,6 +10273,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},
