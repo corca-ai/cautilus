@@ -1414,6 +1414,32 @@ func TestCLIScenarioProposePreservesFullRankedOutputAndDerivesAttentionView(t *t
 	if len(proposals) != 6 {
 		t.Fatalf("expected full ranked proposal list, got %#v", proposals)
 	}
+	selectedKeys := attentionView["proposalKeys"].([]any)
+	if len(selectedKeys) != 5 {
+		t.Fatalf("expected bounded attention view over five proposal keys, got %#v", attentionView)
+	}
+	selectedKeySet := map[string]bool{}
+	for _, rawKey := range selectedKeys {
+		selectedKeySet[rawKey.(string)] = true
+	}
+	proposalKeys := map[string]bool{}
+	for _, rawProposal := range proposals {
+		proposalKeys[rawProposal.(map[string]any)["proposalKey"].(string)] = true
+	}
+	for _, rawKey := range selectedKeys {
+		if !proposalKeys[rawKey.(string)] {
+			t.Fatalf("attention view selected key outside full ranked proposal list: %#v", attentionView)
+		}
+	}
+	reasonCodes := attentionView["reasonCodesByProposalKey"].(map[string]any)
+	if len(reasonCodes) != len(selectedKeys) {
+		t.Fatalf("expected bounded reason map for selected proposal keys only, got %#v", attentionView)
+	}
+	for key := range reasonCodes {
+		if !selectedKeySet[key] {
+			t.Fatalf("attention reason map included unselected proposal key %q: %#v", key, attentionView)
+		}
+	}
 }
 
 func TestCLIScenarioReviewConversationsBuildsScenarioCentricThreadPacket(t *testing.T) {
@@ -1487,10 +1513,40 @@ func TestCLIScenarioReviewConversationsBuildsScenarioCentricThreadPacket(t *test
 	if attentionView["selectedCount"] != float64(1) || attentionView["fallbackUsed"] != false {
 		t.Fatalf("unexpected attention view: %#v", attentionView)
 	}
+	threadKeys := attentionView["threadKeys"].([]any)
+	threadKeySet := map[string]bool{}
+	for _, rawKey := range threadKeys {
+		threadKeySet[rawKey.(string)] = true
+	}
+	reasonCodes := attentionView["reasonCodesByThreadKey"].(map[string]any)
+	if len(reasonCodes) != len(threadKeys) {
+		t.Fatalf("expected bounded reason map for selected thread keys only, got %#v", attentionView)
+	}
+	for key := range reasonCodes {
+		if !threadKeySet[key] {
+			t.Fatalf("attention reason map included unselected thread key %q: %#v", key, attentionView)
+		}
+	}
 	threads := payload["threads"].([]any)
 	first := threads[0].(map[string]any)
 	if first["threadKey"] != "thread-1" || first["recommendation"] != "review_existing_scenario_refresh" {
 		t.Fatalf("unexpected first thread: %#v", first)
+	}
+	linkedProposals := first["linkedProposals"].([]any)
+	if len(linkedProposals) != 1 {
+		t.Fatalf("expected linked proposal for first thread, got %#v", first)
+	}
+	linkedProposal := linkedProposals[0].(map[string]any)
+	if linkedProposal["proposalKey"] != "review-after-retro" || linkedProposal["action"] != "refresh_existing_scenario" {
+		t.Fatalf("expected scenario proposal linkage, got %#v", linkedProposal)
+	}
+	coverage := linkedProposal["existingCoverage"].(map[string]any)
+	if coverage["recentResultCount"] != float64(2) || coverage["scenarioKeyExists"] != true {
+		t.Fatalf("expected linked proposal coverage hint, got %#v", coverage)
+	}
+	reasons := first["attentionReasons"].([]any)
+	if !containsAnyString(reasons, "linked_proposal") || !containsAnyString(reasons, "low_recent_coverage") {
+		t.Fatalf("expected linked proposal and coverage attention reasons, got %#v", reasons)
 	}
 }
 
@@ -5491,6 +5547,15 @@ func anyToString(value any) string {
 		return text
 	}
 	return ""
+}
+
+func containsAnyString(values []any, want string) bool {
+	for _, value := range values {
+		if text, ok := value.(string); ok && text == want {
+			return true
+		}
+	}
+	return false
 }
 
 func mustJSONMarshal(t *testing.T, value any) []byte {

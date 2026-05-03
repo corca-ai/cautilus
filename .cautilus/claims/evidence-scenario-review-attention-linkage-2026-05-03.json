@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-scenario-review-attention-linkage-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-256",
+    "claim-docs-cli-reference-md-258"
+  ],
+  "repoCommit": "849c3caab4aad91c27061a1ddd9688bdfd769360",
+  "summary": "This bundle records deterministic proof that scenario proposal packets keep the full ranked list while emitting a bounded attention view, and that conversation review links normalized chatbot threads to proposals and coverage hints.",
+  "evidenceScope": {
+    "targetSurface": "scenario proposal and conversation-review packets",
+    "claimBoundary": "Only the packet-shape claims for `attentionView` and scenario-centric conversation review linkage are marked satisfied.",
+    "notClaimed": [
+      "A human accepted or rejected any proposal",
+      "A live chatbot or model runtime was executed",
+      "The conversation review command is a generic audit UI",
+      "Every possible coverage hint is represented in the fixture"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIScenarioProposePreservesFullRankedOutputAndDerivesAttentionView|TestCLIScenarioReviewConversationsBuildsScenarioCentricThreadPacket' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "scenario propose preserves the full ranked proposals list",
+          "attentionView is bounded to five proposal keys and every selected key exists in the full proposals list",
+          "scenario review-conversations emits one linked and one unlinked thread",
+          "the linked thread carries a proposal summary with action, proposal key, existing coverage, and low-recent-coverage attention reason"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus scenario propose --input fixtures/scenario-proposals/standalone-input.json --output /tmp/cautilus-scenario-review-proof/proposals.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.scenario_proposals.v1",
+        "proposalCount": 1,
+        "attentionView": {
+          "selectedCount": 1,
+          "fallbackUsed": false,
+          "truncated": false,
+          "proposalKeys": [
+            "review-after-retro"
+          ],
+          "reasonCodesByProposalKey": {
+            "review-after-retro": [
+              "low_recent_coverage"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "./bin/cautilus scenario review-conversations --input fixtures/scenario-conversation-review/input.json --output /tmp/cautilus-scenario-review-proof/conversation-review.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.scenario_conversation_review.v1",
+        "summary": {
+          "threadCount": 2,
+          "linkedThreadCount": 1,
+          "unlinkedThreadCount": 1,
+          "linkedProposalCount": 1
+        },
+        "attentionView": {
+          "selectedCount": 1,
+          "fallbackUsed": false,
+          "threadKeys": [
+            "thread-1"
+          ],
+          "reasonCodesByThreadKey": {
+            "thread-1": [
+              "linked_proposal",
+              "low_recent_coverage"
+            ]
+          }
+        },
+        "firstThread": {
+          "threadKey": "thread-1",
+          "recommendation": "review_existing_scenario_refresh",
+          "linkedProposal": {
+            "proposalKey": "review-after-retro",
+            "action": "refresh_existing_scenario",
+            "family": "fast_regression",
+            "existingCoverage": {
+              "recentResultCount": 2,
+              "scenarioKeyExists": true
+            }
+          }
+        }
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "scenario-proposal-and-review-cli-tests",
+      "contentHash": "sha256:6c2b575927131ea291c7034f48ef8f506cd5ef399d5d76757b8b6876a3e21ae7"
+    },
+    {
+      "path": "internal/runtime/proposals.go",
+      "kind": "scenario-proposal-implementation",
+      "contentHash": "sha256:52ac423061937b57132a9ac8ed0c6861f68e515fea9fc055a3f552ad0d44df0d"
+    },
+    {
+      "path": "internal/runtime/scenario_conversation_review.go",
+      "kind": "scenario-conversation-review-implementation",
+      "contentHash": "sha256:85d5e59fbb05263d91ceba371e4e153efd225f165dbc2832c9fc65c3837cdec4"
+    },
+    {
+      "path": "fixtures/scenario-proposals/standalone-input.json",
+      "kind": "scenario-proposal-fixture",
+      "contentHash": "sha256:e94e0fc3cf01722b88b32adc25cc42c2798871a1d0fa22d148e1ec7d52f71958"
+    },
+    {
+      "path": "fixtures/scenario-conversation-review/input.json",
+      "kind": "scenario-conversation-review-fixture",
+      "contentHash": "sha256:bd657c868afe164397ee8124b7bd94f8557aef7f481f98b54950138b59f7e8bd"
+    },
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "operator-facing-scenario-guidance",
+      "contentHash": "sha256:31f70c226b312f2292e3e317a8dd45d6f1e4bd71d2c8f3f555b2174a15303f05"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused CLI tests and direct command outputs show bounded attention views derived from proposal/thread records while keeping full proposal data and linked coverage hints inspectable."
+  }
+}

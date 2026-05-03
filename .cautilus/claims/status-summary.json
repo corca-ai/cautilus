@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 27
+          "satisfied": 29
         },
         "byReviewStatus": {
-          "agent-reviewed": 27
+          "agent-reviewed": 29
         },
-        "count": 27,
+        "count": 29,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 99
+          "unknown": 97
         },
         "byReviewStatus": {
-          "agent-reviewed": 16,
+          "agent-reviewed": 14,
           "heuristic": 80,
           "human-reviewed": 3
         },
-        "count": 99,
+        "count": 97,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-cli-reference-md-256",
-          "claim-docs-cli-reference-md-258",
           "claim-docs-cli-reference-md-427",
           "claim-docs-cli-reference-md-431",
-          "claim-docs-cli-reference-md-487"
+          "claim-docs-cli-reference-md-487",
+          "claim-docs-contracts-adapter-contract-md-218",
+          "claim-docs-contracts-adapter-contract-md-276"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 27,
-      "unknown": 295
+      "satisfied": 29,
+      "unknown": 293
     },
     "byLifecycle": {
       "new": 322
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 27,
+    "satisfiedClaimCount": 29,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -732,6 +732,46 @@
         "summary": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags."
       },
       {
+        "claimId": "claim-docs-cli-reference-md-256",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dfd876b815d1bf606503b516dfe1df877dac676f4503190dd33721b0f941fe50",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-256",
+              "claim-docs-cli-reference-md-258"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-258",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dfd876b815d1bf606503b516dfe1df877dac676f4503190dd33721b0f941fe50",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-256",
+              "claim-docs-cli-reference-md-258"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn."
+      },
+      {
         "claimId": "claim-docs-cli-reference-md-266",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -906,12 +946,13 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 41,
+    "changedFileCount": 43,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json",
+      ".cautilus/claims/evidence-claim-review-prepare-input-boundary-2026-05-03.json",
       ".cautilus/claims/evidence-doctor-runner-readiness-next-action-2026-05-03.json",
       ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
       ".cautilus/claims/evidence-fixture-runtime-proof-2026-05-03.json",
@@ -923,6 +964,7 @@
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-claim-discover-proof-routing-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-claim-review-prepare-input-boundary-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-doctor-runner-readiness-next-action-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-proof-2026-05-03.json",
@@ -958,7 +1000,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "d838325f2720bda9eedb621b07d8fb7ca8cff0ab",
+    "currentGitCommit": "849c3caab4aad91c27061a1ddd9688bdfd769360",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",

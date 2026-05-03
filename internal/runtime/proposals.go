@@ -179,6 +179,7 @@ func buildScenarioProposalAttentionView(proposals []any) map[string]any {
 		selectedKeys = selectedKeys[:scenarioProposalAttentionCap]
 		truncated = true
 	}
+	reasonCodesByProposalKey = selectReasonCodesForKeys(reasonCodesByProposalKey, selectedKeys)
 	return map[string]any{
 		"ruleVersion":              "v1",
 		"proposalKeys":             selectedKeys,
@@ -188,6 +189,23 @@ func buildScenarioProposalAttentionView(proposals []any) map[string]any {
 		"fallbackUsed":             fallbackUsed,
 		"truncated":                truncated,
 	}
+}
+
+func selectReasonCodesForKeys(reasonCodes map[string]any, selectedKeys []any) map[string]any {
+	selected := map[string]bool{}
+	for _, rawKey := range selectedKeys {
+		key := stringOrEmpty(rawKey)
+		if key != "" {
+			selected[key] = true
+		}
+	}
+	filtered := map[string]any{}
+	for key, value := range reasonCodes {
+		if selected[key] {
+			filtered[key] = value
+		}
+	}
+	return filtered
 }
 
 func scenarioProposalAttentionReasons(proposal map[string]any) []string {

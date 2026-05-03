@@ -1307,9 +1307,20 @@
       "claimFingerprint": "sha256:313275317465567a22c5d4992ec031f8aa811338e2281d6c84520f52f8f7b556",
       "claimId": "claim-docs-cli-reference-md-256",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is a concrete packet-shape claim about `attentionView`; it should be checked deterministically against report/review packet output rather than left for human confirmation.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:dfd876b815d1bf606503b516dfe1df877dac676f4503190dd33721b0f941fe50",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-256",
+            "claim-docs-cli-reference-md-258"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI tests and direct scenario propose output: the full ranked proposals list is preserved while attentionView carries bounded selected proposal keys and reasons drawn from that list.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1317,7 +1328,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or connect a deterministic packet test proving `attentionView` is emitted as a bounded human-facing shortlist derived from the ranked set.",
+      "nextAction": "Keep this claim covered when changing scenario proposal ranking, attentionView cap, or proposals packet shape.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1330,7 +1341,7 @@
       "summary": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "whyThisLayer": "The claim is deterministic scenario proposal packet behavior: attentionView either is a bounded shortlist derived from the ranked proposals or it is not."
     },
     {
       "claimAudience": "user",
@@ -1338,9 +1349,20 @@
       "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
       "claimId": "claim-docs-cli-reference-md-258",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Scenario proposal/rendering linkage claim. It is command/packet behavior, not app/chat behavior, and needs deterministic scenario proposal/render proof.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:dfd876b815d1bf606503b516dfe1df877dac676f4503190dd33721b0f941fe50",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-256",
+            "claim-docs-cli-reference-md-258"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI tests and direct review-conversations output: normalized conversation summaries are linked to scenario proposal summaries, existing coverage hints, and bounded attention reasons without requiring a generic audit UI.",
       "groupHints": [
         "app/chat",
         "audience:user",
@@ -1349,7 +1371,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach scenario normalize/prepare/propose evidence or CLI smoke tests covering chatbot thread linkage to proposals and coverage hints.",
+      "nextAction": "Keep this claim covered when changing chatbot normalization, scenario proposal summaries, conversation-review packet shape, or coverage hint semantics.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1362,7 +1384,7 @@
       "summary": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim is deterministic scenario conversation-review packet behavior over normalized chatbot summaries and proposal candidates."
     },
     {
       "claimAudience": "user",
@@ -10081,8 +10103,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 27,
-      "unknown": 295
+      "satisfied": 29,
+      "unknown": 293
     },
     "byLifecycle": {
       "new": 322
@@ -10283,6 +10305,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

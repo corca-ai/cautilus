@@ -306,6 +306,7 @@ func buildScenarioConversationAttentionView(threads []any) map[string]any {
 		selectedKeys = selectedKeys[:scenarioConversationAttentionCap]
 		truncated = true
 	}
+	reasonCodesByThreadKey = selectReasonCodesForKeys(reasonCodesByThreadKey, selectedKeys)
 	return map[string]any{
 		"ruleVersion":            "v1",
 		"threadKeys":             selectedKeys,

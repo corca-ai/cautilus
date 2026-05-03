@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for scenario proposal/review packet shape and linkage; do not treat this as live chatbot proof or generic audit UI proof."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cli-reference-scenario-attention-linkage",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-256",
+          "claimFingerprint": "sha256:313275317465567a22c5d4992ec031f8aa811338e2281d6c84520f52f8f7b556",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is deterministic scenario proposal packet behavior: attentionView either is a bounded shortlist derived from the ranked proposals or it is not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI tests and direct scenario propose output: the full ranked proposals list is preserved while attentionView carries bounded selected proposal keys and reasons drawn from that list.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:dfd876b815d1bf606503b516dfe1df877dac676f4503190dd33721b0f941fe50",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-256",
+                "claim-docs-cli-reference-md-258"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing scenario proposal ranking, attentionView cap, or proposals packet shape.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-258",
+          "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is deterministic scenario conversation-review packet behavior over normalized chatbot summaries and proposal candidates.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI tests and direct review-conversations output: normalized conversation summaries are linked to scenario proposal summaries, existing coverage hints, and bounded attention reasons without requiring a generic audit UI.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:dfd876b815d1bf606503b516dfe1df877dac676f4503190dd33721b0f941fe50",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-256",
+                "claim-docs-cli-reference-md-258"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing chatbot normalization, scenario proposal summaries, conversation-review packet shape, or coverage hint semantics.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
