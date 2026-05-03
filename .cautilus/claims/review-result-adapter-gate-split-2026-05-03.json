@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-adapter-gate-split-review",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T23:38:03+09:00",
+    "evidencePolicy": "Do not satisfy broad adapter-gate operating rules with one eval. Split evaluator, review-variant, CLI-discovery, and agent-surface readiness into concrete proof obligations before planning fixtures."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-adapter-gate-needs-split-2026-05-03",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-79",
+          "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "whyThisLayer": "The claim is a repo operating rule spanning evaluator proof, review-variant proof, CLI-discovery proof, and agent-surface proof. Treating it as one dev/repo eval target would overclaim because each requested gate has a different readiness command and failure mode.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Current doctor, agent-status, review-variant, and evaluator commands can prove individual readiness surfaces, but this broad rule does not name a single selected gate or adapter capability. It should drive decomposition, not a single eval fixture.",
+          "evidenceRefs": [],
+          "nextAction": "Split this operating rule into concrete checkable claims: selected evaluator command readiness, review variants availability, CLI-discovery command/help availability, and agent-surface doctor/readiness. Attach evidence to those split claims when each selected gate is actually requested.",
+          "unresolvedQuestions": [
+            "Which release or quality gate should own each split readiness claim?",
+            "Should the split claims live as maintainer-facing specdown docs, adapter contract docs, or repo-local quality adapter assertions?"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,70 +1,6 @@
 {
   "evalPlans": [
     {
-      "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
-      "claimId": "claim-agents-md-79",
-      "draftIntent": "Verify that When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "case-level expected files, commands, or routing evidence owned by the repo runner",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "repo",
-        "requiredObservability": [
-          "loadedInstructionFiles",
-          "routingDecision",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-repo-eval-runner",
-        "runnerOutputSchema": "cautilus.evaluation_observed.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-agents-md-79",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/repo",
-        "requiredObservability": [
-          "loadedInstructionFiles",
-          "routingDecision",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-repo-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
-          "line": 79,
-          "path": "AGENTS.md"
-        }
-      ],
-      "targetSurface": "dev/repo",
-      "unresolvedQuestions": [
-        "Should this be split into separate evaluator, review-variant, CLI-discovery, and agent-surface readiness claims?"
-      ]
-    },
-    {
       "claimFingerprint": "sha256:61a9c5048a4a9198d4182a1cfe5d0f91adb31bed9e08cfcf0b37f54508602df4",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
       "draftIntent": "Verify that When raw candidates are too granular to review directly, the bundled skill should curate two canonical specdown indexes before continuing HITL:.",
@@ -267,14 +203,14 @@
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 4,
+    "evalPlanCount": 3,
     "skippedByReason": {
       "already-satisfied": 13,
-      "not-cautilus-eval": 198,
+      "not-cautilus-eval": 199,
       "not-ready-to-verify": 10,
       "not-reviewed": 97
     },
-    "skippedClaimCount": 318,
+    "skippedClaimCount": 319,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
     "zeroPlanReason": ""
   },
@@ -351,6 +287,16 @@
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
+      "claimId": "claim-agents-md-79",
+      "evidenceStatus": "unknown",
+      "reason": "not-cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "blocked"
     },
     {
       "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",

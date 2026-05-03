@@ -43,21 +43,21 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 101
+          "unknown": 100
         },
         "byReviewStatus": {
-          "agent-reviewed": 4,
+          "agent-reviewed": 3,
           "heuristic": 97
         },
-        "count": 101,
+        "count": 100,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-agents-md-79",
           "claim-readme-md-155",
           "claim-docs-contracts-adapter-contract-md-3",
           "claim-docs-contracts-adapter-contract-md-208",
-          "claim-docs-contracts-adapter-contract-md-220"
+          "claim-docs-contracts-adapter-contract-md-220",
+          "claim-docs-contracts-adapter-contract-md-430"
         ],
         "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
       },
@@ -122,13 +122,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 37
+          "unknown": 38
         },
         "byReviewStatus": {
-          "agent-reviewed": 32,
+          "agent-reviewed": 33,
           "heuristic": 5
         },
-        "count": 37,
+        "count": 38,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -182,19 +182,19 @@
       "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 124,
+      "cautilus-eval": 123,
       "deterministic": 106,
-      "human-auditable": 92
+      "human-auditable": 93
     },
     "byReviewStatus": {
       "agent-reviewed": 172,
       "heuristic": 150
     },
     "byVerificationReadiness": {
-      "blocked": 37,
+      "blocked": 38,
       "needs-alignment": 34,
       "needs-scenario": 10,
-      "ready-to-verify": 241
+      "ready-to-verify": 240
     }
   },
   "discoveryBoundary": {
@@ -2654,18 +2654,20 @@
   },
   "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "gitState": {
-    "changedFileCount": 27,
+    "changedFileCount": 29,
     "changedFiles": [
       ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
+      ".cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json",
       ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
       ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-claim-packet-next-work-grouping-2026-05-03.json",
       ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json",
       ".cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json",
@@ -2692,7 +2694,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a063a8af6944b451a15a6411cacfb3b4da0cb3d2",
+    "currentGitCommit": "ddfa5840af2f618d1bbf14b713b3ad80bcdaed4b",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
@@ -2872,14 +2874,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "dev/repo",
+        "human-auditable",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach adapter capability proof from doctor, agent-surface doctor, review variants, or the concrete evaluator command required by the selected gate.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Split this operating rule into concrete checkable claims: selected evaluator command readiness, review variants availability, CLI-discovery command/help availability, and agent-surface doctor/readiness. Attach evidence to those split claims when each selected gate is actually requested.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -2888,7 +2889,7 @@
         }
       ],
       "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "blocked"
     },
     {
       "claimAudience": "developer",

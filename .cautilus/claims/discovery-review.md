@@ -1273,22 +1273,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 ### Adapter and portability (41)
 
-#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (10)
-
-##### claim-agents-md-79
-
-- Summary: When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Attach adapter capability proof from doctor, agent-surface doctor, review variants, or the concrete evaluator command required by the selected gate.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; AGENTS.md:79
+#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (9)
 
 ##### claim-docs-contracts-adapter-contract-md-208
 
@@ -1702,7 +1687,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/adapter-host-ownership.spec.md:18
 
-#### Human-auditable / blocked / evidence unknown (4)
+#### Human-auditable / blocked / evidence unknown (5)
 
 ##### claim-agents-md-12
 
@@ -1717,6 +1702,20 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; AGENTS.md:12
+
+##### claim-agents-md-79
+
+- Summary: When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.
+- Current labels: audience=developer; proof=human-auditable; readiness=blocked; evidence=unknown
+- Suggested next action: Split this operating rule into concrete checkable claims: selected evaluator command readiness, review variants availability, CLI-discovery command/help availability, and agent-surface doctor/readiness. Attach evidence to those split claims when each selected gate is actually requested.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; AGENTS.md:79
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-258
 

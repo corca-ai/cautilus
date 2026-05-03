@@ -210,17 +210,16 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as an operator-gate honesty claim. It needs evidence that the selected adapter can run the requested evaluator, review, CLI-discovery, or agent-surface proof before that gate is treated as available.",
+      "evidenceStatusReason": "Current doctor, agent-status, review-variant, and evaluator commands can prove individual readiness surfaces, but this broad rule does not name a single selected gate or adapter capability. It should drive decomposition, not a single eval fixture.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "dev/repo",
+        "human-auditable",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach adapter capability proof from doctor, agent-surface doctor, review variants, or the concrete evaluator command required by the selected gate.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Split this operating rule into concrete checkable claims: selected evaluator command readiness, review variants availability, CLI-discovery command/help availability, and agent-surface doctor/readiness. Attach evidence to those split claims when each selected gate is actually requested.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -231,10 +230,11 @@
       ],
       "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
       "unresolvedQuestions": [
-        "Should this be split into separate evaluator, review-variant, CLI-discovery, and agent-surface readiness claims?"
+        "Which release or quality gate should own each split readiness claim?",
+        "Should the split claims live as maintainer-facing specdown docs, adapter contract docs, or repo-local quality adapter assertions?"
       ],
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim is a repo operating rule spanning evaluator proof, review-variant proof, CLI-discovery proof, and agent-surface proof. Treating it as one dev/repo eval target would overclaim because each requested gate has a different readiness command and failure mode."
     },
     {
       "claimAudience": "developer",
@@ -11272,19 +11272,19 @@
       "new": 322
     },
     "byRecommendedProof": {
-      "cautilus-eval": 124,
+      "cautilus-eval": 123,
       "deterministic": 106,
-      "human-auditable": 92
+      "human-auditable": 93
     },
     "byReviewStatus": {
       "agent-reviewed": 172,
       "heuristic": 150
     },
     "byVerificationReadiness": {
-      "blocked": 37,
+      "blocked": 38,
       "needs-alignment": 34,
       "needs-scenario": 10,
-      "ready-to-verify": 241
+      "ready-to-verify": 240
     }
   },
   "discoveryEngine": {
