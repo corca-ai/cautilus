@@ -531,6 +531,22 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"In JSON mode, `claude -p` can wrap the verdict under `structured_output` instead of printing the schema payload as the top-level object.",
 		"",
+		"iOS internal-QA runs can still fail around Xcode provider liveness, signing, device trust, or first-run agent-device runner launch on real devices.",
+		"",
+		"Optional setup-readiness probes can fail closed before runtime use.",
+		"",
+		"The runner can fail over to a backup provider when credentials are missing.",
+		"",
+		"The recovery command should recover when provider credentials fail.",
+		"",
+		"> `crill provider ...` is not gated, so you can configure LLM credentials either before or after this step.",
+		"",
+		"The provider command should work without credentials during local setup.",
+		"",
+		"The login command must not require credentials during first-run setup.",
+		"",
+		"> `crill provider ...` is **not** gated, so you can configure LLM credentials either before or after this step.",
+		"",
 		"This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.",
 		"",
 		"Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional.",
@@ -753,6 +769,38 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	providerCaveat := bySummary["In JSON mode, `claude -p` can wrap the verdict under `structured_output` instead of printing the schema payload as the top-level object."]
 	if providerCaveat == nil || providerCaveat["recommendedProof"] != "human-auditable" || providerCaveat["verificationReadiness"] != "blocked" {
 		t.Fatalf("expected provider caveat to stay blocked human-auditable, got %#v", providerCaveat)
+	}
+	runtimeCaveat := bySummary["iOS internal-QA runs can still fail around Xcode provider liveness, signing, device trust, or first-run agent-device runner launch on real devices."]
+	if runtimeCaveat == nil || runtimeCaveat["recommendedProof"] != "human-auditable" || runtimeCaveat["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected runtime setup caveat to stay blocked human-auditable, got %#v", runtimeCaveat)
+	}
+	failClosed := bySummary["Optional setup-readiness probes can fail closed before runtime use."]
+	if failClosed == nil || failClosed["recommendedProof"] != "deterministic" || failClosed["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected fail-closed readiness claim to be deterministic, got %#v", failClosed)
+	}
+	failover := bySummary["The runner can fail over to a backup provider when credentials are missing."]
+	if failover == nil || failover["recommendedProof"] != "cautilus-eval" || failover["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected provider failover behavior to stay eval-ready, got %#v", failover)
+	}
+	recovery := bySummary["The recovery command should recover when provider credentials fail."]
+	if recovery == nil || recovery["recommendedProof"] != "deterministic" || recovery["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected command recovery claim to be deterministic, got %#v", recovery)
+	}
+	cliGating := bySummary["> `crill provider ...` is not gated, so you can configure LLM credentials either before or after this step."]
+	if cliGating == nil || cliGating["recommendedProof"] != "deterministic" || cliGating["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected CLI gating claim to be deterministic, got %#v", cliGating)
+	}
+	worksWithoutCredentials := bySummary["The provider command should work without credentials during local setup."]
+	if worksWithoutCredentials == nil || worksWithoutCredentials["recommendedProof"] != "deterministic" || worksWithoutCredentials["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected generic command availability claim to be deterministic, got %#v", worksWithoutCredentials)
+	}
+	noLoginCredentials := bySummary["The login command must not require credentials during first-run setup."]
+	if noLoginCredentials == nil || noLoginCredentials["recommendedProof"] != "deterministic" || noLoginCredentials["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected generic no-credentials command claim to be deterministic, got %#v", noLoginCredentials)
+	}
+	boldCLIGating := bySummary["> `crill provider ...` is **not** gated, so you can configure LLM credentials either before or after this step."]
+	if boldCLIGating == nil || boldCLIGating["recommendedProof"] != "deterministic" || boldCLIGating["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected bold CLI gating claim to be deterministic, got %#v", boldCLIGating)
 	}
 	rationale := bySummary["This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file."]
 	if rationale == nil || rationale["recommendedProof"] != "human-auditable" || rationale["verificationReadiness"] != "needs-alignment" {

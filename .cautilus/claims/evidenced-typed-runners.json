@@ -1,5 +1,5 @@
 {
-  "candidateCount": 323,
+  "candidateCount": 324,
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -4991,7 +4991,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep or add deterministic readiness, preflight, or command-contract proof for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -5003,7 +5003,36 @@
       ],
       "summary": "The binary can do cheap deterministic preflight, but the skill owns final interpretation.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names readiness, preflight, or command-contract behavior that should be protected by deterministic checks."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:2a32466ef9625c53036cca28142e05c9d37139c43ee5171a4b5aa9534dd860f2",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-368",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic readiness, preflight, or command-contract proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The preflight should never assert that a claim is satisfied solely because a filename looks related.",
+          "line": 368,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "summary": "The preflight should never assert that a claim is satisfied solely because a filename looks related.",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names readiness, preflight, or command-contract behavior that should be protected by deterministic checks."
     },
     {
       "claimAudience": "developer",
@@ -11301,14 +11330,14 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 242,
+      "developer": 243,
       "user": 81
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 57,
       "Agent and skill workflow": 73,
       "Claim discovery and review": 22,
-      "Documentation and contracts": 72,
+      "Documentation and contracts": 73,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
@@ -11318,32 +11347,32 @@
     },
     "byEvidenceStatus": {
       "satisfied": 121,
-      "unknown": 202
+      "unknown": 203
     },
     "byLifecycle": {
-      "new": 323
+      "new": 324
     },
     "byRecommendedProof": {
       "cautilus-eval": 99,
-      "deterministic": 133,
+      "deterministic": 134,
       "human-auditable": 91
     },
     "byReviewStatus": {
       "agent-reviewed": 170,
-      "heuristic": 153
+      "heuristic": 154
     },
     "byVerificationReadiness": {
       "blocked": 33,
       "needs-alignment": 39,
       "needs-scenario": 10,
-      "ready-to-verify": 241
+      "ready-to-verify": 242
     }
   },
   "discoveryEngine": {
-    "implementationHash": "sha256:5cd3bb9b215ef3c096b74b065a66f06feddea3f4742226de002faf37e6ff2940",
+    "implementationHash": "sha256:be0090a14b3a2bccb052eba1aac028f2e063fa71e69dd511e6f5904bedd78a2a",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
-    "ruleset": "claim-discovery-rules.v3"
+    "ruleset": "claim-discovery-rules.v4"
   },
   "discoveryMode": "deterministic-source-inventory",
   "effectiveScanScope": {
@@ -11495,7 +11524,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "73e60ae97009e7a2f599e7e0dec0707ea76896a1",
+  "gitCommit": "62870ac373022ce91b045918ad93ef7a721216f1",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {

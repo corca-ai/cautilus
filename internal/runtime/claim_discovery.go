@@ -152,7 +152,7 @@ type claimReviewCluster struct {
 	candidates             []map[string]any
 }
 
-const claimDiscoveryRulesetVersion = "claim-discovery-rules.v3"
+const claimDiscoveryRulesetVersion = "claim-discovery-rules.v4"
 
 func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, error) {
 	repoRoot := strings.TrimSpace(options.RepoRoot)
@@ -1168,6 +1168,21 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target.",
 			next:                  "Keep this as human-auditable context or promote a concrete regression scenario if the caveat should block releases.",
 		}, true
+	case deterministicReadinessOrPreflightContract(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim names readiness, preflight, or command-contract behavior that should be protected by deterministic checks.",
+			next:                  "Keep or add deterministic readiness, preflight, or command-contract proof for this claim.",
+		}, true
+	case providerFailoverBehaviorClaim(lower):
+		return claimClassification{
+			recommendedProof:       "cautilus-eval",
+			verificationReadiness:  "ready-to-verify",
+			recommendedEvalSurface: "app/prompt",
+			why:                    "The claim describes provider failover behavior, which needs behavior evidence rather than being treated as a caveat.",
+			next:                   "Create a host-owned app/prompt or equivalent provider-behavior fixture and run it through cautilus eval test.",
+		}, true
 	case historicalObservationClaim(lower):
 		return claimClassification{
 			recommendedProof:      "human-auditable",
@@ -1188,6 +1203,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
 			next:                  "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+		}, true
+	case deterministicCLIGatingClaim(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim names command availability or gating behavior that should be protected by deterministic CLI tests.",
+			next:                  "Keep or add deterministic command-contract proof showing the command remains available under the named setup condition.",
 		}, true
 	case operatorPolicyClaim(lower):
 		return claimClassification{
@@ -1347,8 +1369,36 @@ func ownershipBoundaryClaim(lower string) bool {
 }
 
 func providerCaveatClaim(lower string) bool {
+	if containsAny(lower, []string{" fail closed", " fails closed", " fail open", " fails open", " fail over", " failover", " fallback", " recover", " recovers", " preflight", " readiness probe", " readiness probes", " setup-readiness probe", " setup-readiness probes"}) {
+		return false
+	}
+	if containsAny(lower, []string{" can still fail around ", " can still fail during ", " can still fail when ", " may still fail around ", " may still fail during ", " may still fail when ", " failures around "}) &&
+		containsAny(lower, []string{" setup", " runtime", " provider", " xcode", " signing", " device trust", " runner launch", " credential", " credentials", " liveness", " real device", " real devices"}) {
+		return true
+	}
 	return containsAny(lower, []string{" claude -p ", "`claude -p`", " codex exec ", "`codex exec`", " provider "}) &&
 		containsAny(lower, []string{" can wrap ", " fatal ", " stderr ", " structured_output", " exit still looks successful"})
+}
+
+func deterministicCLIGatingClaim(lower string) bool {
+	normalized := strings.ReplaceAll(lower, "*", "")
+	normalized = strings.ReplaceAll(normalized, "_", "")
+	if containsAny(normalized, []string{" not gated", " not blocked", " is not gated", " are not gated", " is not blocked", " are not blocked"}) &&
+		containsAny(normalized, []string{" cli ", " command", " subcommand", " provider", " credential", " credentials", " configure", " configuration", " `"}) {
+		return true
+	}
+	return containsAny(normalized, []string{" work without credentials", " works without credentials", " must not require credentials", " does not require credentials", " do not require credentials", " can run without credentials", " can run without login", " must not require login", " does not require login", " do not require login"}) &&
+		containsAny(normalized, []string{" cli ", " command", " subcommand", " provider", " login", " configure", " configuration", " setup", " first-run"})
+}
+
+func deterministicReadinessOrPreflightContract(lower string) bool {
+	return containsAny(lower, []string{" fail closed", " fails closed", " fail open", " fails open", " preflight", " readiness probe", " readiness probes", " setup-readiness probe", " setup-readiness probes", " recovery command", " command recovers"}) &&
+		containsAny(lower, []string{" readiness", " setup", " runtime", " command", " preflight", " probe", " probes", " provider", " credential", " credentials"})
+}
+
+func providerFailoverBehaviorClaim(lower string) bool {
+	return containsAny(lower, []string{" fail over", " failover", " fallback provider", " backup provider"}) &&
+		containsAny(lower, []string{" provider", " runner", " model", " credentials", " runtime"})
 }
 
 func historicalObservationClaim(lower string) bool {
