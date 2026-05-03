@@ -87,6 +87,10 @@ When raw candidates are too granular to review directly, the bundled skill shoul
 - a user-facing catalog in plain product language that explains what the repo promises to a reader
 - a maintainer-facing catalog that may use internal vocabulary but maps back to the user-facing claim ids
 
+For a product with clear top-level jobs, the user-facing catalog should order claims by the user's feature mental model before cross-cutting implementation promises.
+In this repo's Cautilus catalog, that means `claim`, `eval`, `optimize`, then `doctor` or readiness, followed by supporting promises such as portability, packet/reporting surfaces, and proof-debt visibility.
+In other repos, the same rule should be driven by the repo's adapter, README, and source docs rather than by Cautilus-specific command names.
+An unnumbered catalog introduction may orient the reader, but it should not carry proof-bearing promises that are absent from the numbered canonical claims.
 Each canonical claim should preserve source references, intended proof route, evidence status, and the next action needed to prove or repair it.
 Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available.
 The catalog is a manually maintained or review-applied source document, not a generated status report block.

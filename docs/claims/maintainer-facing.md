@@ -12,7 +12,7 @@ The exact raw-claim evidence state remains in `.cautilus/claims/evidenced-typed-
 
 ## M1. Claim Discovery Is High-Recall, Not A Verdict
 
-Aligned user claims: U1, U8.
+Aligned user claims: U1 Claim, U9 Proof Debt.
 
 `claim discover` emits source-ref-backed candidates, rough labels, and proof-planning fields.
 It should favor recall from configured entry documents and linked Markdown, then rely on the bundled skill or an agent to merge duplicates, split fragments, and project canonical user-facing and maintainer-facing claims.
@@ -32,7 +32,7 @@ Source anchors: README.md, AGENTS.md, docs/contracts/claim-discovery-workflow.md
 
 ## M2. The Binary And Skill Own Different Parts Of The Claim Workflow
 
-Aligned user claims: U1, U4, U8.
+Aligned user claims: U1 Claim, U4 Doctor, U6 CLI and Agents, U9 Proof Debt.
 
 The binary owns deterministic command discovery, packet examples, scans, validation, and reusable artifacts.
 The bundled skill owns routing, sequencing, decision boundaries, claim curation, review-budget explanation, LLM-backed claim review, and subagent orchestration.
@@ -53,7 +53,7 @@ Source anchors: README.md, skills/cautilus/SKILL.md, docs/specs/standalone-surfa
 
 ## M3. Host Repos Own Runtime-Specific Behavior
 
-Aligned user claims: U2, U3, U6.
+Aligned user claims: U2 Eval, U5 Product/Host Ownership, U8 Development and App Surfaces.
 
 Adapters own prompts, fixtures, wrappers, runtime launch, credentials, backend and model selection, repo-specific flags, and acceptance policy.
 `Cautilus` owns the generic CLI, packet schemas, status semantics, behavior-surface vocabulary, normalization helpers, and product-managed request/result semantics.
@@ -73,7 +73,7 @@ Source anchors: docs/cli-reference.md, docs/guides/consumer-adoption.md, docs/co
 
 ## M4. Evaluation Uses Two Surfaces And Four Presets
 
-Aligned user claims: U2, U6.
+Aligned user claims: U2 Eval, U8 Development and App Surfaces.
 
 The top-level surfaces are `dev` and `app`.
 The supported presets are `repo`, `skill`, `chat`, and `prompt`.
@@ -94,7 +94,7 @@ Source anchors: docs/specs/evaluation-surfaces.spec.md, fixtures/eval/.
 
 ## M5. Review And Evidence Are Separate State Transitions
 
-Aligned user claims: U5, U8.
+Aligned user claims: U7 Reviewable Artifacts, U9 Proof Debt.
 
 A reviewer may update labels, proof route, audience, readiness, and next action.
 A claim becomes satisfied only when a direct or verified evidence ref supports that claim.
@@ -115,7 +115,7 @@ Source anchors: docs/contracts/claim-discovery-workflow.md, docs/contracts/evide
 
 ## M6. Review-Result Replay Must Guard Semantic Drift
 
-Aligned user claims: U5, U8.
+Aligned user claims: U7 Reviewable Artifacts, U9 Proof Debt.
 
 Historical review-result packets may remain as audit history.
 When replaying them into a refreshed claim packet, the replay helper must drop stale IDs and must honor optional `claimFingerprint` guards so line-based ID reuse cannot silently apply an old decision to a different current claim.
@@ -135,7 +135,7 @@ Source anchors: scripts/agent-runtime/apply-current-review-results.mjs, charness
 
 ## M7. Runner Readiness Is Based On Declared Runtime Inputs
 
-Aligned user claims: U2, U3, U6.
+Aligned user claims: U2 Eval, U4 Doctor, U5 Product/Host Ownership, U8 Development and App Surfaces.
 
 Runner readiness should depend on the adapter hash and declared runner file hashes, not raw git commit equality.
 Commit drift should be exposed as provenance when the adapter and runner files still match.
@@ -156,7 +156,7 @@ Source anchors: docs/contracts/runner-readiness.md, internal/runtime/runner_read
 
 ## M8. Human Views Mirror Packets
 
-Aligned user claims: U5, U8.
+Aligned user claims: U7 Reviewable Artifacts, U9 Proof Debt.
 
 Markdown and HTML reports are reader surfaces over packets.
 They must not become separate sources of truth, and they must not mix raw discovery counts with applied claim-packet counts.
@@ -176,7 +176,7 @@ Source anchors: docs/contracts/reporting.md, docs/specs/html-report.spec.md, scr
 
 ## M9. Optimization Requires An Honest Proof Surface
 
-Aligned user claims: U7.
+Aligned user claims: U3 Optimize.
 
 `optimize` and GEPA-style search must run against explicit claim, budget, protected validation, and revision-artifact boundaries.
 Optimization output is a bounded proposal and evidence packet, not an instruction to blindly apply changes.
@@ -204,7 +204,7 @@ Raw `claim discover` output should feed the catalog through curation; it should 
 
 Proof route: deterministic and human review.
 Current evidence status: proof-planning; README and link checks can prove reachability, while maintainer review must approve the catalog content.
-Next action: review U1-U8 first, then M1-M10, before returning to raw action-bucket cards.
+Next action: review U1-U9 first, then M1-M10, before returning to raw action-bucket cards.
 Absorbs: raw claims about claim catalogs, public specs, raw discovery output, reader-facing promise maps, and report/source boundaries.
 
 Required evidence:

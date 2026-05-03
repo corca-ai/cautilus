@@ -121,9 +121,14 @@ Treat raw candidates as high-recall proof-planning inputs, not as the human-faci
 For Cautilus itself, keep the curated user-facing promises in `docs/claims/user-facing.md` and the maintainer-facing map in `docs/claims/maintainer-facing.md`.
 In the Cautilus product repo, product-meaning review should start from those catalog docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.
 User-facing claims must use plain product language.
+Order user-facing catalogs by the user's feature mental model before cross-cutting implementation promises.
+For Cautilus itself, lead with `claim`, `eval`, `optimize`, then `doctor` or readiness, then supporting promises such as portability, packet/reporting surfaces, and proof-debt visibility.
+For other repos, infer the equivalent top user jobs from the adapter, README, and source docs instead of copying Cautilus-specific command names.
+Use adapter `semantic_groups`, source-doc headings, declared product surfaces, and README or guide structure as the portable signal for those top user jobs.
+An unnumbered catalog introduction may orient the reader, but proof-bearing promises should appear in numbered claims.
 Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim ids and preserve source refs, proof route, evidence status, and next action.
 Review packets and curation artifacts preserve absorbed raw claim ids and fingerprints when available; stable catalog docs may summarize the absorbed raw themes instead of listing volatile line-based ids.
-When those catalogs change in the Cautilus product repo, run `npm run claims:canonical-map` before `npm run claims:status-report` so the report shows how raw user claims compress into U1-U8.
+When those catalogs change in the Cautilus product repo, run `npm run claims:canonical-map` before `npm run claims:status-report` so the report shows how raw user claims compress into the current U-claim catalog.
 If `claim show` or `agent status` reports `gitState.isStale=true`, run `claim discover --previous <claims.json> --refresh-plan` before claim review, review-result application, or eval planning.
 Do not launch reviewers, apply review results, plan evals, edit files, or commit artifacts from a stale claim packet unless the user explicitly asks to override stale state.
 If a view is missing, prefer adding a product-owned summary option or review packet over guessing raw JSON keys with ad hoc `jq`.
