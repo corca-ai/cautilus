@@ -39,6 +39,17 @@ function assistant(text) {
 	};
 }
 
+function user(text) {
+	return {
+		type: "response_item",
+		payload: {
+			type: "message",
+			role: "user",
+			content: [{ type: "input_text", text }],
+		},
+	};
+}
+
 test("passes reviewer launch flow when one smoke reviewer executes and stops before apply", () => {
 	const audit = auditReviewerLaunchFlowLogText(jsonl([
 		toolCall("./bin/cautilus agent status --repo-root . --json"),
@@ -46,6 +57,7 @@ test("passes reviewer launch flow when one smoke reviewer executes and stops bef
 		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
 		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --max-clusters 1 --max-claims-per-cluster 1 --output .cautilus/review/review-input.json"),
 		assistant("Review budget before launch: max clusters 1, claims per cluster 1, parallel lanes 1, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
+		user("Confirmed: use the stated default review budget and launch the single reviewer lane."),
 		toolCall("node scripts/agent-runtime/run-claim-reviewer-smoke.mjs --review-input .cautilus/review/review-input.json --output .cautilus/review/review-result.json --backend auto --max-clusters 1 --max-claims 1"),
 		toolOutput('{"reviewerExecuted":true,"backend":"codex_exec","output":".cautilus/review/review-result.json"}'),
 		assistant("The reviewer lane executed and produced a cautilus.claim_review_result.v1 review-result packet. I did not apply the result or plan evals."),
@@ -61,6 +73,7 @@ test("fails when reviewer launch applies results in the same branch", () => {
 		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
 		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
 		assistant("Review budget before launch: one cluster, one claim per cluster, single reviewer lane, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
+		user("Confirmed, proceed with that review budget."),
 		toolCall("node scripts/agent-runtime/run-claim-reviewer-smoke.mjs --review-input .cautilus/review/review-input.json --output .cautilus/review/review-result.json"),
 		toolOutput('{"reviewerExecuted":true,"backend":"codex_exec","output":".cautilus/review/review-result.json"}'),
 		toolCall("./bin/cautilus claim review apply-result --claims .cautilus/claims/latest.json --review-result .cautilus/review/review-result.json"),
@@ -75,6 +88,7 @@ test("accepts discover and show when they run in one ordered shell command", () 
 		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json && ./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
 		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
 		assistant("Review budget before launch: one cluster, one claim per cluster, single reviewer lane, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
+		user("Confirmed, use the default budget."),
 		toolCall("node scripts/agent-runtime/run-claim-reviewer-smoke.mjs --review-input .cautilus/review/review-input.json --output .cautilus/review/review-result.json"),
 		toolOutput('{"reviewerExecuted":true,"backend":"codex_exec","output":".cautilus/review/review-result.json"}'),
 		assistant("The reviewer lane executed and produced a cautilus.claim_review_result.v1 review-result packet. I did not apply the result."),
@@ -90,6 +104,7 @@ test("accepts current-agent reviewer lane that writes a review result packet", (
 		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
 		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
 		assistant("Review budget before launch: one cluster, one claim per cluster, single reviewer lane, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
+		user("Confirmed, go ahead with this budget."),
 		toolCall("cat > .cautilus/review/review-result.json <<'JSON'\n{\"schemaVersion\":\"cautilus.claim_review_result.v1\",\"clusterResults\":[]}\nJSON"),
 		toolOutput("wrote .cautilus/review/review-result.json"),
 		assistant("The current-agent reviewer lane executed and produced a cautilus.claim_review_result.v1 review-result packet. I did not apply the result."),
@@ -105,6 +120,7 @@ test("accepts Korean current-agent reviewer completion and no-apply boundary wor
 		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
 		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
 		assistant("리뷰 예산: 단일 클러스터, 단일 claim per cluster, 단일 리뷰어 lane, excerpt chars 800, retry 없음, skipped-cluster policy is to defer."),
+		user("확인했습니다. 그 예산으로 진행하세요."),
 		{
 			type: "response_item",
 			payload: {
@@ -129,6 +145,7 @@ test("accepts current-agent reviewer result writes when the file name is generic
 		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
 		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/review/input.json"),
 		assistant("Review budget before launch: one cluster, one claim per cluster, single reviewer lane, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
+		user("Confirmed, proceed with the stated review budget."),
 		{
 			type: "response_item",
 			payload: {
@@ -158,6 +175,21 @@ test("fails when reviewer launch omits the selected review budget", () => {
 	]));
 	assert.equal(audit.status, "failed");
 	assert(audit.findings.some((finding) => finding.id === "missing_budget_cluster_limit"));
+});
+
+test("fails when reviewer launch lacks user confirmation for the selected review budget", () => {
+	const audit = auditReviewerLaunchFlowLogText(jsonl([
+		toolCall("./bin/cautilus agent status --repo-root . --json"),
+		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json"),
+		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
+		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
+		assistant("Review budget before launch: one cluster, one claim per cluster, single reviewer lane, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
+		toolCall("node scripts/agent-runtime/run-claim-reviewer-smoke.mjs --review-input .cautilus/review/review-input.json --output .cautilus/review/review-result.json"),
+		toolOutput('{"reviewerExecuted":true,"backend":"codex_exec","output":".cautilus/review/review-result.json"}'),
+		assistant("The reviewer lane executed and produced a cautilus.claim_review_result.v1 review-result packet. I did not apply the result."),
+	]));
+	assert.equal(audit.status, "failed");
+	assert(audit.findings.some((finding) => finding.id === "missing_user_budget_confirmation"));
 });
 
 test("fails loose command transcript when budget is stated only after reviewer launch", () => {

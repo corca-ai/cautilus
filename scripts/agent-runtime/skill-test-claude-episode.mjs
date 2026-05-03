@@ -96,6 +96,21 @@ function runEpisodeTurn(options, prompt, sessionId) {
 	});
 }
 
+function userTurnEvent(turnIndex, input) {
+	return JSON.stringify({
+		type: "response_item",
+		payload: {
+			type: "message",
+			role: "user",
+			content: [{ type: "input_text", text: input }],
+		},
+		cautilusSynthetic: {
+			kind: "episode_user_turn",
+			turn: turnIndex + 1,
+		},
+	});
+}
+
 function turnFailureMessage(result, turnIndex, options) {
 	if (result.error?.code === "ETIMEDOUT") {
 		return `The claude_code episode runner timed out after ${options.timeoutMs}ms.`;
@@ -171,6 +186,7 @@ export function runClaudeEpisodeSample({ options, testCase, artifactDir, sampleI
 		if (failure) {
 			return backendFailureResult(testCase, failure, Date.now() - started, artifactRefs);
 		}
+		logs.push(userTurnEvent(turnIndex, turn.input));
 		logs.push((result.stdout ?? "").trim());
 		if (!sessionId) {
 			try {

@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 138
+          "satisfied": 139
         },
         "byReviewStatus": {
-          "agent-reviewed": 138
+          "agent-reviewed": 139
         },
-        "count": 138,
+        "count": 139,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,13 +62,12 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 66
+          "unknown": 65
         },
         "byReviewStatus": {
-          "agent-reviewed": 1,
           "heuristic": 65
         },
-        "count": 66,
+        "count": 65,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -194,8 +193,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 138,
-      "unknown": 185
+      "satisfied": 139,
+      "unknown": 184
     },
     "byLifecycle": {
       "new": 323
@@ -380,7 +379,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 138,
+    "satisfiedClaimCount": 139,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1765,13 +1764,14 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+            "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-186",
               "claim-docs-contracts-claim-discovery-workflow-md-195",
+              "claim-docs-contracts-claim-discovery-workflow-md-214",
               "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
             ]
           }
@@ -1786,13 +1786,14 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+            "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-186",
               "claim-docs-contracts-claim-discovery-workflow-md-195",
+              "claim-docs-contracts-claim-discovery-workflow-md-214",
               "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
             ]
           }
@@ -1841,6 +1842,28 @@
         "recommendedProof": "cautilus-eval",
         "reviewStatus": "agent-reviewed",
         "summary": "After the deterministic pass, the skill should show a separate review plan:"
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-186",
+              "claim-docs-contracts-claim-discovery-workflow-md-195",
+              "claim-docs-contracts-claim-discovery-workflow-md-214",
+              "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review."
       },
       {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-377",
@@ -2622,13 +2645,14 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+            "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-186",
               "claim-docs-contracts-claim-discovery-workflow-md-195",
+              "claim-docs-contracts-claim-discovery-workflow-md-214",
               "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
             ]
           }
@@ -3106,8 +3130,18 @@
   },
   "gitCommit": "5e3af420080749a0c0fabb1c014e5fc2b6938ccd",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 9,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-04.json",
+      ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json",
+      ".cautilus/claims/status-summary.json"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -3115,12 +3149,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "5e3af420080749a0c0fabb1c014e5fc2b6938ccd",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "b920b1ed1783eeba1ac6c86bd67ae68948a32da3",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "5e3af420080749a0c0fabb1c014e5fc2b6938ccd",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",

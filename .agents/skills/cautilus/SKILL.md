@@ -39,8 +39,7 @@ if [ -x ./bin/cautilus ]; then CAUTILUS_BIN=./bin/cautilus; fi
 ```
 
 Let the binary print command families and packet examples.
-Use `"$CAUTILUS_BIN" commands --json`, `"$CAUTILUS_BIN" --help`, or a command's `--example-input` / `--example-output` surface instead of copying broad command lists into the answer.
-The portable forms are `cautilus commands --json` and `cautilus --help`.
+Use `"$CAUTILUS_BIN" commands --json`, `"$CAUTILUS_BIN" --help`, portable `cautilus commands --json` / `cautilus --help`, or a command's `--example-input` / `--example-output` surface instead of copying broad command lists into the answer.
 Use [command-cookbook.md](references/command-cookbook.md) only after the binary has identified the relevant command family and a concrete multi-step invocation is needed.
 
 ## No-Input Orientation
@@ -145,11 +144,12 @@ When reporting a refresh-plan result to a coordinator, use this shape:
 - What I did not do: did not update the saved claim map, review claims, plan evals, or edit product files unless the user selected that branch.
 - Recommended next choice: use the first safe `refreshSummary.nextActions` item in plain language.
 
-LLM-backed claim review is a separate branch; before launching it, state the review budget: maximum clusters, parallel lanes, clusters per reviewer, excerpt budget, retry policy, and skipped-cluster policy, then ask the user to confirm or adjust that budget.
+LLM-backed claim review is a separate branch; before launching it, state the selected review budget in these exact labels: maximum clusters, claims per cluster, parallel lanes, excerpt chars, retry policy, and skipped-cluster policy.
+Then ask the user to confirm or adjust that budget, and stop until that confirmation or adjustment arrives.
 If the user selects the review branch without naming a budget, use the command defaults as a conservative deterministic prepare-input budget and say so before running `claim review prepare-input`.
+After `claim review prepare-input`, restate the concrete selected budget with the same labels before any reviewer lane, even if the user already asked to launch a reviewer.
 After a fresh first discovery for any review branch, run `claim show --input <claims.json> --sample-claims <n>` before `claim review prepare-input`; this is the product-owned review queue summary, not optional narration.
 After `claim review prepare-input`, stop at the packet boundary unless the user has explicitly delegated reviewer launch.
-The review input skips already satisfied and already reviewed non-stale claims by default; inspect `skippedClaims` only when you need to audit carried evidence or prior decisions.
 When reviewer launch is explicitly delegated, use the smallest honest launch budget if none was provided: one cluster, one claim, one reviewer lane, no retries.
 The default single-lane launch in an agent session is the current agent acting as the reviewer lane: review the selected cluster and write a valid `cautilus.claim_review_result.v1` packet.
 For claim evidence, prefer `evidenceStatus=unknown` unless the review input includes direct verified evidence for that claim.
@@ -173,8 +173,6 @@ The canonical command families are `claim`, `eval`, and `optimize`.
 Use `cautilus eval test --fixture <fixture.json>` when the repo already has a checked-in fixture and adapter-owned runner.
 When the agent runtime is read-only, pass an explicit writable `--output-dir`; prefer `/dev/shm/cautilus-<label>` when available, otherwise a writable external temp directory.
 For a fixture-runtime smoke where `doctor --scope agent-surface` or `agent status` already shows the local skill surface is ready, `--skip-preflight` is the right boundary in a read-only agent runtime; state that preflight was skipped because the ready state was already observed.
-Use `cautilus scenarios --json` only when you need the proposal-input normalization catalog.
-
 Routing rule:
 
 - `dev / repo`: an AI development agent must obey the repo work contract.
@@ -182,8 +180,7 @@ Routing rule:
 - `app / chat`: multi-turn product conversation behavior regressed after a prompt or wrapper change.
 - `app / prompt`: a single product input/output behavior must remain stable.
 
-For scenario proposal input shapes, prefer the relevant `--example-input` command from `cautilus scenarios --json` over hand-written JSON.
-
+Use `cautilus scenarios --json` only when you need the proposal-input normalization catalog.
 Use `cautilus doctor --repo-root .` when the selected branch is repo evaluation readiness.
 Use `cautilus doctor --repo-root . --scope agent-surface` or `doctor --scope agent-surface` when the selected branch is only local bundled-skill install/readiness.
 

@@ -22,7 +22,10 @@
           "input": "1"
         },
         {
-          "input": "continue through the review-to-eval branch: after fresh discovery, run claim show before review prepare-input; launch the default single reviewer lane, apply the review result, validate the reviewed claim packet, plan evals, and stop before writing fixtures or editing product files"
+          "input": "Prepare the review-to-eval branch through claim show and claim review prepare-input, state the selected default review budget, and stop before reviewer launch for confirmation."
+        },
+        {
+          "input": "Confirm the stated default review budget; now launch the default single reviewer lane, apply the review result, validate the reviewed claim packet, plan evals, and stop before writing fixtures or editing product files."
         }
       ],
       "auditKind": "cautilus_review_to_eval_flow",

@@ -1,94 +1,18 @@
 {
-  "evalPlans": [
-    {
-      "claimFingerprint": "sha256:b88434bd074af349646232a96a54afd3040eb9d98e7278fd8a039af74a0c910e",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
-      "draftIntent": "Verify that The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "conditionalCaseFields": {
-          "execution": [
-            "thresholds or turns/auditKind when the evaluated behavior needs them"
-          ],
-          "trigger": [
-            "expectedTrigger"
-          ]
-        },
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "trigger cases require expectedTrigger; execution cases use thresholds, turns, or auditKind depending on the skill contract",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "evaluationKind",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "runnerOutputSchema": "cautilus.skill_evaluation_inputs.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-contracts-claim-discovery-workflow-md-214",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/skill",
-        "requiredObservability": [
-          "trigger",
-          "execution",
-          "loadedInstructionFiles",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-skill-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
-          "line": 214,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "targetSurface": "dev/skill",
-      "unresolvedQuestions": [
-        "Should the maintained fixture record explicit user confirmation for the review budget before reviewer launch, or should the contract be narrowed to a product-owned budget statement?"
-      ]
-    }
-  ],
+  "evalPlans": [],
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 1,
+    "evalPlanCount": 0,
     "skippedByReason": {
-      "already-satisfied": 20,
+      "already-satisfied": 21,
       "not-cautilus-eval": 227,
       "not-ready-to-verify": 10,
       "not-reviewed": 65
     },
-    "skippedClaimCount": 322,
+    "skippedClaimCount": 323,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
-    "zeroPlanReason": ""
+    "zeroPlanReason": "all-reviewed-eval-targets-satisfied-and-remaining-reviewed-claims-not-eval-targets"
   },
   "schemaVersion": "cautilus.claim_eval_plan.v1",
   "selectionPolicy": {
@@ -2597,13 +2521,14 @@
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-186",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-186",
             "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-contracts-claim-discovery-workflow-md-214",
             "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
           ]
         }
@@ -2637,13 +2562,14 @@
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-195",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-186",
             "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-contracts-claim-discovery-workflow-md-214",
             "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
           ]
         }
@@ -2716,6 +2642,38 @@
         {
           "excerpt": "After the deterministic pass, the skill should show a separate review plan:",
           "line": 201,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:b88434bd074af349646232a96a54afd3040eb9d98e7278fd8a039af74a0c910e",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-186",
+            "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-contracts-claim-discovery-workflow-md-214",
+            "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
+          "line": 214,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -4720,13 +4678,14 @@
       "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-186",
             "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-contracts-claim-discovery-workflow-md-214",
             "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
           ]
         }

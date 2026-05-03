@@ -4555,13 +4555,14 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-186",
             "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-contracts-claim-discovery-workflow-md-214",
             "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
           ]
         }
@@ -4633,13 +4634,14 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-186",
             "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-contracts-claim-discovery-workflow-md-214",
             "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
           ]
         }
@@ -4762,9 +4764,22 @@
       "claimFingerprint": "sha256:b88434bd074af349646232a96a54afd3040eb9d98e7278fd8a039af74a0c910e",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The current dogfood evidence proves the review budget is stated before reviewer launch, but it does not directly prove the user confirmed or adjusted that budget before launch.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-186",
+            "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-contracts-claim-discovery-workflow-md-214",
+            "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the Codex reviewer-launch and review-to-eval dev/skill dogfood flows: the selected review budget is stated with required fields, a user confirmation turn appears after that statement, and reviewer launch happens only afterward.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -4773,7 +4788,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Extend the dev/skill fixture and audit to capture an explicit user review-budget confirmation or rewrite the claim to match the product-owned budget-statement boundary.",
+      "nextAction": "Keep reviewer-launch and review-to-eval dogfood fixtures/audits current whenever review-budget wording, user-turn transcript capture, or reviewer lane launch behavior changes.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -4785,9 +4800,7 @@
         }
       ],
       "summary": "The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
-      "unresolvedQuestions": [
-        "Should the maintained fixture record explicit user confirmation for the review budget before reviewer launch, or should the contract be narrowed to a product-owned budget statement?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -9285,13 +9298,14 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+          "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-186",
             "claim-docs-contracts-claim-discovery-workflow-md-195",
+            "claim-docs-contracts-claim-discovery-workflow-md-214",
             "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
           ]
         }
@@ -11610,8 +11624,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 138,
-      "unknown": 185
+      "satisfied": 139,
+      "unknown": 184
     },
     "byLifecycle": {
       "new": 323
@@ -11831,6 +11845,7 @@
           "evidenceStatus",
           "reviewStatus",
           "recommendedEvalSurface",
+          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
@@ -11989,7 +12004,7 @@
         "createdAt": "2026-05-04",
         "mode": "evidence-application",
         "reviewer": "codex-dev-skill-dogfood-proof",
-        "summary": "Apply verified Codex dev/skill dogfood evidence for first-scan scope confirmation and raw-discovery-to-review/eval branch behavior. Leave review-budget user-confirmation as an unresolved proof target."
+        "summary": "Apply verified Codex dev/skill dogfood evidence for first-scan scope confirmation, review-budget user confirmation before reviewer launch, and raw-discovery-to-review/eval branch behavior."
       },
       "schemaVersion": "cautilus.claim_review_result.v1"
     }

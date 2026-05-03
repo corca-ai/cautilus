@@ -4,11 +4,12 @@
   "createdForClaimIds": [
     "claim-docs-contracts-claim-discovery-workflow-md-186",
     "claim-docs-contracts-claim-discovery-workflow-md-195",
+    "claim-docs-contracts-claim-discovery-workflow-md-214",
     "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
   ],
   "repoCommit": "efec710865aa6d87d3dff06891200c434a506e91",
   "workingTreeContext": "The skill, agent-status branch label, and dev/skill audit scripts were tightened before rerunning the Codex self-dogfood flows. This evidence bundle, review result, regenerated claim artifacts, transcript artifacts, and matching implementation changes are intended to be committed together.",
-  "summary": "Codex dev/skill dogfood now proves the first-scan branch states entries and linked Markdown depth before discovery, asks for scan-scope confirmation or adjustment, keeps LLM claim review behind a separate review budget, and continues from raw discovery into claim review and eval planning instead of treating the raw packet as the finished answer.",
+  "summary": "Codex dev/skill dogfood now proves the first-scan branch states entries and linked Markdown depth before discovery, asks for scan-scope confirmation or adjustment, keeps LLM claim review behind a separate review budget, requires user confirmation of that budget before reviewer launch, and continues from raw discovery into claim review and eval planning instead of treating the raw packet as the finished answer.",
   "evidenceScope": {
     "targetSurface": "Cautilus bundled skill branch behavior under the Codex dev/skill runtime",
     "claimBoundary": "This bundle proves maintained dev/skill fixture behavior for the Cautilus bundled skill and checked-in audit scripts. It does not prove arbitrary consumer agents, arbitrary host adapters, app/product runners, or every future model backend.",
@@ -41,9 +42,10 @@
       "observed": {
         "recommendation": "accept-now",
         "artifact": "artifacts/self-dogfood/cautilus-reviewer-launch-flow-eval-codex/latest/eval-summary.json",
-        "auditVersionNote": "This run happened before the later review-budget-confirmation audit tightening. It is used here for branch progression and packet-boundary evidence, not as proof that the user confirmed or adjusted the review budget.",
         "protectedBehaviors": [
           "the flow runs first discovery, claim show, and deterministic review-input preparation before reviewer launch",
+          "the transcript states maximum clusters, claims per cluster, parallel lanes, excerpt chars, retry policy, and skipped-cluster policy before reviewer launch",
+          "the transcript includes a user confirmation turn after the budget statement and before reviewer launch",
           "the flow writes a cautilus.claim_review_result.v1 packet and stops before apply-result, eval planning, product edits, or commits"
         ]
       }
@@ -54,8 +56,8 @@
       "observed": {
         "recommendation": "accept-now",
         "artifact": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json",
-        "auditVersionNote": "This run happened before the later review-budget-confirmation audit tightening. It is used here for branch progression and packet-boundary evidence, not as proof that the user confirmed or adjusted the review budget.",
         "protectedBehaviors": [
+          "the flow states the selected review budget and receives user confirmation before reviewer launch",
           "the flow applies the review-result packet, validates the reviewed claim packet, and only then plans evals",
           "the flow stops before fixture authoring, eval execution, product edits, or commits"
         ]
@@ -78,6 +80,7 @@
         "protectedBehaviors": [
           "first-scan audits reject discovery that lacks pre-discovery entries/depth or scope confirmation",
           "reviewer-launch and review-to-eval audits reject reviewer launch that omits required review budget fields before launch",
+          "reviewer-launch and review-to-eval audits reject reviewer launch without user budget confirmation after the budget statement",
           "loose command_execution transcript shapes retain command-order evidence"
         ]
       }
@@ -92,7 +95,7 @@
     {
       "path": "skills/cautilus/SKILL.md",
       "kind": "bundled-skill-routing-contract",
-      "contentHash": "sha256:aa874ffaa01dcb37043f6df3d78acd2fc13cc5890b7333616420a737455d3595"
+      "contentHash": "sha256:1471115c3c2a45be6b8bd7f43e19c6f0b55acc4dbe4534df1a1ce7b3c2206be1"
     },
     {
       "path": "scripts/agent-runtime/audit-cautilus-first-scan-flow-log.mjs",
@@ -102,12 +105,32 @@
     {
       "path": "scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.mjs",
       "kind": "dev-skill-audit",
-      "contentHash": "sha256:21c0594235d82d0913ff0012429d897545bc6f057b34dd2188b75db26e0e65ff"
+      "contentHash": "sha256:a08ee3035a3293474401b276c379afe0f10bc72a2a3303df2d64a6007072875c"
     },
     {
       "path": "scripts/agent-runtime/audit-cautilus-review-to-eval-flow-log.mjs",
       "kind": "dev-skill-audit",
-      "contentHash": "sha256:41a41ca1d9279f7de8f59a9d13de58b43cb47b3c8fe7f8f4409c9164059ce40b"
+      "contentHash": "sha256:896f274315a830aac0737a81c9804c816d89469914b10ec2c56fc01127cca7f4"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-reviewer-launch-flow.fixture.json",
+      "kind": "dev-skill-fixture",
+      "contentHash": "sha256:19c453e2123aaf5b0c52c2085030597564b18021227646d5e5dc4280c641d957"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-review-to-eval-flow.fixture.json",
+      "kind": "dev-skill-fixture",
+      "contentHash": "sha256:ead499c0513218536a8244d8a5aa5a19749e1765b876ec1696fadaabc2422585"
+    },
+    {
+      "path": "scripts/agent-runtime/skill-test-codex-episode.mjs",
+      "kind": "codex-episode-runner",
+      "contentHash": "sha256:e412a0c6f88c185beb604df64d17ccec49e15c582f2188cd4ab6ec0afe8fcff4"
+    },
+    {
+      "path": "scripts/agent-runtime/skill-test-claude-episode.mjs",
+      "kind": "claude-episode-runner",
+      "contentHash": "sha256:2690afad38a4436a391fddad6b12be67b112843cbbbb97d51440326935a85997"
     }
   ],
   "runArtifacts": [
@@ -120,13 +143,25 @@
     {
       "path": "artifacts/self-dogfood/cautilus-reviewer-launch-flow-eval-codex/latest/eval-summary.json",
       "kind": "ignored-dev-skill-eval-summary",
-      "contentHash": "sha256:98e05ef1f31d4e911b52b0ff4ea0aaad7e84e525d0ae780fa7a104fb6bd94807",
+      "contentHash": "sha256:191b70e6e1ce9bdef136cfd0cc6b75a007a13486438deb79ee06f5abc203c204",
       "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
     },
     {
       "path": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json",
       "kind": "ignored-dev-skill-eval-summary",
-      "contentHash": "sha256:169857be62e540cc7fe75a604b1b54ba6d0f0b0d82029c6ea59012dd2ca913d5",
+      "contentHash": "sha256:de712f799e16a73b45196c4acaa081c36289ec4f5bc7dd872b4c29af6e1b79dc",
+      "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-reviewer-launch-flow-eval-codex/latest/reviewer-launch-flow/episode-cautilus-reviewer-launch-flow/audit.json",
+      "kind": "ignored-dev-skill-audit",
+      "contentHash": "sha256:885e6adea8c4220732cb6e1897eab5385f8acf64edcf8f1be81209b7f7eb4a5c",
+      "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
+    },
+    {
+      "path": "artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/review-to-eval-flow/episode-cautilus-review-to-eval-flow/audit.json",
+      "kind": "ignored-dev-skill-audit",
+      "contentHash": "sha256:fd4a646a71216befe837d2d32b2309cb97c3ed5349c6e552d6fe03f181e3c9ad",
       "retentionNote": "Ignored self-dogfood runtime artifact; rerun the command evidence to rematerialize it in another clone."
     }
   ],
@@ -140,6 +175,10 @@
       "reason": "The first-scan dogfood transcript and audit prove the user is asked to confirm the current scan scope or adjust it before discovery."
     },
     {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+      "reason": "The reviewer-launch and review-to-eval dogfood transcripts and audits prove a user confirmation turn appears after the selected review budget is stated and before the reviewer lane launches."
+    },
+    {
       "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
       "reason": "The reviewer-launch and review-to-eval dogfood flows prove the skill moves from raw discovery into claim review and eval planning while preserving packet boundaries, rather than treating raw discovery as a finished answer."
     }
@@ -147,6 +186,6 @@
   "decision": {
     "evidenceStatus": "satisfied",
     "matchKind": "verified",
-    "reason": "The first-scan fixture passed under the stricter scan-scope audit. The reviewer-launch and review-to-eval runs are retained as branch-progression and packet-boundary evidence; explicit user confirmation of the review budget remains unresolved and is not claimed by this bundle."
+    "reason": "The first-scan, reviewer-launch, and review-to-eval fixtures pass under Codex with audits that encode scan-scope confirmation, required review-budget fields, explicit user budget confirmation before reviewer launch, branch progression, and raw-discovery-not-final packet boundaries."
   }
 }

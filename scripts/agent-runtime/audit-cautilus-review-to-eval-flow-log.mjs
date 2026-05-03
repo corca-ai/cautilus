@@ -40,7 +40,7 @@ export function auditReviewToEvalFlowLogText(text) {
 		...requiredCommandFindings(commands, text),
 		...commandOrderFindings(commands),
 		...forbiddenCommandFindings(commands),
-		...messageFindings(summary.assistantMessages, messages, outputText, text, reviewerLaunchIndex),
+		...messageFindings(summary.messages, summary.assistantMessages, messages, outputText, text, reviewerLaunchIndex),
 		...toolFindings(summary.toolCalls),
 	];
 	return {
@@ -143,26 +143,58 @@ function eventContainsReviewerLaunch(value) {
 	if (typeof value !== "object") {
 		return false;
 	}
-	for (const key of ["command", "cmd", "content", "text"]) {
+	if (isMessageEvent(value)) {
+		return false;
+	}
+	if (commandTextContainsReviewerLaunch(value) || carrierContainsReviewerLaunch(value)) {
+		return true;
+	}
+	return traversableEventChildren(value).some((child) => eventContainsReviewerLaunch(child));
+}
+
+function isMessageEvent(value) {
+	return value.payload?.type === "message" || value.item?.type === "message";
+}
+
+function commandTextContainsReviewerLaunch(value) {
+	for (const key of ["command", "cmd"]) {
 		const text = typeof value[key] === "string" ? value[key] : "";
 		if (REVIEWER_SMOKE_PATTERN.test(text) || REVIEWER_RESULT_WRITE_PATTERN.test(text)) {
 			return true;
 		}
 	}
-	return Object.values(value).some((child) => eventContainsReviewerLaunch(child));
+	return false;
 }
 
-function messageFindings(messageRecords, messages, outputText, rawText, reviewerLaunchIndex) {
+function carrierContainsReviewerLaunch(value) {
+	return (value.name === "Write" || value.type === "file_change" || value.type === "command_execution")
+		&& REVIEWER_RESULT_WRITE_PATTERN.test(JSON.stringify(value));
+}
+
+function traversableEventChildren(value) {
+	return Object.entries(value)
+		.filter(([key]) => key !== "content" && key !== "text")
+		.map(([, child]) => child);
+}
+
+function messageFindings(allMessageRecords, assistantMessageRecords, messages, outputText, rawText, reviewerLaunchIndex) {
 	const joined = messages.join("\n\n");
 	const beforeLaunch = reviewerLaunchIndex === null
 		? joined
-		: messageRecords
+		: assistantMessageRecords
 			.filter((message) => message.role === "assistant" && typeof message.index === "number" && message.index < reviewerLaunchIndex)
 			.map((message) => message.text)
 			.join("\n\n");
 	const combined = `${joined}\n\n${outputText}\n\n${rawText}`;
 	const findings = [];
 	findings.push(...reviewBudgetFindings(beforeLaunch));
+	if (!hasUserReviewBudgetConfirmation(allMessageRecords, reviewerLaunchIndex)) {
+		findings.push({
+			severity: "error",
+			id: "missing_user_budget_confirmation",
+			message: "Before launching a reviewer lane, the flow should receive user confirmation or adjustment for the stated review budget.",
+		});
+	}
 	if (!/reviewerExecuted["']?\s*:\s*true|reviewer (?:lane|smoke).*(?:executed|complete|완료)|reviewer.*(?:launched|완료|결과)|current-agent reviewer lane.*(?:executed|complete)|본 에이전트.*reviewer|리뷰어.*(?:실행|호출|완료)|reviewer lane.*완결|리뷰.*완결|inline 검토|단일.*claim.*검토/i.test(combined)) {
 		findings.push({
 			severity: "error",
@@ -206,6 +238,23 @@ function messageFindings(messageRecords, messages, outputText, rawText, reviewer
 		});
 	}
 	return findings;
+}
+
+function hasUserReviewBudgetConfirmation(messageRecords, reviewerLaunchIndex) {
+	const preLaunchMessages = messageRecords.filter((message) =>
+		typeof message.index === "number" && (reviewerLaunchIndex === null || message.index < reviewerLaunchIndex),
+	);
+	const budgetMessage = preLaunchMessages.find((message) =>
+		message.role === "assistant" && reviewBudgetFindings(message.text).length === 0,
+	);
+	if (!budgetMessage) {
+		return false;
+	}
+	return preLaunchMessages.some((message) =>
+		message.role === "user"
+		&& message.index > budgetMessage.index
+		&& /confirm|confirmed|ok(?:ay)?|go ahead|approved|use default|default.*budget|budget.*(?:ok|confirmed|approved)|확인|동의|좋습니다|진행|기본.*예산|예산.*(?:확인|동의|진행)|조정 없음/i.test(message.text),
+	);
 }
 
 function reviewBudgetFindings(beforeLaunch) {

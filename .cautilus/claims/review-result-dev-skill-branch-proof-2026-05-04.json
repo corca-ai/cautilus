@@ -4,7 +4,7 @@
     "reviewer": "codex-dev-skill-dogfood-proof",
     "mode": "evidence-application",
     "createdAt": "2026-05-04",
-    "summary": "Apply verified Codex dev/skill dogfood evidence for first-scan scope confirmation and raw-discovery-to-review/eval branch behavior. Leave review-budget user-confirmation as an unresolved proof target."
+    "summary": "Apply verified Codex dev/skill dogfood evidence for first-scan scope confirmation, review-budget user confirmation before reviewer launch, and raw-discovery-to-review/eval branch behavior."
   },
   "clusterResults": [
     {
@@ -24,10 +24,11 @@
               "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+              "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
               "supportsClaimIds": [
                 "claim-docs-contracts-claim-discovery-workflow-md-186",
                 "claim-docs-contracts-claim-discovery-workflow-md-195",
+                "claim-docs-contracts-claim-discovery-workflow-md-214",
                 "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
               ]
             }
@@ -49,10 +50,11 @@
               "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+              "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
               "supportsClaimIds": [
                 "claim-docs-contracts-claim-discovery-workflow-md-186",
                 "claim-docs-contracts-claim-discovery-workflow-md-195",
+                "claim-docs-contracts-claim-discovery-workflow-md-214",
                 "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
               ]
             }
@@ -67,13 +69,24 @@
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
           "verificationReadiness": "ready-to-verify",
-          "evidenceStatus": "unknown",
-          "evidenceStatusReason": "The current dogfood evidence proves the review budget is stated before reviewer launch, but it does not directly prove the user confirmed or adjusted that budget before launch.",
-          "evidenceRefs": [],
-          "nextAction": "Extend the dev/skill fixture and audit to capture an explicit user review-budget confirmation or rewrite the claim to match the product-owned budget-statement boundary.",
-          "unresolvedQuestions": [
-            "Should the maintained fixture record explicit user confirmation for the review budget before reviewer launch, or should the contract be narrowed to a product-owned budget statement?"
-          ]
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the Codex reviewer-launch and review-to-eval dev/skill dogfood flows: the selected review budget is stated with required fields, a user confirmation turn appears after that statement, and reviewer launch happens only afterward.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-186",
+                "claim-docs-contracts-claim-discovery-workflow-md-195",
+                "claim-docs-contracts-claim-discovery-workflow-md-214",
+                "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
+              ]
+            }
+          ],
+          "nextAction": "Keep reviewer-launch and review-to-eval dogfood fixtures/audits current whenever review-budget wording, user-turn transcript capture, or reviewer lane launch behavior changes.",
+          "unresolvedQuestions": []
         },
         {
           "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
@@ -89,10 +102,11 @@
               "path": ".cautilus/claims/evidence-dev-skill-branch-proof-2026-05-04.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:ff9c50422450d839186610441883579359986d748f622376afa0bb4bce1894e9",
+              "contentHash": "sha256:4f42229c957c6753ea18e6a8bd3cf4b46d9a4d712062070950f7c4947f41fa98",
               "supportsClaimIds": [
                 "claim-docs-contracts-claim-discovery-workflow-md-186",
                 "claim-docs-contracts-claim-discovery-workflow-md-195",
+                "claim-docs-contracts-claim-discovery-workflow-md-214",
                 "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20"
               ]
             }

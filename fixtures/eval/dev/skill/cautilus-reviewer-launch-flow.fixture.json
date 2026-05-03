@@ -22,7 +22,7 @@
           "input": "1"
         },
         {
-          "input": "launch the default single reviewer lane and stop at the review-result packet boundary"
+          "input": "Confirm the stated default review budget, launch the single reviewer lane, and stop at the review-result packet boundary."
         }
       ],
       "auditKind": "cautilus_reviewer_launch_flow",
