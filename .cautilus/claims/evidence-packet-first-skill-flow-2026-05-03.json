@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_bundle.v1",
   "bundleId": "evidence-packet-first-skill-flow-2026-05-03",
   "createdForClaimIds": [
-    "claim-skills-cautilus-skill-md-227"
+    "claim-skills-cautilus-skill-md-223"
   ],
-  "repoCommit": "7c3cf6323cef7934414564a4e607f7a3a913e4e9",
+  "repoCommit": "5e3af420080749a0c0fabb1c014e5fc2b6938ccd",
   "summary": "Current Codex dev/skill packet-first dogfood passed: the bundled Cautilus skill read `agent status --json` and `claim show` packet output before answering, and the audit found no HTML or browser citation when the requested deliverable was agent-oriented.",
   "evidenceScope": {
     "targetSurface": "dev/skill Cautilus packet-first reading workflow",
@@ -39,29 +39,29 @@
       "id": "packet-first-flow-codex",
       "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/eval-summary.json",
       "kind": "skill-evaluation-summary",
-      "contentHash": "sha256:29229edb740354f366cea25029a10a123c8553d33d818d3136d8878bf14f7135",
+      "contentHash": "sha256:986b37cf4e3872f2af951542d9b016be005a65b3aa8667156f914fa36d5d31ad",
       "schemaVersion": "cautilus.skill_evaluation_summary.v1",
       "recommendation": "accept-now",
       "passed": 1,
       "failed": 0,
       "supportsClaimIds": [
-        "claim-skills-cautilus-skill-md-227"
+        "claim-skills-cautilus-skill-md-223"
       ]
     },
     {
       "id": "packet-first-flow-observed",
       "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/eval-observed.json",
       "kind": "skill-evaluation-observed",
-      "contentHash": "sha256:d10c59a1e9d1570c440fe265e378d5967afb0758e20092f64ae8ca81fcd26829",
+      "contentHash": "sha256:652878866d1fc66435627ee425767b05512c82074ea346315abf5b27e2477238",
       "supportsClaimIds": [
-        "claim-skills-cautilus-skill-md-227"
+        "claim-skills-cautilus-skill-md-223"
       ]
     },
     {
       "id": "packet-first-flow-audit",
       "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/packet-first-flow/episode-cautilus-packet-first-flow/audit.json",
       "kind": "packet-first-flow-audit",
-      "contentHash": "sha256:4d5c7d22f00b5e60a183156fe810c3ecb84569275f39ea51b072ee33513e7af1",
+      "contentHash": "sha256:91cae08495d57dac7d60d017e3ee26bcc54700d3efb3f9e722966d7375946af7",
       "auditStatus": "passed",
       "findingIds": [],
       "observedCommands": [
@@ -69,16 +69,16 @@
         "./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 10"
       ],
       "supportsClaimIds": [
-        "claim-skills-cautilus-skill-md-227"
+        "claim-skills-cautilus-skill-md-223"
       ]
     },
     {
       "id": "packet-first-flow-aggregate",
       "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/packet-first-flow/episode-cautilus-packet-first-flow/aggregate.json",
       "kind": "skill-execution-aggregate",
-      "contentHash": "sha256:4af1a72f5c07a2181bcfdaa7ea6fe69f1778d2c098826b1512c37225ff3275f7",
+      "contentHash": "sha256:eefb5178cf94e885c114059b242591a6ea40a6d0499d53195299b92a839a56e8",
       "supportsClaimIds": [
-        "claim-skills-cautilus-skill-md-227"
+        "claim-skills-cautilus-skill-md-223"
       ]
     }
   ],
@@ -86,7 +86,7 @@
     {
       "path": "skills/cautilus/SKILL.md",
       "kind": "bundled-skill-source",
-      "contentHash": "sha256:b945d2543891dd8eaba10325f7a4c322c53c99887fc891d73f32d23ac15cdfce"
+      "contentHash": "sha256:aa874ffaa01dcb37043f6df3d78acd2fc13cc5890b7333616420a737455d3595"
     },
     {
       "path": "fixtures/eval/dev/skill/cautilus-packet-first-flow.fixture.json",
@@ -101,22 +101,22 @@
     {
       "path": "scripts/agent-runtime/skill-test-codex-episode.mjs",
       "kind": "codex-episode-runner",
-      "contentHash": "sha256:9dd249cec33e6c5868f594588c2496e233f3cda8443fcf3b0aa070641008dbe1"
+      "contentHash": "sha256:648f4cadca21f7ea172b12c055706bb20673d7f90d660368a692a11f00c8936e"
     },
     {
       "path": "scripts/agent-runtime/skill-test-claude-episode.mjs",
       "kind": "claude-episode-runner",
-      "contentHash": "sha256:8f956e1a8cc3df7fbe823e492417ebb8b45058d328f21b8379abdd72b74b050e"
+      "contentHash": "sha256:6fdff10347d831e4ce8cc4f67039c82337b552a3bbb8bf0f39f934980599d92a"
     },
     {
       "path": "scripts/agent-runtime/skill-test-case-suite.mjs",
       "kind": "node-skill-suite-normalizer",
-      "contentHash": "sha256:a62986a138afbf88e16fe2ca3b7b7bb3ad18bb599447404f1245cd9e82540a75"
+      "contentHash": "sha256:fa919c3ad08e387d20700ac300843a4a60a0d2335ac35411e2b6a29d778ee3a7"
     },
     {
       "path": "internal/runtime/skill_test_cases.go",
       "kind": "go-eval-input-normalizer",
-      "contentHash": "sha256:d2ae462feb319fa43d379352f2fd73ee0981e73e37a7624bdf212aff924270ba"
+      "contentHash": "sha256:d7985d4bdc33b07f7397a9707ecff57ad98ee69c05bf6ddc38a0e64794241e40"
     },
     {
       "path": ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",

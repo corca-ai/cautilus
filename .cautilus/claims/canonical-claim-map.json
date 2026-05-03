@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:c72b123f6764573d5497291d4ae743ca5d72f63fcc468348a311af58aa337ec4"
+      "contentHash": "sha256:435a2a2ba0db87b836e4d54e3fad7da17c94b44540265e25407c8990e4011a18"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:882064b19bb1f53a7f5d0bdbe653b53c33f2ff4ca8186e056538ca7e2eff76a8"
     }
   },
-  "claimsPacketGitCommit": "7c447d5cddc679c56180d3dff55bdd88c2237092",
+  "claimsPacketGitCommit": "5e3af420080749a0c0fabb1c014e5fc2b6938ccd",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 323,
   "catalogs": {
@@ -315,7 +315,7 @@
       "U7": 2
     },
     "byMaintainerCanonicalClaimId": {
-      "M1": 30,
+      "M1": 29,
       "M10": 21,
       "M11": 10,
       "M2": 56,
@@ -323,7 +323,7 @@
       "M4": 13,
       "M5": 9,
       "M6": 10,
-      "M7": 13,
+      "M7": 14,
       "M8": 14,
       "M9": 19
     },
@@ -584,14 +584,14 @@
       "claim-docs-contracts-scenario-proposal-sources-md-236",
       "claim-skills-cautilus-skill-md-11",
       "claim-skills-cautilus-skill-md-23",
-      "claim-skills-cautilus-skill-md-72",
+      "claim-skills-cautilus-skill-md-69",
+      "claim-skills-cautilus-skill-md-112",
       "claim-skills-cautilus-skill-md-115",
-      "claim-skills-cautilus-skill-md-118",
-      "claim-skills-cautilus-skill-md-124",
-      "claim-skills-cautilus-skill-md-129",
-      "claim-skills-cautilus-skill-md-136",
-      "claim-skills-cautilus-skill-md-162",
-      "claim-skills-cautilus-skill-md-227"
+      "claim-skills-cautilus-skill-md-121",
+      "claim-skills-cautilus-skill-md-126",
+      "claim-skills-cautilus-skill-md-133",
+      "claim-skills-cautilus-skill-md-158",
+      "claim-skills-cautilus-skill-md-223"
     ]
   },
   "userCoverage": [
@@ -1350,7 +1350,7 @@
     {
       "canonicalClaimId": "M1",
       "title": "Claim Discovery Workflow",
-      "absorbedRawClaimCount": 30,
+      "absorbedRawClaimCount": 29,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-220",
         "claim-docs-contracts-adapter-contract-md-472",
@@ -1376,12 +1376,11 @@
         "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-19",
         "claim-docs-contracts-scenario-proposal-sources-md-236",
         "claim-skills-cautilus-skill-md-11",
-        "claim-skills-cautilus-skill-md-72",
-        "claim-skills-cautilus-skill-md-118",
-        "claim-skills-cautilus-skill-md-124",
-        "claim-skills-cautilus-skill-md-129",
-        "claim-skills-cautilus-skill-md-136",
-        "claim-skills-cautilus-skill-md-162"
+        "claim-skills-cautilus-skill-md-115",
+        "claim-skills-cautilus-skill-md-121",
+        "claim-skills-cautilus-skill-md-126",
+        "claim-skills-cautilus-skill-md-133",
+        "claim-skills-cautilus-skill-md-158"
       ],
       "absorbedRawClaims": [
         {
@@ -1529,37 +1528,31 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-skill-md-72",
-          "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-skills-cautilus-skill-md-118",
+          "claimId": "claim-skills-cautilus-skill-md-115",
           "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-skill-md-124",
+          "claimId": "claim-skills-cautilus-skill-md-121",
           "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-skill-md-129",
+          "claimId": "claim-skills-cautilus-skill-md-126",
           "claimFingerprint": "sha256:81df3b1030acb0d476e7b567186862db55f2189eccf9f8b1338b371db7cfd3e6",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-skill-md-136",
+          "claimId": "claim-skills-cautilus-skill-md-133",
           "claimFingerprint": "sha256:ad87c31fd958bda23449318cee9819910cee320e357b5d89828021f8fdc3007a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-skill-md-162",
+          "claimId": "claim-skills-cautilus-skill-md-158",
           "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1567,21 +1560,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 14,
-        "unknown": 16
+        "unknown": 15
       },
       "byReviewStatus": {
-        "agent-reviewed": 19,
+        "agent-reviewed": 18,
         "heuristic": 11
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
         "deterministic": 15,
-        "human-auditable": 11
+        "human-auditable": 10
       },
       "byMappingConfidence": {
         "high": 3,
         "low": 8,
-        "medium": 19
+        "medium": 18
       }
     },
     {
@@ -1644,7 +1637,7 @@
         "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
         "claim-skills-cautilus-skill-md-22",
         "claim-skills-cautilus-skill-md-23",
-        "claim-skills-cautilus-skill-md-115"
+        "claim-skills-cautilus-skill-md-112"
       ],
       "absorbedRawClaims": [
         {
@@ -1978,7 +1971,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-skill-md-115",
+          "claimId": "claim-skills-cautilus-skill-md-112",
           "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2482,7 +2475,7 @@
         "claim-docs-contracts-claim-discovery-workflow-md-607",
         "claim-docs-contracts-runner-readiness-md-349",
         "claim-docs-specs-maintainer-evidence-state-artifacts-spec-md-20",
-        "claim-skills-cautilus-skill-md-227"
+        "claim-skills-cautilus-skill-md-223"
       ],
       "absorbedRawClaims": [
         {
@@ -2534,7 +2527,7 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-skills-cautilus-skill-md-227",
+          "claimId": "claim-skills-cautilus-skill-md-223",
           "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2659,7 +2652,7 @@
     {
       "canonicalClaimId": "M7",
       "title": "Readiness And Runtime Status",
-      "absorbedRawClaimCount": 13,
+      "absorbedRawClaimCount": 14,
       "absorbedRawClaimIds": [
         "claim-agents-md-79",
         "claim-docs-contracts-claim-discovery-workflow-md-96",
@@ -2673,7 +2666,8 @@
         "claim-docs-contracts-runner-readiness-md-118",
         "claim-docs-contracts-runner-readiness-md-198",
         "claim-docs-contracts-runner-readiness-md-347",
-        "claim-docs-specs-maintainer-readiness-runtime-status-spec-md-20"
+        "claim-docs-specs-maintainer-readiness-runtime-status-spec-md-20",
+        "claim-skills-cautilus-skill-md-69"
       ],
       "absorbedRawClaims": [
         {
@@ -2753,23 +2747,29 @@
           "claimFingerprint": "sha256:fc2a2f494f8d3e24e9ff2dfacaab24351ea8515847e8d50fff3d417c3f999b00",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-skills-cautilus-skill-md-69",
+          "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         }
       ],
       "byEvidenceStatus": {
         "satisfied": 6,
-        "unknown": 7
+        "unknown": 8
       },
       "byReviewStatus": {
         "agent-reviewed": 10,
-        "heuristic": 3
+        "heuristic": 4
       },
       "byRecommendedProof": {
         "deterministic": 6,
-        "human-auditable": 7
+        "human-auditable": 8
       },
       "byMappingConfidence": {
         "high": 2,
-        "medium": 11
+        "medium": 12
       }
     },
     {
@@ -16238,12 +16238,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-72",
+      "claimId": "claim-skills-cautilus-skill-md-69",
       "summary": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.",
       "sourceRefs": [
         {
           "path": "skills/cautilus/SKILL.md",
-          "line": 72,
+          "line": 69,
           "excerpt": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created."
         }
       ],
@@ -16253,39 +16253,40 @@
       "recommendedProof": "human-auditable",
       "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
-      "reviewStatus": "agent-reviewed",
+      "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
-      "canonicalClaimId": "M1",
-      "score": 9,
-      "runnerUpCanonicalClaimId": "M2",
+      "canonicalClaimId": "M7",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M6",
       "runnerUpScore": 9,
-      "scoreMargin": 0,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "adapter",
         "agent",
         "aligned",
         "behavior",
-        "deterministic",
-        "prove",
-        "skill",
-        "thi",
+        "named",
+        "repo",
+        "surface",
         "user",
-        "workflow"
+        "what",
+        "which"
       ],
       "alignedUserClaimIds": [
-        "U1",
-        "U7"
+        "U4",
+        "U5"
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-115",
+      "claimId": "claim-skills-cautilus-skill-md-112",
       "summary": "The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.",
       "sourceRefs": [
         {
           "path": "skills/cautilus/SKILL.md",
-          "line": 115,
+          "line": 112,
           "excerpt": "The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen."
         }
       ],
@@ -16321,12 +16322,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-118",
+      "claimId": "claim-skills-cautilus-skill-md-115",
       "summary": "If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.",
       "sourceRefs": [
         {
           "path": "skills/cautilus/SKILL.md",
-          "line": 118,
+          "line": 115,
           "excerpt": "If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration."
         }
       ],
@@ -16364,12 +16365,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-124",
+      "claimId": "claim-skills-cautilus-skill-md-121",
       "summary": "If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.",
       "sourceRefs": [
         {
           "path": "skills/cautilus/SKILL.md",
-          "line": 124,
+          "line": 121,
           "excerpt": "If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`."
         }
       ],
@@ -16403,12 +16404,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-129",
+      "claimId": "claim-skills-cautilus-skill-md-126",
       "summary": "In the Cautilus product repo, product-meaning review should start from those spec docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.",
       "sourceRefs": [
         {
           "path": "skills/cautilus/SKILL.md",
-          "line": 129,
+          "line": 126,
           "excerpt": "In the Cautilus product repo, product-meaning review should start from those spec docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed."
         }
       ],
@@ -16447,12 +16448,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-136",
+      "claimId": "claim-skills-cautilus-skill-md-133",
       "summary": "Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim specs and preserve source refs, proof route, evidence status, and next action.",
       "sourceRefs": [
         {
           "path": "skills/cautilus/SKILL.md",
-          "line": 136,
+          "line": 133,
           "excerpt": "Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim specs and preserve source refs, proof route, evidence status, and next action."
         }
       ],
@@ -16492,12 +16493,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-162",
+      "claimId": "claim-skills-cautilus-skill-md-158",
       "summary": "This branch proves reviewer launch, not review-result merge behavior.",
       "sourceRefs": [
         {
           "path": "skills/cautilus/SKILL.md",
-          "line": 162,
+          "line": 158,
           "excerpt": "This branch proves reviewer launch, not review-result merge behavior."
         }
       ],
@@ -16532,12 +16533,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-skill-md-227",
+      "claimId": "claim-skills-cautilus-skill-md-223",
       "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
       "sourceRefs": [
         {
           "path": "skills/cautilus/SKILL.md",
-          "line": 227,
+          "line": 223,
           "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable."
         }
       ],

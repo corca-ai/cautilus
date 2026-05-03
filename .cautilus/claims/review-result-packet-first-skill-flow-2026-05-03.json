@@ -11,7 +11,7 @@
       "clusterId": "cluster-packet-first-skill-flow-2026-05-03",
       "claimUpdates": [
         {
-          "claimId": "claim-skills-cautilus-skill-md-227",
+          "claimId": "claim-skills-cautilus-skill-md-223",
           "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
@@ -24,9 +24,9 @@
               "path": ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:99b8d900b4b457de04e60308d69e0bb576e8a237dfdf8504764a91bde2df2bc2",
+              "contentHash": "sha256:2c23039f3eb065c3d112236d45a01638347efb452fcb2a8632354d0b40c473e9",
               "supportsClaimIds": [
-                "claim-skills-cautilus-skill-md-227"
+                "claim-skills-cautilus-skill-md-223"
               ]
             }
           ],

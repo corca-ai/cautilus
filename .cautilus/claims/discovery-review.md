@@ -8,7 +8,7 @@ Source excerpts are included for local judgment; source refs are trace data, not
 ## Packet Summary
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Git commit in packet: 7c447d5cddc679c56180d3dff55bdd88c2237092
+- Git commit in packet: 5e3af420080749a0c0fabb1c014e5fc2b6938ccd
 - Candidate count: 323
 - Source count: 44
 - User claims: 82
@@ -1981,7 +1981,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/binary-skill-boundary.spec.md:20
 
-##### claim-skills-cautilus-skill-md-227
+##### claim-skills-cautilus-skill-md-223
 
 - Summary: Agents should read the packet first, then cite HTML only when a browser view is the deliverable.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=satisfied
@@ -1994,7 +1994,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; skills/cautilus/SKILL.md:227
+- Trace: 1 source ref; skills/cautilus/SKILL.md:223
 
 #### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (11)
 
@@ -2570,7 +2570,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/binary-skill-boundary.spec.md:14
 
-##### claim-skills-cautilus-skill-md-136
+##### claim-skills-cautilus-skill-md-133
 
 - Summary: Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim specs and preserve source refs, proof route, evidence status, and next action.
 - Current labels: audience=developer; proof=human-auditable; readiness=needs-alignment; evidence=unknown
@@ -2582,13 +2582,13 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; skills/cautilus/SKILL.md:136
+- Trace: 1 source ref; skills/cautilus/SKILL.md:133
 
-##### claim-skills-cautilus-skill-md-72
+##### claim-skills-cautilus-skill-md-69
 
 - Summary: Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.
 - Current labels: audience=developer; proof=human-auditable; readiness=needs-alignment; evidence=unknown
-- Suggested next action: Create a dev/skill scenario or deterministic skill guidance check for repo-proves-claims routing.
+- Suggested next action: Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -2596,11 +2596,11 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; skills/cautilus/SKILL.md:72
+- Trace: 1 source ref; skills/cautilus/SKILL.md:69
 
 #### Human-auditable / ready-to-verify / evidence unknown (3)
 
-##### claim-skills-cautilus-skill-md-118
+##### claim-skills-cautilus-skill-md-115
 
 - Summary: If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.
 - Current labels: audience=developer; proof=human-auditable; readiness=ready-to-verify; evidence=unknown
@@ -2612,9 +2612,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; skills/cautilus/SKILL.md:118
+- Trace: 1 source ref; skills/cautilus/SKILL.md:115
 
-##### claim-skills-cautilus-skill-md-124
+##### claim-skills-cautilus-skill-md-121
 
 - Summary: If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.
 - Current labels: audience=developer; proof=human-auditable; readiness=ready-to-verify; evidence=unknown
@@ -2626,9 +2626,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; skills/cautilus/SKILL.md:124
+- Trace: 1 source ref; skills/cautilus/SKILL.md:121
 
-##### claim-skills-cautilus-skill-md-129
+##### claim-skills-cautilus-skill-md-126
 
 - Summary: In the Cautilus product repo, product-meaning review should start from those spec docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.
 - Current labels: audience=developer; proof=human-auditable; readiness=ready-to-verify; evidence=unknown
@@ -2640,7 +2640,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; skills/cautilus/SKILL.md:129
+- Trace: 1 source ref; skills/cautilus/SKILL.md:126
 
 ### Claim discovery and review (18)
 
@@ -2661,7 +2661,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/binary-skill-boundary.spec.md:15
 
-##### claim-skills-cautilus-skill-md-115
+##### claim-skills-cautilus-skill-md-112
 
 - Summary: The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -2674,9 +2674,9 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; skills/cautilus/SKILL.md:115
+- Trace: 1 source ref; skills/cautilus/SKILL.md:112
 
-##### claim-skills-cautilus-skill-md-162
+##### claim-skills-cautilus-skill-md-158
 
 - Summary: This branch proves reviewer launch, not review-result merge behavior.
 - Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
@@ -2689,7 +2689,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
-- Trace: 1 source ref; skills/cautilus/SKILL.md:162
+- Trace: 1 source ref; skills/cautilus/SKILL.md:158
 
 #### Cautilus eval / dev/skill / ready-to-verify / evidence satisfied (1)
 
