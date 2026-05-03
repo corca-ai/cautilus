@@ -5026,6 +5026,13 @@ func TestCLILiveEvalRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 		t.Fatalf("expected evaluator input stop reason, got %#v", evaluatorInput["stopReason"])
 	}
 	workspaceDir := filepath.Join(outputPath+".d", "workspace")
+	resultBytes, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	if strings.Contains(string(resultBytes), workspaceDir) {
+		t.Fatalf("public live-run result packet should not expose workspace directory %q: %s", workspaceDir, string(resultBytes))
+	}
 	countBytes, err := os.ReadFile(filepath.Join(workspaceDir, "prepare-count.txt"))
 	if err != nil {
 		t.Fatalf("ReadFile returned error: %v", err)

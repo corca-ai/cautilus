@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-live-run-workspace-boundary-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-live-run-invocation-md-12",
+    "claim-docs-contracts-live-run-invocation-md-24"
+  ],
+  "repoCommit": "8d16ecf675e4816bbd9d96438de09e1d0d8a6dff",
+  "summary": "This bundle records deterministic proof for product-owned live-run workspace allocation, one-time prepare-hook timing, and the public packet/template boundary.",
+  "evidenceScope": {
+    "targetSurface": "product-owned live-run scripted loop workspace boundary",
+    "claimBoundary": "Only the scripted product-owned live-run loop and explicit request-batch workspace markers are marked satisfied.",
+    "notClaimed": [
+      "Remote live-run authentication or session management",
+      "Persona-prompt simulator quality",
+      "Adapter-configurable workspace roots beyond the current output-file-relative path",
+      "Every consumer-specific single-turn backend"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLILiveEvalRunLiveCanExecuteProductOwnedScriptedLoop|TestCLILiveEvalRunScenariosExecutesExplicitRequestBatch' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "eval live run allocates a stable workspace at <output_file>.d/workspace for a product-owned scripted loop",
+          "workspace_prepare_command_template runs once before scripted turns",
+          "each consumer single-turn command receives the same workspace_dir placeholder value",
+          "the public live-run result packet does not expose the workspace directory path",
+          "eval live run-scenarios writes nested per-request result files and each request has a prepared workspace marker"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "live-run-workspace-boundary-cli-smoke-test",
+      "contentHash": "sha256:d5b50fae39bad742acd6d5dce32230909764bac7dbe4535a6b24670cbb8d8b64"
+    },
+    {
+      "path": "docs/contracts/live-run-invocation.md",
+      "kind": "live-run-invocation-claim-source",
+      "contentHash": "sha256:e5e6de878b5b5958edd68768c3013b0d5e04aabda0b19acd5367e875ba73382c"
+    },
+    {
+      "path": "docs/contracts/adapter-contract.md",
+      "kind": "adapter-placeholder-contract",
+      "contentHash": "sha256:1a0ad92e5743b904f57ecbbd047e4cc33e484f128b1d755f9204abbb45063da6"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The cited CLI smoke tests prove the product-owned live-run loop allocates one stable workspace, runs the prepare hook once, routes workspace_dir through adapter placeholders, and keeps the workspace path out of the public result packet."
+  }
+}

@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 43
+          "satisfied": 45
         },
         "byReviewStatus": {
-          "agent-reviewed": 43
+          "agent-reviewed": 45
         },
-        "count": 43,
+        "count": 45,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 78
+          "unknown": 76
         },
         "byReviewStatus": {
-          "agent-reviewed": 11,
+          "agent-reviewed": 9,
           "heuristic": 64,
           "human-reviewed": 3
         },
-        "count": 78,
+        "count": 76,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 43,
-      "unknown": 272
+      "satisfied": 45,
+      "unknown": 270
     },
     "byLifecycle": {
       "new": 315
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 43,
+    "satisfiedClaimCount": 45,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1196,6 +1196,46 @@
         "summary": "`cautilus claim discover` currently emits a deterministic, source-ref-backed proof-plan skeleton."
       },
       {
+        "claimId": "claim-docs-contracts-live-run-invocation-md-12",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:4f0e14d44fc8992a4c56128ee3c59cdb4cf5bf9f1d935e338ea0ac76203a5a3f",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-live-run-workspace-boundary-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-live-run-invocation-md-12",
+              "claim-docs-contracts-live-run-invocation-md-24"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `\u003coutput_file\u003e.d/workspace/` and may run one optional prepare hook before the first turn."
+      },
+      {
+        "claimId": "claim-docs-contracts-live-run-invocation-md-24",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:4f0e14d44fc8992a4c56128ee3c59cdb4cf5bf9f1d935e338ea0ac76203a5a3f",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-live-run-workspace-boundary-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-live-run-invocation-md-12",
+              "claim-docs-contracts-live-run-invocation-md-24"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Product-owned workspace lifecycle stays off the public packet shape and instead flows through adapter template placeholders."
+      },
+      {
         "claimId": "claim-skills-cautilus-skill-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1218,7 +1258,7 @@
   },
   "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "gitState": {
-    "changedFileCount": 21,
+    "changedFileCount": 24,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1233,6 +1273,7 @@
       ".cautilus/claims/review-result-evidence-consumer-surface-alias-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-gepa-sparse-evidence-block-2026-05-03.json",
+      ".cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
       "charness-artifacts/debug/debug-2026-05-03-evaluation-process-concern-proof.md",
@@ -1240,7 +1281,9 @@
       "internal/app/cli_smoke_test.go",
       "internal/runtime/claim_discovery.go",
       "internal/runtime/claim_discovery_test.go",
-      "internal/runtime/proposals_test.go"
+      "internal/runtime/proposals_test.go",
+      "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "scripts/agent-runtime/serve-claim-status-review.test.mjs"
     ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
@@ -1250,7 +1293,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "50c29c534b744bccf693b681490780b312c2d03a",
+    "currentGitCommit": "8d16ecf675e4816bbd9d96438de09e1d0d8a6dff",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",

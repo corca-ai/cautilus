@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark the product-owned scripted live-run workspace boundary claims satisfied; do not infer remote/session or persona-quality behavior."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-live-run-workspace-boundary",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-12",
+          "claimFingerprint": "sha256:ae0122e9a32cdc900075bb4a92bef7f3ed1984464ccba320f1a5824446ee45d2",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names live-run workspace allocation and prepare-hook timing, which are deterministic CLI/runtime behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by CLI smoke tests: the product-owned scripted loop creates <output_file>.d/workspace, runs the prepare hook once before turns, and reuses that same workspace for each turn.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-live-run-workspace-boundary-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:4f0e14d44fc8992a4c56128ee3c59cdb4cf5bf9f1d935e338ea0ac76203a5a3f",
+              "supportsClaimIds": [
+                "claim-docs-contracts-live-run-invocation-md-12",
+                "claim-docs-contracts-live-run-invocation-md-24"
+              ]
+            }
+          ],
+          "nextAction": "Keep the product-owned scripted loop smoke test current when changing live-run workspace allocation or prepare-hook timing.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-24",
+          "claimFingerprint": "sha256:47034d0a3d9bd406d1f4ba72ec4165eaa08af324e5bd9c65bb7460a32e496aef",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names the public packet and adapter-template boundary for live-run workspace lifecycle, which should be protected by deterministic CLI tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by CLI smoke tests: workspace_dir flows through adapter command placeholders to the consumer turn command while the public live-run result packet does not expose the workspace directory path.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-live-run-workspace-boundary-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:4f0e14d44fc8992a4c56128ee3c59cdb4cf5bf9f1d935e338ea0ac76203a5a3f",
+              "supportsClaimIds": [
+                "claim-docs-contracts-live-run-invocation-md-12",
+                "claim-docs-contracts-live-run-invocation-md-24"
+              ]
+            }
+          ],
+          "nextAction": "Keep the public-packet no-workspace assertion and adapter placeholder tests current when changing live-run invocation packet shape.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

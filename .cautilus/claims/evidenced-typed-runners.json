@@ -5906,9 +5906,20 @@
       "claimFingerprint": "sha256:ae0122e9a32cdc900075bb4a92bef7f3ed1984464ccba320f1a5824446ee45d2",
       "claimId": "claim-docs-contracts-live-run-invocation-md-12",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The workspace directory and prepare-hook timing are runtime behavior and should be covered by deterministic invocation tests.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:4f0e14d44fc8992a4c56128ee3c59cdb4cf5bf9f1d935e338ea0ac76203a5a3f",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-live-run-workspace-boundary-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-live-run-invocation-md-12",
+            "claim-docs-contracts-live-run-invocation-md-24"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by CLI smoke tests: the product-owned scripted loop creates <output_file>.d/workspace, runs the prepare hook once before turns, and reuses that same workspace for each turn.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5917,7 +5928,7 @@
         "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or connect deterministic live-run invocation tests for workspace directory allocation and one-time prepare hook timing.",
+      "nextAction": "Keep the product-owned scripted loop smoke test current when changing live-run workspace allocation or prepare-hook timing.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -5930,7 +5941,7 @@
       "summary": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `<output_file>.d/workspace/` and may run one optional prepare hook before the first turn.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+      "whyThisLayer": "The claim names live-run workspace allocation and prepare-hook timing, which are deterministic CLI/runtime behavior."
     },
     {
       "claimAudience": "developer",
@@ -5938,9 +5949,20 @@
       "claimFingerprint": "sha256:47034d0a3d9bd406d1f4ba72ec4165eaa08af324e5bd9c65bb7460a32e496aef",
       "claimId": "claim-docs-contracts-live-run-invocation-md-24",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is a packet-shape and adapter-template behavior that can be checked deterministically.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:4f0e14d44fc8992a4c56128ee3c59cdb4cf5bf9f1d935e338ea0ac76203a5a3f",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-live-run-workspace-boundary-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-live-run-invocation-md-12",
+            "claim-docs-contracts-live-run-invocation-md-24"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by CLI smoke tests: workspace_dir flows through adapter command placeholders to the consumer turn command while the public live-run result packet does not expose the workspace directory path.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5949,7 +5971,7 @@
         "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or connect deterministic schema/template checks proving workspace lifecycle is not exposed through the public packet shape and flows through adapter placeholders.",
+      "nextAction": "Keep the public-packet no-workspace assertion and adapter placeholder tests current when changing live-run invocation packet shape.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -5962,7 +5984,7 @@
       "summary": "Product-owned workspace lifecycle stays off the public packet shape and instead flows through adapter template placeholders.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+      "whyThisLayer": "The claim names the public packet and adapter-template boundary for live-run workspace lifecycle, which should be protected by deterministic CLI tests."
     },
     {
       "claimAudience": "developer",
@@ -10079,8 +10101,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 43,
-      "unknown": 272
+      "satisfied": 45,
+      "unknown": 270
     },
     "byLifecycle": {
       "new": 315
