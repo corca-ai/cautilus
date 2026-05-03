@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-optimize-held-out-route-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+    "claim-docs-specs-user-optimization-spec-md-3"
+  ],
+  "repoCommit": "a7aab532d93501512f43f4a5c15b3aa0925b2868",
+  "summary": "Current optimize tests prove a bounded optimize route that starts from explicit packets, carries held-out results into search input, runs candidate mutation through an eval-test backed held-out/full-gate route, records before/after decision artifacts, and emits reopenable optimize proposal and revision packets.",
+  "evidenceScope": {
+    "targetSurface": "Cautilus optimize packet flow and held-out eval-backed search route",
+    "claimBoundary": "This bundle supports only the current deterministic optimize flow: packet assembly, held-out search input, eval-test backed candidate evaluation, selected candidate improvement over seed in a temp repo, and reopenable proposal/revision artifacts.",
+    "notClaimed": [
+      "External model quality improves in arbitrary consumer repos",
+      "Every optimize target type is covered beyond the checked prompt-target route",
+      "A human has accepted the optimized prompt for production",
+      "Repeated live GEPA-style search with provider APIs is covered",
+      "The optimizer may skip held-out, comparison, or full-gate proof to make an improvement look successful",
+      "Fixture-backed temporary repo proof is equivalent to every product-owned app runner's real production behavior"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIOptimizeSearchRunUsesEvalTestForHeldOutAndFullGate|TestCLIOptimizeSearchPrepareRunAndProposeFromSearch|TestCLIOptimizePrepareInputProposeAndBuildArtifact' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "optimize prepare-input, propose, and build-artifact produce durable optimize input, proposal, and revision packets",
+          "optimize search prepare-input preserves the held-out scenario set from explicit held-out results",
+          "optimize search run invokes eval-test for held-out and full-gate candidate checks in a temporary repo",
+          "an eval-backed mutation candidate can beat the seed candidate for the selected behavior",
+          "the selected mutation candidate records evaluation artifacts, a held-out evaluation matrix score, and a passing full-gate checkpoint",
+          "optimize propose --from-search preserves the search result file and target file references"
+        ]
+      }
+    },
+    {
+      "command": "node --test scripts/agent-runtime/optimize-flow.test.mjs scripts/agent-runtime/optimization-contract-schemas.test.mjs scripts/agent-runtime/optimize-search-contract-schemas.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 10,
+        "pass": 10,
+        "protectedBehaviors": [
+          "optimize input packets are assembled from explicit report, review summary, scenario history, target, and budget evidence",
+          "optimize proposals stay bounded to one revision plan and retain held-out, comparison, and structured review stop conditions",
+          "revision artifacts can be reopened from proposal and input packets",
+          "checked-in optimize and optimize-search example packets match their schemas"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-optimize-held-out-and-packet-tests",
+      "contentHash": "sha256:15c235ebe58a9e23da494628348e4b6b3449d5dcfa5ee079e64d4f63a10817df"
+    },
+    {
+      "path": "scripts/agent-runtime/optimize-flow.test.mjs",
+      "kind": "optimize-packet-flow-tests",
+      "contentHash": "sha256:1decc6f98b7de8ea2b782f4aad00492d61c5e264e29da4a86fdcb5774b3db71f"
+    },
+    {
+      "path": "scripts/agent-runtime/optimization-contract-schemas.test.mjs",
+      "kind": "optimize-schema-tests",
+      "contentHash": "sha256:5fe81a9bb4c2a5e3c9085ed5571d186104d9f11e42d9dcb0e4ebb667f9ef12c9"
+    },
+    {
+      "path": "scripts/agent-runtime/optimize-search-contract-schemas.test.mjs",
+      "kind": "optimize-search-schema-tests",
+      "contentHash": "sha256:d3cd713096979f1cb6363bc2a4f795ea8e346bc32f943cf0b2da9209c6598e16"
+    },
+    {
+      "path": "fixtures/optimize/example-input.json",
+      "kind": "optimize-input-example",
+      "contentHash": "sha256:63c812fc27615fb18cee5717a31c44b955266903e0ac39ff2ed229cfb7a16161"
+    },
+    {
+      "path": "fixtures/optimize/example-proposal.json",
+      "kind": "optimize-proposal-example",
+      "contentHash": "sha256:bf184478afa806d4cb5beaf967fd02c0ad82d6814c30b6e3d3bd448d88a0414f"
+    },
+    {
+      "path": "fixtures/optimize/example-revision-artifact.json",
+      "kind": "optimize-revision-artifact-example",
+      "contentHash": "sha256:9ec59c8f41194aac50a8f766abf47ee7563d57e2766da74ee9bc5a5c0495e3ed"
+    },
+    {
+      "path": "fixtures/optimize-search/example-input.json",
+      "kind": "optimize-search-input-example",
+      "contentHash": "sha256:13c06457dd92f635566ada8f02d9908a03600acc8d75ab673dc0fa5c16242575"
+    },
+    {
+      "path": "fixtures/optimize-search/example-result.json",
+      "kind": "optimize-search-result-example",
+      "contentHash": "sha256:34a46fe3c3565bcdb8a6770a52d11158d803dea1ba3a6a6799e18bf2a4f736fe"
+    },
+    {
+      "path": "docs/specs/user/optimization.spec.md",
+      "kind": "user-optimization-spec",
+      "contentHash": "sha256:cc6ed4707920d10e6789f34c96d957c296d8741e3e4c7819126f7605c7a4310a"
+    },
+    {
+      "path": "docs/specs/maintainer/optimization-loop.spec.md",
+      "kind": "maintainer-optimization-loop-spec",
+      "contentHash": "sha256:27a3f64efb4bf9a1801fbcd0f83ede708844714363ea50f393ee35dfa3da4598"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The executed CLI and packet-flow tests prove the current optimize loop can reopen explicit packets, carry held-out evidence into search, evaluate candidate mutations through eval-test, select an improved candidate in a controlled route, and retain proposal/revision proof artifacts."
+  }
+}

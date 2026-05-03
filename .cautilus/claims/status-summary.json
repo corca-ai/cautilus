@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 119
+          "satisfied": 121
         },
         "byReviewStatus": {
-          "agent-reviewed": 119
+          "agent-reviewed": 121
         },
-        "count": 119,
+        "count": 121,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,13 +43,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 100
+          "unknown": 98
         },
         "byReviewStatus": {
-          "agent-reviewed": 3,
+          "agent-reviewed": 1,
           "heuristic": 97
         },
-        "count": 100,
+        "count": 98,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -175,8 +175,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 119,
-      "unknown": 203
+      "satisfied": 121,
+      "unknown": 201
     },
     "byLifecycle": {
       "new": 322
@@ -361,7 +361,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 119,
+    "satisfiedClaimCount": 121,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -2267,6 +2267,26 @@
         "summary": "The next proof should attach this behavior to deterministic tests or an evidence bundle instead of leaving it as a one-session observation."
       },
       {
+        "claimId": "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:83e62e8762bd8b2dbd1785e7622fae11e6ab2a6be91245c77d642788cfa23fe4",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+              "claim-docs-specs-user-optimization-spec-md-3"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/repo",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The product needs packet-level tests and at least one held-out eval route that can reopen the before and after evidence."
+      },
+      {
         "claimId": "claim-docs-specs-maintainer-reporting-review-variants-spec-md-13",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2379,6 +2399,26 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "Agent status should share the same readiness facts when an agent is driving the workflow."
+      },
+      {
+        "claimId": "claim-docs-specs-user-optimization-spec-md-3",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:83e62e8762bd8b2dbd1785e7622fae11e6ab2a6be91245c77d642788cfa23fe4",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+              "claim-docs-specs-user-optimization-spec-md-3"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/repo",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`Cautilus optimize` improves selected behavior without losing the proof surface that makes the improvement believable."
       },
       {
         "claimId": "claim-docs-specs-user-proof-debt-spec-md-7",
@@ -2654,7 +2694,7 @@
   },
   "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "gitState": {
-    "changedFileCount": 29,
+    "changedFileCount": 30,
     "changedFiles": [
       ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
       ".cautilus/claims/canonical-claim-map.json",
@@ -2667,6 +2707,7 @@
       ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-adapter-gate-split-2026-05-03.json",
       ".cautilus/claims/review-result-claim-packet-next-work-grouping-2026-05-03.json",
       ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json",
@@ -2694,7 +2735,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "ddfa5840af2f618d1bbf14b713b3ad80bcdaed4b",
+    "currentGitCommit": "a7aab532d93501512f43f4a5c15b3aa0925b2868",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",

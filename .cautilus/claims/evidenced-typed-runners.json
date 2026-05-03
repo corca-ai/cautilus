@@ -9270,9 +9270,20 @@
       "claimFingerprint": "sha256:152363b9e592e16a6b64063fc5b1b8685dd1397614fbd0ce7371681619737698",
       "claimId": "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as behavior or skill-orchestration proof that should be checked through a Cautilus eval/audit route rather than deterministic code inspection alone.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:83e62e8762bd8b2dbd1785e7622fae11e6ab2a6be91245c77d642788cfa23fe4",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+            "claim-docs-specs-user-optimization-spec-md-3"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by current optimize packet-flow and CLI smoke tests: optimize packets are materialized from explicit evidence, held-out results are carried into search input, optimize search invokes eval-test for held-out and full-gate candidate checks, and the selected mutation candidate records reopenable evaluation artifacts and a passing full-gate checkpoint.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -9280,7 +9291,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach packet-level tests plus a reopenable before/after held-out eval route before marking the optimization loop proof satisfied.",
+      "nextAction": "Keep this satisfied only while the optimize packet-flow tests and eval-test-backed held-out/full-gate search route remain current; broaden evidence before claiming non-prompt targets or live provider optimization quality.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -9699,9 +9710,20 @@
       "claimFingerprint": "sha256:83fa3e6e882c6c28e2b6cf839c4ff47f4f272cf38f986edf1089322ad45215bf",
       "claimId": "claim-docs-specs-user-optimization-spec-md-3",
       "claimSemanticGroup": "Improvement and optimization",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The review input contains only the source claim from docs/specs/user/optimization.spec.md and no direct eval summary, evidence bundle, or fixture result showing optimize improvement with retained proof surface.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:83e62e8762bd8b2dbd1785e7622fae11e6ab2a6be91245c77d642788cfa23fe4",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+            "claim-docs-specs-user-optimization-spec-md-3"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified for the current bounded prompt optimize route: with explicit packet evidence and held-out scenario results, optimize search can select an eval-backed mutation candidate over the seed while preserving held-out/full-gate evaluation artifacts, proposal references, and revision artifacts.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -9710,7 +9732,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a dev/repo Cautilus eval fixture that runs a controlled optimize workflow and asserts both the selected behavior improvement decision and the retained proof-surface artifacts.",
+      "nextAction": "Keep user-facing wording scoped to selected prompt behavior in the tested route unless future evidence covers broader optimize targets, live provider search, or consumer-specific product runners.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -9722,9 +9744,7 @@
         }
       ],
       "summary": "`Cautilus optimize` improves selected behavior without losing the proof surface that makes the improvement believable.",
-      "unresolvedQuestions": [
-        "Which existing self-dogfood optimize fixture, if any, is intended to be the canonical proof for the user-facing optimize promise?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim promises behavior from the optimize workflow: it must improve selected behavior while preserving a believable proof surface. That requires a bounded repo-level evaluation scenario rather than only reading CLI code or docs."
     },
@@ -11265,8 +11285,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 119,
-      "unknown": 203
+      "satisfied": 121,
+      "unknown": 201
     },
     "byLifecycle": {
       "new": 322

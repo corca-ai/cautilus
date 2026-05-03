@@ -918,13 +918,13 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 
 ### Improvement and optimization (2)
 
-#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (1)
+#### Cautilus eval / dev/repo / ready-to-verify / evidence satisfied (1)
 
 ##### claim-docs-specs-user-optimization-spec-md-3
 
 - Summary: `Cautilus optimize` improves selected behavior without losing the proof surface that makes the improvement believable.
-- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Create a dev/repo Cautilus eval fixture that runs a controlled optimize workflow and asserts both the selected behavior improvement decision and the retained proof-surface artifacts.
+- Current labels: audience=user; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep user-facing wording scoped to selected prompt behavior in the tested route unless future evidence covers broader optimize targets, live provider search, or consumer-specific product runners.
 - Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
 - Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
 - Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
@@ -4580,7 +4580,24 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/runner-readiness.md:13
 
-#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (4)
+#### Cautilus eval / dev/repo / ready-to-verify / evidence satisfied (1)
+
+##### claim-docs-specs-maintainer-optimization-loop-spec-md-19
+
+- Summary: The product needs packet-level tests and at least one held-out eval route that can reopen the before and after evidence.
+- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep this satisfied only while the optimize packet-flow tests and eval-test-backed held-out/full-gate search route remain current; broaden evidence before claiming non-prompt targets or live provider optimization quality.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/specs/maintainer/optimization-loop.spec.md:19
+
+#### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (3)
 
 ##### claim-docs-contracts-runner-readiness-md-111
 
@@ -4626,21 +4643,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/evaluation-surfaces-runners.spec.md:15
-
-##### claim-docs-specs-maintainer-optimization-loop-spec-md-19
-
-- Summary: The product needs packet-level tests and at least one held-out eval route that can reopen the before and after evidence.
-- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/repo; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Attach packet-level tests plus a reopenable before/after held-out eval route before marking the optimization loop proof satisfied.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/specs/maintainer/optimization-loop.spec.md:19
 
 #### Deterministic gate / ready-to-verify / evidence satisfied (11)
 

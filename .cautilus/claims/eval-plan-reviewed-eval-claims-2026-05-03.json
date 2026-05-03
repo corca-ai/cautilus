@@ -72,145 +72,19 @@
       ],
       "targetSurface": "dev/skill",
       "unresolvedQuestions": []
-    },
-    {
-      "claimFingerprint": "sha256:152363b9e592e16a6b64063fc5b1b8685dd1397614fbd0ce7371681619737698",
-      "claimId": "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
-      "draftIntent": "Verify that The product needs packet-level tests and at least one held-out eval route that can reopen the before and after evidence.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "case-level expected files, commands, or routing evidence owned by the repo runner",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "repo",
-        "requiredObservability": [
-          "loadedInstructionFiles",
-          "routingDecision",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-repo-eval-runner",
-        "runnerOutputSchema": "cautilus.evaluation_observed.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-specs-maintainer-optimization-loop-spec-md-19",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/repo",
-        "requiredObservability": [
-          "loadedInstructionFiles",
-          "routingDecision",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-repo-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "The product needs packet-level tests and at least one held-out eval route that can reopen the before and after evidence.",
-          "line": 19,
-          "path": "docs/specs/maintainer/optimization-loop.spec.md"
-        }
-      ],
-      "targetSurface": "dev/repo",
-      "unresolvedQuestions": []
-    },
-    {
-      "claimFingerprint": "sha256:83fa3e6e882c6c28e2b6cf839c4ff47f4f272cf38f986edf1089322ad45215bf",
-      "claimId": "claim-docs-specs-user-optimization-spec-md-3",
-      "draftIntent": "Verify that `Cautilus optimize` improves selected behavior without losing the proof surface that makes the improvement believable.",
-      "evidenceStatus": "unknown",
-      "fixtureAuthoringGuidance": {
-        "evaluationInputSchema": "cautilus.evaluation_input.v1",
-        "expectedShape": "case-level expected files, commands, or routing evidence owned by the repo runner",
-        "fixtureOwner": "host-repo",
-        "minimumCaseFields": [
-          "caseId",
-          "prompt"
-        ],
-        "minimumSuiteFields": [
-          "schemaVersion",
-          "surface",
-          "preset",
-          "suiteId",
-          "cases"
-        ],
-        "nonWriterBoundary": "Cautilus plans the fixture contract but does not write host-owned fixtures, prompts, runners, wrappers, or acceptance policy.",
-        "preset": "repo",
-        "requiredObservability": [
-          "loadedInstructionFiles",
-          "routingDecision",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-repo-eval-runner",
-        "runnerOutputSchema": "cautilus.evaluation_observed.v1",
-        "runnerOwner": "host-repo-adapter",
-        "schemaVersion": "cautilus.claim_eval_fixture_authoring_guidance.v1",
-        "surface": "dev"
-      },
-      "nextStep": "Create a host-owned cautilus.evaluation_input.v1 fixture and adapter-owned runner for this plan.",
-      "planId": "eval-plan-claim-docs-specs-user-optimization-spec-md-3",
-      "proofRequirement": {
-        "minimumProofClasses": [
-          "fixture-smoke",
-          "coding-agent-messaging",
-          "declared-eval-runner"
-        ],
-        "proofMechanism": "cautilus-eval",
-        "recommendedEvalSurface": "dev/repo",
-        "requiredObservability": [
-          "loadedInstructionFiles",
-          "routingDecision",
-          "runtimeFingerprint"
-        ],
-        "requiredRunnerCapability": "development-repo-eval-runner",
-        "requiresProductRunnerProof": false
-      },
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "`Cautilus optimize` improves selected behavior without losing the proof surface that makes the improvement believable.",
-          "line": 3,
-          "path": "docs/specs/user/optimization.spec.md"
-        }
-      ],
-      "targetSurface": "dev/repo",
-      "unresolvedQuestions": [
-        "Which existing self-dogfood optimize fixture, if any, is intended to be the canonical proof for the user-facing optimize promise?"
-      ]
     }
   ],
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/evidenced-typed-runners.json",
   "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
   "planSummary": {
-    "evalPlanCount": 3,
+    "evalPlanCount": 1,
     "skippedByReason": {
-      "already-satisfied": 13,
+      "already-satisfied": 15,
       "not-cautilus-eval": 199,
       "not-ready-to-verify": 10,
       "not-reviewed": 97
     },
-    "skippedClaimCount": 319,
+    "skippedClaimCount": 321,
     "zeroPlanExpectation": "Zero eval plans can be expected when reviewed eval-ready claims are already satisfied or when remaining reviewed claims are not Cautilus eval targets.",
     "zeroPlanReason": ""
   },
@@ -3078,6 +2952,36 @@
       "verificationReadiness": "needs-alignment"
     },
     {
+      "claimFingerprint": "sha256:152363b9e592e16a6b64063fc5b1b8685dd1397614fbd0ce7371681619737698",
+      "claimId": "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:83e62e8762bd8b2dbd1785e7622fae11e6ab2a6be91245c77d642788cfa23fe4",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+            "claim-docs-specs-user-optimization-spec-md-3"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The product needs packet-level tests and at least one held-out eval route that can reopen the before and after evidence.",
+          "line": 19,
+          "path": "docs/specs/maintainer/optimization-loop.spec.md"
+        }
+      ],
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
       "claimFingerprint": "sha256:fc2a2f494f8d3e24e9ff2dfacaab24351ea8515847e8d50fff3d417c3f999b00",
       "claimId": "claim-docs-specs-maintainer-readiness-runtime-status-spec-md-20",
       "evidenceStatus": "unknown",
@@ -3204,6 +3108,36 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
+      "verificationReadiness": "ready-to-verify"
+    },
+    {
+      "claimFingerprint": "sha256:83fa3e6e882c6c28e2b6cf839c4ff47f4f272cf38f986edf1089322ad45215bf",
+      "claimId": "claim-docs-specs-user-optimization-spec-md-3",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:83e62e8762bd8b2dbd1785e7622fae11e6ab2a6be91245c77d642788cfa23fe4",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+            "claim-docs-specs-user-optimization-spec-md-3"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "reason": "already-satisfied",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus optimize` improves selected behavior without losing the proof surface that makes the improvement believable.",
+          "line": 3,
+          "path": "docs/specs/user/optimization.spec.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {

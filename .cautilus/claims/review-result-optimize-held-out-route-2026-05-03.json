@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-with-fresh-eye-optimize-held-out-route",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T23:44:17+09:00",
+    "evidencePolicy": "Mark optimize claims satisfied only for the bounded prompt optimize path whose packet flow, held-out eval-backed search route, selected candidate improvement, and retained proof artifacts are directly covered by current tests."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-optimize-held-out-route-2026-05-03",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+          "claimFingerprint": "sha256:152363b9e592e16a6b64063fc5b1b8685dd1397614fbd0ce7371681619737698",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/repo",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current optimize packet-flow and CLI smoke tests: optimize packets are materialized from explicit evidence, held-out results are carried into search input, optimize search invokes eval-test for held-out and full-gate candidate checks, and the selected mutation candidate records reopenable evaluation artifacts and a passing full-gate checkpoint.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:83e62e8762bd8b2dbd1785e7622fae11e6ab2a6be91245c77d642788cfa23fe4",
+              "supportsClaimIds": [
+                "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+                "claim-docs-specs-user-optimization-spec-md-3"
+              ]
+            }
+          ],
+          "nextAction": "Keep this satisfied only while the optimize packet-flow tests and eval-test-backed held-out/full-gate search route remain current; broaden evidence before claiming non-prompt targets or live provider optimization quality.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-optimization-spec-md-3",
+          "claimFingerprint": "sha256:83fa3e6e882c6c28e2b6cf839c4ff47f4f272cf38f986edf1089322ad45215bf",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/repo",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified for the current bounded prompt optimize route: with explicit packet evidence and held-out scenario results, optimize search can select an eval-backed mutation candidate over the seed while preserving held-out/full-gate evaluation artifacts, proposal references, and revision artifacts.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:83e62e8762bd8b2dbd1785e7622fae11e6ab2a6be91245c77d642788cfa23fe4",
+              "supportsClaimIds": [
+                "claim-docs-specs-maintainer-optimization-loop-spec-md-19",
+                "claim-docs-specs-user-optimization-spec-md-3"
+              ]
+            }
+          ],
+          "nextAction": "Keep user-facing wording scoped to selected prompt behavior in the tested route unless future evidence covers broader optimize targets, live provider search, or consumer-specific product runners.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
