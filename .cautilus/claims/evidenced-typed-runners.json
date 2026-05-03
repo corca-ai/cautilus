@@ -4648,9 +4648,21 @@
       "claimFingerprint": "sha256:c8771569879ff2560b316b4ba714639e8cbf8c21156e0729a47ed22979780a64",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-196",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. The claim is a `claim discover` packet reproducibility contract, not dev/repo model behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-196",
+            "claim-docs-contracts-reporting-md-111",
+            "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by claim-discovery tests requiring the packet to serialize the effective adapter scan scope: entries, include/exclude bounds, evidence roots, linked depth, adapter path, traversal mode, explicit-source status, and gitignore policy.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -4659,7 +4671,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or link deterministic CLI/packet regression proving confirmed discovery scope is serialized with enough entries, depth, bounds, exclusions, and dirty-state detail to reproduce or refresh the run.",
+      "nextAction": "Keep effective scan-scope packet assertions in place when changing claim discovery source selection or adapter scope handling.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -6967,9 +6979,21 @@
       "claimFingerprint": "sha256:6a5975f5be8ff5f08f378525aa1963dc684e6d1d50395f4326e2788cdb47521f",
       "claimId": "claim-docs-contracts-reporting-md-111",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. Model/provider truth provenance is report packet normalization, not model behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-196",
+            "claim-docs-contracts-reporting-md-111",
+            "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by report-packet tests proving provider/model/runtime identity are absent when only command text/log artifact pointers mention them and present when explicit mode telemetry supplies them.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6978,7 +7002,7 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach deterministic report-packet tests proving model and provider fields come only from explicit runner output, adapter metadata, or checked-in wrappers.",
+      "nextAction": "Keep runtime identity provenance tests in place when changing report packet telemetry aggregation.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -10620,9 +10644,21 @@
       "claimFingerprint": "sha256:5b4aa826a977bd6abed0596d72f0a3bba779e7c5d880765a0bd1e59d1439d44d",
       "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. This is a negative side-effect boundary about not auto-editing consumer-owned files, not a dev/skill eval target.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-196",
+            "claim-docs-contracts-reporting-md-111",
+            "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by optimize-proposal tests proving proposal generation preserves target metadata and leaves a consumer-owned skill target file unchanged.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -10631,7 +10667,7 @@
         "linked-from:docs/contracts/reporting.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Prove with a deterministic fixture repo or command test that optimization/runtime-fingerprint paths emit proposals or packets without modifying consumer-owned prompts, skills, or instruction files.",
+      "nextAction": "Keep optimize proposal no-mutation tests in place when changing runtime-fingerprint optimization flow.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -10642,9 +10678,7 @@
         }
       ],
       "summary": "It should not directly auto-edit consumer-owned prompts, skills, or instruction files.",
-      "unresolvedQuestions": [
-        "Which concrete command path currently exercises this optimization boundary?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim can be checked by filesystem side-effect assertions and packet inspection."
     },
@@ -11487,8 +11521,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 132,
-      "unknown": 190
+      "satisfied": 135,
+      "unknown": 187
     },
     "byLifecycle": {
       "new": 322

@@ -2444,6 +2444,12 @@ func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 		"claim_discovery:",
 		"  entries:",
 		"    - docs/start.md",
+		"  include:",
+		"    - docs/**/*.md",
+		"  exclude:",
+		"    - docs/private/**",
+		"  evidence_roots:",
+		"    - docs/specs",
 		"  linked_markdown_depth: 1",
 		"  state_path: .cautilus/claims/custom.json",
 		"  audience_hints:",
@@ -2479,6 +2485,24 @@ func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 	scope := asMap(plan["effectiveScanScope"])
 	if scope["adapterFound"] != true || scope["linkedMarkdownDepth"] != 1 {
 		t.Fatalf("expected adapter-backed scan scope, got %#v", scope)
+	}
+	if scope["adapterPath"] != ".agents/cautilus-adapter.yaml" ||
+		scope["traversal"] != "entry-markdown-links" ||
+		scope["gitignorePolicy"] != "respect-repo-gitignore" ||
+		scope["explicitSources"] != false {
+		t.Fatalf("expected reproducible adapter scan scope metadata, got %#v", scope)
+	}
+	if entries := stringArrayOrEmpty(scope["entries"]); len(entries) != 1 || entries[0] != "docs/start.md" {
+		t.Fatalf("expected adapter entry in effective scan scope, got %#v", scope)
+	}
+	if include := stringArrayOrEmpty(scope["include"]); len(include) != 1 || include[0] != "docs/**/*.md" {
+		t.Fatalf("expected adapter include in effective scan scope, got %#v", scope)
+	}
+	if exclude := stringArrayOrEmpty(scope["exclude"]); !containsString(exclude, "docs/private/**") {
+		t.Fatalf("expected adapter exclude in effective scan scope, got %#v", scope)
+	}
+	if evidenceRoots := stringArrayOrEmpty(scope["evidenceRoots"]); len(evidenceRoots) != 1 || evidenceRoots[0] != "docs/specs" {
+		t.Fatalf("expected adapter evidence roots in effective scan scope, got %#v", scope)
 	}
 	state := asMap(plan["claimState"])
 	if state["path"] != ".cautilus/claims/custom.json" || state["pathSource"] != "adapter" {

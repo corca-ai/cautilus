@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-remaining-deterministic-proof-2026-05-04",
+    "type": "agent",
+    "reviewedAt": "2026-05-04T01:10:00+09:00",
+    "evidencePolicy": "Mark claims satisfied only when focused deterministic tests directly cover the named packet, telemetry provenance, or proposal-only optimization behavior."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-remaining-deterministic-proof-2026-05-04",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-196",
+          "claimFingerprint": "sha256:c8771569879ff2560b316b4ba714639e8cbf8c21156e0729a47ed22979780a64",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by claim-discovery tests requiring the packet to serialize the effective adapter scan scope: entries, include/exclude bounds, evidence roots, linked depth, adapter path, traversal mode, explicit-source status, and gitignore policy.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-196",
+                "claim-docs-contracts-reporting-md-111",
+                "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+              ]
+            }
+          ],
+          "nextAction": "Keep effective scan-scope packet assertions in place when changing claim discovery source selection or adapter scope handling.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-111",
+          "claimFingerprint": "sha256:6a5975f5be8ff5f08f378525aa1963dc684e6d1d50395f4326e2788cdb47521f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by report-packet tests proving provider/model/runtime identity are absent when only command text/log artifact pointers mention them and present when explicit mode telemetry supplies them.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-196",
+                "claim-docs-contracts-reporting-md-111",
+                "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+              ]
+            }
+          ],
+          "nextAction": "Keep runtime identity provenance tests in place when changing report packet telemetry aggregation.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
+          "claimFingerprint": "sha256:5b4aa826a977bd6abed0596d72f0a3bba779e7c5d880765a0bd1e59d1439d44d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by optimize-proposal tests proving proposal generation preserves target metadata and leaves a consumer-owned skill target file unchanged.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-196",
+                "claim-docs-contracts-reporting-md-111",
+                "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+              ]
+            }
+          ],
+          "nextAction": "Keep optimize proposal no-mutation tests in place when changing runtime-fingerprint optimization flow.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ],
+  "reviewSummary": {
+    "satisfiedCount": 3,
+    "remainingUnknownCount": 0,
+    "notes": [
+      "This review only closes claims whose deterministic tests directly cover the public contract.",
+      "It does not close broader semantic optimization quality or runner honesty claims."
+    ]
+  }
+}

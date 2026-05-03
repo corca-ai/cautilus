@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-remaining-deterministic-proof-2026-05-04",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-196",
+    "claim-docs-contracts-reporting-md-111",
+    "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+  ],
+  "repoCommit": "71e6e47f594208e6c888f93026a3c6d49911270f",
+  "workingTreeContext": "The focused tests were run after strengthening scope, runtime identity, and optimize proposal assertions; this evidence bundle, review result, regenerated claim artifacts, and matching test changes are intended to be committed together.",
+  "summary": "Focused deterministic tests prove effective claim-discovery scan scope is serialized for future reproduction, report packets only carry provider/model identity from explicit telemetry, and optimize proposal generation does not directly edit consumer-owned target files.",
+  "evidenceScope": {
+    "targetSurface": "deterministic claim-discovery, report-packet, and optimize-proposal contracts",
+    "claimBoundary": "This bundle proves the named packet and pure proposal-generation boundaries through focused unit tests. It does not prove semantic quality of arbitrary host runners, model behavior, or app-specific optimization quality.",
+    "notClaimed": [
+      "Every consumer adapter command is honest",
+      "Every external runner reports truthful provider/model metadata",
+      "Optimize proposals improve every target",
+      "A generated proposal has been applied to a consumer-owned prompt, skill, or instruction file",
+      "Human-readable report UX quality"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries|TestBuildReportPacketOnlyCarriesExplicitRuntimeIdentity|TestBuildReportPacketOnlyCarriesExplicitCostTelemetry|TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "claim discovery packets serialize adapter entries, include/exclude globs, evidence roots, linked markdown depth, adapter path, traversal mode, explicit-source status, and gitignore policy",
+          "report packets do not infer provider, model, or runtime fingerprint from command text or command-observation artifacts",
+          "report packets carry provider/model/runtime fingerprint when supplied through explicit mode telemetry",
+          "optimize proposal generation carries target-file metadata and suggested changes without modifying the target file contents"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-scope-tests",
+      "contentHash": "sha256:60692f79ea412bf116857295886d863d78c160d04ead14b6091fdb1b8b8b176e"
+    },
+    {
+      "path": "internal/runtime/runtime_fingerprint_test.go",
+      "kind": "runtime-report-and-optimize-tests",
+      "contentHash": "sha256:00a78f2b065a33a0024e78bfdabb823c36b4d95076b66bbfcbc00ded6894b45f"
+    },
+    {
+      "path": "internal/runtime/report.go",
+      "kind": "report-packet-runtime",
+      "contentHash": "sha256:bee4b85e28ec9bb4a3d2868469155cd3a7dd226ad51c2513707d14322f3abf4b"
+    },
+    {
+      "path": "internal/runtime/optimize.go",
+      "kind": "optimize-proposal-runtime",
+      "contentHash": "sha256:6a2351146fc22c958e46984cb596b02dc4883b78f377b644d4734d44e8a3e485"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:7008d9380bd3f8ac21b51b5832ef703dbb5a4af6a84e39d5dc0449a624ff3ff2"
+    }
+  ],
+  "claimSupport": [
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-196",
+      "reason": "`TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries` proves the binary records the effective scan scope needed for a future agent to reproduce or refresh discovery: entries, include/exclude bounds, evidence roots, linked depth, adapter path, traversal mode, explicit-source status, and gitignore policy."
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-111",
+      "reason": "`TestBuildReportPacketOnlyCarriesExplicitRuntimeIdentity` proves provider/model/runtime identity are not inferred from command text or logs and only appear when explicit mode telemetry supplies them."
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
+      "reason": "`TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange` proves optimize proposal generation keeps target-file metadata in the proposal and leaves the consumer-owned target file unchanged."
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused deterministic tests directly cover the named packet serialization, telemetry provenance, and proposal-only optimization boundaries without requiring model or host-app behavior evidence."
+  }
+}

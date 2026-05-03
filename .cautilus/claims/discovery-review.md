@@ -1333,7 +1333,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/reporting.md:50
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (21)
+#### Deterministic gate / ready-to-verify / evidence satisfied (23)
 
 ##### claim-docs-contracts-active-run-md-3
 
@@ -1475,6 +1475,20 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/live-run-invocation.md:59
 
+##### claim-docs-contracts-reporting-md-111
+
+- Summary: Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep runtime identity provenance tests in place when changing report packet telemetry aggregation.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/reporting.md:111
+
 ##### claim-docs-contracts-runner-readiness-md-117
 
 - Summary: It should combine binary health, skill surface readiness, adapter state, claim state, and runner readiness status.
@@ -1559,6 +1573,20 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/runtime-fingerprint-optimization.md:42
 
+##### claim-docs-contracts-runtime-fingerprint-optimization-md-50
+
+- Summary: It should not directly auto-edit consumer-owned prompts, skills, or instruction files.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep optimize proposal no-mutation tests in place when changing runtime-fingerprint optimization flow.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/runtime-fingerprint-optimization.md:50
+
 ##### claim-docs-contracts-workbench-instance-discovery-md-101
 
 - Summary: The product can read scenario-adjacent paths from typed packet fields instead of hardcoded route templates.
@@ -1628,36 +1656,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/adapter-host-ownership.spec.md:18
-
-#### Deterministic gate / ready-to-verify / evidence unknown (2)
-
-##### claim-docs-contracts-reporting-md-111
-
-- Summary: Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.
-- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Attach deterministic report-packet tests proving model and provider fields come only from explicit runner output, adapter metadata, or checked-in wrappers.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/reporting.md:111
-
-##### claim-docs-contracts-runtime-fingerprint-optimization-md-50
-
-- Summary: It should not directly auto-edit consumer-owned prompts, skills, or instruction files.
-- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Prove with a deterministic fixture repo or command test that optimization/runtime-fingerprint paths emit proposals or packets without modifying consumer-owned prompts, skills, or instruction files.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/runtime-fingerprint-optimization.md:50
 
 #### Human-auditable / blocked / evidence unknown (6)
 
@@ -2277,7 +2275,21 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:310
 
-#### Deterministic gate / ready-to-verify / evidence satisfied (8)
+#### Deterministic gate / ready-to-verify / evidence satisfied (9)
+
+##### claim-docs-contracts-claim-discovery-workflow-md-196
+
+- Summary: After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run.
+- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=satisfied
+- Suggested next action: Keep effective scan-scope packet assertions in place when changing claim discovery source selection or adapter scope handling.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:196
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-461
 
@@ -2390,22 +2402,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; skills/cautilus/SKILL.md:11
-
-#### Deterministic gate / ready-to-verify / evidence unknown (1)
-
-##### claim-docs-contracts-claim-discovery-workflow-md-196
-
-- Summary: After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run.
-- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Add or link deterministic CLI/packet regression proving confirmed discovery scope is serialized with enough entries, depth, bounds, exclusions, and dirty-state detail to reproduce or refresh the run.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:196
 
 #### Human-auditable / blocked / evidence unknown (10)
 

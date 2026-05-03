@@ -1,6 +1,8 @@
 package runtime
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -93,6 +95,53 @@ func TestBuildReportPacketOnlyCarriesExplicitCostTelemetry(t *testing.T) {
 	}
 }
 
+func TestBuildReportPacketOnlyCarriesExplicitRuntimeIdentity(t *testing.T) {
+	input := minimalReportInput(map[string]any{}, nil)
+	input["commandObservations"] = []any{
+		map[string]any{
+			"stage":      "held_out",
+			"status":     "completed",
+			"command":    "node run.js --model gpt-5.4 --provider openai",
+			"stdoutFile": "held-out.stdout",
+			"stderrFile": "held-out.stderr",
+		},
+	}
+	report, err := BuildReportPacket(input, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
+	if err != nil {
+		t.Fatalf("BuildReportPacket returned error: %v", err)
+	}
+	telemetry := asMap(report["telemetry"])
+	if _, ok := telemetry["providers"]; ok {
+		t.Fatalf("providers must not be inferred from command text or logs, got %#v", telemetry)
+	}
+	if _, ok := telemetry["models"]; ok {
+		t.Fatalf("models must not be inferred from command text or logs, got %#v", telemetry)
+	}
+	if _, ok := telemetry["runtimeFingerprint"]; ok {
+		t.Fatalf("runtimeFingerprint must not be inferred from command text or logs, got %#v", telemetry)
+	}
+
+	input = minimalReportInput(map[string]any{
+		"telemetry": map[string]any{
+			"provider": "openai",
+			"model":    "gpt-5.4",
+		},
+	}, nil)
+	report, err = BuildReportPacket(input, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
+	if err != nil {
+		t.Fatalf("BuildReportPacket returned error: %v", err)
+	}
+	telemetry = asMap(report["telemetry"])
+	if !containsString(stringSliceValue(telemetry["providers"]), "openai") ||
+		!containsString(stringSliceValue(telemetry["models"]), "gpt-5.4") {
+		t.Fatalf("provider/model must come from explicit mode telemetry, got %#v", telemetry)
+	}
+	fingerprint := asMap(telemetry["runtimeFingerprint"])
+	if fingerprint["provider"] != "openai" || fingerprint["model"] != "gpt-5.4" {
+		t.Fatalf("runtime fingerprint must come from explicit mode telemetry, got %#v", telemetry)
+	}
+}
+
 func TestBuildSkillEvaluationSummaryPreservesPassingRecommendationWithRuntimeChange(t *testing.T) {
 	summary, err := BuildSkillEvaluationSummary(map[string]any{
 		"schemaVersion": contracts.SkillEvaluationInputsSchema,
@@ -181,6 +230,11 @@ func TestBuildEvaluationSummaryBlocksPinnedRuntimeMismatch(t *testing.T) {
 }
 
 func TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange(t *testing.T) {
+	repoRoot := t.TempDir()
+	targetPath := filepath.Join(repoRoot, "skills", "cautilus", "SKILL.md")
+	originalTarget := "Use the existing skill instructions.\n"
+	mustWriteFile(t, targetPath, originalTarget)
+
 	report := map[string]any{
 		"schemaVersion": contracts.ReportPacketSchema,
 		"generatedAt":   "2026-04-24T00:00:00Z",
@@ -216,10 +270,24 @@ func TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange(t *te
 		"report":             report,
 		"runtimeContext":     report["runtimeContext"],
 		"objective":          map[string]any{"constraints": []any{}},
+		"targetFile": map[string]any{
+			"path": targetPath,
+			"kind": "skill",
+		},
 	}
 	proposal, err := GenerateOptimizeProposal(packet, nil, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
 	if err != nil {
 		t.Fatalf("GenerateOptimizeProposal returned error: %v", err)
+	}
+	afterTarget, err := os.ReadFile(targetPath)
+	if err != nil {
+		t.Fatalf("failed to read target file: %v", err)
+	}
+	if string(afterTarget) != originalTarget {
+		t.Fatalf("GenerateOptimizeProposal must not directly edit consumer-owned target files; got %q", string(afterTarget))
+	}
+	if asMap(proposal["targetFile"])["path"] != targetPath {
+		t.Fatalf("proposal should carry target metadata without mutating the target, got %#v", proposal["targetFile"])
 	}
 	reasons := stringSliceValue(proposal["revisionReasons"])
 	if !containsString(reasons, "model_runtime_changed") || !containsString(reasons, "passing_simplification") {

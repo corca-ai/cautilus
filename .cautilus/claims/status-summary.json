@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 132
+          "satisfied": 135
         },
         "byReviewStatus": {
-          "agent-reviewed": 132
+          "agent-reviewed": 135
         },
-        "count": 132,
+        "count": 135,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -40,23 +40,6 @@
           "claim-readme-md-10"
         ],
         "summary": "Proof is already attached and valid under packet semantics."
-      },
-      {
-        "byEvidenceStatus": {
-          "unknown": 3
-        },
-        "byReviewStatus": {
-          "agent-reviewed": 3
-        },
-        "count": 3,
-        "id": "agent-add-deterministic-proof",
-        "recommendedActor": "agent",
-        "sampleClaimIds": [
-          "claim-docs-contracts-claim-discovery-workflow-md-196",
-          "claim-docs-contracts-reporting-md-111",
-          "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
-        ],
-        "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
@@ -191,8 +174,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 132,
-      "unknown": 190
+      "satisfied": 135,
+      "unknown": 187
     },
     "byLifecycle": {
       "new": 322
@@ -377,7 +360,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 132,
+    "satisfiedClaimCount": 135,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1758,6 +1741,27 @@
         "summary": "When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-196",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-196",
+              "claim-docs-contracts-reporting-md-111",
+              "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run."
+      },
+      {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2114,6 +2118,27 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload."
+      },
+      {
+        "claimId": "claim-docs-contracts-reporting-md-111",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-196",
+              "claim-docs-contracts-reporting-md-111",
+              "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping."
       },
       {
         "claimId": "claim-docs-contracts-reporting-md-120",
@@ -2841,6 +2866,27 @@
         "summary": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper."
       },
       {
+        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-50",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-196",
+              "claim-docs-contracts-reporting-md-111",
+              "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It should not directly auto-edit consumer-owned prompts, skills, or instruction files."
+      },
+      {
         "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2977,7 +3023,7 @@
   },
   "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "gitState": {
-    "changedFileCount": 45,
+    "changedFileCount": 48,
     "changedFiles": [
       ".agents/cautilus-adapters/self-dogfood-canonical-spec-curation-flow.yaml",
       ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
@@ -2989,6 +3035,7 @@
       ".cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json",
       ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+      ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
       ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
       ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
       ".cautilus/claims/evidence-skill-episode-and-evaluate-boundary-2026-05-03.json",
@@ -3000,6 +3047,7 @@
       ".cautilus/claims/review-result-claim-packet-next-work-grouping-2026-05-03.json",
       ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json",
+      ".cautilus/claims/review-result-deterministic-proof-batch-2026-05-04.json",
       ".cautilus/claims/review-result-eval-heuristic-batch-2026-05-03.json",
       ".cautilus/claims/review-result-optimize-held-out-route-2026-05-03.json",
       ".cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json",
@@ -3011,6 +3059,7 @@
       "charness-artifacts/debug/latest.md",
       "fixtures/eval/dev/skill/cautilus-canonical-spec-curation-flow.fixture.json",
       "fixtures/eval/dev/skill/cautilus-packet-first-flow.fixture.json",
+      "internal/app/app_test.go",
       "internal/runtime/claim_discovery.go",
       "internal/runtime/claim_discovery_test.go",
       "internal/runtime/evaluation_input_test.go",
@@ -3033,7 +3082,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "b52812a7a499d76af86abae7cbe6902e24e26ef3",
+    "currentGitCommit": "71e6e47f594208e6c888f93026a3c6d49911270f",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
