@@ -2,7 +2,7 @@
   "schemaVersion": "cautilus.claim_evidence_bundle.v1",
   "bundleId": "evidence-scenario-catalog-example-cli-2026-05-03",
   "createdForClaimIds": [
-    "claim-readme-md-166"
+    "claim-readme-md-167"
   ],
   "repoCommit": "bc80621e48ee92e233432f4bbd78c3ebd5f46051",
   "summary": "This bundle records deterministic proof that every scenario-normalization catalog entry exposes `exampleInputCli`, letting operators or wrappers inspect minimal packet shapes without opening fixture files first.",

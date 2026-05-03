@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "review-lane-eval-bucket-user-b",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T21:50:03+09:00",
+    "evidencePolicy": "Strict portable review of assigned eval-bucket user-facing clusters. Leave evidence unknown unless the review input includes direct verified evidence."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-dev-repo-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-ownership-spec-md-14",
+          "claimFingerprint": "sha256:a6b411a0ca847e34dbb6b4bb7fc94233691487617d4cf9dae4f5af7ae7ac9a7e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/repo",
+          "verificationReadiness": "needs-scenario",
+          "whyThisLayer": "The claim is a cross-repo workflow portability promise. It can plausibly be protected by Cautilus dev/repo evaluation, but only after the scenario states what counts as reuse across repos and how adapter-owned behavior stays outside product logic.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input only includes the source claim and no verified evidence refs. The source page itself says evidence is pending and calls for adapter contract checks plus consumer-repo proof.",
+          "evidenceRefs": [],
+          "nextAction": "Define a portable dev/repo scenario that exercises the same Cautilus workflow through adapter-owned commands in a consumer-like repo, and pair it with a deterministic adapter-boundary check before marking the claim ready to verify.",
+          "unresolvedQuestions": [
+            "Should this promise require proof from more than one consumer repo, or is one consumer-like fixture plus adapter-boundary checks enough for the current product claim?",
+            "Which adapter-owned fields or commands are the minimum portability boundary the scenario must exercise?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-repo-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
+          "claimFingerprint": "sha256:b98e04ab7130e78226594061169d44a5f521c7a43859a633e3892871f24544fc",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": "dev/repo",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is about durable artifacts being written and reopenable. Packet creation, rendered views, freshness signals, and source-of-truth boundaries are stronger as deterministic CLI, renderer, and schema checks than as an agent behavior eval.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes no verified evidence refs for this claim. The source page says evidence is pending and names report-rendering specs, status-server proof, and packet freshness checks as future evidence.",
+          "evidenceRefs": [],
+          "nextAction": "Attach or add deterministic evidence that Cautilus writes machine-readable packets and readable claim/eval/report views that can be reopened without relying on terminal scrollback.",
+          "unresolvedQuestions": [
+            "Which generated human-readable views are part of the current user-facing artifact promise: Markdown report, HTML status server, eval summary, doctor output, or all of them?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-12",
+          "claimFingerprint": "sha256:7d2a95136dbffa734309203e9587993060b7614fa9096e426dbf4a689109473f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim says `agent status` should share readiness facts with `doctor`. That is a deterministic CLI parity contract over shared readiness data, not model-backed skill behavior.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes no verified evidence refs. The source page says current proof only checks that both public surfaces exist, while future proof should connect the shared runner-readiness assessment used by both commands.",
+          "evidenceRefs": [],
+          "nextAction": "Add or attach deterministic CLI evidence comparing `doctor` and `agent status --json` readiness facts for the same repo state, including blocked and ready runner-assessment cases.",
+          "unresolvedQuestions": [
+            "Which readiness fields are contractually shared between doctor and agent status versus intentionally phrased differently for human and agent readers?"
+          ]
+        },
+        {
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-11",
+          "claimFingerprint": "sha256:637979c650b8f0f05b67e9dd815c274545862bfcbc4db451db6ee3f61ee0153c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "needs-scenario",
+          "whyThisLayer": "The claim names development-facing behavior that can include agent workflows, repo contracts, tools, and skills. Cautilus eval is the right product layer, but the current sentence is too broad to be ready as one dev/skill fixture.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes no verified evidence refs. The source page has a help-text check for advertised presets, but no direct verified evidence for concrete development-facing behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Split the development-facing support promise into concrete dev/repo and dev/skill scenarios, then create fixtures that show Cautilus can evaluate an agent workflow or skill behavior through a repo-owned runner.",
+          "unresolvedQuestions": [
+            "Should the user-facing promise require both dev/repo and dev/skill fixture evidence, or is one representative development-facing scenario enough?",
+            "Which development-facing example should be canonical for users: repo contract obedience, tool behavior, or skill-trigger behavior?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-prompt-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-12",
+          "claimFingerprint": "sha256:f5b9a1cb237c687e9197418b496d41d005a5658e89ec8018042642e97883df2f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "app/prompt",
+          "verificationReadiness": "needs-scenario",
+          "whyThisLayer": "The claim names app-facing prompt, chat, and service-response behavior. Cautilus eval is the right layer, but the claim spans multiple app surfaces and needs concrete scenarios before it is ready to verify.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes no verified evidence refs. The source page only advertises that app presets exist; it does not include direct verified evidence that app-facing behavior is evaluated through a host-owned runner.",
+          "evidenceRefs": [],
+          "nextAction": "Split the app-facing support promise into concrete app/prompt and app/chat scenarios, then attach eval fixture evidence showing input, observed output, and summary packets for host-owned app behavior.",
+          "unresolvedQuestions": [
+            "Should service-response behavior be represented as app/prompt, app/chat, or a future app surface?",
+            "Which app-facing scenario should be the first portable proof: single prompt behavior, multi-turn chat behavior, or service response classification?"
+          ]
+        }
+      ]
+    }
+  ]
+}

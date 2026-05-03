@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "eval-bucket-user-c",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T21:50:05+09:00",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when the review input includes direct verified evidence for the exact claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-improvement-and-optimization-cautilus-eval-dev-repo-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-optimization-spec-md-3",
+          "claimFingerprint": "sha256:83fa3e6e882c6c28e2b6cf839c4ff47f4f272cf38f986edf1089322ad45215bf",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/repo",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim promises behavior from the optimize workflow: it must improve selected behavior while preserving a believable proof surface. That requires a bounded repo-level evaluation scenario rather than only reading CLI code or docs.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input contains only the source claim from docs/specs/user/optimization.spec.md and no direct eval summary, evidence bundle, or fixture result showing optimize improvement with retained proof surface.",
+          "evidenceRefs": [],
+          "nextAction": "Create a dev/repo Cautilus eval fixture that runs a controlled optimize workflow and asserts both the selected behavior improvement decision and the retained proof-surface artifacts.",
+          "unresolvedQuestions": [
+            "Which existing self-dogfood optimize fixture, if any, is intended to be the canonical proof for the user-facing optimize promise?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-packets-and-reporting-cautilus-eval-dev-repo-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-270",
+          "claimFingerprint": "sha256:1e30b87e2f299951a03c64f4f891326883f447714f997c5b496c8f5a130c8219",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is CLI packet behavior: eval evaluate should consume an already-observed packet and avoid launching the runner. That can be proven by a deterministic command or integration test with a runner-launch sentinel.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes the CLI reference sentence but no direct test result, command transcript, or evidence bundle proving that eval evaluate does not launch the runner again.",
+          "evidenceRefs": [],
+          "nextAction": "Add or point to a deterministic eval evaluate test that feeds an observed packet and fails if any runner invocation path is touched.",
+          "unresolvedQuestions": [
+            "Is there already a checked-in no-runner sentinel test for eval evaluate that should be linked as evidence instead of adding a new one?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-packets-and-reporting-cautilus-eval-dev-repo-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-index-spec-md-25",
+          "claimFingerprint": "sha256:9c02e459e8d9dde0c5546555cd6fd972af45d441ba5ed550d74a7fe99efa9744",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is setup/readiness behavior for the public claim-document workflow. A deterministic doctor or readiness test can prove that raw packets remain possible while the specdown-backed workflow is not fully ready.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes only the user-facing spec sentence and no doctor output, readiness packet, or test evidence for the missing-specdown setup boundary.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a deterministic doctor/readiness fixture where specdown is unavailable and assert that raw Cautilus packets are still usable while claim-document workflow readiness is not satisfied.",
+          "unresolvedQuestions": [
+            "Should this proof live in doctor readiness tests, install/adoption tests, or both?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-quality-gates-cautilus-eval-dev-repo-docs",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-48",
+          "claimFingerprint": "sha256:235f566172db781f7228ff54e5c782c4469aaf0f0c1d64315906048b7547f672",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim describes the generated ready payload and nearby scenario catalog guidance. That is a deterministic adapter/init payload contract, not model-backed behavior.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input provides the adoption-guide sentence but no generated ready payload sample, snapshot test, or evidence bundle proving that first_bounded_run and scenario catalog guidance are emitted together.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a deterministic consumer-adoption payload test that asserts the ready payload includes first_bounded_run and keeps scenario catalog examples available without replacing the eval test/evaluate loop.",
+          "unresolvedQuestions": [
+            "Which command or adapter path owns the ready payload contract that this guide sentence describes?"
+          ]
+        }
+      ]
+    }
+  ]
+}

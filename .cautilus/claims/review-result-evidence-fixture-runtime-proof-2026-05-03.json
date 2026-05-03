@@ -11,7 +11,7 @@
       "clusterId": "cluster-readme-fixture-runtime-proof",
       "claimUpdates": [
         {
-          "claimId": "claim-readme-md-156",
+          "claimId": "claim-readme-md-157",
           "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
@@ -23,9 +23,9 @@
               "path": ".cautilus/claims/evidence-fixture-runtime-proof-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:803b917b46b80551f66ad79c5bb3851eec8937e6df74cdff06ba0f55fa8ce16b",
+              "contentHash": "sha256:6b85828fd24500299d40a1dde8a26b80ccd57991b8eb0b6ff95fd9e9d5657a53",
               "supportsClaimIds": [
-                "claim-readme-md-156"
+                "claim-readme-md-157"
               ]
             }
           ],

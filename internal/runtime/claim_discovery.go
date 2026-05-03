@@ -1201,6 +1201,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks.",
 			next:                  "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
 		}, true
+	case deterministicCommandPacketClaim(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests.",
+			next:                  "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+		}, true
 	case containsAny(lower, []string{" in-editor agent ", " drive the same contracts conversationally", " conversationally "}) && containsAny(lower, []string{" agent", " skill", " codex", " claude"}):
 		return claimClassification{
 			recommendedProof:       "cautilus-eval",
@@ -1234,6 +1241,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			recommendedEvalSurface: surface,
 			why:                    "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture.",
 			next:                   "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+		}, true
+	case broadEvalSurfaceClaim(lower):
+		return claimClassification{
+			recommendedProof:      "cautilus-eval",
+			verificationReadiness: "needs-scenario",
+			why:                   "The claim names a broad behavior surface or reusable workflow; it needs a concrete scenario before an eval fixture can honestly prove it.",
+			next:                  "Decompose this broad behavior promise into one or more concrete scenario candidates before planning a protected eval.",
 		}, true
 	case claimDocumentsScenarioCommand(lower):
 		return claimClassification{
@@ -1317,6 +1331,60 @@ func broadPositioningClaim(lower string) bool {
 		containsAny(lower, []string{" honest", " reliable", " trustworthy", " correct", " safe "}) &&
 		containsAny(lower, []string{" while ", " as "}) &&
 		containsAny(lower, []string{" prompt", " agent", " workflow", " behavior", " model"})
+}
+
+func deterministicCommandPacketClaim(lower string) bool {
+	if modelProducedStructuredOutputClaim(lower) {
+		return false
+	}
+	if containsAny(lower, []string{" claim plan-evals", " doctor", " agent status", " ready payload", " first_bounded_run", " specdown_available", " specdown "}) &&
+		containsAny(lower, []string{" emit", " emits", " emitted", " output", " outputs", " includes", " payload", " packet", " schema", " evaluates", " without launching", " readiness"}) {
+		return true
+	}
+	if strings.Contains(lower, " eval evaluate") &&
+		containsAny(lower, []string{" already-observed", " observed packet", " without launching", " no runner launch", " not launch", " does not launch"}) {
+		return true
+	}
+	if strings.Contains(lower, " specdown") &&
+		containsAny(lower, []string{" raw cautilus packets", " fully set up", " claim-document workflow", " ready", " readiness"}) {
+		return true
+	}
+	if containsAny(lower, []string{" packet", " packets", " payload", " schema", " json", " non-writer", " not a writer", " without launching", " no runner launch"}) &&
+		containsAny(lower, []string{" command ", " cli ", " cautilus ", " cautilus.", " emit", " emits", " emitted", " evaluate", " evaluates", " preserves", " includes", " writes", " output", " outputs"}) &&
+		containsAny(lower, []string{" cautilus.", " command ", " cli ", " --", " non-writer", " not a writer", " without launching", " no runner launch", " golden", " checked-in wrapper"}) {
+		return true
+	}
+	if strings.Contains(lower, " fixture provides ") &&
+		containsAny(lower, []string{" audit packet", " audit packets", " fixture results", " fixture-runtime", " fixture runtime"}) &&
+		!containsAny(lower, []string{" agent episode", " prompt", " chat", " skill behavior", " execution quality"}) {
+		return true
+	}
+	if strings.Contains(lower, " fixture results") &&
+		containsAny(lower, []string{" audit packet", " audit packets"}) &&
+		!containsAny(lower, []string{" agent episode", " prompt", " chat", " skill behavior", " execution quality"}) {
+		return true
+	}
+	if containsAny(lower, []string{" leaves evidence", " reopenable ", " reopen "}) &&
+		containsAny(lower, []string{" packet", " artifact", " artifacts", " terminal scrollback", " memory"}) {
+		return true
+	}
+	return false
+}
+
+func modelProducedStructuredOutputClaim(lower string) bool {
+	if containsAny(lower, []string{" not a writer", " non-writer", " host-owned eval fixtures"}) {
+		return false
+	}
+	return containsAny(lower, []string{" assistant", " model", " llm", " prompt", " chat", " tool-call", " tool call", " agent response", " generated response"}) &&
+		containsAny(lower, []string{" json", " schema", " structured output", " structured-output", " outputs", " emits", " returns", " tool-call"})
+}
+
+func broadEvalSurfaceClaim(lower string) bool {
+	if containsAny(lower, []string{" supports ", " can evaluate ", " evaluates behavior ", " same product workflow can be reused", " workflow can be reused"}) &&
+		containsAny(lower, []string{" such as ", " across repos", " dev/", " app/", " behavior", " agent workflows", " repo contracts", " prompt", " chat", " service-response"}) {
+		return true
+	}
+	return containsAny(lower, []string{" supports development-facing behavior", " supports app-facing behavior"})
 }
 
 func claimNeedsScenario(lower string) bool {

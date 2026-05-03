@@ -11,7 +11,7 @@
       "clusterId": "cluster-readme-scenario-catalog-example-cli",
       "claimUpdates": [
         {
-          "claimId": "claim-readme-md-166",
+          "claimId": "claim-readme-md-167",
           "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
@@ -23,9 +23,9 @@
               "path": ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:4fb0bbb4e58ed6170a9326d6b34b42b865250117b7e27dae0b697c6202b581dd",
+              "contentHash": "sha256:5733aa3d6263b4b396194bcdb6915ca9646d1c5e06d79676556d3a17fd5e9eeb",
               "supportsClaimIds": [
-                "claim-readme-md-166"
+                "claim-readme-md-167"
               ]
             }
           ],

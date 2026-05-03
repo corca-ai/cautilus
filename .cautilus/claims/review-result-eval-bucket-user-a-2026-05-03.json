@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "reviewer-lane-eval-bucket-user-a",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T21:50:00+09:00",
+    "evidencePolicy": "Strict portable review of assigned user-facing eval-bucket clusters. Evidence remains unknown unless the review input includes direct verified evidence; source excerpts alone route proof work but do not satisfy claims."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-agent-and-skill-workflow-cautilus-eval-dev-skill-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-151",
+          "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim promises skill or agent behavior: it must trigger on the right prompts, execute cleanly, and keep static validation passing after changes. That is behavior of an agent-facing runtime, not only a document or unit-level invariant.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes only the README source excerpt and no verified eval summary, fixture result, static-validation run, or evidence bundle for this claim.",
+          "evidenceRefs": [],
+          "nextAction": "Create or select a portable dev/skill fixture that invokes a representative changed skill or agent prompt, checks trigger selection, execution completion, and static validation output, then run it with `cautilus eval test`.",
+          "unresolvedQuestions": [
+            "Which checked-in skill or agent workflow should be the portable representative for this user-facing promise?",
+            "Should static validation passing be asserted inside the eval runner result, or linked as a deterministic prerequisite evidence ref?"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-218",
+          "claimFingerprint": "sha256:0326670200c2a6f36720afd68b0bf4dded8a6d931270b22ff70f68d3fe459927",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The install-file portion is deterministic, but the user-facing promise that an in-editor agent can drive the same Cautilus contracts conversationally requires exercising the bundled skill through an agent-facing workflow.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes only the README source excerpt and no install smoke evidence, plugin manifest evidence, or dev/skill eval showing an agent using the installed skill to drive a Cautilus workflow.",
+          "evidenceRefs": [],
+          "nextAction": "Use deterministic install smoke as a prerequisite, then run a dev/skill fixture where the installed bundled skill drives a small Cautilus workflow such as status orientation or claim review preparation through the same contract commands.",
+          "unresolvedQuestions": [
+            "Should this source sentence be split into a deterministic install-manifest claim and a separate dev/skill conversational-driving claim?",
+            "Which host agent surface, Claude plugin or Codex plugin, is the minimum portable proof target?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-claim-discovery-and-review-cautilus-eval-dev-skill-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-155",
+          "claimFingerprint": "sha256:16b357f816005aa1da9b6ff24f4188e6e6057e0e73d8f39e58c8cb4b153d8c05",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "This claim is about Cautilus eval fixture mechanics and audit-packet provenance: a fixture with `turns` is accepted by the preset and dogfood fixture results derive from audit packets. That can be checked by deterministic fixture-runtime tests and artifact-shape assertions without launching a model.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes only the README source excerpt and no fixture, eval summary, audit packet, or deterministic test evidence that directly verifies turn handling or audit-packet provenance.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a deterministic eval-test fixture-runtime proof that uses a dev/skill fixture with `turns` and asserts the produced observed or summary packet can be traced to the intended audit packet inputs.",
+          "unresolvedQuestions": [
+            "Does an existing self-dogfood fixture already cover `turns`, or does it only cover audit-packet-derived single-step outputs?",
+            "Should the README sentence be split so multi-turn support and audit-packet provenance can have separate proof routes?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-documentation-and-contracts-cautilus-eval-app-prompt-readme",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-129",
+          "claimFingerprint": "sha256:df4aa9115fa3cb65ef65be956336be165bc67437d0f039e64c13baf95891493d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim promises the shape and boundary of `claim plan-evals`: it emits an intermediate plan and does not write host prompts, runners, fixtures, or policy. That is deterministic CLI behavior and output-shape behavior, not app/prompt behavior.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes only the README source excerpt and no `claim plan-evals` output packet, validation report, or filesystem non-write assertion for this claim.",
+          "evidenceRefs": [],
+          "nextAction": "Add or link a deterministic `claim plan-evals` proof that validates `cautilus.claim_eval_plan.v1` output and asserts the command does not create or modify host-owned prompt, runner, fixture, or policy files.",
+          "unresolvedQuestions": [
+            "Should the non-writer boundary be verified by a filesystem diff guard in the CLI test or by a narrower output-path-only assertion?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-user-adapter-and-portability-cautilus-eval-app-prompt-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-14",
+          "claimFingerprint": "sha256:db8d7c50e24066f8e6a1b7e2c3c536e3e09c4a6d2fe18e870b75b4bead176005",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is a product-boundary and ownership promise: the host repo, not Cautilus, owns prompts, models, credentials, runners, and acceptance policy. It should be verified by reading the adapter contract, docs, and command behavior boundaries, with deterministic tests as supporting evidence where available.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The review input includes only the user-facing spec excerpt and no direct contract audit, command-surface evidence, or non-ownership proof for prompts, credentials, runners, and policy.",
+          "evidenceRefs": [],
+          "nextAction": "Perform a human-auditable boundary review of the adapter contract, eval docs, and install/eval command behavior, then attach deterministic supporting refs for any CLI paths that prove Cautilus only invokes host-owned runners rather than owning prompts, credentials, or policy.",
+          "unresolvedQuestions": [
+            "Which contract document is the source of truth for the host-owned prompt, credential, runner, and policy boundary?",
+            "Should a deterministic non-ownership smoke test be added as supporting evidence after the human-auditable contract review?"
+          ]
+        }
+      ]
+    }
+  ]
+}

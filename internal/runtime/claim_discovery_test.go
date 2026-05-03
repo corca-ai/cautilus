@@ -418,7 +418,35 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"The same preset can evaluate a multi-turn agent episode when the fixture provides turns.",
 		"",
+		"The same preset can evaluate a multi-turn agent episode when the fixture provides turns; dogfood fixtures derive results from audit packets.",
+		"",
+		"Dogfood fixture results should derive from audit packets.",
+		"",
 		"When the goal is only to prove command routing, `cautilus eval test --runtime fixture` can run adapter-owned fixture results.",
+		"",
+		"For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
+		"",
+		"`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.",
+		"",
+		"Without specdown, a repo can still contain raw Cautilus packets, but it is not fully set up for the Cautilus claim-document workflow.",
+		"",
+		"The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
+		"",
+		"Cautilus leaves evidence that another person or agent can reopen instead of relying on terminal scrollback or memory.",
+		"",
+		"Agent status should share the same readiness facts when an agent is driving the workflow.",
+		"",
+		"The assistant should output JSON matching the schema.",
+		"",
+		"Tool-call JSON returned by the model should match the schema.",
+		"",
+		"`eval evaluate` remains the first-class packet boundary for skill trigger and execution quality.",
+		"",
+		"Cautilus supports development-facing behavior, such as agent workflows, repo contracts, tools, and skills.",
+		"",
+		"Cautilus supports app-facing behavior, such as prompt, chat, and service-response behavior.",
+		"",
+		"The same product workflow can be reused across repos because repo-specific behavior lives in adapters and fixtures.",
 		"",
 		"The Agent track provides bundled skill and plugin manifests through cautilus install.",
 		"",
@@ -507,9 +535,74 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if skillEpisode == nil || skillEpisode["recommendedEvalSurface"] != "dev/skill" {
 		t.Fatalf("expected audit-backed agent episode to route to dev/skill, got %#v", skillEpisode)
 	}
+	auditPacketEpisode := bySummary["The same preset can evaluate a multi-turn agent episode when the fixture provides turns; dogfood fixtures derive results from audit packets."]
+	if auditPacketEpisode == nil || auditPacketEpisode["recommendedProof"] != "cautilus-eval" || auditPacketEpisode["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected mixed agent episode and audit provenance claim to remain dev/skill eval, got %#v", auditPacketEpisode)
+	}
+	auditPacketProvenance := bySummary["Dogfood fixture results should derive from audit packets."]
+	if auditPacketProvenance == nil || auditPacketProvenance["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected narrow audit-packet provenance claim to be deterministic, got %#v", auditPacketProvenance)
+	}
 	fixtureRuntime := bySummary["When the goal is only to prove command routing, `cautilus eval test --runtime fixture` can run adapter-owned fixture results."]
 	if fixtureRuntime == nil || fixtureRuntime["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected fixture runtime routing claim to be deterministic, got %#v", fixtureRuntime)
+	}
+	planEvalsPacket := bySummary["For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy."]
+	if planEvalsPacket == nil || planEvalsPacket["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected claim plan-evals packet boundary to be deterministic, got %#v", planEvalsPacket)
+	}
+	evaluateObserved := bySummary["`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again."]
+	if evaluateObserved == nil || evaluateObserved["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected no-launch eval evaluate packet claim to be deterministic, got %#v", evaluateObserved)
+	}
+	specdownReadiness := bySummary["Without specdown, a repo can still contain raw Cautilus packets, but it is not fully set up for the Cautilus claim-document workflow."]
+	if specdownReadiness == nil || specdownReadiness["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected specdown readiness claim to be deterministic, got %#v", specdownReadiness)
+	}
+	readyPayload := bySummary["The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples."]
+	if readyPayload == nil || readyPayload["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected ready payload claim to be deterministic, got %#v", readyPayload)
+	}
+	reopenableEvidence := bySummary["Cautilus leaves evidence that another person or agent can reopen instead of relying on terminal scrollback or memory."]
+	if reopenableEvidence == nil || reopenableEvidence["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected reopenable evidence artifact claim to be deterministic, got %#v", reopenableEvidence)
+	}
+	agentStatusReadiness := bySummary["Agent status should share the same readiness facts when an agent is driving the workflow."]
+	if agentStatusReadiness == nil || agentStatusReadiness["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected agent status readiness fact claim to be deterministic, got %#v", agentStatusReadiness)
+	}
+	assistantJSON := bySummary["The assistant should output JSON matching the schema."]
+	if assistantJSON == nil || assistantJSON["recommendedProof"] != "cautilus-eval" || assistantJSON["recommendedEvalSurface"] != "app/chat" {
+		t.Fatalf("expected model-produced JSON output to remain app/chat eval, got %#v", assistantJSON)
+	}
+	toolCallJSON := bySummary["Tool-call JSON returned by the model should match the schema."]
+	if toolCallJSON == nil || toolCallJSON["recommendedProof"] != "cautilus-eval" {
+		t.Fatalf("expected model tool-call JSON to remain eval proof, got %#v", toolCallJSON)
+	}
+	evalEvaluateQuality := bySummary["`eval evaluate` remains the first-class packet boundary for skill trigger and execution quality."]
+	if evalEvaluateQuality == nil || evalEvaluateQuality["recommendedProof"] != "cautilus-eval" || evalEvaluateQuality["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected eval evaluate skill-quality claim to remain dev/skill eval, got %#v", evalEvaluateQuality)
+	}
+	devBehaviorSupport := bySummary["Cautilus supports development-facing behavior, such as agent workflows, repo contracts, tools, and skills."]
+	if devBehaviorSupport == nil || devBehaviorSupport["recommendedProof"] != "cautilus-eval" || devBehaviorSupport["verificationReadiness"] != "needs-scenario" {
+		t.Fatalf("expected broad development behavior support to need scenario shaping, got %#v", devBehaviorSupport)
+	}
+	if _, exists := devBehaviorSupport["recommendedEvalSurface"]; exists {
+		t.Fatalf("expected broad development behavior support not to pick one surface before scenario selection, got %#v", devBehaviorSupport)
+	}
+	appBehaviorSupport := bySummary["Cautilus supports app-facing behavior, such as prompt, chat, and service-response behavior."]
+	if appBehaviorSupport == nil || appBehaviorSupport["recommendedProof"] != "cautilus-eval" || appBehaviorSupport["verificationReadiness"] != "needs-scenario" {
+		t.Fatalf("expected broad app behavior support to need scenario shaping, got %#v", appBehaviorSupport)
+	}
+	if _, exists := appBehaviorSupport["recommendedEvalSurface"]; exists {
+		t.Fatalf("expected broad app behavior support not to pick one surface before scenario selection, got %#v", appBehaviorSupport)
+	}
+	reusedWorkflow := bySummary["The same product workflow can be reused across repos because repo-specific behavior lives in adapters and fixtures."]
+	if reusedWorkflow == nil || reusedWorkflow["recommendedProof"] != "cautilus-eval" || reusedWorkflow["verificationReadiness"] != "needs-scenario" {
+		t.Fatalf("expected broad reused workflow claim to need scenario shaping, got %#v", reusedWorkflow)
+	}
+	if _, exists := reusedWorkflow["recommendedEvalSurface"]; exists {
+		t.Fatalf("expected broad reused workflow claim not to pick one surface before scenario selection, got %#v", reusedWorkflow)
 	}
 	install := bySummary["The Agent track provides bundled skill and plugin manifests through cautilus install."]
 	if install == nil || install["recommendedProof"] != "deterministic" {
@@ -2214,12 +2307,12 @@ func TestDiscoverClaimProofPlanHonorsAdapterExcludesForLinkedMarkdown(t *testing
 		"claim_discovery:",
 		"  entries:",
 		"    - README.md",
-	"  linked_markdown_depth: 3",
-	"  exclude:",
-	"    - docs/specs/**",
+		"  linked_markdown_depth: 3",
+		"  exclude:",
+		"    - docs/specs/**",
 		"    - docs/claims/**",
-	"    - docs/maintainers/**",
-	"  evidence_roots:",
+		"    - docs/maintainers/**",
+		"  evidence_roots:",
 		"    - docs/specs",
 		"",
 	}, "\n"))

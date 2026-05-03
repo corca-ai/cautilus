@@ -11,7 +11,7 @@
       "clusterId": "cluster-readme-machine-readable-packets",
       "claimUpdates": [
         {
-          "claimId": "claim-readme-md-238",
+          "claimId": "claim-readme-md-239",
           "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
@@ -23,9 +23,9 @@
               "path": ".cautilus/claims/evidence-machine-readable-packets-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:96f1b421345d4bb5ae04dd93fc37000f40907c1323a774cc16c818386c2104ab",
+              "contentHash": "sha256:a04b61f283d57ee0dc7783b1f95f63fc0ad9ac5d60cf3cf02e1cf4d301e0aaa7",
               "supportsClaimIds": [
-                "claim-readme-md-238"
+                "claim-readme-md-239"
               ]
             }
           ],

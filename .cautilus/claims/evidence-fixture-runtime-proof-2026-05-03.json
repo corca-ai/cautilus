@@ -2,7 +2,7 @@
   "schemaVersion": "cautilus.claim_evidence_bundle.v1",
   "bundleId": "evidence-fixture-runtime-proof-2026-05-03",
   "createdForClaimIds": [
-    "claim-readme-md-156"
+    "claim-readme-md-157"
   ],
   "repoCommit": "c7ae36509e8ad4a98cc82a0ae7aecd572b63da5d",
   "summary": "This bundle records deterministic proof that `cautilus eval test --runtime fixture` runs the normal eval-test packet path while selecting adapter-owned fixture results instead of a coding-agent backend.",
