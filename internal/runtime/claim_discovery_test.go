@@ -488,6 +488,30 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional.",
 		"",
+		"Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product.",
+		"",
+		"A future live app eval flow can refer to one selected instance by stable id.",
+		"",
+		"Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents.",
+		"",
+		"It should not be folded into binary/skill responsibility unless the claim is specifically about agent routing.",
+		"",
+		"It should prefer recall, preserve the scan boundary, and leave curation to packet-aware agent or maintainer review.",
+		"",
+		"If the user already delegated autonomous continuation, the skill may proceed within the recorded budget, but the budget still must be written to the packet.",
+		"",
+		"The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
+		"",
+		"`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
+		"",
+		"The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer.",
+		"",
+		"Before running a first broad scan, the skill should say which entries and depth it will use.",
+		"",
+		"The skill should ask the user to confirm or adjust that scope.",
+		"",
+		"The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
+		"",
 		"## Probe Questions",
 		"",
 		"- Should `run.json` carry workflow metadata so HTML views can present richer summaries?",
@@ -682,6 +706,54 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	pastRun := bySummary["Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional."]
 	if pastRun == nil || pastRun["recommendedProof"] != "human-auditable" || pastRun["verificationReadiness"] != "blocked" {
 		t.Fatalf("expected past-run historical observation to stay blocked human-auditable, got %#v", pastRun)
+	}
+	provenance := bySummary["Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product."]
+	if provenance == nil || provenance["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected evidence provenance/storage boundary to be deterministic, got %#v", provenance)
+	}
+	futureLive := bySummary["A future live app eval flow can refer to one selected instance by stable id."]
+	if futureLive == nil || futureLive["recommendedProof"] != "human-auditable" || futureLive["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected future live app eval flow claim to need alignment, got %#v", futureLive)
+	}
+	rankedView := bySummary["Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents."]
+	if rankedView == nil || rankedView["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected ranked result view projection to be deterministic, got %#v", rankedView)
+	}
+	notFolded := bySummary["It should not be folded into binary/skill responsibility unless the claim is specifically about agent routing."]
+	if notFolded == nil || notFolded["recommendedProof"] != "human-auditable" || notFolded["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected responsibility boundary note to need alignment, got %#v", notFolded)
+	}
+	recallBoundary := bySummary["It should prefer recall, preserve the scan boundary, and leave curation to packet-aware agent or maintainer review."]
+	if recallBoundary == nil || recallBoundary["recommendedProof"] != "human-auditable" || recallBoundary["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected mixed recall and curation claim to need alignment, got %#v", recallBoundary)
+	}
+	delegatedBudget := bySummary["If the user already delegated autonomous continuation, the skill may proceed within the recorded budget, but the budget still must be written to the packet."]
+	if delegatedBudget == nil || delegatedBudget["recommendedProof"] != "human-auditable" || delegatedBudget["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected mixed delegated continuation and packet budget claim to need alignment, got %#v", delegatedBudget)
+	}
+	helperFlags := bySummary["The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`."]
+	if helperFlags == nil || helperFlags["recommendedProof"] != "human-auditable" || helperFlags["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected optional helper flag workflow claim to need alignment, got %#v", helperFlags)
+	}
+	reviewPrepare := bySummary["`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."]
+	if reviewPrepare == nil || reviewPrepare["recommendedProof"] != "deterministic" || reviewPrepare["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected claim review prepare-input packet contract to be deterministic, got %#v", reviewPrepare)
+	}
+	skillBranch := bySummary["The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer."]
+	if skillBranch == nil || skillBranch["recommendedProof"] != "cautilus-eval" || skillBranch["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected skill branch behavior proof gap to remain dev/skill eval, got %#v", skillBranch)
+	}
+	scanAnnouncement := bySummary["Before running a first broad scan, the skill should say which entries and depth it will use."]
+	if scanAnnouncement == nil || scanAnnouncement["recommendedProof"] != "cautilus-eval" || scanAnnouncement["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected scan announcement behavior to remain dev/skill eval, got %#v", scanAnnouncement)
+	}
+	scopeConfirm := bySummary["The skill should ask the user to confirm or adjust that scope."]
+	if scopeConfirm == nil || scopeConfirm["recommendedProof"] != "cautilus-eval" || scopeConfirm["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected scope confirmation behavior to remain dev/skill eval, got %#v", scopeConfirm)
+	}
+	budgetConfirm := bySummary["The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review."]
+	if budgetConfirm == nil || budgetConfirm["recommendedProof"] != "cautilus-eval" || budgetConfirm["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected review budget confirmation behavior to remain dev/skill eval, got %#v", budgetConfirm)
 	}
 }
 

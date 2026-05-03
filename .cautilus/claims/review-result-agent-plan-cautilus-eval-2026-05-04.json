@@ -1,0 +1,226 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "parallel-agent-plan-cautilus-eval-2026-05-04",
+    "type": "agent",
+    "reviewedAt": "2026-05-04T02:20:00+09:00",
+    "evidencePolicy": "Review heuristic eval candidates before fixture planning; keep cautilus-eval only for behavior that needs agent, model, skill, or workflow runner evidence."
+  },
+  "sourceReviewInput": {
+    "path": ".cautilus/claims/review-input-agent-plan-cautilus-eval-2026-05-04.json",
+    "actionBucket": "agent-plan-cautilus-eval",
+    "clusterCount": 6,
+    "reviewedCandidateCount": 12
+  },
+  "reviewRun": {
+    "id": "agent-plan-cautilus-eval-2026-05-04",
+    "mode": "parallel-agent-review",
+    "lanes": [
+      "019dee7f-41da-7a22-b1cf-f10c83ef4863",
+      "019dee7f-4239-7e41-9646-c1e4039f03ab",
+      "019dee7f-4338-7770-9464-9d7dc0bb3a4f"
+    ]
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-developer-adapter-and-portability-cautilus-eval-dev-repo-contrac",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
+          "claimFingerprint": "sha256:16f88f4564c52531f8082d5bf96244f70ef8c7f96002ca5f2affbfddacea06ea",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet includes no direct verified evidence refs; the claim is a packet/schema portability contract, not agent behavior evidence.",
+          "nextAction": "Verify the scenario proposal evidence schema and fixture examples preserve source provenance without requiring host-specific storage fields.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-workbench-instance-discovery-md-99",
+          "claimFingerprint": "sha256:e1fbfb97b35f7b11b40f8460ec5ff20cf1b4b440f96dab535b1eeac095ba45da",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet includes no direct verified evidence refs, and the claim is future-looking rather than a bounded current product behavior.",
+          "nextAction": "Align wording to the current contract, such as stable instance ids in the discovery catalog, then verify with schema and fixture tests; defer live app eval flow proof until that surface exists.",
+          "unresolvedQuestions": [
+            "Is there a current product-owned live app eval flow, or is this only a deferred success criterion?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-repo-contra",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
+          "claimFingerprint": "sha256:81c2f41f61c908940a6f17d086646de7edd84a7804d9db95d3c115425177c78d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet includes no direct verified evidence refs; the core obligation is that the full ranked proposal list remains available in machine-readable output, which is deterministic, but the human-facing view wording is broad.",
+          "nextAction": "Split or tighten the claim to a bounded packet/view contract: canonical machine-readable output preserves the full ranked list, and any summarized human-facing view keeps the full agent-readable result accessible.",
+          "unresolvedQuestions": [
+            "Which current human-facing proposal views are in scope for this claim?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-repo-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-maintainer-active-run-workspace-spec-md-19",
+          "claimFingerprint": "sha256:5cebde607842447489b21603fed3a73eaf769f6caf9ed821ccb9e6761a33ee14",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet provides only a source excerpt and no direct verified evidence.",
+          "nextAction": "Reword or absorb this as a maintainer boundary note; only split out eval-ready behavior if it names a concrete agent-routing obligation.",
+          "unresolvedQuestions": [
+            "Which specific active-run or workspace claim is at risk of being folded into binary or skill responsibility?"
+          ]
+        },
+        {
+          "claimId": "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-14",
+          "claimFingerprint": "sha256:a828b5ee0bab8ff9914d305f6a6d1216a39214eceac4b5832882b8e25956814c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet includes no evidenceRefs and the excerpt combines several obligations without direct proof.",
+          "nextAction": "Split this into deterministic scan-boundary/source-ref claims and a separate human or skill-review curation claim before eval planning.",
+          "unresolvedQuestions": [
+            "What measurable recall expectation should be protected, if any?",
+            "Is packet-aware curation meant to be a skill behavior claim or only a maintainer workflow note?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-skill-contr",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-186",
+          "claimFingerprint": "sha256:d35816a75e6865197594fed5e07f0ab9ca34213226bdea6bcac3620240cd6330",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet provides the contract excerpt but no direct run evidence that the skill says entries and depth before a broad scan.",
+          "nextAction": "Create a dev/skill fixture for a first broad scan branch and assert that the skill announces entries and depth before running discovery.",
+          "unresolvedQuestions": [
+            "What exact interaction counts as a first broad scan?"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-195",
+          "claimFingerprint": "sha256:d1e36092a7a2f49d069d387a9965ad234f5e185c2568f77a928b0ca28ed0ab32",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No direct verified evidence is attached showing the skill asks for scope confirmation.",
+          "nextAction": "Create a dev/skill fixture that reaches scan-scope presentation and expects a confirm-or-adjust prompt before the scan proceeds.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+          "claimFingerprint": "sha256:b88434bd074af349646232a96a54afd3040eb9d98e7278fd8a039af74a0c910e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet has no evidenceRefs proving review-budget confirmation occurs before LLM-backed review launch.",
+          "nextAction": "Create a dev/skill fixture for the review branch and assert that budget confirmation is requested before any subagent or LLM-backed reviewer launch.",
+          "unresolvedQuestions": [
+            "Which observable event should the fixture treat as reviewer launch?"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-215",
+          "claimFingerprint": "sha256:06f00ea486c952a6c1c1a739c6f893e13de474f5c166a0050ce25c829ec549c1",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet contains no direct evidence, and the excerpt mixes delegated skill behavior with a packet-recording requirement.",
+          "nextAction": "Split the packet-recording requirement into a deterministic contract test and, if needed, create a separate dev/skill claim for autonomous continuation behavior.",
+          "unresolvedQuestions": [
+            "Is the protected behavior the skill proceeding after delegation, the budget being written to the packet, or both?"
+          ]
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-agent-and-skill-workflow-cautilus-eval-dev-skill-spec",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
+          "claimFingerprint": "sha256:c2d13b106d686bfc800b45aee200b2477c8695d5d6de2940585b98c6c087a5f8",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet includes no direct verified evidence; the claim explicitly needs behavior evidence that the bundled skill chooses the claim-review branch correctly.",
+          "nextAction": "Create and run a maintained dev/skill fixture that exercises claim-review branch selection and verifies raw discovery is not treated as the finished answer.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-developer-claim-discovery-and-review-cautilus-eval-dev-repo-cont",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-454",
+          "claimFingerprint": "sha256:9524a84a0b9b0a11aca4d95485397b220bf0a53a254096663f7b1dcfcf69c4fd",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "needs-alignment",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet includes no direct verified evidence; the claim is mainly a CLI command-surface contract, but the wording uses optional/future-looking language such as helper flags the binary may provide.",
+          "nextAction": "Split or reword into current deterministic CLI assertions, then verify command discovery/help exposes refresh planning through claim discover without introducing a separate claim refresh command.",
+          "unresolvedQuestions": [
+            "Should this candidate be split into separate assertions for refresh-plan flag availability and absence of a separate claim refresh command?"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-687",
+          "claimFingerprint": "sha256:5710c92253395bbda0e82175a3f1696b96f8f17275875d7b96f48b951e4ebd09",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The packet includes no direct verified evidence; the claim describes CLI output schema, recorded packet fields, and no-LLM/no-merge side effects that are deterministic.",
+          "nextAction": "Add or run deterministic CLI/schema tests for claim review prepare-input covering packet schema, bounded clusters, skipped clusters, skipped claims, and no review-result merge.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ],
+  "reviewSummary": {
+    "reviewedClaimCount": 12,
+    "keptCautilusEvalCount": 4,
+    "reclassifiedFromEvalCount": 8,
+    "notes": [
+      "Several heuristic eval candidates were packet, schema, renderer, or future-boundary claims rather than runner behavior claims.",
+      "The resulting heuristic update should avoid sending no-LLM packet contracts and ranked-output/view projection contracts to eval planning."
+    ]
+  }
+}

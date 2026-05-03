@@ -1,5 +1,5 @@
 {
-  "candidateCount": 322,
+  "candidateCount": 323,
   "claimCandidates": [
     {
       "claimAudience": "developer",
@@ -4555,6 +4555,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet provides the contract excerpt but no direct run evidence that the skill says entries and depth before a broad scan.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -4563,10 +4564,10 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Create a dev/skill fixture for a first broad scan branch and assert that the skill announces entries and depth before running discovery.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Before running a first broad scan, the skill should say which entries and depth it will use.",
@@ -4575,6 +4576,9 @@
         }
       ],
       "summary": "Before running a first broad scan, the skill should say which entries and depth it will use.",
+      "unresolvedQuestions": [
+        "What exact interaction counts as a first broad scan?"
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -4619,6 +4623,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "No direct verified evidence is attached showing the skill asks for scope confirmation.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -4627,10 +4632,10 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Create a dev/skill fixture that reaches scan-scope presentation and expects a confirm-or-adjust prompt before the scan proceeds.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The skill should ask the user to confirm or adjust that scope.",
@@ -4639,6 +4644,7 @@
         }
       ],
       "summary": "The skill should ask the user to confirm or adjust that scope.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -4736,6 +4742,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet has no evidenceRefs proving review-budget confirmation occurs before LLM-backed review launch.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -4744,10 +4751,10 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Create a dev/skill fixture for the review branch and assert that budget confirmation is requested before any subagent or LLM-backed reviewer launch.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
@@ -4756,6 +4763,9 @@
         }
       ],
       "summary": "The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
+      "unresolvedQuestions": [
+        "Which observable event should the fixture treat as reviewer launch?"
+      ],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -4767,18 +4777,18 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet contains no direct evidence, and the excerpt mixes delegated skill behavior with a packet-recording requirement.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/skill",
-        "linked-from:docs/master-plan.md"
+        "deterministic",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Split the packet-recording requirement into a deterministic contract test and, if needed, create a separate dev/skill claim for autonomous continuation behavior.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "If the user already delegated autonomous continuation, the skill may proceed within the recorded budget, but the budget still must be written to the packet.",
@@ -4787,8 +4797,11 @@
         }
       ],
       "summary": "If the user already delegated autonomous continuation, the skill may proceed within the recorded budget, but the budget still must be written to the packet.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "unresolvedQuestions": [
+        "Is the protected behavior the skill proceeding after delegation, the budget being written to the packet, or both?"
+      ],
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned."
     },
     {
       "claimAudience": "developer",
@@ -5307,15 +5320,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/skill",
+        "deterministic",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic packet, provenance, ranked-output, or renderer proof for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -5326,7 +5337,7 @@
       ],
       "summary": "The parent skill should merge results and keep review provenance in the packet.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names provenance, ranked-output, or view projection behavior that should be protected by deterministic packet or renderer checks."
     },
     {
       "claimAudience": "developer",
@@ -5398,18 +5409,18 @@
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet includes no direct verified evidence; the claim is mainly a CLI command-surface contract, but the wording uses optional/future-looking language such as helper flags the binary may provide.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/repo",
-        "linked-from:docs/master-plan.md"
+        "deterministic",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Split or reword into current deterministic CLI assertions, then verify command discovery/help exposes refresh planning through claim discover without introducing a separate claim refresh command.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
@@ -5418,8 +5429,11 @@
         }
       ],
       "summary": "The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "unresolvedQuestions": [
+        "Should this candidate be split into separate assertions for refresh-plan flag availability and absence of a separate claim refresh command?"
+      ],
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned."
     },
     {
       "claimAudience": "developer",
@@ -6356,18 +6370,17 @@
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet includes no direct verified evidence; the claim describes CLI output schema, recorded packet fields, and no-LLM/no-merge side effects that are deterministic.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/repo",
+        "deterministic",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Add or run deterministic CLI/schema tests for claim review prepare-input covering packet schema, bounded clusters, skipped clusters, skipped claims, and no review-result merge.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
@@ -6376,8 +6389,9 @@
         }
       ],
       "summary": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "developer",
@@ -8774,18 +8788,18 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet includes no direct verified evidence refs, and the claim is future-looking rather than a bounded current product behavior.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/repo",
-        "linked-from:docs/contracts/adapter-contract.md"
+        "deterministic",
+        "linked-from:docs/contracts/adapter-contract.md",
+        "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Align wording to the current contract, such as stable instance ids in the discovery catalog, then verify with schema and fixture tests; defer live app eval flow proof until that surface exists.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "A future live app eval flow can refer to one selected instance by stable id.",
@@ -8794,8 +8808,11 @@
         }
       ],
       "summary": "A future live app eval flow can refer to one selected instance by stable id.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "unresolvedQuestions": [
+        "Is there a current product-owned live app eval flow, or is this only a deferred success criterion?"
+      ],
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned."
     },
     {
       "claimAudience": "developer",
@@ -8942,18 +8959,18 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet provides only a source excerpt and no direct verified evidence.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
+        "human-auditable",
         "linked-from:docs/specs/maintainer/index.spec.md",
+        "needs-alignment",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Reword or absorb this as a maintainer boundary note; only split out eval-ready behavior if it names a concrete agent-routing obligation.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "It should not be folded into binary/skill responsibility unless the claim is specifically about agent routing.",
@@ -8962,8 +8979,11 @@
         }
       ],
       "summary": "It should not be folded into binary/skill responsibility unless the claim is specifically about agent routing.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "unresolvedQuestions": [
+        "Which specific active-run or workspace claim is at risk of being folded into binary or skill responsibility?"
+      ],
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned."
     },
     {
       "claimAudience": "developer",
@@ -9243,6 +9263,7 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet includes no direct verified evidence; the claim explicitly needs behavior evidence that the bundled skill chooses the claim-review branch correctly.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -9251,10 +9272,10 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "nextAction": "Create and run a maintained dev/skill fixture that exercises claim-review branch selection and verifies raw discovery is not treated as the finished answer.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer.",
@@ -9263,6 +9284,7 @@
         }
       ],
       "summary": "The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -9303,18 +9325,18 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet includes no evidenceRefs and the excerpt combines several obligations without direct proof.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "linked-from:docs/specs/maintainer/index.spec.md",
+        "needs-alignment",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Split this into deterministic scan-boundary/source-ref claims and a separate human or skill-review curation claim before eval planning.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "It should prefer recall, preserve the scan boundary, and leave curation to packet-aware agent or maintainer review.",
@@ -9323,8 +9345,12 @@
         }
       ],
       "summary": "It should prefer recall, preserve the scan boundary, and leave curation to packet-aware agent or maintainer review.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "unresolvedQuestions": [
+        "What measurable recall expectation should be protected, if any?",
+        "Is packet-aware curation meant to be a skill behavior claim or only a maintainer workflow note?"
+      ],
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned."
     },
     {
       "claimAudience": "developer",
@@ -10186,6 +10212,35 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:4bf05eb3e53c6a353bfe38c7164dc1470ffcf48c26a7e9e214a868eb8d863781",
+      "claimId": "claim-docs-contracts-optimization-md-27",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/active-run.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet, provenance, ranked-output, or renderer proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "evidence provenance so later review can trace each proposal back to an explicit packet and locator",
+          "line": 27,
+          "path": "docs/contracts/optimization.md"
+        }
+      ],
+      "summary": "evidence provenance so later review can trace each proposal back to an explicit packet and locator",
+      "verificationReadiness": "ready-to-verify",
+      "whyThisLayer": "The claim names provenance, ranked-output, or view projection behavior that should be protected by deterministic packet or renderer checks."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:29d176b2ee0cb2a3c8e8d93596af9f0498bd0ba1d5845be7c5c8867ae6b90b51",
       "claimId": "claim-docs-contracts-optimization-md-34",
       "claimSemanticGroup": "Improvement and optimization",
@@ -11007,18 +11062,17 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet includes no direct verified evidence refs; the claim is a packet/schema portability contract, not agent behavior evidence.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/repo",
+        "deterministic",
         "linked-from:docs/contracts/scenario-history.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Verify the scenario proposal evidence schema and fixture examples preserve source provenance without requiring host-specific storage fields.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product.",
@@ -11027,8 +11081,9 @@
         }
       ],
       "summary": "Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names provenance, ranked-output, or view projection behavior that should be protected by deterministic packet or renderer checks."
     },
     {
       "claimAudience": "developer",
@@ -11108,18 +11163,17 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "The packet includes no direct verified evidence refs; the core obligation is that the full ranked proposal list remains available in machine-readable output, which is deterministic, but the human-facing view wording is broad.",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/repo",
+        "deterministic",
         "linked-from:docs/contracts/scenario-history.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "nextAction": "Split or tighten the claim to a bounded packet/view contract: canonical machine-readable output preserves the full ranked list, and any summarized human-facing view keeps the full agent-readable result accessible.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents.",
@@ -11128,8 +11182,11 @@
         }
       ],
       "summary": "Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "unresolvedQuestions": [
+        "Which current human-facing proposal views are in scope for this claim?"
+      ],
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim names provenance, ranked-output, or view projection behavior that should be protected by deterministic packet or renderer checks."
     },
     {
       "claimAudience": "developer",
@@ -11505,7 +11562,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 240,
+      "developer": 241,
       "user": 82
     },
     "byClaimSemanticGroup": {
@@ -11516,35 +11573,35 @@
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
-      "Packets and reporting": 46,
+      "Packets and reporting": 47,
       "Quality gates": 28,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 135,
-      "unknown": 187
+      "unknown": 188
     },
     "byLifecycle": {
-      "new": 322
+      "new": 323
     },
     "byRecommendedProof": {
-      "cautilus-eval": 105,
-      "deterministic": 119,
-      "human-auditable": 98
+      "cautilus-eval": 96,
+      "deterministic": 128,
+      "human-auditable": 99
     },
     "byReviewStatus": {
-      "agent-reviewed": 191,
-      "heuristic": 131
+      "agent-reviewed": 203,
+      "heuristic": 120
     },
     "byVerificationReadiness": {
       "blocked": 43,
-      "needs-alignment": 35,
+      "needs-alignment": 41,
       "needs-scenario": 10,
-      "ready-to-verify": 234
+      "ready-to-verify": 229
     }
   },
   "discoveryEngine": {
-    "implementationHash": "sha256:8cd80d0e251f35784556e3c9a89fa92b8af0e1a5f0b1fe74d9eb24913ca02fa9",
+    "implementationHash": "sha256:5d7547ac6a22e7617bfe490b75cf4f76ce918d88c7fd66b40edc5504a4eb67f8",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v2"
@@ -11699,7 +11756,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
+  "gitCommit": "7c447d5cddc679c56180d3dff55bdd88c2237092",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -12066,6 +12123,25 @@
         "reviewer": "human-maintainer"
       },
       "schemaVersion": "cautilus.claim_review_result.v1"
+    },
+    {
+      "clusterCount": 6,
+      "reviewRun": {
+        "id": "agent-plan-cautilus-eval-2026-05-04",
+        "lanes": [
+          "019dee7f-41da-7a22-b1cf-f10c83ef4863",
+          "019dee7f-4239-7e41-9646-c1e4039f03ab",
+          "019dee7f-4338-7770-9464-9d7dc0bb3a4f"
+        ],
+        "mode": "parallel-agent-review"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {
+        "actionBucket": "agent-plan-cautilus-eval",
+        "clusterCount": 6,
+        "path": ".cautilus/claims/review-input-agent-plan-cautilus-eval-2026-05-04.json",
+        "reviewedCandidateCount": 12
+      }
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",

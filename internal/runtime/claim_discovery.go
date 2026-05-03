@@ -1208,6 +1208,20 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests.",
 			next:                  "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
 		}, true
+	case deterministicProvenanceOrViewClaim(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim names provenance, ranked-output, or view projection behavior that should be protected by deterministic packet or renderer checks.",
+			next:                  "Keep or add deterministic packet, provenance, ranked-output, or renderer proof for this claim.",
+		}, true
+	case futureOrMixedWorkflowBoundaryClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "needs-alignment",
+			why:                   "The claim is future-looking or mixes workflow ownership with packet obligations, so eval planning would overclaim before the current boundary is aligned.",
+			next:                  "Reword or split this into current deterministic packet/CLI contracts and separate behavior claims before verification.",
+		}, true
 	case containsAny(lower, []string{" in-editor agent ", " drive the same contracts conversationally", " conversationally "}) && containsAny(lower, []string{" agent", " skill", " codex", " claude"}):
 		return claimClassification{
 			recommendedProof:       "cautilus-eval",
@@ -1334,6 +1348,10 @@ func broadPositioningClaim(lower string) bool {
 }
 
 func deterministicCommandPacketClaim(lower string) bool {
+	if strings.Contains(lower, "claim review prepare-input") &&
+		containsAny(lower, []string{" emit", " emits", " emitted", " records", " bounded clusters", " skipped clusters", " skipped claims", " does not call an llm", " no llm", " merge review results"}) {
+		return true
+	}
 	if modelProducedStructuredOutputClaim(lower) {
 		return false
 	}
@@ -1366,6 +1384,43 @@ func deterministicCommandPacketClaim(lower string) bool {
 	}
 	if containsAny(lower, []string{" leaves evidence", " reopenable ", " reopen "}) &&
 		containsAny(lower, []string{" packet", " artifact", " artifacts", " terminal scrollback", " memory"}) {
+		return true
+	}
+	return false
+}
+
+func deterministicProvenanceOrViewClaim(lower string) bool {
+	if containsAny(lower, []string{" skill behavior", " agent episode", " model behavior", " prompt behavior"}) {
+		return false
+	}
+	if containsAny(lower, []string{" evidence should preserve", " preserve where the suggestion came from", " source provenance", " provenance "}) &&
+		containsAny(lower, []string{" without forcing", " host repo", " storage model", " packet", " schema", " fixture example", " evidence "}) {
+		return true
+	}
+	if containsAny(lower, []string{" full ranked result", " full ranked proposal list", " ranked proposal list", " full ranked list"}) &&
+		containsAny(lower, []string{" agent", " machine-readable", " human-facing view", " view", " output", " result"}) {
+		return true
+	}
+	return false
+}
+
+func futureOrMixedWorkflowBoundaryClaim(lower string) bool {
+	if containsAny(lower, []string{" future ", " future-looking "}) &&
+		containsAny(lower, []string{" eval flow", " live app eval", " flow can refer", " stable id", " instance "}) {
+		return true
+	}
+	if containsAny(lower, []string{" may provide", " helper flags"}) &&
+		containsAny(lower, []string{" claim discover", " refresh-plan", " public user-level workflow", " command-surface"}) {
+		return true
+	}
+	if containsAny(lower, []string{" should not be folded into", " responsibility unless"}) {
+		return true
+	}
+	if containsAny(lower, []string{" prefer recall", " preserve the scan boundary", " leave curation"}) &&
+		containsAny(lower, []string{" packet-aware agent", " maintainer review", " curation"}) {
+		return true
+	}
+	if containsAny(lower, []string{" already delegated autonomous continuation", " budget still must be written to the packet", " budget still must be written"}) {
 		return true
 	}
 	return false

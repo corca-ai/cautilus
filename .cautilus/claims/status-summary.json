@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 131
+          "unknown": 120
         },
         "byReviewStatus": {
-          "heuristic": 131
+          "heuristic": 120
         },
-        "count": 131,
+        "count": 120,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,32 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 78
+          "unknown": 4
         },
         "byReviewStatus": {
-          "heuristic": 78
+          "agent-reviewed": 2,
+          "heuristic": 2
         },
-        "count": 78,
+        "count": 4,
+        "id": "agent-add-deterministic-proof",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-docs-contracts-claim-discovery-workflow-md-397",
+          "claim-docs-contracts-claim-discovery-workflow-md-687",
+          "claim-docs-contracts-optimization-md-27",
+          "claim-docs-contracts-scenario-proposal-sources-md-152"
+        ],
+        "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
+      },
+      {
+        "byEvidenceStatus": {
+          "unknown": 69
+        },
+        "byReviewStatus": {
+          "agent-reviewed": 4,
+          "heuristic": 65
+        },
+        "count": 69,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -82,13 +102,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 35
+          "unknown": 41
         },
         "byReviewStatus": {
-          "agent-reviewed": 16,
+          "agent-reviewed": 22,
           "heuristic": 19
         },
-        "count": 35,
+        "count": 41,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -141,7 +161,7 @@
       }
     ]
   },
-  "candidateCount": 322,
+  "candidateCount": 323,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -158,7 +178,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 240,
+      "developer": 241,
       "user": 82
     },
     "byClaimSemanticGroup": {
@@ -169,31 +189,31 @@
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
-      "Packets and reporting": 46,
+      "Packets and reporting": 47,
       "Quality gates": 28,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 135,
-      "unknown": 187
+      "unknown": 188
     },
     "byLifecycle": {
-      "new": 322
+      "new": 323
     },
     "byRecommendedProof": {
-      "cautilus-eval": 105,
-      "deterministic": 119,
-      "human-auditable": 98
+      "cautilus-eval": 96,
+      "deterministic": 128,
+      "human-auditable": 99
     },
     "byReviewStatus": {
-      "agent-reviewed": 191,
-      "heuristic": 131
+      "agent-reviewed": 203,
+      "heuristic": 120
     },
     "byVerificationReadiness": {
       "blocked": 43,
-      "needs-alignment": 35,
+      "needs-alignment": 41,
       "needs-scenario": 10,
-      "ready-to-verify": 234
+      "ready-to-verify": 229
     }
   },
   "discoveryBoundary": {
@@ -3021,59 +3041,10 @@
       }
     ]
   },
-  "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
+  "gitCommit": "7c447d5cddc679c56180d3dff55bdd88c2237092",
   "gitState": {
-    "changedFileCount": 48,
-    "changedFiles": [
-      ".agents/cautilus-adapters/self-dogfood-canonical-spec-curation-flow.yaml",
-      ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/discovery-review.md",
-      ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
-      ".cautilus/claims/evidence-canonical-spec-curation-flow-2026-05-03.json",
-      ".cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json",
-      ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
-      ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
-      ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
-      ".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json",
-      ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
-      ".cautilus/claims/evidence-skill-episode-and-evaluate-boundary-2026-05-03.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/review-input-eval-heuristic-batch-2026-05-03.json",
-      ".cautilus/claims/review-result-adapter-gate-split-2026-05-03.json",
-      ".cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json",
-      ".cautilus/claims/review-result-claim-packet-next-work-grouping-2026-05-03.json",
-      ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
-      ".cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json",
-      ".cautilus/claims/review-result-deterministic-proof-batch-2026-05-04.json",
-      ".cautilus/claims/review-result-eval-heuristic-batch-2026-05-03.json",
-      ".cautilus/claims/review-result-optimize-held-out-route-2026-05-03.json",
-      ".cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json",
-      ".cautilus/claims/review-result-skill-packet-first-reclass-2026-05-03.json",
-      ".cautilus/claims/status-summary.json",
-      "charness-artifacts/debug/debug-2026-05-03-canonical-spec-curation-fixture-runtime.md",
-      "charness-artifacts/debug/debug-2026-05-03-eval-surface-related-evidence-ref.md",
-      "charness-artifacts/debug/debug-2026-05-04-eval-plan-skipped-claim-projection.md",
-      "charness-artifacts/debug/latest.md",
-      "fixtures/eval/dev/skill/cautilus-canonical-spec-curation-flow.fixture.json",
-      "fixtures/eval/dev/skill/cautilus-packet-first-flow.fixture.json",
-      "internal/app/app_test.go",
-      "internal/runtime/claim_discovery.go",
-      "internal/runtime/claim_discovery_test.go",
-      "internal/runtime/evaluation_input_test.go",
-      "internal/runtime/skill_test_cases.go",
-      "package.json",
-      "scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.mjs",
-      "scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.test.mjs",
-      "scripts/agent-runtime/audit-cautilus-packet-first-flow-log.mjs",
-      "scripts/agent-runtime/audit-cautilus-packet-first-flow-log.test.mjs",
-      "scripts/agent-runtime/run-local-skill-test.test.mjs",
-      "scripts/agent-runtime/skill-test-case-suite.mjs",
-      "scripts/agent-runtime/skill-test-claude-episode.mjs",
-      "scripts/agent-runtime/skill-test-codex-episode.mjs"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -3081,12 +3052,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "71e6e47f594208e6c888f93026a3c6d49911270f",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "7c447d5cddc679c56180d3dff55bdd88c2237092",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "7c447d5cddc679c56180d3dff55bdd88c2237092",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -3109,8 +3080,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 104,
-    "needsAlignment": 35,
+    "heuristicClaimsReadyForReview": 93,
+    "needsAlignment": 41,
     "needsScenario": 10
   },
   "sampleClaims": [
