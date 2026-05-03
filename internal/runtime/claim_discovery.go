@@ -3341,6 +3341,7 @@ func syncClaimGroupHints(candidate map[string]any) bool {
 	for _, hint := range []string{
 		"audience:" + claimAudienceOrUnclear(stringFromAny(candidate["claimAudience"])),
 		stringFromAny(candidate["recommendedProof"]),
+		stringFromAny(candidate["recommendedEvalSurface"]),
 	} {
 		if hint != "" && !seen[hint] {
 			seen[hint] = true
@@ -3353,7 +3354,7 @@ func syncClaimGroupHints(candidate map[string]any) bool {
 }
 
 func isDerivedClaimGroupHint(hint string) bool {
-	return strings.HasPrefix(hint, "audience:") || validRecommendedProof(hint)
+	return strings.HasPrefix(hint, "audience:") || validRecommendedProof(hint) || validEvalSurface(hint)
 }
 
 func sameStringSet(raw []any, expected []string) bool {

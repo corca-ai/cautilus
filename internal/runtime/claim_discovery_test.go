@@ -1771,6 +1771,70 @@ func TestApplyClaimReviewResultCanClearRecommendedEvalSurface(t *testing.T) {
 	if updatedClaim["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected recommendedProof to follow deterministic review update, got %#v", updatedClaim)
 	}
+	hints := stringArrayOrEmpty(updatedClaim["groupHints"])
+	if containsString(hints, "dev/repo") || containsString(hints, "dev/skill") || containsString(hints, "app/chat") || containsString(hints, "app/prompt") {
+		t.Fatalf("expected stale eval surface group hints to be cleared, got %#v", hints)
+	}
+}
+
+func TestApplyClaimReviewResultSyncsRecommendedEvalSurfaceGroupHint(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := "claim-agents-md-3"
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":                claimID,
+						"reviewStatus":           "agent-reviewed",
+						"evidenceStatus":         "unknown",
+						"recommendedProof":       "cautilus-eval",
+						"verificationReadiness":  "ready-to-verify",
+						"recommendedEvalSurface": "app/prompt",
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult returned error: %v", err)
+	}
+	var updatedClaim map[string]any
+	for _, raw := range arrayOrEmpty(updated["claimCandidates"]) {
+		candidate := asMap(raw)
+		if stringFromAny(candidate["claimId"]) == claimID {
+			updatedClaim = candidate
+			break
+		}
+	}
+	if updatedClaim == nil {
+		t.Fatalf("missing updated claim in %#v", updated)
+	}
+	if updatedClaim["recommendedEvalSurface"] != "app/prompt" {
+		t.Fatalf("expected reviewed eval surface to be applied, got %#v", updatedClaim)
+	}
+	hints := stringArrayOrEmpty(updatedClaim["groupHints"])
+	if !containsString(hints, "app/prompt") || !containsString(hints, "cautilus-eval") {
+		t.Fatalf("expected group hints to include current eval surface and proof, got %#v", hints)
+	}
+	if containsString(hints, "dev/repo") || containsString(hints, "dev/skill") || containsString(hints, "app/chat") {
+		t.Fatalf("expected stale eval surface group hints to be removed, got %#v", hints)
+	}
+	application := asMap(updated["reviewApplication"])
+	applied := stringArrayOrEmpty(asMap(arrayOrEmpty(application["appliedUpdates"])[0])["appliedFields"])
+	if !containsString(applied, "recommendedEvalSurface") || !containsString(applied, "groupHints") {
+		t.Fatalf("expected applied fields to include surface and group hint sync, got %#v", applied)
+	}
 }
 
 func TestApplyClaimReviewResultCanUpdateClaimAudience(t *testing.T) {
