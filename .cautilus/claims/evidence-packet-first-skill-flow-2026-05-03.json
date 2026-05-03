@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-packet-first-skill-flow-2026-05-03",
+  "createdForClaimIds": [
+    "claim-skills-cautilus-skill-md-227"
+  ],
+  "repoCommit": "7c3cf6323cef7934414564a4e607f7a3a913e4e9",
+  "summary": "Current Codex dev/skill packet-first dogfood passed: the bundled Cautilus skill read `agent status --json` and `claim show` packet output before answering, and the audit found no HTML or browser citation when the requested deliverable was agent-oriented.",
+  "evidenceScope": {
+    "targetSurface": "dev/skill Cautilus packet-first reading workflow",
+    "claimBoundary": "Only the skill claim that agents read packets first and cite HTML only for browser deliverables is marked satisfied.",
+    "notClaimed": [
+      "Claude conversational parity for the packet-first flow",
+      "Every future browser-facing report citation path",
+      "HTML renderer correctness",
+      "Human report usability",
+      "Optimization, review-result application, or eval planning behavior"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-packet-first-flow --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest",
+      "exitCode": 0,
+      "reason": "The current checked-in packet-first dev/skill episode returned accept-now under the Codex runtime."
+    },
+    {
+      "command": "node --test scripts/agent-runtime/audit-cautilus-packet-first-flow-log.test.mjs scripts/agent-runtime/run-local-skill-test.test.mjs",
+      "exitCode": 0,
+      "reason": "Focused Node tests prove the packet-first audit catches HTML-before-packet and HTML citation without a browser deliverable, and the skill test suite accepts the new auditKind."
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestNormalizeEvaluationInputAcceptsDevSkillEpisodeTurns|TestNormalizeEvaluationInputAcceptsPacketFirstAuditKind'",
+      "exitCode": 0,
+      "reason": "Focused Go tests prove the product-side eval input normalizer accepts the packet-first auditKind."
+    }
+  ],
+  "dogfoodEvidence": [
+    {
+      "id": "packet-first-flow-codex",
+      "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/eval-summary.json",
+      "kind": "skill-evaluation-summary",
+      "contentHash": "sha256:29229edb740354f366cea25029a10a123c8553d33d818d3136d8878bf14f7135",
+      "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "passed": 1,
+      "failed": 0,
+      "supportsClaimIds": [
+        "claim-skills-cautilus-skill-md-227"
+      ]
+    },
+    {
+      "id": "packet-first-flow-observed",
+      "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/eval-observed.json",
+      "kind": "skill-evaluation-observed",
+      "contentHash": "sha256:d10c59a1e9d1570c440fe265e378d5967afb0758e20092f64ae8ca81fcd26829",
+      "supportsClaimIds": [
+        "claim-skills-cautilus-skill-md-227"
+      ]
+    },
+    {
+      "id": "packet-first-flow-audit",
+      "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/packet-first-flow/episode-cautilus-packet-first-flow/audit.json",
+      "kind": "packet-first-flow-audit",
+      "contentHash": "sha256:4d5c7d22f00b5e60a183156fe810c3ecb84569275f39ea51b072ee33513e7af1",
+      "auditStatus": "passed",
+      "findingIds": [],
+      "observedCommands": [
+        "./bin/cautilus agent status --repo-root . --json",
+        "./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 10"
+      ],
+      "supportsClaimIds": [
+        "claim-skills-cautilus-skill-md-227"
+      ]
+    },
+    {
+      "id": "packet-first-flow-aggregate",
+      "path": "artifacts/self-dogfood/cautilus-packet-first-flow-eval-codex/latest/packet-first-flow/episode-cautilus-packet-first-flow/aggregate.json",
+      "kind": "skill-execution-aggregate",
+      "contentHash": "sha256:4af1a72f5c07a2181bcfdaa7ea6fe69f1778d2c098826b1512c37225ff3275f7",
+      "supportsClaimIds": [
+        "claim-skills-cautilus-skill-md-227"
+      ]
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "skills/cautilus/SKILL.md",
+      "kind": "bundled-skill-source",
+      "contentHash": "sha256:b945d2543891dd8eaba10325f7a4c322c53c99887fc891d73f32d23ac15cdfce"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-packet-first-flow.fixture.json",
+      "kind": "dev-skill-fixture",
+      "contentHash": "sha256:7b750d661efaa411a4f43d681f03d7050aea0355667c540a9a157fda66ce3007"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-packet-first-flow-log.mjs",
+      "kind": "audit-script",
+      "contentHash": "sha256:7903b532478c1114c983b657c220cc829020a6a535f71038788e419b9e20d52e"
+    },
+    {
+      "path": "scripts/agent-runtime/skill-test-codex-episode.mjs",
+      "kind": "codex-episode-runner",
+      "contentHash": "sha256:9dd249cec33e6c5868f594588c2496e233f3cda8443fcf3b0aa070641008dbe1"
+    },
+    {
+      "path": "scripts/agent-runtime/skill-test-claude-episode.mjs",
+      "kind": "claude-episode-runner",
+      "contentHash": "sha256:8f956e1a8cc3df7fbe823e492417ebb8b45058d328f21b8379abdd72b74b050e"
+    },
+    {
+      "path": "scripts/agent-runtime/skill-test-case-suite.mjs",
+      "kind": "node-skill-suite-normalizer",
+      "contentHash": "sha256:a62986a138afbf88e16fe2ca3b7b7bb3ad18bb599447404f1245cd9e82540a75"
+    },
+    {
+      "path": "internal/runtime/skill_test_cases.go",
+      "kind": "go-eval-input-normalizer",
+      "contentHash": "sha256:d2ae462feb319fa43d379352f2fd73ee0981e73e37a7624bdf212aff924270ba"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
+      "kind": "dev-skill-adapter",
+      "contentHash": "sha256:5b7c8ef74a0ee2c82251c2ad818fa88439cb16d47658d39c00142550e5f89b27"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The checked-in fixture, audit, adapter, runtime wiring, focused tests, and current Codex dev/skill dogfood directly prove packet-first reading without HTML citation for an agent-oriented deliverable."
+  }
+}

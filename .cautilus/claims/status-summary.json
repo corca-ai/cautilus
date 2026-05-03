@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 117
+          "satisfied": 118
         },
         "byReviewStatus": {
-          "agent-reviewed": 117
+          "agent-reviewed": 118
         },
-        "count": 117,
+        "count": 118,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,13 +43,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 103
+          "unknown": 102
         },
         "byReviewStatus": {
-          "agent-reviewed": 6,
+          "agent-reviewed": 5,
           "heuristic": 97
         },
-        "count": 103,
+        "count": 102,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -175,8 +175,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 117,
-      "unknown": 205
+      "satisfied": 118,
+      "unknown": 204
     },
     "byLifecycle": {
       "new": 322
@@ -361,7 +361,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 117,
+    "satisfiedClaimCount": 118,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -2611,22 +2611,57 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout."
+      },
+      {
+        "claimId": "claim-skills-cautilus-skill-md-227",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:99b8d900b4b457de04e60308d69e0bb576e8a237dfdf8504764a91bde2df2bc2",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-skills-cautilus-skill-md-227"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable."
       }
     ]
   },
   "gitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",
   "gitState": {
-    "changedFileCount": 9,
+    "changedFileCount": 25,
     "changedFiles": [
+      ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/discovery-review.md",
       ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
       ".cautilus/claims/evidence-current-dev-skill-dogfood-2026-05-03.json",
+      ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
+      ".cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json",
       ".cautilus/claims/review-result-skill-packet-first-reclass-2026-05-03.json",
-      ".cautilus/claims/status-summary.json"
+      ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/debug-2026-05-03-eval-surface-related-evidence-ref.md",
+      "charness-artifacts/debug/latest.md",
+      "fixtures/eval/dev/skill/cautilus-packet-first-flow.fixture.json",
+      "internal/runtime/evaluation_input_test.go",
+      "internal/runtime/skill_test_cases.go",
+      "package.json",
+      "scripts/agent-runtime/audit-cautilus-packet-first-flow-log.mjs",
+      "scripts/agent-runtime/audit-cautilus-packet-first-flow-log.test.mjs",
+      "scripts/agent-runtime/run-local-skill-test.test.mjs",
+      "scripts/agent-runtime/skill-test-case-suite.mjs",
+      "scripts/agent-runtime/skill-test-claude-episode.mjs",
+      "scripts/agent-runtime/skill-test-codex-episode.mjs"
     ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
@@ -2636,7 +2671,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "3e4cea8eaebd53ea813c3424e2bb6834b53cb16c",
+    "currentGitCommit": "7c3cf6323cef7934414564a4e607f7a3a913e4e9",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb992ae4fb9c2e9fb8a872c2db2e0ccae0a04451",

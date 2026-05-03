@@ -11186,9 +11186,19 @@
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
       "claimId": "claim-skills-cautilus-skill-md-227",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is agent skill-orchestration behavior, not deterministic code behavior. It needs a skill-flow fixture or audit log proving packet-first reading and HTML citation only for browser-facing deliverables.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:99b8d900b4b457de04e60308d69e0bb576e8a237dfdf8504764a91bde2df2bc2",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-skills-cautilus-skill-md-227"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by current packet-first dev/skill dogfood: the agent ran `agent status --json` and `claim show` against the evidenced claim packet, and the audit confirmed no HTML or browser citation for an agent-oriented deliverable.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -11196,7 +11206,7 @@
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Use a skill-flow fixture or audit log to prove agents read the packet first and cite HTML only when a browser-facing deliverable is requested.",
+      "nextAction": "Keep the packet-first flow covered whenever the skill packet-reading guidance, HTML/report guidance, or episode audit wiring changes.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -11245,8 +11255,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 117,
-      "unknown": 205
+      "satisfied": 118,
+      "unknown": 204
     },
     "byLifecycle": {
       "new": 322

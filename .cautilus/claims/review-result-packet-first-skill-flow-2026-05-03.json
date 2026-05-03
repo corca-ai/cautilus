@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-packet-first-skill-flow-evidence",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T23:33:00+09:00",
+    "evidencePolicy": "Only mark the packet-first skill behavior claim satisfied when current Codex dev/skill dogfood and audit evidence directly prove packet-first reading and no HTML citation for a non-browser deliverable."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-packet-first-skill-flow-2026-05-03",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-skill-md-227",
+          "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current packet-first dev/skill dogfood: the agent ran `agent status --json` and `claim show` against the evidenced claim packet, and the audit confirmed no HTML or browser citation for an agent-oriented deliverable.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:99b8d900b4b457de04e60308d69e0bb576e8a237dfdf8504764a91bde2df2bc2",
+              "supportsClaimIds": [
+                "claim-skills-cautilus-skill-md-227"
+              ]
+            }
+          ],
+          "nextAction": "Keep the packet-first flow covered whenever the skill packet-reading guidance, HTML/report guidance, or episode audit wiring changes.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
