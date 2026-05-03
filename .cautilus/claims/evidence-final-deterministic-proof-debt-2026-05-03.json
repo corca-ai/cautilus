@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-final-deterministic-proof-debt-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-live-run-invocation-md-58",
+    "claim-docs-contracts-reporting-md-120",
+    "claim-docs-contracts-runner-readiness-md-198",
+    "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-19"
+  ],
+  "repoCommit": "a645e5b21cea877a2e9b9aaf293b16847e9f4001",
+  "summary": "This bundle records deterministic proof for four remaining proof-debt claims: persona_prompt product-owned loop boundaries, blocked review reason-code packets, runner assessment commit-drift provenance, and active claim discovery excludes for archived/superseded claim docs.",
+  "evidenceScope": {
+    "targetSurface": "deterministic Cautilus live-run invocation, review-variant reporting, runner-readiness, and claim-discovery scan-scope tests",
+    "claimBoundary": "Only the four listed behavior claims are marked satisfied. The named-adapter compare-report persistence claim remains unresolved because existing product tests connect already-persisted report artifacts to review packets but do not prove eval-test commands themselves persist compare-report.md/json files.",
+    "notClaimed": [
+      "Every host-owned adapter command persists compare-report.md and compare-report.json",
+      "Cautilus owns generating compare reports for all named adapters",
+      "Persona prompt behavior quality is evaluated by these deterministic tests",
+      "Commit drift is ignored when adapter or runner file hashes differ",
+      "Archived docs outside the configured claim discovery graph are globally unreachable for all tools"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop|TestCLILiveEvalRunSimulatorPersonaCanContinueFromFixture|TestCLILiveEvalRunSimulatorPersonaCanStopFromFixture|TestCLIReviewVariantsReturnsBlockedSummaryWhenVariantEmitsBlockedPayload|TestCLIReviewVariantsClassifiesUnavailableExecutorAsBlockedPartialSuccess' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "persona_prompt live runs write product-owned request, simulator, turn, transcript, and result packets while delegating backend choice through adapter-owned command templates",
+          "blocked review variants preserve machine-readable reason codes and concrete reasons in variant and summary packets",
+          "unavailable executor failures classify as blocked with unavailable_executor and preserve successful variant outputs"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanHonorsAdapterExcludesForLinkedMarkdown|TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates|TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches|TestDoctorNextActionFallsBackAfterRunnerAssessmentReady|TestValidateAdapterDataAcceptsLiveRunInvocation' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "claim discovery honors adapter excludes for archived spec docs, superseded claim catalogs, and maintainer-only linked Markdown",
+          "runner readiness exposes commit drift as fresh-with-head-drift provenance while preserving non-stale assessment state",
+          "doctor and agent status use shared runner readiness state",
+          "live-run invocation adapter command templates survive validation"
+        ]
+      }
+    },
+    {
+      "command": "node --test scripts/agent-runtime/build-report-packet.test.mjs scripts/agent-runtime/build-review-packet.test.mjs scripts/agent-runtime/review-prompt-flow.test.mjs scripts/agent-runtime/reporting-contract-schemas.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 20,
+        "pass": 20,
+        "protectedBehaviors": [
+          "report packets and review prompt inputs preserve report artifacts, compare artifacts, and comparison questions for reviewer grounding",
+          "this supports but does not fully satisfy the named-adapter compare-report persistence claim"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": ".agents/cautilus-adapter.yaml",
+      "kind": "claim-discovery-adapter-excludes",
+      "contentHash": "sha256:06a96e2ffc2bcb73fdcf47988ac8644a54b3f08cac1aadb4521b33f5c657d1d5"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-smoke-tests",
+      "contentHash": "sha256:ea3b7855779c1e4dcb90c2dd8bc89f1c7bcd24b1ca8e6d43b97217ac4534296e"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-tests",
+      "contentHash": "sha256:7012af126fa0a81fb320bc46676d1c7ad90b3b51867cc98739419f25117abf25"
+    },
+    {
+      "path": "internal/runtime/runner_readiness_test.go",
+      "kind": "runner-readiness-tests",
+      "contentHash": "sha256:4d09a568814f3c792cd9ee9a4f944e0ff407f8586cdb0114a4d8b7220dab9784"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "review-variant-and-live-run-runtime",
+      "contentHash": "sha256:1f7185d41743f903f072ac1f567fb663244a9de0599b9242e6b645a427c324e5"
+    },
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "adapter-and-doctor-runtime",
+      "contentHash": "sha256:3c1ea7ca8956160057ea252be8f98253e841d664a37ee228395ae723638c8616"
+    },
+    {
+      "path": "internal/runtime/agent_status.go",
+      "kind": "agent-status-runtime",
+      "contentHash": "sha256:17b17f6ff81a6fad00e010e4762b58d08b105ef4633d805940042aa460bdd254"
+    },
+    {
+      "path": "internal/runtime/adapter_test.go",
+      "kind": "adapter-tests",
+      "contentHash": "sha256:8df1d34c92ca15195c275aee9b3db0af35786d9448ef5293ac31c156ee67b464"
+    },
+    {
+      "path": "scripts/agent-runtime/build-report-packet.test.mjs",
+      "kind": "report-packet-tests",
+      "contentHash": "sha256:4502bce244d1ce7b51c16fcd6a801db258f6f2d633050fff7ea3677218d1b5a1"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-packet.test.mjs",
+      "kind": "review-packet-tests",
+      "contentHash": "sha256:959561c7a45ae1df77f4644e6094cd01e9d160f15e4c14b6716c5918650501fb"
+    },
+    {
+      "path": "scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "kind": "review-prompt-flow-tests",
+      "contentHash": "sha256:d4bd8df8cb961250890b5de285e2974ac91327f3e600a3489b31f5bf1c8acfb5"
+    },
+    {
+      "path": "scripts/agent-runtime/reporting-contract-schemas.test.mjs",
+      "kind": "reporting-schema-tests",
+      "contentHash": "sha256:4a794183eccb8d1c3359a64a55badef27c5d64dd98b275dbb83bae609084687e"
+    }
+  ]
+}
