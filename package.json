@@ -70,6 +70,7 @@
     "audit:review-to-eval-flow-log": "node scripts/agent-runtime/audit-cautilus-review-to-eval-flow-log.mjs",
     "audit:canonical-spec-curation-flow-log": "node scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.mjs",
     "claims:apply-review-results": "node scripts/agent-runtime/apply-current-review-results.mjs --claims .cautilus/claims/latest.json --claims-dir .cautilus/claims --output .cautilus/claims/evidenced-typed-runners.json",
+    "claims:audit-evidence": "node scripts/agent-runtime/audit-claim-evidence-hashes.mjs --repo-root . --claims-dir .cautilus/claims --summary",
     "claims:canonical-map": "node scripts/agent-runtime/build-canonical-claim-map.mjs --claims .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/canonical-claim-map.json",
     "claims:review-worksheet": "node scripts/agent-runtime/render-claim-discovery-review.mjs --claims .cautilus/claims/evidenced-typed-runners.json --status .cautilus/claims/status-summary.json --output .cautilus/claims/discovery-review.md",
     "claims:status-report": "node scripts/agent-runtime/render-claim-status-report.mjs --claims .cautilus/claims/evidenced-typed-runners.json --status .cautilus/claims/status-summary.json --output .cautilus/claims/claim-status-report.md",

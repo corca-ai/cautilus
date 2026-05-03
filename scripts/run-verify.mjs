@@ -8,6 +8,7 @@ export const PHASES = [
 	{ id: "lint:specs", label: "lint · specs" },
 	{ id: "lint:scenario-normalizers", label: "lint · scenario normalizers" },
 	{ id: "lint:contracts", label: "lint · contracts" },
+	{ id: "claims:audit-evidence", label: "lint · claim evidence hashes" },
 	{ id: "lint:links", label: "lint · links" },
 	{ id: "lint:skill-disclosure", label: "lint · skill disclosure" },
 	{ id: "lint:go", label: "lint · golangci-lint" },

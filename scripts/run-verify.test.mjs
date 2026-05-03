@@ -38,6 +38,7 @@ test("PHASES covers every npm run verify sub-phase", () => {
 		"lint:specs",
 		"lint:scenario-normalizers",
 		"lint:contracts",
+		"claims:audit-evidence",
 		"lint:links",
 		"lint:skill-disclosure",
 		"lint:go",
