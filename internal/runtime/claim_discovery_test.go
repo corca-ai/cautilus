@@ -432,8 +432,8 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		t.Fatalf("expected context recovery to stay an app/chat scenario candidate, got %#v", contextRecovery)
 	}
 	reopen := bySummary["Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result."]
-	if reopen == nil || reopen["recommendedProof"] != "deterministic" {
-		t.Fatalf("expected reopenable scenario-loop claim to be deterministic, got %#v", reopen)
+	if reopen == nil || reopen["recommendedProof"] != "human-auditable" || reopen["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected compound scenario-loop claim to require splitting, got %#v", reopen)
 	}
 	skillEpisode := bySummary["The same preset can evaluate a multi-turn agent episode when the fixture provides turns."]
 	if skillEpisode == nil || skillEpisode["recommendedEvalSurface"] != "dev/skill" {

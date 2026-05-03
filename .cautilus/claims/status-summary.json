@@ -3,20 +3,20 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 254
+          "unknown": 253
         },
         "byReviewStatus": {
-          "heuristic": 254
+          "heuristic": 253
         },
-        "count": 254,
+        "count": 253,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-75",
-          "claim-readme-md-101",
           "claim-readme-md-129",
           "claim-readme-md-151",
-          "claim-readme-md-155"
+          "claim-readme-md-155",
+          "claim-readme-md-160"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
       }
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 104
+          "unknown": 103
         },
         "byReviewStatus": {
           "agent-reviewed": 19,
-          "heuristic": 82,
+          "heuristic": 81,
           "human-reviewed": 3
         },
-        "count": 104,
+        "count": 103,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-readme-md-101",
           "claim-docs-cli-reference-md-32",
           "claim-docs-cli-reference-md-110",
           "claim-docs-cli-reference-md-115",
-          "claim-docs-cli-reference-md-128"
+          "claim-docs-cli-reference-md-128",
+          "claim-docs-cli-reference-md-256"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -142,13 +142,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 15
+          "unknown": 16
         },
         "byReviewStatus": {
-          "agent-reviewed": 11,
+          "agent-reviewed": 12,
           "heuristic": 4
         },
-        "count": 15,
+        "count": 16,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -203,19 +203,19 @@
     },
     "byRecommendedProof": {
       "cautilus-eval": 128,
-      "deterministic": 126,
-      "human-auditable": 68
+      "deterministic": 125,
+      "human-auditable": 69
     },
     "byReviewStatus": {
-      "agent-reviewed": 65,
-      "heuristic": 254,
+      "agent-reviewed": 66,
+      "heuristic": 253,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
-      "blocked": 15,
+      "blocked": 16,
       "needs-alignment": 30,
       "needs-scenario": 8,
-      "ready-to-verify": 269
+      "ready-to-verify": 268
     }
   },
   "discoveryBoundary": {
@@ -830,7 +830,7 @@
   },
   "gitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
   "gitState": {
-    "changedFileCount": 31,
+    "changedFileCount": 32,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -849,6 +849,7 @@
       ".cautilus/claims/review-result-evidence-machine-readable-packets-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-specdown-prerequisite-2026-05-03.json",
+      ".cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
       "charness-artifacts/debug/debug-2026-05-03-claim-gitstate-scope.md",
@@ -872,7 +873,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "23ac47ea151b0bb9ed432f31e495073f1c75393e",
+    "currentGitCommit": "d672c2ff31931faea9cb2342c793639da7efa690",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
@@ -899,7 +900,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 227,
+    "heuristicClaimsReadyForReview": 226,
     "needsAlignment": 30,
     "needsScenario": 8
   },

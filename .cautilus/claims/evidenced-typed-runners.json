@@ -511,15 +511,16 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Existing scenario proposal and HTML tests cover parts of the surrounding README example, but this line should be split before attaching evidence to avoid overclaiming promotion, variant comparison, and downstream bounded-step behavior.",
       "groupHints": [
         "audience:user",
-        "deterministic",
+        "human-auditable",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "nextAction": "Split into concrete claims: saved proposal JSON can be reopened, proposal HTML supports human review, and each follow-up path names the command or packet that consumes the saved result.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.",
@@ -528,8 +529,11 @@
         }
       ],
       "summary": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.",
-      "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
+      "unresolvedQuestions": [
+        "Which follow-up paths should be explicit product promises: protected eval promotion, compare-variant review, optimize input, or another bounded step?"
+      ],
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim combines a human promotion decision with several agent follow-up paths; deterministic packet tests can prove the saved proposal surface, but not the whole next-step workflow as one claim."
     },
     {
       "claimAudience": "user",
@@ -10043,19 +10047,19 @@
     },
     "byRecommendedProof": {
       "cautilus-eval": 128,
-      "deterministic": 126,
-      "human-auditable": 68
+      "deterministic": 125,
+      "human-auditable": 69
     },
     "byReviewStatus": {
-      "agent-reviewed": 65,
-      "heuristic": 254,
+      "agent-reviewed": 66,
+      "heuristic": 253,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
-      "blocked": 15,
+      "blocked": 16,
       "needs-alignment": 30,
       "needs-scenario": 8,
-      "ready-to-verify": 269
+      "ready-to-verify": 268
     }
   },
   "discoveryMode": "deterministic-source-inventory",
@@ -10219,19 +10223,19 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "recommendedEvalSurface",
+          "whyThisLayer",
           "nextAction",
           "evidenceStatusReason",
           "groupHints",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-3",
-        "clusterId": "cluster-user-agent-and-skill-workflow-positioning-readme"
+        "claimId": "claim-readme-md-101",
+        "clusterId": "cluster-readme-scenario-next-step-needs-split"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-positioning-boundary.json",
+    "reviewResultPath": ".cautilus/claims/review-result-readme-scenario-next-step-reclassification-2026-05-03.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "provenanceMode": "aggregate-current-review-results"
@@ -10417,6 +10421,12 @@
         "reviewer": "codex-lane-b",
         "scope": "clusters 3-5 only"
       },
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
       "schemaVersion": "cautilus.claim_review_result.v1",
       "sourceReviewInput": {}
     },

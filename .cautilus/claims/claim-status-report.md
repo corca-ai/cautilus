@@ -20,12 +20,12 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 | Dimension | Counts |
 | --- | --- |
 | Evidence | satisfied: 23, unknown: 299 |
-| Review | agent-reviewed: 65, heuristic: 254, human-reviewed: 3 |
-| Recommended proof | cautilus-eval: 128, deterministic: 126, human-auditable: 68 |
-| Verification readiness | blocked: 15, needs-alignment: 30, needs-scenario: 8, ready-to-verify: 269 |
+| Review | agent-reviewed: 66, heuristic: 253, human-reviewed: 3 |
+| Recommended proof | cautilus-eval: 128, deterministic: 125, human-auditable: 69 |
+| Verification readiness | blocked: 16, needs-alignment: 30, needs-scenario: 8, ready-to-verify: 268 |
 | Audience | developer: 240, user: 82 |
 
-Review readiness: heuristicClaimsReadyForReview: 227, needsAlignment: 30, needsScenario: 8.
+Review readiness: heuristicClaimsReadyForReview: 226, needsAlignment: 30, needsScenario: 8.
 
 ## Canonical Claim Map
 
@@ -41,7 +41,7 @@ Review readiness: heuristicClaimsReadyForReview: 227, needsAlignment: 30, needsS
 
 | User claim | Title | Raw claims | Evidence | Review |
 | --- | --- | --- | --- | --- |
-| U1 | Claim Discovery | 22 | satisfied: 6, unknown: 16 | agent-reviewed: 14, heuristic: 7, human-reviewed: 1 |
+| U1 | Claim Discovery | 22 | satisfied: 6, unknown: 16 | agent-reviewed: 15, heuristic: 6, human-reviewed: 1 |
 | U2 | Evaluation | 29 | satisfied: 5, unknown: 24 | agent-reviewed: 15, heuristic: 14 |
 | U3 | Optimization | 4 | unknown: 4 | heuristic: 4 |
 | U4 | Doctor And Readiness | 8 | satisfied: 3, unknown: 5 | agent-reviewed: 5, heuristic: 3 |
@@ -83,8 +83,8 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 
 ## Next Work
 
-- Human review is still meaningful for human-align-surfaces=30, human-confirm-or-decompose=23, split-or-defer=15.
-- Agent next proof work: connect deterministic gates for 104 claim(s), starting with agent-reviewed items before heuristic items.
+- Human review is still meaningful for human-align-surfaces=30, human-confirm-or-decompose=23, split-or-defer=16.
+- Agent next proof work: connect deterministic gates for 103 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 119 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -93,14 +93,14 @@ Semantic sampling recommended for 260 raw claim(s): claim-agents-md-12, claim-ag
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
 | already-satisfied | none | 23 | agent-reviewed: 23 | satisfied: 23 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 104 | agent-reviewed: 19, heuristic: 82, human-reviewed: 3 | unknown: 104 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| agent-add-deterministic-proof | agent | 103 | agent-reviewed: 19, heuristic: 81, human-reviewed: 3 | unknown: 103 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 119 | agent-reviewed: 1, heuristic: 118 | unknown: 119 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | heuristic: 8 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 30 | agent-reviewed: 11, heuristic: 19 | unknown: 30 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 23 | heuristic: 23 | unknown: 23 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
-| split-or-defer | human | 15 | agent-reviewed: 11, heuristic: 4 | unknown: 15 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
+| split-or-defer | human | 16 | agent-reviewed: 12, heuristic: 4 | unknown: 16 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
-Cross-cutting signal: heuristic-review-needed (254) - Review heuristic labels before spending proof or eval budget.
+Cross-cutting signal: heuristic-review-needed (253) - Review heuristic labels before spending proof or eval budget.
 
 ### agent-add-deterministic-proof
 
@@ -108,11 +108,11 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
-| claim-readme-md-101 | README.md:101 | deterministic | ready-to-verify | heuristic | unknown | Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step. |
 | claim-docs-cli-reference-md-32 | docs/cli-reference.md:32 | deterministic | ready-to-verify | heuristic | unknown | Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels. |
 | claim-docs-cli-reference-md-110 | docs/cli-reference.md:110 | deterministic | ready-to-verify | agent-reviewed | unknown | If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop. |
 | claim-docs-cli-reference-md-115 | docs/cli-reference.md:115 | deterministic | ready-to-verify | agent-reviewed | unknown | Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work. |
 | claim-docs-cli-reference-md-128 | docs/cli-reference.md:128 | deterministic | ready-to-verify | agent-reviewed | unknown | It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied. |
+| claim-docs-cli-reference-md-256 | docs/cli-reference.md:256 | deterministic | ready-to-verify | agent-reviewed | unknown | The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set. |
 
 ### agent-plan-cautilus-eval
 
@@ -201,6 +201,7 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 | .cautilus/claims/review-result-loop2-lane-b.json | clusters 3-5 only | codex-lane-b | 2 | 2 | cautilus-eval: 1, deterministic: 1 | ready-to-verify: 2 |
 | .cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json | - | - | 1 | 2 | human-auditable: 2 | blocked: 2 |
 | .cautilus/claims/review-result-positioning-boundary.json | - | - | 1 | 1 | human-auditable: 1 | blocked: 1 |
+| .cautilus/claims/review-result-readme-scenario-next-step-reclassification-2026-05-03.json | - | - | 1 | 1 | human-auditable: 1 | blocked: 1 |
 
 ### .cautilus/claims/review-result-human-align-action-bucket.json
 
@@ -236,11 +237,11 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 | claim-docs-master-plan-md-56 | deterministic | ready-to-verify | satisfied | Keep covered by verify, workflow-file review, consumer:onboard:smoke, and release install smoke. |
 | claim-docs-master-plan-md-82 | deterministic | ready-to-verify | satisfied | Keep covered by lint:specs and lint:scenario-normalizers whenever scenario-normalization vocabulary changes. |
 
-### .cautilus/claims/review-result-positioning-boundary.json
+### .cautilus/claims/review-result-readme-scenario-next-step-reclassification-2026-05-03.json
 
 | Claim | Proof | Readiness | Evidence | Next action |
 | --- | --- | --- | --- | --- |
-| claim-readme-md-3 | human-auditable | blocked | unknown | Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning. |
+| claim-readme-md-101 | human-auditable | blocked | unknown | Split into concrete claims: saved proposal JSON can be reopened, proposal HTML supports human review, and each follow-up path names the command or packet that consumes the saved result. |
 
 ## Validation
 

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-strict-reclassification",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Do not mark compound next-step workflow claims satisfied when deterministic tests only prove the underlying packet or render surface."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-scenario-next-step-needs-split",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-101",
+          "claimFingerprint": "sha256:c6ac22b52078515a66470c72cc5fb595fb1e06f9a762f720b6c9a0f058d2aa50",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "whyThisLayer": "The claim combines a human promotion decision with several agent follow-up paths; deterministic packet tests can prove the saved proposal surface, but not the whole next-step workflow as one claim.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Existing scenario proposal and HTML tests cover parts of the surrounding README example, but this line should be split before attaching evidence to avoid overclaiming promotion, variant comparison, and downstream bounded-step behavior.",
+          "evidenceRefs": [],
+          "nextAction": "Split into concrete claims: saved proposal JSON can be reopened, proposal HTML supports human review, and each follow-up path names the command or packet that consumes the saved result.",
+          "unresolvedQuestions": [
+            "Which follow-up paths should be explicit product promises: protected eval promotion, compare-variant review, optimize input, or another bounded step?"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1135,6 +1135,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                    "The claim says an agent or skill can drive the workflow conversationally, which needs skill-behavior evidence rather than only install proof.",
 			next:                   "Create or use a dev/skill fixture that proves the installed skill can drive the named workflow.",
 		}, true
+	case claimDocumentsCompoundScenarioNextStep(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "blocked",
+			why:                   "The claim combines a human promotion decision with several agent follow-up paths; deterministic packet tests can prove subclaims but would overclaim the whole next-step workflow.",
+			next:                  "Split into concrete claims for saved proposal JSON, human review HTML, and each named downstream follow-up path before attaching proof.",
+		}, true
 	case containsAny(lower, []string{" install", " installs ", " installer", " standalone binary", " checked into each host repo", " bundled skill", " plugin manifest", " plugin manifests", ".agents/skills", ".agents/cautilus-adapter"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
@@ -1239,6 +1246,14 @@ func claimNeedsScenario(lower string) bool {
 		return false
 	}
 	return containsAny(lower, []string{" needs ", " need ", " future ", " missing ", " create ", " author ", " promote ", " protect ", " protected ", " context recovery", " follow-up"})
+}
+
+func claimDocumentsCompoundScenarioNextStep(lower string) bool {
+	return strings.Contains(lower, " human decides ") &&
+		strings.Contains(lower, " promote ") &&
+		strings.Contains(lower, " protected evaluation ") &&
+		strings.Contains(lower, " agent can ") &&
+		containsAny(lower, []string{" reopen the saved result", " compare variants", " next bounded step"})
 }
 
 func claimDocumentsScenarioCommand(lower string) bool {

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:e840dbb4e9836e9b7197c70aa6340a73e2c08182ac1a99519f2dff9ff68d745f"
+      "contentHash": "sha256:114162f4b6d569b694a4ca333117f20a5ea6d74583d1afb075d61e0a0b46364c"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -759,14 +759,14 @@
         "unknown": 16
       },
       "byReviewStatus": {
-        "agent-reviewed": 14,
-        "heuristic": 7,
+        "agent-reviewed": 15,
+        "heuristic": 6,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
         "cautilus-eval": 1,
-        "deterministic": 16,
-        "human-auditable": 5
+        "deterministic": 15,
+        "human-auditable": 6
       },
       "byMappingConfidence": {
         "high": 3,
@@ -3883,28 +3883,28 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:c6ac22b52078515a66470c72cc5fb595fb1e06f9a762f720b6c9a0f058d2aa50",
       "canonicalClaimId": "U1",
       "score": 11,
       "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 10,
-      "scoreMargin": 1,
+      "runnerUpScore": 11,
+      "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "add",
         "agent",
         "command",
-        "deterministic",
+        "concrete",
+        "json",
         "next",
         "packet",
-        "proof",
         "result",
+        "review",
         "saved",
         "skill",
         "whether"
