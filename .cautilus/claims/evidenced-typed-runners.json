@@ -4541,18 +4541,20 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:130735bbdf1969bf169ca06abc7358686ccfa2146461b0bdae476cafcbb6761d",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-188",
-      "claimSemanticGroup": "Documentation and contracts",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
+        "cautilus-eval",
         "contract",
-        "deterministic",
+        "dev/skill",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill presents the scan scope and deterministic bounds before running broad discovery.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -4563,7 +4565,7 @@
       ],
       "summary": "It should also show the deterministic bounds that will be applied:",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim says the workflow should show scan or deterministic bounds to a user before proceeding, which is observable skill behavior."
     },
     {
       "claimAudience": "developer",
@@ -11345,9 +11347,9 @@
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 58,
-      "Agent and skill workflow": 73,
+      "Agent and skill workflow": 74,
       "Claim discovery and review": 22,
-      "Documentation and contracts": 72,
+      "Documentation and contracts": 71,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
@@ -11363,8 +11365,8 @@
       "new": 323
     },
     "byRecommendedProof": {
-      "cautilus-eval": 103,
-      "deterministic": 119,
+      "cautilus-eval": 104,
+      "deterministic": 118,
       "human-auditable": 101
     },
     "byReviewStatus": {
@@ -11379,7 +11381,7 @@
     }
   },
   "discoveryEngine": {
-    "implementationHash": "sha256:c96e75de3d232b1c8134c6c8ea8f10dc9161354675504dc98575b7cf0c23b5d1",
+    "implementationHash": "sha256:8b1f5c4ea0c58b95097c7f10c857b07093d6924d52492eb9964df1d7ca3cc4e5",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v4"
@@ -11534,7 +11536,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "836a53fbf326a8fe9747d51ba37f74e0bade3c81",
+  "gitCommit": "0949ab4da9f6e7fa025838274260645956230033",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {

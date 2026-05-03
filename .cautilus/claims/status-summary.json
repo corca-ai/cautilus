@@ -43,31 +43,31 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 8
+          "unknown": 7
         },
         "byReviewStatus": {
-          "heuristic": 8
+          "heuristic": 7
         },
-        "count": 8,
+        "count": 7,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-contracts-adapter-contract-md-219",
           "claim-docs-contracts-adapter-contract-md-278",
           "claim-docs-contracts-adapter-contract-md-317",
-          "claim-docs-contracts-claim-discovery-workflow-md-188",
-          "claim-docs-contracts-claim-discovery-workflow-md-372"
+          "claim-docs-contracts-claim-discovery-workflow-md-372",
+          "claim-docs-contracts-claim-discovery-workflow-md-382"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 79
+          "unknown": 80
         },
         "byReviewStatus": {
-          "heuristic": 79
+          "heuristic": 80
         },
-        "count": 79,
+        "count": 80,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -182,9 +182,9 @@
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 58,
-      "Agent and skill workflow": 73,
+      "Agent and skill workflow": 74,
       "Claim discovery and review": 22,
-      "Documentation and contracts": 72,
+      "Documentation and contracts": 71,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 20,
@@ -200,8 +200,8 @@
       "new": 323
     },
     "byRecommendedProof": {
-      "cautilus-eval": 103,
-      "deterministic": 119,
+      "cautilus-eval": 104,
+      "deterministic": 118,
       "human-auditable": 101
     },
     "byReviewStatus": {
@@ -2783,7 +2783,7 @@
       }
     ]
   },
-  "gitCommit": "836a53fbf326a8fe9747d51ba37f74e0bade3c81",
+  "gitCommit": "0949ab4da9f6e7fa025838274260645956230033",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -2795,10 +2795,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "836a53fbf326a8fe9747d51ba37f74e0bade3c81",
+    "currentGitCommit": "0949ab4da9f6e7fa025838274260645956230033",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "836a53fbf326a8fe9747d51ba37f74e0bade3c81",
+    "packetGitCommit": "0949ab4da9f6e7fa025838274260645956230033",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

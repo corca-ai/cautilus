@@ -1243,6 +1243,14 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                    "The claim says LLM-backed review waits for a separate review-budget confirmation, which is observable skill or agent workflow behavior.",
 			next:                   "Create or use a dev/skill fixture that proves the skill separates deterministic scan confirmation from LLM review budget confirmation.",
 		}, true
+	case scanScopeDisplayBehaviorClaim(lower):
+		return claimClassification{
+			recommendedProof:       "cautilus-eval",
+			verificationReadiness:  "ready-to-verify",
+			recommendedEvalSurface: "dev/skill",
+			why:                    "The claim says the workflow should show scan or deterministic bounds to a user before proceeding, which is observable skill behavior.",
+			next:                   "Create or use a dev/skill fixture that proves the skill presents the scan scope and deterministic bounds before running broad discovery.",
+		}, true
 	case providerNeutralBoundaryClaim(lower):
 		return claimClassification{
 			recommendedProof:      "human-auditable",
@@ -1488,6 +1496,11 @@ func reviewBudgetConfirmationClaim(lower string) bool {
 	return containsAny(lower, []string{" review-budget confirmation", " review budget confirmation", " review-budget ", " review budget "}) &&
 		containsAny(lower, []string{" llm", " model-backed", " model backed", " reviewer", " review "}) &&
 		containsAny(lower, []string{" after deterministic scan", " after the deterministic scan", " separate ", " before llm", " before launching"})
+}
+
+func scanScopeDisplayBehaviorClaim(lower string) bool {
+	return containsAny(lower, []string{" show the deterministic bounds", " show deterministic bounds", " show the scan scope", " show scan scope"}) &&
+		containsAny(lower, []string{" before ", " will be applied", " broad scan", " discovery", " scan "})
 }
 
 func providerNeutralBoundaryClaim(lower string) bool {

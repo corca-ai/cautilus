@@ -193,6 +193,12 @@ test("generateOptimizeProposal turns explicit evidence into one bounded revision
 		assert.equal(proposal.trialTelemetry.plan.evidenceLimit, 3);
 		assert.equal(proposal.prioritizedEvidence.length, 3);
 		assert.equal(proposal.prioritizedEvidence[0].source, "report.regressed");
+		for (const evidence of proposal.prioritizedEvidence) {
+			assert.equal(typeof evidence.provenance?.packet, "string");
+			assert.equal(typeof evidence.provenance?.locator, "string");
+			assert.notEqual(evidence.provenance.packet.length, 0);
+			assert.notEqual(evidence.provenance.locator.length, 0);
+		}
 		assert.equal(proposal.suggestedChanges[0].changeKind, "prompt_revision");
 		assert.match(proposal.revisionBrief, /Operator guidance should stay legible under recovery pressure/);
 		assert.equal(typeof proposal.revisionBrief, "string");

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:a161fc35afec5c330f3bc53de2a953a69fb9b05aeda8696dd5bab0a80b2d3a54"
+      "contentHash": "sha256:c16c2d69fe21b37303d5a3cfeb953e0adc65dd80addeaab31ffa0ecf69c4fa4f"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:882064b19bb1f53a7f5d0bdbe653b53c33f2ff4ca8186e056538ca7e2eff76a8"
     }
   },
-  "claimsPacketGitCommit": "836a53fbf326a8fe9747d51ba37f74e0bade3c81",
+  "claimsPacketGitCommit": "0949ab4da9f6e7fa025838274260645956230033",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 323,
   "catalogs": {
@@ -1958,8 +1958,8 @@
         "heuristic": 40
       },
       "byRecommendedProof": {
-        "cautilus-eval": 29,
-        "deterministic": 13,
+        "cautilus-eval": 30,
+        "deterministic": 12,
         "human-auditable": 15
       },
       "byMappingConfidence": {
@@ -8153,27 +8153,28 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "deterministic",
+      "recommendedProof": "cautilus-eval",
       "verificationReadiness": "ready-to-verify",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:130735bbdf1969bf169ca06abc7358686ccfa2146461b0bdae476cafcbb6761d",
       "canonicalClaimId": "M2",
-      "score": 7,
-      "runnerUpCanonicalClaimId": "M10",
-      "runnerUpScore": 5,
-      "scoreMargin": 2,
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M1",
+      "runnerUpScore": 7,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "check",
-        "contract",
         "deterministic",
-        "keep",
-        "lint",
-        "schema",
-        "show"
+        "dev/skill",
+        "discovery",
+        "fixture",
+        "prove",
+        "show",
+        "skill",
+        "workflow"
       ],
       "alignedUserClaimIds": [
         "U1",

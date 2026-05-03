@@ -8,7 +8,7 @@ Source excerpts are included for local judgment; source refs are trace data, not
 ## Packet Summary
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Git commit in packet: 836a53fbf326a8fe9747d51ba37f74e0bade3c81
+- Git commit in packet: 0949ab4da9f6e7fa025838274260645956230033
 - Candidate count: 323
 - Source count: 44
 - User claims: 81
@@ -1858,7 +1858,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:92
 
-### Agent and skill workflow (53)
+### Agent and skill workflow (54)
 
 #### Cautilus eval / dev/repo / ready-to-verify / evidence unknown (4)
 
@@ -1999,7 +1999,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; skills/cautilus/SKILL.md:68
 
-#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (17)
+#### Cautilus eval / dev/skill / ready-to-verify / evidence unknown (18)
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-187
 
@@ -2015,6 +2015,21 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:187
+
+##### claim-docs-contracts-claim-discovery-workflow-md-188
+
+- Summary: It should also show the deterministic bounds that will be applied:
+- Current labels: audience=developer; proof=cautilus-eval; eval surface=dev/skill; readiness=ready-to-verify; evidence=unknown
+- Suggested next action: Create or use a dev/skill fixture that proves the skill presents the scan scope and deterministic bounds before running broad discovery.
+- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
+- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
+- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
+- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
+- Human corrected eval surface: [ ] keep [ ] dev/repo [ ] dev/skill [ ] app/chat [ ] app/prompt [ ] surface undecided
+- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
+- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
+- Human notes:
+- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:188
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-196
 
@@ -2934,7 +2949,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/reporting-review-variants.spec.md:14
 
-### Documentation and contracts (53)
+### Documentation and contracts (52)
 
 #### Cautilus eval / app/prompt / ready-to-verify / evidence unknown (4)
 
@@ -3402,7 +3417,7 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human notes:
 - Trace: 1 source ref; docs/specs/maintainer/scenario-history-normalization.spec.md:18
 
-#### Deterministic gate / ready-to-verify / evidence unknown (4)
+#### Deterministic gate / ready-to-verify / evidence unknown (3)
 
 ##### claim-docs-contracts-adapter-contract-md-278
 
@@ -3417,20 +3432,6 @@ Do not try to clear every claim in the first pass; mark duplicates, fragments, a
 - Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
 - Human notes:
 - Trace: 1 source ref; docs/contracts/adapter-contract.md:278
-
-##### claim-docs-contracts-claim-discovery-workflow-md-188
-
-- Summary: It should also show the deterministic bounds that will be applied:
-- Current labels: audience=developer; proof=deterministic; readiness=ready-to-verify; evidence=unknown
-- Suggested next action: Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.
-- Human claim quality: [ ] keep [ ] merge [ ] split [ ] reword [ ] drop [ ] unsure
-- Human corrected audience: [ ] keep [ ] user [ ] developer [ ] unclear
-- Human corrected semantic group: [ ] keep [ ] Adapter and portability [ ] Agent and skill workflow [ ] Claim discovery and review [ ] Documentation and contracts [ ] Evaluation surfaces [ ] General product behavior [ ] Improvement and optimization [ ] Packets and reporting [ ] Quality gates [ ] Release and packaging [ ] other:
-- Human corrected proof: [ ] keep [ ] human-auditable [ ] deterministic [ ] cautilus-eval
-- Human readiness: [ ] keep [ ] ready-to-verify [ ] needs-scenario [ ] needs-alignment [ ] blocked
-- Human priority: [ ] high [ ] medium [ ] low [ ] later [ ] unsure
-- Human notes:
-- Trace: 1 source ref; docs/contracts/claim-discovery-workflow.md:188
 
 ##### claim-docs-contracts-claim-discovery-workflow-md-372
 

@@ -579,6 +579,8 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Before running a first broad scan, the skill should say which entries and depth it will use.",
 		"",
+		"It should also show the deterministic bounds that will be applied:",
+		"",
 		"The skill should ask the user to confirm or adjust that scope.",
 		"",
 		"The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
@@ -984,6 +986,10 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	scanAnnouncement := bySummary["Before running a first broad scan, the skill should say which entries and depth it will use."]
 	if scanAnnouncement == nil || scanAnnouncement["recommendedProof"] != "cautilus-eval" || scanAnnouncement["recommendedEvalSurface"] != "dev/skill" {
 		t.Fatalf("expected scan announcement behavior to remain dev/skill eval, got %#v", scanAnnouncement)
+	}
+	deterministicBounds := bySummary["It should also show the deterministic bounds that will be applied:"]
+	if deterministicBounds == nil || deterministicBounds["recommendedProof"] != "cautilus-eval" || deterministicBounds["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected deterministic-bounds display behavior to remain dev/skill eval, got %#v", deterministicBounds)
 	}
 	scopeConfirm := bySummary["The skill should ask the user to confirm or adjust that scope."]
 	if scopeConfirm == nil || scopeConfirm["recommendedProof"] != "cautilus-eval" || scopeConfirm["recommendedEvalSurface"] != "dev/skill" {
