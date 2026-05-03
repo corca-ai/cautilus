@@ -351,9 +351,25 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 	if payload["mode"] != "orientation" {
 		t.Fatalf("expected orientation mode, got %#v", payload["mode"])
 	}
+	binary := payload["binary"].(map[string]any)
+	if binary["status"] != "healthy" || binary["current"] == nil {
+		t.Fatalf("expected binary health in agent status, got %#v", binary)
+	}
+	agentSurface := payload["agentSurface"].(map[string]any)
+	if agentSurface["status"] != "ready" {
+		t.Fatalf("expected skill surface readiness in agent status, got %#v", agentSurface)
+	}
+	adapterStatus := payload["adapter"].(map[string]any)
+	if adapterStatus["valid"] != true || adapterStatus["path"] == "" {
+		t.Fatalf("expected adapter state in agent status, got %#v", adapterStatus)
+	}
 	claimState := payload["claimState"].(map[string]any)
 	if claimState["status"] != "missing" {
 		t.Fatalf("expected missing claim state, got %#v", claimState)
+	}
+	runnerReadiness := payload["runnerReadiness"].(map[string]any)
+	if runnerReadiness["state"] == "" || runnerReadiness["reason"] == "" {
+		t.Fatalf("expected runner readiness status in agent status, got %#v", runnerReadiness)
 	}
 	scanScope := payload["scanScope"].(map[string]any)
 	if scanScope["linkedMarkdownDepth"] != float64(3) {

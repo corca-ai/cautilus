@@ -1771,9 +1771,26 @@
       "claimFingerprint": "sha256:91bf63bed1f252b0849096cb1ec6ab5b1453c2f60329227a39b11d7c92cdd08b",
       "claimId": "claim-docs-contracts-adapter-contract-md-3",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. The claim is about adapter-loaded command ownership and can be proven by adapter resolution and eval-test command-template execution.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by CLI and runner-readiness tests showing adapter-declared runner command templates are resolved and executed instead of hardcoded benchmark runners.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -1782,7 +1799,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach adapter resolve/eval-test deterministic proof showing repo-specific command templates are loaded from adapter files rather than hardcoded benchmark runners.",
+      "nextAction": "Keep typed runner and eval-test dispatch tests in place when changing adapter command resolution.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1803,9 +1820,26 @@
       "claimFingerprint": "sha256:99c684dbda2accf4db9b5a114cb2259804c721b6a3d4e59f3720af41a6964b31",
       "claimId": "claim-docs-contracts-adapter-contract-md-208",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached in this review result. The claim is a proof-class normalization rule for fixture runtime, not a new dev/repo behavior eval target.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by fixture-runtime eval-test smoke coverage that records observed proofClass=fixture-smoke while preserving the adapter-declared proof class as metadata.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -1814,7 +1848,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach or extend deterministic fixture-runtime proof showing `runtime=fixture` yields `proofClass=fixture-smoke` while preserving the adapter-declared proof class only as metadata.",
+      "nextAction": "Keep fixture-runtime proof metadata tests in place when changing eval proof augmentation.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1877,9 +1911,26 @@
       "claimFingerprint": "sha256:e072f1310848f030f869ee7e1ccd5ee2da5b858d9bf1278729f22c0e47cc1b0b",
       "claimId": "claim-docs-contracts-adapter-contract-md-220",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. The claim concerns fallback semantic-group classification when adapter groups are omitted, which is deterministic discovery behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by discovery-level test coverage for omitted adapter semantic groups falling back to `General product behavior`.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -1888,7 +1939,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach a claim-discovery or adapter-normalization test proving omitted semantic groups produce `General product behavior` instead of a Cautilus-specific taxonomy.",
+      "nextAction": "Keep portable fallback semantic-group tests in place when changing claim discovery grouping.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -4424,9 +4475,26 @@
       "claimFingerprint": "sha256:931bf4f719385b85ea297bcc3cdd8b56c29eb2d9ca43e3d57acbe2a3c85a9734",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-178",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. This duplicates the portable fallback semantic-group behavior and should not consume eval fixture budget.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the same discovery-level fallback test proving omitted adapter semantic groups yield `General product behavior`.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -4435,7 +4503,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach the same deterministic fallback-group discovery proof used for the adapter-contract fallback claim.",
+      "nextAction": "Keep portable fallback semantic-group tests in place when changing claim discovery grouping.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -5378,9 +5446,26 @@
       "claimFingerprint": "sha256:d04d8eb163d803e2a529f013956a4a4cb5102b5eaf3da8c9dc592c131c78228f",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-461",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. The claim is about refresh-plan packet summary fields and coordinator-facing counts, not model behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by refresh-plan tests checking `refreshSummary` status, counts, changed sources, and next actions.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5389,7 +5474,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or link a deterministic `claim discover --previous ... --refresh-plan` fixture or test checking status, summary, counts, changed sources, and nextActions.",
+      "nextAction": "Keep refresh-plan summary tests in place when changing claim refresh output.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -5534,9 +5619,26 @@
       "claimFingerprint": "sha256:a9943885f769ffe5d334af18d6d6402ccc92d0e356e348f91cc3428c920f80ff",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-520",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. The claim is about `actionSummary.primaryBuckets` packet structure.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by claim status summary tests requiring every primary action bucket to include `byReviewStatus` and `byEvidenceStatus` breakdowns.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5545,7 +5647,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or link a deterministic status-summary or claim-show packet test proving each action bucket includes `byReviewStatus` and `byEvidenceStatus` counts.",
+      "nextAction": "Keep action-bucket breakdown tests in place when changing status summary output.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -7213,9 +7315,26 @@
       "claimFingerprint": "sha256:f10d9bd6fab59f1aab0554881c0e39bd41cdaf669e8abe2056655c4f31009d92",
       "claimId": "claim-docs-contracts-runner-readiness-md-44",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. The claim is about eval-test runner dispatch through adapter-declared runners, which can be checked with CLI tests.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by CLI eval-test coverage that selects and executes adapter-declared typed runner command templates for the selected surface.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7224,7 +7343,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach deterministic eval-test runner-dispatch proof showing bounded evaluation runs use adapter-declared command templates.",
+      "nextAction": "Keep typed runner eval-test coverage in place when changing eval dispatch.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -7369,9 +7488,26 @@
       "claimFingerprint": "sha256:8fe51f062991ce657831e0fad6218ae8064d3f2b64317e2b7727b4e305a59a21",
       "claimId": "claim-docs-contracts-runner-readiness-md-117",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "No direct evidence ref is attached. The claim is about `agent status` packet composition and readiness fields, not model or skill behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by agent-status and runner-readiness tests covering read-only orientation with binary health, skill readiness, adapter state, claim state, and runner readiness fields.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7380,7 +7516,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or link deterministic CLI/golden coverage for `cautilus agent status` showing binary health, skill surface readiness, adapter state, claim state, and runner readiness status.",
+      "nextAction": "Keep agent-status and runner-readiness tests in place when changing orientation packets.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -11351,8 +11487,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 124,
-      "unknown": 198
+      "satisfied": 132,
+      "unknown": 190
     },
     "byLifecycle": {
       "new": 322

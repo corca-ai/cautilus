@@ -1069,19 +1069,71 @@
     {
       "claimFingerprint": "sha256:91bf63bed1f252b0849096cb1ec6ab5b1453c2f60329227a39b11d7c92cdd08b",
       "claimId": "claim-docs-contracts-adapter-contract-md-3",
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` stays portable by loading repo-specific evaluation commands from an adapter instead of hardcoding benchmark runners into the workflow.",
+          "line": 3,
+          "path": "docs/contracts/adapter-contract.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
       "claimFingerprint": "sha256:99c684dbda2accf4db9b5a114cb2259804c721b6a3d4e59f3720af41a6964b31",
       "claimId": "claim-docs-contracts-adapter-contract-md-208",
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata.",
+          "line": 208,
+          "path": "docs/contracts/adapter-contract.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -1116,10 +1168,36 @@
     {
       "claimFingerprint": "sha256:e072f1310848f030f869ee7e1ccd5ee2da5b858d9bf1278729f22c0e47cc1b0b",
       "claimId": "claim-docs-contracts-adapter-contract-md-220",
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.",
+          "line": 220,
+          "path": "docs/contracts/adapter-contract.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -2397,10 +2475,36 @@
     {
       "claimFingerprint": "sha256:931bf4f719385b85ea297bcc3cdd8b56c29eb2d9ca43e3d57acbe2a3c85a9734",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-178",
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.",
+          "line": 178,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -2720,10 +2824,36 @@
     {
       "claimFingerprint": "sha256:d04d8eb163d803e2a529f013956a4a4cb5102b5eaf3da8c9dc592c131c78228f",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-461",
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:",
+          "line": 461,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -2769,10 +2899,36 @@
     {
       "claimFingerprint": "sha256:a9943885f769ffe5d334af18d6d6402ccc92d0e356e348f91cc3428c920f80ff",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-520",
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first.",
+          "line": 520,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -3559,10 +3715,36 @@
     {
       "claimFingerprint": "sha256:f10d9bd6fab59f1aab0554881c0e39bd41cdaf669e8abe2056655c4f31009d92",
       "claimId": "claim-docs-contracts-runner-readiness-md-44",
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "`eval` runs bounded behavior evaluations through adapter-declared runners.",
+          "line": 44,
+          "path": "docs/contracts/runner-readiness.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {
@@ -3607,10 +3789,36 @@
     {
       "claimFingerprint": "sha256:8fe51f062991ce657831e0fad6218ae8064d3f2b64317e2b7727b4e305a59a21",
       "claimId": "claim-docs-contracts-runner-readiness-md-117",
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-3",
+            "claim-docs-contracts-adapter-contract-md-208",
+            "claim-docs-contracts-adapter-contract-md-220",
+            "claim-docs-contracts-claim-discovery-workflow-md-178",
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-520",
+            "claim-docs-contracts-runner-readiness-md-44",
+            "claim-docs-contracts-runner-readiness-md-117"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "It should combine binary health, skill surface readiness, adapter state, claim state, and runner readiness status.",
+          "line": 117,
+          "path": "docs/contracts/runner-readiness.md"
+        }
+      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify"
     },
     {

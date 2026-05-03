@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-deterministic-proof-batch-2026-05-04",
+  "createdForClaimIds": [
+    "claim-docs-contracts-adapter-contract-md-3",
+    "claim-docs-contracts-adapter-contract-md-208",
+    "claim-docs-contracts-adapter-contract-md-220",
+    "claim-docs-contracts-claim-discovery-workflow-md-178",
+    "claim-docs-contracts-claim-discovery-workflow-md-461",
+    "claim-docs-contracts-claim-discovery-workflow-md-520",
+    "claim-docs-contracts-runner-readiness-md-44",
+    "claim-docs-contracts-runner-readiness-md-117"
+  ],
+  "repoCommit": "b52812a7a499d76af86abae7cbe6902e24e26ef3",
+  "workingTreeContext": "The focused tests were run after adding semantic-fallback and action-bucket breakdown assertions; this evidence bundle, review result, regenerated claim artifacts, and matching test changes are intended to be committed together.",
+  "summary": "Focused deterministic tests prove adapter-owned runner dispatch, fixture runtime proof-class downgrade, portable semantic-group fallback, refresh-plan coordinator summary fields, action-bucket status breakdowns, and read-only runner readiness/status packet composition.",
+  "evidenceScope": {
+    "targetSurface": "deterministic CLI, packet, adapter, and runner-readiness contracts",
+    "claimBoundary": "This bundle proves the named packet and command-routing contracts through focused unit and CLI smoke tests. It does not prove semantic quality of arbitrary host runners, model behavior, or app-specific correctness.",
+    "notClaimed": [
+      "Every consumer adapter command is honest",
+      "Every omitted semantic group is product-meaningful",
+      "Every refresh-plan consumer reads the summary correctly",
+      "Product-runner proof for app behavior",
+      "The broader blocked split-field agent-reading claim"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanUsesPortableSemanticFallbackWhenAdapterOmitsGroups|TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries|TestBuildClaimRefreshPlanMarksChangedSources|TestBuildClaimStatusSummarySummarizesExistingPacket|TestBuildClaimStatusSummaryIncludesSatisfiedEvidence|TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches|TestDoctorAndAgentStatusShareRunnerReadinessFacts|TestRunnerReadinessSupportsTypedMultiRunnerAdapters' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "adapter claim discovery entries, depth, state path, audience hints, and semantic groups are applied",
+          "omitted semantic groups fall back to `General product behavior`",
+          "refresh-plan packets expose `refreshSummary` status, coordinator-facing summary text, counts, changed sources, and next actions",
+          "claim status action buckets include `byReviewStatus` and `byEvidenceStatus` breakdowns",
+          "agent status includes runner readiness before claim branches",
+          "doctor and agent status share runner readiness facts",
+          "typed runner readiness resolves per-surface command templates and smoke branches"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunAgentStatusJSONReturnsNoInputOrientation|TestCLIEvalTestSelectsTypedRunnerBySurface|TestCLIEvalTestAcceptsFixtureRuntime' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "`eval test` selects an adapter-declared typed runner by surface and executes its command template",
+          "`agent status` returns read-only no-input orientation with binary, skill, adapter, claim-state, and scan-scope fields",
+          "fixture runtime writes observed proof with `proofClass=fixture-smoke` and `proofClassSource=runtime`",
+          "fixture runtime preserves adapter-declared proof class only as declared metadata"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-and-status-tests",
+      "contentHash": "sha256:3f78a87d401dabd032fd0404ec4c13c1d163638279b61833cad90348ddd66db4"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "agent-status-cli-tests",
+      "contentHash": "sha256:77fe64a7e8ed75eaaccbb04ff36c3cacbeea7e52396d042f387e94cc1036c323"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "eval-test-cli-smoke-tests",
+      "contentHash": "sha256:15c235ebe58a9e23da494628348e4b6b3449d5dcfa5ee079e64d4f63a10817df"
+    },
+    {
+      "path": "internal/runtime/runner_readiness_test.go",
+      "kind": "runner-readiness-tests",
+      "contentHash": "sha256:188e876dbe3c22c3210492f70f4db64af1ace36bedf231326fc12e2507a513c3"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:7008d9380bd3f8ac21b51b5832ef703dbb5a4af6a84e39d5dc0449a624ff3ff2"
+    },
+    {
+      "path": "internal/runtime/runner_readiness.go",
+      "kind": "runner-readiness-runtime",
+      "contentHash": "sha256:4097f310c3fc47addc2a1c78f0774cf9f737ae227b6dc0e9508cdfc4306efb1c"
+    },
+    {
+      "path": "internal/runtime/evaluation_proof.go",
+      "kind": "evaluation-proof-runtime",
+      "contentHash": "sha256:805f4c1b474d0dbdc7e1c5949b13af99e112f8f1e1c79bcac3a84ae90da885c9"
+    }
+  ],
+  "claimSupport": [
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-3",
+      "reason": "`TestCLIEvalTestSelectsTypedRunnerBySurface` and typed runner readiness tests prove command templates are loaded from adapter-owned runner declarations rather than hardcoded benchmark runners."
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-208",
+      "reason": "`TestCLIEvalTestAcceptsFixtureRuntime` and `TestCLIEvalTestSelectsTypedRunnerBySurface` prove fixture runtime downgrades observed proof to `fixture-smoke` while preserving declared proof metadata separately."
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-220",
+      "reason": "`TestDiscoverClaimProofPlanUsesPortableSemanticFallbackWhenAdapterOmitsGroups` proves omitted adapter semantic groups produce `General product behavior`."
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-178",
+      "reason": "The same semantic fallback test proves the binary uses the portable fallback group when adapter semantic groups are omitted."
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-461",
+      "reason": "`TestBuildClaimRefreshPlanMarksChangedSources` proves refresh-plan packets include coordinator-facing summary status, non-mutation summary text, counts, changed sources, and next actions."
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-520",
+      "reason": "`TestBuildClaimStatusSummarySummarizesExistingPacket` proves every primary action bucket includes `byReviewStatus` and `byEvidenceStatus` counts."
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-44",
+      "reason": "`TestCLIEvalTestSelectsTypedRunnerBySurface` proves `eval test` runs bounded evaluations through adapter-declared runner command templates."
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-117",
+      "reason": "`TestRunAgentStatusJSONReturnsNoInputOrientation`, `TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches`, and `TestDoctorAndAgentStatusShareRunnerReadinessFacts` cover the read-only status packet composition including binary, skill, adapter, claim, and runner readiness surfaces."
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused deterministic tests directly cover the named binary, packet, adapter, and runner-readiness behaviors without needing model or Cautilus eval fixture evidence."
+  }
+}

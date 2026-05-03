@@ -759,8 +759,15 @@ func TestBuildClaimStatusSummarySummarizesExistingPacket(t *testing.T) {
 		t.Fatalf("expected explicit discovery boundary, got %#v", boundary)
 	}
 	actions := asMap(summary["actionSummary"])
-	if len(arrayOrEmpty(actions["primaryBuckets"])) == 0 {
+	primaryBuckets := arrayOrEmpty(actions["primaryBuckets"])
+	if len(primaryBuckets) == 0 {
 		t.Fatalf("expected action summary buckets, got %#v", summary)
+	}
+	for _, rawBucket := range primaryBuckets {
+		bucket := asMap(rawBucket)
+		if len(asMap(bucket["byReviewStatus"])) == 0 || len(asMap(bucket["byEvidenceStatus"])) == 0 {
+			t.Fatalf("expected every action bucket to include status breakdowns, got %#v", bucket)
+		}
 	}
 	if len(arrayOrEmpty(summary["recommendedNextActions"])) == 0 {
 		t.Fatalf("expected recommended next actions, got %#v", summary)
@@ -2502,6 +2509,41 @@ func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 	}
 }
 
+func TestDiscoverClaimProofPlanUsesPortableSemanticFallbackWhenAdapterOmitsGroups(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  entries:",
+		"    - README.md",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Demo",
+		"",
+		"Agents must keep the public surface understandable.",
+		"",
+	}, "\n"))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	scope := asMap(plan["effectiveScanScope"])
+	if groups := arrayOrEmpty(scope["semanticGroups"]); len(groups) != 0 {
+		t.Fatalf("expected no adapter semantic groups in scan scope, got %#v", groups)
+	}
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("expected one candidate, got %#v", candidates)
+	}
+	candidate := asMap(candidates[0])
+	if candidate["claimSemanticGroup"] != "General product behavior" {
+		t.Fatalf("expected portable fallback semantic group, got %#v", candidate)
+	}
+}
+
 func TestDiscoverClaimProofPlanRejectsEscapingAdapterStatePath(t *testing.T) {
 	repoRoot := t.TempDir()
 	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), "Agents must keep claim state inside the repo.\n")
@@ -2583,6 +2625,9 @@ func TestBuildClaimRefreshPlanMarksChangedSources(t *testing.T) {
 	refreshSummary := asMap(plan["refreshSummary"])
 	if refreshSummary["status"] != "changes-detected" {
 		t.Fatalf("expected changes-detected refresh summary, got %#v", refreshSummary)
+	}
+	if summaryText := stringFromAny(refreshSummary["summary"]); !strings.Contains(summaryText, "does not update the saved claim map yet") {
+		t.Fatalf("expected coordinator-facing refresh summary to preserve the non-mutation boundary, got %#v", refreshSummary)
 	}
 	if refreshSummary["changedSourceCount"] != 1 || refreshSummary["changedClaimCount"] != 1 || refreshSummary["carriedForwardClaimCount"] != 0 {
 		t.Fatalf("unexpected refresh counts: %#v", refreshSummary)

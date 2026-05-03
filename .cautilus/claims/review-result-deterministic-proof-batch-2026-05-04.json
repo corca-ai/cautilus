@@ -1,0 +1,256 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-deterministic-proof-batch-2026-05-04",
+    "type": "agent",
+    "reviewedAt": "2026-05-04T00:25:00+09:00",
+    "evidencePolicy": "Mark claims satisfied only when focused deterministic tests directly cover the named packet, adapter, CLI, or runner-readiness behavior."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-deterministic-proof-batch-2026-05-04",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-3",
+          "claimFingerprint": "sha256:91bf63bed1f252b0849096cb1ec6ab5b1453c2f60329227a39b11d7c92cdd08b",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by CLI and runner-readiness tests showing adapter-declared runner command templates are resolved and executed instead of hardcoded benchmark runners.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-3",
+                "claim-docs-contracts-adapter-contract-md-208",
+                "claim-docs-contracts-adapter-contract-md-220",
+                "claim-docs-contracts-claim-discovery-workflow-md-178",
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-520",
+                "claim-docs-contracts-runner-readiness-md-44",
+                "claim-docs-contracts-runner-readiness-md-117"
+              ]
+            }
+          ],
+          "nextAction": "Keep typed runner and eval-test dispatch tests in place when changing adapter command resolution.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-208",
+          "claimFingerprint": "sha256:99c684dbda2accf4db9b5a114cb2259804c721b6a3d4e59f3720af41a6964b31",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by fixture-runtime eval-test smoke coverage that records observed proofClass=fixture-smoke while preserving the adapter-declared proof class as metadata.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-3",
+                "claim-docs-contracts-adapter-contract-md-208",
+                "claim-docs-contracts-adapter-contract-md-220",
+                "claim-docs-contracts-claim-discovery-workflow-md-178",
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-520",
+                "claim-docs-contracts-runner-readiness-md-44",
+                "claim-docs-contracts-runner-readiness-md-117"
+              ]
+            }
+          ],
+          "nextAction": "Keep fixture-runtime proof metadata tests in place when changing eval proof augmentation.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-220",
+          "claimFingerprint": "sha256:e072f1310848f030f869ee7e1ccd5ee2da5b858d9bf1278729f22c0e47cc1b0b",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by discovery-level test coverage for omitted adapter semantic groups falling back to `General product behavior`.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-3",
+                "claim-docs-contracts-adapter-contract-md-208",
+                "claim-docs-contracts-adapter-contract-md-220",
+                "claim-docs-contracts-claim-discovery-workflow-md-178",
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-520",
+                "claim-docs-contracts-runner-readiness-md-44",
+                "claim-docs-contracts-runner-readiness-md-117"
+              ]
+            }
+          ],
+          "nextAction": "Keep portable fallback semantic-group tests in place when changing claim discovery grouping.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-178",
+          "claimFingerprint": "sha256:931bf4f719385b85ea297bcc3cdd8b56c29eb2d9ca43e3d57acbe2a3c85a9734",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the same discovery-level fallback test proving omitted adapter semantic groups yield `General product behavior`.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-3",
+                "claim-docs-contracts-adapter-contract-md-208",
+                "claim-docs-contracts-adapter-contract-md-220",
+                "claim-docs-contracts-claim-discovery-workflow-md-178",
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-520",
+                "claim-docs-contracts-runner-readiness-md-44",
+                "claim-docs-contracts-runner-readiness-md-117"
+              ]
+            }
+          ],
+          "nextAction": "Keep portable fallback semantic-group tests in place when changing claim discovery grouping.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-461",
+          "claimFingerprint": "sha256:d04d8eb163d803e2a529f013956a4a4cb5102b5eaf3da8c9dc592c131c78228f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by refresh-plan tests checking `refreshSummary` status, counts, changed sources, and next actions.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-3",
+                "claim-docs-contracts-adapter-contract-md-208",
+                "claim-docs-contracts-adapter-contract-md-220",
+                "claim-docs-contracts-claim-discovery-workflow-md-178",
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-520",
+                "claim-docs-contracts-runner-readiness-md-44",
+                "claim-docs-contracts-runner-readiness-md-117"
+              ]
+            }
+          ],
+          "nextAction": "Keep refresh-plan summary tests in place when changing claim refresh output.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-520",
+          "claimFingerprint": "sha256:a9943885f769ffe5d334af18d6d6402ccc92d0e356e348f91cc3428c920f80ff",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by claim status summary tests requiring every primary action bucket to include `byReviewStatus` and `byEvidenceStatus` breakdowns.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-3",
+                "claim-docs-contracts-adapter-contract-md-208",
+                "claim-docs-contracts-adapter-contract-md-220",
+                "claim-docs-contracts-claim-discovery-workflow-md-178",
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-520",
+                "claim-docs-contracts-runner-readiness-md-44",
+                "claim-docs-contracts-runner-readiness-md-117"
+              ]
+            }
+          ],
+          "nextAction": "Keep action-bucket breakdown tests in place when changing status summary output.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-44",
+          "claimFingerprint": "sha256:f10d9bd6fab59f1aab0554881c0e39bd41cdaf669e8abe2056655c4f31009d92",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by CLI eval-test coverage that selects and executes adapter-declared typed runner command templates for the selected surface.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-3",
+                "claim-docs-contracts-adapter-contract-md-208",
+                "claim-docs-contracts-adapter-contract-md-220",
+                "claim-docs-contracts-claim-discovery-workflow-md-178",
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-520",
+                "claim-docs-contracts-runner-readiness-md-44",
+                "claim-docs-contracts-runner-readiness-md-117"
+              ]
+            }
+          ],
+          "nextAction": "Keep typed runner eval-test coverage in place when changing eval dispatch.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-117",
+          "claimFingerprint": "sha256:8fe51f062991ce657831e0fad6218ae8064d3f2b64317e2b7727b4e305a59a21",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "recommendedEvalSurface": null,
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by agent-status and runner-readiness tests covering read-only orientation with binary health, skill readiness, adapter state, claim state, and runner readiness fields.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-3",
+                "claim-docs-contracts-adapter-contract-md-208",
+                "claim-docs-contracts-adapter-contract-md-220",
+                "claim-docs-contracts-claim-discovery-workflow-md-178",
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-520",
+                "claim-docs-contracts-runner-readiness-md-44",
+                "claim-docs-contracts-runner-readiness-md-117"
+              ]
+            }
+          ],
+          "nextAction": "Keep agent-status and runner-readiness tests in place when changing orientation packets.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
