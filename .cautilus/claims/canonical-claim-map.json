@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:6ee0d8ebfcf9e96331e59f4603c172875ee7182b3e37896bb5acc5dc568a81d8"
+      "contentHash": "sha256:a55477d7f6ad516fee73159c92eebd75ae4d87047babef6942c6235de3d0b7e3"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:882064b19bb1f53a7f5d0bdbe653b53c33f2ff4ca8186e056538ca7e2eff76a8"
     }
   },
-  "claimsPacketGitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
+  "claimsPacketGitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 312,
   "catalogs": {
@@ -2656,7 +2656,7 @@
         },
         {
           "claimId": "claim-docs-contracts-runner-readiness-md-118",
-          "claimFingerprint": "sha256:0252be2d88051d448f6d2d13ed7e379830f2d420ceff1954b11178fe41d0c13f",
+          "claimFingerprint": "sha256:091b32f4a97da9bdda7a28b88cb71efe23fb840cf6780c3e44d8b710e36f77ab",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2686,7 +2686,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "unknown": 10
+        "satisfied": 1,
+        "unknown": 9
       },
       "byReviewStatus": {
         "agent-reviewed": 2,
@@ -11312,12 +11313,12 @@
     },
     {
       "claimId": "claim-docs-contracts-runner-readiness-md-118",
-      "summary": "It should present next branches such as initialize adapter, refresh claim state, create runner assessment, run runner smoke, inspect existing claim map, or run eval.",
+      "summary": "Top-level `nextBranches` should expose safe orientation branches, including adapter setup, claim refresh, runner assessment, declared runner smoke, claim-map inspection, and stop, without promoting eval execution.",
       "sourceRefs": [
         {
           "path": "docs/contracts/runner-readiness.md",
           "line": 118,
-          "excerpt": "It should present next branches such as initialize adapter, refresh claim state, create runner assessment, run runner smoke, inspect existing claim map, or run eval."
+          "excerpt": "Top-level `nextBranches` should expose safe orientation branches, including adapter setup, claim refresh, runner assessment, declared runner smoke, claim-map inspection, and stop, without promoting eval execution."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -11325,13 +11326,13 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
-      "claimFingerprint": "sha256:0252be2d88051d448f6d2d13ed7e379830f2d420ceff1954b11178fe41d0c13f",
+      "claimFingerprint": "sha256:091b32f4a97da9bdda7a28b88cb71efe23fb840cf6780c3e44d8b710e36f77ab",
       "canonicalClaimId": "M7",
-      "score": 7,
+      "score": 8,
       "runnerUpCanonicalClaimId": "M2",
-      "runnerUpScore": 6,
+      "runnerUpScore": 7,
       "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -11340,10 +11341,11 @@
         "adapter",
         "assessment",
         "deterministic",
-        "next",
-        "run",
+        "expose",
+        "keep",
         "runner",
-        "state"
+        "runner-readines",
+        "without"
       ],
       "alignedUserClaimIds": [
         "U4",

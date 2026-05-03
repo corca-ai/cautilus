@@ -6001,31 +6001,33 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:0252be2d88051d448f6d2d13ed7e379830f2d420ceff1954b11178fe41d0c13f",
+      "claimFingerprint": "sha256:091b32f4a97da9bdda7a28b88cb71efe23fb840cf6780c3e44d8b710e36f77ab",
       "claimId": "claim-docs-contracts-runner-readiness-md-118",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
+        "cautilus-eval",
         "contract",
-        "human-auditable",
+        "dev/repo",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
-      "recommendedProof": "human-auditable",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "It should present next branches such as initialize adapter, refresh claim state, create runner assessment, run runner smoke, inspect existing claim map, or run eval.",
+          "excerpt": "Top-level `nextBranches` should expose safe orientation branches, including adapter setup, claim refresh, runner assessment, declared runner smoke, claim-map inspection, and stop, without promoting eval execution.",
           "line": 118,
           "path": "docs/contracts/runner-readiness.md"
         }
       ],
-      "summary": "It should present next branches such as initialize adapter, refresh claim state, create runner assessment, run runner smoke, inspect existing claim map, or run eval.",
+      "summary": "Top-level `nextBranches` should expose safe orientation branches, including adapter setup, claim refresh, runner assessment, declared runner smoke, claim-map inspection, and stop, without promoting eval execution.",
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -9364,9 +9366,9 @@
       "new": 312
     },
     "byRecommendedProof": {
-      "cautilus-eval": 131,
+      "cautilus-eval": 132,
       "deterministic": 102,
-      "human-auditable": 79
+      "human-auditable": 78
     },
     "byReviewStatus": {
       "heuristic": 312
@@ -9533,7 +9535,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
+  "gitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
@@ -10144,7 +10146,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:91cb9010a1f8dc6d385602192aae430ae7027f645a6b6c124f445ca034ade1bc",
+      "contentHash": "sha256:1c8021012227c88ff153e36ece38a20fa2bce4f5d3e388ea32a3ff9277b15359",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

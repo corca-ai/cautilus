@@ -238,6 +238,15 @@ func assertRunnerReadinessBranchShape(t *testing.T, branch map[string]any) {
 	}
 }
 
+func branchIDPresent(branches []any, id string) bool {
+	for _, raw := range branches {
+		if asMap(raw)["id"] == id {
+			return true
+		}
+	}
+	return false
+}
+
 func mustReloadRunnerReadinessAdapter(t *testing.T, repoRoot string) *AdapterPayload {
 	t.Helper()
 	adapter, err := LoadAdapter(repoRoot, nil, nil)
@@ -407,6 +416,9 @@ func TestRunnerReadinessSupportsTypedMultiRunnerAdapters(t *testing.T) {
 	if appRunner["runnerId"] != "app-chat-live" || EvalRunnerDefaultRuntime(appRunner) != "fixture" {
 		t.Fatalf("expected app/chat typed runner, got %#v", appRunner)
 	}
+	if appRunner["smokeCommandTemplate"] != "node scripts/eval/run-live-chat.mjs --smoke --output-file {output_dir}/runner-smoke.json" {
+		t.Fatalf("expected app/chat smoke command template, got %#v", appRunner)
+	}
 	skillRunner, err := ResolveEvalRunner(adapter, "dev/skill")
 	if err != nil {
 		t.Fatalf("ResolveEvalRunner dev/skill returned error: %v", err)
@@ -432,6 +444,21 @@ func TestRunnerReadinessSupportsTypedMultiRunnerAdapters(t *testing.T) {
 	}
 	if appReadiness["proofClass"] != "live-product-runner" || appReadiness["proofClassSource"] != "adapter-runner" {
 		t.Fatalf("expected typed runner proof metadata before assessment, got %#v", appReadiness)
+	}
+	smokeBranch := asMap(appReadiness["smokeBranch"])
+	if smokeBranch["id"] != "run_runner_smoke" || smokeBranch["requiredCommand"] != "node scripts/eval/run-live-chat.mjs --smoke --output-file {output_dir}/runner-smoke.json" {
+		t.Fatalf("expected non-executing runner smoke branch, got %#v", appReadiness)
+	}
+	status, exitCode, err := BuildAgentStatus(repoRoot, AgentStatusOptions{})
+	if err != nil || exitCode != 0 {
+		t.Fatalf("BuildAgentStatus returned exit=%d err=%v", exitCode, err)
+	}
+	branches := arrayOrEmpty(status["nextBranches"])
+	if !branchIDPresent(branches, "run_runner_smoke") {
+		t.Fatalf("expected agent status top-level branches to expose runner smoke command, got %#v", branches)
+	}
+	if branchIDPresent(branches, "run_eval_with_assessed_runner") {
+		t.Fatalf("agent status top-level branches should not promote ready eval without selected claim context, got %#v", branches)
 	}
 }
 
@@ -505,6 +532,7 @@ func setupTypedRunnerReadinessRepo(t *testing.T) string {
 		"        - app/chat",
 		"      proof_class: live-product-runner",
 		"      command_template: node scripts/eval/run-live-chat.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file} --runner-id {runner_id}",
+		"      smoke_command_template: node scripts/eval/run-live-chat.mjs --smoke --output-file {output_dir}/runner-smoke.json",
 		"      assessment_path: .cautilus/runners/app-chat-live.assessment.json",
 		"      default_runtime: fixture",
 		"    - id: dev-skill-agent",

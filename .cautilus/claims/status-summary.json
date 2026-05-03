@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 55
+          "satisfied": 56
         },
         "byReviewStatus": {
-          "agent-reviewed": 55
+          "agent-reviewed": 56
         },
-        "count": 55,
+        "count": 56,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 67
+          "unknown": 66
         },
         "byReviewStatus": {
-          "agent-reviewed": 4,
+          "agent-reviewed": 3,
           "heuristic": 60,
           "human-reviewed": 3
         },
-        "count": 67,
+        "count": 66,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 55,
-      "unknown": 257
+      "satisfied": 56,
+      "unknown": 256
     },
     "byLifecycle": {
       "new": 312
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 55,
+    "satisfiedClaimCount": 56,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1335,11 +1335,30 @@
         "summary": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately."
       },
       {
+        "claimId": "claim-docs-contracts-runner-readiness-md-118",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:1c40521711a00cba4ca733a6d5928cc875d795ec26b2584b117a94eb063cbff5",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-agent-status-safe-branch-catalog-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runner-readiness-md-118"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Top-level `nextBranches` should expose safe orientation branches, including adapter setup, claim refresh, runner assessment, declared runner smoke, claim-map inspection, and stop, without promoting eval execution."
+      },
+      {
         "claimId": "claim-docs-contracts-runner-readiness-md-134",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:aee3e5faaa35374ac70f5a0361888de0bd8e4bfc9209d38add2127c73a544876",
+            "contentHash": "sha256:9078e6c916b1cd4cc6edfc6cc9fd71bd8675f3d4cb1192a74ea4112d6717e63e",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-runner-readiness-branch-shape-2026-05-03.json",
@@ -1454,33 +1473,10 @@
       }
     ]
   },
-  "gitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
+  "gitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
   "gitState": {
-    "changedFileCount": 22,
-    "changedFiles": [
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/discovery-review.md",
-      ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
-      ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/refresh-plan-after-future-proof-placeholder-filter.json",
-      ".cautilus/claims/review-result-evidence-reviewable-proof-debt-reports-2026-05-03.json",
-      ".cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json",
-      ".cautilus/claims/status-summary.json",
-      ".cautilus/claims/validation-evidenced-typed-runners.json",
-      "charness-artifacts/debug/debug-2026-05-03-claim-discovery-engine-freshness.md",
-      "charness-artifacts/debug/debug-2026-05-03-status-report-max-lines.md",
-      "charness-artifacts/debug/debug-2026-05-03-status-report-superseded-review-results.md",
-      "charness-artifacts/debug/latest.md",
-      "internal/runtime/claim_discovery.go",
-      "internal/runtime/claim_discovery_test.go",
-      "scripts/agent-runtime/claim-status-refresh-currentness.mjs",
-      "scripts/agent-runtime/claim-status-refresh-plans.mjs",
-      "scripts/agent-runtime/render-claim-status-report.mjs",
-      "scripts/agent-runtime/render-claim-status-report.test.mjs"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -1488,12 +1484,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "d4f9844f7bc50b6ab84e7023284cf9ad9c8a3b42",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",

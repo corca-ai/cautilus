@@ -6671,33 +6671,44 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:0252be2d88051d448f6d2d13ed7e379830f2d420ceff1954b11178fe41d0c13f",
+      "claimFingerprint": "sha256:091b32f4a97da9bdda7a28b88cb71efe23fb840cf6780c3e44d8b710e36f77ab",
       "claimId": "claim-docs-contracts-runner-readiness-md-118",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is a concrete agent-status branch-shape claim and should be proven by deterministic status packet tests.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:1c40521711a00cba4ca733a6d5928cc875d795ec26b2584b117a94eb063cbff5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-agent-status-safe-branch-catalog-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-118"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by runtime and app tests: top-level agent-status branches can expose safe setup, claim-state, and runner-smoke orientation while ready-runner eval stays nested under runnerReadiness rather than being promoted into first-touch nextBranches.",
       "groupHints": [
         "audience:developer",
         "contract",
         "deterministic",
+        "dev/repo",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or connect deterministic agent-status tests for initialize-adapter, refresh-claim-state, runner-assessment, runner-smoke, inspect-claims, and run-eval branch exposure.",
+      "nextAction": "Keep agent-status branch catalog tests current when changing runner-readiness smoke or eval branch projection.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
-          "excerpt": "It should present next branches such as initialize adapter, refresh claim state, create runner assessment, run runner smoke, inspect existing claim map, or run eval.",
+          "excerpt": "Top-level `nextBranches` should expose safe orientation branches, including adapter setup, claim refresh, runner assessment, declared runner smoke, claim-map inspection, and stop, without promoting eval execution.",
           "line": 118,
           "path": "docs/contracts/runner-readiness.md"
         }
       ],
-      "summary": "It should present next branches such as initialize adapter, refresh claim state, create runner assessment, run runner smoke, inspect existing claim map, or run eval.",
+      "summary": "Top-level `nextBranches` should expose safe orientation branches, including adapter setup, claim refresh, runner assessment, declared runner smoke, claim-map inspection, and stop, without promoting eval execution.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "whyThisLayer": "The claim names deterministic packet shape and branch-boundary behavior for agent status."
     },
     {
       "claimAudience": "developer",
@@ -6738,7 +6749,7 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:aee3e5faaa35374ac70f5a0361888de0bd8e4bfc9209d38add2127c73a544876",
+          "contentHash": "sha256:9078e6c916b1cd4cc6edfc6cc9fd71bd8675f3d4cb1192a74ea4112d6717e63e",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-runner-readiness-branch-shape-2026-05-03.json",
@@ -10113,8 +10124,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 55,
-      "unknown": 257
+      "satisfied": 56,
+      "unknown": 256
     },
     "byLifecycle": {
       "new": 312
@@ -10291,7 +10302,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "4a586aa97e53b0d81c88d490a909aae2f49964ef",
+  "gitCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
@@ -11042,7 +11053,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:91cb9010a1f8dc6d385602192aae430ae7027f645a6b6c124f445ca034ade1bc",
+      "contentHash": "sha256:1c8021012227c88ff153e36ece38a20fa2bce4f5d3e388ea32a3ff9277b15359",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

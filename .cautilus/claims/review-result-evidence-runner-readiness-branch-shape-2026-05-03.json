@@ -24,7 +24,7 @@
               "path": ".cautilus/claims/evidence-runner-readiness-branch-shape-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:aee3e5faaa35374ac70f5a0361888de0bd8e4bfc9209d38add2127c73a544876",
+              "contentHash": "sha256:9078e6c916b1cd4cc6edfc6cc9fd71bd8675f3d4cb1192a74ea4112d6717e63e",
               "supportsClaimIds": [
                 "claim-docs-contracts-runner-readiness-md-134"
               ]

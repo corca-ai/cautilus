@@ -115,7 +115,7 @@ That judgment belongs in a runner assessment.
 
 `agent status` should remain a read-only orientation packet.
 It should combine binary health, skill surface readiness, adapter state, claim state, and runner readiness status.
-It should present next branches such as initialize adapter, refresh claim state, create runner assessment, run runner smoke, inspect existing claim map, or run eval.
+Top-level `nextBranches` should expose safe orientation branches, including adapter setup, claim refresh, runner assessment, declared runner smoke, claim-map inspection, and stop, without promoting eval execution.
 
 `agent status` may say a runner assessment is missing or stale.
 It should not silently downgrade app proof to prompt-only smoke when the selected claim requires a headless product runner.

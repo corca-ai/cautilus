@@ -35,17 +35,17 @@
     {
       "path": "internal/runtime/runner_readiness.go",
       "kind": "runner-readiness-branch-shape-runtime",
-      "contentHash": "sha256:fd567b68bcbd865f1b0b6e897d4d53813dfc6dbf571351325833f5e59221612d"
+      "contentHash": "sha256:4097f310c3fc47addc2a1c78f0774cf9f737ae227b6dc0e9508cdfc4306efb1c"
     },
     {
       "path": "internal/runtime/runner_readiness_test.go",
       "kind": "runner-readiness-branch-shape-tests",
-      "contentHash": "sha256:82aaed5df4dda2851775d59287254ed187cc8f5f760cd855e65f2a190096372d"
+      "contentHash": "sha256:4d09a568814f3c792cd9ee9a4f944e0ff407f8586cdb0114a4d8b7220dab9784"
     },
     {
       "path": "docs/contracts/runner-readiness.md",
       "kind": "runner-readiness-claim-source",
-      "contentHash": "sha256:91cb9010a1f8dc6d385602192aae430ae7027f645a6b6c124f445ca034ade1bc"
+      "contentHash": "sha256:1c8021012227c88ff153e36ece38a20fa2bce4f5d3e388ea32a3ff9277b15359"
     }
   ],
   "decision": {

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-safe-branch-catalog-review",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Mark agent-status branch catalog claims satisfied only when top-level orientation branches and nested runner-readiness eval boundaries are both protected by deterministic tests."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-agent-status-safe-branch-catalog",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-118",
+          "claimFingerprint": "sha256:091b32f4a97da9bdda7a28b88cb71efe23fb840cf6780c3e44d8b710e36f77ab",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names deterministic packet shape and branch-boundary behavior for agent status.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runtime and app tests: top-level agent-status branches can expose safe setup, claim-state, and runner-smoke orientation while ready-runner eval stays nested under runnerReadiness rather than being promoted into first-touch nextBranches.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-agent-status-safe-branch-catalog-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:1c40521711a00cba4ca733a6d5928cc875d795ec26b2584b117a94eb063cbff5",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-118"
+              ]
+            }
+          ],
+          "nextAction": "Keep agent-status branch catalog tests current when changing runner-readiness smoke or eval branch projection.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

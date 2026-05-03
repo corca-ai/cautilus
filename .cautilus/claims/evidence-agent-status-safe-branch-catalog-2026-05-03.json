@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-agent-status-safe-branch-catalog-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-runner-readiness-md-118"
+  ],
+  "repoCommit": "c7d70e1bddf2c3d2b29a9cb435fd2a6143cfd7ce",
+  "summary": "This bundle records deterministic proof that agent status exposes safe top-level orientation branches, including declared runner smoke, while keeping ready-runner eval execution out of first-touch top-level branches.",
+  "evidenceScope": {
+    "targetSurface": "agent status top-level nextBranches and runnerReadiness.nextBranch boundary",
+    "claimBoundary": "Only the safe branch catalog boundary in docs/contracts/runner-readiness.md:118 is marked satisfied. This does not prove that agent status chooses an eval fixture for a selected claim.",
+    "notClaimed": [
+      "agent status executes smoke commands",
+      "smoke output is product-behavior proof",
+      "first-touch agent status may launch eval, review, optimize, edits, or commits",
+      "every future branch id is covered automatically without tests"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestRunnerReadinessSupportsTypedMultiRunnerAdapters|TestRunnerReadinessBranchesExposeStableActionShape|TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches|TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "typed runner smoke_command_template is preserved as smokeCommandTemplate",
+          "BuildRunnerReadiness exposes a non-executing run_runner_smoke branch with the declared smoke command",
+          "agent status top-level nextBranches include run_runner_smoke when the selected typed runner declares smoke_command_template",
+          "agent status top-level nextBranches do not promote run_eval_with_assessed_runner",
+          "runner-readiness branches keep stable branch shape fields"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run TestRunAgentStatus -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "first-touch agent status exposes claim discovery orientation",
+          "first-touch agent status does not offer eval test, review variants, optimize, or git commit"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "protectedBehaviors": [
+          "runner-readiness contract remains specdown-valid after the safe branch wording change"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/runner-readiness.md",
+      "kind": "runner-readiness-safe-branch-contract",
+      "contentHash": "sha256:1c8021012227c88ff153e36ece38a20fa2bce4f5d3e388ea32a3ff9277b15359"
+    },
+    {
+      "path": "internal/runtime/agent_status.go",
+      "kind": "agent-status-branch-merger",
+      "contentHash": "sha256:17b17f6ff81a6fad00e010e4762b58d08b105ef4633d805940042aa460bdd254"
+    },
+    {
+      "path": "internal/runtime/runner_readiness.go",
+      "kind": "runner-readiness-smoke-branch-runtime",
+      "contentHash": "sha256:4097f310c3fc47addc2a1c78f0774cf9f737ae227b6dc0e9508cdfc4306efb1c"
+    },
+    {
+      "path": "internal/runtime/runner_readiness_test.go",
+      "kind": "runner-readiness-safe-branch-tests",
+      "contentHash": "sha256:4d09a568814f3c792cd9ee9a4f944e0ff407f8586cdb0114a4d8b7220dab9784"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "agent-status-first-touch-safety-tests",
+      "contentHash": "sha256:c16537a224f0a2f64984e9396912a3af50c88acf2f62d6358e9516d9263858d7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused runtime and app tests prove that safe top-level orientation branches include the declared runner smoke command while ready-runner eval remains nested under runnerReadiness instead of being promoted into first-touch nextBranches."
+  }
+}

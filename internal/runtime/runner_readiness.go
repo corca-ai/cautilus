@@ -172,6 +172,10 @@ func buildRunnerReadinessForRunner(repoRoot string, adapter *AdapterPayload, run
 	}
 	result["runnerDeclared"] = true
 	result["declaredRunnerKind"] = firstNonEmptyString(runner["declaredRunnerKind"], "declared-eval-runner")
+	if smokeTemplate := strings.TrimSpace(stringOrEmpty(runner["smokeCommandTemplate"])); smokeTemplate != "" {
+		result["smokeCommandTemplate"] = smokeTemplate
+		result["smokeBranch"] = runnerSmokeBranchForRunner(runnerID, smokeTemplate)
+	}
 	if truthy(runner["typed"]) {
 		result["notice"] = "Typed adapter runners bind surfaces to command templates; product-proof readiness still requires a current runner assessment."
 	}
@@ -321,15 +325,16 @@ func adapterRunnerBindings(adapter *AdapterPayload) []map[string]any {
 			assessmentPath = defaultRunnerAssessmentPath(runnerID)
 		}
 		typed = append(typed, map[string]any{
-			"runnerId":           runnerID,
-			"surfaces":           stringArrayToAny(stringArrayOrEmpty(record["surfaces"])),
-			"commandTemplates":   []string{strings.TrimSpace(stringOrEmpty(record["command_template"]))},
-			"assessmentPath":     assessmentPath,
-			"proofClass":         firstNonEmptyString(proofClass, "unknown"),
-			"proofClassSource":   proofClassSource,
-			"declaredRunnerKind": "typed-eval-runner",
-			"defaultRuntime":     strings.TrimSpace(stringOrEmpty(record["default_runtime"])),
-			"typed":              true,
+			"runnerId":             runnerID,
+			"surfaces":             stringArrayToAny(stringArrayOrEmpty(record["surfaces"])),
+			"commandTemplates":     []string{strings.TrimSpace(stringOrEmpty(record["command_template"]))},
+			"smokeCommandTemplate": strings.TrimSpace(stringOrEmpty(record["smoke_command_template"])),
+			"assessmentPath":       assessmentPath,
+			"proofClass":           firstNonEmptyString(proofClass, "unknown"),
+			"proofClassSource":     proofClassSource,
+			"declaredRunnerKind":   "typed-eval-runner",
+			"defaultRuntime":       strings.TrimSpace(stringOrEmpty(record["default_runtime"])),
+			"typed":                true,
 		})
 	}
 	if len(typed) > 0 {
@@ -370,13 +375,17 @@ func runnerSupportsSurface(runner map[string]any, targetSurface string) bool {
 func runnerSummaries(runners []map[string]any) []any {
 	summaries := []any{}
 	for _, runner := range runners {
-		summaries = append(summaries, map[string]any{
+		summary := map[string]any{
 			"runnerId":           runner["runnerId"],
 			"surfaces":           firstNonNil(runner["surfaces"], []any{}),
 			"declaredRunnerKind": runner["declaredRunnerKind"],
 			"proofClass":         runner["proofClass"],
 			"assessmentPath":     runner["assessmentPath"],
-		})
+		}
+		if smokeTemplate := strings.TrimSpace(stringOrEmpty(runner["smokeCommandTemplate"])); smokeTemplate != "" {
+			summary["smokeCommandTemplate"] = smokeTemplate
+		}
+		summaries = append(summaries, summary)
 	}
 	return summaries
 }
@@ -448,6 +457,20 @@ func runnerReadinessBranchForRunner(runnerID string, id string, label string, re
 		branch["scaffoldSource"] = "fixtures/runner-readiness/example-assessment.json"
 		branch["scopeNote"] = "Fill or refresh the assessment after a selected proof requirement is known; plain eval templates remain only declared-eval-runner evidence."
 	}
+	return branch
+}
+
+func runnerSmokeBranchForRunner(runnerID string, commandTemplate string) map[string]any {
+	branch := runnerReadinessBranchForRunner(
+		runnerID,
+		"run_runner_smoke",
+		"Run the runner smoke command",
+		"The adapter declares a cheap smoke command for checking runner wiring without treating it as product-behavior proof.",
+		"",
+		false,
+	)
+	branch["requiredCommand"] = commandTemplate
+	branch["proofBoundary"] = "Smoke output can validate wiring and setup only; it is not product-behavior proof."
 	return branch
 }
 

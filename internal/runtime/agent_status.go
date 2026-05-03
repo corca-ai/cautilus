@@ -243,6 +243,10 @@ func mergeAgentStatusBranches(adapter *AdapterPayload, runnerReadiness map[strin
 		if branchID := strings.TrimSpace(stringOrEmpty(nextBranch["id"])); branchID != "" && branchID != "run_eval_with_assessed_runner" {
 			result = append(result, nextBranch)
 		}
+		smokeBranch := asMap(runnerReadiness["smokeBranch"])
+		if branchID := strings.TrimSpace(stringOrEmpty(smokeBranch["id"])); branchID != "" {
+			result = append(result, smokeBranch)
+		}
 	}
 	result = append(result, arrayOrEmpty(branches)...)
 	result = append(result, map[string]any{
