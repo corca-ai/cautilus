@@ -250,7 +250,7 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 	}
 	if len(carryForward) > 0 {
 		packet["carryForward"] = carryForward
-		if reviewRuns := arrayOrEmpty(previousPacket["reviewRuns"]); len(reviewRuns) > 0 {
+		if reviewRuns := normalizeClaimReviewRuns(arrayOrEmpty(previousPacket["reviewRuns"])); len(reviewRuns) > 0 {
 			packet["reviewRuns"] = reviewRuns
 		}
 		if reviewApplication := asMap(previousPacket["reviewApplication"]); len(reviewApplication) > 0 {
@@ -297,9 +297,14 @@ func applyPreviousClaimState(repoRoot string, candidates []any, previous map[str
 		matched++
 		previousClaimID := stringFromAny(previousCandidate["claimId"])
 		currentClaimID := stringFromAny(candidate["claimId"])
-		for _, key := range []string{"reviewStatus", "evidenceStatus", "lifecycle", "nextAction", "evidenceStatusReason"} {
+		for _, key := range []string{"reviewStatus", "evidenceStatus", "lifecycle", "evidenceStatusReason"} {
 			if value, exists := previousCandidate[key]; exists {
 				candidate[key] = value
+			}
+		}
+		if previousCandidate["reviewStatus"] != "heuristic" {
+			if value, exists := previousCandidate["nextAction"]; exists {
+				candidate["nextAction"] = value
 			}
 		}
 		for _, key := range []string{"evidenceRefs", "reviewRefs", "unresolvedQuestions"} {
@@ -1078,6 +1083,20 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target.",
 			next:                  "Keep this as human-auditable context or promote a concrete regression scenario if the caveat should block releases.",
 		}, true
+	case historicalObservationClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "blocked",
+			why:                   "The claim records a historical observation; it can guide future scenarios but is not itself a ready eval target.",
+			next:                  "Keep this as human-auditable context or promote a concrete regression scenario if the failure mode needs protection.",
+		}, true
+	case designRationaleClaim(lower):
+		return claimClassification{
+			recommendedProof:      "human-auditable",
+			verificationReadiness: "needs-alignment",
+			why:                   "The claim explains a design rationale; proof needs aligned examples or narrower subclaims rather than a single deterministic assertion.",
+			next:                  "Keep this as rationale, or decompose it into concrete adapter, docs, and test surfaces before attaching proof.",
+		}, true
 	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
@@ -1098,13 +1117,6 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "needs-alignment",
 			why:                   "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof.",
 			next:                  "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
-		}, true
-	case historicalObservationClaim(lower):
-		return claimClassification{
-			recommendedProof:      "human-auditable",
-			verificationReadiness: "blocked",
-			why:                   "The claim records a historical observation; it can guide future scenarios but is not itself a ready eval target.",
-			next:                  "Keep this as human-auditable context or promote a concrete regression scenario if the failure mode needs protection.",
 		}, true
 	case containsAny(lower, []string{" align", " aligned", " alignment", " drift", " reconcile", " mismatch", " consistent with", " consistency"}):
 		return claimClassification{
@@ -1220,7 +1232,14 @@ func providerCaveatClaim(lower string) bool {
 }
 
 func historicalObservationClaim(lower string) bool {
-	return containsAny(lower, []string{" past sessions showed", " recent sessions showed", " earlier sessions showed", " previous sessions showed"})
+	return containsAny(lower, []string{" past sessions showed", " recent sessions showed", " earlier sessions showed", " previous sessions showed", " past runs showed", " recent runs showed", " earlier runs showed", " previous runs showed"})
+}
+
+func designRationaleClaim(lower string) bool {
+	trimmed := strings.TrimSpace(lower)
+	return strings.HasPrefix(trimmed, "this keeps ") &&
+		strings.Contains(trimmed, " from ") &&
+		containsAny(trimmed, []string{" collapsing ", " drifting ", " becoming ", " turning into ", " depending on "})
 }
 
 func broadPositioningClaim(lower string) bool {
@@ -2594,8 +2613,15 @@ func ApplyClaimReviewResult(claimPacket map[string]any, reviewResult map[string]
 		"mergeDecisions":      collectClaimMergeDecisions(reviewResult),
 		"unresolvedQuestions": collectClaimUnresolvedQuestions(reviewResult),
 	}
-	reviewRuns := append(arrayOrEmpty(updated["reviewRuns"]), renderClaimReviewRun(reviewResult))
-	updated["reviewRuns"] = reviewRuns
+	reviewRuns := normalizeClaimReviewRuns(arrayOrEmpty(updated["reviewRuns"]))
+	if reviewRun := renderClaimReviewRun(reviewResult); claimReviewRunHasProvenance(reviewRun) {
+		reviewRuns = normalizeClaimReviewRuns(append(reviewRuns, reviewRun))
+	}
+	if len(reviewRuns) > 0 {
+		updated["reviewRuns"] = reviewRuns
+	} else {
+		delete(updated, "reviewRuns")
+	}
 	if err := ValidateClaimProofPlan(updated); err != nil {
 		return nil, err
 	}
@@ -3151,6 +3177,49 @@ func renderClaimReviewRun(result map[string]any) map[string]any {
 		"sourceReviewInput": asMap(result["sourceReviewInput"]),
 		"clusterCount":      len(arrayOrEmpty(result["clusterResults"])),
 	}
+}
+
+func normalizeClaimReviewRuns(rawRuns []any) []any {
+	result := []any{}
+	seen := map[string]struct{}{}
+	for _, raw := range rawRuns {
+		run := asMap(raw)
+		if !claimReviewRunHasProvenance(run) {
+			continue
+		}
+		normalized := normalizeClaimReviewRun(run)
+		keyBytes, err := json.Marshal(normalized)
+		if err != nil {
+			continue
+		}
+		key := string(keyBytes)
+		if _, exists := seen[key]; exists {
+			continue
+		}
+		seen[key] = struct{}{}
+		result = append(result, normalized)
+	}
+	return result
+}
+
+func claimReviewRunHasProvenance(run map[string]any) bool {
+	return len(asMap(run["reviewRun"])) > 0 || len(asMap(run["sourceReviewInput"])) > 0
+}
+
+func normalizeClaimReviewRun(run map[string]any) map[string]any {
+	normalized := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+	}
+	if reviewRun := asMap(run["reviewRun"]); len(reviewRun) > 0 {
+		normalized["reviewRun"] = reviewRun
+	}
+	if sourceReviewInput := asMap(run["sourceReviewInput"]); len(sourceReviewInput) > 0 {
+		normalized["sourceReviewInput"] = sourceReviewInput
+	}
+	if clusterCount := intFromAny(run["clusterCount"]); clusterCount > 0 {
+		normalized["clusterCount"] = clusterCount
+	}
+	return normalized
 }
 
 func incrementStringCount(counts map[string]int, value any) {

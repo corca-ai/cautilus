@@ -350,6 +350,55 @@ func TestDiscoverClaimProofPlanMarksEvidenceBundleClaimMismatchStale(t *testing.
 	}
 }
 
+func TestDiscoverClaimProofPlanDoesNotCarryHeuristicNextAction(t *testing.T) {
+	repoRoot := t.TempDir()
+	claim := "Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional."
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Demo",
+		"",
+		claim,
+		"",
+	}, "\n"))
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidate := asMap(arrayOrEmpty(plan["claimCandidates"])[0])
+	currentNextAction := stringFromAny(candidate["nextAction"])
+	if !strings.Contains(currentNextAction, "human-auditable context") {
+		t.Fatalf("expected historical next action, got %#v", candidate)
+	}
+	previous := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               candidate["claimId"],
+				"claimFingerprint":      candidate["claimFingerprint"],
+				"summary":               candidate["summary"],
+				"recommendedProof":      "deterministic",
+				"verificationReadiness": "ready-to-verify",
+				"reviewStatus":          "heuristic",
+				"evidenceStatus":        "unknown",
+				"lifecycle":             "new",
+				"nextAction":            "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+				"evidenceRefs":          []any{},
+				"sourceRefs":            candidate["sourceRefs"],
+			},
+		},
+	}
+	previousPath := filepath.Join(repoRoot, "previous-claims.json")
+	writeClaimDiscoveryJSONFixture(t, previousPath, previous)
+
+	refreshed, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot, PreviousPath: previousPath})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan with previous returned error: %v", err)
+	}
+	refreshedCandidate := asMap(arrayOrEmpty(refreshed["claimCandidates"])[0])
+	if refreshedCandidate["nextAction"] != currentNextAction {
+		t.Fatalf("expected heuristic nextAction to refresh from current classification, got %#v", refreshedCandidate)
+	}
+}
+
 func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	repoRoot := t.TempDir()
 	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
@@ -406,6 +455,10 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"The host still owns raw invocation and transcript capture; `Cautilus` owns the case-suite/runDir workflow and packet-level recommendation.",
 		"",
 		"In JSON mode, `claude -p` can wrap the verdict under `structured_output` instead of printing the schema payload as the top-level object.",
+		"",
+		"This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.",
+		"",
+		"Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional.",
 		"",
 	}, "\n"))
 
@@ -513,6 +566,14 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	providerCaveat := bySummary["In JSON mode, `claude -p` can wrap the verdict under `structured_output` instead of printing the schema payload as the top-level object."]
 	if providerCaveat == nil || providerCaveat["recommendedProof"] != "human-auditable" || providerCaveat["verificationReadiness"] != "blocked" {
 		t.Fatalf("expected provider caveat to stay blocked human-auditable, got %#v", providerCaveat)
+	}
+	rationale := bySummary["This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file."]
+	if rationale == nil || rationale["recommendedProof"] != "human-auditable" || rationale["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected design rationale to require alignment before proof, got %#v", rationale)
+	}
+	pastRun := bySummary["Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional."]
+	if pastRun == nil || pastRun["recommendedProof"] != "human-auditable" || pastRun["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected past-run historical observation to stay blocked human-auditable, got %#v", pastRun)
 	}
 }
 
@@ -1059,6 +1120,90 @@ func TestApplyClaimReviewResultUpdatesLabelsWithVerifiedEvidence(t *testing.T) {
 	}
 	if len(arrayOrEmpty(updated["reviewRuns"])) != 1 {
 		t.Fatalf("expected review run provenance, got %#v", updated["reviewRuns"])
+	}
+}
+
+func TestApplyClaimReviewResultSkipsEmptyReviewRunProvenance(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	firstClaim := asMap(arrayOrEmpty(plan["claimCandidates"])[0])
+	claimID := stringFromAny(firstClaim["claimId"])
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":          claimID,
+						"reviewStatus":     "agent-reviewed",
+						"evidenceStatus":   "unknown",
+						"recommendedProof": "deterministic",
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult returned error: %v", err)
+	}
+	if runs := arrayOrEmpty(updated["reviewRuns"]); len(runs) != 0 {
+		t.Fatalf("expected empty review-run provenance to be omitted, got %#v", runs)
+	}
+}
+
+func TestApplyClaimReviewResultDedupesReviewRunProvenance(t *testing.T) {
+	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	claimID := stringFromAny(asMap(arrayOrEmpty(plan["claimCandidates"])[0])["claimId"])
+	plan["reviewRuns"] = []any{
+		map[string]any{
+			"schemaVersion": contracts.ClaimReviewResultSchema,
+			"reviewRun":     map[string]any{"reviewer": "fixture-reviewer"},
+			"clusterCount":  1,
+		},
+		map[string]any{
+			"schemaVersion": contracts.ClaimReviewResultSchema,
+			"reviewRun":     map[string]any{},
+			"clusterCount":  1,
+		},
+	}
+	reviewResult := map[string]any{
+		"schemaVersion": contracts.ClaimReviewResultSchema,
+		"reviewRun":     map[string]any{"reviewer": "fixture-reviewer"},
+		"clusterResults": []any{
+			map[string]any{
+				"clusterId": "cluster-fixture",
+				"claimUpdates": []any{
+					map[string]any{
+						"claimId":        claimID,
+						"reviewStatus":   "agent-reviewed",
+						"evidenceStatus": "unknown",
+					},
+				},
+			},
+		},
+	}
+	updated, err := ApplyClaimReviewResult(plan, reviewResult, ClaimReviewApplyOptions{
+		ClaimsPath:       "claims.json",
+		ReviewResultPath: "review-result.json",
+	})
+	if err != nil {
+		t.Fatalf("ApplyClaimReviewResult returned error: %v", err)
+	}
+	runs := arrayOrEmpty(updated["reviewRuns"])
+	if len(runs) != 1 {
+		t.Fatalf("expected duplicate and empty review runs to normalize to one, got %#v", runs)
 	}
 }
 

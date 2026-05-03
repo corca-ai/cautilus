@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:bbf5373c14afbb544f8f4c6406084bbd1be3aa2b6c1682e48828e73934cff68c"
+      "contentHash": "sha256:407bf754515f2da0c9b6702df03fdc76e5dc65d48d7b6cf2e9428dbde239572a"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:882064b19bb1f53a7f5d0bdbe653b53c33f2ff4ca8186e056538ca7e2eff76a8"
     }
   },
-  "claimsPacketGitCommit": "00f3889efd94da3ecdfd9bd4698fdb491797306f",
+  "claimsPacketGitCommit": "ad0eddc13490c72dcd5bf7ee6b3630a435a2e12a",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 322,
   "catalogs": {
@@ -302,8 +302,8 @@
     },
     "byMappingConfidence": {
       "high": 62,
-      "low": 57,
-      "medium": 203
+      "low": 58,
+      "medium": 202
     },
     "byUserCanonicalClaimId": {
       "U1": 22,
@@ -1593,7 +1593,7 @@
         {
           "claimId": "claim-docs-contracts-adapter-contract-md-533",
           "claimFingerprint": "sha256:ec839463e3299779977eb2918b2a34ca128e4ce9bfd2443fcc88c2e9be3193bb",
-          "mappingConfidence": "medium",
+          "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
@@ -2027,13 +2027,13 @@
       },
       "byRecommendedProof": {
         "cautilus-eval": 31,
-        "deterministic": 35,
-        "human-auditable": 6
+        "deterministic": 34,
+        "human-auditable": 7
       },
       "byMappingConfidence": {
         "high": 7,
-        "low": 9,
-        "medium": 56
+        "low": 10,
+        "medium": 55
       }
     },
     {
@@ -2438,8 +2438,8 @@
       },
       "byRecommendedProof": {
         "cautilus-eval": 28,
-        "deterministic": 12,
-        "human-auditable": 15
+        "deterministic": 11,
+        "human-auditable": 16
       },
       "byMappingConfidence": {
         "high": 8,
@@ -5204,25 +5204,24 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:06f26f14f677359b619ed7597b5c5a9f47190a0bd56e7dca43992c9c0f2c33b1",
       "canonicalClaimId": "M3",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "M2",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M4",
       "runnerUpScore": 7,
-      "scoreMargin": 1,
+      "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
-        "deterministic",
         "one",
         "prompt",
-        "schema",
+        "proof",
         "test",
         "thi",
         "workflow"
@@ -5398,25 +5397,22 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:ec839463e3299779977eb2918b2a34ca128e4ce9bfd2443fcc88c2e9be3193bb",
       "canonicalClaimId": "M2",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "M3",
+      "score": 5,
+      "runnerUpCanonicalClaimId": "M11",
       "runnerUpScore": 5,
-      "scoreMargin": 3,
-      "mappingConfidence": "medium",
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "check",
         "contract",
-        "deterministic",
         "keep",
-        "lint",
         "run",
         "schema",
         "without"
