@@ -150,6 +150,29 @@ func TestNormalizeEvaluationInputAcceptsPacketFirstAuditKind(t *testing.T) {
 	}
 }
 
+func TestNormalizeEvaluationInputAcceptsCanonicalSpecCurationAuditKind(t *testing.T) {
+	fixture := validDevSkillFixture()
+	cases := fixture["cases"].([]any)
+	cases[0] = map[string]any{
+		"caseId":         "episode-canonical-spec-curation",
+		"evaluationKind": "execution",
+		"turns": []any{
+			map[string]any{"input": "$demo", "injectSkill": true},
+			map[string]any{"input": "Check canonical spec indexes before continuing HITL."},
+		},
+		"auditKind": "cautilus_canonical_spec_curation_flow",
+	}
+	result, err := NormalizeEvaluationInput(fixture)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	casesOut := result.TranslatedCases["cases"].([]any)
+	first := casesOut[0].(map[string]any)
+	if first["auditKind"] != "cautilus_canonical_spec_curation_flow" {
+		t.Fatalf("expected canonical spec curation auditKind to round-trip, got %#v", first)
+	}
+}
+
 func TestNormalizeEvaluationInputRejectsDevSkillTurnsOnTrigger(t *testing.T) {
 	fixture := validDevSkillFixture()
 	cases := fixture["cases"].([]any)

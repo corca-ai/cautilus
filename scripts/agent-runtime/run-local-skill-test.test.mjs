@@ -121,6 +121,26 @@ test("skill case suites accept packet-first audit episodes", () => {
 	assert.equal(suite.cases[0].turns.length, 2);
 });
 
+test("skill case suites accept canonical spec curation audit episodes", () => {
+	const suite = normalizeSkillTestCaseSuite({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "cautilus",
+		cases: [
+			{
+				caseId: "episode-cautilus-canonical-spec-curation-flow",
+				evaluationKind: "execution",
+				turns: [
+					{ input: "$cautilus", injectSkill: true },
+					{ input: "Check canonical spec indexes before continuing HITL." },
+				],
+				auditKind: "cautilus_canonical_spec_curation_flow",
+			},
+		],
+	});
+	assert.equal(suite.cases[0].auditKind, "cautilus_canonical_spec_curation_flow");
+	assert.equal(suite.cases[0].turns.length, 2);
+});
+
 test("fixture-backed episode cases still materialize skill evaluation packets", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-test-episode-"));
 	const casesFile = join(root, "cases.json");

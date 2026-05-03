@@ -1,0 +1,25 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - local bundled cautilus skill checks canonical spec indexes before continuing HITL
+required_prerequisites:
+  - materialize the local cautilus skill surface before running the episode fixture
+preflight_commands:
+  - ./bin/cautilus install --repo-root . --overwrite
+  - ./bin/cautilus doctor --repo-root . --scope agent-surface
+evaluation_input_default: fixtures/eval/dev/skill/cautilus-canonical-spec-curation-flow.fixture.json
+eval_test_command_templates:
+  - node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox workspace-write --timeout-ms 300000 --claim-state present --artifact-subdir canonical-spec-curation-flow --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(*)'
+artifact_paths:
+  - skills/cautilus/SKILL.md
+  - docs/specs/user/index.spec.md
+  - docs/specs/maintainer/index.spec.md
+  - fixtures/eval/dev/skill/cautilus-canonical-spec-curation-flow.fixture.json
+  - scripts/run-self-dogfood-skill-refresh-flow-eval.mjs
+  - scripts/agent-runtime/run-local-skill-test.mjs
+  - scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.mjs
+comparison_questions:
+  - Can the bundled cautilus skill inspect current claim state plus canonical user/maintainer spec indexes before continuing HITL when raw candidates are too granular?
+human_review_prompts:
+  - id: canonical-spec-curation-flow-episode
+    prompt: Where would an operator still conclude that the canonical spec curation episode skipped the user-facing or maintainer-facing review surface before HITL?

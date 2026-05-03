@@ -9,6 +9,7 @@ import { auditReviewPrepareFlowLogText } from "./audit-cautilus-review-prepare-f
 import { auditReviewerLaunchFlowLogText } from "./audit-cautilus-reviewer-launch-flow-log.mjs";
 import { auditReviewToEvalFlowLogText } from "./audit-cautilus-review-to-eval-flow-log.mjs";
 import { auditPacketFirstFlowLogText } from "./audit-cautilus-packet-first-flow-log.mjs";
+import { auditCanonicalSpecCurationFlowLogText } from "./audit-cautilus-canonical-spec-curation-flow-log.mjs";
 import { applyObservationExpectations } from "./skill-test-expectations.mjs";
 
 function renderTurnInput(options, testCase, turn) {
@@ -144,6 +145,9 @@ function auditEpisode(testCase, combined, artifactRefs, outputDir, started, arti
 	}
 	if (testCase.auditKind === "cautilus_packet_first_flow") {
 		audit = auditPacketFirstFlowLogText(combined);
+	}
+	if (testCase.auditKind === "cautilus_canonical_spec_curation_flow") {
+		audit = auditCanonicalSpecCurationFlowLogText(combined);
 	}
 	if (!audit) {
 		return null;

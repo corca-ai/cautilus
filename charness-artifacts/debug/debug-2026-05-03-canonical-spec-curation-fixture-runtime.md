@@ -59,7 +59,7 @@ It was a fixture-runtime mismatch: fixture-backed skill episode evaluation requi
 - Seam: dev/skill episode adapter runtime selection
 - Disproving Observation: the wrapper and local skill test runner both explicitly require `--fixture-results-file` for fixture backend.
 - What Local Reasoning Cannot Prove: whether the product should later expose a clearer adapter-level readiness message before entering the command template.
-- Generalization Pressure: monitor
+- Generalization Pressure: low
 
 ## Interrupt Decision
 
