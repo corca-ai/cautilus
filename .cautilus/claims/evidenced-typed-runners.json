@@ -552,16 +552,26 @@
       "claimFingerprint": "sha256:df4aa9115fa3cb65ef65be956336be165bc67437d0f039e64c13baf95891493d",
       "claimId": "claim-readme-md-129",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The review input includes only the README source excerpt and no `claim plan-evals` output packet, validation report, or filesystem non-write assertion for this claim.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-readme-md-129"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the current deterministic proof bundle: `claim plan-evals` emits `cautilus.claim_eval_plan.v1` and preserves the non-writer notice.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or link a deterministic `claim plan-evals` proof that validates `cautilus.claim_eval_plan.v1` output and asserts the command does not create or modify host-owned prompt, runner, fixture, or policy files.",
+      "nextAction": "Keep `claim plan-evals` smoke and non-writer notice checks aligned when eval planning changes.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -572,9 +582,7 @@
         }
       ],
       "summary": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
-      "unresolvedQuestions": [
-        "Should the non-writer boundary be verified by a filesystem diff guard in the CLI test or by a narrower output-path-only assertion?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim promises the shape and boundary of `claim plan-evals`: it emits an intermediate plan and does not write host prompts, runners, fixtures, or policy. That is deterministic CLI behavior and output-shape behavior, not app/prompt behavior."
     },
@@ -1140,8 +1148,19 @@
       "claimFingerprint": "sha256:a42ab6736d2ebe2beeb0ba10487b85347c0d81a5444e77f1d95d0f8fc7292e95",
       "claimId": "claim-docs-cli-reference-md-120",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-120"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by refresh-plan overwrite guard tests.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1149,9 +1168,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep saved-claim-state overwrite rejection covered when claim packet schemas change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`.",
@@ -1160,6 +1179,7 @@
         }
       ],
       "summary": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -1485,9 +1505,19 @@
       "claimFingerprint": "sha256:1e30b87e2f299951a03c64f4f891326883f447714f997c5b496c8f5a130c8219",
       "claimId": "claim-docs-cli-reference-md-270",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The review input includes the CLI reference sentence but no direct test result, command transcript, or evidence bundle proving that eval evaluate does not launch the runner again.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-270"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the new no-runner-launch guard plus observed-packet eval evaluate tests.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1495,7 +1525,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or point to a deterministic eval evaluate test that feeds an observed packet and fails if any runner invocation path is touched.",
+      "nextAction": "Keep eval evaluate tests separate from eval test runner-launch tests.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1506,9 +1536,7 @@
         }
       ],
       "summary": "`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.",
-      "unresolvedQuestions": [
-        "Is there already a checked-in no-runner sentinel test for eval evaluate that should be linked as evidence instead of adding a new one?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim is CLI packet behavior: eval evaluate should consume an already-observed packet and avoid launching the runner. That can be proven by a deterministic command or integration test with a runner-launch sentinel."
     },
@@ -1603,8 +1631,19 @@
       "claimFingerprint": "sha256:003038663b54c623858fe0d30f37af8e7554c1f8f79b8750306cdff272f893a5",
       "claimId": "claim-docs-cli-reference-md-451",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-cli-reference-md-451"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by evidence input and bundle tests that assemble report, scenario, audit, and scenario-history sources into one packet.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1612,9 +1651,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep evidence-bundle flow tests aligned with new evidence source kinds.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
@@ -1623,6 +1662,7 @@
         }
       ],
       "summary": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -1891,8 +1931,19 @@
       "claimFingerprint": "sha256:1470cdcbbe6feea4e845e3ac199d21c8e236a3363741f8ab2aa22919279ee094",
       "claimId": "claim-docs-contracts-adapter-contract-md-315",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-315"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by live-run CLI tests that write one result packet to the requested output file.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -1900,9 +1951,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep live-run output-file tests strict when invocation packet schemas change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.",
@@ -1911,6 +1962,7 @@
         }
       ],
       "summary": "The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -2322,9 +2374,19 @@
       "claimFingerprint": "sha256:235f566172db781f7228ff54e5c782c4469aaf0f0c1d64315906048b7547f672",
       "claimId": "claim-docs-guides-consumer-adoption-md-48",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The review input provides the adoption-guide sentence but no generated ready payload sample, snapshot test, or evidence bundle proving that first_bounded_run and scenario catalog guidance are emitted together.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-consumer-adoption-md-48"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by doctor output and external consumer smoke tests for `first_bounded_run`.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -2332,7 +2394,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or link a deterministic consumer-adoption payload test that asserts the ready payload includes first_bounded_run and keeps scenario catalog examples available without replacing the eval test/evaluate loop.",
+      "nextAction": "Keep doctor first-bounded-run payload and consumer onboarding smoke aligned.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -2343,9 +2405,7 @@
         }
       ],
       "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
-      "unresolvedQuestions": [
-        "Which command or adapter path owns the ready payload contract that this guide sentence describes?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim describes the generated ready payload and nearby scenario catalog guidance. That is a deterministic adapter/init payload contract, not model-backed behavior."
     },
@@ -3412,9 +3472,19 @@
       "claimFingerprint": "sha256:9c02e459e8d9dde0c5546555cd6fd972af45d441ba5ed550d74a7fe99efa9744",
       "claimId": "claim-docs-specs-user-index-spec-md-25",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The review input includes only the user-facing spec sentence and no doctor output, readiness packet, or test evidence for the missing-specdown setup boundary.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-index-spec-md-25"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by missing-specdown doctor and raw-packet validation tests.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -3422,7 +3492,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or link a deterministic doctor/readiness fixture where specdown is unavailable and assert that raw Cautilus packets are still usable while claim-document workflow readiness is not satisfied.",
+      "nextAction": "Keep specdown prerequisite checks in doctor and raw packet tooling separate.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -3433,9 +3503,7 @@
         }
       ],
       "summary": "Without specdown, a repo can still contain raw Cautilus packets, but it is not fully set up for the Cautilus claim-document workflow.",
-      "unresolvedQuestions": [
-        "Should this proof live in doctor readiness tests, install/adoption tests, or both?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim is setup/readiness behavior for the public claim-document workflow. A deterministic doctor or readiness test can prove that raw packets remain possible while the specdown-backed workflow is not fully ready."
     },
@@ -3489,16 +3557,16 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The review input includes no verified evidence refs for this claim. The source page says evidence is pending and names report-rendering specs, status-server proof, and packet freshness checks as future evidence.",
+      "evidenceStatusReason": "Too broad for a single deterministic verdict. Existing packets prove several sub-surfaces, but the user-facing claim should be split into reviewable packet outputs, readable projections, and proof-debt reports before satisfaction.",
       "groupHints": [
         "audience:user",
-        "deterministic",
+        "human-auditable",
         "linked-from:README.md",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach or add deterministic evidence that Cautilus writes machine-readable packets and readable claim/eval/report views that can be reopened without relying on terminal scrollback.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Split this broad reviewability claim into concrete user-facing subclaims and attach existing packet/projection evidence to those subclaims.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -3509,9 +3577,9 @@
       ],
       "summary": "Cautilus leaves evidence that another person or agent can reopen instead of relying on terminal scrollback or memory.",
       "unresolvedQuestions": [
-        "Which generated human-readable views are part of the current user-facing artifact promise: Markdown report, HTML status server, eval summary, doctor output, or all of them?"
+        "Should the user-facing spec index replace this sentence with narrower subclaims?"
       ],
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "blocked",
       "whyThisLayer": "The claim is about durable artifacts being written and reopenable. Packet creation, rendered views, freshness signals, and source-of-truth boundaries are stronger as deterministic CLI, renderer, and schema checks than as an agent behavior eval."
     },
     {
@@ -4065,8 +4133,19 @@
       "claimFingerprint": "sha256:fb78eaa26fd5a64b6d6dbf8db46f3409a7251db89887479dc2d40f723db68799",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-96"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by missing-specdown doctor tests.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -4074,9 +4153,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep doctor specdown readiness synchronized with claim-doc workflow docs.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "If specdown is missing, `doctor` should report the repo as not ready for the Cautilus claim-doc workflow.",
@@ -4085,6 +4164,7 @@
         }
       ],
       "summary": "If specdown is missing, `doctor` should report the repo as not ready for the Cautilus claim-doc workflow.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -6212,8 +6292,19 @@
       "claimFingerprint": "sha256:e9e25a9d964bcf82acf21be2ed2a48acb9df0d426087c8e8714b03b75155ee76",
       "claimId": "claim-docs-contracts-live-run-invocation-batch-md-166",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-live-run-invocation-batch-md-166"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by live-run scenario batch CLI tests.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6221,9 +6312,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep batch output-file tests aligned with live-run batch packet schema changes.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The command writes the aggregated batch packet to `--output-file`.",
@@ -6232,6 +6323,7 @@
         }
       ],
       "summary": "The command writes the aggregated batch packet to `--output-file`.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -6557,6 +6649,7 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Existing report-packet tests prove commandObservations are preserved when supplied, but not that Cautilus itself executes adapter-defined mode commands and writes them into report input.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6564,9 +6657,9 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Add an end-to-end report-input preparation test for adapter-defined mode command execution, or rewrite the claim to the narrower commandObservations preservation boundary.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "When `Cautilus` itself executes adapter-defined mode commands, it should write those command observations into the report input so the final packet preserves how the evidence was gathered.",
@@ -6575,7 +6668,10 @@
         }
       ],
       "summary": "When `Cautilus` itself executes adapter-defined mode commands, it should write those command observations into the report input so the final packet preserves how the evidence was gathered.",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [
+        "Should Cautilus own execution-to-report-input materialization here, or should adapters own the report input packet?"
+      ],
+      "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
@@ -6584,8 +6680,19 @@
       "claimFingerprint": "sha256:84e20fceee7b13f03574081e031d1ebd73a26ab909f01a9ef7f75d864fe70b82",
       "claimId": "claim-docs-contracts-reporting-md-108",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-reporting-md-108"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by explicit cost telemetry tests: report cost is carried from mode telemetry and not inferred from command observations or logs.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6593,9 +6700,9 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep telemetry tests payload-driven when adding provider fields.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload.",
@@ -6604,6 +6711,7 @@
         }
       ],
       "summary": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -7024,16 +7132,17 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "This is a concept definition. Schema and readiness tests can prove narrower runner metadata obligations, but they do not prove the prose definition as a behavior claim.",
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
+        "human-auditable",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "nextAction": "Split into adapter schema and runner output packet subclaims if executable proof is desired.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "A runner is a bounded headless command that takes product-readable input and writes a Cautilus-readable observed packet.",
@@ -7042,7 +7151,8 @@
         }
       ],
       "summary": "A runner is a bounded headless command that takes product-readable input and writes a Cautilus-readable observed packet.",
-      "verificationReadiness": "ready-to-verify",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "blocked",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
@@ -8281,8 +8391,19 @@
       "claimFingerprint": "sha256:45c8b516a2ba7c7bfc964136382d65a37d72da0ae53e01df28ca875ed8fe813f",
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-72",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-workbench-instance-discovery-md-72"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by live discovery command-mode tests that normalize stdout JSON and keep warnings on stderr.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -8290,9 +8411,9 @@
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep command-mode live discovery tests strict about stdout JSON and stderr warnings.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout.",
@@ -8301,6 +8422,7 @@
         }
       ],
       "summary": "The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -8373,16 +8495,16 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The catalog packet carries displayLabel values, but no distinct instance chooser rendering surface is implemented yet. Treat this as future UI/workbench work rather than satisfied packet proof.",
+      "evidenceStatusReason": "Current proof covers the instance catalog packet, not a rendered human-facing chooser.",
       "groupHints": [
         "audience:developer",
         "contract",
-        "deterministic",
+        "human-auditable",
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Defer until a shipped chooser or review surface exists, or reword the contract to claim only that eval live discover emits display labels in the catalog packet.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Keep as future work or split into a concrete UI/workbench spec before verification.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -8393,7 +8515,7 @@
       ],
       "summary": "The product can render a human-facing instance chooser without learning consumer-native labels itself.",
       "unresolvedQuestions": [
-        "Should this success criterion be reworded from chooser rendering to packet-level label presentation?"
+        "Should this remain in future GUI workbench scope instead of current eval live discovery?"
       ],
       "verificationReadiness": "blocked",
       "whyThisLayer": "The claim says render a human-facing chooser, but the shipped surface is currently a catalog packet rather than a chooser UI."
@@ -9395,8 +9517,19 @@
       "claimFingerprint": "sha256:9a02111a264073ae2dc0ec0673b9efd8ab90089058bdb8f11215d995b8f114ca",
       "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-11",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-doctor-readiness-spec-md-11"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by doctor output and CLI tests that expose ready/blocked checks and next action.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -9404,9 +9537,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep doctor user spec rows tied to concrete doctor output fields.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Doctor output should explain what is ready, what is blocked, and what the next action is.",
@@ -9415,6 +9548,7 @@
         }
       ],
       "summary": "Doctor output should explain what is ready, what is blocked, and what the next action is.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -9424,9 +9558,19 @@
       "claimFingerprint": "sha256:7d2a95136dbffa734309203e9587993060b7614fa9096e426dbf4a689109473f",
       "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-12",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The review input includes no verified evidence refs. The source page says current proof only checks that both public surfaces exist, while future proof should connect the shared runner-readiness assessment used by both commands.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-doctor-readiness-spec-md-12"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by doctor/agent-status parity tests over runner readiness facts.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -9434,7 +9578,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Add or attach deterministic CLI evidence comparing `doctor` and `agent status --json` readiness facts for the same repo state, including blocked and ready runner-assessment cases.",
+      "nextAction": "Keep doctor and agent status readiness facts sourced from the same runner readiness path.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -9445,9 +9589,7 @@
         }
       ],
       "summary": "Agent status should share the same readiness facts when an agent is driving the workflow.",
-      "unresolvedQuestions": [
-        "Which readiness fields are contractually shared between doctor and agent status versus intentionally phrased differently for human and agent readers?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim says `agent status` should share readiness facts with `doctor`. That is a deterministic CLI parity contract over shared readiness data, not model-backed skill behavior."
     },
@@ -10293,8 +10435,19 @@
       "claimFingerprint": "sha256:96edf0260ccb63c7009cf56b622eb4b843855b73c969515d0a6996ac3162b662",
       "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-184",
       "claimSemanticGroup": "Improvement and optimization",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runtime-fingerprint-optimization-md-184"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by active-run, review-packet, report-packet, and runtime fingerprint tests.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -10302,9 +10455,9 @@
         "linked-from:docs/contracts/reporting.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep active-run and runtime fingerprint tests aligned with optimize input changes.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Keep active-run artifacts reopenable so a later optimize pass can explain which runtime change triggered a simplification opportunity.",
@@ -10313,6 +10466,7 @@
         }
       ],
       "summary": "Keep active-run artifacts reopenable so a later optimize pass can explain which runtime change triggered a simplification opportunity.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -10999,26 +11153,26 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 92,
-      "unknown": 230
+      "satisfied": 106,
+      "unknown": 216
     },
     "byLifecycle": {
       "new": 322
     },
     "byRecommendedProof": {
       "cautilus-eval": 124,
-      "deterministic": 109,
-      "human-auditable": 89
+      "deterministic": 106,
+      "human-auditable": 92
     },
     "byReviewStatus": {
-      "agent-reviewed": 159,
-      "heuristic": 163
+      "agent-reviewed": 170,
+      "heuristic": 152
     },
     "byVerificationReadiness": {
-      "blocked": 35,
-      "needs-alignment": 33,
+      "blocked": 37,
+      "needs-alignment": 34,
       "needs-scenario": 11,
-      "ready-to-verify": 243
+      "ready-to-verify": 240
     }
   },
   "discoveryEngine": {
@@ -11181,7 +11335,7 @@
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
-    "appliedUpdateCount": 4,
+    "appliedUpdateCount": 18,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -11189,14 +11343,13 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "whyThisLayer",
-          "recommendedEvalSurface",
+          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-specs-user-optimization-spec-md-3",
-        "clusterId": "cluster-user-improvement-and-optimization-cautilus-eval-dev-repo-spec"
+        "claimId": "claim-readme-md-129",
+        "clusterId": "cluster-current-deterministic-proof-batch"
       },
       {
         "appliedFields": [
@@ -11204,14 +11357,27 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "whyThisLayer",
-          "recommendedEvalSurface",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-cli-reference-md-120",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-cli-reference-md-270",
-        "clusterId": "cluster-user-packets-and-reporting-cautilus-eval-dev-repo-docs"
+        "clusterId": "cluster-current-deterministic-proof-batch"
       },
       {
         "appliedFields": [
@@ -11219,14 +11385,13 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "whyThisLayer",
-          "recommendedEvalSurface",
+          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-specs-user-index-spec-md-25",
-        "clusterId": "cluster-user-packets-and-reporting-cautilus-eval-dev-repo-spec"
+        "claimId": "claim-docs-cli-reference-md-451",
+        "clusterId": "cluster-current-deterministic-proof-batch"
       },
       {
         "appliedFields": [
@@ -11234,19 +11399,198 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "whyThisLayer",
-          "recommendedEvalSurface",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-adapter-contract-md-315",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-guides-consumer-adoption-md-48",
-        "clusterId": "cluster-user-quality-gates-cautilus-eval-dev-repo-docs"
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-specs-user-index-spec-md-25",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "groupHints",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-live-run-invocation-batch-md-166",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-reporting-md-50",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-reporting-md-108",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-runner-readiness-md-55",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-72",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "nextAction",
+          "evidenceStatusReason",
+          "groupHints",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-100",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-11",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-12",
+        "clusterId": "cluster-current-deterministic-proof-batch"
+      },
+      {
+        "appliedFields": [
+          "recommendedProof",
+          "verificationReadiness",
+          "evidenceStatus",
+          "reviewStatus",
+          "evidenceRefs",
+          "nextAction",
+          "evidenceStatusReason",
+          "unresolvedQuestions"
+        ],
+        "claimId": "claim-docs-contracts-runtime-fingerprint-optimization-md-184",
+        "clusterId": "cluster-current-deterministic-proof-batch"
       }
     ],
-    "claimsPath": "/tmp/evidenced-final3-discovered.json",
+    "claimsPath": ".cautilus/claims/evidenced-typed-runners.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-eval-bucket-user-c-2026-05-03.json",
+    "reviewResultPath": ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "provenanceMode": "aggregate-current-review-results"

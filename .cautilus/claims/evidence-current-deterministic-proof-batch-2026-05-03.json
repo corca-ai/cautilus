@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-current-deterministic-proof-batch-2026-05-03",
+  "createdForClaimIds": [
+    "claim-readme-md-129",
+    "claim-docs-cli-reference-md-120",
+    "claim-docs-cli-reference-md-270",
+    "claim-docs-cli-reference-md-451",
+    "claim-docs-contracts-adapter-contract-md-315",
+    "claim-docs-guides-consumer-adoption-md-48",
+    "claim-docs-specs-user-index-spec-md-25",
+    "claim-docs-contracts-claim-discovery-workflow-md-96",
+    "claim-docs-contracts-live-run-invocation-batch-md-166",
+    "claim-docs-contracts-reporting-md-108",
+    "claim-docs-contracts-workbench-instance-discovery-md-72",
+    "claim-docs-specs-user-doctor-readiness-spec-md-11",
+    "claim-docs-specs-user-doctor-readiness-spec-md-12",
+    "claim-docs-contracts-runtime-fingerprint-optimization-md-184"
+  ],
+  "repoCommit": "ed2b69618b81ea91247eafd54da7671c9315d093",
+  "summary": "This bundle records deterministic proof for narrow current behavior claims after fresh-eye review removed overbroad targets. It covers current packet schemas, non-writer eval planning, no-runner eval evaluation, doctor and agent readiness parity, specdown prerequisite visibility, live-run output packet writing, evidence source unification, explicit cost telemetry boundaries, workbench instance discovery stdout shape, and active-run reopenability.",
+  "evidenceScope": {
+    "targetSurface": "current deterministic CLI, packet, readiness, evidence, live-run, telemetry, workbench discovery, and active-run surfaces",
+    "claimBoundary": "Only the listed narrow current behavior claims are marked satisfied. Broad reviewability, runner-definition, report-command-execution, future GUI workbench, and human-only semantic-honesty claims remain outside this bundle.",
+    "notClaimed": [
+      "A GUI workbench exists for editing claims or scenarios",
+      "Every host adapter's runner is semantically honest for its selected surface",
+      "Cautilus executes every adapter-defined mode command and records it into report input",
+      "The broad claim that all Cautilus evidence is reviewable is fully proven without subclaim splitting",
+      "A prose definition of runner ownership is proven by tests",
+      "All Cautilus-eval claims have checked-in fixtures"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus claim plan-evals --claims .cautilus/claims/evidenced-typed-runners.json --max-claims 5 --output /tmp/cautilus-current-plan-evals.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.claim_eval_plan.v1",
+        "planCount": 5,
+        "nonWriterNotice": "This packet plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy."
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor --repo-root .",
+      "exitCode": 0,
+      "observed": {
+        "status": "ready",
+        "ready": true,
+        "specdown_available": true,
+        "first_bounded_run": {
+          "decisionLoopCommandsInclude": [
+            "cautilus eval test",
+            "cautilus eval evaluate"
+          ],
+          "normalizationCatalogCommand": "cautilus scenarios --json"
+        },
+        "next_action": {
+          "kind": "complete_first_bounded_run"
+        }
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIEvalEvaluateDoesNotLaunchAdapterRunner|TestRunDoctorBlocksClaimDocsWhenSpecdownMissingButPacketsValidate|TestRunClaimDiscoverRefreshPlanRefusesSavedClaimStateOutput|TestCLIEvalEvaluateAcceptsSkillObservedPacket|TestCLIEvalEvaluateAcceptsAppChatObservedPacket|TestCLIEvalEvaluateAcceptsAppPromptObservedPacket|TestCLIDoctorReportsReadyWithExecutionSurface|TestCLIDoctorNextActionPrintsLoopPrompt|TestCLILiveEvalDiscoverExecutesConsumerProbeCommand|TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr|TestCLILiveEvalRunLiveDispatchesConsumerCommand|TestCLILiveEvalRunScenariosExecutesExplicitRequestBatch' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "eval evaluate consumes already-observed packets and does not launch adapter runners",
+          "doctor reports the claim-doc workflow blocked when specdown is missing while raw claim packets remain readable",
+          "refresh-plan packets cannot overwrite saved claim-state outputs",
+          "doctor exposes ready, blocked, next action, and first bounded run payloads",
+          "live discovery command-mode output preserves JSON stdout and stderr warnings",
+          "live run commands write one result packet to the requested output file",
+          "live run scenario batches write aggregate packets to the requested output file"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestDoctorAndAgentStatusShareRunnerReadinessFacts|TestBuildReportPacketOnlyCarriesExplicitCostTelemetry|TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches|TestDoctorRunnerReadinessKeepsAdapterReadyWithMissingAssessment|TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates|TestRunnerReadinessBranchesExposeStableActionShape|TestBuildReportPacketNormalizesAndComparesRuntimeFingerprint|TestBuildReportPacketNotesPriorEvidenceWithoutRuntimeIdentity|TestBuildClaimEvalPlanMarksAppClaimsAsProductRunnerProof|TestBuildClaimValidationReportValidatesEvidenceRefs' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "doctor and agent status share runner readiness facts",
+          "cost fields are carried only from explicit mode telemetry payload fields",
+          "runner readiness exposes stable next-action branches",
+          "runtime identity and active-run evidence remain reopenable for later optimize decisions",
+          "claim eval plans preserve product-runner proof requirements and the non-writer boundary",
+          "claim validation checks referenced evidence bundles"
+        ]
+      }
+    },
+    {
+      "command": "node --test scripts/agent-runtime/build-report-packet.test.mjs scripts/agent-runtime/build-review-packet.test.mjs scripts/agent-runtime/active-run.test.mjs scripts/on-demand/smoke-external-consumer.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 30,
+        "pass": 30,
+        "protectedBehaviors": [
+          "report packets aggregate explicit telemetry fields without log scraping",
+          "review packets can be rebuilt from durable active-run report artifacts",
+          "active-run helpers resolve and validate reopenable run directories",
+          "external consumer onboarding smoke completes the first bounded run"
+        ]
+      }
+    },
+    {
+      "command": "node --test scripts/agent-runtime/evidence-bundle-flow.test.mjs scripts/agent-runtime/evidence-contract-schemas.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 7,
+        "pass": 7,
+        "protectedBehaviors": [
+          "evidence input assembles report, scenario, audit, and scenario-history sources into the next decision packet",
+          "evidence bundles summarize prioritized evidence signals",
+          "evidence input and bundle examples match checked-in schemas",
+          "active-run defaults leave evidence input and evidence bundle paths reopenable"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-smoke-tests",
+      "contentHash": "sha256:15c235ebe58a9e23da494628348e4b6b3449d5dcfa5ee079e64d4f63a10817df"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "app-command-tests",
+      "contentHash": "sha256:b3b9c881dbee7ab90540aa107ba668d412de49af1e8fc4e8b0c6d642477d05cf"
+    },
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "doctor-readiness-implementation",
+      "contentHash": "sha256:3c1ea7ca8956160057ea252be8f98253e841d664a37ee228395ae723638c8616"
+    },
+    {
+      "path": "internal/runtime/runner_readiness_test.go",
+      "kind": "runner-readiness-tests",
+      "contentHash": "sha256:188e876dbe3c22c3210492f70f4db64af1ace36bedf231326fc12e2507a513c3"
+    },
+    {
+      "path": "internal/runtime/runtime_fingerprint_test.go",
+      "kind": "runtime-fingerprint-and-telemetry-tests",
+      "contentHash": "sha256:0905bd7941b42d96024a15220156398c4cf0751f0c078c889a870737fbd8c97b"
+    },
+    {
+      "path": "internal/runtime/agent_status.go",
+      "kind": "agent-status-implementation",
+      "contentHash": "sha256:17b17f6ff81a6fad00e010e4762b58d08b105ef4633d805940042aa460bdd254"
+    },
+    {
+      "path": "internal/runtime/report.go",
+      "kind": "report-runtime",
+      "contentHash": "sha256:bee4b85e28ec9bb4a3d2868469155cd3a7dd226ad51c2513707d14322f3abf4b"
+    },
+    {
+      "path": "scripts/agent-runtime/build-report-packet.test.mjs",
+      "kind": "report-packet-tests",
+      "contentHash": "sha256:4502bce244d1ce7b51c16fcd6a801db258f6f2d633050fff7ea3677218d1b5a1"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-packet.test.mjs",
+      "kind": "review-packet-tests",
+      "contentHash": "sha256:959561c7a45ae1df77f4644e6094cd01e9d160f15e4c14b6716c5918650501fb"
+    },
+    {
+      "path": "scripts/agent-runtime/active-run.test.mjs",
+      "kind": "active-run-tests",
+      "contentHash": "sha256:582d3301fbaa1c9645f2903e4f189589b4152cba49a8426acee3969c8cef6ef4"
+    },
+    {
+      "path": "scripts/agent-runtime/evidence-bundle-flow.test.mjs",
+      "kind": "evidence-bundle-tests",
+      "contentHash": "sha256:09e5c5bbe354a8c7e346de86258ba1c5bb8b2bdf69eeb7f2178afd148506b480"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.test.mjs",
+      "kind": "external-consumer-smoke-tests",
+      "contentHash": "sha256:c246166e8b608dfad02df3d9badddf689a07896b31ca17dd61fb2ef2d2099a05"
+    },
+    {
+      "path": "docs/contracts/workbench-instance-discovery.md",
+      "kind": "workbench-instance-discovery-contract",
+      "contentHash": "sha256:366450d81705bf430c5273eec7454c4d10968b936d17aecf9b3a712b0b37f85e"
+    },
+    {
+      "path": "docs/contracts/reporting.md",
+      "kind": "reporting-contract",
+      "contentHash": "sha256:bf309380f38e3bc836e2864fa836c48f57a169d57c5d832f533a1f3f9b58acde"
+    },
+    {
+      "path": "docs/specs/user/doctor-readiness.spec.md",
+      "kind": "user-doctor-readiness-spec",
+      "contentHash": "sha256:c49034f3da059d33f8a630e021157df2f5eac37df9eac1f030efdd54dbfbd4a1"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The executed command and test set proves the listed packet, readiness, no-runner evaluate, specdown, live-run output, evidence-source, explicit-cost, workbench discovery, and active-run reopenability boundaries without relying on terminal memory."
+  }
+}

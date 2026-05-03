@@ -58,7 +58,7 @@ That collapsed distinct boundaries: direct CLI packet behavior, setup/readiness 
 ## Seam Risk
 
 - Interrupt ID: deterministic-proof-overclaim
-- Risk Class: contract-freeze-risk
+- Risk Class: evidence-boundary-risk
 - Seam: hand-authored claim evidence bundles and review-result application
 - Disproving Observation: independent review found claims whose wording required stronger proof or reclassification than the first bundle provided.
 - What Local Reasoning Cannot Prove: whether future broad claim batches will always be decomposed before evidence application.
