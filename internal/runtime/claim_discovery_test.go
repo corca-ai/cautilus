@@ -2361,6 +2361,83 @@ func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
 	}
 }
 
+func TestBuildClaimValidationReportRequiresSupportedEvidenceKind(t *testing.T) {
+	packet := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               "claim-evidence-kind-1",
+				"claimFingerprint":      "sha256:evidence-kind",
+				"summary":               "Eval evidence must use supported evidence kinds.",
+				"recommendedProof":      "cautilus-eval",
+				"verificationReadiness": "ready-to-verify",
+				"evidenceStatus":        "satisfied",
+				"reviewStatus":          "agent-reviewed",
+				"lifecycle":             "new",
+				"claimSemanticGroup":    "Evidence",
+				"groupHints":            []any{"cautilus-eval"},
+				"sourceRefs": []any{
+					map[string]any{"path": "README.md", "line": 1, "excerpt": "Eval evidence must use supported evidence kinds."},
+				},
+				"evidenceRefs": []any{
+					map[string]any{
+						"kind":             "observed-packet",
+						"path":             "eval-observed.json",
+						"matchKind":        "direct",
+						"contentHash":      "sha256:observed",
+						"supportsClaimIds": []any{"claim-evidence-kind-1"},
+					},
+				},
+			},
+		},
+	}
+	report := BuildClaimValidationReport(packet, ClaimValidationOptions{InputPath: "claims.json"})
+	if report["valid"] != false {
+		t.Fatalf("expected invalid report, got %#v", report)
+	}
+	issues := arrayOrEmpty(report["issues"])
+	if len(issues) == 0 || !strings.Contains(stringFromAny(asMap(issues[0])["message"]), "supported kind") {
+		t.Fatalf("expected unsupported evidence kind issue, got %#v", issues)
+	}
+}
+
+func TestBuildClaimValidationReportAcceptsEvalObservedEvidenceKind(t *testing.T) {
+	packet := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               "claim-eval-observed-1",
+				"claimFingerprint":      "sha256:eval-observed",
+				"summary":               "Eval observed packets can directly support a claim.",
+				"recommendedProof":      "cautilus-eval",
+				"verificationReadiness": "ready-to-verify",
+				"evidenceStatus":        "satisfied",
+				"reviewStatus":          "agent-reviewed",
+				"lifecycle":             "new",
+				"claimSemanticGroup":    "Evidence",
+				"groupHints":            []any{"cautilus-eval"},
+				"sourceRefs": []any{
+					map[string]any{"path": "README.md", "line": 1, "excerpt": "Eval observed packets can directly support a claim."},
+				},
+				"evidenceRefs": []any{
+					map[string]any{
+						"kind":                  "eval-observed",
+						"path":                  "eval-observed.json",
+						"matchKind":             "direct",
+						"artifactSchemaVersion": contracts.AppPromptEvaluationInputsSchema,
+						"contentHash":           "sha256:observed",
+						"supportsClaimIds":      []any{"claim-eval-observed-1"},
+					},
+				},
+			},
+		},
+	}
+	report := BuildClaimValidationReport(packet, ClaimValidationOptions{InputPath: "claims.json"})
+	if report["valid"] != true || report["issueCount"] != 0 {
+		t.Fatalf("expected valid report, got %#v", report)
+	}
+}
+
 func TestBuildClaimValidationReportAcceptsValidPacket(t *testing.T) {
 	repoRoot := filepath.Join("..", "..", "fixtures", "claim-discovery", "tiny-repo")
 	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})

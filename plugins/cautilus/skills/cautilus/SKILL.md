@@ -153,7 +153,7 @@ After a fresh first discovery for any review branch, run `claim show --input <cl
 After `claim review prepare-input`, stop at the packet boundary unless the user has explicitly delegated reviewer launch.
 When reviewer launch is explicitly delegated, use the smallest honest launch budget if none was provided: one cluster, one claim, one reviewer lane, no retries.
 The default single-lane launch in an agent session is the current agent acting as the reviewer lane: review the selected cluster and write a valid `cautilus.claim_review_result.v1` packet.
-For claim evidence, prefer `evidenceStatus=unknown` unless the review input includes direct verified evidence for that claim.
+For claim evidence, prefer `evidenceStatus=unknown` unless the review input includes direct verified evidence; when attaching Cautilus eval evidence, use `kind=eval-summary` for `eval-summary.json`, `kind=eval-observed` for `eval-observed.json`, and reserve `kind=fixture` for checked-in fixture or scenario input files.
 Use an external reviewer CLI helper only when that external lane was explicitly selected.
 The launch is only complete when the selected reviewer lane returns a `cautilus.claim_review_result.v1` packet; if an external lane is blocked from reaching its model provider, report a blocked reviewer launch rather than treating the helper invocation as evidence.
 This branch proves reviewer launch, not review-result merge behavior.

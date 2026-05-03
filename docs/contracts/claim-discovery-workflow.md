@@ -330,7 +330,7 @@ The first valid-state rules are:
 ```json
 {
   "refId": "evidence-spec-command-surfaces-1",
-  "kind": "spec | test | fixture | eval-summary | report | human-note",
+  "kind": "spec | test | fixture | eval-summary | eval-observed | report | human-note | cautilus-claim-evidence-bundle",
   "path": "docs/specs/user/claim-discovery.spec.md",
   "line": 36,
   "artifactSchemaVersion": "cautilus.evaluation_summary.v1",
@@ -342,6 +342,10 @@ The first valid-state rules are:
   "reviewedAt": "2026-04-26T00:00:00Z"
 }
 ```
+
+Use `eval-summary` for the bounded Cautilus decision packet.
+Use `eval-observed` for the runner-written observed packet such as `eval-observed.json`.
+Use `fixture` only for a checked-in fixture or scenario input, not for the observed output produced by a runner.
 
 `matchKind` values are:
 

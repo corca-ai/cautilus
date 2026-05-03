@@ -3157,6 +3157,8 @@ func BuildClaimValidationReport(packet map[string]any, options ClaimValidationOp
 				}
 				if stringFromAny(ref["kind"]) == "" {
 					issues = append(issues, claimValidationIssue(refPath+".kind", "direct or verified evidence refs require kind"))
+				} else if !validEvidenceRefKind(stringFromAny(ref["kind"])) {
+					issues = append(issues, claimValidationIssue(refPath+".kind", fmt.Sprintf("evidence ref kind %q is unsupported", stringFromAny(ref["kind"]))))
 				}
 				if stringFromAny(ref["commit"]) == "" && stringFromAny(ref["contentHash"]) == "" {
 					issues = append(issues, claimValidationIssue(refPath, "direct or verified evidence refs require commit or contentHash"))
@@ -3180,7 +3182,7 @@ func BuildClaimValidationReport(packet map[string]any, options ClaimValidationOp
 		"issueCount":               len(issues),
 		"valid":                    len(issues) == 0,
 		"issues":                   issues,
-		"evidenceValidationPolicy": "satisfied claims require agent/human review plus a direct or verified evidence ref with path, kind, commit or contentHash, and supportsClaimIds containing the claim.",
+		"evidenceValidationPolicy": "satisfied claims require agent/human review plus a direct or verified evidence ref with path, supported kind, commit or contentHash, and supportsClaimIds containing the claim.",
 		"nonMutationNotice":        "This command validates the packet and evidence refs but does not change claims or search for evidence.",
 	}
 }
@@ -3394,7 +3396,7 @@ func validateClaimEvidenceSatisfaction(candidate map[string]any) error {
 		if matchKind != "verified" && matchKind != "direct" {
 			continue
 		}
-		if stringFromAny(ref["path"]) == "" || stringFromAny(ref["kind"]) == "" {
+		if stringFromAny(ref["path"]) == "" || !validEvidenceRefKind(stringFromAny(ref["kind"])) {
 			continue
 		}
 		if stringFromAny(ref["commit"]) == "" && stringFromAny(ref["contentHash"]) == "" {
@@ -3405,7 +3407,7 @@ func validateClaimEvidenceSatisfaction(candidate map[string]any) error {
 		}
 		return nil
 	}
-	return fmt.Errorf("evidenceStatus satisfied requires a direct or verified evidenceRef with path, kind, commit or contentHash, and supportsClaimIds containing the claim")
+	return fmt.Errorf("evidenceStatus satisfied requires a direct or verified evidenceRef with path, supported kind, commit or contentHash, and supportsClaimIds containing the claim")
 }
 
 func evidenceRefSupportsClaim(ref map[string]any, claimID string) bool {
@@ -3415,6 +3417,15 @@ func evidenceRefSupportsClaim(ref map[string]any, claimID string) bool {
 		}
 	}
 	return false
+}
+
+func validEvidenceRefKind(value string) bool {
+	switch value {
+	case "spec", "test", "fixture", "eval-summary", "eval-observed", "report", "human-note", "cautilus-claim-evidence-bundle":
+		return true
+	default:
+		return false
+	}
 }
 
 func collectClaimMergeDecisions(result map[string]any) []any {
