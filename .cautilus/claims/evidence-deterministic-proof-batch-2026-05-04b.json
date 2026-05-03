@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-deterministic-proof-batch-2026-05-04b",
+  "createdForClaimIds": [
+    "claim-docs-contracts-adapter-contract-md-219",
+    "claim-docs-contracts-adapter-contract-md-278",
+    "claim-docs-contracts-adapter-contract-md-317",
+    "claim-docs-contracts-claim-discovery-workflow-md-372",
+    "claim-docs-contracts-claim-discovery-workflow-md-382",
+    "claim-docs-contracts-claim-discovery-workflow-md-632",
+    "claim-docs-contracts-optimization-md-27"
+  ],
+  "repoCommit": "5663e74323ab70f465c8c1ab8c17bb52868aefb9",
+  "summary": "This bundle records deterministic proof for the remaining command, packet, grouping, status, adapter, live-run, and optimize provenance claims that already have focused tests.",
+  "evidenceScope": {
+    "targetSurface": "remaining deterministic claim proof batch",
+    "claimBoundary": "Only checked command, packet, grouping, status, adapter, live-run, and optimize provenance behavior covered by the listed tests is marked satisfied.",
+    "notClaimed": [
+      "The skill or a human reviewer corrected every semantic edge case",
+      "A live product instance completed a real external app run",
+      "LLM-backed claim review launched",
+      "Any possible evidence ref satisfied a claim without review",
+      "Optimization produced a better prompt or adapter"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting|TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries|TestBuildClaimReviewInputIncludesPossibleEvidenceRefs|TestBuildClaimStatusSummarySummarizesExistingPacket|TestBuildClaimStatusSummaryIncludesSatisfiedEvidence' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "adapter audience_hints override portable path defaults and semantic_groups label claim review queues",
+          "claim discovery emits group hints",
+          "possible evidence refs remain hints and do not satisfy claims",
+          "claim status summary exposes satisfied evidence and action buckets for claims needing scenarios, tests, alignment, or existing evidence",
+          "skill-facing scan bound display prose routes to dev/skill instead of deterministic proof debt"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIEvalLiveDiscoverNormalizesExplicitInstances|TestCLILiveEvalRunLiveDispatchesConsumerCommand' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "explicit instance_discovery normalizes to a workbench instance catalog without requiring a probe command",
+          "eval live run writes one cautilus.live_run_invocation_result.v1 packet to the requested output_file",
+          "stdout points at the written result file"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=dot --test-reporter-destination=stdout scripts/agent-runtime/optimize-flow.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "package": "scripts/agent-runtime",
+        "notableAssertions": [
+          "generateOptimizeProposal turns explicit evidence into one bounded revision plan",
+          "each prioritized evidence item carries provenance.packet and provenance.locator"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:8b1f5c4ea0c58b95097c7f10c857b07093d6924d52492eb9964df1d7ca3cc4e5"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-runtime-tests",
+      "contentHash": "sha256:104b36e4f14176137b2ab738bc98871444ced7085d4c0fbd08d534f0c390ba51"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "eval-live-cli-smoke-tests",
+      "contentHash": "sha256:15c235ebe58a9e23da494628348e4b6b3449d5dcfa5ee079e64d4f63a10817df"
+    },
+    {
+      "path": "scripts/agent-runtime/optimize-flow.test.mjs",
+      "kind": "optimize-flow-node-test",
+      "contentHash": "sha256:a83692687ff59a1307f3750910921acb2b52519dc2925673f4ee3af08cec333d"
+    },
+    {
+      "path": "docs/contracts/adapter-contract.md",
+      "kind": "adapter-contract-source",
+      "contentHash": "sha256:d15b6942eb4b4a4e459db60c5ceefb5537baf235a0df5ab4eb35414a12880928"
+    },
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-contract-source",
+      "contentHash": "sha256:287f5011778d0743b241140ab0ad30bfa242de9a33274a0672c29c4ce5926fe3"
+    },
+    {
+      "path": "docs/contracts/optimization.md",
+      "kind": "optimization-contract-source",
+      "contentHash": "sha256:893589f1ac1ea04036f00d054cd1ec97b8146d118d0521b640441c14ccc292ed"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused Go and Node tests prove the deterministic adapter hints, explicit instance discovery, live-run result output, possible-evidence non-satisfaction, grouping hints, status/action summary, and optimize provenance behavior for the listed claims."
+  }
+}
