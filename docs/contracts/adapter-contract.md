@@ -215,7 +215,8 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `related_state_paths` lets `agent status` summarize read-only reviewed, evidenced, or promoted claim packets without treating them as the writable discovery baseline.
   `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation and review-input possible-evidence preflight; it does not prove claims by itself.
   `audience_hints` optionally maps discovered sources into `user` and `developer` claim audiences.
-  The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.
+  The binary uses these hints before portable path defaults to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.
+  Portable defaults classify README and user guide/spec paths as `user`, common docs/spec/skill/plugin/agent paths as `developer`, and unfamiliar paths as `unclear`.
   `semantic_groups` optionally declares repo-owned review batching labels and text terms.
   If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.
 - `instance_discovery`: optional local-first instance routing contract for live app eval flows.

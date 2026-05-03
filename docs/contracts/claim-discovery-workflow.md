@@ -173,6 +173,7 @@ claim_discovery:
 ```
 
 `audience_hints` is adapter-owned because user-versus-developer meaning depends on the repo's documentation layout.
+When hints are absent, the binary applies portable path defaults: `README.md` and user/spec/guide paths are `user`, `AGENTS.md`, `CLAUDE.md`, `docs/**`, `specs/**`, `skills/**`, `plugins/**`, and `.agents/**` are `developer`, and unfamiliar paths remain `unclear`.
 The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for the skill and reviewer loop.
 `semantic_groups` is also adapter-owned because product areas differ across repos.
 When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.

@@ -152,7 +152,7 @@ type claimReviewCluster struct {
 	candidates             []map[string]any
 }
 
-const claimDiscoveryRulesetVersion = "claim-discovery-rules.v2"
+const claimDiscoveryRulesetVersion = "claim-discovery-rules.v3"
 
 func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, error) {
 	repoRoot := strings.TrimSpace(options.RepoRoot)
@@ -901,9 +901,31 @@ func claimAudienceForSource(relPath string, config claimDiscoveryConfig) (string
 		return "user", "entry-default"
 	case "agents.md", "claude.md":
 		return "developer", "entry-default"
-	default:
-		return "unclear", "unknown"
 	}
+	if claimPathLooksUserFacing(lower) {
+		return "user", "path-default"
+	}
+	if claimPathLooksDeveloperFacing(lower) {
+		return "developer", "path-default"
+	}
+	return "unclear", "unknown"
+}
+
+func claimPathLooksUserFacing(lower string) bool {
+	return strings.HasPrefix(lower, "docs/specs/user/") ||
+		strings.HasPrefix(lower, "docs/user/") ||
+		strings.HasPrefix(lower, "docs/users/") ||
+		strings.HasPrefix(lower, "docs/guides/") ||
+		strings.HasPrefix(lower, "docs/claims/user") ||
+		strings.Contains(lower, "/user-facing")
+}
+
+func claimPathLooksDeveloperFacing(lower string) bool {
+	return strings.HasPrefix(lower, "docs/") ||
+		strings.HasPrefix(lower, "specs/") ||
+		strings.HasPrefix(lower, "skills/") ||
+		strings.HasPrefix(lower, "plugins/") ||
+		strings.HasPrefix(lower, ".agents/")
 }
 
 func claimSourceKind(relPath string) string {
@@ -1160,7 +1182,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim explains a design rationale; proof needs aligned examples or narrower subclaims rather than a single deterministic assertion.",
 			next:                  "Keep this as rationale, or decompose it into concrete adapter, docs, and test surfaces before attaching proof.",
 		}, true
-	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
+	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " executable test", " executable check", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-to-verify",
@@ -1307,12 +1329,19 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 }
 
 func operatorPolicyClaim(lower string) bool {
+	if containsAny(lower, []string{" before closing ", " before changing ", " before reviewing ", " before claiming ", " before stopping ", " before mutating ", " always call ", " always commit ", " do not leave ", " do not wait ", " route through quality", " route evaluator-backed validation", " commit targets by default"}) &&
+		containsAny(lower, []string{" read ", " route ", " skill", " artifacts", " commit", " validation", " quality", " handoff", " premortem", " user explicitly says"}) {
+		return true
+	}
 	return containsAny(lower, []string{" while implementing", " during implementation", " operating rule", " working rule", " before further fixes"}) &&
 		containsAny(lower, []string{" bug", " error", " regression", " unexpected behavior", " incident"}) &&
 		containsAny(lower, []string{" routes ", " route ", " through debug", " debug"})
 }
 
 func ownershipBoundaryClaim(lower string) bool {
+	if containsAny(lower, []string{" belongs in adapters", " belongs in adapter", " belongs in installed skill metadata", " belongs in skill metadata", " host-specific behavior belongs"}) {
+		return true
+	}
 	return containsAny(lower, []string{" product-owned", " adapter-owned", " host-owned", " repo-owned", " consumer-owned", " backend selection", " boundary", " skill owns", " binary owns", " cautilus owns", " host still owns", " seam owns"}) &&
 		containsAny(lower, []string{" while ", " stays ", " keeps ", " owns ", " owned"})
 }
@@ -1335,6 +1364,9 @@ func designRationaleClaim(lower string) bool {
 
 func broadPositioningClaim(lower string) bool {
 	if containsAny(lower, []string{" long-term direction", " product direction", " direction is "}) {
+		return true
+	}
+	if containsAny(lower, []string{" built from the patterns", " reflects the core philosophy", " core philosophy", " product-development loop"}) {
 		return true
 	}
 	if containsAny(lower, []string{" prompt", " prompts"}) &&

@@ -144,6 +144,49 @@ func TestDiscoverClaimProofPlanMergesIdenticalClaimsAcrossDistinctSources(t *tes
 	}
 }
 
+func TestDiscoverClaimProofPlanClassifiesLinkedDocAudienceAndOperatingRules(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Demo",
+		"",
+		"See the [consumer guide](docs/guides/consumer-adoption.md) and [operator convention](docs/conventions/operating-contract.md).",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "docs", "guides", "consumer-adoption.md"), strings.Join([]string{
+		"# Consumer Adoption",
+		"",
+		"The guide provides browser-readable setup steps for users.",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "docs", "conventions", "operating-contract.md"), strings.Join([]string{
+		"# Operating Contract",
+		"",
+		"Before changing repo operating contracts, prompt or skill surfaces, exports, or artifact policy, read recent lessons; it owns repeat traps that should change the next move.",
+		"",
+	}, "\n"))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	bySummary := map[string]map[string]any{}
+	for _, raw := range arrayOrEmpty(plan["claimCandidates"]) {
+		entry := asMap(raw)
+		bySummary[stringFromAny(entry["summary"])] = entry
+	}
+	guide := bySummary["The guide provides browser-readable setup steps for users."]
+	if guide == nil || guide["claimAudience"] != "user" || guide["claimAudienceSource"] != "path-default" {
+		t.Fatalf("expected docs/guides claim to default to user-facing, got %#v", guide)
+	}
+	convention := bySummary["Before changing repo operating contracts, prompt or skill surfaces, exports, or artifact policy, read recent lessons; it owns repeat traps that should change the next move."]
+	if convention == nil || convention["claimAudience"] != "developer" || convention["claimAudienceSource"] != "path-default" {
+		t.Fatalf("expected docs/conventions claim to default to developer-facing, got %#v", convention)
+	}
+	if convention["recommendedProof"] != "human-auditable" || convention["verificationReadiness"] != "blocked" {
+		t.Fatalf("expected operating-rule convention to stay out of eval planning, got %#v", convention)
+	}
+}
+
 func TestDiscoverClaimProofPlanCarriesPreviousEvidenceByFingerprint(t *testing.T) {
 	repoRoot := t.TempDir()
 	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
@@ -478,6 +521,10 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed review work.",
 		"",
+		"Keep the harness portable: host-specific behavior belongs in adapters, presets, and integration manifests.",
+		"",
+		"If a fallback or recovery path matters to user-visible behavior, add an executable test that proves the path is reachable.",
+		"",
 		"Past sessions showed `codex exec` can emit fatal skill-loading errors on stderr while the final process exit still looks successful.",
 		"",
 		"The host still owns raw invocation and transcript capture; `Cautilus` owns the case-suite/runDir workflow and packet-level recommendation.",
@@ -686,6 +733,14 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	skillBoundary := bySummary["The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed review work."]
 	if skillBoundary == nil || skillBoundary["recommendedProof"] != "human-auditable" || skillBoundary["verificationReadiness"] != "needs-alignment" {
 		t.Fatalf("expected skill ownership boundary to require human-auditable alignment, got %#v", skillBoundary)
+	}
+	portableBoundary := bySummary["Keep the harness portable: host-specific behavior belongs in adapters, presets, and integration manifests."]
+	if portableBoundary == nil || portableBoundary["recommendedProof"] != "human-auditable" || portableBoundary["verificationReadiness"] != "needs-alignment" {
+		t.Fatalf("expected portability ownership boundary to require human-auditable alignment, got %#v", portableBoundary)
+	}
+	executableRecovery := bySummary["If a fallback or recovery path matters to user-visible behavior, add an executable test that proves the path is reachable."]
+	if executableRecovery == nil || executableRecovery["recommendedProof"] != "deterministic" || executableRecovery["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected executable recovery-path claim to be deterministic, got %#v", executableRecovery)
 	}
 	history := bySummary["Past sessions showed `codex exec` can emit fatal skill-loading errors on stderr while the final process exit still looks successful."]
 	if history == nil || history["recommendedProof"] != "human-auditable" || history["verificationReadiness"] != "blocked" {
