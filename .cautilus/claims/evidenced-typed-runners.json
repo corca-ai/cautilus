@@ -6113,8 +6113,19 @@
       "claimFingerprint": "sha256:5710c92253395bbda0e82175a3f1696b96f8f17275875d7b96f48b951e4ebd09",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-692",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:fff2188e8592233b04a735375b89971957bd8cca2ceccccf2e829488443ed1e7",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-claim-review-prepare-input-contract-2026-05-04.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-692"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by checked-in CLI and runtime tests: prepare-input emits `cautilus.claim_review_input.v1`, records bounded clusters and skipped claims, preserves current labels, leaves the source claim packet unchanged, and does not call an LLM or merge review results.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6122,9 +6133,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep these tests aligned when changing prepare-input packet shape, skipped-claim policy, stale-packet behavior, reviewer launch boundaries, or review-result merge behavior.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
@@ -6133,8 +6144,9 @@
         }
       ],
       "summary": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim is deterministic packet-boundary behavior: prepare-input either emits the bounded review input and preserves no-LLM/no-merge semantics, or it does not."
     },
     {
       "claimAudience": "developer",
@@ -11338,8 +11350,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 122,
-      "unknown": 201
+      "satisfied": 123,
+      "unknown": 200
     },
     "byLifecycle": {
       "new": 323
@@ -11350,8 +11362,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 168,
-      "heuristic": 155
+      "agent-reviewed": 169,
+      "heuristic": 154
     },
     "byVerificationReadiness": {
       "blocked": 35,
@@ -11528,19 +11540,19 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "recommendedEvalSurface",
+          "whyThisLayer",
           "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-specs-maintainer-binary-skill-boundary-spec-md-20",
-        "clusterId": "cluster-dev-skill-first-scan-and-review-budget"
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-692",
+        "clusterId": "cluster-claim-discovery-workflow-prepare-input-contract"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "provenanceMode": "aggregate-current-review-results",
@@ -11610,7 +11622,8 @@
       ".cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json",
       ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
       ".cautilus/claims/review-result-claim-discovery-routing-flow-2026-05-04.json",
-      ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json"
+      ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
+      ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -11624,9 +11637,9 @@
       ".cautilus/claims/review-result-evidence-refresh-plan-state-transition-2026-05-03.json",
       ".cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json"
     ],
-    "appliedResultCount": 65,
+    "appliedResultCount": 66,
     "skippedResultCount": 10,
-    "keptUpdateCount": 232,
+    "keptUpdateCount": 233,
     "droppedUpdateCount": 123
   },
   "reviewRuns": [

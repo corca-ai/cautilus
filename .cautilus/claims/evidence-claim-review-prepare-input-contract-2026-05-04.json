@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-claim-review-prepare-input-contract-2026-05-04",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-692"
+  ],
+  "repoCommit": "1385985cd5d6b8e4789dad5bf38dd6066b6acefd",
+  "summary": "This bundle records deterministic proof that `claim review prepare-input` emits a bounded review-input packet while preserving the no-LLM and no-merge boundary.",
+  "evidenceScope": {
+    "targetSurface": "claim review prepare-input contract",
+    "claimBoundary": "Only the contract claim that prepare-input emits `cautilus.claim_review_input.v1`, records bounded and skipped review work, and does not call an LLM or merge results is marked satisfied.",
+    "notClaimed": [
+      "A reviewer lane was launched",
+      "A model provider was contacted",
+      "Any claim was marked satisfied by prepare-input",
+      "Review-result application happened",
+      "Eval planning happened"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run TestRunClaimReviewPrepareInputWritesClusters -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "claim review prepare-input writes `cautilus.claim_review_input.v1`",
+          "packetNotice states that the packet does not call an LLM or assert satisfaction",
+          "currentLabels preserve `evidenceStatus=unknown` and `reviewStatus=heuristic`",
+          "the source claims file is not mutated"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimReviewInputClustersAndSkipsDeterministically|TestBuildClaimReviewInputSkipsSatisfiedClaims' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "review input clusters are deterministic and preserve current labels",
+          "already satisfied claims are skipped instead of re-reviewed",
+          "skipped satisfied claims retain evidence refs for audit"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "claim-review-prepare-input-cli-test",
+      "contentHash": "sha256:43ffec37996ee609c297ee95ed189783f7c114eb9270b9f780e0e5954a676ef9"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-review-input-builder",
+      "contentHash": "sha256:066fc82bad08193d27a849c0a2ce9658799d42ea8ca78765d12b9cd94934348e"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-review-input-runtime-tests",
+      "contentHash": "sha256:5fdf344db8c35c18beec04f9a2beb67fb9d0fc5e38bf7ffa9de16ada87bf20d2"
+    },
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "contract-claim-source",
+      "contentHash": "sha256:287f5011778d0743b241140ab0ad30bfa242de9a33274a0672c29c4ce5926fe3"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The CLI and runtime tests exercise prepare-input through the public command path and builder path, proving packet schema, bounded clustering, skipped-claim audit behavior, preserved labels, no source mutation, and the no-LLM/non-satisfaction boundary."
+  }
+}

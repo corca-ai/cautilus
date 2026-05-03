@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-04T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the deterministic prepare-input contract; do not treat prepare-input as reviewer launch, LLM review, eval planning, or review-result merge proof."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-claim-discovery-workflow-prepare-input-contract",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-692",
+          "claimFingerprint": "sha256:5710c92253395bbda0e82175a3f1696b96f8f17275875d7b96f48b951e4ebd09",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim is deterministic packet-boundary behavior: prepare-input either emits the bounded review input and preserves no-LLM/no-merge semantics, or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by checked-in CLI and runtime tests: prepare-input emits `cautilus.claim_review_input.v1`, records bounded clusters and skipped claims, preserves current labels, leaves the source claim packet unchanged, and does not call an LLM or merge review results.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-review-prepare-input-contract-2026-05-04.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:fff2188e8592233b04a735375b89971957bd8cca2ceccccf2e829488443ed1e7",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-692"
+              ]
+            }
+          ],
+          "nextAction": "Keep these tests aligned when changing prepare-input packet shape, skipped-claim policy, stale-packet behavior, reviewer launch boundaries, or review-result merge behavior.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

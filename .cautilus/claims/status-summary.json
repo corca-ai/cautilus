@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 155
+          "unknown": 154
         },
         "byReviewStatus": {
-          "heuristic": 155
+          "heuristic": 154
         },
-        "count": 155,
+        "count": 154,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 122
+          "satisfied": 123
         },
         "byReviewStatus": {
-          "agent-reviewed": 122
+          "agent-reviewed": 123
         },
-        "count": 122,
+        "count": 123,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 14
+          "unknown": 13
         },
         "byReviewStatus": {
-          "heuristic": 14
+          "heuristic": 13
         },
-        "count": 14,
+        "count": 13,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -193,8 +193,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 122,
-      "unknown": 201
+      "satisfied": 123,
+      "unknown": 200
     },
     "byLifecycle": {
       "new": 323
@@ -205,8 +205,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 168,
-      "heuristic": 155
+      "agent-reviewed": 169,
+      "heuristic": 154
     },
     "byVerificationReadiness": {
       "blocked": 35,
@@ -379,7 +379,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 122,
+    "satisfiedClaimCount": 123,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1649,6 +1649,25 @@
         "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-692",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:fff2188e8592233b04a735375b89971957bd8cca2ceccccf2e829488443ed1e7",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-review-prepare-input-contract-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-692"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."
+      },
+      {
         "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2766,8 +2785,19 @@
   },
   "gitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 10,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/discovery-review.md",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/debug-2026-05-04-skill-behavior-operator-policy-overlap.md",
+      "charness-artifacts/debug/latest.md",
+      "internal/runtime/claim_discovery.go",
+      "internal/runtime/claim_discovery_test.go"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -2775,12 +2805,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "1385985cd5d6b8e4789dad5bf38dd6066b6acefd",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3292128bd0d5302422173f2ae05f0523652f7900",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -2803,7 +2833,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 122,
+    "heuristicClaimsReadyForReview": 121,
     "needsAlignment": 44,
     "needsScenario": 9
   },
