@@ -2214,11 +2214,12 @@ func TestDiscoverClaimProofPlanHonorsAdapterExcludesForLinkedMarkdown(t *testing
 		"claim_discovery:",
 		"  entries:",
 		"    - README.md",
-		"  linked_markdown_depth: 3",
-		"  exclude:",
-		"    - docs/specs/**",
-		"    - docs/maintainers/**",
-		"  evidence_roots:",
+	"  linked_markdown_depth: 3",
+	"  exclude:",
+	"    - docs/specs/**",
+		"    - docs/claims/**",
+	"    - docs/maintainers/**",
+	"  evidence_roots:",
 		"    - docs/specs",
 		"",
 	}, "\n"))
@@ -2226,6 +2227,7 @@ func TestDiscoverClaimProofPlanHonorsAdapterExcludesForLinkedMarkdown(t *testing
 		"# Root",
 		"",
 		"[Spec](docs/specs/product.spec.md)",
+		"[Superseded Claims](docs/claims/user-facing.md)",
 		"[Maintainer](docs/maintainers/evidence.md)",
 		"[Guide](docs/guide.md)",
 		"",
@@ -2236,6 +2238,12 @@ func TestDiscoverClaimProofPlanHonorsAdapterExcludesForLinkedMarkdown(t *testing
 		"# Product Spec",
 		"",
 		"The executable spec proves step fixtures compose in order.",
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "docs", "claims", "user-facing.md"), strings.Join([]string{
+		"# Superseded Claims",
+		"",
+		"Users should not discover superseded claim catalog promises.",
 		"",
 	}, "\n"))
 	mustWriteFile(t, filepath.Join(repoRoot, "docs", "maintainers", "evidence.md"), strings.Join([]string{
@@ -2262,18 +2270,18 @@ func TestDiscoverClaimProofPlanHonorsAdapterExcludesForLinkedMarkdown(t *testing
 	if !paths["README.md"] || !paths["docs/guide.md"] {
 		t.Fatalf("expected public entry and guide sources, got %#v", plan["sourceInventory"])
 	}
-	if paths["docs/specs/product.spec.md"] || paths["docs/maintainers/evidence.md"] {
+	if paths["docs/specs/product.spec.md"] || paths["docs/claims/user-facing.md"] || paths["docs/maintainers/evidence.md"] {
 		t.Fatalf("adapter-excluded proof/internal docs must not enter source inventory: %#v", plan["sourceInventory"])
 	}
 	for _, raw := range arrayOrEmpty(plan["claimCandidates"]) {
 		summary := stringFromAny(asMap(raw)["summary"])
-		if strings.Contains(summary, "executable spec proves") || strings.Contains(summary, "private consumer proof") {
+		if strings.Contains(summary, "executable spec proves") || strings.Contains(summary, "superseded claim catalog") || strings.Contains(summary, "private consumer proof") {
 			t.Fatalf("excluded proof/internal doc leaked into candidates: %#v", raw)
 		}
 	}
 	scope := asMap(plan["effectiveScanScope"])
 	excludes := stringArrayOrEmpty(scope["exclude"])
-	if !containsString(excludes, "docs/specs/**") || !containsString(excludes, "docs/maintainers/**") {
+	if !containsString(excludes, "docs/specs/**") || !containsString(excludes, "docs/claims/**") || !containsString(excludes, "docs/maintainers/**") {
 		t.Fatalf("expected adapter excludes in effective scan scope, got %#v", scope)
 	}
 }

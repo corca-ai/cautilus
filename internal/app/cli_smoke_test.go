@@ -5653,6 +5653,10 @@ func TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 		"instanceId":        "ceal",
 		"timeoutMs":         30000,
 		"captureTranscript": true,
+		"consumerMetadata": map[string]any{
+			"surface": "app/chat",
+			"owner":   "consumer",
+		},
 		"scenario": map[string]any{
 			"scenarioId":      "scenario-persona",
 			"name":            "Persona live run",
@@ -5692,6 +5696,44 @@ func TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 	transcript, ok := result["transcript"].([]any)
 	if !ok || len(transcript) != 1 {
 		t.Fatalf("expected one transcript entry before persona stop, got %#v", result["transcript"])
+	}
+	artifactDir := outputPath + ".d"
+	simulatorRequest := readJSONObjectFile(t, filepath.Join(artifactDir, "simulator-request-01.json"))
+	if simulatorRequest["schemaVersion"] != contracts.LiveRunSimulatorRequestSchema ||
+		simulatorRequest["requestId"] != "req-persona-123" ||
+		simulatorRequest["scenarioId"] != "scenario-persona" ||
+		simulatorRequest["instructions"] != "Act like a pragmatic operator. Stop once you have enough context to let the assistant proceed." {
+		t.Fatalf("unexpected simulator request packet: %#v", simulatorRequest)
+	}
+	if len(simulatorRequest["transcript"].([]any)) != 0 {
+		t.Fatalf("first simulator request should start from an empty transcript, got %#v", simulatorRequest["transcript"])
+	}
+	simulatorMetadata := simulatorRequest["consumerMetadata"].(map[string]any)
+	if simulatorMetadata["surface"] != "app/chat" || simulatorMetadata["owner"] != "consumer" {
+		t.Fatalf("expected simulator request to round-trip consumer metadata, got %#v", simulatorMetadata)
+	}
+	turnRequest := readJSONObjectFile(t, filepath.Join(artifactDir, "turn-request-01.json"))
+	if turnRequest["schemaVersion"] != contracts.LiveRunTurnRequestSchema ||
+		turnRequest["requestId"] != "req-persona-123" ||
+		turnRequest["scenarioId"] != "scenario-persona" ||
+		turnRequest["captureTranscript"] != true {
+		t.Fatalf("unexpected turn request packet: %#v", turnRequest)
+	}
+	turnMetadata := turnRequest["consumerMetadata"].(map[string]any)
+	if turnMetadata["surface"] != "app/chat" || turnMetadata["owner"] != "consumer" {
+		t.Fatalf("expected turn request to round-trip consumer metadata, got %#v", turnMetadata)
+	}
+	simulatorTurn := turnRequest["simulatorTurn"].(map[string]any)
+	if simulatorTurn["text"] != "대상 repo는 cautilus입니다." {
+		t.Fatalf("expected adapter persona backend result to shape the consumer turn request, got %#v", simulatorTurn)
+	}
+	transcriptPacket := readJSONObjectFile(t, filepath.Join(artifactDir, "transcript.json"))
+	if transcriptPacket["schemaVersion"] != contracts.LiveRunTranscriptSchema || transcriptPacket["stopReason"] != "goal_satisfied" {
+		t.Fatalf("unexpected transcript packet: %#v", transcriptPacket)
+	}
+	transcriptMetadata := transcriptPacket["consumerMetadata"].(map[string]any)
+	if transcriptMetadata["surface"] != "app/chat" || transcriptMetadata["owner"] != "consumer" {
+		t.Fatalf("expected transcript to round-trip consumer metadata, got %#v", transcriptMetadata)
 	}
 }
 

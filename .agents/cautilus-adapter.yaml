@@ -41,6 +41,7 @@ claim_discovery:
     - .cautilus/claims
   exclude:
     - docs/specs/old/**
+    - docs/claims/**
     - docs/maintainers/**
     - docs/internal/handoff.md
     - docs/internal/research/**
