@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark runner-readiness branch shape satisfied; keep broader branch catalog completeness separate."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-runner-readiness-branch-shape",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-134",
+          "claimFingerprint": "sha256:9a1c2d9bc6d27fcaeeda00e4907d101b6e4dacbf5286223d4687ad82e9e272a5",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "whyThisLayer": "The claim names machine-readable branch shape, which is deterministic runtime packet behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runner-readiness runtime tests: runner next branches expose stable identity fields, a blocking reason, setup ownership, writesFiles, runner id, and either requiredArtifact or requiredCommand.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-runner-readiness-branch-shape-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:aee3e5faaa35374ac70f5a0361888de0bd8e4bfc9209d38add2127c73a544876",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-134"
+              ]
+            }
+          ],
+          "nextAction": "Keep runner-readiness branch-shape tests current when changing agent-status or doctor next-branch payloads.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

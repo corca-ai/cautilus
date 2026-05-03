@@ -120,6 +120,7 @@ func buildRunnerReadiness(repoRoot string, adapter *AdapterPayload, targetSurfac
 	if len(runners) == 0 {
 		result["state"] = "unknown"
 		result["reason"] = "runner-template-missing"
+		result["nextBranch"] = runnerReadinessBranchForRunner(defaultRunnerID, "bind_runner_metadata", "Bind runner metadata", "No valid adapter eval runner is declared yet.", stringFromAny(adapter.Path), true)
 		return result
 	}
 	if strings.TrimSpace(targetSurface) != "" {
@@ -129,7 +130,7 @@ func buildRunnerReadiness(repoRoot string, adapter *AdapterPayload, targetSurfac
 			result["reason"] = "runner-surface-missing"
 			result["targetSurface"] = targetSurface
 			result["availableRunners"] = runnerSummaries(runners)
-			result["nextBranch"] = runnerReadinessBranchForRunner(defaultRunnerID, "bind_runner_metadata", "Bind runner metadata", "No adapter runner supports the selected evaluation surface.", "", false)
+			result["nextBranch"] = runnerReadinessBranchForRunner(defaultRunnerID, "bind_runner_metadata", "Bind runner metadata", "No adapter runner supports the selected evaluation surface.", stringFromAny(adapter.Path), true)
 			return result
 		}
 		return buildRunnerReadinessForRunner(repoRoot, adapter, runner, targetSurface)
@@ -438,6 +439,10 @@ func runnerReadinessBranchForRunner(runnerID string, id string, label string, re
 	}
 	if strings.TrimSpace(artifactPath) != "" {
 		branch["artifactPath"] = artifactPath
+		branch["requiredArtifact"] = artifactPath
+	}
+	if strings.TrimSpace(stringFromAny(branch["requiredArtifact"])) == "" && id == "run_eval_with_assessed_runner" {
+		branch["requiredCommand"] = "cautilus eval test --fixture <fixture.json>"
 	}
 	if id == "create_runner_assessment" || id == "upgrade_runner_assessment" || id == "repair_runner_assessment" {
 		branch["scaffoldSource"] = "fixtures/runner-readiness/example-assessment.json"

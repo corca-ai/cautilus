@@ -32,6 +32,7 @@ func TestDoctorRunnerReadinessKeepsAdapterReadyWithMissingAssessment(t *testing.
 	if nextBranch["id"] != "create_runner_assessment" || nextBranch["writesFiles"] != true {
 		t.Fatalf("expected create assessment branch, got %#v", nextBranch)
 	}
+	assertRunnerReadinessBranchShape(t, nextBranch)
 }
 
 func TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates(t *testing.T) {
@@ -100,6 +101,7 @@ func TestRunnerReadinessBlocksProductProofWithoutVerificationCapabilities(t *tes
 	if nextBranch["id"] != "upgrade_runner_assessment" || nextBranch["writesFiles"] != true {
 		t.Fatalf("expected upgrade runner assessment branch, got %#v", nextBranch)
 	}
+	assertRunnerReadinessBranchShape(t, nextBranch)
 	verification := asMap(readiness["runnerVerification"])
 	if verification["capabilityState"] != "missing" {
 		t.Fatalf("expected missing capability state, got %#v", verification)
@@ -152,6 +154,7 @@ func TestDoctorNextActionFallsBackAfterRunnerAssessmentReady(t *testing.T) {
 	if asMap(readiness["nextBranch"])["id"] != "run_eval_with_assessed_runner" {
 		t.Fatalf("expected ready runner branch, got %#v", readiness)
 	}
+	assertRunnerReadinessBranchShape(t, asMap(readiness["nextBranch"]))
 }
 
 func TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches(t *testing.T) {
@@ -174,9 +177,74 @@ func TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches(t *testing.
 	if asMap(branches[0])["id"] != "create_runner_assessment" {
 		t.Fatalf("expected runner readiness branch before claim branches, got %#v", branches)
 	}
+	assertRunnerReadinessBranchShape(t, asMap(branches[0]))
 	if asMap(branches[1])["id"] != "run_first_claim_scan" {
 		t.Fatalf("expected claim branch after runner readiness branch, got %#v", branches)
 	}
+}
+
+func TestRunnerReadinessBranchesExposeStableActionShape(t *testing.T) {
+	bindRepoRoot := setupRunnerReadinessRepo(t)
+	if err := os.WriteFile(filepath.Join(bindRepoRoot, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{
+		"version: 1",
+		"repo: runner-demo",
+		"evaluation_surfaces:",
+		"  - app / chat",
+		"baseline_options:",
+		"  - compare current checkout with a selected baseline ref",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile adapter returned error: %v", err)
+	}
+	adapter, err := LoadAdapter(bindRepoRoot, nil, nil)
+	if err != nil {
+		t.Fatalf("LoadAdapter without runner returned error: %v", err)
+	}
+	bindBranch := asMap(BuildRunnerReadiness(bindRepoRoot, adapter)["nextBranch"])
+	if bindBranch["id"] != "bind_runner_metadata" || bindBranch["writesFiles"] != true {
+		t.Fatalf("expected bind runner metadata branch, got %#v", bindBranch)
+	}
+	assertRunnerReadinessBranchShape(t, bindBranch)
+
+	repoRoot := setupRunnerReadinessRepo(t)
+	adapter = mustReloadRunnerReadinessAdapter(t, repoRoot)
+	writeRunnerAssessment(t, repoRoot, adapter, "blocked", "fixture-smoke")
+	notReadyBranch := asMap(BuildRunnerReadiness(repoRoot, adapter)["nextBranch"])
+	if notReadyBranch["id"] != "address_runner_assessment_gaps" {
+		t.Fatalf("expected address gaps branch, got %#v", notReadyBranch)
+	}
+	assertRunnerReadinessBranchShape(t, notReadyBranch)
+
+	writeRunnerAssessment(t, repoRoot, adapter, "ready-for-selected-surface", "in-process-product-runner")
+	readyBranch := asMap(BuildRunnerReadiness(repoRoot, adapter)["nextBranch"])
+	if readyBranch["id"] != "run_eval_with_assessed_runner" || readyBranch["requiredCommand"] == "" {
+		t.Fatalf("expected eval command branch, got %#v", readyBranch)
+	}
+	assertRunnerReadinessBranchShape(t, readyBranch)
+}
+
+func assertRunnerReadinessBranchShape(t *testing.T, branch map[string]any) {
+	t.Helper()
+	for _, field := range []string{"id", "label", "reason", "owningSurface", "runnerId"} {
+		if strings.TrimSpace(stringFromAny(branch[field])) == "" {
+			t.Fatalf("runner readiness branch missing %s: %#v", field, branch)
+		}
+	}
+	if _, ok := branch["writesFiles"].(bool); !ok {
+		t.Fatalf("runner readiness branch missing boolean writesFiles: %#v", branch)
+	}
+	if stringFromAny(branch["requiredArtifact"]) == "" && stringFromAny(branch["requiredCommand"]) == "" {
+		t.Fatalf("runner readiness branch must expose requiredArtifact or requiredCommand: %#v", branch)
+	}
+}
+
+func mustReloadRunnerReadinessAdapter(t *testing.T, repoRoot string) *AdapterPayload {
+	t.Helper()
+	adapter, err := LoadAdapter(repoRoot, nil, nil)
+	if err != nil {
+		t.Fatalf("LoadAdapter returned error: %v", err)
+	}
+	return adapter
 }
 
 func TestAgentStatusIncludesRelatedClaimStates(t *testing.T) {

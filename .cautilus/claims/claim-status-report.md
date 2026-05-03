@@ -19,7 +19,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 45, unknown: 270 |
+| Evidence | satisfied: 46, unknown: 269 |
 | Review | agent-reviewed: 78, heuristic: 234, human-reviewed: 3 |
 | Recommended proof | cautilus-eval: 125, deterministic: 120, human-auditable: 70 |
 | Verification readiness | blocked: 17, needs-alignment: 31, needs-scenario: 8, ready-to-verify: 259 |
@@ -35,7 +35,7 @@ Review readiness: heuristicClaimsReadyForReview: 206, needsAlignment: 31, needsS
 - User claims mapped to U1-U7: 82
 - User claims not mapped to U1-U7: 0
 - User mappings recommended for semantic sampling: 58
-- Maintainer claims mapped to M1-M11: M1: 18, M10: 16, M11: 12, M2: 68, M3: 52, M4: 11, M5: 5, M6: 8, M7: 10, M8: 12, M9: 21
+- Maintainer claims mapped to M1-M11: M1: 18, M10: 17, M11: 12, M2: 68, M3: 51, M4: 11, M5: 5, M6: 8, M7: 10, M8: 12, M9: 21
 - All raw claims by disposition: mapped-to-maintainer-canonical: 233, mapped-to-user-canonical: 82
 - Mapping confidence: high: 61, low: 57, medium: 197
 
@@ -53,14 +53,14 @@ Review readiness: heuristicClaimsReadyForReview: 206, needsAlignment: 31, needsS
 | --- | --- | --- | --- | --- | --- |
 | M1 | Claim Discovery Workflow | 18 | cautilus-eval: 3, deterministic: 6, human-auditable: 9 | satisfied: 3, unknown: 15 | agent-reviewed: 3, heuristic: 15 |
 | M2 | Binary And Skill Boundary | 68 | cautilus-eval: 29, deterministic: 32, human-auditable: 7 | satisfied: 3, unknown: 65 | agent-reviewed: 4, heuristic: 64 |
-| M3 | Adapter And Host Ownership | 52 | cautilus-eval: 27, deterministic: 10, human-auditable: 15 | unknown: 52 | agent-reviewed: 7, heuristic: 45 |
+| M3 | Adapter And Host Ownership | 51 | cautilus-eval: 27, deterministic: 9, human-auditable: 15 | unknown: 51 | agent-reviewed: 6, heuristic: 45 |
 | M4 | Evaluation Surfaces And Runners | 11 | cautilus-eval: 9, deterministic: 1, human-auditable: 1 | satisfied: 1, unknown: 10 | agent-reviewed: 2, heuristic: 9 |
 | M5 | Evidence State And Review Artifacts | 5 | deterministic: 2, human-auditable: 3 | satisfied: 1, unknown: 4 | agent-reviewed: 3, heuristic: 2 |
 | M6 | Optimization Loop | 8 | cautilus-eval: 3, deterministic: 4, human-auditable: 1 | satisfied: 1, unknown: 7 | agent-reviewed: 1, heuristic: 7 |
 | M7 | Readiness And Runtime Status | 10 | cautilus-eval: 2, deterministic: 4, human-auditable: 4 | unknown: 10 | agent-reviewed: 2, heuristic: 7, human-reviewed: 1 |
 | M8 | Active Run And Workspace Lifecycle | 12 | cautilus-eval: 6, deterministic: 4, human-auditable: 2 | satisfied: 3, unknown: 9 | agent-reviewed: 5, heuristic: 7 |
 | M9 | Live Invocation Runtime | 21 | cautilus-eval: 15, deterministic: 4, human-auditable: 2 | satisfied: 1, unknown: 20 | agent-reviewed: 1, heuristic: 19, human-reviewed: 1 |
-| M10 | Reporting And Review Variants | 16 | cautilus-eval: 3, deterministic: 9, human-auditable: 4 | unknown: 16 | agent-reviewed: 1, heuristic: 15 |
+| M10 | Reporting And Review Variants | 17 | cautilus-eval: 3, deterministic: 10, human-auditable: 4 | satisfied: 1, unknown: 16 | agent-reviewed: 2, heuristic: 15 |
 | M11 | Scenario History And Proposal Normalization | 12 | cautilus-eval: 6, deterministic: 6 | unknown: 12 | heuristic: 12 |
 
 Maintainer semantic sampling queue:
@@ -84,7 +84,7 @@ Semantic sampling recommended for 254 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=31, human-confirm-or-decompose=22, split-or-defer=17.
-- Agent next proof work: connect deterministic gates for 76 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 75 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 116 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -92,8 +92,8 @@ Semantic sampling recommended for 254 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 45 | agent-reviewed: 45 | satisfied: 45 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 76 | agent-reviewed: 9, heuristic: 64, human-reviewed: 3 | unknown: 76 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 46 | agent-reviewed: 46 | satisfied: 46 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 75 | agent-reviewed: 8, heuristic: 64, human-reviewed: 3 | unknown: 75 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 116 | agent-reviewed: 1, heuristic: 115 | unknown: 116 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | heuristic: 8 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 31 | agent-reviewed: 11, heuristic: 20 | unknown: 31 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
@@ -196,6 +196,7 @@ Split broad, historical, provider-caveated, policy-like, or otherwise blocked cl
 | .cautilus/claims/review-result-evidence-live-run-workspace-boundary-2026-05-03.json | - | - | 1 | 2 | deterministic: 2 | ready-to-verify: 2 |
 | .cautilus/claims/review-result-evidence-machine-readable-packets-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-review-variants-status-and-output-text-2026-05-03.json | - | - | 1 | 2 | deterministic: 2 | ready-to-verify: 2 |
+| .cautilus/claims/review-result-evidence-runner-readiness-branch-shape-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |
 | .cautilus/claims/review-result-evidence-scenario-review-attention-linkage-2026-05-03.json | - | - | 1 | 2 | deterministic: 2 | ready-to-verify: 2 |
 | .cautilus/claims/review-result-evidence-self-dogfood-html-renderers-2026-05-03.json | - | - | 1 | 1 | deterministic: 1 | ready-to-verify: 1 |

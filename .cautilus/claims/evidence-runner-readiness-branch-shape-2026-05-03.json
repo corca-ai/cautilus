@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-runner-readiness-branch-shape-2026-05-03",
+  "createdForClaimIds": [
+    "claim-docs-contracts-runner-readiness-md-134"
+  ],
+  "repoCommit": "f666f3bffc98c3f6ae9ed08f8c763975b65f175d",
+  "summary": "This bundle records deterministic proof that runner-readiness branches expose the stable action shape required by the runner-readiness contract.",
+  "evidenceScope": {
+    "targetSurface": "runner-readiness nextBranch packet shape",
+    "claimBoundary": "Only runner-readiness nextBranch records are marked satisfied; broader agent-status branch catalog completeness remains separate.",
+    "notClaimed": [
+      "Every possible agent-status branch is present in one packet",
+      "Runner smoke execution is implemented as a separate branch",
+      "Claim-state branches use the exact same runner-readiness branch schema"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestRunnerReadinessBranchesExposeStableActionShape|TestDoctorRunnerReadinessKeepsAdapterReadyWithMissingAssessment|TestRunnerReadinessBlocksProductProofWithoutVerificationCapabilities|TestDoctorNextActionFallsBackAfterRunnerAssessmentReady|TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "runner-readiness branches expose id, label, reason, owningSurface, runnerId, and boolean writesFiles",
+          "runner-readiness branches expose either requiredArtifact or requiredCommand",
+          "missing assessment and upgrade assessment branches point at assessment artifacts and scaffold source",
+          "the ready branch exposes a required eval command",
+          "agent status places the runner-readiness branch before claim-state branches when runner setup blocks honest evaluation"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/runner_readiness.go",
+      "kind": "runner-readiness-branch-shape-runtime",
+      "contentHash": "sha256:fd567b68bcbd865f1b0b6e897d4d53813dfc6dbf571351325833f5e59221612d"
+    },
+    {
+      "path": "internal/runtime/runner_readiness_test.go",
+      "kind": "runner-readiness-branch-shape-tests",
+      "contentHash": "sha256:82aaed5df4dda2851775d59287254ed187cc8f5f760cd855e65f2a190096372d"
+    },
+    {
+      "path": "docs/contracts/runner-readiness.md",
+      "kind": "runner-readiness-claim-source",
+      "contentHash": "sha256:91cb9010a1f8dc6d385602192aae430ae7027f645a6b6c124f445ca034ade1bc"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The runtime branch builder now exposes requiredArtifact or requiredCommand alongside stable branch identity fields, and focused tests cover create, bind, upgrade, address-gaps, ready, and agent-status ordering cases."
+  }
+}

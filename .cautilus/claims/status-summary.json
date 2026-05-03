@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 45
+          "satisfied": 46
         },
         "byReviewStatus": {
-          "agent-reviewed": 45
+          "agent-reviewed": 46
         },
-        "count": 45,
+        "count": 46,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 76
+          "unknown": 75
         },
         "byReviewStatus": {
-          "agent-reviewed": 9,
+          "agent-reviewed": 8,
           "heuristic": 64,
           "human-reviewed": 3
         },
-        "count": 76,
+        "count": 75,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -195,8 +195,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 45,
-      "unknown": 270
+      "satisfied": 46,
+      "unknown": 269
     },
     "byLifecycle": {
       "new": 315
@@ -381,7 +381,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 45,
+    "satisfiedClaimCount": 46,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -1236,6 +1236,25 @@
         "summary": "Product-owned workspace lifecycle stays off the public packet shape and instead flows through adapter template placeholders."
       },
       {
+        "claimId": "claim-docs-contracts-runner-readiness-md-134",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:aee3e5faaa35374ac70f5a0361888de0bd8e4bfc9209d38add2127c73a544876",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-runner-readiness-branch-shape-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runner-readiness-md-134"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Each branch should expose a stable id, human label, blocking reason, required command or artifact, owning product family or setup helper, and whether the branch writes files."
+      },
+      {
         "claimId": "claim-skills-cautilus-skill-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1258,7 +1277,7 @@
   },
   "gitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
   "gitState": {
-    "changedFileCount": 24,
+    "changedFileCount": 26,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1267,12 +1286,14 @@
       ".cautilus/claims/evidence-consumer-surface-alias-2026-05-03.json",
       ".cautilus/claims/evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/evidence-gepa-sparse-evidence-block-2026-05-03.json",
+      ".cautilus/claims/evidence-live-run-workspace-boundary-2026-05-03.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-consumer-surface-alias-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-gepa-sparse-evidence-block-2026-05-03.json",
+      ".cautilus/claims/review-result-evidence-live-run-workspace-boundary-2026-05-03.json",
       ".cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json",
       ".cautilus/claims/status-summary.json",
       ".cautilus/claims/validation-evidenced-typed-runners.json",
@@ -1293,7 +1314,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "8d16ecf675e4816bbd9d96438de09e1d0d8a6dff",
+    "currentGitCommit": "f666f3bffc98c3f6ae9ed08f8c763975b65f175d",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "3819d259fd796dc6fd5777b579f6b013c0dcb508",
