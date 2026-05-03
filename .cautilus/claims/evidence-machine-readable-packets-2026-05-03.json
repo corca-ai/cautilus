@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-machine-readable-packets-2026-05-03",
+  "createdForClaimIds": [
+    "claim-readme-md-238"
+  ],
+  "repoCommit": "78746e5fd79bafb9745d29c32a8224dfc4b9bd20",
+  "summary": "This bundle records deterministic proof that eval, report, review, evidence, and optimization surfaces are machine-readable Cautilus packets with explicit schema versions and agent-consumable fields.",
+  "evidenceScope": {
+    "targetSurface": "machine-readable eval/report/review/evidence/optimization packet families",
+    "claimBoundary": "Only the README claim that these packet families are machine-readable and agent-consumable is marked satisfied.",
+    "notClaimed": [
+      "Every possible packet field is stable forever",
+      "Every packet proves the evaluated behavior is correct",
+      "Human-readable HTML views are covered by this bundle",
+      "Every command path in the product emits one of these packet families"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test scripts/agent-runtime/run-local-eval-test.test.mjs scripts/agent-runtime/build-report-packet.test.mjs scripts/agent-runtime/build-review-packet.test.mjs scripts/agent-runtime/evidence-bundle-flow.test.mjs scripts/agent-runtime/optimize-flow.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 38,
+        "pass": 38,
+        "schemaFamilies": [
+          "cautilus.evaluation_cases.v1",
+          "cautilus.evaluation_observed.v1",
+          "cautilus.report_packet.v2",
+          "cautilus.review_packet.v1",
+          "cautilus.evidence_bundle_inputs.v1",
+          "cautilus.evidence_bundle.v1",
+          "cautilus.optimize_inputs.v1",
+          "cautilus.optimize_proposal.v1",
+          "cautilus.revision_artifact.v1"
+        ],
+        "protectedBehaviors": [
+          "eval runtime writes observed evaluation packets",
+          "report builder aggregates scenario and variant telemetry into a report packet",
+          "review builder collects adapter review surfaces around a report packet",
+          "evidence builder summarizes prioritized evidence signals",
+          "optimization flow builds bounded optimize inputs, proposals, and revision artifacts"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "scripts/agent-runtime/run-local-eval-test.test.mjs",
+      "kind": "eval-packet-tests",
+      "contentHash": "sha256:c912b92045b304f6b53a712a67873622bb52163ddcd4c1d65ceaafa998cf9bf0"
+    },
+    {
+      "path": "scripts/agent-runtime/build-report-packet.test.mjs",
+      "kind": "report-packet-tests",
+      "contentHash": "sha256:4502bce244d1ce7b51c16fcd6a801db258f6f2d633050fff7ea3677218d1b5a1"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-packet.test.mjs",
+      "kind": "review-packet-tests",
+      "contentHash": "sha256:959561c7a45ae1df77f4644e6094cd01e9d160f15e4c14b6716c5918650501fb"
+    },
+    {
+      "path": "scripts/agent-runtime/evidence-bundle-flow.test.mjs",
+      "kind": "evidence-packet-tests",
+      "contentHash": "sha256:09e5c5bbe354a8c7e346de86258ba1c5bb8b2bdf69eeb7f2178afd148506b480"
+    },
+    {
+      "path": "scripts/agent-runtime/optimize-flow.test.mjs",
+      "kind": "optimization-packet-tests",
+      "contentHash": "sha256:64d377d9fac031870b01197f50f692ac8e372ef3e7aeaaeedc8518dbdef9d825"
+    },
+    {
+      "path": "scripts/agent-runtime/run-local-eval-test.mjs",
+      "kind": "eval-packet-runtime",
+      "contentHash": "sha256:8baccbe165cec155877809a242b0d096b9c3e17e9498f6fa4b66eede3657e9c2"
+    },
+    {
+      "path": "scripts/agent-runtime/build-report-packet.mjs",
+      "kind": "report-packet-runtime",
+      "contentHash": "sha256:eda1c909395f9b63462914e0624b07e19877dd3eb49b4b1c1286c81860ce3e9c"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-packet.mjs",
+      "kind": "review-packet-runtime",
+      "contentHash": "sha256:ec43241df9350eed0da8d2b459481e609b5f6d0b7b6a1d8126b84750815d696b"
+    },
+    {
+      "path": "scripts/agent-runtime/build-evidence-bundle.mjs",
+      "kind": "evidence-packet-runtime",
+      "contentHash": "sha256:c0e55b755852d86cac38a5950632f58eb20a373eae885093035588bfe8a59ab0"
+    },
+    {
+      "path": "scripts/agent-runtime/build-optimize-input.mjs",
+      "kind": "optimize-input-runtime",
+      "contentHash": "sha256:35de9c0b00828213b4d6f7093a77423e8cec1c1252eb24a2abbda60759d5305c"
+    },
+    {
+      "path": "scripts/agent-runtime/generate-optimize-proposal.mjs",
+      "kind": "optimize-proposal-runtime",
+      "contentHash": "sha256:874ec13ac0839746185d2e7f46761c41955e938f4d92835a91557bc68ceba32f"
+    },
+    {
+      "path": "scripts/agent-runtime/build-revision-artifact.mjs",
+      "kind": "revision-artifact-runtime",
+      "contentHash": "sha256:deb4c6e304889534f84119ec781788f5fe266c625cfa74e76307e11391de7e10"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused packet-flow tests cover eval, report, review, evidence, optimize, proposal, and revision packet schema versions and command defaults, demonstrating machine-readable artifacts that agents can consume directly."
+  }
+}

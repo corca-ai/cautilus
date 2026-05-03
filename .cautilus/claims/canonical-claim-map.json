@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:0cb700966f08af9b3b0b7c10975ae6654cdfc4f3f3c2063409ec1c1ba62ee10e"
+      "contentHash": "sha256:35069ebddf1727b6036a4d245dab9e79e9f7068f39cedb2ec021700e6d1c654b"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -306,12 +306,12 @@
       "medium": 203
     },
     "byUserCanonicalClaimId": {
-      "U1": 23,
+      "U1": 22,
       "U2": 29,
       "U3": 4,
       "U4": 8,
       "U5": 8,
-      "U6": 4,
+      "U6": 5,
       "U7": 6
     },
     "byMaintainerCanonicalClaimId": {
@@ -595,7 +595,7 @@
     {
       "canonicalClaimId": "U1",
       "title": "Claim Discovery",
-      "absorbedRawClaimCount": 23,
+      "absorbedRawClaimCount": 22,
       "absorbedRawClaimIds": [
         "claim-readme-md-7",
         "claim-readme-md-9",
@@ -603,7 +603,6 @@
         "claim-readme-md-75",
         "claim-readme-md-101",
         "claim-readme-md-166",
-        "claim-readme-md-238",
         "claim-docs-cli-reference-md-115",
         "claim-docs-cli-reference-md-128",
         "claim-docs-cli-reference-md-180",
@@ -656,12 +655,6 @@
           "claimId": "claim-readme-md-166",
           "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
           "mappingConfidence": "low",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-readme-md-238",
-          "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
-          "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
@@ -763,22 +756,22 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 6,
-        "unknown": 17
+        "unknown": 16
       },
       "byReviewStatus": {
         "agent-reviewed": 14,
-        "heuristic": 8,
+        "heuristic": 7,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
         "cautilus-eval": 1,
-        "deterministic": 17,
+        "deterministic": 16,
         "human-auditable": 5
       },
       "byMappingConfidence": {
         "high": 3,
         "low": 8,
-        "medium": 12
+        "medium": 11
       }
     },
     {
@@ -1229,14 +1222,21 @@
     {
       "canonicalClaimId": "U6",
       "title": "Reviewable Artifacts",
-      "absorbedRawClaimCount": 4,
+      "absorbedRawClaimCount": 5,
       "absorbedRawClaimIds": [
+        "claim-readme-md-238",
         "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
         "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
         "claim-docs-specs-user-reviewable-artifacts-spec-md-12",
         "claim-docs-specs-user-reviewable-artifacts-spec-md-13"
       ],
       "absorbedRawClaims": [
+        {
+          "claimId": "claim-readme-md-238",
+          "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
         {
           "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
           "claimFingerprint": "sha256:e3899b096e94f29ab48e81c4c735843e228abbbd14b836134054a60e75f126f5",
@@ -1263,18 +1263,21 @@
         }
       ],
       "byEvidenceStatus": {
+        "satisfied": 1,
         "unknown": 4
       },
       "byReviewStatus": {
+        "agent-reviewed": 1,
         "heuristic": 4
       },
       "byRecommendedProof": {
         "cautilus-eval": 1,
-        "deterministic": 2,
+        "deterministic": 3,
         "human-auditable": 1
       },
       "byMappingConfidence": {
-        "high": 4
+        "high": 4,
+        "medium": 1
       }
     },
     {
@@ -4298,27 +4301,27 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-to-verify",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
-      "canonicalClaimId": "U1",
+      "canonicalClaimId": "U6",
       "score": 9,
-      "runnerUpCanonicalClaimId": "U6",
-      "runnerUpScore": 9,
-      "scoreMargin": 0,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 8,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "add",
         "agent",
-        "deterministic",
+        "artifact",
         "eval",
         "evidence",
+        "machine-readable",
         "packet",
-        "proof",
-        "review",
-        "skill"
+        "report",
+        "thi",
+        "workflow"
       ]
     },
     {

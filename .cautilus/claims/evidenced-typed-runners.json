@@ -851,17 +851,28 @@
       "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
       "claimId": "claim-readme-md-238",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:96f1b421345d4bb5ae04dd93fc37000f40907c1323a774cc16c818386c2104ab",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-machine-readable-packets-2026-05-03.json",
+          "supportsClaimIds": [
+            "claim-readme-md-238"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in machine-readable packet evidence bundle: focused packet-flow tests cover eval, report, review, evidence, optimize, proposal, and revision artifact schema versions and command defaults.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep this claim covered by packet-flow tests when adding, renaming, or changing eval, report, review, evidence, optimization, proposal, or revision artifact schemas.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
@@ -870,6 +881,7 @@
         }
       ],
       "summary": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-to-verify",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
@@ -10007,8 +10019,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 21,
-      "unknown": 301
+      "satisfied": 22,
+      "unknown": 300
     },
     "byLifecycle": {
       "new": 322
@@ -10019,8 +10031,8 @@
       "human-auditable": 66
     },
     "byReviewStatus": {
-      "agent-reviewed": 63,
-      "heuristic": 256,
+      "agent-reviewed": 64,
+      "heuristic": 255,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
@@ -10209,6 +10221,12 @@
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
+    {
+      "clusterCount": 1,
+      "reviewRun": {},
+      "schemaVersion": "cautilus.claim_review_result.v1",
+      "sourceReviewInput": {}
+    },
     {
       "clusterCount": 1,
       "reviewRun": {},

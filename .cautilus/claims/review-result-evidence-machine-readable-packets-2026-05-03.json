@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-03T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied when a checked-in evidence bundle records direct or verified proof for the claim boundary."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-machine-readable-packets",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-238",
+          "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-to-verify",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in machine-readable packet evidence bundle: focused packet-flow tests cover eval, report, review, evidence, optimize, proposal, and revision artifact schema versions and command defaults.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-machine-readable-packets-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:96f1b421345d4bb5ae04dd93fc37000f40907c1323a774cc16c818386c2104ab",
+              "supportsClaimIds": [
+                "claim-readme-md-238"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered by packet-flow tests when adding, renaming, or changing eval, report, review, evidence, optimization, proposal, or revision artifact schemas.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
