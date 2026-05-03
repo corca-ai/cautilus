@@ -30,6 +30,7 @@ type EvaluationCase struct {
 	ForbiddenInstructionFiles []string
 	RequiredSupportingFiles   []string
 	ForbiddenSupportingFiles  []string
+	AllowedFirstToolCalls     []string
 	ExpectedRouting           map[string]any
 }
 
@@ -122,6 +123,10 @@ func normalizeEvaluationCase(input map[string]any, index int) (*EvaluationCase, 
 	if err != nil {
 		return nil, err
 	}
+	allowedFirstToolCalls, err := normalizeEvaluationCasePathList(input["allowedFirstToolCalls"], fmt.Sprintf("evaluations[%d].allowedFirstToolCalls", index))
+	if err != nil {
+		return nil, err
+	}
 	expectedRouting, err := normalizeEvaluationCaseExpectedRouting(input["expectedRouting"], fmt.Sprintf("evaluations[%d].expectedRouting", index))
 	if err != nil {
 		return nil, err
@@ -137,6 +142,7 @@ func normalizeEvaluationCase(input map[string]any, index int) (*EvaluationCase, 
 		ForbiddenInstructionFiles: forbiddenInstructionFiles,
 		RequiredSupportingFiles:   requiredSupportingFiles,
 		ForbiddenSupportingFiles:  forbiddenSupportingFiles,
+		AllowedFirstToolCalls:     allowedFirstToolCalls,
 		ExpectedRouting:           expectedRouting,
 	}, nil
 }

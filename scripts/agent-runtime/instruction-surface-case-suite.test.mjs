@@ -37,6 +37,7 @@ test("normalize carries optional task path, file expectations, and expected rout
 		forbiddenInstructionFiles: ["legacy/AGENTS.md"],
 		requiredSupportingFiles: ["docs/internal/routing-note.md"],
 		forbiddenSupportingFiles: ["docs/internal/secret-note.md"],
+		allowedFirstToolCalls: ["none", "functions.exec_command"],
 		expectedRouting: {
 			selectedSkill: "none",
 			bootstrapHelper: "find-skills",
@@ -52,6 +53,7 @@ test("normalize carries optional task path, file expectations, and expected rout
 	assert.deepEqual(evaluated.forbiddenInstructionFiles, ["legacy/AGENTS.md"]);
 	assert.deepEqual(evaluated.requiredSupportingFiles, ["docs/internal/routing-note.md"]);
 	assert.deepEqual(evaluated.forbiddenSupportingFiles, ["docs/internal/secret-note.md"]);
+	assert.deepEqual(evaluated.allowedFirstToolCalls, ["none", "functions.exec_command"]);
 	assert.deepEqual(evaluated.expectedRouting, {
 		selectedSkill: "none",
 		bootstrapHelper: "find-skills",

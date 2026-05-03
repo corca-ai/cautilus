@@ -46,6 +46,7 @@ test("buildObservedInstructionSurfaceInput materializes fixture-backed instructi
 				prompt: "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
 				expectedEntryFile: "AGENTS.md",
 				requiredInstructionFiles: ["AGENTS.md"],
+				allowedFirstToolCalls: ["none", "functions.exec_command"],
 				expectedRouting: { selectedSkill: "none" },
 			},
 		],
@@ -73,6 +74,7 @@ test("buildObservedInstructionSurfaceInput materializes fixture-backed instructi
 	assert.equal(packet.evaluations.length, 1);
 	assert.equal(packet.evaluations[0].evaluationId, "checked-in-agents-routing");
 	assert.equal(packet.evaluations[0].expectedEntryFile, "AGENTS.md");
+	assert.deepEqual(packet.evaluations[0].allowedFirstToolCalls, ["none", "functions.exec_command"]);
 	assert.equal(packet.evaluations[0].loadedInstructionFiles[0], "AGENTS.md");
 	assert.equal(packet.evaluations[0].telemetry, undefined);
 	assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), readFileSync(join(process.cwd(), "AGENTS.md"), "utf-8"));

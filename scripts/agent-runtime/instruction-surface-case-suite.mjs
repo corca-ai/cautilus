@@ -122,6 +122,7 @@ function normalizeEvaluation(record, index) {
 		forbiddenInstructionFiles: normalizePathList(record.forbiddenInstructionFiles, `evaluations[${index}].forbiddenInstructionFiles`),
 		requiredSupportingFiles: normalizePathList(record.requiredSupportingFiles, `evaluations[${index}].requiredSupportingFiles`),
 		forbiddenSupportingFiles: normalizePathList(record.forbiddenSupportingFiles, `evaluations[${index}].forbiddenSupportingFiles`),
+		allowedFirstToolCalls: normalizePathList(record.allowedFirstToolCalls, `evaluations[${index}].allowedFirstToolCalls`),
 		...(normalizeExpectedRouting(record.expectedRouting, `evaluations[${index}].expectedRouting`) ? {
 			expectedRouting: normalizeExpectedRouting(record.expectedRouting, `evaluations[${index}].expectedRouting`),
 		} : {}),

@@ -74,6 +74,22 @@ func TestNormalizeEvaluationInputAcceptsDevRepo(t *testing.T) {
 	}
 }
 
+func TestNormalizeEvaluationInputDevRepoPreservesAllowedFirstToolCalls(t *testing.T) {
+	fixture := validDevRepoFixture()
+	cases := fixture["cases"].([]any)
+	caseEntry := cases[0].(map[string]any)
+	caseEntry["allowedFirstToolCalls"] = []any{"none", "functions.exec_command"}
+	result, err := NormalizeEvaluationInput(fixture)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	evaluations := result.TranslatedCases["evaluations"].([]any)
+	first := evaluations[0].(map[string]any)
+	if got := stringArrayOrEmpty(first["allowedFirstToolCalls"]); len(got) != 2 || got[1] != "functions.exec_command" {
+		t.Fatalf("expected allowed first tool calls to translate, got %#v", got)
+	}
+}
+
 func TestNormalizeEvaluationInputAcceptsDevSkill(t *testing.T) {
 	result, err := NormalizeEvaluationInput(validDevSkillFixture())
 	if err != nil {

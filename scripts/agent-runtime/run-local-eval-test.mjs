@@ -326,6 +326,7 @@ function normalizeExpectedFields(evaluation) {
 		...(evaluation.forbiddenInstructionFiles.length > 0 ? { forbiddenInstructionFiles: evaluation.forbiddenInstructionFiles } : {}),
 		...(evaluation.requiredSupportingFiles.length > 0 ? { requiredSupportingFiles: evaluation.requiredSupportingFiles } : {}),
 		...(evaluation.forbiddenSupportingFiles.length > 0 ? { forbiddenSupportingFiles: evaluation.forbiddenSupportingFiles } : {}),
+		...(evaluation.allowedFirstToolCalls.length > 0 ? { allowedFirstToolCalls: evaluation.allowedFirstToolCalls } : {}),
 		...(evaluation.expectedRouting ? { expectedRouting: evaluation.expectedRouting } : {}),
 	};
 }

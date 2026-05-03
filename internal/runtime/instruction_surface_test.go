@@ -35,6 +35,7 @@ func TestBuildEvaluationSummaryScoresRoutingAndFiles(t *testing.T) {
 				"expectedEntryFile":        "AGENTS.md",
 				"requiredInstructionFiles": []any{"AGENTS.md"},
 				"requiredSupportingFiles":  []any{"docs/internal/handoff.md"},
+				"allowedFirstToolCalls":    []any{"none", "functions.exec_command"},
 				"expectedRouting": map[string]any{
 					"bootstrapHelper":      "charness:find-skills",
 					"workSkill":            "charness:impl",
@@ -106,6 +107,66 @@ func TestBuildEvaluationSummaryScoresRoutingAndFiles(t *testing.T) {
 	}
 	if status := stringOrEmpty(asMap(evaluations[1])["status"]); status != "failed" {
 		t.Fatalf("expected failed second evaluation, got %q", status)
+	}
+	if got := stringArrayOrEmpty(asMap(evaluations[0])["allowedFirstToolCalls"]); len(got) != 2 || got[1] != "functions.exec_command" {
+		t.Fatalf("expected allowed first tool calls to be preserved, got %#v", got)
+	}
+	firstToolCallResult := asMap(asMap(evaluations[0])["expectationResults"])["firstToolCall"]
+	if stringOrEmpty(asMap(firstToolCallResult)["status"]) != "passed" {
+		t.Fatalf("expected first tool allowlist to pass, got %#v", firstToolCallResult)
+	}
+}
+
+func TestBuildEvaluationSummaryRejectsDisallowedFirstToolCall(t *testing.T) {
+	now := time.Date(2026, 5, 4, 0, 0, 0, 0, time.UTC)
+	summary, err := BuildEvaluationSummary(map[string]any{
+		"schemaVersion": "cautilus.evaluation_observed.v1",
+		"suiteId":       "instruction-surface-demo",
+		"evaluations": []any{
+			map[string]any{
+				"evaluationId":           "disallowed-first-tool",
+				"prompt":                 "Read the repo instructions and decide.",
+				"startedAt":              "2026-05-04T00:00:00Z",
+				"observationStatus":      "observed",
+				"summary":                "Used an unexpected first tool.",
+				"entryFile":              "AGENTS.md",
+				"loadedInstructionFiles": []any{"AGENTS.md"},
+				"loadedSupportingFiles":  []any{},
+				"routingDecision": map[string]any{
+					"bootstrapHelper": "find-skills",
+					"workSkill":       "impl",
+					"firstToolCall":   "functions.exec_command",
+				},
+				"instructionSurface": map[string]any{
+					"surfaceLabel": "compact_agents",
+					"files": []any{
+						map[string]any{"path": "AGENTS.md", "kind": "file", "sourceKind": "workspace_default"},
+					},
+				},
+				"expectedEntryFile":        "AGENTS.md",
+				"requiredInstructionFiles": []any{"AGENTS.md"},
+				"allowedFirstToolCalls":    []any{"none"},
+				"expectedRouting": map[string]any{
+					"bootstrapHelper": "find-skills",
+					"workSkill":       "impl",
+				},
+				"artifactRefs": []any{},
+			},
+		},
+	}, now)
+	if err != nil {
+		t.Fatalf("BuildEvaluationSummary returned error: %v", err)
+	}
+	if summary["recommendation"] != "reject" {
+		t.Fatalf("expected reject recommendation, got %#v", summary["recommendation"])
+	}
+	evaluation := asMap(arrayOrEmpty(summary["evaluations"])[0])
+	firstToolCallResult := asMap(asMap(evaluation["expectationResults"])["firstToolCall"])
+	if firstToolCallResult["status"] != "failed" {
+		t.Fatalf("expected first tool allowlist to fail, got %#v", firstToolCallResult)
+	}
+	if got := stringArrayOrEmpty(firstToolCallResult["allowed"]); len(got) != 1 || got[0] != "none" {
+		t.Fatalf("expected allowed calls in result, got %#v", got)
 	}
 }
 

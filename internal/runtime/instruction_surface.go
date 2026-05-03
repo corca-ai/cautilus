@@ -27,6 +27,7 @@ type instructionSurfaceEvaluationInput struct {
 	forbiddenInstructionFiles []string
 	requiredSupportingFiles   []string
 	forbiddenSupportingFiles  []string
+	allowedFirstToolCalls     []string
 	expectedRouting           map[string]any
 	blockerKind               *string
 	artifactRefs              []any
@@ -215,6 +216,10 @@ func normalizeInstructionSurfaceEvaluationInput(input map[string]any, index int,
 	if err != nil {
 		return nil, err
 	}
+	allowedFirstToolCalls, err := normalizeEvaluationCasePathList(input["allowedFirstToolCalls"], fmt.Sprintf("evaluations[%d].allowedFirstToolCalls", index))
+	if err != nil {
+		return nil, err
+	}
 	expectedRouting, err := normalizeEvaluationCaseExpectedRouting(input["expectedRouting"], fmt.Sprintf("evaluations[%d].expectedRouting", index))
 	if err != nil {
 		return nil, err
@@ -249,6 +254,7 @@ func normalizeInstructionSurfaceEvaluationInput(input map[string]any, index int,
 		forbiddenInstructionFiles: forbiddenInstructionFiles,
 		requiredSupportingFiles:   requiredSupportingFiles,
 		forbiddenSupportingFiles:  forbiddenSupportingFiles,
+		allowedFirstToolCalls:     allowedFirstToolCalls,
 		expectedRouting:           expectedRouting,
 		blockerKind:               blockerKind,
 		artifactRefs:              artifactRefs,
@@ -329,11 +335,13 @@ func evaluateInstructionSurfaceEvaluation(evaluation *instructionSurfaceEvaluati
 	instructionFilesResult := evaluateInstructionFileList(evaluation.requiredInstructionFiles, evaluation.forbiddenInstructionFiles, loadedInstructionFiles)
 	supportingFilesResult := evaluateInstructionFileList(evaluation.requiredSupportingFiles, evaluation.forbiddenSupportingFiles, evaluation.loadedSupportingFiles)
 	routingResult := evaluateInstructionRouting(evaluation.expectedRouting, evaluation.routingDecision)
+	firstToolCallResult := evaluateAllowedFirstToolCall(evaluation.allowedFirstToolCalls, evaluation.routingDecision)
 	expectationResults := map[string]any{
 		"entryFile":        entryResult,
 		"instructionFiles": instructionFilesResult,
 		"supportingFiles":  supportingFilesResult,
 		"routing":          routingResult,
+		"firstToolCall":    firstToolCallResult,
 	}
 	status := "passed"
 	if evaluation.observationStatus == "blocked" {
@@ -369,6 +377,9 @@ func evaluateInstructionSurfaceEvaluation(evaluation *instructionSurfaceEvaluati
 	}
 	if evaluation.expectedRouting != nil {
 		result["expectedRouting"] = evaluation.expectedRouting
+	}
+	if len(evaluation.allowedFirstToolCalls) > 0 {
+		result["allowedFirstToolCalls"] = stringArrayToAny(evaluation.allowedFirstToolCalls)
 	}
 	if evaluation.blockerKind != nil {
 		result["blockerKind"] = *evaluation.blockerKind
@@ -492,8 +503,28 @@ func evaluateInstructionRouting(expected map[string]any, observed map[string]any
 	}
 }
 
+func evaluateAllowedFirstToolCall(allowed []string, observed map[string]any) map[string]any {
+	observedFirstToolCall := stringOrEmpty(observed["firstToolCall"])
+	if len(allowed) == 0 {
+		return map[string]any{
+			"status":   "not_applicable",
+			"allowed":  []any{},
+			"observed": observedFirstToolCall,
+		}
+	}
+	status := "failed"
+	if containsString(allowed, observedFirstToolCall) {
+		status = "passed"
+	}
+	return map[string]any{
+		"status":   status,
+		"allowed":  stringArrayToAny(allowed),
+		"observed": observedFirstToolCall,
+	}
+}
+
 func expectationFailed(expectationResults map[string]any) bool {
-	for _, key := range []string{"entryFile", "instructionFiles", "supportingFiles", "routing"} {
+	for _, key := range []string{"entryFile", "instructionFiles", "supportingFiles", "routing", "firstToolCall"} {
 		if stringOrEmpty(asMap(expectationResults[key])["status"]) == "failed" {
 			return true
 		}

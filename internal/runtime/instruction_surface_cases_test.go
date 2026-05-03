@@ -26,6 +26,7 @@ func TestNormalizeEvaluationCasesAcceptsFileAndSymlinkVariants(t *testing.T) {
 				},
 				"expectedEntryFile":        "AGENTS.md",
 				"requiredInstructionFiles": []any{"AGENTS.md", "CLAUDE.md"},
+				"allowedFirstToolCalls":    []any{"none", "functions.exec_command"},
 				"expectedRouting": map[string]any{
 					"bootstrapHelper": "charness:find-skills",
 					"workSkill":       "charness:impl",
@@ -44,6 +45,9 @@ func TestNormalizeEvaluationCasesAcceptsFileAndSymlinkVariants(t *testing.T) {
 	}
 	if got := *suite.Evaluations[0].InstructionSurface.Files[1].TargetPath; got != "CLAUDE.md" {
 		t.Fatalf("unexpected symlink target: %q", got)
+	}
+	if got := suite.Evaluations[0].AllowedFirstToolCalls; len(got) != 2 || got[1] != "functions.exec_command" {
+		t.Fatalf("expected allowed first tool calls to normalize, got %#v", got)
 	}
 }
 
