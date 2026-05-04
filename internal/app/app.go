@@ -338,6 +338,7 @@ type claimDiscoverArgs struct {
 	repoRoot        string
 	sources         []string
 	previous        *string
+	fromScratch     bool
 	refreshPlanOnly bool
 	output          *string
 }
@@ -799,10 +800,19 @@ func handleClaimDiscover(repoRoot string, cwd string, args []string, stdout io.W
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
+	previousPath := derefString(options.previous)
+	if previousPath == "" && !options.fromScratch && options.output != nil {
+		if resolved := strings.TrimSpace(*options.output); resolved != "" {
+			outputAbs := resolvePath(cwd, resolved)
+			if info, statErr := os.Stat(outputAbs); statErr == nil && !info.IsDir() {
+				previousPath = outputAbs
+			}
+		}
+	}
 	plan, err := runtime.DiscoverClaimProofPlan(runtime.ClaimDiscoveryOptions{
 		RepoRoot:        options.repoRoot,
 		SourcePaths:     options.sources,
-		PreviousPath:    derefString(options.previous),
+		PreviousPath:    previousPath,
 		RefreshPlanOnly: options.refreshPlanOnly,
 	})
 	if err != nil {
@@ -2158,6 +2168,8 @@ func parseClaimDiscoverArgs(args []string, cwd string) (*claimDiscoverArgs, erro
 			}
 			index = next
 			options.previous = &value
+		case "--from-scratch":
+			options.fromScratch = true
 		case "--refresh-plan":
 			options.refreshPlanOnly = true
 		case "--output":
@@ -2173,6 +2185,9 @@ func parseClaimDiscoverArgs(args []string, cwd string) (*claimDiscoverArgs, erro
 	}
 	if strings.TrimSpace(options.repoRoot) == "" {
 		return nil, fmt.Errorf("--repo-root must not be empty")
+	}
+	if options.fromScratch && options.previous != nil {
+		return nil, fmt.Errorf("--from-scratch and --previous are mutually exclusive")
 	}
 	return options, nil
 }

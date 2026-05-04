@@ -3301,6 +3301,9 @@ func BuildClaimValidationReport(packet map[string]any, options ClaimValidationOp
 	if err := ValidateClaimProofPlan(packet); err != nil {
 		issues = append(issues, claimValidationIssue("$", err.Error()))
 	}
+	if err := reportCarryForwardPresence(packet); err != nil {
+		issues = append(issues, claimValidationIssue(err.path, err.message))
+	}
 	for index, raw := range arrayOrEmpty(packet["claimCandidates"]) {
 		candidate := asMap(raw)
 		path := fmt.Sprintf("$.claimCandidates[%d]", index)
@@ -3375,6 +3378,37 @@ func claimValidationIssue(path string, message string) map[string]any {
 		"path":     path,
 		"message":  message,
 	}
+}
+
+type claimValidationIssueDetail struct {
+	path    string
+	message string
+}
+
+func reportCarryForwardPresence(packet map[string]any) *claimValidationIssueDetail {
+	if _, hasCarryForward := packet["carryForward"]; hasCarryForward {
+		return nil
+	}
+	for index, raw := range arrayOrEmpty(packet["claimCandidates"]) {
+		entry, ok := raw.(map[string]any)
+		if !ok {
+			continue
+		}
+		reviewStatus := strings.TrimSpace(stringFromAny(entry["reviewStatus"]))
+		if reviewStatus == "agent-reviewed" || reviewStatus == "human-reviewed" {
+			return &claimValidationIssueDetail{
+				path:    "$",
+				message: fmt.Sprintf("claimCandidates[%d].reviewStatus is %q but top-level carryForward audit summary is missing; rerun claim discover with --previous pointing at the saved packet, or pass --from-scratch when intentionally discarding reviewed state", index, reviewStatus),
+			}
+		}
+		if refs := arrayOrEmpty(entry["evidenceRefs"]); len(refs) > 0 {
+			return &claimValidationIssueDetail{
+				path:    "$",
+				message: fmt.Sprintf("claimCandidates[%d] has %d evidenceRef(s) but top-level carryForward audit summary is missing; rerun claim discover with --previous pointing at the saved packet, or pass --from-scratch when intentionally discarding evidenced state", index, len(refs)),
+			}
+		}
+	}
+	return nil
 }
 
 func validateClaimReviewResult(result map[string]any) error {

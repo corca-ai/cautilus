@@ -2459,6 +2459,7 @@ func TestBuildClaimEvalPlanSkipsSatisfiedNonEvalClaimsWithEvidenceContext(t *tes
 func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
 	packet := map[string]any{
 		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"carryForward":  map[string]any{"strategy": "claimFingerprint", "matchedClaimCount": 0},
 		"claimCandidates": []any{
 			map[string]any{
 				"claimId":               "claim-fixture-1",
@@ -2505,6 +2506,7 @@ func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
 func TestBuildClaimValidationReportRequiresSupportedEvidenceKind(t *testing.T) {
 	packet := map[string]any{
 		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"carryForward":  map[string]any{"strategy": "claimFingerprint", "matchedClaimCount": 0},
 		"claimCandidates": []any{
 			map[string]any{
 				"claimId":               "claim-evidence-kind-1",
@@ -2545,6 +2547,7 @@ func TestBuildClaimValidationReportRequiresSupportedEvidenceKind(t *testing.T) {
 func TestBuildClaimValidationReportAcceptsEvalObservedEvidenceKind(t *testing.T) {
 	packet := map[string]any{
 		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"carryForward":  map[string]any{"strategy": "claimFingerprint", "matchedClaimCount": 0},
 		"claimCandidates": []any{
 			map[string]any{
 				"claimId":               "claim-eval-observed-1",
@@ -2576,6 +2579,44 @@ func TestBuildClaimValidationReportAcceptsEvalObservedEvidenceKind(t *testing.T)
 	report := BuildClaimValidationReport(packet, ClaimValidationOptions{InputPath: "claims.json"})
 	if report["valid"] != true || report["issueCount"] != 0 {
 		t.Fatalf("expected valid report, got %#v", report)
+	}
+}
+
+func TestBuildClaimValidationReportFlagsMissingCarryForwardOnReviewedPacket(t *testing.T) {
+	packet := map[string]any{
+		"schemaVersion": contracts.ClaimProofPlanSchema,
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               "claim-no-carry-forward-1",
+				"claimFingerprint":      "sha256:no-carry-forward",
+				"summary":               "Reviewed claims without carryForward should be flagged.",
+				"recommendedProof":      "deterministic",
+				"verificationReadiness": "ready-to-verify",
+				"evidenceStatus":        "unknown",
+				"reviewStatus":          "agent-reviewed",
+				"lifecycle":             "new",
+				"sourceRefs": []any{
+					map[string]any{"path": "README.md", "line": 1, "excerpt": "Reviewed claims without carryForward should be flagged."},
+				},
+				"evidenceRefs": []any{},
+			},
+		},
+	}
+	report := BuildClaimValidationReport(packet, ClaimValidationOptions{InputPath: "claims.json"})
+	if report["valid"] != false {
+		t.Fatalf("expected invalid report when carryForward is missing on reviewed packet, got %#v", report)
+	}
+	issues := arrayOrEmpty(report["issues"])
+	found := false
+	for _, raw := range issues {
+		message := stringFromAny(asMap(raw)["message"])
+		if strings.Contains(message, "carryForward audit summary is missing") {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatalf("expected carryForward absence issue, got %#v", issues)
 	}
 }
 

@@ -459,6 +459,8 @@ When a previous claim-state packet exists, the skill should:
 The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.
 No separate binary `claim refresh` command is planned for this stage.
 When the skill runs `claim discover --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
+When `--output` points at an existing claim packet and neither `--previous` nor `--from-scratch` is given, the binary auto-uses the existing output as the previous packet so silent loss of reviewed state is not possible by omission; operators pass `--from-scratch` to opt into first-discovery semantics on top of an existing packet.
+`claim validate` also surfaces missing carry-forward audit summaries on packets that already carry reviewed or evidenced state, so refreshes that lost the audit block fail validation instead of passing silently.
 If a line-number-derived display `claimId` changes while the fingerprint remains stable, carried evidence refs rewrite `supportsClaimIds` to the current claim id before validation.
 Direct or verified carried evidence refs with `contentHash` are not blindly trusted.
 The refreshed proof plan rechecks repo-local evidence files, marks the claim `evidenceStatus=stale` when a referenced file is missing, changed, outside the repo root, or when a `cautilus.claim_evidence_bundle.v1` does not list the current claim id in `createdForClaimIds`, and records stale evidence counts in `carryForward`.

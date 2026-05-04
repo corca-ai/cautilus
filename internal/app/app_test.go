@@ -442,6 +442,140 @@ func TestRunClaimDiscoverWritesProofPlanFromTinyRepo(t *testing.T) {
 	}
 }
 
+func TestRunClaimDiscoverAutoUsesExistingOutputAsPrevious(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte("# Tiny\n\nThis tool emits a human-auditable setup checklist.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile README returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repoRoot, "AGENTS.md"), []byte("# Agent Contract\n\nAgents must follow the repo operating contract before changing code.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile AGENTS returned error: %v", err)
+	}
+	outputPath := filepath.Join(repoRoot, ".cautilus", "claims", "latest.json")
+
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout, stderr bytes.Buffer
+	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+		t.Fatalf("first run: exit=%d stderr=%s", exitCode, stderr.String())
+	}
+
+	initial := readJSONObjectFile(t, outputPath)
+	candidates, _ := initial["claimCandidates"].([]any)
+	if len(candidates) == 0 {
+		t.Fatalf("expected claim candidates in initial packet")
+	}
+	first := candidates[0].(map[string]any)
+	first["reviewStatus"] = "agent-reviewed"
+	updated, err := json.Marshal(initial)
+	if err != nil {
+		t.Fatalf("marshal updated packet: %v", err)
+	}
+	if err := os.WriteFile(outputPath, updated, 0o644); err != nil {
+		t.Fatalf("rewrite packet: %v", err)
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+		t.Fatalf("second run: exit=%d stderr=%s", exitCode, stderr.String())
+	}
+	refreshed := readJSONObjectFile(t, outputPath)
+	cf, ok := refreshed["carryForward"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected carryForward block after auto-previous, got %#v", refreshed["carryForward"])
+	}
+	matched, _ := cf["matchedClaimCount"].(float64)
+	if matched <= 0 {
+		t.Fatalf("expected matchedClaimCount > 0, got %v", cf["matchedClaimCount"])
+	}
+	refreshedCandidates, _ := refreshed["claimCandidates"].([]any)
+	preservedReview := false
+	for _, raw := range refreshedCandidates {
+		entry, _ := raw.(map[string]any)
+		if entry == nil {
+			continue
+		}
+		if entry["claimId"] == first["claimId"] && entry["reviewStatus"] == "agent-reviewed" {
+			preservedReview = true
+			break
+		}
+	}
+	if !preservedReview {
+		t.Fatalf("expected reviewed status to carry forward, got %#v", refreshedCandidates)
+	}
+}
+
+func TestRunClaimDiscoverFromScratchSkipsAutoPrevious(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte("# Tiny\n\nThis tool emits a human-auditable setup checklist.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile README returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repoRoot, "AGENTS.md"), []byte("# Agent Contract\n\nAgents must follow the repo operating contract before changing code.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile AGENTS returned error: %v", err)
+	}
+	outputPath := filepath.Join(repoRoot, ".cautilus", "claims", "latest.json")
+
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout, stderr bytes.Buffer
+	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+		t.Fatalf("first run: exit=%d stderr=%s", exitCode, stderr.String())
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--from-scratch", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+		t.Fatalf("from-scratch run: exit=%d stderr=%s", exitCode, stderr.String())
+	}
+	refreshed := readJSONObjectFile(t, outputPath)
+	if _, hasCarry := refreshed["carryForward"]; hasCarry {
+		t.Fatalf("expected --from-scratch to suppress auto-previous, got carryForward=%#v", refreshed["carryForward"])
+	}
+}
+
+func TestRunClaimDiscoverNewOutputStartsFromFirstDiscovery(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte("# Tiny\n\nThis tool emits a human-auditable setup checklist.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile README returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repoRoot, "AGENTS.md"), []byte("# Agent Contract\n\nAgents must follow the repo operating contract before changing code.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile AGENTS returned error: %v", err)
+	}
+	outputPath := filepath.Join(repoRoot, "first-time", "claims.json")
+
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout, stderr bytes.Buffer
+	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+		t.Fatalf("first-time run: exit=%d stderr=%s", exitCode, stderr.String())
+	}
+	packet := readJSONObjectFile(t, outputPath)
+	if _, hasCarry := packet["carryForward"]; hasCarry {
+		t.Fatalf("first-time discovery should not emit carryForward, got %#v", packet["carryForward"])
+	}
+}
+
+func TestRunClaimDiscoverFromScratchAndPreviousMutuallyExclusive(t *testing.T) {
+	repoRoot := t.TempDir()
+	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte("# Tiny\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout, stderr bytes.Buffer
+	exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--previous", "anything.json", "--from-scratch"}, &stdout, &stderr)
+	if exitCode == 0 {
+		t.Fatalf("expected non-zero exit when both --previous and --from-scratch are given")
+	}
+	if !strings.Contains(stderr.String(), "mutually exclusive") {
+		t.Fatalf("expected mutually-exclusive error, got stderr=%s", stderr.String())
+	}
+}
+
 func TestRunClaimDiscoverRefreshPlanRefusesSavedClaimStateOutput(t *testing.T) {
 	repoRoot := t.TempDir()
 	statePath := filepath.Join(repoRoot, ".cautilus", "claims", "latest.json")
