@@ -4,8 +4,8 @@ Host repos own runtime-specific behavior.
 
 Aligned user claims: U2, U5.
 Proof route: deterministic plus consumer dogfood.
-Current evidence status: partial.
-Next action: connect adapter contract tests and at least one consumer repo proof that Cautilus invokes host-owned runners without importing host-specific logic.
+Current evidence status: covered.
+Next action: keep adapter contract tests, the external consumer smoke, and the product-import-isolation lint deterministic; consumer-side parity proof grows when new host adapters land.
 Absorbs: adapters, prompts, model choice, credentials, runtime launch, command templates, backend selection, fixtures, acceptance policy, repo-specific flags, portable schema.
 
 ## Maintainer Promise
@@ -24,7 +24,4 @@ Cautilus owns generic workflow contracts, packet shapes, readiness semantics, be
 - [internal/runtime/adapter_test.go](../../../internal/runtime/adapter_test.go) `TestValidateAdapterData*` family covers explicit and command-instance discovery, live-run invocation, typed runner readiness, and claim-discovery configuration against the adapter contract.
 - [scripts/agent-runtime/adapter-resolution.test.mjs](../../../scripts/agent-runtime/adapter-resolution.test.mjs) covers adapter resolution across host-owned name and path variants.
 - [scripts/on-demand/smoke-external-consumer.test.mjs](../../../scripts/on-demand/smoke-external-consumer.test.mjs) bootstraps a temporary external consumer repo through `npm run consumer:onboard:smoke` and asserts the same product workflow runs unchanged.
-
-## Evidence Gaps
-
-- Negative test proving product code paths do not import host-specific prompts, runners, credentials, or policy. Owner: maintainer. Next action: add a build-time grep guard against host-specific names in the product source tree; no existing import-policy check today.
+- `npm run lint:product-import-isolation` ([scripts/check-product-import-isolation.mjs](../../../scripts/check-product-import-isolation.mjs)) parses every non-test Go file under `cmd/` and `internal/` and rejects any third-party import outside an explicit allowlist; this proves product code paths do not pull in host-specific prompts, runners, credentials, or policy. Self-test: [scripts/check-product-import-isolation.test.mjs](../../../scripts/check-product-import-isolation.test.mjs).
