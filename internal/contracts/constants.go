@@ -43,6 +43,7 @@ const (
 	OptimizeProposalSchema                          = "cautilus.optimize_proposal.v1"
 	OptimizeSearchInputsSchema                      = "cautilus.optimize_search_inputs.v1"
 	OptimizeSearchResultSchema                      = "cautilus.optimize_search_result.v1"
+	PacketInspectionSchema                          = "cautilus.packet_inspection.v1"
 	RevisionArtifactSchema                          = "cautilus.revision_artifact.v1"
 	ReportInputsSchema                              = "cautilus.report_inputs.v1"
 	ReportPacketSchema                              = "cautilus.report_packet.v2"

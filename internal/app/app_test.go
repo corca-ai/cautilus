@@ -558,6 +558,51 @@ func TestRunClaimDiscoverNewOutputStartsFromFirstDiscovery(t *testing.T) {
 	}
 }
 
+func TestRunPacketInspectEmitsSchemaVersionAndArrayCounts(t *testing.T) {
+	repoRoot := t.TempDir()
+	packetPath := filepath.Join(repoRoot, "eval-plan.json")
+	if err := os.WriteFile(packetPath, []byte(`{
+		"schemaVersion": "cautilus.claim_eval_plan.v1",
+		"evalPlans": [{"claimId": "c1"}, {"claimId": "c2"}],
+		"skippedClaims": [{"claimId": "c-skip"}]
+	}`), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout, stderr bytes.Buffer
+	exitCode := Run([]string{"packet", "inspect", "--input", packetPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit 0, got %d stderr=%s", exitCode, stderr.String())
+	}
+	var report map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &report); err != nil {
+		t.Fatalf("invalid JSON stdout: %v\n%s", err, stdout.String())
+	}
+	if report["schemaVersion"] != "cautilus.packet_inspection.v1" {
+		t.Fatalf("unexpected schemaVersion: %#v", report["schemaVersion"])
+	}
+	if report["inputSchemaVersion"] != "cautilus.claim_eval_plan.v1" {
+		t.Fatalf("expected eval-plan input echo, got %#v", report["inputSchemaVersion"])
+	}
+	hints, ok := report["selectorHints"].([]any)
+	if !ok || len(hints) == 0 {
+		t.Fatalf("expected selectorHints for known schema, got %#v", report["selectorHints"])
+	}
+	planFound := false
+	for _, raw := range hints {
+		hint, _ := raw.(map[string]any)
+		if hint["name"] == "plans" && hint["path"] == ".evalPlans" {
+			planFound = true
+			break
+		}
+	}
+	if !planFound {
+		t.Fatalf("expected plans hint with path .evalPlans, got %#v", hints)
+	}
+}
+
 func TestRunClaimDiscoverFromScratchAndPreviousMutuallyExclusive(t *testing.T) {
 	repoRoot := t.TempDir()
 	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte("# Tiny\n"), 0o644); err != nil {

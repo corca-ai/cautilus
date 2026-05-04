@@ -173,6 +173,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleClaimPlanEvals
 	case "claim validate":
 		return handleClaimValidate
+	case "packet inspect":
+		return handlePacketInspect
 	case "install":
 		return handleInstall
 	case "update":
@@ -380,6 +382,11 @@ type claimValidateArgs struct {
 	claims        string
 	displayClaims string
 	output        *string
+}
+
+type packetInspectArgs struct {
+	input  string
+	output *string
 }
 
 type installArgs struct {
@@ -993,6 +1000,27 @@ func handleClaimPlanEvals(repoRoot string, cwd string, args []string, stdout io.
 		return 1
 	}
 	if err := writeOutput(stdout, cwd, options.output, plan); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handlePacketInspect(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	options, err := parsePacketInspectArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	packet, err := runtime.ReadPacketForInspection(options.input)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	report := runtime.BuildPacketInspection(packet)
+	if err := writeOutput(stdout, cwd, options.output, report); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
@@ -2421,6 +2449,35 @@ func parseClaimValidateArgs(args []string, cwd string) (*claimValidateArgs, erro
 	}
 	if strings.TrimSpace(options.claims) == "" {
 		return nil, fmt.Errorf("--claims is required")
+	}
+	return options, nil
+}
+
+func parsePacketInspectArgs(args []string, cwd string) (*packetInspectArgs, error) {
+	options := &packetInspectArgs{}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--input":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.input = resolvePath(cwd, value)
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.output = &value
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.input) == "" {
+		return nil, fmt.Errorf("--input is required")
 	}
 	return options, nil
 }
