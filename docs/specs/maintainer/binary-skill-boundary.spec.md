@@ -22,9 +22,9 @@ The binary owns deterministic command execution, packet schemas, help text, and 
 ## Evidence
 
 - `npm run lint:skill-disclosure` enforces the progressive-disclosure contract between the bundled and packaged skill via [scripts/check-cautilus-skill-disclosure.mjs](../../../scripts/check-cautilus-skill-disclosure.mjs).
+- [internal/cli/registry_test.go](../../../internal/cli/registry_test.go) covers the deterministic command-discovery surface that `cautilus commands --json` advertises.
 - The bundled skill `dev/skill` self-dogfood fixtures (first-scan-flow, refresh-flow, review-prepare-flow, reviewer-launch-flow) under [fixtures/eval/dev/skill/](../../../fixtures/eval/dev/skill/) exercise the skill-driven branches end-to-end.
 
 ## Evidence Gaps
 
-- Deterministic command-discovery and help-text snapshot test proving the binary surface advertises only product-owned commands and does not regress when new commands land. Owner: maintainer. Next action: extract a focused snapshot test from the existing `cautilus commands --json` output.
-- Negative test proving the binary code path never opens a direct LLM provider connection for claim discovery or claim review. Owner: maintainer. Next action: add a build-time grep guard or a runtime assertion test against the binary build.
+- Negative test proving the binary code path never opens a direct LLM provider connection for claim discovery or claim review. Owner: maintainer. Next action: add a build-time grep guard or a runtime assertion test against the binary build; no existing import-policy check today.

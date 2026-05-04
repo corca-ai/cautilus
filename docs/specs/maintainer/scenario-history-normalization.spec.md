@@ -4,7 +4,7 @@ Scenario history and proposal normalization keep protected checks reusable acros
 
 Aligned user claims: U2, U3, U7.
 Proof route: deterministic plus held-out eval.
-Current evidence status: proof-planning.
+Current evidence status: partial.
 Next action: connect scenario proposal sources, scenario history cadence, normalizer coverage, and held-out selection to eval and optimize packets.
 Absorbs: scenario proposal, scenario history, protected check, held-out, iterate cadence, train cadence, normalizer, proposal packet, context recovery, skill failure episode.
 
@@ -21,10 +21,10 @@ Cautilus preserves useful scenarios as durable candidates that can be reused for
 
 ## Evidence
 
+- [internal/runtime/scenario_history_test.go](../../../internal/runtime/scenario_history_test.go) `TestSelectProfileScenarioIDsReturnsAllTrainScenariosWithoutHistory`, `TestUpdateScenarioHistoryGraduatesPerfectTrainScenarios`, and `TestScenarioBaselineCacheKeyStableAcrossIDOrder` together prove deterministic held-out selection and observable history cadence.
+- [internal/runtime/proposals_test.go](../../../internal/runtime/proposals_test.go) `TestNormalizeChatbotProposalCandidatesRespectsWordBoundary` family plus [scripts/agent-runtime/scenario-proposal-schemas.test.mjs](../../../scripts/agent-runtime/scenario-proposal-schemas.test.mjs) prove reproducible inspectable normalizer output across chatbot, skill, and workflow shapes.
 - `npm run lint:scenario-normalizers` enforces runtime completeness of the surviving normalization helpers via [scripts/check-scenario-normalization-completeness.mjs](../../../scripts/check-scenario-normalization-completeness.mjs).
 
 ## Evidence Gaps
 
-- Test proving held-out selection rules choose the same scenarios for the same input across tuning loops, so iterate-vs-train cadence does not silently drift. Owner: maintainer. Next action: extract a focused unit test from the existing held-out selection logic.
-- Test proving normalizer output is reproducible and inspectable, not a hidden one-off shape transformation. Owner: maintainer. Next action: add fixture inputs and assert normalizer output is byte-stable across runs.
-- Held-out eval result packet attached to a scenario-history cycle so the reuse contract has a reopenable end-to-end proof. Owner: maintainer. Next action: capture a self-dogfood scenario-history cycle with held-out validation and link the summary.
+- Held-out eval result packet attached to a scenario-history cycle so the reuse contract has a reopenable end-to-end proof. Owner: maintainer. Next action: capture a self-dogfood scenario-history cycle with held-out validation under `artifacts/self-dogfood/` and link the summary; no checked-in artifact today.

@@ -13,8 +13,11 @@ Cautilus standardizes claim, eval, optimize, readiness, and evidence packets wit
 - Adapter-owned commands keep host behavior explicit instead of hiding it inside product logic.
 - The same product workflow can be reused across repos because repo-specific behavior lives in adapters and fixtures.
 
+## Evidence
+
+- The maintainer-side proof of host-owned-runner invocation lives at [docs/specs/maintainer/adapter-host-ownership.spec.md](../maintainer/adapter-host-ownership.spec.md), which is where the adapter contract test and consumer dogfood are owned.
+- [scripts/on-demand/smoke-external-consumer.test.mjs](../../../scripts/on-demand/smoke-external-consumer.test.mjs) bootstraps a temporary consumer repo through `npm run consumer:onboard:smoke` and exercises the end-to-end install → adapter init → first bounded run path against host-owned wiring.
+
 ## Evidence Gaps
 
-- Adapter contract test that proves Cautilus invokes host-owned runners without importing host-specific logic into product code paths. Owner: maintainer. Next action: link the existing adapter contract test or author one against a checked-in fixture adapter.
-- Consumer-repo proof that the same product workflow runs unchanged across two adapters. Owner: maintainer. Next action: link the `npm run consumer:onboard:smoke` end-to-end evidence packet for the canonical bootstrap path.
-- Per-subclaim binding of each existing host-owned-command path (prompts, model choice, credentials, runtime launch) to a deterministic adapter test. Owner: maintainer. Next action: enumerate the host-owned fields under [docs/contracts/adapter-contract.md](../../contracts/adapter-contract.md) and attach one test per field.
+- Per-host-owned-field test against [docs/contracts/adapter-contract.md](../../contracts/adapter-contract.md) (prompts, model choice, credentials, runtime launch). Owner: maintainer. Next action: enumerate the host-owned fields and author one focused test per field; existing `internal/runtime/adapter_test.go` covers shape but not per-field binding.

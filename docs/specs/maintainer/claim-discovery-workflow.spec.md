@@ -4,7 +4,7 @@ Claim discovery is a high-recall proof-planning pass, not a verdict.
 
 Aligned user claims: U1, U7.
 Proof route: deterministic plus skill review.
-Current evidence status: proof-planning.
+Current evidence status: partial.
 Next action: keep source-scope tests, canonical-map generation, and review-result replay connected to the active spec tree.
 Absorbs: source inventory, entry Markdown, linked Markdown, `.gitignore`, raw candidates, duplicate handling, canonical compression, review-result replay, false-positive review, false-negative boundary.
 
@@ -19,7 +19,8 @@ Absorbs: source inventory, entry Markdown, linked Markdown, `.gitignore`, raw ca
 - The active scan boundary excludes archived spec trees and superseded claim pages so they do not dilute current proof planning.
 - Canonical compression and review-result replay consume the discovery packet without mutating discovery's recall behavior.
 
-## Evidence Gaps
+## Evidence
 
-- Deterministic test or evidence bundle proving the active scan excludes `docs/specs/old/**` and `docs/claims/**` so the current source-packet observation stops being a one-session note. Owner: maintainer. Next action: link the existing source-scope test or extract a focused unit test against a fixture repo.
-- Per-subclaim binding from review-result replay, canonical compression, and false-positive review claims back to their respective deterministic or fixture-backed proofs. Owner: maintainer. Next action: enumerate the absorbed surfaces and attach the corresponding existing tests or audit packets.
+- [internal/runtime/claim_discovery_test.go](../../../internal/runtime/claim_discovery_test.go) `TestDiscoverClaimProofPlanHonorsAdapterExcludesForLinkedMarkdown` exercises the active scan boundary against a fixture repo and asserts adapter excludes drop archived and superseded paths from the inventory.
+- [scripts/agent-runtime/build-canonical-claim-map.test.mjs](../../../scripts/agent-runtime/build-canonical-claim-map.test.mjs) covers canonical compression against checked-in user/maintainer catalogs.
+- [internal/runtime/claim_discovery_test.go](../../../internal/runtime/claim_discovery_test.go) `TestApplyClaimReviewResult*` family covers review-result replay including missing IDs, fingerprint guards, and reused-id rejection.

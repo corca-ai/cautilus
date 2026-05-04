@@ -4,7 +4,7 @@ Optimization is a bounded behavior-improvement loop.
 
 Aligned user claims: U3, U7.
 Proof route: deterministic plus held-out eval.
-Current evidence status: proof-planning.
+Current evidence status: partial.
 Next action: connect optimize packet tests to at least one held-out eval proof before treating improvement claims as satisfied.
 Absorbs: optimize prepare-input, search budget, checkpoint, frontier, proposal, held-out validation, protected checks, runtime fingerprint, blocked readiness, reuse.
 
@@ -19,8 +19,11 @@ Optimization starts from an explicit behavior target and budget, and records wha
 - Blocked-readiness conditions surface through the optimize packet rather than being hidden behind repeated retries.
 - Held-out evaluation guards regressions; an improvement claim is not treated as satisfied without a held-out proof.
 
+## Evidence
+
+- [scripts/agent-runtime/optimization-contract-schemas.test.mjs](../../../scripts/agent-runtime/optimization-contract-schemas.test.mjs) verifies checked-in optimize input, proposal, and revision packets against schemas; [scripts/agent-runtime/optimize-search-contract-schemas.test.mjs](../../../scripts/agent-runtime/optimize-search-contract-schemas.test.mjs) does the same for search input/result, including budget, checkpoint, and frontier fields.
+- [internal/runtime/evaluation_proof_test.go](../../../internal/runtime/evaluation_proof_test.go) `TestOptimizeInputRejectsBlockedProductRunnerProof` and `TestEvaluationProofPreservesBlockersThroughSummary` show blocked-readiness states reaching the optimize packet rather than being masked.
+
 ## Evidence Gaps
 
-- Optimize input and search-result schema tests proving budget, checkpoint, and frontier fields stay populated end-to-end. Owner: maintainer. Next action: link existing optimize schema tests or extract a focused unit test against the canonical input/output packets.
-- At least one held-out eval result packet attached to a real optimize run so improvement claims have a reopenable before/after evidence pair. Owner: maintainer. Next action: capture a self-dogfood optimize run with held-out validation and link both summaries.
-- Test proving blocked readiness states surface in the optimize packet rather than being masked. Owner: maintainer. Next action: add a fixture-backed test that triggers a blocked-readiness condition and asserts it appears in the output.
+- Held-out eval result packet attached to a real optimize run so improvement claims have a reopenable before/after evidence pair. Owner: maintainer. Next action: capture a self-dogfood optimize cycle with held-out validation under `artifacts/self-dogfood/` and link both summaries.

@@ -22,10 +22,10 @@ Readiness commands tell the operator what can run next, what is blocked, and whi
 
 ## Evidence
 
-- The shared runner-readiness assessment is implemented in [internal/runtime/runner_readiness.go](../../../internal/runtime/runner_readiness.go) and exercised by [internal/runtime/runner_readiness_test.go](../../../internal/runtime/runner_readiness_test.go).
+- [internal/runtime/runner_readiness_test.go](../../../internal/runtime/runner_readiness_test.go) `TestDoctorAndAgentStatusShareRunnerReadinessFacts` directly asserts the parity of readiness verdicts between `doctor` and `agent status`.
+- The shared runner-readiness assessment is implemented in [internal/runtime/runner_readiness.go](../../../internal/runtime/runner_readiness.go) and covered by the surrounding tests in the same file.
 - The user-facing readiness surface smoke is enforced by [docs/specs/user/doctor-readiness.spec.md](../user/doctor-readiness.spec.md) (specdown directives over `doctor --help` and `agent status --json`).
 
 ## Evidence Gaps
 
-- Test proving `doctor` and `agent status` produce identical readiness verdicts and next-action strings for the same repo state. Owner: maintainer. Next action: add a fixture-backed snapshot test that asserts both commands' outputs agree on a controlled scenario.
-- Test proving a ready doctor result does not silently advertise behavior-claim satisfaction. Owner: maintainer. Next action: add an assertion that the readiness packet does not include claim-satisfied counts in its public fields.
+- Negative test proving a ready doctor result does not silently advertise behavior-claim satisfaction. Owner: maintainer. Next action: add an assertion that the readiness packet does not include claim-satisfied counts in its public fields; existing tests cover share-of-facts but not this absence property.

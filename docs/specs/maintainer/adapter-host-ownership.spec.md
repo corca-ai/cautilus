@@ -4,7 +4,7 @@ Host repos own runtime-specific behavior.
 
 Aligned user claims: U2, U5.
 Proof route: deterministic plus consumer dogfood.
-Current evidence status: proof-planning.
+Current evidence status: partial.
 Next action: connect adapter contract tests and at least one consumer repo proof that Cautilus invokes host-owned runners without importing host-specific logic.
 Absorbs: adapters, prompts, model choice, credentials, runtime launch, command templates, backend selection, fixtures, acceptance policy, repo-specific flags, portable schema.
 
@@ -19,8 +19,12 @@ Cautilus owns generic workflow contracts, packet shapes, readiness semantics, be
 - The same product workflow runs unchanged across two adapters because repo-specific behavior lives in adapters and fixtures.
 - Cautilus does not import host-specific prompts, runners, credentials, or policy into product code paths.
 
+## Evidence
+
+- [internal/runtime/adapter_test.go](../../../internal/runtime/adapter_test.go) `TestValidateAdapterData*` family covers explicit and command-instance discovery, live-run invocation, typed runner readiness, and claim-discovery configuration against the adapter contract.
+- [scripts/agent-runtime/adapter-resolution.test.mjs](../../../scripts/agent-runtime/adapter-resolution.test.mjs) covers adapter resolution across host-owned name and path variants.
+- [scripts/on-demand/smoke-external-consumer.test.mjs](../../../scripts/on-demand/smoke-external-consumer.test.mjs) bootstraps a temporary external consumer repo through `npm run consumer:onboard:smoke` and asserts the same product workflow runs unchanged.
+
 ## Evidence Gaps
 
-- Adapter contract test that exercises a fixture adapter end-to-end and asserts that host-owned command templates remain explicit and product-owned schemas stay portable. Owner: maintainer. Next action: link the existing adapter contract test or author one against [docs/contracts/adapter-contract.md](../../contracts/adapter-contract.md).
-- Consumer dogfood proof that the same product workflow runs unchanged across two adapters. Owner: maintainer. Next action: link the `npm run consumer:onboard:smoke` evidence packet for the canonical bootstrap path.
-- Negative test proving product code paths do not import host-specific prompts, runners, credentials, or policy. Owner: maintainer. Next action: add a build-time grep guard against host-specific names in the product source tree.
+- Negative test proving product code paths do not import host-specific prompts, runners, credentials, or policy. Owner: maintainer. Next action: add a build-time grep guard against host-specific names in the product source tree; no existing import-policy check today.

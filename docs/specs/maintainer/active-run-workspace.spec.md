@@ -4,7 +4,7 @@ Active runs keep multi-command workflows resumable without hiding workspace owne
 
 Aligned user claims: U2, U6, U7.
 Proof route: deterministic.
-Current evidence status: proof-planning.
+Current evidence status: partial.
 Next action: keep active-run resolution, auto-materialization, pruning, and run-directory freshness tied to command tests and packet fields.
 Absorbs: active run, run directory, workspace lifecycle, manifest, auto-materialize, prune, output directory, compare workspace, candidate workspace, baseline workspace.
 
@@ -19,8 +19,11 @@ Cautilus can allocate and remember a per-run workspace for a workflow, but comma
 - Workflow metadata lives in command artifacts; the workspace is not treated as the source of truth for the workflow.
 - Compare, candidate, and baseline workspaces are inspectable rather than implicit.
 
+## Evidence
+
+- [scripts/agent-runtime/active-run.test.mjs](../../../scripts/agent-runtime/active-run.test.mjs) covers env-var, explicit, and auto-materialize precedence so sequential commands resolve to the same active run.
+- [scripts/agent-runtime/workspace-start.test.mjs](../../../scripts/agent-runtime/workspace-start.test.mjs), [scripts/agent-runtime/prepare-compare-worktrees.test.mjs](../../../scripts/agent-runtime/prepare-compare-worktrees.test.mjs), and [scripts/agent-runtime/prune-workspace-artifacts.test.mjs](../../../scripts/agent-runtime/prune-workspace-artifacts.test.mjs) cover auto-materialize manifests, compare-worktree preparation, and prune cadence respectively.
+
 ## Evidence Gaps
 
-- Test proving `eval test` and follow-on commands resolve to the same active run when invoked sequentially in one workflow. Owner: maintainer. Next action: extract a focused integration test against `resolveRunDir`.
-- Test proving the active-run marker does not leak into product-owned packets as workflow truth. Owner: maintainer. Next action: assert that the marker only appears under the workspace boundary, not inside `cautilus.*` schema fields.
-- Per-subclaim binding from the absorbed surfaces (compare workspace, candidate workspace, baseline workspace, prune, auto-materialize) back to the corresponding command tests. Owner: maintainer. Next action: enumerate the absorbed surfaces and link the matching tests under [internal/](../../../internal/) and [scripts/](../../../scripts/).
+- Test proving the active-run marker does not leak into product-owned packets as workflow truth. Owner: maintainer. Next action: assert that the marker only appears under the workspace boundary, not inside `cautilus.*` schema fields; existing tests only cover marker resolution, not its absence in product schemas.

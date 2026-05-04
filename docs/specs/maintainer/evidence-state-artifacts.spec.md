@@ -21,10 +21,7 @@ Reviewer agreement can update wording, audience, proof route, readiness, and nex
 
 ## Evidence
 
-- `claim review apply-result` enforces the satisfied-evidence boundary in the implementation and is exercised through the `dev/skill` review-prepare-flow and reviewer-launch-flow fixtures under [fixtures/eval/dev/skill/](../../../fixtures/eval/dev/skill/).
-- `claim validate` is wired into `lint:specs` indirectly through downstream verification flows; the command itself is documented in [docs/contracts/claim-discovery-workflow.md](../../contracts/claim-discovery-workflow.md).
-
-## Evidence Gaps
-
-- Focused unit test proving review agreement alone cannot move a claim to satisfied without a direct or verified evidence ref. Owner: maintainer. Next action: extract a unit test from the existing `claim review apply-result` guard.
-- Stale-packet rendering test proving the rendered Markdown / HTML / status views surface stale state rather than masking it. Owner: maintainer. Next action: link the existing freshness logic in `claim show` and add a renderer-side test.
+- [internal/runtime/claim_discovery_test.go](../../../internal/runtime/claim_discovery_test.go) `TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence` enforces the satisfied-evidence boundary in `claim review apply-result`.
+- [internal/runtime/claim_discovery_test.go](../../../internal/runtime/claim_discovery_test.go) `TestApplyClaimReviewResultAllowsStaleToRevokeSatisfiedEvidence` and `TestBuildClaimValidationReportValidatesEvidenceRefs` cover stale-state propagation upstream.
+- [scripts/agent-runtime/render-claim-status-report.test.mjs](../../../scripts/agent-runtime/render-claim-status-report.test.mjs) covers the renderer side so stale Markdown / HTML / status views surface stale state instead of masking it.
+- The `dev/skill` review-prepare-flow and reviewer-launch-flow audit fixtures under [fixtures/eval/dev/skill/](../../../fixtures/eval/dev/skill/) exercise the application path end-to-end.

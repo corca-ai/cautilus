@@ -13,8 +13,7 @@ Cautilus leaves evidence that another person or agent can reopen instead of rely
 - Report views should make stale, blocked, or missing evidence visible.
 - Human-friendly views support claim, eval, optimize, and doctor workflows; they do not prove behavior by themselves.
 
-## Evidence Gaps
+## Evidence
 
-- Report renderer tests proving Markdown and HTML views project the same packet without becoming an independent truth source. Owner: maintainer. Next action: link existing report rendering tests under `scripts/agent-runtime/` or author a renderer-projection test.
-- Packet freshness check proving stale packets surface stale state in the rendered view rather than masking it. Owner: maintainer. Next action: link the existing freshness logic in `claim show` / `agent status` or extend it with a renderer-side test.
-- Per-subclaim binding from each rendered view (claim status report, eval summary, doctor report, optimize report) back to its source packet schema. Owner: maintainer. Next action: enumerate the rendered views and attach one render-from-packet test per view.
+- [scripts/agent-runtime/reviewable-artifact-projections.test.mjs](../../../scripts/agent-runtime/reviewable-artifact-projections.test.mjs) enumerates the shipped readable views (report, review, eval summary, claim status) and asserts each projects from a source packet without becoming an independent truth surface.
+- [scripts/agent-runtime/render-claim-status-report.test.mjs](../../../scripts/agent-runtime/render-claim-status-report.test.mjs) covers the renderer's stale-state pass-through, including the case where a refresh plan points at an older base packet and the rendered view surfaces that as historical rather than masking it.
