@@ -60,6 +60,90 @@ function stableDisplayPath(filePath, cwd = process.cwd()) {
 	return slashPath(path.normalize(filePath));
 }
 
+function reviewApplicationOrEmpty(packet) {
+	if (packet.reviewApplication && typeof packet.reviewApplication === "object") {
+		return packet.reviewApplication;
+	}
+	return {};
+}
+
+function stableDisplayPaths(paths, cwd) {
+	return paths.map((filePath) => stableDisplayPath(filePath, cwd));
+}
+
+function emptyApplicationLog() {
+	return {
+		appliedReviewResultPaths: [],
+		skippedReviewResultPaths: [],
+		lastAppliedReviewResultPath: "",
+		appliedResultCount: 0,
+		skippedResultCount: 0,
+		keptUpdateCount: 0,
+		droppedUpdateCount: 0,
+	};
+}
+
+function assertNoTmpdirLeak(value, context, tmpdirPrefix) {
+	if (!tmpdirPrefix) {
+		return;
+	}
+	if (typeof value === "string") {
+		if (value.startsWith(tmpdirPrefix) || value.includes(tmpdirPrefix)) {
+			throw new Error(`temp path leak detected in ${context}: ${value}`);
+		}
+		return;
+	}
+	if (Array.isArray(value)) {
+		value.forEach((entry, index) => assertNoTmpdirLeak(entry, `${context}[${index}]`, tmpdirPrefix));
+		return;
+	}
+	if (value && typeof value === "object") {
+		for (const [key, child] of Object.entries(value)) {
+			assertNoTmpdirLeak(child, `${context}.${key}`, tmpdirPrefix);
+		}
+	}
+}
+
+export function projectAggregateProvenance(packet, {
+	claims,
+	output,
+	applicationLog,
+	cwd = process.cwd(),
+	tmpdirPrefix = "",
+} = {}) {
+	if (!packet || typeof packet !== "object") {
+		return packet;
+	}
+	const log = applicationLog || emptyApplicationLog();
+	const projected = {
+		...packet,
+		reviewApplication: {
+			...reviewApplicationOrEmpty(packet),
+			claimsPath: stableDisplayPath(claims, cwd),
+			outputPath: stableDisplayPath(output, cwd),
+			reviewResultPath: log.lastAppliedReviewResultPath
+				? stableDisplayPath(log.lastAppliedReviewResultPath, cwd)
+				: "",
+			aggregateReviewResultPaths: stableDisplayPaths(log.appliedReviewResultPaths, cwd),
+			skippedReviewResultPaths: stableDisplayPaths(log.skippedReviewResultPaths, cwd),
+			appliedResultCount: log.appliedResultCount,
+			skippedResultCount: log.skippedResultCount,
+			keptUpdateCount: log.keptUpdateCount,
+			droppedUpdateCount: log.droppedUpdateCount,
+			provenanceMode: "aggregate-current-review-results",
+		},
+	};
+	assertNoTmpdirLeak(projected.reviewApplication, "reviewApplication", tmpdirPrefix);
+	if (projected.reviewApplication.aggregateReviewResultPaths.length !== log.appliedResultCount) {
+		throw new Error(
+			`aggregateReviewResultPaths length ${projected.reviewApplication.aggregateReviewResultPaths.length} does not match appliedResultCount ${log.appliedResultCount}`,
+		);
+	}
+	return projected;
+}
+
+// Back-compat exports retained for callers that imported the previous helper names.
+// Both delegate to projectAggregateProvenance under the hood.
 export function normalizeAggregateReviewApplication(packet, { claims, reviewResultPath, cwd = process.cwd() } = {}) {
 	if (!packet || typeof packet !== "object" || !packet.reviewApplication) {
 		return packet;
@@ -73,17 +157,6 @@ export function normalizeAggregateReviewApplication(packet, { claims, reviewResu
 			provenanceMode: "aggregate-current-review-results",
 		},
 	};
-}
-
-function reviewApplicationOrEmpty(packet) {
-	if (packet.reviewApplication && typeof packet.reviewApplication === "object") {
-		return packet.reviewApplication;
-	}
-	return {};
-}
-
-function stableDisplayPaths(paths, cwd) {
-	return paths.map((filePath) => stableDisplayPath(filePath, cwd));
 }
 
 export function writeAggregateReviewApplication(packet, {
@@ -267,70 +340,70 @@ function runApplyResult({ cautilusBin, claims, reviewResult, output }) {
 	}
 }
 
+export function selectOrderedReviewResults(options) {
+	return reviewResultPaths(options);
+}
+
+export function applyOrderedResults({ basePacket, orderedPaths, cautilusBin, tmpdir }) {
+	const currentIndex = claimIndexForPacket(basePacket);
+	const currentPath = path.join(tmpdir, "current.json");
+	writeJSON(currentPath, basePacket);
+	const log = emptyApplicationLog();
+	let appliedPacketPath = currentPath;
+	for (const reviewResultPath of orderedPaths) {
+		const reviewResult = readJSON(reviewResultPath);
+		const filtered = filterReviewResultForCurrentClaims(reviewResult, currentIndex);
+		log.droppedUpdateCount += filtered.droppedUpdateCount;
+		if (filtered.keptUpdateCount === 0) {
+			log.skippedResultCount += 1;
+			log.skippedReviewResultPaths.push(reviewResultPath);
+			continue;
+		}
+		log.keptUpdateCount += filtered.keptUpdateCount;
+		const filteredPath = path.join(tmpdir, path.basename(reviewResultPath));
+		const nextPath = path.join(tmpdir, `applied-${log.appliedResultCount + 1}.json`);
+		writeJSON(filteredPath, filtered.reviewResult);
+		runApplyResult({ cautilusBin, claims: appliedPacketPath, reviewResult: filteredPath, output: nextPath });
+		appliedPacketPath = nextPath;
+		log.appliedResultCount += 1;
+		log.lastAppliedReviewResultPath = reviewResultPath;
+		log.appliedReviewResultPaths.push(reviewResultPath);
+	}
+	for (const operatorPath of [...log.appliedReviewResultPaths, ...log.skippedReviewResultPaths]) {
+		if (operatorPath.startsWith(tmpdir)) {
+			throw new Error(`applicationLog leaked tmp path: ${operatorPath}`);
+		}
+	}
+	return { finalPacketPath: appliedPacketPath, applicationLog: log };
+}
+
 export function applyCurrentReviewResults(options) {
 	const basePacket = readJSON(options.claims);
-	const currentIndex = claimIndexForPacket(basePacket);
-	const paths = reviewResultPaths(options);
+	const orderedPaths = selectOrderedReviewResults(options);
 	const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), "cautilus-review-results-"));
-	const currentPath = path.join(tmpdir, "current.json");
-	let appliedPacketPath = currentPath;
-	let appliedResultCount = 0;
-	let skippedResultCount = 0;
-	let keptUpdateCount = 0;
-	let droppedUpdateCount = 0;
-	let lastAppliedReviewResultPath = "";
-	const appliedReviewResultPaths = [];
-	const skippedReviewResultPaths = [];
 	try {
-		writeJSON(currentPath, basePacket);
-		for (const reviewResultPath of paths) {
-			const reviewResult = readJSON(reviewResultPath);
-			const filtered = filterReviewResultForCurrentClaims(reviewResult, currentIndex);
-			droppedUpdateCount += filtered.droppedUpdateCount;
-			if (filtered.keptUpdateCount === 0) {
-				skippedResultCount += 1;
-				skippedReviewResultPaths.push(reviewResultPath);
-				continue;
-			}
-			keptUpdateCount += filtered.keptUpdateCount;
-			const filteredPath = path.join(tmpdir, path.basename(reviewResultPath));
-			const nextPath = path.join(tmpdir, `applied-${appliedResultCount + 1}.json`);
-			writeJSON(filteredPath, filtered.reviewResult);
-			runApplyResult({
-				cautilusBin: options.cautilusBin,
-				claims: appliedPacketPath,
-				reviewResult: filteredPath,
-				output: nextPath,
-			});
-			appliedPacketPath = nextPath;
-			appliedResultCount += 1;
-			lastAppliedReviewResultPath = reviewResultPath;
-			appliedReviewResultPaths.push(reviewResultPath);
-		}
+		const { finalPacketPath, applicationLog } = applyOrderedResults({
+			basePacket,
+			orderedPaths,
+			cautilusBin: options.cautilusBin,
+			tmpdir,
+		});
 		fs.mkdirSync(path.dirname(options.output), { recursive: true });
-		fs.copyFileSync(appliedPacketPath, options.output);
-		if (lastAppliedReviewResultPath) {
-			const normalizedPacket = normalizeAggregateReviewApplication(readJSON(options.output), {
-				claims: options.claims,
-				reviewResultPath: lastAppliedReviewResultPath,
-			});
-			const outputPacket = writeAggregateReviewApplication(normalizedPacket, {
+		fs.copyFileSync(finalPacketPath, options.output);
+		if (applicationLog.appliedResultCount > 0) {
+			const projected = projectAggregateProvenance(readJSON(options.output), {
 				claims: options.claims,
 				output: options.output,
-				appliedReviewResultPaths,
-				skippedReviewResultPaths,
-				appliedResultCount,
-				skippedResultCount,
-				keptUpdateCount,
-				droppedUpdateCount,
+				applicationLog,
+				tmpdirPrefix: tmpdir,
 			});
-			writeJSON(options.output, outputPacket);
+			writeJSON(options.output, projected);
 		}
 		return {
-			appliedResultCount,
-			skippedResultCount,
-			keptUpdateCount,
-			droppedUpdateCount,
+			appliedResultCount: applicationLog.appliedResultCount,
+			skippedResultCount: applicationLog.skippedResultCount,
+			keptUpdateCount: applicationLog.keptUpdateCount,
+			droppedUpdateCount: applicationLog.droppedUpdateCount,
 			output: options.output,
 		};
 	} finally {

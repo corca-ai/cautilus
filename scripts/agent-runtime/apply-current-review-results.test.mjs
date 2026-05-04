@@ -11,6 +11,7 @@ import {
 	filterReviewResultForCurrentClaims,
 	filterReviewResultForClaimIds,
 	normalizeAggregateReviewApplication,
+	projectAggregateProvenance,
 	reviewResultPaths,
 	reviewResultTimestamp,
 	writeAggregateReviewApplication,
@@ -166,6 +167,106 @@ test("normalizeAggregateReviewApplication replaces temporary paths with stable i
 		appliedUpdateCount: 1,
 		provenanceMode: "aggregate-current-review-results",
 	});
+});
+
+test("projectAggregateProvenance records aggregate fields in one pass without duplicating helpers", () => {
+	const projected = projectAggregateProvenance(
+		{
+			reviewApplication: {
+				schemaVersion: "cautilus.claim_review_result.v1",
+				appliedUpdateCount: 1,
+			},
+		},
+		{
+			claims: "/repo/.cautilus/claims/latest.json",
+			output: "/repo/.cautilus/claims/evidenced.json",
+			applicationLog: {
+				appliedReviewResultPaths: [
+					"/repo/.cautilus/claims/review-result-one.json",
+					"/repo/.cautilus/claims/review-result-two.json",
+				],
+				skippedReviewResultPaths: ["/repo/.cautilus/claims/review-result-stale.json"],
+				lastAppliedReviewResultPath: "/repo/.cautilus/claims/review-result-two.json",
+				appliedResultCount: 2,
+				skippedResultCount: 1,
+				keptUpdateCount: 3,
+				droppedUpdateCount: 4,
+			},
+			cwd: "/repo",
+		},
+	);
+
+	assert.deepEqual(projected.reviewApplication, {
+		schemaVersion: "cautilus.claim_review_result.v1",
+		appliedUpdateCount: 1,
+		claimsPath: ".cautilus/claims/latest.json",
+		outputPath: ".cautilus/claims/evidenced.json",
+		reviewResultPath: ".cautilus/claims/review-result-two.json",
+		aggregateReviewResultPaths: [
+			".cautilus/claims/review-result-one.json",
+			".cautilus/claims/review-result-two.json",
+		],
+		skippedReviewResultPaths: [".cautilus/claims/review-result-stale.json"],
+		appliedResultCount: 2,
+		skippedResultCount: 1,
+		keptUpdateCount: 3,
+		droppedUpdateCount: 4,
+		provenanceMode: "aggregate-current-review-results",
+	});
+});
+
+test("projectAggregateProvenance throws when reviewApplication still references a tmpdir prefix", () => {
+	assert.throws(
+		() =>
+			projectAggregateProvenance(
+				{
+					reviewApplication: {
+						schemaVersion: "cautilus.claim_review_result.v1",
+						leakedSidePath: "/tmp/cautilus-review-results-abc/applied-1.json",
+					},
+				},
+				{
+					claims: "/repo/.cautilus/claims/latest.json",
+					output: "/repo/.cautilus/claims/evidenced.json",
+					applicationLog: {
+						appliedReviewResultPaths: ["/repo/.cautilus/claims/review-result-one.json"],
+						skippedReviewResultPaths: [],
+						lastAppliedReviewResultPath: "/repo/.cautilus/claims/review-result-one.json",
+						appliedResultCount: 1,
+						skippedResultCount: 0,
+						keptUpdateCount: 1,
+						droppedUpdateCount: 0,
+					},
+					cwd: "/repo",
+					tmpdirPrefix: "/tmp/cautilus-review-results-abc",
+				},
+			),
+		/temp path leak detected/,
+	);
+});
+
+test("projectAggregateProvenance throws when applicationLog count drifts from aggregate paths", () => {
+	assert.throws(
+		() =>
+			projectAggregateProvenance(
+				{ reviewApplication: { schemaVersion: "cautilus.claim_review_result.v1" } },
+				{
+					claims: "/repo/.cautilus/claims/latest.json",
+					output: "/repo/.cautilus/claims/evidenced.json",
+					applicationLog: {
+						appliedReviewResultPaths: ["/repo/.cautilus/claims/review-result-one.json"],
+						skippedReviewResultPaths: [],
+						lastAppliedReviewResultPath: "/repo/.cautilus/claims/review-result-one.json",
+						appliedResultCount: 2,
+						skippedResultCount: 0,
+						keptUpdateCount: 1,
+						droppedUpdateCount: 0,
+					},
+					cwd: "/repo",
+				},
+			),
+		/aggregateReviewResultPaths length 1 does not match appliedResultCount 2/,
+	);
 });
 
 test("writeAggregateReviewApplication records all applied review-result paths", () => {
