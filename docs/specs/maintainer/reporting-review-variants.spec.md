@@ -10,10 +10,17 @@ Absorbs: report packet, HTML report, Markdown report, review packet, review vari
 
 ## Maintainer Promise
 
-Cautilus should write machine-readable review packets first and render readable projections over the same data.
-Variant review should point both human and machine reviewers at the same durable artifacts.
+Cautilus writes machine-readable review packets first and renders readable projections over the same data; variant review points both human and machine reviewers at the same durable artifacts.
 
-## Proof Notes
+## Subclaims
 
-This area should absorb `docs/contracts/reporting.md`, `docs/contracts/review-packet.md`, and review-variant adapter claims.
-It should not claim behavior proof by itself; reports are views over evidence.
+- Review packets, report packets, and compare-question packets are the source of truth; rendered reports are projections over them.
+- Variant verdicts route both human and machine reviewers to the same durable artifact rather than to view-specific state.
+- Numeric telemetry and human-visible failure shapes are inspectable in the packet, not only in the rendered view.
+- Stale review or report state surfaces as stale rather than being masked by cached rendering.
+
+## Evidence Gaps
+
+- Test proving the rendered Markdown / HTML report is a deterministic projection over the source review or report packet. Owner: maintainer. Next action: add a focused renderer-from-packet test that asserts identical packet input produces identical rendered output.
+- Test proving variant verdict routing reaches the same durable artifact for both human and machine reviewer flows. Owner: maintainer. Next action: extract a unit test from the existing review-variants surface against a fixture verdict.
+- Stale-state rendering test proving the renderer surfaces stale review or report state rather than masking it. Owner: maintainer. Next action: add a fixture with explicit stale state and assert both packet and rendered view expose the staleness.

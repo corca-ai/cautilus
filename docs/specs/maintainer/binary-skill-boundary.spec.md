@@ -10,11 +10,21 @@ Absorbs: command discovery, help text, packet examples, skill routing, review bu
 
 ## Maintainer Promise
 
-The binary owns deterministic command execution, packet schemas, help text, and reusable artifacts.
-The bundled skill owns sequencing, decision boundaries, review-budget explanation, and agent-driven claim curation.
-The binary should not call an LLM provider directly for claim discovery or claim review.
+The binary owns deterministic command execution, packet schemas, help text, and reusable artifacts; the bundled skill owns sequencing, decision boundaries, review-budget explanation, and agent-driven claim curation, and the binary never calls an LLM provider directly for claim discovery or claim review.
 
-## Proof Notes
+## Subclaims
 
-`npm run lint:skill-disclosure` proves the bundled and packaged skill stay within the progressive-disclosure contract.
-The remaining proof gap is behavior-level: a maintained dev/skill fixture should show the skill choosing the claim-review branch without treating raw discovery as a finished answer.
+- The binary owns deterministic command execution, packet schemas, help text, and reusable artifacts.
+- The bundled skill owns sequencing, decision boundaries, review-budget explanation, and agent-driven claim curation.
+- The binary does not call an LLM provider directly for claim discovery or claim review; LLM work routes through the skill or subagent surface.
+- Progressive disclosure between the binary and the bundled skill stays within a deterministically checkable contract.
+
+## Evidence
+
+- `npm run lint:skill-disclosure` enforces the progressive-disclosure contract between the bundled and packaged skill via [scripts/check-cautilus-skill-disclosure.mjs](../../../scripts/check-cautilus-skill-disclosure.mjs).
+- The bundled skill `dev/skill` self-dogfood fixtures (first-scan-flow, refresh-flow, review-prepare-flow, reviewer-launch-flow) under [fixtures/eval/dev/skill/](../../../fixtures/eval/dev/skill/) exercise the skill-driven branches end-to-end.
+
+## Evidence Gaps
+
+- Deterministic command-discovery and help-text snapshot test proving the binary surface advertises only product-owned commands and does not regress when new commands land. Owner: maintainer. Next action: extract a focused snapshot test from the existing `cautilus commands --json` output.
+- Negative test proving the binary code path never opens a direct LLM provider connection for claim discovery or claim review. Owner: maintainer. Next action: add a build-time grep guard or a runtime assertion test against the binary build.

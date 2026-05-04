@@ -13,7 +13,8 @@ Cautilus standardizes claim, eval, optimize, readiness, and evidence packets wit
 - Adapter-owned commands keep host behavior explicit instead of hiding it inside product logic.
 - The same product workflow can be reused across repos because repo-specific behavior lives in adapters and fixtures.
 
-## Evidence
+## Evidence Gaps
 
-Evidence is pending.
-This page should later link adapter contract checks and at least one consumer-repo proof that Cautilus can evaluate a host-owned runner without importing host-specific logic into the product.
+- Adapter contract test that proves Cautilus invokes host-owned runners without importing host-specific logic into product code paths. Owner: maintainer. Next action: link the existing adapter contract test or author one against a checked-in fixture adapter.
+- Consumer-repo proof that the same product workflow runs unchanged across two adapters. Owner: maintainer. Next action: link the `npm run consumer:onboard:smoke` end-to-end evidence packet for the canonical bootstrap path.
+- Per-subclaim binding of each existing host-owned-command path (prompts, model choice, credentials, runtime launch) to a deterministic adapter test. Owner: maintainer. Next action: enumerate the host-owned fields under [docs/contracts/adapter-contract.md](../../contracts/adapter-contract.md) and attach one test per field.

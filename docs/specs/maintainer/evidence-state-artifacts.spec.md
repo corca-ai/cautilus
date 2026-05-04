@@ -10,11 +10,21 @@ Absorbs: evidence refs, possible evidence, satisfied evidence, review labels, st
 
 ## Maintainer Promise
 
-Reviewer agreement can update wording, audience, proof route, readiness, and next action.
-A claim is satisfied only when a direct or verified evidence ref supports it.
-Readable reports are projections over packets and must not become independent truth sources.
+Reviewer agreement can update wording, audience, proof route, readiness, and next action, but a claim becomes satisfied only when a direct or verified evidence ref supports it; readable reports stay projections over packets and never become independent truth sources.
 
-## Proof Notes
+## Subclaims
 
-`claim validate`, `claim show`, canonical-map generation, and report rendering should stay in one reproducible packet flow.
-Freshness must be visible whenever packets point at an older commit.
+- Review-result application updates labels, proof route, readiness, and next action without flipping evidence status by itself.
+- A claim becomes satisfied only when a direct or verified evidence ref supports it; possible evidence and review agreement alone do not satisfy.
+- `claim validate` exits non-zero when packet shape or evidence refs are invalid.
+- Stale packet state stays visible in `claim show`, `agent status`, and rendered reports rather than masked behind cached labels.
+
+## Evidence
+
+- `claim review apply-result` enforces the satisfied-evidence boundary in the implementation and is exercised through the `dev/skill` review-prepare-flow and reviewer-launch-flow fixtures under [fixtures/eval/dev/skill/](../../../fixtures/eval/dev/skill/).
+- `claim validate` is wired into `lint:specs` indirectly through downstream verification flows; the command itself is documented in [docs/contracts/claim-discovery-workflow.md](../../contracts/claim-discovery-workflow.md).
+
+## Evidence Gaps
+
+- Focused unit test proving review agreement alone cannot move a claim to satisfied without a direct or verified evidence ref. Owner: maintainer. Next action: extract a unit test from the existing `claim review apply-result` guard.
+- Stale-packet rendering test proving the rendered Markdown / HTML / status views surface stale state rather than masking it. Owner: maintainer. Next action: link the existing freshness logic in `claim show` and add a renderer-side test.
