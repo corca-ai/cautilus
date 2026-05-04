@@ -74,7 +74,7 @@ Quick links:
 The user and maintainer spec indexes are the curated claim source of truth, and [docs/specs/index.spec.md](./docs/specs/index.spec.md) is the executable report entry that includes both views.
 Raw `claim discover` packets remain the source-ref-backed proof-planning input, not the primary document a user should review.
 That report is generated with `specdown` from the claim spec tree.
-Each claim page pairs a bounded product promise with executable evidence or an explicit proof-debt placeholder.
+Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.
 Read the user spec index to understand what Cautilus promises, then use the maintainer index to inspect proof routes, adapters, fixtures, and known gaps.
 
 ## One Reviewable Decision Loop

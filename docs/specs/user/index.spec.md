@@ -4,20 +4,23 @@
 
 These specs are the user-facing source of truth for what the product promises.
 Some claim pages already include executable evidence through the repo-local Cautilus specdown adapter.
-Other subclaims intentionally remain empty until `claim`, `eval`, or `optimize` work produces honest evidence.
+Other proof remains visible as explicit evidence gaps until `claim`, `eval`, or `optimize` work produces honest evidence.
 
 Maintainer view: [Maintainer-Facing Specs](../maintainer/index.spec.md).
 Full claim-spec report entry: [Cautilus Claim Specs](../index.spec.md).
 
 ## Claims
 
-- [Claim Discovery](claim-discovery.spec.md)
-- [Evaluation](evaluation.spec.md)
-- [Optimization](optimization.spec.md)
-- [Doctor And Readiness](doctor-readiness.spec.md)
-- [Product And Host Ownership](ownership.spec.md)
-- [Reviewable Artifacts](reviewable-artifacts.spec.md)
-- [Proof Debt](proof-debt.spec.md)
+- U1: [Claim Discovery](claim-discovery.spec.md)
+- U2: [Evaluation](evaluation.spec.md)
+- U3: [Optimization](optimization.spec.md)
+- U4: [Doctor And Readiness](doctor-readiness.spec.md)
+- U5: [Product And Host Ownership](ownership.spec.md)
+- U6: [Reviewable Artifacts](reviewable-artifacts.spec.md)
+- U7: [Proof Debt](proof-debt.spec.md)
+
+Read this index first when judging the product story.
+Each U-claim page states a user promise, the subclaims that make it concrete, and either attached evidence or an explicit evidence gap.
 
 ## Prerequisite
 

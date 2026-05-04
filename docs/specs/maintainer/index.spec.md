@@ -5,6 +5,10 @@ This index maps the user-facing Cautilus promises to maintainer-owned contracts,
 User view: [User-Facing Specs](../user/index.spec.md).
 Full claim-spec report entry: [Cautilus Claim Specs](../index.spec.md).
 
+Use this view after the user-facing index.
+Each maintainer page names the aligned U-claims, the maintainer promise, concrete subclaims, current evidence, and remaining evidence gaps.
+The `Aligned user claims` field refers to the IDs in the user-facing index.
+
 ## Claims
 
 - [Claim Discovery Workflow](claim-discovery-workflow.spec.md)
