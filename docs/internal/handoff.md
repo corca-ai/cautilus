@@ -8,6 +8,10 @@
 
 ## Current State
 
+- 2026-05-05 Theme A(제품-vs-host import/grep guard) 두 gap이 닫혔다 (`cca9852`).
+  `scripts/check-product-import-isolation.mjs`가 `cmd/`와 `internal/` 모든 비-test Go 파일을 파싱해 third-party import allowlist(현재 `gopkg.in/yaml.v3`만)와 forbidden provider host 4종(`api.anthropic.com`, `api.openai.com`, `generativelanguage.googleapis.com`, `api.x.ai`)을 거부한다.
+  `npm run lint:product-import-isolation`으로 lint chain에 들어왔고, self-test 7개(파서, pass, provider SDK reject, host module reject, provider host 문자열 reject, `_test.go` skip, programmatic API)는 `scripts/check-product-import-isolation.test.mjs`에 있다.
+  `maintainer/binary-skill-boundary.spec.md`와 `maintainer/adapter-host-ownership.spec.md`는 negative-test gap bullet을 `## Evidence` 링크로 승급했고 evidence status는 `partial → covered`다.
 - 2026-05-04 subclaim evidence convention이 lint로 잠겼다 (`f48ed20`).
   `scripts/check-spec-evidence.mjs`가 모든 non-index claim spec 페이지에 대해 `## Subclaims` 비어있지 않음, `## Evidence` 또는 `## Evidence Gaps` 중 하나에 구체 entry ≥1개, "Evidence is pending" 단어 거부 세 가지를 강제한다.
   같은 슬라이스에서 maintainer specs 11개를 user format(`## Subclaims` + `## Evidence`/`## Evidence Gaps`)으로 정렬하고 user specs 3개의 "pending" 표기를 explicit gap bullet로 옮겼다.
@@ -224,14 +228,13 @@
 9. 후속 후보: direct provider parity는 현재 요구사항으로 잠그지 않는다.
    실제 consumer adapter가 direct API와 CLI messaging 비교를 요구할 때 다시 연다.
 10. user/maintainer claim spec tree로 product SOT를 정렬하는 작업의 living-doc 정렬은 끝났고(AGENTS.md/master-plan.md/handoff), subclaim evidence convention도 lint로 잠겼고, 이미 존재하는 evidence는 18 페이지 모두에 link됐다.
-11. 다음 슬라이스 후보 — fixture/test authoring이 필요한 13개 honest gap (`docs/specs/{user,maintainer}/*.spec.md`의 `## Evidence Gaps`에 살아 있음).
-    다섯 theme으로 그루핑된다:
-    - **Theme A: 제품-vs-host import/grep guard (negative test) — 2 gap.** `maintainer/binary-skill-boundary`(binary가 LLM provider 직접 호출 안 함), `maintainer/adapter-host-ownership`(제품 코드가 host-specific 이름 import 안 함). 둘 다 build-time grep guard 또는 동등한 정적 검사로 묶을 수 있다.
+11. 다음 슬라이스 후보 — fixture/test authoring이 필요한 honest gap (`docs/specs/{user,maintainer}/*.spec.md`의 `## Evidence Gaps`에 살아 있음).
+    Theme A(2 gap)는 2026-05-05에 `cca9852`로 닫혔다. 남은 11 gap을 네 theme으로 그루핑한다:
     - **Theme B: absence-style schema assertion — 3 gap.** `maintainer/active-run-workspace`(active-run 마커가 `cautilus.*` schema field에 leak 안 됨), `maintainer/readiness-runtime-status`(readiness packet이 claim-satisfied count를 노출하지 않음), `maintainer/live-invocation-runtime`(provider-specific flag가 product schema field에 없음). 세 개 모두 schema-validation 테스트 형식이라 한 슬라이스에 묶기 좋다.
     - **Theme C: held-out eval artifact 캡처 — 2 gap.** `maintainer/optimization-loop`(self-dogfood optimize cycle held-out 결과), `maintainer/scenario-history-normalization`(scenario-history cycle held-out 결과). `artifacts/self-dogfood/` 아래 새 디렉터리로 떨어져야 함. 실 dogfood 실행 필요.
     - **Theme D: 새 fixture-backed test — 2 gap.** `maintainer/live-invocation-runtime`(batch-run fixture로 multi-scenario loop boundary 증명), `maintainer/reporting-review-variants`(stale-state rendering fixture). 각각 fixture 한 개와 동반 test가 필요.
     - **Theme E: per-host-owned-field test — 1 gap.** `user/ownership`(adapter contract의 prompts/model/credentials/runtime-launch 각 host-owned field마다 한 개 focused test). 한 슬라이스에 일괄 처리 가능.
-    Theme A→B→E→C→D 순서가 자연스럽다 (정적/구조 검사 먼저, 동적 fixture 나중).
+    Theme B→E→C→D 순서가 자연스럽다 (정적/구조 검사 먼저, 동적 fixture 나중).
 12. 다음 후보는 (3) Absorbs 흡수 실행 — `docs/contracts/{active-run,live-run-invocation,live-run-invocation-batch,reporting,review-packet,scenario-history,scenario-proposal-sources}.md`를 해당 maintainer spec으로 흡수하고, deprecated `docs/claims/{user,maintainer}-facing.md` 두 파일을 정리하는 것이다.
     Subclaim evidence가 link로 채워진 상태에서 진행하면 흡수된 contract의 어느 부분이 이미 evidence에 매핑됐는지 보이므로 매핑이 더 정확해진다.
     사용자 결정 대기: (1) U7 proof-debt를 user claim으로 둘지/cross-cutting 차원으로 재배치할지.
