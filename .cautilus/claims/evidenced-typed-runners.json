@@ -11608,7 +11608,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "4f4dd5af3c59ed3934a3ef57147c8a56ecc7101f",
+  "gitCommit": "fe162d3f9e53436e5fed14b706abe9b5bcfe90c2",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
   "reviewApplication": {
