@@ -206,9 +206,12 @@
 
 1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
 2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. 현재 reviewed eval plan은 3개 `dev/skill` claims이고, evidenced eval plan과 `claim show` summary both expose the evidence refs that close them.
+3. 다음 사용자-facing 목표는 README, AGENTS.md, user spec, maintainer spec 네 표면을 HITL해서 maintainer가 만족하는 상태로 만드는 것이다.
+   `7e29bf9`는 pre-HITL 정리로 user index에 U1-U7 ids를 붙이고, maintainer index가 그 ids를 참조한다고 설명하며, [charness-artifacts/hitl/latest.md](../../charness-artifacts/hitl/latest.md)를 네 표면용 review queue로 갱신했다.
+   다음 HITL chunk는 README lines 1-90이고 질문은 "opening narrative plus quick links are good enough for the product's first-reader story?"이다.
+4. 현재 reviewed eval plan은 3개 `dev/skill` claims이고, evidenced eval plan과 `claim show` summary both expose the evidence refs that close them.
    다음 claim-hardening 후보는 dedicated claim report/HTML을 만들지, 아니면 JSON packet 우선 원칙을 유지할지 결정하는 것이다.
-4. 그 다음 claim hardening 후보는 새 dogfood evidence가 드러내는 구체적 실패에서 고른다.
+5. 그 다음 claim hardening 후보는 새 dogfood evidence가 드러내는 구체적 실패에서 고른다.
    review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
    evidence preflight의 첫 slice는 possible evidence hint까지만 허용하는 형태로 들어왔다.
    public `claim group` 또는 `claim refresh` command는 만들지 않는다.
@@ -216,11 +219,11 @@
    그래서 eval-fixture authoring guidance, review-result application branch proof, stale evidence reconciliation 첫 slice는 닫혔다.
    `claim discover --previous <packet>`는 fingerprint가 같은 claim의 reviewed/evidenced state를 carry forward하고, line-number 기반 `claimId`가 바뀌면 evidence ref `supportsClaimIds`를 현재 claim id로 재기록한다.
    carried evidence는 `contentHash`와 claim-evidence bundle target id를 재확인하므로, stale evidence reconciliation 첫 slice도 닫혔다.
-5. evaluation-surface composition primitives C2/C3/C4는 모두 shipped 상태다.
+6. evaluation-surface composition primitives C2/C3/C4는 모두 shipped 상태다.
    C2 `extends`는 2026-05-01에 file-backed `eval test` fixture에서 shipped 됐다.
    C3 `steps`도 2026-05-01에 strict explicit `outputProjection` 기반으로 shipped 됐다.
    C4 `expected.snapshot`은 2026-05-01에 app `finalText` snapshot 비교로 shipped 됐다.
-6. spec follow-up #5 — `scenario normalize` 재범위는 2026-05-01 `27cfb2d`에서 닫힘.
+7. spec follow-up #5 — `scenario normalize` 재범위는 2026-05-01 `27cfb2d`에서 닫힘.
    `cautilus scenarios --json`, `first_bounded_run`, version state, lint/test/docs가 `archetypes` 대신 `normalizationFamilies`를 쓴다.
    `lint:archetypes`는 `lint:scenario-normalizers`로 바뀌었고, refresh-plan overwrite guard도 같이 들어왔다.
 8. 2026-05-01 proof-boundary quality pass에서 app Codex dogfood script 이름은 `:live`에서 `:codex`로 바뀌었고, `check-proof-boundary-names`가 `dogfood:*:live` script가 `cautilus eval live`를 호출하지 않으면 실패한다.
@@ -229,7 +232,7 @@
    실제 consumer adapter가 direct API와 CLI messaging 비교를 요구할 때 다시 연다.
 10. user/maintainer claim spec tree로 product SOT를 정렬하는 작업의 living-doc 정렬은 끝났고(AGENTS.md/master-plan.md/handoff), subclaim evidence convention도 lint로 잠겼고, 이미 존재하는 evidence는 18 페이지 모두에 link됐다.
 11. 다음 슬라이스 후보 — fixture/test authoring이 필요한 honest gap (`docs/specs/{user,maintainer}/*.spec.md`의 `## Evidence Gaps`에 살아 있음).
-    Theme A(2 gap)는 2026-05-05에 `cca9852`로 닫혔다. 남은 11 gap을 네 theme으로 그루핑한다:
+    Theme A(2 gap)는 2026-05-05에 `cca9852`로 닫혔다. 남은 8 gap을 네 theme으로 그루핑한다:
     - **Theme B: absence-style schema assertion — 3 gap.** `maintainer/active-run-workspace`(active-run 마커가 `cautilus.*` schema field에 leak 안 됨), `maintainer/readiness-runtime-status`(readiness packet이 claim-satisfied count를 노출하지 않음), `maintainer/live-invocation-runtime`(provider-specific flag가 product schema field에 없음). 세 개 모두 schema-validation 테스트 형식이라 한 슬라이스에 묶기 좋다.
     - **Theme C: held-out eval artifact 캡처 — 2 gap.** `maintainer/optimization-loop`(self-dogfood optimize cycle held-out 결과), `maintainer/scenario-history-normalization`(scenario-history cycle held-out 결과). `artifacts/self-dogfood/` 아래 새 디렉터리로 떨어져야 함. 실 dogfood 실행 필요.
     - **Theme D: 새 fixture-backed test — 2 gap.** `maintainer/live-invocation-runtime`(batch-run fixture로 multi-scenario loop boundary 증명), `maintainer/reporting-review-variants`(stale-state rendering fixture). 각각 fixture 한 개와 동반 test가 필요.
