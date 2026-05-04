@@ -8,6 +8,19 @@
 
 ## Current State
 
+- 2026-05-03 specdown claim specs가 product SOT가 됐다 (`30a664a`).
+  `docs/specs/index.spec.md`가 report entry이고, 그 아래 `user/index.spec.md`(U1–U7: claim-discovery, evaluation, optimization, doctor-readiness, ownership, reviewable-artifacts, proof-debt)와 `maintainer/index.spec.md`(11 proof area)로 갈라진다.
+  Maintainer specs는 5/3 두 슬라이스로 proof area별 분할됐다 — claim-discovery-workflow / binary-skill-boundary / adapter-host-ownership / evaluation-surfaces-runners / evidence-state-artifacts / optimization-loop / readiness-runtime-status 첫 묶음(`3c02512`)과 active-run-workspace / live-invocation-runtime / reporting-review-variants / scenario-history-normalization 두 번째 묶음(`00f3889`).
+  같은 흐름에서 claim status report가 snapshot-honest 해졌다 (`74b40f9`).
+  legacy `docs/claims/{user,maintainer}-facing.md`는 deprecated planning context로 표시되어 있고 다음 cleanup 슬라이스에서 흡수/삭제 대상이다.
+  AGENTS.md, README.md, master-plan.md는 새 인덱스를 가리키도록 정렬됐다 (`3b23211`).
+- 2026-05-04 작업 세션은 claim discovery proof routing, skill claim-review branch proof, deterministic proof debt cleanup, claim eval/verify hardening 네 축이었다.
+  Discovery 쪽: routing trigger 증명, portable heuristic, caveat routing, scenario proposal evidence kind+provenance 강화 (`2846876`, `6b9b038`, `62870ac`, `97f798e`, `6dd5ea1`, `3292128`).
+  Skill 쪽: claim-review branch proof와 review-budget confirmation, skill workflow claims의 eval routing (`5e3af42`, `b920b1e`, `407c95e`, `1385985`).
+  Deterministic proof debt: `7c447d5`, `71e6e47`, `5663e74`, `4dd69e4`, `0949ab4`, `efec710`로 batch 정리. `efc7c8b`로 claim eval review queue를 요약하고 `16716d5`로 `claim discover --previous`의 silent carry-forward loss를 막았다.
+  `4f4dd5a`로 review-apply pipeline가 explicit application log + tmpdir-leak invariant를 갖고, `fe162d3`로 schema-aware `cautilus packet inspect` 명령이 추가됐다.
+  Eval/verify 쪽: `7502d96` headless product eval runtime, `0f605d6` dev/repo first-tool allowlist scoring, `962fcf5`+`a08898c` observed evidence naming + review surface hint, `1a983fd` verify-side claim evidence hash audit, `836a53f` claim review input packet contract proof.
+  Checked-in claim packets는 routing/proof/carry-forward/pipeline/packet-inspect 슬라이스 직후마다 refresh됐다 (`73e60ae`, `c8e95e4`, `ed8e641`, `3477000`).
 - 2026-05-01 후속 구현으로 commit hash는 freshness 판정의 단독 기준이 아니라 provenance가 됐다.
   Claim packet freshness는 recorded source path/content hash를 현재 checkout과 비교하고, runner assessment freshness는 adapter hash와 listed runner file hashes를 비교한다.
   그래서 generated artifact commit이나 source+claim packet atomic commit 뒤에도 source content가 packet과 일치하면 `fresh-with-head-drift`, `isStale=false`로 review/eval planning이 계속 가능하다.
@@ -205,6 +218,9 @@
    `npm run dogfood:app-chat:codex`와 `npm run dogfood:app-prompt:codex`는 둘 다 `accept-now`, `passed=1`, `failed=0`이며 summary proof는 `productProofReady=false`, `runnerAssessmentState=missing-assessment`다.
 9. 후속 후보: direct provider parity는 현재 요구사항으로 잠그지 않는다.
    실제 consumer adapter가 direct API와 CLI messaging 비교를 요구할 때 다시 연다.
+10. user/maintainer claim spec tree로 product SOT를 정렬하는 작업의 living-doc 정렬은 끝났다(AGENTS.md/master-plan.md/handoff).
+    다음 후보는 (3) Absorbs 흡수 실행 — `docs/contracts/{active-run,live-run-invocation,live-run-invocation-batch,reporting,review-packet,scenario-history,scenario-proposal-sources}.md`를 해당 maintainer spec으로 흡수하고, deprecated `docs/claims/{user,maintainer}-facing.md` 두 파일을 정리하는 것이다.
+    사용자 결정 대기: (1) U5/U6/U7 evidence 정책(빈 채로 둘지/최소 smoke proof 붙일지), (2) U7 proof-debt를 user claim으로 둘지/cross-cutting 차원으로 재배치할지.
 
 ## Discuss
 
