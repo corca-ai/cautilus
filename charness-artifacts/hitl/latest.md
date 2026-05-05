@@ -1,62 +1,64 @@
-# HITL Review: README, AGENTS, and Claim Specs
+# HITL Review: Cautilus User-Facing Specs
 Date: 2026-05-05
 
 ## Target
 
-- [README.md](../../README.md)
-- [AGENTS.md](../../AGENTS.md)
 - [docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md) and user claim pages
-- [docs/specs/maintainer/index.spec.md](../../docs/specs/maintainer/index.spec.md) and maintainer proof-area pages
 
 ## Goal
 
-Use human judgment to decide whether the four reader-facing surfaces now tell one coherent product story.
-The desired final state is that a maintainer can review these four surfaces and be satisfied that Cautilus's product promises, proof boundaries, and remaining evidence gaps are understandable without reading raw claim packets first.
+Use human judgment to reshape the user-facing claim spec tree so it reads as acceptance criteria for Cautilus's product promises.
+The desired final state is that a user or maintainer can read the index and story pages, see the user job, the Cautilus surface, the acceptance criteria, and the current proof or gap without reading raw claim packets first.
 
 ## Accepted Rules
 
-- README is the first product narrative.
-  It should point readers to the claim specs quickly and should not make raw packets or archived proof specs feel like the primary review surface.
-- AGENTS.md is the repo operating contract.
-  It should route agents to the current source of truth and should avoid copying detailed product catalogs that belong in specs or skills.
-- User-facing specs are the promise map.
-  They should use plain product language, ordered by the reader's mental model: claim discovery, evaluation, optimization, doctor/readiness, ownership, reviewable artifacts, and proof debt.
-- Maintainer-facing specs are the proof map.
-  They may use internal vocabulary, but each page must map back to the U-claim ids in the user-facing index and must expose evidence or explicit evidence gaps.
-- Raw `claim discover` packets are high-recall proof-planning inputs, not the primary human review surface for product meaning.
-- Evidence gaps are acceptable only when they name a concrete owner and next action.
-- Dense tables are not an acceptable primary HITL review surface.
-  If a generated packet or matrix matters, present the decision first and keep the raw structure as evidence.
+- User-facing specs should read like top-level user stories whose acceptance criteria carry local executable proof or an explicit gap.
+- Top-level stories should name the user-facing actor, the Cautilus command or bundled-skill surface, and the outcome.
+- The user-facing index should use named stories rather than visible U-numbering.
+  Internal stable IDs may remain hidden or secondary if maintainer mapping still needs them.
+- Story order should follow the user's workflow:
+  Readiness;
+  Claim Discovery;
+  Behavior Evaluation;
+  Bounded Optimization;
+  Host Ownership.
+- Reviewable artifacts, evidence visibility, and no-satisfied-without-valid-evidence are cross-cutting acceptance invariants, not separate top-level user jobs.
+- Acceptance criteria and proof should not be separated into distant `Evidence` sections.
+  A specdown block or check table directly under the criterion is the report-visible proof.
+- Public claim proof should not rely on source guards or simple stdout substring checks except as narrow command-discovery smoke.
+  Stronger proof should inspect structured packets, artifact freshness, schema, projections, or focused behavior contracts.
+- Standing `specdown run` should stay cheap.
+  Expensive Cautilus eval and optimize proof should be produced on demand as explicit artifacts, while the specdown report projects the latest selected artifact's status, provenance, freshness, and gaps.
+- Standalone Cautilus promises claim discovery, proof-routing packets, Cautilus-specific claim-spec curation, bundled-skill workflow, and Cautilus evidence artifact interpretation.
+  Specdown owns executable Markdown and reports.
+  Charness owns portable spec workflow discipline and optional orchestration when installed.
 
-## Current Pre-HITL Cleanup
+## Current Decisions
 
-- Added U-claim ids to [docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md), matching the `Aligned user claims` references used by maintainer pages.
-- Clarified that unevidenced work appears as explicit evidence gaps, not empty subclaims or vague proof-debt placeholders.
-- Added maintainer-index guidance explaining that maintainer pages should be read after the user-facing index and that `Aligned user claims` refers to U-claim ids.
-- Tightened README wording so each claim page pairs a bounded promise with executable evidence or an explicit evidence gap.
+- [docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md) has been applied to the accepted index direction.
+- Cross-cutting criteria remain linked to existing `reviewable-artifacts.spec.md` and `proof-debt.spec.md` for now, but those pages should be reshaped as acceptance invariants rather than independent product jobs.
 
 ## Review Queue
 
-1. README first-reader pass.
-   Decision: does the README quickly communicate what Cautilus is, why `claim/eval/optimize` matter, and where the curated spec SOT lives?
-2. User spec index and U-claim pages.
-   Decision: are U1-U7 the right user-facing promise set, in the right order, with plain enough wording?
-3. Maintainer spec index and proof-area pages.
-   Decision: does the maintainer tree give enough internal proof routing without becoming a raw implementation dump?
-4. AGENTS.md operating contract.
-   Decision: does it tell future agents how to work in this repo without duplicating or drifting from README/specs/skills?
+1. Readiness story page.
+   Decision: does [doctor-readiness.spec.md](../../docs/specs/user/doctor-readiness.spec.md) read as a user story with acceptance criteria directly backed by cheap, report-visible proof?
+2. Claim Discovery story page.
+   Decision: does [claim-discovery.spec.md](../../docs/specs/user/claim-discovery.spec.md) promise discovery from selected repo docs, proof-planning packets, and bundled-skill curation without pretending discovery proves behavior?
+3. Behavior Evaluation story page.
+   Decision: does [evaluation.spec.md](../../docs/specs/user/evaluation.spec.md) explain why `eval` exists, name the `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces, and project latest evidence artifacts cheaply?
+4. Bounded Optimization story page.
+   Decision: does [optimization.spec.md](../../docs/specs/user/optimization.spec.md) explain what improves, how intent and protected checks are preserved, and how on-demand proof feeds the spec report?
+5. Host Ownership story page and cross-cutting invariants.
+   Decision: do [ownership.spec.md](../../docs/specs/user/ownership.spec.md), [reviewable-artifacts.spec.md](../../docs/specs/user/reviewable-artifacts.spec.md), and [proof-debt.spec.md](../../docs/specs/user/proof-debt.spec.md) put adapter ownership, reopenable artifacts, and evidence gaps at the right level?
 
 ## Known Risks To Ask About
 
-- README is still long and mixes quick-start, scenario proposal, claim workflow, eval surfaces, and older normalization-family examples.
-  It may need a stronger first-screen path to the current claim spec SOT.
-- Some README links still point at archived `docs/specs/old/**` pages as historical context.
-  That may be acceptable, but a human should confirm whether it distracts from the active spec tree.
-- Maintainer specs are now structurally consistent, but several pages still have `Evidence Gaps`.
-  HITL should decide whether those gaps are acceptable as honest proof debt before more implementation work starts.
-- AGENTS.md is operationally useful but may still be too long for a new agent's first read.
+- The current specdown adapter mostly supports `check:cautilus-command`, which is too source-guard-like for the final user-facing proof shape.
+- Stronger proof likely needs cheap artifact-viewer checks over latest selected Cautilus run artifacts, not standing reruns of expensive Cautilus workflows.
+- Maintainer-facing pages currently refer to U-claim IDs.
+  If visible U-numbering leaves the user index, maintainer alignment needs secondary stable anchors or a mapping update.
 
 ## Next HITL Chunk
 
-Start with README lines 1-90 and ask whether the opening narrative plus quick links are good enough for the product's first-reader story.
-Do not ask the human to review the whole README at once.
+Start with [docs/specs/user/doctor-readiness.spec.md](../../docs/specs/user/doctor-readiness.spec.md).
+Ask whether the page should be reshaped into `Readiness` with AC-local proof and whether the current command-smoke proof is enough temporarily or should become an explicit gap.

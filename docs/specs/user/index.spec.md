@@ -1,31 +1,36 @@
 # Cautilus User-Facing Specs
 
-`Cautilus` helps repos discover, evaluate, and improve behavior promises as prompts, agents, and app behavior change.
+`Cautilus` helps users discover, evaluate, and improve behavior promises as prompts, agents, and app behavior change.
 
 These specs are the user-facing source of truth for what the product promises.
-Some claim pages already include executable evidence through the repo-local Cautilus specdown adapter.
-Other proof remains visible as explicit evidence gaps until `claim`, `eval`, or `optimize` work produces honest evidence.
+Each story page should read as an acceptance contract:
+the story names the user job, the Cautilus surface, and the outcome;
+each acceptance criterion carries local executable proof or an explicit gap.
+Expensive Cautilus proof is produced on demand as durable artifacts, while this specdown report should project the latest selected evidence without rerunning costly evaluation or optimization loops.
 
 Maintainer view: [Maintainer-Facing Specs](../maintainer/index.spec.md).
 Full claim-spec report entry: [Cautilus Claim Specs](../index.spec.md).
 
-## Claims
+## User Stories
 
-- U1: [Claim Discovery](claim-discovery.spec.md)
-- U2: [Evaluation](evaluation.spec.md)
-- U3: [Optimization](optimization.spec.md)
-- U4: [Doctor And Readiness](doctor-readiness.spec.md)
-- U5: [Product And Host Ownership](ownership.spec.md)
-- U6: [Reviewable Artifacts](reviewable-artifacts.spec.md)
-- U7: [Proof Debt](proof-debt.spec.md)
+- [Readiness](doctor-readiness.spec.md): using `cautilus doctor`, `cautilus agent status`, and the bundled skill, a user can see which Cautilus workflow is ready, blocked, or missing setup before starting claim, eval, or optimize work.
+- [Claim Discovery](claim-discovery.spec.md): using `cautilus claim` and the bundled skill, a user can discover behavior promises from the repo docs selected for claim discovery and turn them into a reviewable next-work map.
+- [Behavior Evaluation](evaluation.spec.md): using `cautilus eval` and bundled-skill guidance, a user can evaluate intentful behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces when deterministic tests alone do not explain the behavior.
+- [Bounded Optimization](optimization.spec.md): using `cautilus optimize` and bundled-skill guidance, a user can improve a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.
+- [Host Ownership](ownership.spec.md): using Cautilus adapters and host-owned runners, a user can keep prompts, models, credentials, runtime wiring, and acceptance policy in the host repo while Cautilus standardizes workflow packets and boundaries.
 
 Read this index first when judging the product story.
-Each U-claim page states a user promise, the subclaims that make it concrete, and either attached evidence or an explicit evidence gap.
+The pages are ordered by the user's workflow, not by internal implementation layers.
+
+## Cross-Cutting Acceptance Criteria
+
+- [Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen.
+- [Evidence Gaps](proof-debt.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
 
 ## Prerequisite
 
 Cautilus requires specdown for public executable claim documentation.
-Without specdown, a repo can still contain raw Cautilus packets, but it is not fully set up for the Cautilus claim-document workflow.
+Without specdown, a repo can still contain raw Cautilus packets, but it is not fully set up for the Cautilus claim-spec report workflow.
 
 > check:cautilus-command
 | args_json | stdout_includes |
