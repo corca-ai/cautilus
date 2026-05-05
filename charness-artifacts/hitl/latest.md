@@ -29,6 +29,15 @@ The desired final state is that a user or maintainer can read the index and stor
   Stronger proof should inspect structured packets, artifact freshness, schema, projections, or focused behavior contracts.
 - Standing `specdown run` should stay cheap.
   Expensive Cautilus eval and optimize proof should be produced on demand as explicit artifacts, while the specdown report projects the latest selected artifact's status, provenance, freshness, and gaps.
+- Standing `specdown run` may execute cheap deterministic local Cautilus setup contracts such as `adapter init`, `doctor`, `agent status`, command discovery, schema validation, and JSON packet projection.
+  It should not execute LLM-backed eval runners, optimize search, review variants, or other materially stateful/expensive behavior loops.
+  Those runs should be produced on demand as durable Cautilus artifacts and then projected by the specdown report.
+- Public proof should prefer raw command output or raw generated files when the output is understandable enough.
+  Avoid curated excerpts unless the full output would materially obscure the acceptance claim; if an excerpt is necessary, prefer improving the binary's output shape first.
+- Generated sample workspaces should avoid nondeterministic values in the public report when the binary can accept stable inputs.
+  For adapter examples, prefer `cautilus adapter init --repo-name <stable-name>` over wildcarding temporary directory names.
+- If a table includes prose labels such as setup conditions, the executable proof should still be anchored in binary vocabulary and raw packet fields such as `status`, `checks[*].id`, `checks[*].ok`, `checks[*].meaning`, `suggestions`, and `next_action`.
+  Raw doctor packets should remain available in a collapsible `run:shell` block when a table summarizes them.
 - Standalone Cautilus promises claim discovery, proof-routing packets, Cautilus-specific claim-spec curation, bundled-skill workflow, and Cautilus evidence artifact interpretation.
   Specdown owns executable Markdown and reports.
   Charness owns portable spec workflow discipline and optional orchestration when installed.
@@ -42,6 +51,8 @@ The desired final state is that a user or maintainer can read the index and stor
 - The readiness opening and first H2 chunk have been tightened through HITL.
   `agent status` is no longer in the top story sentence, the story names concrete user choices, and the valid-adapter example is backed by a `run:shell` excerpt from this repo's real `.agents/cautilus-adapter.yaml`.
 - `doctor` now emits a machine-readable `meaning` field for readiness checks, and the specdown adapter has a `check:cautilus-readiness` proof shape so the first readiness table is no longer prose-only.
+- Follow-up decision: replace the repo-adapter excerpt with the full YAML produced by `cautilus adapter init --repo-name sample-skill-repo --scenario skill`, and link this repo's real `.agents/cautilus-adapter.yaml` only for readers who want the production adapter.
+- Follow-up decision: fold `check:cautilus-readiness` back into a more general, public-friendly `check:cautilus-json-command` shape instead of keeping a readiness-specific specdown adapter.
 - The remaining user-facing child pages are still in the earlier story / acceptance-criteria / JSON-projection shape and should be updated only after the readiness house style is accepted.
 - Cross-cutting criteria remain linked to `reviewable-artifacts.spec.md` and `proof-debt.spec.md`, but those pages now read as acceptance invariants rather than independent numbered product jobs.
 - The old existence-based evidence lint has been removed.
@@ -66,6 +77,8 @@ The desired final state is that a user or maintainer can read the index and stor
 - The rewritten readiness page intentionally shows the target public proof shape without wiring a new `check:cautilus-readiness` or `run:cautilus-cli` adapter yet.
   Update: the first readiness chunk now uses `check:cautilus-readiness`.
   Later chunks still need equivalent domain proof shapes for blocked cases, next-action mapping, and bundled-skill orientation.
+- `specdown`-missing readiness can be simulated honestly by running a compiled Cautilus binary with a `PATH` that excludes `specdown`.
+  Current observation: `specdown_available=false` is reported correctly, but `next_action.kind` currently falls back to `edit_adapter`, which is misleading for an environment prerequisite and should be fixed before finalizing the blocked-case table.
 - Stronger proof may still need better artifact-role resolution instead of hardcoded latest evidence bundle paths.
 - Maintainer-facing pages currently refer to U-claim IDs.
   If visible U-numbering leaves the user index, maintainer alignment needs secondary stable anchors or a mapping update.
