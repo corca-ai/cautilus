@@ -1,20 +1,36 @@
-# Proof Debt
+# Evidence Gaps
 
-Cautilus separates finding a promise from proving that the promise is true.
+Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
 
-## User Promise
+## Acceptance Criteria
 
-Cautilus makes proof debt visible so maintainers can decide whether to add deterministic proof, plan evals, align docs, split broad claims, or defer work.
+### A claim packet is a work plan, not a certificate.
 
-## Subclaims
+The claim status summary keeps the proof-plan boundary visible to users.
 
-- A claim packet is a work plan, not a certificate.
-- Human review may approve wording or proof route, but review comments alone do not satisfy a claim.
-- Evidence refs must be attached and valid before a claim is treated as satisfied.
-- Unknown or missing evidence should stay visible in the public claim workflow.
+> check:cautilus-json-file
+| path | json_path | includes |
+| --- | --- | --- |
+| .cautilus/claims/status-summary.json | nonVerdictNotice | proof plan, not proof |
 
-## Evidence
+### A reviewed claim cannot become satisfied without valid evidence.
 
-- [internal/runtime/claim_discovery_test.go](../../../internal/runtime/claim_discovery_test.go) `TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence` enforces that review agreement alone cannot move a claim to `satisfied` without a direct or verified evidence ref.
-- [internal/runtime/claim_discovery_test.go](../../../internal/runtime/claim_discovery_test.go) `TestBuildClaimValidationReportValidatesEvidenceRefs` and `TestBuildClaimStatusSummaryIncludesSatisfiedEvidence` keep unknown / missing evidence visible in the validation report and status summary rather than silently dropped.
-- [scripts/agent-runtime/render-claim-status-report.test.mjs](../../../scripts/agent-runtime/render-claim-status-report.test.mjs) covers the renderer side so unknown evidence buckets stay visible in the rendered claim status view.
+The current proof-debt evidence records tests that keep validation summaries, proof-debt buckets, and missing evidence visible.
+
+> check:cautilus-json-file
+| path | json_path | equals | includes |
+| --- | --- | --- | --- |
+| .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | decision.evidenceStatus | satisfied | |
+| .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | summary | | proof debt |
+| .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | commandEvidence[0].observed.protectedBehaviors[0] | | JSON packets |
+
+### Missing or weak evidence remains visible as next work.
+
+The current status packet exposes evidence satisfaction counts, action buckets, and stale-evidence signals instead of hiding unknown or stale proof.
+
+> check:cautilus-json-file
+| path | json_path | exists | min_number | includes |
+| --- | --- | --- | --- | --- |
+| .cautilus/claims/status-summary.json | evidenceSatisfaction.satisfiedClaimCount | | 1 | |
+| .cautilus/claims/status-summary.json | actionSummary.primaryBuckets[0].id | yes | | |
+| .cautilus/claims/status-summary.json | actionSummary.crossCuttingSignals[0].summary | | | Review heuristic labels |

@@ -1,25 +1,37 @@
-# Doctor And Readiness
+# Readiness
 
-`Cautilus doctor` tells a repo whether the selected Cautilus surface is ready for the next bounded step.
+Using `cautilus doctor`, `cautilus agent status`, and the bundled skill, a user can see which Cautilus workflow is ready, blocked, or missing setup before starting claim, eval, or optimize work.
 
-## User Promise
+## Acceptance Criteria
 
-Cautilus makes setup, agent-surface install, adapter state, runner readiness, and saved claim state visible instead of relying on private operator memory.
+### A user can see whether the selected Cautilus surface is ready or blocked.
 
-## Subclaims
+`doctor` reports readiness, blocker checks, and the next action for the selected repo scope.
 
-- Doctor output should explain what is ready, what is blocked, and what the next action is.
-- Agent status should share the same readiness facts when an agent is driving the workflow.
-- A ready doctor result means the selected Cautilus surface can run.
-- A ready doctor result does not prove the repo's behavior claims by itself.
+> check:cautilus-json-command
+| args_json | json_path | equals |
+| --- | --- | --- |
+| ["doctor","--repo-root","."] | ready | true |
+| ["doctor","--repo-root","."] | next_action.kind | complete_first_bounded_run |
 
-## Evidence
+### An agent can read the same readiness state before choosing a workflow branch.
 
-The current executable proof checks that `doctor` and `agent status` expose their public readiness surfaces.
-Future proof should connect the shared runner-readiness assessment used by both commands.
+`agent status` exposes a stable orientation packet with agent-surface readiness, runner assessment state, claim-state availability, and next branches.
 
-> check:cautilus-command
-| args_json | stdout_includes |
-| --- | --- |
-| ["doctor","--help"] | ready repo payload |
-| ["agent","status","--repo-root",".","--json"] | cautilus.agent_status.v1 |
+> check:cautilus-json-command
+| args_json | json_path | equals | min_number |
+| --- | --- | --- | --- |
+| ["agent","status","--repo-root",".","--json"] | schemaVersion | cautilus.agent_status.v1 | |
+| ["agent","status","--repo-root",".","--json"] | agentSurface.ready | true | |
+| ["agent","status","--repo-root",".","--json"] | runnerReadiness.assessment.schemaVersion | cautilus.runner_assessment.v1 | |
+| ["agent","status","--repo-root",".","--json"] | nextBranches.length | | 1 |
+
+### A ready result means the selected Cautilus surface can run, not that behavior claims are proven.
+
+When the repo is ready, `doctor` points the user to a first bounded run instead of treating readiness as evidence that the repo's behavior claims are true.
+
+> check:cautilus-json-command
+| args_json | json_path | includes |
+| --- | --- | --- |
+| ["doctor","--repo-root","."] | first_bounded_run.summary | bounded eval |
+| ["doctor","--repo-root","."] | first_bounded_run.decisionLoopCommands[0] | cautilus eval test |

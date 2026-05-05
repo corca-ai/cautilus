@@ -1,27 +1,40 @@
-# Evaluation
+# Behavior Evaluation
 
-`Cautilus eval` checks selected behavior through explicit fixtures and repo-owned runners.
+Using `cautilus eval` and bundled-skill guidance, a user can evaluate intentful behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces when deterministic tests alone do not explain the behavior.
 
-## User Promise
+## Acceptance Criteria
 
-Cautilus evaluates behavior that ordinary deterministic tests cannot fully explain, while keeping the repo in control of the runtime that produces behavior.
+### A user can choose the behavior surface that matches the evaluation intent.
 
-## Subclaims
+The current eval-surface evidence covers repo-contract behavior, checked-in skill behavior, multi-turn app chat behavior, and single prompt input/output behavior.
 
-- Cautilus supports development-facing behavior, such as agent workflows, repo contracts, tools, and skills.
-- Cautilus supports app-facing behavior, such as prompt, chat, and service-response behavior.
-- A fixture declares the evaluated surface and preset so the reader can tell what kind of behavior is under test.
-- The host repo owns prompts, models, credentials, runners, and acceptance policy.
-- Each eval leaves enough input, observed output, and summary evidence for another person or agent to reopen the result.
+> check:cautilus-json-file
+| path | json_path | equals | includes |
+| --- | --- | --- | --- |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | decision.evidenceStatus | satisfied | |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | packetEvidence[0].proof.targetSurface | dev/repo | |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | packetEvidence[2].proof.targetSurface | app/chat | |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | packetEvidence[4].proof.targetSurface | app/prompt | |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | relatedEvidence[0].reason | | dev/skill |
 
-## Evidence
+### A fixture and adapter-owned runner keep the host repo in control of behavior execution.
 
-The current executable proof checks that the shipped `eval test` surface advertises both development and app presets.
-Per-claim evidence pages should later link concrete fixtures and result packets.
+The evidence bundle points at checked-in fixtures, adapters, and runner wrappers for the selected surfaces.
 
-> check:cautilus-command
-| args_json | stdout_includes |
-| --- | --- |
-| ["eval","test","--help"] | dev/repo |
-| ["eval","test","--help"] | app/chat |
-| ["eval","test","--help"] | app/prompt |
+> check:cautilus-json-file
+| path | json_path | includes |
+| --- | --- | --- |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | checkedInEvidence[1].kind | eval-fixture |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | checkedInEvidence[4].kind | adapter |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | checkedInEvidence[7].kind | runner-wrapper |
+
+### Each eval leaves reopenable observed and summary packets.
+
+The latest selected eval artifacts record schema versions, recommendations, runtime, proof class, and target surface without rerunning the expensive eval in this specdown pass.
+
+> check:cautilus-json-file
+| path | json_path | equals |
+| --- | --- | --- |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | packetEvidence[0].schemaVersion | cautilus.evaluation_summary.v1 |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | packetEvidence[0].recommendation | accept-now |
+| .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | packetEvidence[1].schemaVersion | cautilus.evaluation_observed.v1 |

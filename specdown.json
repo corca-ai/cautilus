@@ -8,7 +8,9 @@
         "scripts/specdown/cautilus-adapter.mjs"
       ],
       "checks": [
-        "cautilus-command"
+        "cautilus-command",
+        "cautilus-json-command",
+        "cautilus-json-file"
       ]
     }
   ],

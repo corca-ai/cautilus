@@ -1,23 +1,44 @@
-# Product And Host Ownership
+# Host Ownership
 
-Cautilus owns the common evaluation workflow; the host repo owns the behavior being evaluated.
+Using Cautilus adapters and host-owned runners, a user can keep prompts, models, credentials, runtime wiring, and acceptance policy in the host repo while Cautilus standardizes workflow packets and boundaries.
 
-## User Promise
+## Acceptance Criteria
 
-Cautilus standardizes claim, eval, optimize, readiness, and evidence packets without secretly taking over a repo's app, prompts, runners, credentials, or policy.
+### A host repo owns the behavior runtime that Cautilus evaluates.
 
-## Subclaims
+The current adapter evidence proves that adapter-owned claim discovery entries and explicit live instance definitions are validated and normalized without product-owned runtime guessing.
 
-- Host repos own prompts, model choices, credentials, runtime wiring, and acceptance policy.
-- Cautilus-owned packets make the workflow reviewable across repos.
-- Adapter-owned commands keep host behavior explicit instead of hiding it inside product logic.
-- The same product workflow can be reused across repos because repo-specific behavior lives in adapters and fixtures.
+> check:cautilus-json-file
+| path | json_path | equals | includes |
+| --- | --- | --- | --- |
+| .cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json | decision.evidenceStatus | satisfied | |
+| .cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json | commandEvidence[0].observed.notableAssertions[0] | | adapter claim_discovery entries |
+| .cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json | commandEvidence[1].observed.notableAssertions[0] | | adapter kind: explicit |
 
-## Evidence
+### A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy.
 
-- The maintainer-side proof of host-owned-runner invocation lives at [docs/specs/maintainer/adapter-host-ownership.spec.md](../maintainer/adapter-host-ownership.spec.md), which is where the adapter contract test and consumer dogfood are owned.
-- [scripts/on-demand/smoke-external-consumer.test.mjs](../../../scripts/on-demand/smoke-external-consumer.test.mjs) bootstraps a temporary consumer repo through `npm run consumer:onboard:smoke` and exercises the end-to-end install → adapter init → first bounded run path against host-owned wiring.
+The consumer onboarding evidence covers install, adapter init, doctor readiness, and first bounded eval behavior in a temporary host repo.
 
-## Evidence Gaps
+> check:cautilus-json-file
+| path | json_path | equals | includes |
+| --- | --- | --- | --- |
+| .cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json | decision.evidenceStatus | satisfied | |
+| .cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json | summary | | doctor onboarding |
+| .cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json | commandEvidence[0].observed.notableAssertions[2] | | adapter-init |
 
-- Per-host-owned-field test against [docs/contracts/adapter-contract.md](../../contracts/adapter-contract.md) (prompts, model choice, credentials, runtime launch). Owner: maintainer. Next action: enumerate the host-owned fields and author one focused test per field; existing `internal/runtime/adapter_test.go` covers shape but not per-field binding.
+### Cautilus standardizes packets and workflow boundaries instead of prompts, credentials, or acceptance policy.
+
+The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen.
+
+> check:cautilus-json-file
+| path | json_path | equals | includes |
+| --- | --- | --- | --- |
+| .cautilus/claims/evidence-durable-packets-2026-05-03.json | decision.evidenceStatus | satisfied | |
+| .cautilus/claims/evidence-durable-packets-2026-05-03.json | commandEvidence[1].observed.schemaVersion | cautilus.agent_status.v1 | |
+| .cautilus/claims/evidence-durable-packets-2026-05-03.json | commandEvidence[2].observed.schemaVersion | cautilus.claim_status_summary.v1 | |
+
+### Gap: per-field host ownership is not fully proven at the user-spec layer yet.
+
+The adapter contract still needs focused per-field proof for prompts, model choice, credentials, and runtime launch.
+Owner: maintainer.
+Next action: enumerate the host-owned fields in [docs/contracts/adapter-contract.md](../../contracts/adapter-contract.md) and attach one focused artifact-viewer or contract test per field.

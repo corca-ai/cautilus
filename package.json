@@ -52,7 +52,7 @@
     "lint:go": "node scripts/run-golangci-lint.mjs run ./cmd/... ./internal/...",
     "lint:links": "node scripts/check-markdown-links.mjs",
     "lint:skill-disclosure": "node scripts/check-cautilus-skill-disclosure.mjs",
-    "lint:specs": "node scripts/check-specs.mjs && node scripts/check-spec-evidence.mjs && specdown run -quiet",
+    "lint:specs": "node scripts/check-specs.mjs && specdown run -quiet",
     "specdown": "specdown run",
     "specdown:pages": "npm run lint:specs && node scripts/prepare-specdown-pages.mjs",
     "security:govulncheck": "node scripts/run-govulncheck.mjs ./...",

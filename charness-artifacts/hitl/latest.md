@@ -36,12 +36,15 @@ The desired final state is that a user or maintainer can read the index and stor
 ## Current Decisions
 
 - [docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md) has been applied to the accepted index direction.
-- Cross-cutting criteria remain linked to existing `reviewable-artifacts.spec.md` and `proof-debt.spec.md` for now, but those pages should be reshaped as acceptance invariants rather than independent product jobs.
+- The user-facing child pages have been pre-shaped into the accepted story / acceptance-criteria format so later HITL can review story content rather than first fighting old section structure.
+- Cross-cutting criteria remain linked to `reviewable-artifacts.spec.md` and `proof-debt.spec.md`, but those pages now read as acceptance invariants rather than independent numbered product jobs.
+- The old existence-based evidence lint has been removed.
+  Specdown and Cautilus artifact-viewer checks now carry the report-visible proof path.
 
 ## Review Queue
 
 1. Readiness story page.
-   Decision: does [doctor-readiness.spec.md](../../docs/specs/user/doctor-readiness.spec.md) read as a user story with acceptance criteria directly backed by cheap, report-visible proof?
+   Decision: are the selected readiness acceptance criteria the right ones, and is the current cheap JSON projection enough proof for this story?
 2. Claim Discovery story page.
    Decision: does [claim-discovery.spec.md](../../docs/specs/user/claim-discovery.spec.md) promise discovery from selected repo docs, proof-planning packets, and bundled-skill curation without pretending discovery proves behavior?
 3. Behavior Evaluation story page.
@@ -53,12 +56,12 @@ The desired final state is that a user or maintainer can read the index and stor
 
 ## Known Risks To Ask About
 
-- The current specdown adapter mostly supports `check:cautilus-command`, which is too source-guard-like for the final user-facing proof shape.
-- Stronger proof likely needs cheap artifact-viewer checks over latest selected Cautilus run artifacts, not standing reruns of expensive Cautilus workflows.
+- The specdown adapter now supports cheap `cautilus-json-command` and `cautilus-json-file` checks, but the exact proof rows are still first-pass selections and should be reviewed story by story.
+- Stronger proof may still need better artifact-role resolution instead of hardcoded latest evidence bundle paths.
 - Maintainer-facing pages currently refer to U-claim IDs.
   If visible U-numbering leaves the user index, maintainer alignment needs secondary stable anchors or a mapping update.
 
 ## Next HITL Chunk
 
-Start with [docs/specs/user/doctor-readiness.spec.md](../../docs/specs/user/doctor-readiness.spec.md).
-Ask whether the page should be reshaped into `Readiness` with AC-local proof and whether the current command-smoke proof is enough temporarily or should become an explicit gap.
+Start HITL with [docs/specs/user/doctor-readiness.spec.md](../../docs/specs/user/doctor-readiness.spec.md).
+Review the story wording, the three acceptance criteria, and whether the current JSON projection checks prove the right boundary without overclaiming.

@@ -1,26 +1,39 @@
-# Optimization
+# Bounded Optimization
 
-`Cautilus optimize` improves selected behavior without losing the proof surface that makes the improvement believable.
+Using `cautilus optimize` and bundled-skill guidance, a user can improve a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.
 
-## User Promise
+## Acceptance Criteria
 
-Cautilus supports bounded improvement loops where the target claim, budget, and protected checks are explicit before work begins.
+### Optimization starts only after the claim and eval proof surface are explicit.
 
-## Subclaims
+The current optimization evidence is attached to explicit optimize input, proposal, search result, and revision artifact examples rather than to an open-ended retry loop.
 
-- Optimization starts from an explicit behavior target, not an open-ended retry request.
-- The improvement budget and protected checks are recorded before the loop runs.
-- The result records what changed, what was reused, and which held-out checks still protect against regressions.
-- Blocked readiness should be visible instead of being hidden behind repeated attempts.
+> check:cautilus-json-file
+| path | json_path | equals |
+| --- | --- | --- |
+| .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json | schemaVersion | cautilus.claim_evidence_bundle.v1 |
+| .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json | decision.evidenceStatus | satisfied |
+| fixtures/optimize/example-input.json | schemaVersion | cautilus.optimize_inputs.v1 |
 
-## Evidence
+### The improvement loop preserves protected checks and held-out evidence.
 
-The current executable proof checks that optimization is a first-class command family and advertises bounded preparation, search, proposal, and artifact steps.
-Future proof should connect concrete optimize packets and held-out eval results.
+The selected on-demand evidence proves a bounded route that carries held-out results into search input and evaluates candidate mutations through eval-test backed held-out and full-gate checks.
 
-> check:cautilus-command
-| args_json | stdout_includes |
-| --- | --- |
-| ["optimize","--help"] | optimize prepare-input |
-| ["optimize","--help"] | optimize search run |
-| ["optimize","--help"] | improve |
+> check:cautilus-json-file
+| path | json_path | includes |
+| --- | --- | --- |
+| .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json | commandEvidence[0].observed.protectedBehaviors[1] | held-out |
+| .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json | commandEvidence[0].observed.protectedBehaviors[2] | eval-test |
+| .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json | summary | bounded optimize route |
+
+### The user gets a reviewable revision artifact before applying a change.
+
+Optimization produces a proposal and revision artifact that preserve source files, stop conditions, prioritized evidence, and follow-up checks.
+
+> check:cautilus-json-file
+| path | json_path | equals | exists |
+| --- | --- | --- | --- |
+| fixtures/optimize/example-proposal.json | schemaVersion | cautilus.optimize_proposal.v1 | |
+| fixtures/optimize/example-revision-artifact.json | schemaVersion | cautilus.revision_artifact.v1 | |
+| fixtures/optimize/example-revision-artifact.json | stopConditions | | yes |
+| fixtures/optimize/example-revision-artifact.json | followUpChecks | | yes |

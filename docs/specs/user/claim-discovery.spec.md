@@ -1,27 +1,47 @@
 # Claim Discovery
 
-`Cautilus claim` turns repo documentation into a reviewable map of behavior promises and proof gaps.
+Using `cautilus claim` and the bundled skill, a user can discover behavior promises from the repo docs selected for claim discovery and turn them into a reviewable next-work map.
 
-## User Promise
+## Acceptance Criteria
 
-Cautilus helps a repo find the behavior promises it already declares, then gives an agent or maintainer a concrete next-work map.
+### A user can discover declared behavior promises from selected repo docs.
 
-## Subclaims
+`claim discover` starts from configured entry documents and linked Markdown, records the effective discovery boundary, and emits a proof plan instead of an unscoped narrative.
 
-- The binary performs the initial scan from configured entry documents and linked Markdown.
-- The scan respects the repo's ignore rules and records the effective discovery boundary.
-- The output records what was scanned, which claims were found, and whether the saved packet still matches the checkout.
-- The bundled skill can use the claim packet to group next work:
-  review wording, add deterministic proof, plan Cautilus evals, align docs and adapters, or defer broad claims.
-- If an important user-facing feature is not declared in the entry docs or linked Markdown, Cautilus treats that as a product-story gap unless another reviewed artifact proves an in-scope miss.
+> check:cautilus-json-file
+| path | json_path | equals | min_number |
+| --- | --- | --- | --- |
+| .cautilus/claims/status-summary.json | schemaVersion | cautilus.claim_status_summary.v1 | |
+| .cautilus/claims/status-summary.json | sourceCount | | 1 |
+| .cautilus/claims/status-summary.json | discoveryBoundary.entries[0] | | |
 
-## Evidence
+### The claim packet is a proof plan, not a verdict.
 
-The current executable proof only checks that the claim-discovery command family and status packet surface are available.
-Deeper proof should be added by linking a fresh claim packet, a reviewed status summary, and at least one skill-driven review result.
+The status summary keeps the non-verdict boundary visible so users do not confuse discovery with proof.
 
-> check:cautilus-command
-| args_json | stdout_includes |
-| --- | --- |
-| ["claim","discover","--help"] | cautilus claim discover |
-| ["claim","show","--input",".cautilus/claims/evidenced-typed-runners.json","--sample-claims","1"] | cautilus.claim_status_summary.v1 |
+> check:cautilus-json-file
+| path | json_path | includes |
+| --- | --- | --- |
+| .cautilus/claims/status-summary.json | nonVerdictNotice | proof plan, not proof |
+
+### The binary routes discovered claims into next-work buckets before fixture work starts.
+
+The latest claim evidence bundle records that `claim discover` emits source-ref-backed candidates with human-auditable, deterministic, and Cautilus-eval proof routes before any fixture writer is involved.
+
+> check:cautilus-json-file
+| path | json_path | equals | includes |
+| --- | --- | --- | --- |
+| .cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json | schemaVersion | cautilus.claim_evidence_bundle.v1 | |
+| .cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json | decision.evidenceStatus | satisfied | |
+| .cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json | summary | | proof routes |
+
+### The bundled skill can curate the packet into a reviewable next-work map.
+
+The latest skill evidence shows the bundled skill reading the claim packet and grouping next work by review, deterministic proof, Cautilus eval planning, alignment, and split-or-defer branches.
+
+> check:cautilus-json-file
+| path | json_path | equals | includes |
+| --- | --- | --- | --- |
+| .cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json | decision.evidenceStatus | satisfied | |
+| .cautilus/claims/evidence-claim-packet-next-work-grouping-2026-05-03.json | summary | | group next work |
+| .cautilus/claims/evidence-canonical-spec-curation-flow-2026-05-03.json | decision.evidenceStatus | satisfied | |
