@@ -22,10 +22,10 @@ Full claim-spec report entry: [Cautilus Claim Specs](../index.spec.md).
 Read this index first when judging the product story.
 The pages are ordered by the user's workflow, not by internal implementation layers.
 
-## Cross-Cutting Acceptance Criteria
+## Cross-Cutting Stories
 
 - [Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen.
-- [Evidence Gaps](proof-debt.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
+- [Evidence Gaps](evidence-gaps.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
 
 ## Prerequisite
 

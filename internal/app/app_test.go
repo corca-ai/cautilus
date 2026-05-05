@@ -159,6 +159,10 @@ func TestRunDoctorBlocksClaimDocsWhenSpecdownMissingButPacketsValidate(t *testin
 	if doctor["ready"] != false || doctorCheckOK(doctor, "specdown_available") {
 		t.Fatalf("expected specdown readiness to block claim-doc workflow, got %#v", doctor)
 	}
+	nextAction, ok := doctor["next_action"].(map[string]any)
+	if !ok || nextAction["kind"] != "install_specdown" {
+		t.Fatalf("expected install_specdown next action, got %#v", doctor["next_action"])
+	}
 
 	stdout.Reset()
 	stderr.Reset()

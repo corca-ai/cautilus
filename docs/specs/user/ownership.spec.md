@@ -2,11 +2,19 @@
 
 Using Cautilus adapters and host-owned runners, a user can keep prompts, models, credentials, runtime wiring, and acceptance policy in the host repo while Cautilus standardizes workflow packets and boundaries.
 
-## Acceptance Criteria
-
-### A host repo owns the behavior runtime that Cautilus evaluates.
+## A host repo owns the behavior runtime that Cautilus evaluates.
 
 The current adapter evidence proves that adapter-owned claim discovery entries and explicit live instance definitions are validated and normalized without product-owned runtime guessing.
+
+```run:shell
+# Show the production Cautilus adapter surface that this repo owns.
+node -e 'const fs=require("fs"); const text=fs.readFileSync(".agents/cautilus-adapter.yaml","utf8"); console.log(text);'
+```
+
+```run:shell
+# Show the adapter-owned discovery behaviors proven by the latest selected evidence bundle.
+node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, notableAssertions: observed.notableAssertions})), null, 2));'
+```
 
 > check:cautilus-json-file
 | path | json_path | equals | includes |
@@ -15,9 +23,14 @@ The current adapter evidence proves that adapter-owned claim discovery entries a
 | .cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json | commandEvidence[0].observed.notableAssertions[0] | | adapter claim_discovery entries |
 | .cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json | commandEvidence[1].observed.notableAssertions[0] | | adapter kind: explicit |
 
-### A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy.
+## A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy.
 
 The consumer onboarding evidence covers install, adapter init, doctor readiness, and first bounded eval behavior in a temporary host repo.
+
+```run:shell
+# Show the standalone onboarding behaviors covered by the latest selected evidence bundle.
+node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, notableAssertions: observed.notableAssertions})), null, 2));'
+```
 
 > check:cautilus-json-file
 | path | json_path | equals | includes |
@@ -26,9 +39,14 @@ The consumer onboarding evidence covers install, adapter init, doctor readiness,
 | .cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json | summary | | doctor onboarding |
 | .cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json | commandEvidence[0].observed.notableAssertions[2] | | adapter-init |
 
-### Cautilus standardizes packets and workflow boundaries instead of prompts, credentials, or acceptance policy.
+## Cautilus standardizes packets and workflow boundaries instead of prompts, credentials, or acceptance policy.
 
 The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen.
+
+```run:shell
+# Show the durable packet surfaces proven by the latest selected evidence bundle.
+node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-durable-packets-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, observed})), null, 2));'
+```
 
 > check:cautilus-json-file
 | path | json_path | equals | includes |
@@ -37,7 +55,7 @@ The current durable-packet evidence proves that core command surfaces emit schem
 | .cautilus/claims/evidence-durable-packets-2026-05-03.json | commandEvidence[1].observed.schemaVersion | cautilus.agent_status.v1 | |
 | .cautilus/claims/evidence-durable-packets-2026-05-03.json | commandEvidence[2].observed.schemaVersion | cautilus.claim_status_summary.v1 | |
 
-### Gap: per-field host ownership is not fully proven at the user-spec layer yet.
+## Gap: per-field host ownership is not fully proven at the user-spec layer yet.
 
 The adapter contract still needs focused per-field proof for prompts, model choice, credentials, and runtime launch.
 Owner: maintainer.

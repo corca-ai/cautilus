@@ -2,11 +2,15 @@
 
 Using `cautilus eval` and bundled-skill guidance, a user can evaluate intentful behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces when deterministic tests alone do not explain the behavior.
 
-## Acceptance Criteria
-
-### A user can choose the behavior surface that matches the evaluation intent.
+## A user can choose the behavior surface that matches the evaluation intent.
 
 The current eval-surface evidence covers repo-contract behavior, checked-in skill behavior, multi-turn app chat behavior, and single prompt input/output behavior.
+This spec projects the latest selected evidence bundle instead of rerunning expensive eval work.
+
+```run:shell
+# Show the target surfaces from the latest selected eval-surface evidence.
+node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json","utf8")); console.log(JSON.stringify(p.packetEvidence.map((item)=>({schemaVersion:item.schemaVersion,targetSurface:item.proof?.targetSurface,recommendation:item.recommendation})), null, 2));'
+```
 
 > check:cautilus-json-file
 | path | json_path | equals | includes |
@@ -17,7 +21,7 @@ The current eval-surface evidence covers repo-contract behavior, checked-in skil
 | .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | packetEvidence[4].proof.targetSurface | app/prompt | |
 | .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | relatedEvidence[0].reason | | dev/skill |
 
-### A fixture and adapter-owned runner keep the host repo in control of behavior execution.
+## A fixture and adapter-owned runner keep the host repo in control of behavior execution.
 
 The evidence bundle points at checked-in fixtures, adapters, and runner wrappers for the selected surfaces.
 
@@ -28,7 +32,7 @@ The evidence bundle points at checked-in fixtures, adapters, and runner wrappers
 | .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | checkedInEvidence[4].kind | adapter |
 | .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | checkedInEvidence[7].kind | runner-wrapper |
 
-### Each eval leaves reopenable observed and summary packets.
+## Each eval leaves reopenable observed and summary packets.
 
 The latest selected eval artifacts record schema versions, recommendations, runtime, proof class, and target surface without rerunning the expensive eval in this specdown pass.
 

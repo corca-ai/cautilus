@@ -75,6 +75,14 @@ func buildRepoNextAction(result map[string]any, repoRoot string, adapterName *st
 		}
 		return doctorAction("edit_adapter", message, "", currentDoctorCommand)
 	case "incomplete_adapter":
+		if firstIncompleteCheckID(result) == "specdown_available" {
+			return doctorAction(
+				"install_specdown",
+				"Install specdown before relying on the public executable claim-spec report, then continue from doctor.",
+				"",
+				currentDoctorCommand,
+			)
+		}
 		return doctorAction("edit_adapter", incompleteAdapterMessage(result, adapterPath), "", currentDoctorCommand)
 	case "ready":
 		if action := buildRunnerReadinessNextAction(result, currentDoctorCommand); len(action) > 0 {

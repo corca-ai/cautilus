@@ -65,8 +65,8 @@ test("cautilus-json-file checks structured values in a JSON artifact", async () 
 	});
 });
 
-test("cautilus-readiness verifies doctor check meaning from command output", async () => {
-	await withTempDir("readiness", async (root) => {
+test("cautilus-json-command verifies selected command JSON and sibling meaning", async () => {
+	await withTempDir("json-command", async (root) => {
 		const fakeCautilus = join(root, "fake-cautilus.mjs");
 		writeFileSync(
 			fakeCautilus,
@@ -89,14 +89,47 @@ test("cautilus-readiness verifies doctor check meaning from command output", asy
 			{
 				type: "assert",
 				id: 1,
-				check: "cautilus-readiness",
-				columns: ["workflow", "command", "doctor_check", "meaning"],
+				check: "cautilus-json-command",
+				checkParams: { command: "cautilus doctor --repo-root ." },
+				columns: ["label", "path", "equals", "meaning"],
 				cells: [
 					"first bounded eval",
-					"cautilus doctor --repo-root .",
-					"execution_surface",
+					"checks[id=execution_surface].ok",
+					"true",
 					"Cautilus can point the user to an executable first run.",
 				],
+			},
+			{ CAUTILUS_BIN: fakeCautilus },
+		);
+		assert.equal(response.type, "passed");
+	});
+});
+
+test("cautilus-json-command can verify nonzero JSON command payloads", async () => {
+	await withTempDir("json-command-nonzero", async (root) => {
+		const fakeCautilus = join(root, "fake-cautilus.mjs");
+		writeFileSync(
+			fakeCautilus,
+			[
+				"#!/usr/bin/env node",
+				"console.log(JSON.stringify({",
+				"  status: 'incomplete_adapter',",
+				"  next_action: { kind: 'install_specdown' }",
+				"}));",
+				"process.exit(1);",
+			].join("\n"),
+			"utf-8",
+		);
+		chmodSync(fakeCautilus, 0o755);
+		const response = await sendAssert(
+			root,
+			{
+				type: "assert",
+				id: 1,
+				check: "cautilus-json-command",
+				checkParams: { command: "cautilus doctor --repo-root .", exit_code: "1" },
+				columns: ["path", "equals"],
+				cells: ["next_action.kind", "install_specdown"],
 			},
 			{ CAUTILUS_BIN: fakeCautilus },
 		);

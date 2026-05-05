@@ -8,6 +8,11 @@ function cell(columns, cells, name) {
 	return index === -1 ? "" : cells[index];
 }
 
+function valueFor(req, name) {
+	const fromCell = cell(req.columns ?? [], req.cells ?? [], name);
+	return fromCell || req.checkParams?.[name] || "";
+}
+
 function parseArgs(value) {
 	if (!value) {
 		return [];
@@ -49,43 +54,35 @@ function verifyIncludes(actual, expected, streamName, label) {
 }
 
 function commandExpectation(req) {
-	const columns = req.columns ?? [];
-	const cells = req.cells ?? [];
 	return {
-		args: parseArgs(cell(columns, cells, "args_json")),
-		expectedExitCode: Number(cell(columns, cells, "exit_code") || "0"),
-		stdoutIncludes: cell(columns, cells, "stdout_includes"),
-		stderrIncludes: cell(columns, cells, "stderr_includes"),
+		args: parseArgs(valueFor(req, "args_json")),
+		expectedExitCode: Number(valueFor(req, "exit_code") || "0"),
+		stdoutIncludes: valueFor(req, "stdout_includes"),
+		stderrIncludes: valueFor(req, "stderr_includes"),
 	};
 }
 
 function jsonExpectation(req) {
-	const columns = req.columns ?? [];
-	const cells = req.cells ?? [];
+	const command = valueFor(req, "command");
+	const invocation = command ? parseCommand(command) : { bin: cautilusCommand(), args: parseArgs(valueFor(req, "args_json")) };
 	return {
-		args: parseArgs(cell(columns, cells, "args_json")),
-		path: cell(columns, cells, "path"),
-		jsonPath: cell(columns, cells, "json_path"),
-		exists: cell(columns, cells, "exists"),
-		equals: cell(columns, cells, "equals"),
-		includes: cell(columns, cells, "includes"),
-		minNumber: cell(columns, cells, "min_number"),
-	};
-}
-
-function readinessExpectation(req) {
-	const columns = req.columns ?? [];
-	const cells = req.cells ?? [];
-	return {
-		command: cell(columns, cells, "command") || "cautilus doctor --repo-root .",
-		doctorCheck: cell(columns, cells, "doctor_check"),
-		expectedResult: cell(columns, cells, "expected_result") || "pass",
-		meaning: cell(columns, cells, "meaning"),
+		bin: invocation.bin,
+		args: invocation.args,
+		path: valueFor(req, "path"),
+		jsonPath: valueFor(req, "json_path") || valueFor(req, "path"),
+		exists: valueFor(req, "exists"),
+		equals: valueFor(req, "equals"),
+		includes: valueFor(req, "includes"),
+		minNumber: valueFor(req, "min_number"),
+		meaning: valueFor(req, "meaning"),
+		expectedExitCode: Number(valueFor(req, "exit_code") || "0"),
+		envPath: valueFor(req, "env_path"),
 		label:
-			cell(columns, cells, "workflow") ||
-			cell(columns, cells, "setup_condition") ||
-			cell(columns, cells, "repo_condition") ||
-			cell(columns, cells, "doctor_check"),
+			valueFor(req, "label") ||
+			valueFor(req, "setup_condition") ||
+			valueFor(req, "repo_condition") ||
+			valueFor(req, "path") ||
+			valueFor(req, "json_path"),
 	};
 }
 
@@ -104,8 +101,11 @@ function parseCommand(value) {
 	if (parts.length === 0) {
 		throw new Error("command is required");
 	}
-	if (parts[0] === "cautilus" || parts[0] === "./bin/cautilus" || parts[0].endsWith("/cautilus")) {
-		return parts.slice(1);
+	if (parts[0] === "cautilus") {
+		return { bin: cautilusCommand(), args: parts.slice(1) };
+	}
+	if (parts[0] === "./bin/cautilus" || parts[0].endsWith("/cautilus")) {
+		return { bin: parts[0], args: parts.slice(1) };
 	}
 	throw new Error("command must start with cautilus");
 }
@@ -139,13 +139,13 @@ function parseJSONPath(path) {
 	}
 	const result = [];
 	for (const segment of path.split(".")) {
-		const matcher = /([^.[\]]+)|\[(\d+)]/g;
+		const matcher = /([^.[\]]+)|\[(\d+)]|\[([^=\]]+)=([^\]]+)]/g;
 		let match;
 		while ((match = matcher.exec(segment)) !== null) {
 			if (match[1]) {
 				result.push(match[1]);
 			} else {
-				result.push(Number(match[2]));
+				result.push(match[2] ? Number(match[2]) : { key: match[3], value: match[4] });
 			}
 		}
 	}
@@ -155,22 +155,38 @@ function parseJSONPath(path) {
 function valueAtPath(root, path) {
 	let current = root;
 	for (const segment of parseJSONPath(path)) {
-		if (current === null || current === undefined) {
-			return { found: false, value: undefined };
-		}
-		if (typeof segment === "number") {
-			if (!Array.isArray(current) || segment >= current.length) {
-				return { found: false, value: undefined };
-			}
-			current = current[segment];
-			continue;
-		}
-		if (typeof current !== "object" || !(segment in current)) {
-			return { found: false, value: undefined };
-		}
-		current = current[segment];
+		const next = valueAtSegment(current, segment);
+		if (!next.found) return next;
+		current = next.value;
 	}
 	return { found: true, value: current };
+}
+
+function valueAtSegment(current, segment) {
+	if (current === null || current === undefined) return missingValue();
+	if (typeof segment === "number") return valueAtIndex(current, segment);
+	if (typeof segment === "object") return valueAtSelector(current, segment);
+	return valueAtProperty(current, segment);
+}
+
+function valueAtIndex(current, segment) {
+	if (!Array.isArray(current) || segment >= current.length) return missingValue();
+	return { found: true, value: current[segment] };
+}
+
+function valueAtSelector(current, segment) {
+	if (!Array.isArray(current)) return missingValue();
+	const value = current.find((item) => typeof item === "object" && printable(item[segment.key]) === segment.value);
+	return value === undefined ? missingValue() : { found: true, value };
+}
+
+function valueAtProperty(current, segment) {
+	if (typeof current !== "object" || !(segment in current)) return missingValue();
+	return { found: true, value: current[segment] };
+}
+
+function missingValue() {
+	return { found: false, value: undefined };
 }
 
 function printable(value) {
@@ -186,7 +202,7 @@ function verifyJSONValue(payload, expectation, label) {
 	if (!found) {
 		return failed("JSON path not found", expectation.jsonPath, "missing", label);
 	}
-	return verifyJSONComparisons(value, expectation, label);
+	return verifyJSONComparisons(value, expectation, label) ?? verifyJSONMeaning(payload, expectation, label);
 }
 
 function verifyJSONExists(found, expectation, label) {
@@ -215,15 +231,36 @@ function verifyJSONMinimum(value, expectation, label) {
 	return failed("JSON numeric minimum not met", expectation.minNumber, printable(value), label);
 }
 
+function verifyJSONMeaning(payload, expectation, label) {
+	if (!expectation.meaning) return null;
+	const meaningPath = meaningPathFor(expectation.jsonPath);
+	if (!meaningPath) {
+		return failed("Meaning cannot be inferred for JSON path", "path ending in .ok", expectation.jsonPath, label);
+	}
+	const { found, value } = valueAtPath(payload, meaningPath);
+	if (!found) {
+		return failed("JSON meaning path not found", meaningPath, "missing", label);
+	}
+	if (value !== expectation.meaning) {
+		return failed("JSON meaning mismatch", expectation.meaning, printable(value), label);
+	}
+	return null;
+}
+
+function meaningPathFor(path) {
+	return path.endsWith(".ok") ? `${path.slice(0, -".ok".length)}.meaning` : "";
+}
+
 function handleJSONCommand(req) {
 	const expectation = jsonExpectation(req);
-	const label = `${expectation.args.join(" ")} ${expectation.jsonPath}`.trim();
-	const result = spawnSync(cautilusCommand(), expectation.args, {
+	const label = expectation.label || `${expectation.args.join(" ")} ${expectation.jsonPath}`.trim();
+	const result = spawnSync(expectation.bin, expectation.args, {
 		cwd: process.cwd(),
 		encoding: "utf-8",
+		env: expectation.envPath ? { ...process.env, PATH: expectation.envPath } : process.env,
 		maxBuffer: 10 * 1024 * 1024,
 	});
-	const exitFailure = verifyExitCode(result, 0, label);
+	const exitFailure = verifyExitCode(result, expectation.expectedExitCode, label);
 	if (exitFailure) return exitFailure;
 	let payload;
 	try {
@@ -246,49 +283,6 @@ function handleJSONFile(req) {
 	return verifyJSONValue(payload, expectation, label) ?? { type: "passed" };
 }
 
-function handleReadiness(req) {
-	const expectation = readinessExpectation(req);
-	const label = expectation.label || expectation.doctorCheck;
-	const payload = runReadinessCommand(expectation, label);
-	if (payload.type === "failed") return payload;
-	if (!expectation.doctorCheck) {
-		return failed("Missing doctor_check", "doctor_check column", "", label);
-	}
-	const check = findDoctorCheck(payload, expectation, label);
-	if (check.type === "failed") return check;
-	return verifyReadinessCheck(check, expectation, label) ?? { type: "passed" };
-}
-
-function runReadinessCommand(expectation, label) {
-	const result = spawnSync(cautilusCommand(), parseCommand(expectation.command), {
-		cwd: process.cwd(),
-		encoding: "utf-8",
-		maxBuffer: 10 * 1024 * 1024,
-	});
-	try {
-		return JSON.parse(result.stdout);
-	} catch (error) {
-		return failed("Command stdout was not JSON", "valid doctor JSON", result.stdout || error.message, label);
-	}
-}
-
-function findDoctorCheck(payload, expectation, label) {
-	const check = (payload.checks ?? []).find((candidate) => candidate.id === expectation.doctorCheck);
-	if (check) return check;
-	return failed("Doctor check not found", expectation.doctorCheck, JSON.stringify(payload.checks ?? []), label);
-}
-
-function verifyReadinessCheck(check, expectation, label) {
-	const expectedOK = expectation.expectedResult === "pass";
-	if (Boolean(check.ok) !== expectedOK) {
-		return failed("Doctor check result mismatch", expectation.expectedResult, check.ok ? "pass" : "fail", label);
-	}
-	if (expectation.meaning && check.meaning !== expectation.meaning) {
-		return failed("Doctor check meaning mismatch", expectation.meaning, check.meaning ?? "", label);
-	}
-	return null;
-}
-
 function handleAssert(req) {
 	if (req.check === "cautilus-command") {
 		return handleCommand(req);
@@ -298,9 +292,6 @@ function handleAssert(req) {
 	}
 	if (req.check === "cautilus-json-file") {
 		return handleJSONFile(req);
-	}
-	if (req.check === "cautilus-readiness") {
-		return handleReadiness(req);
 	}
 	return {
 		type: "failed",

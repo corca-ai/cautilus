@@ -2,11 +2,15 @@
 
 Using `cautilus optimize` and bundled-skill guidance, a user can improve a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.
 
-## Acceptance Criteria
-
-### Optimization starts only after the claim and eval proof surface are explicit.
+## A user starts optimization from explicit claim, eval, and target packets rather than an open-ended retry loop.
 
 The current optimization evidence is attached to explicit optimize input, proposal, search result, and revision artifact examples rather than to an open-ended retry loop.
+The latest selected optimize evidence is projected here instead of rerunning expensive optimize work during every specdown pass.
+
+```run:shell
+# Show the selected optimize route and the packet examples that bound it.
+node -e 'const fs=require("fs"); const evidence=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json","utf8")); const input=JSON.parse(fs.readFileSync("fixtures/optimize/example-input.json","utf8")); console.log(JSON.stringify({bundleId:evidence.bundleId, evidenceStatus:evidence.decision.evidenceStatus, optimizationTarget:input.optimizationTarget, intent:input.intentProfile.summary, reportRecommendation:input.report.recommendation, budget:input.optimizer.budget}, null, 2));'
+```
 
 > check:cautilus-json-file
 | path | json_path | equals |
@@ -15,9 +19,14 @@ The current optimization evidence is attached to explicit optimize input, propos
 | .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json | decision.evidenceStatus | satisfied |
 | fixtures/optimize/example-input.json | schemaVersion | cautilus.optimize_inputs.v1 |
 
-### The improvement loop preserves protected checks and held-out evidence.
+## A user can improve behavior while preserving protected checks, held-out evidence, and explicit budget.
 
 The selected on-demand evidence proves a bounded route that carries held-out results into search input and evaluates candidate mutations through eval-test backed held-out and full-gate checks.
+
+```run:shell
+# Show the protected optimize behaviors proven by the latest selected evidence bundle.
+node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, protectedBehaviors: observed.protectedBehaviors})), null, 2));'
+```
 
 > check:cautilus-json-file
 | path | json_path | includes |
@@ -26,9 +35,14 @@ The selected on-demand evidence proves a bounded route that carries held-out res
 | .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json | commandEvidence[0].observed.protectedBehaviors[2] | eval-test |
 | .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json | summary | bounded optimize route |
 
-### The user gets a reviewable revision artifact before applying a change.
+## A user gets a reviewable revision artifact before applying a change.
 
 Optimization produces a proposal and revision artifact that preserve source files, stop conditions, prioritized evidence, and follow-up checks.
+
+```run:shell
+# Show the proposal and revision fields a reviewer can reopen before applying a change.
+node -e 'const fs=require("fs"); const proposal=JSON.parse(fs.readFileSync("fixtures/optimize/example-proposal.json","utf8")); const revision=JSON.parse(fs.readFileSync("fixtures/optimize/example-revision-artifact.json","utf8")); console.log(JSON.stringify({proposal:{schemaVersion:proposal.schemaVersion, decision:proposal.decision, prioritizedEvidence:proposal.prioritizedEvidence.map(({source,key,severity})=>({source,key,severity})), suggestedChanges:proposal.suggestedChanges.map(({id,changeKind,target})=>({id,changeKind,target}))}, revision:{schemaVersion:revision.schemaVersion, stopConditions:revision.stopConditions, followUpChecks:revision.followUpChecks}}, null, 2));'
+```
 
 > check:cautilus-json-file
 | path | json_path | equals | exists |
