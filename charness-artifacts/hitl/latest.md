@@ -36,7 +36,10 @@ The desired final state is that a user or maintainer can read the index and stor
 ## Current Decisions
 
 - [docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md) has been applied to the accepted index direction.
-- The user-facing child pages have been pre-shaped into the accepted story / acceptance-criteria format so later HITL can review story content rather than first fighting old section structure.
+- [docs/specs/user/doctor-readiness.spec.md](../../docs/specs/user/doctor-readiness.spec.md) has been rewritten as the first revised story page.
+  It now uses H2 acceptance chunks directly instead of a generic `## Acceptance Criteria` wrapper.
+  The page defines a valid Cautilus adapter locally, links deeper adapter ownership to Host Ownership, covers ready and blocked conditions, separates next bounded actions from setup readiness, and explains why `agent status --json` is a skill-orientation packet rather than a duplicate of `doctor`.
+- The remaining user-facing child pages are still in the earlier story / acceptance-criteria / JSON-projection shape and should be updated only after the readiness house style is accepted.
 - Cross-cutting criteria remain linked to `reviewable-artifacts.spec.md` and `proof-debt.spec.md`, but those pages now read as acceptance invariants rather than independent numbered product jobs.
 - The old existence-based evidence lint has been removed.
   Specdown and Cautilus artifact-viewer checks now carry the report-visible proof path.
@@ -44,7 +47,7 @@ The desired final state is that a user or maintainer can read the index and stor
 ## Review Queue
 
 1. Readiness story page.
-   Decision: are the selected readiness acceptance criteria the right ones, and is the current cheap JSON projection enough proof for this story?
+   Decision: review the rewritten H2 chunks, especially whether the ready condition table, blocked-condition table, next-action table, and bundled-skill orientation table are the right acceptance boundaries.
 2. Claim Discovery story page.
    Decision: does [claim-discovery.spec.md](../../docs/specs/user/claim-discovery.spec.md) promise discovery from selected repo docs, proof-planning packets, and bundled-skill curation without pretending discovery proves behavior?
 3. Behavior Evaluation story page.
@@ -57,6 +60,8 @@ The desired final state is that a user or maintainer can read the index and stor
 ## Known Risks To Ask About
 
 - The specdown adapter now supports cheap `cautilus-json-command` and `cautilus-json-file` checks, but the exact proof rows are still first-pass selections and should be reviewed story by story.
+- The rewritten readiness page intentionally shows the target public proof shape without wiring a new `check:cautilus-readiness` or `run:cautilus-cli` adapter yet.
+  After HITL accepts the shape, the implementation question is whether to add a domain adapter or project the same condition/action/result rows from existing JSON command/file checks.
 - Stronger proof may still need better artifact-role resolution instead of hardcoded latest evidence bundle paths.
 - Maintainer-facing pages currently refer to U-claim IDs.
   If visible U-numbering leaves the user index, maintainer alignment needs secondary stable anchors or a mapping update.
@@ -64,4 +69,9 @@ The desired final state is that a user or maintainer can read the index and stor
 ## Next HITL Chunk
 
 Start HITL with [docs/specs/user/doctor-readiness.spec.md](../../docs/specs/user/doctor-readiness.spec.md).
-Review the story wording, the three acceptance criteria, and whether the current JSON projection checks prove the right boundary without overclaiming.
+Review the four H2 chunks:
+ready conditions;
+blocked conditions;
+state-to-next-action mapping;
+bundled-skill orientation from `agent status --json`.
+Ask whether each chunk is a user-facing acceptance boundary, whether any rows are missing or too implementation-specific, and which proof rows should become executable once the readiness adapter exists.
