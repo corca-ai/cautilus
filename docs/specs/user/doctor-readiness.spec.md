@@ -1,6 +1,6 @@
 # Readiness
 
-Using `cautilus doctor`, `cautilus agent status`, and the bundled Cautilus skill, a user can decide what setup or bounded workflow should happen next before spending effort on claim, eval, or optimize work.
+Using `cautilus doctor` and the bundled Cautilus skill, a user can decide whether to fix setup, inspect claims, run a first eval, or stop before spending effort on claim, eval, or optimize work.
 
 Readiness means the repo has enough Cautilus setup to choose and run the next bounded workflow.
 It is not evidence that the repo's behavior promises are already true; proof status is handled by [Evidence Gaps](proof-debt.spec.md).
@@ -8,19 +8,31 @@ It is not evidence that the repo's behavior promises are already true; proof sta
 A valid Cautilus adapter is a repo-owned file, usually `.agents/cautilus-adapter.yaml`, that Cautilus can parse and that declares the repo, evaluation surfaces, baseline options, and runnable eval commands.
 Host-specific adapter ownership is covered in [Host Ownership](ownership.spec.md).
 
-## A user can see the setup conditions that make a repo ready for Cautilus work.
+This repo's adapter exposes the readiness fields directly:
 
-`doctor` treats a repo as ready only when the required setup checks pass.
-The happy path should show the conditions, the checks Cautilus reports, and what those checks mean to the user.
+```run:shell
+$ node -e 'const fs=require("fs"); const text=fs.readFileSync(".agents/cautilus-adapter.yaml","utf8"); for (const key of ["repo:","evaluation_surfaces:","baseline_options:","eval_test_command_templates:"]) { const line=text.split("\n").find((candidate)=>candidate.startsWith(key)); if (!line) process.exit(1); console.log(line); }'
+repo: cautilus
+evaluation_surfaces:
+baseline_options:
+eval_test_command_templates:
+```
 
-| Repo condition | Doctor check | Expected result | User meaning |
-| --- | --- | --- | --- |
-| Cautilus adapter file exists | `adapter_found` | pass | Cautilus can find repo-owned configuration |
-| Adapter parses and matches the schema | `adapter_valid` | pass | Cautilus can trust the adapter shape enough to continue |
-| `specdown` is available | `specdown_available` | pass | Public executable claim specs can be rendered |
-| Adapter declares evaluation surfaces | `evaluation_surfaces` | pass | Cautilus knows which behavior surfaces the repo exposes |
-| Adapter declares baseline options | `baseline_options` | pass | Eval and optimize work have comparison targets |
-| Adapter declares runnable eval commands | `execution_surface` | pass | Cautilus can point the user to an executable first run |
+## A user can see the setup conditions that make this repo ready for the selected Cautilus workflow.
+
+`doctor` reports workflow-relevant readiness checks with machine-readable meaning.
+The public report should project those meanings from the binary output so people and agents read the same readiness contract.
+
+> check:cautilus-readiness
+| workflow | setup_condition | command | doctor_check | meaning |
+| --- | --- | --- | --- | --- |
+| adapter discovery | Cautilus adapter file exists | cautilus doctor --repo-root . | adapter_found | Cautilus can find repo-owned configuration. |
+| adapter discovery | Adapter parses and matches the schema | cautilus doctor --repo-root . | adapter_valid | Cautilus can parse and trust the adapter shape enough to continue. |
+| repo identity | Adapter names the repo | cautilus doctor --repo-root . | repo_name | The adapter identifies the host repo whose behavior is being evaluated. |
+| claim-spec report | `specdown` is available | cautilus doctor --repo-root . | specdown_available | The public claim-spec report can render executable evidence. |
+| first bounded eval | Adapter declares evaluation surfaces | cautilus doctor --repo-root . | evaluation_surfaces | The repo names the behavior surfaces Cautilus may evaluate. |
+| first bounded eval | Adapter declares baseline options | cautilus doctor --repo-root . | baseline_options | Eval and optimize work have explicit comparison targets. |
+| first bounded eval | Adapter declares runnable eval commands | cautilus doctor --repo-root . | execution_surface | Cautilus can point the user to an executable first run. |
 
 ## A user can see which setup condition blocks readiness.
 

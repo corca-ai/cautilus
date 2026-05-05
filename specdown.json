@@ -10,7 +10,8 @@
       "checks": [
         "cautilus-command",
         "cautilus-json-command",
-        "cautilus-json-file"
+        "cautilus-json-file",
+        "cautilus-readiness"
       ]
     }
   ],

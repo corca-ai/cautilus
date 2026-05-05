@@ -1212,7 +1212,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		if len(namedAdapters) > 0 {
 			detail = "No default checked-in adapter was found, but named adapters are available."
 		}
-		checks = append(checks, map[string]any{"id": "adapter_found", "ok": false, "detail": detail})
+		checks = append(checks, doctorCheck("adapter_found", false, detail))
 		command := fmt.Sprintf("cautilus adapter init --repo-root %s", repoRoot)
 		if adapterName != nil && strings.TrimSpace(*adapterName) != "" {
 			command += " --adapter-name " + *adapterName
@@ -1239,9 +1239,9 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		result["ready"] = false
 		return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 1, nil
 	}
-	checks = append(checks, map[string]any{"id": "adapter_found", "ok": true, "detail": fmt.Sprintf("Using adapter at %v", payload.Path)})
+	checks = append(checks, doctorCheck("adapter_found", true, fmt.Sprintf("Using adapter at %v", payload.Path)))
 	if !payload.Valid {
-		checks = append(checks, map[string]any{"id": "adapter_valid", "ok": false, "detail": "Adapter failed schema validation."})
+		checks = append(checks, doctorCheck("adapter_valid", false, "Adapter failed schema validation."))
 		result := baseResult()
 		result["status"] = "invalid_adapter"
 		result["ready"] = false
@@ -1252,7 +1252,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		}
 		return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 1, nil
 	}
-	checks = append(checks, map[string]any{"id": "adapter_valid", "ok": true, "detail": "Adapter passed schema validation."})
+	checks = append(checks, doctorCheck("adapter_valid", true, "Adapter passed schema validation."))
 	appendSpecdownCheck(&checks, &suggestions)
 	data := payload.Data
 	appendFieldCheck(&checks, &suggestions, "repo_name", strings.TrimSpace(stringOrEmpty(data["repo"])) != "", "Adapter declares repo.", "Adapter is missing a repo name.", "Set adapter.repo to the host repo name.")
@@ -1325,11 +1325,7 @@ func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
 			detail = definition.okDetail
 			artifactPaths[definition.id] = definition.path
 		}
-		checks = append(checks, map[string]any{
-			"id":     definition.id,
-			"ok":     ok,
-			"detail": detail,
-		})
+		checks = append(checks, doctorCheck(definition.id, ok, detail))
 		if !ok {
 			suggestions = append(suggestions, definition.suggestion)
 		}
@@ -1375,9 +1371,43 @@ func appendFieldCheck(checks *[]any, suggestions *[]any, id string, ok bool, okD
 	if ok {
 		detail = okDetail
 	}
-	*checks = append(*checks, map[string]any{"id": id, "ok": ok, "detail": detail})
+	*checks = append(*checks, doctorCheck(id, ok, detail))
 	if !ok {
 		*suggestions = append(*suggestions, suggestion)
+	}
+}
+
+func doctorCheck(id string, ok bool, detail string) map[string]any {
+	return map[string]any{
+		"id":      id,
+		"ok":      ok,
+		"detail":  detail,
+		"meaning": doctorCheckMeaning(id),
+	}
+}
+
+func doctorCheckMeaning(id string) string {
+	switch id {
+	case "adapter_found":
+		return "Cautilus can find repo-owned configuration."
+	case "adapter_valid":
+		return "Cautilus can parse and trust the adapter shape enough to continue."
+	case "specdown_available":
+		return "The public claim-spec report can render executable evidence."
+	case "repo_name":
+		return "The adapter identifies the host repo whose behavior is being evaluated."
+	case "evaluation_surfaces":
+		return "The repo names the behavior surfaces Cautilus may evaluate."
+	case "baseline_options":
+		return "Eval and optimize work have explicit comparison targets."
+	case "execution_surface":
+		return "Cautilus can point the user to an executable first run."
+	case "skill_installed":
+		return "The bundled Cautilus skill is available to local agents."
+	case "claude_skills_link":
+		return "Claude-compatible skill discovery can find the installed skill."
+	default:
+		return "Cautilus reports this readiness condition for the selected scope."
 	}
 }
 

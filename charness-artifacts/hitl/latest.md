@@ -39,6 +39,9 @@ The desired final state is that a user or maintainer can read the index and stor
 - [docs/specs/user/doctor-readiness.spec.md](../../docs/specs/user/doctor-readiness.spec.md) has been rewritten as the first revised story page.
   It now uses H2 acceptance chunks directly instead of a generic `## Acceptance Criteria` wrapper.
   The page defines a valid Cautilus adapter locally, links deeper adapter ownership to Host Ownership, covers ready and blocked conditions, separates next bounded actions from setup readiness, and explains why `agent status --json` is a skill-orientation packet rather than a duplicate of `doctor`.
+- The readiness opening and first H2 chunk have been tightened through HITL.
+  `agent status` is no longer in the top story sentence, the story names concrete user choices, and the valid-adapter example is backed by a `run:shell` excerpt from this repo's real `.agents/cautilus-adapter.yaml`.
+- `doctor` now emits a machine-readable `meaning` field for readiness checks, and the specdown adapter has a `check:cautilus-readiness` proof shape so the first readiness table is no longer prose-only.
 - The remaining user-facing child pages are still in the earlier story / acceptance-criteria / JSON-projection shape and should be updated only after the readiness house style is accepted.
 - Cross-cutting criteria remain linked to `reviewable-artifacts.spec.md` and `proof-debt.spec.md`, but those pages now read as acceptance invariants rather than independent numbered product jobs.
 - The old existence-based evidence lint has been removed.
@@ -61,7 +64,8 @@ The desired final state is that a user or maintainer can read the index and stor
 
 - The specdown adapter now supports cheap `cautilus-json-command` and `cautilus-json-file` checks, but the exact proof rows are still first-pass selections and should be reviewed story by story.
 - The rewritten readiness page intentionally shows the target public proof shape without wiring a new `check:cautilus-readiness` or `run:cautilus-cli` adapter yet.
-  After HITL accepts the shape, the implementation question is whether to add a domain adapter or project the same condition/action/result rows from existing JSON command/file checks.
+  Update: the first readiness chunk now uses `check:cautilus-readiness`.
+  Later chunks still need equivalent domain proof shapes for blocked cases, next-action mapping, and bundled-skill orientation.
 - Stronger proof may still need better artifact-role resolution instead of hardcoded latest evidence bundle paths.
 - Maintainer-facing pages currently refer to U-claim IDs.
   If visible U-numbering leaves the user index, maintainer alignment needs secondary stable anchors or a mapping update.

@@ -103,6 +103,9 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	if !doctorCheckOK(payload, "specdown_available") {
 		t.Fatalf("expected doctor to require specdown readiness, got %#v", payload["checks"])
 	}
+	if meaning := doctorCheckMeaning(payload, "execution_surface"); meaning != "Cautilus can point the user to an executable first run." {
+		t.Fatalf("expected execution_surface meaning in doctor payload, got %q", meaning)
+	}
 }
 
 func TestRunDoctorBlocksClaimDocsWhenSpecdownMissingButPacketsValidate(t *testing.T) {
@@ -199,6 +202,17 @@ func doctorCheckOK(payload map[string]any, id string) bool {
 		}
 	}
 	return false
+}
+
+func doctorCheckMeaning(payload map[string]any, id string) string {
+	for _, raw := range arrayOrEmpty(payload["checks"]) {
+		check := raw.(map[string]any)
+		if check["id"] == id {
+			meaning, _ := check["meaning"].(string)
+			return meaning
+		}
+	}
+	return ""
 }
 
 func TestRunCommandsJSONReturnsRegistry(t *testing.T) {

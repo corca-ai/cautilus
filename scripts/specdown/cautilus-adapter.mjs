@@ -73,6 +73,22 @@ function jsonExpectation(req) {
 	};
 }
 
+function readinessExpectation(req) {
+	const columns = req.columns ?? [];
+	const cells = req.cells ?? [];
+	return {
+		command: cell(columns, cells, "command") || "cautilus doctor --repo-root .",
+		doctorCheck: cell(columns, cells, "doctor_check"),
+		expectedResult: cell(columns, cells, "expected_result") || "pass",
+		meaning: cell(columns, cells, "meaning"),
+		label:
+			cell(columns, cells, "workflow") ||
+			cell(columns, cells, "setup_condition") ||
+			cell(columns, cells, "repo_condition") ||
+			cell(columns, cells, "doctor_check"),
+	};
+}
+
 function cautilusCommand() {
 	if (process.env.CAUTILUS_BIN) {
 		return process.env.CAUTILUS_BIN;
@@ -81,6 +97,17 @@ function cautilusCommand() {
 		return "./bin/cautilus";
 	}
 	return process.platform === "win32" ? "cautilus.exe" : "cautilus";
+}
+
+function parseCommand(value) {
+	const parts = value.trim().split(/\s+/).filter(Boolean);
+	if (parts.length === 0) {
+		throw new Error("command is required");
+	}
+	if (parts[0] === "cautilus" || parts[0] === "./bin/cautilus" || parts[0].endsWith("/cautilus")) {
+		return parts.slice(1);
+	}
+	throw new Error("command must start with cautilus");
 }
 
 function handleCommand(req) {
@@ -219,6 +246,49 @@ function handleJSONFile(req) {
 	return verifyJSONValue(payload, expectation, label) ?? { type: "passed" };
 }
 
+function handleReadiness(req) {
+	const expectation = readinessExpectation(req);
+	const label = expectation.label || expectation.doctorCheck;
+	const payload = runReadinessCommand(expectation, label);
+	if (payload.type === "failed") return payload;
+	if (!expectation.doctorCheck) {
+		return failed("Missing doctor_check", "doctor_check column", "", label);
+	}
+	const check = findDoctorCheck(payload, expectation, label);
+	if (check.type === "failed") return check;
+	return verifyReadinessCheck(check, expectation, label) ?? { type: "passed" };
+}
+
+function runReadinessCommand(expectation, label) {
+	const result = spawnSync(cautilusCommand(), parseCommand(expectation.command), {
+		cwd: process.cwd(),
+		encoding: "utf-8",
+		maxBuffer: 10 * 1024 * 1024,
+	});
+	try {
+		return JSON.parse(result.stdout);
+	} catch (error) {
+		return failed("Command stdout was not JSON", "valid doctor JSON", result.stdout || error.message, label);
+	}
+}
+
+function findDoctorCheck(payload, expectation, label) {
+	const check = (payload.checks ?? []).find((candidate) => candidate.id === expectation.doctorCheck);
+	if (check) return check;
+	return failed("Doctor check not found", expectation.doctorCheck, JSON.stringify(payload.checks ?? []), label);
+}
+
+function verifyReadinessCheck(check, expectation, label) {
+	const expectedOK = expectation.expectedResult === "pass";
+	if (Boolean(check.ok) !== expectedOK) {
+		return failed("Doctor check result mismatch", expectation.expectedResult, check.ok ? "pass" : "fail", label);
+	}
+	if (expectation.meaning && check.meaning !== expectation.meaning) {
+		return failed("Doctor check meaning mismatch", expectation.meaning, check.meaning ?? "", label);
+	}
+	return null;
+}
+
 function handleAssert(req) {
 	if (req.check === "cautilus-command") {
 		return handleCommand(req);
@@ -228,6 +298,9 @@ function handleAssert(req) {
 	}
 	if (req.check === "cautilus-json-file") {
 		return handleJSONFile(req);
+	}
+	if (req.check === "cautilus-readiness") {
+		return handleReadiness(req);
 	}
 	return {
 		type: "failed",
