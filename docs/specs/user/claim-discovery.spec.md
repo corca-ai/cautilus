@@ -5,10 +5,12 @@ Using `cautilus claim` and the bundled skill, a user can discover behavior promi
 ## A user can discover declared behavior promises from selected repo docs.
 
 `claim discover` starts from configured entry documents and linked Markdown, records the effective discovery boundary, and emits a proof plan instead of an unscoped narrative.
-The latest selected status packet is projected here instead of rerunning discovery during every specdown pass.
 
 ```run:shell
-$ node -e 'const p=require("./.cautilus/claims/status-summary.json"); console.log("schema="+p.schemaVersion); console.log("sourceBasis="+p.discoveryBoundary.sourceBasis); console.log("entries="+p.discoveryBoundary.entries.join(",")); console.log("candidateCount>=1="+(p.candidateCount>=1));'
+$ node -e 'const packet=".cautilus/claims/status-summary.json"; const p=require("./"+packet); console.log("packet="+packet); console.log("provenance.inputPath="+p.inputPath); console.log("provenance.gitCommit.present="+((p.gitCommit||"").length>0)); console.log("schema="+p.schemaVersion); console.log("sourceBasis="+p.discoveryBoundary.sourceBasis); console.log("entries="+p.discoveryBoundary.entries.join(",")); console.log("candidateCount>=1="+(p.candidateCount>=1));'
+packet=.cautilus/claims/status-summary.json
+provenance.inputPath=.cautilus/claims/evidenced-typed-runners.json
+provenance.gitCommit.present=true
 schema=cautilus.claim_status_summary.v1
 sourceBasis=entry-docs-and-linked-markdown
 entries=README.md,AGENTS.md,CLAUDE.md
