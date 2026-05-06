@@ -36,6 +36,9 @@ The desired final state is that a user or maintainer can read the index and stor
   Those runs should be produced on demand as durable Cautilus artifacts and then projected by the specdown report.
 - Public proof should prefer raw command output or raw generated files when the output is understandable enough.
   Avoid curated excerpts unless the full output would materially obscure the acceptance claim; if an excerpt is necessary, prefer improving the binary's output shape first.
+- For `*.spec.md` review, the primary human-readable surface is the generated specdown HTML report.
+  Markdown CLI preview is a supplemental line-wrap check, not the acceptance surface.
+- Claim Discovery requires smaller HITL chunks than deterministic Readiness because deterministic discovery packets, agent proof-routing judgment, and bundled-skill curation are different acceptance boundaries.
 - Generated sample workspaces should avoid nondeterministic values in the public report when the binary can accept stable inputs.
   For adapter examples, prefer `cautilus adapter init --repo-name <stable-name>` over wildcarding temporary directory names.
 - If a table includes prose labels such as setup conditions, the executable proof should still be anchored in binary vocabulary and raw packet fields such as `status`, `checks[*].id`, `checks[*].ok`, `checks[*].meaning`, `suggestions`, and `next_action`.
@@ -80,19 +83,31 @@ The desired final state is that a user or maintainer can read the index and stor
 - HITL paused on 2026-05-06 to record broader design principles before restarting from the index.
   Durable rule: Cautilus should align user language, product-domain language, CLI JSON fields, bundled-skill guidance, maintainer specs, tests, and helper names whenever they refer to the same concept.
   Durable rule: workflow stories are the main concern decomposition, while cross-cutting stories such as Reviewable Artifacts and Evidence Gaps must stay visible in the index and reappear locally in story proof.
+- Readiness is treated as reviewed because its proof is deterministic:
+  generated adapter setup, `doctor` ready/blocker states, missing specdown simulation, next bounded action, and bundled-skill orientation all pass through cheap specdown-visible Cautilus checks.
+- Claim Discovery should resume in smaller chunks.
+  The deterministic boundary packet, the non-verdict contract, the next-work bucket routing, and bundled-skill curation each need separate review because agent judgment enters proof planning and curation.
 
 ## Review Queue
 
-1. Readiness story page.
-   Decision: review the rewritten H2 chunks, especially whether the ready condition table, blocked-condition table, next-action table, and bundled-skill orientation table are the right acceptance boundaries.
-2. Claim Discovery story page.
-   Decision: does [claim-discovery.spec.md](../../docs/specs/user/claim-discovery.spec.md) promise discovery from selected repo docs, proof-planning packets, and bundled-skill curation without pretending discovery proves behavior?
-3. Behavior Evaluation story page.
+1. Claim Discovery: story and discovery boundary.
+   Decision: does the opening and first AC show selected repo docs, discovery scope, and nonzero candidate discovery without pretending discovery proves behavior?
+2. Claim Discovery: non-verdict boundary.
+   Decision: does the claim packet remain visibly a proof plan, not a certificate?
+3. Claim Discovery: next-work buckets.
+   Decision: does the visible output and artifact proof show human, agent, deterministic, eval-planning, and split/defer routing before fixture work starts?
+4. Claim Discovery: bundled-skill curation.
+   Decision: does the proof show enough Cautilus run or reviewed skill evidence that curation is not only deterministic packet discovery?
+5. Behavior Evaluation story page.
    Decision: does [evaluation.spec.md](../../docs/specs/user/evaluation.spec.md) explain why `eval` exists, name the `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces, and project latest evidence artifacts cheaply?
-4. Bounded Optimization story page.
+6. Bounded Optimization story page.
    Decision: does [optimization.spec.md](../../docs/specs/user/optimization.spec.md) explain what improves, how intent and protected checks are preserved, and how on-demand proof feeds the spec report?
-5. Host Ownership story page and cross-cutting invariants.
-   Decision: do [ownership.spec.md](../../docs/specs/user/ownership.spec.md), [reviewable-artifacts.spec.md](../../docs/specs/user/reviewable-artifacts.spec.md), and [evidence-gaps.spec.md](../../docs/specs/user/evidence-gaps.spec.md) put adapter ownership, reopenable artifacts, and evidence gaps at the right level?
+7. Host Ownership story page.
+   Decision: does [ownership.spec.md](../../docs/specs/user/ownership.spec.md) put adapter ownership and host policy at the right level?
+8. Reviewable Artifacts cross-cutting story.
+   Decision: does [reviewable-artifacts.spec.md](../../docs/specs/user/reviewable-artifacts.spec.md) stay cross-cutting while still carrying local specdown-visible evidence?
+9. Evidence Gaps cross-cutting story.
+   Decision: does [evidence-gaps.spec.md](../../docs/specs/user/evidence-gaps.spec.md) explain missing or weak evidence without old proof-debt vocabulary?
 
 ## Known Risks To Ask About
 
@@ -107,5 +122,5 @@ The desired final state is that a user or maintainer can read the index and stor
 
 Restart HITL with [docs/specs/index.spec.md](../../docs/specs/index.spec.md), then [docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md), then the user-facing child pages.
 Review from the top in small chunks.
-For each chunk, show the source text plus the actual `specdown run` output for its code fences.
+For each spec chunk, show the source text, the generated specdown HTML/report-visible shape, and the actual `specdown run` output for its code fences.
 Ask whether each chunk is a user-facing acceptance boundary, whether any rows are missing or too implementation-specific, and whether the visible output is honest enough for a user and an agent.
