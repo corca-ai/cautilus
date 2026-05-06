@@ -17,6 +17,7 @@ Readiness commands tell the operator what can run next, what is blocked, and whi
 
 - `doctor` and `agent status` share the same readiness facts and runner-readiness assessment rather than duplicating decisions.
 - Readiness output explains what is ready, what is blocked, and which command continues the loop.
+- `doctor` check objects separate stable `meaning` from run-specific `detail`; external executable prerequisites expose the resolved binary path when present and the searched `PATH` when missing.
 - A ready doctor result means the selected Cautilus surface can run, not that the repo's behavior claims are proven.
 - `specdown_available` is checked in both repo and agent-surface doctor scopes so the spec proof prerequisite stays visible.
 
@@ -24,6 +25,7 @@ Readiness commands tell the operator what can run next, what is blocked, and whi
 
 - [internal/runtime/runner_readiness_test.go](../../../internal/runtime/runner_readiness_test.go) `TestDoctorAndAgentStatusShareRunnerReadinessFacts` directly asserts the parity of readiness verdicts between `doctor` and `agent status`.
 - The shared runner-readiness assessment is implemented in [internal/runtime/runner_readiness.go](../../../internal/runtime/runner_readiness.go) and covered by the surrounding tests in the same file.
+- [internal/app/app_test.go](../../../internal/app/app_test.go) asserts that `specdown_available.detail` includes a resolved `specdown` path when present and the searched `PATH` when missing.
 - The user-facing readiness surface smoke is enforced by [docs/specs/user/doctor-readiness.spec.md](../user/doctor-readiness.spec.md) (specdown directives over `doctor --help` and `agent status --json`).
 
 ## Evidence Gaps

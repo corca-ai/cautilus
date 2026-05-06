@@ -103,8 +103,11 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	if !doctorCheckOK(payload, "specdown_available") {
 		t.Fatalf("expected doctor to require specdown readiness, got %#v", payload["checks"])
 	}
-	if meaning := doctorCheckMeaning(payload, "execution_surface"); meaning != "Cautilus can point the user to an executable first run." {
-		t.Fatalf("expected execution_surface meaning in doctor payload, got %q", meaning)
+	if detail := doctorCheckDetail(payload, "specdown_available"); !strings.Contains(detail, "specdown found at ") {
+		t.Fatalf("expected specdown detail to include resolved path, got %q", detail)
+	}
+	if meaning := doctorCheckMeaning(payload, "specdown_available"); meaning != "The public claim-spec report can execute and render evidence." {
+		t.Fatalf("expected specdown_available meaning in doctor payload, got %q", meaning)
 	}
 }
 
@@ -158,6 +161,9 @@ func TestRunDoctorBlocksClaimDocsWhenSpecdownMissingButPacketsValidate(t *testin
 	}
 	if doctor["ready"] != false || doctorCheckOK(doctor, "specdown_available") {
 		t.Fatalf("expected specdown readiness to block claim-doc workflow, got %#v", doctor)
+	}
+	if detail := doctorCheckDetail(doctor, "specdown_available"); !strings.Contains(detail, "specdown missing from PATH=/usr/bin:/bin") {
+		t.Fatalf("expected missing specdown detail to include PATH, got %q", detail)
 	}
 	nextAction, ok := doctor["next_action"].(map[string]any)
 	if !ok || nextAction["kind"] != "install_specdown" {
@@ -214,6 +220,17 @@ func doctorCheckMeaning(payload map[string]any, id string) string {
 		if check["id"] == id {
 			meaning, _ := check["meaning"].(string)
 			return meaning
+		}
+	}
+	return ""
+}
+
+func doctorCheckDetail(payload map[string]any, id string) string {
+	for _, raw := range arrayOrEmpty(payload["checks"]) {
+		check := raw.(map[string]any)
+		if check["id"] == id {
+			detail, _ := check["detail"].(string)
+			return detail
 		}
 	}
 	return ""

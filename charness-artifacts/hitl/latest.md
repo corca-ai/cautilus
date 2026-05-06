@@ -70,6 +70,11 @@ The desired final state is that a user or maintainer can read the index and stor
 - Post-implementation premortem issues acted on before commit:
   the visible missing-git `run:shell` block and the verifying `check:cautilus-json-command` now target the same generated repo path;
   `npm run lint:specs` has verified the actual `specdown run` integration path for directive params, variable substitution, and the generalized JSON-command adapter.
+- HITL follow-up accepted after commit:
+  adapter context should be the first Readiness H2 instead of an abrupt opening paragraph;
+  ready-check H2 should explain `id`, `ok`, stable `meaning`, and run-specific `detail`;
+  `Repo-Owned Adapter` and `Executable Claim-Spec Report` are better H3 labels;
+  `specdown_available.detail` should show the resolved executable path when present and searched `PATH` when missing.
 
 ## Review Queue
 

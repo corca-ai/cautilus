@@ -110,6 +110,9 @@ Use `doctor --next-action` when you want one current onboarding step plus the ex
 If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.
 Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
+Each `doctor` check separates stable contract from run-specific observation:
+`id` names the machine-readable readiness condition, `ok` reports the boolean result, `meaning` explains why the condition matters, and `detail` records the observed fact for this run.
+External executable prerequisites should put the resolved binary path in `detail` when present and the searched `PATH` in `detail` when missing.
 When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: a starter `eval test -> eval evaluate` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.
 When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
 Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.

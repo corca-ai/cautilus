@@ -5,9 +5,17 @@ Using `cautilus doctor` and the bundled Cautilus skill, a user can decide whethe
 Readiness means the repo has enough Cautilus setup to choose and run the next bounded workflow.
 It is not evidence that the repo's behavior promises are already true; proof status is handled by [Evidence Gaps](evidence-gaps.spec.md).
 
+## A user can see that readiness starts from a valid repo-owned adapter.
+
+Cautilus does not guess a host repo's prompts, runners, baselines, or acceptance policy.
+Instead, it uses a repo-owned adapter so the user can declare how Cautilus should inspect and evaluate that repo.
+
+A repo becomes ready for Cautilus only after `cautilus doctor` can find and parse a valid adapter for the selected workflow.
 A valid Cautilus adapter is YAML generated or maintained by the host repo, usually at `.agents/cautilus-adapter.yaml`.
-It must parse as a Cautilus adapter, name the repo, and declare enough workflow wiring for the selected Cautilus work.
-Host-specific adapter ownership is covered in [Host Ownership](ownership.spec.md), and this repo's production adapter is [.agents/cautilus-adapter.yaml](../../../.agents/cautilus-adapter.yaml).
+It names the repo and declares enough workflow wiring for the selected Cautilus work.
+
+Host-specific adapter ownership is covered in [Host Ownership](ownership.spec.md).
+This repo's production adapter is [.agents/cautilus-adapter.yaml](../../../.agents/cautilus-adapter.yaml).
 
 ```run:shell -> $sample_repo, $sample_cautilus
 # Create a deterministic sample skill adapter repo and standalone Cautilus binary.
@@ -29,17 +37,20 @@ printf '%s\n%s\n' "$tmp" "$bin"
 cat "${sample_repo}/.agents/cautilus-adapter.yaml"
 ```
 
-## A user can see the setup conditions that make the sample repo ready for the selected Cautilus workflow.
+## A user can see which setup checks are ready before choosing the next Cautilus workflow.
 
 `doctor` reports workflow-relevant checks with machine-readable meaning.
-The raw packet remains visible, and the tables below verify the same packet by workflow.
+Each check has an `id`, an `ok` result, a stable `meaning`, and a run-specific `detail`.
+The tables verify the stable readiness contract through `id`, `ok`, and `meaning`; the folded raw packet keeps run-specific details such as resolved paths visible.
+
+A ready setup does not mean every next action is complete; `doctor` can still point to the next bounded setup branch, such as runner assessment.
 
 ```run:shell
 # Show the raw doctor packet for the generated sample adapter.
 "${sample_cautilus}" doctor --repo-root "${sample_repo}"
 ```
 
-### Adapter Discovery
+### Repo-Owned Adapter
 
 Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
 
@@ -50,14 +61,15 @@ Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
 | checks[id=adapter_valid].ok | true | Cautilus can parse and trust the adapter shape enough to continue. |
 | checks[id=repo_name].ok | true | The adapter identifies the host repo whose behavior is being evaluated. |
 
-### Claim-Spec Report
+### Executable Claim-Spec Report
 
 Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
 
 > check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo})
-| path | equals | meaning |
-| --- | --- | --- |
-| checks[id=specdown_available].ok | true | The public claim-spec report can render executable evidence. |
+| path | equals | meaning | includes |
+| --- | --- | --- | --- |
+| checks[id=specdown_available].ok | true | The public claim-spec report can execute and render evidence. | |
+| checks[id=specdown_available].detail | | | specdown found at |
 
 ### First Bounded Eval
 
@@ -202,11 +214,12 @@ env PATH=/usr/bin:/bin "${sample_cautilus}" doctor --repo-root "${sample_repo}" 
 ```
 
 > check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo}, exit_code=1, env_path=/usr/bin:/bin)
-| path | equals | meaning |
-| --- | --- | --- |
-| status | incomplete_adapter | |
-| checks[id=specdown_available].ok | false | The public claim-spec report can render executable evidence. |
-| next_action.kind | install_specdown | |
+| path | equals | meaning | includes |
+| --- | --- | --- | --- |
+| status | incomplete_adapter | | |
+| checks[id=specdown_available].ok | false | The public claim-spec report can execute and render evidence. | |
+| checks[id=specdown_available].detail | | | specdown missing from PATH=/usr/bin:/bin |
+| next_action.kind | install_specdown | | |
 
 ## A user can see the next bounded action for the current readiness state.
 

@@ -1354,16 +1354,24 @@ func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
 }
 
 func appendSpecdownCheck(checks *[]any, suggestions *[]any) {
-	_, err := exec.LookPath("specdown")
-	appendFieldCheck(
+	appendExecutableCheck(
 		checks,
 		suggestions,
 		"specdown_available",
-		err == nil,
-		"specdown is available on PATH for executable claim specs.",
-		"specdown is missing from PATH; Cautilus requires specdown for public executable claim docs.",
+		"specdown",
+		"Cautilus requires specdown for public executable claim docs.",
 		"Install specdown and rerun `cautilus doctor`.",
 	)
+}
+
+func appendExecutableCheck(checks *[]any, suggestions *[]any, id string, executable string, missingReason string, suggestion string) {
+	resolvedPath, err := exec.LookPath(executable)
+	if err == nil {
+		*checks = append(*checks, doctorCheck(id, true, fmt.Sprintf("%s found at %s.", executable, resolvedPath)))
+		return
+	}
+	*checks = append(*checks, doctorCheck(id, false, fmt.Sprintf("%s missing from PATH=%s. %s", executable, os.Getenv("PATH"), missingReason)))
+	*suggestions = append(*suggestions, suggestion)
 }
 
 func appendFieldCheck(checks *[]any, suggestions *[]any, id string, ok bool, okDetail string, missingDetail string, suggestion string) {
@@ -1393,7 +1401,7 @@ func doctorCheckMeaning(id string) string {
 	case "adapter_valid":
 		return "Cautilus can parse and trust the adapter shape enough to continue."
 	case "specdown_available":
-		return "The public claim-spec report can render executable evidence."
+		return "The public claim-spec report can execute and render evidence."
 	case "repo_name":
 		return "The adapter identifies the host repo whose behavior is being evaluated."
 	case "evaluation_surfaces":
