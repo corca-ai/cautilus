@@ -74,6 +74,10 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 
 - **Standing gate 먼저, 슬라이스 나중.**
   다수 파일 카스케이드를 수반하는 슬라이스를 계획 중이면 린터부터.
+- **문서 HITL 은 rendered preview 까지 본다.**
+  public docs 나 `docs/specs/` prose 를 chunk review 할 때는 raw markdown 만 보지 말고 `npm run docs:preview:changed` 를 돌린 뒤 `.artifacts/markdown-preview/` 의 해당 width snapshot 을 읽는다.
+  단순히 preview 명령이 exit 0 이라고 충분하지 않다.
+  non-empty rendered text 가 실제로 생성됐는지 보고, 빈 snapshot 이면 renderer seam bug 로 취급한다.
 - **Standing gate 가 landed 되면 escape hatch 를 재평가.**
   임시로 남겨둔 enforcement escape (`Must*` 헬퍼 등) 는 gate 가 들어온 뒤 삭제 가능한지 확인.
 - **같은 generated artifact 를 쓰고 읽는 명령은 병렬화하지 않는다.**
