@@ -5,7 +5,6 @@ widths:
   - 100
 include:
   - README*.md
-  - install.md
   - docs/specs/*.md
   - docs/guides/consumer-adoption.md
   - docs/maintainers/development.md

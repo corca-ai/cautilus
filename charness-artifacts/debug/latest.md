@@ -1,53 +1,55 @@
 # Debug Review
-Date: 2026-05-05
+Date: 2026-05-06
 
 ## Problem
 
-`npm run lint:eslint` failed after replacing `check:cautilus-readiness` with generalized `check:cautilus-json-command`.
-Exact error: `Function 'valueAtPath' has a cognitive complexity of 18. Maximum allowed is 12`.
+`npm run docs:preview:changed` fails while reviewing the executable spec index.
+Exact error: `markdown preview path not found: install.md`.
 
 ## Correct Behavior
 
-Given the specdown Cautilus adapter supports selector JSON paths such as `checks[id=adapter_found].ok`, when `npm run lint:eslint` runs, then path traversal should stay under the repo's configured complexity threshold while preserving selector, array index, and object field behavior.
+Given a checked-in markdown preview scope, when a changed markdown file matches that scope, then `npm run docs:preview:changed` should render width-specific artifacts without failing on stale configured paths.
 
 ## Observed Facts
 
-ESLint reported only one failure in `scripts/specdown/cautilus-adapter.mjs`.
-The failure was in `valueAtPath`.
-The sonarjs cognitive-complexity rule penalizes nested branches and loop decisions, which the first selector implementation concentrated in one traversal function.
+`.agents/markdown-preview.yaml` includes `install.md`.
+`git ls-files install.md` returns no tracked file.
+The repo has `install.sh`, but markdown preview only accepts markdown targets.
+The preview script intentionally errors for missing explicit configured paths.
+The support capability exists and repo scripts are wired as `docs:preview`, `docs:preview:changed`, and `docs:preview:specs`.
 
 ## Reproduction
 
-`npm run lint:eslint` reproduced the failure.
-`node --test scripts/specdown-cautilus-adapter.test.mjs`, `go test ./internal/app ./internal/runtime`, and `npm run lint:specs` had already passed before this lint failure was addressed.
+`npm run docs:preview:changed` reproduced the failure with `markdown preview path not found: install.md`.
 
 ## Candidate Causes
 
-- The new JSON path traversal handles null checks, array indexes, selector objects, and object fields in one loop.
-- The repo's configured cognitive-complexity threshold is intentionally lower than the first-pass traversal shape.
-- Selector support is valid behavior, but branch-heavy local implementation crossed the lint budget.
+- The checked-in markdown preview config references a file that was removed or never committed.
+- The preview script could be too strict about missing explicit targets.
+- The current docs review workflow may be relying on advisory preview commands without a verify hook that catches stale scope entries earlier.
 
 ## Hypothesis
 
-If segment traversal is extracted into focused helpers for array indexes, selector objects, and object fields, then `valueAtPath` will fall below the configured complexity threshold without changing behavior.
+If the stale `install.md` target is removed from `.agents/markdown-preview.yaml`, then `npm run docs:preview:changed` will render the changed spec index instead of failing before target selection.
 
 ## Verification
 
-The traversal was split into `valueAtSegment`, `valueAtIndex`, `valueAtSelector`, `valueAtProperty`, and `missingValue`.
-`npm run lint:eslint`, `node --test scripts/specdown-cautilus-adapter.test.mjs`, and `npm run lint:specs` pass after extraction.
+Removed the stale `install.md` include from `.agents/markdown-preview.yaml`.
+`npm run docs:preview:changed` now renders 2 snapshots across the changed spec index into `.artifacts/markdown-preview`.
+`python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.16/scripts/validate_debug_artifact.py --repo-root .` passes.
 
 ## Root Cause
 
-The first selector-path implementation put several independent traversal cases in one function.
-That made the function exceed the repo's ESLint cognitive-complexity budget even though the behavior was locally correct.
+The repo-owned markdown preview scope still referenced `install.md`, but that markdown file is not tracked in this repo.
+Because explicit missing configured paths are treated as invalid configuration, the preview command failed before rendering the changed spec file.
 
 ## Seam Risk
 
-- Interrupt ID: eslint-complexity-json-path-adapter
+- Interrupt ID: markdown-preview-stale-scope
 - Risk Class: none
-- Seam: specdown adapter JSON command/file checks
-- Disproving Observation: lint reported a single local complexity violation, not a runtime protocol failure.
-- What Local Reasoning Cannot Prove: whether future JSON path selectors need a more formal parser instead of this small supported subset.
+- Seam: markdown preview support configuration
+- Disproving Observation: the failing path is a checked-in local config entry, not a backend renderer or external host failure.
+- What Local Reasoning Cannot Prove: whether a future docs install guide should reintroduce an `install.md` target.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -58,4 +60,4 @@ That made the function exceed the repo's ESLint cognitive-complexity budget even
 
 ## Prevention
 
-Keep specdown adapter handlers and traversal functions as orchestration functions, and move branch-heavy validation into focused helpers before adding more row shapes.
+Keep checked-in markdown preview scopes limited to tracked markdown files or globs that can be empty without blocking unrelated changed-file previews.
