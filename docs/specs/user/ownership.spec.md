@@ -8,12 +8,12 @@ The current adapter evidence proves that adapter-owned claim discovery entries a
 
 ```run:shell
 # Show the production Cautilus adapter surface that this repo owns.
-node -e 'const fs=require("fs"); const text=fs.readFileSync(".agents/cautilus-adapter.yaml","utf8"); console.log(text);'
+cat .agents/cautilus-adapter.yaml
 ```
 
 ```run:shell
 # Show the adapter-owned discovery behaviors proven by the latest selected evidence bundle.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, notableAssertions: observed.notableAssertions})), null, 2));'
+jq '[.commandEvidence[] | {command, notableAssertions: .observed.notableAssertions}]' .cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json
 ```
 
 > check:cautilus-json-file
@@ -29,7 +29,7 @@ The consumer onboarding evidence covers install, adapter init, doctor readiness,
 
 ```run:shell
 # Show the standalone onboarding behaviors covered by the latest selected evidence bundle.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, notableAssertions: observed.notableAssertions})), null, 2));'
+jq '[.commandEvidence[] | {command, notableAssertions: .observed.notableAssertions}]' .cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json
 ```
 
 > check:cautilus-json-file
@@ -45,7 +45,7 @@ The current durable-packet evidence proves that core command surfaces emit schem
 
 ```run:shell
 # Show the durable packet surfaces proven by the latest selected evidence bundle.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-durable-packets-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, observed})), null, 2));'
+jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-durable-packets-2026-05-03.json
 ```
 
 > check:cautilus-json-file

@@ -8,7 +8,7 @@ Core command surfaces emit schema-versioned packets with state summaries, next b
 
 ```run:shell
 # Show durable packet surfaces from the latest selected evidence bundle.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-durable-packets-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, observed})), null, 2));'
+jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-durable-packets-2026-05-03.json
 ```
 
 > check:cautilus-json-file
@@ -23,7 +23,7 @@ The projection matrix and renderer tests cover the shipped readable artifact fam
 
 ```run:shell
 # Show the readable projection behaviors proven by the latest selected evidence bundle.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, observed})), null, 2));'
+jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json
 ```
 
 > check:cautilus-json-file
@@ -39,7 +39,7 @@ The status-report evidence covers evidence-gap buckets, validation summaries, re
 
 ```run:shell
 # Show the stale, blocked, and missing evidence behaviors proven by the latest selected report evidence.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, observed})), null, 2));'
+jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json
 ```
 
 > check:cautilus-json-file

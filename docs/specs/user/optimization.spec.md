@@ -9,7 +9,7 @@ The latest selected optimize evidence is projected here instead of rerunning exp
 
 ```run:shell
 # Show the selected optimize route and the packet examples that bound it.
-node -e 'const fs=require("fs"); const evidence=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json","utf8")); const input=JSON.parse(fs.readFileSync("fixtures/optimize/example-input.json","utf8")); console.log(JSON.stringify({bundleId:evidence.bundleId, evidenceStatus:evidence.decision.evidenceStatus, optimizationTarget:input.optimizationTarget, intent:input.intentProfile.summary, reportRecommendation:input.report.recommendation, budget:input.optimizer.budget}, null, 2));'
+jq -n --slurpfile evidence .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json --slurpfile input fixtures/optimize/example-input.json '{bundleId: $evidence[0].bundleId, evidenceStatus: $evidence[0].decision.evidenceStatus, optimizationTarget: $input[0].optimizationTarget, intent: $input[0].intentProfile.summary, reportRecommendation: $input[0].report.recommendation, budget: $input[0].optimizer.budget}'
 ```
 
 > check:cautilus-json-file
@@ -25,7 +25,7 @@ The selected on-demand evidence proves a bounded route that carries held-out res
 
 ```run:shell
 # Show the protected optimize behaviors proven by the latest selected evidence bundle.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json","utf8")); console.log(JSON.stringify(p.commandEvidence.map(({command,observed})=>({command, protectedBehaviors: observed.protectedBehaviors})), null, 2));'
+jq '[.commandEvidence[] | {command, protectedBehaviors: .observed.protectedBehaviors}]' .cautilus/claims/evidence-optimize-held-out-route-2026-05-03.json
 ```
 
 > check:cautilus-json-file
@@ -41,7 +41,7 @@ Optimization produces a proposal and revision artifact that preserve source file
 
 ```run:shell
 # Show the proposal and revision fields a reviewer can reopen before applying a change.
-node -e 'const fs=require("fs"); const proposal=JSON.parse(fs.readFileSync("fixtures/optimize/example-proposal.json","utf8")); const revision=JSON.parse(fs.readFileSync("fixtures/optimize/example-revision-artifact.json","utf8")); console.log(JSON.stringify({proposal:{schemaVersion:proposal.schemaVersion, decision:proposal.decision, prioritizedEvidence:proposal.prioritizedEvidence.map(({source,key,severity})=>({source,key,severity})), suggestedChanges:proposal.suggestedChanges.map(({id,changeKind,target})=>({id,changeKind,target}))}, revision:{schemaVersion:revision.schemaVersion, stopConditions:revision.stopConditions, followUpChecks:revision.followUpChecks}}, null, 2));'
+jq -n --slurpfile proposal fixtures/optimize/example-proposal.json --slurpfile revision fixtures/optimize/example-revision-artifact.json '{proposal: {schemaVersion: $proposal[0].schemaVersion, decision: $proposal[0].decision, prioritizedEvidence: [$proposal[0].prioritizedEvidence[] | {source, key, severity}], suggestedChanges: [$proposal[0].suggestedChanges[] | {id, changeKind, target}]}, revision: {schemaVersion: $revision[0].schemaVersion, stopConditions: $revision[0].stopConditions, followUpChecks: $revision[0].followUpChecks}}'
 ```
 
 > check:cautilus-json-file

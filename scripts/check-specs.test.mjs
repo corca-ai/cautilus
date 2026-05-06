@@ -162,3 +162,50 @@ test("check-specs fails on broken relative links inside docs/specs", () => {
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("check-specs target mode validates selected linked specs without requiring every active spec", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-check-specs-target-"));
+	try {
+		writeFile(root, "specdown.json", JSON.stringify({ entry: "docs/specs/index.spec.md" }));
+		writeFile(
+			root,
+			"docs/specs/index.spec.md",
+			[
+				"# Test Report",
+				"",
+				"- [Product](user/product.spec.md)",
+				"",
+			].join("\n"),
+		);
+		writeFile(
+			root,
+			"docs/specs/user/product.spec.md",
+			[
+				"# Product",
+				"",
+				"[Readme](../../../README.md)",
+				"",
+			].join("\n"),
+		);
+		writeFile(
+			root,
+			"docs/specs/user/extra.spec.md",
+			[
+				"# Extra",
+				"",
+				"[Readme](../../../README.md)",
+				"",
+			].join("\n"),
+		);
+		writeFile(root, "README.md", "# temp\n");
+
+		const result = spawnSync("node", [SCRIPT_PATH, "docs/specs/user/product.spec.md"], {
+			cwd: root,
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 0, result.stderr);
+		assert.match(result.stdout, /spec checks passed \(1 selected spec\(s\)\)/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});

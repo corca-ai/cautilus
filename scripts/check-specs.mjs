@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname, relative, resolve } from "node:path";
 import process from "node:process";
+import { pathToFileURL } from "node:url";
 
 function fail(message) {
 	const error = new Error(message);
@@ -63,6 +64,47 @@ function parseMarkdownLinks(content) {
 	return [...content.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)].map((match) => match[1]);
 }
 
+function repoRelative(repoRoot, specPath) {
+	return relative(repoRoot, specPath).replaceAll("\\", "/");
+}
+
+function usage() {
+	return [
+		"Usage: node scripts/check-specs.mjs [spec-file ...]",
+		"",
+		"Without spec-file arguments, validates every active docs/specs/*.spec.md file.",
+		"With spec-file arguments, validates those spec files' links and confirms they are reachable from specdown.json entry.",
+	].join("\n");
+}
+
+function parseArgs(argv) {
+	if (argv.includes("-h") || argv.includes("--help")) {
+		return { help: true, targets: [] };
+	}
+	for (const arg of argv) {
+		if (arg.startsWith("-")) {
+			throw fail(`unknown argument: ${arg}`);
+		}
+	}
+	return { help: false, targets: argv };
+}
+
+function resolveTargetSpecPaths(repoRoot, specsDir, targets) {
+	return targets.map((target) => {
+		const specPath = resolve(repoRoot, target);
+		if (!specPath.startsWith(`${specsDir}/`) && specPath !== specsDir) {
+			throw fail(`Spec target must be under docs/specs: ${target}`);
+		}
+		if (!specPath.endsWith(".spec.md")) {
+			throw fail(`Spec target must end with .spec.md: ${target}`);
+		}
+		if (!existsSync(specPath) || !statSync(specPath).isFile()) {
+			throw fail(`Spec target does not exist: ${target}`);
+		}
+		return specPath;
+	});
+}
+
 function validateRelativeLinks(repoRoot, specPath, content) {
 	for (const target of parseMarkdownLinks(content)) {
 		if (target.startsWith("http://") || target.startsWith("https://") || target.startsWith("/")) {
@@ -75,33 +117,49 @@ function validateRelativeLinks(repoRoot, specPath, content) {
 	}
 }
 
-function main() {
+export function checkSpecs({ repoRoot = process.cwd(), targets = [] } = {}) {
+	const specsDir = resolve(repoRoot, "docs", "specs");
+	const config = readSpecdownConfig(repoRoot);
+	const indexPath = resolve(repoRoot, config.entry);
+	if (!existsSync(indexPath)) {
+		throw fail(`Specdown entry does not exist: ${config.entry}`);
+	}
+	const specFiles = targets.length > 0
+		? resolveTargetSpecPaths(repoRoot, specsDir, targets)
+		: listSpecFiles(specsDir);
+	const linkedSpecPaths = discoverLinkedSpecs(indexPath);
+
+	for (const specPath of specFiles) {
+		const content = readFileSync(specPath, "utf-8");
+		validateRelativeLinks(repoRoot, specPath, content);
+	}
+	for (const specPath of specFiles) {
+		if (!linkedSpecPaths.has(specPath)) {
+			throw fail(`Specdown entry does not link ${repoRelative(repoRoot, specPath)}`);
+		}
+	}
+
+	return { specCount: specFiles.length, selected: targets.length > 0 };
+}
+
+export function main(argv = process.argv.slice(2)) {
 	const repoRoot = process.cwd();
 	try {
-		const specsDir = resolve(repoRoot, "docs", "specs");
-		const config = readSpecdownConfig(repoRoot);
-		const indexPath = resolve(repoRoot, config.entry);
-		if (!existsSync(indexPath)) {
-			throw fail(`Specdown entry does not exist: ${config.entry}`);
+		const options = parseArgs(argv);
+		if (options.help) {
+			process.stdout.write(`${usage()}\n`);
+			return;
 		}
-		const specFiles = listSpecFiles(specsDir);
-		const linkedSpecPaths = discoverLinkedSpecs(indexPath);
-
-		for (const specPath of specFiles) {
-			const content = readFileSync(specPath, "utf-8");
-			validateRelativeLinks(repoRoot, specPath, content);
-		}
-		for (const specPath of specFiles) {
-			if (!linkedSpecPaths.has(specPath)) {
-				throw fail(`Specdown entry does not link ${specPath.slice(repoRoot.length + 1)}`);
-			}
-		}
-
-		process.stdout.write(`spec checks passed (${specFiles.length} specs)\n`);
+		const result = checkSpecs({ repoRoot, targets: options.targets });
+		const suffix = result.selected ? " selected spec(s)" : " specs";
+		process.stdout.write(`spec checks passed (${result.specCount}${suffix})\n`);
 	} catch (error) {
 		process.stderr.write(`${error.message}\n`);
 		process.exit(1);
 	}
 }
 
-main();
+const entryHref = process.argv[1] ? pathToFileURL(resolve(process.argv[1])).href : "";
+if (import.meta.url === entryHref) {
+	main();
+}

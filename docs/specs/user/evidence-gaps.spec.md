@@ -8,7 +8,7 @@ The claim status summary keeps the proof-plan boundary visible to users.
 
 ```run:shell
 # Show the non-verdict boundary from the latest selected claim status packet.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/status-summary.json","utf8")); console.log(JSON.stringify({schemaVersion:p.schemaVersion, candidateCount:p.candidateCount, nonVerdictNotice:p.nonVerdictNotice}, null, 2));'
+jq '{schemaVersion, candidateCount, nonVerdictNotice}' .cautilus/claims/status-summary.json
 ```
 
 > check:cautilus-json-file
@@ -22,7 +22,7 @@ The current evidence-gap evidence records tests that keep validation summaries, 
 
 ```run:shell
 # Show the report behaviors that keep missing and stale evidence visible.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json","utf8")); console.log(JSON.stringify({bundleId:p.bundleId, evidenceStatus:p.decision.evidenceStatus, summary:p.summary, protectedBehaviors:p.commandEvidence[0].observed.protectedBehaviors}, null, 2));'
+jq '{bundleId, evidenceStatus: .decision.evidenceStatus, summary, protectedBehaviors: .commandEvidence[0].observed.protectedBehaviors}' .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json
 ```
 
 > check:cautilus-json-file
@@ -38,7 +38,7 @@ The current status packet exposes evidence satisfaction counts, action buckets, 
 
 ```run:shell
 # Show the current evidence satisfaction and next-work signals from the latest selected claim status packet.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/status-summary.json","utf8")); console.log(JSON.stringify({evidenceSatisfaction:p.evidenceSatisfaction, primaryBuckets:p.actionSummary.primaryBuckets.map(({id,count,recommendedActor,summary})=>({id,count,recommendedActor,summary})), crossCuttingSignals:p.actionSummary.crossCuttingSignals}, null, 2));'
+jq '{evidenceSatisfaction, primaryBuckets: [.actionSummary.primaryBuckets[] | {id, count, recommendedActor, summary}], crossCuttingSignals: .actionSummary.crossCuttingSignals}' .cautilus/claims/status-summary.json
 ```
 
 > check:cautilus-json-file

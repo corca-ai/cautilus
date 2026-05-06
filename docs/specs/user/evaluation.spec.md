@@ -9,7 +9,7 @@ This spec projects the latest selected evidence bundle instead of rerunning expe
 
 ```run:shell
 # Show the target surfaces from the latest selected eval-surface evidence.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json","utf8")); console.log(JSON.stringify(p.packetEvidence.map((item)=>({schemaVersion:item.schemaVersion,targetSurface:item.proof?.targetSurface,recommendation:item.recommendation})), null, 2));'
+jq '[.packetEvidence[] | {schemaVersion, targetSurface: .proof.targetSurface, recommendation}]' .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json
 ```
 
 > check:cautilus-json-file
