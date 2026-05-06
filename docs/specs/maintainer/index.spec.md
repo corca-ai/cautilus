@@ -1,13 +1,13 @@
 # Cautilus Maintainer-Facing Specs
 
-This index maps the user-facing Cautilus promises to maintainer-owned contracts, proof routes, adapters, fixtures, and known proof debt.
+This index maps the user-facing Cautilus promises to maintainer-owned contracts, proof routes, adapters, fixtures, and known evidence gaps.
 
 User view: [User-Facing Specs](../user/index.spec.md).
 Full claim-spec report entry: [Cautilus Claim Specs](../index.spec.md).
 
 Use this view after the user-facing index.
-Each maintainer page names the aligned U-claims, the maintainer promise, concrete subclaims, current evidence, and remaining evidence gaps.
-The `Aligned user claims` field refers to the IDs in the user-facing index.
+Each maintainer page names the aligned user-facing story or legacy maintainer-local claim IDs, the maintainer promise, concrete subclaims, current evidence, and remaining evidence gaps.
+Named user stories are the preferred public anchor; legacy `U*` IDs should be retired as maintainer pages are refreshed.
 
 ## Claims
 

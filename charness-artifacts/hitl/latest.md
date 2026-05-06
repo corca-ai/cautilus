@@ -14,6 +14,7 @@ The desired final state is that a user or maintainer can read the index and stor
 
 - User-facing specs should read like top-level user stories whose acceptance criteria carry local executable proof or an explicit gap.
 - Top-level stories should name the user-facing actor, the Cautilus command or bundled-skill surface, and the outcome.
+- Product vocabulary should align across user prose, Cautilus JSON packets, bundled-skill guidance, maintainer specs, tests, and helper names whenever the same concept is meant.
 - The user-facing index should use named stories rather than visible U-numbering.
   Internal stable IDs may remain hidden or secondary if maintainer mapping still needs them.
 - Story order should follow the user's workflow:
@@ -23,6 +24,7 @@ The desired final state is that a user or maintainer can read the index and stor
   Bounded Optimization;
   Host Ownership.
 - Reviewable artifacts, evidence visibility, and no-satisfied-without-valid-evidence are cross-cutting acceptance invariants, not separate top-level user jobs.
+  Cross-cutting stories should remain visible in the index and should also appear locally inside the main stories where they constrain the workflow.
 - Acceptance criteria and proof should not be separated into distant `Evidence` sections.
   A specdown block or check table directly under the criterion is the report-visible proof.
 - Public claim proof should not rely on source guards or simple stdout substring checks except as narrow command-discovery smoke.
@@ -75,6 +77,9 @@ The desired final state is that a user or maintainer can read the index and stor
   ready-check H2 should explain `id`, `ok`, stable `meaning`, and run-specific `detail`;
   `Repo-Owned Adapter` and `Executable Claim-Spec Report` are better H3 labels;
   `specdown_available.detail` should show the resolved executable path when present and searched `PATH` when missing.
+- HITL paused on 2026-05-06 to record broader design principles before restarting from the index.
+  Durable rule: Cautilus should align user language, product-domain language, CLI JSON fields, bundled-skill guidance, maintainer specs, tests, and helper names whenever they refer to the same concept.
+  Durable rule: workflow stories are the main concern decomposition, while cross-cutting stories such as Reviewable Artifacts and Evidence Gaps must stay visible in the index and reappear locally in story proof.
 
 ## Review Queue
 
@@ -100,7 +105,7 @@ The desired final state is that a user or maintainer can read the index and stor
 
 ## Next HITL Chunk
 
-Start HITL with [docs/specs/user/doctor-readiness.spec.md](../../docs/specs/user/doctor-readiness.spec.md).
+Restart HITL with [docs/specs/index.spec.md](../../docs/specs/index.spec.md), then [docs/specs/user/index.spec.md](../../docs/specs/user/index.spec.md), then the user-facing child pages.
 Review from the top in small chunks.
 For each chunk, show the source text plus the actual `specdown run` output for its code fences.
 Ask whether each chunk is a user-facing acceptance boundary, whether any rows are missing or too implementation-specific, and whether the visible output is honest enough for a user and an agent.

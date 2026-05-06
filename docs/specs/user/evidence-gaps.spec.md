@@ -29,7 +29,7 @@ node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/c
 | path | json_path | equals | includes |
 | --- | --- | --- | --- |
 | .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | decision.evidenceStatus | satisfied | |
-| .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | summary | | proof debt |
+| .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | summary | | missing evidence |
 | .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | commandEvidence[0].observed.protectedBehaviors[0] | | JSON packets |
 
 ## Missing or weak evidence remains visible as next work.

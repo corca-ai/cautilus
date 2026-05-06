@@ -41,6 +41,24 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 - **Follow-up 번호는 스펙에서 삭제될 때 재넘버링한다.**
   gap 을 남기지 말고 삭제 + 재넘버링 + cross-ref 갱신을 한 커밋에.
 
+## Product Language 및 Cross-Cutting Concern 원칙
+
+- **유저 언어, 제품 도메인 언어, 문서 언어, 코드/JSON 언어를 가능한 한 맞춘다.**
+  같은 개념은 user-facing spec, maintainer spec, CLI JSON, bundled skill, test name, helper name 에서 같은 이름을 써야 한다.
+  예: `readiness`, `adapter`, `claim discovery`, `evaluation surface`, `evidence gap`, `reviewable artifact`, `meaning`, `detail`.
+- **이름이 다르면 다른 개념으로 간주한다.**
+  단순 rename 처럼 보여도 사용자 문서와 binary output 이 어긋나면 제품 의미가 분리된다.
+  rename 은 public prose, JSON field/meaning, tests, maintainer mapping 을 한 slice 에서 같이 갱신하거나 명시적으로 defer 한다.
+- **User-facing stories 는 main concern 이고, cross-cutting stories 는 숨기지 않는다.**
+  Readiness, Claim Discovery, Behavior Evaluation, Bounded Optimization, Host Ownership 은 workflow 중심 dominant decomposition 이다.
+  Reviewable Artifacts, Evidence Gaps, vocabulary/packet consistency 같은 concern 은 별도 workflow 가 아니어도 index 에서 보이고 각 story 안의 proof 로 다시 투영되어야 한다.
+- **Cross-cutting concern 을 AOP 용어로 노출하지 않는다.**
+  내부 설계 렌즈로는 AOP / dominant decomposition 경고를 사용하되, public docs 는 concrete contract 와 evidence route 로 말한다.
+  "aspect" 라는 설명보다 "every workflow leaves reviewable artifacts" 나 "missing evidence remains visible" 이 더 좋은 product language 다.
+- **한 분해 축이 다른 관심사를 지우는지 self-check 한다.**
+  user story 순서가 workflow 를 잘 설명해도, evidence visibility / host ownership / cost-budget / agent-human readability 가 특정 story 에 묻혀 사라지면 설계가 퇴행한 것이다.
+  index 에 cross-cutting 항목을 남기고, maintainer side 에는 어떤 invariant 가 어느 story 를 제한하는지 mapping 을 둔다.
+
 ## Breaking Change 및 마이그레이션
 
 - **Breaking change 의 actionable error 계약.**

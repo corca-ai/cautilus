@@ -7,6 +7,7 @@ Each story page should read as an acceptance contract:
 the story names the user job, the Cautilus surface, and the outcome;
 each acceptance criterion carries local executable proof or an explicit gap.
 Expensive Cautilus proof is produced on demand as durable artifacts, while this specdown report should project the latest selected evidence without rerunning costly evaluation or optimization loops.
+The same product vocabulary should appear in user prose, Cautilus JSON packets, bundled-skill guidance, maintainer specs, and tests.
 
 Maintainer view: [Maintainer-Facing Specs](../maintainer/index.spec.md).
 Full claim-spec report entry: [Cautilus Claim Specs](../index.spec.md).
@@ -20,12 +21,16 @@ Full claim-spec report entry: [Cautilus Claim Specs](../index.spec.md).
 - [Host Ownership](ownership.spec.md): using Cautilus adapters and host-owned runners, a user can keep prompts, models, credentials, runtime wiring, and acceptance policy in the host repo while Cautilus standardizes workflow packets and boundaries.
 
 Read this index first when judging the product story.
-The pages are ordered by the user's workflow, not by internal implementation layers.
+The main stories are ordered by the user's workflow, not by internal implementation layers.
+They are the dominant product decomposition, but they do not replace the cross-cutting stories below.
 
 ## Cross-Cutting Stories
 
 - [Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen.
 - [Evidence Gaps](evidence-gaps.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
+
+Cross-cutting stories should stay visible here and should also appear locally inside the main stories where they constrain the workflow.
+For example, readiness uses `meaning` and `detail` consistently in the `doctor` packet, while evaluation and optimization project latest evidence artifacts instead of hiding cost or proof state.
 
 ## Prerequisite
 
