@@ -1,7 +1,20 @@
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
+import {
+	closeSync,
+	existsSync,
+	mkdirSync,
+	mkdtempSync,
+	openSync,
+	readFileSync,
+	readdirSync,
+	rmSync,
+	statSync,
+	unlinkSync,
+	writeFileSync,
+} from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { tmpdir } from "node:os";
 import process from "node:process";
 
 const DEFAULT_WIDTHS = [80, 100];
@@ -383,7 +396,36 @@ function renderFile(repoRoot, absolutePath, width, spawn = spawnSync) {
 	if (result.status !== 0) {
 		throw new Error(`glow failed for ${relative(repoRoot, absolutePath)}: ${(result.stderr || "").trim()}`);
 	}
-	return result.stdout;
+	if ((result.stdout || "").trim() !== "") {
+		return result.stdout;
+	}
+	return renderFileToRegularStdout(repoRoot, absolutePath, width, spawn);
+}
+
+function renderFileToRegularStdout(repoRoot, absolutePath, width, spawn = spawnSync) {
+	const dir = mkdtempSync(join(tmpdir(), "cautilus-markdown-preview-"));
+	const outPath = join(dir, "rendered.txt");
+	const fd = openSync(outPath, "w");
+	try {
+		const result = spawn("glow", ["-w", String(width), absolutePath], {
+			cwd: repoRoot,
+			encoding: "utf-8",
+			maxBuffer: 20 * 1024 * 1024,
+			stdio: ["ignore", fd, "pipe"],
+		});
+		if (result.status !== 0) {
+			throw new Error(`glow failed for ${relative(repoRoot, absolutePath)}: ${(result.stderr || "").trim()}`);
+		}
+		const rendered = readFileSync(outPath, "utf-8");
+		if (rendered.trim() === "") {
+			throw new Error(`glow rendered empty output for ${relative(repoRoot, absolutePath)}`);
+		}
+		return rendered;
+	} finally {
+		closeSync(fd);
+		unlinkSync(outPath);
+		rmSync(dir, { recursive: true, force: true });
+	}
 }
 
 function backendVersion(backend, spawn = spawnSync) {

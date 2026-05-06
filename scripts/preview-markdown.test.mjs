@@ -121,6 +121,46 @@ test("previewMarkdown writes rendered artifacts with default widths", () => {
 	}
 });
 
+test("previewMarkdown retries glow with regular stdout when pipe output is empty", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-preview-"));
+	try {
+		writeFileSync(join(root, "README.md"), "# Root\n");
+
+		let renderCalls = 0;
+		const result = previewMarkdown(
+			root,
+			{ changed: false, specsOnly: false, stdout: false, widths: [80], paths: ["README.md"] },
+			{
+				spawn(cmd, args, options = {}) {
+					if (cmd === "sh") {
+						return { status: 0, stdout: "/usr/bin/glow\n", stderr: "" };
+					}
+					if (cmd === "glow") {
+						if (args[0] === "-w") renderCalls += 1;
+						if (options.stdio) {
+							writeFileSync(options.stdio[1], "rendered through file stdout\n");
+							return { status: 0, stdout: "", stderr: "" };
+						}
+						return { status: 0, stdout: "\n\n", stderr: "" };
+					}
+					throw new Error(`unexpected command ${cmd}`);
+				},
+				stdout: { write() {} },
+			},
+		);
+
+		assert.equal(result.fileCount, 1);
+		assert.equal(result.renderCount, 1);
+		assert.equal(renderCalls, 2);
+		assert.equal(
+			readFileSync(join(root, ".artifacts", "markdown-preview", "README.md.w80.txt"), "utf-8"),
+			"rendered through file stdout\n",
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("previewMarkdown uses shared markdown-preview config when present", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-preview-"));
 	try {
