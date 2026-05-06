@@ -7,7 +7,7 @@ Using `cautilus claim` and the bundled skill, a user can discover behavior promi
 `claim discover` starts from configured entry documents and linked Markdown, records the effective discovery boundary, and emits a proof plan instead of an unscoped narrative.
 
 ```run:shell
-$ node -e 'const packet=".cautilus/claims/status-summary.json"; const p=require("./"+packet); console.log("packet="+packet); console.log("provenance.inputPath="+p.inputPath); console.log("provenance.gitCommit.present="+((p.gitCommit||"").length>0)); console.log("schema="+p.schemaVersion); console.log("sourceBasis="+p.discoveryBoundary.sourceBasis); console.log("entries="+p.discoveryBoundary.entries.join(",")); console.log("candidateCount>=1="+(p.candidateCount>=1));'
+$ jq -r '"packet=.cautilus/claims/status-summary.json", "provenance.inputPath=" + .inputPath, "provenance.gitCommit.present=" + ((.gitCommit // "") | length > 0 | tostring), "schema=" + .schemaVersion, "sourceBasis=" + .discoveryBoundary.sourceBasis, "entries=" + (.discoveryBoundary.entries | join(",")), "candidateCount>=1=" + (.candidateCount >= 1 | tostring)' .cautilus/claims/status-summary.json
 packet=.cautilus/claims/status-summary.json
 provenance.inputPath=.cautilus/claims/evidenced-typed-runners.json
 provenance.gitCommit.present=true
@@ -38,7 +38,7 @@ The status summary keeps the non-verdict boundary visible so users do not confus
 The latest claim evidence bundle records that `claim discover` emits source-ref-backed candidates with human-auditable, deterministic, and Cautilus-eval proof routes before any fixture writer is involved.
 
 ```run:shell
-$ node -e 'const p=require("./.cautilus/claims/status-summary.json"); console.log(p.actionSummary.primaryBuckets.map(({id,recommendedActor})=>id+":"+recommendedActor).join("\n"));'
+$ jq -r '.actionSummary.primaryBuckets[] | .id + ":" + .recommendedActor' .cautilus/claims/status-summary.json
 already-satisfied:none
 agent-plan-cautilus-eval:agent
 agent-design-scenario:agent
