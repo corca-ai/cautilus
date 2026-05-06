@@ -8,8 +8,11 @@ Using `cautilus claim` and the bundled skill, a user can discover behavior promi
 The latest selected status packet is projected here instead of rerunning discovery during every specdown pass.
 
 ```run:shell
-# Show the discovery boundary from the latest selected claim status packet.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/status-summary.json","utf8")); console.log(JSON.stringify({schemaVersion:p.schemaVersion, sourceCount:p.sourceCount, candidateCount:p.candidateCount, discoveryBoundary:p.discoveryBoundary}, null, 2));'
+$ node -e 'const p=require("./.cautilus/claims/status-summary.json"); console.log("schema="+p.schemaVersion); console.log("sourceBasis="+p.discoveryBoundary.sourceBasis); console.log("entries="+p.discoveryBoundary.entries.join(",")); console.log("candidateCount>=1="+(p.candidateCount>=1));'
+schema=cautilus.claim_status_summary.v1
+sourceBasis=entry-docs-and-linked-markdown
+entries=README.md,AGENTS.md,CLAUDE.md
+candidateCount>=1=true
 ```
 
 > check:cautilus-json-file
@@ -33,8 +36,13 @@ The status summary keeps the non-verdict boundary visible so users do not confus
 The latest claim evidence bundle records that `claim discover` emits source-ref-backed candidates with human-auditable, deterministic, and Cautilus-eval proof routes before any fixture writer is involved.
 
 ```run:shell
-# Show the current next-work buckets from the latest selected claim status packet.
-node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync(".cautilus/claims/status-summary.json","utf8")); console.log(JSON.stringify(p.actionSummary.primaryBuckets.map(({id,count,recommendedActor,summary})=>({id,count,recommendedActor,summary})), null, 2));'
+$ node -e 'const p=require("./.cautilus/claims/status-summary.json"); console.log(p.actionSummary.primaryBuckets.map(({id,recommendedActor})=>id+":"+recommendedActor).join("\n"));'
+already-satisfied:none
+agent-plan-cautilus-eval:agent
+agent-design-scenario:agent
+human-align-surfaces:human
+human-confirm-or-decompose:human
+split-or-defer:human
 ```
 
 > check:cautilus-json-file
