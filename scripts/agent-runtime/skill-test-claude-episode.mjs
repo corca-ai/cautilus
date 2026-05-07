@@ -10,6 +10,7 @@ import { auditReviewerLaunchFlowLogText } from "./audit-cautilus-reviewer-launch
 import { auditReviewToEvalFlowLogText } from "./audit-cautilus-review-to-eval-flow-log.mjs";
 import { auditPacketFirstFlowLogText } from "./audit-cautilus-packet-first-flow-log.mjs";
 import { auditCanonicalSpecCurationFlowLogText } from "./audit-cautilus-canonical-spec-curation-flow-log.mjs";
+import { auditClaimDiscoveryCurationFlowLogText } from "./audit-cautilus-claim-discovery-curation-flow-log.mjs";
 import { applyObservationExpectations } from "./skill-test-expectations.mjs";
 import { CLAUDE_CLI_ENV } from "./skill-test-claude-backend.mjs";
 
@@ -143,6 +144,9 @@ function auditEpisode(testCase, combined, artifactRefs, outputDir, started, arti
 	}
 	if (testCase.auditKind === "cautilus_canonical_spec_curation_flow") {
 		audit = auditCanonicalSpecCurationFlowLogText(combined);
+	}
+	if (testCase.auditKind === "cautilus_claim_discovery_curation_flow") {
+		audit = auditClaimDiscoveryCurationFlowLogText(combined);
 	}
 	if (!audit) {
 		return null;

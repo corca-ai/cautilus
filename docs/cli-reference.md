@@ -323,6 +323,11 @@ cautilus eval test \
   --repo-root . \
   --adapter-name self-dogfood-first-scan-flow
 
+# run first scan, inspect the saved claim map, then curate extraction and next-work signals
+cautilus eval test \
+  --repo-root . \
+  --adapter-name self-dogfood-claim-discovery-curation-flow
+
 # run first scan, then prepare deterministic claim review input without reviewer launch
 cautilus eval test \
   --repo-root . \
@@ -336,6 +341,8 @@ cautilus eval test \
 # maintainer proof for both supported coding-agent CLI runtimes
 npm run dogfood:cautilus-first-scan-flow:eval:codex
 npm run dogfood:cautilus-first-scan-flow:eval:claude
+npm run dogfood:cautilus-claim-discovery-curation-flow:eval:codex
+npm run dogfood:cautilus-claim-discovery-curation-flow:eval:claude
 npm run dogfood:cautilus-review-prepare-flow:eval:codex
 npm run dogfood:cautilus-review-prepare-flow:eval:claude
 npm run dogfood:cautilus-reviewer-launch-flow:eval:codex

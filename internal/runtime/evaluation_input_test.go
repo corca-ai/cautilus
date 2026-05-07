@@ -189,6 +189,29 @@ func TestNormalizeEvaluationInputAcceptsCanonicalSpecCurationAuditKind(t *testin
 	}
 }
 
+func TestNormalizeEvaluationInputAcceptsClaimDiscoveryCurationAuditKind(t *testing.T) {
+	fixture := validDevSkillFixture()
+	cases := fixture["cases"].([]any)
+	cases[0] = map[string]any{
+		"caseId":         "episode-claim-discovery-curation",
+		"evaluationKind": "execution",
+		"turns": []any{
+			map[string]any{"input": "$demo", "injectSkill": true},
+			map[string]any{"input": "Run discovery and classify the resulting packet before review or eval."},
+		},
+		"auditKind": "cautilus_claim_discovery_curation_flow",
+	}
+	result, err := NormalizeEvaluationInput(fixture)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	casesOut := result.TranslatedCases["cases"].([]any)
+	first := casesOut[0].(map[string]any)
+	if first["auditKind"] != "cautilus_claim_discovery_curation_flow" {
+		t.Fatalf("expected claim discovery curation auditKind to round-trip, got %#v", first)
+	}
+}
+
 func TestNormalizeEvaluationInputRejectsDevSkillTurnsOnTrigger(t *testing.T) {
 	fixture := validDevSkillFixture()
 	cases := fixture["cases"].([]any)
