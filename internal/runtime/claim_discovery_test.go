@@ -144,6 +144,63 @@ func TestDiscoverClaimProofPlanMergesIdenticalClaimsAcrossDistinctSources(t *tes
 	}
 }
 
+func TestDiscoverClaimProofPlanUsesCandidateHeuristicsTogether(t *testing.T) {
+	repoRoot := t.TempDir()
+	claim := "Users can run deterministic checks before review."
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Demo",
+		"",
+		"Input (for agent): run this command.",
+		claim,
+		"",
+	}, "\n"))
+	mustWriteFile(t, filepath.Join(repoRoot, "AGENTS.md"), strings.Join([]string{
+		"# AGENTS",
+		"",
+		claim,
+		"",
+	}, "\n"))
+
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	heuristics := arrayOrEmpty(asMap(plan["discoveryEngine"])["heuristics"])
+	heuristicIDs := map[string]bool{}
+	for _, raw := range heuristics {
+		heuristicIDs[stringFromAny(asMap(raw)["id"])] = true
+	}
+	for _, id := range []string{"markdown-text-blocks", "claim-shaped-line-filter", "next-work-classifier", "duplicate-summary-merge"} {
+		if !heuristicIDs[id] {
+			t.Fatalf("expected discovery engine heuristic %q in %#v", id, heuristics)
+		}
+	}
+
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("expected prompt filtering and duplicate merging to leave one candidate, got %#v", candidates)
+	}
+	first := asMap(candidates[0])
+	if first["summary"] != claim {
+		t.Fatalf("expected duplicate claim summary %q, got %#v", claim, first)
+	}
+	if first["recommendedProof"] != "deterministic" || first["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected deterministic next-work classification, got %#v", first)
+	}
+	refs := arrayOrEmpty(first["sourceRefs"])
+	if len(refs) != 2 {
+		t.Fatalf("expected one candidate to preserve two source refs, got %#v", first)
+	}
+	seenRefs := map[string]string{}
+	for _, raw := range refs {
+		ref := asMap(raw)
+		seenRefs[stringFromAny(ref["path"])] = stringFromAny(ref["excerpt"])
+	}
+	if seenRefs["README.md"] != claim || seenRefs["AGENTS.md"] != claim {
+		t.Fatalf("expected concrete duplicate sentences to be preserved as source refs, got %#v", refs)
+	}
+}
+
 func TestDiscoverClaimProofPlanClassifiesLinkedDocAudienceAndOperatingRules(t *testing.T) {
 	repoRoot := t.TempDir()
 	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{

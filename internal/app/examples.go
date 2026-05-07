@@ -219,7 +219,7 @@ const claimDiscoverExampleOutput = `{
     "traversal": "entry-markdown-links"
   },
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
-  "nonVerdictNotice": "This packet is a proof plan, not proof that the claims are true.",
+  "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "schemaVersion": "cautilus.claim_proof_plan.v1",
   "sourceCount": 2,
   "sourceGraph": [],

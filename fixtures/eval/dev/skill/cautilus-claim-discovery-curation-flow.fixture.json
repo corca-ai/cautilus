@@ -16,7 +16,7 @@
           "injectSkill": true
         },
         {
-          "input": "Confirm the scan scope, run the first claim discovery scan, inspect the saved claim map, then classify what the discovery found. Report which entry-doc signals were used, how source refs and duplicate fingerprints are handled, and which next-work buckets should guide human or agent follow-up. Stop before claim review prepare-input, reviewer launch, eval execution, edits, or commits."
+          "input": "Confirm the scan scope, run the first claim discovery scan, inspect the saved claim map, then classify what the discovery found. Report which extraction heuristics and entry-doc signals were used, how source refs and duplicate fingerprints are handled, and which next-action groups should guide human or agent follow-up. Stop before claim review prepare-input, reviewer launch, eval execution, edits, or commits."
         }
       ],
       "auditKind": "cautilus_claim_discovery_curation_flow",

@@ -251,7 +251,7 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 		"candidateCount":     len(mergedCandidates),
 		"sourceCount":        len(sources),
 		"nextRecommended":    "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
-		"nonVerdictNotice":   "This packet is a proof plan, not proof that the claims are true.",
+		"nonVerdictNotice":   "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
 	}
 	if len(carryForward) > 0 {
 		packet["carryForward"] = carryForward
@@ -267,8 +267,9 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 
 func renderClaimDiscoveryEngine(repoRoot string) map[string]any {
 	engine := map[string]any{
-		"name":    "cautilus.claim_discovery",
-		"ruleset": claimDiscoveryRulesetVersion,
+		"name":       "cautilus.claim_discovery",
+		"ruleset":    claimDiscoveryRulesetVersion,
+		"heuristics": claimDiscoveryHeuristics(),
 	}
 	sourcePath := filepath.Join(repoRoot, "internal", "runtime", "claim_discovery.go")
 	if hash, err := fileSHA256(sourcePath); err == nil {
@@ -276,6 +277,31 @@ func renderClaimDiscoveryEngine(repoRoot string) map[string]any {
 		engine["implementationHash"] = hash
 	}
 	return engine
+}
+
+func claimDiscoveryHeuristics() []any {
+	return []any{
+		map[string]any{
+			"id":                     "markdown-text-blocks",
+			"implementationFunction": "claimTextBlocks",
+			"summary":                "Read Markdown headings, bullets, numbered items, and sentence paragraphs outside code fences and frontmatter.",
+		},
+		map[string]any{
+			"id":                     "claim-shaped-line-filter",
+			"implementationFunction": "claimLineLooksUseful",
+			"summary":                "Keep lines that look like behavior promises and drop prompt examples, open questions, definition labels, future placeholders, and very short or long text.",
+		},
+		map[string]any{
+			"id":                     "next-work-classifier",
+			"implementationFunction": "classifyClaimLine",
+			"summary":                "Label the candidate with the kind of follow-up work Cautilus recommends next.",
+		},
+		map[string]any{
+			"id":                     "duplicate-summary-merge",
+			"implementationFunction": "mergeIdenticalClaimCandidates",
+			"summary":                "Merge identical normalized candidate text into one candidate with all source references preserved.",
+		},
+	}
 }
 
 func readClaimPacketFile(repoRoot string, path string) (map[string]any, error) {
@@ -2130,6 +2156,7 @@ func BuildClaimStatusSummaryWithOptions(packet map[string]any, options ClaimStat
 		"sourceCount":               len(sourceInventory),
 		"claimSummary":              claimSummary,
 		"effectiveScanScope":        scanScope,
+		"discoveryEngine":           asMap(packet["discoveryEngine"]),
 		"discoveryBoundary":         claimStatusDiscoveryBoundary(scanScope),
 		"claimState":                asMap(packet["claimState"]),
 		"nonVerdictNotice":          packet["nonVerdictNotice"],

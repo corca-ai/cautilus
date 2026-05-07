@@ -11,6 +11,27 @@
     "schemaVersion": { "type": "string", "const": "cautilus.claim_proof_plan.v1" },
     "discoveryMode": { "type": "string" },
     "sourceRoot": { "type": "string" },
+    "discoveryEngine": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "ruleset": { "type": "string" },
+        "implementationPath": { "type": "string" },
+        "implementationHash": { "type": "string" },
+        "heuristics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "implementationFunction", "summary"],
+            "properties": {
+              "id": { "type": "string" },
+              "implementationFunction": { "type": "string" },
+              "summary": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
     "effectiveScanScope": {
       "type": "object",
       "properties": {
