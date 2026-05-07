@@ -1,0 +1,12 @@
+session_id: hitl-20260505-010438
+status: in_progress
+target: docs/specs/user/index.spec.md and docs/specs/user/*.spec.md
+base_ref: ""
+scope: user-facing-claim-specs
+require_explicit_apply: true
+apply_mode: explicit-after-all-chunks
+queue_epoch: 2
+queue_status: ready
+intent_resync_required: false
+last_presented_chunk_id: "readiness-story-page"
+last_intent_resync_at: ""

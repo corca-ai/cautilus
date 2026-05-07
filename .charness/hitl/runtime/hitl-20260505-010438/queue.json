@@ -1,0 +1,101 @@
+{
+  "session_id": "hitl-20260505-010438",
+  "target": "docs/specs/user/index.spec.md and docs/specs/user/*.spec.md",
+  "target_provenance": {
+    "kind": "logical-or-repo-relative"
+  },
+  "require_explicit_apply": true,
+  "apply_mode": "explicit-after-all-chunks",
+  "priority_policy_version": 1,
+  "queue_epoch": 2,
+  "status": "ready",
+  "current_queue_order": [
+    "claim-discovery-story-and-boundary",
+    "claim-discovery-non-verdict",
+    "claim-discovery-next-work-buckets",
+    "claim-discovery-bundled-skill-curation",
+    "behavior-evaluation-story",
+    "bounded-optimization-story",
+    "host-ownership-story",
+    "reviewable-artifacts-cross-cutting",
+    "evidence-gaps-cross-cutting"
+  ],
+  "reviewed_item_ids": [
+    "user-spec-index-and-claim-order",
+    "readiness-story-page"
+  ],
+  "superseded_unreviewed_item_ids": [
+    "user-spec-core-workflows-u1-u3",
+    "user-spec-readiness-ownership-artifacts-u4-u6",
+    "user-spec-proof-debt-u7"
+  ],
+  "queue_recommendation": "Continue with Claim Discovery in smaller chunks because deterministic discovery packets, agent proof-routing judgment, and bundled-skill curation need separate acceptance review.",
+  "items": [
+    {
+      "id": "user-spec-index-and-claim-order",
+      "target": "docs/specs/user/index.spec.md",
+      "status": "accepted",
+      "decision": "Use a user-story index without visible U-numbering, ordered by user workflow and backed by AC-local specdown proof rather than separated Evidence sections."
+    },
+    {
+      "id": "readiness-story-page",
+      "target": "docs/specs/user/doctor-readiness.spec.md",
+      "status": "accepted",
+      "decision": "Readiness can be treated as reviewed because its acceptance proof is deterministic: generated adapter setup, doctor ready/blocker states, missing specdown simulation, next bounded action, and bundled-skill orientation all pass through cheap specdown-visible Cautilus checks."
+    },
+    {
+      "id": "claim-discovery-story-and-boundary",
+      "target": "docs/specs/user/claim-discovery.spec.md#A user can discover declared behavior promises from selected repo docs.",
+      "status": "pending",
+      "decision": "Does the story and first AC honestly show the selected docs boundary, claim discovery scope, and nonzero candidate discovery without pretending discovery proves behavior?"
+    },
+    {
+      "id": "claim-discovery-non-verdict",
+      "target": "docs/specs/user/claim-discovery.spec.md#The claim packet is a proof plan, not a verdict.",
+      "status": "pending",
+      "decision": "Does the spec make the non-verdict boundary visible enough for users and agents to avoid treating discovered claims as satisfied evidence?"
+    },
+    {
+      "id": "claim-discovery-next-work-buckets",
+      "target": "docs/specs/user/claim-discovery.spec.md#The binary routes discovered claims into next-work buckets before fixture work starts.",
+      "status": "pending",
+      "decision": "Does the visible output and artifact proof show that Cautilus routes discovered claims into human, agent, deterministic, eval-planning, and split/defer work before fixture work starts?"
+    },
+    {
+      "id": "claim-discovery-bundled-skill-curation",
+      "target": "docs/specs/user/claim-discovery.spec.md#The bundled skill can curate the packet into a reviewable next-work map.",
+      "status": "pending",
+      "decision": "Does the proof show enough Cautilus run or reviewed skill evidence that bundled-skill curation is not only deterministic packet discovery?"
+    },
+    {
+      "id": "behavior-evaluation-story",
+      "target": "docs/specs/user/evaluation.spec.md",
+      "status": "pending",
+      "decision": "Does Behavior Evaluation explain why `eval` exists, name the `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces, and project latest evidence artifacts cheaply?"
+    },
+    {
+      "id": "bounded-optimization-story",
+      "target": "docs/specs/user/optimization.spec.md",
+      "status": "pending",
+      "decision": "Does Bounded Optimization explain what improves, how intent and protected checks are preserved, and how on-demand proof feeds the spec report?"
+    },
+    {
+      "id": "host-ownership-story",
+      "target": "docs/specs/user/ownership.spec.md",
+      "status": "pending",
+      "decision": "Does Host Ownership put adapter ownership, runtime wiring, credentials, prompts, models, and acceptance policy at the right product boundary?"
+    },
+    {
+      "id": "reviewable-artifacts-cross-cutting",
+      "target": "docs/specs/user/reviewable-artifacts.spec.md",
+      "status": "pending",
+      "decision": "Does Reviewable Artifacts stay cross-cutting while still carrying local specdown-visible evidence?"
+    },
+    {
+      "id": "evidence-gaps-cross-cutting",
+      "target": "docs/specs/user/evidence-gaps.spec.md",
+      "status": "pending",
+      "decision": "Does Evidence Gaps explain the difference between discovered claims, human review, and satisfied evidence without old proof-debt vocabulary?"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+rules:
+  - id: user-story-acceptance-shape
+    text: "User-facing specs should read as top-level user stories with subclaims as acceptance criteria, and each acceptance criterion should have evidence or an explicit evidence gap."
+  - id: user-story-actor-and-surface
+    text: "Top-level U-claims should name the user-facing actor or system responsibility honestly and should include the command or skill surface through which the user experiences the promise."
+  - id: cross-cutting-evidence-visible-in-specdown
+    text: "Cross-cutting acceptance criteria must not be prose-only; they should have evidence that appears in the specdown report through adapter-backed checks, or an explicit evidence gap with owner and next action."
+  - id: evidence-under-each-acceptance-criterion
+    text: "User-facing specs should place executable proof or an explicit gap directly under the acceptance criterion it supports; do not add a separate `Evidence:` label when the specdown block or check table itself is the evidence shown in the report."
+  - id: no-source-guard-evidence-for-user-claims
+    text: "User-facing claim evidence should not rely on source-guard or simple stdout substring checks as the proof shape; adapter-backed evidence should verify the behavior contract, packet schema, or artifact relationship that the acceptance criterion promises."
+  - id: product-specific-spec-format-ownership
+    text: "The Cautilus bundled skill should own Cautilus-specific claim-spec authoring shape, while charness:spec should keep only the portable executable-contract principle and specdown should own syntax/report/adapter mechanics."
+  - id: standing-specdown-views-on-demand-cautilus-evidence
+    text: "Standing specdown runs should not invoke expensive Cautilus eval/optimize workflows directly; user-facing specs should project the latest explicit on-demand Cautilus run artifacts into the specdown report through cheap artifact-viewer checks with freshness/provenance rules."
+  - id: spec-md-primary-rendered-surface
+    text: "For `*.spec.md` review, the primary human-readable surface is the generated specdown HTML report; Markdown CLI preview is only a supplemental line-wrap check."
+  - id: claim-discovery-small-chunks
+    text: "Claim Discovery requires smaller HITL chunks than deterministic Readiness because deterministic discovery packets, agent proof-routing judgment, and bundled-skill curation are different acceptance boundaries."
