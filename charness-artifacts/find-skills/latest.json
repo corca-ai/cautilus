@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-04T09:37:00Z",
+  "generated_at": "2026-05-06T23:52:44Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -258,7 +258,7 @@
           "charness:premortem"
         ],
         "referenced_paths": [
-          "skills/premortem/references/subagent-capability-check.md"
+          "shared/references/fresh-eye-subagent-review.md"
         ],
         "source": "local-public",
         "layer": "public skill"

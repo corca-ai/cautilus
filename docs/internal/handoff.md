@@ -2,258 +2,45 @@
 
 ## Workflow Trigger
 
-다음 세션의 기본 pickup은 `charness:find-skills`로 설치된 스킬 지도를 먼저 재확인한 뒤, [docs/master-plan.md](../master-plan.md)의 `Immediate Next Moves`에서 evidence가 축적된 슬라이스를 고르는 것이다.
-첫 행동은 `git status --short`로 live worktree를 확인하는 것이고, 그 다음 이 handoff의 `Next Session` 섹션을 읽는다.
-이 handoff는 mention-only pickup 기준 문서이며, handoff adapter는 `docs/internal/handoff.md`를 canonical artifact로 해석한다.
+Next session should resume `charness:hitl` over the Cautilus user-facing specs.
+Start with `git status --short`, then run `charness:find-skills` once and explicitly check whether `support/specdown` applies before editing any `docs/specs/**/*.spec.md` file.
 
 ## Current State
 
-- 2026-05-05 Theme A(제품-vs-host import/grep guard) 두 gap이 닫혔다 (`cca9852`).
-  `scripts/check-product-import-isolation.mjs`가 `cmd/`와 `internal/` 모든 비-test Go 파일을 파싱해 third-party import allowlist(현재 `gopkg.in/yaml.v3`만)와 forbidden provider host 4종(`api.anthropic.com`, `api.openai.com`, `generativelanguage.googleapis.com`, `api.x.ai`)을 거부한다.
-  `npm run lint:product-import-isolation`으로 lint chain에 들어왔고, self-test 7개(파서, pass, provider SDK reject, host module reject, provider host 문자열 reject, `_test.go` skip, programmatic API)는 `scripts/check-product-import-isolation.test.mjs`에 있다.
-  `maintainer/binary-skill-boundary.spec.md`와 `maintainer/adapter-host-ownership.spec.md`는 negative-test gap bullet을 `## Evidence` 링크로 승급했고 evidence status는 `partial → covered`다.
-- 2026-05-04 subclaim evidence convention이 lint로 잠겼다 (`f48ed20`).
-  `scripts/check-spec-evidence.mjs`가 모든 non-index claim spec 페이지에 대해 `## Subclaims` 비어있지 않음, `## Evidence` 또는 `## Evidence Gaps` 중 하나에 구체 entry ≥1개, "Evidence is pending" 단어 거부 세 가지를 강제한다.
-  같은 슬라이스에서 maintainer specs 11개를 user format(`## Subclaims` + `## Evidence`/`## Evidence Gaps`)으로 정렬하고 user specs 3개의 "pending" 표기를 explicit gap bullet로 옮겼다.
-  후속 슬라이스(`dfa58ec`)에서 이미 존재하는 evidence를 18개 페이지에 link로 매핑했다 — 25개 gap bullet이 `## Evidence`로 승급, 13개 honest gap이 `## Evidence Gaps`에 owner+next-action으로 남는다.
-  핵심 매핑은 `claim_discovery_test.go::TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence`(satisfied-evidence 경계), `runner_readiness_test.go::TestDoctorAndAgentStatusShareRunnerReadinessFacts`(doctor/agent-status parity), `reviewable-artifact-projections.test.mjs`(렌더 view→packet 매핑), `smoke-external-consumer.test.mjs`(consumer onboarding), `evaluation_proof_test.go::TestOptimizeInputRejectsBlockedProductRunnerProof`(optimize blocked readiness), `evaluation_input_test.go::TestNormalizeEvaluationInputRejectsCrossAxisCombo`(surface/preset mismatch), `scenario_history_test.go`의 deterministic selection 시리즈, 그리고 4개 checked-in self-dogfood eval-summary packets다.
-- 2026-05-03 specdown claim specs가 product SOT가 됐다 (`30a664a`).
-  `docs/specs/index.spec.md`가 report entry이고, 그 아래 `user/index.spec.md`(U1–U7: claim-discovery, evaluation, optimization, doctor-readiness, ownership, reviewable-artifacts, proof-debt)와 `maintainer/index.spec.md`(11 proof area)로 갈라진다.
-  Maintainer specs는 5/3 두 슬라이스로 proof area별 분할됐다 — claim-discovery-workflow / binary-skill-boundary / adapter-host-ownership / evaluation-surfaces-runners / evidence-state-artifacts / optimization-loop / readiness-runtime-status 첫 묶음(`3c02512`)과 active-run-workspace / live-invocation-runtime / reporting-review-variants / scenario-history-normalization 두 번째 묶음(`00f3889`).
-  같은 흐름에서 claim status report가 snapshot-honest 해졌다 (`74b40f9`).
-  legacy `docs/claims/{user,maintainer}-facing.md`는 deprecated planning context로 표시되어 있고 다음 cleanup 슬라이스에서 흡수/삭제 대상이다.
-  AGENTS.md, README.md, master-plan.md는 새 인덱스를 가리키도록 정렬됐다 (`3b23211`).
-- 2026-05-04 작업 세션은 claim discovery proof routing, skill claim-review branch proof, deterministic proof debt cleanup, claim eval/verify hardening 네 축이었다.
-  Discovery 쪽: routing trigger 증명, portable heuristic, caveat routing, scenario proposal evidence kind+provenance 강화 (`2846876`, `6b9b038`, `62870ac`, `97f798e`, `6dd5ea1`, `3292128`).
-  Skill 쪽: claim-review branch proof와 review-budget confirmation, skill workflow claims의 eval routing (`5e3af42`, `b920b1e`, `407c95e`, `1385985`).
-  Deterministic proof debt: `7c447d5`, `71e6e47`, `5663e74`, `4dd69e4`, `0949ab4`, `efec710`로 batch 정리. `efc7c8b`로 claim eval review queue를 요약하고 `16716d5`로 `claim discover --previous`의 silent carry-forward loss를 막았다.
-  `4f4dd5a`로 review-apply pipeline가 explicit application log + tmpdir-leak invariant를 갖고, `fe162d3`로 schema-aware `cautilus packet inspect` 명령이 추가됐다.
-  Eval/verify 쪽: `7502d96` headless product eval runtime, `0f605d6` dev/repo first-tool allowlist scoring, `962fcf5`+`a08898c` observed evidence naming + review surface hint, `1a983fd` verify-side claim evidence hash audit, `836a53f` claim review input packet contract proof.
-  Checked-in claim packets는 routing/proof/carry-forward/pipeline/packet-inspect 슬라이스 직후마다 refresh됐다 (`73e60ae`, `c8e95e4`, `ed8e641`, `3477000`).
-- 2026-05-01 후속 구현으로 commit hash는 freshness 판정의 단독 기준이 아니라 provenance가 됐다.
-  Claim packet freshness는 recorded source path/content hash를 현재 checkout과 비교하고, runner assessment freshness는 adapter hash와 listed runner file hashes를 비교한다.
-  그래서 generated artifact commit이나 source+claim packet atomic commit 뒤에도 source content가 packet과 일치하면 `fresh-with-head-drift`, `isStale=false`로 review/eval planning이 계속 가능하다.
-  Symlinked claim source는 `sourceInventory[].contentPath`로 target path를 같이 기록해 target edit stale miss를 막는다.
-  관련 커밋은 `368e30a`, `4c59a79`, `f34ccf8`, `c7c88b8`.
-- 2026-05-01 live backend eval 기준 dev/repo self-dogfood runner는 실제 Codex backend proof를 갖는다.
-  `./bin/cautilus eval test --repo-root . --runtime codex --output-dir ./artifacts/self-dogfood/dev-repo-self-dogfood/latest`는 `recommendation=accept-now`, `passed=1`, `failed=0`이었다.
-  `.cautilus/runners/dev-repo-self-dogfood.assessment.json`는 adapter hash와 runner file hashes 기준으로 fresh이고, `agent status`에서 `runnerReadiness.state=assessed`, `reason=runner-assessment-ready`다.
-  이제 dev proof promotion은 selected runtime name만 믿지 않고 observed telemetry runtime을 요구한다.
-- 2026-05-01 claim state는 `.cautilus/claims/latest.json` 기준 `candidateCount=322`이다.
-  `claim_discovery.state_path`는 raw discovery baseline인 `.cautilus/claims/latest.json`이고, `agent status`는 `related_state_paths`로 reviewed/evidenced packets도 함께 요약한다.
-  `agent-reviewed=13`, `heuristic=309`인 reviewed packet은 `.cautilus/claims/reviewed-typed-runners.json`에 있다.
-  `.cautilus/claims/evidenced-typed-runners.json`는 `claim-readme-md-144`, `claim-readme-md-148`, `claim-readme-md-211`, `claim-docs-contracts-claim-discovery-workflow-md-619`을 `evidenceStatus=satisfied`로 올린다.
-  그래서 evidenced packet의 review status는 `agent-reviewed=14`, `heuristic=308`이고 evidence status는 `satisfied=4`, `unknown=318`이다.
-  `claim-docs-contracts-claim-discovery-workflow-md-612`는 현재 source line 기준 `claim-docs-contracts-claim-discovery-workflow-md-619`로 이동했고, claim fingerprint와 evidence bundle target id를 확인한 뒤 satisfied 상태로 다시 적용됐다.
-  `claim discover --previous`는 current evidenced packet에서 `carryForward.matchedClaimCount=322`, `evidenceSupportIdRewriteCount=0`, `staleEvidenceClaimCount=0`을 기록한다.
-  이제 direct/verified evidence ref의 `contentHash`도 repo-local evidence file에 대해 다시 확인하고, 파일 누락/변경/레포 밖 경로/claim evidence bundle의 `createdForClaimIds` 불일치가 있으면 carried `satisfied`를 `stale`로 낮춘다.
-  Generated claim packets no longer emit the old `proofLayer` compatibility field; downstream workflow logic reads `recommendedProof`, `verificationReadiness`, `evidenceStatus`, `reviewStatus`, and `lifecycle` directly.
-  `docs/internal/handoff.md`와 `docs/internal/research/**`는 claim source에서 제외된다.
-  `docs/internal/working-patterns.md`는 durable operating pattern 문서라 developer-facing source로 남아 있다.
-  Evidence bundles are `.cautilus/claims/evidence-dev-skill-dogfood.json`, `.cautilus/claims/evidence-dev-skill-routing-install.json`, and `.cautilus/claims/evidence-review-to-eval-flow.json`.
-  `cautilus skills install` compatibility command는 제거됐고, repo skill setup은 `cautilus install --repo-root <path>`가 단일 canonical path다.
-  `.cautilus/claims/eval-plan-evidenced-typed-runners.json`는 `selectionPolicy.excludesEvidenceStatus=["satisfied"]`를 기록하고, satisfied claims를 `already-satisfied`로 skip하며, 현재 남은 ready eval target은 0개다.
-  `already-satisfied` skipped claims now carry their evidence refs directly, so the 0-plan packet maps the four reviewed `dev/skill` plans back to their evidence bundles without joining against `.cautilus/claims/evidenced-typed-runners.json`.
-  같은 packet의 `planSummary.zeroPlanReason`은 `all-reviewed-eval-targets-satisfied-and-remaining-reviewed-claims-not-eval-targets`다.
-  `claim show` status summary also includes `evidenceSatisfaction.satisfiedClaims`, currently the same four claims with one evidence ref each.
-  `claim review prepare-input` now runs deterministic possible-evidence preflight over adapter `evidence_roots`.
-  For this repo `.cautilus/claims/review-input-typed-runners.json` reports `matchedRefCount=4` from `.cautilus/claims`, and the refs stay `matchKind=possible` with `evidenceStatus=unknown` until review/apply-result verifies them.
-  `claim-readme-md-3`은 README tagline/umbrella promise로 보존하되 `human-auditable`, `verificationReadiness=blocked`로 라우팅한다.
-  그래서 eval-plan files에 `claim-readme-md-3`가 보이면 target이 아니라 `skippedClaims.reason=not-cautilus-eval`이다.
-- 2026-05-01 후속 dogfood로 `npm run dogfood:cautilus-review-to-eval-flow:eval:codex`와 `npm run dogfood:cautilus-review-to-eval-flow:eval:claude` 증거를 claim evidence bundle에 반영했다.
-  두 artifact 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이고 각각 `artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-codex/latest/eval-summary.json`, `artifacts/self-dogfood/cautilus-review-to-eval-flow-eval-claude/latest/eval-summary.json`에 있다.
-  기존 first-scan / refresh-flow / review-prepare / reviewer-launch Codex dogfood summaries and audit packets도 모두 accept/pass 상태라, 이 다섯 run을 묶은 evidence bundle로 `claim-readme-md-148`은 satisfied 상태가 됐다.
-  별도 evidence bundle `.cautilus/claims/evidence-review-to-eval-flow.json`는 Codex/Claude review-to-eval audits에서 `claim review apply-result`, `claim validate`, `claim plan-evals` 실행과 fixture/product edits 없음이 확인되어 `claim-docs-contracts-claim-discovery-workflow-md-619`도 satisfied로 올린다.
-- 2026-05-01 후속 dogfood로 `./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime codex --output-dir ./artifacts/self-dogfood/eval-skill-codex/latest`를 실행했다.
-  결과는 `recommendation=accept-now`, `passed=3`, `failed=0`, trigger case 1개와 execution case 2개다.
-  이 run과 install/doctor preflight, installed skill/plugin manifest content hashes를 묶은 evidence bundle로 `claim-readme-md-144`와 `claim-readme-md-211`은 satisfied 상태가 됐다.
-  단, `claim-readme-md-211`의 evidence boundary는 Claude/Codex manifest presence와 Codex conversational runtime proof를 만족시키는 것이며, Claude conversational runtime parity는 explicitly not claimed다.
-  `claim-readme-md-3`은 더 넓은 positioning claim이라 satisfied로 올리지 않고 decomposition 전까지 blocked로 남겼다.
-- 2026-05-01 Cautilus dogfood 중 Charness follow-up 두 개를 열었다.
-  [corca-ai/charness#87](https://github.com/corca-ai/charness/issues/87)는 delegated premortem reviewer가 nested subagent capability check를 다시 수행해 blocked로 끝나는 문제다.
-  [corca-ai/charness#88](https://github.com/corca-ai/charness/issues/88)는 `debug` scaffold가 consumer repo에 없는 `scripts/validate_debug_artifact.py` 경로를 안내하는 문제다.
-- Cautilus `v0.13.0` 게시 상태 그대로 ([release](https://github.com/corca-ai/cautilus/releases/tag/v0.13.0)).
-  release-artifacts / verify-public-release / install-sh smoke 모두 green.
-  세부 기록은 [charness-artifacts/release/latest.md](../../charness-artifacts/release/latest.md).
-- `evaluation-surfaces` 재설계의 네 preset은 모두 shipped 상태다 — 새 reader-facing SOT는 [docs/specs/user/evaluation.spec.md](../specs/user/evaluation.spec.md), 이전 구현 스펙은 [docs/specs/old/evaluation-surfaces.spec.md](../specs/old/evaluation-surfaces.spec.md).
-  `dev/repo`, `dev/skill`, `app/chat`, `app/prompt` 모두 `cautilus eval test --fixture ...` / `cautilus eval evaluate --input ...` 경로가 있다.
-  `app/prompt`는 2026-04-26에 추가됐고 `cautilus.app_prompt_test_cases.v1` / `cautilus.app_prompt_evaluation_inputs.v1` / `cautilus.app_prompt_evaluation_summary.v1`를 쓴다.
-  evaluator는 app-surface 공통 runtime 필드(provider, model, harness, mode=`messaging`, durationMs, observed.messages, observed.finalText)에 더해 `app/prompt`에서 `observed.input`을 요구한다.
-- 이번 command-surface implementation slice의 closeout verification: `npm run verify`, `npm run hooks:check`, `npm run test:on-demand`, `npm run dogfood:self` green.
-  이후 hardcoded claim candidate cap은 제거됐다.
-  2026-04-26 후속 구현 기준 `cautilus claim discover --repo-root . --output /tmp/cautilus-claims-self.json`는 adapter/default entries에서 repo-local Markdown links depth 3을 따라가며, `candidateLimit` 없이 `candidateCount=283`의 source-ref-backed proof plan을 만든다.
-  기본 출력은 숨은 product limit으로 잘라내지 않는다.
-- `mode evaluate` cut + archetype-boundary retire 슬라이스는 이미 들어왔고, 상세 기록은 이 spec의 follow-up notes와 git history를 본다.
-- `dogfood:self` canonical alias가 복원됐고 현재 `dogfood:self:eval`로 위임한다.
-  2026-04-26 실행 기준 `dev/repo` checked-in AGENTS routing fixture는 real Codex (`gpt-5.4-mini`, low)에서 `recommendation=accept-now`, `evaluationCounts.passed=1`, `failed=0`, `blocked=0`.
-- 제품 프레임은 세 축으로 정리됐다:
-  (1) declared behavior claim discovery / proof planning,
-  (2) bounded eval verification,
-  (3) bounded improvement / optimization.
-  README proof는 (1)의 예시일 뿐이며 Cautilus 표면은 README에 강결합하지 않는다.
-  세 축은 장기적으로 각각 first-class binary command surface가 있어야 한다.
-- 세 핵심 기능의 command-family 설계와 첫 `claim` 구현은 새 [docs/specs/user/index.spec.md](../specs/user/index.spec.md)와 archived [docs/specs/old/command-surfaces.spec.md](../specs/old/command-surfaces.spec.md)에 걸쳐 있다.
-  canonical front doors는 `cautilus claim ...`, `cautilus eval ...`, `cautilus optimize ...`이며, `cautilus claim discover --repo-root . --output <claims.json>`는 repo-owned truth surface에서 `cautilus.claim_proof_plan.v1`을 만든다.
-  이 packet은 verdict가 아니라 proof plan이며, 발견된 backlog를 정직하게 보존한다.
-  selection이나 prioritization이 필요하면 future explicit command option, adapter-owned policy, 또는 다음 agent step으로 드러내야 한다.
-- 다음 claim-discovery workflow 설계는 [docs/contracts/claim-discovery-workflow.md](../contracts/claim-discovery-workflow.md)에 있다.
-  핵심 결정은 binary가 deterministic skeleton / scan scope / state path / refresh plan / packet semantics를 소유하고, bundled skill이 user confirmation / LLM review / grouping / final evidence interpretation / next-action conversation을 소유한다는 것이다.
-  default scan은 entry sources plus repo-local Markdown links depth 3이며, scan confirmation과 LLM review-budget confirmation은 분리한다.
-- 2026-04-26 후속 구현으로 bundled skill control-flow slice도 들어왔다.
-  no-input invocation은 claim-state availability를 확인하고, prior JSON이 없으면 scan scope를 설명한 뒤 `claim discover`를 쓰며, deterministic scan 뒤 LLM review budget을 별도로 확인하고, prior JSON이 있으면 `claim discover --previous ... --refresh-plan`을 쓴다는 지침이 `skills/cautilus/SKILL.md`와 packaged skill에 반영됐다.
-  `dev/skill` self-dogfood fixture에는 `execution-cautilus-no-input-claim-discovery-status` 케이스가 추가됐다.
-  2026-04-26에 product repo 자체의 `.agents/skills/cautilus`와 `.claude/skills -> ../.agents/skills`도 materialize했다.
-  `./bin/cautilus doctor --repo-root . --scope agent-surface`는 `ready=true`.
-  새 `codex exec` no-input dogfood는 `$cautilus` 경로에서 `./bin/cautilus`를 사용했고, `.cautilus/claims/latest.json` 부재를 감지한 뒤 `/tmp/cautilus-claims-discovery-status.json`와 `/tmp/cautilus-claim-status-summary.json`만 생성했다.
-  LLM review는 별도 review budget이 없어서 실행하지 않았다.
-  사전 실패 방지로 bundled skill은 Cautilus product repo에서 `cautilus` PATH binary보다 `./bin/cautilus`를 우선하도록 바뀌었다.
-  이유: 이 host의 PATH `cautilus`는 v0.12.1로 claim command family가 없었고, checkout `./bin/cautilus`는 v0.13.0로 claim command family가 있었다.
-- 2026-04-26 no-input `$cautilus` 경로는 다시 조여졌다.
-  최초 실행은 binary / command registry / agent surface / adapter bootstrap까지 허용하고, 그 다음 claim-state/status와 next branch만 요약한다.
-  default `doctor`가 ready라고 해서 `eval test`, quality review, code edit, commit으로 넘어가지 않도록 `skills/cautilus/SKILL.md`, packaged skill, `.agents/skills/cautilus/SKILL.md`, dev/skill fixture expectation에 반영했다.
-  실제 `codex_exec` read-only 단독 no-input 검증은 `/tmp/cautilus-no-input-live/observed.json` 기준 `outcome=passed`였고, 금지된 eval/quality/test/commit command expectation을 통과했다.
-  source checkout launcher `bin/cautilus`는 read-only agent sandbox에서 `go run`/`cgo`가 깨지지 않도록 external scratch root(`/dev/shm/cautilus-go` 우선, `/tmp/cautilus-go` fallback, `CAUTILUS_GO_TMP_ROOT` override)를 쓰도록 바뀌었다.
-  관련 debug record는 [charness-artifacts/debug/debug-2026-04-26-source-shim-read-only-go-cache.md](../../charness-artifacts/debug/debug-2026-04-26-source-shim-read-only-go-cache.md).
-- 2026-04-27 후속 구현으로 no-input 경로는 `cautilus agent status --repo-root . --json`를 canonical orientation packet으로 읽는다.
-  이 command는 `cautilus.agent_status.v1`를 내보내며 binary health, agent-surface readiness, adapter state, repo-local claim-state availability, scan scope, next branches를 읽기 전용으로 묶는다.
-  bundled skill은 prompt-level 금지 목록 대신 `agent status`를 먼저 읽고 branch selection에서 멈추는 what/why 계약으로 정리됐다.
-  `scripts/agent-runtime/audit-cautilus-no-input-log.mjs`는 real `codex exec '$cautilus'` JSONL 전체에서 command/tool/message를 훑어 `agent status` 사용 여부와 discovery/eval/review/optimize/debug/edit/commit 회귀를 잡는다.
-  실제 self-check `/tmp/cautilus-no-input-1777250621.jsonl`는 audit `passed`였고 실행 command는 `find-skills` bootstrap 뒤 `./bin/cautilus agent status --repo-root . --json`까지였다.
-- 2026-04-27 후속 구현으로 Codex session log review는 repo-local normalized helper를 갖는다.
-  `scripts/agent-runtime/summarize-codex-session-log.mjs --session-id <id>`는 JSONL 전체에서 user/assistant messages, tool calls, command outputs, shell commands, commits, parse warnings를 `cautilus.codex_session_summary.v1`로 요약한다.
-  `audit-cautilus-no-input-log.mjs`도 이 shared summarizer를 재사용한다.
-  이 helper는 public Cautilus command가 아니라 self-dogfood/debug aid이며, raw `jq` 추측을 줄이는 것이 목적이다.
-- 2026-04-27 후속 구현으로 `$cautilus` two-turn refresh-flow dogfood가 생겼다.
-  `npm run dogfood:cautilus-refresh-flow`는 disposable candidate worktree에서 실제 `codex exec "$cautilus"`를 실행하고, 같은 session id로 `codex exec resume <id> "1"`을 이어 실행한 뒤 `scripts/agent-runtime/audit-cautilus-refresh-flow-log.mjs`로 combined JSONL을 판정한다.
-  이 감사는 branch 선택 뒤 fresh `agent status` 재확인, `refreshSummary` 읽기, coordinator-facing saved-claim-map 언어, 내부 branch id를 option title로 쓰는 회귀, review/eval 과진행을 잡는다.
-  같은 수동 검증을 사용자가 새 세션에서 반복하는 것은 더 이상 기본 경로가 아니다.
-- 2026-04-27 후속 구현으로 위 two-turn refresh-flow가 `cautilus eval test`의 `dev/skill` multi-turn episode fixture로 들어왔다.
-  `fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json`는 `$cautilus` 다음 `1`을 ordered `turns`로 표현하고 `auditKind=cautilus_refresh_flow`로 결과를 판정한다.
-  `npm run dogfood:cautilus-refresh-flow:eval`는 adapter-owned wrapper를 통해 disposable candidate worktree를 만들고, source checkout을 오염시키지 않는 상태로 live Codex episode를 실행한다.
-  최종 실행은 `recommendation=accept-now`, `passed=1`, `failed=0`이며 artifact는 `artifacts/self-dogfood/cautilus-refresh-flow-eval/latest/eval-summary.json`.
-  2026-04-27 후속 구현으로 같은 refresh-flow eval이 Codex와 Claude 양쪽 live runtime에서 명시적으로 증명됐다.
-  `npm run dogfood:cautilus-refresh-flow:eval:codex`와 `npm run dogfood:cautilus-refresh-flow:eval:claude`는 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
-  Claude parity를 위해 `run-local-skill-test`는 Claude `stream-json` + `--resume` 기반 multi-turn episode runner를 갖고, refresh-flow audit은 Claude stream-json tool calls / `$CAUTILUS_BIN` command shape / 한국어 saved-claim-map 표현을 인식한다.
-  debug record는 [charness-artifacts/debug/debug-2026-04-27-claude-refresh-flow-parity.md](../../charness-artifacts/debug/debug-2026-04-27-claude-refresh-flow-parity.md).
-  2026-04-27 후속 구현으로 saved claim map이 없는 최초 실행도 같은 `dev/skill` multi-turn episode로 증명된다.
-  `fixtures/eval/dev/skill/cautilus-first-scan-flow.fixture.json`는 candidate worktree에서 `.cautilus/claims/`를 제거한 뒤 `$cautilus`, `1`을 실행하고 `auditKind=cautilus_first_scan_flow`로 판정한다.
-  이 감사는 branch 선택 전 `agent status`, 최초 `claim discover`, 후속 `claim show --sample-claims`, scan scope 설명, LLM review budget boundary를 요구하고 review/eval/edit/commit 과진행을 막는다.
-  `npm run dogfood:cautilus-first-scan-flow:eval:codex`와 `npm run dogfood:cautilus-first-scan-flow:eval:claude`는 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
-  2026-04-27 후속 구현으로 discover 다음의 review-prepare branch도 `dev/skill` multi-turn episode로 증명된다.
-  `fixtures/eval/dev/skill/cautilus-review-prepare-flow.fixture.json`는 `$cautilus`, `1`, `1`을 실행하고 `auditKind=cautilus_review_prepare_flow`로 판정한다.
-  이 감사는 first scan 이후 `claim review prepare-input`까지만 허용하고 reviewer launch, review-result application, eval planning, product edit, commit 과진행을 막는다.
-  `npm run dogfood:cautilus-review-prepare-flow:eval:codex`와 `npm run dogfood:cautilus-review-prepare-flow:eval:claude`는 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
-  debug record는 [charness-artifacts/debug/debug-2026-04-27-review-prepare-flow-dogfood-hardening.md](../../charness-artifacts/debug/debug-2026-04-27-review-prepare-flow-dogfood-hardening.md).
-  2026-04-28 후속 구현으로 review-prepare 다음의 reviewer-launch branch도 `dev/skill` multi-turn episode로 증명된다.
-  `fixtures/eval/dev/skill/cautilus-reviewer-launch-flow.fixture.json`는 `$cautilus`, `1`, `1`, `launch the default single reviewer lane and stop at the review-result packet boundary`를 실행하고 `auditKind=cautilus_reviewer_launch_flow`로 판정한다.
-  이 감사는 first scan, `claim show`, `claim review prepare-input`, one default reviewer lane, `cautilus.claim_review_result.v1` packet output을 요구하고, `claim review apply-result`, eval planning, product edit, commit 과진행을 막는다.
-  portable default reviewer lane은 external CLI helper가 아니라 현재 에이전트가 직접 review-result packet을 쓰는 방식이다.
-  external reviewer helper는 명시 선택 시에만 쓰는 smoke 경로로 남겼고, nested provider CLI에는 `danger-full-access` sandbox가 필요할 수 있다.
-  `npm run dogfood:cautilus-reviewer-launch-flow:eval:codex`와 `npm run dogfood:cautilus-reviewer-launch-flow:eval:claude`는 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
-  debug record는 [charness-artifacts/debug/debug-2026-04-28-reviewer-launch-flow-boundary.md](../../charness-artifacts/debug/debug-2026-04-28-reviewer-launch-flow-boundary.md).
-  이 과정에서 `.cautilus/claims/latest.json`의 legacy `repo/whole-repo` / `repo/skill` labels도 `dev/repo` / `dev/skill`로 정리되어 `agent status`가 `claimState.status=present`와 `refresh_claims_from_diff` 첫 branch를 보여준다.
-- 2026-04-26 후속 구현으로 existing-packet helper slice도 들어왔다.
-  `claim show --input <claims.json> --sample-claims <n>`는 `cautilus.claim_status_summary.v1`를 만들고 bounded `sampleClaims`와 `gitState`로 stable candidate fields와 claim-packet freshness를 보여준다.
-  `agent status`도 claim summary 안에 `gitState`를 포함하고, stale packet이면 `refresh_claims_from_diff`를 `show_existing_claims`보다 먼저 제안한다.
-  `claim review prepare-input --claims <claims.json>`는 LLM 호출 없이 bounded `cautilus.claim_review_input.v1` cluster packet을 만들되, stale packet은 기본 거부한다.
-  그 다음 `claim review apply-result --claims <claims.json> --review-result <review-result.json>`도 들어왔다.
-  `cautilus.claim_review_result.v1`를 적용하되, `evidenceStatus=satisfied`는 direct/verified evidence ref가 claim을 support할 때만 허용하며 stale packet은 기본 거부한다.
-- 2026-04-26 후속 구현으로 reviewed-claim eval planning helper도 들어왔다.
-  `claim plan-evals --claims <reviewed-claims.json>`는 reviewed `cautilus-eval` + `ready-to-verify` claims만 골라 `cautilus.claim_eval_plan.v1` intermediate packet을 만들고, stale packet은 기본 거부한다.
-  host-owned fixture, prompt, runner, wrapper, policy는 쓰지 않는다.
-- 2026-04-26 후속 구현으로 packet/evidence validation helper도 들어왔다.
-  `claim validate --claims <claims.json>`는 `cautilus.claim_validation_report.v1`를 만들고, packet shape 또는 evidence refs가 invalid면 non-zero exit한다.
-  이 command는 claim을 mutate하거나 evidence를 찾지 않는다.
-  실제 Cautilus repo dogfood에서 fresh discover packet은 `issueCount=0`, `valid=true`였다.
-  `claim review prepare-input --max-clusters 8 --max-claims-per-cluster 4` 기준 top 8 clusters는 모두 entry-surface priority 10이고, skipped clusters는 30개였다.
-  즉 지금 병목은 evidence preflight보다 bounded review budget / reviewed-claim promotion 쪽이다.
-- 2026-04-27 후속 구현으로 broader `self-dogfood-eval-skill` suite의 nested self-eval 실패도 해소됐다.
-  `cautilus eval test --runtime fixture`가 public `dev/skill` test runtime으로 노출됐고, adapter template은 `{backend}=fixture`를 받을 수 있다.
-  `execution-cautilus-test-request`는 이제 live Codex 안에서 `$cautilus`를 호출해 same suite를 `--runtime fixture --skip-preflight`로 cheap smoke하고 `accept-now`를 요약한다.
-  실제 live run `./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --output-dir /tmp/cautilus-skill-live`는 `recommendation=accept-now`, `passed=3`, `failed=0`이었다.
-- 2026-04-27 후속 구현으로 README / CLI reference / binary help도 네 evaluation presets와 세 command-family front doors에 맞춰 조정됐다.
-  `cautilus --help`의 첫 run group은 이제 `claim discover`, `eval test`, `eval evaluate`를 먼저 보여주고, `eval --help`는 `dev/repo`, `dev/skill`, `app/chat`, `app/prompt`와 `--runtime fixture`의 cheap command-routing 의미를 설명한다.
-  `optimize --help`는 optimize가 proof surface 이후의 improvement front door임을 명시한다.
-  `app/chat`과 `app/prompt`도 fixture-backed self-dogfood entry가 생겼다.
-  `npm run dogfood:app-chat:fixture`와 `npm run dogfood:app-prompt:fixture`는 각각 `recommendation=accept-now`, `passed=1`, `failed=0`으로 통과했다.
-  이 과정에서 adapter loader가 `default_runtime`을 버리던 버그를 고쳐 named adapter의 `default_runtime: fixture`가 실제 `eval test` runtime으로 쓰이게 했다.
-  같은 runner를 Codex backend 경로로도 확장했다.
-  `npm run dogfood:app-prompt:codex`와 `npm run dogfood:app-chat:codex` 모두 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
-  2026-04-27 후속 구현으로 같은 app runner가 Claude backend 경로도 지원한다.
-  `npm run dogfood:app-prompt:claude`와 `npm run dogfood:app-chat:claude` 모두 실제 `claude -p` 경로에서 `recommendation=accept-now`, `passed=1`, `failed=0`이다.
-  app/chat Codex messaging의 첫 시도는 fixture가 제품명을 기대하면서도 user turn에 제품명을 넣지 않아 `reject`였고, debug record는 [charness-artifacts/debug/debug-2026-04-27-app-chat-live-fixture-ambiguity.md](../../charness-artifacts/debug/debug-2026-04-27-app-chat-live-fixture-ambiguity.md).
-  이전 handoff에 적힌 `charness-artifacts/cautilus/latest.md`는 현재 repo에 존재하지 않는 artifact path였으므로 다음 작업 후보에서 제거했다.
-- 2026-04-27 skill-surface verification 중 shared charness guidance가 removed `cautilus instruction-surface test --repo-root .`를 아직 참조한다는 것을 확인했다.
-  Cautilus binary는 현재 spec대로 해당 command를 제거했고, replacement path는 `cautilus eval test --adapter-name self-dogfood-eval` 또는 `npm run dogfood:self`다.
-  debug record는 [charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md](../../charness-artifacts/debug/debug-2026-04-27-stale-instruction-surface-command.md)이고, charness follow-up은 [corca-ai/charness#76](https://github.com/corca-ai/charness/issues/76).
-  같은 검증에서 `npm run dogfood:self`는 real Codex로 `recommendation=accept-now`, `caseCount=1`을 통과했다.
-- 2026-04-27 resumed `$cautilus` test session exposed a stale-claim overrun.
-  The session used updated skill text, but after `claim show` it accepted `prepare-claim-review`, spawned reviewer lanes, applied results, planned evals, verified, and committed artifacts from stale `.cautilus/claims/latest.json`.
-  That artifact commit `7048548` was reverted by `0fe2942`.
-  The fix is binary-backed: `claim show` / `agent status` now expose `gitState`, and review/eval-planning commands reject stale packets unless `--allow-stale-claims` is explicitly passed.
-  debug record: [charness-artifacts/debug/debug-2026-04-27-stale-claim-review-overrun.md](../../charness-artifacts/debug/debug-2026-04-27-stale-claim-review-overrun.md).
-- premortem deferral 상태:
-  (a) Result packet surface-agnostic 필드 — `app/chat` / `app/prompt` evaluator에서 require로 명시 정착됨; `dev/repo`/`dev/skill`로 backport는 후속 hardening 슬라이스에서.
-  (b) `cautilus eval evaluate` 디스패처는 여전히 schemaVersion만으로 라우팅; fixture preset cross-check는 follow-up.
-  (c) Node 측 `scripts/agent-runtime/evaluate-skill.mjs`와 동반 모듈은 self-test와 coverage floor에만 의해 살아있다 — dead-code sweep slice에서 정리.
-  (d) optimize-search held-out/full-gate gating은 `evaluation_input_default`가 있는 adapter에서 `cautilus eval test`로 재배선됐다.
-  Adapter가 eval-test surface를 노출하지 않으면 기존처럼 `status=skipped`, `skipReason=surface_unavailable`로 남는다.
-  (e) consumer onboarding smoke (`npm run consumer:onboard:smoke`)는 2026-04-26에 `doctor ready` 이후 one bounded `eval test`까지 재배선됐다.
-  temp consumer repo에 `app/prompt` fixture와 fixture-backend runner를 심고 `eval-summary.json`의 `accept-now`까지 확인한다.
-- 마이그레이션 트래킹: [corca-ai/cautilus#32](https://github.com/corca-ai/cautilus/issues/32).
+- Latest committed slice: `3689443 Focus spec lint on selected files`.
+  `npm run lint:specs -- <spec-file>` now validates selected spec files and runs each one as a focused temporary specdown entry with `-no-report`.
+- Current deliberate product boundary:
+  Cautilus is not strongly coupled to specdown.
+  Cautilus owns standalone binary behavior, machine-readable packets, provenance, status summaries, and next-work routing.
+  The bundled Cautilus skill interprets those packets.
+  Charness-owned authoring discipline should eventually own reusable top-level user-facing, maintainer-facing, and cross-concern spec language.
+- The Charness follow-up for missed support-skill discoverability is [corca-ai/charness#108](https://github.com/corca-ai/charness/issues/108).
+  Do not over-specify the final Charness design yet; this Cautilus repo is still the sharpening surface.
+- The Charness follow-up for reusable top-level spec authoring discipline is [corca-ai/charness#109](https://github.com/corca-ai/charness/issues/109).
+  Treat it as a direction marker, not a frozen implementation plan.
+- Readiness story review is considered complete.
+  Claim Discovery needs smaller HITL chunks because deterministic packet evidence, non-verdict boundary, next-work routing, and bundled-skill curation have different acceptance boundaries.
+- `.charness/hitl/` is runtime state and should stay uncommitted unless the user explicitly asks otherwise.
 
 ## Next Session
 
-1. `git status --short`로 사용자 변경 여부를 먼저 확인한다.
-2. `charness:find-skills`로 설치된 public / support / integration 스킬 지도를 한 번 갱신한다.
-3. 다음 사용자-facing 목표는 README, AGENTS.md, user spec, maintainer spec 네 표면을 HITL해서 maintainer가 만족하는 상태로 만드는 것이다.
-   `7e29bf9`는 pre-HITL 정리로 user index에 U1-U7 ids를 붙이고, maintainer index가 그 ids를 참조한다고 설명하며, [charness-artifacts/hitl/latest.md](../../charness-artifacts/hitl/latest.md)를 네 표면용 review queue로 갱신했다.
-   다음 HITL chunk는 README lines 1-90이고 질문은 "opening narrative plus quick links are good enough for the product's first-reader story?"이다.
-4. 현재 reviewed eval plan은 3개 `dev/skill` claims이고, evidenced eval plan과 `claim show` summary both expose the evidence refs that close them.
-   다음 claim-hardening 후보는 dedicated claim report/HTML을 만들지, 아니면 JSON packet 우선 원칙을 유지할지 결정하는 것이다.
-5. 그 다음 claim hardening 후보는 새 dogfood evidence가 드러내는 구체적 실패에서 고른다.
-   review prepare-input과 reviewer launch branch proof는 Codex/Claude 양쪽에서 완료됐다.
-   evidence preflight의 첫 slice는 possible evidence hint까지만 허용하는 형태로 들어왔다.
-   public `claim group` 또는 `claim refresh` command는 만들지 않는다.
-   `claim plan-evals`는 이제 각 plan에 `fixtureAuthoringGuidance`를 포함해 surface/preset, 최소 fixture 필드, runner output schema, required runner capability/observability, host-owned non-writer boundary를 보여준다.
-   그래서 eval-fixture authoring guidance, review-result application branch proof, stale evidence reconciliation 첫 slice는 닫혔다.
-   `claim discover --previous <packet>`는 fingerprint가 같은 claim의 reviewed/evidenced state를 carry forward하고, line-number 기반 `claimId`가 바뀌면 evidence ref `supportsClaimIds`를 현재 claim id로 재기록한다.
-   carried evidence는 `contentHash`와 claim-evidence bundle target id를 재확인하므로, stale evidence reconciliation 첫 slice도 닫혔다.
-6. evaluation-surface composition primitives C2/C3/C4는 모두 shipped 상태다.
-   C2 `extends`는 2026-05-01에 file-backed `eval test` fixture에서 shipped 됐다.
-   C3 `steps`도 2026-05-01에 strict explicit `outputProjection` 기반으로 shipped 됐다.
-   C4 `expected.snapshot`은 2026-05-01에 app `finalText` snapshot 비교로 shipped 됐다.
-7. spec follow-up #5 — `scenario normalize` 재범위는 2026-05-01 `27cfb2d`에서 닫힘.
-   `cautilus scenarios --json`, `first_bounded_run`, version state, lint/test/docs가 `archetypes` 대신 `normalizationFamilies`를 쓴다.
-   `lint:archetypes`는 `lint:scenario-normalizers`로 바뀌었고, refresh-plan overwrite guard도 같이 들어왔다.
-8. 2026-05-01 proof-boundary quality pass에서 app Codex dogfood script 이름은 `:live`에서 `:codex`로 바뀌었고, `check-proof-boundary-names`가 `dogfood:*:live` script가 `cautilus eval live`를 호출하지 않으면 실패한다.
-   `npm run dogfood:app-chat:codex`와 `npm run dogfood:app-prompt:codex`는 둘 다 `accept-now`, `passed=1`, `failed=0`이며 summary proof는 `productProofReady=false`, `runnerAssessmentState=missing-assessment`다.
-9. 후속 후보: direct provider parity는 현재 요구사항으로 잠그지 않는다.
-   실제 consumer adapter가 direct API와 CLI messaging 비교를 요구할 때 다시 연다.
-10. user/maintainer claim spec tree로 product SOT를 정렬하는 작업의 living-doc 정렬은 끝났고(AGENTS.md/master-plan.md/handoff), subclaim evidence convention도 lint로 잠겼고, 이미 존재하는 evidence는 18 페이지 모두에 link됐다.
-11. 다음 슬라이스 후보 — fixture/test authoring이 필요한 honest gap (`docs/specs/{user,maintainer}/*.spec.md`의 `## Evidence Gaps`에 살아 있음).
-    Theme A(2 gap)는 2026-05-05에 `cca9852`로 닫혔다. 남은 8 gap을 네 theme으로 그루핑한다:
-    - **Theme B: absence-style schema assertion — 3 gap.** `maintainer/active-run-workspace`(active-run 마커가 `cautilus.*` schema field에 leak 안 됨), `maintainer/readiness-runtime-status`(readiness packet이 claim-satisfied count를 노출하지 않음), `maintainer/live-invocation-runtime`(provider-specific flag가 product schema field에 없음). 세 개 모두 schema-validation 테스트 형식이라 한 슬라이스에 묶기 좋다.
-    - **Theme C: held-out eval artifact 캡처 — 2 gap.** `maintainer/optimization-loop`(self-dogfood optimize cycle held-out 결과), `maintainer/scenario-history-normalization`(scenario-history cycle held-out 결과). `artifacts/self-dogfood/` 아래 새 디렉터리로 떨어져야 함. 실 dogfood 실행 필요.
-    - **Theme D: 새 fixture-backed test — 2 gap.** `maintainer/live-invocation-runtime`(batch-run fixture로 multi-scenario loop boundary 증명), `maintainer/reporting-review-variants`(stale-state rendering fixture). 각각 fixture 한 개와 동반 test가 필요.
-    - **Theme E: per-host-owned-field test — 1 gap.** `user/ownership`(adapter contract의 prompts/model/credentials/runtime-launch 각 host-owned field마다 한 개 focused test). 한 슬라이스에 일괄 처리 가능.
-    Theme B→E→C→D 순서가 자연스럽다 (정적/구조 검사 먼저, 동적 fixture 나중).
-12. 다음 후보는 (3) Absorbs 흡수 실행 — `docs/contracts/{active-run,live-run-invocation,live-run-invocation-batch,reporting,review-packet,scenario-history,scenario-proposal-sources}.md`를 해당 maintainer spec으로 흡수하고, deprecated `docs/claims/{user,maintainer}-facing.md` 두 파일을 정리하는 것이다.
-    Subclaim evidence가 link로 채워진 상태에서 진행하면 흡수된 contract의 어느 부분이 이미 evidence에 매핑됐는지 보이므로 매핑이 더 정확해진다.
-    사용자 결정 대기: (1) U7 proof-debt를 user claim으로 둘지/cross-cutting 차원으로 재배치할지.
+1. Confirm the live worktree with `git status --short`.
+2. Read [docs/internal/working-patterns.md](./working-patterns.md) sections `Product Language 및 Cross-Cutting Concern 원칙` and `Standing Gate 순서`.
+3. Use `support/specdown` references before changing executable spec syntax.
+4. Resume HITL at [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md), first chunk: story sentence plus discovery-boundary proof.
+5. For each chunk, show the source text and the actual focused command output.
+   Use focused checks such as `npm run lint:specs -- docs/specs/user/claim-discovery.spec.md`, not full `specdown run`, until a story-level closeout.
 
 ## Discuss
 
-- runtime fingerprint의 두 번째 슬라이스 (automatic prior-evidence selection, provider API 연동)를 언제 시작할지.
-- self-dogfood / consumer onboarding 재배선 슬라이스에서 optimize-search의 `eval test` 기반 candidate worktree 평가를 어떤 consumer adapter까지 dogfood할지.
-- `dogfood:self`는 현재 canonical self-dogfood entry point이고 `dogfood:self:eval`로 위임한다.
-  이전 tuning experiments(`dogfood:self:experiments`)에 해당하던 강한 클레임을 새 preset, 새 fixture 시리즈, 또는 폐기 중 어느 쪽으로 정리할지는 아직 결정 필요.
-- premortem deferral (a)–(e) 중 어느 것을 다음 hardening 슬라이스로 묶을지.
+- Whether Charness should place reusable top-level spec authoring in `charness:narrative`, `charness:spec`, or a split contract.
+  Current leaning: narrative owns meaning and concern structure; spec/specdown support owns executable syntax and proof mechanics.
+- Which Cautilus-only spec patterns should be promoted to Charness after the user-facing and maintainer-facing docs are sharper.
 
 ## References
 
-- [docs/master-plan.md](../master-plan.md)
-- [docs/specs/user/evaluation.spec.md](../specs/user/evaluation.spec.md)
-- [docs/contracts/runtime-fingerprint-optimization.md](../contracts/runtime-fingerprint-optimization.md)
-- [docs/contracts/scenario-history.md](../contracts/scenario-history.md)
-- [corca-ai/charness#66](https://github.com/corca-ai/charness/issues/66) — ideation/spec의 enum-axis consistency 점검 제안 (여전히 열려 있음)
+- [docs/specs/user/index.spec.md](../specs/user/index.spec.md)
+- [docs/specs/maintainer/index.spec.md](../specs/maintainer/index.spec.md)
+- [docs/internal/working-patterns.md](./working-patterns.md)
+- [corca-ai/charness#108](https://github.com/corca-ai/charness/issues/108)
+- [corca-ai/charness#109](https://github.com/corca-ai/charness/issues/109)
