@@ -26,6 +26,7 @@ Start with `git status --short`, then run `charness:find-skills` once and explic
 1. Confirm the live worktree with `git status --short`.
 2. Read [docs/internal/working-patterns.md](./working-patterns.md) sections `Product Language 및 Cross-Cutting Concern 원칙` and `Standing Gate 순서`.
 3. Re-check whether the Cautilus-vs-Charness boundary is expressed as reusable principle rather than session know-how.
+   Do not wait for Charness #109 to be implemented; #109 assumes Cautilus HITL has already produced a sharper reference surface.
 4. Use `support/specdown` references before changing executable spec syntax.
 5. Resume HITL at [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md), first chunk: story sentence plus discovery-boundary proof.
 6. For each chunk, show the source text and the actual focused command output.
