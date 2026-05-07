@@ -58,10 +58,10 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 - **한 분해 축이 다른 관심사를 지우는지 self-check 한다.**
   user story 순서가 workflow 를 잘 설명해도, evidence visibility / host ownership / cost-budget / agent-human readability 가 특정 story 에 묻혀 사라지면 설계가 퇴행한 것이다.
   index 에 cross-cutting 항목을 남기고, maintainer side 에는 어떤 invariant 가 어느 story 를 제한하는지 mapping 을 둔다.
-- **Cautilus 와 specdown 을 강결합하지 않는다.**
-  이 repo 의 `docs/specs/*.spec.md` 는 좋은 dogfood/reference surface 이지만, Cautilus 제품 약속은 specdown runtime 에 의존하지 않는다.
+- **Cautilus 제품 책임은 artifact-first 로 쓴다.**
   Cautilus 의 독립 책임은 좋은 바이너리와 머신이 이해하기 쉬운 패킷, provenance, status, next-work route 를 내는 것이다.
   Cautilus bundled skill 은 그 패킷을 해석하고 workflow branch 를 돕는다.
+  문서 substrate 나 authoring runtime 은 제품 약속의 중심에 세우지 않는다.
 - **좋은 top-level spec 언어는 Charness 쪽으로 승격한다.**
   user-facing spec, maintainer-facing spec, cross-concern spec 을 통일된 용어와 관심사로 쓰는 철학은 Cautilus 전용이 아니라 Charness-managed repo 전반의 authoring discipline 이다.
   이 repo 에서 충분히 깎은 뒤 Charness skill/support surface 로 옮긴다.

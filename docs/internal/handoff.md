@@ -2,7 +2,7 @@
 
 ## Workflow Trigger
 
-Next session should resume `charness:hitl` over the Cautilus user-facing specs.
+Next session should first re-check the responsibility boundary notes, then resume `charness:hitl` over the Cautilus user-facing specs only after that wording still feels right.
 Start with `git status --short`, then run `charness:find-skills` once and explicitly check whether `support/specdown` applies before editing any `docs/specs/**/*.spec.md` file.
 
 ## Current State
@@ -10,7 +10,6 @@ Start with `git status --short`, then run `charness:find-skills` once and explic
 - Latest committed slice: `3689443 Focus spec lint on selected files`.
   `npm run lint:specs -- <spec-file>` now validates selected spec files and runs each one as a focused temporary specdown entry with `-no-report`.
 - Current deliberate product boundary:
-  Cautilus is not strongly coupled to specdown.
   Cautilus owns standalone binary behavior, machine-readable packets, provenance, status summaries, and next-work routing.
   The bundled Cautilus skill interprets those packets.
   Charness-owned authoring discipline should eventually own reusable top-level user-facing, maintainer-facing, and cross-concern spec language.
@@ -26,9 +25,10 @@ Start with `git status --short`, then run `charness:find-skills` once and explic
 
 1. Confirm the live worktree with `git status --short`.
 2. Read [docs/internal/working-patterns.md](./working-patterns.md) sections `Product Language 및 Cross-Cutting Concern 원칙` and `Standing Gate 순서`.
-3. Use `support/specdown` references before changing executable spec syntax.
-4. Resume HITL at [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md), first chunk: story sentence plus discovery-boundary proof.
-5. For each chunk, show the source text and the actual focused command output.
+3. Re-check whether the Cautilus-vs-Charness boundary is expressed as reusable principle rather than session know-how.
+4. Use `support/specdown` references before changing executable spec syntax.
+5. Resume HITL at [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md), first chunk: story sentence plus discovery-boundary proof.
+6. For each chunk, show the source text and the actual focused command output.
    Use focused checks such as `npm run lint:specs -- docs/specs/user/claim-discovery.spec.md`, not full `specdown run`, until a story-level closeout.
 
 ## Discuss

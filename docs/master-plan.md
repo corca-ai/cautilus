@@ -27,10 +27,7 @@ The product has three connected jobs:
 
 README proof is one instance of the first job, not a product-specific concept.
 Cautilus owns the generic claim-to-proof workflow; consumer repos own their local fixtures, runners, prompts, wrappers, and policy.
-Cautilus does not require specdown as its reporting substrate.
-Specdown remains an excellent executable-spec and dogfood surface for this repo, while the standalone product promise stays centered on machine-readable packets, provenance, status summaries, and bounded next-work routes that other tools can consume.
-Charness is the intended owner for reusable top-level spec authoring discipline: user-facing stories, maintainer-facing proof maps, cross-concern visibility, shared vocabulary, and readable evidence placement.
-That Charness extraction remains open in [corca-ai/charness#109](https://github.com/corca-ai/charness/issues/109) while this repo continues to sharpen the format.
+Cautilus exposes machine-readable packets, provenance, status summaries, and bounded next-work routes that other tools can consume.
 Each job now has a first-class command family: `claim`, `eval`, and `optimize`.
 The product surface should keep following the same discipline as `charness`: expose the user's intent at the public command boundary, keep tool-specific mechanics underneath it, and preserve durable artifacts that another agent can resume.
 Do not hide arbitrary caps or host-specific defaults inside generic discovery; use explicit packet fields, adapter-owned policy, or explicit command options when selection is needed.
