@@ -2,7 +2,7 @@
 
 Every Cautilus workflow should leave machine-readable packets and readable views that another person or agent can reopen.
 
-## JSON packets remain the audit source of truth.
+## A user or agent can reopen JSON packets as the audit source of truth.
 
 Core command surfaces emit schema-versioned packets with state summaries, next branches, git state, validation state, and eval planning state.
 
@@ -17,7 +17,7 @@ jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-durabl
 | .cautilus/claims/evidence-durable-packets-2026-05-03.json | decision.evidenceStatus | satisfied | |
 | .cautilus/claims/evidence-durable-packets-2026-05-03.json | summary | | structured Cautilus packets |
 
-## Readable views project packet state instead of becoming a separate truth source.
+## A user can read projected views without losing the packet source of truth.
 
 The projection matrix and renderer tests cover the shipped readable artifact families and preserve JSON packets or source artifacts as the audit source.
 
@@ -33,7 +33,7 @@ jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-review
 | .cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json | checkedInEvidence[0].kind | reviewable-artifact-projection-matrix | |
 | .cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json | summary | | machine-readable packets |
 
-## Report views make stale, blocked, and missing evidence visible.
+## A user can see stale, blocked, and missing evidence in report views.
 
 The status-report evidence covers evidence-gap buckets, validation summaries, refresh-plan currentness, and separate comment packets for human review.
 

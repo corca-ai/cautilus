@@ -237,7 +237,7 @@ For the generated sample adapter, `doctor` keeps the first bounded eval loop vis
 | first_bounded_run.decisionLoopCommands[0] | | cautilus eval test |
 | first_bounded_run.decisionLoopCommands[1] | | cautilus eval evaluate |
 
-## The bundled skill can choose a safe branch from the readiness packet before spending workflow budget.
+## A user can get a safe next workflow branch before spending workflow budget.
 
 This is different from the human-facing `doctor` result.
 `doctor` answers whether setup is ready and what a user should fix or run next.

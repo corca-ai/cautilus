@@ -2,7 +2,7 @@
 
 Using Cautilus adapters and host-owned runners, a user can keep prompts, models, credentials, runtime wiring, and acceptance policy in the host repo while Cautilus standardizes workflow packets and boundaries.
 
-## A host repo owns the behavior runtime that Cautilus evaluates.
+## A user can keep behavior execution in the host repo.
 
 The current adapter evidence proves that adapter-owned claim discovery entries and explicit live instance definitions are validated and normalized without product-owned runtime guessing.
 
@@ -39,7 +39,7 @@ jq '[.commandEvidence[] | {command, notableAssertions: .observed.notableAssertio
 | .cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json | summary | | doctor onboarding |
 | .cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json | commandEvidence[0].observed.notableAssertions[2] | | adapter-init |
 
-## Cautilus standardizes packets and workflow boundaries instead of prompts, credentials, or acceptance policy.
+## A user can rely on Cautilus for packets and workflow boundaries, not host policy.
 
 The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen.
 
@@ -55,7 +55,7 @@ jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-durabl
 | .cautilus/claims/evidence-durable-packets-2026-05-03.json | commandEvidence[1].observed.schemaVersion | cautilus.agent_status.v1 | |
 | .cautilus/claims/evidence-durable-packets-2026-05-03.json | commandEvidence[2].observed.schemaVersion | cautilus.claim_status_summary.v1 | |
 
-## Gap: per-field host ownership is not fully proven at the user-spec layer yet.
+## A user can see which host-owned fields still need focused proof.
 
 The adapter contract still needs focused per-field proof for prompts, model choice, credentials, and runtime launch.
 Owner: maintainer.

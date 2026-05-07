@@ -2,7 +2,7 @@
 
 Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
 
-## A claim packet is a work plan, not a certificate.
+## A user can see that discovered promises still need evidence.
 
 The claim status summary keeps the proof-plan boundary visible to users.
 
@@ -16,7 +16,7 @@ jq '{schemaVersion, candidateCount, nonVerdictNotice}' .cautilus/claims/status-s
 | --- | --- | --- |
 | .cautilus/claims/status-summary.json | nonVerdictNotice | proof plan, not proof |
 
-## A reviewed claim cannot become satisfied without valid evidence.
+## A user can see that reviewed claims still require valid evidence.
 
 The current evidence-gap evidence records tests that keep validation summaries, evidence-gap buckets, and missing evidence visible.
 
@@ -32,7 +32,7 @@ jq '{bundleId, evidenceStatus: .decision.evidenceStatus, summary, protectedBehav
 | .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | summary | | missing evidence |
 | .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | commandEvidence[0].observed.protectedBehaviors[0] | | JSON packets |
 
-## Missing or weak evidence remains visible as next work.
+## A user can keep missing or weak evidence visible as next work.
 
 The current status packet exposes evidence satisfaction counts, action buckets, and stale-evidence signals instead of hiding unknown or stale proof.
 

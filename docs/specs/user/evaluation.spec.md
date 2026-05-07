@@ -21,7 +21,7 @@ jq '[.packetEvidence[] | {schemaVersion, targetSurface: .proof.targetSurface, re
 | .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | packetEvidence[4].proof.targetSurface | app/prompt | |
 | .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | relatedEvidence[0].reason | | dev/skill |
 
-## A fixture and adapter-owned runner keep the host repo in control of behavior execution.
+## A user can evaluate behavior without Cautilus taking over host-owned execution.
 
 The evidence bundle points at checked-in fixtures, adapters, and runner wrappers for the selected surfaces.
 
@@ -32,7 +32,7 @@ The evidence bundle points at checked-in fixtures, adapters, and runner wrappers
 | .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | checkedInEvidence[4].kind | adapter |
 | .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json | checkedInEvidence[7].kind | runner-wrapper |
 
-## Each eval leaves reopenable observed and summary packets.
+## A user can reopen observed behavior and summary packets after each eval.
 
 The latest selected eval artifacts record schema versions, recommendations, runtime, proof class, and target surface without rerunning the expensive eval in this specdown pass.
 
