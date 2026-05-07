@@ -1,6 +1,6 @@
 # Find Skills Inventory
-Date: 2026-05-06
-Updated: 2026-05-06T23:52:44Z
+Date: 2026-05-07
+Updated: 2026-05-07T04:49:41Z
 
 ## Summary
 - public skills: 17
@@ -34,7 +34,7 @@ Updated: 2026-05-06T23:52:44Z
 - `gather-notion` (support skill): Internal support capability for gathering published Notion pages into durable local markdown without requiring consumer repos to supply their own export helper.
 - `gather-slack` (support skill): Internal support capability for gathering Slack threads into durable local markdown without asking consumer repos to reimplement Slack export helpers.
 - `markdown-preview` (support skill): Internal support capability for rendering checked-in Markdown into durable preview artifacts so doc-facing workflows can review real terminal output instead of raw source alone.
-- `specdown` (support skill): Write, run, and fix specdown executable specifications. Use when the user asks to create, edit, run, or fix specs.
+- `specdown` (support skill): Write, run, and fix Specdown executable specifications. Use when task language mentions `*.spec.md`, `docs/specs`, `run:shell`, doctest output, check tables, `check:jq`, `report.json`, Specdown HTML reports, executable specs, adapter checks, or focused Specdown iteration.
 - `web-fetch` (support skill): Internal support capability for routing public-web fetch requests through the strongest honest access path and classifying blocked or partial fetch responses without turning those tactics into a public workflow concept.
 
 ## Support Capabilities
