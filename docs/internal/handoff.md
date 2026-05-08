@@ -2,46 +2,50 @@
 
 ## Workflow Trigger
 
-Next session should first re-check the responsibility boundary notes, then resume `charness:hitl` over the Cautilus user-facing specs only after that wording still feels right.
-Start with `git status --short`, then run `charness:find-skills` once and explicitly check whether `support/specdown` applies before editing any `docs/specs/**/*.spec.md` file.
+다음 세션은 `charness:hitl`로 [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md)를 재개하세요.
+먼저 `git status --short`를 보고, repo 규칙대로 `charness:find-skills`를 한 번 실행한 뒤, 현재 HITL runtime의 active rules와 queue cursor를 확인하세요.
 
 ## Current State
 
-- Latest committed slice: `3689443 Focus spec lint on selected files`.
-  `npm run lint:specs -- <spec-file>` now validates selected spec files and runs each one as a focused temporary specdown entry with `-no-report`.
-- Current deliberate product boundary:
-  Cautilus owns standalone binary behavior, machine-readable packets, provenance, status summaries, and next-work routing.
-  The Cautilus Agent interprets those packets.
-  Charness-owned authoring discipline should eventually own reusable top-level user-facing, maintainer-facing, and cross-concern spec language.
-- The Charness follow-up for missed support-skill discoverability is [corca-ai/charness#108](https://github.com/corca-ai/charness/issues/108).
-  Do not over-specify the final Charness design yet; this Cautilus repo is still the sharpening surface.
-- The Charness follow-up for reusable top-level spec authoring discipline is [corca-ai/charness#109](https://github.com/corca-ai/charness/issues/109).
-  Treat it as a direction marker, not a frozen implementation plan.
-- Readiness story review is considered complete.
-  Claim Discovery needs smaller HITL chunks because deterministic packet evidence, non-verdict boundary, next-work routing, and Cautilus Agent curation have different acceptance boundaries.
-- `.charness/hitl/` is runtime state and should stay uncommitted unless the user explicitly asks otherwise.
+- Latest committed slice: `edb7ea2 Harmonize user specs for HITL handoff`.
+  User-facing specs now follow the current session rules: pain-point opening, concrete CLI command plus `cautilus-agent` skill on first workflow introduction, command-surface vocabulary instead of user-facing "binary", no generic Specdown readiness coupling, and prepared-not-executed eval language.
+- Recent support commits:
+  `2b3ea32 Rename bundled skill to Cautilus Agent`,
+  `b14707a Remove specdown from doctor readiness`,
+  `0d04dfc Drop retired specdown regression assertions`,
+  `dcee67a Record HITL terminology drift retro`.
+- Premortem artifact: [charness-artifacts/premortem/hitl-user-spec-closeout.md](../../charness-artifacts/premortem/hitl-user-spec-closeout.md).
+  It records the delegated angle reviews and the counterweight triage used before `edb7ea2`.
+- Charness follow-ups opened during this session:
+  [#117](https://github.com/corca-ai/charness/issues/117) full-target readback after chunks,
+  [#118](https://github.com/corca-ai/charness/issues/118) show rewritten chunk after edit,
+  [#119](https://github.com/corca-ai/charness/issues/119) accepted HITL rules as active pre-edit constraints plus target/cursor/chunk-bound validation.
+- `.charness/hitl/` remains runtime state and is intentionally uncommitted unless the user explicitly asks otherwise.
 
 ## Next Session
 
-1. Confirm the live worktree with `git status --short`.
-2. Read [docs/internal/working-patterns.md](./working-patterns.md) sections `Product Language 및 Cross-Cutting Concern 원칙` and `Standing Gate 순서`.
-3. Re-check whether the Cautilus-vs-Charness boundary is expressed as reusable principle rather than session know-how.
-   Do not wait for Charness #109 to be implemented; #109 assumes Cautilus HITL has already produced a sharper reference surface.
-4. Use `support/specdown` references before changing executable spec syntax.
-5. Resume HITL at [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md), first chunk: story sentence plus discovery-boundary proof.
-6. For each chunk, show the source text and the actual focused command output.
-   Use focused checks such as `npm run lint:specs -- docs/specs/user/claim-discovery.spec.md`, not full `specdown run`, until a story-level closeout.
+1. Confirm worktree state.
+   Expected dirty state is only HITL runtime under `.charness/hitl/runtime/...` unless the user has changed more.
+2. Read `.charness/hitl/runtime/hitl-20260508-062748/rules.yaml`, `state.yaml`, `queue.json`, and `hitl-scratchpad.md`.
+   The state has been resynced to `docs/specs/user/claim-discovery.spec.md`.
+3. Resume with queue item `claim-discover-heuristics-and-dedupe-evidence`.
+   Present [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md) lines 62-129, including the implementation-evidence block, before asking for judgment.
+4. Apply the active HITL rules before every edit:
+   show the rewritten chunk after changes, keep user-facing command vocabulary, and do not advance cursor until the user accepts or redirects.
+5. After Claim Discovery chunks are all reviewed, show the full updated Claim Discovery document before considering that target complete.
+6. Do not run the prepared Cautilus eval unless the user explicitly approves it.
+   The prepared command remains `dogfood:cautilus-claim-discovery-curation-flow:eval:codex`.
 
 ## Discuss
 
-- Whether Charness should place reusable top-level spec authoring in `charness:narrative`, `charness:spec`, or a split contract.
-  Current leaning: narrative owns meaning and concern structure; spec/specdown support owns executable syntax and proof mechanics.
-- Which Cautilus-only spec patterns should be promoted to Charness after the user-facing and maintainer-facing docs are sharper.
+- Whether the updated Claim Discovery heuristic section is now too example-heavy or has the right example-to-implementation balance.
+- Whether lower-level packet output may still show Markdown traversal terms while user-facing prose says entry and linked docs.
+- Whether any Cautilus-only spec authoring pattern from this HITL should move into Charness after #117-#119.
 
 ## References
 
 - [docs/specs/user/index.spec.md](../specs/user/index.spec.md)
-- [docs/specs/maintainer/index.spec.md](../specs/maintainer/index.spec.md)
+- [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md)
 - [docs/internal/working-patterns.md](./working-patterns.md)
-- [corca-ai/charness#108](https://github.com/corca-ai/charness/issues/108)
-- [corca-ai/charness#109](https://github.com/corca-ai/charness/issues/109)
+- [charness-artifacts/retro/hitl-terminology-drift.md](../../charness-artifacts/retro/hitl-terminology-drift.md)
+- [charness-artifacts/premortem/hitl-user-spec-closeout.md](../../charness-artifacts/premortem/hitl-user-spec-closeout.md)
