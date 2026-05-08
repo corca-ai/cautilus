@@ -1,20 +1,21 @@
 # Evidence Gaps
 
-Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
+When Cautilus finds or reviews a promise, the user needs to see whether evidence actually supports it or whether work is still missing.
+Using the `cautilus claim show` CLI command and the `cautilus-agent` skill, discovered or reviewed promises stay unsatisfied until valid evidence is attached, and missing or weak evidence remains visible until the claim is proven, narrowed, deferred, or removed.
 
 ## A user can see that discovered promises still need evidence.
 
-The claim status summary keeps the proof-plan boundary visible to users.
+The claim status summary keeps the candidate-not-proof boundary visible to users.
 
 ```run:shell
-# Show the non-verdict boundary from the latest selected claim status packet.
+# Show the candidate-not-proof status from the latest selected claim status packet.
 jq '{schemaVersion, candidateCount, nonVerdictNotice}' .cautilus/claims/status-summary.json
 ```
 
 > check:cautilus-json-file
 | path | json_path | includes |
 | --- | --- | --- |
-| .cautilus/claims/status-summary.json | nonVerdictNotice | proof plan, not proof |
+| .cautilus/claims/status-summary.json | nonVerdictNotice | not proof |
 
 ## A user can see that reviewed claims still require valid evidence.
 

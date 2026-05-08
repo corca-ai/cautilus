@@ -7,8 +7,8 @@ Using the `cautilus claim` CLI command and the `cautilus-agent` skill, a user ca
 
 Claim discovery is a two-pass workflow.
 
-- Pass 1: The `cautilus` binary runs a broad deterministic scan over the selected entry and linked docs. It intentionally accepts some false positives so it does not miss declared promises inside that scan boundary, and it leaves source refs, heuristic metadata, duplicate handling, and next-action hints for an agent to inspect.
-- Pass 2: Cautilus Agent curates the discovered candidate list. It reduces false positives, compares candidates with docs and code, looks for likely missing public promises, and asks whether a missing promise is intentional or under-documented.
+- Pass 1: `claim discover` runs a broad deterministic scan over the selected entry and linked docs. It intentionally accepts some false positives so it does not miss declared promises inside that scan boundary, and it leaves source refs, heuristic metadata, duplicate handling, and next-action hints for an agent to inspect.
+- Pass 2: The `cautilus-agent` skill curates the discovered candidate list. It reduces false positives, compares candidates with docs and code, looks for likely missing public promises, and asks whether a missing promise is intentional or under-documented.
 
 Discovery creates candidates, not proof.
 A candidate is not verified until matching evidence is attached.
@@ -21,30 +21,31 @@ Each candidate is routed toward the kind of evidence it needs next:
 
 | workflow step | surface | result |
 | --- | --- | --- |
-| Select the source boundary | Cautilus Agent plus `claim discover` | entry docs and linked Markdown depth to scan |
+| Select the source boundary | `cautilus-agent` skill plus `claim discover` | entry docs and linked docs to scan |
 | Extract broad candidates | `claim discover` | source-referenced candidates, heuristic metadata, duplicate refs, and next-action hints |
-| Curate the candidate list | Cautilus Agent | false-positive reductions, possible false-negative questions, and grouped follow-up work |
+| Curate the candidate list | `cautilus-agent` skill | false-positive reductions, possible false-negative questions, and grouped follow-up work |
 | Fill evidence gaps | `claim show`, deterministic tests, `cautilus eval`, or human review | proof status changes only after valid evidence or a recorded decision |
 
 ## A user can audit the source boundary.
 
-`claim discover` records the scan boundary and the claim-discovery engine in the saved claim JSON.
-`claim show` projects that saved claim JSON into a status summary without rescanning.
-If a declared promise is inside that recorded boundary and discovery misses it, that is a discovery bug.
-If an important behavior only appears outside the boundary, such as in code, transcripts, issues, or private operator memory, that is a narrative or catalog gap for Cautilus Agent or a human to raise.
+Claim discovery should make one question easy to answer: which docs were actually scanned before this candidate list was created?
+`claim discover` records that source boundary in the saved discovery packet.
+`claim show` reads the saved packet and summarizes the same boundary without running discovery again.
+
+That boundary defines responsibility.
+If a declared promise appears in the selected entry and linked docs but no candidate is created, `claim discover` missed an in-scope promise.
+If an important behavior appears only outside that boundary, such as in code, transcripts, issues, or private operator memory, Cautilus Agent or a human can raise it as a documentation, catalog, or alignment gap.
 
 ```run:shell
-$ sh -lc 'claims_path="$(jq -r ".inputPath" .cautilus/claims/status-summary.json)"; jq -r '"'"'"claimJson=" + $p, "engine.name=" + .discoveryEngine.name, "engine.ruleset=" + .discoveryEngine.ruleset, "entries=" + (.effectiveScanScope.entries | join(",")), "traversal=" + .effectiveScanScope.traversal'"'"' --arg p "$claims_path" "$claims_path"; jq -r '"'"'"boundary=" + .discoveryBoundary.sourceBasis, "omission=" + .discoveryBoundary.omissionPolicy'"'"' .cautilus/claims/status-summary.json'
-claimJson=.cautilus/claims/evidenced-typed-runners.json
-engine.name=cautilus.claim_discovery
-engine.ruleset=claim-discovery-rules.v4
-entries=README.md,AGENTS.md,CLAUDE.md
-traversal=entry-markdown-links
-boundary=entry-docs-and-linked-markdown
-omission=Claims not declared in configured entry documents or linked Markdown are outside deterministic discovery scope.
+$ sh -lc 'claims_path="$(jq -r ".inputPath" .cautilus/claims/status-summary.json)"; jq -r '"'"'"savedPacket=" + $p, "selectedEntries=" + (.effectiveScanScope.entries | join(",")), "linkedDocs=" + .effectiveScanScope.traversal'"'"' --arg p "$claims_path" "$claims_path"; jq -r '"'"'"outsideBoundary=Claims not declared in selected entry and linked docs are outside deterministic discovery scope.", "statusSummaryReads=" + .inputPath'"'"' .cautilus/claims/status-summary.json'
+savedPacket=.cautilus/claims/evidenced-typed-runners.json
+selectedEntries=README.md,AGENTS.md,CLAUDE.md
+linkedDocs=entry-markdown-links
+outsideBoundary=Claims not declared in selected entry and linked docs are outside deterministic discovery scope.
+statusSummaryReads=.cautilus/claims/evidenced-typed-runners.json
 ```
 
-Fresh discovery output says the same thing in user-facing terms: candidates are not verified until evidence is attached.
+The same output also keeps candidate status clear: discovery creates candidates, not verified proof.
 
 ```run:shell
 $ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." > "$tmp/README.md"; ./bin/cautilus claim discover --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r ".nonVerdictNotice" "$tmp/claims.json"'
@@ -58,18 +59,51 @@ Discovery creates candidates. A discovered claim is not verified until matching 
 | .cautilus/claims/status-summary.json | sourceCount | | 1 |
 | .cautilus/claims/status-summary.json | discoveryBoundary.entries[0] | README.md | |
 
-## The binary exposes the heuristics behind broad extraction.
+## `claim discover` exposes broad extraction with examples.
 
-The examples below are representative, not a second copy of every classifier branch.
-They show the contract Cautilus must keep: scan readable Markdown prose, reject obvious prompt or placeholder noise, classify the next evidence route, and merge identical normalized sentences while preserving every source ref.
-The implementation records the heuristic families it uses, and the focused Go test proves those functions work together in one discovery run.
+`claim discover` should be easy to audit from examples before a reader has to care about implementation names.
+The examples below do not copy every classifier branch.
+They show the behavior Cautilus must keep when it scans docs broadly: keep useful promises, filter obvious non-promises, choose a next evidence route, and merge duplicate source sentences without losing refs.
 
-| source signal | what the binary does with it | code path |
-| --- | --- | --- |
-| Markdown prose outside fenced code | breaks source docs into candidate text blocks | `claimTextBlocks` |
-| claim-shaped sentence, such as "Users can run deterministic checks before review." | keeps behavior-like promises and filters prompt examples, questions, labels, placeholders, and noise | `claimLineLooksUseful` |
-| proof words, behavior words, command names, and alignment words | recommends the next evidence route for the candidate | `classifyClaimLine` |
-| same normalized sentence in more than one source | emits one candidate with multiple source refs instead of separate duplicates | `mergeIdenticalClaimCandidates` |
+### Signal: readable docs, not fenced examples.
+
+`claim discover` scans readable doc prose and ignores fenced examples or metadata.
+In this sample, only the ordinary prose sentence becomes a candidate.
+
+```run:shell
+$ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "---" "title: Demo" "---" "# Demo" "" "```" "Users can run this command in an example." "```" "" "Users can run deterministic checks before review." > "$tmp/README.md"; ./bin/cautilus claim discover --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'"candidateCount=" + (.candidateCount|tostring), "candidate=" + .claimCandidates[0].summary'"'"' "$tmp/claims.json"'
+candidateCount=1
+candidate=Users can run deterministic checks before review.
+```
+
+### Signal: promise words point to the next evidence route.
+
+`claim discover` uses claim text to suggest the next kind of proof work.
+These examples show deterministic test evidence, a Cautilus behavior evaluation, and human-auditable policy work.
+
+```run:shell
+$ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." "The workflow should show scan scope before spending review budget." "Review-budget policy remains human-auditable until it is split into concrete proof targets." > "$tmp/README.md"; ./bin/cautilus claim discover --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'.claimCandidates[] | .summary + " => " + .recommendedProof + ":" + .verificationReadiness + (if .recommendedEvalSurface then ":" + .recommendedEvalSurface else "" end)'"'"' "$tmp/claims.json"'
+Users can run deterministic checks before review. => deterministic:ready-to-verify
+The workflow should show scan scope before spending review budget. => cautilus-eval:ready-to-verify:dev/skill
+Review-budget policy remains human-auditable until it is split into concrete proof targets. => human-auditable:ready-to-verify
+```
+
+### Signal: duplicate source sentences become one candidate.
+
+If the same promise appears in more than one scanned doc, discovery emits one candidate and keeps both source refs.
+This lets Cautilus Agent inspect duplication without asking the user to review the same promise twice.
+
+```run:shell
+$ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Input (for agent): run this command." "Users can run deterministic checks before review." > "$tmp/README.md"; printf "%s\n" "# AGENTS" "" "Users can run deterministic checks before review." > "$tmp/AGENTS.md"; ./bin/cautilus claim discover --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'"sourceSentences=2", "candidateCount=" + (.candidateCount|tostring), "candidate=" + .claimCandidates[0].summary, "sourceRefs=" + (.claimCandidates[0].sourceRefs | map(.path + ":" + (.line|tostring)) | join(","))'"'"' "$tmp/claims.json"'
+sourceSentences=2
+candidateCount=1
+candidate=Users can run deterministic checks before review.
+sourceRefs=AGENTS.md:3,README.md:4
+```
+
+### Implementation evidence.
+
+The saved discovery packet records the heuristic families used for these behaviors, and the focused Go test proves the text scan, candidate filter, route classifier, and duplicate merge work together in one discovery run.
 
 ```run:shell
 $ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." > "$tmp/README.md"; ./bin/cautilus claim discover --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'.discoveryEngine.heuristics[] | .id + ":" + .implementationFunction'"'"' "$tmp/claims.json"'
@@ -84,17 +118,6 @@ $ go test ./internal/runtime -run TestDiscoverClaimProofPlanUsesCandidateHeurist
 heuristic-composition-test=passed
 ```
 
-The same behavior is visible at the sentence level.
-The prompt example is filtered out, the same candidate sentence appears in two files, and discovery saves one candidate with both source refs.
-
-```run:shell
-$ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Input (for agent): run this command." "Users can run deterministic checks before review." > "$tmp/README.md"; printf "%s\n" "# AGENTS" "" "Users can run deterministic checks before review." > "$tmp/AGENTS.md"; ./bin/cautilus claim discover --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'"sourceSentences=2", "candidateCount=" + (.candidateCount|tostring), "candidate=" + .claimCandidates[0].summary, "sourceRefs=" + (.claimCandidates[0].sourceRefs | map(.path + ":" + (.line|tostring)) | join(","))'"'"' "$tmp/claims.json"'
-sourceSentences=2
-candidateCount=1
-candidate=Users can run deterministic checks before review.
-sourceRefs=AGENTS.md:3,README.md:4
-```
-
 > check:cautilus-json-file
 | path | json_path | equals | includes |
 | --- | --- | --- | --- |
@@ -107,12 +130,12 @@ sourceRefs=AGENTS.md:3,README.md:4
 
 ## Cautilus Agent curates candidates before proof work.
 
-Binary discovery intentionally leaves a broad candidate list.
-Cautilus Agent is responsible for turning that packet into a useful working set before proof work starts.
+`claim discover` intentionally leaves a broad candidate list.
+The `cautilus-agent` skill is responsible for turning that packet into a useful working set before proof work starts.
 That means it should inspect the saved candidates, compare them with the repo, reduce false positives, raise possible false negatives, and preserve source refs when it asks the user what to do next.
 
-This spec verifies that the prepared dogfood episode and audit expect that curation behavior.
-It does not execute the Cautilus eval.
+This spec checks that the dogfood fixture and audit hook are prepared to ask for that curation behavior.
+It does not execute the Cautilus eval or claim that the curation episode has passed.
 
 ```run:shell
 $ jq -r '.cases[0].turns[1].input as $prompt | "asks-discovery=" + ($prompt | contains("run the first claim discovery scan") | tostring), "asks-false-positive-curation=" + ($prompt | contains("false positives") | tostring), "asks-false-negative-scan=" + ($prompt | contains("false negatives") | tostring), "stops-before-review-or-eval=" + ($prompt | contains("Stop before claim review prepare-input, reviewer launch, eval execution, edits, or commits") | tostring)' fixtures/eval/dev/skill/cautilus-claim-discovery-curation-flow.fixture.json
@@ -123,8 +146,8 @@ stops-before-review-or-eval=true
 ```
 
 ```run:shell
-$ node --test --test-reporter=dot --test-reporter-destination=stdout scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs >/dev/null && echo curation-audit-test=passed
-curation-audit-test=passed
+$ node --test --test-reporter=dot --test-reporter-destination=stdout scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs >/dev/null && echo curation-audit-unit-test=passed
+curation-audit-unit-test=passed
 ```
 
 > check:cautilus-json-file
@@ -138,7 +161,7 @@ curation-audit-test=passed
 
 ## Cautilus groups candidates by recommended next action.
 
-`claim show` owns the next-action summary over a saved claim packet.
+`claim show` owns the next-action summary over a saved discovery packet.
 It groups candidates by the next route and does not launch a reviewer, evaluation, edit, or commit.
 
 This is the vocabulary Cautilus can use.
@@ -174,8 +197,9 @@ split-or-defer:human
 
 ## The prepared skill evaluation is a later proof step.
 
-The binary owns candidate extraction, duplicate sentence merging, saved claim JSON, and next-action summaries.
-Cautilus Agent owns the agent-facing curation workflow: use the binary, inspect the saved candidates, explain source refs and duplicate fingerprints, reduce false positives, raise possible false negatives, classify next work, and stop before review, evaluation execution, edits, or commits.
+`claim discover` owns candidate extraction, duplicate sentence merging, and the saved discovery packet.
+`claim show` owns next-action summaries over that saved packet.
+Cautilus Agent owns the agent-facing curation workflow: run those commands, inspect the saved candidates, explain source refs and duplicate fingerprints, reduce false positives, raise possible false negatives, classify next work, and stop before review, evaluation execution, edits, or commits.
 
 This spec only verifies that the agent-run skill check is prepared.
 It does not claim that the episode has passed until the Cautilus evaluation command below is approved and executed.

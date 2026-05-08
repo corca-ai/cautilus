@@ -1,6 +1,7 @@
 # Behavior Evaluation
 
-Using `cautilus eval` and Cautilus Agent guidance, a user can evaluate intentful behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces when deterministic tests alone do not explain the behavior.
+When deterministic checks pass but behavior is still uncertain, the user needs a bounded way to compare observed intentful behavior.
+Using the `cautilus eval` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state.
 
 ## A user can choose the behavior surface that matches the evaluation intent.
 
@@ -34,7 +35,7 @@ The evidence bundle points at checked-in fixtures, adapters, and runner wrappers
 
 ## A user can reopen observed behavior and summary packets after each eval.
 
-The latest selected eval artifacts record schema versions, recommendations, runtime, proof class, and target surface without rerunning the expensive eval in this specdown pass.
+The latest selected eval artifacts record schema versions, recommendations, runtime, proof class, and target surface without rerunning the expensive eval during this report check.
 
 > check:cautilus-json-file
 | path | json_path | equals |

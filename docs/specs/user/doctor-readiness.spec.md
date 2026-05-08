@@ -19,7 +19,7 @@ Host-specific adapter ownership is covered in [Host Ownership](ownership.spec.md
 This repo's production adapter is [.agents/cautilus-adapter.yaml](../../../.agents/cautilus-adapter.yaml).
 
 ```run:shell -> $sample_repo, $sample_cautilus
-# Create a deterministic sample skill adapter repo and standalone Cautilus binary.
+# Create a deterministic sample skill adapter repo and standalone Cautilus CLI.
 tmp=$(mktemp -d)
 bin="$tmp/cautilus"
 go build -o "$bin" ./cmd/cautilus
@@ -76,7 +76,7 @@ Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
 ## A user can see the exact blocker and next setup action.
 
 `doctor` reports the actual status, failed check, suggestions, and next action for setup blockers.
-The examples below use generated repos so the report shows actual binary behavior instead of a guessed setup checklist.
+The examples below use generated repos so the report shows actual command behavior instead of a guessed setup checklist.
 
 ### Missing Git Repository
 
@@ -215,9 +215,9 @@ For the generated sample adapter, `doctor` keeps the first bounded eval loop vis
 
 ## A user can get a safe next workflow branch before spending workflow budget.
 
-This is different from the human-facing `doctor` result.
-`doctor` answers whether setup is ready and what a user should fix or run next.
-`agent status --json` gives the Cautilus Agent an orientation packet so it can propose claim discovery, eval, optimize, setup, inspection, or stop branches before running discovery, evaluation, optimization, edits, or commits.
+A ready setup still needs a safe next branch before the agent spends workflow budget.
+`doctor` gives the human-facing readiness result: whether setup is ready and what a user should fix or run next.
+`agent status --json` gives Cautilus Agent an orientation packet so it can choose an allowed next branch, such as claim discovery, eval, optimize, setup, inspection, or stop, before running discovery, evaluation, optimization, edits, or commits.
 
 ```run:shell
 # Show the raw agent orientation packet for this repo.

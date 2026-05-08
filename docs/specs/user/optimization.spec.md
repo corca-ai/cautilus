@@ -1,11 +1,12 @@
 # Bounded Optimization
 
-Using `cautilus optimize` and Cautilus Agent guidance, a user can improve a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.
+When a behavior target needs improvement, the user needs bounded search that preserves intent, budget, protected checks, and reviewable changes.
+Using the `cautilus optimize` CLI command and the `cautilus-agent` skill, a user can improve a selected behavior target while preserving held-out evidence and revision artifacts.
 
 ## A user starts optimization from explicit claim, eval, and target packets rather than an open-ended retry loop.
 
 The current optimization evidence is attached to explicit optimize input, proposal, search result, and revision artifact examples rather than to an open-ended retry loop.
-The latest selected optimize evidence is projected here instead of rerunning expensive optimize work during every specdown pass.
+The latest selected optimize evidence is projected here instead of rerunning expensive optimize work during every report check.
 
 ```run:shell
 # Show the selected optimize route and the packet examples that bound it.

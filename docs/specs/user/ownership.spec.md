@@ -1,6 +1,7 @@
 # Host Ownership
 
-Using Cautilus adapters and host-owned runners, a user can keep prompts, models, credentials, runtime wiring, and acceptance policy in the host repo while Cautilus standardizes workflow packets and boundaries.
+Before Cautilus can evaluate behavior honestly, the user needs host-specific prompts, models, credentials, runtime wiring, and acceptance policy to stay in the host repo.
+Using the `cautilus adapter` and `cautilus doctor` CLI commands with the `cautilus-agent` skill, a user can keep host-owned execution in place while Cautilus standardizes workflow packets and boundaries.
 
 ## A user can keep behavior execution in the host repo.
 
