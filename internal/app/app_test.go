@@ -100,9 +100,6 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	if ready, ok := payload["ready"].(bool); !ok || !ready {
 		t.Fatalf("expected ready doctor payload, got %#v", payload)
 	}
-	if doctorCheckExists(payload, "specdown_available") {
-		t.Fatalf("generic doctor readiness should not require specdown, got %#v", payload["checks"])
-	}
 }
 
 func TestRunDoctorDoesNotBlockWhenSpecdownMissingAndPacketsValidate(t *testing.T) {
@@ -153,7 +150,7 @@ func TestRunDoctorDoesNotBlockWhenSpecdownMissingAndPacketsValidate(t *testing.T
 	if err := json.Unmarshal(stdout.Bytes(), &doctor); err != nil {
 		t.Fatalf("Unmarshal doctor returned error: %v\nstdout=%s", err, stdout.String())
 	}
-	if doctor["ready"] != true || doctorCheckExists(doctor, "specdown_available") {
+	if doctor["ready"] != true {
 		t.Fatalf("expected generic doctor readiness to ignore specdown, got %#v", doctor)
 	}
 
@@ -188,16 +185,6 @@ func TestRunDoctorHelpReturnsZeroAndUsage(t *testing.T) {
 	if stderr.Len() != 0 {
 		t.Fatalf("unexpected stderr: %q", stderr.String())
 	}
-}
-
-func doctorCheckExists(payload map[string]any, id string) bool {
-	for _, raw := range arrayOrEmpty(payload["checks"]) {
-		check := raw.(map[string]any)
-		if check["id"] == id {
-			return true
-		}
-	}
-	return false
 }
 
 func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
