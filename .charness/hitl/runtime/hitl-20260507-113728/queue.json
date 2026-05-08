@@ -1,0 +1,54 @@
+{
+  "session_id": "hitl-20260507-113728",
+  "target": "docs/specs/user/claim-discovery.spec.md",
+  "target_provenance": {
+    "kind": "logical-or-repo-relative"
+  },
+  "require_explicit_apply": true,
+  "apply_mode": "explicit-after-all-chunks",
+  "priority_policy_version": 1,
+  "queue_epoch": 1,
+  "status": "ready",
+  "current_queue_order": [
+    "opening-user-value-and-actor-map",
+    "candidate-origin-and-verification-boundary",
+    "heuristic-evidence-and-duplicate-example",
+    "next-action-grouping",
+    "agent-run-skill-check"
+  ],
+  "reviewed_item_ids": [],
+  "superseded_unreviewed_item_ids": [],
+  "queue_recommendation": "Review the current Claim Discovery spec from the beginning after the heuristic-exposure rewrite. Keep focus on user value, plain-language terms, whether evidence is real enough, and whether the skill-check behavior is visible before eval is approved.",
+  "items": [
+    {
+      "id": "opening-user-value-and-actor-map",
+      "target": "docs/specs/user/claim-discovery.spec.md:1-13",
+      "status": "needs-change",
+      "decision": "Needs opening rewrite: do not assume readers already know `Cautilus evaluation`; introduce the three verification paths with concrete examples, and avoid mixing input-like scan scope/source list with output-like candidate fields in one `where it shows up` column."
+    },
+    {
+      "id": "candidate-origin-and-verification-boundary",
+      "target": "docs/specs/user/claim-discovery.spec.md:15-41",
+      "status": "pending",
+      "decision": "Does the first section show where candidates came from and clearly say candidates are not verified evidence yet?"
+    },
+    {
+      "id": "heuristic-evidence-and-duplicate-example",
+      "target": "docs/specs/user/claim-discovery.spec.md:43-86",
+      "status": "pending",
+      "decision": "Does the heuristic section show actual implementation evidence and sentence-level duplicate handling without hiding behind internal jargon?"
+    },
+    {
+      "id": "next-action-grouping",
+      "target": "docs/specs/user/claim-discovery.spec.md:88-122",
+      "status": "pending",
+      "decision": "Does the next-action section explain the possible categories and current repo output clearly?"
+    },
+    {
+      "id": "agent-run-skill-check",
+      "target": "docs/specs/user/claim-discovery.spec.md:124-165",
+      "status": "pending",
+      "decision": "Does the prepared agent-run skill check make the intended behavior visible while honestly saying it has not been executed?"
+    }
+  ]
+}

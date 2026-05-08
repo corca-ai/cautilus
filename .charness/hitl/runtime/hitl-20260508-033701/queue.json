@@ -1,0 +1,54 @@
+{
+  "session_id": "hitl-20260508-033701",
+  "target": "docs/specs/user/claim-discovery.spec.md",
+  "target_provenance": {
+    "kind": "logical-or-repo-relative"
+  },
+  "require_explicit_apply": true,
+  "apply_mode": "explicit-after-all-chunks",
+  "priority_policy_version": 1,
+  "queue_epoch": 1,
+  "status": "ready",
+  "current_queue_order": [
+    "opening-two-pass-model",
+    "source-boundary-and-nonverdict",
+    "binary-heuristics-and-dedupe",
+    "skill-curation-proof",
+    "next-actions-and-prepared-eval"
+  ],
+  "reviewed_item_ids": [],
+  "superseded_unreviewed_item_ids": [],
+  "queue_recommendation": "Review the post-rewrite Claim Discovery user spec from the beginning. Keep focus on product value, DDD-style shared vocabulary, binary/skill boundary, false-positive and false-negative handling, and whether prepared-but-not-executed eval evidence is honest.",
+  "items": [
+    {
+      "id": "opening-two-pass-model",
+      "target": "docs/specs/user/claim-discovery.spec.md:1-18",
+      "status": "needs-change",
+      "decision": "Needs opening rewrite: strengthen first-sentence user value, use bullets for the two-pass workflow, explain recall as accepting false positives to avoid missing in-scope declarations, avoid premature packet language, and restore proof-route bullets with examples."
+    },
+    {
+      "id": "source-boundary-and-nonverdict",
+      "target": "docs/specs/user/claim-discovery.spec.md:20-50",
+      "status": "pending",
+      "decision": "Does this chunk make the scan boundary, in-scope FN bug boundary, out-of-scope narrative gap, and non-verdict status clear?"
+    },
+    {
+      "id": "binary-heuristics-and-dedupe",
+      "target": "docs/specs/user/claim-discovery.spec.md:52-98",
+      "status": "pending",
+      "decision": "Does this chunk show concrete binary heuristics and sentence-level duplicate handling with enough executable evidence?"
+    },
+    {
+      "id": "skill-curation-proof",
+      "target": "docs/specs/user/claim-discovery.spec.md:99-128",
+      "status": "pending",
+      "decision": "Does this chunk make the skill's FP/FN curation behavior visible while honestly saying the eval has not run?"
+    },
+    {
+      "id": "next-actions-and-prepared-eval",
+      "target": "docs/specs/user/claim-discovery.spec.md:130-210",
+      "status": "pending",
+      "decision": "Do the next-action groups and prepared skill-eval section explain what happens next without confusing user workflow with maintainer proof?"
+    }
+  ]
+}

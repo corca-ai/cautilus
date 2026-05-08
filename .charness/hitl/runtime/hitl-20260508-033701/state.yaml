@@ -1,0 +1,12 @@
+session_id: hitl-20260508-033701
+status: in_progress
+target: docs/specs/user/claim-discovery.spec.md
+base_ref: main
+scope: claim-discovery-spec-post-rewrite-from-start
+require_explicit_apply: true
+apply_mode: explicit-after-all-chunks
+queue_epoch: 1
+queue_status: ready
+intent_resync_required: false
+last_presented_chunk_id: "opening-two-pass-model"
+last_intent_resync_at: ""

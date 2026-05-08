@@ -17,3 +17,5 @@ rules:
     text: "For `*.spec.md` review, the primary human-readable surface is the generated specdown HTML report; Markdown CLI preview is only a supplemental line-wrap check."
   - id: claim-discovery-small-chunks
     text: "Claim Discovery requires smaller HITL chunks than deterministic Readiness because deterministic discovery packets, agent proof-routing judgment, and bundled-skill curation are different acceptance boundaries."
+  - id: user-value-story-boundary
+    text: "Do not promote an internal product boundary to a standalone user-facing story unless the heading names the user job, decision, or outcome; proof-plan, packet, and gap boundaries should usually be acceptance invariants under the workflow they constrain or user-visible evidence-gap stories."

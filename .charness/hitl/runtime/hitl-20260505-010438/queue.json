@@ -8,10 +8,9 @@
   "apply_mode": "explicit-after-all-chunks",
   "priority_policy_version": 1,
   "queue_epoch": 2,
-  "status": "ready",
+  "status": "closed",
   "current_queue_order": [
     "claim-discovery-story-and-boundary",
-    "claim-discovery-non-verdict",
     "claim-discovery-next-work-buckets",
     "claim-discovery-bundled-skill-curation",
     "behavior-evaluation-story",
@@ -22,7 +21,11 @@
   ],
   "reviewed_item_ids": [
     "user-spec-index-and-claim-order",
-    "readiness-story-page"
+    "readiness-story-page",
+    "claim-discovery-story-and-boundary"
+  ],
+  "superseded_reviewed_item_ids": [
+    "claim-discovery-non-verdict"
   ],
   "superseded_unreviewed_item_ids": [
     "user-spec-core-workflows-u1-u3",
@@ -46,26 +49,26 @@
     {
       "id": "claim-discovery-story-and-boundary",
       "target": "docs/specs/user/claim-discovery.spec.md#A user can discover declared behavior promises from selected repo docs.",
-      "status": "pending",
-      "decision": "Does the story and first AC honestly show the selected docs boundary, claim discovery scope, and nonzero candidate discovery without pretending discovery proves behavior?"
+      "status": "accepted",
+      "decision": "Accepted: the story and first AC honestly show the selected docs boundary, claim discovery scope, provenance, schema, and nonzero candidate discovery without pretending discovery proves behavior."
     },
     {
       "id": "claim-discovery-non-verdict",
       "target": "docs/specs/user/claim-discovery.spec.md#The claim packet is a proof plan, not a verdict.",
-      "status": "pending",
-      "decision": "Does the spec make the non-verdict boundary visible enough for users and agents to avoid treating discovered claims as satisfied evidence?"
+      "status": "superseded",
+      "decision": "Superseded: the non-verdict proof is valuable, but not as a standalone user-facing story. It moved under the claim discovery story as an acceptance invariant so users see discovered promises are not satisfied evidence yet."
     },
     {
       "id": "claim-discovery-next-work-buckets",
       "target": "docs/specs/user/claim-discovery.spec.md#The binary routes discovered claims into next-work buckets before fixture work starts.",
-      "status": "pending",
-      "decision": "Does the visible output and artifact proof show that Cautilus routes discovered claims into human, agent, deterministic, eval-planning, and split/defer work before fixture work starts?"
+      "status": "needs-change",
+      "decision": "Needs rewrite: this section should distinguish discovery extraction/de-dup heuristics from post-discovery routing, and the report should show a table of entry-doc signals, extraction behavior, source refs, and de-dup behavior before treating buckets as enough proof."
     },
     {
       "id": "claim-discovery-bundled-skill-curation",
       "target": "docs/specs/user/claim-discovery.spec.md#The bundled skill can curate the packet into a reviewable next-work map.",
-      "status": "pending",
-      "decision": "Does the proof show enough Cautilus run or reviewed skill evidence that bundled-skill curation is not only deterministic packet discovery?"
+      "status": "needs-change",
+      "decision": "Needs rewrite: the proof should come from a dev/skill dogfood episode where an agent uses the bundled Cautilus skill to run discovery and classify or curate the resulting packet, not only from static JSON summary checks."
     },
     {
       "id": "behavior-evaluation-story",

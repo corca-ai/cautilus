@@ -1,0 +1,78 @@
+{
+  "session_id": "hitl-20260508-062748",
+  "target": "docs/specs/user/claim-discovery.spec.md",
+  "target_provenance": {
+    "kind": "logical-or-repo-relative"
+  },
+  "require_explicit_apply": true,
+  "apply_mode": "explicit-after-all-chunks",
+  "priority_policy_version": 1,
+  "queue_epoch": 1,
+  "status": "ready",
+  "current_queue_order": [
+    "readiness-opening-adapter-and-checks",
+    "readiness-blockers-and-next-action",
+    "readiness-agent-status-branching",
+    "source-boundary-and-candidate-status",
+    "claim-discover-heuristics-and-dedupe-evidence",
+    "cautilus-agent-curation-proof",
+    "next-action-groups-and-prepared-eval"
+  ],
+  "reviewed_item_ids": [
+    "readiness-opening-adapter-and-checks",
+    "readiness-blockers-and-next-action",
+    "readiness-agent-status-branching"
+  ],
+  "superseded_unreviewed_item_ids": [],
+  "queue_recommendation": "Resume Claim Discovery HITL. Show the rewritten heuristic chunk through the implementation evidence block before asking for judgment, then continue to Cautilus Agent curation and prepared-eval boundaries.",
+  "items": [
+    {
+      "id": "opening-two-pass-and-evidence-routes",
+      "target": "docs/specs/user/claim-discovery.spec.md:1-27",
+      "status": "applied",
+      "decision": "Applied: opening now introduces the surfaces as the `cautilus claim` CLI command and the `cautilus-agent` skill, and Pass 1 uses `entry and linked docs` instead of naming Markdown in the opening."
+    },
+    {
+      "id": "readiness-opening-adapter-and-checks",
+      "target": "docs/specs/user/doctor-readiness.spec.md:1-84",
+      "status": "accepted",
+      "decision": "Accepted after applying: the opening now starts from the setup-spend pain point and introduces the concrete surfaces as the `cautilus doctor` CLI command and the `cautilus-agent` skill."
+    },
+    {
+      "id": "readiness-blockers-and-next-action",
+      "target": "docs/specs/user/doctor-readiness.spec.md:85-239",
+      "status": "applied",
+      "decision": "Applied: removed strong specdown coupling from generic readiness and kept the blocker section focused on actual setup states and bounded next actions."
+    },
+    {
+      "id": "readiness-agent-status-branching",
+      "target": "docs/specs/user/doctor-readiness.spec.md:216-233",
+      "status": "accepted",
+      "decision": "Accepted after rewrite: the section now starts from the user value of a safe next branch before agent workflow budget is spent, then distinguishes human-facing `doctor` readiness from the Cautilus Agent orientation packet."
+    },
+    {
+      "id": "source-boundary-and-candidate-status",
+      "target": "docs/specs/user/claim-discovery.spec.md:29-59",
+      "status": "applied",
+      "decision": "Applied after rewrite: the section now starts from the user question of which docs were scanned, avoids leading with JSON/engine structure, and distinguishes in-scope discovery misses, out-of-boundary documentation/catalog/alignment gaps, and candidate-not-proof status."
+    },
+    {
+      "id": "claim-discover-heuristics-and-dedupe-evidence",
+      "target": "docs/specs/user/claim-discovery.spec.md:62-129",
+      "status": "pending",
+      "decision": "Does the rewritten example-first `claim discover` section expose real extraction heuristics, proof-route classification, duplicate handling, and implementation evidence without falling back to user-facing binary vocabulary?"
+    },
+    {
+      "id": "cautilus-agent-curation-proof",
+      "target": "docs/specs/user/claim-discovery.spec.md:131-160",
+      "status": "pending",
+      "decision": "Does this section make `cautilus-agent` curation behavior visible while clearly limiting the proof to prepared fixture and audit-hook readiness, not an executed Cautilus eval?"
+    },
+    {
+      "id": "next-action-groups-and-prepared-eval",
+      "target": "docs/specs/user/claim-discovery.spec.md:162-243",
+      "status": "pending",
+      "decision": "Do the next-action groups and prepared eval section explain what happens next without confusing user workflow with maintainer proof?"
+    }
+  ]
+}

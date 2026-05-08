@@ -31,6 +31,14 @@
   Cautilus owns claim discovery, proof-routing packets, Cautilus-specific claim-spec curation, bundled-skill workflow, and Cautilus evidence artifact interpretation;
   specdown owns executable Markdown/report mechanics;
   Charness owns portable spec workflow discipline and optional orchestration when installed.
+- Claim Discovery story and boundary accepted:
+  `claim discover` starts from configured entry documents and linked Markdown, records `entry-docs-and-linked-markdown` with `README.md`, `AGENTS.md`, and `CLAUDE.md`, preserves provenance and schema in `.cautilus/claims/status-summary.json`, and shows at least one candidate without presenting discovery as proof.
+- User-value story boundary accepted:
+  proof-plan, packet, adapter, and gap language can remain as evidence or acceptance invariants, but user-facing `##` headings should name what the user can decide, avoid, reopen, or accomplish.
+  The Claim Discovery non-verdict proof moved under the discovery story instead of standing as its own story.
+- HITL closed before accepting Claim Discovery next-work buckets:
+  the next review changed scope from chunk acceptance to a Claim Discovery rewrite.
+  The rewrite must show extraction heuristics from entry docs, deterministic de-duplication, binary routing, and a separate dev/skill dogfood path where the bundled Cautilus skill runs discovery and curates the result.
 
 ## Open Questions
 
@@ -53,7 +61,7 @@
 - User clarified that `Evidence:` labels are also unnecessary; in specdown, the executable block or check table directly under the AC is the visible evidence in the report.
 - Neighbor repo `craken` uses AC/rationale prose followed immediately by `run:*` blocks or domain check tables, and its adapters expose domain checks such as `host-path`, `host-ownership`, and browser/editor operations rather than generic source guards.
 - Do not blindly create one new Cautilus adapter check per AC; prefer good executable acceptance tests and domain adapters at the right boundary, reusing existing tests where they already prove the contract honestly.
-- Cautilus-specific spec generation/curation guidance belongs in the bundled `skills/cautilus/SKILL.md`; portable executable-contract guidance belongs in `charness:spec`; specdown-specific syntax/report mechanics belong in the specdown skill/docs.
+- Cautilus-specific spec generation/curation guidance belongs in the bundled `skills/cautilus-agent/SKILL.md`; portable executable-contract guidance belongs in `charness:spec`; specdown-specific syntax/report mechanics belong in the specdown skill/docs.
 - Standing `specdown run` should stay cheap and should not run Cautilus eval/optimize workflows directly.
 - Expensive Cautilus proof should be produced on demand as explicit run artifacts; specdown should read and validate the latest selected artifact so the report shows evidence status, provenance, freshness, and gaps.
 - Charness `spec` can own more of the portable pattern: AC-local executable proof, on-demand evidence projection, freshness/provenance, and no public source-guard proof.
@@ -61,3 +69,5 @@
 - Open portability question: Charness-installed users can consume Cautilus as a support binary/skill, but standalone Cautilus users still need Cautilus binary + bundled skill, with specdown, to turn claim discovery into a curated user/maintainer-facing spec report.
 - Current likely boundary: Cautilus promises claim discovery and claim-spec curation for Cautilus-managed behavior evaluation; Charness promises portable spec workflow guidance and can use Cautilus as an optional validation/evidence support capability.
 - Avoid making Cautilus own every spec-writing concern; it should own the claim-to-proof workflow and generated/curated Cautilus claim-spec surfaces, while leaving generic executable-spec style to specdown/charness:spec.
+- Review other user-facing specs with the same user-value-story boundary before accepting remaining chunks.
+- Resume HITL only after the Claim Discovery rewrite is prepared and before running the direct Cautilus eval.

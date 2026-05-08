@@ -1,0 +1,4 @@
+rules:
+  - id: show-rewritten-chunk-after-edit
+    status: accepted
+    text: After the user asks HITL to rewrite or change the current chunk, show the changed chunk text back to the user before advancing the cursor.

@@ -1,0 +1,12 @@
+session_id: hitl-20260507-085934
+status: closed
+target: docs/specs/user/claim-discovery.spec.md
+base_ref: main
+scope: claim-discovery-spec-rewrite
+require_explicit_apply: true
+apply_mode: explicit-after-all-chunks
+queue_epoch: 1
+queue_status: ready
+intent_resync_required: false
+last_presented_chunk_id: "claim-discovery-skill-dogfood-proof"
+last_intent_resync_at: ""

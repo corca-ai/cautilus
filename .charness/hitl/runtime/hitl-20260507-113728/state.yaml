@@ -1,0 +1,12 @@
+session_id: hitl-20260507-113728
+status: in_progress
+target: docs/specs/user/claim-discovery.spec.md
+base_ref: main
+scope: claim-discovery-spec-from-start
+require_explicit_apply: true
+apply_mode: explicit-after-all-chunks
+queue_epoch: 1
+queue_status: ready
+intent_resync_required: false
+last_presented_chunk_id: "opening-user-value-and-actor-map"
+last_intent_resync_at: ""

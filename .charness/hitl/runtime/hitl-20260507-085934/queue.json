@@ -1,0 +1,56 @@
+{
+  "session_id": "hitl-20260507-085934",
+  "target": "docs/specs/user/claim-discovery.spec.md",
+  "target_provenance": {
+    "kind": "logical-or-repo-relative"
+  },
+  "require_explicit_apply": true,
+  "apply_mode": "explicit-after-all-chunks",
+  "priority_policy_version": 1,
+  "queue_epoch": 1,
+  "status": "closed",
+  "current_queue_order": [
+    "claim-discovery-purpose-and-actor-map",
+    "claim-discovery-boundary-and-non-verdict",
+    "claim-discovery-extraction-examples",
+    "claim-discovery-next-work-buckets",
+    "claim-discovery-skill-dogfood-proof"
+  ],
+  "reviewed_item_ids": [
+    "claim-discovery-purpose-and-actor-map"
+  ],
+  "superseded_unreviewed_item_ids": [],
+  "queue_recommendation": "Review the rewritten Claim Discovery spec in document order, with special attention to actor clarity, example-first extraction evidence, and the prepared-but-not-executed dev/skill proof boundary.",
+  "items": [
+    {
+      "id": "claim-discovery-purpose-and-actor-map",
+      "target": "docs/specs/user/claim-discovery.spec.md:1-13",
+      "status": "accepted",
+      "decision": "Accepted: the opening states the user value and actor split clearly enough to proceed."
+    },
+    {
+      "id": "claim-discovery-boundary-and-non-verdict",
+      "target": "docs/specs/user/claim-discovery.spec.md:15-47",
+      "status": "applied",
+      "decision": "Applied: replaced internal `non-verdict boundary` and `proof-plan` wording with candidate/evidence language."
+    },
+    {
+      "id": "claim-discovery-extraction-examples",
+      "target": "docs/specs/user/claim-discovery.spec.md:49-93",
+      "status": "applied",
+      "decision": "Applied: section now names heuristic families, exposes implementation functions in discovery output, cites a focused Go composition test, and shows two duplicate source sentences becoming one candidate with two source refs."
+    },
+    {
+      "id": "claim-discovery-next-work-buckets",
+      "target": "docs/specs/user/claim-discovery.spec.md:95-126",
+      "status": "applied",
+      "decision": "Applied: kept the `claim show` actor boundary, translated the user-facing table to next-action categories, and distinguished possible categories from current repo output."
+    },
+    {
+      "id": "claim-discovery-skill-dogfood-proof",
+      "target": "docs/specs/user/claim-discovery.spec.md:128-161",
+      "status": "applied",
+      "decision": "Applied: renamed the section around an agent-run skill check, reduced internal terms, and added executable checks that the prepared fixture asks for discovery, extraction heuristics, duplicate handling, and stop-before-review/eval behavior."
+    }
+  ]
+}
