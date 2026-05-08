@@ -2,7 +2,7 @@
 
 Claim discovery is a high-recall proof-planning pass, not a verdict.
 
-Aligned user claims: U1, U7.
+Aligned model anchors: `promise.claim-discovery`, `concern.reviewable-artifacts`, `concern.evidence-gaps`, `concern.agent-human-resumability`.
 Proof route: deterministic plus skill review.
 Current evidence status: partial.
 Next action: keep source-scope tests, canonical-map generation, and review-result replay connected to the active spec tree.

@@ -2,7 +2,7 @@
 
 Host repos own runtime-specific behavior.
 
-Aligned user claims: U2, U5.
+Aligned model anchors: `promise.readiness`, `promise.evaluation`, `concern.host-owned-execution`, `concern.vocabulary-consistency`.
 Proof route: deterministic plus consumer dogfood.
 Current evidence status: covered.
 Next action: keep adapter contract tests, the external consumer smoke, and the product-import-isolation lint deterministic; consumer-side parity proof grows when new host adapters land.

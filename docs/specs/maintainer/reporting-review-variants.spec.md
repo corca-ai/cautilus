@@ -2,7 +2,7 @@
 
 Reports and review variants keep evaluator-backed judgment inspectable.
 
-Aligned user claims: U6, U7.
+Aligned model anchors: `concern.reviewable-artifacts`, `concern.packet-freshness`, `concern.agent-human-resumability`.
 Proof route: deterministic plus evaluator review.
 Current evidence status: partial.
 Next action: connect reporting packets, review packets, compare questions, schemas, variant verdicts, and rendered summaries to stale-state checks.

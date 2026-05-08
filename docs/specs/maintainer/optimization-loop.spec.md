@@ -2,7 +2,7 @@
 
 Optimization is a bounded behavior-improvement loop.
 
-Aligned user claims: U3, U7.
+Aligned model anchors: `promise.optimization`, `concern.evidence-gaps`, `concern.cost-and-proof-freshness`, `concern.reviewable-artifacts`.
 Proof route: deterministic plus held-out eval.
 Current evidence status: partial.
 Next action: connect optimize packet tests to at least one held-out eval proof before treating improvement claims as satisfied.

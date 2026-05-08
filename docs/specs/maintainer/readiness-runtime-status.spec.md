@@ -2,7 +2,7 @@
 
 Doctor and agent status expose readiness without proving behavior claims.
 
-Aligned user claims: U4, U5.
+Aligned model anchors: `promise.readiness`, `concern.evidence-gaps`, `concern.vocabulary-consistency`, `concern.agent-human-resumability`.
 Proof route: deterministic.
 Current evidence status: partial.
 Next action: keep doctor, agent status, runner-readiness assessment, and active-run status sharing the same readiness facts.

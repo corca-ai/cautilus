@@ -1,14 +1,38 @@
 # Cautilus Claim Specs
 
-This is the executable claim-spec report entry for `Cautilus`.
+This is the top-level entry for checking what `Cautilus` promises, how those promises are verified, and which contracts keep the evidence current.
 
-This report keeps the top-level promise map readable:
+This report keeps one promise model visible through multiple projections.
+The model is the source of truth for promise identity, concern tags, proof routes, and evidence state.
+Views are reader-facing projections over that model.
 
-- The user-facing index explains what Cautilus promises and shows how those promises are checked.
-- The maintainer-facing index maps those promises to the contracts, adapters, fixtures, proof routes, and evidence gaps that maintainers must keep current.
-- Cross-cutting promises such as reviewable artifacts and evidence gaps stay visible in the user view and are mapped to maintainer-owned proof routes.
+## Canonical Model
+
+- [Promise Model](model/index.spec.md)
+- [Promise Ledger](model/promise-ledger.spec.md)
+- [Projection Contract](model/projection-contract.spec.md)
+- [ID Policy](model/id-policy.spec.md)
 
 ## Views
 
 - [User View](user/index.spec.md)
 - [Maintainer View](maintainer/index.spec.md)
+
+## Concern Lens
+
+- [Cross-Cutting Concerns](concerns/index.spec.md)
+
+Cross-cutting concerns are not a third audience.
+They are concern-first projections over the same model, used when a reader needs to ask where reviewability, evidence visibility, vocabulary consistency, packet freshness, or agent-human resumability attach across workflows and maintainer proof routes.
+
+## Proof View
+
+- [Proof View](proof/index.spec.md)
+
+The proof view keeps current evidence, expected proof gaps, and intentionally red Specdown checks visible without promoting missing evidence to product truth.
+
+## Archive
+
+- [Archived Specs](archive/index.spec.md)
+
+Archived specs are retained for historical context, not as current product promises.

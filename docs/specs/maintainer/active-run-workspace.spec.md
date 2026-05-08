@@ -2,7 +2,7 @@
 
 Active runs keep multi-command workflows resumable without hiding workspace ownership.
 
-Aligned user claims: U2, U6, U7.
+Aligned model anchors: `promise.evaluation`, `promise.optimization`, `concern.reviewable-artifacts`, `concern.packet-freshness`, `concern.agent-human-resumability`.
 Proof route: deterministic.
 Current evidence status: partial.
 Next action: keep active-run resolution, auto-materialization, pruning, and run-directory freshness tied to command tests and packet fields.

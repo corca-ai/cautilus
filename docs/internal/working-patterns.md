@@ -49,15 +49,18 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 - **이름이 다르면 다른 개념으로 간주한다.**
   단순 rename 처럼 보여도 사용자 문서와 binary output 이 어긋나면 제품 의미가 분리된다.
   rename 은 public prose, JSON field/meaning, tests, maintainer mapping 을 한 slice 에서 같이 갱신하거나 명시적으로 defer 한다.
-- **User-facing stories 는 main concern 이고, cross-cutting stories 는 숨기지 않는다.**
-  Readiness, Claim Discovery, Behavior Evaluation, Bounded Optimization, Host Ownership 은 workflow 중심 dominant decomposition 이다.
-  Reviewable Artifacts, Evidence Gaps, vocabulary/packet consistency 같은 concern 은 별도 workflow 가 아니어도 index 에서 보이고 각 story 안의 proof 로 다시 투영되어야 한다.
+- **User-facing stories 는 main concern 이고, cross-cutting concerns 는 숨기지 않는다.**
+  Readiness, Claim Discovery, Behavior Evaluation, Bounded Optimization 은 workflow 중심 dominant decomposition 이다.
+  Host-owned execution, Reviewable Artifacts, Evidence Gaps, vocabulary/packet consistency 같은 concern 은 별도 workflow 가 아니어도 index 에서 보이고 각 story 안의 proof 로 다시 투영되어야 한다.
+  이 concern 들은 "또 하나의 audience view" 가 아니라 canonical promise model 위에 얹는 concern-first lens 다.
+  User / Maintainer 는 독자 축이고, Primary workflow / Cross-cutting concern 은 분해 축이다.
 - **Cross-cutting concern 을 AOP 용어로 노출하지 않는다.**
   내부 설계 렌즈로는 AOP / dominant decomposition 경고를 사용하되, public docs 는 concrete contract 와 evidence route 로 말한다.
   "aspect" 라는 설명보다 "every workflow leaves reviewable artifacts" 나 "missing evidence remains visible" 이 더 좋은 product language 다.
 - **한 분해 축이 다른 관심사를 지우는지 self-check 한다.**
   user story 순서가 workflow 를 잘 설명해도, evidence visibility / host ownership / cost-budget / agent-human readability 가 특정 story 에 묻혀 사라지면 설계가 퇴행한 것이다.
   index 에 cross-cutting 항목을 남기고, maintainer side 에는 어떤 invariant 가 어느 story 를 제한하는지 mapping 을 둔다.
+  구조가 커지면 `docs/specs/concerns/` 같은 concern lens 를 추가하되, 그것을 user/maintainer 와 같은 종류의 view 로 설명하지 않는다.
 - **Cautilus 제품 책임은 artifact-first 로 쓴다.**
   Cautilus 의 독립 책임은 좋은 바이너리와 머신이 이해하기 쉬운 패킷, provenance, status, next-work route 를 내는 것이다.
   Cautilus Agent 는 그 패킷을 해석하고 workflow branch 를 돕는다.

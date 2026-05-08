@@ -23,6 +23,11 @@
 - Does the phrase "claim-spec report entry" help the intended reader, or is it too maintainer-facing for the first line of this surface?
 - User asked why cross-cutting promises do not have separate docs.
   They do have user-facing pages at `docs/specs/user/reviewable-artifacts.spec.md` and `docs/specs/user/evidence-gaps.spec.md`; the top-level index currently hides that by linking only to the user and maintainer views.
+- User is considering whether cross-cutting should become a separate view, or whether cross-cutting concerns should exist on both the user and maintainer sides.
+  Current repo memory supports the second direction: cross-cutting stories stay visible, and maintainer side maps which invariants constrain which stories.
+  If that direction holds, the phrase `Cross-cutting user stories such as ...` is too narrow.
+- User later terminated HITL and asked for whole-structure rewrite with flexible expert-lens subagent review.
+  Further spec changes belong to the normal spec/impl flow, not this HITL runtime.
 
 ## Pre-Edit Constraints
 - Accepted Rules: show-rewritten-chunk-after-edit, full-target-readback-after-chunks, agent-assessment-before-human-decision
@@ -47,21 +52,17 @@ This report keeps the promise map readable:
 
 - The user view explains what Cautilus promises and shows how those promises are checked.
 - The maintainer view maps those promises to the contracts, adapters, fixtures, proof routes, and evidence gaps that maintainers must keep current.
-- Cross-cutting user stories such as reviewable artifacts and evidence gaps have dedicated pages in the user view and are mapped to maintainer-owned proof routes.
+- Cross-cutting concerns such as reviewable artifacts and evidence gaps appear across both views: the user view states what must stay visible, and the maintainer view maps the contracts and proof routes that keep those invariants current.
 
 ## Views
 
 - [User View](user/index.spec.md)
 - [Maintainer View](maintainer/index.spec.md)
-
-## Cross-Cutting User Stories
-
-- [Reviewable Artifacts](user/reviewable-artifacts.spec.md)
-- [Evidence Gaps](user/evidence-gaps.spec.md)
 ```
 
-- Verification: Checked `docs/specs/user/index.spec.md`, `docs/specs/user/doctor-readiness.spec.md`, `docs/specs/user/claim-discovery.spec.md`, `docs/specs/user/reviewable-artifacts.spec.md`, and `docs/specs/user/evidence-gaps.spec.md` for established vocabulary.
+- Verification: Checked `docs/specs/user/index.spec.md`, `docs/specs/user/doctor-readiness.spec.md`, `docs/specs/user/claim-discovery.spec.md`, `docs/specs/user/reviewable-artifacts.spec.md`, `docs/specs/user/evidence-gaps.spec.md`, `docs/specs/maintainer/index.spec.md`, and `docs/internal/working-patterns.md` for established vocabulary and cross-cutting policy.
 - Review Result:
+  HITL terminated by user before chunk review closed.
 
 ## Full Target Review
 

@@ -2,7 +2,7 @@
 
 Live invocation turns product-owned request packets into host-owned runtime calls.
 
-Aligned user claims: U2, U5.
+Aligned model anchors: `promise.evaluation`, `concern.host-owned-execution`, `concern.packet-freshness`.
 Proof route: deterministic plus live-run fixture.
 Current evidence status: partial.
 Next action: connect live invocation, batch invocation, persona prompt, request packet, result normalization, and backend handoff tests.

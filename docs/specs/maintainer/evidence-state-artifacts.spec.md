@@ -2,7 +2,7 @@
 
 Review state and evidence state are separate transitions.
 
-Aligned user claims: U6, U7.
+Aligned model anchors: `concern.reviewable-artifacts`, `concern.evidence-gaps`, `concern.packet-freshness`, `concern.vocabulary-consistency`.
 Proof route: deterministic.
 Current evidence status: partial.
 Next action: keep review-result application, evidence validation, canonical maps, Markdown reports, and HTML/status views tied to packet freshness.

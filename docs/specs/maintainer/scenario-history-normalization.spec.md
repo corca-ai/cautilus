@@ -2,7 +2,7 @@
 
 Scenario history and proposal normalization keep protected checks reusable across tuning loops.
 
-Aligned user claims: U2, U3, U7.
+Aligned model anchors: `promise.evaluation`, `promise.optimization`, `concern.cost-and-proof-freshness`, `concern.agent-human-resumability`.
 Proof route: deterministic plus held-out eval.
 Current evidence status: partial.
 Next action: connect scenario proposal sources, scenario history cadence, normalizer coverage, and held-out selection to eval and optimize packets.

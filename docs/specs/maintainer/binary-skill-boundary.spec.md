@@ -2,7 +2,7 @@
 
 The binary and Cautilus Agent own different parts of the workflow.
 
-Aligned user claims: U1, U4, U7.
+Aligned model anchors: `promise.claim-discovery`, `promise.readiness`, `concern.agent-human-resumability`, `concern.host-owned-execution`.
 Proof route: deterministic plus dev/skill eval.
 Current evidence status: covered.
 Next action: keep command-discovery, skill-disclosure, and product-import-isolation checks deterministic, then prove claim-review routing through a checked dev/skill fixture.
