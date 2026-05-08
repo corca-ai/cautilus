@@ -2,21 +2,22 @@
 
 ## Current Focus
 
+- The session reviewed and rewrote user-facing Cautilus specs through HITL. (source: `charness-artifacts/retro/hitl-terminology-drift.md`)
 - One continuous session that started with `/init-repo` + `/quality`, produced 17 commits including coverage-floor gate introduction, evaluate-skill split, gitleaks wiring, Node coverage driver swap (to `c8`), two charness issues (#70, #71), one debug artifact, and the v0.12.3 release. (source: `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`)
 
 ## Repeat Traps
 
-- **Adapter side-effects accepted without review.** `bootstrap_adapter.py` wrote pytest-shaped defaults into a Node+Go adapter; I committed some of them before the user caught it. Running a charness skill's auto-write helpers without first reading the diff is the shape of waste that keeps repeating. (source: `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`)
-- **Coverage floor written before a refactor that changed the layout.** I initialized `coverage-floor.json` from a measurement, then split `evaluate-skill.mjs` afterwards. CI then failed on the first bump because the floor still referenced the old file shape. The cost was two "realign floor" commits that the agenda never planned for. (source: `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`)
-- **Debug skill arrived late.** AGENTS.md names `charness:debug` as the route for "any bug, error, regression, or unexpected behavior," but when coverage became non-deterministic I tried a tolerance knob first and only ran `debug` after the user asked me to. The real fix (c8) came directly from the debug flow once it was invoked; everything before it was wasted motion. (source: `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`)
-- **Host-capability question asked the user.** During `release` I asked the user whether the host allows subagent spawning and whether to "skip premortem." AGENTS.md L80–84 explicitly forbids that pattern: delegation is by repo contract, and host blocks get reported, not polled. The rule was in my context but lost eyeball gravity mid-flow. (source: `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`)
+- I advanced the HITL loop after edits by reporting verification, but did not consistently show the changed chunk, which made the user carry review state. (source: `charness-artifacts/retro/hitl-terminology-drift.md`)
+- I opened follow-up issues only after the user named the workflow gap, instead of noticing that the HITL loop itself was failing its review contract. (source: `charness-artifacts/retro/hitl-terminology-drift.md`)
+- I treated local phrase fixes as isolated edits instead of scanning the whole affected chunk for the same vocabulary class. (source: `charness-artifacts/retro/hitl-terminology-drift.md`)
+- I used maintainer/internal language in user-facing prose because the implementation evidence was nearby and pulled the writing back toward code structure. (source: `charness-artifacts/retro/hitl-terminology-drift.md`)
 
 ## Next-Time Checklist
 
-- Already landed: charness issues #70 (bootstrap defaults) and #71 (delegation eyeball gravity). These are the right platform-level leverage. (source: `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`)
-- Before introducing any measurement-based gate (coverage, runtime budget, token cost, etc.), run the underlying measurement **three times on the same commit** and confirm drift < threshold. Only then initialize the floor/baseline and wire it into CI. Record that repeatability check as a one-liner in the gate's script header. (source: `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`)
-- Consider a lightweight repo-local `scripts/check-workflow-parity.mjs` that fails when two workflow files reference the same `npm run` script but differ in tool-install lines. Low priority, revisit if this miss recurs. ### memory (source: `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`)
-- The release adapter now exists (`cbf3d1f`); future release flows will see declared seams up front. (source: `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`)
+- Capability: update Charness HITL so rewritten chunks and whole-target readbacks are first-class states rather than operator memory. (source: `charness-artifacts/retro/hitl-terminology-drift.md`)
+- Memory: keep the user-facing terminology rule in the current HITL runtime and carry it into future user-spec reviews. (source: `charness-artifacts/retro/hitl-terminology-drift.md`)
+- Workflow: after editing a HITL chunk, always show the changed chunk before asking to continue. (source: `charness-artifacts/retro/hitl-terminology-drift.md`)
+- Workflow: before editing a HITL chunk, run a short "active rules" pass from `rules.yaml` and scratchpad agreements, then state which rules apply to this chunk. (source: `charness-artifacts/retro/hitl-terminology-drift.md`)
 
 ## Selection Policy
 
@@ -27,3 +28,4 @@
 ## Sources
 
 - `charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md`
+- `charness-artifacts/retro/hitl-terminology-drift.md`

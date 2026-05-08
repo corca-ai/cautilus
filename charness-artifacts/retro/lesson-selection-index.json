@@ -10,10 +10,230 @@
     "recurrence_multiplier": "1 + alpha_t * max(0, source_count - 1)",
     "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
   },
-  "as_of_source_date": "2026-04-24",
-  "source_artifact_count": 1,
-  "candidate_count": 17,
+  "as_of_source_date": "2026-05-08",
+  "source_artifact_count": 2,
+  "candidate_count": 28,
   "top_candidates": [
+    {
+      "candidate_id": "current_focus:90650ab555f5",
+      "kind": "current_focus",
+      "lesson": "The session reviewed and rewrote user-facing Cautilus specs through HITL.",
+      "normalized_key": "the session reviewed and rewrote user facing cautilus specs through hitl",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:4548038488a5",
+      "kind": "next_improvement",
+      "lesson": "Capability: update Charness HITL so rewritten chunks and whole-target readbacks are first-class states rather than operator memory.",
+      "normalized_key": "capability update charness hitl so rewritten chunks and whole target readbacks are first class",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:2db54e28c6f9",
+      "kind": "next_improvement",
+      "lesson": "Memory: keep the user-facing terminology rule in the current HITL runtime and carry it into future user-spec reviews.",
+      "normalized_key": "memory keep the user facing terminology rule in the current hitl runtime and carry",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:d603a837b739",
+      "kind": "next_improvement",
+      "lesson": "Workflow: after editing a HITL chunk, always show the changed chunk before asking to continue.",
+      "normalized_key": "workflow after editing a hitl chunk always show the changed chunk before asking to",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:89e8b4384627",
+      "kind": "next_improvement",
+      "lesson": "Workflow: before editing a HITL chunk, run a short \"active rules\" pass from `rules.yaml` and scratchpad agreements, then state which rules apply to this chunk.",
+      "normalized_key": "workflow before editing a hitl chunk run a short active rules pass from rules",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:45cc118989e9",
+      "kind": "next_improvement",
+      "lesson": "Workflow: when a term is corrected, scan the current chunk and same target document for the old term class before stopping.",
+      "normalized_key": "workflow when a term is corrected scan the current chunk and same target document",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:bdc602e35325",
+      "kind": "repeat_trap",
+      "lesson": "I advanced the HITL loop after edits by reporting verification, but did not consistently show the changed chunk, which made the user carry review state.",
+      "normalized_key": "i advanced the hitl loop after edits by reporting verification but did not consistently",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:df23d3d4b037",
+      "kind": "repeat_trap",
+      "lesson": "I opened follow-up issues only after the user named the workflow gap, instead of noticing that the HITL loop itself was failing its review contract.",
+      "normalized_key": "i opened follow up issues only after the user named the workflow gap instead",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:aacdb91211d6",
+      "kind": "repeat_trap",
+      "lesson": "I treated local phrase fixes as isolated edits instead of scanning the whole affected chunk for the same vocabulary class.",
+      "normalized_key": "i treated local phrase fixes as isolated edits instead of scanning the whole affected",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:c01f7acffacd",
+      "kind": "repeat_trap",
+      "lesson": "I used maintainer/internal language in user-facing prose because the implementation evidence was nearby and pulled the writing back toward code structure.",
+      "normalized_key": "i used maintainer internal language in user facing prose because the implementation evidence was",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:6d52cd151921",
+      "kind": "repeat_trap",
+      "lesson": "The same product-language decisions had to be corrected multiple times because they lived as chat feedback and scratchpad notes, not as an active pre-edit checklist.",
+      "normalized_key": "the same product language decisions had to be corrected multiple times because they lived",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
     {
       "candidate_id": "current_focus:001840cb3322",
       "kind": "current_focus",
@@ -22,241 +242,241 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
           "date": "2026-04-24",
           "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:8e9cfc711797",
-      "kind": "next_improvement",
-      "lesson": "Already landed: charness issues #70 (bootstrap defaults) and #71 (delegation eyeball gravity). These are the right platform-level leverage.",
-      "normalized_key": "already landed charness issues 70 bootstrap defaults and 71 delegation eyeball gravity these are",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:d99555814344",
-      "kind": "next_improvement",
-      "lesson": "Before introducing any measurement-based gate (coverage, runtime budget, token cost, etc.), run the underlying measurement **three times on the same commit** and confirm drift < threshold. Only then initialize the floor/baseline and wire it into CI. Record that repeatability check as a one-liner in the gate's script header.",
-      "normalized_key": "before introducing any measurement based gate coverage runtime budget token cost etc run the",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:4240ab7efd81",
-      "kind": "next_improvement",
-      "lesson": "Consider a lightweight repo-local `scripts/check-workflow-parity.mjs` that fails when two workflow files reference the same `npm run` script but differ in tool-install lines. Low priority, revisit if this miss recurs. ### memory",
-      "normalized_key": "consider a lightweight repo local scripts check workflow parity mjs that fails when two",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:b328666eb8a8",
-      "kind": "next_improvement",
-      "lesson": "The release adapter now exists (`cbf3d1f`); future release flows will see declared seams up front.",
-      "normalized_key": "the release adapter now exists cbf3d1f future release flows will see declared seams up",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:c04bdc5ef82c",
-      "kind": "next_improvement",
-      "lesson": "When a charness skill has an auto-write helper (`bootstrap_adapter`, `init_adapter`, `seed_*`), read the produced diff before committing. Never let the helper's output propagate without a review. ### capability",
-      "normalized_key": "when a charness skill has an auto write helper bootstrap adapter init adapter seed",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:3b0063377f87",
-      "kind": "next_improvement",
-      "lesson": "When a refactor reshapes files that a floor/baseline gate reads, refresh the floor in the same slice. Add this to `AGENTS.md` \"Before Stopping on a Spec-Driven Slice\" if it happens again.",
-      "normalized_key": "when a refactor reshapes files that a floor baseline gate reads refresh the floor",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:b8dc5b74e9ba",
-      "kind": "next_improvement",
-      "lesson": "When adding a new CI step to any workflow, grep the other `.github/workflows/*.yml` files for the same invocation (`npm run verify`, `npm run lint`, etc.) and patch them in the same PR.",
-      "normalized_key": "when adding a new ci step to any workflow grep the other github workflows",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:eec9ea4043ea",
-      "kind": "next_improvement",
-      "lesson": "Write the \"grep all workflow files before landing a verify-step change\" rule into the same file.",
-      "normalized_key": "write the grep all workflow files before landing a verify step change rule into",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:68788669d4c9",
-      "kind": "next_improvement",
-      "lesson": "Write the \"run debug before reaching for a tolerance knob\" rule into the same file.",
-      "normalized_key": "write the run debug before reaching for a tolerance knob rule into the same",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:69060aa9b91c",
-      "kind": "next_improvement",
-      "lesson": "Write the three-times-repeatability rule into `charness-artifacts/retro/recent-lessons.md` so the next session inherits it.",
-      "normalized_key": "write the three times repeatability rule into charness artifacts retro recent lessons md so",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "repeat_trap:bc2270eb608b",
-      "kind": "repeat_trap",
-      "lesson": "**Adapter side-effects accepted without review.** `bootstrap_adapter.py` wrote pytest-shaped defaults into a Node+Go adapter; I committed some of them before the user caught it. Running a charness skill's auto-write helpers without first reading the diff is the shape of waste that keeps repeating.",
-      "normalized_key": "adapter side effects accepted without review bootstrap adapter py wrote pytest shaped defaults into",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-      "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
-          "date": "2026-04-24",
-          "section": "Waste"
         }
       ]
     }
   ],
   "candidates": [
     {
+      "candidate_id": "current_focus:90650ab555f5",
+      "kind": "current_focus",
+      "lesson": "The session reviewed and rewrote user-facing Cautilus specs through HITL.",
+      "normalized_key": "the session reviewed and rewrote user facing cautilus specs through hitl",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:4548038488a5",
+      "kind": "next_improvement",
+      "lesson": "Capability: update Charness HITL so rewritten chunks and whole-target readbacks are first-class states rather than operator memory.",
+      "normalized_key": "capability update charness hitl so rewritten chunks and whole target readbacks are first class",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:2db54e28c6f9",
+      "kind": "next_improvement",
+      "lesson": "Memory: keep the user-facing terminology rule in the current HITL runtime and carry it into future user-spec reviews.",
+      "normalized_key": "memory keep the user facing terminology rule in the current hitl runtime and carry",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:d603a837b739",
+      "kind": "next_improvement",
+      "lesson": "Workflow: after editing a HITL chunk, always show the changed chunk before asking to continue.",
+      "normalized_key": "workflow after editing a hitl chunk always show the changed chunk before asking to",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:89e8b4384627",
+      "kind": "next_improvement",
+      "lesson": "Workflow: before editing a HITL chunk, run a short \"active rules\" pass from `rules.yaml` and scratchpad agreements, then state which rules apply to this chunk.",
+      "normalized_key": "workflow before editing a hitl chunk run a short active rules pass from rules",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:45cc118989e9",
+      "kind": "next_improvement",
+      "lesson": "Workflow: when a term is corrected, scan the current chunk and same target document for the old term class before stopping.",
+      "normalized_key": "workflow when a term is corrected scan the current chunk and same target document",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:bdc602e35325",
+      "kind": "repeat_trap",
+      "lesson": "I advanced the HITL loop after edits by reporting verification, but did not consistently show the changed chunk, which made the user carry review state.",
+      "normalized_key": "i advanced the hitl loop after edits by reporting verification but did not consistently",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:df23d3d4b037",
+      "kind": "repeat_trap",
+      "lesson": "I opened follow-up issues only after the user named the workflow gap, instead of noticing that the HITL loop itself was failing its review contract.",
+      "normalized_key": "i opened follow up issues only after the user named the workflow gap instead",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:aacdb91211d6",
+      "kind": "repeat_trap",
+      "lesson": "I treated local phrase fixes as isolated edits instead of scanning the whole affected chunk for the same vocabulary class.",
+      "normalized_key": "i treated local phrase fixes as isolated edits instead of scanning the whole affected",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:c01f7acffacd",
+      "kind": "repeat_trap",
+      "lesson": "I used maintainer/internal language in user-facing prose because the implementation evidence was nearby and pulled the writing back toward code structure.",
+      "normalized_key": "i used maintainer internal language in user facing prose because the implementation evidence was",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:6d52cd151921",
+      "kind": "repeat_trap",
+      "lesson": "The same product-language decisions had to be corrected multiple times because they lived as chat feedback and scratchpad notes, not as an active pre-edit checklist.",
+      "normalized_key": "the same product language decisions had to be corrected multiple times because they lived",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+      "latest_source_date": "2026-05-08",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
+          "date": "2026-05-08",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
       "candidate_id": "current_focus:001840cb3322",
       "kind": "current_focus",
       "lesson": "One continuous session that started with `/init-repo` + `/quality`, produced 17 commits including coverage-floor gate introduction, evaluate-skill split, gitleaks wiring, Node coverage driver swap (to `c8`), two charness issues (#70, #71), one debug artifact, and the v0.12.3 release.",
@@ -264,10 +484,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -284,10 +504,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -304,10 +524,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -324,10 +544,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -344,10 +564,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -364,10 +584,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -384,10 +604,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -404,10 +624,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -424,10 +644,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -444,10 +664,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -464,10 +684,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -484,10 +704,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -504,10 +724,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -524,10 +744,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -544,10 +764,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -564,10 +784,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -584,10 +804,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 14,
+      "recency_weight": 0.5,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.5,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
