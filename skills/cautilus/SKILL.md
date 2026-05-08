@@ -67,8 +67,7 @@ If claim state exists, read or refresh that packet before planning new proof wor
 
 Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.
 For these direct questions, do not run `claim discover` until scan entries/depth are stated and the user confirms or adjusts the scope; keep LLM review as a separate budgeted branch.
-Do not hard-code the search to README.
-By default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
+Do not hard-code the search to README; by default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.
 
 Initial scan:
@@ -112,7 +111,8 @@ When the next natural branch is claim review, explain that it is a budgeted LLM 
 The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.
 Use `claim show --sample-claims <n>` as the canonical status view before hand-inspecting packet fields.
 Read `discoveryBoundary` before judging false negatives.
-If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.
+If a declared promise is present inside the configured entry docs or linked Markdown graph and discovery missed it, report a `claim discover` false-negative bug; if a user-facing feature is missing from that graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.
+During curation, reduce false positives before proof work and scan for likely missing public promises so the user can decide whether they were intentionally excluded or simply under-documented.
 Read `actionSummary.primaryBuckets` before making a next-work recommendation.
 Use the bucket `recommendedActor` and `summary` fields to separate agent work, human confirmation, deterministic proof, Cautilus eval planning, scenario design, alignment, and split-or-defer branches.
 Use `actionSummary.crossCuttingSignals` for review debt or stale-evidence warnings that can coexist with a primary proof branch.

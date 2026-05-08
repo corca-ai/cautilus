@@ -35,7 +35,7 @@ test("passes when the skill discovers claims and curates extraction and bucket s
 		assistant("Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md with linked Markdown depth 3. Confirm this scope or adjust it before I run discovery."),
 		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json"),
 		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
-		assistant("Extraction heuristics used entry-doc headings and imperative promise signals, kept sourceRefs, and merged duplicate summaries by claimFingerprint. Next-work buckets include agent-plan-cautilus-eval, human-confirm-or-decompose, and split-or-defer. Stop before review launch, eval execution, or edits."),
+		assistant("Extraction heuristics used entry-doc headings and imperative promise signals, kept sourceRefs, and merged duplicate summaries by claimFingerprint. Reduce false positives where candidates are over-broad, then scan for likely false negatives: an in-scope missed claim is a discovery bug, while an out-of-scope missing public promise is a narrative gap. Next-work buckets include agent-plan-cautilus-eval, human-confirm-or-decompose, and split-or-defer. Stop before review launch, eval execution, or edits."),
 	]));
 	assert.equal(audit.status, "passed");
 	assert.deepEqual(audit.findings, []);
@@ -52,6 +52,8 @@ test("fails when the flow only runs first scan without curation language", () =>
 	assert.equal(audit.status, "failed");
 	assert(audit.findings.some((finding) => finding.id === "missing_extraction_heuristics"));
 	assert(audit.findings.some((finding) => finding.id === "missing_dedupe_or_fingerprint"));
+	assert(audit.findings.some((finding) => finding.id === "missing_false_positive_curation"));
+	assert(audit.findings.some((finding) => finding.id === "missing_false_negative_scan"));
 	assert(audit.findings.some((finding) => finding.id === "missing_next_work_curation"));
 });
 
@@ -61,7 +63,7 @@ test("fails when the agent overruns into eval or review work", () => {
 		assistant("Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md with linked Markdown depth 3. Confirm this scope or adjust it before I run discovery."),
 		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json"),
 		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
-		assistant("Extraction signals, fingerprint dedup, and next-work buckets are ready."),
+		assistant("Extraction signals, fingerprint dedup, false-positive curation, likely false-negative scan, and next-work buckets are ready."),
 		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json"),
 		toolCall("./bin/cautilus eval test --repo-root . --adapter-name demo"),
 	]));

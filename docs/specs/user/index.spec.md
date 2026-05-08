@@ -15,7 +15,7 @@ Full claim-spec report entry: [Cautilus Claim Specs](../index.spec.md).
 ## User Stories
 
 - [Readiness](doctor-readiness.spec.md): using `cautilus doctor`, `cautilus agent status`, and the bundled skill, a user can see which Cautilus workflow is ready, blocked, or missing setup before starting claim, eval, or optimize work.
-- [Claim Discovery](claim-discovery.spec.md): using `cautilus claim` and the bundled skill, a user can discover behavior promises from the repo docs selected for claim discovery and turn them into a reviewable next-work map.
+- [Claim Discovery](claim-discovery.spec.md): using `cautilus claim` and the bundled skill, a user can scan selected source docs into broad source-referenced candidates, curate false positives and likely missing promises, and turn the result into a reviewable next-work map.
 - [Behavior Evaluation](evaluation.spec.md): using `cautilus eval` and bundled-skill guidance, a user can evaluate intentful behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces when deterministic tests alone do not explain the behavior.
 - [Bounded Optimization](optimization.spec.md): using `cautilus optimize` and bundled-skill guidance, a user can improve a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.
 - [Host Ownership](ownership.spec.md): using Cautilus adapters and host-owned runners, a user can keep prompts, models, credentials, runtime wiring, and acceptance policy in the host repo while Cautilus standardizes workflow packets and boundaries.

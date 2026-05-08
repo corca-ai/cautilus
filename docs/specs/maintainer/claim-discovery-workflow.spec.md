@@ -10,12 +10,13 @@ Absorbs: source inventory, entry Markdown, linked Markdown, `.gitignore`, raw ca
 
 ## Maintainer Promise
 
-`claim discover` emits source-ref-backed candidates from configured entry documents and the linked Markdown they reach, preferring recall and preserving the scan boundary so curation stays a packet-aware agent or maintainer responsibility.
+`claim discover` emits source-ref-backed candidates from configured entry documents and the linked Markdown they reach, preferring recall and preserving the scan boundary so curation can distinguish binary false negatives from out-of-scope narrative gaps.
 
 ## Subclaims
 
 - Discovery emits source-ref-backed candidates from configured entry documents and linked Markdown within the declared depth bounds.
-- Discovery favors recall; duplicate handling, false-positive curation, and false-negative boundaries belong to review surfaces, not to the deterministic scan.
+- Discovery favors recall; a missed declaration inside the scan boundary is a binary bug, while missing behavior outside the boundary is catalog, narrative, or alignment work.
+- Duplicate handling and false-positive curation remain packet-aware review responsibilities rather than deterministic verdicts.
 - The active scan boundary excludes archived spec trees and superseded claim pages so they do not dilute current proof planning.
 - Canonical compression and review-result replay consume the discovery packet without mutating discovery's recall behavior.
 

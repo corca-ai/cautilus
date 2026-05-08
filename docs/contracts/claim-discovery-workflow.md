@@ -125,11 +125,11 @@ Semantic duplicates with different wording are grouping/review work, not determi
 
 This entry-surface boundary is also the product's false-negative boundary.
 `claim discover` is expected to find declared claims in README-like entry documents and linked Markdown, not every latent user-facing behavior hidden in code, transcripts, issue threads, or private operator memory.
-If a core user-facing feature is not stated in the configured entry documents or their linked Markdown graph, deterministic discovery may miss it.
-That is not automatically a binary bug.
-It is a product signal that the repo's public narrative or adoption surface is underspecified.
+If a declared claim is inside the configured entry documents or their linked Markdown graph and deterministic discovery misses it, that is a `claim discover` false-negative bug.
+If a core user-facing feature is not stated in that graph, deterministic discovery may miss it without being wrong.
+That out-of-scope miss is a product signal that the repo's public narrative or adoption surface is underspecified.
 The bundled skill, `charness:quality`, `charness:narrative`, or a human reviewer may still explore the codebase and discover such missing public claims.
-Those findings should be recorded as narrative, alignment, or documentation work before expecting `claim discover` to emit them by default.
+Those findings should be recorded as narrative, catalog, alignment, or documentation work before expecting `claim discover` to emit them by default.
 
 The adapter may override entries, depth, include globs, and exclude globs:
 
@@ -379,7 +379,7 @@ The skill review can upgrade them to `satisfied`, `partial`, `stale`, or `missin
 ## Grouping And Review Strategy
 
 The workflow should not send every raw candidate to an LLM independently.
-The deterministic pass should emit grouping hints:
+The deterministic pass should emit broad candidates and grouping hints that make curation efficient:
 
 - source path
 - source section
@@ -388,7 +388,7 @@ The deterministic pass should emit grouping hints:
 - repeated noun phrases or command names
 - source graph neighborhood
 
-The skill should review clusters in priority order:
+The skill should reduce false positives, scan for likely false negatives, and review clusters in priority order:
 
 1. entry-surface claims from README and AGENTS
 2. `cautilus-eval` candidates
@@ -398,7 +398,7 @@ The skill should review clusters in priority order:
 6. lower-priority duplicate or long-tail doc claims
 
 Subagents should receive clusters with source excerpts, source refs, candidate labels, possible evidence refs, and a bounded output schema.
-They should return merged claims, corrected labels, evidence-status judgments, and unresolved questions.
+They should return merged claims, corrected labels, false-positive removals, possible false-negative questions, evidence-status judgments, and unresolved questions.
 The parent skill should merge results and keep review provenance in the packet.
 
 The LLM review seam should use versioned packets instead of hidden prompt-only behavior:
@@ -510,7 +510,8 @@ Full-batch work should show estimated claim count, affected files, and review or
 The skill should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.
 
 `claim show` should expose the same decision boundary in `cautilus.claim_status_summary.v1`.
-The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked Markdown, and that undeclared user-facing behavior is an entry-surface gap rather than a discoverable claim.
+The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked Markdown.
+That block should separate in-scope false negatives from out-of-scope narrative gaps: a declared promise inside the boundary that discovery missed is a binary bug, while undeclared user-facing behavior outside the boundary is an entry-surface or catalog gap rather than a discoverable claim.
 The status packet should also include `actionSummary.primaryBuckets`, so a caller can separate work without rereading every claim:
 
 - `already-satisfied`: proof is already attached and valid under packet semantics.

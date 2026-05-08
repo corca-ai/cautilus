@@ -2346,8 +2346,8 @@ func claimStatusDiscoveryBoundary(scanScope map[string]any) map[string]any {
 		"linkedDepth":      scanScope["linkedMarkdownDepth"],
 		"gitignorePolicy":  scanScope["gitignorePolicy"],
 		"omissionPolicy":   "Claims not declared in configured entry documents or linked Markdown are outside deterministic discovery scope.",
-		"productSignal":    "A core user-facing feature missing from entry docs is a narrative or adoption-surface gap, not automatically a claim discover false negative.",
-		"agentEscapeHatch": "Agent-led quality or narrative review may explore the codebase for missing public claims, then record alignment or documentation work before expecting deterministic discovery.",
+		"productSignal":    "A declared in-scope promise missed by discovery is a claim discover bug; an important behavior outside the scan boundary is a narrative or catalog gap.",
+		"agentEscapeHatch": "Agent-led quality or narrative review may explore the codebase for missing public claims, then record in-scope discovery bugs or out-of-scope alignment and documentation work before expecting deterministic discovery.",
 	}
 }
 

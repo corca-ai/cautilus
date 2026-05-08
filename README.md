@@ -3,7 +3,7 @@
 `Cautilus` keeps agent and workflow behavior honest while prompts keep changing.
 It is a repo-local contract layer for agent and workflow behavior evaluation: define the behavior you are trying to protect once, then verify it survives prompt, skill, and wrapper changes.
 The product has three connected jobs:
-discover declared behavior claims worth proving, verify those claims through bounded evaluation packets, and improve behavior with budgeted optimization once the proof surface is honest.
+discover declared behavior claims worth proving from selected source docs, verify curated claims through bounded evaluation packets, and improve behavior with budgeted optimization once the proof surface is honest.
 Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.
 Agents are first-class users of the product surface.
 Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.
@@ -72,7 +72,8 @@ Quick links:
 - Public executable spec report: <https://corca-ai.github.io/cautilus/>
 
 The user and maintainer spec indexes are the curated claim source of truth, and [docs/specs/index.spec.md](./docs/specs/index.spec.md) is the executable report entry that includes both views.
-Raw `claim discover` packets remain the source-ref-backed proof-planning input, not the primary document a user should review.
+Raw `claim discover` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.
+The bundled skill curates that packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.
 That report is generated with `specdown` from the claim spec tree.
 Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.
 Read the user spec index to understand what Cautilus promises, then use the maintainer index to inspect proof routes, adapters, fixtures, and known gaps.
@@ -106,7 +107,7 @@ It is the shortest honest example of the product claim: `Cautilus` turns behavio
 ## Scenarios
 
 Cautilus has three connected product layers.
-First, `cautilus claim discover` and scenario proposal surfaces find behavior claims worth proving from adapter-owned entry docs, README.md, AGENTS.md, CLAUDE.md, and linked repo-local Markdown.
+First, `cautilus claim discover` finds broad behavior-claim candidates from adapter-owned entry docs, README.md, AGENTS.md, CLAUDE.md, and linked repo-local Markdown, then the bundled skill curates those candidates against the repo.
 Second, `cautilus eval test` / `eval evaluate` verify selected claims through explicit fixtures and summary packets.
 Third, optimize and GEPA-style search improve prompts or behavior only after the proof surface is clear.
 
@@ -121,9 +122,10 @@ cautilus claim validate --claims /tmp/cautilus-reviewed-claims.json --output /tm
 cautilus claim plan-evals --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json
 ```
 
-The output is `cautilus.claim_proof_plan.v1`: source-ref-backed candidate claims with split proof, readiness, evidence, review, and lifecycle fields.
+The output is `cautilus.claim_proof_plan.v1`: source-ref-backed candidate claims with split proof, readiness, evidence, review, lifecycle, scan-boundary, heuristic, and duplicate-ref fields.
 It is not a verdict that the repo is correct.
-For agents, the bundled skill turns that packet into a status workflow: scan scope first, existing-packet summary via `claim show`, then a separate review budget before `claim review prepare-input` creates deterministic clusters for LLM-backed review.
+For agents, the bundled skill turns that packet into a status workflow: scan scope first, existing-packet summary via `claim show`, false-positive and possible false-negative curation, then a separate review budget before `claim review prepare-input` creates deterministic clusters for LLM-backed review.
+If discovery misses a declared promise inside the recorded scan boundary, treat that as a `claim discover` bug; if an important behavior only appears outside that boundary, treat it as narrative, catalog, or alignment work.
 When reviewed clusters come back, `claim review apply-result` merges reviewed labels and evidence refs while enforcing that possible evidence cannot satisfy a claim.
 `claim validate` emits `cautilus.claim_validation_report.v1` and exits non-zero when packet shape or evidence refs are invalid.
 For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.

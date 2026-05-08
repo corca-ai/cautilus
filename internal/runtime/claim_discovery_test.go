@@ -1131,6 +1131,10 @@ func TestBuildClaimStatusSummarySummarizesExistingPacket(t *testing.T) {
 	if boundary["sourceBasis"] != "entry-docs-and-linked-markdown" || !strings.Contains(stringFromAny(boundary["omissionPolicy"]), "outside deterministic discovery scope") {
 		t.Fatalf("expected explicit discovery boundary, got %#v", boundary)
 	}
+	if !strings.Contains(stringFromAny(boundary["productSignal"]), "in-scope promise missed by discovery is a claim discover bug") ||
+		!strings.Contains(stringFromAny(boundary["agentEscapeHatch"]), "out-of-scope alignment and documentation work") {
+		t.Fatalf("expected discoveryBoundary to separate in-scope discovery bugs from out-of-scope narrative gaps, got %#v", boundary)
+	}
 	actions := asMap(summary["actionSummary"])
 	primaryBuckets := arrayOrEmpty(actions["primaryBuckets"])
 	if len(primaryBuckets) == 0 {

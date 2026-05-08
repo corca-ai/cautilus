@@ -37,6 +37,8 @@ const SCAN_SCOPE_PATTERN = /scan (?:entries|scope)|스캔 (?:범위|엔트리)|R
 const SCOPE_CONFIRM_PATTERN = /(?:confirm|확인).*(?:scope|범위)|(?:adjust|조정).*(?:scope|범위)|(?:scope|범위).*(?:confirm|확인|adjust|조정)|narrower explicit source set|명시.*소스/i;
 const EXTRACTION_SIGNAL_PATTERN = /extraction|extract|heuristic|signal|source[- ]?ref|sourceRefs|heading|imperative|promise|엔트리|추출|신호|휴리스틱/i;
 const DEDUPE_PATTERN = /dedup|de[- ]?dup|duplicate|fingerprint|claimFingerprint|merge|중복|핑거프린트|병합/i;
+const FALSE_POSITIVE_PATTERN = /false[- ]?positive|FP\b|over[- ]?broad|too broad|noise|reduce.*candidate|candidate.*reduce|오탐|과다.*후보/i;
+const FALSE_NEGATIVE_PATTERN = /false[- ]?negative|FN\b|missing (?:public )?(?:promise|claim|candidate)|missed (?:public )?(?:promise|claim|candidate)|in[- ]?scope.*(?:bug|miss)|out[- ]?of[- ]?scope.*(?:narrative|catalog|gap)|누락|미탐/i;
 const CURATION_PATTERN = /actionSummary|bucket|next[- ]?work|agent-plan-cautilus-eval|human-confirm-or-decompose|split-or-defer|group|curat|분류|큐레이션|다음 작업/i;
 const STOP_BOUNDARY_PATTERN = /stop|stopped|before (?:review|eval|edits|HITL)|do not (?:launch|run|edit)|리뷰.*전|eval.*전|멈/i;
 
@@ -54,6 +56,8 @@ export function auditClaimDiscoveryCurationFlowLogText(text) {
 		...preDiscoverScopeFindings(summary.assistantMessages, firstDiscoverIndex),
 		...requiredTextFindings(combined, EXTRACTION_SIGNAL_PATTERN, "missing_extraction_heuristics", "The curation flow should discuss extraction signals or source-ref heuristics, not only run discovery."),
 		...requiredTextFindings(combined, DEDUPE_PATTERN, "missing_dedupe_or_fingerprint", "The curation flow should account for duplicate handling or claim fingerprints."),
+		...requiredTextFindings(combined, FALSE_POSITIVE_PATTERN, "missing_false_positive_curation", "The curation flow should identify false-positive or over-broad candidates before proof work."),
+		...requiredTextFindings(combined, FALSE_NEGATIVE_PATTERN, "missing_false_negative_scan", "The curation flow should scan for likely missing claims and separate in-scope discovery bugs from out-of-scope narrative gaps."),
 		...requiredTextFindings(combined, CURATION_PATTERN, "missing_next_work_curation", "The curation flow should classify discovered claims into reviewable next-work groups."),
 		...requiredTextFindings(assistantText, STOP_BOUNDARY_PATTERN, "missing_stop_boundary", "The curation flow should stop before review launch, eval execution, or product edits."),
 		...forbiddenCommandFindings(commands),
