@@ -1641,16 +1641,12 @@ func deterministicCommandPacketClaim(lower string) bool {
 	if modelProducedStructuredOutputClaim(lower) {
 		return false
 	}
-	if containsAny(lower, []string{" claim plan-evals", " doctor", " agent status", " ready payload", " first_bounded_run", " specdown_available", " specdown "}) &&
+	if containsAny(lower, []string{" claim plan-evals", " doctor", " agent status", " ready payload", " first_bounded_run"}) &&
 		containsAny(lower, []string{" emit", " emits", " emitted", " output", " outputs", " includes", " payload", " packet", " schema", " evaluates", " without launching", " readiness"}) {
 		return true
 	}
 	if strings.Contains(lower, " eval evaluate") &&
 		containsAny(lower, []string{" already-observed", " observed packet", " without launching", " no runner launch", " not launch", " does not launch"}) {
-		return true
-	}
-	if strings.Contains(lower, " specdown") &&
-		containsAny(lower, []string{" raw cautilus packets", " fully set up", " claim-document workflow", " ready", " readiness"}) {
 		return true
 	}
 	if containsAny(lower, []string{" packet", " packets", " payload", " schema", " json", " non-writer", " not a writer", " without launching", " no runner launch"}) &&

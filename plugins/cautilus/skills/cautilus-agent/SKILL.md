@@ -11,8 +11,6 @@ Cautilus Agent assumes a Cautilus binary is available.
 In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.
 In consumer repos, use `cautilus` on `PATH`.
 If no binary is available, install the CLI first and verify with `cautilus --version`.
-Specdown is a hard prerequisite for the public executable claim-doc workflow.
-If `cautilus doctor` reports `specdown_available=false`, install specdown before treating the repo as ready for Cautilus-managed claim docs.
 To materialize Cautilus Agent in a host repo, run `cautilus install --repo-root .`.
 
 ## Product Shape
@@ -119,7 +117,7 @@ Use `actionSummary.crossCuttingSignals` for review debt or stale-evidence warnin
 When preparing a focused review queue, pass `--action-bucket <bucket>` to `claim review prepare-input` instead of hand-filtering claim JSON.
 In the Cautilus product repo, when raw claim status or review packets are too large for a maintainer to judge directly, run `npm run claims:status-report` and read `.cautilus/claims/claim-status-report.md` before asking for human decisions.
 If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.
-When raw candidates are too granular for product judgment, curate a canonical specdown claim tree before continuing HITL.
+When raw candidates are too granular for product judgment, curate a canonical claim spec tree before continuing HITL.
 Treat raw candidates as high-recall proof-planning inputs, not as the human-facing promise map.
 For Cautilus itself, keep the curated user-facing promises in `docs/specs/user/index.spec.md` and per-claim pages under `docs/specs/user/`.
 Keep the maintainer-facing index in `docs/specs/maintainer/index.spec.md`.

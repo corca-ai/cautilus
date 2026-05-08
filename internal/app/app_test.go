@@ -100,18 +100,12 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 	if ready, ok := payload["ready"].(bool); !ok || !ready {
 		t.Fatalf("expected ready doctor payload, got %#v", payload)
 	}
-	if !doctorCheckOK(payload, "specdown_available") {
-		t.Fatalf("expected doctor to require specdown readiness, got %#v", payload["checks"])
-	}
-	if detail := doctorCheckDetail(payload, "specdown_available"); !strings.Contains(detail, "specdown found at ") {
-		t.Fatalf("expected specdown detail to include resolved path, got %q", detail)
-	}
-	if meaning := doctorCheckMeaning(payload, "specdown_available"); meaning != "The public claim-spec report can execute and render evidence." {
-		t.Fatalf("expected specdown_available meaning in doctor payload, got %q", meaning)
+	if doctorCheckExists(payload, "specdown_available") {
+		t.Fatalf("generic doctor readiness should not require specdown, got %#v", payload["checks"])
 	}
 }
 
-func TestRunDoctorBlocksClaimDocsWhenSpecdownMissingButPacketsValidate(t *testing.T) {
+func TestRunDoctorDoesNotBlockWhenSpecdownMissingAndPacketsValidate(t *testing.T) {
 	repoRoot := t.TempDir()
 	initGitRepo(t, repoRoot)
 	agentsDir := filepath.Join(repoRoot, ".agents")
@@ -152,22 +146,15 @@ func TestRunDoctorBlocksClaimDocsWhenSpecdownMissingButPacketsValidate(t *testin
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	exitCode := Run([]string{"doctor", "--repo-root", "."}, &stdout, &stderr)
-	if exitCode == 0 {
-		t.Fatalf("expected doctor to fail without specdown, stdout=%s stderr=%s", stdout.String(), stderr.String())
+	if exitCode != 0 {
+		t.Fatalf("expected doctor to stay ready without specdown, stdout=%s stderr=%s", stdout.String(), stderr.String())
 	}
 	var doctor map[string]any
 	if err := json.Unmarshal(stdout.Bytes(), &doctor); err != nil {
 		t.Fatalf("Unmarshal doctor returned error: %v\nstdout=%s", err, stdout.String())
 	}
-	if doctor["ready"] != false || doctorCheckOK(doctor, "specdown_available") {
-		t.Fatalf("expected specdown readiness to block claim-doc workflow, got %#v", doctor)
-	}
-	if detail := doctorCheckDetail(doctor, "specdown_available"); !strings.Contains(detail, "specdown missing from PATH=/usr/bin:/bin") {
-		t.Fatalf("expected missing specdown detail to include PATH, got %q", detail)
-	}
-	nextAction, ok := doctor["next_action"].(map[string]any)
-	if !ok || nextAction["kind"] != "install_specdown" {
-		t.Fatalf("expected install_specdown next action, got %#v", doctor["next_action"])
+	if doctor["ready"] != true || doctorCheckExists(doctor, "specdown_available") {
+		t.Fatalf("expected generic doctor readiness to ignore specdown, got %#v", doctor)
 	}
 
 	stdout.Reset()
@@ -203,37 +190,14 @@ func TestRunDoctorHelpReturnsZeroAndUsage(t *testing.T) {
 	}
 }
 
-func doctorCheckOK(payload map[string]any, id string) bool {
+func doctorCheckExists(payload map[string]any, id string) bool {
 	for _, raw := range arrayOrEmpty(payload["checks"]) {
 		check := raw.(map[string]any)
 		if check["id"] == id {
-			ok, _ := check["ok"].(bool)
-			return ok
+			return true
 		}
 	}
 	return false
-}
-
-func doctorCheckMeaning(payload map[string]any, id string) string {
-	for _, raw := range arrayOrEmpty(payload["checks"]) {
-		check := raw.(map[string]any)
-		if check["id"] == id {
-			meaning, _ := check["meaning"].(string)
-			return meaning
-		}
-	}
-	return ""
-}
-
-func doctorCheckDetail(payload map[string]any, id string) string {
-	for _, raw := range arrayOrEmpty(payload["checks"]) {
-		check := raw.(map[string]any)
-		if check["id"] == id {
-			detail, _ := check["detail"].(string)
-			return detail
-		}
-	}
-	return ""
 }
 
 func TestRunCommandsJSONReturnsRegistry(t *testing.T) {

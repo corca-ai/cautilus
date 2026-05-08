@@ -3,11 +3,11 @@
 Every repo makes promises to users and maintainers: what problem it solves, how it should behave, and which workflows it protects.
 Those promises usually appear in docs, but the evidence behind them is scattered across tests, code, specs, eval artifacts, and human decisions.
 
-Using `cautilus claim` and Cautilus Agent, a user can turn scattered repo promises into a source-referenced worklist: what Cautilus found, what looks noisy, what may be missing, and what evidence each candidate needs next.
+Using the `cautilus claim` CLI command and the `cautilus-agent` skill, a user can turn scattered repo promises into a source-referenced worklist: what Cautilus found, what looks noisy, what may be missing, and what evidence each candidate needs next.
 
 Claim discovery is a two-pass workflow.
 
-- Pass 1: The `cautilus` binary runs a broad deterministic scan over the selected entry docs and linked Markdown. It intentionally accepts some false positives so it does not miss declared promises inside that scan boundary, and it leaves source refs, heuristic metadata, duplicate handling, and next-action hints for an agent to inspect.
+- Pass 1: The `cautilus` binary runs a broad deterministic scan over the selected entry and linked docs. It intentionally accepts some false positives so it does not miss declared promises inside that scan boundary, and it leaves source refs, heuristic metadata, duplicate handling, and next-action hints for an agent to inspect.
 - Pass 2: Cautilus Agent curates the discovered candidate list. It reduces false positives, compares candidates with docs and code, looks for likely missing public promises, and asks whether a missing promise is intentional or under-documented.
 
 Discovery creates candidates, not proof.

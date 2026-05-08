@@ -82,7 +82,7 @@ This keeps the product agent-first without making the binary a host-specific age
 Raw `claim discover` candidates are high-recall proof-planning inputs.
 They are not the primary human review surface once the maintainer is judging product meaning, duplication, audience fit, or next-action grouping.
 
-When raw candidates are too granular to review directly, the Cautilus Agent should curate two canonical specdown indexes before continuing HITL:
+When raw candidates are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL:
 
 - a user-facing spec index in plain product language that explains what the repo promises to a reader
 - a maintainer-facing spec index that may use internal vocabulary but maps back to the user-facing claims
@@ -92,8 +92,6 @@ In this repo's Cautilus spec tree, that means `claim`, `eval`, `optimize`, then 
 In other repos, the same rule should be driven by the repo's adapter, README, and source docs rather than by Cautilus-specific command names.
 The user-facing index should stay short and link to one spec page per major claim.
 Each claim spec page should keep subclaims, source references, intended proof route, evidence status, and the next action needed to prove or repair the claim.
-Specdown is a hard prerequisite for this public executable claim-document workflow.
-If specdown is missing, `doctor` should report the repo as not ready for the Cautilus claim-doc workflow.
 Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available.
 The spec tree is a manually maintained or review-applied source document, not a generated status report block.
 It may be part of the next discovery entry graph through README links, while volatile generated reports and JSON packets remain evidence or state artifacts.

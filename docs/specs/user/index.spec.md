@@ -6,7 +6,7 @@ These specs are the user-facing source of truth for what the product promises.
 Each story page should read as an acceptance contract:
 the story names the user job, the Cautilus surface, and the outcome;
 each acceptance criterion carries local executable proof or an explicit gap.
-Expensive Cautilus proof is produced on demand as durable artifacts, while this specdown report should project the latest selected evidence without rerunning costly evaluation or optimization loops.
+Expensive Cautilus proof is produced on demand as durable artifacts, while this report should project the latest selected evidence without rerunning costly evaluation or optimization loops.
 The same product vocabulary should appear in user prose, Cautilus JSON packets, Cautilus Agent guidance, maintainer specs, and tests.
 
 Maintainer view: [Maintainer-Facing Specs](../maintainer/index.spec.md).
@@ -32,11 +32,6 @@ They are the dominant product decomposition, but they do not replace the cross-c
 Cross-cutting stories should stay visible here and should also appear locally inside the main stories where they constrain the workflow.
 For example, readiness uses `meaning` and `detail` consistently in the `doctor` packet, while evaluation and optimization project latest evidence artifacts instead of hiding cost or proof state.
 
-## Prerequisite
-
-Cautilus requires specdown for public executable claim documentation.
-Without specdown, a repo can still contain raw Cautilus packets, but it is not fully set up for the Cautilus claim-spec report workflow.
-
 > check:cautilus-command
 | args_json | stdout_includes |
 | --- | --- |
@@ -44,4 +39,4 @@ Without specdown, a repo can still contain raw Cautilus packets, but it is not f
 | ["commands","--json"] | eval |
 | ["commands","--json"] | optimize |
 | ["doctor","--help"] | Usage: |
-| ["doctor","--repo-root","."] | specdown_available |
+| ["doctor","--repo-root","."] | ready |

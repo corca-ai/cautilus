@@ -1253,7 +1253,6 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 1, nil
 	}
 	checks = append(checks, doctorCheck("adapter_valid", true, "Adapter passed schema validation."))
-	appendSpecdownCheck(&checks, &suggestions)
 	data := payload.Data
 	appendFieldCheck(&checks, &suggestions, "repo_name", strings.TrimSpace(stringOrEmpty(data["repo"])) != "", "Adapter declares repo.", "Adapter is missing a repo name.", "Set adapter.repo to the host repo name.")
 	appendFieldCheck(&checks, &suggestions, "evaluation_surfaces", len(stringArrayOrEmpty(data["evaluation_surfaces"])) > 0, "Adapter declares evaluation surfaces.", "Adapter is missing evaluation_surfaces.", "Add at least one evaluation_surfaces entry that states what the adapter judges.")
@@ -1316,7 +1315,6 @@ func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
 	checks := []any{}
 	suggestions := []any{}
 	artifactPaths := map[string]any{}
-	appendSpecdownCheck(&checks, &suggestions)
 	for _, definition := range checkDefinitions {
 		_, err := os.Lstat(definition.path)
 		ok := err == nil
@@ -1353,27 +1351,6 @@ func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
 	return AttachDoctorGuidance(result, repoRoot, "agent-surface", nil), 1, nil
 }
 
-func appendSpecdownCheck(checks *[]any, suggestions *[]any) {
-	appendExecutableCheck(
-		checks,
-		suggestions,
-		"specdown_available",
-		"specdown",
-		"Cautilus requires specdown for public executable claim docs.",
-		"Install specdown and rerun `cautilus doctor`.",
-	)
-}
-
-func appendExecutableCheck(checks *[]any, suggestions *[]any, id string, executable string, missingReason string, suggestion string) {
-	resolvedPath, err := exec.LookPath(executable)
-	if err == nil {
-		*checks = append(*checks, doctorCheck(id, true, fmt.Sprintf("%s found at %s.", executable, resolvedPath)))
-		return
-	}
-	*checks = append(*checks, doctorCheck(id, false, fmt.Sprintf("%s missing from PATH=%s. %s", executable, os.Getenv("PATH"), missingReason)))
-	*suggestions = append(*suggestions, suggestion)
-}
-
 func appendFieldCheck(checks *[]any, suggestions *[]any, id string, ok bool, okDetail string, missingDetail string, suggestion string) {
 	detail := missingDetail
 	if ok {
@@ -1400,8 +1377,6 @@ func doctorCheckMeaning(id string) string {
 		return "Cautilus can find repo-owned configuration."
 	case "adapter_valid":
 		return "Cautilus can parse and trust the adapter shape enough to continue."
-	case "specdown_available":
-		return "The public claim-spec report can execute and render evidence."
 	case "repo_name":
 		return "The adapter identifies the host repo whose behavior is being evaluated."
 	case "evaluation_surfaces":

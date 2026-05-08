@@ -528,8 +528,6 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.",
 		"",
-		"Without specdown, a repo can still contain raw Cautilus packets, but it is not fully set up for the Cautilus claim-document workflow.",
-		"",
 		"The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
 		"",
 		"Cautilus leaves evidence that another person or agent can reopen instead of relying on terminal scrollback or memory.",
@@ -751,10 +749,6 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	evaluateObserved := bySummary["`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again."]
 	if evaluateObserved == nil || evaluateObserved["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected no-launch eval evaluate packet claim to be deterministic, got %#v", evaluateObserved)
-	}
-	specdownReadiness := bySummary["Without specdown, a repo can still contain raw Cautilus packets, but it is not fully set up for the Cautilus claim-document workflow."]
-	if specdownReadiness == nil || specdownReadiness["recommendedProof"] != "deterministic" {
-		t.Fatalf("expected specdown readiness claim to be deterministic, got %#v", specdownReadiness)
 	}
 	readyPayload := bySummary["The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples."]
 	if readyPayload == nil || readyPayload["recommendedProof"] != "deterministic" {

@@ -29,7 +29,6 @@ Prerequisites:
 - native macOS or native Linux
 - a target host repo you can edit locally
 - `git` available on `PATH`
-- `specdown` available on `PATH`
 
 ```bash
 curl -fsSL \
@@ -74,7 +73,7 @@ Quick links:
 The user and maintainer spec indexes are the curated claim source of truth, and [docs/specs/index.spec.md](./docs/specs/index.spec.md) is the executable report entry that includes both views.
 Raw `claim discover` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.
 The Cautilus Agent curates that packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.
-That report is generated with `specdown` from the claim spec tree.
+The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or optimization work.
 Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.
 Read the user spec index to understand what Cautilus promises, then use the maintainer index to inspect proof routes, adapters, fixtures, and known gaps.
 

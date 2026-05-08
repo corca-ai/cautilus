@@ -114,7 +114,7 @@ test("cautilus-json-command can verify nonzero JSON command payloads", async () 
 				"#!/usr/bin/env node",
 				"console.log(JSON.stringify({",
 				"  status: 'incomplete_adapter',",
-				"  next_action: { kind: 'install_specdown' }",
+				"  next_action: { kind: 'edit_adapter' }",
 				"}));",
 				"process.exit(1);",
 			].join("\n"),
@@ -129,7 +129,7 @@ test("cautilus-json-command can verify nonzero JSON command payloads", async () 
 				check: "cautilus-json-command",
 				checkParams: { command: "cautilus doctor --repo-root .", exit_code: "1" },
 				columns: ["path", "equals"],
-				cells: ["next_action.kind", "install_specdown"],
+				cells: ["next_action.kind", "edit_adapter"],
 			},
 			{ CAUTILUS_BIN: fakeCautilus },
 		);

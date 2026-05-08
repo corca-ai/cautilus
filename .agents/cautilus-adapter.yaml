@@ -8,7 +8,6 @@ baseline_options:
 required_prerequisites:
   - install local dependencies with npm install before running evaluation
   - install the checked-in git hooks with npm run hooks:install before relying on maintainer-local checks
-  - install specdown before treating Cautilus claim docs as ready
 review_timeout_ms: 30000
 preflight_commands:
   - npm run hooks:check

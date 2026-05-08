@@ -1,6 +1,7 @@
 # Readiness
 
-Using `cautilus doctor` and the Cautilus Agent, a user can decide whether to fix setup, inspect claims, run a first eval, or stop before spending effort on claim, eval, or optimize work.
+Before a repo spends agent time on claim discovery, evaluation, or optimization, the user needs to know whether Cautilus can safely operate there and what setup is still missing.
+Using the `cautilus doctor` CLI command and the `cautilus-agent` skill, a user can have an agent inspect setup, explain or fix blockers, choose whether to inspect claims or run a first eval, and stop before spending workflow budget on a repo that is not ready.
 
 Readiness means the repo has enough Cautilus setup to choose and run the next bounded workflow.
 It is not evidence that the repo's behavior promises are already true; proof status is handled by [Evidence Gaps](evidence-gaps.spec.md).
@@ -37,7 +38,7 @@ printf '%s\n%s\n' "$tmp" "$bin"
 cat "${sample_repo}/.agents/cautilus-adapter.yaml"
 ```
 
-## A user can see which setup checks are ready before choosing the next Cautilus workflow.
+## A user can see the exact setup checks before choosing the next Cautilus workflow.
 
 `doctor` reports workflow-relevant checks with machine-readable meaning.
 Each check has an `id`, an `ok` result, a stable `meaning`, and a run-specific `detail`.
@@ -61,16 +62,6 @@ Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
 | checks[id=adapter_valid].ok | true | Cautilus can parse and trust the adapter shape enough to continue. |
 | checks[id=repo_name].ok | true | The adapter identifies the host repo whose behavior is being evaluated. |
 
-### Executable Claim-Spec Report
-
-Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
-
-> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo})
-| path | equals | meaning | includes |
-| --- | --- | --- | --- |
-| checks[id=specdown_available].ok | true | The public claim-spec report can execute and render evidence. | |
-| checks[id=specdown_available].detail | | | specdown found at |
-
 ### First Bounded Eval
 
 Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
@@ -82,10 +73,10 @@ Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
 | checks[id=baseline_options].ok | true | Eval and optimize work have explicit comparison targets. |
 | checks[id=execution_surface].ok | true | Cautilus can point the user to an executable first run. |
 
-## A user can see the binary result for every readiness blocker.
+## A user can see the exact blocker and next setup action.
 
 `doctor` reports the actual status, failed check, suggestions, and next action for setup blockers.
-The examples below use generated repos so the report shows the binary behavior instead of a hand-written diagnosis catalog.
+The examples below use generated repos so the report shows actual binary behavior instead of a guessed setup checklist.
 
 ### Missing Git Repository
 
@@ -205,21 +196,6 @@ printf '%s\n' "$repo"
 | status | incomplete_adapter | |
 | checks[id=evaluation_surfaces].ok | false | The repo names the behavior surfaces Cautilus may evaluate. |
 | next_action.kind | edit_adapter | |
-
-### Missing Specdown
-
-```run:shell
-# Show doctor output when specdown is absent from PATH but Cautilus can still run.
-env PATH=/usr/bin:/bin "${sample_cautilus}" doctor --repo-root "${sample_repo}" || true
-```
-
-> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo}, exit_code=1, env_path=/usr/bin:/bin)
-| path | equals | meaning | includes |
-| --- | --- | --- | --- |
-| status | incomplete_adapter | | |
-| checks[id=specdown_available].ok | false | The public claim-spec report can execute and render evidence. | |
-| checks[id=specdown_available].detail | | | specdown missing from PATH=/usr/bin:/bin |
-| next_action.kind | install_specdown | | |
 
 ## A user can see the next bounded action for the current readiness state.
 
