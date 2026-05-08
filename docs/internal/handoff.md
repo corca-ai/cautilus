@@ -19,7 +19,8 @@
 - Charness follow-ups opened during this session:
   [#117](https://github.com/corca-ai/charness/issues/117) full-target readback after chunks,
   [#118](https://github.com/corca-ai/charness/issues/118) show rewritten chunk after edit,
-  [#119](https://github.com/corca-ai/charness/issues/119) accepted HITL rules as active pre-edit constraints plus target/cursor/chunk-bound validation.
+  [#119](https://github.com/corca-ai/charness/issues/119) accepted HITL rules as active pre-edit constraints plus target/cursor/chunk-bound validation,
+  [#120](https://github.com/corca-ai/charness/issues/120) sync live HITL runtime into the durable `charness-artifacts/hitl/latest.md` artifact before closeout.
 - `.charness/hitl/` remains runtime state and is intentionally uncommitted unless the user explicitly asks otherwise.
 
 ## Next Session
