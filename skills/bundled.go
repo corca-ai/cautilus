@@ -8,13 +8,13 @@ import (
 	"regexp"
 )
 
-//go:embed cautilus
+//go:embed cautilus-agent
 var bundled embed.FS
 
 var upwardMarkdownLinkPattern = regexp.MustCompile(`(\]\()(\.\.(?:/\.\.)*/)([^)\s]+)(\))`)
 
-func InstallCautilus(destinationDir string) error {
-	skillFS, err := fs.Sub(bundled, "cautilus")
+func InstallCautilusAgent(destinationDir string) error {
+	skillFS, err := fs.Sub(bundled, "cautilus-agent")
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func rewriteInstalledAgentLinks(destinationDir string, path string, payload []by
 
 func isAgentSkillDestination(destinationDir string) bool {
 	clean := filepath.Clean(destinationDir)
-	return filepath.Base(clean) == "cautilus" &&
+	return filepath.Base(clean) == "cautilus-agent" &&
 		filepath.Base(filepath.Dir(clean)) == "skills" &&
 		filepath.Base(filepath.Dir(filepath.Dir(clean))) == ".agents"
 }

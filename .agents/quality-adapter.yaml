@@ -34,11 +34,11 @@ prompt_asset_policy:
 skill_ergonomics_gate_rules:
   - progressive_disclosure_risk
 skill_ergonomics_skill_paths:
-  - skills/cautilus/SKILL.md
-  - plugins/cautilus/skills/cautilus/SKILL.md
+  - skills/cautilus-agent/SKILL.md
+  - plugins/cautilus/skills/cautilus-agent/SKILL.md
 product_surfaces:
   - installable_cli
-  - bundled_skill
+  - cautilus_agent
 cli_skill_surface_probe_commands:
   - "./bin/cautilus --version"
   - "./bin/cautilus --help"
@@ -52,15 +52,15 @@ cli_skill_surface_command_docs:
   - docs/guides/consumer-adoption.md
   - docs/specs/user/evaluation.spec.md
 cli_skill_surface_skill_paths:
-  - skills/cautilus/SKILL.md
-  - plugins/cautilus/skills/cautilus/SKILL.md
+  - skills/cautilus-agent/SKILL.md
+  - plugins/cautilus/skills/cautilus-agent/SKILL.md
 cli_skill_surface_change_globs:
   - "bin/**"
   - "cmd/cautilus/**"
   - "internal/app/**"
   - "internal/cli/**"
   - "internal/runtime/**"
-  - "skills/cautilus/**"
+  - "skills/cautilus-agent/**"
   - "plugins/cautilus/**"
   - "docs/cli-reference.md"
   - "docs/guides/consumer-adoption.md"
@@ -109,7 +109,7 @@ startup_probes:
       - tmpdir="$(mktemp -d /tmp/cautilus-agent-surface-XXXXXX)" && ./bin/cautilus install --repo-root "$tmpdir" --json >/dev/null && ./bin/cautilus doctor --repo-root "$tmpdir" --scope agent-surface >/dev/null
     class: release
     startup_mode: first-launch
-    surface: bundled_skill
+    surface: cautilus_agent
     samples: 1
 concept_paths:
   - AGENTS.md
@@ -121,8 +121,8 @@ concept_paths:
   - docs/maintainers/releasing.md
   - docs/specs/old/self-dogfood.spec.md
   - docs/internal/handoff.md
-  - skills/cautilus/SKILL.md
-  - plugins/cautilus/skills/cautilus/SKILL.md
+  - skills/cautilus-agent/SKILL.md
+  - plugins/cautilus/skills/cautilus-agent/SKILL.md
   - charness-artifacts/quality/quality.md
 preflight_commands:
   - ./bin/cautilus adapter resolve --repo-root .

@@ -17,8 +17,8 @@ import { pathToFileURL } from "node:url";
 // prepend extra `../` segments without touching anything else.
 const UPWARD_LINK = /(\]\()(\.\.(?:\/\.\.)*\/)([^)\s]+)(\))/g;
 
-// skills/cautilus/references/ is 3 levels deep under the repo root.
-// plugins/cautilus/skills/cautilus/references/ is 5. An upward link
+// skills/cautilus-agent/references/ is 3 levels deep under the repo root.
+// plugins/cautilus/skills/cautilus-agent/references/ is 5. An upward link
 // that resolved to `<repo>/<target>` from the source tree needs two
 // extra `../` segments to still resolve to the same target from the
 // packaged tree.
@@ -45,8 +45,8 @@ function walkMarkdownFiles(dir) {
 
 export function syncPackagedSkill({
 	repoRoot,
-	sourceDir = join(repoRoot, "skills", "cautilus"),
-	destinationDir = join(repoRoot, "plugins", "cautilus", "skills", "cautilus"),
+	sourceDir = join(repoRoot, "skills", "cautilus-agent"),
+	destinationDir = join(repoRoot, "plugins", "cautilus", "skills", "cautilus-agent"),
 } = {}) {
 	if (!repoRoot) {
 		throw new Error("repoRoot is required");

@@ -197,7 +197,7 @@ Record these so future sessions do not re-propose them:
 ## Fixed Decisions
 
 - Env var name is `CAUTILUS_RUN_DIR`.
-  Single source of truth across the product, the bundled skill, and the packaged skill copy.
+  Single source of truth across the product, the Cautilus Agent, and the packaged skill copy.
 - Default root is `./.cautilus/runs/`, cwd-relative, auto-created.
 - `workspace start` is the only per-run materializer entry.
   `workspace new-run` is removed, not aliased.

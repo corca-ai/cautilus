@@ -12,7 +12,7 @@ quality_command: npm run verify
 
 update_instructions:
   - "Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`. Any legacy Homebrew copy should be removed first with `brew uninstall cautilus`."
-  - "Claude Code and Codex plugin consumers pick up the bundled skill refresh via `charness update` or by re-running `cautilus install` in the host repo."
+  - "Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus install` in the host repo."
 
 real_host_required_surfaces: []
 real_host_required_path_globs: []
@@ -22,7 +22,7 @@ requested_review_commands: []
 
 product_surfaces:
   - installable_cli
-  - bundled_skill
+  - cautilus_agent
 
 cli_skill_surface_probe_commands:
   - "./bin/cautilus --version"
@@ -34,15 +34,15 @@ cli_skill_surface_probe_commands:
 cli_skill_surface_command_docs: []
 
 cli_skill_surface_skill_paths:
-  - skills/cautilus/SKILL.md
-  - plugins/cautilus/skills/cautilus/SKILL.md
+  - skills/cautilus-agent/SKILL.md
+  - plugins/cautilus/skills/cautilus-agent/SKILL.md
 
 cli_skill_surface_change_globs:
   - "bin/**"
   - "cmd/cautilus/**"
   - "internal/cli/**"
   - "internal/app/**"
-  - "skills/cautilus/**"
+  - "skills/cautilus-agent/**"
   - "plugins/cautilus/**"
   - "install.sh"
   - "scripts/release/**"

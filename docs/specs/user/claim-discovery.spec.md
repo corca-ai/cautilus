@@ -1,20 +1,29 @@
 # Claim Discovery
 
-Using `cautilus claim` and the bundled skill, a user can scan selected source docs, turn declared promises into source-referenced candidates, curate that candidate list against the repo, and choose the next evidence route.
+Every repo makes promises to users and maintainers: what problem it solves, how it should behave, and which workflows it protects.
+Those promises usually appear in docs, but the evidence behind them is scattered across tests, code, specs, eval artifacts, and human decisions.
+
+Using `cautilus claim` and Cautilus Agent, a user can turn scattered repo promises into a source-referenced worklist: what Cautilus found, what looks noisy, what may be missing, and what evidence each candidate needs next.
 
 Claim discovery is a two-pass workflow.
-The binary runs a broad deterministic scan over the selected entry docs and linked Markdown.
-That pass prefers recall and leaves source refs, heuristic metadata, duplicate handling, and next-action hints for an agent to inspect.
-The bundled skill then curates the packet: reduce false positives, compare candidates with docs and code, look for likely missing public promises, and ask whether a missing promise is intentional or under-documented.
+
+- Pass 1: The `cautilus` binary runs a broad deterministic scan over the selected entry docs and linked Markdown. It intentionally accepts some false positives so it does not miss declared promises inside that scan boundary, and it leaves source refs, heuristic metadata, duplicate handling, and next-action hints for an agent to inspect.
+- Pass 2: Cautilus Agent curates the discovered candidate list. It reduces false positives, compares candidates with docs and code, looks for likely missing public promises, and asks whether a missing promise is intentional or under-documented.
 
 Discovery creates candidates, not proof.
-A candidate is not verified until matching evidence is attached through deterministic tests, Cautilus behavior evaluation, or a human decision.
+A candidate is not verified until matching evidence is attached.
+
+Each candidate is routed toward the kind of evidence it needs next:
+
+- deterministic test evidence, such as unit, e2e, lint, schema, build, or CI checks
+- Cautilus behavior evaluation, when the claim needs an LLM-backed behavior test
+- human decision, when permissions, ownership, policy, or product judgment are part of the claim
 
 | workflow step | surface | result |
 | --- | --- | --- |
-| Select the source boundary | bundled skill plus `claim discover` | entry docs and linked Markdown depth to scan |
+| Select the source boundary | Cautilus Agent plus `claim discover` | entry docs and linked Markdown depth to scan |
 | Extract broad candidates | `claim discover` | source-referenced candidates, heuristic metadata, duplicate refs, and next-action hints |
-| Curate the candidate list | bundled skill | false-positive reductions, possible false-negative questions, and grouped follow-up work |
+| Curate the candidate list | Cautilus Agent | false-positive reductions, possible false-negative questions, and grouped follow-up work |
 | Fill evidence gaps | `claim show`, deterministic tests, `cautilus eval`, or human review | proof status changes only after valid evidence or a recorded decision |
 
 ## A user can audit the source boundary.
@@ -22,7 +31,7 @@ A candidate is not verified until matching evidence is attached through determin
 `claim discover` records the scan boundary and the claim-discovery engine in the saved claim JSON.
 `claim show` projects that saved claim JSON into a status summary without rescanning.
 If a declared promise is inside that recorded boundary and discovery misses it, that is a discovery bug.
-If an important behavior only appears outside the boundary, such as in code, transcripts, issues, or private operator memory, that is a narrative or catalog gap for the skill or a human to raise.
+If an important behavior only appears outside the boundary, such as in code, transcripts, issues, or private operator memory, that is a narrative or catalog gap for Cautilus Agent or a human to raise.
 
 ```run:shell
 $ sh -lc 'claims_path="$(jq -r ".inputPath" .cautilus/claims/status-summary.json)"; jq -r '"'"'"claimJson=" + $p, "engine.name=" + .discoveryEngine.name, "engine.ruleset=" + .discoveryEngine.ruleset, "entries=" + (.effectiveScanScope.entries | join(",")), "traversal=" + .effectiveScanScope.traversal'"'"' --arg p "$claims_path" "$claims_path"; jq -r '"'"'"boundary=" + .discoveryBoundary.sourceBasis, "omission=" + .discoveryBoundary.omissionPolicy'"'"' .cautilus/claims/status-summary.json'
@@ -96,10 +105,10 @@ sourceRefs=AGENTS.md:3,README.md:4
 | .cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json | commandEvidence[1].observed.byRecommendedProof.deterministic | 1 | |
 | .cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json | commandEvidence[1].observed.byRecommendedProof.cautilus-eval | 1 | |
 
-## The skill curates candidates before proof work.
+## Cautilus Agent curates candidates before proof work.
 
 Binary discovery intentionally leaves a broad candidate list.
-The bundled skill is responsible for turning that packet into a useful working set before proof work starts.
+Cautilus Agent is responsible for turning that packet into a useful working set before proof work starts.
 That means it should inspect the saved candidates, compare them with the repo, reduce false positives, raise possible false negatives, and preserve source refs when it asks the user what to do next.
 
 This spec verifies that the prepared dogfood episode and audit expect that curation behavior.
@@ -166,7 +175,7 @@ split-or-defer:human
 ## The prepared skill evaluation is a later proof step.
 
 The binary owns candidate extraction, duplicate sentence merging, saved claim JSON, and next-action summaries.
-The bundled skill owns the agent-facing curation workflow: use the binary, inspect the saved candidates, explain source refs and duplicate fingerprints, reduce false positives, raise possible false negatives, classify next work, and stop before review, evaluation execution, edits, or commits.
+Cautilus Agent owns the agent-facing curation workflow: use the binary, inspect the saved candidates, explain source refs and duplicate fingerprints, reduce false positives, raise possible false negatives, classify next work, and stop before review, evaluation execution, edits, or commits.
 
 This spec only verifies that the agent-run skill check is prepared.
 It does not claim that the episode has passed until the Cautilus evaluation command below is approved and executed.
@@ -178,7 +187,7 @@ $ jq -r '.scripts["dogfood:cautilus-claim-discovery-curation-flow:eval:codex"]' 
 
 | behavior to check | prepared artifact | current state |
 | --- | --- | --- |
-| agent invokes the bundled Cautilus workflow over this repo | `.agents/cautilus-adapters/self-dogfood-claim-discovery-curation-flow.yaml` | prepared, not executed |
+| agent invokes Cautilus Agent over this repo | `.agents/cautilus-adapters/self-dogfood-claim-discovery-curation-flow.yaml` | prepared, not executed |
 | episode asks for scan scope, first discovery, saved claim inspection, extraction heuristics, duplicate fingerprints, false-positive curation, possible false-negative scan, and next-action groups | `fixtures/eval/dev/skill/cautilus-claim-discovery-curation-flow.fixture.json` | prepared, not executed |
 | transcript is audited for the curation flow instead of manually trusted | `scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.mjs` | prepared, not executed |
 

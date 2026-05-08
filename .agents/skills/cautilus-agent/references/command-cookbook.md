@@ -3,7 +3,7 @@
 Concrete invocations for the step-8 scenario-propose workflow in `SKILL.md` §
 Workflow. Reach for this reference after the core workflow step has told you
 what to do; each subsection below maps to one contract already detailed under
-`skills/cautilus/references/`.
+`skills/cautilus-agent/references/`.
 
 Prefer `scenario propose` as the default entry after inventorying the
 LLM-behavior surfaces (see `bootstrap-inventory.md`). Use it to turn the

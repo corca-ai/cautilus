@@ -269,7 +269,7 @@ function ensureSmokeArtifacts(paths) {
 	ensurePathExists(paths.evalSummaryPath, "eval summary");
 	ensurePathExists(paths.evalObservedPath, "eval observed packet");
 	ensurePathExists(paths.evalCasesPath, "eval cases packet");
-	ensurePathExists(join(paths.agentSkillRoot, "SKILL.md"), "bundled skill");
+	ensurePathExists(join(paths.agentSkillRoot, "SKILL.md"), "Cautilus Agent");
 	ensureSymlink(paths.claudeSkillLink, "Claude skill compatibility link");
 }
 
@@ -359,7 +359,7 @@ export async function runExternalConsumerOnboardingSmoke(
 		const doctorPayload = JSON.parse(doctor.stdout);
 
 		const evalResult = runFirstBoundedEval(summary, cautilusBin, workspace.repoRoot, execCommand);
-		const agentSkillRoot = join(workspace.repoRoot, ".agents", "skills", "cautilus");
+		const agentSkillRoot = join(workspace.repoRoot, ".agents", "skills", "cautilus-agent");
 		const claudeSkillLink = join(workspace.repoRoot, ".claude", "skills");
 		ensureSmokeArtifacts({ adapterPath, fixturePath, runnerPath, agentSkillRoot, claudeSkillLink, ...evalResult });
 

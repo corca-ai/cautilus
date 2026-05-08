@@ -16,7 +16,7 @@ Start from:
 End at:
 
 - a checked-in `.agents/cautilus-adapter.yaml`
-- a checked-in `.agents/skills/cautilus/` tree
+- a checked-in `.agents/skills/cautilus-agent/` tree
 - `cautilus doctor --next-action` returning the smallest honest next step while wiring remains incomplete
 - `cautilus doctor` returning `ready` after the repo adds at least one runnable command template or executor variant and satisfies the git precondition
 
@@ -40,8 +40,8 @@ cautilus doctor --next-action
 
 What each step proves:
 
-1. `install` materializes the bundled skill into `.agents/skills/cautilus/` and creates the Claude compatibility shim.
-2. `doctor` is the full state surface: it tells you whether git is ready, whether the bundled skill is present, whether the default adapter exists, and whether the repo already has a runnable evaluation path.
+1. `install` materializes the Cautilus Agent into `.agents/skills/cautilus-agent/` and creates the Claude compatibility shim.
+2. `doctor` is the full state surface: it tells you whether git is ready, whether the Cautilus Agent is present, whether the default adapter exists, and whether the repo already has a runnable evaluation path.
 3. `doctor --next-action` narrows that full state down to one current action plus the exact doctor command to continue with.
 4. Follow that loop until `doctor` returns `ready`.
 5. `doctor` then proves the repo is ready against the checked-in runtime contract.

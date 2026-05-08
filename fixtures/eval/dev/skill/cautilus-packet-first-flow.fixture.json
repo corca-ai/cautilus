@@ -4,15 +4,15 @@
   "preset": "skill",
   "suiteId": "cautilus-packet-first-flow",
   "suiteDisplayName": "Cautilus Packet-First Flow",
-  "skillId": "cautilus",
-  "skillDisplayName": "cautilus",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
   "cases": [
     {
       "caseId": "episode-cautilus-packet-first-flow",
       "evaluationKind": "execution",
       "turns": [
         {
-          "input": "$cautilus",
+          "input": "$cautilus-agent",
           "injectSkill": true
         },
         {

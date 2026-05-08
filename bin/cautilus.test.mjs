@@ -95,9 +95,9 @@ test("repo shim keeps lifecycle install working from a consumer repo", () => {
 			encoding: "utf-8",
 		});
 		assert.equal(install.status, 0, install.stderr);
-		assert.match(install.stdout, /Installed .*\.agents\/skills\/cautilus/);
+		assert.match(install.stdout, /Installed .*\.agents\/skills\/cautilus-agent/);
 
-		const skillPath = join(root, ".agents", "skills", "cautilus", "SKILL.md");
+		const skillPath = join(root, ".agents", "skills", "cautilus-agent", "SKILL.md");
 		assert.equal(existsSync(skillPath), true);
 		assert.doesNotMatch(readFileSync(skillPath, "utf-8"), /node \.\/bin\/cautilus/);
 

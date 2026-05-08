@@ -1241,12 +1241,12 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	if exitCode != 0 {
 		t.Fatalf("install failed: %s", stderr)
 	}
-	if !strings.Contains(stdout, ".agents/skills/cautilus") {
+	if !strings.Contains(stdout, ".agents/skills/cautilus-agent") {
 		t.Fatalf("expected install output, got %q", stdout)
 	}
 
-	skillPath := filepath.Join(root, ".agents", "skills", "cautilus", "SKILL.md")
-	referencesPath := filepath.Join(root, ".agents", "skills", "cautilus", "references", "evaluation-process.md")
+	skillPath := filepath.Join(root, ".agents", "skills", "cautilus-agent", "SKILL.md")
+	referencesPath := filepath.Join(root, ".agents", "skills", "cautilus-agent", "references", "evaluation-process.md")
 	if _, err := os.Stat(skillPath); err != nil {
 		t.Fatalf("expected installed skill: %v", err)
 	}
@@ -1266,7 +1266,7 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	if strings.Contains(string(skill), "node ./bin/cautilus") {
 		t.Fatalf("unexpected repo-local node invocation in installed skill")
 	}
-	bootstrapInventoryPath := filepath.Join(root, ".agents", "skills", "cautilus", "references", "bootstrap-inventory.md")
+	bootstrapInventoryPath := filepath.Join(root, ".agents", "skills", "cautilus-agent", "references", "bootstrap-inventory.md")
 	bootstrapInventory, err := os.ReadFile(bootstrapInventoryPath)
 	if err != nil {
 		t.Fatalf("expected bootstrap-inventory reference: %v", err)
@@ -1360,7 +1360,7 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkillAndReportsCurrentCLI(t *testing
 		t.Fatalf("expected version 1.2.3, got %#v", current["version"])
 	}
 	skill := summary["skill"].(map[string]any)
-	if skill["destinationDir"] != filepath.Join(root, ".agents", "skills", "cautilus") {
+	if skill["destinationDir"] != filepath.Join(root, ".agents", "skills", "cautilus-agent") {
 		t.Fatalf("unexpected destinationDir: %#v", skill["destinationDir"])
 	}
 	nextSteps, ok := summary["nextSteps"].([]any)
@@ -1370,7 +1370,7 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkillAndReportsCurrentCLI(t *testing
 	if anyToString(nextSteps[0]) != "cautilus doctor --repo-root "+root+" --next-action" {
 		t.Fatalf("unexpected first next step: %#v", nextSteps[0])
 	}
-	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {
+	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "cautilus-agent", "SKILL.md")); err != nil {
 		t.Fatalf("expected installed skill: %v", err)
 	}
 }
@@ -1453,7 +1453,7 @@ func TestCLIUpdateRefreshesStandaloneInstallAndRepoSkill(t *testing.T) {
 	if installResult["wrapperPath"] != filepath.Join(binDir, "cautilus") {
 		t.Fatalf("unexpected wrapperPath: %#v", installResult["wrapperPath"])
 	}
-	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {
+	if _, err := os.Stat(filepath.Join(root, ".agents", "skills", "cautilus-agent", "SKILL.md")); err != nil {
 		t.Fatalf("expected refreshed skill: %v", err)
 	}
 }

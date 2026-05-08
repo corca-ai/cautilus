@@ -4,15 +4,15 @@
   "preset": "skill",
   "suiteId": "cautilus-docs-behavior-routing-flow",
   "suiteDisplayName": "Cautilus Docs Behavior Routing Flow",
-  "skillId": "cautilus",
-  "skillDisplayName": "cautilus",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
   "cases": [
     {
       "caseId": "episode-cautilus-docs-behavior-routing-flow",
       "evaluationKind": "execution",
       "turns": [
         {
-          "input": "$cautilus\nAre the docs and behavior aligned? Use the checked-in Cautilus workflow.",
+          "input": "$cautilus-agent\nAre the docs and behavior aligned? Use the checked-in Cautilus workflow.",
           "injectSkill": true
         },
         {

@@ -215,7 +215,7 @@ Each required leg must be `present` or explicitly `not-required` with a reason b
 The default assessment path is `.cautilus/runners/<runner-id>.assessment.json`.
 The first implementation must provide one operator-copyable assessment scaffold path through the existing product surface without introducing a public `runner` command family.
 `agent status` and `doctor --next-action` should name the expected assessment path, runner id, selected surface, proof class, and one concrete scaffold source.
-The bundled skill may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone.
+The Cautilus Agent may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone.
 
 Recommendation values should be narrow:
 
@@ -276,7 +276,7 @@ The shipped schema uses `id`, `surfaces`, `proof_class`, `command_template`, opt
 
 ## Skill Design
 
-The bundled `cautilus` skill should keep one progressive surface.
+The Cautilus Agent should keep one progressive surface.
 It should not split into separate discover, eval, optimize, and runner skills.
 
 The skill should use the binary for command discovery and examples.
@@ -308,7 +308,7 @@ More complex apps can use instance discovery and live-run invocation when select
 
 - Should runner readiness be a new adapter section or an extension of `eval_test_command_templates`?
 - Should `claim plan-evals` emit `requiredRunnerCapability` in the first slice or should that wait until runner assessment packets exist?
-- How much of `cautilus.runner_assessment.v1` should be written by a binary helper versus by the bundled skill?
+- How much of `cautilus.runner_assessment.v1` should be written by a binary helper versus by the Cautilus Agent?
 - How much output observability is required for tool-using app claims before the product should call an evaluation result actionable?
 
 ## Deferred Decisions

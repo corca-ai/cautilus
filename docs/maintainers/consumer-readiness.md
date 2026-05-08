@@ -27,7 +27,7 @@ What this means:
 
 - `cautilus` satisfies its own official adapter discovery contract.
 - The repo keeps cheap deterministic proof in the root adapter and explicit LLM-backed self-dogfood paths in named adapters.
-- Stronger binary or bundled-skill claims should come back as explicit eval presets, fixture series, or named adapters instead of being smuggled into the canonical latest eval summary.
+- Stronger binary or Cautilus Agent claims should come back as explicit eval presets, fixture series, or named adapters instead of being smuggled into the canonical latest eval summary.
 
 ## Chatbot Consumer
 
@@ -114,7 +114,7 @@ It keeps one official adapter contract while still grounding the normalization l
 
 ## Near-Term Implications
 
-1. Keep proving the deepest binary and bundled-skill behavior against `cautilus` itself.
+1. Keep proving the deepest binary and Cautilus Agent behavior against `cautilus` itself.
 2. Keep checked-in consumer-shaped normalized packet examples for the chatbot, skill-validation, and durable-workflow normalization families.
 3. Keep one explicit external bootstrap-heavy consumer proof for the `dev / repo` preset, but treat it as pattern validation rather than named-repo product ownership.
 4. Treat the next external-consumer question as whether the first bounded run should expand beyond `eval test` into the first review loop, not as whether `bootstrapHelper` / `workSkill` works at all.

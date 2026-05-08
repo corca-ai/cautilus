@@ -55,7 +55,7 @@ test("run-self-dogfood-eval materializes a disposable candidate workspace", () =
 			cwd: process.cwd(),
 			encoding: "utf-8",
 		});
-		assert.equal(existsSync(join(candidateRepo, ".agents", "skills", "cautilus", "SKILL.md")), true);
+		assert.equal(existsSync(join(candidateRepo, ".agents", "skills", "cautilus-agent", "SKILL.md")), true);
 		const packet = JSON.parse(readFileSync(outputFile, "utf-8"));
 		assert.equal(packet.schemaVersion, "cautilus.evaluation_observed.v1");
 		assert.equal(packet.evaluations.length, 1);

@@ -240,7 +240,7 @@ Record these so future sessions do not re-propose them:
 ## Fixed Decisions
 
 - Env var name is `CAUTILUS_RUN_DIR`. Single source of truth across the
-  product, the bundled skill, and the packaged skill copy.
+  product, the Cautilus Agent, and the packaged skill copy.
 - Default root is `./.cautilus/runs/`, cwd-relative, auto-created.
 - `workspace start` is the only per-run materializer entry. `workspace
   new-run` is removed, not aliased.
@@ -284,11 +284,11 @@ Record these so future sessions do not re-propose them:
 
 ## Source References
 
-- [active-run.mjs](../../../../../scripts/agent-runtime/active-run.mjs)
-- [active-run.test.mjs](../../../../../scripts/agent-runtime/active-run.test.mjs)
-- [workspace-start.mjs](../../../../../scripts/agent-runtime/workspace-start.mjs)
-- [workspace-start.test.mjs](../../../../../scripts/agent-runtime/workspace-start.test.mjs)
-- [prune-workspace-artifacts.mjs](../../../../../scripts/agent-runtime/prune-workspace-artifacts.mjs)
+- [active-run.mjs](../../../../scripts/agent-runtime/active-run.mjs)
+- [active-run.test.mjs](../../../../scripts/agent-runtime/active-run.test.mjs)
+- [workspace-start.mjs](../../../../scripts/agent-runtime/workspace-start.mjs)
+- [workspace-start.test.mjs](../../../../scripts/agent-runtime/workspace-start.test.mjs)
+- [prune-workspace-artifacts.mjs](../../../../scripts/agent-runtime/prune-workspace-artifacts.mjs)
 - [./reporting.md](./reporting.md)
 - [./review-packet.md](./review-packet.md)
 - [./optimization.md](./optimization.md)

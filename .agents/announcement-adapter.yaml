@@ -15,7 +15,7 @@ audience_tags:
 - consumer-repo operators
 - agent-eval builders
 omission_lenses:
-- standalone binary plus bundled skill should read as one product surface
+- standalone binary plus Cautilus Agent should read as one product surface
 - repo-agnostic contract boundaries matter more than any one consumer
 - held-out validation and structured review matter more than benchmark anecdotes
 delivery_kind: none

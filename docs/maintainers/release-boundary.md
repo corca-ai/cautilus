@@ -11,7 +11,7 @@ These are part of the reusable release boundary:
 - [.agents/plugins/marketplace.json](../../.agents/plugins/marketplace.json)
 - [plugins/cautilus/](../../plugins/cautilus)
 - [plugins/cautilus/.claude-plugin/plugin.json](../../plugins/cautilus/.claude-plugin/plugin.json)
-- [skills/cautilus/](../../skills/cautilus)
+- [skills/cautilus-agent/](../../skills/cautilus-agent)
 - [scripts/resolve_adapter.mjs](../../scripts/resolve_adapter.mjs)
 - [scripts/init_adapter.mjs](../../scripts/init_adapter.mjs)
 - [scripts/doctor.mjs](../../scripts/doctor.mjs)
@@ -41,7 +41,7 @@ The current honest install story is:
 2. let `install.sh` detect the host OS and architecture and download the matching tagged binary asset
 3. require `cautilus --version` to work on `PATH`
 4. in each consumer repo, run `cautilus install --repo-root .`
-5. treat `.agents/skills/cautilus/` as the canonical checked-in skill path and `.claude/skills -> ../.agents/skills` as the Claude compatibility shim
+5. treat `.agents/skills/cautilus-agent/` as the canonical checked-in skill path and `.claude/skills -> ../.agents/skills` as the Claude compatibility shim
 6. keep adapters and repo-local assets in the consumer repo
 7. for local Codex plugin testing, expose the repo marketplace through [.agents/plugins/marketplace.json](../../.agents/plugins/marketplace.json) so Codex resolves `./plugins/cautilus` as the installable local plugin
 8. verify the repo-local marketplace with [check-codex-marketplace.mjs](../../scripts/release/check-codex-marketplace.mjs)
@@ -59,6 +59,6 @@ The plugin surfaces remain repo-local test fixtures, not the canonical consumer 
 Before wider reuse, keep these compatibility rules:
 
 - breaking contract changes must update checked-in docs and fixtures in the same change
-- CLI help, bundled skill instructions, and executable specs should describe the same commands
+- CLI help, Cautilus Agent instructions, and executable specs should describe the same commands
 - new runtime surfaces should land with at least one executable test
 - if a consumer migration depends on a new product surface, update [handoff.md](../internal/handoff.md) and [master-plan.md](../master-plan.md) in the same work unit

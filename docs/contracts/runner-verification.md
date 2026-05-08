@@ -9,7 +9,7 @@ This contract keeps that judgment packet-shaped and repo-owned instead of teachi
 The binary validates and reports verification capability evidence.
 The binary does not infer semantic honesty from framework files, prompt builders, route handlers, or adapter prose.
 The host repo owns the runner, the production-path reuse argument, and the assessment judgment.
-The bundled skill may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet.
+The Cautilus Agent may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet.
 
 Runner verification is not a fourth product command family.
 It is setup evidence consumed by `doctor`, `agent status`, `eval`, and later `optimize`.

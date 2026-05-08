@@ -7,19 +7,19 @@
 3. `optimize` — improve behavior after the proof surface is honest
 
 This spec defines the command-surface contract and the deterministic `claim` packet helpers around `claim discover`.
-The goal is to keep `Cautilus` repo-agnostic while making the product understandable from the binary and bundled skill alone.
+The goal is to keep `Cautilus` repo-agnostic while making the product understandable from the binary and Cautilus Agent alone.
 
 ## Problem
 
 The product has converged on three jobs, but the command surface still exposes them unevenly.
 `eval` is now the verification front door.
 `optimize` already owns most improvement surfaces, including GEPA-style search.
-The first job, declared-claim discovery and proof planning, is still mostly expressed in bundled-skill prose plus scenario proposal helpers.
+The first job, declared-claim discovery and proof planning, is still mostly expressed in Cautilus Agent prose plus scenario proposal helpers.
 
 That creates two risks:
 
 - operators may think `Cautilus` starts only after they already know which fixture to write
-- bundled-skill guidance may drift into repo-specific wording such as README proof instead of naming the generic product job
+- Cautilus Agent guidance may drift into repo-specific wording such as README proof instead of naming the generic product job
 
 ## Current Slice
 
@@ -31,7 +31,7 @@ Discovery must also respect the repo's `.gitignore`; ignored generated reports, 
 Existing-packet helpers summarize a proof plan and prepare bounded review clusters without calling an LLM.
 The reviewed-claim helper plans eval fixtures from reviewed `cautilus-eval` claims without writing host-owned fixtures, prompts, runners, or policy.
 The validation helper gives automation a packet-shape and evidence-ref gate before a reviewed claim packet is reused.
-The no-input agent entry point is `agent status`: it emits a read-only orientation packet so the bundled skill can summarize readiness, claim-state availability, scan scope, and branch choices before running discovery, evaluation, review, optimization, edits, or commits.
+The no-input agent entry point is `agent status`: it emits a read-only orientation packet so the Cautilus Agent can summarize readiness, claim-state availability, scan scope, and branch choices before running discovery, evaluation, review, optimization, edits, or commits.
 Live app execution is now exposed under `cautilus eval live ...`.
 
 ## See It Work
@@ -278,7 +278,7 @@ It should point to the relevant scenario command rather than duplicating scenari
 ## Constraints
 
 - The three families must be discoverable from `cautilus commands --json`.
-- The bundled skill must route claim discovery, evaluation, and optimization to the same family names as the binary.
+- The Cautilus Agent must route claim discovery, evaluation, and optimization to the same family names as the binary.
 - Generated claim plans must be repo-agnostic and source-ref based.
 - `claim discover` must be useful before a repo has a runnable eval adapter.
 - `claim discover` must not imply that deterministic unit-test claims belong in Cautilus eval fixtures.
@@ -288,7 +288,7 @@ It should point to the relevant scenario command rather than duplicating scenari
 1. A fresh consumer can ask Cautilus what declared behavior claims still need proof before writing eval fixtures.
 2. A proof plan can distinguish human-auditable, deterministic, eval-backed, scenario-candidate, and alignment-work claims.
 3. Claims that need Cautilus eval are mapped to one of the four current eval presets.
-4. The command registry and bundled skill present `claim`, `eval`, and `optimize` as the three product front doors.
+4. The command registry and Cautilus Agent present `claim`, `eval`, and `optimize` as the three product front doors.
 5. Existing `eval` and `optimize` behavior remains unchanged while the first deterministic `claim` surface lands.
 
 ## Acceptance Checks
@@ -307,7 +307,7 @@ The first implementation slice includes:
 - fixture-backed unit tests for `cautilus.claim_eval_plan.v1` selection over reviewed eval claims
 - fixture-backed unit tests for `cautilus.claim_validation_report.v1` over valid and invalid evidence refs
 - a CLI smoke test that discovers claims from a tiny temp repo with README, AGENTS.md, and one deterministic-test-like claim
-- a bundled-skill disclosure check that requires the `claim`, `eval`, and `optimize` family names and forbids README-specific naming as the core concept
+- a Cautilus Agent disclosure check that requires the `claim`, `eval`, and `optimize` family names and forbids README-specific naming as the core concept
 - public spec proof that the command can emit at least one `human-auditable`, one `deterministic`, and one `cautilus-eval` candidate from checked-in fixtures
 
 ## Premortem
@@ -328,7 +328,7 @@ Countermeasure: `claim` recommends scenario commands for proposal-candidate work
 
 This file is the command-surface implementation contract.
 `docs/master-plan.md` carries only the durable roadmap summary.
-`skills/cautilus/SKILL.md` should stay short and route through the binary once the `claim` command exists.
+`skills/cautilus-agent/SKILL.md` should stay short and route through the binary once the `claim` command exists.
 
 ## Implementation Slices
 

@@ -1,7 +1,7 @@
 version: 1
 repo: cautilus
 evaluation_surfaces:
-  - focused review of the bundled skill surface
+  - focused review of the Cautilus Agent surface
 baseline_options:
   - baseline git ref in the same repo via {baseline_ref}
 required_prerequisites:
@@ -10,7 +10,7 @@ review_timeout_ms: 30000
 executor_variants:
   - id: codex-review-skill-surface
     tool: codex_exec
-    purpose: bounded review of whether the bundled skill is actually usable
+    purpose: bounded review of whether the Cautilus Agent is actually usable
     command_template: CAUTILUS_REVIEW_CODEX_MODEL=gpt-5.4-mini CAUTILUS_REVIEW_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
     required_prerequisites:
       - generate the latest full-gate report before review variants
@@ -19,13 +19,13 @@ executor_variants:
 artifact_paths:
   - README.md
   - docs/specs/old/self-dogfood.spec.md
-  - skills/cautilus/SKILL.md
-  - plugins/cautilus/skills/cautilus/SKILL.md
+  - skills/cautilus-agent/SKILL.md
+  - plugins/cautilus/skills/cautilus-agent/SKILL.md
 comparison_questions:
   - Do the repo skill and packaged skill give operators a trustworthy path for explicit self-dogfood?
 human_review_prompts:
   - id: skill-surface
-    prompt: Where would an operator still conclude the bundled skill path is stale, underspecified, or not actually usable despite the current full-gate report?
+    prompt: Where would an operator still conclude the Cautilus Agent path is stale, underspecified, or not actually usable despite the current full-gate report?
   - id: stale-latest
     prompt: Ignore artifacts/self-dogfood/latest from previous completed runs. Only judge the current report packet and the listed product files for this run.
 default_schema_file: fixtures/review/review-verdict.schema.json

@@ -509,10 +509,10 @@ func setupRunnerReadinessRepo(t *testing.T) string {
 	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents"), 0o755); err != nil {
 		t.Fatalf("MkdirAll .agents returned error: %v", err)
 	}
-	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents", "skills", "cautilus"), 0o755); err != nil {
-		t.Fatalf("MkdirAll cautilus skill returned error: %v", err)
+	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents", "skills", "cautilus-agent"), 0o755); err != nil {
+		t.Fatalf("MkdirAll Cautilus Agent returned error: %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "skills", "cautilus", "SKILL.md"), []byte("# Cautilus\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "skills", "cautilus-agent", "SKILL.md"), []byte("# Cautilus\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile skill returned error: %v", err)
 	}
 	if err := os.MkdirAll(filepath.Join(repoRoot, ".claude", "skills"), 0o755); err != nil {

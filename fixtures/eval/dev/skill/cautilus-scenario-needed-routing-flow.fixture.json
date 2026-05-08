@@ -4,15 +4,15 @@
   "preset": "skill",
   "suiteId": "cautilus-scenario-needed-routing-flow",
   "suiteDisplayName": "Cautilus Scenario Needed Routing Flow",
-  "skillId": "cautilus",
-  "skillDisplayName": "cautilus",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
   "cases": [
     {
       "caseId": "episode-cautilus-scenario-needed-routing-flow",
       "evaluationKind": "execution",
       "turns": [
         {
-          "input": "$cautilus\nWhich scenarios still need to be created? Use the checked-in Cautilus workflow.",
+          "input": "$cautilus-agent\nWhich scenarios still need to be created? Use the checked-in Cautilus workflow.",
           "injectSkill": true
         },
         {

@@ -19,7 +19,7 @@ The exact raw-claim evidence state remains in `.cautilus/claims/evidenced-typed-
 Aligned user claims: U1 Claim, U9 Proof Debt.
 
 `claim discover` emits source-ref-backed candidates, rough labels, and proof-planning fields.
-It should favor recall from configured entry documents and linked Markdown, then rely on the bundled skill or an agent to merge duplicates, split fragments, and project canonical user-facing and maintainer-facing claims.
+It should favor recall from configured entry documents and linked Markdown, then rely on Cautilus Agent or a reviewer to merge duplicates, split fragments, and project canonical user-facing and maintainer-facing claims.
 
 Proof route: deterministic.
 Current evidence status: proof-planning; not satisfied by this catalog entry alone.
@@ -39,7 +39,7 @@ Source anchors: README.md, AGENTS.md, docs/contracts/claim-discovery-workflow.md
 Aligned user claims: U1 Claim, U4 Doctor, U6 CLI and Agents, U9 Proof Debt.
 
 The binary owns deterministic command discovery, packet examples, scans, validation, and reusable artifacts.
-The bundled skill owns routing, sequencing, decision boundaries, claim curation, review-budget explanation, LLM-backed claim review, and subagent orchestration.
+The Cautilus Agent owns routing, sequencing, decision boundaries, claim curation, review-budget explanation, LLM-backed claim review, and subagent orchestration.
 The binary must not directly call an LLM provider for claim discovery or claim review.
 
 Proof route: deterministic plus dev/skill eval.
@@ -53,7 +53,7 @@ Required evidence:
 - skill disclosure checks for progressive disclosure between the binary and skill
 - dev/skill eval proving the skill routes claim-review work through a budgeted branch instead of treating raw discovery as a finished answer
 
-Source anchors: README.md, skills/cautilus/SKILL.md, docs/specs/old/standalone-surface.spec.md.
+Source anchors: README.md, skills/cautilus-agent/SKILL.md, docs/specs/old/standalone-surface.spec.md.
 
 ## M3. Host Repos Own Runtime-Specific Behavior
 

@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-const SOURCE_SKILL = "skills/cautilus/SKILL.md";
-const PACKAGED_SKILL = "plugins/cautilus/skills/cautilus/SKILL.md";
+const SOURCE_SKILL = "skills/cautilus-agent/SKILL.md";
+const PACKAGED_SKILL = "plugins/cautilus/skills/cautilus-agent/SKILL.md";
 const MAX_NONEMPTY_LINES = 180;
 
 const REQUIRED_FRAGMENTS = [
@@ -125,7 +125,7 @@ if (source !== packaged) {
 const sourceResult = checkSkill(SOURCE_SKILL, source);
 const packagedResult = checkSkill(PACKAGED_SKILL, packaged);
 problems.push(...sourceResult.problems, ...packagedResult.problems);
-problems.push(...checkSkillTree("skills/cautilus"), ...checkSkillTree("plugins/cautilus/skills/cautilus"));
+problems.push(...checkSkillTree("skills/cautilus-agent"), ...checkSkillTree("plugins/cautilus/skills/cautilus-agent"));
 
 if (problems.length > 0) {
 	console.error("check-cautilus-skill-disclosure: failed");

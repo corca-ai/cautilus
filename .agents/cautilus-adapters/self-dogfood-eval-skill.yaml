@@ -1,11 +1,11 @@
 version: 1
 repo: cautilus
 evaluation_surfaces:
-  - local bundled cautilus skill can orchestrate a checked-in dev/skill eval request
+  - local Cautilus Agent can orchestrate a checked-in dev/skill eval request
 baseline_options:
   - baseline git ref in the same repo via {baseline_ref}
 required_prerequisites:
-  - materialize the local cautilus skill surface before running nested skill evals
+  - materialize the local Cautilus Agent surface before running nested skill evals
 preflight_commands:
   - ./bin/cautilus install --repo-root . --overwrite
   - ./bin/cautilus doctor --repo-root . --scope agent-surface
@@ -13,16 +13,16 @@ evaluation_input_default: fixtures/eval/dev/skill/cautilus-skill-routing.fixture
 eval_test_command_templates:
   - node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/local-skill-test --backend {backend} --fixture-results-file fixtures/eval/dev/skill/internal-runner-fixture-results.json --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(cautilus *)'
 artifact_paths:
-  - skills/cautilus/SKILL.md
+  - skills/cautilus-agent/SKILL.md
   - docs/contracts/claim-discovery-workflow.md
-  - skills/cautilus/references/skill-evaluation.md
-  - skills/cautilus/references/evaluation-process.md
+  - skills/cautilus-agent/references/skill-evaluation.md
+  - skills/cautilus-agent/references/evaluation-process.md
   - fixtures/eval/dev/skill/cautilus-skill-routing.fixture.json
 comparison_questions:
-  - Can the bundled cautilus skill follow a concrete dev/skill eval request without hand-held packet editing?
-  - Can the bundled cautilus skill choose the bounded claim discovery status path when invoked without detailed task input?
+  - Can the Cautilus Agent follow a concrete dev/skill eval request without hand-held packet editing?
+  - Can the Cautilus Agent choose the bounded claim discovery status path when invoked without detailed task input?
 human_review_prompts:
   - id: local-skill-eval
-    prompt: Where would an operator still conclude that the bundled cautilus skill cannot reliably run a dev/skill eval end to end?
+    prompt: Where would an operator still conclude that the Cautilus Agent cannot reliably run a dev/skill eval end to end?
   - id: no-input-claim-discovery
     prompt: Where would an operator still conclude that no-input invocation could skip scan confirmation, over-scan the repo, or launch LLM review without a separate review budget?

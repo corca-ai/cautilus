@@ -2,24 +2,24 @@
   "trigger-cautilus-test-request": [
     {
       "invoked": true,
-      "summary": "The prompt explicitly called for the cautilus skill and the agent used it.",
+      "summary": "The prompt explicitly called for the Cautilus Agent and the agent used it.",
       "duration_ms": 1800
     },
     {
       "invoked": true,
-      "summary": "A second trigger run also used the cautilus skill for the local fixture workflow.",
+      "summary": "A second trigger run also used the Cautilus Agent for the local fixture workflow.",
       "duration_ms": 1900
     }
   ],
   "execution-cautilus-test-request": {
     "invoked": true,
-    "summary": "The agent used the cautilus skill to run the checked-in dev/skill eval fixture with --runtime fixture, --skip-preflight, and summarized the accept-now recommendation.",
+    "summary": "The agent used the Cautilus Agent to run the checked-in dev/skill eval fixture with --runtime fixture, --skip-preflight, and summarized the accept-now recommendation.",
     "outcome": "passed",
     "duration_ms": 2600
   },
   "execution-cautilus-no-input-claim-discovery-status": {
     "invoked": true,
-    "summary": "The agent used the cautilus skill's no-input path, checked adapter readiness and claim-state availability, kept scan confirmation separate from LLM review, and offered next branch options.",
+    "summary": "The agent used the Cautilus Agent's no-input path, checked adapter readiness and claim-state availability, kept scan confirmation separate from LLM review, and offered next branch options.",
     "outcome": "passed",
     "duration_ms": 3200
   }

@@ -19,7 +19,7 @@ test("run-self-dogfood-skill-refresh-flow-eval materializes a disposable candida
 				caseId: "episode-cautilus-refresh-flow",
 				evaluationKind: "execution",
 				turns: [
-					{ input: "$cautilus", injectSkill: true },
+					{ input: "$cautilus-agent", injectSkill: true },
 					{ input: "1" },
 				],
 				auditKind: "cautilus_refresh_flow",
@@ -53,13 +53,13 @@ test("run-self-dogfood-skill-refresh-flow-eval materializes a disposable candida
 			cwd: process.cwd(),
 			encoding: "utf-8",
 		});
-		assert.equal(existsSync(join(candidateRepo, ".agents", "skills", "cautilus", "SKILL.md")), true);
+		assert.equal(existsSync(join(candidateRepo, ".agents", "skills", "cautilus-agent", "SKILL.md")), true);
 		const packet = JSON.parse(readFileSync(outputFile, "utf-8"));
 		assert.equal(packet.schemaVersion, "cautilus.skill_evaluation_inputs.v1");
 		assert.equal(packet.evaluations.length, 1);
 		assert.equal(packet.evaluations[0].evaluationId, "episode-cautilus-refresh-flow");
 		assert.equal(packet.evaluations[0].outcome, "passed");
-		assert.equal(existsSync(join(process.cwd(), ".agents", "skills", "cautilus", "SKILL.md")), true);
+		assert.equal(existsSync(join(process.cwd(), ".agents", "skills", "cautilus-agent", "SKILL.md")), true);
 	} finally {
 		try {
 			execFileSync("git", ["-C", process.cwd(), "worktree", "remove", "--force", candidateRepo], {

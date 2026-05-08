@@ -11,14 +11,14 @@ Start with `git status --short`, then run `charness:find-skills` once and explic
   `npm run lint:specs -- <spec-file>` now validates selected spec files and runs each one as a focused temporary specdown entry with `-no-report`.
 - Current deliberate product boundary:
   Cautilus owns standalone binary behavior, machine-readable packets, provenance, status summaries, and next-work routing.
-  The bundled Cautilus skill interprets those packets.
+  The Cautilus Agent interprets those packets.
   Charness-owned authoring discipline should eventually own reusable top-level user-facing, maintainer-facing, and cross-concern spec language.
 - The Charness follow-up for missed support-skill discoverability is [corca-ai/charness#108](https://github.com/corca-ai/charness/issues/108).
   Do not over-specify the final Charness design yet; this Cautilus repo is still the sharpening surface.
 - The Charness follow-up for reusable top-level spec authoring discipline is [corca-ai/charness#109](https://github.com/corca-ai/charness/issues/109).
   Treat it as a direction marker, not a frozen implementation plan.
 - Readiness story review is considered complete.
-  Claim Discovery needs smaller HITL chunks because deterministic packet evidence, non-verdict boundary, next-work routing, and bundled-skill curation have different acceptance boundaries.
+  Claim Discovery needs smaller HITL chunks because deterministic packet evidence, non-verdict boundary, next-work routing, and Cautilus Agent curation have different acceptance boundaries.
 - `.charness/hitl/` is runtime state and should stay uncommitted unless the user explicitly asks otherwise.
 
 ## Next Session

@@ -548,7 +548,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"The same product workflow can be reused across repos because repo-specific behavior lives in adapters and fixtures.",
 		"",
-		"The Agent track provides bundled skill and plugin manifests through cautilus install.",
+		"The Agent track provides Cautilus Agent and plugin manifests through cautilus install.",
 		"",
 		"The static HTML renderer emits browser-readable views for human review.",
 		"",
@@ -560,7 +560,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Use when a stateful automation keeps stalling on the same step.",
 		"",
-		"The `cautilus install` step also lands a bundled skill with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
+		"The `cautilus install` step also lands a Cautilus Agent with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
 		"",
 		"The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
 		"",
@@ -661,7 +661,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.",
 		"",
-		"The bundled skill should own orchestration that depends on an agent.",
+		"The Cautilus Agent should own orchestration that depends on an agent.",
 		"",
 		"The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation.",
 		"",
@@ -801,7 +801,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if _, exists := reusedWorkflow["recommendedEvalSurface"]; exists {
 		t.Fatalf("expected broad reused workflow claim not to pick one surface before scenario selection, got %#v", reusedWorkflow)
 	}
-	install := bySummary["The Agent track provides bundled skill and plugin manifests through cautilus install."]
+	install := bySummary["The Agent track provides Cautilus Agent and plugin manifests through cautilus install."]
 	if install == nil || install["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected install and plugin materialization to be deterministic, got %#v", install)
 	}
@@ -825,7 +825,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if stalledGuidance == nil || stalledGuidance["recommendedProof"] != "human-auditable" || stalledGuidance["verificationReadiness"] != "blocked" {
 		t.Fatalf("expected broad stalled-workflow guidance to be blocked human-auditable, got %#v", stalledGuidance)
 	}
-	conversationalAgent := bySummary["The `cautilus install` step also lands a bundled skill with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."]
+	conversationalAgent := bySummary["The `cautilus install` step also lands a Cautilus Agent with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."]
 	if conversationalAgent == nil || conversationalAgent["recommendedProof"] != "cautilus-eval" || conversationalAgent["recommendedEvalSurface"] != "dev/skill" {
 		t.Fatalf("expected conversational installed-agent claim to route to dev/skill eval, got %#v", conversationalAgent)
 	}
@@ -996,9 +996,9 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if refreshPlanBoundary == nil || refreshPlanBoundary["recommendedProof"] != "human-auditable" || refreshPlanBoundary["verificationReadiness"] != "needs-alignment" {
 		t.Fatalf("expected mixed skill/refresh-plan packet obligation to need alignment, got %#v", refreshPlanBoundary)
 	}
-	bundledSkillOwnership := bySummary["The bundled skill should own orchestration that depends on an agent."]
+	bundledSkillOwnership := bySummary["The Cautilus Agent should own orchestration that depends on an agent."]
 	if bundledSkillOwnership == nil || bundledSkillOwnership["recommendedProof"] != "human-auditable" || bundledSkillOwnership["verificationReadiness"] != "needs-alignment" {
-		t.Fatalf("expected bundled-skill ownership claim to need alignment, got %#v", bundledSkillOwnership)
+		t.Fatalf("expected Cautilus Agent ownership claim to need alignment, got %#v", bundledSkillOwnership)
 	}
 	binaryProviderOwnership := bySummary["The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation."]
 	if binaryProviderOwnership == nil || binaryProviderOwnership["recommendedProof"] != "human-auditable" || binaryProviderOwnership["verificationReadiness"] != "needs-alignment" {

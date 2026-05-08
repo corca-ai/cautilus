@@ -30,7 +30,7 @@ This updates the maintained version surfaces together:
 - [.claude-plugin/marketplace.json](../../.claude-plugin/marketplace.json)
 - [plugins/cautilus/.claude-plugin/plugin.json](../../plugins/cautilus/.claude-plugin/plugin.json)
 - [plugins/cautilus/.codex-plugin/plugin.json](../../plugins/cautilus/.codex-plugin/plugin.json)
-- the packaged `plugins/cautilus/skills/cautilus/` tree from the bundled `skills/cautilus/` source (upward relative markdown links inside `.md` files are rewritten so they still resolve to the same repo-root targets from the two-levels-deeper packaged location; sibling `./X` links and non-markdown files stay byte-identical)
+- the packaged `plugins/cautilus/skills/cautilus-agent/` tree from the bundled `skills/cautilus-agent/` source (upward relative markdown links inside `.md` files are rewritten so they still resolve to the same repo-root targets from the two-levels-deeper packaged location; sibling `./X` links and non-markdown files stay byte-identical)
 
 2. Run:
 

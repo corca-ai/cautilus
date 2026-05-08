@@ -155,7 +155,7 @@ test("repo marketplace points Claude at the packaged cautilus plugin subtree", (
 	assert.equal(marketplace.plugins[0].version, PACKAGE_VERSION);
 });
 
-test("packaged cautilus plugin manifest points at its bundled skills directory", () => {
+test("packaged cautilus plugin manifest points at its Cautilus Agent directory", () => {
 	const manifest = JSON.parse(
 		readFileSync(join(REPO_ROOT, "plugins", "cautilus", ".codex-plugin", "plugin.json"), "utf-8"),
 	);
@@ -172,10 +172,10 @@ test("packaged cautilus Claude plugin manifest carries stable product metadata",
 	assert.equal(manifest.repository, "https://github.com/corca-ai/cautilus");
 });
 
-test("packaged cautilus skill stays in sync with the repo-bundled skill source", () => {
-	const repoTree = readTree(join(REPO_ROOT, "skills", "cautilus"));
+test("packaged cautilus-agent skill stays in sync with the repo-Cautilus Agent source", () => {
+	const repoTree = readTree(join(REPO_ROOT, "skills", "cautilus-agent"));
 	const packagedTree = readTree(
-		join(REPO_ROOT, "plugins", "cautilus", "skills", "cautilus"),
+		join(REPO_ROOT, "plugins", "cautilus", "skills", "cautilus-agent"),
 	);
 	// The packaged tree sits two directory levels deeper than the source tree,
 	// so sync-packaged-skill.mjs rewrites upward markdown links to keep them

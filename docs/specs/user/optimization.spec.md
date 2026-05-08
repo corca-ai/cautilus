@@ -1,6 +1,6 @@
 # Bounded Optimization
 
-Using `cautilus optimize` and bundled-skill guidance, a user can improve a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.
+Using `cautilus optimize` and Cautilus Agent guidance, a user can improve a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.
 
 ## A user starts optimization from explicit claim, eval, and target packets rather than an open-ended retry loop.
 

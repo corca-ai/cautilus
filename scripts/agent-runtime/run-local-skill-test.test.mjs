@@ -24,7 +24,7 @@ test("buildObservedSkillEvaluationInput materializes a normalized packet from fi
 		fixtureResultsFile: join(process.cwd(), "fixtures", "eval", "dev", "skill", "internal-runner-fixture-results.json"),
 	});
 	assert.equal(packet.schemaVersion, "cautilus.skill_evaluation_inputs.v1");
-	assert.equal(packet.skillId, "cautilus");
+	assert.equal(packet.skillId, "cautilus-agent");
 	assert.equal(packet.evaluations.length, 3);
 	assert.equal(packet.evaluations[0].expectedTrigger, "must_invoke");
 	assert.equal(packet.evaluations[0].invoked, true);
@@ -88,14 +88,14 @@ test("skill case suites preserve audit-backed episode turns", () => {
 				caseId: "episode-cautilus-refresh-flow",
 				evaluationKind: "execution",
 				turns: [
-					{ input: "$cautilus", injectSkill: true },
+					{ input: "$cautilus-agent", injectSkill: true },
 					{ input: "1" },
 				],
 				auditKind: "cautilus_refresh_flow",
 			},
 		],
 	});
-	assert.equal(suite.cases[0].prompt, "Multi-turn episode starting with: $cautilus");
+	assert.equal(suite.cases[0].prompt, "Multi-turn episode starting with: $cautilus-agent");
 	assert.equal(suite.cases[0].turns.length, 2);
 	assert.equal(suite.cases[0].turns[0].injectSkill, true);
 	assert.equal(suite.cases[0].auditKind, "cautilus_refresh_flow");
@@ -110,7 +110,7 @@ test("skill case suites accept packet-first audit episodes", () => {
 				caseId: "episode-cautilus-packet-first-flow",
 				evaluationKind: "execution",
 				turns: [
-					{ input: "$cautilus", injectSkill: true },
+					{ input: "$cautilus-agent", injectSkill: true },
 					{ input: "Summarize the current claim packet without browser output." },
 				],
 				auditKind: "cautilus_packet_first_flow",
@@ -130,7 +130,7 @@ test("skill case suites accept canonical spec curation audit episodes", () => {
 				caseId: "episode-cautilus-canonical-spec-curation-flow",
 				evaluationKind: "execution",
 				turns: [
-					{ input: "$cautilus", injectSkill: true },
+					{ input: "$cautilus-agent", injectSkill: true },
 					{ input: "Check canonical spec indexes before continuing HITL." },
 				],
 				auditKind: "cautilus_canonical_spec_curation_flow",
@@ -150,7 +150,7 @@ test("skill case suites accept claim discovery curation audit episodes", () => {
 				caseId: "episode-cautilus-claim-discovery-curation-flow",
 				evaluationKind: "execution",
 				turns: [
-					{ input: "$cautilus", injectSkill: true },
+					{ input: "$cautilus-agent", injectSkill: true },
 					{ input: "Run discovery and classify the resulting packet before review or eval." },
 				],
 				auditKind: "cautilus_claim_discovery_curation_flow",
@@ -173,7 +173,7 @@ test("fixture-backed episode cases still materialize skill evaluation packets", 
 				caseId: "episode-cautilus-refresh-flow",
 				evaluationKind: "execution",
 				turns: [
-					{ input: "$cautilus", injectSkill: true },
+					{ input: "$cautilus-agent", injectSkill: true },
 					{ input: "1" },
 				],
 				auditKind: "cautilus_refresh_flow",
@@ -196,7 +196,7 @@ test("fixture-backed episode cases still materialize skill evaluation packets", 
 		backend: "fixture",
 		fixtureResultsFile,
 	});
-	assert.equal(packet.evaluations[0].prompt, "Multi-turn episode starting with: $cautilus");
+	assert.equal(packet.evaluations[0].prompt, "Multi-turn episode starting with: $cautilus-agent");
 	assert.equal(packet.evaluations[0].outcome, "passed");
 });
 

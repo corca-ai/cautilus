@@ -168,7 +168,7 @@ func currentProductSurfaceSummary() ProductSurfaceSummary {
 		},
 		CurrentSurfaceNote: []string{
 			"inspect report.json reasonCodes and warnings before treating reject as a clean regression",
-			"use cautilus scenarios or the bundled skill when the right normalization family is unclear",
+			"use cautilus scenarios or the Cautilus Agent when the right normalization family is unclear",
 		},
 	}
 }

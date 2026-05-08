@@ -231,7 +231,7 @@ func TestBuildEvaluationSummaryBlocksPinnedRuntimeMismatch(t *testing.T) {
 
 func TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange(t *testing.T) {
 	repoRoot := t.TempDir()
-	targetPath := filepath.Join(repoRoot, "skills", "cautilus", "SKILL.md")
+	targetPath := filepath.Join(repoRoot, "skills", "cautilus-agent", "SKILL.md")
 	originalTarget := "Use the existing skill instructions.\n"
 	mustWriteFile(t, targetPath, originalTarget)
 

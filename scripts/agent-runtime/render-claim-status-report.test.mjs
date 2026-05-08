@@ -147,7 +147,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 					ruleset: "claim-discovery-rules.v2",
 				},
 				summary: "The saved claim map is stale.",
-				changedClaimSources: [{ path: "skills/cautilus/SKILL.md", claimCount: 2 }],
+				changedClaimSources: [{ path: "skills/cautilus-agent/SKILL.md", claimCount: 2 }],
 				nextActions: [
 					{
 						id: "update_saved_claim_map",

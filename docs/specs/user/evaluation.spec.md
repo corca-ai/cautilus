@@ -1,6 +1,6 @@
 # Behavior Evaluation
 
-Using `cautilus eval` and bundled-skill guidance, a user can evaluate intentful behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces when deterministic tests alone do not explain the behavior.
+Using `cautilus eval` and Cautilus Agent guidance, a user can evaluate intentful behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces when deterministic tests alone do not explain the behavior.
 
 ## A user can choose the behavior surface that matches the evaluation intent.
 

@@ -208,7 +208,7 @@ func TestFindRepoRootFromNestedPath(t *testing.T) {
 		"package.json",
 		"bin/cautilus",
 		"scripts/.keep",
-		"skills/cautilus/SKILL.md",
+		"skills/cautilus-agent/SKILL.md",
 		"internal/cli/command-registry.json",
 	}
 	for _, relativePath := range paths {

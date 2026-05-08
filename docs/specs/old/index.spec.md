@@ -32,7 +32,7 @@ The first proof deliberately shows a small end-to-end product move: `Cautilus` t
 - [Current Product](current-product.spec.md)
   Explains the packet-first evaluation workflow that ships today: normalize inputs, build reusable packets, and reopen the result through review and HTML surfaces.
 - [Standalone Surface](standalone-surface.spec.md)
-  Proves that the standalone binary and bundled skill can be installed into a fresh repo and discovered through stable operator-facing commands.
+  Proves that the standalone binary and Cautilus Agent can be installed into a fresh repo and discovered through stable operator-facing commands.
 - [Self-Dogfood Publication](self-dogfood.spec.md)
   Defines the narrow claim of the published latest self-dogfood bundle: record the result honestly and reopen it without replaying the expensive review.
 - [Evaluation Surfaces](evaluation-surfaces.spec.md)

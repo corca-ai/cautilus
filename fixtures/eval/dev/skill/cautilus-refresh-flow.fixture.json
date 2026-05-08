@@ -4,15 +4,15 @@
   "preset": "skill",
   "suiteId": "cautilus-refresh-flow",
   "suiteDisplayName": "Cautilus Refresh Flow",
-  "skillId": "cautilus",
-  "skillDisplayName": "cautilus",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
   "cases": [
     {
       "caseId": "episode-cautilus-refresh-flow",
       "evaluationKind": "execution",
       "turns": [
         {
-          "input": "$cautilus",
+          "input": "$cautilus-agent",
           "injectSkill": true
         },
         {

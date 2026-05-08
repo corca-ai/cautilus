@@ -4,15 +4,15 @@
   "preset": "skill",
   "suiteId": "cautilus-review-prepare-flow",
   "suiteDisplayName": "Cautilus Review Prepare Flow",
-  "skillId": "cautilus",
-  "skillDisplayName": "cautilus",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
   "cases": [
     {
       "caseId": "episode-cautilus-review-prepare-flow",
       "evaluationKind": "execution",
       "turns": [
         {
-          "input": "$cautilus",
+          "input": "$cautilus-agent",
           "injectSkill": true
         },
         {

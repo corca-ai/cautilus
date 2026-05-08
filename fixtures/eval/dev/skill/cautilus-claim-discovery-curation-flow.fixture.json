@@ -4,15 +4,15 @@
   "preset": "skill",
   "suiteId": "cautilus-claim-discovery-curation-flow",
   "suiteDisplayName": "Cautilus Claim Discovery Curation Flow",
-  "skillId": "cautilus",
-  "skillDisplayName": "cautilus",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
   "cases": [
     {
       "caseId": "episode-cautilus-claim-discovery-curation-flow",
       "evaluationKind": "execution",
       "turns": [
         {
-          "input": "$cautilus\nDoes this repo prove what it claims? Use the checked-in Cautilus workflow.",
+          "input": "$cautilus-agent\nDoes this repo prove what it claims? Use the checked-in Cautilus workflow.",
           "injectSkill": true
         },
         {

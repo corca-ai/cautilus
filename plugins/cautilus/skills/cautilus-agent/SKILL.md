@@ -1,26 +1,26 @@
 ---
-name: cautilus
+name: cautilus-agent
 description: "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand."
 ---
 
-# Cautilus
+# Cautilus Agent
 
-Use this bundled skill when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding claim discovery, eval fixtures, report, review, or optimize commands by hand.
+Use Cautilus Agent when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding claim discovery, eval fixtures, report, review, or optimize commands by hand.
 
-The installed skill assumes a Cautilus binary is available.
+Cautilus Agent assumes a Cautilus binary is available.
 In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.
 In consumer repos, use `cautilus` on `PATH`.
 If no binary is available, install the CLI first and verify with `cautilus --version`.
 Specdown is a hard prerequisite for the public executable claim-doc workflow.
 If `cautilus doctor` reports `specdown_available=false`, install specdown before treating the repo as ready for Cautilus-managed claim docs.
-To materialize this skill in a host repo, run `cautilus install --repo-root .`.
+To materialize Cautilus Agent in a host repo, run `cautilus install --repo-root .`.
 
 ## Product Shape
 
-`Cautilus` is a standalone binary plus this bundled skill.
+`Cautilus` is a standalone binary plus Cautilus Agent.
 Host repos own adapters, fixtures, prompts, wrappers, and policy.
 The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts.
-The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
+Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
 `eval` and `optimize` may still exercise model-involving behavior through adapter-owned runners.
 
 The three product front doors are:
@@ -183,7 +183,7 @@ Routing rule:
 
 Use `cautilus scenarios --json` only when you need the proposal-input normalization catalog.
 Use `cautilus doctor --repo-root .` when the selected branch is repo evaluation readiness.
-Use `cautilus doctor --repo-root . --scope agent-surface` or `doctor --scope agent-surface` when the selected branch is only local bundled-skill install/readiness.
+Use `cautilus doctor --repo-root . --scope agent-surface` or `doctor --scope agent-surface` when the selected branch is only local Cautilus Agent install/readiness.
 
 ## Workflow
 

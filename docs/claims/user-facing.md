@@ -101,13 +101,13 @@ README.md, docs/cli-reference.md, docs/guides/consumer-adoption.md, docs/contrac
 
 **What this means.**
 The binary gives stable commands and files.
-The bundled skill helps an agent choose the right next step, explain the decision boundary, and run review work without rebuilding the workflow from scratch.
+The Cautilus Agent helps an agent choose the right next step, explain the decision boundary, and run review work without rebuilding the workflow from scratch.
 
 **How Cautilus checks it.**
-Install checks, command-discovery checks, skill-disclosure checks, and skill evaluation fixtures should prove that the binary and bundled skill stay consistent.
+Install checks, command-discovery checks, skill-disclosure checks, and skill evaluation fixtures should prove that the binary and Cautilus Agent stay consistent.
 
 **Source anchors.**
-README.md, skills/cautilus/SKILL.md, docs/specs/old/standalone-surface.spec.md, docs/specs/user/index.spec.md.
+README.md, skills/cautilus-agent/SKILL.md, docs/specs/old/standalone-surface.spec.md, docs/specs/user/index.spec.md.
 
 ## U7. Cautilus Produces Reviewable Human And Machine Artifacts
 

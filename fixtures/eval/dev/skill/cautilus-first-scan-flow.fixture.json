@@ -4,15 +4,15 @@
   "preset": "skill",
   "suiteId": "cautilus-first-scan-flow",
   "suiteDisplayName": "Cautilus First Scan Flow",
-  "skillId": "cautilus",
-  "skillDisplayName": "cautilus",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
   "cases": [
     {
       "caseId": "episode-cautilus-first-scan-flow",
       "evaluationKind": "execution",
       "turns": [
         {
-          "input": "$cautilus",
+          "input": "$cautilus-agent",
           "injectSkill": true
         },
         {

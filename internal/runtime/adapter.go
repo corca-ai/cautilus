@@ -1299,10 +1299,10 @@ func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
 	checkDefinitions := []surfaceCheck{
 		{
 			id:         "skill_installed",
-			path:       filepath.Join(repoRoot, ".agents", "skills", "cautilus", "SKILL.md"),
-			okDetail:   "Installed bundled skill is present under .agents/skills/cautilus.",
-			failDetail: "Installed bundled skill is missing under .agents/skills/cautilus.",
-			suggestion: fmt.Sprintf("Run cautilus install --repo-root %s to materialize the local agent skill surface.", repoRoot),
+			path:       filepath.Join(repoRoot, ".agents", "skills", "cautilus-agent", "SKILL.md"),
+			okDetail:   "Cautilus Agent is installed under .agents/skills/cautilus-agent.",
+			failDetail: "Cautilus Agent is missing under .agents/skills/cautilus-agent.",
+			suggestion: fmt.Sprintf("Run cautilus install --repo-root %s to materialize the local Cautilus Agent surface.", repoRoot),
 		},
 		{
 			id:         "claude_skills_link",
@@ -1411,7 +1411,7 @@ func doctorCheckMeaning(id string) string {
 	case "execution_surface":
 		return "Cautilus can point the user to an executable first run."
 	case "skill_installed":
-		return "The bundled Cautilus skill is available to local agents."
+		return "The Cautilus Agent is available to local agents."
 	case "claude_skills_link":
 		return "Claude-compatible skill discovery can find the installed skill."
 	default:

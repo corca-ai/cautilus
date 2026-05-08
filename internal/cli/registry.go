@@ -48,7 +48,7 @@ var embeddedFiles embed.FS
 var (
 	registry           Registry
 	registryLoadErr    error
-	repoRootSentinels  = []string{"package.json", "bin/cautilus", "scripts", "skills/cautilus/SKILL.md", "internal/cli/command-registry.json"}
+	repoRootSentinels  = []string{"package.json", "bin/cautilus", "scripts", "skills/cautilus-agent/SKILL.md", "internal/cli/command-registry.json"}
 	errRepoRootMissing = errors.New("could not locate cautilus source root from the current working directory")
 )
 

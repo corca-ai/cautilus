@@ -8,8 +8,8 @@ import { syncPackagedSkill } from "./sync-packaged-skill.mjs";
 
 test("syncPackagedSkill replaces the packaged skill tree with the bundled source", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-sync-packaged-"));
-	const sourceDir = join(root, "skills", "cautilus");
-	const destinationDir = join(root, "plugins", "cautilus", "skills", "cautilus");
+	const sourceDir = join(root, "skills", "cautilus-agent");
+	const destinationDir = join(root, "plugins", "cautilus", "skills", "cautilus-agent");
 
 	mkdirSync(join(sourceDir, "references"), { recursive: true });
 	mkdirSync(destinationDir, { recursive: true });

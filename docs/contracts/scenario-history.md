@@ -237,7 +237,7 @@ Recorded here so the next session does not re-run the same analysis.
   `(commitSha, scenarioId, adapterId, mode)`).
 - **Part 2 — broader compare ownership.** Extend history / compare hooks beyond the single profile-backed eval path so `review variants`, profile-less eval test runs, and skill evaluation can also update history and materialize compare artifacts.
 
-The two parts were planned as one coordinated slice, with README, [skills/cautilus/SKILL.md](../../skills/cautilus/SKILL.md), `cautilus --help` (registry), and this contract updated together.
+The two parts were planned as one coordinated slice, with README, [skills/cautilus-agent/SKILL.md](../../skills/cautilus-agent/SKILL.md), `cautilus --help` (registry), and this contract updated together.
 
 ### Why deferred
 

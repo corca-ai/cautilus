@@ -137,7 +137,7 @@ func buildAgentSurfaceNextAction(result map[string]any, repoRoot string) map[str
 	case "missing_agent_surface":
 		return doctorAction(
 			"run_command",
-			"Materialize the bundled skill surface in this repo before asking an in-repo assistant to use Cautilus.",
+			"Materialize the Cautilus Agent surface in this repo before asking an in-repo assistant to use Cautilus.",
 			fmt.Sprintf("cautilus install --repo-root %s", ShellSingleQuote(repoRoot)),
 			currentDoctorCommand,
 		)

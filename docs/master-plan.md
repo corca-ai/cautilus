@@ -6,11 +6,11 @@ Turn `Cautilus` from an extraction scaffold into a standalone intentful behavior
 
 The target product is:
 
-- a standalone installable CLI plus bundled reusable skill
+- a standalone installable CLI plus Cautilus Agent
 - declared-claim discovery that turns repo-owned truth surfaces into proof backlogs
 - host-repo adapters that define baselines, iterate loops, held-out checks, compare passes, and full gates
 - optional executor-variant runners for bounded external review
-- product-owned helper scripts and bundled-skill references for bounded evidence mining and optimization loops
+- product-owned helper scripts and Cautilus Agent references for bounded evidence mining and optimization loops
 - train-vs-held-out discipline backed by scenario history
 - scenario proposal flows that mine runtime logs and audit traces into draft evaluation cases
 - first-class evaluation surfaces for chatbot, skill, and durable workflow behavior
@@ -41,8 +41,8 @@ Current `core validated surface`:
 - Go CLI entrypoint (`toolchain go1.26.2`) with checked-in `golangci-lint`, `govulncheck`, and an attestation-backed release artifact workflow
 - registry-backed command discovery (`cautilus commands`, `cautilus healthcheck`) for safe probing and wrapper tooling
 - Node adapter bootstrap scripts
-- a minimal CLI plus a bundled `cautilus` skill entrypoint embedded through `skills/bundled.go`
-- repo-local Codex and Claude plugin packages, marketplace wiring, and local proof paths for the bundled skill
+- a minimal CLI plus a Cautilus Agent entrypoint embedded through `skills/bundled.go`
+- repo-local Codex and Claude plugin packages, marketplace wiring, and local proof paths for the Cautilus Agent
 - adapter readiness checks through `doctor`
 - bounded runtime execution through `eval test`
 - scenario-history-aware profile selection and history updates for profile-backed mode runs
@@ -76,8 +76,8 @@ Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in 
 The three command-family promise map lives in [specs/user/index.spec.md](./specs/user/index.spec.md): `claim` for declared-claim discovery and proof planning, `eval` for verification, and `optimize` for bounded improvement.
 The maintainer-facing proof map for those promises lives in [specs/maintainer/index.spec.md](./specs/maintainer/index.spec.md).
 The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict.
-The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the bundled skill owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.
-The deterministic binary slice, first bundled-skill control-flow slice, deterministic review-input helper slice, possible-evidence preflight, guarded review-result application slice, review-to-eval branch proof, eval planning, fixture-authoring guidance, and first carried-evidence reconciliation slice are now implemented.
+The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the Cautilus Agent owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.
+The deterministic binary slice, first Cautilus Agent control-flow slice, deterministic review-input helper slice, possible-evidence preflight, guarded review-result application slice, review-to-eval branch proof, eval planning, fixture-authoring guidance, and first carried-evidence reconciliation slice are now implemented.
 The next claim-discovery hardening seam should come from fresh dogfood evidence rather than the old review-result application / evidence reconciliation backlog.
 The current reader-facing evaluation claim lives in [specs/user/evaluation.spec.md](./specs/user/evaluation.spec.md); the archived implementation-surface spec lives in [specs/old/evaluation-surfaces.spec.md](./specs/old/evaluation-surfaces.spec.md).
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
@@ -101,7 +101,7 @@ Their public command namespace is `eval live`; the `workbench` name is reserved 
 
 ### Phase 2: Standalone Product Hardening — done
 
-- standalone Go binary and bundled skill feel like one product surface
+- standalone Go binary and Cautilus Agent feel like one product surface
 - durable runtime boundary for review prompts, schemas, and compare artifacts
 - stable versioned JSON contracts (`cautilus.report_packet.v2`, review/evidence/optimize/revision/scenario variants)
 - tagged-release installer surface without npm publication, including checksums, attestations, and post-release verification helpers
@@ -129,7 +129,7 @@ Product-owned pieces shipped:
 - `chatbot`, `skill`, and `workflow` `scenario normalize` commands plus candidate helpers (proposal-input pipeline; the evaluation-surface archetype framing was retired)
 - `scenario prepare-input`, `scenario propose`, `scenario summarize-telemetry`
 - checked-in schema artifacts and normalization-family fixtures (chatbot, skill-validation, durable-workflow)
-- bundled-skill reference prompts point at these helpers
+- Cautilus Agent reference prompts point at these helpers
 
 Still open:
 
@@ -143,7 +143,7 @@ Product-owned pieces shipped:
 - `cautilus.behavior_intent.v1` framing for chatbot, skill, and durable-workflow
 - report, compare, review, history, evidence, optimize, and revision packets flow end-to-end
 - GEPA-style `optimize-search v2` with reflective mutation, bounded merge, checkpoint feedback, severity-aware rejected-sibling handling, and selection caps — implementation and dogfood evidence both closed
-- bundled-skill meta-prompts read report packets, compare artifacts, review verdicts, and scenario history
+- Cautilus Agent meta-prompts read report packets, compare artifacts, review verdicts, and scenario history
 - product-owned helper scripts carry the bounded optimization loop orchestration (input build, propose, build-artifact)
 
 Still open:

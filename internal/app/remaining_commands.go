@@ -231,7 +231,7 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 		}
 		fmt.Fprintf(stdout, "Source checkout detected. Pull the repo and rebuild to update the CLI.\n")
 		if targetRepo != "" {
-			fmt.Fprintf(stdout, "Refreshed bundled skill in %s\n", targetRepo)
+			fmt.Fprintf(stdout, "Refreshed Cautilus Agent in %s\n", targetRepo)
 			fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --next-action\n", targetRepo)
 			fmt.Fprintf(stdout, "Inspect: cautilus doctor --repo-root %s\n", targetRepo)
 		}
@@ -1462,7 +1462,7 @@ type bundledSkillInstallResult struct {
 }
 
 func installBundledSkill(repoRoot string, overwrite bool, log io.Writer) (*bundledSkillInstallResult, error) {
-	destinationDir := filepath.Join(repoRoot, ".agents", "skills", "cautilus")
+	destinationDir := filepath.Join(repoRoot, ".agents", "skills", "cautilus-agent")
 	destinationSkill := filepath.Join(destinationDir, "SKILL.md")
 	migrated, err := migrateLegacyClaudeSkillsDir(repoRoot, log)
 	if err != nil {
@@ -1477,7 +1477,7 @@ func installBundledSkill(repoRoot string, overwrite bool, log io.Writer) (*bundl
 	if err := os.MkdirAll(destinationDir, 0o755); err != nil {
 		return nil, err
 	}
-	if err := bundledskills.InstallCautilus(destinationDir); err != nil {
+	if err := bundledskills.InstallCautilusAgent(destinationDir); err != nil {
 		return nil, err
 	}
 	if err := ensureClaudeSkillsSymlink(repoRoot); err != nil {

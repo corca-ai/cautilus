@@ -89,7 +89,7 @@ Products: cli/cli, ohmyzsh/ohmyzsh, denoland/deno, tauri-apps/tauri.
 
 Burying or omitting the extension surface.
 GitHub CLI, Deno, and VS Code all underplay their extension systems in the main README, and the ambiguity costs onboarding.
-If Cautilus hides the bundled skill + plugin manifests, readers who wanted the agent-side surface will assume Cautilus is operator-only and abandon it.
+If Cautilus hides the Cautilus Agent + plugin manifests, readers who wanted the agent-side surface will assume Cautilus is operator-only and abandon it.
 
 ### Applied to Cautilus
 

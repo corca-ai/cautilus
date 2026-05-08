@@ -1,26 +1,26 @@
 ---
-name: cautilus
+name: cautilus-agent
 description: "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand."
 ---
 
-# Cautilus
+# Cautilus Agent
 
-Use this bundled skill when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding claim discovery, eval fixtures, report, review, or optimize commands by hand.
+Use Cautilus Agent when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding claim discovery, eval fixtures, report, review, or optimize commands by hand.
 
-The installed skill assumes a Cautilus binary is available.
+Cautilus Agent assumes a Cautilus binary is available.
 In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.
 In consumer repos, use `cautilus` on `PATH`.
 If no binary is available, install the CLI first and verify with `cautilus --version`.
 Specdown is a hard prerequisite for the public executable claim-doc workflow.
 If `cautilus doctor` reports `specdown_available=false`, install specdown before treating the repo as ready for Cautilus-managed claim docs.
-To materialize this skill in a host repo, run `cautilus install --repo-root .`.
+To materialize Cautilus Agent in a host repo, run `cautilus install --repo-root .`.
 
 ## Product Shape
 
-`Cautilus` is a standalone binary plus this bundled skill.
+`Cautilus` is a standalone binary plus Cautilus Agent.
 Host repos own adapters, fixtures, prompts, wrappers, and policy.
 The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts.
-The skill owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
+Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
 `eval` and `optimize` may still exercise model-involving behavior through adapter-owned runners.
 
 The three product front doors are:
@@ -67,8 +67,7 @@ If claim state exists, read or refresh that packet before planning new proof wor
 
 Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.
 For these direct questions, do not run `claim discover` until scan entries/depth are stated and the user confirms or adjusts the scope; keep LLM review as a separate budgeted branch.
-Do not hard-code the search to README.
-By default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
+Do not hard-code the search to README; by default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.
 
 Initial scan:
@@ -112,7 +111,8 @@ When the next natural branch is claim review, explain that it is a budgeted LLM 
 The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.
 Use `claim show --sample-claims <n>` as the canonical status view before hand-inspecting packet fields.
 Read `discoveryBoundary` before judging false negatives.
-If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.
+If a declared promise is present inside the configured entry docs or linked Markdown graph and discovery missed it, report a `claim discover` false-negative bug; if a user-facing feature is missing from that graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.
+During curation, reduce false positives before proof work and scan for likely missing public promises so the user can decide whether they were intentionally excluded or simply under-documented.
 Read `actionSummary.primaryBuckets` before making a next-work recommendation.
 Use the bucket `recommendedActor` and `summary` fields to separate agent work, human confirmation, deterministic proof, Cautilus eval planning, scenario design, alignment, and split-or-defer branches.
 Use `actionSummary.crossCuttingSignals` for review debt or stale-evidence warnings that can coexist with a primary proof branch.
@@ -153,7 +153,7 @@ After a fresh first discovery for any review branch, run `claim show --input <cl
 After `claim review prepare-input`, stop at the packet boundary unless the user has explicitly delegated reviewer launch.
 When reviewer launch is explicitly delegated, use the smallest honest launch budget if none was provided: one cluster, one claim, one reviewer lane, no retries.
 The default single-lane launch in an agent session is the current agent acting as the reviewer lane: review the selected cluster and write a valid `cautilus.claim_review_result.v1` packet.
-For claim evidence, prefer `evidenceStatus=unknown` unless the review input includes direct verified evidence for that claim.
+For claim evidence, prefer `evidenceStatus=unknown` unless the review input includes direct verified evidence; when attaching Cautilus eval evidence, use `kind=eval-summary` for `eval-summary.json`, `kind=eval-observed` for `eval-observed.json`, and reserve `kind=fixture` for checked-in fixture or scenario input files.
 Use an external reviewer CLI helper only when that external lane was explicitly selected.
 The launch is only complete when the selected reviewer lane returns a `cautilus.claim_review_result.v1` packet; if an external lane is blocked from reaching its model provider, report a blocked reviewer launch rather than treating the helper invocation as evidence.
 This branch proves reviewer launch, not review-result merge behavior.
@@ -183,7 +183,7 @@ Routing rule:
 
 Use `cautilus scenarios --json` only when you need the proposal-input normalization catalog.
 Use `cautilus doctor --repo-root .` when the selected branch is repo evaluation readiness.
-Use `cautilus doctor --repo-root . --scope agent-surface` or `doctor --scope agent-surface` when the selected branch is only local bundled-skill install/readiness.
+Use `cautilus doctor --repo-root . --scope agent-surface` or `doctor --scope agent-surface` when the selected branch is only local Cautilus Agent install/readiness.
 
 ## Workflow
 

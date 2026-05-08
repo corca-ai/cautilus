@@ -4,19 +4,19 @@
   "preset": "skill",
   "suiteId": "cautilus-canonical-spec-curation-flow",
   "suiteDisplayName": "Cautilus Canonical Spec Curation Flow",
-  "skillId": "cautilus",
-  "skillDisplayName": "cautilus",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
   "cases": [
     {
       "caseId": "episode-cautilus-canonical-spec-curation-flow",
       "evaluationKind": "execution",
       "turns": [
         {
-          "input": "$cautilus",
+          "input": "$cautilus-agent",
           "injectSkill": true
         },
         {
-          "input": "Raw Cautilus claim candidates are too granular for product judgment. Use the Cautilus skill guidance to inspect the current claim/spec state and report whether the canonical user-facing and maintainer-facing spec indexes are the right review surface before continuing HITL. Do not edit files, do not launch reviewers, and do not run claim review prepare-input."
+          "input": "Raw Cautilus claim candidates are too granular for product judgment. Use the Cautilus Agent guidance to inspect the current claim/spec state and report whether the canonical user-facing and maintainer-facing spec indexes are the right review surface before continuing HITL. Do not edit files, do not launch reviewers, and do not run claim review prepare-input."
         }
       ],
       "auditKind": "cautilus_canonical_spec_curation_flow",

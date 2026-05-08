@@ -44,7 +44,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 ## Product Language 및 Cross-Cutting Concern 원칙
 
 - **유저 언어, 제품 도메인 언어, 문서 언어, 코드/JSON 언어를 가능한 한 맞춘다.**
-  같은 개념은 user-facing spec, maintainer spec, CLI JSON, bundled skill, test name, helper name 에서 같은 이름을 써야 한다.
+  같은 개념은 user-facing spec, maintainer spec, CLI JSON, Cautilus Agent, test name, helper name 에서 같은 이름을 써야 한다.
   예: `readiness`, `adapter`, `claim discovery`, `evaluation surface`, `evidence gap`, `reviewable artifact`, `meaning`, `detail`.
 - **이름이 다르면 다른 개념으로 간주한다.**
   단순 rename 처럼 보여도 사용자 문서와 binary output 이 어긋나면 제품 의미가 분리된다.
@@ -60,7 +60,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   index 에 cross-cutting 항목을 남기고, maintainer side 에는 어떤 invariant 가 어느 story 를 제한하는지 mapping 을 둔다.
 - **Cautilus 제품 책임은 artifact-first 로 쓴다.**
   Cautilus 의 독립 책임은 좋은 바이너리와 머신이 이해하기 쉬운 패킷, provenance, status, next-work route 를 내는 것이다.
-  Cautilus bundled skill 은 그 패킷을 해석하고 workflow branch 를 돕는다.
+  Cautilus Agent 는 그 패킷을 해석하고 workflow branch 를 돕는다.
   문서 substrate 나 authoring runtime 은 제품 약속의 중심에 세우지 않는다.
 - **좋은 top-level spec 언어는 Charness 쪽으로 승격한다.**
   user-facing spec, maintainer-facing spec, cross-concern spec 을 통일된 용어와 관심사로 쓰는 철학은 Cautilus 전용이 아니라 Charness-managed repo 전반의 authoring discipline 이다.
@@ -117,7 +117,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 ## Go / JS 경계
 
 - **기본 원칙: `Go` 는 shipped product surface, `JS` 는 bounded helper/runtime seam.**
-  이 repo 는 `standalone binary plus bundled skill` 을 제품 표면으로 약속한다.
+  이 repo 는 `standalone binary plus Cautilus Agent` 를 제품 표면으로 약속한다.
   따라서 operator 가 `cautilus ...` 로 직접 기대하게 되는 안정 명령, release artifact 가 "공식 지원" 한다고 말할 표면, 장기적으로 에러 계약을 강하게 고정할 표면은 `Go CLI` 로 끌어올리는 쪽이 기본이다.
   반대로 host repo adapter 와 consumer-owned command 사이를 잇는 thin orchestration, packet assembly/validation helper, direct script usage 로도 충분한 bounded runtime seam 은 우선 `scripts/` 또는 `scripts/agent-runtime/` 에 둔다.
 - **"지금 당장 Go 로 안 가는" 첫 기준은 surface stability 이다.**
@@ -172,7 +172,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   `cautilus.<name>_prototype.v0` 네이밍.
 - **`sync-packaged-skill.mjs` 가 upward 링크를 rewriting 한다.**
   packaged 트리의 `.md` 파일 내용이 source 와 byte-identical 이 아니다.
-  새 consumer-facing docs 를 `skills/cautilus/references/` 아래 추가할 때 upward 링크를 쓰면 rewriter 가 packaged 복사본에서 자동으로 2 level 더 깊게 rewrite.
+  새 consumer-facing docs 를 `skills/cautilus-agent/references/` 아래 추가할 때 upward 링크를 쓰면 rewriter 가 packaged 복사본에서 자동으로 2 level 더 깊게 rewrite.
   **Link text 에 경로를 쓰지 말 것** — 그러면 packaged 에서 text/target mismatch.
   filename-label 또는 human-label.
 - **Starter kit fixture drift.**

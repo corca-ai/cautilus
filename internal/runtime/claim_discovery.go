@@ -1413,12 +1413,12 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim combines a human promotion decision with several agent follow-up paths; deterministic packet tests can prove subclaims but would overclaim the whole next-step workflow.",
 			next:                  "Split into concrete claims for saved proposal JSON, human review HTML, and each named downstream follow-up path before attaching proof.",
 		}, true
-	case containsAny(lower, []string{" install", " installs ", " installer", " standalone binary", " checked into each host repo", " bundled skill", " plugin manifest", " plugin manifests", ".agents/skills", ".agents/cautilus-adapter"}):
+	case containsAny(lower, []string{" install", " installs ", " installer", " standalone binary", " checked into each host repo", " cautilus agent", " plugin manifest", " plugin manifests", ".agents/skills", ".agents/cautilus-adapter"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-to-verify",
 			why:                   "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks.",
-			next:                  "Keep or add deterministic install, adapter, bundled-skill, or doctor readiness proof for this claim.",
+			next:                  "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
 		}, true
 	case claimNeedsScenario(lower):
 		surface := ""
@@ -1543,7 +1543,7 @@ func skillOrAgentBehaviorClaim(lower string) bool {
 	if operatorPolicyClaim(lower) {
 		return false
 	}
-	return containsAny(lower, []string{" skill ", " parent skill ", " bundled skill ", " agent ", " agents ", " subagent ", " subagents "}) &&
+	return containsAny(lower, []string{" skill ", " parent skill ", " cautilus agent ", " agent ", " agents ", " subagent ", " subagents "}) &&
 		containsAny(lower, []string{" should ", " may ", " must ", " can "}) &&
 		containsAny(lower, []string{" show ", " say ", " ask ", " confirm ", " launch ", " merge ", " select ", " read ", " cite ", " choose ", " proceed ", " sequence ", " come after "})
 }

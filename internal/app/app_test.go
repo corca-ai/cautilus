@@ -333,10 +333,10 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}
 	initGitRepo(t, repoRoot)
-	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents", "skills", "cautilus"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(repoRoot, ".agents", "skills", "cautilus-agent"), 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "skills", "cautilus", "SKILL.md"), []byte("# Cautilus\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(repoRoot, ".agents", "skills", "cautilus-agent", "SKILL.md"), []byte("# Cautilus\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 	if err := os.MkdirAll(filepath.Join(repoRoot, ".claude", "skills"), 0o755); err != nil {
@@ -1277,11 +1277,11 @@ func TestRunInstallDoesNotRequireToolRoot(t *testing.T) {
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
-	if !strings.Contains(stdout.String(), ".agents/skills/cautilus") {
+	if !strings.Contains(stdout.String(), ".agents/skills/cautilus-agent") {
 		t.Fatalf("unexpected stdout: %q", stdout.String())
 	}
-	if _, err := os.Stat(filepath.Join(repoRoot, ".agents", "skills", "cautilus", "SKILL.md")); err != nil {
-		t.Fatalf("expected installed bundled skill: %v", err)
+	if _, err := os.Stat(filepath.Join(repoRoot, ".agents", "skills", "cautilus-agent", "SKILL.md")); err != nil {
+		t.Fatalf("expected installed Cautilus Agent: %v", err)
 	}
 	if _, err := os.Stat(filepath.Join(cacheRoot, "cautilus", "version-state.json")); err != nil {
 		t.Fatalf("expected version state cache to be recorded: %v", err)

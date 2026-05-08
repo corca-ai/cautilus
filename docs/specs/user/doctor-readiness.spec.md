@@ -1,6 +1,6 @@
 # Readiness
 
-Using `cautilus doctor` and the bundled Cautilus skill, a user can decide whether to fix setup, inspect claims, run a first eval, or stop before spending effort on claim, eval, or optimize work.
+Using `cautilus doctor` and the Cautilus Agent, a user can decide whether to fix setup, inspect claims, run a first eval, or stop before spending effort on claim, eval, or optimize work.
 
 Readiness means the repo has enough Cautilus setup to choose and run the next bounded workflow.
 It is not evidence that the repo's behavior promises are already true; proof status is handled by [Evidence Gaps](evidence-gaps.spec.md).
@@ -241,7 +241,7 @@ For the generated sample adapter, `doctor` keeps the first bounded eval loop vis
 
 This is different from the human-facing `doctor` result.
 `doctor` answers whether setup is ready and what a user should fix or run next.
-`agent status --json` gives the bundled skill an orientation packet so it can propose claim discovery, eval, optimize, setup, inspection, or stop branches before running discovery, evaluation, optimization, edits, or commits.
+`agent status --json` gives the Cautilus Agent an orientation packet so it can propose claim discovery, eval, optimize, setup, inspection, or stop branches before running discovery, evaluation, optimization, edits, or commits.
 
 ```run:shell
 # Show the raw agent orientation packet for this repo.

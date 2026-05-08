@@ -14,10 +14,10 @@ curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh |
 brew uninstall cautilus
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 
-# install CLI + bundled skill into a host repo
+# install CLI + Cautilus Agent into a host repo
 cautilus install --repo-root /path/to/host-repo
 
-# refresh the CLI and the checked-in bundled skill in a repo
+# refresh the CLI and the checked-in Cautilus Agent in a repo
 cautilus update --repo-root /path/to/host-repo
 
 # inspect local version provenance
@@ -104,11 +104,11 @@ cautilus scenarios --json
 ```
 
 `cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus optimize search --help`.
-Use `agent status --json` when a bundled skill or agent is invoked without a detailed task.
+Use `agent status --json` when a Cautilus Agent or agent is invoked without a detailed task.
 It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.
 Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.
 If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.
-Use `doctor --scope agent-surface` to verify only the bundled skill and local agent-surface install.
+Use `doctor --scope agent-surface` to verify only the Cautilus Agent and local agent-surface install.
 Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
 Each `doctor` check separates stable contract from run-specific observation:
 `id` names the machine-readable readiness condition, `ok` reports the boolean result, `meaning` explains why the condition matters, and `detail` records the observed fact for this run.

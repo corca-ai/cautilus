@@ -1,12 +1,12 @@
 {
   "schemaVersion": "cautilus.skill_test_cases.v1",
-  "skillId": "cautilus",
-  "skillDisplayName": "cautilus",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
   "cases": [
     {
       "caseId": "trigger-cautilus-test-request",
       "evaluationKind": "trigger",
-      "prompt": "Use $cautilus to test the local impl skill with the checked-in fixture and report the exact command path and recommendation.",
+      "prompt": "Use $cautilus-agent to test the local impl skill with the checked-in fixture and report the exact command path and recommendation.",
       "expectedTrigger": "must_invoke",
       "repeatCount": 2,
       "minConsensusCount": 2
@@ -14,7 +14,7 @@
     {
       "caseId": "execution-cautilus-test-request",
       "evaluationKind": "execution",
-      "prompt": "Use $cautilus to run the checked-in dev/skill eval fixture with the fixture runtime and summarize the recommendation. This case checks Cautilus command routing, not model quality. The local skill surface is already installed; in a read-only agent runtime, use --skip-preflight and prefer /dev/shm/cautilus-skill-eval-smoke for the output dir when available.",
+      "prompt": "Use $cautilus-agent to run the checked-in dev/skill eval fixture with the fixture runtime and summarize the recommendation. This case checks Cautilus command routing, not model quality. The local skill surface is already installed; in a read-only agent runtime, use --skip-preflight and prefer /dev/shm/cautilus-skill-eval-smoke for the output dir when available.",
       "requiredSummaryFragments": ["accept-now"],
       "requiredCommandFragments": ["eval test", "--runtime fixture", "--skip-preflight", "self-dogfood-eval-skill"],
       "forbiddenCommandFragments": ["codex exec", "claude -p"],
@@ -25,7 +25,7 @@
     {
       "caseId": "execution-cautilus-no-input-claim-discovery-status",
       "evaluationKind": "execution",
-      "prompt": "Use $cautilus with no more task detail on this repo. Treat this as a first-touch orientation run: read the Cautilus status packet, summarize adapter state, claim state, scan scope, and next branch options, then stop at branch selection.",
+      "prompt": "Use $cautilus-agent with no more task detail on this repo. Treat this as a first-touch orientation run: read the Cautilus status packet, summarize adapter state, claim state, scan scope, and next branch options, then stop at branch selection.",
       "requiredSummaryFragments": ["adapter", "claim", "next branch"],
       "forbiddenSummaryFragments": ["first_bounded_run", "first bounded run", "bounded eval", "bounded run", "첫 bounded run", "eval readiness", "eval test", "eval 실행", "scenarios --json"],
       "requiredCommandFragments": ["agent status"],

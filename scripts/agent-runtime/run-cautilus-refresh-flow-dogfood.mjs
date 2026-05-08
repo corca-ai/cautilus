@@ -231,10 +231,10 @@ function codexExecArgs(options, candidateRepo, prompt) {
 }
 
 function renderSkillInvocationPrompt(candidateRepo) {
-	const skillPath = join(candidateRepo, ".agents", "skills", "cautilus", "SKILL.md");
+	const skillPath = join(candidateRepo, ".agents", "skills", "cautilus-agent", "SKILL.md");
 	const skillBody = readFileSync(skillPath, "utf-8");
 	return [
-		"$cautilus",
+		"$cautilus-agent",
 		"",
 		"<skill>",
 		"<name>cautilus</name>",

@@ -100,9 +100,9 @@ as overrides for automation and tests.
 | File or subdirectory              | Written by                          | Consumed by                                                 | Notes                                               |
 | --------------------------------- | ----------------------------------- | ----------------------------------------------------------- | --------------------------------------------------- |
 | `run.json`                        | `workspace start`                   | `workspace prune-artifacts`                                 | Manifest marker. `cautilus.workspace_run_manifest.v1`. |
-| `eval-cases.json`                 | `eval test`                     | adapter-owned eval runner                                   | Product-normalized test-case packet. Schema depends on the selected evaluation surface and preset. |
-| `eval-observed.json`              | adapter-owned eval runner       | `eval test`, `eval evaluate`                                | Product-owned observed packet. Schema depends on the selected evaluation surface and preset. |
-| `eval-summary.json`               | `eval test`, `eval evaluate`    | operator                                                    | Product-owned evaluation summary. Schema depends on the selected evaluation surface and preset. |
+| `eval-cases.json`                 | `eval test`                     | adapter-owned eval runner                                   | Product-normalized test-case packet. Schema depends on the selected evaluation surface and preset. For `dev/repo`, a case may include `allowedFirstToolCalls`; the host-owned runner must copy it into `eval-observed.json` for Cautilus to score the first action. |
+| `eval-observed.json`              | adapter-owned eval runner plus `eval test` proof augmentation | `eval test`, `eval evaluate`                                | Product-owned observed packet. Schema depends on the selected evaluation surface and preset; `eval test` may add a top-level `proof` object from runner readiness before scoring. |
+| `eval-summary.json`               | `eval test`, `eval evaluate`    | operator                                                    | Product-owned evaluation summary. Schema depends on the selected evaluation surface and preset and preserves top-level `proof` metadata when present. For `dev/repo`, route-only allowlists such as `allowedFirstToolCalls` are scored and preserved when the observed packet provides them. |
 | `report-input.json`               | operator / agent                | `report build` (optional)                                   | Assembled report packet inputs. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `report build --input` is omitted. |
 | `report.json`                     | `report build`                  | `review prepare-input`, `evidence prepare-input`, `optimize prepare-input` | `cautilus.report_packet.v2`. Defaults here when an active-run-aware helper omits `--report-file`. |
 | `baseline/`                       | `workspace prepare-compare`         | adapter commands                                            | Git worktree. Directory marker.                     |
@@ -240,7 +240,7 @@ Record these so future sessions do not re-propose them:
 ## Fixed Decisions
 
 - Env var name is `CAUTILUS_RUN_DIR`. Single source of truth across the
-  product, the bundled skill, and the packaged skill copy.
+  product, the Cautilus Agent, and the packaged skill copy.
 - Default root is `./.cautilus/runs/`, cwd-relative, auto-created.
 - `workspace start` is the only per-run materializer entry. `workspace
   new-run` is removed, not aliased.
@@ -284,11 +284,11 @@ Record these so future sessions do not re-propose them:
 
 ## Source References
 
-- [active-run.mjs](../../../../scripts/agent-runtime/active-run.mjs)
-- [active-run.test.mjs](../../../../scripts/agent-runtime/active-run.test.mjs)
-- [workspace-start.mjs](../../../../scripts/agent-runtime/workspace-start.mjs)
-- [workspace-start.test.mjs](../../../../scripts/agent-runtime/workspace-start.test.mjs)
-- [prune-workspace-artifacts.mjs](../../../../scripts/agent-runtime/prune-workspace-artifacts.mjs)
+- [active-run.mjs](../../../../../scripts/agent-runtime/active-run.mjs)
+- [active-run.test.mjs](../../../../../scripts/agent-runtime/active-run.test.mjs)
+- [workspace-start.mjs](../../../../../scripts/agent-runtime/workspace-start.mjs)
+- [workspace-start.test.mjs](../../../../../scripts/agent-runtime/workspace-start.test.mjs)
+- [prune-workspace-artifacts.mjs](../../../../../scripts/agent-runtime/prune-workspace-artifacts.mjs)
 - [./reporting.md](./reporting.md)
 - [./review-packet.md](./review-packet.md)
 - [./optimization.md](./optimization.md)
