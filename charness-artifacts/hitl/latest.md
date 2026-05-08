@@ -3,21 +3,21 @@
 <!-- hitl-runtime-sync
 session_id: hitl-20260508-222100
 runtime_session_dir: .charness/hitl/runtime/hitl-20260508-222100
-runtime_updated_at: 2026-05-08T22:21:27+00:00
+runtime_updated_at: 2026-05-08T22:24:46+00:00
 target: docs/specs/index.spec.md
 last_presented_chunk_id: specs-index-entry-map
 queue_epoch: 1
 queue_status: ready
-accepted_rules_digest: deb190ec5fa49542
+accepted_rules_digest: 9111f0fb9fe6ff2c
 queue_items_digest: 4b5701ec20a457ae
 queue_state_digest: cfaf0e4536ba5297
-approval_state_digest: 1a2f358120234df8
+approval_state_digest: 23ef1bc13965c600
 -->
 
-- Synced At: 2026-05-08T22:21:32+00:00
+- Synced At: 2026-05-08T22:24:53+00:00
 - Synced From Session: `hitl-20260508-222100`
 - Runtime Session Dir: `.charness/hitl/runtime/hitl-20260508-222100`
-- Runtime Updated At: 2026-05-08T22:21:27+00:00
+- Runtime Updated At: 2026-05-08T22:24:46+00:00
 
 ## Active Target
 
@@ -33,6 +33,7 @@ approval_state_digest: 1a2f358120234df8
 
 - show-rewritten-chunk-after-edit: accepted
 - full-target-readback-after-chunks: accepted
+- agent-assessment-before-human-decision: accepted
 
 ## Queue State
 

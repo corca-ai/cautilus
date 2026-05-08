@@ -14,6 +14,8 @@
 - The first chunk is the full current `docs/specs/index.spec.md` file, lines 1-14.
 - After a requested rewrite is applied, show the changed chunk text before advancing.
 - After all chunks for this target are reviewed, show the full updated target before closing it.
+- Before asking for human judgment on a HITL chunk, provide the agent's assessment, risks or gaps, and a non-binding recommended disposition.
+- Charness issue https://github.com/corca-ai/charness/issues/123 tracks making this recommendation requirement explicit in the public HITL skill.
 
 ## Open Questions
 
@@ -21,8 +23,8 @@
 - Does the phrase "claim-spec report entry" help the intended reader, or is it too maintainer-facing for the first line of this surface?
 
 ## Pre-Edit Constraints
-- Accepted Rules: show-rewritten-chunk-after-edit, full-target-readback-after-chunks
-- Active Rules Applied: show-rewritten-chunk-after-edit, full-target-readback-after-chunks
+- Accepted Rules: show-rewritten-chunk-after-edit, full-target-readback-after-chunks, agent-assessment-before-human-decision
+- Active Rules Applied: show-rewritten-chunk-after-edit, full-target-readback-after-chunks, agent-assessment-before-human-decision
 - Target/Cursor Checked: true; Target/Cursor Check Result: target=docs/specs/index.spec.md; chunk=specs-index-entry-map; queue item=specs-index-entry-map; lines=1-14; queue_epoch=1
 
 ## Applied Rewrite Review

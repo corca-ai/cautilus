@@ -1,2 +1,3 @@
 2026-05-08T22:21:00+00:00 bootstrap docs/specs/index.spec.md
 2026-05-08T22:21:00+00:00 restart-target docs/specs/index.spec.md lines=1-14 item=specs-index-entry-map
+2026-05-08T22:21:00+00:00 rule-added agent-assessment-before-human-decision issue=https://github.com/corca-ai/charness/issues/123

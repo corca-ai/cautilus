@@ -14,9 +14,13 @@ accepted_rules:
   - id: full-target-readback-after-chunks
     status: accepted
     text: After all chunks for a target are reviewed, show the full updated target before closing that target.
+  - id: agent-assessment-before-human-decision
+    status: accepted
+    text: Before asking for human judgment on a HITL chunk, provide the agent's assessment, risks or gaps, and a non-binding recommended disposition.
 active_rules_applied:
   - show-rewritten-chunk-after-edit
   - full-target-readback-after-chunks
+  - agent-assessment-before-human-decision
 target_cursor_checked: true
 target_cursor_check_result: "target=docs/specs/index.spec.md; chunk=specs-index-entry-map; queue item=specs-index-entry-map; lines=1-14; queue_epoch=1"
 intent_resync_required: false
