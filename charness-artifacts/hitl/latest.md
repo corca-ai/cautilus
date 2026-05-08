@@ -3,7 +3,7 @@
 <!-- hitl-runtime-sync
 session_id: hitl-20260508-222100
 runtime_session_dir: .charness/hitl/runtime/hitl-20260508-222100
-runtime_updated_at: 2026-05-08T22:24:46+00:00
+runtime_updated_at: 2026-05-08T22:29:50+00:00
 target: docs/specs/index.spec.md
 last_presented_chunk_id: specs-index-entry-map
 queue_epoch: 1
@@ -11,13 +11,13 @@ queue_status: ready
 accepted_rules_digest: 9111f0fb9fe6ff2c
 queue_items_digest: 4b5701ec20a457ae
 queue_state_digest: cfaf0e4536ba5297
-approval_state_digest: 23ef1bc13965c600
+approval_state_digest: 4ae1073313b0cfcf
 -->
 
-- Synced At: 2026-05-08T22:24:53+00:00
+- Synced At: 2026-05-08T22:29:56+00:00
 - Synced From Session: `hitl-20260508-222100`
 - Runtime Session Dir: `.charness/hitl/runtime/hitl-20260508-222100`
-- Runtime Updated At: 2026-05-08T22:24:46+00:00
+- Runtime Updated At: 2026-05-08T22:29:50+00:00
 
 ## Active Target
 
@@ -52,7 +52,7 @@ approval_state_digest: 23ef1bc13965c600
 
 ## Approval Boundaries
 
-- Applied Rewrite Review Status: `inactive`
+- Applied Rewrite Review Status: `pending`
 - Full Target Review Status: `pending_after_chunks`
 - Target/Cursor Checked: `True`
 - Target/Cursor Check Result: `target=docs/specs/index.spec.md; chunk=specs-index-entry-map; queue item=specs-index-entry-map; lines=1-14; queue_epoch=1`

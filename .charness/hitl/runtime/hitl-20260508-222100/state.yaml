@@ -26,10 +26,10 @@ target_cursor_check_result: "target=docs/specs/index.spec.md; chunk=specs-index-
 intent_resync_required: false
 last_presented_chunk_id: "specs-index-entry-map"
 last_intent_resync_at: ""
-applied_rewrite_review_status: inactive
-pending_rewrite_chunk_id: ""
-pending_rewrite_source_anchor: ""
-last_rewritten_chunk_id: ""
+applied_rewrite_review_status: pending
+pending_rewrite_chunk_id: "specs-index-entry-map"
+pending_rewrite_source_anchor: "docs/specs/index.spec.md:1-14"
+last_rewritten_chunk_id: "specs-index-entry-map"
 last_rewrite_review_result: ""
 full_target_review_item_id: full_target_review
 full_target_review_status: pending_after_chunks

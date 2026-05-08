@@ -21,6 +21,8 @@
 
 - Should the top-level index remain a compact router, or should it state a stronger acceptance-story promise before linking to the user and maintainer views?
 - Does the phrase "claim-spec report entry" help the intended reader, or is it too maintainer-facing for the first line of this surface?
+- User asked why cross-cutting promises do not have separate docs.
+  They do have user-facing pages at `docs/specs/user/reviewable-artifacts.spec.md` and `docs/specs/user/evidence-gaps.spec.md`; the top-level index currently hides that by linking only to the user and maintainer views.
 
 ## Pre-Edit Constraints
 - Accepted Rules: show-rewritten-chunk-after-edit, full-target-readback-after-chunks, agent-assessment-before-human-decision
@@ -29,13 +31,36 @@
 
 ## Applied Rewrite Review
 
-- Status: inactive until a reviewer-requested rewrite is applied
+- Status: pending
 - Decision Needed: Decide whether the rewritten chunk is accepted or needs another revision.
 - Required Surface: applied chunk excerpt with line or hunk anchor when possible, surrounding context, and secondary verification results if available.
-- Pending Chunk ID:
-- Source Anchor:
+- Pending Chunk ID: specs-index-entry-map
+- Source Anchor: docs/specs/index.spec.md:1-14
 - Applied Excerpt:
-- Verification:
+
+```md
+# Cautilus Claim Specs
+
+This is the top-level entry for checking what `Cautilus` promises, how those promises are verified, and which maintainer-owned contracts keep the evidence current.
+
+This report keeps the promise map readable:
+
+- The user view explains what Cautilus promises and shows how those promises are checked.
+- The maintainer view maps those promises to the contracts, adapters, fixtures, proof routes, and evidence gaps that maintainers must keep current.
+- Cross-cutting user stories such as reviewable artifacts and evidence gaps have dedicated pages in the user view and are mapped to maintainer-owned proof routes.
+
+## Views
+
+- [User View](user/index.spec.md)
+- [Maintainer View](maintainer/index.spec.md)
+
+## Cross-Cutting User Stories
+
+- [Reviewable Artifacts](user/reviewable-artifacts.spec.md)
+- [Evidence Gaps](user/evidence-gaps.spec.md)
+```
+
+- Verification: Checked `docs/specs/user/index.spec.md`, `docs/specs/user/doctor-readiness.spec.md`, `docs/specs/user/claim-discovery.spec.md`, `docs/specs/user/reviewable-artifacts.spec.md`, and `docs/specs/user/evidence-gaps.spec.md` for established vocabulary.
 - Review Result:
 
 ## Full Target Review
