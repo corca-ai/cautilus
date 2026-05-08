@@ -1,0 +1,32 @@
+session_id: hitl-20260508-222100
+status: in_progress
+target: docs/specs/index.spec.md
+base_ref: main
+scope: specs-index-restart
+require_explicit_apply: true
+apply_mode: explicit-after-all-chunks
+queue_epoch: 1
+queue_status: ready
+accepted_rules:
+  - id: show-rewritten-chunk-after-edit
+    status: accepted
+    text: After the user asks HITL to rewrite or change the current chunk, show the changed chunk text back to the user before advancing the cursor.
+  - id: full-target-readback-after-chunks
+    status: accepted
+    text: After all chunks for a target are reviewed, show the full updated target before closing that target.
+active_rules_applied:
+  - show-rewritten-chunk-after-edit
+  - full-target-readback-after-chunks
+target_cursor_checked: true
+target_cursor_check_result: "target=docs/specs/index.spec.md; chunk=specs-index-entry-map; queue item=specs-index-entry-map; lines=1-14; queue_epoch=1"
+intent_resync_required: false
+last_presented_chunk_id: "specs-index-entry-map"
+last_intent_resync_at: ""
+applied_rewrite_review_status: inactive
+pending_rewrite_chunk_id: ""
+pending_rewrite_source_anchor: ""
+last_rewritten_chunk_id: ""
+last_rewrite_review_result: ""
+full_target_review_item_id: full_target_review
+full_target_review_status: pending_after_chunks
+full_target_review_result: ""
