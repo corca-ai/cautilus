@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-08T08:24:57Z",
+  "generated_at": "2026-05-08T12:45:21Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -227,7 +227,9 @@
           "skills/hitl/references/state-model.md",
           "skills/hitl/references/rule-propagation.md",
           "skills/hitl/scripts/bootstrap_review.py",
-          "skills/hitl/scripts/render_report.py"
+          "skills/hitl/scripts/check_review_state.py",
+          "skills/hitl/scripts/render_report.py",
+          "skills/hitl/scripts/sync_review_artifact.py"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -315,6 +317,33 @@
           "skills/init-repo/references/retro-memory-seam.md",
           "skills/init-repo/references/github-actions-defaults.md",
           "skills/init-repo/references/operator-acceptance-synthesis.md"
+        ],
+        "source": "local-public",
+        "layer": "public skill"
+      },
+      {
+        "id": "issue",
+        "name": "issue",
+        "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through `gh`. Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth.",
+        "summary": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through `gh`. Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth.",
+        "path": "skills/issue/SKILL.md",
+        "skill_dir": "skills/issue",
+        "canonical_path": "skills/issue/SKILL.md",
+        "trigger_phrases": [
+          "issue",
+          "issue skill",
+          "issue 스킬",
+          "charness:issue"
+        ],
+        "referenced_paths": [
+          "shared/references/binary-preflight.md",
+          "skills/issue/SKILL.md",
+          "skills/issue/references/issue-shaping.md",
+          "skills/issue/references/resolve-flow.md",
+          "skills/issue/scripts/issue_tool.py",
+          "skills/issue/scripts/issue_runtime.py",
+          "skills/issue/scripts/resolve_adapter.py",
+          "skills/issue/scripts/init_adapter.py"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -1002,7 +1031,9 @@
           }
         ],
         "readiness_checks": [],
-        "supports_public_skills": [],
+        "supports_public_skills": [
+          "issue"
+        ],
         "recommendation_role": null,
         "path": "integrations/tools/github-gh.json",
         "source": "local-integration",

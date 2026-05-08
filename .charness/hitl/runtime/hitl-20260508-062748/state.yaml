@@ -7,6 +7,45 @@ require_explicit_apply: true
 apply_mode: explicit-after-all-chunks
 queue_epoch: 1
 queue_status: ready
+accepted_rules:
+  - id: pain-point-opening
+    status: accepted
+    text: Each user-story spec should expose the pain point in the first sentence.
+  - id: concrete-cli-and-skill-first-workflow-introduction
+    status: accepted
+    text: The first workflow introduction should name the concrete CLI command plus the `cautilus-agent` skill.
+  - id: user-facing-command-vocabulary
+    status: accepted
+    text: In user-facing specs, prefer command surfaces such as `claim discover`, `claim show`, or `cautilus claim` over "the binary".
+  - id: entry-and-linked-docs-vocabulary
+    status: accepted
+    text: Use `entry and linked docs` in product-facing language; Markdown may appear only in lower-level technical evidence when needed.
+  - id: candidates-not-proof
+    status: accepted
+    text: Discovery creates candidates, not proof.
+  - id: in-boundary-miss-is-discovery-bug
+    status: accepted
+    text: If a declared promise is inside the configured entry and linked-doc boundary but no candidate appears, that is a `claim discover` bug.
+  - id: out-of-boundary-miss-is-alignment-gap
+    status: accepted
+    text: If an important behavior appears only outside that boundary, it is a documentation, catalog, or alignment gap for Cautilus Agent or a human to raise.
+  - id: prepared-eval-is-not-executed-proof
+    status: accepted
+    text: Prepared Cautilus eval checks are not executed eval proof. Keep prepared, not executed, visible until the user explicitly approves the eval.
+  - id: show-rewritten-chunk-after-edit
+    status: accepted
+    text: After the user asks HITL to rewrite or change the current chunk, show the changed chunk text back to the user before advancing the cursor.
+  - id: full-target-readback-after-chunks
+    status: accepted
+    text: After all chunks for a target are reviewed, show the full updated target before closing that target.
+active_rules_applied:
+  - user-facing-command-vocabulary
+  - entry-and-linked-docs-vocabulary
+  - candidates-not-proof
+  - prepared-eval-is-not-executed-proof
+  - show-rewritten-chunk-after-edit
+target_cursor_checked: true
+target_cursor_check_result: "target=docs/specs/user/claim-discovery.spec.md; chunk=claim-discover-heuristics-and-dedupe-evidence; queue item=claim-discover-heuristics-and-dedupe-evidence; lines=62-129; queue_epoch=1"
 intent_resync_required: false
 last_presented_chunk_id: "claim-discover-heuristics-and-dedupe-evidence"
 last_intent_resync_at: ""
