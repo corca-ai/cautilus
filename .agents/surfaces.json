@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "surfaces": [
+    {
+      "surface_id": "release-packaging",
+      "description": "Installable binary release, installer, workflow, and release helper surface.",
+      "source_paths": [
+        ".agents/release-adapter.yaml",
+        ".agents/surfaces.json",
+        ".github/workflows/release-artifacts.yml",
+        "install.sh",
+        "package.json",
+        "package-lock.json",
+        "scripts/release/**"
+      ],
+      "derived_paths": [
+        ".claude-plugin/marketplace.json",
+        "plugins/cautilus/.claude-plugin/plugin.json",
+        "plugins/cautilus/.codex-plugin/plugin.json"
+      ],
+      "sync_commands": [
+        "npm run skills:sync-packaged"
+      ],
+      "verify_commands": [
+        "npm run verify",
+        "npm run release:smoke-install"
+      ],
+      "notes": [
+        "Do not treat tag push as release closure until the public release verifier passes.",
+        "The install.sh channel resolves GitHub releases/latest unless CAUTILUS_VERSION is set."
+      ],
+      "generated_markdown": []
+    },
+    {
+      "surface_id": "cli-agent-product",
+      "description": "Cautilus CLI plus Cautilus Agent product surface used by host repos.",
+      "source_paths": [
+        "bin/**",
+        "cmd/cautilus/**",
+        "internal/**",
+        "skills/cautilus-agent/**",
+        "plugins/cautilus/**",
+        "docs/cli-reference.md",
+        "docs/guides/consumer-adoption.md"
+      ],
+      "derived_paths": [
+        "plugins/cautilus/skills/cautilus-agent/**"
+      ],
+      "sync_commands": [
+        "npm run skills:sync-packaged"
+      ],
+      "verify_commands": [
+        "npm run verify",
+        "npm run hooks:check"
+      ],
+      "notes": [
+        "The binary owns deterministic command discovery, packet validation, and reusable artifacts.",
+        "The Cautilus Agent owns routing, sequencing, guardrails, and decision boundaries."
+      ],
+      "generated_markdown": []
+    },
+    {
+      "surface_id": "promise-specs",
+      "description": "Executable promise specs and selected evidence state.",
+      "source_paths": [
+        "docs/specs/**",
+        "docs/contracts/**",
+        "charness-artifacts/hitl/**"
+      ],
+      "derived_paths": [],
+      "sync_commands": [],
+      "verify_commands": [
+        "npm run specdown",
+        "npm run hooks:check"
+      ],
+      "notes": [
+        "Each spec page should carry local proof or a visible proof gap.",
+        "Evidence State is the cross-spec ledger, not the only proof location."
+      ],
+      "generated_markdown": []
+    }
+  ]
+}

@@ -12,6 +12,12 @@ The binary is shared across repos.
 The Cautilus Agent surface, adapter wiring, prompts, and instruction-routing surface are not.
 They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.
 
+## Current Release Boundary
+
+The current external-adoption slice is eval-only while the broader claim, optimize, live app-runner, and review-learning contracts are still being rewritten.
+Host repos can use `cautilus eval test` and `cautilus eval evaluate` with checked-in fixtures, host-owned adapters, and the current `cautilus.evaluation_input.v1`, `cautilus.evaluation_observed.v1`, and `cautilus.evaluation_summary.v1` packets.
+Treat claim discovery automation, optimize automation, live `eval` app-runner workflows, and review-learning packet capture as opt-in product slices until the rewrite closes.
+
 ## Who It Is For
 
 - teams maintaining agent runtimes or chatbot loops whose prompts and wrappers change frequently
@@ -77,31 +83,31 @@ The public website report is generated from the claim spec tree, but host repos 
 Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.
 Read the user spec index to understand what Cautilus promises, then use the maintainer index to inspect proof routes, adapters, fixtures, and known gaps.
 
-## One Reviewable Decision Loop
+## One Bounded Eval Loop
 
-Start here if you want one concrete picture before reading the full surface.
-You need one checked-in proposal input, or one new behavior input you want to turn into a reusable scenario.
-This loop sits in the claim-discovery layer: it turns messy behavior evidence into candidate claims and scenarios before those candidates become protected eval fixtures.
+Start here if you want the current stable cross-repo slice before reading the full surface.
+You need one checked-in `cautilus.evaluation_input.v1` fixture and a host-owned adapter runner.
+This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.
 
 **Input (CLI)**
 
 ```bash
-cautilus scenario propose \
-  --input ./fixtures/scenario-proposals/standalone-input.json \
-  --output /tmp/proposals.json
-cautilus scenario render-proposals-html \
-  --input /tmp/proposals.json \
-  --output /tmp/proposals.html
+cautilus eval test \
+  --fixture ./fixtures/eval/<behavior>.fixture.json \
+  --output-dir /tmp/cautilus-eval
+cautilus eval evaluate \
+  --input /tmp/cautilus-eval/eval-observed.json \
+  --output /tmp/cautilus-eval/eval-summary.json
 ```
 
-**Input (For Agent)**: "Turn this behavior input into reusable scenarios and render an HTML page I can review."
+**Input (For Agent)**: "Run this checked-in Cautilus eval fixture and summarize the observed packet and summary packet."
 
-`Cautilus` turns the evidence into a reviewable proposal packet whose canonical JSON preserves the full ranked proposal set for agents, then renders the same result into a browser-readable page with a bounded attention-first view for humans.
-You get back `proposals.json` as the machine-readable truth surface and `proposals.html` as the human review view.
-Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.
+`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen.
+The summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose.
+Next step: a human decides whether that evidence is enough for the host repo's current proof need.
 
 The same small loop anchors the public spec report in `docs/specs/user/index.spec.md`.
-It is the shortest honest example of the product claim: `Cautilus` turns behavior evidence into a reviewable decision surface.
+It is the shortest currently stable external-adoption example of the product claim: `Cautilus` turns behavior evidence into a reviewable decision surface.
 
 ## Scenarios
 
@@ -109,6 +115,7 @@ Cautilus has three connected product layers.
 First, `cautilus claim discover` finds broad behavior-claim candidates from adapter-owned entry docs, README.md, AGENTS.md, CLAUDE.md, and linked repo-local Markdown, then the Cautilus Agent curates those candidates against the repo.
 Second, `cautilus eval test` / `eval evaluate` verify selected claims through explicit fixtures and summary packets.
 Third, optimize and GEPA-style search improve prompts or behavior only after the proof surface is clear.
+During the current contract rewrite, external host repos should treat this full chain as opt-in and use the eval-only slice above for ordinary adoption.
 
 For the generic first pass, ask for a proof plan:
 

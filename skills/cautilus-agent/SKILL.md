@@ -5,7 +5,9 @@ description: "Use when intentful behavior evaluation itself is the task and the 
 
 # Cautilus Agent
 
-Use Cautilus Agent when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding claim discovery, eval fixtures, report, review, or optimize commands by hand.
+Use Cautilus Agent when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding eval fixtures, packets, reports, claim discovery, review, or optimize commands by hand.
+For external host repos during the current contract rewrite, treat `eval test` and `eval evaluate` as the stable adoption slice.
+Claim discovery automation, optimize automation, live app-runner workflows, and review-learning capture remain opt-in product slices unless the repo explicitly chooses them.
 
 Cautilus Agent assumes a Cautilus binary is available.
 In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.
@@ -21,11 +23,16 @@ The binary owns command discovery, packet examples, deterministic scans, validat
 Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
 `eval` and `optimize` may still exercise model-involving behavior through adapter-owned runners.
 
-The three product front doors are:
+The current external-adoption front door is:
+
+- `eval`: verify bounded intentful behavior with explicit fixtures and adapters.
+
+The broader product also includes opt-in surfaces:
 
 - `claim`: discover declared behavior claims and turn them into proof plans.
-- `eval`: verify bounded intentful behavior with explicit fixtures and adapters.
 - `optimize`: improve behavior only after the claim and held-out proof surface are explicit.
+
+During the contract rewrite, do not present `claim`, `optimize`, live app-runner workflows, or review-learning packet capture as stable cross-repo defaults.
 
 ## CLI First
 
@@ -64,6 +71,7 @@ If claim state exists, read or refresh that packet before planning new proof wor
 ## Declared Claim Discovery
 
 Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.
+In external consumer repos during the contract rewrite, use this path only after the user explicitly opts into non-eval Cautilus work.
 For these direct questions, do not run `claim discover` until scan entries/depth are stated and the user confirms or adjusts the scope; keep LLM review as a separate budgeted branch.
 Do not hard-code the search to README; by default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.
