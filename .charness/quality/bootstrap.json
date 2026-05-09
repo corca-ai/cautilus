@@ -4,37 +4,54 @@
   "artifact_path": "charness-artifacts/quality/latest.md",
   "report_path": ".charness/quality/bootstrap.json",
   "preset_lineage": [
-    "specdown-quality"
+    "specdown-quality",
+    "go-quality"
   ],
   "field_statuses": {
-    "preset_lineage": "inferred",
-    "coverage_fragile_margin_pp": "defaulted",
-    "coverage_floor_policy": "defaulted",
-    "specdown_smoke_patterns": "inferred",
-    "spec_pytest_reference_format": "defaulted",
-    "recommendation_defaults_version": "defaulted",
-    "prompt_asset_roots": "defaulted",
-    "adapter_review_sources": "defaulted",
-    "acknowledged_recommendations": "defaulted",
-    "gate_design_review_globs": "defaulted",
-    "prompt_asset_policy": "defaulted",
+    "preset_lineage": "augmented",
+    "coverage_fragile_margin_pp": "preserved",
+    "coverage_floor_policy": "preserved",
+    "specdown_smoke_patterns": "preserved",
+    "spec_pytest_reference_format": "deferred",
+    "recommendation_defaults_version": "preserved",
+    "public_spec_section_exemptions": "defaulted",
+    "public_spec_pointer_proof_markers": "defaulted",
+    "public_spec_implementation_ref_density_floor": "defaulted",
+    "public_spec_implementation_guard_min_lines": "defaulted",
+    "prompt_asset_roots": "preserved",
+    "adapter_review_sources": "preserved",
+    "acknowledged_recommendations": "preserved",
+    "gate_design_review_globs": "preserved",
+    "product_surfaces": "preserved",
+    "cli_skill_surface_probe_commands": "preserved",
+    "cli_skill_surface_command_docs": "preserved",
+    "cli_skill_surface_skill_paths": "preserved",
+    "cli_skill_surface_change_globs": "preserved",
+    "canonical_markdown_surfaces": "defaulted",
+    "skill_ergonomics_skill_paths": "preserved",
+    "skill_ergonomics_runtime_install_skill_paths": "defaulted",
+    "vendored_paths": "defaulted",
+    "prompt_asset_policy": "preserved",
+    "domain_language_contract": "defaulted",
     "skill_ergonomics_gate_rules": "preserved",
-    "runtime_budgets": "defaulted",
+    "runtime_profile_default": "defaulted",
+    "runtime_budgets": "preserved",
+    "runtime_budget_profiles": "defaulted",
     "startup_probes": "preserved",
-    "concept_paths": "preserved",
+    "quality_phases": "defaulted",
+    "concept_paths": "augmented",
     "preflight_commands": "preserved",
     "gate_commands": "preserved",
-    "security_commands": "deferred",
+    "security_commands": "preserved",
     "review_commands": "preserved"
   },
   "deferred_setup": [
     {
-      "field": "security_commands",
+      "field": "spec_pytest_reference_format",
       "status": "deferred",
-      "reason": "No repo-owned security helper was detected.",
+      "reason": "No Python quality preset was inferred.",
       "suggested_families": [
-        "secret scan",
-        "dependency or supply-chain audit"
+        "choose a language-specific quality preset or leave pytest references unset"
       ]
     }
   ]

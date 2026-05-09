@@ -6,6 +6,7 @@ preset_id: portable-defaults
 customized_from: portable-defaults
 preset_lineage:
   - specdown-quality
+  - go-quality
 coverage_fragile_margin_pp: 1.0
 coverage_floor_policy:
   min_statements_threshold: 30
@@ -18,34 +19,34 @@ coverage_floor_policy:
   ci_workflow_glob: .github/workflows/*.yml
 specdown_smoke_patterns: []
 recommendation_defaults_version: issue-64
+public_spec_section_exemptions:
+  - Fixed Decisions
+  - HTTP API contract
+  - Server backend stack
+  - Deferred Decisions
+  - Non-Goals
+public_spec_implementation_ref_density_floor: 0.02
+public_spec_implementation_guard_min_lines: 100
+public_spec_pointer_proof_markers:
+  - "proof: pointer"
+  - "proof: pointer-spec"
+  - "executable_proof: pointer"
+  - "public_spec_proof: pointer"
 prompt_asset_roots: []
 adapter_review_sources: []
 acknowledged_recommendations:
-  # This repo owns public-skill validation through `npm run dogfood:self`,
-  # which is executor-backed and deeper than the generic
-  # `suggest_public_skill_dogfood` smoke matrix. Revisit only if the
-  # product stops self-dogfooding.
   - public_skill_validation_missing_policy
 gate_design_review_globs: []
-prompt_asset_policy:
-  source_globs: []
-  min_multiline_chars: 400
-  exemption_globs: []
-skill_ergonomics_gate_rules:
-  - progressive_disclosure_risk
-skill_ergonomics_skill_paths:
-  - skills/cautilus-agent/SKILL.md
-  - plugins/cautilus/skills/cautilus-agent/SKILL.md
 product_surfaces:
   - installable_cli
   - cautilus_agent
 cli_skill_surface_probe_commands:
-  - "./bin/cautilus --version"
-  - "./bin/cautilus --help"
-  - "./bin/cautilus healthcheck --json"
-  - "./bin/cautilus commands --json"
-  - "./bin/cautilus scenarios --json"
-  - "./bin/cautilus doctor --repo-root . --scope agent-surface"
+  - ./bin/cautilus --version
+  - ./bin/cautilus --help
+  - ./bin/cautilus healthcheck --json
+  - ./bin/cautilus commands --json
+  - ./bin/cautilus scenarios --json
+  - ./bin/cautilus doctor --repo-root . --scope agent-surface
 cli_skill_surface_command_docs:
   - README.md
   - docs/cli-reference.md
@@ -55,16 +56,29 @@ cli_skill_surface_skill_paths:
   - skills/cautilus-agent/SKILL.md
   - plugins/cautilus/skills/cautilus-agent/SKILL.md
 cli_skill_surface_change_globs:
-  - "bin/**"
-  - "cmd/cautilus/**"
-  - "internal/app/**"
-  - "internal/cli/**"
-  - "internal/runtime/**"
-  - "skills/cautilus-agent/**"
-  - "plugins/cautilus/**"
-  - "docs/cli-reference.md"
-  - "docs/guides/consumer-adoption.md"
-  - "docs/specs/user/evaluation.spec.md"
+  - bin/**
+  - cmd/cautilus/**
+  - internal/app/**
+  - internal/cli/**
+  - internal/runtime/**
+  - skills/cautilus-agent/**
+  - plugins/cautilus/**
+  - docs/cli-reference.md
+  - docs/guides/consumer-adoption.md
+  - docs/specs/user/evaluation.spec.md
+canonical_markdown_surfaces:
+  - AGENTS.md
+  - CLAUDE.md
+prompt_asset_policy:
+  source_globs: []
+  min_multiline_chars: 400
+  exemption_globs: []
+skill_ergonomics_gate_rules:
+  - progressive_disclosure_risk
+skill_ergonomics_skill_paths:
+  - skills/cautilus-agent/SKILL.md
+  - plugins/cautilus/skills/cautilus-agent/SKILL.md
+runtime_profile_default: default
 runtime_budgets:
 startup_probes:
   - label: cautilus-version
@@ -124,6 +138,7 @@ concept_paths:
   - skills/cautilus-agent/SKILL.md
   - plugins/cautilus/skills/cautilus-agent/SKILL.md
   - charness-artifacts/quality/quality.md
+  - charness-artifacts/quality/latest.md
 preflight_commands:
   - ./bin/cautilus adapter resolve --repo-root .
 gate_commands:
