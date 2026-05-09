@@ -3,7 +3,7 @@ Date: 2026-05-09
 
 ## Summary
 
-Preparing Cautilus `v0.14.2`.
+Released Cautilus `v0.14.2`.
 
 ## Release Scope
 
@@ -17,7 +17,7 @@ The release keeps claim discovery, optimize automation, live app-runner workflow
 - `ca0d668` Bound v0.14 adoption to eval-only
 - `44f7c28` Prepare Cautilus 0.14.0 release
 - `b9eda1d` Prepare Cautilus 0.14.1 release
-- pending fix-forward commit for `v0.14.2`
+- `c23cc92` Prepare Cautilus 0.14.2 release
 
 ## Review
 
@@ -29,7 +29,7 @@ The release keeps claim discovery, optimize automation, live app-runner workflow
   - Release/public visibility reviewer noted that version surfaces must be bumped and synced before tag publish.
     Resolved by `npm run release:prepare -- 0.14.2`.
   - Release/public visibility reviewer noted that `verify-public-release.mjs` checks a tag but not the unpinned `releases/latest` installer path.
-    Carry into post-publish verification with an unpinned install smoke after GitHub marks `v0.14.2` latest.
+    Resolved by running both pinned and unpinned install-sh smoke tests after GitHub marked `v0.14.2` latest.
 - Bundle anyway:
   - Asset naming, OS/arch mapping, checksum manifest generation, and public asset presence verification are aligned across installer, workflow, and verifier.
   - `docs/guides/consumer-adoption.md` already steers the ordinary consumer path toward `install -> doctor -> eval test/evaluate`.
@@ -40,7 +40,11 @@ The release keeps claim discovery, optimize automation, live app-runner workflow
 ## Debug Notes
 
 - `check_real_host_proof.py` initially failed because Cautilus lacked `.agents/surfaces.json`.
-  Added the release, CLI/Agent, and promise-spec surface manifest and recorded the incident in [charness-artifacts/debug/latest.md](../debug/latest.md).
+  Added the release, CLI/Agent, and promise-spec surface manifest.
+- The first release tag workflow failed on a CI-only spec link to ignored local self-dogfood artifacts.
+  Fixed the spec to name selected evidence paths as plain code paths instead of Markdown links.
+- The second release tag workflow failed because CI pinned Go 1.26.2 while `govulncheck` required Go 1.26.3 for the standard library.
+  Updated GitHub workflows and maintainer docs to Go 1.26.3 and recorded the current incident in [charness-artifacts/debug/latest.md](../debug/latest.md).
 
 ## Verification
 
@@ -49,21 +53,29 @@ The release keeps claim discovery, optimize automation, live app-runner workflow
 - `npm run verify` (47.24s after CI-only spec-link fix): green.
 - `npm run hooks:check`: ready.
 - `python3 check_cli_skill_surface.py --run-probes`: status `ok` with 5/5 probes returning 0.
-- Pre-publish `npm run release:smoke-install -- --channel install_sh --version v0.14.0 --repo corca-ai/cautilus --installer-source local --skip-update --json`: blocked as expected with GitHub asset 404 because `v0.14.0` assets do not exist before tag publish and release workflow completion.
-  Rerun this after public assets are available.
 - GitHub Actions run `25596477876` for `v0.14.0` failed before asset publication on a CI-only spec link to ignored local self-dogfood artifacts.
   Resolved in `docs/specs/maintainer/evaluation-surfaces-runners.spec.md` by changing ignored artifact links to selected-evidence code paths.
 - GitHub Actions run `25596627243` for `v0.14.1` failed before asset publication because CI pinned Go 1.26.2 and `govulncheck` requires Go 1.26.3 for GO-2026-4971 and GO-2026-4918.
   Resolved by updating GitHub workflows and maintainer docs to Go 1.26.3.
+- GitHub Actions run `25596754775` for `v0.14.2`: `release-artifacts` and `verify-public-release` succeeded.
+- `node scripts/release/verify-public-release.mjs --version v0.14.2 --json`: ok, all expected assets present and checksum manifest complete.
+- Pinned installer smoke: `npm run release:smoke-install -- --channel install_sh --version v0.14.2 --repo corca-ai/cautilus --installer-source local --skip-update --json`: ok, installed `0.14.2`.
+- Unpinned latest installer smoke: `npm run release:smoke-install -- --channel install_sh --repo corca-ai/cautilus --installer-source local --skip-update --json`: ok, `releases/latest` resolved to `v0.14.2` and installed `0.14.2`.
 
 ## Public Release
 
 - Failed tags without public release: `v0.14.0`, `v0.14.1`.
-- Pending tag: `v0.14.2`.
-- Pending URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.14.2`.
-- Pending public verifier: `node scripts/release/verify-public-release.mjs --version v0.14.2 --json`.
-- Pending pinned installer smoke after release assets exist.
-- Pending unpinned installer smoke after `releases/latest` resolves to `v0.14.2`.
+- Released tag: `v0.14.2`.
+- URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.14.2`.
+- Published at: `2026-05-09T08:44:19Z`.
+- Assets:
+  - `cautilus_0.14.2_darwin_arm64.tar.gz`
+  - `cautilus_0.14.2_darwin_x64.tar.gz`
+  - `cautilus_0.14.2_linux_arm64.tar.gz`
+  - `cautilus_0.14.2_linux_x64.tar.gz`
+  - `cautilus-v0.14.2-checksums.txt`
+  - `cautilus-v0.14.2.sha256`
+  - `release-notes-v0.14.2.md`
 
 ## Operator Update Steps
 
@@ -76,4 +88,5 @@ The release keeps claim discovery, optimize automation, live app-runner workflow
 ## Open Risks
 
 - The release is intentionally incomplete outside eval-only adoption.
-- The public release is not complete until GitHub Actions publishes assets, the public verifier passes, and the unpinned installer smoke confirms `releases/latest` resolves to `v0.14.2`.
+- `v0.14.0` and `v0.14.1` remain failed tags without public releases.
+  Do not move or delete them without an explicit maintainer decision.
