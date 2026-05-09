@@ -7,8 +7,10 @@
 
 ## Current State
 
-- Latest committed slice: `d904355 Refine promise specs for reader language`.
+- Latest committed spec slice: `d904355 Refine promise specs for reader language`.
   Specs now use this reader order: User Workflow, Maintainer View, Promise Model, Shared Concerns, Evidence State.
+- Issue [#33](https://github.com/corca-ai/cautilus/issues/33) has been reframed as a Cautilus-native review-learning design question, not a request to import Engelbart vocabulary directly.
+  Read [docs/contracts/review-learning.md](../contracts/review-learning.md) before restarting HITL.
 - The previous HITL runtime was `.charness/hitl/runtime/hitl-20260508-222100`, and the durable checkpoint is [charness-artifacts/hitl/latest.md](../../charness-artifacts/hitl/latest.md).
   Treat it as historical context only: the user terminated that HITL and the spec tree was rewritten afterward.
 - Current intended HITL target is the rewritten [docs/specs/index.spec.md](../specs/index.spec.md), not the old Claim Discovery runtime target.
@@ -24,13 +26,15 @@
 
 1. Confirm Charness is updated enough that the fixes for #128-#131 are available.
    In particular, `charness:issue` preflight should resolve from the caller repo, and HITL chunks should require agent assessment plus non-binding recommendation before asking the user.
-2. Start a fresh or explicitly refreshed HITL session for `docs/specs/index.spec.md`.
+2. Before starting HITL, apply this design rubric from [Review Learning](../contracts/review-learning.md):
+   Does this spec leave a clear place for Cautilus Agent to capture source-bound review feedback and turn it into reusable evidence about which discovery or evaluation methods produced review-useful proposals?
+3. Start a fresh or explicitly refreshed HITL session for `docs/specs/index.spec.md`.
    Do not advance the old `hitl-20260508-222100` cursor as if it still represents the current text.
-3. Present the current index as the first chunk with this shape:
+4. Present the current index as the first chunk with this shape:
    direct excerpt, related context, agent assessment, risks or gaps, recommended disposition, then the human decision request.
-4. Apply the accepted HITL rules every time:
+5. Apply the accepted HITL rules every time:
    show rewritten chunk text after changes, require full target readback after chunks, verify target/cursor/line bounds before edits, and sync the durable HITL artifact before closeout.
-5. After index acceptance, continue in reader order:
+6. After index acceptance, continue in reader order:
    [User Workflow](../specs/user/index.spec.md), [Maintainer View](../specs/maintainer/index.spec.md), [Shared Concerns](../specs/concerns/index.spec.md), [Evidence State](../specs/proof/index.spec.md), then [Promise Model](../specs/model/index.spec.md) and its reference pages.
 
 ## Discuss
