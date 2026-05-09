@@ -1,7 +1,7 @@
 # Latest Selected Evidence
 
 Some Cautilus evidence is expensive, host-specific, or evaluator-backed.
-The standing spec report should project selected durable evidence and name stale or missing proof instead of pretending every expensive loop reran.
+The standing spec report should show selected durable evidence and name stale or missing proof instead of pretending every expensive loop reran.
 
 ## Current Selection Policy
 
@@ -15,7 +15,7 @@ The standing spec report should project selected durable evidence and name stale
 | status word | reader meaning |
 | --- | --- |
 | current | standing checks or selected artifacts support the claim now |
-| selected | durable evidence is projected into this report without rerunning the expensive workflow |
+| selected | durable evidence is shown in this report without rerunning the expensive workflow |
 | prepared | the fixture, adapter, or review route exists, and the live proof run remains open |
 | stale | an artifact exists but should be refreshed before it supports a fresh claim |
 | open gap | the proof condition is visible and unresolved |

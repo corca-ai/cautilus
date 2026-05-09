@@ -2,11 +2,11 @@
 
 The binary and Cautilus Agent own different parts of the workflow.
 
-Aligned model anchors: `promise.claim-discovery`, `promise.readiness`, `concern.agent-human-resumability`, `concern.host-owned-execution`.
-Proof route: deterministic plus dev/skill eval.
-Current evidence status: covered.
+Map keys: `promise.claim-discovery`, `promise.readiness`, `concern.agent-human-resumability`, `concern.host-owned-execution`.
+Evidence path: deterministic plus dev/skill eval.
+Evidence status: current.
 Next action: keep command-discovery, skill-disclosure, and product-import-isolation checks deterministic, then prove claim-review routing through a checked dev/skill fixture.
-Absorbs: command discovery, help text, packet examples, skill routing, review budget, LLM-backed claim review, subagent orchestration, progressive disclosure, install smoke.
+Terms covered here: command discovery, help text, packet examples, skill routing, review budget, LLM-backed claim review, subagent orchestration, progressive disclosure, install smoke.
 
 ## Maintainer Promise
 

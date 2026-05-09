@@ -2,11 +2,11 @@
 
 Scenario history and proposal normalization keep protected checks reusable across tuning loops.
 
-Aligned model anchors: `promise.evaluation`, `promise.optimization`, `concern.cost-and-proof-freshness`, `concern.agent-human-resumability`.
-Proof route: deterministic plus held-out eval.
-Current evidence status: partial.
+Map keys: `promise.evaluation`, `promise.optimization`, `concern.cost-and-proof-freshness`, `concern.agent-human-resumability`.
+Evidence path: deterministic plus held-out eval.
+Evidence status: open gap.
 Next action: connect scenario proposal sources, scenario history cadence, normalizer coverage, and held-out selection to eval and optimize packets.
-Absorbs: scenario proposal, scenario history, protected check, held-out, iterate cadence, train cadence, normalizer, proposal packet, context recovery, skill failure episode.
+Terms covered here: scenario proposal, scenario history, protected check, held-out, iterate cadence, train cadence, normalizer, proposal packet, context recovery, skill failure episode.
 
 ## Maintainer Promise
 

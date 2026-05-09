@@ -1,18 +1,17 @@
-# Agent-Human Resumability Concern
+# Agent-Human Resumability
 
-Concern ID: `concern.agent-human-resumability`.
+Cautilus should leave enough source refs, packets, next actions, and readable reports that a human or agent can resume the workflow without relying on chat memory.
 
-Cautilus should leave enough source refs, packets, next actions, and readable projections that a human or agent can resume the workflow without relying on chat memory.
+Key: `concern.agent-human-resumability`.
 
-## Projections
+## Where To Check This
 
 - User-facing attachments: [Readiness](../user/doctor-readiness.spec.md), [Claim Discovery](../user/claim-discovery.spec.md), [Host Ownership](../user/ownership.spec.md)
-- Maintainer routes: [Binary And Skill Boundary](../maintainer/binary-skill-boundary.spec.md), [Active Run And Workspace Lifecycle](../maintainer/active-run-workspace.spec.md), [Reporting And Review Variants](../maintainer/reporting-review-variants.spec.md)
+- Maintainer evidence routes: [Binary And Skill Boundary](../maintainer/binary-skill-boundary.spec.md), [Active Run And Workspace Lifecycle](../maintainer/active-run-workspace.spec.md), [Reporting And Review Variants](../maintainer/reporting-review-variants.spec.md)
 
-## Current Proof
+## Link Checks
 
-Current proof exists through readiness next actions, claim discovery source refs, active-run state, review packets, and report rendering.
-This concern stays separate so agent-first behavior does not collapse into hidden chat state.
+Current evidence details live in [Evidence State](../proof/index.spec.md).
 
 ```run:shell
 # Verify the maintainer routes that currently own resumability proof exist.

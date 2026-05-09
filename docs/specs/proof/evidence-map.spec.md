@@ -1,22 +1,22 @@
 # Evidence Map
 
-This page maps canonical promises and concerns to the current durable proof routes.
-It does not assert that every route is complete.
+This page maps Cautilus promises and shared concerns to the current durable evidence routes.
 Completeness is handled by [Proof Gaps](gaps.spec.md).
+The human name comes first; compact keys are included for packets and checks.
 
 ## Evidence Routes
 
-| evidence id | supports | route | current state |
-| --- | --- | --- | --- |
-| `evidence.readiness-cli` | `promise.readiness`, `concern.vocabulary-consistency` | [Readiness](../user/doctor-readiness.spec.md), [Readiness And Runtime Status](../maintainer/readiness-runtime-status.spec.md) | executable CLI checks exist |
-| `evidence.claim-discovery-fixtures` | `promise.claim-discovery`, `concern.reviewable-artifacts`, `concern.evidence-gaps` | [Claim Discovery](../user/claim-discovery.spec.md), [Claim Discovery Workflow](../maintainer/claim-discovery-workflow.spec.md) | deterministic fixture proof exists; agent curation proof is partial |
-| `evidence.evaluation-selected` | `promise.evaluation`, `concern.packet-freshness`, `concern.cost-and-proof-freshness` | [Behavior Evaluation](../user/evaluation.spec.md), [Evaluation Surfaces And Runners](../maintainer/evaluation-surfaces-runners.spec.md) | selected evidence is projected instead of rerun |
-| `evidence.optimization-packets` | `promise.optimization`, `concern.reviewable-artifacts`, `concern.cost-and-proof-freshness` | [Bounded Optimization](../user/optimization.spec.md), [Optimization Loop](../maintainer/optimization-loop.spec.md) | packet proof exists; held-out live cycle proof is missing |
-| `evidence.host-boundary` | `concern.host-owned-execution` | [Host Ownership](../user/ownership.spec.md), [Adapter And Host Ownership](../maintainer/adapter-host-ownership.spec.md), [Live Invocation Runtime](../maintainer/live-invocation-runtime.spec.md) | deterministic boundary proof exists; live parity proof is partial |
-| `evidence.review-artifact-rendering` | `concern.reviewable-artifacts`, `concern.packet-freshness`, `concern.agent-human-resumability` | [Evidence State And Review Artifacts](../maintainer/evidence-state-artifacts.spec.md), [Reporting And Review Variants](../maintainer/reporting-review-variants.spec.md), [Active Run And Workspace Lifecycle](../maintainer/active-run-workspace.spec.md) | route proof exists across maintainer pages |
+| evidence route | key | supports | where to inspect | state |
+| --- | --- | --- | --- | --- |
+| Readiness CLI | `evidence.readiness-cli` | [Readiness](../model/readiness.spec.md), [Vocabulary Consistency](../concerns/vocabulary-consistency.spec.md) | [Readiness](../user/doctor-readiness.spec.md), [Readiness And Runtime Status](../maintainer/readiness-runtime-status.spec.md) | current |
+| Claim Discovery Fixtures | `evidence.claim-discovery-fixtures` | [Claim Discovery](../model/claim-discovery.spec.md), [Reviewable Artifacts](../concerns/reviewable-artifacts.spec.md), [Evidence Gaps](../concerns/evidence-gaps.spec.md) | [Claim Discovery](../user/claim-discovery.spec.md), [Claim Discovery Workflow](../maintainer/claim-discovery-workflow.spec.md) | open gap |
+| Evaluation Selected Evidence | `evidence.evaluation-selected` | [Behavior Evaluation](../model/evaluation.spec.md), [Packet Freshness](../concerns/packet-freshness.spec.md), [Cost And Proof Freshness](../concerns/cost-and-proof-freshness.spec.md) | [Behavior Evaluation](../user/evaluation.spec.md), [Evaluation Surfaces And Runners](../maintainer/evaluation-surfaces-runners.spec.md) | selected |
+| Optimization Packets | `evidence.optimization-packets` | [Bounded Optimization](../model/optimization.spec.md), [Reviewable Artifacts](../concerns/reviewable-artifacts.spec.md), [Cost And Proof Freshness](../concerns/cost-and-proof-freshness.spec.md) | [Bounded Optimization](../user/optimization.spec.md), [Optimization Loop](../maintainer/optimization-loop.spec.md) | open gap |
+| Host Boundary | `evidence.host-boundary` | [Host-Owned Execution](../concerns/host-owned-execution.spec.md) | [Host Ownership](../user/ownership.spec.md), [Adapter And Host Ownership](../maintainer/adapter-host-ownership.spec.md), [Live Invocation Runtime](../maintainer/live-invocation-runtime.spec.md) | open gap |
+| Review Artifact Rendering | `evidence.review-artifact-rendering` | [Reviewable Artifacts](../concerns/reviewable-artifacts.spec.md), [Packet Freshness](../concerns/packet-freshness.spec.md), [Agent-Human Resumability](../concerns/agent-human-resumability.spec.md) | [Evidence State And Review Artifacts](../maintainer/evidence-state-artifacts.spec.md), [Reporting And Review Variants](../maintainer/reporting-review-variants.spec.md), [Active Run And Workspace Lifecycle](../maintainer/active-run-workspace.spec.md) | current |
 
 ```run:shell
-# Verify evidence map can reach the canonical ledger and gap view.
+# Verify evidence map can reach the ledger and gap view.
 test -f docs/specs/model/promise-ledger.spec.md
 test -f docs/specs/proof/gaps.spec.md
 ```

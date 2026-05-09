@@ -2,11 +2,11 @@
 
 Evaluation uses explicit surfaces, presets, fixtures, and runners.
 
-Aligned model anchors: `promise.evaluation`, `concern.packet-freshness`, `concern.cost-and-proof-freshness`, `concern.host-owned-execution`.
-Proof route: deterministic plus fixture-backed eval.
-Current evidence status: partial.
+Map keys: `promise.evaluation`, `concern.packet-freshness`, `concern.cost-and-proof-freshness`, `concern.host-owned-execution`.
+Evidence path: deterministic plus fixture-backed eval.
+Evidence status: open gap.
 Next action: keep normalizer, fixture, and public spec proof aligned with `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt`.
-Absorbs: dev surface, app surface, repo preset, skill preset, chat preset, prompt preset, fixture composition, runner readiness, eval test, eval evaluate, scenario normalization.
+Terms covered here: dev surface, app surface, repo preset, skill preset, chat preset, prompt preset, fixture composition, runner readiness, eval test, eval evaluate, scenario normalization.
 
 ## Maintainer Promise
 

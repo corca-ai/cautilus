@@ -1,26 +1,22 @@
-# Host-Owned Execution Concern
-
-Concern ID: `concern.host-owned-execution`.
+# Host-Owned Execution
 
 Host repos own prompts, models, credentials, runtime wiring, fixtures, and acceptance policy.
-Cautilus owns generic workflow contracts, packet shapes, command boundaries, and proof routes.
+Cautilus owns generic workflow contracts, packet shapes, command boundaries, and evidence routes.
 
-This is a cross-cutting concern rather than a primary workflow story because it constrains readiness, discovery, evaluation, and optimization at the same time.
+User-facing name: [Host Ownership](../user/ownership.spec.md).
+Key: `concern.host-owned-execution`.
 
-## Projections
+## Where To Check This
 
-- User-facing projection: [Host Ownership](../user/ownership.spec.md)
-- Model constraint: [Host-Owned Execution Constraint](../model/host-ownership.spec.md)
-- Maintainer routes: [Adapter And Host Ownership](../maintainer/adapter-host-ownership.spec.md), [Live Invocation Runtime](../maintainer/live-invocation-runtime.spec.md), [Binary And Skill Boundary](../maintainer/binary-skill-boundary.spec.md)
+- User-facing page: [Host Ownership](../user/ownership.spec.md)
+- Maintainer evidence routes: [Adapter And Host Ownership](../maintainer/adapter-host-ownership.spec.md), [Live Invocation Runtime](../maintainer/live-invocation-runtime.spec.md), [Binary And Skill Boundary](../maintainer/binary-skill-boundary.spec.md)
 
-## Current Proof
+## Evidence State
 
-Adapter contract tests, command-discovery checks, and product-import isolation prove the deterministic boundary.
-Live invocation and consumer parity proof remain partial and should stay visible as proof gaps rather than being hidden behind the host-ownership wording.
+Live invocation and consumer parity proof remain open gaps and should stay visible rather than being hidden behind the host-ownership wording.
 
 ```run:shell
-# Verify the current host-owned execution projections exist.
+# Verify the host-owned execution pages and maintainer route exist.
 test -f docs/specs/user/ownership.spec.md
-test -f docs/specs/model/host-ownership.spec.md
 test -f docs/specs/maintainer/adapter-host-ownership.spec.md
 ```

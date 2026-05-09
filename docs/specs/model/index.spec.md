@@ -1,16 +1,16 @@
 # Cautilus Promise Model
 
-The promise model names the product concepts that the rest of the spec tree reads.
-Each concept has a human name first.
-Machine keys appear only where tables, packets, or checks need compact references.
+The promise model is the compact reference for Cautilus promises, shared concerns, and evidence pages.
+Start with the [User Workflow](../user/index.spec.md) when reading for the product story.
+Use this page when you need a map.
 
 Spec entry: [Cautilus Promise Specs](../index.spec.md).
 
 ## Model Files
 
 - [Promise Ledger](promise-ledger.spec.md)
-- [Projection Contract](projection-contract.spec.md)
-- [Naming And Addressing](naming-and-addressing.spec.md)
+- [How The Views Relate](how-views-relate.spec.md)
+- [Names And Keys](names-and-keys.spec.md)
 
 ## Workflow Promises
 
@@ -19,17 +19,17 @@ Spec entry: [Cautilus Promise Specs](../index.spec.md).
 - [Behavior Evaluation](evaluation.spec.md)
 - [Bounded Optimization](optimization.spec.md)
 
-## Cross-Cutting Concerns
+## Shared Concerns
 
-- [Host-Owned Execution](host-ownership.spec.md)
-- [Concern View](../concerns/index.spec.md)
+- [Host-Owned Execution](../concerns/host-owned-execution.spec.md)
+- [Shared Concerns](../concerns/index.spec.md)
 
 ## Evidence State
 
-- [Evidence And Gap View](../proof/index.spec.md)
+- [Evidence State](../proof/index.spec.md)
 
 ```run:shell
-# Verify that the canonical model's projection entrypoints exist.
+# Verify that the model's reading views exist.
 test -f docs/specs/user/index.spec.md
 test -f docs/specs/maintainer/index.spec.md
 test -f docs/specs/concerns/index.spec.md
@@ -38,5 +38,5 @@ test -f docs/specs/model/readiness.spec.md
 test -f docs/specs/model/claim-discovery.spec.md
 test -f docs/specs/model/evaluation.spec.md
 test -f docs/specs/model/optimization.spec.md
-test -f docs/specs/model/host-ownership.spec.md
+test -f docs/specs/concerns/host-owned-execution.spec.md
 ```

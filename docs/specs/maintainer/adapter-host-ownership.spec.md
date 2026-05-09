@@ -2,11 +2,11 @@
 
 Host repos own runtime-specific behavior.
 
-Aligned model anchors: `promise.readiness`, `promise.evaluation`, `concern.host-owned-execution`, `concern.vocabulary-consistency`.
-Proof route: deterministic plus consumer dogfood.
-Current evidence status: covered.
+Map keys: `promise.readiness`, `promise.evaluation`, `concern.host-owned-execution`, `concern.vocabulary-consistency`.
+Evidence path: deterministic plus consumer dogfood.
+Evidence status: current.
 Next action: keep adapter contract tests, the external consumer smoke, and the product-import-isolation lint deterministic; consumer-side parity proof grows when new host adapters land.
-Absorbs: adapters, prompts, model choice, credentials, runtime launch, command templates, backend selection, fixtures, acceptance policy, repo-specific flags, portable schema.
+Terms covered here: adapters, prompts, model choice, credentials, runtime launch, command templates, backend selection, fixtures, acceptance policy, repo-specific flags, portable schema.
 
 ## Maintainer Promise
 

@@ -1,6 +1,6 @@
-# Evidence And Gap View
+# Evidence State
 
-This projection shows what evidence currently supports the [Promise Ledger](../model/promise-ledger.spec.md), which evidence is selected rather than rerun, and which proof gaps remain open.
+This view shows what evidence currently supports the [Promise Ledger](../model/promise-ledger.spec.md), which evidence is selected rather than rerun, and which proof gaps remain open.
 It answers which promises are currently supported, stale, selected from durable evidence, or visibly red in the Specdown report.
 
 ## Pages

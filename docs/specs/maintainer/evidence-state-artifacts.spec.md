@@ -2,19 +2,19 @@
 
 Review state and evidence state are separate transitions.
 
-Aligned model anchors: `concern.reviewable-artifacts`, `concern.evidence-gaps`, `concern.packet-freshness`, `concern.vocabulary-consistency`.
-Proof route: deterministic.
-Current evidence status: partial.
-Next action: keep review-result application, evidence validation, canonical maps, Markdown reports, and HTML/status views tied to packet freshness.
-Absorbs: evidence refs, possible evidence, satisfied evidence, review labels, status summary, canonical claim map, Markdown report, HTML view, stale packet, drift handling.
+Map keys: `concern.reviewable-artifacts`, `concern.evidence-gaps`, `concern.packet-freshness`, `concern.vocabulary-consistency`.
+Evidence path: deterministic.
+Evidence status: open gap.
+Next action: keep review-result application, evidence validation, stable maps, Markdown reports, and HTML/status views tied to packet freshness.
+Terms covered here: evidence refs, possible evidence, satisfied evidence, review labels, status summary, canonical claim map, Markdown report, HTML view, stale packet, drift handling.
 
 ## Maintainer Promise
 
-Reviewer agreement can update wording, audience, proof route, readiness, and next action, but a claim becomes satisfied only when a direct or verified evidence ref supports it; readable reports stay projections over packets and never become independent truth sources.
+Reviewer agreement can update wording, audience, evidence route, readiness, and next action, but a claim becomes satisfied only when a direct or verified evidence ref supports it; readable reports stay generated from packets and never become independent truth sources.
 
 ## Subclaims
 
-- Review-result application updates labels, proof route, readiness, and next action without flipping evidence status by itself.
+- Review-result application updates labels, evidence route, readiness, and next action without flipping evidence status by itself.
 - A claim becomes satisfied only when a direct or verified evidence ref supports it; possible evidence and review agreement alone do not satisfy.
 - `claim validate` exits non-zero when packet shape or evidence refs are invalid.
 - Stale packet state stays visible in `claim show`, `agent status`, and rendered reports rather than masked behind cached labels.

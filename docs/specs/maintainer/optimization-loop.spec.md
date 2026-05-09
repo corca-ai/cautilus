@@ -2,11 +2,11 @@
 
 Optimization is a bounded behavior-improvement loop.
 
-Aligned model anchors: `promise.optimization`, `concern.evidence-gaps`, `concern.cost-and-proof-freshness`, `concern.reviewable-artifacts`.
-Proof route: deterministic plus held-out eval.
-Current evidence status: partial.
+Map keys: `promise.optimization`, `concern.evidence-gaps`, `concern.cost-and-proof-freshness`, `concern.reviewable-artifacts`.
+Evidence path: deterministic plus held-out eval.
+Evidence status: open gap.
 Next action: connect optimize packet tests to at least one held-out eval proof before treating improvement claims as satisfied.
-Absorbs: optimize prepare-input, search budget, checkpoint, frontier, proposal, held-out validation, protected checks, runtime fingerprint, blocked readiness, reuse.
+Terms covered here: optimize prepare-input, search budget, checkpoint, frontier, proposal, held-out validation, protected checks, runtime fingerprint, blocked readiness, reuse.
 
 ## Maintainer Promise
 

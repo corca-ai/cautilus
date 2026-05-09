@@ -2,12 +2,12 @@
 
 Doctor and agent status expose readiness without proving behavior claims.
 
-Aligned model anchors: `promise.readiness`, `concern.evidence-gaps`, `concern.vocabulary-consistency`, `concern.agent-human-resumability`.
-Proof route: deterministic.
-Current evidence status: partial.
+Map keys: `promise.readiness`, `concern.evidence-gaps`, `concern.vocabulary-consistency`, `concern.agent-human-resumability`.
+Evidence path: deterministic.
+Evidence status: open gap.
 Next action: keep doctor, agent status, runner-readiness assessment, and active-run status sharing the same readiness facts.
 
-Absorbs: doctor, agent status, adapter resolve, named adapter, runner readiness, active run, missing git repo, install state, next action, first bounded run.
+Terms covered here: doctor, agent status, adapter resolve, named adapter, runner readiness, active run, missing git repo, install state, next action, first bounded run.
 
 ## Maintainer Promise
 

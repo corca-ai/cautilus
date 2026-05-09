@@ -2,11 +2,11 @@
 
 Live invocation turns product-owned request packets into host-owned runtime calls.
 
-Aligned model anchors: `promise.evaluation`, `concern.host-owned-execution`, `concern.packet-freshness`.
-Proof route: deterministic plus live-run fixture.
-Current evidence status: partial.
+Map keys: `promise.evaluation`, `concern.host-owned-execution`, `concern.packet-freshness`.
+Evidence path: deterministic plus live-run fixture.
+Evidence status: open gap.
 Next action: connect live invocation, batch invocation, persona prompt, request packet, result normalization, and backend handoff tests.
-Absorbs: live run, batch run, invocation, persona prompt, simulator, request packet, result packet, samples per scenario, backend command handoff, provider-specific flags.
+Terms covered here: live run, batch run, invocation, persona prompt, simulator, request packet, result packet, samples per scenario, backend command handoff, provider-specific flags.
 
 ## Maintainer Promise
 

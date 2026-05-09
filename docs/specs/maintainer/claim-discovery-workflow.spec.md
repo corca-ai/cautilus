@@ -2,11 +2,11 @@
 
 Claim discovery is a high-recall proof-planning pass, not a verdict.
 
-Aligned model anchors: `promise.claim-discovery`, `concern.reviewable-artifacts`, `concern.evidence-gaps`, `concern.agent-human-resumability`.
-Proof route: deterministic plus skill review.
-Current evidence status: partial.
+Map keys: `promise.claim-discovery`, `concern.reviewable-artifacts`, `concern.evidence-gaps`, `concern.agent-human-resumability`.
+Evidence path: deterministic plus skill review.
+Evidence status: open gap.
 Next action: keep source-scope tests, canonical-map generation, and review-result replay connected to the active spec tree.
-Absorbs: source inventory, entry Markdown, linked Markdown, `.gitignore`, raw candidates, duplicate handling, canonical compression, review-result replay, false-positive review, false-negative boundary.
+Terms covered here: source inventory, entry Markdown, linked Markdown, `.gitignore`, raw candidates, duplicate handling, canonical compression, review-result replay, false-positive review, false-negative boundary.
 
 ## Maintainer Promise
 

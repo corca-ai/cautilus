@@ -2,11 +2,11 @@
 
 Active runs keep multi-command workflows resumable without hiding workspace ownership.
 
-Aligned model anchors: `promise.evaluation`, `promise.optimization`, `concern.reviewable-artifacts`, `concern.packet-freshness`, `concern.agent-human-resumability`.
-Proof route: deterministic.
-Current evidence status: partial.
+Map keys: `promise.evaluation`, `promise.optimization`, `concern.reviewable-artifacts`, `concern.packet-freshness`, `concern.agent-human-resumability`.
+Evidence path: deterministic.
+Evidence status: open gap.
 Next action: keep active-run resolution, auto-materialization, pruning, and run-directory freshness tied to command tests and packet fields.
-Absorbs: active run, run directory, workspace lifecycle, manifest, auto-materialize, prune, output directory, compare workspace, candidate workspace, baseline workspace.
+Terms covered here: active run, run directory, workspace lifecycle, manifest, auto-materialize, prune, output directory, compare workspace, candidate workspace, baseline workspace.
 
 ## Maintainer Promise
 
