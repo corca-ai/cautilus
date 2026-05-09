@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-08T12:45:21Z",
+  "generated_at": "2026-05-09T04:16:41Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -33,6 +33,7 @@
         "referenced_paths": [
           "skills/announcement/references/draft-shape.md",
           "skills/announcement/references/delivery-seams.md",
+          "shared/references/closeout-discipline.md",
           "skills/announcement/references/adapter-contract.md",
           "skills/announcement/references/audience-policy.md"
         ],
@@ -58,6 +59,7 @@
           "skills/create-cli/references/command-conventions.md",
           "skills/create-cli/references/command-surface.md",
           "skills/create-cli/references/external-capability-clis.md",
+          "shared/references/external-capability-proof-ladder.md",
           "skills/create-cli/references/install-update.md",
           "skills/create-cli/references/version-provenance.md",
           "skills/create-cli/references/machine-readable-state.md",
@@ -83,6 +85,7 @@
           "charness:create-skill"
         ],
         "referenced_paths": [
+          "shared/references/external-capability-proof-ladder.md",
           "skills/create-skill/SKILL.md",
           "skills/create-skill/references/portable-authoring.md",
           "skills/create-skill/references/adapter-pattern.md",
@@ -169,6 +172,7 @@
         "referenced_paths": [
           "skills/gather/SKILL.md",
           "skills/gather/references/browser-mediated-private-sources.md",
+          "shared/references/closeout-discipline.md",
           "skills/gather/references/adapter-contract.md",
           "skills/gather/references/source-priority.md",
           "skills/gather/references/asset-refresh.md",
@@ -197,6 +201,7 @@
           "skills/handoff/references/continuation-sequence.md",
           "skills/handoff/SKILL.md",
           "skills/handoff/references/spill-targets.md",
+          "shared/references/closeout-discipline.md",
           "shared/references/fresh-eye-subagent-review.md",
           "skills/handoff/references/adapter-contract.md",
           "skills/handoff/references/workflow-trigger.md",
@@ -221,12 +226,14 @@
           "charness:hitl"
         ],
         "referenced_paths": [
-          "skills/hitl/references/adapter-contract.md",
           "skills/hitl/references/chunk-contract.md",
+          "skills/hitl/references/adapter-contract.md",
           "skills/hitl/references/report-mode.md",
           "skills/hitl/references/state-model.md",
           "skills/hitl/references/rule-propagation.md",
+          "shared/references/agent-assessment-invariant.md",
           "skills/hitl/scripts/bootstrap_review.py",
+          "skills/hitl/scripts/check_chunk_contract.py",
           "skills/hitl/scripts/check_review_state.py",
           "skills/hitl/scripts/render_report.py",
           "skills/hitl/scripts/sync_review_artifact.py"
@@ -286,6 +293,7 @@
           "shared/references/source-bound-records.md",
           "skills/impl/SKILL.md",
           "shared/references/prescribed-path-self-test.md",
+          "shared/references/external-capability-proof-ladder.md",
           "skills/impl/references/contract-consumption.md",
           "skills/impl/references/external-api-contract.md",
           "skills/impl/references/spec-loop.md"
@@ -316,7 +324,8 @@
           "skills/init-repo/references/probe-surface.md",
           "skills/init-repo/references/retro-memory-seam.md",
           "skills/init-repo/references/github-actions-defaults.md",
-          "skills/init-repo/references/operator-acceptance-synthesis.md"
+          "skills/init-repo/references/operator-acceptance-synthesis.md",
+          "shared/references/agent-assessment-invariant.md"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -324,8 +333,8 @@
       {
         "id": "issue",
         "name": "issue",
-        "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through `gh`. Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth.",
-        "summary": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through `gh`. Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth.",
+        "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution premortem so the same class of issue does not recur.",
+        "summary": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution premortem so the same class of issue does not recur.",
         "path": "skills/issue/SKILL.md",
         "skill_dir": "skills/issue",
         "canonical_path": "skills/issue/SKILL.md",
@@ -336,10 +345,14 @@
           "charness:issue"
         ],
         "referenced_paths": [
-          "shared/references/binary-preflight.md",
+          "skills/issue/references/issue-backend.md",
+          "shared/references/external-capability-proof-ladder.md",
           "skills/issue/SKILL.md",
+          "skills/issue/references/closeout-discipline.md",
+          "skills/issue/references/causal-review.md",
           "skills/issue/references/issue-shaping.md",
           "skills/issue/references/resolve-flow.md",
+          "shared/references/fresh-eye-subagent-review.md",
           "skills/issue/scripts/issue_tool.py",
           "skills/issue/scripts/issue_runtime.py",
           "skills/issue/scripts/resolve_adapter.py",
@@ -366,9 +379,11 @@
           "skills/narrative/references/landing-rewrite-loop.md",
           "skills/narrative/references/cross-repo-issue-shaping.md",
           "skills/narrative/references/scenario-blocks.md",
+          "shared/references/closeout-discipline.md",
           "skills/narrative/references/adapter-contract.md",
           "skills/narrative/references/source-map.md",
           "skills/narrative/references/brief-shape.md",
+          "shared/references/agent-assessment-invariant.md",
           "shared/references/success-criteria-review.md"
         ],
         "source": "local-public",
@@ -391,7 +406,8 @@
         "referenced_paths": [
           "shared/references/fresh-eye-subagent-review.md",
           "skills/premortem/references/angle-selection.md",
-          "skills/premortem/references/counterweight-triage.md"
+          "skills/premortem/references/counterweight-triage.md",
+          "shared/references/agent-assessment-invariant.md"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -416,6 +432,7 @@
           "skills/quality/references/skill-ergonomics.md",
           "skills/quality/references/skill-quality.md",
           "shared/references/fresh-eye-subagent-review.md",
+          "shared/references/external-capability-proof-ladder.md",
           "skills/quality/references/adapter-contract.md",
           "skills/quality/references/adapter-gate-review.md",
           "skills/quality/references/automation-promotion.md",
@@ -445,7 +462,8 @@
           "skills/quality/references/security-uv.md",
           "skills/quality/references/standing-gate-verbosity.md",
           "skills/quality/references/startup-probes.md",
-          "skills/quality/references/validate_spec_pytest_references.py"
+          "skills/quality/references/validate_spec_pytest_references.py",
+          "shared/references/agent-assessment-invariant.md"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -465,6 +483,7 @@
           "charness:release"
         ],
         "referenced_paths": [
+          "shared/references/closeout-discipline.md",
           "skills/release/references/adapter-contract.md",
           "skills/release/references/version-policy.md",
           "skills/release/references/install-surface.md"
@@ -529,6 +548,7 @@
           "skills/spec/references/impl-loop.md",
           "skills/spec/references/ideation-boundary.md",
           "skills/spec/references/document-seams.md",
+          "shared/references/agent-assessment-invariant.md",
           "shared/references/success-criteria-review.md"
         ],
         "source": "local-public",
