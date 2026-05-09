@@ -163,6 +163,8 @@ In the later review-to-eval branch, apply `cautilus.claim_review_result.v1`, val
 When review-to-eval is explicitly delegated in the same agent turn, keep the same bounded reviewer budget unless the user names a larger one, write the applied claim packet to a separate artifact, validate that artifact, run `claim plan-evals` from the validated artifact, and stop before fixture authoring, eval execution, product edits, or commits.
 The review and eval-planning commands reject stale claim packets by default; treat that error as a prompt to refresh, not as a reason to pass `--allow-stale-claims` automatically.
 
+After a human review, HITL chunk, issue, pull request review, `review.json`, or `review-summary.json` produces a source review decision about a Cautilus proposal, use `"$CAUTILUS_BIN" review feedback build` to materialize `cautilus.review_feedback.v1`; include proposal evidence for `accepted`, `narrowed`, `reframed`, or `rejected`, reserve proposal-less packets for `missing_critical`, read the packet before reporting it, and do not treat it as eval pass/fail or source-ref verification.
+
 ## Eval Routing
 
 `Cautilus` has two top-level evaluation surfaces and four fixture presets.

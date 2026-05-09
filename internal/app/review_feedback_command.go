@@ -172,6 +172,9 @@ func validateReviewFeedbackBuildArgs(options *reviewFeedbackBuildArgs) error {
 	if strings.TrimSpace(options.reviewNote) == "" {
 		return fmt.Errorf("--review-note is required")
 	}
+	if options.disposition != "missing_critical" && options.proposalID == nil && len(options.proposalSourceRefs) == 0 {
+		return fmt.Errorf("--proposal-id or --proposal-source-ref is required unless --disposition is missing_critical")
+	}
 	return nil
 }
 
@@ -188,6 +191,10 @@ func buildReviewFeedbackPacket(options *reviewFeedbackBuildArgs, now time.Time) 
 		},
 		"method": map[string]any{
 			"family": options.methodFamily,
+		},
+		"normalization": map[string]any{
+			"producer": "cautilus.review.feedback.build",
+			"basis":    "source_review",
 		},
 		"disposition": options.disposition,
 		"reviewNote":  options.reviewNote,

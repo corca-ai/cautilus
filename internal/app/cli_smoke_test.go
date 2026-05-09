@@ -81,6 +81,11 @@ func readJSONObjectFile(t *testing.T, path string) map[string]any {
 	if err != nil {
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
+	return readJSONObjectPayload(t, payload)
+}
+
+func readJSONObjectPayload(t *testing.T, payload []byte) map[string]any {
+	t.Helper()
 	var value map[string]any
 	if err := json.Unmarshal(payload, &value); err != nil {
 		t.Fatalf("Unmarshal returned error: %v", err)
@@ -657,14 +662,30 @@ func TestCLIReviewFeedbackBuildEmitsSourceBoundLearningPacket(t *testing.T) {
 		t.Fatalf("unexpected source review: %#v", sourceReview)
 	}
 	method := packet["method"].(map[string]any)
-	if method["family"] != "claim_discovery" || method["id"] != "linked_markdown_scan" {
+	if method["family"] != "claim_discovery" || method["id"] != "linked_markdown_scan" || method["sourceScope"] != "docs/specs/index.spec.md" {
 		t.Fatalf("unexpected method: %#v", method)
+	}
+	proposal := packet["proposal"].(map[string]any)
+	if proposal["id"] != "claim-review-learning" {
+		t.Fatalf("unexpected proposal id: %#v", proposal)
+	}
+	proposalSourceRefs := proposal["sourceRefs"].([]any)
+	if len(proposalSourceRefs) != 1 || proposalSourceRefs[0] != "docs/specs/index.spec.md:14" {
+		t.Fatalf("unexpected proposal source refs: %#v", proposalSourceRefs)
+	}
+	normalization := packet["normalization"].(map[string]any)
+	if normalization["producer"] != "cautilus.review.feedback.build" || normalization["basis"] != "source_review" {
+		t.Fatalf("unexpected normalization metadata: %#v", normalization)
 	}
 	if packet["disposition"] != "reframed" {
 		t.Fatalf("unexpected disposition: %#v", packet["disposition"])
 	}
 	if packet["reviewNote"] == "" {
 		t.Fatalf("expected review note in packet: %#v", packet)
+	}
+	followUpRefs := packet["followUpRefs"].([]any)
+	if len(followUpRefs) != 1 || followUpRefs[0] != "https://github.com/corca-ai/cautilus/issues/33" {
+		t.Fatalf("unexpected follow-up refs: %#v", followUpRefs)
 	}
 }
 
@@ -692,6 +713,61 @@ func TestCLIReviewFeedbackBuildRejectsTestStatusDisposition(t *testing.T) {
 	}
 	if !strings.Contains(stderr, "--disposition must be one of:") || strings.Contains(stderr, "passed") {
 		t.Fatalf("unexpected stderr for invalid disposition: %s", stderr)
+	}
+}
+
+func TestCLIReviewFeedbackBuildRejectsMissingReviewedProposal(t *testing.T) {
+	root := t.TempDir()
+	_, stderr, exitCode := runCLI(
+		t,
+		root,
+		"review",
+		"feedback",
+		"build",
+		"--source-kind",
+		"hitl",
+		"--source-ref",
+		"docs/internal/handoff.md",
+		"--method-family",
+		"claim_discovery",
+		"--disposition",
+		"accepted",
+		"--review-note",
+		"The proposal was useful.",
+	)
+	if exitCode == 0 {
+		t.Fatalf("expected missing reviewed proposal evidence to fail")
+	}
+	if !strings.Contains(stderr, "--proposal-id or --proposal-source-ref is required") {
+		t.Fatalf("unexpected stderr for missing proposal evidence: %s", stderr)
+	}
+}
+
+func TestCLIReviewFeedbackBuildAllowsMissingCriticalWithoutProposal(t *testing.T) {
+	root := t.TempDir()
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"review",
+		"feedback",
+		"build",
+		"--source-kind",
+		"hitl",
+		"--source-ref",
+		"docs/internal/handoff.md",
+		"--method-family",
+		"claim_discovery",
+		"--disposition",
+		"missing_critical",
+		"--review-note",
+		"The method missed a product promise reviewers needed.",
+	)
+	if exitCode != 0 {
+		t.Fatalf("expected missing_critical without proposal to pass: %s", stderr)
+	}
+	packet := readJSONObjectPayload(t, []byte(stdout))
+	if packet["disposition"] != "missing_critical" {
+		t.Fatalf("unexpected disposition: %#v", packet["disposition"])
 	}
 }
 

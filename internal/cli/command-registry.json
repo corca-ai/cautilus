@@ -364,8 +364,8 @@
     {
       "path": ["review", "feedback", "build"],
       "group": "results",
-      "usage": "cautilus review feedback build --source-kind <hitl|issue|pull_request_review|review_packet|review_summary> --source-ref <ref> --method-family <claim_discovery|evaluation|manual_seed> --disposition <accepted|narrowed|reframed|rejected|missing_critical> --review-note <text> [--method-id <id>] [--proposal-id <id>] [--proposal-source-ref <ref>] [--follow-up-ref <ref>] [--output <review-feedback.json>]",
-      "example": "cautilus review feedback build --source-kind hitl --source-ref docs/internal/handoff.md --method-family claim_discovery --method-id linked_markdown_scan --disposition reframed --review-note \"Useful signal, but the claim name needed narrowing.\" --output /tmp/cautilus-review/review-feedback.json",
+      "usage": "cautilus review feedback build --source-kind <hitl|issue|pull_request_review|review_packet|review_summary> --source-ref <ref> --method-family <claim_discovery|evaluation|manual_seed> --disposition <accepted|narrowed|reframed|rejected|missing_critical> --review-note <text> [--method-id <id>] [--source-scope <ref>] [--proposal-id <id>] [--proposal-source-ref <ref>] [--follow-up-ref <ref>] [--output <review-feedback.json>]",
+      "example": "cautilus review feedback build --source-kind hitl --source-ref docs/internal/handoff.md --method-family claim_discovery --method-id linked_markdown_scan --source-scope docs/specs/index.spec.md --proposal-source-ref docs/specs/index.spec.md:14 --disposition reframed --review-note \"Useful signal, but the claim name needed narrowing.\" --output /tmp/cautilus-review/review-feedback.json",
       "notes": [
         "Emits `cautilus.review_feedback.v1` so Cautilus Agent can normalize source-bound review outcomes without becoming the review authority.",
         "The disposition vocabulary is about review usefulness, not test pass/fail status."

@@ -27,7 +27,7 @@ Cautilus Agent captures source-bound review feedback from host repo workflows an
 This slice establishes the first packet materializer.
 
 - The reviewer or host workflow remains the authority for disposition.
-- Cautilus Agent is responsible for capturing and normalizing the review outcome.
+- Cautilus Agent is responsible for routing post-review capture when it is installed in a host repo; an operator may also run the same packet builder directly.
 - The binary owns packet validation for `cautilus.review_feedback.v1` through `cautilus review feedback build`.
 - The first packet lives beside review artifacts as `review-feedback.json` when the operator or agent chooses that output path.
 - Active-run defaults and report or CLI aggregation remain deferred.
@@ -66,10 +66,16 @@ The first packet preserves:
   - `rejected`
   - `missing_critical`
 - `reviewNote`
+- `normalization`
+  - producer, currently `cautilus.review.feedback.build`
+  - basis, currently `source_review`
 - optional `followUpRefs`
 
 The disposition set is deliberately about review usefulness.
 It should not be reused as a generic test status enum.
+For `accepted`, `narrowed`, `reframed`, and `rejected`, the packet builder requires either a proposal id or proposal source ref so a later reader can tell what was reviewed.
+`missing_critical` may omit proposal evidence because it records that a method failed to surface a proposal reviewers needed.
+The first packet validates source-review references as supplied refs; it does not dereference or prove URLs, issue ids, or host artifact paths.
 
 ## HITL Rubric
 
@@ -100,7 +106,7 @@ This is a design-readiness question, not a requirement that the current spec alr
 The first implementation slice is useful when:
 
 - one host workflow can produce a source-bound review-learning record through `cautilus review feedback build`
-- the record distinguishes source review authority from agent normalization
+- the record preserves the source review ref separately from normalized fields and records the normalization basis
 - the record names the method that produced the proposal
 - the record records review-useful disposition without collapsing into pass/fail
 - a later report or CLI view can count dispositions by method family

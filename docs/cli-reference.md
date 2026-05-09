@@ -434,6 +434,8 @@ cautilus review feedback build \
   --source-ref docs/internal/handoff.md \
   --method-family claim_discovery \
   --method-id linked_markdown_scan \
+  --source-scope docs/specs/index.spec.md \
+  --proposal-source-ref docs/specs/index.spec.md:14 \
   --disposition reframed \
   --review-note "Useful signal, but the claim name needed narrowing." \
   --output /tmp/cautilus-review/review-feedback.json
@@ -449,11 +451,16 @@ Local executor readiness failures such as missing auth are classified as blocked
 When at least one variant passes and another does not, the summary sets `partialSuccess: true` and lifts the passing outputs into `successfulVariantOutputs`.
 When `--output-under-test` is present, the generated review prompt switches into `output_under_test` mode and treats the referenced artifact as primary evidence.
 When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.
-`review feedback build` writes `cautilus.review_feedback.v1`.
-It preserves source review authority separately from Cautilus Agent's normalization, and uses review-useful dispositions rather than pass/fail status.
 This command answers:
 "do multiple bounded reviewers agree with the current report, and what concrete
 reason codes or warnings survive that second pass?"
+`review feedback build` writes `cautilus.review_feedback.v1`.
+It preserves a source review reference plus normalized method, proposal, disposition, and note fields, while recording that normalization is based on the source review.
+For `accepted`, `narrowed`, `reframed`, or `rejected`, include `--proposal-id` or `--proposal-source-ref` so the packet names the proposal that was reviewed.
+`missing_critical` may omit proposal evidence because it records that the method missed a proposal reviewers needed.
+Its disposition vocabulary is about review usefulness rather than pass/fail status.
+This command answers:
+"which discovery or evaluation method produced this source-reviewed proposal outcome?"
 
 ## Evidence
 
