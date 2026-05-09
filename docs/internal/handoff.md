@@ -2,51 +2,46 @@
 
 ## Workflow Trigger
 
-다음 세션은 `charness:hitl`로 [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md)를 재개하세요.
-먼저 `git status --short`를 보고, repo 규칙대로 `charness:find-skills`를 한 번 실행한 뒤, 현재 HITL runtime의 active rules와 queue cursor를 확인하세요.
+다음 세션은 `charness:hitl`로 [docs/specs/index.spec.md](../specs/index.spec.md)부터 다시 시작하세요.
+먼저 `git status --short`와 `charness:find-skills` bootstrap을 확인하고, Charness 쪽 HITL/issue/premortem 수정이 설치된 상태인지 확인하세요.
 
 ## Current State
 
-- Latest committed slice: `edb7ea2 Harmonize user specs for HITL handoff`.
-  User-facing specs now follow the current session rules: pain-point opening, concrete CLI command plus `cautilus-agent` skill on first workflow introduction, command-surface vocabulary instead of user-facing "binary", no generic Specdown readiness coupling, and prepared-not-executed eval language.
-- Recent support commits:
-  `2b3ea32 Rename bundled skill to Cautilus Agent`,
-  `b14707a Remove specdown from doctor readiness`,
-  `0d04dfc Drop retired specdown regression assertions`,
-  `dcee67a Record HITL terminology drift retro`.
-- Premortem artifact: [charness-artifacts/premortem/hitl-user-spec-closeout.md](../../charness-artifacts/premortem/hitl-user-spec-closeout.md).
-  It records the delegated angle reviews and the counterweight triage used before `edb7ea2`.
-- Charness follow-ups opened during this session:
-  [#117](https://github.com/corca-ai/charness/issues/117) full-target readback after chunks,
-  [#118](https://github.com/corca-ai/charness/issues/118) show rewritten chunk after edit,
-  [#119](https://github.com/corca-ai/charness/issues/119) accepted HITL rules as active pre-edit constraints plus target/cursor/chunk-bound validation,
-  [#120](https://github.com/corca-ai/charness/issues/120) sync live HITL runtime into the durable `charness-artifacts/hitl/latest.md` artifact before closeout.
-- `.charness/hitl/` remains runtime state and is intentionally uncommitted unless the user explicitly asks otherwise.
+- Latest committed slice: `d904355 Refine promise specs for reader language`.
+  Specs now use this reader order: User Workflow, Maintainer View, Promise Model, Shared Concerns, Evidence State.
+- The previous HITL runtime was `.charness/hitl/runtime/hitl-20260508-222100`, and the durable checkpoint is [charness-artifacts/hitl/latest.md](../../charness-artifacts/hitl/latest.md).
+  Treat it as historical context only: the user terminated that HITL and the spec tree was rewritten afterward.
+- Current intended HITL target is the rewritten [docs/specs/index.spec.md](../specs/index.spec.md), not the old Claim Discovery runtime target.
+- Charness follow-up issues filed from this work:
+  [#128](https://github.com/corca-ai/charness/issues/128) issue preflight caller-repo adapter bug,
+  [#129](https://github.com/corca-ai/charness/issues/129) HITL recommendation-before-question coverage,
+  [#130](https://github.com/corca-ai/charness/issues/130) premortem first-reader language lens,
+  [#131](https://github.com/corca-ai/charness/issues/131) title-slug-address drift after renames.
+  User says these will be fixed in Charness before the next HITL session.
+- Last verified after `d904355`: `npm run verify`, `npm run specdown`, and `npm run hooks:check` passed.
 
 ## Next Session
 
-1. Confirm worktree state.
-   Expected dirty state is only HITL runtime under `.charness/hitl/runtime/...` unless the user has changed more.
-2. Read `.charness/hitl/runtime/hitl-20260508-062748/rules.yaml`, `state.yaml`, `queue.json`, and `hitl-scratchpad.md`.
-   The state has been resynced to `docs/specs/user/claim-discovery.spec.md`.
-3. Resume with queue item `claim-discover-heuristics-and-dedupe-evidence`.
-   Present [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md) lines 62-129, including the implementation-evidence block, before asking for judgment.
-4. Apply the active HITL rules before every edit:
-   show the rewritten chunk after changes, keep user-facing command vocabulary, and do not advance cursor until the user accepts or redirects.
-5. After Claim Discovery chunks are all reviewed, show the full updated Claim Discovery document before considering that target complete.
-6. Do not run the prepared Cautilus eval unless the user explicitly approves it.
-   The prepared command remains `dogfood:cautilus-claim-discovery-curation-flow:eval:codex`.
+1. Confirm Charness is updated enough that the fixes for #128-#131 are available.
+   In particular, `charness:issue` preflight should resolve from the caller repo, and HITL chunks should require agent assessment plus non-binding recommendation before asking the user.
+2. Start a fresh or explicitly refreshed HITL session for `docs/specs/index.spec.md`.
+   Do not advance the old `hitl-20260508-222100` cursor as if it still represents the current text.
+3. Present the current index as the first chunk with this shape:
+   direct excerpt, related context, agent assessment, risks or gaps, recommended disposition, then the human decision request.
+4. Apply the accepted HITL rules every time:
+   show rewritten chunk text after changes, require full target readback after chunks, verify target/cursor/line bounds before edits, and sync the durable HITL artifact before closeout.
+5. After index acceptance, continue in reader order:
+   [User Workflow](../specs/user/index.spec.md), [Maintainer View](../specs/maintainer/index.spec.md), [Shared Concerns](../specs/concerns/index.spec.md), [Evidence State](../specs/proof/index.spec.md), then [Promise Model](../specs/model/index.spec.md) and its reference pages.
 
 ## Discuss
 
-- Whether the updated Claim Discovery heuristic section is now too example-heavy or has the right example-to-implementation balance.
-- Whether lower-level packet output may still show Markdown traversal terms while user-facing prose says entry and linked docs.
-- Whether any Cautilus-only spec authoring pattern from this HITL should move into Charness after #117-#119.
+- Whether the new top-level vocabulary is now reader-plain enough without hiding necessary product terms.
+- Whether `Shared Concerns` is the right durable name for workflow-wide rules that are not primary user stories.
+- Whether maintainer shared-concern evidence should stay mapped through evidence routes, or later gain dedicated maintainer concern pages.
 
 ## References
 
-- [docs/specs/user/index.spec.md](../specs/user/index.spec.md)
-- [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md)
-- [docs/internal/working-patterns.md](./working-patterns.md)
-- [charness-artifacts/retro/hitl-terminology-drift.md](../../charness-artifacts/retro/hitl-terminology-drift.md)
-- [charness-artifacts/premortem/hitl-user-spec-closeout.md](../../charness-artifacts/premortem/hitl-user-spec-closeout.md)
+- [docs/specs/index.spec.md](../specs/index.spec.md)
+- [docs/specs/model/names-and-keys.spec.md](../specs/model/names-and-keys.spec.md)
+- [docs/specs/model/how-views-relate.spec.md](../specs/model/how-views-relate.spec.md)
+- [charness-artifacts/hitl/latest.md](../../charness-artifacts/hitl/latest.md)
