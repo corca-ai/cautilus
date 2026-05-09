@@ -9,6 +9,7 @@ const FLOOR_PATH = resolve(REPO_ROOT, "scripts/coverage-floor.json");
 const EXEMPTIONS_PATH = resolve(REPO_ROOT, "scripts/coverage-floor-exemptions.txt");
 
 const MIN_STATEMENTS = 30;
+const FLOOR_BUFFER_PP = 0.25;
 
 function loadExemptions() {
   if (!existsSync(EXEMPTIONS_PATH)) return new Set();
@@ -35,7 +36,7 @@ for (const path of Object.keys(coverage.files).sort()) {
   if (exemptions.has(path)) continue;
   const { num_statements: stmts, percent_covered: pct } = coverage.files[path].summary;
   if (stmts < MIN_STATEMENTS) continue;
-  floor[path] = Number(pct.toFixed(2));
+  floor[path] = Number(Math.max(0, pct - FLOOR_BUFFER_PP).toFixed(2));
 }
 
 writeFileSync(FLOOR_PATH, JSON.stringify(floor, null, 2) + "\n");

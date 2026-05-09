@@ -16,6 +16,7 @@ The GitHub Actions `verify` workflow should call `npm run verify` after setup, n
 - `scripts/run-verify.mjs` includes `test:coverage` and `coverage:floor:check`.
 - `.github/workflows/verify.yml` does not run separate post-verify coverage gates.
 - `scripts/coverage-floor.json` matches the current generated coverage packet.
+- `scripts/write-coverage-floor.mjs` keeps a small buffer below measured coverage so local and CI coverage jitter does not turn the floor into an exact-environment snapshot.
 - Local `npm run verify` catches coverage floor failure before push.
 
 ## Deferred Decisions
