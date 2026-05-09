@@ -24,12 +24,13 @@ Cautilus Agent captures source-bound review feedback from host repo workflows an
 
 ## Current Slice
 
-This design slice establishes the contract shape before implementation.
+This slice establishes the first packet materializer.
 
 - The reviewer or host workflow remains the authority for disposition.
 - Cautilus Agent is responsible for capturing and normalizing the review outcome.
-- The binary should later own packet validation, active-run filenames, and report or CLI aggregation.
-- The first packet should live beside review artifacts rather than inside `eval-cases.json`.
+- The binary owns packet validation for `cautilus.review_feedback.v1` through `cautilus review feedback build`.
+- The first packet lives beside review artifacts as `review-feedback.json` when the operator or agent chooses that output path.
+- Active-run defaults and report or CLI aggregation remain deferred.
 - `eval-cases.json` provenance is supporting infrastructure, not the primary product promise.
 
 ## Fixed Decisions
@@ -38,13 +39,13 @@ This design slice establishes the contract shape before implementation.
 - The normalized disposition must be source-bound to the review artifact, issue, PR comment, HITL chunk, or packet that justified it.
 - Agent-authored summaries may normalize feedback, but they must not silently replace the source review decision.
 - The learning record belongs to Cautilus-owned artifacts, not host-specific chat memory.
-- The first durable surface should attach to review output, such as `review-feedback.json` or a `learningFeedback` field on a review artifact.
+- The first durable surface is a standalone `review-feedback.json` packet.
 - The first design target is claim-discovery and evaluation methods.
   Optimization search already has a more specific checkpoint-feedback reinjection loop.
 
 ## Proposed Record
 
-A future packet should preserve at least:
+The first packet preserves:
 
 - `schemaVersion`
 - `generatedAt`
@@ -80,9 +81,8 @@ This is a design-readiness question, not a requirement that the current spec alr
 
 ## Deferred Decisions
 
-- exact packet filename and schema id
-- whether the first implementation is a standalone `review-feedback.json` file or an extension of an existing review summary
 - how Cautilus aggregates review-learning records across active runs
+- whether `review feedback build` should default to `review-feedback.json` inside an active run
 - whether the learned method ids become public product vocabulary
 - whether review-learning records should later feed claim-discovery heuristics automatically
 - how to represent reviewer disagreement or multi-reviewer outcomes
@@ -97,13 +97,16 @@ This is a design-readiness question, not a requirement that the current spec alr
 
 ## Acceptance Signals
 
-The first implementation slice should be considered useful when:
+The first implementation slice is useful when:
 
-- one host workflow can produce a source-bound review-learning record
+- one host workflow can produce a source-bound review-learning record through `cautilus review feedback build`
 - the record distinguishes source review authority from agent normalization
 - the record names the method that produced the proposal
 - the record records review-useful disposition without collapsing into pass/fail
 - a later report or CLI view can count dispositions by method family
+
+The first four signals are implemented by the initial packet builder.
+The aggregation signal remains deferred.
 
 ## Related Contracts
 

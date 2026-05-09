@@ -48,6 +48,7 @@ const (
 	ReportInputsSchema                              = "cautilus.report_inputs.v1"
 	ReportPacketSchema                              = "cautilus.report_packet.v2"
 	ReviewPacketSchema                              = "cautilus.review_packet.v1"
+	ReviewFeedbackSchema                            = "cautilus.review_feedback.v1"
 	ReviewPromptInputsSchema                        = "cautilus.review_prompt_inputs.v1"
 	ReviewSummarySchema                             = "cautilus.review_summary.v1"
 	ReviewVariantResultSchema                       = "cautilus.review_variant_result.v1"

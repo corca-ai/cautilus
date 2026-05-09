@@ -610,6 +610,91 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 	}
 }
 
+func TestCLIReviewFeedbackBuildEmitsSourceBoundLearningPacket(t *testing.T) {
+	root := t.TempDir()
+	outputPath := filepath.Join(root, "review-feedback.json")
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"review",
+		"feedback",
+		"build",
+		"--source-kind",
+		"hitl",
+		"--source-ref",
+		"docs/internal/handoff.md",
+		"--method-family",
+		"claim_discovery",
+		"--method-id",
+		"linked_markdown_scan",
+		"--source-scope",
+		"docs/specs/index.spec.md",
+		"--proposal-id",
+		"claim-review-learning",
+		"--proposal-source-ref",
+		"docs/specs/index.spec.md:14",
+		"--disposition",
+		"reframed",
+		"--review-note",
+		"Useful signal, but the claim name needed narrowing.",
+		"--follow-up-ref",
+		"https://github.com/corca-ai/cautilus/issues/33",
+		"--output",
+		outputPath,
+	)
+	if exitCode != 0 {
+		t.Fatalf("review feedback build failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != outputPath {
+		t.Fatalf("expected output path on stdout, got %q", stdout)
+	}
+	packet := readJSONObjectFile(t, outputPath)
+	if packet["schemaVersion"] != contracts.ReviewFeedbackSchema {
+		t.Fatalf("unexpected review feedback schema: %#v", packet["schemaVersion"])
+	}
+	sourceReview := packet["sourceReview"].(map[string]any)
+	if sourceReview["kind"] != "hitl" || sourceReview["ref"] != "docs/internal/handoff.md" {
+		t.Fatalf("unexpected source review: %#v", sourceReview)
+	}
+	method := packet["method"].(map[string]any)
+	if method["family"] != "claim_discovery" || method["id"] != "linked_markdown_scan" {
+		t.Fatalf("unexpected method: %#v", method)
+	}
+	if packet["disposition"] != "reframed" {
+		t.Fatalf("unexpected disposition: %#v", packet["disposition"])
+	}
+	if packet["reviewNote"] == "" {
+		t.Fatalf("expected review note in packet: %#v", packet)
+	}
+}
+
+func TestCLIReviewFeedbackBuildRejectsTestStatusDisposition(t *testing.T) {
+	root := t.TempDir()
+	_, stderr, exitCode := runCLI(
+		t,
+		root,
+		"review",
+		"feedback",
+		"build",
+		"--source-kind",
+		"hitl",
+		"--source-ref",
+		"docs/internal/handoff.md",
+		"--method-family",
+		"evaluation",
+		"--disposition",
+		"passed",
+		"--review-note",
+		"Looks green.",
+	)
+	if exitCode == 0 {
+		t.Fatalf("expected test-status disposition to fail")
+	}
+	if !strings.Contains(stderr, "--disposition must be one of:") || strings.Contains(stderr, "passed") {
+		t.Fatalf("unexpected stderr for invalid disposition: %s", stderr)
+	}
+}
+
 func TestCLIReviewVariantsReturnsBlockedSummaryWhenVariantEmitsBlockedPayload(t *testing.T) {
 	root := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {

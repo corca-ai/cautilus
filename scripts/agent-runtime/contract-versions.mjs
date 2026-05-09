@@ -16,6 +16,7 @@ export const REVISION_ARTIFACT_SCHEMA = "cautilus.revision_artifact.v1";
 export const REPORT_INPUTS_SCHEMA = "cautilus.report_inputs.v1";
 export const REPORT_PACKET_SCHEMA = "cautilus.report_packet.v2";
 export const REVIEW_PACKET_SCHEMA = "cautilus.review_packet.v1";
+export const REVIEW_FEEDBACK_SCHEMA = "cautilus.review_feedback.v1";
 export const REVIEW_PROMPT_INPUTS_SCHEMA = "cautilus.review_prompt_inputs.v1";
 export const REVIEW_SUMMARY_SCHEMA = "cautilus.review_summary.v1";
 export const REVIEW_VARIANT_RESULT_SCHEMA = "cautilus.review_variant_result.v1";

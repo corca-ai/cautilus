@@ -11,6 +11,8 @@
   Specs now use this reader order: User Workflow, Maintainer View, Promise Model, Shared Concerns, Evidence State.
 - Issue [#33](https://github.com/corca-ai/cautilus/issues/33) has been reframed as a Cautilus-native review-learning design question, not a request to import Engelbart vocabulary directly.
   Read [docs/contracts/review-learning.md](../contracts/review-learning.md) before restarting HITL.
+- The first implementation slice for #33 is `cautilus review feedback build`, which emits `cautilus.review_feedback.v1` from source-bound review outcomes.
+  Use it after a review decision exists; do not treat Cautilus Agent as the review authority.
 - The previous HITL runtime was `.charness/hitl/runtime/hitl-20260508-222100`, and the durable checkpoint is [charness-artifacts/hitl/latest.md](../../charness-artifacts/hitl/latest.md).
   Treat it as historical context only: the user terminated that HITL and the spec tree was rewritten afterward.
 - Current intended HITL target is the rewritten [docs/specs/index.spec.md](../specs/index.spec.md), not the old Claim Discovery runtime target.
@@ -36,6 +38,7 @@
    show rewritten chunk text after changes, require full target readback after chunks, verify target/cursor/line bounds before edits, and sync the durable HITL artifact before closeout.
 6. After index acceptance, continue in reader order:
    [User Workflow](../specs/user/index.spec.md), [Maintainer View](../specs/maintainer/index.spec.md), [Shared Concerns](../specs/concerns/index.spec.md), [Evidence State](../specs/proof/index.spec.md), then [Promise Model](../specs/model/index.spec.md) and its reference pages.
+7. When a HITL or review decision meaningfully accepts, narrows, reframes, rejects, or identifies a missing-critical proposal, materialize one review-learning packet with `cautilus review feedback build`.
 
 ## Discuss
 
