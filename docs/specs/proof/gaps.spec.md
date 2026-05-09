@@ -18,6 +18,7 @@ Expected-failing checks keep concrete missing artifacts visible in the report.
 | `gap.optimize-held-out-cycle` | `promise.optimization`, `concern.cost-and-proof-freshness` | No checked-in end-to-end optimize cycle with held-out validation. | run or fixture a representative bounded optimize cycle | durable held-out cycle summary is linked from evidence map | open |
 | `gap.vocabulary-evidence-bundle` | `concern.vocabulary-consistency` | No dedicated vocabulary consistency evidence bundle across prose, JSON, tests, and agent guidance. | choose deterministic vocabulary probe scope | current vocabulary evidence packet exists | open |
 | `gap.live-batch-fixture` | `promise.evaluation`, `concern.host-owned-execution` | Live invocation and batch invocation proof are still partial. | create host-owned runtime fixture with sanitized packets | live/batch fixture output is linked from evidence map | open |
+| `gap.review-learning-aggregation` | `concern.agent-human-resumability` | Review-learning packets can be materialized one at a time, but no report or CLI aggregation counts dispositions by method family across active runs. | decide active-run/default packet location and the report or CLI aggregation surface | a selected durable aggregation artifact or deterministic report/CLI check counts dispositions by method family from `cautilus.review_feedback.v1` packets and is linked from the evidence map | open |
 
 ## Expected-Failing Proof Checks
 

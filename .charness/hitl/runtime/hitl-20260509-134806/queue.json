@@ -1,6 +1,6 @@
 {
-  "session_id": "hitl-20260509-053911",
-  "target": "docs/specs/index.spec.md",
+  "session_id": "hitl-20260509-134806",
+  "target": "docs/specs/model/index.spec.md",
   "target_provenance": {
     "kind": "logical-or-repo-relative"
   },
@@ -11,14 +11,14 @@
   "status": "complete",
   "current_queue_order": [],
   "reviewed_item_ids": [
-    "specs-index-entry-map"
+    "model-index-map"
   ],
   "superseded_unreviewed_item_ids": [],
-  "queue_recommendation": "Start at the top-level specs index. Decide whether the compact report entry gives enough orientation before branching to the user and maintainer views, while leaving a clear review-learning capture point.",
+  "queue_recommendation": "Review the promise model index as the compact map. Decide whether it should change for issue #33 or whether the real model update belongs in the Promise Ledger.",
   "applied_rewrite_review": {
     "id": "applied_rewrite_review",
     "type": "applied_rewrite_review_policy",
-    "status": "accepted",
+    "status": "inactive_until_reviewer_requested_rewrite_is_applied",
     "requires_applied_excerpt_before_cursor_advance": true,
     "anchor_preference": "line-or-hunk-anchor",
     "verification_role": "secondary",
@@ -30,27 +30,26 @@
   "full_target_review": {
     "id": "full_target_review",
     "type": "full_target_review",
-    "status": "accepted",
-    "target": "docs/specs/index.spec.md",
-    "scope": "specs-index-restart",
+    "status": "pending_after_chunks",
+    "target": "docs/specs/model/index.spec.md",
+    "scope": "issue-33-promise-model-closeout",
     "requires_whole_target_judgment": true,
     "activation_condition": "all_chunks_reviewed_and_target_edit_applied_or_staged",
     "decision_needed": "Review the full updated target before accepting the target as complete."
   },
   "items": [
     {
-      "id": "specs-index-entry-map",
-      "target": "docs/specs/index.spec.md:1-37",
-      "status": "accepted",
-      "accepted_working_text_ref": ".charness/hitl/runtime/hitl-20260509-053911/hitl-scratchpad.md#accepted-working-text",
-      "decision": "Does the top-level specs index clearly orient readers to Cautilus promises, the reader order, and review-learning capture without becoming too maintainer-facing?"
+      "id": "model-index-map",
+      "target": "docs/specs/model/index.spec.md:1-42",
+      "status": "accepted_as_is",
+      "decision": "Does the compact promise-model index need a review-learning-specific change, or is the issue #33 model work owned by the Promise Ledger and concern pages?"
     },
     {
       "id": "full_target_review",
       "type": "full_target_review",
       "status": "accepted",
-      "target": "docs/specs/index.spec.md",
-      "scope": "specs-index-restart",
+      "target": "docs/specs/model/index.spec.md",
+      "scope": "issue-33-promise-model-closeout",
       "requires_whole_target_judgment": true,
       "activation_condition": "all_chunks_reviewed_and_target_edit_applied_or_staged",
       "decision_needed": "Review the full updated target before accepting the target as complete."

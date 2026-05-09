@@ -1,8 +1,8 @@
-session_id: hitl-20260509-053911
+session_id: hitl-20260509-132058
 status: target_accepted
-target: docs/specs/index.spec.md
+target: docs/specs/concerns/index.spec.md
 base_ref: main
-scope: specs-index-restart
+scope: issue-33-shared-concerns-closeout
 require_explicit_apply: true
 apply_mode: explicit-after-all-chunks
 queue_epoch: 1
@@ -22,15 +22,15 @@ active_rules_applied:
   - full-target-readback-after-chunks
   - agent-assessment-before-human-decision
 target_cursor_checked: true
-target_cursor_check_result: "target=docs/specs/index.spec.md; chunk=specs-index-entry-map; queue item=specs-index-entry-map; lines=1-37; queue_epoch=1"
+target_cursor_check_result: "target=docs/specs/concerns/index.spec.md; chunk=shared-concerns-index-map; queue item=shared-concerns-index-map; lines=1-25; queue_epoch=1"
 intent_resync_required: false
-last_presented_chunk_id: "specs-index-entry-map"
+last_presented_chunk_id: "shared-concerns-index-map"
 last_intent_resync_at: ""
 applied_rewrite_review_status: accepted
-pending_rewrite_chunk_id: "specs-index-entry-map"
-pending_rewrite_source_anchor: "docs/specs/index.spec.md:1-37"
-last_rewritten_chunk_id: "specs-index-entry-map"
-last_rewrite_review_result: "accepted: reviewer accepted the Evidence State justification as a product-wide proof status board while each spec keeps local proof ownership."
+pending_rewrite_chunk_id: "shared-concerns-index-map"
+pending_rewrite_source_anchor: "docs/specs/concerns/index.spec.md:1-25"
+last_rewritten_chunk_id: "shared-concerns-index-map"
+last_rewrite_review_result: "accepted pending apply: reviewer accepted wording that connects source-bound review feedback to reusable learning evidence."
 full_target_review_item_id: full_target_review
 full_target_review_status: accepted
-full_target_review_result: "accepted: reviewer approved full target after replacing transient gap id with stable evidence-state categories."
+full_target_review_result: "accepted: reviewer approved full target with Agent-Human Resumability connecting source-bound review feedback to reusable learning evidence."

@@ -1,0 +1,36 @@
+session_id: hitl-20260509-135850
+status: target_accepted
+target: docs/specs/model/promise-ledger.spec.md
+base_ref: main
+scope: issue-33-promise-ledger-closeout
+require_explicit_apply: true
+apply_mode: explicit-after-all-chunks
+queue_epoch: 1
+queue_status: complete
+accepted_rules:
+  - id: show-rewritten-chunk-after-edit
+    status: accepted
+    text: After the user asks HITL to rewrite or change the current chunk, show the changed chunk text back to the user before advancing the cursor.
+  - id: full-target-readback-after-chunks
+    status: accepted
+    text: After all chunks for a target are reviewed, show the full updated target before closing the target.
+  - id: agent-assessment-before-human-decision
+    status: accepted
+    text: Before asking for human judgment on a HITL chunk, provide the agent's assessment, risks or gaps, and a non-binding recommended disposition.
+active_rules_applied:
+  - show-rewritten-chunk-after-edit
+  - full-target-readback-after-chunks
+  - agent-assessment-before-human-decision
+target_cursor_checked: true
+target_cursor_check_result: "target=docs/specs/model/promise-ledger.spec.md; chunk=ledger-agent-human-resumability; queue item=ledger-agent-human-resumability; lines=27-37; queue_epoch=1"
+intent_resync_required: false
+last_presented_chunk_id: "ledger-agent-human-resumability"
+last_intent_resync_at: ""
+applied_rewrite_review_status: accepted
+pending_rewrite_chunk_id: "ledger-agent-human-resumability"
+pending_rewrite_source_anchor: "docs/specs/model/promise-ledger.spec.md:27-37"
+last_rewritten_chunk_id: "ledger-agent-human-resumability"
+last_rewrite_review_result: "accepted pending apply: reviewer accepted narrowed commitment wording for source-bound review feedback as reusable learning evidence."
+full_target_review_item_id: full_target_review
+full_target_review_status: accepted
+full_target_review_result: "accepted: reviewer approved Promise Ledger commitment for Agent-Human Resumability including source-bound review feedback as reusable learning evidence."

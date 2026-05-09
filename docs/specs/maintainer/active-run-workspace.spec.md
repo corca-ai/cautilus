@@ -27,3 +27,4 @@ Cautilus can allocate and remember a per-run workspace for a workflow, but comma
 ## Evidence Gaps
 
 - Test proving the active-run marker does not leak into product-owned packets as workflow truth. Owner: maintainer. Next action: assert that the marker only appears under the workspace boundary, not inside `cautilus.*` schema fields; existing tests only cover marker resolution, not its absence in product schemas.
+- Decide whether `review feedback build` should default to `review-feedback.json` inside an active run. Owner: maintainer. Next action: keep the first packet explicit via `--output` beside review artifacts until the active-run default is intentionally wired and tested.

@@ -26,6 +26,7 @@ The shared-concern section keeps workflow-wide rules and risks visible.
 - [Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen.
 - [Evidence Gaps](evidence-gaps.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
 - [Host Ownership](ownership.spec.md): prompts, models, credentials, runtime wiring, fixtures, and acceptance policy stay in the host repo while Cautilus standardizes workflow packets and boundaries.
+- [Agent-Human Resumability](../concerns/agent-human-resumability.spec.md): workflow packets and next actions should let a human or agent resume without relying on chat memory, while source-bound review feedback can become reusable learning evidence about which discovery or evaluation work was useful.
 
 Shared concerns should stay visible here and should also appear locally inside the main stories where they constrain the workflow.
 For example, readiness uses `meaning` and `detail` consistently in the `doctor` packet, while evaluation and optimization show latest evidence artifacts instead of hiding cost or proof state.

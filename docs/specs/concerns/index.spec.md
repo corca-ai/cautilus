@@ -17,7 +17,7 @@ Evidence state: [Evidence State](../proof/index.spec.md).
 | [Vocabulary Consistency](vocabulary-consistency.spec.md) | one concept should keep one name across prose, packets, tests, and Cautilus Agent guidance | user index and individual workflow pages | policy exists; dedicated proof is incomplete |
 | [Packet Freshness](packet-freshness.spec.md) | readable views must show current packets instead of stale or copied state | reviewable artifacts and evidence gaps pages | mapped through evidence-state and reporting routes |
 | [Cost And Proof Freshness](cost-and-proof-freshness.spec.md) | expensive eval and optimize evidence should be shown honestly without pretending it reran | evaluation and optimization pages | mapped through evaluation, optimization, and scenario-history routes |
-| [Agent-Human Resumability](agent-human-resumability.spec.md) | users and agents need durable packets, next actions, and source refs instead of chat memory | readiness, claim discovery, host ownership | mapped through binary/skill boundary, active-run, and reporting routes |
+| [Agent-Human Resumability](agent-human-resumability.spec.md) | users and agents need durable packets, next actions, and source-bound review feedback that can become reusable learning evidence instead of chat memory | readiness, claim discovery, host ownership | mapped through evidence-state, binary/skill boundary, active-run, and reporting routes |
 
 ## Maintainer View
 

@@ -1,6 +1,6 @@
 {
-  "session_id": "hitl-20260509-053911",
-  "target": "docs/specs/index.spec.md",
+  "session_id": "hitl-20260509-161518",
+  "target": "docs/specs/user/index.spec.md",
   "target_provenance": {
     "kind": "logical-or-repo-relative"
   },
@@ -11,10 +11,10 @@
   "status": "complete",
   "current_queue_order": [],
   "reviewed_item_ids": [
-    "specs-index-entry-map"
+    "user-workflow-index"
   ],
   "superseded_unreviewed_item_ids": [],
-  "queue_recommendation": "Start at the top-level specs index. Decide whether the compact report entry gives enough orientation before branching to the user and maintainer views, while leaving a clear review-learning capture point.",
+  "queue_recommendation": "Review the user workflow index for issue #33. Decide whether review-learning needs user-facing index wording or is sufficiently covered by shared concern links.",
   "applied_rewrite_review": {
     "id": "applied_rewrite_review",
     "type": "applied_rewrite_review_policy",
@@ -31,26 +31,26 @@
     "id": "full_target_review",
     "type": "full_target_review",
     "status": "accepted",
-    "target": "docs/specs/index.spec.md",
-    "scope": "specs-index-restart",
+    "target": "docs/specs/user/index.spec.md",
+    "scope": "issue-33-user-workflow-closeout",
     "requires_whole_target_judgment": true,
     "activation_condition": "all_chunks_reviewed_and_target_edit_applied_or_staged",
     "decision_needed": "Review the full updated target before accepting the target as complete."
   },
   "items": [
     {
-      "id": "specs-index-entry-map",
-      "target": "docs/specs/index.spec.md:1-37",
+      "id": "user-workflow-index",
+      "target": "docs/specs/user/index.spec.md:1-40",
       "status": "accepted",
-      "accepted_working_text_ref": ".charness/hitl/runtime/hitl-20260509-053911/hitl-scratchpad.md#accepted-working-text",
-      "decision": "Does the top-level specs index clearly orient readers to Cautilus promises, the reader order, and review-learning capture without becoming too maintainer-facing?"
+      "accepted_working_text_ref": ".charness/hitl/runtime/hitl-20260509-161518/hitl-scratchpad.md#accepted-working-text",
+      "decision": "Should the user-facing workflow index mention source-bound review feedback and reusable learning evidence directly, or keep that concern behind Reviewable Artifacts/Evidence Gaps/Shared Concerns?"
     },
     {
       "id": "full_target_review",
       "type": "full_target_review",
       "status": "accepted",
-      "target": "docs/specs/index.spec.md",
-      "scope": "specs-index-restart",
+      "target": "docs/specs/user/index.spec.md",
+      "scope": "issue-33-user-workflow-closeout",
       "requires_whole_target_judgment": true,
       "activation_condition": "all_chunks_reviewed_and_target_edit_applied_or_staged",
       "decision_needed": "Review the full updated target before accepting the target as complete."

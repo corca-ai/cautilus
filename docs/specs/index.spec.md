@@ -17,7 +17,10 @@ Cautilus is a CLI plus Cautilus Agent workflow for discovering, evaluating, and 
 2. Read the [Maintainer View](maintainer/index.spec.md) to see which contracts, fixtures, and evidence routes keep those workflows true.
 3. Use the [Promise Model](model/index.spec.md) when you need the compact map of names, keys, and links.
 4. Use [Shared Concerns](concerns/index.spec.md) when checking reviewability, evidence visibility, ownership, vocabulary, or packet freshness across workflows.
-5. Use [Evidence State](proof/index.spec.md) when checking current evidence, selected evidence, or expected-failing gaps.
+5. Use [Evidence State](proof/index.spec.md) to see the product-wide proof status without rereading every spec, including expensive evidence selected instead of rerun, stale evidence that needs refresh, and proof gaps that remain open.
+
+Each spec page should still carry its own local proof or visible proof gap.
+Evidence State summarizes cross-spec status; it does not replace the proof owned by each spec.
 
 ## Reference Pages
 

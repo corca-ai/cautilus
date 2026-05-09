@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-09T04:16:41Z",
+  "generated_at": "2026-05-09T09:51:24Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -99,6 +99,34 @@
           "shared/references/source-bound-records.md",
           "shared/references/prescribed-path-self-test.md",
           "shared/references/success-criteria-review.md"
+        ],
+        "source": "local-public",
+        "layer": "public skill"
+      },
+      {
+        "id": "critique",
+        "name": "critique",
+        "description": "Use when a non-trivial design decision, code change, release, rename, deletion, spec, or workflow change needs a before-the-fact critique. Probe distinct failure angles, then run a counterweight pass that separates real blockers from over-worry before the change locks in.",
+        "summary": "Use when a non-trivial design decision, code change, release, rename, deletion, spec, or workflow change needs a before-the-fact critique. Probe distinct failure angles, then run a counterweight pass that separates real blockers from over-worry before the change locks in.",
+        "path": "skills/critique/SKILL.md",
+        "skill_dir": "skills/critique",
+        "canonical_path": "skills/critique/SKILL.md",
+        "trigger_phrases": [
+          "critique",
+          "critique skill",
+          "critique 스킬",
+          "charness:critique"
+        ],
+        "referenced_paths": [
+          "shared/references/fresh-eye-subagent-review.md",
+          "skills/critique/references/premortem-decision.md",
+          "skills/critique/references/code-critique.md",
+          "skills/critique/references/release-critique.md",
+          "skills/critique/references/rename-critique.md",
+          "skills/critique/references/spec-critique.md",
+          "skills/critique/references/angle-selection.md",
+          "skills/critique/references/counterweight-triage.md",
+          "shared/references/agent-assessment-invariant.md"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -227,11 +255,11 @@
         ],
         "referenced_paths": [
           "skills/hitl/references/chunk-contract.md",
+          "shared/references/agent-assessment-invariant.md",
           "skills/hitl/references/adapter-contract.md",
           "skills/hitl/references/report-mode.md",
           "skills/hitl/references/state-model.md",
           "skills/hitl/references/rule-propagation.md",
-          "shared/references/agent-assessment-invariant.md",
           "skills/hitl/scripts/bootstrap_review.py",
           "skills/hitl/scripts/check_chunk_contract.py",
           "skills/hitl/scripts/check_review_state.py",
@@ -333,8 +361,8 @@
       {
         "id": "issue",
         "name": "issue",
-        "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution premortem so the same class of issue does not recur.",
-        "summary": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution premortem so the same class of issue does not recur.",
+        "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
+        "summary": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
         "path": "skills/issue/SKILL.md",
         "skill_dir": "skills/issue",
         "canonical_path": "skills/issue/SKILL.md",
@@ -385,29 +413,6 @@
           "skills/narrative/references/brief-shape.md",
           "shared/references/agent-assessment-invariant.md",
           "shared/references/success-criteria-review.md"
-        ],
-        "source": "local-public",
-        "layer": "public skill"
-      },
-      {
-        "id": "premortem",
-        "name": "premortem",
-        "description": "Use when a non-trivial design, deletion, rename, release, or workflow decision needs a before-the-fact failure review. Probe distinct failure angles, then run a counterweight pass that separates real blockers from over-worry before the caller locks the decision.",
-        "summary": "Use when a non-trivial design, deletion, rename, release, or workflow decision needs a before-the-fact failure review. Probe distinct failure angles, then run a counterweight pass that separates real blockers from over-worry before the caller locks the decision.",
-        "path": "skills/premortem/SKILL.md",
-        "skill_dir": "skills/premortem",
-        "canonical_path": "skills/premortem/SKILL.md",
-        "trigger_phrases": [
-          "premortem",
-          "premortem skill",
-          "premortem 스킬",
-          "charness:premortem"
-        ],
-        "referenced_paths": [
-          "shared/references/fresh-eye-subagent-review.md",
-          "skills/premortem/references/angle-selection.md",
-          "skills/premortem/references/counterweight-triage.md",
-          "shared/references/agent-assessment-invariant.md"
         ],
         "source": "local-public",
         "layer": "public skill"

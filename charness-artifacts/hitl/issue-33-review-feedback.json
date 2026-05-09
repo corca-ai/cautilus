@@ -1,0 +1,31 @@
+{
+  "disposition": "narrowed",
+  "followUpRefs": [
+    "https://github.com/corca-ai/cautilus/issues/33"
+  ],
+  "generatedAt": "2026-05-09T16:46:18.564954098Z",
+  "method": {
+    "family": "manual_seed",
+    "id": "issue_33_hitl_spec_review",
+    "sourceScope": "docs/specs"
+  },
+  "normalization": {
+    "basis": "source_review",
+    "producer": "cautilus.review.feedback.build"
+  },
+  "proposal": {
+    "id": "issue-33-review-learning-spec-closeout",
+    "sourceRefs": [
+      "docs/internal/handoff.md:31",
+      "docs/specs/concerns/index.spec.md:20",
+      "docs/specs/model/promise-ledger.spec.md:37",
+      "docs/specs/proof/gaps.spec.md:21"
+    ]
+  },
+  "reviewNote": "Accepted the review-learning direction by narrowing it into existing Agent-Human Resumability, Reviewable Artifacts, Packet Freshness, and Evidence State routes instead of adding a new taxonomy. Packet materialization is current; aggregation remains an explicit proof gap.",
+  "schemaVersion": "cautilus.review_feedback.v1",
+  "sourceReview": {
+    "kind": "hitl",
+    "ref": ".charness/hitl/runtime/hitl-20260509-161518/hitl-scratchpad.md"
+  }
+}
