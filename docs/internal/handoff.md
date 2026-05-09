@@ -9,6 +9,8 @@
 
 - Latest committed spec slice: `d904355 Refine promise specs for reader language`.
   Specs now use this reader order: User Workflow, Maintainer View, Promise Model, Shared Concerns, Evidence State.
+- Latest review-learning implementation slice: `eb00c86 Align review feedback with Agent workflow`.
+  This incorporates the delegated fresh-eye review findings for issue #33.
 - Issue [#33](https://github.com/corca-ai/cautilus/issues/33) has been reframed as a Cautilus-native review-learning design question, not a request to import Engelbart vocabulary directly.
   Read [docs/contracts/review-learning.md](../contracts/review-learning.md) before restarting HITL.
 - The first implementation slice for #33 is `cautilus review feedback build`, which emits `cautilus.review_feedback.v1` from source-bound review outcomes.
@@ -22,8 +24,8 @@
   [#129](https://github.com/corca-ai/charness/issues/129) HITL recommendation-before-question coverage,
   [#130](https://github.com/corca-ai/charness/issues/130) premortem first-reader language lens,
   [#131](https://github.com/corca-ai/charness/issues/131) title-slug-address drift after renames.
-  User says these will be fixed in Charness before the next HITL session.
-- Last verified after `d904355`: `npm run verify`, `npm run specdown`, and `npm run hooks:check` passed.
+  User reported the Charness implementation updates are done; still confirm the installed Charness surface at startup.
+- Last verified after `eb00c86`: `npm run verify`, `npm run specdown`, `npm run hooks:check`, and the Cautilus Agent surface quality probes passed.
 
 ## Next Session
 
