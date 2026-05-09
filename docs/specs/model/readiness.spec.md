@@ -8,7 +8,7 @@ Readiness means a user can tell whether Cautilus can safely operate in the selec
 
 - User projection: [Readiness](../user/doctor-readiness.spec.md)
 - Maintainer routes: [Readiness And Runtime Status](../maintainer/readiness-runtime-status.spec.md), [Adapter And Host Ownership](../maintainer/adapter-host-ownership.spec.md)
-- Related concerns: [Evidence Gaps](../concerns/evidence-gaps.spec.md), [Vocabulary Consistency](../concerns/vocabulary-consistency.spec.md), [Agent-Human Resumability](../concerns/agent-human-resumability.spec.md)
+- Related concerns: [Evidence Gaps](../concerns/evidence-gaps.spec.md), [Vocabulary Consistency](../concerns/vocabulary-consistency.spec.md), [Agent-Human Resumability](../concerns/agent-human-resumability.spec.md), [Host-Owned Execution](../concerns/host-owned-execution.spec.md)
 
 ## Evidence Posture
 

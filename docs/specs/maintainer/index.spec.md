@@ -1,12 +1,12 @@
-# Cautilus Maintainer-Facing Specs
+# Cautilus Maintainer Proof View
 
 This is the maintainer-facing view over the [canonical Cautilus promise model](../model/index.spec.md).
 It maps promises and cross-cutting concerns to maintainer-owned contracts, proof routes, adapters, fixtures, and known evidence gaps.
 
-User view: [User-Facing Specs](../user/index.spec.md).
-Full spec entry: [Cautilus Claim Specs](../index.spec.md).
-Concern lens: [Cross-Cutting Concerns](../concerns/index.spec.md).
-Proof view: [Proof View](../proof/index.spec.md).
+User workflow view: [Cautilus User Workflow View](../user/index.spec.md).
+Full spec entry: [Cautilus Promise Specs](../index.spec.md).
+Concern view: [Cross-Cutting Concerns](../concerns/index.spec.md).
+Evidence and gap view: [Evidence And Gap View](../proof/index.spec.md).
 
 Use this view after the user-facing index.
 Each maintainer page names the aligned canonical promises or concerns, the maintainer promise, concrete subclaims, current evidence, and remaining evidence gaps.

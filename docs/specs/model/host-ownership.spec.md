@@ -2,7 +2,8 @@
 
 Concern ID: `concern.host-owned-execution`.
 
-Host Ownership keeps prompts, models, credentials, runtime wiring, and acceptance policy in the host repo while Cautilus standardizes workflow packets, command boundaries, and proof routes.
+Host-Owned Execution keeps prompts, models, credentials, runtime wiring, and acceptance policy in the host repo while Cautilus standardizes workflow packets, command boundaries, and proof routes.
+The user-facing name is [Host Ownership](../user/ownership.spec.md).
 
 ## Projections
 

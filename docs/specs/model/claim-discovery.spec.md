@@ -8,7 +8,7 @@ Claim Discovery turns selected source docs into broad source-referenced candidat
 
 - User projection: [Claim Discovery](../user/claim-discovery.spec.md)
 - Maintainer routes: [Claim Discovery Workflow](../maintainer/claim-discovery-workflow.spec.md), [Evidence State And Review Artifacts](../maintainer/evidence-state-artifacts.spec.md), [Binary And Skill Boundary](../maintainer/binary-skill-boundary.spec.md)
-- Related concerns: [Reviewable Artifacts](../concerns/reviewable-artifacts.spec.md), [Evidence Gaps](../concerns/evidence-gaps.spec.md), [Agent-Human Resumability](../concerns/agent-human-resumability.spec.md)
+- Related concerns: [Reviewable Artifacts](../concerns/reviewable-artifacts.spec.md), [Evidence Gaps](../concerns/evidence-gaps.spec.md), [Agent-Human Resumability](../concerns/agent-human-resumability.spec.md), [Host-Owned Execution](../concerns/host-owned-execution.spec.md)
 
 ## Evidence Posture
 

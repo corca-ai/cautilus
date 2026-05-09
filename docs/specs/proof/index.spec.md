@@ -1,11 +1,9 @@
-# Cautilus Proof View
+# Evidence And Gap View
 
-This view asks what evidence currently supports the [Promise Ledger](../model/promise-ledger.spec.md), which evidence is intentionally selected instead of rerun, and which missing proof should remain visibly red.
+This projection shows what evidence currently supports the [Promise Ledger](../model/promise-ledger.spec.md), which evidence is selected rather than rerun, and which proof gaps remain open.
+It answers which promises are currently supported, stale, selected from durable evidence, or visibly red in the Specdown report.
 
-The proof view is not a planning backlog.
-It is the reader-facing evidence projection for current product claims.
-
-## Proof Pages
+## Pages
 
 - [Evidence Map](evidence-map.spec.md)
 - [Proof Gaps](gaps.spec.md)

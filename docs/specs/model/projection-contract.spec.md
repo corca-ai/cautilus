@@ -1,30 +1,37 @@
 # Projection Contract
 
-The Cautilus design docs use one canonical ledger and several projections.
-This follows the current structure decision from the Engelbart/OHS, aspect-oriented, user-story, and executable-spec review lenses:
-keep one model of the work, then expose different reader and concern projections without letting any projection become a second source of truth.
+Cautilus design specs separate the model from the projections that read it.
+The model names the product concepts.
+Each projection chooses an order and emphasis for a specific reader task.
 
 Canonical ledger: [Promise Ledger](promise-ledger.spec.md).
-ID policy: [ID Policy](id-policy.spec.md).
+Naming rules: [Naming And Addressing](naming-and-addressing.spec.md).
 
-## Projection Rules
+## Model
 
-- The ledger owns promise identity, concern identity, evidence posture, and first-order mapping.
-- The user view orders primary workflow stories by user work sequence.
-- The maintainer view orders proof routes by contract ownership.
-- The concern lens answers where non-primary acceptance concerns attach across workflow and maintainer routes.
-- The proof view records current evidence, stale proof, and expected proof gaps.
-- Archived specs can inform migration, but they do not define current promises.
+The [Promise Ledger](promise-ledger.spec.md) names workflow promises, cross-cutting concerns, and their first-order relationships.
+The model favors stable concepts and short commitments over explanation of past debates.
 
-## Non-Goals
+## Projections
 
-- Do not make cross-cutting concerns a third audience equivalent to user or maintainer.
-- Do not force every concern into a user story.
-- Do not treat readiness or discovery wording as immutable if the ledger needs a clearer structure.
-- Do not treat expected-failing proof gaps as satisfied acceptance.
+| projection | reading task | primary order |
+| --- | --- | --- |
+| [User Workflow View](../user/index.spec.md) | understand what a Cautilus user can do | readiness, discovery, evaluation, optimization |
+| [Maintainer Proof View](../maintainer/index.spec.md) | see which contracts and proof routes maintain the promises | proof-route ownership |
+| [Cross-Cutting Concern View](../concerns/index.spec.md) | inspect acceptance concerns that apply across workflows | concern name |
+| [Evidence And Gap View](../proof/index.spec.md) | inspect current evidence, selected evidence, and open proof gaps | evidence state |
 
-## Traceability Gap
+## Context Map
 
-Specdown supports typed document traceability, but this repo does not yet configure the trace graph.
-Until that work lands, the ledger and link checker provide explicit reachability and identity discipline.
-The concrete expected-failing check is tracked as `gap.traceability-config` in [Proof Gaps](../proof/gaps.spec.md).
+| context | owns |
+| --- | --- |
+| Promise identity | human names, compact keys, projection membership |
+| User workflow | reader-facing jobs and acceptance criteria |
+| Maintainer proof | contracts, adapters, fixtures, and proof routes |
+| Host execution | prompts, models, credentials, runtime wiring, fixtures, and acceptance policy in host repos |
+| Evidence state | selected evidence, stale evidence, and open proof gaps |
+
+## Traceability
+
+The current traceability contract is Markdown reachability plus executable Specdown checks.
+Typed Specdown traceability is tracked as `gap.traceability-config` in [Proof Gaps](../proof/gaps.spec.md).

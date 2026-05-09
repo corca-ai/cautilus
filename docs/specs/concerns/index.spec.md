@@ -1,14 +1,13 @@
 # Cross-Cutting Concerns
 
-This lens asks a different question of the same Cautilus promise model:
-which concerns constrain several workflows, and where are those constraints visible in user-facing prose, maintainer proof routes, packets, and tests?
+This projection shows acceptance concerns that apply across several Cautilus workflows.
+Each concern has a named page, user-facing attachments, and maintainer proof routes.
+Read this view when checking reviewability, evidence visibility, ownership, vocabulary, packet freshness, or resumability across workflows.
 
-Cross-cutting concerns are not primary workflow stories and not a third audience.
-They are concern-first projections over the [canonical promise model](../model/index.spec.md).
-Canonical ledger: [Promise Ledger](../model/promise-ledger.spec.md).
-Proof view: [Proof View](../proof/index.spec.md).
+Promise ledger: [Promise Ledger](../model/promise-ledger.spec.md).
+Evidence and gaps: [Evidence And Gap View](../proof/index.spec.md).
 
-## Current Concern Lens
+## Concern View
 
 | concern | why it exists | user-facing projection | maintainer projection status |
 | --- | --- | --- | --- |
@@ -20,8 +19,7 @@ Proof view: [Proof View](../proof/index.spec.md).
 | [Cost And Proof Freshness](cost-and-proof-freshness.spec.md) | expensive eval and optimize proof should be projected honestly without pretending it reran | evaluation and optimization pages | mapped through evaluation, optimization, and scenario-history routes |
 | [Agent-Human Resumability](agent-human-resumability.spec.md) | users and agents need durable packets, next actions, and source refs instead of chat memory | readiness, claim discovery, host ownership | mapped through binary/skill boundary, active-run, and reporting routes |
 
-## Known Structure Gap
+## Maintainer Projection
 
-Maintainer-facing concern pages are not split out yet.
-Until that happens, maintainer-side concern proof lives inside maintainer contract pages.
-The concrete expected-failing check is tracked as `gap.maintainer-concern-pages` in [Proof Gaps](../proof/gaps.spec.md).
+Maintainer-side concern proof is currently mapped through maintainer proof routes.
+The planned maintainer concern index is tracked as `gap.maintainer-concern-pages` in [Proof Gaps](../proof/gaps.spec.md).

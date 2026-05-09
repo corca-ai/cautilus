@@ -8,7 +8,7 @@ Bounded Optimization improves a selected behavior target while preserving intent
 
 - User projection: [Bounded Optimization](../user/optimization.spec.md)
 - Maintainer routes: [Optimization Loop](../maintainer/optimization-loop.spec.md), [Scenario History And Proposal Normalization](../maintainer/scenario-history-normalization.spec.md), [Active Run And Workspace Lifecycle](../maintainer/active-run-workspace.spec.md)
-- Related concerns: [Reviewable Artifacts](../concerns/reviewable-artifacts.spec.md), [Evidence Gaps](../concerns/evidence-gaps.spec.md), [Cost And Proof Freshness](../concerns/cost-and-proof-freshness.spec.md)
+- Related concerns: [Reviewable Artifacts](../concerns/reviewable-artifacts.spec.md), [Evidence Gaps](../concerns/evidence-gaps.spec.md), [Cost And Proof Freshness](../concerns/cost-and-proof-freshness.spec.md), [Host-Owned Execution](../concerns/host-owned-execution.spec.md)
 
 ## Evidence Posture
 
