@@ -24,13 +24,14 @@ Cautilus Agent captures source-bound review feedback from host repo workflows an
 
 ## Current Slice
 
-This slice establishes the first packet materializer.
+This slice establishes the first packet materializer and a selected-packet summary surface.
 
 - The reviewer or host workflow remains the authority for disposition.
 - Cautilus Agent is responsible for routing post-review capture when it is installed in a host repo; an operator may also run the same packet builder directly.
 - The binary owns packet validation for `cautilus.review_feedback.v1` through `cautilus review feedback build`.
+- The binary owns selected-packet aggregation for `cautilus.review_feedback_summary.v1` through `cautilus review feedback summarize`.
 - The first packet lives beside review artifacts as `review-feedback.json` when the operator or agent chooses that output path.
-- Active-run defaults and report or CLI aggregation remain deferred.
+- Active-run defaults and automatic discovery of review-feedback packets remain deferred.
 - `eval-cases.json` provenance is supporting infrastructure, not the primary product promise.
 
 ## Fixed Decisions
@@ -77,6 +78,20 @@ For `accepted`, `narrowed`, `reframed`, and `rejected`, the packet builder requi
 `missing_critical` may omit proposal evidence because it records that a method failed to surface a proposal reviewers needed.
 The first packet validates source-review references as supplied refs; it does not dereference or prove URLs, issue ids, or host artifact paths.
 
+The first summary preserves:
+
+- `schemaVersion`
+- `generatedAt`
+- selected input files
+- total packet count
+- disposition counts across all selected packets
+- method-family entries, each with packet count and disposition counts
+- per-input source-review refs, method family, method id, disposition, and proposal refs
+- aggregation basis, currently `selected_review_feedback_packets`
+
+The first summary intentionally reads explicit `--input` files.
+It does not scan active-run directories or decide where review-feedback packets should live by default.
+
 ## HITL Rubric
 
 Before or during HITL over the promise specs, reviewers should ask:
@@ -87,7 +102,7 @@ This is a design-readiness question, not a requirement that the current spec alr
 
 ## Deferred Decisions
 
-- how Cautilus aggregates review-learning records across active runs
+- how Cautilus discovers and selects review-learning records across active runs
 - whether `review feedback build` should default to `review-feedback.json` inside an active run
 - whether the learned method ids become public product vocabulary
 - whether review-learning records should later feed claim-discovery heuristics automatically
@@ -112,7 +127,8 @@ The first implementation slice is useful when:
 - a later report or CLI view can count dispositions by method family
 
 The first four signals are implemented by the initial packet builder.
-The aggregation signal remains deferred.
+The selected-packet aggregation signal is implemented by `cautilus review feedback summarize`.
+Active-run packet discovery and default packet location remain deferred.
 
 ## Related Contracts
 

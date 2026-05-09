@@ -771,6 +771,128 @@ func TestCLIReviewFeedbackBuildAllowsMissingCriticalWithoutProposal(t *testing.T
 	}
 }
 
+func TestCLIReviewFeedbackSummarizeCountsDispositionsByMethodFamily(t *testing.T) {
+	root := t.TempDir()
+	claimDiscoveryPath := filepath.Join(root, "claim-discovery-feedback.json")
+	evaluationPath := filepath.Join(root, "evaluation-feedback.json")
+	summaryPath := filepath.Join(root, "review-feedback-summary.json")
+
+	buildReviewFeedbackPacketForTest(t, root, claimDiscoveryPath, "claim_discovery", "accepted", "claim proposal was useful")
+	buildReviewFeedbackPacketForTest(t, root, evaluationPath, "evaluation", "reframed", "evaluation proposal needed a narrower promise")
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"review",
+		"feedback",
+		"summarize",
+		"--input",
+		claimDiscoveryPath,
+		"--input",
+		evaluationPath,
+		"--output",
+		summaryPath,
+	)
+	if exitCode != 0 {
+		t.Fatalf("review feedback summarize failed: %s", stderr)
+	}
+	if strings.TrimSpace(stdout) != summaryPath {
+		t.Fatalf("expected summary output path on stdout, got %q", stdout)
+	}
+	summary := readJSONObjectFile(t, summaryPath)
+	if summary["schemaVersion"] != contracts.ReviewFeedbackSummarySchema {
+		t.Fatalf("unexpected summary schema: %#v", summary["schemaVersion"])
+	}
+	if summary["packetCount"] != float64(2) {
+		t.Fatalf("unexpected packet count: %#v", summary["packetCount"])
+	}
+	if summary["reviewFeedbackSchemaRef"] != contracts.ReviewFeedbackSchema {
+		t.Fatalf("unexpected source schema ref: %#v", summary["reviewFeedbackSchemaRef"])
+	}
+	aggregation := summary["aggregation"].(map[string]any)
+	if aggregation["basis"] != "selected_review_feedback_packets" {
+		t.Fatalf("unexpected aggregation basis: %#v", aggregation)
+	}
+	dispositions := summary["dispositions"].([]any)
+	if len(dispositions) != 2 || dispositions[0].(map[string]any)["value"] != "accepted" || dispositions[1].(map[string]any)["value"] != "reframed" {
+		t.Fatalf("unexpected disposition totals: %#v", dispositions)
+	}
+	methodFamilies := summary["methodFamilies"].([]any)
+	if len(methodFamilies) != 2 {
+		t.Fatalf("expected two method family summaries, got %#v", methodFamilies)
+	}
+	firstFamily := methodFamilies[0].(map[string]any)
+	secondFamily := methodFamilies[1].(map[string]any)
+	if firstFamily["family"] != "claim_discovery" || firstFamily["packetCount"] != float64(1) {
+		t.Fatalf("unexpected first family summary: %#v", firstFamily)
+	}
+	if secondFamily["family"] != "evaluation" || secondFamily["packetCount"] != float64(1) {
+		t.Fatalf("unexpected second family summary: %#v", secondFamily)
+	}
+	inputs := summary["inputs"].([]any)
+	if len(inputs) != 2 || inputs[0].(map[string]any)["sourceReviewRef"] == "" {
+		t.Fatalf("expected source-bound input records, got %#v", inputs)
+	}
+}
+
+func TestCLIReviewFeedbackSummarizeRejectsNonFeedbackPacket(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "report.json")
+	if err := os.WriteFile(inputPath, mustJSONMarshal(t, map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+	}), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	_, stderr, exitCode := runCLI(
+		t,
+		root,
+		"review",
+		"feedback",
+		"summarize",
+		"--input",
+		inputPath,
+	)
+	if exitCode == 0 {
+		t.Fatalf("expected non-feedback packet to fail")
+	}
+	if !strings.Contains(stderr, "must use schemaVersion "+contracts.ReviewFeedbackSchema) {
+		t.Fatalf("unexpected stderr for non-feedback packet: %s", stderr)
+	}
+}
+
+func buildReviewFeedbackPacketForTest(t *testing.T, root string, outputPath string, methodFamily string, disposition string, note string) {
+	t.Helper()
+	_, stderr, exitCode := runCLI(
+		t,
+		root,
+		"review",
+		"feedback",
+		"build",
+		"--source-kind",
+		"hitl",
+		"--source-ref",
+		"docs/internal/handoff.md",
+		"--method-family",
+		methodFamily,
+		"--method-id",
+		methodFamily+"_method",
+		"--source-scope",
+		"docs/specs",
+		"--proposal-source-ref",
+		"docs/specs/index.spec.md:14",
+		"--disposition",
+		disposition,
+		"--review-note",
+		note,
+		"--output",
+		outputPath,
+	)
+	if exitCode != 0 {
+		t.Fatalf("review feedback build failed: %s", stderr)
+	}
+}
+
 func TestCLIReviewVariantsReturnsBlockedSummaryWhenVariantEmitsBlockedPayload(t *testing.T) {
 	root := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {

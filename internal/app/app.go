@@ -225,6 +225,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleReviewPrepareInput
 	case "review feedback build":
 		return handleReviewFeedbackBuild
+	case "review feedback summarize":
+		return handleReviewFeedbackSummarize
 	case "review build-prompt-input":
 		return handleReviewBuildPromptInput
 	case "review render-prompt":

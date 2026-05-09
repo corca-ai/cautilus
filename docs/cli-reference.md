@@ -439,6 +439,11 @@ cautilus review feedback build \
   --disposition reframed \
   --review-note "Useful signal, but the claim name needed narrowing." \
   --output /tmp/cautilus-review/review-feedback.json
+
+# summarize selected review-learning packets by method family and disposition
+cautilus review feedback summarize \
+  --input /tmp/cautilus-review/review-feedback.json \
+  --output /tmp/cautilus-review/review-feedback-summary.json
 ```
 
 If you need a minimal valid report packet before review, run `cautilus report build --example-input`.
@@ -461,6 +466,11 @@ For `accepted`, `narrowed`, `reframed`, or `rejected`, include `--proposal-id` o
 Its disposition vocabulary is about review usefulness rather than pass/fail status.
 This command answers:
 "which discovery or evaluation method produced this source-reviewed proposal outcome?"
+`review feedback summarize` writes `cautilus.review_feedback_summary.v1`.
+It reads explicitly selected `cautilus.review_feedback.v1` packets, counts review-useful dispositions overall and by method family, and keeps source-review refs in per-input records.
+It does not discover active-run defaults or treat dispositions as evaluator pass/fail status.
+This command answers:
+"across the selected review-learning packets, which method families produced which review-useful outcomes?"
 
 ## Evidence
 

@@ -372,6 +372,16 @@
       ]
     },
     {
+      "path": ["review", "feedback", "summarize"],
+      "group": "results",
+      "usage": "cautilus review feedback summarize --input <review-feedback.json> [--input <review-feedback.json> ...] [--output <review-feedback-summary.json>]",
+      "example": "cautilus review feedback summarize --input /tmp/cautilus-review/review-feedback.json --output /tmp/cautilus-review/review-feedback-summary.json",
+      "notes": [
+        "Emits `cautilus.review_feedback_summary.v1` for explicitly selected `cautilus.review_feedback.v1` packets.",
+        "Counts review-useful dispositions by method family without discovering active-run defaults or treating dispositions as pass/fail status."
+      ]
+    },
+    {
       "path": ["review", "build-prompt-input"],
       "group": "results",
       "usage": "cautilus review build-prompt-input [args]",

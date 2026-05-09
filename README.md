@@ -16,7 +16,7 @@ They stay checked into each host repo so evaluation behavior remains reproducibl
 
 The current external-adoption slice is eval-only while the broader claim, optimize, live app-runner, and review-learning contracts are still being rewritten.
 Host repos can use `cautilus eval test` and `cautilus eval evaluate` with checked-in fixtures, host-owned adapters, and the current `cautilus.evaluation_input.v1`, `cautilus.evaluation_observed.v1`, and `cautilus.evaluation_summary.v1` packets.
-Treat claim discovery automation, optimize automation, live `eval` app-runner workflows, and review-learning packet capture as opt-in product slices until the rewrite closes.
+Treat claim discovery automation, optimize automation, live `eval` app-runner workflows, and review-learning packet capture or selected-packet summaries as opt-in product slices until the rewrite closes.
 
 ## Who It Is For
 
