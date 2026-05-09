@@ -1,0 +1,10 @@
+rules:
+  - id: show-rewritten-chunk-after-edit
+    status: accepted
+    text: After the user asks HITL to rewrite or change the current chunk, show the changed chunk text back to the user before advancing the cursor.
+  - id: full-target-readback-after-chunks
+    status: accepted
+    text: After all chunks for a target are reviewed, show the full updated target before closing that target.
+  - id: agent-assessment-before-human-decision
+    status: accepted
+    text: Before asking for human judgment on a HITL chunk, provide the agent's assessment, risks or gaps, and a non-binding recommended disposition.
