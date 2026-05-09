@@ -5,7 +5,7 @@ For consumer installation and use, see the [README](../../README.md).
 
 ## Tooling
 
-Install the local Node tooling, and make sure Go `1.26.2+`, `golangci-lint`, and `govulncheck` are available on `PATH` (or under `$(go env GOPATH)/bin`):
+Install the local Node tooling, and make sure Go `1.26.3+`, `golangci-lint`, and `govulncheck` are available on `PATH` (or under `$(go env GOPATH)/bin`):
 
 ```bash
 npm install

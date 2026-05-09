@@ -1,68 +1,69 @@
-# CI Spec Link Check Debug
+# CI Go Toolchain Vulnerability Debug
 Date: 2026-05-09
 
 ## Problem
 
-The first `v0.14.0` release workflow failed in GitHub Actions during `npm run verify`, even though local `npm run verify` had passed before tagging.
+The `v0.14.1` release workflow failed in GitHub Actions during `npm run verify`, even though local `npm run verify` had passed before tagging.
 
 ## Correct Behavior
 
-Given release verification runs from a clean GitHub checkout, when `npm run lint:specs` checks spec links, then docs should not depend on ignored local artifacts that exist only in the maintainer workspace.
+Given the release workflow runs `govulncheck`, when Go standard-library vulnerabilities are fixed in a patch toolchain, then GitHub Actions should use the patched Go toolchain rather than an older pinned patch release.
 
 ## Observed Facts
 
-- GitHub Actions run `25596477876` failed in workflow `release-artifacts`, job `release-artifacts`, step `Run npm run verify`.
-- The failing line was `Broken spec link in docs/specs/maintainer/evaluation-surfaces-runners.spec.md: ../../../artifacts/self-dogfood/eval/latest/eval-summary.json`.
-- The file exists locally at `artifacts/self-dogfood/eval/latest/eval-summary.json`.
-- `git ls-files artifacts/self-dogfood/eval/latest/eval-summary.json` returned no tracked file.
-- `.gitignore` ignores `artifacts/self-dogfood/*`.
+- GitHub Actions run `25596627243` failed in workflow `release-artifacts`, job `release-artifacts`, step `Run npm run verify`.
+- `govulncheck` reported GO-2026-4971 and GO-2026-4918 in the Go standard library.
+- Both vulnerabilities were reported as found in Go 1.26.2 and fixed in Go 1.26.3.
+- Local `go env GOVERSION` returns `go1.26.3`.
+- The GitHub workflows pinned `actions/setup-go` to `go-version: "1.26.2"`.
 
 ## Reproduction
 
 Run:
 
 ```bash
-git check-ignore -v artifacts/self-dogfood/eval/latest/eval-summary.json
-git ls-files artifacts/self-dogfood/eval/latest/eval-summary.json
+gh run view 25596627243 --repo corca-ai/cautilus --log-failed
+rg -n "go-version: \"1.26.2\"" .github
 ```
 
 ## Candidate Causes
 
-- The maintainer spec linked to selected self-dogfood artifacts as if they were checked in.
-- Local ignored artifacts made `npm run lint:specs` pass locally while a clean GitHub checkout failed.
-- The spec wording conflated selected evidence paths with checked-in evidence links.
+- CI workflows pinned a vulnerable Go patch version.
+- Local verification used the patched Go 1.26.3 toolchain, so the release gate was stricter in CI only because of workflow pin drift.
+- Maintainer docs still advertised Go 1.26.2+ after govulncheck began requiring the patched stdlib.
 
 ## Hypothesis
 
-If the maintainer spec changes ignored self-dogfood artifact links into plain code paths and describes them as selected evidence paths rather than checked-in links, then `npm run lint:specs` should pass in a clean checkout.
+If GitHub workflows and maintainer docs are updated from Go 1.26.2 to Go 1.26.3, then release `npm run verify` should use the patched standard library and `govulncheck` should pass.
 
 ## Verification
 
-- Updated `docs/specs/maintainer/evaluation-surfaces-runners.spec.md` to use plain code paths for selected self-dogfood summary packet paths.
-- Pending: rerun `npm run lint:specs`.
+- Updated `.github/workflows/release-artifacts.yml`, `.github/workflows/verify.yml`, and `.github/workflows/spec-report.yml` to Go 1.26.3.
+- Updated maintainer docs and roadmap references to Go 1.26.3+.
+- Pending: rerun local `npm run verify`.
 - Pending: rerun the release workflow on the fix-forward tag.
 
 ## Root Cause
 
-`docs/specs/maintainer/evaluation-surfaces-runners.spec.md` used Markdown links to ignored local self-dogfood artifacts.
-The local maintainer workspace had those artifacts, but the release workflow's clean checkout did not.
+The release workflows pinned Go 1.26.2 while local verification had already moved to Go 1.26.3.
+`govulncheck` correctly blocked release verification because the binary code path reaches standard-library network APIs affected in 1.26.2 and fixed in 1.26.3.
 
 ## Seam Risk
 
-- Interrupt ID: ci-spec-link-local-artifact
+- Interrupt ID: ci-go-toolchain-vuln-pin
 - Risk Class: contract-freeze-risk
-- Seam: selected local evidence paths versus checked-in spec link validation
-- Disproving Observation: A clean checkout can pass `npm run lint:specs` after ignored artifacts are no longer Markdown links.
-- What Local Reasoning Cannot Prove: Whether other selected evidence paths elsewhere in docs are silently protected by local ignored files.
+- Seam: maintainer-local Go toolchain versus GitHub Actions pinned Go toolchain
+- Disproving Observation: CI release workflow passes `govulncheck` after setup-go uses Go 1.26.3.
+- What Local Reasoning Cannot Prove: Whether future Go patch vulnerabilities will require a standing "latest patch" policy instead of exact patch pins.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
 
 - Premortem Required: no
 - Next Step: impl
-- Handoff Artifact: `docs/specs/maintainer/evaluation-surfaces-runners.spec.md`
+- Handoff Artifact: `.github/workflows/release-artifacts.yml`
 
 ## Prevention
 
-Do not use Markdown links for ignored selected-evidence artifacts unless the artifact is intentionally checked in.
-Use plain code paths for selected evidence and reserve links for tracked files.
+Keep CI Go patch versions aligned with the local `toolchain` patch when `govulncheck` begins reporting standard-library fixes.
+Do not cut release artifacts from a workflow pinned below the fixed Go patch version.
