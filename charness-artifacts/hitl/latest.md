@@ -3,7 +3,7 @@
 <!-- hitl-runtime-sync
 session_id: hitl-20260509-053911
 runtime_session_dir: .charness/hitl/runtime/hitl-20260509-053911
-runtime_updated_at: 2026-05-09T08:04:49+00:00
+runtime_updated_at: 2026-05-09T08:20:58+00:00
 target: docs/specs/index.spec.md
 last_presented_chunk_id: specs-index-entry-map
 queue_epoch: 1
@@ -14,10 +14,10 @@ queue_state_digest: cfaf0e4536ba5297
 approval_state_digest: 5fd3ea7772082dd5
 -->
 
-- Synced At: 2026-05-09T08:04:58+00:00
+- Synced At: 2026-05-09T08:21:02+00:00
 - Synced From Session: `hitl-20260509-053911`
 - Runtime Session Dir: `.charness/hitl/runtime/hitl-20260509-053911`
-- Runtime Updated At: 2026-05-09T08:04:49+00:00
+- Runtime Updated At: 2026-05-09T08:20:58+00:00
 
 ## Active Target
 

@@ -30,11 +30,11 @@
   <md>
   ## Reading Path
 
-  1. Start with the [User Workflow](user/index.spec.md) to see what Cautilus helps a user do.
-  2. Read the [Maintainer View](maintainer/index.spec.md) to see which contracts, fixtures, and evidence routes keep those workflows true.
-  3. Use the [Promise Model](model/index.spec.md) when you need the compact map of names, keys, and links.
-  4. Use [Shared Concerns](concerns/index.spec.md) when checking reviewability, evidence visibility, ownership, vocabulary, or packet freshness across workflows.
-  5. Use [Evidence State](proof/index.spec.md) as the cross-spec ledger for selected evidence, stale evidence, and open proof gaps.
+  1. Start with User Workflow (`docs/specs/user/index.spec.md`) to see what Cautilus helps a user do.
+  2. Read Maintainer View (`docs/specs/maintainer/index.spec.md`) to see which contracts, fixtures, and evidence routes keep those workflows true.
+  3. Use Promise Model (`docs/specs/model/index.spec.md`) when you need the compact map of names, keys, and links.
+  4. Use Shared Concerns (`docs/specs/concerns/index.spec.md`) when checking reviewability, evidence visibility, ownership, vocabulary, or packet freshness across workflows.
+  5. Use Evidence State (`docs/specs/proof/index.spec.md`) as the cross-spec ledger for selected evidence, stale evidence, and open proof gaps.
 
   Each spec page should still carry its own local proof or visible proof gap.
   </md>
