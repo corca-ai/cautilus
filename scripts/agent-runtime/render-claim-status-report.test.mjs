@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { renderStatusReport } from "./render-claim-status-report.mjs";
+import { parseArgs, renderStatusReport } from "./render-claim-status-report.mjs";
+
+test("parseArgs supports status report check mode", () => {
+	assert.equal(parseArgs(["node", "script", "--check"]).check, true);
+});
 
 test("renderStatusReport summarizes status, review results, validation, and eval plans", () => {
 	const args = {

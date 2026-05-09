@@ -6,12 +6,15 @@ It answers which promises are currently supported, stale, selected from durable 
 ## Pages
 
 - [Evidence Map](evidence-map.spec.md)
+- [Claim Evidence State](claim-evidence-state.md)
 - [Proof Gaps](gaps.spec.md)
 - [Latest Selected Evidence](latest-selected-evidence.spec.md)
 
 ```run:shell
 # Verify proof pages are present.
 test -f docs/specs/proof/evidence-map.spec.md
+test -f docs/specs/proof/claim-evidence-state.md
 test -f docs/specs/proof/gaps.spec.md
 test -f docs/specs/proof/latest-selected-evidence.spec.md
+test -f .cautilus/claims/evidence-state.json
 ```

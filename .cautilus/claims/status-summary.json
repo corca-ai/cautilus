@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 147
+          "unknown": 148
         },
         "byReviewStatus": {
-          "heuristic": 147
+          "heuristic": 148
         },
-        "count": 147,
+        "count": 148,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -19,17 +19,32 @@
           "claim-docs-contracts-adapter-contract-md-209"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
+      },
+      {
+        "byEvidenceStatus": {
+          "stale": 1
+        },
+        "byReviewStatus": {
+          "agent-reviewed": 1
+        },
+        "count": 1,
+        "id": "stale-evidence",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-docs-contracts-claim-discovery-workflow-md-694"
+        ],
+        "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
     ],
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 130
+          "satisfied": 128
         },
         "byReviewStatus": {
-          "agent-reviewed": 130
+          "agent-reviewed": 128
         },
-        "count": 130,
+        "count": 128,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -40,6 +55,24 @@
           "claim-readme-md-10"
         ],
         "summary": "Proof is already attached and valid under packet semantics."
+      },
+      {
+        "byEvidenceStatus": {
+          "stale": 1,
+          "unknown": 1
+        },
+        "byReviewStatus": {
+          "agent-reviewed": 1,
+          "heuristic": 1
+        },
+        "count": 2,
+        "id": "agent-add-deterministic-proof",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-docs-contracts-claim-discovery-workflow-md-634",
+          "claim-docs-contracts-claim-discovery-workflow-md-694"
+        ],
+        "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
@@ -75,7 +108,7 @@
           "claim-readme-md-179",
           "claim-docs-master-plan-md-88",
           "claim-docs-specs-user-evaluation-spec-md-12",
-          "claim-docs-contracts-claim-discovery-workflow-md-688",
+          "claim-docs-contracts-claim-discovery-workflow-md-690",
           "claim-docs-contracts-scenario-history-md-3"
         ],
         "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
@@ -174,8 +207,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 130,
-      "unknown": 193
+      "satisfied": 128,
+      "stale": 1,
+      "unknown": 194
     },
     "byLifecycle": {
       "new": 323
@@ -186,8 +220,8 @@
       "human-auditable": 101
     },
     "byReviewStatus": {
-      "agent-reviewed": 176,
-      "heuristic": 147
+      "agent-reviewed": 175,
+      "heuristic": 148
     },
     "byVerificationReadiness": {
       "blocked": 36,
@@ -197,7 +231,7 @@
     }
   },
   "discoveryBoundary": {
-    "agentEscapeHatch": "Agent-led quality or narrative review may explore the codebase for missing public claims, then record alignment or documentation work before expecting deterministic discovery.",
+    "agentEscapeHatch": "Agent-led quality or narrative review may explore the codebase for missing public claims, then record in-scope discovery bugs or out-of-scope alignment and documentation work before expecting deterministic discovery.",
     "entries": [
       "README.md",
       "AGENTS.md",
@@ -206,9 +240,15 @@
     "gitignorePolicy": "respect-repo-gitignore",
     "linkedDepth": 3,
     "omissionPolicy": "Claims not declared in configured entry documents or linked Markdown are outside deterministic discovery scope.",
-    "productSignal": "A core user-facing feature missing from entry docs is a narrative or adoption-surface gap, not automatically a claim discover false negative.",
+    "productSignal": "A declared in-scope promise missed by discovery is a claim discover bug; an important behavior outside the scan boundary is a narrative or catalog gap.",
     "sourceBasis": "entry-docs-and-linked-markdown",
     "traversal": "entry-markdown-links"
+  },
+  "discoveryEngine": {
+    "implementationHash": "sha256:31e226d9a2d122103f912b8147a9ea88b1116072b4fc431443225b2c565c2f27",
+    "implementationPath": "internal/runtime/claim_discovery.go",
+    "name": "cautilus.claim_discovery",
+    "ruleset": "claim-discovery-rules.v4"
   },
   "effectiveScanScope": {
     "adapterFound": true,
@@ -360,7 +400,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 130,
+    "satisfiedClaimCount": 128,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-78",
@@ -709,7 +749,7 @@
         "recommendedEvalSurface": null,
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
-        "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean."
+        "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean."
       },
       {
         "claimId": "claim-docs-cli-reference-md-115",
@@ -1165,7 +1205,7 @@
         "recommendedEvalSurface": null,
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
-        "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -\u003e eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples."
+        "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples."
       },
       {
         "claimId": "claim-docs-guides-consumer-adoption-md-49",
@@ -1184,7 +1224,7 @@
         "recommendedEvalSurface": null,
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
-        "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation."
+        "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation."
       },
       {
         "claimId": "claim-docs-guides-consumer-adoption-md-67",
@@ -1725,44 +1765,6 @@
         "summary": "The deterministic pass should emit grouping hints:"
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-632",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:0de05f63d508740f01aac3209c284f132178a06a215bc167fdd117a868822f22",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04b.json",
-            "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-632"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work."
-      },
-      {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-692",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:fff2188e8592233b04a735375b89971957bd8cca2ceccccf2e829488443ed1e7",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-claim-review-prepare-input-contract-2026-05-04.json",
-            "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-692"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."
-      },
-      {
         "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1818,7 +1820,7 @@
         "recommendedEvalSurface": null,
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
-        "summary": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `\u003coutput_file\u003e.d/workspace/` and may run one optional prepare hook before the first turn."
+        "summary": "When the product-owned loop is active, `Cautilus` also owns one stable per-request workspace directory under `<output_file>.d/workspace/` and may run one optional prepare hook before the first turn."
       },
       {
         "claimId": "claim-docs-contracts-live-run-invocation-md-24",
@@ -2897,33 +2899,387 @@
       }
     ]
   },
-  "gitCommit": "0949ab4da9f6e7fa025838274260645956230033",
+  "gitCommit": "fe162d3f9e53436e5fed14b706abe9b5bcfe90c2",
   "gitState": {
-    "changedFileCount": 9,
+    "changedFileCount": 329,
     "changedFiles": [
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/discovery-review.md",
+      ".agents/announcement-adapter.yaml",
+      ".agents/cautilus-adapter.yaml",
+      ".agents/cautilus-adapters/self-dogfood-canonical-spec-curation-flow.yaml",
+      ".agents/cautilus-adapters/self-dogfood-claim-discovery-curation-flow.yaml",
+      ".agents/cautilus-adapters/self-dogfood-claim-discovery-routing-flow.yaml",
+      ".agents/cautilus-adapters/self-dogfood-eval-skill.yaml",
+      ".agents/cautilus-adapters/self-dogfood-first-scan-flow.yaml",
+      ".agents/cautilus-adapters/self-dogfood-packet-first-flow.yaml",
+      ".agents/cautilus-adapters/self-dogfood-refresh-flow.yaml",
+      ".agents/cautilus-adapters/self-dogfood-review-prepare-flow.yaml",
+      ".agents/cautilus-adapters/self-dogfood-review-to-eval-flow.yaml",
+      ".agents/cautilus-adapters/self-dogfood-reviewer-launch-flow.yaml",
+      ".agents/cautilus-adapters/self-dogfood-skill-surface.yaml",
+      ".agents/cautilus-adapters/self-dogfood.yaml",
+      ".agents/markdown-preview.yaml",
+      ".agents/quality-adapter.yaml",
+      ".agents/release-adapter.yaml",
+      ".agents/skills/cautilus-agent/SKILL.md",
+      ".agents/skills/cautilus-agent/agents/openai.yaml",
+      ".agents/skills/cautilus-agent/references/active-run.md",
+      ".agents/skills/cautilus-agent/references/adapter-contract.md",
+      ".agents/skills/cautilus-agent/references/bootstrap-inventory.md",
+      ".agents/skills/cautilus-agent/references/chatbot-normalization.md",
+      ".agents/skills/cautilus-agent/references/command-cookbook.md",
+      ".agents/skills/cautilus-agent/references/evaluation-process.md",
+      ".agents/skills/cautilus-agent/references/evidence-bundle.md",
+      ".agents/skills/cautilus-agent/references/optimization-search.md",
+      ".agents/skills/cautilus-agent/references/optimization.md",
+      ".agents/skills/cautilus-agent/references/reporting.md",
+      ".agents/skills/cautilus-agent/references/review-packet.md",
+      ".agents/skills/cautilus-agent/references/review-prompt-inputs.md",
+      ".agents/skills/cautilus-agent/references/revision-artifact.md",
+      ".agents/skills/cautilus-agent/references/scenario-proposal-inputs.md",
+      ".agents/skills/cautilus-agent/references/scenario-proposal-normalization.md",
+      ".agents/skills/cautilus-agent/references/scenario-proposal-sources.md",
+      ".agents/skills/cautilus-agent/references/self-dogfood-runner.md",
+      ".agents/skills/cautilus-agent/references/skill-evaluation.md",
+      ".agents/skills/cautilus-agent/references/skill-normalization.md",
+      ".agents/skills/cautilus-agent/references/skill-testing.md",
+      ".agents/skills/cautilus-agent/references/workflow-normalization.md",
+      ".agents/skills/cautilus/agents/openai.yaml",
+      ".agents/surfaces.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
-      ".cautilus/claims/status-summary.json",
+      ".charness/hitl/runtime/hitl-20260505-010438/events.log",
+      ".charness/hitl/runtime/hitl-20260505-010438/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260505-010438/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260505-010438/queue.json",
+      ".charness/hitl/runtime/hitl-20260505-010438/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260505-010438/state.yaml",
+      ".charness/hitl/runtime/hitl-20260507-085934/events.log",
+      ".charness/hitl/runtime/hitl-20260507-085934/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260507-085934/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260507-085934/queue.json",
+      ".charness/hitl/runtime/hitl-20260507-085934/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260507-085934/state.yaml",
+      ".charness/hitl/runtime/hitl-20260507-113728/events.log",
+      ".charness/hitl/runtime/hitl-20260507-113728/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260507-113728/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260507-113728/queue.json",
+      ".charness/hitl/runtime/hitl-20260507-113728/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260507-113728/state.yaml",
+      ".charness/hitl/runtime/hitl-20260508-033701/events.log",
+      ".charness/hitl/runtime/hitl-20260508-033701/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260508-033701/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260508-033701/queue.json",
+      ".charness/hitl/runtime/hitl-20260508-033701/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260508-033701/state.yaml",
+      ".charness/hitl/runtime/hitl-20260508-062748/events.log",
+      ".charness/hitl/runtime/hitl-20260508-062748/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260508-062748/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260508-062748/queue.json",
+      ".charness/hitl/runtime/hitl-20260508-062748/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260508-062748/state.yaml",
+      ".charness/hitl/runtime/hitl-20260508-222100/events.log",
+      ".charness/hitl/runtime/hitl-20260508-222100/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260508-222100/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260508-222100/queue.json",
+      ".charness/hitl/runtime/hitl-20260508-222100/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260508-222100/state.yaml",
+      ".charness/hitl/runtime/hitl-20260509-053911/events.log",
+      ".charness/hitl/runtime/hitl-20260509-053911/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260509-053911/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260509-053911/queue.json",
+      ".charness/hitl/runtime/hitl-20260509-053911/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260509-053911/state.yaml",
+      ".charness/hitl/runtime/hitl-20260509-132058/events.log",
+      ".charness/hitl/runtime/hitl-20260509-132058/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260509-132058/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260509-132058/queue.json",
+      ".charness/hitl/runtime/hitl-20260509-132058/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260509-132058/state.yaml",
+      ".charness/hitl/runtime/hitl-20260509-134806/events.log",
+      ".charness/hitl/runtime/hitl-20260509-134806/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260509-134806/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260509-134806/queue.json",
+      ".charness/hitl/runtime/hitl-20260509-134806/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260509-134806/state.yaml",
+      ".charness/hitl/runtime/hitl-20260509-135850/events.log",
+      ".charness/hitl/runtime/hitl-20260509-135850/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260509-135850/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260509-135850/queue.json",
+      ".charness/hitl/runtime/hitl-20260509-135850/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260509-135850/state.yaml",
+      ".charness/hitl/runtime/hitl-20260509-161518/events.log",
+      ".charness/hitl/runtime/hitl-20260509-161518/fix-queue.yaml",
+      ".charness/hitl/runtime/hitl-20260509-161518/hitl-scratchpad.md",
+      ".charness/hitl/runtime/hitl-20260509-161518/queue.json",
+      ".charness/hitl/runtime/hitl-20260509-161518/rules.yaml",
+      ".charness/hitl/runtime/hitl-20260509-161518/state.yaml",
+      ".charness/quality/bootstrap.json",
+      ".claude-plugin/marketplace.json",
+      ".github/workflows/release-artifacts.yml",
+      ".github/workflows/spec-report.yml",
+      ".github/workflows/verify.yml",
+      "AGENTS.md",
+      "README.md",
+      "bin/cautilus.test.mjs",
+      "charness-artifacts/debug/debug-2026-05-06-markdown-preview-renderer.md",
+      "charness-artifacts/debug/debug-2026-05-08-hitl-runtime-sync-metadata.md",
+      "charness-artifacts/debug/debug-2026-05-09-ignored-self-dogfood-evidence-links.md",
+      "charness-artifacts/debug/debug-2026-05-10-cautilus-agent-skill-disclosure-limit.md",
+      "charness-artifacts/debug/debug-2026-05-10-hitl-scratchpad-link-validation.md",
+      "charness-artifacts/debug/latest.md",
+      "charness-artifacts/find-skills/latest.json",
+      "charness-artifacts/find-skills/latest.md",
+      "charness-artifacts/gather/2026-05-06-ddd-aop-decomposition.md",
+      "charness-artifacts/gather/latest.md",
+      "charness-artifacts/hitl/issue-33-review-feedback.json",
+      "charness-artifacts/hitl/latest.md",
+      "charness-artifacts/premortem/hitl-user-spec-closeout.md",
+      "charness-artifacts/quality/2026-05-10-quality-review.md",
+      "charness-artifacts/quality/latest.md",
+      "charness-artifacts/release/latest.md",
+      "charness-artifacts/retro/hitl-terminology-drift.md",
+      "charness-artifacts/retro/lesson-selection-index.json",
+      "charness-artifacts/retro/recent-lessons.md",
+      "charness-artifacts/spec/evaluation-surfaces-runners-proof.md",
+      "charness-artifacts/spec/verify-coverage-parity.md",
+      "docs/claims/maintainer-facing.md",
+      "docs/claims/user-facing.md",
+      "docs/cli-reference.md",
+      "docs/contracts/active-run.md",
+      "docs/contracts/adapter-contract.md",
+      "docs/contracts/claim-discovery-workflow.md",
+      "docs/contracts/review-learning.md",
+      "docs/contracts/runner-readiness.md",
+      "docs/contracts/runner-verification.md",
+      "docs/contracts/scenario-history.md",
+      "docs/guides/consumer-adoption.md",
+      "docs/internal/handoff.md",
+      "docs/internal/research/readme-research.md",
+      "docs/internal/working-patterns.md",
+      "docs/maintainers/consumer-readiness.md",
+      "docs/maintainers/development.md",
+      "docs/maintainers/operator-acceptance.md",
+      "docs/maintainers/release-boundary.md",
+      "docs/maintainers/releasing.md",
+      "docs/master-plan.md",
+      "docs/specs/archive/index.spec.md",
+      "docs/specs/concerns/agent-human-resumability.spec.md",
+      "docs/specs/concerns/cost-and-proof-freshness.spec.md",
+      "docs/specs/concerns/evidence-gaps.spec.md",
+      "docs/specs/concerns/host-owned-execution.spec.md",
+      "docs/specs/concerns/index.spec.md",
+      "docs/specs/concerns/packet-freshness.spec.md",
+      "docs/specs/concerns/reviewable-artifacts.spec.md",
+      "docs/specs/concerns/vocabulary-consistency.spec.md",
+      "docs/specs/index.spec.md",
+      "docs/specs/maintainer/active-run-workspace.spec.md",
+      "docs/specs/maintainer/adapter-host-ownership.spec.md",
+      "docs/specs/maintainer/binary-skill-boundary.spec.md",
+      "docs/specs/maintainer/claim-discovery-workflow.spec.md",
+      "docs/specs/maintainer/concerns-policy.spec.md",
+      "docs/specs/maintainer/evaluation-surfaces-runners.spec.md",
+      "docs/specs/maintainer/evidence-state-artifacts.spec.md",
+      "docs/specs/maintainer/index.spec.md",
+      "docs/specs/maintainer/live-invocation-runtime.spec.md",
+      "docs/specs/maintainer/optimization-loop.spec.md",
+      "docs/specs/maintainer/readiness-runtime-status.spec.md",
+      "docs/specs/maintainer/reporting-review-variants.spec.md",
+      "docs/specs/maintainer/scenario-history-normalization.spec.md",
+      "docs/specs/model/claim-discovery.spec.md",
+      "docs/specs/model/evaluation.spec.md",
+      "docs/specs/model/how-views-relate.spec.md",
+      "docs/specs/model/index.spec.md",
+      "docs/specs/model/names-and-keys.spec.md",
+      "docs/specs/model/optimization.spec.md",
+      "docs/specs/model/promise-ledger.spec.md",
+      "docs/specs/model/readiness.spec.md",
+      "docs/specs/old/command-surfaces.spec.md",
+      "docs/specs/old/index.spec.md",
+      "docs/specs/old/standalone-surface.spec.md",
+      "docs/specs/proof/evidence-map.spec.md",
+      "docs/specs/proof/gaps.spec.md",
+      "docs/specs/proof/index.spec.md",
+      "docs/specs/proof/latest-selected-evidence.spec.md",
+      "docs/specs/user/claim-discovery.spec.md",
+      "docs/specs/user/doctor-readiness.spec.md",
+      "docs/specs/user/evaluation.spec.md",
+      "docs/specs/user/evidence-gaps.spec.md",
+      "docs/specs/user/index.spec.md",
+      "docs/specs/user/optimization.spec.md",
+      "docs/specs/user/ownership.spec.md",
+      "docs/specs/user/proof-debt.spec.md",
+      "docs/specs/user/reviewable-artifacts.spec.md",
+      "examples/agents/openai.yaml",
+      "fixtures/claim-discovery/example-proof-plan.json",
+      "fixtures/claim-discovery/proof-plan.schema.json",
+      "fixtures/eval/dev/skill/cautilus-canonical-spec-curation-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-claim-discovery-curation-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-claim-discovery-routing-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-docs-behavior-routing-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-first-scan-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-packet-first-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-review-prepare-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-review-to-eval-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-reviewer-launch-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-scenario-needed-routing-flow.fixture.json",
+      "fixtures/eval/dev/skill/cautilus-skill-routing.fixture.json",
+      "fixtures/eval/dev/skill/internal-runner-cases.json",
+      "fixtures/eval/dev/skill/internal-runner-fixture-results.json",
+      "go.mod",
+      "internal/app/app.go",
+      "internal/app/app_test.go",
+      "internal/app/cli_smoke_test.go",
+      "internal/app/examples.go",
+      "internal/app/remaining_commands.go",
+      "internal/app/review_feedback_command.go",
+      "internal/cli/command-registry.json",
+      "internal/cli/registry.go",
+      "internal/cli/registry_test.go",
+      "internal/cli/version_state.go",
+      "internal/contracts/constants.go",
+      "internal/runtime/adapter.go",
       "internal/runtime/claim_discovery.go",
       "internal/runtime/claim_discovery_test.go",
-      "scripts/agent-runtime/optimize-flow.test.mjs"
+      "internal/runtime/doctor_next_action.go",
+      "internal/runtime/evaluation_input_test.go",
+      "internal/runtime/prototypes/README.md",
+      "internal/runtime/runner_readiness_test.go",
+      "internal/runtime/runtime_fingerprint_test.go",
+      "internal/runtime/skill_test_cases.go",
+      "package-lock.json",
+      "package.json",
+      "plugins/cautilus/.claude-plugin/plugin.json",
+      "plugins/cautilus/.codex-plugin/plugin.json",
+      "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+      "plugins/cautilus/skills/cautilus-agent/agents/openai.yaml",
+      "plugins/cautilus/skills/cautilus-agent/references/active-run.md",
+      "plugins/cautilus/skills/cautilus-agent/references/adapter-contract.md",
+      "plugins/cautilus/skills/cautilus-agent/references/bootstrap-inventory.md",
+      "plugins/cautilus/skills/cautilus-agent/references/chatbot-normalization.md",
+      "plugins/cautilus/skills/cautilus-agent/references/command-cookbook.md",
+      "plugins/cautilus/skills/cautilus-agent/references/evaluation-process.md",
+      "plugins/cautilus/skills/cautilus-agent/references/evidence-bundle.md",
+      "plugins/cautilus/skills/cautilus-agent/references/optimization-search.md",
+      "plugins/cautilus/skills/cautilus-agent/references/optimization.md",
+      "plugins/cautilus/skills/cautilus-agent/references/reporting.md",
+      "plugins/cautilus/skills/cautilus-agent/references/review-packet.md",
+      "plugins/cautilus/skills/cautilus-agent/references/review-prompt-inputs.md",
+      "plugins/cautilus/skills/cautilus-agent/references/revision-artifact.md",
+      "plugins/cautilus/skills/cautilus-agent/references/scenario-proposal-inputs.md",
+      "plugins/cautilus/skills/cautilus-agent/references/scenario-proposal-normalization.md",
+      "plugins/cautilus/skills/cautilus-agent/references/scenario-proposal-sources.md",
+      "plugins/cautilus/skills/cautilus-agent/references/self-dogfood-runner.md",
+      "plugins/cautilus/skills/cautilus-agent/references/skill-evaluation.md",
+      "plugins/cautilus/skills/cautilus-agent/references/skill-normalization.md",
+      "plugins/cautilus/skills/cautilus-agent/references/skill-testing.md",
+      "plugins/cautilus/skills/cautilus-agent/references/workflow-normalization.md",
+      "plugins/cautilus/skills/cautilus/agents/openai.yaml",
+      "scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.mjs",
+      "scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs",
+      "scripts/agent-runtime/contract-versions.mjs",
+      "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "scripts/agent-runtime/run-cautilus-refresh-flow-dogfood.mjs",
+      "scripts/agent-runtime/run-local-skill-test.test.mjs",
+      "scripts/agent-runtime/skill-test-case-suite.mjs",
+      "scripts/agent-runtime/skill-test-claude-episode.mjs",
+      "scripts/agent-runtime/skill-test-codex-episode.mjs",
+      "scripts/check-cautilus-skill-disclosure.mjs",
+      "scripts/check-product-import-isolation.mjs",
+      "scripts/check-product-import-isolation.test.mjs",
+      "scripts/check-specs.mjs",
+      "scripts/check-specs.test.mjs",
+      "scripts/coverage-floor.json",
+      "scripts/lint-specs.mjs",
+      "scripts/lint-specs.test.mjs",
+      "scripts/on-demand/smoke-external-consumer.mjs",
+      "scripts/preview-markdown.mjs",
+      "scripts/preview-markdown.test.mjs",
+      "scripts/release/distribution-surface.test.mjs",
+      "scripts/release/sync-packaged-skill.mjs",
+      "scripts/release/sync-packaged-skill.test.mjs",
+      "scripts/run-self-dogfood-eval.test.mjs",
+      "scripts/run-self-dogfood-skill-refresh-flow-eval.test.mjs",
+      "scripts/run-verify.mjs",
+      "scripts/run-verify.test.mjs",
+      "scripts/specdown-cautilus-adapter.test.mjs",
+      "scripts/specdown/cautilus-adapter.mjs",
+      "scripts/write-coverage-floor.mjs",
+      "skills/bundled.go",
+      "skills/bundled_test.go",
+      "skills/cautilus-agent/SKILL.md",
+      "skills/cautilus-agent/agents/openai.yaml",
+      "skills/cautilus-agent/references/active-run.md",
+      "skills/cautilus-agent/references/adapter-contract.md",
+      "skills/cautilus-agent/references/bootstrap-inventory.md",
+      "skills/cautilus-agent/references/chatbot-normalization.md",
+      "skills/cautilus-agent/references/command-cookbook.md",
+      "skills/cautilus-agent/references/evaluation-process.md",
+      "skills/cautilus-agent/references/evidence-bundle.md",
+      "skills/cautilus-agent/references/optimization-search.md",
+      "skills/cautilus-agent/references/optimization.md",
+      "skills/cautilus-agent/references/reporting.md",
+      "skills/cautilus-agent/references/review-packet.md",
+      "skills/cautilus-agent/references/review-prompt-inputs.md",
+      "skills/cautilus-agent/references/revision-artifact.md",
+      "skills/cautilus-agent/references/scenario-proposal-inputs.md",
+      "skills/cautilus-agent/references/scenario-proposal-normalization.md",
+      "skills/cautilus-agent/references/scenario-proposal-sources.md",
+      "skills/cautilus-agent/references/self-dogfood-runner.md",
+      "skills/cautilus-agent/references/skill-evaluation.md",
+      "skills/cautilus-agent/references/skill-normalization.md",
+      "skills/cautilus-agent/references/skill-testing.md",
+      "skills/cautilus-agent/references/workflow-normalization.md",
+      "skills/cautilus/agents/openai.yaml",
+      "specdown.json"
     ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
       "workingTreePolicy": "excluded"
     },
-    "changedSourceCount": 0,
-    "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "5663e74323ab70f465c8c1ab8c17bb52868aefb9",
+    "changedSourceCount": 33,
+    "changedSources": [
+      "AGENTS.md",
+      "README.md",
+      "docs/cli-reference.md",
+      "docs/contracts/active-run.md",
+      "docs/contracts/adapter-contract.md",
+      "docs/contracts/claim-discovery-workflow.md",
+      "docs/contracts/runner-readiness.md",
+      "docs/contracts/runner-verification.md",
+      "docs/contracts/scenario-history.md",
+      "docs/guides/consumer-adoption.md",
+      "docs/internal/working-patterns.md",
+      "docs/master-plan.md",
+      "docs/specs/index.spec.md",
+      "docs/specs/maintainer/active-run-workspace.spec.md",
+      "docs/specs/maintainer/adapter-host-ownership.spec.md",
+      "docs/specs/maintainer/binary-skill-boundary.spec.md",
+      "docs/specs/maintainer/claim-discovery-workflow.spec.md",
+      "docs/specs/maintainer/evaluation-surfaces-runners.spec.md",
+      "docs/specs/maintainer/evidence-state-artifacts.spec.md",
+      "docs/specs/maintainer/index.spec.md",
+      "docs/specs/maintainer/live-invocation-runtime.spec.md",
+      "docs/specs/maintainer/optimization-loop.spec.md",
+      "docs/specs/maintainer/readiness-runtime-status.spec.md",
+      "docs/specs/maintainer/reporting-review-variants.spec.md",
+      "docs/specs/maintainer/scenario-history-normalization.spec.md",
+      "docs/specs/user/claim-discovery.spec.md",
+      "docs/specs/user/doctor-readiness.spec.md",
+      "docs/specs/user/evaluation.spec.md",
+      "docs/specs/user/index.spec.md",
+      "docs/specs/user/optimization.spec.md",
+      "docs/specs/user/ownership.spec.md",
+      "docs/specs/user/proof-debt.spec.md",
+      "docs/specs/user/reviewable-artifacts.spec.md"
+    ],
+    "comparisonStatus": "stale",
+    "currentGitCommit": "815a3de374f46930d45de4c55a474318898c56fb",
     "headDrift": true,
-    "isStale": false,
-    "packetGitCommit": "0949ab4da9f6e7fa025838274260645956230033",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "isStale": true,
+    "packetGitCommit": "fe162d3f9e53436e5fed14b706abe9b5bcfe90c2",
+    "recommendedAction": "Run claim discover --previous <claims.json> --refresh-plan before review, review application, or eval planning.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
@@ -2946,7 +3302,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 111,
+    "heuristicClaimsReadyForReview": 112,
     "needsAlignment": 47,
     "needsScenario": 9
   },
@@ -2972,101 +3328,6 @@
         }
       ],
       "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-26",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "human-auditable",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Do not satisfy directly; either leave as positioning or decompose into narrower contract ownership claims.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 26,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-29",
-      "claimSemanticGroup": "Evaluation surfaces",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "blocked",
-        "human-auditable",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "If this should remain a proof target, split it into concrete product claims under the roadmap/spec surface, such as claim/eval/optimize allowing prompt changes only when held-out behavior evidence improves.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 29,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-61",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "human-auditable",
-        "needs-alignment",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Either keep this as a maintainer operating principle or split it into concrete checks: AGENTS skill-routing section length, skill metadata availability, and find-skills inventory coverage.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 61,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
-      "verificationReadiness": "blocked"
-    },
-    {
-      "claimAudience": "developer",
-      "claimId": "claim-agents-md-73",
-      "claimSemanticGroup": "General product behavior",
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "blocked",
-        "human-auditable",
-        "repo-instructions"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep as an operating rule rather than a satisfied product claim, or add a narrower audited-process claim that points to recent debug artifacts and commit discipline.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "line": 73,
-          "path": "AGENTS.md"
-        }
-      ],
-      "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
       "verificationReadiness": "blocked"
     }
   ],

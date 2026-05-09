@@ -21,6 +21,7 @@ export function parseArgs(argv) {
 		output: DEFAULT_OUTPUT,
 		samplePerBucket: 5,
 		reviewSample: 8,
+		check: false,
 	};
 	for (let index = 2; index < argv.length; index += 1) {
 		const arg = argv[index];
@@ -38,6 +39,8 @@ export function parseArgs(argv) {
 			args.samplePerBucket = parsePositiveInteger(argv[++index], arg);
 		} else if (arg === "--review-sample") {
 			args.reviewSample = parsePositiveInteger(argv[++index], arg);
+		} else if (arg === "--check") {
+			args.check = true;
 		} else {
 			throw new Error(`Unsupported argument: ${arg}`);
 		}
@@ -612,6 +615,16 @@ function canonicalMapInputStatus(canonicalMap, args) {
 function main() {
 	const args = parseArgs(process.argv);
 	const output = buildStatusReport(args);
+	if (args.check) {
+		if (!fs.existsSync(args.output)) {
+			throw new Error(`${args.output} is missing; run npm run claims:status-report`);
+		}
+		const actual = fs.readFileSync(args.output, "utf8");
+		if (actual !== output) {
+			throw new Error(`${args.output} is stale; run npm run claims:status-report`);
+		}
+		return;
+	}
 	fs.mkdirSync(path.dirname(args.output), { recursive: true });
 	fs.writeFileSync(args.output, output, "utf8");
 	console.log(`wrote ${args.output}`);
