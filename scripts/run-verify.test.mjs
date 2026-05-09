@@ -47,6 +47,8 @@ test("PHASES covers every npm run verify sub-phase", () => {
 		"security:secrets",
 		"test:go:race",
 		"test:node",
+		"test:coverage",
+		"coverage:floor:check",
 	]);
 });
 

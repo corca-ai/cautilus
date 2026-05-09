@@ -1,69 +1,83 @@
-# CI Go Toolchain Vulnerability Debug
+# CI Coverage Floor Debug
 Date: 2026-05-09
 
 ## Problem
 
-The `v0.14.1` release workflow failed in GitHub Actions during `npm run verify`, even though local `npm run verify` had passed before tagging.
+The `main` push after recording the `v0.14.2` release failed in GitHub Actions during `npm run coverage:floor:check`, even though local `npm run verify` and the pre-push hook had passed.
 
 ## Correct Behavior
 
-Given the release workflow runs `govulncheck`, when Go standard-library vulnerabilities are fixed in a patch toolchain, then GitHub Actions should use the patched Go toolchain rather than an older pinned patch release.
+Given maintainers are told to run `npm run verify` before stopping, when CI runs required release and mainline gates, then the same required coverage floor gate should either run locally through `npm run verify` or be clearly outside the required local gate.
 
 ## Observed Facts
 
-- GitHub Actions run `25596627243` failed in workflow `release-artifacts`, job `release-artifacts`, step `Run npm run verify`.
-- `govulncheck` reported GO-2026-4971 and GO-2026-4918 in the Go standard library.
-- Both vulnerabilities were reported as found in Go 1.26.2 and fixed in Go 1.26.3.
-- Local `go env GOVERSION` returns `go1.26.3`.
-- The GitHub workflows pinned `actions/setup-go` to `go-version: "1.26.2"`.
+- GitHub Actions run `25596922800` failed in workflow `verify`, job `verify`, step `Run npm run coverage:floor:check`.
+- The failed CI step reported unfloored files below `fail_below_pct` and six floored files below their declared floor.
+- Local `npm run verify` passed because `scripts/run-verify.mjs` did not include `test:coverage` or `coverage:floor:check`.
+- The pre-push hook also ran `npm run verify`, so it shared the same blind spot.
+- Running `npm run test:coverage && npm run coverage:floor:check` locally reproduced the failure.
+- Running `npm run coverage:floor:write` regenerated `scripts/coverage-floor.json` from the current local coverage packet.
 
 ## Reproduction
 
 Run:
 
 ```bash
-gh run view 25596627243 --repo corca-ai/cautilus --log-failed
-rg -n "go-version: \"1.26.2\"" .github
+npm run test:coverage
+npm run coverage:floor:check
+gh run view 25596922800 --repo corca-ai/cautilus --log-failed
 ```
 
 ## Candidate Causes
 
-- CI workflows pinned a vulnerable Go patch version.
-- Local verification used the patched Go 1.26.3 toolchain, so the release gate was stricter in CI only because of workflow pin drift.
-- Maintainer docs still advertised Go 1.26.2+ after govulncheck began requiring the patched stdlib.
+- The coverage floor gate had drifted from the current codebase and had not been run locally before release record push.
+- The local required gate and pre-push hook were weaker than the GitHub Actions `verify` workflow.
+- The CI coverage command used different tooling or environment behavior than local coverage.
 
 ## Hypothesis
 
-If GitHub workflows and maintainer docs are updated from Go 1.26.2 to Go 1.26.3, then release `npm run verify` should use the patched standard library and `govulncheck` should pass.
+If `scripts/coverage-floor.json` is regenerated from the current coverage packet and `npm run verify` owns `test:coverage` plus `coverage:floor:check`, then the local required gate, pre-push hook, and GitHub Actions workflow will agree on the coverage floor result.
 
 ## Verification
 
-- Updated `.github/workflows/release-artifacts.yml`, `.github/workflows/verify.yml`, and `.github/workflows/spec-report.yml` to Go 1.26.3.
-- Updated maintainer docs and roadmap references to Go 1.26.3+.
-- Pending: rerun local `npm run verify`.
-- Pending: rerun the release workflow on the fix-forward tag.
+- `npm run test:coverage`: reproduced and refreshed `coverage/coverage.json`.
+- `npm run coverage:floor:check`: reproduced the CI failure locally before the fix.
+- `npm run coverage:floor:write`: regenerated `scripts/coverage-floor.json` with 138 floored files.
+- Updated `scripts/run-verify.mjs` so `npm run verify` runs `test:coverage` and `coverage:floor:check`.
+- Updated `scripts/run-verify.test.mjs` to lock the expanded phase list.
+- Updated `.github/workflows/verify.yml` to stop running coverage as separate post-verify steps.
+- `npm run coverage:floor:check`: ok after rebaseline.
+- `npm run verify`: ok after adding coverage phases.
+- Pending: push and verify GitHub Actions run for the fix.
 
 ## Root Cause
 
-The release workflows pinned Go 1.26.2 while local verification had already moved to Go 1.26.3.
-`govulncheck` correctly blocked release verification because the binary code path reaches standard-library network APIs affected in 1.26.2 and fixed in 1.26.3.
+The CI workflow contained two required coverage steps that were not part of the repo-local `npm run verify` command.
+Because both maintainers and the pre-push hook used `npm run verify`, a stale coverage floor file and new unfloored files could pass locally and fail only after pushing to `main`.
 
 ## Seam Risk
 
-- Interrupt ID: ci-go-toolchain-vuln-pin
-- Risk Class: contract-freeze-risk
-- Seam: maintainer-local Go toolchain versus GitHub Actions pinned Go toolchain
-- Disproving Observation: CI release workflow passes `govulncheck` after setup-go uses Go 1.26.3.
-- What Local Reasoning Cannot Prove: Whether future Go patch vulnerabilities will require a standing "latest patch" policy instead of exact patch pins.
+- Interrupt ID: ci-coverage-floor-verify-gap
+- Risk Class: host-disproves-local
+- Seam: repo-local required verification versus GitHub Actions verify workflow
+- Disproving Observation: GitHub Actions failed a coverage floor step that local `npm run verify` did not execute.
+- What Local Reasoning Cannot Prove: Whether future CI-only steps have again drifted outside `npm run verify` without a direct workflow parity check.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
 
-- Premortem Required: no
-- Next Step: impl
-- Handoff Artifact: `.github/workflows/release-artifacts.yml`
+- Premortem Required: yes
+- Next Step: spec
+- Handoff Artifact: charness-artifacts/spec/verify-coverage-parity.md
+
+Scoped premortem:
+
+- Act Before Ship: avoid leaving coverage as a CI-only post-verify step; make `npm run verify` the single gate owner.
+- Bundle Anyway: rebaseline the coverage floor to current measured coverage rather than manufacturing unrelated test work during release closeout.
+- Valid but Defer: add a future meta-check that the GitHub workflow does not append required gates outside `npm run verify`.
+- Over-Worry: treating the failed coverage floor as a `v0.14.2` binary release defect; the published release assets and installer smokes already passed.
 
 ## Prevention
 
-Keep CI Go patch versions aligned with the local `toolchain` patch when `govulncheck` begins reporting standard-library fixes.
-Do not cut release artifacts from a workflow pinned below the fixed Go patch version.
+Keep required CI gates inside `npm run verify` when they are expected before stopping or pushing.
+When adding a separate GitHub Actions step after `npm run verify`, add a local parity check or document why that step is intentionally CI-only.

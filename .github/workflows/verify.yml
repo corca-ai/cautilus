@@ -24,5 +24,3 @@ jobs:
       - run: go install github.com/zricethezav/gitleaks/v8@v8.30.1
       - run: npm ci
       - run: npm run verify
-      - run: npm run test:coverage
-      - run: npm run coverage:floor:check

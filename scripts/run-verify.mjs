@@ -17,6 +17,8 @@ export const PHASES = [
 	{ id: "security:secrets", label: "security · secret scan" },
 	{ id: "test:go:race", label: "test · go race" },
 	{ id: "test:node", verboseId: "test:node:spec", label: "test · node" },
+	{ id: "test:coverage", label: "test · coverage" },
+	{ id: "coverage:floor:check", label: "test · coverage floor" },
 ];
 
 export function parseArgs(argv) {
