@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:df4a1208f5512364d81608edebb77348c829c6f093d6bf8745d0bfb4d63c140c",
+    "claimsHash": "sha256:df6807e88e1cf9aa937379082cbae700daa8366210c4c9d939c5d1de221ec52f",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:0873c3d89db62759239ee145f7cb9ce1eef879c71f194f4c795627be2c20435d",
+    "statusHash": "sha256:233a288afa0283c5383f9937a1403bfbc39858f25b6f0f216e1fdcc562969c66",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,10 +22,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "6d00d72aa70c1f16cd280f055bf1872607831aad",
+    "currentGitCommit": "128e15454ff634d446a95c7408b95379ce009788",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "6d00d72aa70c1f16cd280f055bf1872607831aad",
+    "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -33,8 +33,8 @@
     "candidateCount": 365,
     "sourceCount": 66,
     "byEvidenceStatus": {
-      "satisfied": 67,
-      "stale": 28,
+      "satisfied": 68,
+      "stale": 27,
       "unknown": 270
     },
     "byRecommendedProof": {
@@ -207,26 +207,26 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 67,
+      "count": 68,
       "actor": "none",
       "evidence": {
-        "satisfied": 67
+        "satisfied": 68
       },
       "review": {
-        "agent-reviewed": 67
+        "agent-reviewed": 68
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 81,
+      "count": 80,
       "actor": "agent",
       "evidence": {
-        "stale": 23,
+        "stale": 22,
         "unknown": 58
       },
       "review": {
-        "agent-reviewed": 33,
+        "agent-reviewed": 32,
         "heuristic": 48
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
@@ -315,15 +315,15 @@
     },
     {
       "id": "stale-evidence",
-      "count": 28,
+      "count": 27,
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [
-        "claim-agents-md-124",
         "claim-readme-md-152",
         "claim-readme-md-163",
         "claim-readme-md-165",
-        "claim-readme-md-175"
+        "claim-readme-md-175",
+        "claim-readme-md-247"
       ]
     }
   ]

@@ -250,24 +250,24 @@
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:f7c5aa59fe306bd1e9fd995bea3d4e8c373847f115817c0888f79d3875a79b8a",
+          "contentHash": "sha256:650414df533b0b310f7fedeae61b338057706db55e91c2219d911deaafb2a89a",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-agent-instruction-gates-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
           "supportsClaimIds": [
             "claim-agents-md-124"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-agent-instruction-gates-2026-05-01.json does not list current claimId claim-agents-md-124 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by package.json wiring from test:on-demand to scripts/on-demand/*.test.mjs, checked-in on-demand test files, AGENTS.md gate wording, and a passing npm run test:on-demand execution.",
       "groupHints": [
         "audience:developer",
         "deterministic",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep npm run test:on-demand and scripts/on-demand/*.test.mjs aligned when moving heavier self-dogfood workflow checks.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -278,8 +278,9 @@
         }
       ],
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names a maintainer npm gate and its checked-in test ownership, which is deterministic repo behavior."
     },
     {
       "claimAudience": "user",
@@ -12222,8 +12223,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 67,
-      "stale": 28,
+      "satisfied": 68,
+      "stale": 27,
       "unknown": 270
     },
     "byLifecycle": {
@@ -12429,11 +12430,11 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "6d00d72aa70c1f16cd280f055bf1872607831aad",
+  "gitCommit": "128e15454ff634d446a95c7408b95379ce009788",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
-    "appliedUpdateCount": 22,
+    "appliedUpdateCount": 1,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -12441,293 +12442,19 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-6",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-8",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-user-optimization-spec-md-41",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-694",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-704",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-reporting-md-112",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
+          "whyThisLayer",
+          "evidenceRefs",
           "nextAction",
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-reporting-md-50",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-guides-consumer-adoption-md-106",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-guides-evaluation-process-md-293",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "reviewStatus"
-        ],
-        "claimId": "claim-docs-contracts-runner-readiness-md-198",
-        "clusterId": "auto-ready-deterministic-packet-and-status-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "reviewStatus"
-        ],
-        "claimId": "claim-docs-contracts-active-run-md-3",
-        "clusterId": "auto-ready-runtime-workspace-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "reviewStatus"
-        ],
-        "claimId": "claim-docs-contracts-live-run-invocation-md-12",
-        "clusterId": "auto-ready-runtime-workspace-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "reviewStatus"
-        ],
-        "claimId": "claim-docs-contracts-live-run-invocation-md-24",
-        "clusterId": "auto-ready-runtime-workspace-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
-        "clusterId": "auto-ready-skill-workflow-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "recommendedEvalSurface",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-skills-cautilus-agent-skill-md-65",
-        "clusterId": "auto-ready-skill-workflow-contracts"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-master-plan-md-90",
-        "clusterId": "non-ready-product-or-definition-claims"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-scenario-history-md-3",
-        "clusterId": "non-ready-product-or-definition-claims"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-scenario-history-md-175",
-        "clusterId": "non-ready-product-or-definition-claims"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
-        "clusterId": "non-ready-product-or-definition-claims"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-323",
-        "clusterId": "non-ready-product-or-definition-claims"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "groupHints",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-user-ownership-spec-md-3",
-        "clusterId": "non-ready-product-or-definition-claims"
+        "claimId": "claim-agents-md-124",
+        "clusterId": "cluster-on-demand-test-gate-2026-05-11"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12775,7 +12502,8 @@
       ".cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json",
       ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json",
-      ".cautilus/claims/review-result-readiness-triage-2026-05-10.json"
+      ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
+      ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
@@ -12813,9 +12541,9 @@
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 44,
+    "appliedResultCount": 45,
     "skippedResultCount": 34,
-    "keptUpdateCount": 159,
+    "keptUpdateCount": 160,
     "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },

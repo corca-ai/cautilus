@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:df4a1208f5512364d81608edebb77348c829c6f093d6bf8745d0bfb4d63c140c"
+      "contentHash": "sha256:df6807e88e1cf9aa937379082cbae700daa8366210c4c9d939c5d1de221ec52f"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:27cf7d5c376da0ad59c25cab4662744aba8ee6ee1f3f1e9d1043b096fcbe6766"
     }
   },
-  "claimsPacketGitCommit": "6d00d72aa70c1f16cd280f055bf1872607831aad",
+  "claimsPacketGitCommit": "128e15454ff634d446a95c7408b95379ce009788",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 365,
   "catalogs": {
@@ -2384,8 +2384,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 7,
-        "stale": 2,
+        "satisfied": 8,
+        "stale": 1,
         "unknown": 47
       },
       "byReviewStatus": {
@@ -4476,7 +4476,7 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "stale",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
       "canonicalClaimId": "M3",
@@ -4488,13 +4488,13 @@
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "check",
         "currently",
         "deterministic",
-        "evidence",
+        "keep",
         "npm",
         "run",
         "self-dogfood",
-        "thi",
         "workflow"
       ]
     },
