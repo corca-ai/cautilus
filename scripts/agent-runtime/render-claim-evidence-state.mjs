@@ -82,7 +82,7 @@ function countEntries(counts) {
 
 function readinessLabel(value) {
 	switch (value) {
-		case "ready-to-verify":
+		case "ready-for-proof":
 			return "ready for proof";
 		case "needs-scenario":
 			return "needs scenario";
@@ -172,7 +172,7 @@ function buildProjection({ claimsPacket, statusPacket, claimsPath, statusPath, c
 	assertStatusSummaryMatchesClaimPacket(claimsPacket, statusPacket);
 	const candidates = asArray(claimsPacket.claimCandidates);
 	const openEval = candidates.filter((candidate) => candidate.recommendedProof === "cautilus-eval" && candidate.evidenceStatus !== "satisfied");
-	const readyEval = openEval.filter((candidate) => candidate.verificationReadiness === "ready-to-verify");
+	const readyEval = openEval.filter((candidate) => candidate.verificationReadiness === "ready-for-proof");
 	const needsScenario = openEval.filter((candidate) => candidate.verificationReadiness === "needs-scenario");
 	const summary = selectedClaimSummary(claimsPacket);
 	return {

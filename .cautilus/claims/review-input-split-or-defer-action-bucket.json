@@ -131,7 +131,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -164,7 +164,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -186,7 +186,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -197,7 +197,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -208,7 +208,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -230,7 +230,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -241,7 +241,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -252,7 +252,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -263,7 +263,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -274,7 +274,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -285,7 +285,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -296,7 +296,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -307,7 +307,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -318,7 +318,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -329,7 +329,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -351,7 +351,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -384,7 +384,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -395,7 +395,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -406,7 +406,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -417,7 +417,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -428,7 +428,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -439,7 +439,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -450,7 +450,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -461,7 +461,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -472,7 +472,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -483,7 +483,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -505,7 +505,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -527,7 +527,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -538,7 +538,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -549,7 +549,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -560,7 +560,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -571,7 +571,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -582,7 +582,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -593,7 +593,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -604,7 +604,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -615,7 +615,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -626,7 +626,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -637,7 +637,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -648,7 +648,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -659,7 +659,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -670,7 +670,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -681,7 +681,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -692,7 +692,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -703,7 +703,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -714,7 +714,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -725,7 +725,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -736,7 +736,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -747,7 +747,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -758,7 +758,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -780,7 +780,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -791,7 +791,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -802,7 +802,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -835,7 +835,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -857,7 +857,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -868,7 +868,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -879,7 +879,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -901,7 +901,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -989,7 +989,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1000,7 +1000,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1011,7 +1011,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1022,7 +1022,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -1055,7 +1055,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1066,7 +1066,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1077,7 +1077,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1088,7 +1088,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1099,7 +1099,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1110,7 +1110,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1121,7 +1121,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1132,7 +1132,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1143,7 +1143,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1154,7 +1154,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1165,7 +1165,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1176,7 +1176,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1187,7 +1187,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1209,7 +1209,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1220,7 +1220,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1231,7 +1231,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1242,7 +1242,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1253,7 +1253,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1264,7 +1264,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1275,7 +1275,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1286,7 +1286,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1297,7 +1297,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1308,7 +1308,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1319,7 +1319,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1330,7 +1330,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1341,7 +1341,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1352,7 +1352,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -1374,7 +1374,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -1385,7 +1385,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1407,7 +1407,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -1418,7 +1418,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1429,7 +1429,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1440,7 +1440,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1451,7 +1451,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1462,7 +1462,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1473,7 +1473,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1484,7 +1484,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1495,7 +1495,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1506,7 +1506,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1517,7 +1517,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1528,7 +1528,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1539,7 +1539,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1550,7 +1550,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1561,7 +1561,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1572,7 +1572,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1583,7 +1583,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1594,7 +1594,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1605,7 +1605,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1616,7 +1616,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1627,7 +1627,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -1638,7 +1638,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1649,7 +1649,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1671,7 +1671,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1682,7 +1682,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1693,7 +1693,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1704,7 +1704,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1715,7 +1715,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1726,7 +1726,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1737,7 +1737,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1748,7 +1748,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1759,7 +1759,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1770,7 +1770,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1781,7 +1781,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1792,7 +1792,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1803,7 +1803,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1814,7 +1814,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1825,7 +1825,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -1858,7 +1858,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1869,7 +1869,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1891,7 +1891,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1913,7 +1913,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1924,7 +1924,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1935,7 +1935,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1946,7 +1946,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -1957,7 +1957,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1979,7 +1979,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -1990,7 +1990,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2001,7 +2001,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2012,7 +2012,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2034,7 +2034,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2045,7 +2045,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2056,7 +2056,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2067,7 +2067,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2078,7 +2078,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2089,7 +2089,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2100,7 +2100,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2111,7 +2111,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2122,7 +2122,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2133,7 +2133,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2144,7 +2144,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2155,7 +2155,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2166,7 +2166,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2177,7 +2177,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2188,7 +2188,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2199,7 +2199,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2210,7 +2210,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2221,7 +2221,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2232,7 +2232,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2243,7 +2243,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2254,7 +2254,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2265,7 +2265,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2276,7 +2276,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2287,7 +2287,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2298,7 +2298,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2309,7 +2309,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2320,7 +2320,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2331,7 +2331,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2342,7 +2342,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2353,7 +2353,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2364,7 +2364,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2375,7 +2375,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2386,7 +2386,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2397,7 +2397,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2408,7 +2408,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2419,7 +2419,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2430,7 +2430,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2441,7 +2441,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2463,7 +2463,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2474,7 +2474,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2485,7 +2485,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2496,7 +2496,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -2529,7 +2529,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2540,7 +2540,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2551,7 +2551,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -2573,7 +2573,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2584,7 +2584,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2595,7 +2595,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2606,7 +2606,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2617,7 +2617,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2628,7 +2628,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2639,7 +2639,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2650,7 +2650,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2661,7 +2661,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2672,7 +2672,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2683,7 +2683,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2694,7 +2694,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2705,7 +2705,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2716,7 +2716,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2727,7 +2727,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2738,7 +2738,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2749,7 +2749,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2760,7 +2760,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2771,7 +2771,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2782,7 +2782,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2793,7 +2793,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2804,7 +2804,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2815,7 +2815,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2826,7 +2826,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2837,7 +2837,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2848,7 +2848,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2859,7 +2859,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2870,7 +2870,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2881,7 +2881,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2892,7 +2892,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2903,7 +2903,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2914,7 +2914,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2936,7 +2936,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2958,7 +2958,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2969,7 +2969,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "human-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-plan-cautilus-eval",
@@ -2980,7 +2980,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-add-deterministic-proof",
@@ -2991,7 +2991,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     }
   ],
   "skippedClusters": [],

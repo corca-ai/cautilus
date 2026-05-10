@@ -28,7 +28,7 @@ The generated eval-plan packet should also state that satisfied claims are exclu
 
 - `BuildClaimEvalPlan` filters by `recommendedProof`, `verificationReadiness`, and `reviewStatus`, but not `evidenceStatus`.
 - The original eval-planning slice was written before the repo had a real satisfied claim packet to exercise this branch.
-- `verificationReadiness=ready-to-verify` is not automatically updated when evidence becomes satisfied, so eval planning must check evidence status explicitly.
+- `verificationReadiness=ready-for-proof` is not automatically updated when evidence becomes satisfied, so eval planning must check evidence status explicitly.
 
 ## Hypothesis
 
@@ -45,7 +45,7 @@ If `BuildClaimEvalPlan` skips claims with `evidenceStatus=satisfied` and records
 ## Root Cause
 
 `BuildClaimEvalPlan` did not initially consider `evidenceStatus`.
-Once a claim became satisfied, it still matched `recommendedProof=cautilus-eval`, `verificationReadiness=ready-to-verify`, and `reviewStatus=agent-reviewed`, so it stayed in the planning queue.
+Once a claim became satisfied, it still matched `recommendedProof=cautilus-eval`, `verificationReadiness=ready-for-proof`, and `reviewStatus=agent-reviewed`, so it stayed in the planning queue.
 The first repair added the filter but missed the packet-level policy metadata.
 
 ## Seam Risk

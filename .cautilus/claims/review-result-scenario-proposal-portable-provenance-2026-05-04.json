@@ -16,7 +16,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by scenario proposal input/output schemas and schema tests that bound evidence sourceKind to portable source ports while requiring only sourceKind, title, and observedAt as provenance fields, with no required host storage path fields.",
           "evidenceRefs": [

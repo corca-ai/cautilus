@@ -24,7 +24,7 @@
         }
       ],
       "summary": "Agents must follow the repo operating contract before changing code.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -48,7 +48,7 @@
         }
       ],
       "summary": "This tool emits a human-auditable setup checklist.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -72,7 +72,7 @@
         }
       ],
       "summary": "The deterministic unit test suite proves the parser accepts valid packets.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     }
   ],
@@ -96,7 +96,7 @@
       "heuristic": 3
     },
     "byVerificationReadiness": {
-      "ready-to-verify": 3
+      "ready-for-proof": 3
     }
   },
   "discoveryMode": "deterministic-source-inventory",

@@ -15,7 +15,7 @@ No product code was modified.
 
 ## Label Summary
 
-- Kept `claim-readme-md-144` as `cautilus-eval`, `dev/skill`, `ready-to-verify`.
-- Kept `claim-readme-md-10`, `claim-readme-md-137`, and `claim-readme-md-95` as deterministic, `ready-to-verify`.
-- Changed `claim-readme-md-211` from deterministic to `cautilus-eval`, `dev/skill`, `ready-to-verify`.
-- Kept `claim-readme-md-148` as `cautilus-eval`, `dev/skill`, `ready-to-verify`.
+- Kept `claim-readme-md-144` as `cautilus-eval`, `dev/skill`, `ready-for-proof`.
+- Kept `claim-readme-md-10`, `claim-readme-md-137`, and `claim-readme-md-95` as deterministic, `ready-for-proof`.
+- Changed `claim-readme-md-211` from deterministic to `cautilus-eval`, `dev/skill`, `ready-for-proof`.
+- Kept `claim-readme-md-148` as `cautilus-eval`, `dev/skill`, `ready-for-proof`.

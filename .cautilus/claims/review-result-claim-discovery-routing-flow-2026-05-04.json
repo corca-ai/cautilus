@@ -16,7 +16,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by focused Codex dev/skill routing dogfood flows: transcripts route repo-proof, docs-behavior-alignment, and scenario-needed questions into claim discovery, state the first scan scope, wait for user confirmation, run first discovery, summarize with claim show, and pass the first-scan audit.",
           "evidenceRefs": [

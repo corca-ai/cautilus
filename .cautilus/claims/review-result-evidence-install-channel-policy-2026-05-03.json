@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "whyThisLayer": "The claim is install-channel policy backed by release smoke tests and user-facing migration guidance.",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in install-channel evidence bundle: release smoke accepts only install_sh, a focused test rejects homebrew, and docs direct legacy Homebrew users to uninstall and reinstall through install.sh.",

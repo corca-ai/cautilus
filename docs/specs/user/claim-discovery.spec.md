@@ -83,9 +83,9 @@ These examples show deterministic test evidence, a Cautilus behavior evaluation,
 
 ```run:shell
 $ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." "The workflow should show scan scope before spending review budget." "Review-budget policy remains human-auditable until it is split into concrete proof targets." > "$tmp/README.md"; ./bin/cautilus claim discover --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'.claimCandidates[] | .summary + " => " + .recommendedProof + ":" + .verificationReadiness + (if .recommendedEvalSurface then ":" + .recommendedEvalSurface else "" end)'"'"' "$tmp/claims.json"'
-Users can run deterministic checks before review. => deterministic:ready-to-verify
-The workflow should show scan scope before spending review budget. => cautilus-eval:ready-to-verify:dev/skill
-Review-budget policy remains human-auditable until it is split into concrete proof targets. => human-auditable:ready-to-verify
+Users can run deterministic checks before review. => deterministic:ready-for-proof
+The workflow should show scan scope before spending review budget. => cautilus-eval:ready-for-proof:dev/skill
+Review-budget policy remains human-auditable until it is split into concrete proof targets. => human-auditable:ready-for-proof
 ```
 
 ### Signal: duplicate source sentences become one candidate.

@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:7fccb1b11ea6b2c9ccff7fa0f28cde48c29e17d866287b3b45f8a50628896265",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "whyThisLayer": "The claim names behavior-intent schema vocabulary and input alias normalization, which are deterministic runtime contract behavior.",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by a focused runtime unit test that accepts workflow_conversation input and returns the canonical conversation_continuity behavior surface while the schema remains cautilus.behavior_intent.v1.",

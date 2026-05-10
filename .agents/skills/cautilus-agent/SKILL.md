@@ -159,7 +159,7 @@ It ends when the selected reviewer lane writes the `cautilus.claim_review_result
 If you need local confidence before stopping, inspect the written JSON shape directly; do not call `claim review apply-result` as packet validation inside the reviewer-launch branch.
 Treat `claim review apply-result` as the next branch even when the output path is temporary and the intent is only validation.
 After reviewer launch, stop before review-result application, eval planning, edits, or commits unless the user explicitly delegates the next branch.
-In the later review-to-eval branch, apply `cautilus.claim_review_result.v1`, validate the reviewed claim packet, and only then plan eval fixtures for reviewed `cautilus-eval` claims that are `ready-to-verify`.
+In the later review-to-eval branch, apply `cautilus.claim_review_result.v1`, validate the reviewed claim packet, and only then plan eval fixtures for reviewed `cautilus-eval` claims that are `ready-for-proof`.
 When review-to-eval is explicitly delegated in the same agent turn, keep the same bounded reviewer budget unless the user names a larger one, write the applied claim packet to a separate artifact, validate that artifact, run `claim plan-evals` from the validated artifact, and stop before fixture authoring, eval execution, product edits, or commits.
 The review and eval-planning commands reject stale claim packets by default; treat that error as a prompt to refresh, not as a reason to pass `--allow-stale-claims` automatically.
 

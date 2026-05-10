@@ -36,7 +36,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the final deterministic evidence bundle: persona_prompt live-run smoke now asserts product-owned request, simulator, turn, transcript, and result packet boundaries while backend selection remains adapter-owned.",
           "evidenceRefs": [
@@ -58,7 +58,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by review-variant CLI smoke tests: blocked variants preserve machine-readable reason codes and concrete reasons, and unavailable executors become blocked unavailable_executor packets.",
           "evidenceRefs": [
@@ -80,7 +80,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by runner readiness tests: commit drift with unchanged adapter and runner hashes is exposed as fresh-with-head-drift provenance without marking the assessment stale; doctor and agent status consume the same readiness state.",
           "evidenceRefs": [
@@ -102,7 +102,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the final deterministic evidence bundle: the adapter excludes docs/specs/old/** and docs/claims/**, and the claim discovery test proves excluded linked Markdown cannot enter sourceInventory or claimCandidates.",
           "evidenceRefs": [

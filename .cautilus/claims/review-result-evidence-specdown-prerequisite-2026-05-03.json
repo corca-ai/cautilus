@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:709c984aab47e9413a9ad976289e76d65a9a866e45307a5afe0ef15a8624f520",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in specdown prerequisite evidence bundle: doctor reports specdown_available=true for this repo, the specdown-backed spec lint gate passes, and doctor fails readiness when specdown is removed from PATH.",
           "evidenceRefs": [

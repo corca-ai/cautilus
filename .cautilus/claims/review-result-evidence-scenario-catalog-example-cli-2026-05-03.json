@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in scenario-catalog evidence bundle: `cautilus scenarios --json` returns three normalization families and each has a non-empty `exampleInputCli`; focused CLI tests require that field on every catalog family.",
           "evidenceRefs": [

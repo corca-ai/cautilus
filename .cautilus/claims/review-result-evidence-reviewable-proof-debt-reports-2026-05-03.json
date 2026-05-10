@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:0e02ed9d14628673771e5a239e29ab5700fdb3d69a30870125e9d81f77f86590",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by status-report tests covering stale refresh-plan handling, action buckets, validation summaries, and unknown evidence visibility.",
           "evidenceRefs": [
@@ -39,7 +39,7 @@
           "claimFingerprint": "sha256:16155d7a86d2048fb6bca84210717dc0ca9c5396495dbad3a301c83c5f749273",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the claim status report tests and current dogfood status packet: proof debt is surfaced by evidence status, action buckets, validation reports, eval plans, and refresh summaries.",
           "evidenceRefs": [
@@ -63,7 +63,7 @@
           "claimFingerprint": "sha256:a541795d739f3f1195e1a52ac1f6d16a18146c7bd0a2fa85cd1881c6559d4cdb",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the public claim status workflow: current packets and reports keep unknown evidence counts and action buckets visible instead of treating review comments as proof.",
           "evidenceRefs": [

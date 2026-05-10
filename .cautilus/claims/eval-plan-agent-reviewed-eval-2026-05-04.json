@@ -7,7 +7,7 @@
     "skippedByReason": {
       "already-satisfied": 15,
       "not-cautilus-eval": 224,
-      "not-ready-to-verify": 10,
+      "not-ready-for-proof": 10,
       "not-reviewed": 74
     },
     "skippedClaimCount": 323,
@@ -25,7 +25,7 @@
       "agent-reviewed",
       "human-reviewed"
     ],
-    "requiresVerificationReadiness": "ready-to-verify"
+    "requiresVerificationReadiness": "ready-for-proof"
   },
   "skippedClaims": [
     {
@@ -99,7 +99,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
@@ -136,7 +136,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:bf72456c50e1505ba08fddf7e1c028aee5f233a950414edfdf5a3528d3749182",
@@ -175,7 +175,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
@@ -203,7 +203,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
@@ -233,7 +233,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
@@ -263,7 +263,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:b32b7d8a7c03981231258c118fb4c012c5d2c8d0603ff287c6820cb70f37cfb4",
@@ -272,7 +272,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c6ac22b52078515a66470c72cc5fb595fb1e06f9a762f720b6c9a0f058d2aa50",
@@ -309,7 +309,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:278d2b24e86fda13b675714aeb0c57ae685fd07d2c02ed6320572f06d476cdb7",
@@ -338,7 +338,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
@@ -367,7 +367,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:afaff338e3a44ec8eeb8b39d25319e27d26e908ac17a00c2f46c5af9979e5e1f",
@@ -397,7 +397,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
@@ -425,7 +425,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9bada1ab213276f56664107bebda9322010ab42d914bbc27bd0c1e1937c171b3",
@@ -462,13 +462,13 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
       "claimId": "claim-readme-md-179",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -510,7 +510,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
@@ -538,7 +538,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
@@ -566,7 +566,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
@@ -594,7 +594,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
@@ -622,7 +622,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
@@ -650,14 +650,14 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:677531528b5130a8cb2c449a6df5177abb7ee7d925262299b9123f87c1e7e60c",
       "claimId": "claim-docs-cli-reference-md-115",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:8c8cf01d447044090ad5fa5c1649066cfe006963f47f1d1a5a6ff09ab6df5aa4",
+          "contentHash": "sha256:b9db2cd61f9820ee664a0a9d84f7b7550b39c0f1526d18e6480611075ca77e87",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json",
@@ -678,7 +678,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a42ab6736d2ebe2beeb0ba10487b85347c0d81a5444e77f1d95d0f8fc7292e95",
@@ -706,7 +706,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
@@ -734,7 +734,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:10dc5fd8f817011f748f06bba796f3567abb6cfd596947ecff3ff1f6fdf00e95",
@@ -762,7 +762,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:5f23376739756b6461dbac74ecc14110789ff32f95ca2f3f13d85448d5e5bfdb",
@@ -799,7 +799,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:0fb7d2b87e1402f9d2997f30c4fe48f61e05ea9654c80981f5c80b85574f2e1d",
@@ -837,7 +837,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
@@ -866,7 +866,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3abe64a979d238c9760ba219c69eccf79d874dd45f4d7c8bf954e9ad207a2e33",
@@ -894,7 +894,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:1e30b87e2f299951a03c64f4f891326883f447714f997c5b496c8f5a130c8219",
@@ -922,7 +922,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
@@ -951,7 +951,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
@@ -980,7 +980,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:003038663b54c623858fe0d30f37af8e7554c1f8f79b8750306cdff272f893a5",
@@ -1008,7 +1008,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
@@ -1036,7 +1036,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:0d2d0ae18ce22c8340114c00a1c819ca126769c3214c11aeeb592815afda81e2",
@@ -1064,7 +1064,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:91bf63bed1f252b0849096cb1ec6ab5b1453c2f60329227a39b11d7c92cdd08b",
@@ -1099,7 +1099,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:99c684dbda2accf4db9b5a114cb2259804c721b6a3d4e59f3720af41a6964b31",
@@ -1134,7 +1134,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:199195dab049116db4bdfc12593536671b941b1294e557a9ced0ffda8553ee3c",
@@ -1143,7 +1143,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:e072f1310848f030f869ee7e1ccd5ee2da5b858d9bf1278729f22c0e47cc1b0b",
@@ -1153,7 +1153,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a4cb7622c26b143238198eb59a666e408efaec3b04eaa0f7681f3a2fac020c30",
@@ -1162,7 +1162,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:1470cdcbbe6feea4e845e3ac199d21c8e236a3363741f8ab2aa22919279ee094",
@@ -1171,7 +1171,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:06f26f14f677359b619ed7597b5c5a9f47190a0bd56e7dca43992c9c0f2c33b1",
@@ -1189,7 +1189,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f8a7b8b6077d204569c0fb22707b27e01368f625cf2f02abaa05ba5aa0b44a0d",
@@ -1199,7 +1199,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:30809430ddd6084516693e4e61aa78edcd386bf19c693df0ca749489c2df3106",
@@ -1218,7 +1218,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ec839463e3299779977eb2918b2a34ca128e4ce9bfd2443fcc88c2e9be3193bb",
@@ -1246,7 +1246,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:707379c574740cd365d23854282c59e67b7ae584bfdea36fd8c035e3e318be90",
@@ -1274,7 +1274,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:aae5fa6c0eeb4ee6edb98897c455b1e005bcbe79b4489e2545b5835fbe02cee5",
@@ -1303,7 +1303,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:11114aa5e9af2aea6b1f3d5cac375deb4a0df1029464551ae23e800346cec247",
@@ -1331,7 +1331,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:696d0ed10d3b67a18729fca9b33c15fcac98a62f3f9aa7e7a3602a7dffde132b",
@@ -1368,7 +1368,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:40340b4a5e0545c5ef338ab3868e84af46ec09b140f83496a30ba8434ff7e7f7",
@@ -1396,7 +1396,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8aac208866396b84c450be1369558a4a9accf00000d8711dc7e1a69c5467915d",
@@ -1425,7 +1425,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:23d83d6f72cc9755461377ad2ac8e6f2dafbf01128bd117a8efa793b71aeb95e",
@@ -1471,7 +1471,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:5c3061a13544c3262868dcf8badb89865d72baf4fa92d20e8ace297f22d0cda5",
@@ -1508,7 +1508,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:bd1727a2c94b086b9544d09769750e9a036855429b04810a8fa455b4a0238470",
@@ -1536,7 +1536,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:6b5f627200b50a7707f96c32d7a64e3244f7b3701dcfb153006454b68e1ad489",
@@ -1565,7 +1565,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c6d2e597888ecc5376d7b9be45b7628fe5a1387bf6afa041f72f7ac936335653",
@@ -1602,7 +1602,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:bbd0cc15974f28949118cb1f8125d27772e524aa4827d8ff92875cd374b45fd3",
@@ -1702,7 +1702,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:69aa5ae1ce7aca764e9f8198ae964b6ec8da23ff55f59f7f2df2a66910e697bc",
@@ -1730,7 +1730,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:6523f7c5fcd4585bdecf8007f4d0e451f467a90452d544e69ccbd7e292b45a47",
@@ -1758,13 +1758,13 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:815dd0a63f977133f71cba4abf88a635f27ae1e6db6eee7884fc85f9acab52d4",
       "claimId": "claim-docs-master-plan-md-88",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -1806,7 +1806,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:637979c650b8f0f05b67e9dd815c274545862bfcbc4db451db6ee3f61ee0153c",
@@ -1835,13 +1835,13 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f5b9a1cb237c687e9197418b496d41d005a5658e89ec8018042642e97883df2f",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-12",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -1874,7 +1874,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:db8d7c50e24066f8e6a1b7e2c3c536e3e09c4a6d2fe18e870b75b4bead176005",
@@ -1902,7 +1902,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:709c984aab47e9413a9ad976289e76d65a9a866e45307a5afe0ef15a8624f520",
@@ -1930,7 +1930,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9c02e459e8d9dde0c5546555cd6fd972af45d441ba5ed550d74a7fe99efa9744",
@@ -1958,7 +1958,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:e3899b096e94f29ab48e81c4c735843e228abbbd14b836134054a60e75f126f5",
@@ -1987,7 +1987,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:b98e04ab7130e78226594061169d44a5f521c7a43859a633e3892871f24544fc",
@@ -2025,7 +2025,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:0e02ed9d14628673771e5a239e29ab5700fdb3d69a30870125e9d81f77f86590",
@@ -2055,7 +2055,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a3e9d1b41016a93c606e82451a6da80d88f8a02bd0e06446782f080a7974a31c",
@@ -2083,7 +2083,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:630444eba3130d0faa2c059a3f9e553e6e44566a1c386797f762ef96d9cfe403",
@@ -2093,7 +2093,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:60b597b534327feb3e42ee75d7df606921d85af5e75ace3d4953430704dc817c",
@@ -2103,7 +2103,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3d2a20d102796beaf896d44e99f5b0cc2118f72769b881aa505b083b4f4a168c",
@@ -2113,7 +2113,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8832bba3db8e251f9ff546cb2c4d5944134a46bd9c709b1dd13736c8630cca8e",
@@ -2141,7 +2141,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:fde6d2140934f920952b573f759955309b9ef147087ffcf646eed715be8668ac",
@@ -2170,7 +2170,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:1cce79c5204f1bf8cd1feb6735fd63b25a41f3de67a2b5c3861a1825f869052c",
@@ -2199,7 +2199,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:45b653427563292b6418370c4faf5171a5c0bca05f568f9fc6df60bb5358c2f0",
@@ -2264,7 +2264,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:74518a9a34a9bf98a5c45e23baabd1bd3883b6f9254ee0a0df84b55d049bbbe4",
@@ -2274,7 +2274,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:496c841b68f5a55aed3144f3c38780213a70b876c7139adb652f187d0ebc768e",
@@ -2283,7 +2283,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:fb78eaa26fd5a64b6d6dbf8db46f3409a7251db89887479dc2d40f723db68799",
@@ -2311,7 +2311,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:7d3319b0e7a1f160a74b9d107b204e7be679e30bf1ed3c65c38bb71be9be3d14",
@@ -2339,7 +2339,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:1428eec288b0dab0aa084911be814bf9b87c1d68f00e38164dbbba01e4331af3",
@@ -2367,7 +2367,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:2e68dd94ed732fd3ce2eaaaefacd3d39194dfa1a64351e8faf94aca3fbf29c42",
@@ -2386,7 +2386,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:931bf4f719385b85ea297bcc3cdd8b56c29eb2d9ca43e3d57acbe2a3c85a9734",
@@ -2396,7 +2396,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a6845a133b65a004148aab93666ff7c1a55d3abd582acf53177bf94928629dfa",
@@ -2405,7 +2405,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:d35816a75e6865197594fed5e07f0ab9ca34213226bdea6bcac3620240cd6330",
@@ -2415,7 +2415,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:130735bbdf1969bf169ca06abc7358686ccfa2146461b0bdae476cafcbb6761d",
@@ -2424,7 +2424,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:d1e36092a7a2f49d069d387a9965ad234f5e185c2568f77a928b0ca28ed0ab32",
@@ -2434,7 +2434,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c8771569879ff2560b316b4ba714639e8cbf8c21156e0729a47ed22979780a64",
@@ -2444,7 +2444,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:217060ae33b576f27c9e488235a7b291e4fa3b3061da405ef153f4a209e51c43",
@@ -2453,7 +2453,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:b88434bd074af349646232a96a54afd3040eb9d98e7278fd8a039af74a0c910e",
@@ -2463,7 +2463,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:06f00ea486c952a6c1c1a739c6f893e13de474f5c166a0050ce25c829ec549c1",
@@ -2481,7 +2481,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:da572ed3286b0f1ef82c84812bf748fbf889422e9874b45fcd7cd5197eb0faa7",
@@ -2490,7 +2490,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:48f5766e7befdc0b2f0b0224cbc45ab1e20490741062c24f849126ad7ae5281a",
@@ -2499,7 +2499,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3647c769bd0d7e394a06b1fd8ed656afe9f215d21539caad402d082349200012",
@@ -2508,13 +2508,13 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:12366ae1b1010607eff115267924c54661536c62df6052d080c79608e4d3e1b3",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-262",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2528,7 +2528,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3f1f7361e7d218ea05d47457857af1633664e2b8e28cfd571dc5dc2d4bbe5e74",
@@ -2537,7 +2537,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3ae052d2e69bce5fd477651716c93abdc26b8279663de5c98b4c7f3922bbea72",
@@ -2555,7 +2555,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:cd6b3240fca5d92670e322831630b4d7532d9189f8a6f4af5654af0103b65116",
@@ -2564,7 +2564,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:1844fc5f59ff44a652520ea491bcacebf795a1dcb4a536a5f38d913f351d74d5",
@@ -2573,7 +2573,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:fbfa1b74f0f2eb0484273b680e070c94e65cfeb6add53a630bf2ca8f48be4d61",
@@ -2583,7 +2583,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9f1f52d5759d9b763f4e181c99e9e5d6da380819a69f14de78a12c4e396eb1eb",
@@ -2593,7 +2593,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9bf39257967e8679266bbb31122162ae4714240eecfa9117e32c6e84bd1247a5",
@@ -2603,7 +2603,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:4ebcb6776a40613cddaea25e17e6a777434b73564b371822ff93a88182a6b1e9",
@@ -2612,7 +2612,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:d63aff27f89631ee4ca274aa5a66ef8fc03be36cbee5d5a836f9de494185539d",
@@ -2622,7 +2622,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:07cfb886e14a82742a41cf1e255357dce81dade3f1bdbd0dbe812e448368e426",
@@ -2631,7 +2631,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8c74d01a69910bc7763524d8dd19949d087bc30b23b07492608fe975eaf3e434",
@@ -2641,7 +2641,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:6760bf2ea6521a5f35690ef7eed832fa059cf7870a1bf5149fd68c7174212fa4",
@@ -2651,7 +2651,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9524a84a0b9b0a11aca4d95485397b220bf0a53a254096663f7b1dcfcf69c4fd",
@@ -2670,7 +2670,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:d04d8eb163d803e2a529f013956a4a4cb5102b5eaf3da8c9dc592c131c78228f",
@@ -2680,7 +2680,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:36fbc258e71c31485963d2c661bc4b76eaf69a54332b8acae73686a83b9f5be6",
@@ -2690,7 +2690,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:af4bc0b6d9aeeaf585750b151f5b17c18bf8063b1c1331a19d4a3495e85c4bf4",
@@ -2700,7 +2700,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:857f37f990a98b3ae0dd80c3ce484046c16bc3e2304b0b79702d4a04081034b4",
@@ -2710,7 +2710,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:fa2646bb26d51c392c653ad13387938ba7984e9a497a2c0dcb71b2a69de2e925",
@@ -2720,7 +2720,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a9943885f769ffe5d334af18d6d6402ccc92d0e356e348f91cc3428c920f80ff",
@@ -2730,7 +2730,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:cf9b996efe054da8c1c4215651aad9eb3dadee70df68452d653c2761fd1b720b",
@@ -2740,7 +2740,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a193435e176f49736db5b80cce7b172a5c37c50552974e6415814b8109df52c5",
@@ -2750,7 +2750,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:cce31c9469a568f2944264556e5aa5b7b3f7d4d4c960d15d51184c3218bd4b0b",
@@ -2759,7 +2759,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ec44ab256f9a1f76a634ff4891760069518ff698390dc48dbf9b082c91fa88dd",
@@ -2768,7 +2768,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c46a1bfd5efa1342b0731e4254060a988a3f8dc71245a4fe13f96d0d1a6f3f87",
@@ -2778,7 +2778,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8eba8ebef3902c23c9cfe8bf9217ad9946d2146e24b0271fbea8af363c6b5da3",
@@ -2788,7 +2788,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:2f4267a19f2f19ebee6eb0625444b67649c805bb85fa44682e131b2ff2e7b77d",
@@ -2797,7 +2797,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:7de8c9a43753e5fa399bc925d09b5cd194092042ee884a565b09c916ec9d60f8",
@@ -2806,7 +2806,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8f03ccafa90afade7b2150dbc716d4d777d35e84a61b36f736d65f1acd3b3795",
@@ -2824,7 +2824,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:e69d60f7c92a20a2320993d00a9b6841701ba2806fa758b2c19f69acfd54279d",
@@ -2833,7 +2833,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c0c7d0f38d477c81974441fe12254d670a3a1fc6fb362622769dc305a89dcb8f",
@@ -2842,7 +2842,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:6fd233d3ffafd0f2392f61109f17dd94ba308f158d01a415610d25adf4e7c2cd",
@@ -2852,7 +2852,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f3946d4b74ff6c434c6b8b7a693c7f5bfc4bbaa3fd6f16d89f21e5243b5ccfd3",
@@ -2862,7 +2862,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:2f006cdc0b2c26694835121869f8eb2d65ff4327e293477d439a86c4f58f58a7",
@@ -2871,7 +2871,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f55435ef267dad864cbd1d818ce3a0dc1651c0feabb49fecc5b72c8bbb9a361b",
@@ -2889,7 +2889,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:97777d7b82dc5cce5cb38b19082240250c0408eb628dc1f44dec30706a5c5a47",
@@ -2898,13 +2898,13 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:201b64a8ff613496c0ab6030dc9f00e7c7e7a39a86c6d739cf68f67a43b3ed44",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-684",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -2926,7 +2926,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:d94d8642a7467878df80b58d110e874368ba1402147ff447dc961b4732eca82b",
@@ -2935,7 +2935,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
@@ -2990,7 +2990,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:e9e25a9d964bcf82acf21be2ed2a48acb9df0d426087c8e8714b03b75155ee76",
@@ -3018,7 +3018,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ae0122e9a32cdc900075bb4a92bef7f3ed1984464ccba320f1a5824446ee45d2",
@@ -3047,7 +3047,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:47034d0a3d9bd406d1f4ba72ec4165eaa08af324e5bd9c65bb7460a32e496aef",
@@ -3076,7 +3076,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:22dbd2b45769d7449806d56519b0926c85aa82e0359074dcab9be9f4143debe2",
@@ -3104,7 +3104,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:6059ec1e2738f23b3c184046049c654f0fa32b494859a6906da65b1a8a6fdfbc",
@@ -3132,7 +3132,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:49ccbb01966c7e93a6257de58f1a4cdec18a010f5b9d1b489fe6480a24216206",
@@ -3169,7 +3169,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:7b138d09302205c97e8b0336bf52789afe8266689277237506bcfc4dafc0c089",
@@ -3179,7 +3179,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a28fba1074645afd60275da2aa5b322795c05b91ab75f8330802d59f8e14d28e",
@@ -3207,7 +3207,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:73fb8c10d3361b316a7113e31f0b8d4652101dc2cf2fc639a9ad58d1237205d9",
@@ -3244,7 +3244,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:6a5975f5be8ff5f08f378525aa1963dc684e6d1d50395f4326e2788cdb47521f",
@@ -3274,7 +3274,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c40280e0f0251c4fe6717805add31109eb82cf41e62faba97ebfb5d41cec0fde",
@@ -3311,7 +3311,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
@@ -3339,7 +3339,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f837e4e0934106ad104956fd9d7e47ae5f9fa801b51a2ef9d30f008ea7e2158f",
@@ -3367,7 +3367,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:4c026c323498f2e3bdb8f8e9ae07bd3be82d64e0f8167b9899e5e0fc717f5db3",
@@ -3376,7 +3376,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:d1978a38a330c077db7ab68edb6d553016cd4637907ad610d7e822dc7bbcc438",
@@ -3386,7 +3386,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9ac5a58afee765f6920438778b4c83fabd0615aa52ffd68044c02f24255280ba",
@@ -3414,7 +3414,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:312e3f48e81a962743a5b4dc1bfcba5a160c7ce803b1dee2825abb359f686558",
@@ -3424,7 +3424,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:eb47c06c34125c3243fb30e32a975319a8c7574eee035757c05368ca269306a0",
@@ -3434,7 +3434,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f10d9bd6fab59f1aab0554881c0e39bd41cdaf669e8abe2056655c4f31009d92",
@@ -3469,7 +3469,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:b7b5f4b83ffbcf062b9fded05c027372d39e83dc72625e20b232142149b5a590",
@@ -3479,7 +3479,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:60ae1ebcaf288176c291f3920581f54867c13dbce63bace0631a0b3113ebcee0",
@@ -3498,7 +3498,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:38098b5d31afd6620eedf297d7cb511d98a5bc1d97777e1d1c6000ec4bddf099",
@@ -3508,7 +3508,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8fe51f062991ce657831e0fad6218ae8064d3f2b64317e2b7727b4e305a59a21",
@@ -3543,7 +3543,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:091b32f4a97da9bdda7a28b88cb71efe23fb840cf6780c3e44d8b710e36f77ab",
@@ -3571,7 +3571,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3f2fb74325cdd41345733f7859ac52b8675a9e21f540d219f2cc1080b787d1f9",
@@ -3581,7 +3581,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9a1c2d9bc6d27fcaeeda00e4907d101b6e4dacbf5286223d4687ad82e9e272a5",
@@ -3609,7 +3609,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:32c473c093c26b67803e0239c85988a23a2fdd8abc4a1d944735253a2fdbc138",
@@ -3637,7 +3637,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:d0eef80fecd2569ebed96e8f6dc6a8176036efc49d6177b3c0c2e0b51686833f",
@@ -3647,7 +3647,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c0889b10ccba68bae6cd77b826bf8302060b036d6b4b6c8057588de1a99a1e41",
@@ -3657,7 +3657,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c2fd8b6ddee5b4a4d0498113549a4e1b1aaaf6d9165acccc4b151967620531d3",
@@ -3667,7 +3667,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:66ef0b0e57a3ad1a8f22a8bcb5be04003c58813bf95d954e3d708586d92b25ec",
@@ -3676,7 +3676,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:be5f13dad4eaff72ac28185435f719e39f08da85ce9b73b6854097fa24c6d31a",
@@ -3704,7 +3704,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:03ad2ed43f747e59c1f4871cb7ca29f1bfbfaa803bbab2a061b950119e6c1da7",
@@ -3714,7 +3714,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:72e1d6502bc136657c2b8b900091df1d80d01daee253b5605b74071a482f0dd2",
@@ -3742,7 +3742,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:82896bc781c929afea1876b90b1af2208ca7a40401fd5f57319e18617578165b",
@@ -3770,7 +3770,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:6967e3f85b15d337045129fe73d149300c1be2b29e0b7cff814a281b507d0eab",
@@ -3780,7 +3780,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:05bfb58e38644674085a8f642e0e4d0cb82ae81f0a1f56aeaf52170e9c2bfa4e",
@@ -3790,7 +3790,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:d18cda09c7af4c6f9c0f928f93eea59ad01ee60408f6f904c159096850a1a37c",
@@ -3800,7 +3800,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9fa2368158266b9fff3f7c4e0ee3e56438a32265a1f7261f8c07508734a33d58",
@@ -3828,7 +3828,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a3b19b998b05905440cd8a18f6c445f0e540b0e193a936aa8cb917bfc60c7a3f",
@@ -3838,7 +3838,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:e5b4cc3fb78135f7afda966fe50a60d719a8501ca84993e9bfed43fbef455f3f",
@@ -3848,7 +3848,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:46696fb00546a2f028dbe9f036a7e1de33ba8a47dcdd7074b4c7280cdf2c6762",
@@ -3885,7 +3885,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:2f7e93422daa0414fa5d11958a69e48e55e76e1b0a7d6d6c6f498693e370a6c4",
@@ -3895,7 +3895,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8fa0494ebce3835b7746dfe891883393d5f4537e803da2d1fcdddd080a1304f5",
@@ -3914,7 +3914,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:7ce309943f6ad2f1d8a580b71809279d5e9370481906e32619ba94c591b4f25e",
@@ -3951,7 +3951,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:314666ba59ccf0d491a3cf1af85b27d812ee82600fad678e1a1b1d98812f6a56",
@@ -3970,7 +3970,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:87d0d0c027b0497551be24a3e0756bacb16eab6cacae48c6244a6e4f98eedec9",
@@ -3998,13 +3998,13 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:fde2dba8906af77ca6a87865b51b67bfe1cdbe6055e706960f1164061dc20d4a",
       "claimId": "claim-docs-contracts-scenario-history-md-3",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4014,7 +4014,7 @@
       "claimFingerprint": "sha256:011098fa8f0fb74f38fea92d734fd20899794fa138b4bd51484b07c3dd9a2f5b",
       "claimId": "claim-docs-contracts-scenario-history-md-175",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4037,7 +4037,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9aa67d9d960873c3babfef7757cc09598c422c34c2ee669d1b412995289b98ca",
@@ -4066,7 +4066,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:45c8b516a2ba7c7bfc964136382d65a37d72da0ae53e01df28ca875ed8fe813f",
@@ -4094,13 +4094,13 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:1d69d79140e7241bd365131d6dbac7a81739a91c58a9914a8a48980c64e44686",
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4151,7 +4151,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:543403c171f9e7b3ddfa9eba3d18f6552237e853c8b0d96792e24e5904eca4f7",
@@ -4161,7 +4161,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ab43cf6f8278e9091813e352f7290b635adabed605d9b91cd7ecf8a2c7dc4d63",
@@ -4171,7 +4171,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:5cebde607842447489b21603fed3a73eaf769f6caf9ed821ccb9e6761a33ee14",
@@ -4226,7 +4226,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:cd19dcd50f48defb627cd4240219b47848b9e552bf3ca377393f51a0b0ea85a0",
@@ -4263,7 +4263,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:266f0654c93bf588ccb621ac04d8a9b5766ce5f01c70a971634f158bc546388d",
@@ -4291,7 +4291,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c2d13b106d686bfc800b45aee200b2477c8695d5d6de2940585b98c6c087a5f8",
@@ -4323,7 +4323,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:474e935d12c1aced7aa55987868b07b6f0f0d374781cce43b789d4d2274e7408",
@@ -4332,7 +4332,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a828b5ee0bab8ff9914d305f6a6d1216a39214eceac4b5832882b8e25956814c",
@@ -4369,7 +4369,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a6571bb1abd2ccc3776be056d0c1942a503f8c7ed90196e049667c930eb86084",
@@ -4379,7 +4379,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8c351ccbb59b2dbc619374a6dc10030b4b369238f67124071d83468c0e48e5dd",
@@ -4388,7 +4388,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:5804a40ebbbdbeab88bc7f9cc104650d349270a7b425d95646f186050e070323",
@@ -4436,7 +4436,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:fc2a2f494f8d3e24e9ff2dfacaab24351ea8515847e8d50fff3d417c3f999b00",
@@ -4473,7 +4473,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:b5b3ec89571fddc50cd9b2250d6943417b8a34d8acf13809d02efae2c00a66f9",
@@ -4482,7 +4482,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:06f0a17ea40009f4c5c37662ecec3cc99aaf314119474f0956f302b668b0c0ba",
@@ -4492,7 +4492,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:05018c4fe296c0f5384de58b41f266797904d84a5021a3a4445413a2a3343068",
@@ -4520,7 +4520,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:0ce6bc7d7060f90d3be104ecf2788fc1f2b999ba4170c95ed28fa1577f6f84a9",
@@ -4548,7 +4548,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:be74efa96a832b58f44b5351149b65c3d43cb4d5c7a165a0802b1cb91f978272",
@@ -4558,7 +4558,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:93b8c3284cda9f97c3bba18688a2a6e8be0942582eb8e07799244fccce78a67a",
@@ -4587,7 +4587,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:30ef460039911189d3d6124c72b19d246c5bc002187e7565828234ef1d68793e",
@@ -4596,7 +4596,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9a02111a264073ae2dc0ec0673b9efd8ab90089058bdb8f11215d995b8f114ca",
@@ -4624,7 +4624,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:7d2a95136dbffa734309203e9587993060b7614fa9096e426dbf4a689109473f",
@@ -4652,7 +4652,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:83fa3e6e882c6c28e2b6cf839c4ff47f4f272cf38f986edf1089322ad45215bf",
@@ -4682,13 +4682,13 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ffcfb8eacb3317109fb5558b5c50a97dcc29eaa65d4a82e592f6bbeb0d545e9c",
       "claimId": "claim-docs-specs-user-optimization-spec-md-7",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
@@ -4701,7 +4701,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:87e17b5ea69471a932aa1d7960c64fa1fa6cbd8f8dd0f92c066f274d05615e61",
@@ -4716,7 +4716,7 @@
       "claimFingerprint": "sha256:a6b411a0ca847e34dbb6b4bb7fc94233691487617d4cf9dae4f5af7ae7ac9a7e",
       "claimId": "claim-docs-specs-user-ownership-spec-md-14",
       "evidenceStatus": "unknown",
-      "reason": "not-ready-to-verify",
+      "reason": "not-ready-for-proof",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -4750,7 +4750,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a541795d739f3f1195e1a52ac1f6d16a18146c7bd0a2fa85cd1881c6559d4cdb",
@@ -4780,7 +4780,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:4bf05eb3e53c6a353bfe38c7164dc1470ffcf48c26a7e9e214a868eb8d863781",
@@ -4789,7 +4789,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:29d176b2ee0cb2a3c8e8d93596af9f0498bd0ba1d5845be7c5c8867ae6b90b51",
@@ -4817,7 +4817,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:977717b940351fe1391783f91ae96d0524160fd94797bda216a8ab7e178660b2",
@@ -4827,7 +4827,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8267c797749dc3d46b681a63b6457b53c5c5238a263eda2c602f3240c758fce7",
@@ -4837,7 +4837,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:301ece068251c30068c87897290df68a55b44e9ca80d563b48a14aa568215435",
@@ -4847,7 +4847,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:cbd66b75bb6dd424a98dddb7ece09c891e0b3652de0d60378af3fc2a45c23784",
@@ -4875,7 +4875,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:963e37e737b81f9b5b39cd5ccf092692084566cc8f87c3153ea80161649abfb1",
@@ -4894,7 +4894,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:08d93168049eadacc2c094b7a88b6d03a8526e9d1369ea055058ed10603f962d",
@@ -4922,7 +4922,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:57cfb40c24ad1142b4c035e714fd8a92e9b4962c1f54cc3745fc4149a10aa4dd",
@@ -4950,7 +4950,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:81bdce0a1a2f1a8f7a9340da04360ac8a8d0635bb4040f387076e82a21968b8c",
@@ -4960,7 +4960,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:65c37a743b4d55157f8794db1a2987d7fa756266493234ed05ac0093c2955853",
@@ -4970,7 +4970,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:59d8c133631e0b643a8528326ed3986dcb879eb6b39d42ca435dd9de4df24895",
@@ -4998,7 +4998,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f7a245a3ea62f8af7464f6c411c40a9367f4156a06f104325af836664ef874ff",
@@ -5008,7 +5008,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:5b4aa826a977bd6abed0596d72f0a3bba779e7c5d880765a0bd1e59d1439d44d",
@@ -5038,7 +5038,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:88135551ab27a00915b4ef2441bc41ba5de58ea3f13b85eadbac2506cf431f9d",
@@ -5048,7 +5048,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:cf22224c908691a76efd6ffc47cac4d7dcd50a298b34a655fc05fd00d31af065",
@@ -5076,7 +5076,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:31d64ec42dc92ae1ed314aaec386b8f5ed1310ab6551f92a702941813f74472a",
@@ -5086,7 +5086,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:96edf0260ccb63c7009cf56b622eb4b843855b73c969515d0a6996ac3162b662",
@@ -5114,7 +5114,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:fcfea5f504bd3665d363e93c6a62e485a89bf34e26feaf25970b1acbeaa448a2",
@@ -5142,7 +5142,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:67576f222383159761b9ea092fb7c44d591d2f1036800696b57a27efa7132625",
@@ -5152,7 +5152,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a38f781ccbff0d0118f18d4cba2545434af8ae7f86a844df7311099fc4ef5953",
@@ -5162,7 +5162,7 @@
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:77a8da5194b241cb6d76b536a1d670c2edb7bce6d432ce4e2acffde0831356fd",
@@ -5190,7 +5190,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f857ecc444a26190ac7995cdc15710ecdaee2d3feaf2534b4d815ead614920e7",
@@ -5199,7 +5199,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:16f88f4564c52531f8082d5bf96244f70ef8c7f96002ca5f2affbfddacea06ea",
@@ -5208,7 +5208,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ed69f1c31fe54fb67614a2f39b18a38ebe425fa0672cdb81c3e41510d2ba7594",
@@ -5217,7 +5217,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f7e8c40841a9218e0671478c7e2ff6a948e90e42cfca3f8198a63485e854ab96",
@@ -5245,7 +5245,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:81c2f41f61c908940a6f17d086646de7edd84a7804d9db95d3c115425177c78d",
@@ -5282,7 +5282,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8f8b1ba060f857e8ce89ec62f94e7e3d1bb3bb8e370321ad7bdb03be3ae3292a",
@@ -5329,7 +5329,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
@@ -5339,7 +5339,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
@@ -5348,7 +5348,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
@@ -5357,7 +5357,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:81df3b1030acb0d476e7b567186862db55f2189eccf9f8b1338b371db7cfd3e6",
@@ -5366,7 +5366,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ad87c31fd958bda23449318cee9819910cee320e357b5d89828021f8fdc3007a",
@@ -5385,7 +5385,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
@@ -5394,7 +5394,7 @@
       "reason": "not-cautilus-eval",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     }
   ],
   "sourceClaimPacket": {

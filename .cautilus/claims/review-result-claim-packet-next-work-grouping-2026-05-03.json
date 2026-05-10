@@ -16,7 +16,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by current packet-first dogfood: after reading the evidenced claim packet, the skill summarized next work by heuristic review, deterministic proof, Cautilus eval planning, scenario design, alignment, human confirm/decompose, and split/defer buckets.",
           "evidenceRefs": [

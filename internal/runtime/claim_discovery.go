@@ -1264,7 +1264,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case reviewBudgetConfirmationClaim(lower):
 		return claimClassification{
 			recommendedProof:       "cautilus-eval",
-			verificationReadiness:  "ready-to-verify",
+			verificationReadiness:  "ready-for-proof",
 			recommendedEvalSurface: "dev/skill",
 			why:                    "The claim says LLM-backed review waits for a separate review-budget confirmation, which is observable skill or agent workflow behavior.",
 			next:                   "Create or use a dev/skill fixture that proves the skill separates deterministic scan confirmation from LLM review budget confirmation.",
@@ -1272,7 +1272,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case scanScopeDisplayBehaviorClaim(lower):
 		return claimClassification{
 			recommendedProof:       "cautilus-eval",
-			verificationReadiness:  "ready-to-verify",
+			verificationReadiness:  "ready-for-proof",
 			recommendedEvalSurface: "dev/skill",
 			why:                    "The claim says the workflow should show scan or deterministic bounds to a user before proceeding, which is observable skill behavior.",
 			next:                   "Create or use a dev/skill fixture that proves the skill presents the scan scope and deterministic bounds before running broad discovery.",
@@ -1287,14 +1287,14 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case deterministicReadinessOrPreflightContract(lower):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names readiness, preflight, or command-contract behavior that should be protected by deterministic checks.",
 			next:                  "Keep or add deterministic readiness, preflight, or command-contract proof for this claim.",
 		}, true
 	case providerFailoverBehaviorClaim(lower):
 		return claimClassification{
 			recommendedProof:       "cautilus-eval",
-			verificationReadiness:  "ready-to-verify",
+			verificationReadiness:  "ready-for-proof",
 			recommendedEvalSurface: "app/prompt",
 			why:                    "The claim describes provider failover behavior, which needs behavior evidence rather than being treated as a caveat.",
 			next:                   "Create a host-owned app/prompt or equivalent provider-behavior fixture and run it through cautilus eval test.",
@@ -1337,7 +1337,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case skillOrAgentBehaviorClaim(lower):
 		return claimClassification{
 			recommendedProof:       "cautilus-eval",
-			verificationReadiness:  "ready-to-verify",
+			verificationReadiness:  "ready-for-proof",
 			recommendedEvalSurface: "dev/skill",
 			why:                    "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence.",
 			next:                   "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
@@ -1345,14 +1345,14 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " executable test", " executable check", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
 			next:                  "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
 		}, true
 	case deterministicCLIGatingClaim(lower):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names command availability or gating behavior that should be protected by deterministic CLI tests.",
 			next:                  "Keep or add deterministic command-contract proof showing the command remains available under the named setup condition.",
 		}, true
@@ -1373,42 +1373,42 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case containsAny(lower, []string{" static html", " html ", " render-html", " renderer", " browser-readable", " exampleinputcli", " catalog entry", " command catalog"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests.",
 			next:                  "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
 		}, true
 	case containsAny(lower, []string{" durable packet", " durable packets", " machine-readable ", " eval-cases.json", " eval-observed.json", " eval-summary.json"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks.",
 			next:                  "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
 		}, true
 	case deterministicCommandPacketClaim(lower):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests.",
 			next:                  "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
 		}, true
 	case deterministicReviewPromptContractClaim(lower):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names review-prompt routing, rendering, or shared-path contract behavior that should be protected by deterministic command or golden-output checks.",
 			next:                  "Keep or add deterministic review-prompt render, path, or packet-output proof for this claim.",
 		}, true
 	case deterministicProvenanceOrViewClaim(lower):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names provenance, ranked-output, or view projection behavior that should be protected by deterministic packet or renderer checks.",
 			next:                  "Keep or add deterministic packet, provenance, ranked-output, or renderer proof for this claim.",
 		}, true
 	case containsAny(lower, []string{" in-editor agent ", " drive the same contracts conversationally", " conversationally "}) && containsAny(lower, []string{" agent", " skill", " codex", " claude"}):
 		return claimClassification{
 			recommendedProof:       "cautilus-eval",
-			verificationReadiness:  "ready-to-verify",
+			verificationReadiness:  "ready-for-proof",
 			recommendedEvalSurface: "dev/skill",
 			why:                    "The claim says an agent or skill can drive the workflow conversationally, which needs skill-behavior evidence rather than only install proof.",
 			next:                   "Create or use a dev/skill fixture that proves the installed skill can drive the named workflow.",
@@ -1423,7 +1423,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case containsAny(lower, []string{" install", " installs ", " installer", " standalone binary", " checked into each host repo", " cautilus agent", " plugin manifest", " plugin manifests", ".agents/skills", ".agents/cautilus-adapter"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks.",
 			next:                  "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
 		}, true
@@ -1449,7 +1449,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case claimDocumentsScenarioCommand(lower):
 		return claimClassification{
 			recommendedProof:      "deterministic",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario.",
 			next:                  "Keep or add deterministic scenario command, packet, or render proof for this claim.",
 		}, true
@@ -1471,7 +1471,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 		surface := recommendedEvalSurface(lower)
 		return claimClassification{
 			recommendedProof:       "cautilus-eval",
-			verificationReadiness:  "ready-to-verify",
+			verificationReadiness:  "ready-for-proof",
 			recommendedEvalSurface: surface,
 			why:                    "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
 			next:                   fmt.Sprintf("Create a host-owned %s fixture and run it through cautilus eval test.", surface),
@@ -1479,7 +1479,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 	case containsAny(lower, []string{" human", " auditable", " read ", " docs", " document", " visible", " inspect"}):
 		return claimClassification{
 			recommendedProof:      "human-auditable",
-			verificationReadiness: "ready-to-verify",
+			verificationReadiness: "ready-for-proof",
 			why:                   "The claim can be checked by reading current source, docs, or generated artifacts.",
 			next:                  "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
 		}, true
@@ -1864,7 +1864,7 @@ func claimGroupHints(source claimSource, classification claimClassification) []s
 	if source.audience != "" {
 		hints = append(hints, "audience:"+source.audience)
 	}
-	if classification.verificationReadiness != "" && classification.verificationReadiness != "ready-to-verify" {
+	if classification.verificationReadiness != "" && classification.verificationReadiness != "ready-for-proof" {
 		hints = append(hints, classification.verificationReadiness)
 	}
 	if classification.recommendedEvalSurface != "" {
@@ -2436,7 +2436,7 @@ func claimStatusPrimaryActionID(candidate map[string]any) string {
 		return "human-align-surfaces"
 	case "needs-scenario":
 		return "agent-design-scenario"
-	case "ready-to-verify":
+	case "ready-for-proof":
 		switch stringFromAny(candidate["recommendedProof"]) {
 		case "deterministic":
 			return "agent-add-deterministic-proof"
@@ -3147,8 +3147,8 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 			skipped = append(skipped, skippedClaimEvalPlan(candidate, "not-cautilus-eval"))
 			continue
 		}
-		if stringFromAny(candidate["verificationReadiness"]) != "ready-to-verify" {
-			skipped = append(skipped, skippedClaimEvalPlan(candidate, "not-ready-to-verify"))
+		if stringFromAny(candidate["verificationReadiness"]) != "ready-for-proof" {
+			skipped = append(skipped, skippedClaimEvalPlan(candidate, "not-ready-for-proof"))
 			continue
 		}
 		if !claimEvalPlanReviewAccepted(stringFromAny(candidate["reviewStatus"])) {
@@ -3192,7 +3192,7 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 		},
 		"selectionPolicy": map[string]any{
 			"requiresRecommendedProof":      "cautilus-eval",
-			"requiresVerificationReadiness": "ready-to-verify",
+			"requiresVerificationReadiness": "ready-for-proof",
 			"requiresReviewStatus":          []any{"agent-reviewed", "human-reviewed"},
 			"excludesEvidenceStatus":        []any{"satisfied"},
 			"maxClaims":                     maxClaims,
@@ -3234,7 +3234,7 @@ func claimEvalPlanZeroReason(plans []any, skipped []any) string {
 	alreadySatisfied := intFromAny(counts["already-satisfied"])
 	notEval := intFromAny(counts["not-cautilus-eval"])
 	notReviewed := intFromAny(counts["not-reviewed"])
-	notReady := intFromAny(counts["not-ready-to-verify"])
+	notReady := intFromAny(counts["not-ready-for-proof"])
 	switch {
 	case alreadySatisfied > 0 && notEval > 0:
 		return "all-reviewed-eval-targets-satisfied-and-remaining-reviewed-claims-not-eval-targets"
@@ -4274,7 +4274,7 @@ func validRecommendedProof(value string) bool {
 
 func validVerificationReadiness(value string) bool {
 	switch value {
-	case "ready-to-verify", "needs-scenario", "needs-alignment", "blocked":
+	case "ready-for-proof", "needs-scenario", "needs-alignment", "blocked":
 		return true
 	default:
 		return false

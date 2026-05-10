@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "whyThisLayer": "The claim is deterministic packet-boundary behavior: prepare-input either emits review input without mutating or satisfying claims, or it does not.",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by checked-in CLI and runtime tests: prepare-input emits `cautilus.claim_review_input.v1`, records a no-LLM/non-satisfaction packet notice, preserves unknown current labels, and leaves the source claims file unchanged.",

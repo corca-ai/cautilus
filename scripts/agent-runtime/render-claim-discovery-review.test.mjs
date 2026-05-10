@@ -26,7 +26,7 @@ test("render-claim-discovery-review creates a Markdown projection over claim pac
 					claimAudience: "user",
 					claimSemanticGroup: "Claim discovery and review",
 					recommendedProof: "deterministic",
-					verificationReadiness: "ready-to-verify",
+					verificationReadiness: "ready-for-proof",
 					evidenceStatus: "unknown",
 					nextAction: "Attach deterministic proof.",
 					sourceRefs: [{ path: "README.md", line: 12, excerpt: "Cautilus writes claim packets before readable worksheets." }],

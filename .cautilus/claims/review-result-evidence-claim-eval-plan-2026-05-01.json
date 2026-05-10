@@ -15,7 +15,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "app/prompt",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked claim-eval-plan evidence bundle: after review, `claim plan-evals` emitted `cautilus.claim_eval_plan.v1`, included an app/prompt plan for this claim, and preserved the non-writer boundary.",
           "evidenceRefs": [

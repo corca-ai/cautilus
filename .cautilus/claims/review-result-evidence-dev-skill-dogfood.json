@@ -15,7 +15,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in dev/skill dogfood evidence bundle: first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval Codex eval summaries are accept-now and their audit packets are passed.",
           "evidenceRefs": [

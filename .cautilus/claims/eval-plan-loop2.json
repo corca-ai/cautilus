@@ -87,7 +87,7 @@
       "agent-reviewed",
       "human-reviewed"
     ],
-    "requiresVerificationReadiness": "ready-to-verify"
+    "requiresVerificationReadiness": "ready-for-proof"
   },
   "skippedClaims": [
     {
@@ -164,7 +164,7 @@
     },
     {
       "claimId": "claim-readme-md-171",
-      "reason": "not-ready-to-verify"
+      "reason": "not-ready-for-proof"
     },
     {
       "claimId": "claim-readme-md-192",
@@ -456,7 +456,7 @@
     },
     {
       "claimId": "claim-docs-master-plan-md-86",
-      "reason": "not-ready-to-verify"
+      "reason": "not-ready-for-proof"
     },
     {
       "claimId": "claim-docs-master-plan-md-180",
@@ -768,7 +768,7 @@
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-591",
-      "reason": "not-ready-to-verify"
+      "reason": "not-ready-for-proof"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-592",
@@ -1016,11 +1016,11 @@
     },
     {
       "claimId": "claim-docs-contracts-scenario-history-md-3",
-      "reason": "not-ready-to-verify"
+      "reason": "not-ready-for-proof"
     },
     {
       "claimId": "claim-docs-contracts-scenario-history-md-175",
-      "reason": "not-ready-to-verify"
+      "reason": "not-ready-for-proof"
     },
     {
       "claimId": "claim-docs-contracts-scenario-history-md-238",
@@ -1036,7 +1036,7 @@
     },
     {
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
-      "reason": "not-ready-to-verify"
+      "reason": "not-ready-for-proof"
     },
     {
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-99",

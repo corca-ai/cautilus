@@ -16,7 +16,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by current Codex-backed dev/skill dogfood: the bundled skill read agent status, the canonical user-facing index, the canonical maintainer-facing index, and the evidenced claim packet before answering the HITL boundary. The audit passed with zero findings and forbids skipping the maintainer index or launching claim review prepare-input during this boundary.",
           "evidenceRefs": [

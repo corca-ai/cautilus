@@ -16,7 +16,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by CLI and runner-readiness tests showing adapter-declared runner command templates are resolved and executed instead of hardcoded benchmark runners.",
           "evidenceRefs": [
@@ -46,7 +46,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by fixture-runtime eval-test smoke coverage that records observed proofClass=fixture-smoke while preserving the adapter-declared proof class as metadata.",
           "evidenceRefs": [
@@ -76,7 +76,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by discovery-level test coverage for omitted adapter semantic groups falling back to `General product behavior`.",
           "evidenceRefs": [
@@ -106,7 +106,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the same discovery-level fallback test proving omitted adapter semantic groups yield `General product behavior`.",
           "evidenceRefs": [
@@ -136,7 +136,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by refresh-plan tests checking `refreshSummary` status, counts, changed sources, and next actions.",
           "evidenceRefs": [
@@ -166,7 +166,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by claim status summary tests requiring every primary action bucket to include `byReviewStatus` and `byEvidenceStatus` breakdowns.",
           "evidenceRefs": [
@@ -196,7 +196,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by CLI eval-test coverage that selects and executes adapter-declared typed runner command templates for the selected surface.",
           "evidenceRefs": [
@@ -226,7 +226,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by agent-status and runner-readiness tests covering read-only orientation with binary health, skill readiness, adapter state, claim state, and runner readiness fields.",
           "evidenceRefs": [

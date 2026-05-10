@@ -38,7 +38,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `agent status --json` exits 0 and emits the orientation packet surface.",
           "evidenceRefs": [
@@ -60,7 +60,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `doctor --adapter-name self-dogfood-eval` exits 0 and the checked CLI smoke surface covers doctor behavior.",
           "evidenceRefs": [
@@ -82,7 +82,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: eval live discover/run help surfaces exit 0 and the checked CLI smoke file covers live eval instance behavior.",
           "evidenceRefs": [
@@ -104,7 +104,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `eval live run-simulator-persona --help` exits 0 and exposes the persona simulator runtime surface.",
           "evidenceRefs": [
@@ -126,7 +126,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `eval test --adapter-name self-dogfood-eval` exits 0 and writes an eval-summary packet.",
           "evidenceRefs": [
@@ -148,7 +148,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `./bin/cautilus --version` exits 0 before adapter or skill wiring proof is considered.",
           "evidenceRefs": [
@@ -170,7 +170,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: named-adapter doctor exits 0 and covers the documented validation path.",
           "evidenceRefs": [
@@ -243,7 +243,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `scenario normalize skill --example-input` exits 0 and exposes the checked-in skill normalization helper path.",
           "evidenceRefs": [
@@ -270,7 +270,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "Reviewed as concrete bundled-skill sequencing behavior. It needs dev/skill scenario proof that the agent reruns `agent status` before mutating claim state or launching review/eval branches from a previous menu.",
           "evidenceRefs": [],
@@ -282,7 +282,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "Reviewed as concrete bundled-skill sequencing behavior for the refresh-plan exception. It needs dev/skill proof over the branch boundary before satisfaction.",
           "evidenceRefs": [],
@@ -299,7 +299,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: eval live discover/run help surfaces exit 0 through the binary rather than direct Node paths.",
           "evidenceRefs": [
@@ -326,7 +326,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: the checked-in source launcher exits 0 for `--version` in this checkout.",
           "evidenceRefs": [
@@ -348,7 +348,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
           "recommendedEvalSurface": null,
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `lint:skill-disclosure` exits 0 and the command registry plus skill text hashes are recorded.",
           "evidenceRefs": [

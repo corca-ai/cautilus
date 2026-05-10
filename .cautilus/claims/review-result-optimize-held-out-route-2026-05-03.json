@@ -16,7 +16,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/repo",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by current optimize packet-flow and CLI smoke tests: optimize packets are materialized from explicit evidence, held-out results are carried into search input, optimize search invokes eval-test for held-out and full-gate candidate checks, and the selected mutation candidate records reopenable evaluation artifacts and a passing full-gate checkpoint.",
           "evidenceRefs": [
@@ -40,7 +40,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/repo",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified for the current bounded prompt optimize route: with explicit packet evidence and held-out scenario results, optimize search can select an eval-backed mutation candidate over the seed while preserving held-out/full-gate evaluation artifacts, proposal references, and revision artifacts.",
           "evidenceRefs": [

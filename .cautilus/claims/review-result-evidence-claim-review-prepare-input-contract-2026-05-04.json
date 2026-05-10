@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:5710c92253395bbda0e82175a3f1696b96f8f17275875d7b96f48b951e4ebd09",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "whyThisLayer": "The claim is deterministic packet-boundary behavior: prepare-input either emits the bounded review input and preserves no-LLM/no-merge semantics, or it does not.",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by checked-in CLI and runtime tests: prepare-input emits `cautilus.claim_review_input.v1`, records bounded clusters and skipped claims, preserves current labels, leaves the source claim packet unchanged, and does not call an LLM or merge review results.",

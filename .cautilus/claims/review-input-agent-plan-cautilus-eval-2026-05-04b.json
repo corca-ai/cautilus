@@ -14,7 +14,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -46,7 +46,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -78,7 +78,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -108,7 +108,7 @@
       "reason": "Evaluator-dependent claims need review before scenario drafting.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -124,7 +124,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -156,7 +156,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -188,7 +188,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -220,7 +220,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -250,7 +250,7 @@
       "reason": "Evaluator-dependent claims need review before scenario drafting.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -266,7 +266,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -298,7 +298,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -330,7 +330,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -379,7 +379,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -410,7 +410,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "truncatedClaimCount": 13,
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -426,7 +426,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -456,7 +456,7 @@
       "reason": "Evaluator-dependent claims need review before scenario drafting.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -472,7 +472,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -504,7 +504,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -534,7 +534,7 @@
       "reason": "Evaluator-dependent claims need review before scenario drafting.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -550,7 +550,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -580,7 +580,7 @@
       "reason": "Evaluator-dependent claims need review before scenario drafting.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -596,7 +596,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -628,7 +628,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -677,7 +677,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -709,7 +709,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -739,7 +739,7 @@
       "reason": "Evaluator-dependent claims need review before scenario drafting.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -755,7 +755,7 @@
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -787,7 +787,7 @@
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -819,7 +819,7 @@
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -851,7 +851,7 @@
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -881,7 +881,7 @@
       "reason": "Evaluator-dependent claims need review before scenario drafting.",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     }
   ],
   "evidencePreflight": {
@@ -981,7 +981,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -1003,7 +1003,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -1025,7 +1025,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1036,7 +1036,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1047,7 +1047,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1058,7 +1058,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -1069,7 +1069,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -1091,7 +1091,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1102,7 +1102,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1113,7 +1113,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1124,7 +1124,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1135,7 +1135,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -1157,7 +1157,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -1190,7 +1190,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1201,7 +1201,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1212,7 +1212,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1223,7 +1223,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1234,7 +1234,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1245,7 +1245,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1256,7 +1256,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1267,7 +1267,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1278,7 +1278,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1289,7 +1289,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1311,7 +1311,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1333,7 +1333,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1344,7 +1344,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1355,7 +1355,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1366,7 +1366,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1377,7 +1377,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1388,7 +1388,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1399,7 +1399,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1410,7 +1410,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1421,7 +1421,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1432,7 +1432,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1443,7 +1443,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1454,7 +1454,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1465,7 +1465,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1476,7 +1476,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1498,7 +1498,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -1542,7 +1542,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1553,7 +1553,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1564,7 +1564,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1586,7 +1586,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1597,7 +1597,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1608,7 +1608,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1641,7 +1641,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1663,7 +1663,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1674,7 +1674,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1685,7 +1685,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1707,7 +1707,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -1806,7 +1806,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1817,7 +1817,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1828,7 +1828,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -1861,7 +1861,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1872,7 +1872,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -1894,7 +1894,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1905,7 +1905,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1916,7 +1916,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1927,7 +1927,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1938,7 +1938,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -1960,7 +1960,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1971,7 +1971,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1982,7 +1982,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -1993,7 +1993,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2004,7 +2004,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2015,7 +2015,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -2070,7 +2070,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2081,7 +2081,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2092,7 +2092,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2103,7 +2103,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2114,7 +2114,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2136,7 +2136,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2213,7 +2213,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2235,7 +2235,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2246,7 +2246,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2268,7 +2268,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2279,7 +2279,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2301,7 +2301,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2367,7 +2367,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2433,7 +2433,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2444,7 +2444,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2488,7 +2488,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2499,7 +2499,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2510,7 +2510,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2521,7 +2521,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2532,7 +2532,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2543,7 +2543,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2565,7 +2565,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2576,7 +2576,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2598,7 +2598,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2609,7 +2609,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2631,7 +2631,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2642,7 +2642,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2653,7 +2653,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2664,7 +2664,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2675,7 +2675,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2686,7 +2686,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -2708,7 +2708,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2719,7 +2719,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2730,7 +2730,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2741,7 +2741,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -2752,7 +2752,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2763,7 +2763,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2774,7 +2774,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2785,7 +2785,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2796,7 +2796,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2818,7 +2818,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2840,7 +2840,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -2862,7 +2862,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -2906,7 +2906,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -2917,7 +2917,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -2961,7 +2961,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -3005,7 +3005,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -3049,7 +3049,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3060,7 +3060,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -3071,7 +3071,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -3093,7 +3093,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -3104,7 +3104,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -3137,7 +3137,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -3159,7 +3159,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -3170,7 +3170,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3181,7 +3181,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3192,7 +3192,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3203,7 +3203,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -3214,7 +3214,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3225,7 +3225,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3236,7 +3236,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3247,7 +3247,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "agent-design-scenario",
@@ -3269,7 +3269,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -3302,7 +3302,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3313,7 +3313,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3324,7 +3324,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3335,7 +3335,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3346,7 +3346,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -3368,7 +3368,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3379,7 +3379,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3390,7 +3390,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3401,7 +3401,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3412,7 +3412,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3423,7 +3423,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3434,7 +3434,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3445,7 +3445,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -3456,7 +3456,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3467,7 +3467,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -3478,7 +3478,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "already-satisfied",
@@ -3489,7 +3489,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",
@@ -3511,7 +3511,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "split-or-defer",
@@ -3544,7 +3544,7 @@
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -3555,7 +3555,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -3566,7 +3566,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-confirm-or-decompose",
@@ -3577,7 +3577,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "actionBucket": "human-align-surfaces",

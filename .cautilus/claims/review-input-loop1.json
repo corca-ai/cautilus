@@ -14,7 +14,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -45,7 +45,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -74,7 +74,7 @@
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -90,7 +90,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -119,7 +119,7 @@
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -238,7 +238,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -269,7 +269,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -298,7 +298,7 @@
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -356,7 +356,7 @@
             "proofLayer": "human-auditable",
             "recommendedProof": "human-auditable",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -383,7 +383,7 @@
       "priority": 10,
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -399,7 +399,7 @@
             "recommendedEvalSurface": "app/chat",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -428,7 +428,7 @@
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -444,7 +444,7 @@
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -475,7 +475,7 @@
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -506,7 +506,7 @@
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -537,7 +537,7 @@
             "recommendedEvalSurface": "app/prompt",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -566,7 +566,7 @@
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     }
   ],
   "inputPath": "/home/hwidong/codes/cautilus/.cautilus/claims/latest.json",

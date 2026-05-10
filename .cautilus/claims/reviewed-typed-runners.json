@@ -36,7 +36,7 @@
         }
       ],
       "summary": "Deterministic behavior belongs in code, scripts, adapters, tests, and specs.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -66,7 +66,7 @@
         }
       ],
       "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -123,7 +123,7 @@
         }
       ],
       "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -180,7 +180,7 @@
         }
       ],
       "summary": "The skill should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -210,7 +210,7 @@
         }
       ],
       "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -238,7 +238,7 @@
         }
       ],
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -295,7 +295,7 @@
         }
       ],
       "summary": "Ships as a standalone binary plus a bundled skill a host repo can install without copying another scaffold first.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -323,7 +323,7 @@
         }
       ],
       "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -351,7 +351,7 @@
         }
       ],
       "summary": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -379,7 +379,7 @@
         }
       ],
       "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -407,7 +407,7 @@
         }
       ],
       "summary": "Next step: a human decides whether to promote the scenario into a protected evaluation path, while an agent can reopen the saved result, compare variants, or feed it into the next bounded step.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
     },
     {
@@ -437,7 +437,7 @@
         }
       ],
       "summary": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -465,7 +465,7 @@
         }
       ],
       "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
     },
     {
@@ -495,7 +495,7 @@
         }
       ],
       "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -525,7 +525,7 @@
         }
       ],
       "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`; Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixtures derive their results from audit packets.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -553,7 +553,7 @@
         }
       ],
       "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -610,7 +610,7 @@
         }
       ],
       "summary": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -700,7 +700,7 @@
         }
       ],
       "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a bundled skill at `.agents/skills/cautilus/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim says an agent or skill can drive the workflow conversationally, which needs skill-behavior evidence rather than only install proof."
     },
     {
@@ -728,7 +728,7 @@
         }
       ],
       "summary": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -756,7 +756,7 @@
         }
       ],
       "summary": "static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop See `docs/specs/html-report.spec.md` for the rendered contract.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -785,7 +785,7 @@
         }
       ],
       "summary": "Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -814,7 +814,7 @@
         }
       ],
       "summary": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -845,7 +845,7 @@
         }
       ],
       "summary": "If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -874,7 +874,7 @@
         }
       ],
       "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -903,7 +903,7 @@
         }
       ],
       "summary": "Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -934,7 +934,7 @@
         }
       ],
       "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -963,7 +963,7 @@
         }
       ],
       "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1022,7 +1022,7 @@
         }
       ],
       "summary": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1081,7 +1081,7 @@
         }
       ],
       "summary": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -1112,7 +1112,7 @@
         }
       ],
       "summary": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1141,7 +1141,7 @@
         }
       ],
       "summary": "`cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1172,7 +1172,7 @@
         }
       ],
       "summary": "`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1201,7 +1201,7 @@
         }
       ],
       "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -1232,7 +1232,7 @@
         }
       ],
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1261,7 +1261,7 @@
         }
       ],
       "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -1290,7 +1290,7 @@
         }
       ],
       "summary": "Shipped runtime entrypoints such as `cautilus eval live discover` and `cautilus eval live run` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1321,7 +1321,7 @@
         }
       ],
       "summary": "`Cautilus` stays portable by loading repo-specific evaluation commands from an adapter instead of hardcoding benchmark runners into the workflow.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1352,7 +1352,7 @@
         }
       ],
       "summary": "When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1381,7 +1381,7 @@
         }
       ],
       "summary": "The binary uses these hints to label review queues, while the bundled skill or a human reviewer may still correct semantic edge cases.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -1412,7 +1412,7 @@
         }
       ],
       "summary": "If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1441,7 +1441,7 @@
         }
       ],
       "summary": "`kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1470,7 +1470,7 @@
         }
       ],
       "summary": "This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1499,7 +1499,7 @@
         }
       ],
       "summary": "A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -1530,7 +1530,7 @@
         }
       ],
       "summary": "point review prompts at the same path so human and machine review can refer to the same compare output",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1591,7 +1591,7 @@
         }
       ],
       "summary": "Each review prompt should point at human-visible failure:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1620,7 +1620,7 @@
         }
       ],
       "summary": "Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1681,7 +1681,7 @@
         }
       ],
       "summary": "`Cautilus` should keep review prompts, schemas, compare questions, and report artifacts on one durable boundary before executor variants run.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1710,7 +1710,7 @@
         }
       ],
       "summary": "Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -1739,7 +1739,7 @@
         }
       ],
       "summary": "`cautilus doctor --next-action` returning the smallest honest next step while wiring remains incomplete",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1768,7 +1768,7 @@
         }
       ],
       "summary": "`cautilus --version` must work on `PATH` before any consumer adapter or skill wiring is treated as valid.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1799,7 +1799,7 @@
         }
       ],
       "summary": "`Cautilus` only owns the generic workflow contract, CLI, and normalization helpers.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1830,7 +1830,7 @@
         }
       ],
       "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `eval test -\u003e eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1859,7 +1859,7 @@
         }
       ],
       "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1888,7 +1888,7 @@
         }
       ],
       "summary": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -1919,7 +1919,7 @@
         }
       ],
       "summary": "It should answer \"what is the default `Cautilus` evaluation for this repo?\" without forcing the operator to mentally sort multiple unrelated workflows.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1950,7 +1950,7 @@
         }
       ],
       "summary": "The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -1979,7 +1979,7 @@
         }
       ],
       "summary": "The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -2038,7 +2038,7 @@
         }
       ],
       "summary": "The helper emits machine-readable baseline and candidate paths you can pass back into `eval test` or `review variants`.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -2069,7 +2069,7 @@
         }
       ],
       "summary": "When repeated workflow failures should become durable scenario coverage, prefer the checked-in `skill` normalization helper over repo-local one-off shapers:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -2100,7 +2100,7 @@
         }
       ],
       "summary": "`eval evaluate` remains the first-class packet boundary for skill trigger and execution quality.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -2159,7 +2159,7 @@
         }
       ],
       "summary": "Use a checked-in JSON schema file and a fixed output file path so the loop can detect `blocker`, `concern`, and `pass` without guessing.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -2188,7 +2188,7 @@
         }
       ],
       "summary": "Review variants should inspect the candidate, not mutate the repo.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -2367,7 +2367,7 @@
         }
       ],
       "summary": "Product-facing docs should describe repo-agnostic surfaces such as `chatbot`, `skill`, `workflow`, and `agent runtime` first, then point here for checked-in evidence shapes and proof expectations.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -2396,7 +2396,7 @@
         }
       ],
       "summary": "The repo keeps cheap deterministic proof in the root adapter and explicit LLM-backed self-dogfood paths in named adapters.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -2427,7 +2427,7 @@
         }
       ],
       "summary": "Stronger binary or bundled-skill claims should come back as explicit eval presets, fixture series, or named adapters instead of being smuggled into the canonical latest eval summary.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -2606,7 +2606,7 @@
         }
       ],
       "summary": "`npm run verify` runs the same standing lint phases, then adds `go test -race` before the standing Node test suite.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -2635,7 +2635,7 @@
         }
       ],
       "summary": "`npm run lint:specs` validates the spec index, checks relative spec links, and runs the full public spec suite with `specdown run -quiet`.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -2666,7 +2666,7 @@
         }
       ],
       "summary": "`internal/app/app_test.go` owns single-command native command behavior and JSON payload shape.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -2695,7 +2695,7 @@
         }
       ],
       "summary": "`internal/app/cli_smoke_test.go` owns multi-command integration flows that mutate repos, install surfaces, or write artifact trees.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -2726,7 +2726,7 @@
         }
       ],
       "summary": "When adding a new check, start from the narrowest layer that can prove the behavior.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -2755,7 +2755,7 @@
         }
       ],
       "summary": "Do not push deterministic helper logic into an end-to-end smoke when a fixture-backed unit test can prove it more precisely.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -2786,7 +2786,7 @@
         }
       ],
       "summary": "`internal/runtime/` owns shipped behavior semantics for native product surfaces.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -2815,7 +2815,7 @@
         }
       ],
       "summary": "If a change alters shipped `optimize search` behavior, the same slice must update the Go runtime and its Go acceptance tests.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -2844,7 +2844,7 @@
         }
       ],
       "summary": "리드미는 *\"static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop\"*을 약속한다.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -2905,7 +2905,7 @@
         }
       ],
       "summary": "The product surface should keep following the same discipline as `charness`: expose the user's intent at the public command boundary, keep tool-specific mechanics underneath it, and preserve durable artifacts that another agent can resume.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -2934,7 +2934,7 @@
         }
       ],
       "summary": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `eval test`",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -2963,7 +2963,7 @@
         }
       ],
       "summary": "The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -2992,7 +2992,7 @@
         }
       ],
       "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3081,7 +3081,7 @@
         }
       ],
       "summary": "Provider can be direct API (anthropic/openai/...) **or** a coding-agent CLI in messaging mode (`claude -p` with `--system-prompt` override, `codex exec` equivalent), so a user who only has CLI tooling installed can still run app fixtures.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -3112,7 +3112,7 @@
         }
       ],
       "summary": "A one-turn fixture is the degenerate case of a multi-turn episode; `app / prompt` stays intentionally one-turn because prompt I/O is the operator-facing concept.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3143,7 +3143,7 @@
         }
       ],
       "summary": "Dev-surface turns may also carry runtime-adapter hints such as `injectSkill: true` when the runner must materialize a portable skill body for a coding-agent CLI that does not perform host skill expansion itself.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3174,7 +3174,7 @@
         }
       ],
       "summary": "Those hints are adapter instructions, not product concepts; the portable fixture contract remains the ordered user inputs and the expected behavior evidence.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3203,7 +3203,7 @@
         }
       ],
       "summary": "A new value on either axis must pass the taxonomy-axis checkpoint and update the normalizer tests.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3234,7 +3234,7 @@
         }
       ],
       "summary": "Shipped 2026-05-01 for file-backed `cautilus eval test` fixtures: object fields deep-merge, arrays replace, scalar child fields override, and `extends` paths must be relative to the child fixture.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3265,7 +3265,7 @@
         }
       ],
       "summary": "Shipped 2026-05-01 with strict explicit projection: every step must declare `outputProjection`, a mapping from output keys to dotted paths in that step's eval summary.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3294,7 +3294,7 @@
         }
       ],
       "summary": "`dev` surface MUST work with the operator's installed Claude Code or Codex without re-pinning model versions.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -3323,7 +3323,7 @@
         }
       ],
       "summary": "`app` surface MUST work without an API key when the user has Claude or Codex CLI installed.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -3352,7 +3352,7 @@
         }
       ],
       "summary": "Result packet schema MUST stay stable across surfaces so downstream consumers (`optimize prepare-input`, `report.json`) treat all four presets uniformly.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3381,7 +3381,7 @@
         }
       ],
       "summary": "A user with Claude Code installed and no other config can run `cautilus eval test --fixture \u003cdev-repo.fixture.json\u003e` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3410,7 +3410,7 @@
         }
       ],
       "summary": "A user with Claude CLI but no API key can run `cautilus eval test --fixture \u003cchat.fixture.json\u003e` and get a usable result.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3439,7 +3439,7 @@
         }
       ],
       "summary": "A `steps: [...]` fixture executes each step in order, and step N can read step (N-1)'s output.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -3468,7 +3468,7 @@
         }
       ],
       "summary": "**Spec lint**: `npm run lint:specs` accepts this spec; `npm run lint:scenario-normalizers` keeps the surviving proposal-input normalizers complete.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3497,7 +3497,7 @@
         }
       ],
       "summary": "Schema validates `surface=dev, preset=repo` only; C2/C3/C4 fields stub-error until their slices land.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3558,7 +3558,7 @@
         }
       ],
       "summary": "File-backed `cautilus eval test` fixtures can extend a relative base fixture; object fields deep-merge, arrays replace, and scalar child fields override.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3587,7 +3587,7 @@
         }
       ],
       "summary": "This slice completes the vocabulary cut: `cautilus scenarios --json` emits `cautilus.scenario_normalization_catalog.v1` with `normalizationFamilies`, `first_bounded_run` uses the same field, and the lint command is now `lint:scenario-normalizers`.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3616,7 +3616,7 @@
         }
       ],
       "summary": "`npm run lint:specs` validates the spec index, checks relative links, and runs the full suite.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3645,7 +3645,7 @@
         }
       ],
       "summary": "The first proof deliberately shows a small end-to-end product move: `Cautilus` turns raw proposal inputs into a reusable scenario packet and then into a page a human can scan in a browser.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -3674,7 +3674,7 @@
         }
       ],
       "summary": "[Standalone Surface](standalone-surface.spec.md) Proves that the standalone binary and bundled skill can be installed into a fresh repo and discovered through stable operator-facing commands.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -3703,7 +3703,7 @@
         }
       ],
       "summary": "[HTML Report Surface](html-report.spec.md) Proves the currently shipped static HTML outputs that let a human review packet-based artifacts in a browser.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -3764,7 +3764,7 @@
         }
       ],
       "summary": "The manifest is only a recognition marker for the pruner; workflow metadata belongs in per-command artifacts, not in the manifest.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3795,7 +3795,7 @@
         }
       ],
       "summary": "Ambiguous across parallel workflows, silently grabs yesterday's workflow across session gaps, requires a magic freshness threshold.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3824,7 +3824,7 @@
         }
       ],
       "summary": "Should `run.json` carry workflow metadata (mode, baseline ref, adapter name) so the pruner and HTML views can present richer summaries?",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -3855,7 +3855,7 @@
         }
       ],
       "summary": "Is `review variants` a workflow-creating command that mints runDirs (and therefore uses `resolveRunDir`), or is it a consume-only command that only reads an existing active run (and therefore uses `readActiveRunDir`)?",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3886,7 +3886,7 @@
         }
       ],
       "summary": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` \u003e `CAUTILUS_RUN_DIR` \u003e auto-materialize under `./.cautilus/runs/`) and emits `Active run: \u003cabs path\u003e` once only when it auto-materializes.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -3915,7 +3915,7 @@
         }
       ],
       "summary": "`cautilus claim discover` currently emits a deterministic, source-ref-backed proof-plan skeleton.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3944,7 +3944,7 @@
         }
       ],
       "summary": "Existing claim state refresh is selected by the skill when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -3973,7 +3973,7 @@
         }
       ],
       "summary": "If prior claim state exists, step 5 becomes a diff-aware refresh selected by the skill: the skill uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -4002,7 +4002,7 @@
         }
       ],
       "summary": "The binary should own deterministic behavior that can be rerun without model access:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -4033,7 +4033,7 @@
         }
       ],
       "summary": "The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4062,7 +4062,7 @@
         }
       ],
       "summary": "The bundled skill should own orchestration that depends on an agent:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -4093,7 +4093,7 @@
         }
       ],
       "summary": "This keeps the product agent-first without making the binary a host-specific agent runtime.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4154,7 +4154,7 @@
         }
       ],
       "summary": "The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for the skill and reviewer loop.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4185,7 +4185,7 @@
         }
       ],
       "summary": "When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4214,7 +4214,7 @@
         }
       ],
       "summary": "That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -4245,7 +4245,7 @@
         }
       ],
       "summary": "Before running a first broad scan, the skill should say which entries and depth it will use.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4274,7 +4274,7 @@
         }
       ],
       "summary": "It should also show the deterministic bounds that will be applied:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -4305,7 +4305,7 @@
         }
       ],
       "summary": "The skill should ask the user to confirm or adjust that scope.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4336,7 +4336,7 @@
         }
       ],
       "summary": "After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4365,7 +4365,7 @@
         }
       ],
       "summary": "After the deterministic pass, the skill should show a separate review plan:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -4396,7 +4396,7 @@
         }
       ],
       "summary": "The user should confirm or adjust that review budget before the skill launches subagents or other LLM-backed review.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4427,7 +4427,7 @@
         }
       ],
       "summary": "If the user already delegated autonomous continuation, the skill may proceed within the recorded budget, but the budget still must be written to the packet.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4456,7 +4456,7 @@
         }
       ],
       "summary": "Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -4485,7 +4485,7 @@
         }
       ],
       "summary": "The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -4514,7 +4514,7 @@
         }
       ],
       "summary": "Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -4543,7 +4543,7 @@
         }
       ],
       "summary": "Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -4604,7 +4604,7 @@
         }
       ],
       "summary": "Agents and validators must read the split fields directly instead of deriving a compatibility label.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4627,13 +4627,13 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "`verificationReadiness=ready-to-verify` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run.",
+          "excerpt": "`verificationReadiness=ready-for-proof` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run.",
           "line": 282,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
-      "summary": "`verificationReadiness=ready-to-verify` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run.",
-      "verificationReadiness": "ready-to-verify",
+      "summary": "`verificationReadiness=ready-for-proof` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run.",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -4692,7 +4692,7 @@
         }
       ],
       "summary": "`evidenceRefs[]` should use a minimum inspectable shape:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -4721,7 +4721,7 @@
         }
       ],
       "summary": "The binary can do cheap deterministic preflight, but the skill owns final interpretation.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -4752,7 +4752,7 @@
         }
       ],
       "summary": "The skill review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4783,7 +4783,7 @@
         }
       ],
       "summary": "`unknown` should be used when the workflow did not inspect enough evidence to make an honest statement.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4814,7 +4814,7 @@
         }
       ],
       "summary": "The workflow should not send every raw candidate to an LLM independently.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4843,7 +4843,7 @@
         }
       ],
       "summary": "The deterministic pass should emit grouping hints:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -4874,7 +4874,7 @@
         }
       ],
       "summary": "The skill should review clusters in priority order:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4905,7 +4905,7 @@
         }
       ],
       "summary": "The parent skill should merge results and keep review provenance in the packet.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4936,7 +4936,7 @@
         }
       ],
       "summary": "The LLM review seam should use versioned packets instead of hidden prompt-only behavior:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4967,7 +4967,7 @@
         }
       ],
       "summary": "Those packets should record cluster IDs, candidate IDs, source refs, prompt/reference hashes, runtime/model identity when available, merge decisions, label changes, evidence-status reasons, unresolved questions, and skipped clusters.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -4998,7 +4998,7 @@
         }
       ],
       "summary": "The binary may provide helper flags such as `claim discover --previous \u003cpacket\u003e --refresh-plan`, but the public user-level workflow remains `discover`.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5029,7 +5029,7 @@
         }
       ],
       "summary": "When the skill runs `claim discover --previous \u003cpacket\u003e` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5060,7 +5060,7 @@
         }
       ],
       "summary": "The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5091,7 +5091,7 @@
         }
       ],
       "summary": "After discovery or refresh, the skill should report status in a compact decision-oriented shape:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5122,7 +5122,7 @@
         }
       ],
       "summary": "The skill should then ask the user which branch to take.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5153,7 +5153,7 @@
         }
       ],
       "summary": "The skill should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5184,7 +5184,7 @@
         }
       ],
       "summary": "The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked Markdown, and that undeclared user-facing behavior is an entry-surface gap rather than a discoverable claim.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5215,7 +5215,7 @@
         }
       ],
       "summary": "Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5246,7 +5246,7 @@
         }
       ],
       "summary": "The workflow should avoid a `claim group` command.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5277,7 +5277,7 @@
         }
       ],
       "summary": "Scan confirmation and LLM review confirmation must be separate.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5306,7 +5306,7 @@
         }
       ],
       "summary": "Depth 3 must be paired with visible source, candidate, cluster, and review-budget bounds.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -5335,7 +5335,7 @@
         }
       ],
       "summary": "The skill may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -5366,7 +5366,7 @@
         }
       ],
       "summary": "Helper flags under `claim discover` are enough if the skill keeps the user-facing action as discover.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5397,7 +5397,7 @@
         }
       ],
       "summary": "LLM extraction should not move into the binary.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5426,7 +5426,7 @@
         }
       ],
       "summary": "The binary stays deterministic and provider-neutral.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -5455,7 +5455,7 @@
         }
       ],
       "summary": "Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -5484,7 +5484,7 @@
         }
       ],
       "summary": "The binary remains deterministic and does not directly call an LLM.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -5543,7 +5543,7 @@
         }
       ],
       "summary": "Existing state refresh is selected by the skill when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -5572,7 +5572,7 @@
         }
       ],
       "summary": "How much deterministic evidence preflight should the binary do before it risks false satisfaction?",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -5603,7 +5603,7 @@
         }
       ],
       "summary": "How much of the refresh-plan helper should ship in the first binary slice versus the first skill slice?",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5632,7 +5632,7 @@
         }
       ],
       "summary": "Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -5663,7 +5663,7 @@
         }
       ],
       "summary": "Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5694,7 +5694,7 @@
         }
       ],
       "summary": "A user can invoke the Cautilus skill without detailed input and get a clear status summary rather than a raw 500-claim dump.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5723,7 +5723,7 @@
         }
       ],
       "summary": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -5782,7 +5782,7 @@
         }
       ],
       "summary": "The binary should remain deterministic and provider-neutral.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -5811,7 +5811,7 @@
         }
       ],
       "summary": "LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -5902,7 +5902,7 @@
         }
       ],
       "summary": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -5931,7 +5931,7 @@
         }
       ],
       "summary": "Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -5990,7 +5990,7 @@
         }
       ],
       "summary": "This slice exists to stop adopters from re-implementing the per-scenario scheduler once `cautilus eval live run` already owns the single-request runtime semantics.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -6049,7 +6049,7 @@
         }
       ],
       "summary": "For each kept scenario, the command expands `samplesPerScenario` into deterministic request ids and emits the canonical batch request packet.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -6168,7 +6168,7 @@
         }
       ],
       "summary": "The adapter still owns backend selection and provider-specific flags through the simulator command template.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -6227,7 +6227,7 @@
         }
       ],
       "summary": "The consumer can return a machine-readable result without exposing its route layout.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -6258,7 +6258,7 @@
         }
       ],
       "summary": "optional `intentProfile` when present, it must use the product-owned behavior-intent catalog",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6287,7 +6287,7 @@
         }
       ],
       "summary": "This keeps report assembly deterministic.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -6318,7 +6318,7 @@
         }
       ],
       "summary": "Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6377,7 +6377,7 @@
         }
       ],
       "summary": "`blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -6406,7 +6406,7 @@
         }
       ],
       "summary": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -6435,7 +6435,7 @@
         }
       ],
       "summary": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -6464,7 +6464,7 @@
         }
       ],
       "summary": "Human-review failures must be reported even when the benchmark score improves.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -6495,7 +6495,7 @@
         }
       ],
       "summary": "For app repos, a prompt-only fixture can accidentally test a copied prompt instead of the product.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6526,7 +6526,7 @@
         }
       ],
       "summary": "Does this repo have a headless runner that can execute the selected behavior surface without a GUI while staying close enough to the real product path to support the intended proof?",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6555,7 +6555,7 @@
         }
       ],
       "summary": "The first implementation slice should be read-only readiness visibility through `doctor` and `agent status`, plus a minimal runner assessment schema and example.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -6586,7 +6586,7 @@
         }
       ],
       "summary": "`optimize` requires runner-backed proof before changing behavior.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6617,7 +6617,7 @@
         }
       ],
       "summary": "`claim` discovers and organizes declared behavior claims into proof requirements.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6648,7 +6648,7 @@
         }
       ],
       "summary": "`eval` runs bounded behavior evaluations through adapter-declared runners.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6679,7 +6679,7 @@
         }
       ],
       "summary": "`optimize` improves behavior only after the proof surface is honest.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6710,7 +6710,7 @@
         }
       ],
       "summary": "A headless product runner is an app runner that can execute product behavior from a CLI or local command while reusing production-adjacent prompt composition, tool registry, state policy, and response logic.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6741,7 +6741,7 @@
         }
       ],
       "summary": "`doctor` should not infer that a runner shares production behavior by reading arbitrary app code.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6772,7 +6772,7 @@
         }
       ],
       "summary": "It should combine binary health, skill surface readiness, adapter state, claim state, and runner readiness status.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6801,7 +6801,7 @@
         }
       ],
       "summary": "It should present next branches such as initialize adapter, refresh claim state, create runner assessment, run runner smoke, inspect existing claim map, or run eval.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -6832,7 +6832,7 @@
         }
       ],
       "summary": "It should not silently downgrade app proof to prompt-only smoke when the selected claim requires a headless product runner.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6861,7 +6861,7 @@
         }
       ],
       "summary": "Each branch should expose a stable id, human label, blocking reason, required command or artifact, owning product family or setup helper, and whether the branch writes files.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -6890,7 +6890,7 @@
         }
       ],
       "summary": "The observed packet should distinguish fixture-backed smoke, coding-agent messaging, in-process product runner, and live/server product runner.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -6921,7 +6921,7 @@
         }
       ],
       "summary": "When only fixture smoke exists, optimize may prepare or explain missing proof, but it should not claim behavior improvement.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6952,7 +6952,7 @@
         }
       ],
       "summary": "They must be marked non-actionable for app behavior improvement unless the claim explicitly targets that proof class.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -6983,7 +6983,7 @@
         }
       ],
       "summary": "`fixture-smoke` means the product path and command routing can be exercised cheaply, but the result does not prove model or app behavior.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7012,7 +7012,7 @@
         }
       ],
       "summary": "This document owns assessment existence, scope, freshness, proof class, and recommendation.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -7073,7 +7073,7 @@
         }
       ],
       "summary": "`productionPathReuse` should name the reused modules, route handlers, services, prompt builders, tool registries, state stores, or policy modules.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7102,7 +7102,7 @@
         }
       ],
       "summary": "The bundled skill may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -7131,7 +7131,7 @@
         }
       ],
       "summary": "The shipped schema uses `id`, `surfaces`, `proof_class`, `command_template`, optional `smoke_command_template`, optional `assessment_path`, and optional `default_runtime`.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -7162,7 +7162,7 @@
         }
       ],
       "summary": "The bundled `cautilus` skill should keep one progressive surface.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7193,7 +7193,7 @@
         }
       ],
       "summary": "It should not split into separate discover, eval, optimize, and runner skills.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7224,7 +7224,7 @@
         }
       ],
       "summary": "The skill should use the binary for command discovery and examples.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7253,7 +7253,7 @@
         }
       ],
       "summary": "It should not duplicate the command catalog.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -7284,7 +7284,7 @@
         }
       ],
       "summary": "For app repos, the skill should prefer creating a headless product runner over extracting prompts into a standalone mock.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7315,7 +7315,7 @@
         }
       ],
       "summary": "They should not become the only runner model.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7344,7 +7344,7 @@
         }
       ],
       "summary": "How much of `cautilus.runner_assessment.v1` should be written by a binary helper versus by the bundled skill?",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -7373,7 +7373,7 @@
         }
       ],
       "summary": "The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -7402,7 +7402,7 @@
         }
       ],
       "summary": "Proof class must remain visible in downstream summaries and reports.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -7433,7 +7433,7 @@
         }
       ],
       "summary": "A simple app repo can adopt Cautilus with one headless product runner without adopting the full eval-live instance model.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7464,7 +7464,7 @@
         }
       ],
       "summary": "Treating `agent status` branch labels as a fourth product workflow is over-worry once the branch ordering keeps ownership visible and status remains read-only.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7495,7 +7495,7 @@
         }
       ],
       "summary": "Implementation notes should update this document before changing adapter, doctor, status, claim, eval, or optimize behavior in ways that affect the runner substrate.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7554,7 +7554,7 @@
         }
       ],
       "summary": "The bundled skill may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -7583,7 +7583,7 @@
         }
       ],
       "summary": "external substitution: nondeterministic or costly external dependencies can be replaced with deterministic substitutes at the same boundary the product uses",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -7614,7 +7614,7 @@
         }
       ],
       "summary": "external observation: behavior can be observed from outside the unit under test through artifacts the runner or agent cannot forge or silently erase",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7643,7 +7643,7 @@
         }
       ],
       "summary": "Those proof classes can support setup checks, fixture shaping, and deterministic smoke confidence without claiming app product-path proof.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -7732,7 +7732,7 @@
         }
       ],
       "summary": "**Part 2 — broader compare ownership.** Extend history / compare hooks beyond the single profile-backed eval path so `review variants`, profile-less eval test runs, and skill evaluation can also update history and materialize compare artifacts.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -7763,7 +7763,7 @@
         }
       ],
       "summary": "Scenario-history is archetype-neutral and stays that way unless a skill-specific graduation policy is introduced.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7792,7 +7792,7 @@
         }
       ],
       "summary": "Every instance must expose a stable `instanceId` and a human-facing `displayLabel`.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -7853,7 +7853,7 @@
         }
       ],
       "summary": "A future live app eval flow can refer to one selected instance by stable id.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -7882,7 +7882,7 @@
         }
       ],
       "summary": "The product can render a human-facing instance chooser without learning consumer-native labels itself.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -7911,7 +7911,7 @@
         }
       ],
       "summary": "The product can read scenario-adjacent paths from typed packet fields instead of hardcoded route templates.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -7970,7 +7970,7 @@
         }
       ],
       "summary": "breaking contract changes must update checked-in docs and fixtures in the same change",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -7999,7 +7999,7 @@
         }
       ],
       "summary": "CLI help, bundled skill instructions, and executable specs should describe the same commands",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -8028,7 +8028,7 @@
         }
       ],
       "summary": "This runs the public `install.sh` flow inside an isolated temp install root, then verifies:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -8057,7 +8057,7 @@
         }
       ],
       "summary": "The implemented slice is intentionally deterministic: it inventories explicit truth surfaces and emits source-ref-backed proof-plan candidates.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -8088,7 +8088,7 @@
         }
       ],
       "summary": "Default output is not silently capped; agents are first-class readers of the packet and should filter or select claims explicitly instead of inheriting a hidden product limit.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8119,7 +8119,7 @@
         }
       ],
       "summary": "It may point at source files and propose proof layers, but it must not import host-specific adapters, prompts, storage readers, or private workflow conventions into Cautilus.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8150,7 +8150,7 @@
         }
       ],
       "summary": "It tells an operator or agent what should be proven where.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8181,7 +8181,7 @@
         }
       ],
       "summary": "It should preserve the discovered backlog honestly; prioritization belongs in the next agent step or a future explicit selection command, not in a hidden cap.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8212,7 +8212,7 @@
         }
       ],
       "summary": "Agents should use that summary before hand-inspecting raw `changedSources` or `claimPlan`.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8243,7 +8243,7 @@
         }
       ],
       "summary": "When called with `--sample-claims \u003cn\u003e`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8304,7 +8304,7 @@
         }
       ],
       "summary": "The host repo owns the fixture contents, runner implementation, prompt files, wrappers, and acceptance policy.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8335,7 +8335,7 @@
         }
       ],
       "summary": "GEPA-style search belongs under `optimize`, not under `claim` or `eval`, because it changes behavior after the proof surface exists.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8364,7 +8364,7 @@
         }
       ],
       "summary": "**How semantic should claim extraction be?** Start with deterministic source inventory and lightweight claim candidates that can be audited from file references.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -8393,7 +8393,7 @@
         }
       ],
       "summary": "The bundled skill must route claim discovery, evaluation, and optimization to the same family names as the binary.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -8424,7 +8424,7 @@
         }
       ],
       "summary": "`claim discover` must be useful before a repo has a runnable eval adapter.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8453,7 +8453,7 @@
         }
       ],
       "summary": "`claim discover` must not imply that deterministic unit-test claims belong in Cautilus eval fixtures.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -8484,7 +8484,7 @@
         }
       ],
       "summary": "A fresh consumer can ask Cautilus what declared behavior claims still need proof before writing eval fixtures.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8513,7 +8513,7 @@
         }
       ],
       "summary": "A proof plan can distinguish human-auditable, deterministic, eval-backed, scenario-candidate, and alignment-work claims.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -8542,7 +8542,7 @@
         }
       ],
       "summary": "Existing `eval` and `optimize` behavior remains unchanged while the first deterministic `claim` surface lands.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -8571,7 +8571,7 @@
         }
       ],
       "summary": "a CLI smoke test that discovers claims from a tiny temp repo with README, AGENTS.md, and one deterministic-test-like claim",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -8630,7 +8630,7 @@
         }
       ],
       "summary": "Countermeasure: `recommendedProof` and `verificationReadiness` are required, and deterministic claims must point away from eval fixtures.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -8661,7 +8661,7 @@
         }
       ],
       "summary": "`Cautilus` currently helps an operator do one concrete job: turn recent behavior evidence into a bounded evaluation decision that can be reopened from files without redoing the whole analysis.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8692,7 +8692,7 @@
         }
       ],
       "summary": "reopen scenario-adjacent chatbot conversations in a review packet that stays tied to proposal work",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8721,7 +8721,7 @@
         }
       ],
       "summary": "It is the mechanism that keeps the decision durable, inspectable, and reusable across CLI, review, and HTML surfaces.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -8752,7 +8752,7 @@
         }
       ],
       "summary": "The current product should be able to turn checked-in fixture data into one reusable evaluation decision without any LLM call.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8783,7 +8783,7 @@
         }
       ],
       "summary": "The deeper backend behavior is covered by lower-level tests, but the public command contract should still reject invalid runtime names before doing work.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8812,7 +8812,7 @@
         }
       ],
       "summary": "`Cautilus` ships static HTML views so a human can answer one practical question in a browser: what happened in this evaluation, and what should I trust or revisit next?",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -8841,7 +8841,7 @@
         }
       ],
       "summary": "The current HTML surface should let a reviewer answer questions like:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
@@ -8870,7 +8870,7 @@
         }
       ],
       "summary": "Which proposal, finding, or evidence signal should I inspect first?",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -8901,7 +8901,7 @@
         }
       ],
       "summary": "It should not pretend that every stronger binary, skill, or review claim is part of the standing gate.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -8930,7 +8930,7 @@
         }
       ],
       "summary": "`Cautilus` should make sense as a standalone binary plus a bundled skill.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -8959,7 +8959,7 @@
         }
       ],
       "summary": "The product should not need a host-specific migration story before an operator can discover the command surface, install the skill, and run readiness checks in a fresh repo.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -8988,7 +8988,7 @@
         }
       ],
       "summary": "`cautilus install` materializes the same product surface for an in-repo assistant, while the operator still uses the CLI directly.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -9017,7 +9017,7 @@
         }
       ],
       "summary": "The optimizer still emits one bounded next-revision brief, not a compile loop.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -9048,7 +9048,7 @@
         }
       ],
       "summary": "Runtime fingerprint changes can become optimization context without becoming a separate refresh workflow; see [runtime-fingerprint-optimization.md](./runtime-fingerprint-optimization.md).",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9079,7 +9079,7 @@
         }
       ],
       "summary": "Shorter and less specialized prompts should win only after behavior, held-out, comparison, and review guardrails remain satisfied.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9110,7 +9110,7 @@
         }
       ],
       "summary": "`optimize prepare-input` keeps a shared behavior-intent profile above raw prompt or adapter mechanics.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9139,7 +9139,7 @@
         }
       ],
       "summary": "`optimize build-artifact` emits one durable packet that can be reopened without rediscovering optimize inputs by hand.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -9168,7 +9168,7 @@
         }
       ],
       "summary": "Update the optimize input builder, optimize proposal generator, revision artifact builder, schemas, fixtures, and flow tests so the optimize seam keeps one durable packet for the next bounded revision.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -9199,7 +9199,7 @@
         }
       ],
       "summary": "`Cautilus` should make model and provider changes visible without turning every evaluation into a pinned-model benchmark.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9228,7 +9228,7 @@
         }
       ],
       "summary": "By default, those tests should not force a model choice just to make evaluation evidence easier to compare.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -9257,7 +9257,7 @@
         }
       ],
       "summary": "Adapter command templates may still pin a model when the evaluated product explicitly requires one.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -9288,7 +9288,7 @@
         }
       ],
       "summary": "Under the default policy, a model or provider change should produce a context warning, not a failing result.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9319,7 +9319,7 @@
         }
       ],
       "summary": "`Cautilus` should not infer hidden model identity from human-oriented logs.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9348,7 +9348,7 @@
         }
       ],
       "summary": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -9379,7 +9379,7 @@
         }
       ],
       "summary": "Optimization should prefer the shortest, least specialized target that preserves or improves the evaluated behavior.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9410,7 +9410,7 @@
         }
       ],
       "summary": "It should not directly auto-edit consumer-owned prompts, skills, or instruction files.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9441,7 +9441,7 @@
         }
       ],
       "summary": "Alias matching is intentionally not inferred in the first slice unless the runtime emits both requested and resolved model fields.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9470,7 +9470,7 @@
         }
       ],
       "summary": "It should generate a candidate or revision brief, then require the same tests and review gates before the candidate is trusted.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -9501,7 +9501,7 @@
         }
       ],
       "summary": "Model-change-driven optimize suggestions should preserve:",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9530,7 +9530,7 @@
         }
       ],
       "summary": "A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -9561,7 +9561,7 @@
         }
       ],
       "summary": "Report and evidence packets can carry runtime-context reason codes without treating them as behavior regressions.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9592,7 +9592,7 @@
         }
       ],
       "summary": "This sequence keeps the evidence honest before asking optimize search to mutate prompts more aggressively.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9621,7 +9621,7 @@
         }
       ],
       "summary": "Those helpers should sit between source-port ingestion and proposal packet generation.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
     },
     {
@@ -9650,7 +9650,7 @@
         }
       ],
       "summary": "The proposal engine should read from four source ports.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -9681,7 +9681,7 @@
         }
       ],
       "summary": "Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9710,7 +9710,7 @@
         }
       ],
       "summary": "The draft scenario embedded in each proposal should be normalized enough for a human to accept, edit, or reject it without re-deriving the context.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -9739,7 +9739,7 @@
         }
       ],
       "summary": "The canonical machine-readable output should preserve the full ranked proposal list.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
@@ -9770,7 +9770,7 @@
         }
       ],
       "summary": "Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9799,7 +9799,7 @@
         }
       ],
       "summary": "Should blocked-run proposals and human-conversation proposals share one ranking queue, or should they be ranked per source kind first?",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -9828,7 +9828,7 @@
         }
       ],
       "summary": "In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
@@ -9857,7 +9857,7 @@
         }
       ],
       "summary": "The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
@@ -9918,7 +9918,7 @@
         }
       ],
       "summary": "When the user selects a numbered branch from a previous orientation turn, rerun `\"$CAUTILUS_BIN\" agent status --repo-root . --json` before any branch that writes or overwrites the saved claim map, launches review, plans evals, edits files, or commits.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -9949,7 +9949,7 @@
         }
       ],
       "summary": "For the refresh-plan branch, it is acceptable to proceed from the immediately preceding orientation when the command only writes a separate refresh-plan artifact and the agent does not claim it rechecked status.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -10010,7 +10010,7 @@
         }
       ],
       "summary": "The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -10039,7 +10039,7 @@
         }
       ],
       "summary": "If a user-facing feature is missing from the configured entry docs or linked Markdown graph, report it as an entry-surface or narrative gap unless another reviewed artifact proves the binary skipped an in-scope declaration.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
@@ -10070,7 +10070,7 @@
         }
       ],
       "summary": "This branch proves reviewer launch, not review-result merge behavior.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -10099,7 +10099,7 @@
         }
       ],
       "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-      "verificationReadiness": "ready-to-verify",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     }
   ],
@@ -10153,7 +10153,7 @@
       "blocked": 12,
       "needs-alignment": 32,
       "needs-scenario": 7,
-      "ready-to-verify": 287
+      "ready-for-proof": 287
     }
   },
   "discoveryMode": "deterministic-source-inventory",

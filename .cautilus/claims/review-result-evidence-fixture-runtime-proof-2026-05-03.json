@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in fixture-runtime evidence bundle: the focused CLI test passes `--runtime fixture`, asserts fixture proof metadata in eval-observed, and a self-dogfood dev/skill adapter run emitted accept-now eval packets while using adapter-owned fixture results.",
           "evidenceRefs": [

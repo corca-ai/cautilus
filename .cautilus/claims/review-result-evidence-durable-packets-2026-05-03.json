@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in durable-packets evidence bundle: representative core command surfaces emit schema-versioned packets with next branches, action buckets, git state, validation state, and eval planning state.",
           "evidenceRefs": [

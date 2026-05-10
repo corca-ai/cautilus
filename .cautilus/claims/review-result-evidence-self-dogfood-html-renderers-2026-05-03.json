@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "whyThisLayer": "The claim is a deterministic renderer contract: the CLI either writes static HTML indexes with decision-first sections over the JSON bundle or it does not.",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by focused CLI and runtime tests: both self-dogfood renderer families write index.html pages, include Decision Summary and navigation structures, and preserve the JSON bundle as source of truth.",

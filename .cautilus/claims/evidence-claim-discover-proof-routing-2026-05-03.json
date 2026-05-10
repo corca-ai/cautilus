@@ -44,7 +44,7 @@
           "cautilus-eval": 1
         },
         "byVerificationReadiness": {
-          "ready-to-verify": 3
+          "ready-for-proof": 3
         }
       }
     },

@@ -18,14 +18,14 @@
           "evidenceStatusReason": "Verified by the checked-in review-to-eval evidence bundle: the Codex and Claude dogfood runs returned accept-now, and both audits confirm claim review apply-result, claim validate, and claim plan-evals ran without fixture or product edits.",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "No new fixture is needed for this claim while the referenced review-to-eval evidence bundle remains current.",
           "unresolvedQuestions": [],
           "evidenceRefs": [
             {
               "kind": "cautilus-claim-evidence-bundle",
               "path": ".cautilus/claims/evidence-review-to-eval-flow.json",
-              "contentHash": "sha256:a083e375daa35bc85efb66dd436e1c5018bef2dfea3ff66ffbba967fd70584f3",
+              "contentHash": "sha256:821917f85e582293afb012e1d8f49d1b0889a268a5f3d0dda6c98637bc117e11",
               "matchKind": "verified",
               "supportsClaimIds": [
                 "claim-docs-contracts-claim-discovery-workflow-md-656"

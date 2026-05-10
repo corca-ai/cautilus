@@ -17,7 +17,7 @@ Given `agent status` has both a writable discovery baseline and a more advanced 
 - `.cautilus/claims/status-summary.json` reports `agent-plan-cautilus-eval: 123`, with `agent-reviewed: 11` and `heuristic: 112`.
 - Running focused review input against `.cautilus/claims/evidenced-typed-runners.json` with `--allow-stale-claims` produced 20 clusters and 36 rendered candidates under the default budget.
 - The same packet recorded 200 skipped claims, including 189 action-bucket mismatches and 11 already reviewed claims.
-- Direct packet inspection showed 112 heuristic, unknown, ready-to-verify `cautilus-eval` claims in `agent-plan-cautilus-eval`.
+- Direct packet inspection showed 112 heuristic, unknown, ready-for-proof `cautilus-eval` claims in `agent-plan-cautilus-eval`.
 - `skills/cautilus/SKILL.md` already instructs agents to treat `claimState.orientationState` as the selected claim map and `claimState.configuredState` as the writable discovery baseline.
 - `agent status --json` selects `.cautilus/claims/evidenced-typed-runners.json` as top-level `claimState.path`, records `.cautilus/claims/latest.json` under `configuredState.path`, and makes next branches point at the evidenced packet.
 - `.cautilus/claims/latest.json` is older and purely heuristic, but it is not the selected orientation packet.

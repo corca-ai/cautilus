@@ -184,7 +184,7 @@ func TestDiscoverClaimProofPlanUsesCandidateHeuristicsTogether(t *testing.T) {
 	if first["summary"] != claim {
 		t.Fatalf("expected duplicate claim summary %q, got %#v", claim, first)
 	}
-	if first["recommendedProof"] != "deterministic" || first["verificationReadiness"] != "ready-to-verify" {
+	if first["recommendedProof"] != "deterministic" || first["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected deterministic next-work classification, got %#v", first)
 	}
 	refs := arrayOrEmpty(first["sourceRefs"])
@@ -476,7 +476,7 @@ func TestDiscoverClaimProofPlanDoesNotCarryHeuristicNextAction(t *testing.T) {
 				"claimFingerprint":      candidate["claimFingerprint"],
 				"summary":               candidate["summary"],
 				"recommendedProof":      "deterministic",
-				"verificationReadiness": "ready-to-verify",
+				"verificationReadiness": "ready-for-proof",
 				"reviewStatus":          "heuristic",
 				"evidenceStatus":        "unknown",
 				"lifecycle":             "new",
@@ -869,7 +869,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		t.Fatalf("expected portability ownership boundary to require human-auditable alignment, got %#v", portableBoundary)
 	}
 	executableRecovery := bySummary["If a fallback or recovery path matters to user-visible behavior, add an executable test that proves the path is reachable."]
-	if executableRecovery == nil || executableRecovery["recommendedProof"] != "deterministic" || executableRecovery["verificationReadiness"] != "ready-to-verify" {
+	if executableRecovery == nil || executableRecovery["recommendedProof"] != "deterministic" || executableRecovery["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected executable recovery-path claim to be deterministic, got %#v", executableRecovery)
 	}
 	history := bySummary["Past sessions showed `codex exec` can emit fatal skill-loading errors on stderr while the final process exit still looks successful."]
@@ -889,31 +889,31 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		t.Fatalf("expected runtime setup caveat to stay blocked human-auditable, got %#v", runtimeCaveat)
 	}
 	failClosed := bySummary["Optional setup-readiness probes can fail closed before runtime use."]
-	if failClosed == nil || failClosed["recommendedProof"] != "deterministic" || failClosed["verificationReadiness"] != "ready-to-verify" {
+	if failClosed == nil || failClosed["recommendedProof"] != "deterministic" || failClosed["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected fail-closed readiness claim to be deterministic, got %#v", failClosed)
 	}
 	failover := bySummary["The runner can fail over to a backup provider when credentials are missing."]
-	if failover == nil || failover["recommendedProof"] != "cautilus-eval" || failover["verificationReadiness"] != "ready-to-verify" {
+	if failover == nil || failover["recommendedProof"] != "cautilus-eval" || failover["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected provider failover behavior to stay eval-ready, got %#v", failover)
 	}
 	recovery := bySummary["The recovery command should recover when provider credentials fail."]
-	if recovery == nil || recovery["recommendedProof"] != "deterministic" || recovery["verificationReadiness"] != "ready-to-verify" {
+	if recovery == nil || recovery["recommendedProof"] != "deterministic" || recovery["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected command recovery claim to be deterministic, got %#v", recovery)
 	}
 	cliGating := bySummary["> `crill provider ...` is not gated, so you can configure LLM credentials either before or after this step."]
-	if cliGating == nil || cliGating["recommendedProof"] != "deterministic" || cliGating["verificationReadiness"] != "ready-to-verify" {
+	if cliGating == nil || cliGating["recommendedProof"] != "deterministic" || cliGating["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected CLI gating claim to be deterministic, got %#v", cliGating)
 	}
 	worksWithoutCredentials := bySummary["The provider command should work without credentials during local setup."]
-	if worksWithoutCredentials == nil || worksWithoutCredentials["recommendedProof"] != "deterministic" || worksWithoutCredentials["verificationReadiness"] != "ready-to-verify" {
+	if worksWithoutCredentials == nil || worksWithoutCredentials["recommendedProof"] != "deterministic" || worksWithoutCredentials["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected generic command availability claim to be deterministic, got %#v", worksWithoutCredentials)
 	}
 	noLoginCredentials := bySummary["The login command must not require credentials during first-run setup."]
-	if noLoginCredentials == nil || noLoginCredentials["recommendedProof"] != "deterministic" || noLoginCredentials["verificationReadiness"] != "ready-to-verify" {
+	if noLoginCredentials == nil || noLoginCredentials["recommendedProof"] != "deterministic" || noLoginCredentials["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected generic no-credentials command claim to be deterministic, got %#v", noLoginCredentials)
 	}
 	boldCLIGating := bySummary["> `crill provider ...` is **not** gated, so you can configure LLM credentials either before or after this step."]
-	if boldCLIGating == nil || boldCLIGating["recommendedProof"] != "deterministic" || boldCLIGating["verificationReadiness"] != "ready-to-verify" {
+	if boldCLIGating == nil || boldCLIGating["recommendedProof"] != "deterministic" || boldCLIGating["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected bold CLI gating claim to be deterministic, got %#v", boldCLIGating)
 	}
 	rationale := bySummary["This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file."]
@@ -953,19 +953,19 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		t.Fatalf("expected optional helper flag workflow claim to need alignment, got %#v", helperFlags)
 	}
 	reviewPrepare := bySummary["`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."]
-	if reviewPrepare == nil || reviewPrepare["recommendedProof"] != "deterministic" || reviewPrepare["verificationReadiness"] != "ready-to-verify" {
+	if reviewPrepare == nil || reviewPrepare["recommendedProof"] != "deterministic" || reviewPrepare["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected claim review prepare-input packet contract to be deterministic, got %#v", reviewPrepare)
 	}
 	claimShowSummary := bySummary["`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` when agents need concrete candidates before choosing the next branch."]
-	if claimShowSummary == nil || claimShowSummary["recommendedProof"] != "deterministic" || claimShowSummary["verificationReadiness"] != "ready-to-verify" {
+	if claimShowSummary == nil || claimShowSummary["recommendedProof"] != "deterministic" || claimShowSummary["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected claim show summary packet contract not to be treated as scenario design, got %#v", claimShowSummary)
 	}
 	reviewPromptPath := bySummary["Review prompts point at the same path so human and machine review can refer to the same compare output."]
-	if reviewPromptPath == nil || reviewPromptPath["recommendedProof"] != "deterministic" || reviewPromptPath["verificationReadiness"] != "ready-to-verify" {
+	if reviewPromptPath == nil || reviewPromptPath["recommendedProof"] != "deterministic" || reviewPromptPath["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected review prompt path contract to be deterministic, got %#v", reviewPromptPath)
 	}
 	reviewPromptBoundary := bySummary["`Cautilus` should keep review prompts, schemas, compare questions, and report artifacts on one durable boundary before executor variants run."]
-	if reviewPromptBoundary == nil || reviewPromptBoundary["recommendedProof"] != "deterministic" || reviewPromptBoundary["verificationReadiness"] != "ready-to-verify" {
+	if reviewPromptBoundary == nil || reviewPromptBoundary["recommendedProof"] != "deterministic" || reviewPromptBoundary["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected review prompt durable-boundary contract to be deterministic, got %#v", reviewPromptBoundary)
 	}
 	reviewPromptJudgment := bySummary["The review prompt should judge whether the model answer is better."]
@@ -993,7 +993,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		t.Fatalf("expected reusable behavior ownership claim to require alignment, got %#v", reusableBehaviorOwnership)
 	}
 	whetherClaim := bySummary["Whether Cautilus emits durable packet state is recorded as a deterministic command contract."]
-	if whetherClaim == nil || whetherClaim["recommendedProof"] != "deterministic" || whetherClaim["verificationReadiness"] != "ready-to-verify" {
+	if whetherClaim == nil || whetherClaim["recommendedProof"] != "deterministic" || whetherClaim["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected non-deferred whether claim to remain discoverable, got %#v", whetherClaim)
 	}
 	skillReviewPlan := bySummary["After the deterministic pass, the skill should show a separate review plan:"]
@@ -1049,11 +1049,11 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		t.Fatalf("expected premature cluster-review tuning claim to stay blocked, got %#v", clusterReviewTuning)
 	}
 	reviewBudgetPacket := bySummary["The command emits a packet that records separate review-budget confirmation before launching reviewers."]
-	if reviewBudgetPacket == nil || reviewBudgetPacket["recommendedProof"] != "deterministic" || reviewBudgetPacket["verificationReadiness"] != "ready-to-verify" {
+	if reviewBudgetPacket == nil || reviewBudgetPacket["recommendedProof"] != "deterministic" || reviewBudgetPacket["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected review-budget packet contract to stay deterministic, got %#v", reviewBudgetPacket)
 	}
 	providerNeutralPacket := bySummary["The workflow emits a deterministic provider-neutral packet for audit."]
-	if providerNeutralPacket == nil || providerNeutralPacket["recommendedProof"] != "deterministic" || providerNeutralPacket["verificationReadiness"] != "ready-to-verify" {
+	if providerNeutralPacket == nil || providerNeutralPacket["recommendedProof"] != "deterministic" || providerNeutralPacket["verificationReadiness"] != "ready-for-proof" {
 		t.Fatalf("expected provider-neutral packet contract to stay deterministic, got %#v", providerNeutralPacket)
 	}
 	skillSequencing := bySummary["The skill control flow should come after the deterministic packet."]
@@ -1226,7 +1226,7 @@ func TestBuildClaimStatusSummaryIncludesSatisfiedEvidence(t *testing.T) {
 				"summary":                "The skill flow is already covered.",
 				"recommendedProof":       "cautilus-eval",
 				"recommendedEvalSurface": "dev/skill",
-				"verificationReadiness":  "ready-to-verify",
+				"verificationReadiness":  "ready-for-proof",
 				"evidenceStatus":         "satisfied",
 				"reviewStatus":           "agent-reviewed",
 				"lifecycle":              "new",
@@ -1327,7 +1327,7 @@ func TestBuildClaimReviewInputSkipsSatisfiedClaims(t *testing.T) {
 				"summary":                "The skill flow is already covered.",
 				"recommendedProof":       "cautilus-eval",
 				"recommendedEvalSurface": "dev/skill",
-				"verificationReadiness":  "ready-to-verify",
+				"verificationReadiness":  "ready-for-proof",
 				"evidenceStatus":         "satisfied",
 				"reviewStatus":           "agent-reviewed",
 				"lifecycle":              "new",
@@ -1347,7 +1347,7 @@ func TestBuildClaimReviewInputSkipsSatisfiedClaims(t *testing.T) {
 				"summary":                "The skill flow still needs review.",
 				"recommendedProof":       "cautilus-eval",
 				"recommendedEvalSurface": "dev/skill",
-				"verificationReadiness":  "ready-to-verify",
+				"verificationReadiness":  "ready-for-proof",
 				"evidenceStatus":         "unknown",
 				"reviewStatus":           "heuristic",
 				"lifecycle":              "new",
@@ -1361,7 +1361,7 @@ func TestBuildClaimReviewInputSkipsSatisfiedClaims(t *testing.T) {
 				"summary":                "The skill flow was already reviewed and needs proof.",
 				"recommendedProof":       "cautilus-eval",
 				"recommendedEvalSurface": "dev/skill",
-				"verificationReadiness":  "ready-to-verify",
+				"verificationReadiness":  "ready-for-proof",
 				"evidenceStatus":         "unknown",
 				"reviewStatus":           "agent-reviewed",
 				"lifecycle":              "new",
@@ -1426,7 +1426,7 @@ func TestBuildClaimReviewInputCanFocusActionBucket(t *testing.T) {
 				"claimFingerprint":      "sha256:deterministic",
 				"summary":               "The CLI emits JSON.",
 				"recommendedProof":      "deterministic",
-				"verificationReadiness": "ready-to-verify",
+				"verificationReadiness": "ready-for-proof",
 				"evidenceStatus":        "unknown",
 				"reviewStatus":          "heuristic",
 				"lifecycle":             "new",
@@ -1515,7 +1515,7 @@ func TestBuildClaimReviewInputIncludesPossibleEvidenceRefs(t *testing.T) {
 				"summary":                "The skill flow might already have evidence.",
 				"recommendedProof":       "cautilus-eval",
 				"recommendedEvalSurface": "dev/skill",
-				"verificationReadiness":  "ready-to-verify",
+				"verificationReadiness":  "ready-for-proof",
 				"evidenceStatus":         "unknown",
 				"reviewStatus":           "heuristic",
 				"lifecycle":              "new",
@@ -1966,7 +1966,7 @@ func TestApplyClaimReviewResultCanClearRecommendedEvalSurface(t *testing.T) {
 						"reviewStatus":           "agent-reviewed",
 						"evidenceStatus":         "unknown",
 						"recommendedProof":       "deterministic",
-						"verificationReadiness":  "ready-to-verify",
+						"verificationReadiness":  "ready-for-proof",
 						"recommendedEvalSurface": nil,
 					},
 				},
@@ -2021,7 +2021,7 @@ func TestApplyClaimReviewResultSyncsRecommendedEvalSurfaceGroupHint(t *testing.T
 						"reviewStatus":           "agent-reviewed",
 						"evidenceStatus":         "unknown",
 						"recommendedProof":       "cautilus-eval",
-						"verificationReadiness":  "ready-to-verify",
+						"verificationReadiness":  "ready-for-proof",
 						"recommendedEvalSurface": "app/prompt",
 					},
 				},
@@ -2182,7 +2182,7 @@ func TestApplyClaimReviewResultCanClearUnresolvedQuestions(t *testing.T) {
 						"claimId":               claimID,
 						"reviewStatus":          "agent-reviewed",
 						"evidenceStatus":        "unknown",
-						"verificationReadiness": "ready-to-verify",
+						"verificationReadiness": "ready-for-proof",
 						"unresolvedQuestions":   []any{"Does this need Claude parity?"},
 					},
 				},
@@ -2248,7 +2248,7 @@ func TestApplyClaimReviewResultClearsSurfaceForNonEvalProof(t *testing.T) {
 						"reviewStatus":          "agent-reviewed",
 						"evidenceStatus":        "unknown",
 						"recommendedProof":      "deterministic",
-						"verificationReadiness": "ready-to-verify",
+						"verificationReadiness": "ready-for-proof",
 					},
 				},
 			},
@@ -2369,7 +2369,7 @@ func TestBuildClaimEvalPlanMarksAppClaimsAsProductRunnerProof(t *testing.T) {
 				"summary":                "The chat remembers prior preferences.",
 				"recommendedProof":       "cautilus-eval",
 				"recommendedEvalSurface": "app/chat",
-				"verificationReadiness":  "ready-to-verify",
+				"verificationReadiness":  "ready-for-proof",
 				"evidenceStatus":         "missing",
 				"reviewStatus":           "agent-reviewed",
 				"lifecycle":              "new",
@@ -2448,7 +2448,7 @@ func TestBuildClaimEvalPlanSkipsSatisfiedEvalClaims(t *testing.T) {
 				"summary":                "The skill flow is already covered.",
 				"recommendedProof":       "cautilus-eval",
 				"recommendedEvalSurface": "dev/skill",
-				"verificationReadiness":  "ready-to-verify",
+				"verificationReadiness":  "ready-for-proof",
 				"evidenceStatus":         "satisfied",
 				"reviewStatus":           "agent-reviewed",
 				"lifecycle":              "new",
@@ -2505,7 +2505,7 @@ func TestBuildClaimEvalPlanSkipsSatisfiedNonEvalClaimsWithEvidenceContext(t *tes
 				"claimFingerprint":      "sha256:satisfied-deterministic",
 				"summary":               "The packet boundary is already covered.",
 				"recommendedProof":      "deterministic",
-				"verificationReadiness": "ready-to-verify",
+				"verificationReadiness": "ready-for-proof",
 				"evidenceStatus":        "satisfied",
 				"reviewStatus":          "agent-reviewed",
 				"lifecycle":             "new",
@@ -2551,7 +2551,7 @@ func TestBuildClaimValidationReportValidatesEvidenceRefs(t *testing.T) {
 				"claimFingerprint":      "sha256:fixture",
 				"summary":               "Agents must follow the repo operating contract.",
 				"recommendedProof":      "cautilus-eval",
-				"verificationReadiness": "ready-to-verify",
+				"verificationReadiness": "ready-for-proof",
 				"evidenceStatus":        "satisfied",
 				"reviewStatus":          "agent-reviewed",
 				"lifecycle":             "new",
@@ -2598,7 +2598,7 @@ func TestBuildClaimValidationReportRequiresSupportedEvidenceKind(t *testing.T) {
 				"claimFingerprint":      "sha256:evidence-kind",
 				"summary":               "Eval evidence must use supported evidence kinds.",
 				"recommendedProof":      "cautilus-eval",
-				"verificationReadiness": "ready-to-verify",
+				"verificationReadiness": "ready-for-proof",
 				"evidenceStatus":        "satisfied",
 				"reviewStatus":          "agent-reviewed",
 				"lifecycle":             "new",
@@ -2639,7 +2639,7 @@ func TestBuildClaimValidationReportAcceptsEvalObservedEvidenceKind(t *testing.T)
 				"claimFingerprint":      "sha256:eval-observed",
 				"summary":               "Eval observed packets can directly support a claim.",
 				"recommendedProof":      "cautilus-eval",
-				"verificationReadiness": "ready-to-verify",
+				"verificationReadiness": "ready-for-proof",
 				"evidenceStatus":        "satisfied",
 				"reviewStatus":          "agent-reviewed",
 				"lifecycle":             "new",
@@ -2676,7 +2676,7 @@ func TestBuildClaimValidationReportFlagsMissingCarryForwardOnReviewedPacket(t *t
 				"claimFingerprint":      "sha256:no-carry-forward",
 				"summary":               "Reviewed claims without carryForward should be flagged.",
 				"recommendedProof":      "deterministic",
-				"verificationReadiness": "ready-to-verify",
+				"verificationReadiness": "ready-for-proof",
 				"evidenceStatus":        "unknown",
 				"reviewStatus":          "agent-reviewed",
 				"lifecycle":             "new",

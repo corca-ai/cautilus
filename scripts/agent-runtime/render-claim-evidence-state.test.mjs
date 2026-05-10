@@ -27,7 +27,7 @@ function fixturePackets(root) {
 		claimSummary: {
 			byEvidenceStatus: { satisfied: 1, unknown: 3 },
 			byRecommendedProof: { "cautilus-eval": 3, deterministic: 1 },
-			byVerificationReadiness: { "ready-to-verify": 2, "needs-scenario": 1, satisfied: 1 },
+			byVerificationReadiness: { "ready-for-proof": 2, "needs-scenario": 1, satisfied: 1 },
 			byReviewStatus: { accepted: 1, unreviewed: 3 },
 		},
 		claimCandidates: [
@@ -35,7 +35,7 @@ function fixturePackets(root) {
 				claimId: "claim.ready.repo",
 				recommendedProof: "cautilus-eval",
 				evidenceStatus: "unknown",
-				verificationReadiness: "ready-to-verify",
+				verificationReadiness: "ready-for-proof",
 				recommendedEvalSurface: "dev/repo",
 				reviewStatus: "unreviewed",
 				summary: "Repo behavior needs eval proof.",
@@ -45,7 +45,7 @@ function fixturePackets(root) {
 				claimId: "claim.ready.skill",
 				recommendedProof: "cautilus-eval",
 				evidenceStatus: "unknown",
-				verificationReadiness: "ready-to-verify",
+				verificationReadiness: "ready-for-proof",
 				recommendedEvalSurface: "dev/skill",
 				reviewStatus: "unreviewed",
 				summary: "Skill behavior needs eval proof.",
@@ -87,7 +87,7 @@ function fixturePackets(root) {
 		claimSummary: {
 			byEvidenceStatus: { satisfied: 1, unknown: 3 },
 			byRecommendedProof: { "cautilus-eval": 3, deterministic: 1 },
-			byVerificationReadiness: { "ready-to-verify": 2, "needs-scenario": 1, satisfied: 1 },
+			byVerificationReadiness: { "ready-for-proof": 2, "needs-scenario": 1, satisfied: 1 },
 			byReviewStatus: { accepted: 1, unreviewed: 3 },
 		},
 		actionSummary: {

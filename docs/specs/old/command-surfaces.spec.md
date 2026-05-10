@@ -183,7 +183,7 @@ It checks packet shape and evidence refs without mutating claims or searching fo
 It exits non-zero when the packet is invalid.
 
 `cautilus claim plan-evals --claims <reviewed-claims.json>` emits `cautilus.claim_eval_plan.v1`.
-It selects reviewed `cautilus-eval` claims whose `verificationReadiness` is `ready-to-verify`.
+It selects reviewed `cautilus-eval` claims whose `verificationReadiness` is `ready-for-proof`.
 It skips claims that already have `evidenceStatus=satisfied`.
 It records that default skip in `selectionPolicy.excludesEvidenceStatus`.
 It records `planSummary` so an empty `evalPlans` array explains whether nothing is left because claims are already satisfied, not eval targets, not reviewed, or not ready.

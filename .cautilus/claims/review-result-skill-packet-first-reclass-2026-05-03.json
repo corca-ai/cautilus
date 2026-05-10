@@ -16,7 +16,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is agent skill-orchestration behavior, not deterministic code behavior. It needs a skill-flow fixture or audit log proving packet-first reading and HTML citation only for browser-facing deliverables.",
           "evidenceRefs": [],

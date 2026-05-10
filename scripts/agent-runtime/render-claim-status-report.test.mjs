@@ -34,7 +34,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 				claimId: "claim-readme-md-1",
 				summary: "Cautilus emits a readable status report.",
 				recommendedProof: "deterministic",
-				verificationReadiness: "ready-to-verify",
+				verificationReadiness: "ready-for-proof",
 				reviewStatus: "agent-reviewed",
 				evidenceStatus: "unknown",
 				sourceRefs: [{ path: "README.md", line: 1 }],
@@ -112,7 +112,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 					{
 						claimId: "claim-readme-md-1",
 						recommendedProof: "deterministic",
-						verificationReadiness: "ready-to-verify",
+						verificationReadiness: "ready-for-proof",
 						evidenceStatus: "unknown",
 						nextAction: "Old proof gap should not appear as current work.",
 					},

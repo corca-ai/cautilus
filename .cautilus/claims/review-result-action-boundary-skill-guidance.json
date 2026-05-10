@@ -19,7 +19,7 @@
           "evidenceStatusReason": "The source is a bundled-skill instruction, but there is no checked behavior evidence yet that an agent following the skill reports missing undeclared user-facing features as entry-surface or narrative gaps.",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add a bounded dev/skill scenario where the repo has a user-facing behavior missing from entry docs and the skill must report the gap as narrative or alignment work rather than a binary false negative.",
           "unresolvedQuestions": [],
           "evidenceRefs": []

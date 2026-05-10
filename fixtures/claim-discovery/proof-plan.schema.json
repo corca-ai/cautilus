@@ -112,7 +112,7 @@
           },
           "verificationReadiness": {
             "type": "string",
-            "enum": ["ready-to-verify", "needs-scenario", "needs-alignment", "blocked"]
+            "enum": ["ready-for-proof", "needs-scenario", "needs-alignment", "blocked"]
           },
           "evidenceStatus": {
             "type": "string",

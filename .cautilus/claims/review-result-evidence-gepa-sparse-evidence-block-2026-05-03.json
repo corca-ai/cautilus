@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:707379c574740cd365d23854282c59e67b7ae584bfdea36fd8c035e3e318be90",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "whyThisLayer": "The claim names optimize-search readiness blocking and machine-readable output, which is deterministic CLI packet behavior.",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by an optimize-search CLI smoke test: sparse evidence makes `optimize search run --json` return a blocked JSON payload with machine-readable reason codes before candidate generation proceeds.",

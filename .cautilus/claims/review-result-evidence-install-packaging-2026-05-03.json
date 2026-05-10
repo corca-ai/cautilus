@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:320919049969c4267f56feeb209110e44d822f29703dc1fdd362d2f120d5484a",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in install/packaging evidence bundle: distribution tests protect the standalone binary installer and packaged skill sync, and a temp-repo install smoke materializes the bundled skill without requiring another scaffold.",
           "evidenceRefs": [
@@ -39,7 +39,7 @@
           "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in install/packaging evidence bundle: install.sh is protected as the machine-level binary install surface, while `cautilus install` writes the agent-facing skill into the selected repo.",
           "evidenceRefs": [
@@ -63,7 +63,7 @@
           "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in install/packaging evidence bundle: temp-repo install writes `.agents/skills/cautilus/SKILL.md` plus references into the host repo, and tests protect canonical repo-local skill creation.",
           "evidenceRefs": [

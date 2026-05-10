@@ -16,7 +16,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the current dev/skill routing dogfood: the bundled Cautilus skill triggered under Codex, ran a checked-in dev/skill eval fixture, completed cleanly, and kept the agent-surface preflight ready. This does not prove every possible skill prompt.",
           "evidenceRefs": [
@@ -39,7 +39,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by current install/doctor preflight, installed bundled skill and Claude/Codex plugin manifests, and Codex conversational dogfood that drove Cautilus status and eval contracts. This does not claim full Claude conversational runtime parity.",
           "evidenceRefs": [
@@ -62,7 +62,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the current refresh-flow dogfood: the skill selected the saved-claim-map refresh branch from an explicit branch request, ran `claim discover --previous ... --refresh-plan`, read `refreshSummary`, and left state transition ownership in deterministic packet output.",
           "evidenceRefs": [
@@ -85,7 +85,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the current refresh-flow dogfood and audit: prior claim state led to a diff-aware refresh-plan command and `refreshSummary` read. The evidence proves packet transition behavior, not semantic optimality of every rescan decision.",
           "evidenceRefs": [
@@ -108,7 +108,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by current review-prepare dogfood: after a deterministic first scan and `claim show`, the skill stated the review budget boundary and produced a deterministic `claim review prepare-input` packet.",
           "evidenceRefs": [
@@ -131,7 +131,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by current review-prepare dogfood and audit: the agent described the review budget before LLM review and did not launch reviewer lanes, apply results, or plan eval fixtures.",
           "evidenceRefs": [
@@ -154,7 +154,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by current refresh-flow dogfood: existing claim state selected the refresh-plan path while the binary-owned refresh-plan packet, not the skill prose, owned the state transition.",
           "evidenceRefs": [

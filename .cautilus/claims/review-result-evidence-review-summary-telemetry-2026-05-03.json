@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "whyThisLayer": "The claim names summary packet aggregation of explicit telemetry, which is deterministic CLI packet behavior.",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by a review variants CLI smoke test that writes two variant result packets with explicit telemetry and confirms the top-level review summary aggregates counts, token totals, cost, provider, and model.",

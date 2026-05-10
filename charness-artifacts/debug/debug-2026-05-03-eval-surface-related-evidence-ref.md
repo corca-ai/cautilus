@@ -38,7 +38,7 @@ jq '.claimCandidates[90] | {claimId, summary, evidenceRefs}' .cautilus/claims/ev
 ## Hypothesis
 
 If the review-result keeps only the primary eval-surface evidence bundle as a direct evidence ref for `claim-docs-specs-user-evaluation-spec-md-11`, while the primary bundle retains the dev-skill bundle in `relatedEvidence`, then aggregate replay should validate with zero issues.
-If the new evidence-application review-result carries an actual later `reviewedAt`, then the satisfied update should replay after the earlier no-evidence review and keep `verificationReadiness=ready-to-verify`.
+If the new evidence-application review-result carries an actual later `reviewedAt`, then the satisfied update should replay after the earlier no-evidence review and keep `verificationReadiness=ready-for-proof`.
 If the current evidence removes `claim-docs-specs-user-evaluation-spec-md-12` from direct support, then the service-response-containing claim should remain unknown and needs-scenario while the app/chat and app/prompt proof still supports narrower evaluation claims.
 
 ## Verification
@@ -53,7 +53,7 @@ If the current evidence removes `claim-docs-specs-user-evaluation-spec-md-12` fr
 - `npm run claims:review-worksheet`
 
 Validation now reports `valid=true` and `issueCount=0`.
-The newly satisfied evaluation-spec claims now carry `verificationReadiness=ready-to-verify`.
+The newly satisfied evaluation-spec claims now carry `verificationReadiness=ready-for-proof`.
 `claim-docs-specs-user-evaluation-spec-md-12` now remains `evidenceStatus=unknown` and `verificationReadiness=needs-scenario`.
 
 ## Root Cause

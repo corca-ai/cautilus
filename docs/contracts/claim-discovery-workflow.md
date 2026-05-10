@@ -227,7 +227,7 @@ The current packet splits those concepts:
   "claimFingerprint": "sha256:...",
   "recommendedProof": "cautilus-eval",
   "recommendedEvalSurface": "dev/repo",
-  "verificationReadiness": "ready-to-verify",
+  "verificationReadiness": "ready-for-proof",
   "evidenceStatus": "missing",
   "reviewStatus": "agent-reviewed",
   "lifecycle": "new",
@@ -268,7 +268,7 @@ Line number is a locator, not identity.
 
 `verificationReadiness` answers whether verification can start:
 
-- `ready-to-verify`
+- `ready-for-proof`
 - `needs-scenario`
 - `needs-alignment`
 - `blocked`
@@ -318,7 +318,7 @@ The first valid-state rules are:
 - `evidenceStatus=satisfied` requires at least one `evidenceRefs[]` entry with `matchKind=verified` or `matchKind=direct`, a source commit or source hash, and an evidence commit or content hash.
 - `evidenceStatus=satisfied` also requires `reviewStatus=agent-reviewed` or `reviewStatus=human-reviewed`.
 - `matchKind=possible` can produce only `evidenceStatus=unknown` or `evidenceStatus=partial`.
-- `verificationReadiness=ready-to-verify` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run.
+- `verificationReadiness=ready-for-proof` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run.
 - `verificationReadiness=needs-scenario` means the claim is not ready for a protected eval fixture yet.
 - `verificationReadiness=needs-alignment` means at least two truth surfaces must be reconciled before proof would be honest.
 - `lifecycle=changed` describes changed claim source or claim meaning.

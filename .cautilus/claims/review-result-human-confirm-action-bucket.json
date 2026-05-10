@@ -18,7 +18,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a concrete packet-shape claim about `attentionView`; it should be checked deterministically against report/review packet output rather than left for human confirmation.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect a deterministic packet test proving `attentionView` is emitted as a bounded human-facing shortlist derived from the ranked set.",
           "unresolvedQuestions": []
         }
@@ -33,7 +33,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a concrete agent-status branch-shape claim and should be proven by deterministic status packet tests.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic agent-status tests for initialize-adapter, refresh-claim-state, runner-assessment, runner-smoke, inspect-claims, and run-eval branch exposure.",
           "unresolvedQuestions": []
         },
@@ -43,7 +43,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is an observable workbench/instance packet rendering capability. It should be proven by deterministic packet or renderer tests once the surface is implemented.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic instance-chooser rendering proof, or defer the claim if the workbench UI remains future work.",
           "unresolvedQuestions": []
         },
@@ -53,7 +53,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a packet-field routing claim and should be tested deterministically instead of confirmed manually.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic tests proving scenario-adjacent paths come from typed packet fields rather than hardcoded route templates.",
           "unresolvedQuestions": []
         },
@@ -63,7 +63,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "Stable `instanceId` and `displayLabel` are adapter/packet contract fields and should be validated deterministically.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect adapter/packet validation for stable `instanceId` and human-facing `displayLabel` fields.",
           "unresolvedQuestions": []
         }
@@ -78,7 +78,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a concrete adapter-output persistence requirement. It should be proven by deterministic adapter fixture or schema checks.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic adapter checks that rich scenario-by-scenario signals are persisted as files for executor variants and human reviewers.",
           "unresolvedQuestions": []
         },
@@ -88,7 +88,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a concrete claim-review selection behavior and should be covered by deterministic review-input tests.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic `claim review prepare-input` tests for excluding satisfied and already reviewed non-stale claims while preserving skipped audit entries.",
           "unresolvedQuestions": []
         }
@@ -103,7 +103,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is concrete agent-status orientation behavior and should be proven by deterministic tests.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic agent-status tests proving the selected related claim map drives status summaries and inspect/refresh branch commands while `state_path` remains the first-discovery output path.",
           "unresolvedQuestions": []
         },
@@ -123,7 +123,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a concrete summary-packet aggregation behavior and should be tested deterministically.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic report-summary tests for aggregating numeric telemetry across variants.",
           "unresolvedQuestions": []
         },
@@ -133,7 +133,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a concrete branch packet-shape claim and should be tested deterministically.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic runner-readiness branch-shape tests for stable id, human label, blocking reason, command/artifact, owning surface, and write flag.",
           "unresolvedQuestions": []
         },
@@ -143,7 +143,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a concrete downstream packet/report field visibility claim and should be tested deterministically.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic summary/report tests proving proof class stays visible downstream.",
           "unresolvedQuestions": []
         }

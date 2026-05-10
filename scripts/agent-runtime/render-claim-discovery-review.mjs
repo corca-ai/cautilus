@@ -199,7 +199,7 @@ function renderCandidate(candidate, semanticOptions) {
 	if (candidate.recommendedProof === "cautilus-eval") {
 		lines.push(checkboxOptions("Human corrected eval surface", ["keep", "dev/repo", "dev/skill", "app/chat", "app/prompt", "surface undecided"]));
 	}
-	lines.push(checkboxOptions("Human readiness", ["keep", "ready-to-verify", "needs-scenario", "needs-alignment", "blocked"]));
+	lines.push(checkboxOptions("Human readiness", ["keep", "ready-for-proof", "needs-scenario", "needs-alignment", "blocked"]));
 	lines.push(checkboxOptions("Human priority", ["high", "medium", "low", "later", "unsure"]));
 	lines.push("- Human notes:");
 	lines.push(`- Trace: ${sourceTrace(candidate)}`);
@@ -302,7 +302,7 @@ function renderReviewDocument(claimsPacket, statusPacket, claimsPath = ".cautilu
 	lines.push("This is a batching worksheet, not a demand to finish all candidates in one pass.");
 	lines.push("For each reviewed item, decide whether it is a real product or developer claim, a duplicate, a fragment, or noise.");
 	lines.push("Use the correction fields to mark obvious relabeling without editing the JSON directly.");
-	lines.push("`ready-to-verify` means the claim is shaped enough to choose a proof path; it does not mean evidence already exists.");
+	lines.push("`ready-for-proof` means the claim is shaped enough to choose a proof path; it does not mean evidence already exists.");
 	lines.push("`evidence unknown` means this deterministic pass has not reconciled tests, eval packets, or human review evidence yet.");
 	lines.push("Semantic groups are batching hints, not final taxonomy.");
 	lines.push("Each correction line lists its allowed values as checkboxes; mark the selected box with `[x]`.");

@@ -9,7 +9,7 @@
   "evidenceScope": {
     "targetSurface": "dev/skill",
     "runtime": "codex+claude",
-    "claimBoundary": "Supports the contract claim that the review-to-eval branch emits a claim eval plan from reviewed ready-to-verify cautilus-eval claims while preserving the host-owned fixture, prompt, runner, wrapper, and policy boundary.",
+    "claimBoundary": "Supports the contract claim that the review-to-eval branch emits a claim eval plan from reviewed ready-for-proof cautilus-eval claims while preserving the host-owned fixture, prompt, runner, wrapper, and policy boundary.",
     "notClaimed": [
       "All claim review branches",
       "App product-path proof"

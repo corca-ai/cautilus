@@ -19,7 +19,7 @@ Given a review-result file has no explicit timestamp, then a `YYYY-MM-DD` filena
 - `node scripts/agent-runtime/apply-current-review-results.mjs --claims .cautilus/claims/evidenced-typed-runners.json --claims-dir .cautilus/claims --output /tmp/cautilus-review-replayed.json --cautilus-bin ./bin/cautilus` reduced that bucket to 1.
 - The remaining claim was `claim-docs-contracts-adapter-contract-md-424`.
 - `.cautilus/claims/review-result-final-deterministic-proof-debt-2026-05-03.json` reclassified that claim to `human-auditable` and `needs-alignment`.
-- `.cautilus/claims/review-result-hitl-audience-2026-05-02.json` was older but lexicographically sorted after the `final-...` file, so it restored `deterministic` and `ready-to-verify`.
+- `.cautilus/claims/review-result-hitl-audience-2026-05-02.json` was older but lexicographically sorted after the `final-...` file, so it restored `deterministic` and `ready-for-proof`.
 - A same-day HITL result could also tie with an explicit `reviewedAt` synthesis timestamp when the HITL file only had a filename date.
 - Eight older review-result packets had real updates but no explicit timestamp or filename date, so their replay order depended on treating missing time as older than all dated packets.
 

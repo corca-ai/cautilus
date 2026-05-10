@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:ec44ab256f9a1f76a634ff4891760069518ff698390dc48dbf9b082c91fa88dd",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "whyThisLayer": "The claim names deterministic refresh-plan output fields and state-transition facts, which should be covered by runtime packet tests.",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by focused runtime tests: refresh-plan output records baseline and target commits, target policy, working-tree policy, changed source and carried-forward counts, stale evidence reasons, and does not update the saved claim map.",

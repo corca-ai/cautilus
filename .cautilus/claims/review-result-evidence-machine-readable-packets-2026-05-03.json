@@ -15,7 +15,7 @@
           "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in machine-readable packet evidence bundle: focused packet-flow tests cover eval, report, review, evidence, optimize, proposal, and revision artifact schema versions and command defaults.",
           "evidenceRefs": [

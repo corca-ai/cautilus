@@ -25,7 +25,7 @@ Given a claim says the skill or binary should own, must own, or must not own a b
 
 - `npm run verify` failed in `go test -race ./cmd/... ./internal/...`.
 - The failing test was `TestDiscoverClaimProofPlanClassifiesLinkedDocAudienceAndOperatingRules`.
-- The claim was classified as `recommendedProof=cautilus-eval`, `recommendedEvalSurface=dev/skill`, and `verificationReadiness=ready-to-verify`.
+- The claim was classified as `recommendedProof=cautilus-eval`, `recommendedEvalSurface=dev/skill`, and `verificationReadiness=ready-for-proof`.
 - The intended test expectation was that operating-rule convention claims stay out of eval planning.
 - Fresh-eye review found two related edge cases before commit: a mixed refresh-plan sentence could be moved into eval, and `should own` / `must not own` ownership sentences could miss the ownership-boundary classifier.
 

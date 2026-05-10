@@ -18,7 +18,7 @@
           "evidenceStatus": "unknown",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatusReason": "The claim describes skill/agent execution fixtures with multi-turn episodes; no direct verified evidence refs are attached by this lane.",
           "unresolvedQuestions": [
             "Should the claim be split into multi-turn fixture support and dogfood fixture audit-packet derivation?"
@@ -29,7 +29,7 @@
           "reviewStatus": "agent-reviewed",
           "evidenceStatus": "unknown",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatusReason": "The claim is about static HTML renderer output and should be protected by deterministic renderer/spec checks, not an LLM eval claim; no direct verified evidence refs are attached by this lane.",
           "unresolvedQuestions": [
             "The result packet cannot clear the existing recommendedEvalSurface, so dev/repo remains a merge concern unless the applier supports clearing non-eval surfaces."
@@ -60,7 +60,7 @@
           "reviewStatus": "agent-reviewed",
           "evidenceStatus": "unknown",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatusReason": "The claim is about the deterministic scenario catalog packet shape, specifically exampleInputCli; no direct verified evidence refs are attached by this lane.",
           "unresolvedQuestions": []
         }
@@ -75,7 +75,7 @@
           "evidenceStatus": "unknown",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatusReason": "The claim concerns installed bundled skill and Claude/Codex agent plugin behavior, so the eval surface is dev/skill rather than app/chat; no direct verified evidence refs are attached by this lane.",
           "unresolvedQuestions": [
             "Should the deterministic install-manifest claim be split from the agent conversational-driving claim?"

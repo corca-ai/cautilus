@@ -16,7 +16,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by current packet-first dev/skill dogfood: the agent ran `agent status --json` and `claim show` against the evidenced claim packet, and the audit confirmed no HTML or browser citation for an agent-oriented deliverable.",
           "evidenceRefs": [

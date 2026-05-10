@@ -17,7 +17,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "The maintainer agreed this is a concrete review-input behavior claim, not a human-only judgment. It should be proven by deterministic review-input tests.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic claim review prepare-input coverage proving satisfied and reviewed non-stale claims are excluded from clusters while remaining auditable under skippedClaims.",
           "unresolvedQuestions": []
         }
@@ -32,7 +32,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "The maintainer agreed deterministic tests are sufficient. If doctor and agent status share the same runner-readiness assessment logic, one shared drift test can cover both surfaces.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic runner-readiness tests proving commit drift is shown as provenance and does not make the assessment stale when adapter and runner file hashes still match.",
           "unresolvedQuestions": []
         }

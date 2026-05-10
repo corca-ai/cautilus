@@ -100,7 +100,7 @@ function examplePacket() {
 							claimSemanticGroup: "Claim discovery and review",
 							recommendedProof: "cautilus-eval",
 							recommendedEvalSurface: "dev/skill",
-							verificationReadiness: "ready-to-verify",
+							verificationReadiness: "ready-for-proof",
 							evidenceStatus: "unknown",
 						},
 						sourceRefs: [

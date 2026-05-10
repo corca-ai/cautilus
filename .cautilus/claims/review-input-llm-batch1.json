@@ -12,7 +12,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -40,7 +40,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -68,7 +68,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [
             {
@@ -122,7 +122,7 @@
       "priority": 10,
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -137,7 +137,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [
             {
@@ -194,7 +194,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [
             {
@@ -250,7 +250,7 @@
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -264,7 +264,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [
             {
@@ -319,7 +319,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [
             {
@@ -374,7 +374,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -402,7 +402,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -430,7 +430,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -457,7 +457,7 @@
       "priority": 10,
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -543,7 +543,7 @@
             "recommendedEvalSurface": "dev/skill",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "agent-reviewed",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [
             {
@@ -599,7 +599,7 @@
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -613,7 +613,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -640,7 +640,7 @@
       "priority": 10,
       "reason": "User-facing entry-surface claims are reviewed first because they define product promises.",
       "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     }
   ],
   "evidencePreflight": {

@@ -240,7 +240,7 @@
       "blocked": 27,
       "needs-alignment": 44,
       "needs-scenario": 14,
-      "ready-to-verify": 283
+      "ready-for-proof": 283
     }
   },
   "discoveryBoundary": {
@@ -280,7 +280,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:d2d756be78ed0a053898f5547a0c13156920e005c0eb7718cfe9c4aeab344d08",
+    "implementationHash": "sha256:5b653ccd904a8b2c8c1a0807d70b34c8531db6b2768b19df9dd261eee47765a7",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v4"
@@ -1755,7 +1755,7 @@
       }
     ]
   },
-  "gitCommit": "e5b886eb0ebf5cd4162a5e66f92f3df4d0415656",
+  "gitCommit": "1d79b710c3921b12692d1d3bb6ada0550d4306f7",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1767,10 +1767,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "e5b886eb0ebf5cd4162a5e66f92f3df4d0415656",
+    "currentGitCommit": "1d79b710c3921b12692d1d3bb6ada0550d4306f7",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "e5b886eb0ebf5cd4162a5e66f92f3df4d0415656",
+    "packetGitCommit": "1d79b710c3921b12692d1d3bb6ada0550d4306f7",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

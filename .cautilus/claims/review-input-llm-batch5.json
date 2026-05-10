@@ -55,7 +55,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -84,7 +84,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -113,7 +113,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -142,7 +142,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -171,7 +171,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -200,7 +200,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -229,7 +229,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -257,7 +257,7 @@
       "priority": 20,
       "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
       "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -388,7 +388,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -418,7 +418,7 @@
       "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -433,7 +433,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -464,7 +464,7 @@
             "recommendedEvalSurface": "dev/repo",
             "recommendedProof": "cautilus-eval",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -494,7 +494,7 @@
       "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -508,7 +508,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -536,7 +536,7 @@
       "priority": 20,
       "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
       "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "candidates": [
@@ -550,7 +550,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -579,7 +579,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -608,7 +608,7 @@
             "lifecycle": "new",
             "recommendedProof": "deterministic",
             "reviewStatus": "heuristic",
-            "verificationReadiness": "ready-to-verify"
+            "verificationReadiness": "ready-for-proof"
           },
           "evidenceRefs": [],
           "groupHints": [
@@ -636,7 +636,7 @@
       "priority": 20,
       "reason": "User-facing claims are reviewed before developer conventions because they are closest to product promises.",
       "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     }
   ],
   "evidencePreflight": {
@@ -678,7 +678,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:367f95519e0813c875bfa7e39244a69fa73e6cad1dc133bc6338767ce229d3fa",
@@ -688,7 +688,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:23a867598176c24e844968b2700a44f31228da6e0f368e8194124a5ee0df47c9",
@@ -708,7 +708,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:96b7f51516ba4c8a8d89e4e5a77652f179a81105dc574ab340fab051182ee0a8",
@@ -747,7 +747,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
@@ -757,7 +757,7 @@
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
@@ -786,7 +786,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:bf72456c50e1505ba08fddf7e1c028aee5f233a950414edfdf5a3528d3749182",
@@ -825,7 +825,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
@@ -835,7 +835,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
@@ -864,7 +864,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
@@ -874,7 +874,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c6ac22b52078515a66470c72cc5fb595fb1e06f9a762f720b6c9a0f058d2aa50",
@@ -884,7 +884,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:df4aa9115fa3cb65ef65be956336be165bc67437d0f039e64c13baf95891493d",
@@ -913,7 +913,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:278d2b24e86fda13b675714aeb0c57ae685fd07d2c02ed6320572f06d476cdb7",
@@ -942,7 +942,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
@@ -971,7 +971,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:16b357f816005aa1da9b6ff24f4188e6e6057e0e73d8f39e58c8cb4b153d8c05",
@@ -1000,7 +1000,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
@@ -1029,7 +1029,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:9bada1ab213276f56664107bebda9322010ab42d914bbc27bd0c1e1937c171b3",
@@ -1068,7 +1068,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
@@ -1117,7 +1117,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
@@ -1127,7 +1127,7 @@
       "recommendedEvalSurface": "",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:7a8711ca2f1f27e4419951dad2bf11c236250a5e0502f7e14d87745169249c5d",
@@ -1156,7 +1156,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:0fb7d2b87e1402f9d2997f30c4fe48f61e05ea9654c80981f5c80b85574f2e1d",
@@ -1224,7 +1224,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f766b99cc32cebe7b9aafc33333dd0cce95591b76de0140d420c4b154fb1cac9",
@@ -1253,7 +1253,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:cded348f163e369e203082c915c65ea16c62e5635bf7f06b6df1f570a02fb631",
@@ -1282,7 +1282,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:43afeafb11ef51bf56fcffc35f717e1f2f116bc2e6c4660fd9333f19cde6f59b",
@@ -1311,7 +1311,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:6523f7c5fcd4585bdecf8007f4d0e451f467a90452d544e69ccbd7e292b45a47",
@@ -1340,7 +1340,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:f883e687af52552323f19cfc9cc39ad98e119d9e053817c66026264845d26fea",
@@ -1369,7 +1369,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:03f59c1ca391d32a92b70e0d91517ad5da85e5adec1df6f2cc1bb6fa5ba3e93a",
@@ -1398,7 +1398,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:a499498f47fba0065fd216a84496013060614be574a8d46c833b3d25a5152b7d",
@@ -1427,7 +1427,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:3a804e36a23628e37cd887ca031ec0b2e7a226d06090b7cce94549d3cec523fb",
@@ -1456,7 +1456,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
@@ -1514,7 +1514,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:51f59499790b2dcefb56da0fcfd779b37968968f346cd6a30ee12f60b0b8559f",
@@ -1543,7 +1543,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:8f9e2080a8509b865e510a79701cb88f73cd4864faf7e4241b697e4dbeb231a4",
@@ -1572,7 +1572,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     },
     {
       "claimFingerprint": "sha256:c4214820c0a5c7432d36573b11512d41a2071caf863cfc00f9b7af5229975adc",
@@ -1601,7 +1601,7 @@
         }
       ],
       "unresolvedQuestions": [],
-      "verificationReadiness": "ready-to-verify"
+      "verificationReadiness": "ready-for-proof"
     }
   ],
   "skippedClusters": [

@@ -22,7 +22,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the remaining deterministic evidence bundle: dogfood audit tests show the deterministic packet and skill control-flow boundaries are stable before broader LLM-backed cluster review.",
           "evidenceRefs": [
@@ -44,7 +44,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "cautilus-eval",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This names bundled-skill curation behavior before HITL, not merely deterministic packet shape. It needs a dev/skill eval or audit-backed skill-flow fixture.",
           "evidenceRefs": [],
@@ -58,7 +58,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by evaluation proof tests that distinguish fixture-backed smoke, coding-agent messaging, in-process product runner, and live/server product runner proof classes.",
           "evidenceRefs": [
@@ -80,7 +80,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by runner readiness branch-shape tests and schema fixture validation; operators get scaffolded packet actions instead of prose-only assessment authoring.",
           "evidenceRefs": [
@@ -102,7 +102,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the runner assessment schema, fixture example schema tests, and runner readiness tests that durable truth lands in a runner assessment packet.",
           "evidenceRefs": [
@@ -129,7 +129,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the skill disclosure lint: the bundled skill uses binary command discovery and avoids duplicating the command catalog.",
           "evidenceRefs": [
@@ -165,7 +165,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by evaluation proof and runner readiness tests: smoke and declared proof classes can support setup confidence without being promoted to app product-path proof.",
           "evidenceRefs": [
@@ -187,7 +187,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by CLI smoke, runtime, and schema tests that scenario proposal packets preserve the full ranked proposal list while deriving a bounded attention view.",
           "evidenceRefs": [
@@ -214,7 +214,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the canonical claim map test that scenario history, scenario proposal source, and normalizer raw claims are absorbed into one maintainer-facing claim while preserving fingerprints.",
           "evidenceRefs": [
@@ -241,7 +241,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by optimize CLI smoke and agent-runtime tests that build-artifact emits one durable revision packet reopenable without rediscovering optimize inputs by hand.",
           "evidenceRefs": [
@@ -277,7 +277,7 @@
           "reviewStatus": "agent-reviewed",
           "unresolvedQuestions": [],
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by optimize-flow tests that generated optimize proposals include one revision brief, bounded stop conditions, and no compile loop, iteration plan, or target patch.",
           "evidenceRefs": [

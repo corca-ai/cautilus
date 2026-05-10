@@ -15,7 +15,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: the self-dogfood-eval-skill Codex run passed one trigger case and two execution cases after install and agent-surface doctor preflight.",
           "evidenceRefs": [
@@ -37,7 +37,7 @@
           "reviewStatus": "agent-reviewed",
           "recommendedProof": "cautilus-eval",
           "recommendedEvalSurface": "dev/skill",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "evidenceStatus": "satisfied",
           "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: install and doctor preflight passed, installed skill and Claude/Codex plugin manifests are present with recorded content hashes, and the installed skill drove trigger/execution contracts conversationally under Codex; this does not claim Claude conversational runtime parity.",
           "evidenceRefs": [

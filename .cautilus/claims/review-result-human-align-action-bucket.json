@@ -33,7 +33,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is an implementation behavior about active-run workspace allocation and sticky shell state. It should be proven by deterministic runtime tests rather than human alignment alone.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect a deterministic active-run test that proves the workspace root is pinned per workflow and reused through the shell environment variable.",
           "unresolvedQuestions": []
         },
@@ -63,7 +63,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "The workspace directory and prepare-hook timing are runtime behavior and should be covered by deterministic invocation tests.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic live-run invocation tests for workspace directory allocation and one-time prepare hook timing.",
           "unresolvedQuestions": []
         },
@@ -83,7 +83,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a packet-shape and adapter-template behavior that can be checked deterministically.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect deterministic schema/template checks proving workspace lifecycle is not exposed through the public packet shape and flows through adapter placeholders.",
           "unresolvedQuestions": []
         }
@@ -98,7 +98,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a maintained external-consumer proof claim. The review input does not include direct evidence refs for the external commands, so it should become human confirmation or evidence-linking work rather than generic alignment.",
           "recommendedProof": "human-auditable",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Human-confirm or attach direct evidence for the external consumer evaluator and pytest runs referenced by the maintainer note.",
           "unresolvedQuestions": []
         },
@@ -108,7 +108,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is an external adoption proof claim. It needs direct evidence attachment or human confirmation, not broad alignment.",
           "recommendedProof": "human-auditable",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Human-confirm the external adoption proof or attach the matching consumer proof artifact before treating it as satisfied.",
           "unresolvedQuestions": []
         },
@@ -118,7 +118,7 @@
           "evidenceStatus": "unknown",
           "evidenceStatusReason": "This is a repository structure claim about where implementation surfaces live. It can be checked deterministically by inspecting command ownership and source layout.",
           "recommendedProof": "deterministic",
-          "verificationReadiness": "ready-to-verify",
+          "verificationReadiness": "ready-for-proof",
           "nextAction": "Add or connect a deterministic source-layout or command-registry check for Node-owned bootstrap/release/provider wrappers.",
           "unresolvedQuestions": []
         },
