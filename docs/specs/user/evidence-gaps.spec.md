@@ -15,7 +15,7 @@ jq '{schemaVersion, candidateCount, nonVerdictNotice}' .cautilus/claims/status-s
 > check:cautilus-json-file
 | path | json_path | includes |
 | --- | --- | --- |
-| .cautilus/claims/status-summary.json | nonVerdictNotice | not proof |
+| .cautilus/claims/status-summary.json | nonVerdictNotice | not verified |
 
 ## A user can see that reviewed claims still require valid evidence.
 

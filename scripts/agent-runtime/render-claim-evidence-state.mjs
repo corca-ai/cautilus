@@ -219,7 +219,13 @@ function buildProjection({ claimsPacket, statusPacket, claimsPath, statusPath, c
 }
 
 function table(headers, rows) {
-	const escape = (value) => compactText(value).replaceAll("|", "\\|") || "-";
+	const escape = (value) =>
+		compactText(value)
+			.replaceAll("](", "] (")
+			.replaceAll("\\", "\\\\")
+			.replaceAll("|", "\\|")
+			.replaceAll("[", "\\[")
+			.replaceAll("]", "\\]") || "-";
 	const lines = [`| ${headers.map(escape).join(" | ")} |`, `| ${headers.map(() => "---").join(" | ")} |`];
 	for (const row of rows) {
 		lines.push(`| ${row.map(escape).join(" | ")} |`);

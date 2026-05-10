@@ -1391,6 +1391,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests.",
 			next:                  "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
 		}, true
+	case deterministicReviewPromptContractClaim(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-to-verify",
+			why:                   "The claim names review-prompt routing, rendering, or shared-path contract behavior that should be protected by deterministic command or golden-output checks.",
+			next:                  "Keep or add deterministic review-prompt render, path, or packet-output proof for this claim.",
+		}, true
 	case deterministicProvenanceOrViewClaim(lower):
 		return claimClassification{
 			recommendedProof:      "deterministic",
@@ -1645,6 +1652,10 @@ func deterministicCommandPacketClaim(lower string) bool {
 		containsAny(lower, []string{" emit", " emits", " emitted", " output", " outputs", " includes", " payload", " packet", " schema", " evaluates", " without launching", " readiness"}) {
 		return true
 	}
+	if containsAny(lower, []string{"claim show", "claim_status_summary", "sampleclaims", "gitstate"}) &&
+		containsAny(lower, []string{" emit", " emits", " emitted", " include", " includes", " output", " outputs", " packet", " payload", " schema", " summary"}) {
+		return true
+	}
 	if strings.Contains(lower, " eval evaluate") &&
 		containsAny(lower, []string{" already-observed", " observed packet", " without launching", " no runner launch", " not launch", " does not launch"}) {
 		return true
@@ -1669,6 +1680,21 @@ func deterministicCommandPacketClaim(lower string) bool {
 		return true
 	}
 	return false
+}
+
+func deterministicReviewPromptContractClaim(lower string) bool {
+	if !containsAny(lower, []string{" review prompt", " review prompts"}) {
+		return false
+	}
+	if reviewPromptModelJudgmentClaim(lower) {
+		return false
+	}
+	return containsAny(lower, []string{" same path", " point ", " points ", " path ", " refer to", " rendered prompt", " render prompt", " render-prompt", " prompt input", " prompt inputs", " output_under_test", " output under test", " generated review prompt", " generated prompt", " prompt file", " schema", " schemas", " compare questions", " report artifacts", " artifact", " artifacts", " durable boundary", " packet boundary"})
+}
+
+func reviewPromptModelJudgmentClaim(lower string) bool {
+	return containsAny(lower, []string{" judge ", " judges ", " judgment", " verdict", " score ", " scores ", " scoring ", " rate ", " rates ", " rating ", " better", " worse", " pass ", " passes ", " fail ", " fails "}) &&
+		containsAny(lower, []string{" model", " answer", " response", " output", " candidate", " variant", " behavior"})
 }
 
 func deterministicProvenanceOrViewClaim(lower string) bool {
@@ -1733,7 +1759,7 @@ func claimNeedsScenario(lower string) bool {
 	if !containsAny(lower, []string{" scenario", " proposal", " candidate", " coverage", " protected check", " protected scenario"}) {
 		return false
 	}
-	if claimDocumentsScenarioCommand(lower) {
+	if claimDocumentsScenarioCommand(lower) || deterministicCommandPacketClaim(lower) || deterministicReviewPromptContractClaim(lower) {
 		return false
 	}
 	return containsAny(lower, []string{" needs ", " need ", " future ", " missing ", " create ", " author ", " promote ", " protect ", " protected ", " context recovery", " follow-up"})

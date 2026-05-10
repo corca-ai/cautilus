@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-09T09:51:24Z",
+  "generated_at": "2026-05-10T03:05:00Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -146,8 +146,10 @@
           "charness:debug"
         ],
         "referenced_paths": [
+          "skills/issue/references/causal-review.md",
           "skills/debug/SKILL.md",
           "skills/debug/references/named-target-verification.md",
+          "skills/debug/references/five-whys-causal-chain.md",
           "skills/debug/references/adapter-contract.md",
           "skills/debug/references/five-steps.md",
           "skills/debug/references/debug-memory.md",
@@ -200,10 +202,11 @@
         "referenced_paths": [
           "skills/gather/SKILL.md",
           "skills/gather/references/browser-mediated-private-sources.md",
+          "skills/gather/references/asset-refresh.md",
+          "skills/gather/scripts/write_record.py",
           "shared/references/closeout-discipline.md",
           "skills/gather/references/adapter-contract.md",
           "skills/gather/references/source-priority.md",
-          "skills/gather/references/asset-refresh.md",
           "skills/gather/references/document-seams.md",
           "skills/gather/references/capability-contract.md",
           "skills/gather/references/google-workspace-via-gws.md"
@@ -330,35 +333,6 @@
         "layer": "public skill"
       },
       {
-        "id": "init-repo",
-        "name": "init-repo",
-        "description": "Use when a repo needs its initial operating surface created or normalized. Bootstrap README, AGENTS.md, CLAUDE.md symlink policy, roadmap, and operator-acceptance docs from minimal ideation for greenfield repos, or realign those same surfaces for partially-initialized repos without pretending quality review or deep product ideation already happened.",
-        "summary": "Use when a repo needs its initial operating surface created or normalized. Bootstrap README, AGENTS.md, CLAUDE.md symlink policy, roadmap, and operator-acceptance docs from minimal ideation for greenfield repos, or realign those same surfaces for partially-initialized repos without pretending quality review or deep product ideation already happened.",
-        "path": "skills/init-repo/SKILL.md",
-        "skill_dir": "skills/init-repo",
-        "canonical_path": "skills/init-repo/SKILL.md",
-        "trigger_phrases": [
-          "init-repo",
-          "init-repo skill",
-          "init-repo 스킬",
-          "charness:init-repo"
-        ],
-        "referenced_paths": [
-          "skills/init-repo/SKILL.md",
-          "skills/init-repo/references/greenfield-flow.md",
-          "skills/init-repo/references/normalization-flow.md",
-          "skills/init-repo/references/agent-docs-policy.md",
-          "skills/init-repo/references/default-surfaces.md",
-          "skills/init-repo/references/probe-surface.md",
-          "skills/init-repo/references/retro-memory-seam.md",
-          "skills/init-repo/references/github-actions-defaults.md",
-          "skills/init-repo/references/operator-acceptance-synthesis.md",
-          "shared/references/agent-assessment-invariant.md"
-        ],
-        "source": "local-public",
-        "layer": "public skill"
-      },
-      {
         "id": "issue",
         "name": "issue",
         "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
@@ -377,6 +351,7 @@
           "shared/references/external-capability-proof-ladder.md",
           "skills/issue/SKILL.md",
           "skills/issue/references/closeout-discipline.md",
+          "skills/debug/references/five-whys-causal-chain.md",
           "skills/issue/references/causal-review.md",
           "skills/issue/references/issue-shaping.md",
           "skills/issue/references/resolve-flow.md",
@@ -438,6 +413,8 @@
           "skills/quality/references/skill-quality.md",
           "shared/references/fresh-eye-subagent-review.md",
           "shared/references/external-capability-proof-ladder.md",
+          "skills/quality/references/maintainer-local-enforcement.md",
+          "skills/quality/scripts/inventory_ci_local_gate_parity.py",
           "skills/quality/references/adapter-contract.md",
           "skills/quality/references/adapter-gate-review.md",
           "skills/quality/references/automation-promotion.md",
@@ -454,7 +431,6 @@
           "skills/quality/references/gate-classification.md",
           "skills/quality/references/installable-cli-probes.md",
           "skills/quality/references/lint-ignore-discipline.md",
-          "skills/quality/references/maintainer-local-enforcement.md",
           "skills/quality/references/operability-signals.md",
           "skills/quality/references/prompt-asset-policy.md",
           "skills/quality/references/proposal-flow.md",
@@ -522,6 +498,35 @@
         "layer": "public skill"
       },
       {
+        "id": "setup",
+        "name": "setup",
+        "description": "Use when a repo needs its initial operating surface created or normalized. Bootstrap README, AGENTS.md, CLAUDE.md symlink policy, roadmap, and operator-acceptance docs from minimal ideation for greenfield repos, or realign those same surfaces for partially-initialized repos without pretending quality review or deep product ideation already happened.",
+        "summary": "Use when a repo needs its initial operating surface created or normalized. Bootstrap README, AGENTS.md, CLAUDE.md symlink policy, roadmap, and operator-acceptance docs from minimal ideation for greenfield repos, or realign those same surfaces for partially-initialized repos without pretending quality review or deep product ideation already happened.",
+        "path": "skills/setup/SKILL.md",
+        "skill_dir": "skills/setup",
+        "canonical_path": "skills/setup/SKILL.md",
+        "trigger_phrases": [
+          "setup",
+          "setup skill",
+          "setup 스킬",
+          "charness:setup"
+        ],
+        "referenced_paths": [
+          "skills/setup/SKILL.md",
+          "skills/setup/references/greenfield-flow.md",
+          "skills/setup/references/normalization-flow.md",
+          "skills/setup/references/agent-docs-policy.md",
+          "skills/setup/references/default-surfaces.md",
+          "skills/setup/references/probe-surface.md",
+          "skills/setup/references/retro-memory-seam.md",
+          "skills/setup/references/github-actions-defaults.md",
+          "skills/setup/references/operator-acceptance-synthesis.md",
+          "shared/references/agent-assessment-invariant.md"
+        ],
+        "source": "local-public",
+        "layer": "public skill"
+      },
+      {
         "id": "spec",
         "name": "spec",
         "description": "Use when a concept needs to become a living implementation contract. Refine ideation artifacts or existing design docs into the current build contract, decide what must be fixed now versus probed during implementation, define testable success criteria, and keep the contract synchronized as `impl` learns new facts.",
@@ -541,6 +546,7 @@
           "skills/spec/references/design-lenses.md",
           "skills/spec/references/taxonomy-axis-checkpoint.md",
           "shared/references/source-bound-records.md",
+          "skills/spec/references/evidence-durability.md",
           "shared/references/fresh-eye-subagent-review.md",
           "skills/spec/references/contract-modes.md",
           "skills/spec/references/fixed-probe-defer.md",
@@ -1251,7 +1257,7 @@
         "readiness_checks": [],
         "supports_public_skills": [
           "quality",
-          "init-repo"
+          "setup"
         ],
         "recommendation_role": "validation",
         "path": "integrations/tools/vulture.json",

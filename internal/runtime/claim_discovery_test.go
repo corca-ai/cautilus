@@ -622,6 +622,16 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
 		"",
+		"`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` when agents need concrete candidates before choosing the next branch.",
+		"",
+		"Review prompts point at the same path so human and machine review can refer to the same compare output.",
+		"",
+		"`Cautilus` should keep review prompts, schemas, compare questions, and report artifacts on one durable boundary before executor variants run.",
+		"",
+		"The review prompt should judge whether the model answer is better.",
+		"",
+		"The skill should show the review prompt before launching reviewers.",
+		"",
 		"Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
 		"",
 		"The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.",
@@ -945,6 +955,26 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	reviewPrepare := bySummary["`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."]
 	if reviewPrepare == nil || reviewPrepare["recommendedProof"] != "deterministic" || reviewPrepare["verificationReadiness"] != "ready-to-verify" {
 		t.Fatalf("expected claim review prepare-input packet contract to be deterministic, got %#v", reviewPrepare)
+	}
+	claimShowSummary := bySummary["`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` when agents need concrete candidates before choosing the next branch."]
+	if claimShowSummary == nil || claimShowSummary["recommendedProof"] != "deterministic" || claimShowSummary["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected claim show summary packet contract not to be treated as scenario design, got %#v", claimShowSummary)
+	}
+	reviewPromptPath := bySummary["Review prompts point at the same path so human and machine review can refer to the same compare output."]
+	if reviewPromptPath == nil || reviewPromptPath["recommendedProof"] != "deterministic" || reviewPromptPath["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected review prompt path contract to be deterministic, got %#v", reviewPromptPath)
+	}
+	reviewPromptBoundary := bySummary["`Cautilus` should keep review prompts, schemas, compare questions, and report artifacts on one durable boundary before executor variants run."]
+	if reviewPromptBoundary == nil || reviewPromptBoundary["recommendedProof"] != "deterministic" || reviewPromptBoundary["verificationReadiness"] != "ready-to-verify" {
+		t.Fatalf("expected review prompt durable-boundary contract to be deterministic, got %#v", reviewPromptBoundary)
+	}
+	reviewPromptJudgment := bySummary["The review prompt should judge whether the model answer is better."]
+	if reviewPromptJudgment == nil || reviewPromptJudgment["recommendedProof"] != "cautilus-eval" {
+		t.Fatalf("expected review prompt model-judgment behavior to stay eval proof, got %#v", reviewPromptJudgment)
+	}
+	skillReviewPrompt := bySummary["The skill should show the review prompt before launching reviewers."]
+	if skillReviewPrompt == nil || skillReviewPrompt["recommendedProof"] != "cautilus-eval" || skillReviewPrompt["recommendedEvalSurface"] != "dev/skill" {
+		t.Fatalf("expected skill review-prompt workflow behavior to stay dev/skill eval, got %#v", skillReviewPrompt)
 	}
 	broadDirective := bySummary["Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims."]
 	if broadDirective == nil || broadDirective["recommendedProof"] != "human-auditable" || broadDirective["verificationReadiness"] != "blocked" {

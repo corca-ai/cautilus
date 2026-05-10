@@ -257,6 +257,8 @@ Markdown glossary bullets that only define a code-styled label, such as `` `alig
 Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.
 YAML frontmatter is metadata, not claim prose.
 Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior.
+CLI summary packets that mention bounded candidate examples, `gitState`, or schema names are still deterministic packet contracts, even when the summary says agents use those candidates for branch selection.
+Review-prompt render, path, prompt-input, schema, compare-question, report-artifact, and durable-boundary contracts are deterministic unless the claim is about the model's judgment or a skill's review workflow behavior.
 Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.
 
 `claimId` is a display handle and packet reference.

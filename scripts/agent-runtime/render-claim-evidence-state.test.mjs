@@ -58,7 +58,7 @@ function fixturePackets(root) {
 				verificationReadiness: "needs-scenario",
 				recommendedEvalSurface: "app/prompt",
 				reviewStatus: "unreviewed",
-				summary: "Prompt behavior needs a scenario first.",
+				summary: "[Prompt behavior](prompt.spec.md) needs a scenario first.",
 				sourceRefs: [{ path: "docs/prompt.md", line: 8 }],
 			},
 			{
@@ -155,6 +155,8 @@ test("render claim evidence state from claim packet and status snapshot", () => 
 	assert.match(markdown, /ready for proof/);
 	assert.match(markdown, /does not mean a scenario fixture already exists/);
 	assert.match(markdown, /claim\.ready\.repo/);
+	assert.match(markdown, /\\\[Prompt behavior\\\] \(prompt\.spec\.md\)/);
+	assert.doesNotMatch(markdown, /\[Prompt behavior\]\(prompt\.spec\.md\)/);
 });
 
 test("render fails when status summary diverges from claim packet summary", () => {
