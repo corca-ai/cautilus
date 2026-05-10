@@ -7,6 +7,34 @@ test("parseArgs supports status report check mode", () => {
 	assert.equal(parseArgs(["node", "script", "--check"]).check, true);
 });
 
+test("parseArgs supports custom status report inputs", () => {
+	const args = parseArgs([
+		"node",
+		"script",
+		"--claims",
+		"claims.json",
+		"--status",
+		"status.json",
+		"--canonical-map",
+		"canonical.json",
+		"--claims-dir",
+		"claims-dir",
+		"--output",
+		"report.md",
+		"--sample-per-bucket",
+		"7",
+		"--review-sample",
+		"3",
+	]);
+	assert.equal(args.claims, "claims.json");
+	assert.equal(args.status, "status.json");
+	assert.equal(args.canonicalMap, "canonical.json");
+	assert.equal(args.claimsDir, "claims-dir");
+	assert.equal(args.output, "report.md");
+	assert.equal(args.samplePerBucket, 7);
+	assert.equal(args.reviewSample, 3);
+});
+
 test("renderStatusReport summarizes status, review results, validation, and eval plans", () => {
 	const args = {
 		claims: ".cautilus/claims/evidenced-typed-runners.json",
@@ -20,7 +48,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 			name: "cautilus.claim_discovery",
 			ruleset: "claim-discovery-rules.v2",
 		},
-		candidateCount: 2,
+		candidateCount: 3,
 		sourceCount: 1,
 		effectiveScanScope: {
 			entries: ["README.md"],
@@ -48,10 +76,19 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 				evidenceStatus: "unknown",
 				sourceRefs: [{ path: "README.md", line: 2 }],
 			},
+			{
+				claimId: "claim-readme-md-3",
+				summary: "A second [ambiguous](relative.md) claim should appear even when it is not a bucket sample.",
+				recommendedProof: "human-auditable",
+				verificationReadiness: "needs-alignment",
+				reviewStatus: "heuristic",
+				evidenceStatus: "unknown",
+				sourceRefs: [{ path: "README.md", line: 3 }],
+			},
 		],
 	};
 	const statusPacket = {
-		candidateCount: 2,
+		candidateCount: 3,
 		sourceCount: 1,
 		gitState: {
 			comparisonStatus: "fresh",
@@ -76,9 +113,9 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 				{
 					id: "human-align-surfaces",
 					recommendedActor: "human",
-					count: 1,
-					byReviewStatus: { heuristic: 1 },
-					byEvidenceStatus: { unknown: 1 },
+					count: 2,
+					byReviewStatus: { heuristic: 2 },
+					byEvidenceStatus: { unknown: 2 },
 					summary: "Reconcile ownership before proof.",
 					sampleClaimIds: ["claim-readme-md-2"],
 				},
@@ -227,6 +264,9 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /## Scoreboard/);
 	assert.match(report, /agent-add-deterministic-proof/);
 	assert.match(report, /human-align-surfaces/);
+	assert.match(report, /Full bucket detail is shown because this bucket is not ready for proof/);
+	assert.match(report, /A second ambiguous \(relative\.md\) claim should appear even when it is not a bucket sample/);
+	assert.doesNotMatch(report, /\[ambiguous\]\(relative\.md\)/);
 	assert.match(report, /review-result-human-align-action-bucket\.json/);
 	assert.match(report, /Active updates still match the current claim packet/);
 	assert.match(report, /Superseded/);

@@ -1,0 +1,268 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "createdAt": "2026-05-10T15:20:00+09:00",
+    "reviewer": "codex-current-agent",
+    "backend": "same-agent-review",
+    "mode": "action-bucket-readiness-triage",
+    "reviewInputPaths": [
+      ".cautilus/claims/review-input-agent-design-scenario-2026-05-10.json",
+      ".cautilus/claims/review-input-human-align-surfaces-2026-05-10.json"
+    ],
+    "reviewPolicy": "Review needs-scenario and needs-alignment action buckets for claims that can honestly move to ready-for-proof without product discussion. Keep product-scope, future-surface, ownership-boundary, and label-definition claims non-ready."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "auto-ready-deterministic-packet-and-status-contracts",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-6",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The claim describes current claim-discovery packet output and source-referenced worklist behavior. It can be proven by deterministic claim discover, status summary, and report projection checks before evidence is attached.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic claim-discovery and status-report proof for the source-referenced worklist contract.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-8",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The candidate-not-proof boundary is visible in the status summary packet and report projection, so the proof route is deterministic rather than broad alignment.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic status summary and evidence-state projection proof.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-optimization-spec-md-41",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The proposal and revision artifact fields are packet and workflow output contracts. They need deterministic artifact proof, not new product discussion.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic optimize proposal and revision artifact proof.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-694",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Generated-artifact head drift behavior is a concrete git-state packet contract that can be checked deterministically.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic claim git-state proof for generated-artifact head drift.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-704",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "`claim plan-evals` packet emission and non-writer behavior are deterministic command contracts.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic claim plan-evals packet and non-writer proof.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-112",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Runtime drift code placement is a packet/reporting classification contract that can be proven by deterministic report tests.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic reporting proof for runtime drift context classification.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-50",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Command observation preservation is a concrete report-input packet contract and does not require product-scope discussion before proof.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic report-input proof for adapter command observations.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The full ranked proposal list versus attention-view behavior is a deterministic packet and renderer projection contract.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic scenario proposal packet and renderer proof for preserving the full ranked result.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-106",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The behavior-surface vocabulary is a concrete schema contract in `cautilus.behavior_intent.v1`.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic behavior-intent schema proof for canonical and deprecated surface vocabulary.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-293",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Review-variant non-mutation is observable command behavior and should be protected by deterministic workspace-diff proof.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic review-variants proof that variants inspect the candidate without mutating the repo.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-198",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Runner assessment head-drift provenance is a concrete doctor and agent-status packet behavior.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic doctor and agent-status proof for runner assessment head-drift provenance.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "auto-ready-runtime-workspace-contracts",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-active-run-md-3",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Pinned active-run workspace behavior is a concrete runtime contract and should be tested deterministically.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic active-run workspace pinning proof.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-12",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Workspace directory allocation and prepare-hook timing are concrete live-run runtime behaviors.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic live-run invocation proof for workspace allocation and prepare timing.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-md-24",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Keeping workspace lifecycle off the public packet and flowing through adapter placeholders is a concrete packet/template contract.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic packet-shape and adapter-template proof for workspace lifecycle placeholders.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "auto-ready-skill-workflow-contracts",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Autonomous continuation within a recorded budget is observable Cautilus Agent workflow behavior and has a concrete packet side effect.",
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-for-proof",
+          "recommendedEvalSurface": "dev/skill",
+          "nextAction": "Create or attach a dev/skill fixture proving delegated continuation records the budget before proceeding.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-skills-cautilus-agent-skill-md-65",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The skill routing path for proof, alignment, and scenario questions is observable Cautilus Agent behavior.",
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-for-proof",
+          "recommendedEvalSurface": "dev/skill",
+          "nextAction": "Create or attach a dev/skill fixture proving Cautilus Agent selects the claim-discovery workflow for proof, alignment, or scenario questions.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "non-ready-product-or-definition-claims",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-master-plan-md-90",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The current command namespace can be checked, but the candidate also reserves a future GUI workbench surface. Treating the combined line as ready would overclaim.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "nextAction": "Split the current `eval live` namespace claim from the future GUI workbench reservation before attaching proof.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-scenario-history-md-3",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The candidate describes a missing repo-agnostic scenario-cadence design, not a ready eval scenario.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "nextAction": "Specify the scenario history contract and split concrete deterministic cadence checks before proof planning.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-scenario-history-md-175",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The line is rationale for compare-run behavior and needs a concrete command or packet contract before proof.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "nextAction": "Split a concrete compare-run baseline-freezing contract before attaching proof.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The candidate is explicitly about a future GUI workbench and is not a current protected scenario.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "nextAction": "Keep this as future-surface planning until the GUI workbench contract exists.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-proof-claim-evidence-state-md-38",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a readiness-label definition, not a claim that should become an eval fixture.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "nextAction": "Keep this as glossary context or teach discovery to exclude readiness-label definitions.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-323",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a readiness-label definition, not an independently provable behavior claim.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "nextAction": "Keep this as glossary context or teach discovery to exclude readiness-label definitions.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-ownership-spec-md-3",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The claim is an ownership boundary for honest evaluation, not a scenario candidate by itself.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-alignment",
+          "nextAction": "Align host-owned prompts, models, credentials, runtime wiring, and acceptance policy across the user and maintainer specs before splitting executable proof.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

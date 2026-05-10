@@ -3,6 +3,7 @@ import fs from "node:fs";
 import crypto from "node:crypto";
 import path from "node:path";
 
+import { primaryBuckets, renderActionBuckets } from "./claim-status-action-buckets.mjs";
 import { renderCanonicalMapSection } from "./render-canonical-claim-map-section.mjs";
 import { refreshPlanDigest, renderRefreshPlans } from "./claim-status-refresh-plans.mjs";
 
@@ -113,7 +114,9 @@ function formatCounts(counts) {
 }
 
 function table(headers, rows) {
-	const escapeCell = (value) => compactText(value).replaceAll("|", "\\|") || "-";
+	const escapeCell = (value) => compactText(value)
+		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)")
+		.replaceAll("|", "\\|") || "-";
 	const lines = [];
 	lines.push(`| ${headers.map(escapeCell).join(" | ")} |`);
 	lines.push(`| ${headers.map(() => "---").join(" | ")} |`);
@@ -125,40 +128,6 @@ function table(headers, rows) {
 
 function claimMap(claimsPacket) {
 	return new Map(asArray(claimsPacket?.claimCandidates).map((candidate) => [candidate.claimId, candidate]));
-}
-
-function claimSummary(candidate) {
-	return candidate ? compactText(candidate.summary) : "claim not found in selected packet";
-}
-
-function sourceLabel(candidate) {
-	const ref = asArray(candidate?.sourceRefs)[0];
-	return ref ? `${ref.path}:${ref.line ?? "?"}` : "-";
-}
-
-function bucketSampleRows(bucket, claimsById, limit) {
-	return asArray(bucket.sampleClaimIds)
-		.slice(0, limit)
-		.map((claimId) => {
-			const candidate = claimsById.get(claimId);
-			return [
-				claimId,
-				sourceLabel(candidate),
-				candidate?.recommendedProof ?? "-",
-				candidate?.verificationReadiness ?? "-",
-				candidate?.reviewStatus ?? "-",
-				candidate?.evidenceStatus ?? "-",
-				claimSummary(candidate),
-			];
-		});
-}
-
-function primaryBuckets(statusPacket) {
-	return asArray(statusPacket?.actionSummary?.primaryBuckets);
-}
-
-function crossCuttingSignals(statusPacket) {
-	return asArray(statusPacket?.actionSummary?.crossCuttingSignals);
 }
 
 function fallbackSummary(claimsPacket) {
@@ -398,38 +367,6 @@ function renderScoreboard(lines, claimsPacket, statusPacket) {
 	}
 }
 
-function renderActionBuckets(lines, statusPacket, claimsById, sampleLimit) {
-	lines.push("## Action Buckets");
-	lines.push("");
-	const bucketRows = primaryBuckets(statusPacket).map((bucket) => [
-		bucket.id,
-		bucket.recommendedActor ?? "-",
-		bucket.count ?? 0,
-		formatCounts(bucket.byReviewStatus),
-		formatCounts(bucket.byEvidenceStatus),
-		bucket.summary ?? "-",
-	]);
-	lines.push(...table(["Bucket", "Actor", "Count", "Review", "Evidence", "Meaning"], bucketRows));
-	lines.push("");
-	for (const signal of crossCuttingSignals(statusPacket)) {
-		lines.push(`Cross-cutting signal: ${signal.id} (${signal.count ?? 0}) - ${compactText(signal.summary)}`);
-		lines.push("");
-	}
-	const focusBucketIds = ["human-align-surfaces", "human-confirm-or-decompose", "split-or-defer", "agent-add-deterministic-proof", "agent-plan-cautilus-eval", "agent-design-scenario"];
-	for (const bucket of primaryBuckets(statusPacket).filter((item) => focusBucketIds.includes(item.id))) {
-		const sampleRows = bucketSampleRows(bucket, claimsById, sampleLimit);
-		if (sampleRows.length === 0) {
-			continue;
-		}
-		lines.push(`### ${bucket.id}`);
-		lines.push("");
-		lines.push(compactText(bucket.summary));
-		lines.push("");
-		lines.push(...table(["Claim", "Source", "Proof", "Readiness", "Review", "Evidence", "Summary"], sampleRows));
-		lines.push("");
-	}
-}
-
 function renderReviewResults(lines, digests, claimsById, sampleLimit) {
 	lines.push("## Review Results");
 	lines.push("");
@@ -583,7 +520,7 @@ export function renderStatusReport({ claimsPacket, statusPacket, digests, args }
 	renderScoreboard(lines, claimsPacket, statusPacket);
 	lines.push(...renderCanonicalMapSection({ canonicalMap: digests.canonicalMap, formatCounts, table }));
 	renderNextWork(lines, statusPacket);
-	renderActionBuckets(lines, statusPacket, claimsById, args.samplePerBucket);
+	renderActionBuckets(lines, statusPacket, claimsById, args.samplePerBucket, { formatCounts, table });
 	renderReviewResults(lines, currentReviewResults, claimsById, args.reviewSample);
 	renderValidation(lines, digests.validationReports);
 	renderEvalPlans(lines, digests.evalPlans);
