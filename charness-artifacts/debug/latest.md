@@ -1,63 +1,58 @@
-# Claim Derived Artifacts Stale Debug
-Date: 2026-05-10
+# Claim Evidence Projection Source Loop Debug
+Date: 2026-05-11
 
 ## Problem
 
-`npm run verify` failed after the Cautilus adapter gained new claim-status and evidence-state paths.
-The first stale artifact was the evidence-state summary, and after regenerating it the next stale artifact was the claim status report.
+Refreshing the claim packet made `docs/specs/proof/claim-evidence-state.md` appear as a changed claim source.
 
 ## Correct Behavior
 
-Given `.agents/cautilus-adapter.yaml` changes the claim discovery context, when `npm run verify` runs, then checked-in claim-derived artifacts should either already match the current adapter input or be regenerated before verification.
+Given `docs/specs/proof/claim-evidence-state.md` is generated from the claim packet and status snapshot, when claim discovery decides whether a saved claim map is stale, then this generated projection should not itself create claim candidates or make the next claim packet stale.
 
 ## Observed Facts
 
-- `npm run verify` failed in the `lint · claim evidence state` step.
-- The exact error was `.cautilus/claims/status-summary.json is stale; run npm run claims:evidence-state`.
-- After `npm run claims:evidence-state` and `npm run claims:evidence-state:check` passed, `npm run verify` failed in the `lint · claim status report` step.
-- The second exact error was `.cautilus/claims/claim-status-report.md is stale; run npm run claims:status-report`.
-- The current slice changed `.agents/cautilus-adapter.yaml` by adding semantic claim terms and artifact paths for evidence state, status summary, and claim status report.
-- The failures occurred after earlier gates passed, including eslint, spec lint, scenario normalizer lint, contract lint, and claim evidence hash audit.
+- `./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan-2026-05-11-post-skill-triage.json` reported `changedSourceCount: 2`.
+- The changed sources were `skills/cautilus-agent/SKILL.md` and `docs/specs/proof/claim-evidence-state.md`.
+- The generated evidence-state page says `This file is generated from the claim packet and status snapshot` and `Do not edit it by hand`.
+- The page also embeds volatile projection fields such as claims hash, status hash, current commit, packet commit, and changed claim source count.
 
 ## Reproduction
 
 Run:
 
 ```bash
-npm run verify
+./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan-2026-05-11-post-skill-triage.json
 ```
 
 ## Candidate Causes
 
-- Adapter metadata participates in the generated claim evidence-state summary and claim status report.
-- Adding artifact paths changed the expected status projection without regenerating `.cautilus/claims/status-summary.json`.
-- Adding artifact paths changed the expected report projection without regenerating `.cautilus/claims/claim-status-report.md`.
-- The verifier intentionally treats checked-in claim-derived artifact drift as a failing stale-artifact condition.
+- The Cautilus adapter lists `docs/specs/proof/claim-evidence-state.md` as an artifact path but does not exclude it from claim discovery.
+- The linked Markdown scan can reach generated proof projection pages under `docs/specs/proof/`.
+- The generated page contains claim-shaped explanatory text, so it can produce claim candidates even though it is not a source-of-truth promise document.
 
 ## Hypothesis
 
-If the adapter change altered generated claim-derived artifacts, then running `npm run claims:evidence-state` and `npm run claims:status-report` should update the checked-in artifacts and allow both stale checks to pass.
+If the adapter excludes `docs/specs/proof/claim-evidence-state.md` from claim discovery while keeping it as an artifact path, then the projection remains inspectable but stops participating in claim candidate discovery and stale-source detection.
 
 ## Verification
 
-Ran `npm run claims:evidence-state`, which refreshed `.cautilus/claims/status-summary.json`, `.cautilus/claims/evidence-state.json`, and `docs/specs/proof/claim-evidence-state.md`.
-Then `npm run claims:evidence-state:check` passed.
-Ran `npm run claims:status-report`, which refreshed `.cautilus/claims/claim-status-report.md`.
-Then `npm run claims:status-report:check` passed.
+Added `docs/specs/proof/claim-evidence-state.md` to `.agents/cautilus-adapter.yaml` claim discovery excludes.
+Re-ran the refresh plan, claim discovery, review-result application, canonical map generation, evidence-state generation, and status-report generation.
+The new refresh plan reports `status: up-to-date`, `changedSourceCount: 0`, and no changed claim lifecycle rows.
 
 ## Root Cause
 
-The checked-in claim-derived artifacts were generated before the current adapter and claim-status documentation changes.
-The verifier correctly rejected stale derived artifacts until they were regenerated.
+The generated evidence-state projection was treated as both a derived status artifact and a claim source.
+That made the status projection self-referential: refreshing the projection could create another changed claim-source signal.
 
 ## Seam Risk
 
-- Interrupt ID: claim-derived-artifacts-stale-after-adapter-update
+- Interrupt ID: claim-evidence-projection-source-loop
 - Risk Class: none
-- Seam: Cautilus adapter metadata to checked-in claim-derived artifacts
-- Disproving Observation: `npm run claims:evidence-state:check` and `npm run claims:status-report:check` pass after regenerating the artifacts.
-- What Local Reasoning Cannot Prove: whether unrelated checked-in evidence hash warnings should be cleaned in this slice.
-- Generalization Pressure: none
+- Seam: generated claim-status projection to claim-discovery source selection
+- Disproving Observation: a refresh plan after adapter exclusion no longer lists `docs/specs/proof/claim-evidence-state.md` as a changed source.
+- What Local Reasoning Cannot Prove: whether other generated proof projection pages under `docs/specs/proof/` should also be excluded.
+- Generalization Pressure: monitor
 
 ## Interrupt Decision
 
@@ -67,8 +62,4 @@ The verifier correctly rejected stale derived artifacts until they were regenera
 
 ## Prevention
 
-When `.agents/cautilus-adapter.yaml` changes claim discovery terms or artifact paths, run `npm run claims:evidence-state` and `npm run claims:status-report` before the full verify gate.
-
-## Related Prior Incidents
-
-- [debug-2026-05-03-status-report-max-lines.md](debug-2026-05-03-status-report-max-lines.md): claim status report changes can require regenerating checked-in claim artifacts before verification.
+Keep generated claim/status projections in adapter artifact paths for review, but exclude them from claim discovery unless they are intentionally authored promise sources.

@@ -7,13 +7,13 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:769a06ffeb696bcca77ffceb0b1a58656b1da4fd6c008061db9249c761c8ee73
+- Claims hash: sha256:df4a1208f5512364d81608edebb77348c829c6f093d6bf8745d0bfb4d63c140c
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:22950563d4330a435b574b380bb15e6ede60e86727090359de8b90401a0bcfd0
-- Git state: stale; stale=yes
-- Snapshot current commit: a8c10e2e0e4e3323f842a52919cb72a9dd20525a
-- Packet commit: 99e9ca40ac94b64719bb07ca53d77cad7c82f2c0
-- Changed claim sources: 1
+- Status hash: sha256:0873c3d89db62759239ee145f7cb9ce1eef879c71f194f4c795627be2c20435d
+- Git state: fresh; stale=no
+- Snapshot current commit: 6d00d72aa70c1f16cd280f055bf1872607831aad
+- Packet commit: 6d00d72aa70c1f16cd280f055bf1872607831aad
+- Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
 - Status snapshot role: derived command snapshot for git state, action buckets, and cross-cutting signals; its claimSummary must match the claim packet
 
@@ -21,10 +21,10 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 67, stale: 28, unknown: 273 |
-| Recommended proof | cautilus-eval: 118, deterministic: 150, human-auditable: 100 |
-| Proof readiness | blocked: 33, needs alignment: 34, needs scenario: 6, ready for proof: 295 |
-| Review | agent-reviewed: 149, heuristic: 218, human-reviewed: 1 |
+| Evidence | satisfied: 67, stale: 28, unknown: 270 |
+| Recommended proof | cautilus-eval: 118, deterministic: 149, human-auditable: 98 |
+| Proof readiness | blocked: 32, needs alignment: 34, needs scenario: 6, ready for proof: 293 |
+| Review | agent-reviewed: 148, heuristic: 216, human-reviewed: 1 |
 
 ## Cautilus Eval Backlog
 
@@ -76,18 +76,18 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | Bucket | Actor | Count | Evidence | Review | Meaning |
 | --- | --- | --- | --- | --- | --- |
 | already-satisfied | none | 67 | satisfied: 67 | agent-reviewed: 67 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 82 | stale: 23, unknown: 59 | agent-reviewed: 33, heuristic: 49 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| agent-add-deterministic-proof | agent | 81 | stale: 23, unknown: 58 | agent-reviewed: 33, heuristic: 48 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 112 | stale: 4, unknown: 108 | agent-reviewed: 9, heuristic: 102, human-reviewed: 1 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
 | agent-design-scenario | agent | 6 | unknown: 6 | heuristic: 6 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 34 | unknown: 34 | agent-reviewed: 16, heuristic: 18 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
-| human-confirm-or-decompose | human | 34 | stale: 1, unknown: 33 | agent-reviewed: 1, heuristic: 33 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
-| split-or-defer | human | 33 | unknown: 33 | agent-reviewed: 23, heuristic: 10 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
+| human-confirm-or-decompose | human | 33 | stale: 1, unknown: 32 | agent-reviewed: 1, heuristic: 32 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
+| split-or-defer | human | 32 | unknown: 32 | agent-reviewed: 22, heuristic: 10 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
 ## Cross-Cutting Signals
 
 | Signal | Actor | Count | Meaning |
 | --- | --- | --- | --- |
-| heuristic-review-needed | agent | 218 | Review heuristic labels before spending proof or eval budget. |
+| heuristic-review-needed | agent | 216 | Review heuristic labels before spending proof or eval budget. |
 | stale-evidence | agent | 28 | Refresh or recheck stale evidence before consuming it as proof. |
 
 ## How This Avoids A Split SOT

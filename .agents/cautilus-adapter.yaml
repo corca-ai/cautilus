@@ -40,6 +40,7 @@ claim_discovery:
     - .cautilus/claims
   exclude:
     - docs/specs/old/**
+    - docs/specs/proof/claim-evidence-state.md
     - docs/claims/**
     - docs/maintainers/**
     - docs/internal/handoff.md

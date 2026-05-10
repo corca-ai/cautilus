@@ -1,9 +1,9 @@
 {
-  "candidateCount": 368,
+  "candidateCount": 365,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 368,
+    "matchedClaimCount": 365,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 31,
@@ -177,7 +177,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ff43dd3472f293c1135165ce80962d3f3fb5ac2ddc54d47e5280f03e701ef028",
       "claimId": "claim-agents-md-79",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "evidenceStatusReason": "Reviewed as an operator-gate honesty claim. It needs evidence that the selected adapter can run the requested evaluator, review, CLI-discovery, or agent-surface proof before that gate is treated as available.",
@@ -541,7 +541,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e7fc47dac8033dfb97843d05c7b63de464847e6144724ea58e5097d94dda83ff",
       "claimId": "claim-readme-md-82",
-      "claimSemanticGroup": "Adapter and portability",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -1065,7 +1065,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
       "claimId": "claim-docs-cli-reference-md-108",
-      "claimSemanticGroup": "Adapter and portability",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
           "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
@@ -4820,7 +4820,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8ca72db113d324be35c266102e9b03f89f0798792273549ac3040280249aac80",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-252",
-      "claimSemanticGroup": "Documentation and contracts",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -4910,7 +4910,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3647c769bd0d7e394a06b1fd8ed656afe9f215d21539caad402d082349200012",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-259",
-      "claimSemanticGroup": "Agent and skill workflow",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -5001,7 +5001,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a18081e054aa826cfbe8c33f84e82bd37288350f76b48affbbf379f6150ed00d",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-321",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -5030,7 +5030,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3ae052d2e69bce5fd477651716c93abdc26b8279663de5c98b4c7f3922bbea72",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-323",
-      "claimSemanticGroup": "Documentation and contracts",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "evidenceStatusReason": "This is a readiness-label definition, not an independently provable behavior claim.",
@@ -5642,7 +5642,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a9943885f769ffe5d334af18d6d6402ccc92d0e356e348f91cc3428c920f80ff",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-528",
-      "claimSemanticGroup": "Agent and skill workflow",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -7108,7 +7108,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9ac5a58afee765f6920438778b4c83fabd0615aa52ffd68044c02f24255280ba",
       "claimId": "claim-docs-contracts-runner-readiness-md-29",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
           "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
@@ -7383,7 +7383,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8fe51f062991ce657831e0fad6218ae8064d3f2b64317e2b7727b4e305a59a21",
       "claimId": "claim-docs-contracts-runner-readiness-md-117",
-      "claimSemanticGroup": "Adapter and portability",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
           "contentHash": "sha256:2c15dc552e330eea44493e941ec7385e1ce1804634d75f645e10782d386e5448",
@@ -8994,7 +8994,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c26ee45a2c0003b1af74e8488f107159acc29a6aa1ef18af82df43dfa45a0976",
       "claimId": "claim-docs-specs-maintainer-adapter-host-ownership-spec-md-13",
-      "claimSemanticGroup": "Adapter and portability",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -9444,7 +9444,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7a88e134a26a96a127f0dd4bf9719c5ae5666d0ed47ba236a994cbec64a92411",
       "claimId": "claim-docs-specs-maintainer-readiness-runtime-status-spec-md-14",
-      "claimSemanticGroup": "Documentation and contracts",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -10171,7 +10171,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:13b915b8e802a3e21c9a4cdd482ed3ac1e7e15fc52f3e671ec95458d3ff25925",
       "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-45",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -10262,7 +10262,7 @@
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ad8aab282e858212b0b60be1349737226fb31858cb7aa48b97d20ed2dc999cb0",
       "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-219",
-      "claimSemanticGroup": "Quality gates",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -11746,7 +11746,7 @@
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:8845e73c8baa1168045998bd91688457e123495fd87321e8859dc6c4605223f7",
       "claimId": "claim-docs-specs-model-readiness-spec-md-5",
-      "claimSemanticGroup": "Documentation and contracts",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -11771,96 +11771,6 @@
       "summary": "Readiness means a user can tell whether Cautilus can safely operate in the selected repo and what setup is still missing before spending workflow budget.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:aa98497fd538c986d92d93ec1b2825fce2fc36a28c84dcc595e182bb28d8615b",
-      "claimId": "claim-docs-specs-proof-claim-evidence-state-md-5",
-      "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "human-auditable",
-        "linked-from:docs/specs/proof/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Raw claim evidence state stays in the claim packet; this page is the Evidence State projection for human reading.",
-          "line": 5,
-          "path": "docs/specs/proof/claim-evidence-state.md"
-        }
-      ],
-      "summary": "Raw claim evidence state stays in the claim packet; this page is the Evidence State projection for human reading.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:a351b2c24d2f840fca00844fb9907b759c6a628dc4ab1c2238881aea6b0c7136",
-      "claimId": "claim-docs-specs-proof-claim-evidence-state-md-18",
-      "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "deterministic",
-        "linked-from:docs/specs/proof/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Status snapshot role: derived command snapshot for git state, action buckets, and cross-cutting signals; its claimSummary must match the claim packet",
-          "line": 18,
-          "path": "docs/specs/proof/claim-evidence-state.md"
-        }
-      ],
-      "summary": "Status snapshot role: derived command snapshot for git state, action buckets, and cross-cutting signals; its claimSummary must match the claim packet",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:278d43807f9e5faf3ccd0087719dbc97dba28bb94e08789be181f9b3ec4f1d18",
-      "claimId": "claim-docs-specs-proof-claim-evidence-state-md-38",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "This is a readiness-label definition, not a claim that should become an eval fixture.",
-      "groupHints": [
-        "audience:developer",
-        "human-auditable",
-        "linked-from:docs/specs/proof/index.spec.md",
-        "needs-scenario",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep this as glossary context or teach discovery to exclude readiness-label definitions.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Needs scenario means the claim is still too broad, abstract, or surface-ambiguous for honest eval planning and must first be decomposed into one or more observable scenarios.",
-          "line": 38,
-          "path": "docs/specs/proof/claim-evidence-state.md"
-        }
-      ],
-      "summary": "Needs scenario means the claim is still too broad, abstract, or surface-ambiguous for honest eval planning and must first be decomposed into one or more observable scenarios.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
     },
     {
       "claimAudience": "developer",
@@ -12102,7 +12012,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
-      "claimId": "claim-skills-cautilus-agent-skill-md-109",
+      "claimId": "claim-skills-cautilus-agent-skill-md-104",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12121,7 +12031,7 @@
       "sourceRefs": [
         {
           "excerpt": "The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.",
-          "line": 109,
+          "line": 104,
           "path": "skills/cautilus-agent/SKILL.md"
         }
       ],
@@ -12133,7 +12043,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
-      "claimId": "claim-skills-cautilus-agent-skill-md-119",
+      "claimId": "claim-skills-cautilus-agent-skill-md-116",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12150,7 +12060,7 @@
       "sourceRefs": [
         {
           "excerpt": "If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.",
-          "line": 119,
+          "line": 116,
           "path": "skills/cautilus-agent/SKILL.md"
         }
       ],
@@ -12162,8 +12072,8 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:81df3b1030acb0d476e7b567186862db55f2189eccf9f8b1338b371db7cfd3e6",
-      "claimId": "claim-skills-cautilus-agent-skill-md-124",
-      "claimSemanticGroup": "Agent and skill workflow",
+      "claimId": "claim-skills-cautilus-agent-skill-md-121",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -12179,7 +12089,7 @@
       "sourceRefs": [
         {
           "excerpt": "In the Cautilus product repo, product-meaning review should start from those spec docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.",
-          "line": 124,
+          "line": 121,
           "path": "skills/cautilus-agent/SKILL.md"
         }
       ],
@@ -12191,7 +12101,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ad87c31fd958bda23449318cee9819910cee320e357b5d89828021f8fdc3007a",
-      "claimId": "claim-skills-cautilus-agent-skill-md-131",
+      "claimId": "claim-skills-cautilus-agent-skill-md-128",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12209,7 +12119,7 @@
       "sourceRefs": [
         {
           "excerpt": "Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim specs and preserve source refs, proof route, evidence status, and next action.",
-          "line": 131,
+          "line": 128,
           "path": "skills/cautilus-agent/SKILL.md"
         }
       ],
@@ -12221,7 +12131,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
-      "claimId": "claim-skills-cautilus-agent-skill-md-157",
+      "claimId": "claim-skills-cautilus-agent-skill-md-154",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12240,7 +12150,7 @@
       "sourceRefs": [
         {
           "excerpt": "This branch proves reviewer launch, not review-result merge behavior.",
-          "line": 157,
+          "line": 154,
           "path": "skills/cautilus-agent/SKILL.md"
         }
       ],
@@ -12252,7 +12162,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
-      "claimId": "claim-skills-cautilus-agent-skill-md-221",
+      "claimId": "claim-skills-cautilus-agent-skill-md-218",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12271,7 +12181,7 @@
       "sourceRefs": [
         {
           "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
-          "line": 221,
+          "line": 218,
           "path": "skills/cautilus-agent/SKILL.md"
         }
       ],
@@ -12296,44 +12206,44 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 262,
+      "developer": 259,
       "user": 106
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 65,
-      "Agent and skill workflow": 80,
-      "Claim discovery and review": 27,
-      "Documentation and contracts": 91,
+      "Adapter and portability": 61,
+      "Agent and skill workflow": 77,
+      "Claim discovery and review": 43,
+      "Documentation and contracts": 86,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and optimization": 24,
-      "Packets and reporting": 50,
-      "Quality gates": 27,
+      "Packets and reporting": 48,
+      "Quality gates": 22,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 67,
       "stale": 28,
-      "unknown": 273
+      "unknown": 270
     },
     "byLifecycle": {
-      "new": 368
+      "new": 365
     },
     "byRecommendedProof": {
       "cautilus-eval": 118,
-      "deterministic": 150,
-      "human-auditable": 100
+      "deterministic": 149,
+      "human-auditable": 98
     },
     "byReviewStatus": {
-      "agent-reviewed": 149,
-      "heuristic": 218,
+      "agent-reviewed": 148,
+      "heuristic": 216,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
-      "blocked": 33,
+      "blocked": 32,
       "needs-alignment": 34,
       "needs-scenario": 6,
-      "ready-for-proof": 295
+      "ready-for-proof": 293
     }
   },
   "discoveryEngine": {
@@ -12407,6 +12317,7 @@
       "artifacts/**",
       "charness-artifacts/**",
       "docs/specs/old/**",
+      "docs/specs/proof/claim-evidence-state.md",
       "docs/claims/**",
       "docs/maintainers/**",
       "docs/internal/handoff.md",
@@ -12424,7 +12335,11 @@
           "claim-discovery",
           "claim review",
           "review input",
-          "reviewer"
+          "reviewer",
+          "action bucket",
+          "readiness",
+          "evidence state",
+          "status report"
         ]
       },
       {
@@ -12514,11 +12429,11 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "99e9ca40ac94b64719bb07ca53d77cad7c82f2c0",
+  "gitCommit": "6d00d72aa70c1f16cd280f055bf1872607831aad",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
-    "appliedUpdateCount": 23,
+    "appliedUpdateCount": 22,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -12526,8 +12441,10 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
+          "recommendedEvalSurface",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-specs-user-claim-discovery-spec-md-6",
@@ -12541,6 +12458,7 @@
           "reviewStatus",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-8",
@@ -12552,8 +12470,10 @@
           "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
+          "recommendedEvalSurface",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-specs-user-optimization-spec-md-41",
@@ -12567,6 +12487,7 @@
           "reviewStatus",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-694",
@@ -12580,6 +12501,7 @@
           "reviewStatus",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-704",
@@ -12593,6 +12515,7 @@
           "reviewStatus",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-contracts-reporting-md-112",
@@ -12697,6 +12620,7 @@
           "recommendedEvalSurface",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
@@ -12711,6 +12635,7 @@
           "recommendedEvalSurface",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-skills-cautilus-agent-skill-md-65",
@@ -12724,6 +12649,7 @@
           "reviewStatus",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-master-plan-md-90",
@@ -12737,6 +12663,7 @@
           "reviewStatus",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-contracts-scenario-history-md-3",
@@ -12750,6 +12677,7 @@
           "reviewStatus",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-contracts-scenario-history-md-175",
@@ -12763,22 +12691,10 @@
           "reviewStatus",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
-        "clusterId": "non-ready-product-or-definition-claims"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-specs-proof-claim-evidence-state-md-38",
         "clusterId": "non-ready-product-or-definition-claims"
       },
       {
@@ -12802,6 +12718,7 @@
           "reviewStatus",
           "nextAction",
           "evidenceStatusReason",
+          "groupHints",
           "unresolvedQuestions"
         ],
         "claimId": "claim-docs-specs-user-ownership-spec-md-3",
@@ -12898,8 +12815,8 @@
     ],
     "appliedResultCount": 44,
     "skippedResultCount": 34,
-    "keptUpdateCount": 160,
-    "droppedUpdateCount": 226,
+    "keptUpdateCount": 159,
+    "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
@@ -13156,7 +13073,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 67,
+  "sourceCount": 66,
   "sourceGraph": [
     {
       "depth": 1,
@@ -14152,12 +14069,6 @@
       "depth": 3,
       "from": "docs/specs/proof/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/proof/claim-evidence-state.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/proof/index.spec.md",
-      "kind": "markdown-link",
       "to": "docs/specs/proof/evidence-map.spec.md"
     },
     {
@@ -15143,16 +15054,6 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:ee2947a010384f136249813879e85f8ef93778b50164bee3635d6d61ebb649bb",
-      "depth": 3,
-      "discoveredFrom": "docs/specs/proof/index.spec.md",
-      "kind": "spec",
-      "path": "docs/specs/proof/claim-evidence-state.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
       "contentHash": "sha256:b7610b16f37168959175581655e8ca0d645c666e26648b2b94bf40c433153560",
       "depth": 3,
       "discoveredFrom": "docs/specs/model/names-and-keys.spec.md",
@@ -15183,7 +15084,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:9aa43b23f1f511a66c1b45f87728de1b4050ec0f575c5ed0cff9ae1de68c3983",
+      "contentHash": "sha256:f0de0eda36e891dfdf4cadefeedf994e2dac569bb3715eddbcc23de422d6d625",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",
