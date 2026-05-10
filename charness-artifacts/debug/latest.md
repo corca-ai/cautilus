@@ -1,20 +1,23 @@
-# Claim Status Report Max Lines Debug
+# Claim Derived Artifacts Stale Debug
 Date: 2026-05-10
 
 ## Problem
 
-`npm run verify` failed after adding full non-ready bucket detail to the claim status report renderer.
+`npm run verify` failed after the Cautilus adapter gained new claim-status and evidence-state paths.
+The first stale artifact was the evidence-state summary, and after regenerating it the next stale artifact was the claim status report.
 
 ## Correct Behavior
 
-Given the report needs full non-ready bucket rows, when the renderer is updated, then it should keep the generated report useful without violating the repository's JavaScript lint limits.
+Given `.agents/cautilus-adapter.yaml` changes the claim discovery context, when `npm run verify` runs, then checked-in claim-derived artifacts should either already match the current adapter input or be regenerated before verification.
 
 ## Observed Facts
 
-- `npm run verify` failed in the eslint stage.
-- The exact lint error was `File has too many lines (627). Maximum allowed is 600`.
-- The failing file was `scripts/agent-runtime/render-claim-status-report.mjs`.
-- The newly added action-bucket routing helper duplicated Go-side action-bucket routing inside the already-large renderer file.
+- `npm run verify` failed in the `lint · claim evidence state` step.
+- The exact error was `.cautilus/claims/status-summary.json is stale; run npm run claims:evidence-state`.
+- After `npm run claims:evidence-state` and `npm run claims:evidence-state:check` passed, `npm run verify` failed in the `lint · claim status report` step.
+- The second exact error was `.cautilus/claims/claim-status-report.md is stale; run npm run claims:status-report`.
+- The current slice changed `.agents/cautilus-adapter.yaml` by adding semantic claim terms and artifact paths for evidence state, status summary, and claim status report.
+- The failures occurred after earlier gates passed, including eslint, spec lint, scenario normalizer lint, contract lint, and claim evidence hash audit.
 
 ## Reproduction
 
@@ -26,35 +29,35 @@ npm run verify
 
 ## Candidate Causes
 
-- The status report renderer file was already close to the max-lines threshold.
-- Adding full non-ready bucket rendering directly to the renderer pushed it over the lint limit.
-- The action-bucket routing helper is reusable logic and belongs in a small support module rather than in the report renderer.
+- Adapter metadata participates in the generated claim evidence-state summary and claim status report.
+- Adding artifact paths changed the expected status projection without regenerating `.cautilus/claims/status-summary.json`.
+- Adding artifact paths changed the expected report projection without regenerating `.cautilus/claims/claim-status-report.md`.
+- The verifier intentionally treats checked-in claim-derived artifact drift as a failing stale-artifact condition.
 
 ## Hypothesis
 
-If the action-bucket routing helper moves to a focused module and the renderer imports it, then eslint will pass without changing the report behavior.
+If the adapter change altered generated claim-derived artifacts, then running `npm run claims:evidence-state` and `npm run claims:status-report` should update the checked-in artifacts and allow both stale checks to pass.
 
 ## Verification
 
-- Moved action-bucket routing and full-bucket rendering helpers out of `render-claim-status-report.mjs`.
-- Rendered Markdown links inside status-report table cells as plain text so source-relative links do not become broken links from the generated report path.
-- Re-ran the status report renderer test.
-- Re-ran the status report generator.
-- `render-claim-status-report.mjs` is now 579 lines, below the 600-line lint limit.
+Ran `npm run claims:evidence-state`, which refreshed `.cautilus/claims/status-summary.json`, `.cautilus/claims/evidence-state.json`, and `docs/specs/proof/claim-evidence-state.md`.
+Then `npm run claims:evidence-state:check` passed.
+Ran `npm run claims:status-report`, which refreshed `.cautilus/claims/claim-status-report.md`.
+Then `npm run claims:status-report:check` passed.
 
 ## Root Cause
 
-The immediate cause was implementation placement.
-The full-bucket behavior was correct, but adding the routing helper directly to `render-claim-status-report.mjs` violated the repo's file-size lint budget.
+The checked-in claim-derived artifacts were generated before the current adapter and claim-status documentation changes.
+The verifier correctly rejected stale derived artifacts until they were regenerated.
 
 ## Seam Risk
 
-- Interrupt ID: claim-status-report-max-lines
+- Interrupt ID: claim-derived-artifacts-stale-after-adapter-update
 - Risk Class: none
-- Seam: generated report renderer to lint maintainability limit
-- Disproving Observation: eslint passes after moving the helper out of the large renderer.
-- What Local Reasoning Cannot Prove: whether other large agent-runtime renderers are close enough to the same limit to fail after small future additions.
-- Generalization Pressure: monitor
+- Seam: Cautilus adapter metadata to checked-in claim-derived artifacts
+- Disproving Observation: `npm run claims:evidence-state:check` and `npm run claims:status-report:check` pass after regenerating the artifacts.
+- What Local Reasoning Cannot Prove: whether unrelated checked-in evidence hash warnings should be cleaned in this slice.
+- Generalization Pressure: none
 
 ## Interrupt Decision
 
@@ -64,4 +67,8 @@ The full-bucket behavior was correct, but adding the routing helper directly to 
 
 ## Prevention
 
-Keep reusable projection routing helpers in small modules when a renderer is near the lint line limit.
+When `.agents/cautilus-adapter.yaml` changes claim discovery terms or artifact paths, run `npm run claims:evidence-state` and `npm run claims:status-report` before the full verify gate.
+
+## Related Prior Incidents
+
+- [debug-2026-05-03-status-report-max-lines.md](debug-2026-05-03-status-report-max-lines.md): claim status report changes can require regenerating checked-in claim artifacts before verification.

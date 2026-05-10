@@ -1,97 +1,84 @@
 # Quality Review
-
 Date: 2026-05-10
 
 ## Scope
 
-Review-learning summary CLI slice plus Cautilus Agent progressive-disclosure surface.
-The main ownership risk is overclaiming selected-packet aggregation as active-run learning.
-
-## Concept Risks
-
-- `cautilus review feedback summarize` is intentionally a selected-input CLI surface.
-  It does not discover active-run packet sets, choose default packet locations, or rank methods automatically.
-- The Cautilus Agent mentions the new command only as a follow-on for explicitly selected packets.
-  This keeps routing and guardrails in the agent while broad command discovery and schema output remain in the binary.
-- The remaining gap is now narrower: active-run or report-level packet discovery and default placement.
+Cautilus Agent skill and repo-local adapter improvements from the issue #33 claim-readiness dogfood session.
+The quality question is whether the learning is now in the agent-first product surface instead of remaining only in chat or maintainer memory.
 
 ## Current Gates
 
-- `go test ./internal/app ./internal/cli ./internal/contracts`
 - `npm run lint:skill-disclosure`
-- `npm run lint:links`
-- `npm run lint:specs`
-- `./bin/cautilus commands --json`
-- `./bin/cautilus doctor --repo-root . --scope agent-surface`
+- `./bin/cautilus adapter resolve --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path skills/cautilus-agent/SKILL.md --json`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path plugins/cautilus/skills/cautilus-agent/SKILL.md --json`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/suggest_public_skill_dogfood.py --repo-root . --skill-id cautilus-agent`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/debug/scripts/scaffold_debug_artifact.py --repo-root . --json`
 
 ## Runtime Signals
 
-- `review feedback summarize` appears in `./bin/cautilus commands --json`.
-- `./bin/cautilus review feedback summarize --input charness-artifacts/hitl/issue-33-review-feedback.json` emits `cautilus.review_feedback_summary.v1` with `aggregation.basis=selected_review_feedback_packets`.
-- `doctor --scope agent-surface` reports the local Cautilus Agent surface is ready.
-- Skill ergonomics inventory reports `long_core` for both source and packaged Cautilus Agent skill copies.
-  The standing disclosure gate still passes at the configured 180 non-empty-line limit.
-
-## Standing Test Economics
-
-The focused Go and doc gates are fast enough for this slice.
-The full `npm run verify` remains the stop gate before commit or push.
-
-## Coverage and Eval Depth
-
-- Deterministic coverage exists for successful selected-packet aggregation and non-feedback packet rejection.
-- No evaluator-backed proof was run because this slice is a deterministic CLI/report boundary, not prompt behavior.
-
-## Maintainer-Local Enforcement
-
-- `healthy`: command registry exposes the new CLI surface.
-- `healthy`: source and packaged Cautilus Agent skill copies stay synchronized by the skill-disclosure gate.
-- `weak`: Cautilus Agent core remains exactly at the 180-line disclosure ceiling.
-
-## Enforcement Triage
-
-- `AUTO_EXISTING`: `go test ./internal/app ./internal/cli ./internal/contracts` covers command behavior and registry shape.
-- `AUTO_EXISTING`: `npm run lint:skill-disclosure` catches progressive-disclosure line-budget drift.
-- `AUTO_EXISTING`: `npm run lint:specs` and `npm run lint:links` catch spec and doc wiring drift.
-- `NON_AUTOMATABLE`: deciding active-run packet discovery semantics remains product design work.
+- runtime source: missing structured timing capture for this docs/skill slice; command results came from direct gate output, not runtime metrics JSON.
+- runtime hot spots: unavailable because no structured timing source was collected for this slice.
+- coverage gate: not applicable for prose and adapter metadata changes; `npm run verify` remains the final stop gate.
+- evaluator depth: no evaluator run was used; this was a product-surface guidance change plus adapter-path update.
 
 ## Healthy
 
-- The binary owns broad command discovery and summary packet emission.
-- The Cautilus Agent owns when to call the summary command and explicitly avoids inventing active-run discovery.
-- Specs now distinguish current selected-packet aggregation from the still-open active-run aggregation gap.
+- The portable skill now says to keep proof class and readiness separate before creating fixtures.
+- The portable skill now routes `needs-scenario` and `needs-alignment` through normalized review-result packets and `claim review apply-result`, matching the dogfood path.
+- The portable skill now warns that only concrete command, packet, runner, schema, or skill-behavior claims should be promoted to proof-ready without further split or alignment.
+- The Cautilus adapter now names repo-local claim-status, evidence-state, and readiness terms and artifact paths so product-specific review context is discoverable without bloating the portable skill.
 
 ## Weak
 
-- The Cautilus Agent skill is still at its line ceiling.
-  Future command guidance should move detail into references or remove older prose instead of adding another line.
+- Skill ergonomics inventory reports `long_core` for `skills/cautilus-agent/SKILL.md`; the source and packaged copies are still close to the 180-line disclosure ceiling.
+- Consumer-side dogfood scaffolding for `cautilus-agent` is not automated by the current Charness public-skill helper because it only discovers `skills/public/*/SKILL.md`.
 
 ## Missing
 
-- No active-run or report surface discovers review-feedback packet sets yet.
-- No durable checked-in summary artifact is selected as standing evidence beyond deterministic CLI tests and the issue #33 sample packet.
+- No repo-owned helper currently maps `product_surfaces: cautilus_agent` to a consumer dogfood prompt/artifact the way `suggest_public_skill_dogfood.py` does for `skills/public`.
+- No structured runtime sample was recorded for this docs/skill quality slice.
 
 ## Deferred
 
-- Do not claim automatic operator-learning aggregation from active runs yet.
-- Do not make learned method ids public product vocabulary in this slice.
+- Do not move Cautilus Agent under `skills/public/` just to satisfy the Charness public-skill helper; that would blur the Cautilus product boundary.
+- Do not encode Cautilus-specific artifact paths into the portable skill body when the adapter can carry them.
+
+## Advisory
+
+- command: `inventory_skill_ergonomics.py` returned `status: clean` with `heuristics: ["long_core"]`, so this is a disclosure-pressure warning rather than a failing gate.
+- artifact: `charness-artifacts/debug/latest.md` records the public-skill dogfood helper registry mismatch and keeps the follow-up attached to quality instead of treating the helper failure as invisible.
 
 ## Delegated Review
 
-blocked: this turn did not include explicit subagent authorization for the new implementation slice, and the host instruction only allows spawning subagents when explicitly requested.
+blocked. Host signal: the current tool contract limits new subagent spawning to tasks that ask for delegation; this focused patch used same-session quality and debug gates instead.
 
 ## Commands Run
 
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.19/skills/quality/scripts/resolve_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.19/skills/quality/scripts/bootstrap_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.19/skills/quality/scripts/resolve_quality_artifact.py --repo-root . --intent current`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.19/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path skills/cautilus-agent/SKILL.md --json`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.19/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path plugins/cautilus/skills/cautilus-agent/SKILL.md --json`
-- `./bin/cautilus commands --json`
-- `./bin/cautilus doctor --repo-root . --scope agent-surface`
-- `./bin/cautilus review feedback summarize --input charness-artifacts/hitl/issue-33-review-feedback.json`
+- `npm run skills:sync-packaged`
+- `npm run claims:evidence-state`
+- `npm run claims:evidence-state:check`
+- `npm run claims:status-report`
+- `npm run claims:status-report:check`
+- `npm run lint:skill-disclosure`
+- `./bin/cautilus adapter resolve --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/resolve_adapter.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/bootstrap_adapter.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/resolve_quality_artifact.py --repo-root . --intent current`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path skills/cautilus-agent/SKILL.md --json`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/suggest_public_skill_dogfood.py --repo-root . --skill-id cautilus-agent`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/debug/scripts/resolve_adapter.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/skills/debug/scripts/scaffold_debug_artifact.py --repo-root . --json`
+- `python3 /home/hwidong/.codex/plugins/charness/scripts/validate_debug_artifact.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/charness/scripts/validate_quality_artifact.py --repo-root .`
+- `npm run verify`
+- `npm run hooks:check`
 
 ## Recommended Next Gates
 
-- `active` / `AUTO_CANDIDATE`: add active-run packet discovery only after the default review-feedback packet location is decided.
-- `passive`: move some Cautilus Agent detail into references before adding the next agent-facing command boundary.
+- active `AUTO_CANDIDATE`: add a Cautilus Agent dogfood suggestion helper or adapter mapping for `product_surfaces: cautilus_agent`.
+- passive `AUTO_CANDIDATE`: move detailed claim-readiness triage examples into a reference when the portable Cautilus Agent skill grows again because the core is already near the disclosure limit.
+
+## History
+
+- [2026-04-22 quality review](history/2026-04-22.md)

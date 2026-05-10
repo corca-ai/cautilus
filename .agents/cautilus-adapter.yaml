@@ -72,6 +72,10 @@ claim_discovery:
         - claim review
         - review input
         - reviewer
+        - action bucket
+        - readiness
+        - evidence state
+        - status report
     - label: Improvement and optimization
       terms:
         - optimize
@@ -146,6 +150,11 @@ artifact_paths:
   - README.md
   - docs/guides/evaluation-process.md
   - docs/specs/user/index.spec.md
+  - docs/specs/proof/claim-evidence-state.md
+  - .cautilus/claims/evidenced-typed-runners.json
+  - .cautilus/claims/status-summary.json
+  - .cautilus/claims/claim-status-report.md
+  - .cautilus/claims/evidence-state.json
   - skills/cautilus-agent/SKILL.md
 comparison_questions:
   - Does the current deterministic self-consumer gate stay honest about what it actually proves for the product repo?

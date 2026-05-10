@@ -96,13 +96,8 @@ Status from existing state:
 "$CAUTILUS_BIN" claim show --input <claims.json> --sample-claims 10
 ```
 
-Classify each candidate claim before creating fixtures:
-
-- `human-auditable`: the claim can be checked by reading current source or docs.
-- `deterministic`: the claim belongs in unit, lint, type, build, or CI checks.
-- `cautilus-eval`: the claim needs model, agent, prompt, skill, or workflow behavior evidence.
-- `scenario-candidate`: the claim needs normalized proposal input before it becomes a protected eval fixture.
-- `alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest.
+Before creating fixtures, keep proof class and readiness separate.
+Use `human-auditable` for source/doc judgment, `deterministic` for unit/lint/type/build/schema/CI proof, `cautilus-eval` for model/agent/prompt/skill/workflow evidence, `needs-scenario` for claims needing scenario decomposition, and `needs-alignment` for docs/code/adapter/skill surfaces that must be reconciled before proof would be honest.
 
 After discovery or refresh, summarize scanned entry files, linked Markdown count and depth, raw candidate count, claim summary by proof mechanism/readiness/evidence/review/lifecycle, and the groups that look ready for deterministic tests, Cautilus scenarios, alignment work, or human-auditable review.
 When the next natural branch is claim review, explain that it is a budgeted LLM review branch before presenting it as a choice.
@@ -115,6 +110,8 @@ Read `actionSummary.primaryBuckets` before making a next-work recommendation.
 Use the bucket `recommendedActor` and `summary` fields to separate agent work, human confirmation, deterministic proof, Cautilus eval planning, scenario design, alignment, and split-or-defer branches.
 Use `actionSummary.crossCuttingSignals` for review debt or stale-evidence warnings that can coexist with a primary proof branch.
 When preparing a focused review queue, pass `--action-bucket <bucket>` to `claim review prepare-input` instead of hand-filtering claim JSON.
+When triaging `needs-scenario` or `needs-alignment`, stay inside packet surfaces: prepare the focused action bucket, record reclassification decisions as `cautilus.claim_review_result.v1`, and apply them with `claim review apply-result`.
+Promote only concrete command, packet, runner, schema, or skill-behavior claims to `ready-for-proof`; keep product-boundary, future-surface, ownership, umbrella, and readiness-definition claims non-ready until split or aligned.
 In the Cautilus product repo, when raw claim status or review packets are too large for a maintainer to judge directly, run `npm run claims:status-report` and read `.cautilus/claims/claim-status-report.md` before asking for human decisions.
 If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.
 When raw candidates are too granular for product judgment, curate a canonical claim spec tree before continuing HITL.

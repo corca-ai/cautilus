@@ -4,7 +4,7 @@
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
     "claimsHash": "sha256:769a06ffeb696bcca77ffceb0b1a58656b1da4fd6c008061db9249c761c8ee73",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:dd2e2b29dfc0af67a2d24c9c85ab20f2fdd04850225b0f22eaa48c8ac3505d6c",
+    "statusHash": "sha256:22950563d4330a435b574b380bb15e6ede60e86727090359de8b90401a0bcfd0",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,21 +12,40 @@
     }
   },
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 16,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/refresh-plan-2026-05-10-readiness-triage.json",
+      ".cautilus/claims/review-input-agent-design-scenario-2026-05-10.json",
+      ".cautilus/claims/review-input-human-align-surfaces-2026-05-10.json",
+      ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
+      ".cautilus/claims/reviewed-typed-runners.json",
+      ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/latest.md",
+      "docs/specs/proof/claim-evidence-state.md",
+      "scripts/agent-runtime/claim-status-action-buckets.mjs",
+      "scripts/agent-runtime/render-claim-status-report.mjs",
+      "scripts/agent-runtime/render-claim-status-report.test.mjs"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
       "workingTreePolicy": "excluded"
     },
-    "changedSourceCount": 0,
-    "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "99e9ca40ac94b64719bb07ca53d77cad7c82f2c0",
-    "headDrift": false,
-    "isStale": false,
+    "changedSourceCount": 1,
+    "changedSources": [
+      "docs/specs/proof/claim-evidence-state.md"
+    ],
+    "comparisonStatus": "stale",
+    "currentGitCommit": "a8c10e2e0e4e3323f842a52919cb72a9dd20525a",
+    "headDrift": true,
+    "isStale": true,
     "packetGitCommit": "99e9ca40ac94b64719bb07ca53d77cad7c82f2c0",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "Run claim discover --previous <claims.json> --refresh-plan before review, review application, or eval planning.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
