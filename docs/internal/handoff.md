@@ -12,14 +12,14 @@ Issue #33은 닫혔고, 이번 세션의 후속 작업은 claim Evidence State S
 - 사용자가 Evidence State와 raw claim backlog가 둘로 갈라져 SOT가 흐려진다고 지적했습니다.
   현재 개선은 raw audit source를 `.cautilus/claims/evidenced-typed-runners.json`로 고정하고, 사람이 읽는 Evidence State projection을 생성물로 둡니다.
 - 새 projection은 `.cautilus/claims/evidence-state.json`와 [Claim Evidence State](../specs/proof/claim-evidence-state.md)입니다.
-  이 파일은 Cautilus eval로 증명해야 하지만 아직 열려 있는 claim 총량, ready/needs-scenario queue, surface별 분포, 샘플 claim, action bucket, stale 신호를 보여줍니다.
+  이 파일은 Cautilus eval로 증명해야 하지만 아직 열려 있는 claim 총량, ready-for-proof/needs-scenario queue, surface별 분포, 샘플 claim, action bucket, stale 신호를 보여줍니다.
 - `npm run claims:evidence-state`는 `cautilus claim show`로 `.cautilus/claims/status-summary.json`를 새로 만들고 Evidence State projection을 다시 렌더링합니다.
   `npm run claims:evidence-state:check`와 `npm run verify`는 status snapshot, JSON projection, Markdown projection의 drift를 잡습니다.
 - `claim-status-report.md`도 같은 status snapshot을 읽으므로 `claims:status-report:check`를 추가해 `verify`에서 함께 검사합니다.
 - 현재 claim packet은 HEAD 기준 stale입니다.
   생성 projection은 `Git state: stale`, packet commit `fe162d3`, current commit `815a3de`, changed claim sources `33`을 그대로 표시합니다.
 - 현재 open Cautilus-eval backlog는 89개입니다.
-  ready-to-verify 80개, needs-scenario 9개이며, surface 분포는 dev/repo 49, dev/skill 23, app/prompt 10, app/chat 1, undecided 6입니다.
+  ready for proof 80개, needs scenario 9개이며, surface 분포는 dev/repo 49, dev/skill 23, app/prompt 10, app/chat 1, undecided 6입니다.
 - Fresh-eye 리뷰에서 잡힌 핵심 문제는 반영했습니다.
   totals는 claim packet에서만 오고, status summary가 claim packet summary와 어긋나면 projection 렌더가 실패합니다.
   Evidence Map 상태도 `current` 대신 `generated; packet freshness shown`으로 바꿨습니다.

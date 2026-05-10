@@ -139,8 +139,12 @@ test("render claim evidence state from claim packet and status snapshot", () => 
 	assert.equal(projection.schemaVersion, "cautilus.claim_evidence_state.v1");
 	assert.equal(projection.sourceOfTruth.sourceRoles.claimsPacket, "audit source for candidates, labels, evidence status, and count totals");
 	assert.equal(projection.openCautilusEval.total, 3);
-	assert.equal(projection.openCautilusEval.readyToVerify, 2);
+	assert.equal(projection.openCautilusEval.readyForProof, 2);
 	assert.equal(projection.openCautilusEval.needsScenario, 1);
+	assert.deepEqual(projection.openCautilusEval.byReadiness, {
+		"needs scenario": 1,
+		"ready for proof": 2,
+	});
 	assert.deepEqual(projection.openCautilusEval.bySurface, {
 		"app/prompt": 1,
 		"dev/repo": 1,
@@ -148,6 +152,8 @@ test("render claim evidence state from claim packet and status snapshot", () => 
 	});
 	assert.match(markdown, /Do not edit it by hand\./);
 	assert.match(markdown, /open Cautilus eval claims/);
+	assert.match(markdown, /ready for proof/);
+	assert.match(markdown, /does not mean a scenario fixture already exists/);
 	assert.match(markdown, /claim\.ready\.repo/);
 });
 

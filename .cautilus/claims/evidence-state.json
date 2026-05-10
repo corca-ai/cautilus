@@ -4,7 +4,7 @@
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
     "claimsHash": "sha256:259a3ea5b27c7a36acca980e4c817363cf7208aaa061efcd1d06e4b2a570c42f",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:97757f814f769288d99d18ab6735ddc82664d0041e5d89c9cc6f713b6295504b",
+    "statusHash": "sha256:c74536c1b35010d9079d6ee0730d7a6b853db18e86ac382ec3d4e3889227f894",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,7 +12,7 @@
     }
   },
   "gitState": {
-    "changedFileCount": 329,
+    "changedFileCount": 336,
     "changedFiles": [
       ".agents/announcement-adapter.yaml",
       ".agents/cautilus-adapter.yaml",
@@ -56,8 +56,11 @@
       ".agents/skills/cautilus-agent/references/workflow-normalization.md",
       ".agents/skills/cautilus/agents/openai.yaml",
       ".agents/surfaces.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/status-summary.json",
       ".charness/hitl/runtime/hitl-20260505-010438/events.log",
       ".charness/hitl/runtime/hitl-20260505-010438/fix-queue.yaml",
       ".charness/hitl/runtime/hitl-20260505-010438/hitl-scratchpad.md",
@@ -207,6 +210,7 @@
       "docs/specs/old/command-surfaces.spec.md",
       "docs/specs/old/index.spec.md",
       "docs/specs/old/standalone-surface.spec.md",
+      "docs/specs/proof/claim-evidence-state.md",
       "docs/specs/proof/evidence-map.spec.md",
       "docs/specs/proof/gaps.spec.md",
       "docs/specs/proof/index.spec.md",
@@ -289,6 +293,9 @@
       "scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.mjs",
       "scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs",
       "scripts/agent-runtime/contract-versions.mjs",
+      "scripts/agent-runtime/render-claim-evidence-state.mjs",
+      "scripts/agent-runtime/render-claim-evidence-state.test.mjs",
+      "scripts/agent-runtime/render-claim-status-report.mjs",
       "scripts/agent-runtime/render-claim-status-report.test.mjs",
       "scripts/agent-runtime/run-cautilus-refresh-flow-dogfood.mjs",
       "scripts/agent-runtime/run-local-skill-test.test.mjs",
@@ -386,7 +393,7 @@
       "docs/specs/user/reviewable-artifacts.spec.md"
     ],
     "comparisonStatus": "stale",
-    "currentGitCommit": "815a3de374f46930d45de4c55a474318898c56fb",
+    "currentGitCommit": "59a4a9a83cfc6b79ec2dd75a1e8d23336b54ebea",
     "headDrift": true,
     "isStale": true,
     "packetGitCommit": "fe162d3f9e53436e5fed14b706abe9b5bcfe90c2",
@@ -419,7 +426,7 @@
   },
   "openCautilusEval": {
     "total": 89,
-    "readyToVerify": 80,
+    "readyForProof": 80,
     "needsScenario": 9,
     "bySurface": {
       "(none)": 6,
@@ -429,15 +436,20 @@
       "dev/skill": 23
     },
     "byReadiness": {
+      "needs scenario": 9,
+      "ready for proof": 80
+    },
+    "rawByReadiness": {
       "needs-scenario": 9,
       "ready-to-verify": 80
     },
-    "readySamples": [
+    "proofReadySamples": [
       {
         "claimId": "claim-docs-contracts-adapter-contract-md-209",
         "source": "docs/contracts/adapter-contract.md:209",
         "surface": "dev/repo",
-        "readiness": "ready-to-verify",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-to-verify",
         "review": "heuristic",
         "summary": "When an eval run uses `runtime=product`, the adapter-owned command is expected to exercise a headless product path; the runtime label does not make product proof ready without a current runner assessment."
       },
@@ -445,7 +457,8 @@
         "claimId": "claim-docs-contracts-adapter-contract-md-222",
         "source": "docs/contracts/adapter-contract.md:222",
         "surface": "dev/repo",
-        "readiness": "ready-to-verify",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-to-verify",
         "review": "heuristic",
         "summary": "If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy."
       },
@@ -453,7 +466,8 @@
         "claimId": "claim-docs-contracts-adapter-contract-md-432",
         "source": "docs/contracts/adapter-contract.md:432",
         "surface": "dev/repo",
-        "readiness": "ready-to-verify",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-to-verify",
         "review": "heuristic",
         "summary": "point review prompts at the same path so human and machine review can refer to the same compare output"
       },
@@ -461,7 +475,8 @@
         "claimId": "claim-docs-contracts-adapter-contract-md-478",
         "source": "docs/contracts/adapter-contract.md:478",
         "surface": "dev/repo",
-        "readiness": "ready-to-verify",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-to-verify",
         "review": "heuristic",
         "summary": "Each review prompt should point at human-visible failure:"
       },
@@ -469,7 +484,8 @@
         "claimId": "claim-docs-contracts-review-packet-md-3",
         "source": "docs/contracts/review-packet.md:3",
         "surface": "dev/repo",
-        "readiness": "ready-to-verify",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-to-verify",
         "review": "heuristic",
         "summary": "`Cautilus` should keep review prompts, schemas, compare questions, and report artifacts on one durable boundary before executor variants run."
       },
@@ -477,7 +493,8 @@
         "claimId": "claim-docs-contracts-active-run-md-59",
         "source": "docs/contracts/active-run.md:59",
         "surface": "dev/repo",
-        "readiness": "ready-to-verify",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-to-verify",
         "review": "heuristic",
         "summary": "The manifest is only a recognition marker for the pruner; workflow metadata belongs in per-command artifacts, not in the manifest."
       },
@@ -485,7 +502,8 @@
         "claimId": "claim-docs-contracts-active-run-md-186",
         "source": "docs/contracts/active-run.md:186",
         "surface": "dev/repo",
-        "readiness": "ready-to-verify",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-to-verify",
         "review": "heuristic",
         "summary": "Ambiguous across parallel workflows, silently grabs yesterday's workflow across session gaps, requires a magic freshness threshold."
       },
@@ -493,7 +511,8 @@
         "claimId": "claim-docs-contracts-active-run-md-221",
         "source": "docs/contracts/active-run.md:221",
         "surface": "dev/repo",
-        "readiness": "ready-to-verify",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-to-verify",
         "review": "heuristic",
         "summary": "The command therefore follows the same precedence chain as other workflow-creating helpers (explicit `--output-dir` > `CAUTILUS_RUN_DIR` > auto-materialize under `./.cautilus/runs/`) and emits `Active run: <abs path>` once only when it auto-materializes."
       }
@@ -503,7 +522,8 @@
         "claimId": "claim-readme-md-179",
         "source": "README.md:179",
         "surface": "app/chat",
-        "readiness": "needs-scenario",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
         "review": "heuristic",
         "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest."
       },
@@ -511,7 +531,8 @@
         "claimId": "claim-docs-master-plan-md-88",
         "source": "docs/master-plan.md:88",
         "surface": "surface undecided",
-        "readiness": "needs-scenario",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
         "review": "heuristic",
         "summary": "Their public command namespace is `eval live`; the `workbench` name is reserved for a possible future GUI where operators can browse and edit claims, scenarios, and evidence."
       },
@@ -519,7 +540,8 @@
         "claimId": "claim-docs-specs-user-evaluation-spec-md-12",
         "source": "docs/specs/user/evaluation.spec.md:12",
         "surface": "app/prompt",
-        "readiness": "needs-scenario",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
         "review": "agent-reviewed",
         "summary": "Cautilus supports app-facing behavior, such as prompt, chat, and service-response behavior."
       },
@@ -527,7 +549,8 @@
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-690",
         "source": "docs/contracts/claim-discovery-workflow.md:690",
         "surface": "surface undecided",
-        "readiness": "needs-scenario",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
         "review": "heuristic",
         "summary": "`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch."
       },
@@ -535,7 +558,8 @@
         "claimId": "claim-docs-contracts-scenario-history-md-3",
         "source": "docs/contracts/scenario-history.md:3",
         "surface": "surface undecided",
-        "readiness": "needs-scenario",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
         "review": "heuristic",
         "summary": "`Cautilus` needs a repo-agnostic way to decide which scenarios run during iterate, held-out, and full-gate evaluation, and how repeated train runs change scenario cadence over time."
       },
@@ -543,7 +567,8 @@
         "claimId": "claim-docs-contracts-scenario-history-md-175",
         "source": "docs/contracts/scenario-history.md:175",
         "surface": "surface undecided",
-        "readiness": "needs-scenario",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
         "review": "heuristic",
         "summary": "Compare runs often need a frozen baseline side so only the candidate reruns."
       },
@@ -551,7 +576,8 @@
         "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
         "source": "docs/contracts/workbench-instance-discovery.md:87",
         "surface": "surface undecided",
-        "readiness": "needs-scenario",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
         "review": "heuristic",
         "summary": "future GUI workbench behavior for browsing and editing claims, scenarios, evidence, and related review state That future workbench should be specified as an interactive product surface, not as the current live app runner seam."
       },
@@ -559,7 +585,8 @@
         "claimId": "claim-docs-specs-user-optimization-spec-md-7",
         "source": "docs/specs/user/optimization.spec.md:7",
         "surface": "surface undecided",
-        "readiness": "needs-scenario",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
         "review": "heuristic",
         "summary": "Cautilus supports bounded improvement loops where the target claim, budget, and protected checks are explicit before work begins."
       }
@@ -602,7 +629,7 @@
       "review": {
         "heuristic": 80
       },
-      "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
+      "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
     },
     {
       "id": "agent-design-scenario",

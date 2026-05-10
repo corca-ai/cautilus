@@ -80,6 +80,23 @@ function countEntries(counts) {
 	return Object.entries(asObject(counts)).map(([value, count]) => ({ value, count }));
 }
 
+function readinessLabel(value) {
+	switch (value) {
+		case "ready-to-verify":
+			return "ready for proof";
+		case "needs-scenario":
+			return "needs scenario";
+		case "needs-alignment":
+			return "needs alignment";
+		default:
+			return String(value ?? "unknown");
+	}
+}
+
+function readinessDisplayCounts(counts) {
+	return Object.fromEntries(Object.entries(asObject(counts)).map(([key, count]) => [readinessLabel(key), count]));
+}
+
 function selectedClaimSummary(claimsPacket) {
 	const candidates = asArray(claimsPacket.claimCandidates);
 	const summary = asObject(claimsPacket.claimSummary);
@@ -130,7 +147,8 @@ function sampleRows(candidates, limit = 8) {
 		claimId: candidate.claimId,
 		source: firstSourceRef(candidate),
 		surface: candidate.recommendedEvalSurface ?? "surface undecided",
-		readiness: candidate.verificationReadiness ?? "unknown",
+		readiness: readinessLabel(candidate.verificationReadiness),
+		rawReadiness: candidate.verificationReadiness ?? "unknown",
 		review: candidate.reviewStatus ?? "unknown",
 		summary: compactText(candidate.summary),
 	}));
@@ -143,7 +161,10 @@ function bucketRows(statusPacket) {
 		actor: bucket.recommendedActor ?? "-",
 		evidence: asObject(bucket.byEvidenceStatus),
 		review: asObject(bucket.byReviewStatus),
-		summary: compactText(bucket.summary),
+		summary:
+			bucket.id === "agent-plan-cautilus-eval"
+				? "Draft or select Cautilus eval scenarios for proof-ready eval claims."
+				: compactText(bucket.summary),
 	}));
 }
 
@@ -178,11 +199,12 @@ function buildProjection({ claimsPacket, statusPacket, claimsPath, statusPath, c
 		},
 		openCautilusEval: {
 			total: openEval.length,
-			readyToVerify: readyEval.length,
+			readyForProof: readyEval.length,
 			needsScenario: needsScenario.length,
 			bySurface: countBy(openEval, (candidate) => candidate.recommendedEvalSurface ?? "(none)"),
-			byReadiness: countBy(openEval, (candidate) => candidate.verificationReadiness ?? "unknown"),
-			readySamples: sampleRows(readyEval),
+			byReadiness: readinessDisplayCounts(countBy(openEval, (candidate) => candidate.verificationReadiness ?? "unknown")),
+			rawByReadiness: countBy(openEval, (candidate) => candidate.verificationReadiness ?? "unknown"),
+			proofReadySamples: sampleRows(readyEval),
 			scenarioSamples: sampleRows(needsScenario),
 		},
 		actionBuckets: bucketRows(statusPacket),
@@ -239,7 +261,7 @@ export function renderMarkdown(projection) {
 			[
 				["Evidence", formatCounts(projection.totals.byEvidenceStatus)],
 				["Recommended proof", formatCounts(projection.totals.byRecommendedProof)],
-				["Verification readiness", formatCounts(projection.totals.byVerificationReadiness)],
+				["Proof readiness", formatCounts(readinessDisplayCounts(projection.totals.byVerificationReadiness))],
 				["Review", formatCounts(projection.totals.byReviewStatus)],
 			],
 		),
@@ -250,20 +272,23 @@ export function renderMarkdown(projection) {
 			["Queue", "Count"],
 			[
 				["open Cautilus eval claims", projection.openCautilusEval.total],
-				["ready to verify", projection.openCautilusEval.readyToVerify],
+				["ready for proof", projection.openCautilusEval.readyForProof],
 				["needs scenario", projection.openCautilusEval.needsScenario],
 			],
 		),
+		"",
+		"Ready for proof means the claim is concrete enough to attach or create the selected proof now; it does not mean a scenario fixture already exists.",
+		"Needs scenario means the claim is still too broad, abstract, or surface-ambiguous for honest eval planning and must first be decomposed into one or more observable scenarios.",
 		"",
 		"### By Surface",
 		"",
 		...table(["Surface", "Count"], countEntries(projection.openCautilusEval.bySurface).map((entry) => [entry.value, entry.count])),
 		"",
-		"### Ready Samples",
+		"### Proof-Ready Samples",
 		"",
 		...table(
 			["Claim", "Source", "Surface", "Readiness", "Review", "Summary"],
-			projection.openCautilusEval.readySamples.map((row) => [row.claimId, row.source, row.surface, row.readiness, row.review, row.summary]),
+			projection.openCautilusEval.proofReadySamples.map((row) => [row.claimId, row.source, row.surface, row.readiness, row.review, row.summary]),
 		),
 		"",
 		"### Scenario Samples",

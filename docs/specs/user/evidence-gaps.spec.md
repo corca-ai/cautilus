@@ -61,4 +61,5 @@ jq '{schemaVersion, sourceOfTruth, openCautilusEval}' .cautilus/claims/evidence-
 | .cautilus/claims/evidence-state.json | schemaVersion | cautilus.claim_evidence_state.v1 | | |
 | .cautilus/claims/evidence-state.json | sourceOfTruth.claimsPacket | .cautilus/claims/evidenced-typed-runners.json | | |
 | .cautilus/claims/evidence-state.json | openCautilusEval.total | | | 1 |
+| .cautilus/claims/evidence-state.json | openCautilusEval.readyForProof | | | 1 |
 | .cautilus/claims/evidence-state.json | actionBuckets[0].id | | yes | |
