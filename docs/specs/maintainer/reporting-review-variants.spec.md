@@ -27,7 +27,7 @@ Cautilus writes machine-readable review packets first and renders readable repor
 - [scripts/agent-runtime/run-review-variant.test.mjs](../../../scripts/agent-runtime/run-review-variant.test.mjs) and [scripts/agent-runtime/run-executor-variants.test.mjs](../../../scripts/agent-runtime/run-executor-variants.test.mjs) cover variant routing so human and machine reviewer flows reach the same durable artifact.
 - [internal/app/cli_smoke_test.go](../../../internal/app/cli_smoke_test.go) `TestCLIReviewFeedbackBuildEmitsSourceBoundLearningPacket` and related invalid-disposition, missing-proposal, and `missing_critical` cases cover the `cautilus.review_feedback.v1` packet contract.
 - [internal/app/cli_smoke_test.go](../../../internal/app/cli_smoke_test.go) `TestCLIReviewFeedbackSummarizeCountsDispositionsByMethodFamily` and `TestCLIReviewFeedbackSummarizeRejectsNonFeedbackPacket` cover selected-packet aggregation for `cautilus.review_feedback_summary.v1`.
-- [docs/cli-reference.md](../../cli-reference.md) documents `cautilus review feedback build` and `cautilus review feedback summarize` as the commands that preserve source review refs, normalized method and proposal fields, review-useful dispositions, and selected-packet summary counts.
+- [docs/guides/cli.md](../../guides/cli.md) documents `cautilus review feedback build` and `cautilus review feedback summarize` as the commands that preserve source review refs, normalized method and proposal fields, review-useful dispositions, and selected-packet summary counts.
 
 ## Evidence Gaps
 

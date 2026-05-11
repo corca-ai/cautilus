@@ -73,7 +73,7 @@ Required evidence:
 - live-run invocation tests for request and result packet semantics
 - behavior-intent schema and normalization tests for canonical surface vocabulary and deprecated aliases
 
-Source anchors: docs/cli-reference.md, docs/guides/consumer-adoption.md, docs/contracts/adapter-contract.md.
+Source anchors: docs/guides/cli.md, docs/guides/consumer-adoption.md, docs/contracts/adapter-contract.md.
 
 ## M4. Evaluation Uses Two Surfaces And Four Presets
 
@@ -196,7 +196,7 @@ Required evidence:
 - evaluation summary tests used by optimize scoring
 - revision artifact tests that preserve budget, checkpoint, and recommendation state
 
-Source anchors: docs/contracts/optimization.md, docs/contracts/optimization-search.md, docs/gepa.md.
+Source anchors: docs/contracts/optimization.md, docs/contracts/optimization-search.md, docs/guides/optimize.md.
 
 ## M10. Public Specs And Claim Catalogs Have Different Jobs
 

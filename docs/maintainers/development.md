@@ -131,7 +131,7 @@ Refresh the HTML views without replaying LLM-backed reviews:
 npm run dogfood:self:html
 ```
 
-This is a thin wrapper around the product-owned `cautilus self-dogfood render-html` command (see [cli-reference.md](../cli-reference.md)).
+This is a thin wrapper around the product-owned `cautilus self-dogfood render-html` command (see [cli.md](../guides/cli.md)).
 
 ## Runtime ownership
 

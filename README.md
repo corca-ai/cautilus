@@ -73,7 +73,7 @@ Quick links:
 - What Cautilus promises: [docs/specs/user/index.spec.md](./docs/specs/user/index.spec.md)
 - Maintainer claim map: [docs/specs/maintainer/index.spec.md](./docs/specs/maintainer/index.spec.md)
 - Claim spec report entry: [docs/specs/index.spec.md](./docs/specs/index.spec.md)
-- Full command catalog: [docs/cli-reference.md](./docs/cli-reference.md)
+- Full command catalog: [docs/guides/cli.md](./docs/guides/cli.md)
 - Fresh consumer bootstrap after the binary is on `PATH`: [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md)
 - Public executable spec report: <https://corca-ai.github.io/cautilus/>
 
@@ -204,7 +204,7 @@ Evaluator-dependent behavior goes through `cautilus eval`.
 Improvement work waits until the proof surface is explicit.
 
 `Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot optimizer: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.
-Deep dive: `docs/gepa.md`.
+Deep dive: `docs/guides/optimize.md`.
 
 The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.
 
@@ -266,9 +266,7 @@ docs/
 ├── contracts/                     # adapter, reports, review, scenarios
 ├── specs/                         # active claim specs and archived proof specs
 ├── maintainers/                   # maintainer-only operations and release docs
-├── master-plan.md                 # durable direction
-├── cli-reference.md               # full CLI command catalog
-└── gepa.md                        # GEPA-style prompt search deep-dive
+└── master-plan.md                 # durable direction
 ```
 
 Top picks:
@@ -280,10 +278,10 @@ Top picks:
 - [docs/specs/maintainer/index.spec.md](./docs/specs/maintainer/index.spec.md) — maintainer-facing claim spec index
 - [docs/contracts/adapter-contract.md](./docs/contracts/adapter-contract.md) — adapter schema
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md) — review packet boundary
-- [docs/cli-reference.md](./docs/cli-reference.md) — full CLI reference
+- [docs/guides/cli.md](./docs/guides/cli.md) — full CLI reference
 - [docs/maintainers/development.md](./docs/maintainers/development.md) — maintainer dev + self-dogfood
 - [docs/maintainers/operator-acceptance.md](./docs/maintainers/operator-acceptance.md) — human takeover and acceptance checklist
-- [docs/gepa.md](./docs/gepa.md) — GEPA-style prompt search
+- [docs/guides/optimize.md](./docs/guides/optimize.md) — GEPA-style prompt search
 - [docs/master-plan.md](./docs/master-plan.md) — roadmap
 - [examples/starters/](./examples/starters/) — normalization-family starter kits
 

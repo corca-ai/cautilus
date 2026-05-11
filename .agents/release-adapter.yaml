@@ -37,7 +37,7 @@ cli_skill_surface_probe_commands:
   - "./bin/cautilus scenarios --json"
 
 cli_skill_surface_command_docs:
-  - docs/cli-reference.md
+  - docs/guides/cli.md
   - docs/maintainers/operator-acceptance.md
 
 cli_skill_surface_skill_paths:
@@ -50,7 +50,7 @@ cli_skill_surface_change_globs:
   - "cmd/cautilus/**"
   - "internal/cli/**"
   - "internal/app/**"
-  - "docs/cli-reference.md"
+  - "docs/guides/cli.md"
   - "docs/maintainers/operator-acceptance.md"
   - "skills/public/**"
   - "skills/cautilus-agent/**"

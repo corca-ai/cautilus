@@ -1,8 +1,8 @@
 # CLI Reference
 
 Full command catalog for `cautilus`.
-For the narrative overview, see the [README](../README.md).
-For the shortest bootstrap loop on a fresh machine, see the Quick Start section in [README.md](../README.md).
+For the narrative overview, see the [README](../../README.md).
+For the shortest bootstrap loop on a fresh machine, see the Quick Start section in [README.md](../../README.md).
 
 ## Install & lifecycle
 
@@ -41,7 +41,7 @@ cautilus adapter init --repo-root .
 cautilus adapter resolve --repo-root .
 ```
 
-If you already know which evaluation surface your repo needs, start from the closest starter kit under [examples/starters/](../examples/starters/) instead of `cautilus adapter init`.
+If you already know which evaluation surface your repo needs, start from the closest starter kit under [examples/starters/](../../examples/starters/) instead of `cautilus adapter init`.
 Each starter ships a pre-filled `cautilus-adapter.yaml`, a canonical input fixture, and a README that explains what to replace next.
 Treat starter placeholders as bootstrap help, not as proof that a real consumer workflow is already wired.
 
@@ -262,7 +262,7 @@ It links normalized chatbot threads to scenario proposals and coverage hints so 
 
 ## Evaluation surfaces
 
-The shipped surface is `cautilus eval` (see [docs/specs/user/evaluation.spec.md](./specs/user/evaluation.spec.md)).
+The shipped surface is `cautilus eval` (see [docs/specs/user/evaluation.spec.md](../specs/user/evaluation.spec.md)).
 The first preset, `dev / repo`, replaces the prior `cautilus instruction-surface` commands.
 Cautilus exposes two top-level surfaces and four presets:
 `dev / repo` for repo work contracts, `dev / skill` for checked-in or portable development skills, `app / chat` for multi-turn product conversation behavior, and `app / prompt` for single product input/output behavior.
@@ -517,7 +517,7 @@ cautilus optimize propose \
   --input /tmp/cautilus-optimize/input.json
 ```
 
-For the GEPA-style bounded prompt search seam layered above that optimizer — multi-generation reflective mutation, held-out reevaluation, frontier selection — see [gepa.md](./gepa.md).
+For the GEPA-style bounded prompt search seam layered above that optimizer — multi-generation reflective mutation, held-out reevaluation, frontier selection — see [optimize.md](./optimize.md).
 
 ## Self-dogfood rendering
 
@@ -530,7 +530,7 @@ cautilus self-dogfood render-experiments-html
 ```
 
 The rendered HTML is read-only over `summary.json`, `report.json`, and `review-summary.json`; those JSON files remain the source of truth.
-For the npm wrappers and the full dogfood workflow, see [development.md](./maintainers/development.md).
+For the npm wrappers and the full dogfood workflow, see [development.md](../maintainers/development.md).
 These renderers answer:
 "what should a human reviewer open first if they should inspect the same
 decision surface without parsing raw JSON?"

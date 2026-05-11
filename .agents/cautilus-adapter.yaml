@@ -49,7 +49,6 @@ claim_discovery:
     user:
       - README.md
       - docs/specs/user/**
-      - docs/cli-reference.md
       - docs/guides/**
     developer:
       - AGENTS.md
@@ -61,7 +60,6 @@ claim_discovery:
       - docs/internal/**
       - docs/maintainers/**
       - docs/master-plan.md
-      - docs/gepa.md
       - .agents/**
       - scripts/**
       - internal/**

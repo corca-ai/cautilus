@@ -60,7 +60,7 @@ Optimization work must preserve what was tested, what changed, and which checks 
 Optimization tests and reports should prove that budgets, checkpoints, review reuse, and blocked-readiness states are recorded.
 
 **Source anchors.**
-README.md, docs/contracts/optimization.md, docs/contracts/optimization-search.md, docs/gepa.md.
+README.md, docs/contracts/optimization.md, docs/contracts/optimization-search.md, docs/guides/optimize.md.
 
 ## U4. Doctor: Show Setup And Runner Readiness
 
@@ -76,7 +76,7 @@ A ready doctor result means the selected Cautilus surface can run; it does not p
 Doctor, adapter, runner-readiness, and agent-status tests should prove that readiness decisions are shared between the binary and agent workflow.
 
 **Source anchors.**
-README.md, docs/cli-reference.md, docs/guides/consumer-adoption.md, docs/contracts/runner-readiness.md.
+README.md, docs/guides/cli.md, docs/guides/consumer-adoption.md, docs/contracts/runner-readiness.md.
 
 ## U5. Cautilus Keeps Product And Host Ownership Separate
 
@@ -92,7 +92,7 @@ This is the supporting ownership rule behind `claim`, `eval`, `optimize`, and `d
 Adapter and command tests should prove that Cautilus keeps host-owned runner commands explicit instead of hiding them inside product logic.
 
 **Source anchors.**
-README.md, docs/cli-reference.md, docs/guides/consumer-adoption.md, docs/contracts/adapter-contract.md.
+README.md, docs/guides/cli.md, docs/guides/consumer-adoption.md, docs/contracts/adapter-contract.md.
 
 ## U6. Cautilus Serves Both CLI Operators And Agents
 
