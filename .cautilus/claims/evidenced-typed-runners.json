@@ -4425,17 +4425,19 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+          "contentHash": "sha256:0138cb9b86f4d5eb4434d834fea97148613a9aeab400167e576861b13c6ce83b",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-claim-discovery-workflow-md-95"
+            "claim-docs-contracts-claim-discovery-workflow-md-95",
+            "claim-docs-contracts-claim-discovery-workflow-md-98",
+            "claim-docs-contracts-claim-discovery-workflow-md-695"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-deterministic-ready-batch-2026-05-03.json does not list current claimId claim-docs-contracts-claim-discovery-workflow-md-95 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by canonical-map generator tests and live canonical-map output that preserve raw claim ids in mappings and coverage records, and preserve claimFingerprint both per mapping and per absorbed raw claim.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -4443,7 +4445,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep semantic-review confidence separate from the raw-id and fingerprint preservation guarantee.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -4454,8 +4456,9 @@
         }
       ],
       "summary": "Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names deterministic packet and curation artifact fields: absorbed raw claim ids and fingerprints."
     },
     {
       "claimAudience": "developer",
@@ -4465,17 +4468,19 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+          "contentHash": "sha256:0138cb9b86f4d5eb4434d834fea97148613a9aeab400167e576861b13c6ce83b",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-claim-discovery-workflow-md-98"
+            "claim-docs-contracts-claim-discovery-workflow-md-95",
+            "claim-docs-contracts-claim-discovery-workflow-md-98",
+            "claim-docs-contracts-claim-discovery-workflow-md-695"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-deterministic-ready-batch-2026-05-03.json does not list current claimId claim-docs-contracts-claim-discovery-workflow-md-98 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in .cautilus/claims/canonical-claim-map.json packet and a live regenerated packet with schemaVersion cautilus.canonical_claim_map.v1, 365 raw claims, and all raw claims projected to user or maintainer canonical ids.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -4483,7 +4488,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep canonical-map generation connected to the maintained user and maintainer spec indexes.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -4494,8 +4499,9 @@
         }
       ],
       "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names a machine-readable mapping artifact and projection from raw claims to canonical user-facing or maintainer-facing claim ids."
     },
     {
       "claimAudience": "developer",
@@ -6239,17 +6245,19 @@
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:fff2188e8592233b04a735375b89971957bd8cca2ceccccf2e829488443ed1e7",
+          "contentHash": "sha256:0138cb9b86f4d5eb4434d834fea97148613a9aeab400167e576861b13c6ce83b",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-claim-review-prepare-input-contract-2026-05-04.json",
+          "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
           "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-95",
+            "claim-docs-contracts-claim-discovery-workflow-md-98",
             "claim-docs-contracts-claim-discovery-workflow-md-695"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-claim-review-prepare-input-contract-2026-05-04.json does not list current claimId claim-docs-contracts-claim-discovery-workflow-md-694 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by CLI and runtime tests plus a live `claim review prepare-input` packet with schemaVersion cautilus.claim_review_input.v1, bounded clusters, skippedClusters, skippedClaims, selectionPolicy, and a packetNotice stating it does not call an LLM or assert satisfaction. The CLI handler only builds and writes review input.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6257,7 +6265,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep reviewer launch and review-result application as separate workflow branches from prepare-input.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -6268,8 +6276,9 @@
         }
       ],
       "summary": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names deterministic CLI packet preparation behavior and explicitly excludes LLM review and result application."
     },
     {
       "claimAudience": "developer",
@@ -12243,8 +12252,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 76,
-      "stale": 19,
+      "satisfied": 79,
+      "stale": 16,
       "unknown": 270
     },
     "byLifecycle": {
@@ -12524,6 +12533,7 @@
       ".cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json",
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
@@ -12565,9 +12575,9 @@
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 49,
+    "appliedResultCount": 50,
     "skippedResultCount": 34,
-    "keptUpdateCount": 168,
+    "keptUpdateCount": 171,
     "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },

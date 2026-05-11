@@ -22,12 +22,12 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 19
+          "stale": 16
         },
         "byReviewStatus": {
-          "agent-reviewed": 19
+          "agent-reviewed": 16
         },
-        "count": 19,
+        "count": 16,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 76
+          "satisfied": 79
         },
         "byReviewStatus": {
-          "agent-reviewed": 76
+          "agent-reviewed": 79
         },
-        "count": 76,
+        "count": 79,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,14 +62,14 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 14,
+          "stale": 11,
           "unknown": 58
         },
         "byReviewStatus": {
-          "agent-reviewed": 24,
+          "agent-reviewed": 21,
           "heuristic": 48
         },
-        "count": 72,
+        "count": 69,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -218,8 +218,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 76,
-      "stale": 19,
+      "satisfied": 79,
+      "stale": 16,
       "unknown": 270
     },
     "byLifecycle": {
@@ -439,7 +439,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 76,
+    "satisfiedClaimCount": 79,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-124",
@@ -1140,6 +1140,48 @@
         "summary": "`cautilus claim discover` currently emits a deterministic, source-ref-backed proof-plan skeleton."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-95",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:0138cb9b86f4d5eb4434d834fea97148613a9aeab400167e576861b13c6ce83b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-95",
+              "claim-docs-contracts-claim-discovery-workflow-md-98",
+              "claim-docs-contracts-claim-discovery-workflow-md-695"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-98",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:0138cb9b86f4d5eb4434d834fea97148613a9aeab400167e576861b13c6ce83b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-95",
+              "claim-docs-contracts-claim-discovery-workflow-md-98",
+              "claim-docs-contracts-claim-discovery-workflow-md-695"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids."
+      },
+      {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-372",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1157,6 +1199,27 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The preflight should never assert that a claim is satisfied solely because a filename looks related."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-695",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:0138cb9b86f4d5eb4434d834fea97148613a9aeab400167e576861b13c6ce83b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-95",
+              "claim-docs-contracts-claim-discovery-workflow-md-98",
+              "claim-docs-contracts-claim-discovery-workflow-md-695"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."
       },
       {
         "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
@@ -1944,11 +2007,12 @@
   },
   "gitCommit": "128e15454ff634d446a95c7408b95379ce009788",
   "gitState": {
-    "changedFileCount": 16,
+    "changedFileCount": 18,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-11.json",
@@ -1956,6 +2020,7 @@
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
@@ -1971,7 +2036,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "e233ea88b8dc05fb46162109d18b1fba4da5e732",
+    "currentGitCommit": "a4f156e2cf6b9ed26e2b6808ef52ddbf6196ac6d",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",

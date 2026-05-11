@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-11T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the three claim-discovery workflow claims covered by canonical-map tests, review-input tests, live packets, and explicit proof boundaries."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-claim-workflow-canonical-review-input-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-95",
+          "claimFingerprint": "sha256:7d3319b0e7a1f160a74b9d107b204e7be679e30bf1ed3c65c38bb71be9be3d14",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic packet and curation artifact fields: absorbed raw claim ids and fingerprints.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by canonical-map generator tests and live canonical-map output that preserve raw claim ids in mappings and coverage records, and preserve claimFingerprint both per mapping and per absorbed raw claim.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:0138cb9b86f4d5eb4434d834fea97148613a9aeab400167e576861b13c6ce83b",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-95",
+                "claim-docs-contracts-claim-discovery-workflow-md-98",
+                "claim-docs-contracts-claim-discovery-workflow-md-695"
+              ]
+            }
+          ],
+          "nextAction": "Keep semantic-review confidence separate from the raw-id and fingerprint preservation guarantee.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-98",
+          "claimFingerprint": "sha256:1428eec288b0dab0aa084911be814bf9b87c1d68f00e38164dbbba01e4331af3",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a machine-readable mapping artifact and projection from raw claims to canonical user-facing or maintainer-facing claim ids.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in .cautilus/claims/canonical-claim-map.json packet and a live regenerated packet with schemaVersion cautilus.canonical_claim_map.v1, 365 raw claims, and all raw claims projected to user or maintainer canonical ids.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:0138cb9b86f4d5eb4434d834fea97148613a9aeab400167e576861b13c6ce83b",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-95",
+                "claim-docs-contracts-claim-discovery-workflow-md-98",
+                "claim-docs-contracts-claim-discovery-workflow-md-695"
+              ]
+            }
+          ],
+          "nextAction": "Keep canonical-map generation connected to the maintained user and maintainer spec indexes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-695",
+          "claimFingerprint": "sha256:5710c92253395bbda0e82175a3f1696b96f8f17275875d7b96f48b951e4ebd09",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic CLI packet preparation behavior and explicitly excludes LLM review and result application.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by CLI and runtime tests plus a live `claim review prepare-input` packet with schemaVersion cautilus.claim_review_input.v1, bounded clusters, skippedClusters, skippedClaims, selectionPolicy, and a packetNotice stating it does not call an LLM or assert satisfaction. The CLI handler only builds and writes review input.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:0138cb9b86f4d5eb4434d834fea97148613a9aeab400167e576861b13c6ce83b",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-95",
+                "claim-docs-contracts-claim-discovery-workflow-md-98",
+                "claim-docs-contracts-claim-discovery-workflow-md-695"
+              ]
+            }
+          ],
+          "nextAction": "Keep reviewer launch and review-result application as separate workflow branches from prepare-input.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

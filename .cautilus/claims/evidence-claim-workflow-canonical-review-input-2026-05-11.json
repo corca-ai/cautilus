@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-claim-workflow-canonical-review-input-2026-05-11",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-95",
+    "claim-docs-contracts-claim-discovery-workflow-md-98",
+    "claim-docs-contracts-claim-discovery-workflow-md-695"
+  ],
+  "repoCommit": "a4f156e2cf6b9ed26e2b6808ef52ddbf6196ac6d",
+  "summary": "Deterministic proof for canonical claim-map raw-id and fingerprint preservation, canonical mapping artifact generation, and claim review prepare-input packet boundaries.",
+  "evidenceScope": {
+    "targetSurface": "Claim discovery workflow curation artifacts and review-input packet preparation",
+    "claimBoundary": "Only the three listed claim-discovery workflow contract claims are marked satisfied.",
+    "notClaimed": [
+      "The heuristic canonical map is semantically perfect or requires no human review.",
+      "Every consumer repo must maintain canonical catalogs before it has a reviewed claim surface.",
+      "`claim review prepare-input` launches reviewer lanes, calls an LLM, applies review results, or marks claims satisfied.",
+      "The generated review-input packet proves the selected claims themselves; it proves only the prepare-input packet shape and selection boundary."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test scripts/agent-runtime/build-canonical-claim-map.test.mjs",
+      "exitCode": 0,
+      "reason": "Focused tests cover raw user and maintainer claim projection into canonical catalogs, preservation of claim fingerprints, absorbed raw claim ids, low-confidence review routing, and spec-tree parsing."
+    },
+    {
+      "command": "go test ./internal/app -run TestRunClaimReviewPrepareInputWritesClusters",
+      "exitCode": 0,
+      "reason": "The CLI prepare-input path emits cautilus.claim_review_input.v1, includes the no-LLM/non-satisfaction notice, writes clusters, preserves current labels, and does not mutate the source claim packet."
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimReviewInputClustersAndSkipsDeterministically|TestBuildClaimReviewInputSkipsSatisfiedClaims|TestBuildClaimReviewInputCanFocusActionBucket'",
+      "exitCode": 0,
+      "reason": "Runtime tests cover bounded clusters, skipped clusters, skipped satisfied or already-reviewed claims, retained evidence refs for skipped satisfied claims, and action-bucket mismatch skips."
+    },
+    {
+      "command": "node scripts/agent-runtime/build-canonical-claim-map.mjs --claims .cautilus/claims/evidenced-typed-runners.json --user-catalog docs/specs/user/index.spec.md --maintainer-catalog docs/specs/maintainer/index.spec.md --output /tmp/cautilus-claim-workflow-proof-2026-05-11/canonical-claim-map.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.canonical_claim_map.v1",
+        "totalRawClaimCount": 365,
+        "userRawClaimCount": 106,
+        "byDisposition": {
+          "mapped-to-maintainer-canonical": 259,
+          "mapped-to-user-canonical": 106
+        },
+        "firstMappingHasClaimId": true,
+        "firstMappingHasClaimFingerprint": true,
+        "coverageIncludesAbsorbedRawClaimIds": true,
+        "coverageIncludesAbsorbedRawClaimsWithFingerprints": true
+      }
+    },
+    {
+      "command": "./bin/cautilus claim review prepare-input --claims .cautilus/claims/evidenced-typed-runners.json --action-bucket agent-add-deterministic-proof --max-clusters 2 --max-claims-per-cluster 2 --output /tmp/cautilus-claim-workflow-proof-2026-05-11/review-input.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.claim_review_input.v1",
+        "packetNotice": "This packet prepares deterministic claim review input. It does not call an LLM or assert that any claim is satisfied.",
+        "actionBucket": "agent-add-deterministic-proof",
+        "clusterCount": 2,
+        "skippedClusterCount": 25,
+        "skippedClaimCount": 303,
+        "firstSkippedClusterReason": "max-clusters-exceeded",
+        "firstSkippedClaimReason": "action-bucket-mismatch"
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-claim-workflow-proof-2026-05-11/canonical-claim-map.json",
+      "kind": "canonical-claim-map-packet",
+      "contentHash": "sha256:63855532289018bf0ee50485ada66515291162f336ee4d494bfd203b13de4749",
+      "schemaVersion": "cautilus.canonical_claim_map.v1"
+    },
+    {
+      "path": ".cautilus/claims/canonical-claim-map.json",
+      "kind": "checked-in-canonical-claim-map-packet",
+      "contentHash": "sha256:63855532289018bf0ee50485ada66515291162f336ee4d494bfd203b13de4749",
+      "schemaVersion": "cautilus.canonical_claim_map.v1"
+    },
+    {
+      "path": "/tmp/cautilus-claim-workflow-proof-2026-05-11/review-input.json",
+      "kind": "claim-review-input-packet",
+      "contentHash": "sha256:fc2ec0936c3e9b161a625fa59a2814c6b40b3af432581d779f988d17bccd4b13",
+      "schemaVersion": "cautilus.claim_review_input.v1"
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:5c5c8d0b79d56fad17f0ee53779a9ef72c37eb49d1ab20cc34bdfd36d10db954"
+    },
+    {
+      "path": "scripts/agent-runtime/build-canonical-claim-map.mjs",
+      "kind": "canonical-map-generator",
+      "contentHash": "sha256:f91212074ea58875ff6f3ab47f3f1cf10c1e7181da3fd8b2d40619158ac6871e"
+    },
+    {
+      "path": "scripts/agent-runtime/build-canonical-claim-map.test.mjs",
+      "kind": "canonical-map-generator-tests",
+      "contentHash": "sha256:87a26fa6498f8dc483a6ef66e7583a3819834072872dbdf7c68cab59dfde5be8"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "claim-review-prepare-input-cli-handler",
+      "contentHash": "sha256:e15cef8b1322c520c628b77bb1d914396598ce2975e6ec97478b40b04a589343"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "claim-review-prepare-input-cli-test",
+      "contentHash": "sha256:768fa1077ca18927aed56217974800fbec418ffe1350776d37f631d38b9ef6b2"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-review-input-builder",
+      "contentHash": "sha256:5b653ccd904a8b2c8c1a0807d70b34c8531db6b2768b19df9dd261eee47765a7"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-review-input-runtime-tests",
+      "contentHash": "sha256:8ba0ce24fdffd00a979ee639a80b3c36f2900411dac2ce18627688aed2d619ee"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused tests and live packets show the canonical map preserves raw claim ids and fingerprints while projecting raw claims to canonical user or maintainer claims, and show claim review prepare-input emits bounded review-input packets without launching review or applying results."
+  }
+}
