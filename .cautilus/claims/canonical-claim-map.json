@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:769328f6e3a60d120d859b34d86509c1cbb6ab1bf270a14a49639bfbe6e580d5"
+      "contentHash": "sha256:2a04e8ba4b692bd08eddaa95b1ae79b31dc63791490793dcdfb202c8e06741be"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:27cf7d5c376da0ad59c25cab4662744aba8ee6ee1f3f1e9d1043b096fcbe6766"
     }
   },
-  "claimsPacketGitCommit": "f44aaa48fe3ba6acb6bd64c0c682032cd2b6bebe",
+  "claimsPacketGitCommit": "c729a90421957649840ac0a158ef843f1af41d9f",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 366,
   "catalogs": {
@@ -576,8 +576,8 @@
     "userRawClaimCount": 107,
     "userMappedToCanonicalCount": 107,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 299,
-    "userSemanticReviewRecommendedCount": 45,
+    "semanticReviewRecommendedCount": 297,
+    "userSemanticReviewRecommendedCount": 43,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 259,
       "mapped-to-user-canonical": 107
@@ -587,13 +587,13 @@
       "user": 107
     },
     "byMappingConfidence": {
-      "high": 67,
+      "high": 69,
       "low": 16,
-      "medium": 283
+      "medium": 281
     },
     "byUserCanonicalClaimId": {
-      "U1": 27,
-      "U2": 60,
+      "U1": 25,
+      "U2": 62,
       "U3": 4,
       "U4": 3,
       "U5": 4,
@@ -605,8 +605,8 @@
       "M10": 11,
       "M11": 26,
       "M12": 9,
-      "M2": 12,
-      "M3": 55,
+      "M2": 11,
+      "M3": 56,
       "M4": 74,
       "M5": 16,
       "M6": 7,
@@ -628,11 +628,9 @@
       "claim-readme-md-9",
       "claim-readme-md-13",
       "claim-readme-md-18",
-      "claim-readme-md-82",
-      "claim-readme-md-90",
-      "claim-readme-md-105",
-      "claim-readme-md-159",
-      "claim-readme-md-247",
+      "claim-readme-md-83",
+      "claim-readme-md-106",
+      "claim-readme-md-248",
       "claim-docs-cli-reference-md-32",
       "claim-docs-cli-reference-md-108",
       "claim-docs-cli-reference-md-117",
@@ -905,29 +903,27 @@
       "claim-docs-specs-proof-gaps-spec-md-9",
       "claim-docs-specs-proof-latest-selected-evidence-spec-md-9",
       "claim-docs-specs-proof-latest-selected-evidence-spec-md-11",
-      "claim-skills-cautilus-agent-skill-md-12",
-      "claim-skills-cautilus-agent-skill-md-21",
+      "claim-skills-cautilus-agent-skill-md-13",
       "claim-skills-cautilus-agent-skill-md-22",
-      "claim-skills-cautilus-agent-skill-md-65",
-      "claim-skills-cautilus-agent-skill-md-104",
-      "claim-skills-cautilus-agent-skill-md-116",
-      "claim-skills-cautilus-agent-skill-md-121",
-      "claim-skills-cautilus-agent-skill-md-128",
-      "claim-skills-cautilus-agent-skill-md-154",
-      "claim-skills-cautilus-agent-skill-md-218"
+      "claim-skills-cautilus-agent-skill-md-23",
+      "claim-skills-cautilus-agent-skill-md-66",
+      "claim-skills-cautilus-agent-skill-md-105",
+      "claim-skills-cautilus-agent-skill-md-117",
+      "claim-skills-cautilus-agent-skill-md-122",
+      "claim-skills-cautilus-agent-skill-md-129",
+      "claim-skills-cautilus-agent-skill-md-155",
+      "claim-skills-cautilus-agent-skill-md-219"
     ]
   },
   "userCoverage": [
     {
       "canonicalClaimId": "U1",
       "title": "Readiness",
-      "absorbedRawClaimCount": 27,
+      "absorbedRawClaimCount": 25,
       "absorbedRawClaimIds": [
         "claim-readme-md-13",
-        "claim-readme-md-82",
-        "claim-readme-md-90",
-        "claim-readme-md-159",
-        "claim-readme-md-247",
+        "claim-readme-md-83",
+        "claim-readme-md-248",
         "claim-docs-cli-reference-md-32",
         "claim-docs-cli-reference-md-108",
         "claim-docs-cli-reference-md-110",
@@ -959,25 +955,13 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-readme-md-82",
+          "claimId": "claim-readme-md-83",
           "claimFingerprint": "sha256:e7fc47dac8033dfb97843d05c7b63de464847e6144724ea58e5097d94dda83ff",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-readme-md-90",
-          "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-readme-md-159",
-          "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-readme-md-247",
+          "claimId": "claim-readme-md-248",
           "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1116,42 +1100,45 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 13,
-        "unknown": 14
+        "satisfied": 11,
+        "stale": 1,
+        "unknown": 13
       },
       "byReviewStatus": {
-        "agent-reviewed": 14,
-        "heuristic": 13
+        "agent-reviewed": 13,
+        "heuristic": 12
       },
       "byRecommendedProof": {
         "cautilus-eval": 8,
-        "deterministic": 15,
+        "deterministic": 13,
         "human-auditable": 4
       },
       "byMappingConfidence": {
         "high": 13,
-        "medium": 14
+        "medium": 12
       }
     },
     {
       "canonicalClaimId": "U2",
       "title": "Claim Discovery",
-      "absorbedRawClaimCount": 60,
+      "absorbedRawClaimCount": 62,
       "absorbedRawClaimIds": [
         "claim-readme-md-3",
         "claim-readme-md-9",
         "claim-readme-md-10",
-        "claim-readme-md-80",
-        "claim-readme-md-105",
-        "claim-readme-md-137",
-        "claim-readme-md-152",
-        "claim-readme-md-163",
-        "claim-readme-md-165",
-        "claim-readme-md-169",
-        "claim-readme-md-175",
-        "claim-readme-md-187",
-        "claim-readme-md-208",
-        "claim-readme-md-227",
+        "claim-readme-md-81",
+        "claim-readme-md-91",
+        "claim-readme-md-106",
+        "claim-readme-md-138",
+        "claim-readme-md-153",
+        "claim-readme-md-160",
+        "claim-readme-md-164",
+        "claim-readme-md-166",
+        "claim-readme-md-170",
+        "claim-readme-md-176",
+        "claim-readme-md-188",
+        "claim-readme-md-209",
+        "claim-readme-md-228",
         "claim-docs-cli-reference-md-118",
         "claim-docs-cli-reference-md-123",
         "claim-docs-cli-reference-md-131",
@@ -1219,67 +1206,79 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-80",
+          "claimId": "claim-readme-md-81",
           "claimFingerprint": "sha256:c0baf79f41a09fd2a4de5393def8f9e3418bef17ca047c03f867a990b2719afc",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-105",
+          "claimId": "claim-readme-md-91",
+          "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-readme-md-106",
           "claimFingerprint": "sha256:e1d40b8af228eee85cfe4d1bf48eb7be58e13f6c5737038ab9c41ef1ac6eb0d2",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-readme-md-137",
+          "claimId": "claim-readme-md-138",
           "claimFingerprint": "sha256:df4aa9115fa3cb65ef65be956336be165bc67437d0f039e64c13baf95891493d",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-152",
+          "claimId": "claim-readme-md-153",
           "claimFingerprint": "sha256:278d2b24e86fda13b675714aeb0c57ae685fd07d2c02ed6320572f06d476cdb7",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-163",
+          "claimId": "claim-readme-md-160",
+          "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-readme-md-164",
           "claimFingerprint": "sha256:afaff338e3a44ec8eeb8b39d25319e27d26e908ac17a00c2f46c5af9979e5e1f",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-165",
+          "claimId": "claim-readme-md-166",
           "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-169",
+          "claimId": "claim-readme-md-170",
           "claimFingerprint": "sha256:9bada1ab213276f56664107bebda9322010ab42d914bbc27bd0c1e1937c171b3",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-175",
+          "claimId": "claim-readme-md-176",
           "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-187",
+          "claimId": "claim-readme-md-188",
           "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-208",
+          "claimId": "claim-readme-md-209",
           "claimFingerprint": "sha256:26fb3d242b29d1859c5171dda55376329d47dc400c8136fb67df8562a6160c5a",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-227",
+          "claimId": "claim-readme-md-228",
           "claimFingerprint": "sha256:4d0ddb28b68c304807c2d3b770d886fb4b0247d09bc30ac0d39c1dc4fb6d2e4c",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -1562,21 +1561,21 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 19,
-        "stale": 5,
-        "unknown": 36
+        "satisfied": 14,
+        "stale": 10,
+        "unknown": 38
       },
       "byReviewStatus": {
-        "agent-reviewed": 38,
+        "agent-reviewed": 40,
         "heuristic": 22
       },
       "byRecommendedProof": {
-        "cautilus-eval": 13,
-        "deterministic": 28,
-        "human-auditable": 19
+        "cautilus-eval": 14,
+        "deterministic": 27,
+        "human-auditable": 21
       },
       "byMappingConfidence": {
-        "high": 35,
+        "high": 37,
         "medium": 25
       }
     },
@@ -1593,7 +1592,7 @@
       "absorbedRawClaims": [
         {
           "claimId": "claim-readme-md-18",
-          "claimFingerprint": "sha256:30f314bb10dab026f1b2f44020137a0e8133afac2f6847fd16d4370393649264",
+          "claimFingerprint": "sha256:61605c1e54df3af257c3576412077d11d7198e863efe466a5c029b0dc9bfa535",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1901,7 +1900,7 @@
     {
       "canonicalClaimId": "M2",
       "title": "Claim Discovery Workflow",
-      "absorbedRawClaimCount": 12,
+      "absorbedRawClaimCount": 11,
       "absorbedRawClaimIds": [
         "claim-docs-master-plan-md-78",
         "claim-docs-contracts-claim-discovery-workflow-md-5",
@@ -1913,8 +1912,7 @@
         "claim-docs-contracts-claim-discovery-workflow-md-691",
         "claim-docs-contracts-workbench-instance-discovery-md-100",
         "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-13",
-        "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-17",
-        "claim-skills-cautilus-agent-skill-md-12"
+        "claim-docs-specs-maintainer-claim-discovery-workflow-spec-md-17"
       ],
       "absorbedRawClaims": [
         {
@@ -1982,36 +1980,30 @@
           "claimFingerprint": "sha256:d48557899f7322875af6d154d1a8a03bce8365f712609da54be1e305ac8a7c89",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
-        },
-        {
-          "claimId": "claim-skills-cautilus-agent-skill-md-12",
-          "claimFingerprint": "sha256:472e59de361f21a5a5e3e1d85308f65a4e14d34e4c524f59b3cabd292719d42d",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 4,
+        "satisfied": 3,
         "unknown": 8
       },
       "byReviewStatus": {
-        "agent-reviewed": 6,
+        "agent-reviewed": 5,
         "heuristic": 6
       },
       "byRecommendedProof": {
-        "deterministic": 5,
+        "deterministic": 4,
         "human-auditable": 7
       },
       "byMappingConfidence": {
         "high": 4,
         "low": 3,
-        "medium": 5
+        "medium": 4
       }
     },
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 55,
+      "absorbedRawClaimCount": 56,
       "absorbedRawClaimIds": [
         "claim-agents-md-79",
         "claim-agents-md-124",
@@ -2062,12 +2054,13 @@
         "claim-docs-contracts-runtime-fingerprint-optimization-md-154",
         "claim-docs-contracts-runtime-fingerprint-optimization-md-188",
         "claim-docs-contracts-scenario-proposal-sources-md-28",
-        "claim-skills-cautilus-agent-skill-md-21",
+        "claim-skills-cautilus-agent-skill-md-13",
         "claim-skills-cautilus-agent-skill-md-22",
-        "claim-skills-cautilus-agent-skill-md-104",
-        "claim-skills-cautilus-agent-skill-md-116",
-        "claim-skills-cautilus-agent-skill-md-128",
-        "claim-skills-cautilus-agent-skill-md-218"
+        "claim-skills-cautilus-agent-skill-md-23",
+        "claim-skills-cautilus-agent-skill-md-105",
+        "claim-skills-cautilus-agent-skill-md-117",
+        "claim-skills-cautilus-agent-skill-md-129",
+        "claim-skills-cautilus-agent-skill-md-219"
       ],
       "absorbedRawClaims": [
         {
@@ -2365,37 +2358,43 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-agent-skill-md-21",
-          "claimFingerprint": "sha256:8f8b1ba060f857e8ce89ec62f94e7e3d1bb3bb8e370321ad7bdb03be3ae3292a",
+          "claimId": "claim-skills-cautilus-agent-skill-md-13",
+          "claimFingerprint": "sha256:472e59de361f21a5a5e3e1d85308f65a4e14d34e4c524f59b3cabd292719d42d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
           "claimId": "claim-skills-cautilus-agent-skill-md-22",
+          "claimFingerprint": "sha256:8f8b1ba060f857e8ce89ec62f94e7e3d1bb3bb8e370321ad7bdb03be3ae3292a",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-skills-cautilus-agent-skill-md-23",
           "claimFingerprint": "sha256:5e1b96ae1d2595865dd18231f55e8983c86d8fc6166c4d12e3674c4c9d01fcae",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-agent-skill-md-104",
+          "claimId": "claim-skills-cautilus-agent-skill-md-105",
           "claimFingerprint": "sha256:a5c82e29ce761e42ed2b18553ae831a189310fe0174962cc79b0705853e8b2fc",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-agent-skill-md-116",
+          "claimId": "claim-skills-cautilus-agent-skill-md-117",
           "claimFingerprint": "sha256:a950feb4b722b7133b2ffd1104b6fc46f6302a9ba218b408e7bfa851b6dcfcc3",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-agent-skill-md-128",
+          "claimId": "claim-skills-cautilus-agent-skill-md-129",
           "claimFingerprint": "sha256:ad87c31fd958bda23449318cee9819910cee320e357b5d89828021f8fdc3007a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-agent-skill-md-218",
+          "claimId": "claim-skills-cautilus-agent-skill-md-219",
           "claimFingerprint": "sha256:0430d8a298c4e11b0f53d621d1b7c1c908425d463f7a66dc5efbf4043936efbd",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2403,21 +2402,22 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 8,
+        "stale": 1,
         "unknown": 47
       },
       "byReviewStatus": {
-        "agent-reviewed": 15,
+        "agent-reviewed": 16,
         "heuristic": 39,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
         "cautilus-eval": 23,
-        "deterministic": 18,
+        "deterministic": 19,
         "human-auditable": 14
       },
       "byMappingConfidence": {
         "low": 3,
-        "medium": 52
+        "medium": 53
       }
     },
     {
@@ -2498,7 +2498,7 @@
         "claim-docs-contracts-runtime-fingerprint-optimization-md-261",
         "claim-docs-contracts-scenario-proposal-sources-md-152",
         "claim-docs-specs-model-claim-discovery-spec-md-16",
-        "claim-skills-cautilus-agent-skill-md-154"
+        "claim-skills-cautilus-agent-skill-md-155"
       ],
       "absorbedRawClaims": [
         {
@@ -2940,7 +2940,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-agent-skill-md-154",
+          "claimId": "claim-skills-cautilus-agent-skill-md-155",
           "claimFingerprint": "sha256:c575861c975813835a93a64b3d0ca6aafdb2ee55d71de1ffb6211b433852c558",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2984,7 +2984,7 @@
         "claim-docs-specs-maintainer-evaluation-surfaces-runners-spec-md-27",
         "claim-docs-specs-model-promise-ledger-spec-md-15",
         "claim-docs-specs-model-readiness-spec-md-5",
-        "claim-skills-cautilus-agent-skill-md-65"
+        "claim-skills-cautilus-agent-skill-md-66"
       ],
       "absorbedRawClaims": [
         {
@@ -3078,7 +3078,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-agent-skill-md-65",
+          "claimId": "claim-skills-cautilus-agent-skill-md-66",
           "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3093,8 +3093,9 @@
         "heuristic": 10
       },
       "byRecommendedProof": {
-        "cautilus-eval": 9,
-        "deterministic": 7
+        "cautilus-eval": 8,
+        "deterministic": 7,
+        "human-auditable": 1
       },
       "byMappingConfidence": {
         "medium": 16
@@ -3689,7 +3690,7 @@
         "claim-docs-contracts-scenario-proposal-sources-md-40",
         "claim-docs-contracts-scenario-proposal-sources-md-216",
         "claim-docs-specs-proof-latest-selected-evidence-spec-md-11",
-        "claim-skills-cautilus-agent-skill-md-121"
+        "claim-skills-cautilus-agent-skill-md-122"
       ],
       "absorbedRawClaims": [
         {
@@ -3843,7 +3844,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-skills-cautilus-agent-skill-md-121",
+          "claimId": "claim-skills-cautilus-agent-skill-md-122",
           "claimFingerprint": "sha256:81df3b1030acb0d476e7b567186862db55f2189eccf9f8b1338b371db7cfd3e6",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -4705,12 +4706,12 @@
     },
     {
       "claimId": "claim-readme-md-18",
-      "summary": "Host repos can use `cautilus eval test` and `cautilus eval evaluate` with checked-in fixtures, host-owned adapters, and the current `cautilus.evaluation_input.v1`, `cautilus.evaluation_observed.v1`, and `cautilus.evaluation_summary.v1` packets.",
+      "summary": "Host repos can use `cautilus eval test`, `cautilus eval evaluate`, and post-run `cautilus eval skill-experiment compare` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.",
       "sourceRefs": [
         {
           "path": "README.md",
           "line": 18,
-          "excerpt": "Host repos can use `cautilus eval test` and `cautilus eval evaluate` with checked-in fixtures, host-owned adapters, and the current `cautilus.evaluation_input.v1`, `cautilus.evaluation_observed.v1`, and `cautilus.evaluation_summary.v1` packets."
+          "excerpt": "Host repos can use `cautilus eval test`, `cautilus eval evaluate`, and post-run `cautilus eval skill-experiment compare` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets."
         }
       ],
       "disposition": "mapped-to-user-canonical",
@@ -4720,7 +4721,7 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:30f314bb10dab026f1b2f44020137a0e8133afac2f6847fd16d4370393649264",
+      "claimFingerprint": "sha256:61605c1e54df3af257c3576412077d11d7198e863efe466a5c029b0dc9bfa535",
       "canonicalClaimId": "U3",
       "score": 15,
       "runnerUpCanonicalClaimId": "U2",
@@ -4732,25 +4733,25 @@
       "matchedKeywords": [
         "adapter",
         "cautilu",
-        "cautilus.evaluation",
         "checked-in",
-        "dev/repo",
+        "compare",
+        "dev/skill",
         "eval",
         "evaluate",
+        "evaluation",
         "fixture",
         "host",
         "host-owned",
-        "observed.v1",
         "packet"
       ]
     },
     {
-      "claimId": "claim-readme-md-80",
+      "claimId": "claim-readme-md-81",
       "summary": "Raw `claim discover` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 80,
+          "line": 81,
           "excerpt": "Raw `claim discover` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review."
         }
       ],
@@ -4786,12 +4787,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-82",
+      "claimId": "claim-readme-md-83",
       "summary": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or optimization work.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 82,
+          "line": 83,
           "excerpt": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or optimization work."
         }
       ],
@@ -4827,53 +4828,53 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-90",
+      "claimId": "claim-readme-md-91",
       "summary": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 90,
+          "line": 91,
           "excerpt": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets."
         }
       ],
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
-      "canonicalClaimId": "U1",
-      "score": 13,
-      "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 13,
-      "scoreMargin": 0,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "canonicalClaimId": "U2",
+      "score": 14,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 10,
+      "scoreMargin": 4,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "add",
+        "agent",
         "behavior",
-        "bounded",
-        "cli",
-        "deterministic",
-        "keep",
-        "loop",
+        "candidate",
+        "example",
+        "fixture",
+        "human-auditable",
+        "input",
+        "only",
         "packet",
-        "proof",
-        "readines",
         "readme.md",
-        "thi"
+        "summary",
+        "them"
       ]
     },
     {
-      "claimId": "claim-readme-md-105",
+      "claimId": "claim-readme-md-106",
       "summary": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 105,
+          "line": 106,
           "excerpt": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen."
         }
       ],
@@ -4909,12 +4910,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-137",
+      "claimId": "claim-readme-md-138",
       "summary": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 137,
+          "line": 138,
           "excerpt": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy."
         }
       ],
@@ -4923,55 +4924,55 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
+      "evidenceStatus": "stale",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:df4aa9115fa3cb65ef65be956336be165bc67437d0f039e64c13baf95891493d",
       "canonicalClaimId": "U2",
       "score": 15,
-      "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 11,
-      "scoreMargin": 4,
+      "runnerUpCanonicalClaimId": "U3",
+      "runnerUpScore": 10,
+      "scoreMargin": 5,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "cautilus-eval",
         "cautilus.claim",
-        "change",
         "deterministic",
-        "doc",
         "documentation",
         "emit",
         "eval",
+        "evidence",
         "fixture",
-        "input",
-        "keep",
-        "plan"
+        "plan",
+        "policy",
+        "prompt",
+        "readme.md"
       ]
     },
     {
-      "claimId": "claim-readme-md-152",
+      "claimId": "claim-readme-md-153",
       "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 152,
+          "line": 153,
           "excerpt": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks."
         }
       ],
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-scenario",
+      "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:278d2b24e86fda13b675714aeb0c57ae685fd07d2c02ed6320572f06d476cdb7",
       "canonicalClaimId": "U2",
-      "score": 20,
+      "score": 19,
       "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 15,
-      "scoreMargin": 5,
+      "runnerUpScore": 13,
+      "scoreMargin": 6,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -4981,63 +4982,63 @@
         "cautilu",
         "check",
         "cli",
-        "deterministic",
-        "eval",
-        "evidence",
         "fixture",
+        "human-auditable",
         "input",
         "keep",
-        "operator"
+        "product",
+        "prompt",
+        "readme.md"
       ]
     },
     {
-      "claimId": "claim-readme-md-159",
+      "claimId": "claim-readme-md-160",
       "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 159,
+          "line": 160,
           "excerpt": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing."
         }
       ],
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "deterministic",
+      "recommendedProof": "cautilus-eval",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
+      "evidenceStatus": "stale",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:cca48e23143767450d964a26876792773f2f92ca2d3588c21e022181f0c06a2e",
-      "canonicalClaimId": "U1",
-      "score": 16,
-      "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 15,
-      "scoreMargin": 1,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "canonicalClaimId": "U2",
+      "score": 15,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 11,
+      "scoreMargin": 4,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
-        "cautilu",
-        "covered",
-        "deterministic",
-        "json",
+        "cautilus-eval",
+        "change",
+        "dev/skill",
+        "evidence",
+        "execute",
         "keep",
-        "know",
         "prompt",
         "readme.md",
-        "scenario",
-        "skill",
-        "smoke"
+        "ref",
+        "satisfied",
+        "skill"
       ]
     },
     {
-      "claimId": "claim-readme-md-163",
+      "claimId": "claim-readme-md-164",
       "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 163,
+          "line": 164,
           "excerpt": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`."
         }
       ],
@@ -5046,14 +5047,14 @@
       "claimAudience": "user",
       "recommendedProof": "cautilus-eval",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
+      "evidenceStatus": "stale",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:afaff338e3a44ec8eeb8b39d25319e27d26e908ac17a00c2f46c5af9979e5e1f",
       "canonicalClaimId": "U2",
-      "score": 16,
-      "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 9,
-      "scoreMargin": 7,
+      "score": 14,
+      "runnerUpCanonicalClaimId": "U3",
+      "runnerUpScore": 8,
+      "scoreMargin": 6,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -5061,24 +5062,24 @@
         "agent",
         "cautilus-eval",
         "dev/skill",
-        "dogfood",
         "episode",
-        "eval",
         "evidence",
         "fixture",
-        "keep",
         "readme.md",
-        "runtime",
-        "same"
+        "ref",
+        "same",
+        "satisfied",
+        "skill",
+        "thi"
       ]
     },
     {
-      "claimId": "claim-readme-md-165",
+      "claimId": "claim-readme-md-166",
       "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 165,
+          "line": 166,
           "excerpt": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval."
         }
       ],
@@ -5087,14 +5088,14 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
+      "evidenceStatus": "stale",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:2439661f4452be243c0dab17f3fe5f51d86ae2155ef8e79a8e9ef32ca0d2591c",
       "canonicalClaimId": "U2",
-      "score": 21,
+      "score": 23,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 16,
-      "scoreMargin": 5,
+      "scoreMargin": 7,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -5105,21 +5106,21 @@
         "deterministic",
         "eval",
         "evaluation",
+        "evidence",
         "fixture",
         "instead",
-        "keep",
         "only",
         "packet",
         "path"
       ]
     },
     {
-      "claimId": "claim-readme-md-169",
+      "claimId": "claim-readme-md-170",
       "summary": "Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 169,
+          "line": 170,
           "excerpt": "Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step."
         }
       ],
@@ -5155,12 +5156,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-175",
+      "claimId": "claim-readme-md-176",
       "summary": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 175,
+          "line": 176,
           "excerpt": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first."
         }
       ],
@@ -5169,14 +5170,14 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
+      "evidenceStatus": "stale",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
       "canonicalClaimId": "U2",
-      "score": 17,
+      "score": 18,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 11,
-      "scoreMargin": 6,
+      "scoreMargin": 7,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -5185,23 +5186,23 @@
         "catalog",
         "deterministic",
         "entry",
-        "family",
+        "evidence",
         "first",
         "fixture",
         "include",
         "inspect",
-        "keep",
         "operator",
-        "packet"
+        "packet",
+        "path"
       ]
     },
     {
-      "claimId": "claim-readme-md-187",
+      "claimId": "claim-readme-md-188",
       "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 187,
+          "line": 188,
           "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest."
         }
       ],
@@ -5237,12 +5238,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-208",
+      "claimId": "claim-readme-md-209",
       "summary": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 208,
+          "line": 209,
           "excerpt": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives."
         }
       ],
@@ -5278,12 +5279,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-227",
+      "claimId": "claim-readme-md-228",
       "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a Cautilus Agent at `.agents/skills/cautilus-agent/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 227,
+          "line": 228,
           "excerpt": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a Cautilus Agent at `.agents/skills/cautilus-agent/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
         }
       ],
@@ -5319,12 +5320,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-247",
+      "claimId": "claim-readme-md-248",
       "summary": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 247,
+          "line": 248,
           "excerpt": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly"
         }
       ],
@@ -5333,14 +5334,14 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
+      "evidenceStatus": "stale",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
       "canonicalClaimId": "U1",
-      "score": 15,
+      "score": 13,
       "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 13,
-      "scoreMargin": 2,
+      "runnerUpScore": 12,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -5349,14 +5350,14 @@
         "deterministic",
         "eval",
         "evidence",
-        "keep",
         "machine-readable",
         "optimization",
         "packet",
-        "proof",
         "readme.md",
         "report",
-        "review"
+        "review",
+        "skill",
+        "thi"
       ]
     },
     {
@@ -18322,12 +18323,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-12",
+      "claimId": "claim-skills-cautilus-agent-skill-md-13",
       "summary": "In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 12,
+          "line": 13,
           "excerpt": "In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout."
         }
       ],
@@ -18336,36 +18337,37 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
+      "evidenceStatus": "stale",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:472e59de361f21a5a5e3e1d85308f65a4e14d34e4c524f59b3cabd292719d42d",
-      "canonicalClaimId": "M2",
-      "score": 9,
-      "runnerUpCanonicalClaimId": "M3",
-      "runnerUpScore": 9,
+      "canonicalClaimId": "M3",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M11",
+      "runnerUpScore": 10,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "agent",
         "binary",
-        "checked-in",
+        "cautilu",
         "deterministic",
-        "keep",
+        "evidence",
         "path",
-        "repo",
         "skill",
         "source",
+        "thi",
         "workflow"
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-21",
+      "claimId": "claim-skills-cautilus-agent-skill-md-22",
       "summary": "The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 21,
+          "line": 22,
           "excerpt": "The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts."
         }
       ],
@@ -18401,12 +18403,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-22",
+      "claimId": "claim-skills-cautilus-agent-skill-md-23",
       "summary": "Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 22,
+          "line": 23,
           "excerpt": "Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work."
         }
       ],
@@ -18442,20 +18444,20 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-65",
+      "claimId": "claim-skills-cautilus-agent-skill-md-66",
       "summary": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 65,
+          "line": 66,
           "excerpt": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:65cb30158d551471121109baa101be43b1ccbca956f9424cce6149c48a5667b1",
@@ -18483,12 +18485,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-104",
+      "claimId": "claim-skills-cautilus-agent-skill-md-105",
       "summary": "The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 104,
+          "line": 105,
           "excerpt": "The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen."
         }
       ],
@@ -18520,12 +18522,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-116",
+      "claimId": "claim-skills-cautilus-agent-skill-md-117",
       "summary": "If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 116,
+          "line": 117,
           "excerpt": "If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`."
         }
       ],
@@ -18556,12 +18558,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-121",
+      "claimId": "claim-skills-cautilus-agent-skill-md-122",
       "summary": "In the Cautilus product repo, product-meaning review should start from those spec docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 121,
+          "line": 122,
           "excerpt": "In the Cautilus product repo, product-meaning review should start from those spec docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed."
         }
       ],
@@ -18595,12 +18597,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-128",
+      "claimId": "claim-skills-cautilus-agent-skill-md-129",
       "summary": "Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim specs and preserve source refs, proof route, evidence status, and next action.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 128,
+          "line": 129,
           "excerpt": "Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim specs and preserve source refs, proof route, evidence status, and next action."
         }
       ],
@@ -18636,12 +18638,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-154",
+      "claimId": "claim-skills-cautilus-agent-skill-md-155",
       "summary": "This branch proves reviewer launch, not review-result merge behavior.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 154,
+          "line": 155,
           "excerpt": "This branch proves reviewer launch, not review-result merge behavior."
         }
       ],
@@ -18675,12 +18677,12 @@
       ]
     },
     {
-      "claimId": "claim-skills-cautilus-agent-skill-md-218",
+      "claimId": "claim-skills-cautilus-agent-skill-md-219",
       "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
       "sourceRefs": [
         {
           "path": "skills/cautilus-agent/SKILL.md",
-          "line": 218,
+          "line": 219,
           "excerpt": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable."
         }
       ],

@@ -23,6 +23,7 @@ requested_review_commands: []
 product_surfaces:
   - installable_cli
   - cautilus_agent
+  - bundled_skill
 
 cli_skill_surface_probe_commands:
   - "./bin/cautilus --version"
@@ -31,18 +32,25 @@ cli_skill_surface_probe_commands:
   - "./bin/cautilus commands --json"
   - "./bin/cautilus scenarios --json"
 
-cli_skill_surface_command_docs: []
+cli_skill_surface_command_docs:
+  - docs/cli-reference.md
+  - docs/maintainers/operator-acceptance.md
 
 cli_skill_surface_skill_paths:
   - skills/cautilus-agent/SKILL.md
   - plugins/cautilus/skills/cautilus-agent/SKILL.md
 
 cli_skill_surface_change_globs:
+  - ".agents/skills/**"
   - "bin/**"
   - "cmd/cautilus/**"
   - "internal/cli/**"
   - "internal/app/**"
+  - "docs/cli-reference.md"
+  - "docs/maintainers/operator-acceptance.md"
+  - "skills/public/**"
   - "skills/cautilus-agent/**"
+  - "plugins/**"
   - "plugins/cautilus/**"
   - "install.sh"
   - "scripts/release/**"

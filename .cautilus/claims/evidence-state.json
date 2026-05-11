@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:769328f6e3a60d120d859b34d86509c1cbb6ab1bf270a14a49639bfbe6e580d5",
+    "claimsHash": "sha256:2a04e8ba4b692bd08eddaa95b1ae79b31dc63791490793dcdfb202c8e06741be",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:1326f4f93630d88c0c05a339240f4bb9e243ae5c98b5295bdd1dff26b6766e86",
+    "statusHash": "sha256:c1b389e13fea60cbedc08d926b3004a3a3c9cb64767cef59153c178c04a58cae",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,10 +22,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "f44aaa48fe3ba6acb6bd64c0c682032cd2b6bebe",
+    "currentGitCommit": "c729a90421957649840ac0a158ef843f1af41d9f",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "f44aaa48fe3ba6acb6bd64c0c682032cd2b6bebe",
+    "packetGitCommit": "c729a90421957649840ac0a158ef843f1af41d9f",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -33,45 +33,45 @@
     "candidateCount": 366,
     "sourceCount": 66,
     "byEvidenceStatus": {
-      "satisfied": 90,
-      "stale": 5,
-      "unknown": 271
+      "satisfied": 82,
+      "stale": 12,
+      "unknown": 272
     },
     "byRecommendedProof": {
       "cautilus-eval": 117,
-      "deterministic": 152,
-      "human-auditable": 97
+      "deterministic": 149,
+      "human-auditable": 100
     },
     "byVerificationReadiness": {
-      "blocked": 32,
-      "needs-alignment": 34,
-      "needs-scenario": 6,
-      "ready-for-proof": 294
+      "blocked": 33,
+      "needs-alignment": 35,
+      "needs-scenario": 7,
+      "ready-for-proof": 291
     },
     "byReviewStatus": {
-      "agent-reviewed": 148,
-      "heuristic": 217,
+      "agent-reviewed": 149,
+      "heuristic": 216,
       "human-reviewed": 1
     }
   },
   "openCautilusEval": {
-    "total": 116,
-    "readyForProof": 110,
+    "total": 117,
+    "readyForProof": 111,
     "needsScenario": 6,
     "bySurface": {
       "(none)": 5,
       "app/chat": 2,
       "app/prompt": 10,
-      "dev/repo": 73,
-      "dev/skill": 26
+      "dev/repo": 72,
+      "dev/skill": 28
     },
     "byReadiness": {
       "needs scenario": 6,
-      "ready for proof": 110
+      "ready for proof": 111
     },
     "rawByReadiness": {
       "needs-scenario": 6,
-      "ready-for-proof": 110
+      "ready-for-proof": 111
     },
     "proofReadySamples": [
       {
@@ -95,15 +95,15 @@
       {
         "claimId": "claim-readme-md-18",
         "source": "README.md:18",
-        "surface": "dev/repo",
+        "surface": "dev/skill",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
         "review": "heuristic",
-        "summary": "Host repos can use `cautilus eval test` and `cautilus eval evaluate` with checked-in fixtures, host-owned adapters, and the current `cautilus.evaluation_input.v1`, `cautilus.evaluation_observed.v1`, and `cautilus.evaluation_summary.v1` packets."
+        "summary": "Host repos can use `cautilus eval test`, `cautilus eval evaluate`, and post-run `cautilus eval skill-experiment compare` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets."
       },
       {
-        "claimId": "claim-readme-md-105",
-        "source": "README.md:105",
+        "claimId": "claim-readme-md-106",
+        "source": "README.md:106",
         "surface": "dev/skill",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -111,8 +111,26 @@
         "summary": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen."
       },
       {
-        "claimId": "claim-readme-md-227",
-        "source": "README.md:227",
+        "claimId": "claim-readme-md-160",
+        "source": "README.md:160",
+        "surface": "dev/skill",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-for-proof",
+        "review": "agent-reviewed",
+        "summary": "Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing."
+      },
+      {
+        "claimId": "claim-readme-md-164",
+        "source": "README.md:164",
+        "surface": "dev/skill",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-for-proof",
+        "review": "agent-reviewed",
+        "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`."
+      },
+      {
+        "claimId": "claim-readme-md-228",
+        "source": "README.md:228",
         "surface": "dev/skill",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -127,30 +145,12 @@
         "rawReadiness": "ready-for-proof",
         "review": "heuristic",
         "summary": "`cautilus eval skill-experiment compare` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation."
-      },
-      {
-        "claimId": "claim-docs-cli-reference-md-466",
-        "source": "docs/cli-reference.md:466",
-        "surface": "app/prompt",
-        "readiness": "ready for proof",
-        "rawReadiness": "ready-for-proof",
-        "review": "agent-reviewed",
-        "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly."
-      },
-      {
-        "claimId": "claim-docs-contracts-adapter-contract-md-209",
-        "source": "docs/contracts/adapter-contract.md:209",
-        "surface": "dev/repo",
-        "readiness": "ready for proof",
-        "rawReadiness": "ready-for-proof",
-        "review": "heuristic",
-        "summary": "When an eval run uses `runtime=product`, the adapter-owned command is expected to exercise a headless product path; the runtime label does not make product proof ready without a current runner assessment."
       }
     ],
     "scenarioSamples": [
       {
-        "claimId": "claim-readme-md-187",
-        "source": "README.md:187",
+        "claimId": "claim-readme-md-188",
+        "source": "README.md:188",
         "surface": "app/chat",
         "readiness": "needs scenario",
         "rawReadiness": "needs-scenario",
@@ -207,40 +207,40 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 90,
+      "count": 82,
       "actor": "none",
       "evidence": {
-        "satisfied": 90
+        "satisfied": 82
       },
       "review": {
-        "agent-reviewed": 90
+        "agent-reviewed": 82
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 62,
+      "count": 66,
       "actor": "agent",
       "evidence": {
-        "stale": 4,
-        "unknown": 58
+        "stale": 9,
+        "unknown": 57
       },
       "review": {
-        "agent-reviewed": 14,
-        "heuristic": 48
+        "agent-reviewed": 19,
+        "heuristic": 47
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 110,
+      "count": 111,
       "actor": "agent",
       "evidence": {
-        "stale": 1,
-        "unknown": 109
+        "stale": 3,
+        "unknown": 108
       },
       "review": {
-        "agent-reviewed": 6,
+        "agent-reviewed": 7,
         "heuristic": 103,
         "human-reviewed": 1
       },
@@ -248,25 +248,26 @@
     },
     {
       "id": "agent-design-scenario",
-      "count": 6,
+      "count": 7,
       "actor": "agent",
       "evidence": {
-        "unknown": 6
+        "unknown": 7
       },
       "review": {
+        "agent-reviewed": 1,
         "heuristic": 6
       },
       "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
     },
     {
       "id": "human-align-surfaces",
-      "count": 34,
+      "count": 35,
       "actor": "human",
       "evidence": {
-        "unknown": 34
+        "unknown": 35
       },
       "review": {
-        "agent-reviewed": 16,
+        "agent-reviewed": 17,
         "heuristic": 18
       },
       "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
@@ -285,13 +286,13 @@
     },
     {
       "id": "split-or-defer",
-      "count": 32,
+      "count": 33,
       "actor": "human",
       "evidence": {
-        "unknown": 32
+        "unknown": 33
       },
       "review": {
-        "agent-reviewed": 22,
+        "agent-reviewed": 23,
         "heuristic": 10
       },
       "summary": "Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification."
@@ -300,28 +301,28 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 217,
+      "count": 216,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [
         "claim-readme-md-18",
-        "claim-readme-md-80",
-        "claim-readme-md-82",
-        "claim-readme-md-90",
-        "claim-readme-md-105"
+        "claim-readme-md-81",
+        "claim-readme-md-83",
+        "claim-readme-md-106",
+        "claim-readme-md-170"
       ]
     },
     {
       "id": "stale-evidence",
-      "count": 5,
+      "count": 12,
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [
-        "claim-docs-cli-reference-md-462",
-        "claim-docs-cli-reference-md-466",
-        "claim-docs-cli-reference-md-498",
-        "claim-docs-cli-reference-md-534",
-        "claim-docs-cli-reference-md-552"
+        "claim-readme-md-138",
+        "claim-readme-md-160",
+        "claim-readme-md-164",
+        "claim-readme-md-166",
+        "claim-readme-md-176"
       ]
     }
   ]

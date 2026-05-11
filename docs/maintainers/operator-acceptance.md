@@ -139,7 +139,13 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 | 3.17 | `cautilus optimize propose --input ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
 | 3.18 | `cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
 
-### 3f. Review (fixture 기반, LLM 없음)
+### 3f. Eval 비교
+
+| # | 명령 | 통과 조건 | 실행자 |
+|---|---|---|---|
+| 3.18a | `cautilus eval skill-experiment compare --input ./fixtures/skill-clone-experiment/example-input.json --output /tmp/cautilus-oa-skill-experiment-report.json` | report JSON에 `cautilus.skill_clone_experiment_report.v1` 포함, exit 0 | 기계적 |
+
+### 3g. Review (fixture 기반, LLM 없음)
 
 의존: review 입력은 체크인된 report fixture에서 만든 `report.json`을 사용한다.
 `cautilus eval test`는 현재 `eval-observed.json`과 `eval-summary.json`을 만들며, review packet 입력을 직접 만들지는 않는다.

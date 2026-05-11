@@ -5,7 +5,9 @@ description: "Use when intentful behavior evaluation itself is the task and the 
 
 # Cautilus Agent
 
-Use Cautilus Agent when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding claim discovery, eval fixtures, report, review, or optimize commands by hand.
+Use Cautilus Agent when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding eval fixtures, packets, reports, claim discovery, review, or optimize commands by hand.
+For external host repos during the current contract rewrite, treat `eval test`, `eval evaluate`, and post-run `eval skill-experiment compare` as stable; claim discovery automation, optimize automation, live app-runner workflows, and review-learning capture remain opt-in.
+`eval skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.
 
 Cautilus Agent assumes a Cautilus binary is available.
 In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.
@@ -21,11 +23,9 @@ The binary owns command discovery, packet examples, deterministic scans, validat
 Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
 `eval` and `optimize` may still exercise model-involving behavior through adapter-owned runners.
 
-The three product front doors are:
-
-- `claim`: discover declared behavior claims and turn them into proof plans.
-- `eval`: verify bounded intentful behavior with explicit fixtures and adapters.
-- `optimize`: improve behavior only after the claim and held-out proof surface are explicit.
+The current external-adoption front door is `eval`: verify bounded intentful behavior with explicit fixtures and adapters, and compare host-preserved skill experiment outputs after a run.
+The broader product also includes opt-in `claim` and `optimize` surfaces.
+During the contract rewrite, do not present `claim`, `optimize`, live app-runner workflows, or review-learning packet capture as stable cross-repo defaults.
 
 ## CLI First
 
@@ -64,6 +64,7 @@ If claim state exists, read or refresh that packet before planning new proof wor
 ## Declared Claim Discovery
 
 Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.
+In external consumer repos during the contract rewrite, use this path only after the user explicitly opts into non-eval Cautilus work.
 For these direct questions, do not run `claim discover` until scan entries/depth are stated and the user confirms or adjusts the scope; keep LLM review as a separate budgeted branch.
 Do not hard-code the search to README; by default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.
@@ -96,13 +97,8 @@ Status from existing state:
 "$CAUTILUS_BIN" claim show --input <claims.json> --sample-claims 10
 ```
 
-Classify each candidate claim before creating fixtures:
-
-- `human-auditable`: the claim can be checked by reading current source or docs.
-- `deterministic`: the claim belongs in unit, lint, type, build, or CI checks.
-- `cautilus-eval`: the claim needs model, agent, prompt, skill, or workflow behavior evidence.
-- `scenario-candidate`: the claim needs normalized proposal input before it becomes a protected eval fixture.
-- `alignment-work`: the code, docs, adapter, or skill surface must be reconciled before proof would be honest.
+Before creating fixtures, keep proof class and readiness separate.
+Use `human-auditable` for source/doc judgment, `deterministic` for unit/lint/type/build/schema/CI proof, `cautilus-eval` for model/agent/prompt/skill/workflow evidence, `needs-scenario` for claims needing scenario decomposition, and `needs-alignment` for docs/code/adapter/skill surfaces that must be reconciled before proof would be honest.
 
 After discovery or refresh, summarize scanned entry files, linked Markdown count and depth, raw candidate count, claim summary by proof mechanism/readiness/evidence/review/lifecycle, and the groups that look ready for deterministic tests, Cautilus scenarios, alignment work, or human-auditable review.
 When the next natural branch is claim review, explain that it is a budgeted LLM review branch before presenting it as a choice.
@@ -115,6 +111,8 @@ Read `actionSummary.primaryBuckets` before making a next-work recommendation.
 Use the bucket `recommendedActor` and `summary` fields to separate agent work, human confirmation, deterministic proof, Cautilus eval planning, scenario design, alignment, and split-or-defer branches.
 Use `actionSummary.crossCuttingSignals` for review debt or stale-evidence warnings that can coexist with a primary proof branch.
 When preparing a focused review queue, pass `--action-bucket <bucket>` to `claim review prepare-input` instead of hand-filtering claim JSON.
+When triaging `needs-scenario` or `needs-alignment`, stay inside packet surfaces: prepare the focused action bucket, record reclassification decisions as `cautilus.claim_review_result.v1`, and apply them with `claim review apply-result`.
+Promote only concrete command, packet, runner, schema, or skill-behavior claims to `ready-for-proof`; keep product-boundary, future-surface, ownership, umbrella, and readiness-definition claims non-ready until split or aligned.
 In the Cautilus product repo, when raw claim status or review packets are too large for a maintainer to judge directly, run `npm run claims:status-report` and read `.cautilus/claims/claim-status-report.md` before asking for human decisions.
 If the maintainer is reviewing from a constrained terminal or phone, run `npm run claims:status-server` so they can read the report in a browser and save section comments as `.cautilus/claims/claim-status-comments.json`.
 When raw candidates are too granular for product judgment, curate a canonical claim spec tree before continuing HITL.
@@ -162,6 +160,8 @@ After reviewer launch, stop before review-result application, eval planning, edi
 In the later review-to-eval branch, apply `cautilus.claim_review_result.v1`, validate the reviewed claim packet, and only then plan eval fixtures for reviewed `cautilus-eval` claims that are `ready-for-proof`.
 When review-to-eval is explicitly delegated in the same agent turn, keep the same bounded reviewer budget unless the user names a larger one, write the applied claim packet to a separate artifact, validate that artifact, run `claim plan-evals` from the validated artifact, and stop before fixture authoring, eval execution, product edits, or commits.
 The review and eval-planning commands reject stale claim packets by default; treat that error as a prompt to refresh, not as a reason to pass `--allow-stale-claims` automatically.
+
+After a human review, HITL chunk, issue, pull request review, `review.json`, or `review-summary.json` produces a source review decision about a Cautilus proposal, use `"$CAUTILUS_BIN" review feedback build` to materialize `cautilus.review_feedback.v1`; include proposal evidence for `accepted`, `narrowed`, `reframed`, or `rejected`, reserve proposal-less packets for `missing_critical`, read the packet before reporting it, and do not treat it as eval pass/fail or source-ref verification; when comparing multiple explicitly selected review-feedback packets, use `"$CAUTILUS_BIN" review feedback summarize --input <packet> ...` to materialize `cautilus.review_feedback_summary.v1` without inventing active-run packet discovery or default packet placement.
 
 ## Eval Routing
 

@@ -1,7 +1,7 @@
 {
   "name": "cautilus",
   "private": true,
-  "version": "0.14.2",
+  "version": "0.15.0",
   "type": "module",
   "description": "Adapter-driven intentful behavior evaluation toolkit",
   "engines": {
@@ -41,10 +41,10 @@
     "release:publish": "node scripts/release/publish-release.mjs",
     "release:smoke-install": "node scripts/release/run-install-smoke.mjs",
     "consumer:starters:smoke": "node scripts/on-demand/smoke-starter-kits.mjs",
-  "hooks:install": "node scripts/install-git-hooks.mjs",
-  "hooks:check": "node scripts/check-git-hooks.mjs",
-  "generated:drift:check": "node scripts/check-generated-artifact-drift.mjs",
-  "docs:preview": "node scripts/preview-markdown.mjs",
+    "hooks:install": "node scripts/install-git-hooks.mjs",
+    "hooks:check": "node scripts/check-git-hooks.mjs",
+    "generated:drift:check": "node scripts/check-generated-artifact-drift.mjs",
+    "docs:preview": "node scripts/preview-markdown.mjs",
     "docs:preview:changed": "node scripts/preview-markdown.mjs --changed",
     "docs:preview:specs": "node scripts/preview-markdown.mjs --specs",
     "lint": "npm run lint:eslint && npm run lint:specs && npm run lint:scenario-normalizers && npm run lint:contracts && npm run lint:links && npm run lint:skill-disclosure && npm run lint:product-import-isolation && npm run lint:go && npm run vet:go && npm run security:govulncheck && npm run security:secrets",

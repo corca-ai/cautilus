@@ -53,6 +53,8 @@ jobs:
           {
             echo "# Cautilus ${VERSION}"
             echo
+            echo "Operator-facing release scope and verification notes are recorded in \`charness-artifacts/release/latest.md\` at this tag."
+            echo
             echo "- source archive checksum: \`${SHA256}\`"
             echo "- binary artifacts:"
             ls dist/cautilus_*.tar.gz | sed 's#dist/##' | sed 's#^#  - `#' | sed 's#$#`#'
