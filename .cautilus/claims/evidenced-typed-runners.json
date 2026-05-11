@@ -1285,28 +1285,27 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:f11775360f4bee9b7b6e47ee4e7f68e7bb46a4af90fdef52de4e3c32780d2b0e",
+          "contentHash": "sha256:8316cdb65e049a6e3f7cc626b673466aac852b024faf6c25e4ca13cb301dd7e8",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-claim-review-prepare-input-boundary-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-131"
+            "claim-docs-cli-reference-md-131",
+            "claim-docs-master-plan-md-78"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-claim-review-prepare-input-boundary-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-131 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused app/runtime tests and a live `claim review prepare-input` packet with schemaVersion cautilus.claim_review_input.v1, bounded clusters, skippedClusters, and a packetNotice stating that it does not call an LLM or assert satisfaction.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep reviewer launch and review-result application separate from prepare-input.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -1316,8 +1315,9 @@
         }
       ],
       "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names deterministic claim-review prepare-input packet behavior rather than reviewer execution."
     },
     {
       "claimAudience": "user",
@@ -3322,17 +3322,18 @@
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:b6e47471edb374b6100551bd79b317bde779d3102efd88dd02d046fbdad24524",
+          "contentHash": "sha256:8316cdb65e049a6e3f7cc626b673466aac852b024faf6c25e4ca13cb301dd7e8",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-active-run-and-claim-discover-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
           "supportsClaimIds": [
+            "claim-docs-cli-reference-md-131",
             "claim-docs-master-plan-md-78"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-active-run-and-claim-discover-2026-05-03.json does not list current claimId claim-docs-master-plan-md-78 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused claim-discover tests and a live tiny-repo `claim discover` run that emitted cautilus.claim_proof_plan.v1 with sourceRefs and nonVerdictNotice: discovered candidates are not verified until matching evidence is attached.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -3340,7 +3341,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep `claim discover` as proof planning; evidence attachment remains a later review or proof step.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -3351,8 +3352,9 @@
         }
       ],
       "summary": "The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic claim-discover packet semantics and non-verdict behavior."
     },
     {
       "claimAudience": "developer",
@@ -11899,17 +11901,17 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+          "contentHash": "sha256:148097e73227fbd9f6de2943eeeb3888016af4a007b7103eb89e0b40604064f1",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-cautilus-agent-source-launcher-2026-05-11.json",
           "supportsClaimIds": [
             "claim-skills-cautilus-agent-skill-md-12"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-runtime-claims-2026-05-01.json does not list current claimId claim-skills-cautilus-agent-skill-md-12 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by synchronized source and packaged Cautilus Agent skill text, the skill-disclosure and distribution gates, and a local resolution snippet that chooses ./bin/cautilus when it is executable and then runs version 0.14.2 through that launcher.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -11917,7 +11919,7 @@
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep product-repo source-launcher guidance separate from consumer-repo PATH guidance.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -11928,8 +11930,9 @@
         }
       ],
       "summary": "In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names deterministic skill guidance and local binary resolution behavior in the Cautilus product checkout."
     },
     {
       "claimAudience": "developer",
@@ -12252,16 +12255,16 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 79,
-      "stale": 16,
+      "satisfied": 82,
+      "stale": 13,
       "unknown": 270
     },
     "byLifecycle": {
       "new": 365
     },
     "byRecommendedProof": {
-      "cautilus-eval": 118,
-      "deterministic": 149,
+      "cautilus-eval": 117,
+      "deterministic": 150,
       "human-auditable": 98
     },
     "byReviewStatus": {
@@ -12532,7 +12535,9 @@
       ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json",
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
+      ".cautilus/claims/review-result-evidence-cautilus-agent-source-launcher-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-claim-cli-packet-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
@@ -12575,9 +12580,9 @@
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 50,
+    "appliedResultCount": 52,
     "skippedResultCount": 34,
-    "keptUpdateCount": 171,
+    "keptUpdateCount": 174,
     "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },

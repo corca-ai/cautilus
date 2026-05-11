@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:336473eb101b26f0957332686d498f937714a41e32b957f11e4a5b6d8e86c6f1",
+    "claimsHash": "sha256:5d7b897e74dc0fed155a97a30399cd5d6581749bee036da3b3a612ea091ccbb5",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:eac34ee90f4ca1100f52b53534c9f882e058072e6058667a2c7aa644abcb7d9b",
+    "statusHash": "sha256:02b71f274c9629beda984a2cc9a50ff8ff183a8ce0d49ddbcdd91b0fe33349c0",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,11 +12,12 @@
     }
   },
   "gitState": {
-    "changedFileCount": 18,
+    "changedFileCount": 20,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
@@ -25,6 +26,7 @@
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
@@ -41,7 +43,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a4f156e2cf6b9ed26e2b6808ef52ddbf6196ac6d",
+    "currentGitCommit": "a8e0d4aa25b558baab59e90df3882b19c6789326",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",
@@ -52,13 +54,13 @@
     "candidateCount": 365,
     "sourceCount": 66,
     "byEvidenceStatus": {
-      "satisfied": 79,
-      "stale": 16,
+      "satisfied": 82,
+      "stale": 13,
       "unknown": 270
     },
     "byRecommendedProof": {
-      "cautilus-eval": 118,
-      "deterministic": 149,
+      "cautilus-eval": 117,
+      "deterministic": 150,
       "human-auditable": 98
     },
     "byVerificationReadiness": {
@@ -74,23 +76,23 @@
     }
   },
   "openCautilusEval": {
-    "total": 118,
-    "readyForProof": 112,
+    "total": 117,
+    "readyForProof": 111,
     "needsScenario": 6,
     "bySurface": {
       "(none)": 5,
       "app/chat": 3,
       "app/prompt": 10,
-      "dev/repo": 74,
+      "dev/repo": 73,
       "dev/skill": 26
     },
     "byReadiness": {
       "needs scenario": 6,
-      "ready for proof": 112
+      "ready for proof": 111
     },
     "rawByReadiness": {
       "needs-scenario": 6,
-      "ready-for-proof": 112
+      "ready-for-proof": 111
     },
     "proofReadySamples": [
       {
@@ -148,15 +150,6 @@
         "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a Cautilus Agent at `.agents/skills/cautilus-agent/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
       },
       {
-        "claimId": "claim-docs-cli-reference-md-131",
-        "source": "docs/cli-reference.md:131",
-        "surface": "dev/repo",
-        "readiness": "ready for proof",
-        "rawReadiness": "ready-for-proof",
-        "review": "agent-reviewed",
-        "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied."
-      },
-      {
         "claimId": "claim-docs-cli-reference-md-261",
         "source": "docs/cli-reference.md:261",
         "surface": "app/chat",
@@ -164,6 +157,15 @@
         "rawReadiness": "ready-for-proof",
         "review": "agent-reviewed",
         "summary": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-458",
+        "source": "docs/cli-reference.md:458",
+        "surface": "app/prompt",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-for-proof",
+        "review": "agent-reviewed",
+        "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly."
       }
     ],
     "scenarioSamples": [
@@ -226,40 +228,40 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 79,
+      "count": 82,
       "actor": "none",
       "evidence": {
-        "satisfied": 79
+        "satisfied": 82
       },
       "review": {
-        "agent-reviewed": 79
+        "agent-reviewed": 82
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 69,
+      "count": 67,
       "actor": "agent",
       "evidence": {
-        "stale": 11,
+        "stale": 9,
         "unknown": 58
       },
       "review": {
-        "agent-reviewed": 21,
+        "agent-reviewed": 19,
         "heuristic": 48
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 112,
+      "count": 111,
       "actor": "agent",
       "evidence": {
-        "stale": 4,
+        "stale": 3,
         "unknown": 108
       },
       "review": {
-        "agent-reviewed": 9,
+        "agent-reviewed": 8,
         "heuristic": 102,
         "human-reviewed": 1
       },
@@ -334,15 +336,15 @@
     },
     {
       "id": "stale-evidence",
-      "count": 16,
+      "count": 13,
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [
         "claim-readme-md-163",
         "claim-readme-md-247",
-        "claim-docs-cli-reference-md-131",
         "claim-docs-cli-reference-md-176",
-        "claim-docs-cli-reference-md-188"
+        "claim-docs-cli-reference-md-188",
+        "claim-docs-cli-reference-md-259"
       ]
     }
   ]

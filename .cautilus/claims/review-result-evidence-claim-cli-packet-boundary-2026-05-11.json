@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-11T00:00:00Z",
+    "evidencePolicy": "Mark evidenceStatus=satisfied only for the two CLI packet-boundary claims covered by focused CLI/runtime tests, agent-flow audit tests, and live packets."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-claim-cli-packet-boundary-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-131",
+          "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic claim-review prepare-input packet behavior rather than reviewer execution.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused app/runtime tests and a live `claim review prepare-input` packet with schemaVersion cautilus.claim_review_input.v1, bounded clusters, skippedClusters, and a packetNotice stating that it does not call an LLM or assert satisfaction.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8316cdb65e049a6e3f7cc626b673466aac852b024faf6c25e4ca13cb301dd7e8",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-131",
+                "claim-docs-master-plan-md-78"
+              ]
+            }
+          ],
+          "nextAction": "Keep reviewer launch and review-result application separate from prepare-input.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-master-plan-md-78",
+          "claimFingerprint": "sha256:69aa5ae1ce7aca764e9f8198ae964b6ec8da23ff55f59f7f2df2a66910e697bc",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic claim-discover packet semantics and non-verdict behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused claim-discover tests and a live tiny-repo `claim discover` run that emitted cautilus.claim_proof_plan.v1 with sourceRefs and nonVerdictNotice: discovered candidates are not verified until matching evidence is attached.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8316cdb65e049a6e3f7cc626b673466aac852b024faf6c25e4ca13cb301dd7e8",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-131",
+                "claim-docs-master-plan-md-78"
+              ]
+            }
+          ],
+          "nextAction": "Keep `claim discover` as proof planning; evidence attachment remains a later review or proof step.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

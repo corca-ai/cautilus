@@ -22,20 +22,20 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 16
+          "stale": 13
         },
         "byReviewStatus": {
-          "agent-reviewed": 16
+          "agent-reviewed": 13
         },
-        "count": 16,
+        "count": 13,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-163",
           "claim-readme-md-247",
-          "claim-docs-cli-reference-md-131",
           "claim-docs-cli-reference-md-176",
-          "claim-docs-cli-reference-md-188"
+          "claim-docs-cli-reference-md-188",
+          "claim-docs-cli-reference-md-259"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 79
+          "satisfied": 82
         },
         "byReviewStatus": {
-          "agent-reviewed": 79
+          "agent-reviewed": 82
         },
-        "count": 79,
+        "count": 82,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,14 +62,14 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 11,
+          "stale": 9,
           "unknown": 58
         },
         "byReviewStatus": {
-          "agent-reviewed": 21,
+          "agent-reviewed": 19,
           "heuristic": 48
         },
-        "count": 69,
+        "count": 67,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -83,15 +83,15 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 4,
+          "stale": 3,
           "unknown": 108
         },
         "byReviewStatus": {
-          "agent-reviewed": 9,
+          "agent-reviewed": 8,
           "heuristic": 102,
           "human-reviewed": 1
         },
-        "count": 112,
+        "count": 111,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -218,16 +218,16 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 79,
-      "stale": 16,
+      "satisfied": 82,
+      "stale": 13,
       "unknown": 270
     },
     "byLifecycle": {
       "new": 365
     },
     "byRecommendedProof": {
-      "cautilus-eval": 118,
-      "deterministic": 149,
+      "cautilus-eval": 117,
+      "deterministic": 150,
       "human-auditable": 98
     },
     "byReviewStatus": {
@@ -439,7 +439,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 79,
+    "satisfiedClaimCount": 82,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-124",
@@ -756,6 +756,26 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-131",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:8316cdb65e049a6e3f7cc626b673466aac852b024faf6c25e4ca13cb301dd7e8",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-131",
+              "claim-docs-master-plan-md-78"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied."
       },
       {
         "claimId": "claim-docs-cli-reference-md-269",
@@ -1100,6 +1120,26 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "Use a checked-in JSON schema file and a fixed output file path so the loop can detect `blocker`, `concern`, and `pass` without guessing."
+      },
+      {
+        "claimId": "claim-docs-master-plan-md-78",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:8316cdb65e049a6e3f7cc626b673466aac852b024faf6c25e4ca13cb301dd7e8",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-131",
+              "claim-docs-master-plan-md-78"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict."
       },
       {
         "claimId": "claim-docs-contracts-active-run-md-3",
@@ -2002,16 +2042,36 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The canonical machine-readable output should preserve the full ranked proposal list."
+      },
+      {
+        "claimId": "claim-skills-cautilus-agent-skill-md-12",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:148097e73227fbd9f6de2943eeeb3888016af4a007b7103eb89e0b40604064f1",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cautilus-agent-source-launcher-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-skills-cautilus-agent-skill-md-12"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout."
       }
     ]
   },
   "gitCommit": "128e15454ff634d446a95c7408b95379ce009788",
   "gitState": {
-    "changedFileCount": 18,
+    "changedFileCount": 20,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
@@ -2020,6 +2080,7 @@
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
@@ -2036,7 +2097,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a4f156e2cf6b9ed26e2b6808ef52ddbf6196ac6d",
+    "currentGitCommit": "a8e0d4aa25b558baab59e90df3882b19c6789326",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",

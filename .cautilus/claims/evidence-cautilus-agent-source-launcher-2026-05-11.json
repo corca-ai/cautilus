@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-cautilus-agent-source-launcher-2026-05-11",
+  "createdForClaimIds": [
+    "claim-skills-cautilus-agent-skill-md-12"
+  ],
+  "repoCommit": "a8e0d4aa25b558baab59e90df3882b19c6789326",
+  "summary": "Deterministic proof that Cautilus Agent guidance in this product repo prefers the checked-in ./bin/cautilus source launcher and that the packaged skill preserves that guidance.",
+  "evidenceScope": {
+    "targetSurface": "Cautilus Agent source-launcher preference",
+    "claimBoundary": "Only the listed Cautilus Agent skill claim is marked satisfied.",
+    "notClaimed": [
+      "Every future agent runtime will always obey the guidance.",
+      "The installed `cautilus` binary on PATH is actually stale on this machine.",
+      "Consumer repos should use `./bin/cautilus`; the skill explicitly keeps consumer repos on `cautilus` from PATH.",
+      "The source-launcher preference proves claim-discover or review-input packet behavior."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:skill-disclosure",
+      "exitCode": 0,
+      "reason": "Skill disclosure check confirms the source Cautilus Agent and packaged Cautilus Agent stay synchronized while retaining required binary-resolution fragments."
+    },
+    {
+      "command": "node --test scripts/release/distribution-surface.test.mjs bin/cautilus.test.mjs",
+      "exitCode": 0,
+      "reason": "Focused release and repo-shim tests cover packaged skill sync, product distribution surfaces, and the repo source launcher forwarding to the Go CLI entry."
+    },
+    {
+      "command": "sh -lc 'CAUTILUS_BIN=cautilus; if [ -x ./bin/cautilus ]; then CAUTILUS_BIN=./bin/cautilus; fi; printf \"resolved=%s\\n\" \"$CAUTILUS_BIN\"; \"$CAUTILUS_BIN\" --version'",
+      "exitCode": 0,
+      "observed": {
+        "resolved": "./bin/cautilus",
+        "version": "0.14.2"
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-claim-cli-skill-proof-2026-05-11/source-launcher.txt",
+      "kind": "source-launcher-resolution-output",
+      "contentHash": "sha256:c89ca760e0f90b75f80511970c320a4713d62a76c55563dfd6e790bfed965183"
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "skills/cautilus-agent/SKILL.md",
+      "kind": "claim-source-and-source-agent-guidance",
+      "contentHash": "sha256:f0de0eda36e891dfdf4cadefeedf994e2dac569bb3715eddbcc23de422d6d625"
+    },
+    {
+      "path": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+      "kind": "packaged-agent-guidance",
+      "contentHash": "sha256:f0de0eda36e891dfdf4cadefeedf994e2dac569bb3715eddbcc23de422d6d625"
+    },
+    {
+      "path": "scripts/check-cautilus-skill-disclosure.mjs",
+      "kind": "skill-disclosure-sync-check",
+      "contentHash": "sha256:4ef93a2ca797aa6f28b4be8b6af8053cf92c84cb14a9b25d94fa51af60073446"
+    },
+    {
+      "path": "scripts/release/distribution-surface.test.mjs",
+      "kind": "distribution-surface-tests",
+      "contentHash": "sha256:0ecec670271678a31930e29bb12ccafe7e410fcd9bbef29eb6354b7e4afbf5e0"
+    },
+    {
+      "path": "bin/cautilus.test.mjs",
+      "kind": "source-launcher-tests",
+      "contentHash": "sha256:f54f731203bd05ac5b1c151ada714486daf9da63d2131aea9f413ed643fa013b"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The source and packaged Cautilus Agent skill text match, the skill-disclosure and distribution tests pass, and the local resolution snippet chooses ./bin/cautilus in this product checkout before printing the current source launcher version."
+  }
+}

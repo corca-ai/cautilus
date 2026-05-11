@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-11T00:00:00Z",
+    "evidencePolicy": "Mark evidenceStatus=satisfied only for the Cautilus Agent source-launcher preference claim covered by skill text, packaged sync, focused tests, and local resolution output."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cautilus-agent-source-launcher-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-skills-cautilus-agent-skill-md-12",
+          "claimFingerprint": "sha256:472e59de361f21a5a5e3e1d85308f65a4e14d34e4c524f59b3cabd292719d42d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic skill guidance and local binary resolution behavior in the Cautilus product checkout.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by synchronized source and packaged Cautilus Agent skill text, the skill-disclosure and distribution gates, and a local resolution snippet that chooses ./bin/cautilus when it is executable and then runs version 0.14.2 through that launcher.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cautilus-agent-source-launcher-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:148097e73227fbd9f6de2943eeeb3888016af4a007b7103eb89e0b40604064f1",
+              "supportsClaimIds": [
+                "claim-skills-cautilus-agent-skill-md-12"
+              ]
+            }
+          ],
+          "nextAction": "Keep product-repo source-launcher guidance separate from consumer-repo PATH guidance.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-claim-cli-packet-boundary-2026-05-11",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-131",
+    "claim-docs-master-plan-md-78"
+  ],
+  "repoCommit": "a8e0d4aa25b558baab59e90df3882b19c6789326",
+  "summary": "Deterministic proof for claim-discover proof-plan semantics and claim-review prepare-input packet boundaries.",
+  "evidenceScope": {
+    "targetSurface": "Claim CLI deterministic packet boundaries",
+    "claimBoundary": "Only the two listed claim CLI packet-boundary claims are marked satisfied.",
+    "notClaimed": [
+      "`claim discover` verifies declared behavior or attaches evidence.",
+      "`claim review prepare-input` launches reviewer lanes, calls an LLM, applies review results, or marks claims satisfied.",
+      "The review-input packet writes eval fixtures, prompts, runners, wrappers, or host policy.",
+      "Discovered claim text is true merely because it appears in a proof-plan packet."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test scripts/agent-runtime/audit-cautilus-first-scan-flow-log.test.mjs scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs",
+      "exitCode": 0,
+      "reason": "Agent-flow audits cover first-scan sequencing through ./bin/cautilus or CAUTILUS_BIN, claim discover followed by claim show, and review-prepare stopping at deterministic packet creation without review overrun."
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunClaimDiscoverWritesProofPlanFromTinyRepo|TestRunClaimReviewPrepareInputWritesClusters'",
+      "exitCode": 0,
+      "reason": "Focused app tests cover claim discover writing a proof-plan packet and claim review prepare-input emitting the review-input packet with no-LLM and non-satisfaction notice."
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting|TestBuildClaimReviewInputClustersAndSkipsDeterministically'",
+      "exitCode": 0,
+      "reason": "Focused runtime tests cover source-ref-backed claim discovery routing and bounded review-input clusters plus skipped clusters."
+    },
+    {
+      "command": "go test ./internal/runtime -run TestBuildClaimReviewInputSkipsSatisfiedClaims",
+      "exitCode": 0,
+      "reason": "Focused runtime test covers that already satisfied and already reviewed claims are skipped instead of being re-reviewed or re-marked by prepare-input."
+    },
+    {
+      "command": "./bin/cautilus claim discover --repo-root fixtures/claim-discovery/tiny-repo --output /tmp/cautilus-claim-cli-skill-proof-2026-05-11/tiny-claims.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.claim_proof_plan.v1",
+        "candidateCount": 3,
+        "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
+        "firstClaimHasSourceRefs": true,
+        "firstClaimEvidenceStatus": "unknown"
+      }
+    },
+    {
+      "command": "./bin/cautilus claim review prepare-input --claims /tmp/cautilus-claim-cli-skill-proof-2026-05-11/tiny-claims.json --max-clusters 2 --max-claims-per-cluster 1 --output /tmp/cautilus-claim-cli-skill-proof-2026-05-11/review-input.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.claim_review_input.v1",
+        "packetNotice": "This packet prepares deterministic claim review input. It does not call an LLM or assert that any claim is satisfied.",
+        "clusterCount": 2,
+        "skippedClusterCount": 1,
+        "skippedClaimCount": 0
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-claim-cli-skill-proof-2026-05-11/tiny-claims.json",
+      "kind": "claim-proof-plan-packet",
+      "contentHash": "sha256:9e13290c3b96e885d4f65971e8baf527d179292ce90d74d70030b136b7f90395",
+      "schemaVersion": "cautilus.claim_proof_plan.v1"
+    },
+    {
+      "path": "/tmp/cautilus-claim-cli-skill-proof-2026-05-11/review-input.json",
+      "kind": "claim-review-input-packet",
+      "contentHash": "sha256:029933ba1dea0046f2c8660d3d2be2e79f6f3ec731dd853db2344c9243c617c6",
+      "schemaVersion": "cautilus.claim_review_input.v1"
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:0dc3583c7c90493d22e13963ffc25596dddceb7ad427dc53fbb3124bb937570b"
+    },
+    {
+      "path": "docs/master-plan.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:aaccc2794b4e4496fb762cf6ff6933b4e36adc45b80f51651e8065306152405f"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "claim-cli-handlers",
+      "contentHash": "sha256:e15cef8b1322c520c628b77bb1d914396598ce2975e6ec97478b40b04a589343"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "claim-cli-tests",
+      "contentHash": "sha256:768fa1077ca18927aed56217974800fbec418ffe1350776d37f631d38b9ef6b2"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discover-and-review-input-runtime",
+      "contentHash": "sha256:5b653ccd904a8b2c8c1a0807d70b34c8531db6b2768b19df9dd261eee47765a7"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discover-and-review-input-runtime-tests",
+      "contentHash": "sha256:8ba0ce24fdffd00a979ee639a80b3c36f2900411dac2ce18627688aed2d619ee"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-first-scan-flow-log.test.mjs",
+      "kind": "agent-first-scan-flow-tests",
+      "contentHash": "sha256:f15ca58ecfd1e8f62922d0533a951418bddb1bcb518ba3f5c508c1e95c8cc73d"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs",
+      "kind": "agent-review-prepare-flow-tests",
+      "contentHash": "sha256:c14255ec114d85a18f7d63eef8ef1423f068a8c024f4544883b4638f6aad3c63"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused tests, agent-flow audits, and live CLI packets prove that claim discover emits a source-ref-backed non-verdict proof plan and claim review prepare-input emits a review-input packet without LLM calls, reviewer launch, result application, or satisfaction marking."
+  }
+}
