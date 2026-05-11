@@ -1,4 +1,4 @@
-import { accessSync, constants, existsSync } from "node:fs";
+import { accessSync, constants, existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import process from "node:process";
@@ -56,10 +56,19 @@ function isExecutable(path) {
 	}
 }
 
+function readFile(path) {
+	try {
+		return readFileSync(path, "utf-8");
+	} catch {
+		return "";
+	}
+}
+
 export function checkGitHooks(repoRoot) {
 	const expectedHooksPath = join(repoRoot, HOOKS_PATH);
 	const prePushHook = join(repoRoot, PRE_PUSH_PATH);
 	const hooksPath = runGit(repoRoot, ["config", "--get", "core.hooksPath"]);
+	const prePushContent = readFile(prePushHook);
 	const checks = [
 		{
 			id: "hooks_path_configured",
@@ -82,6 +91,13 @@ export function checkGitHooks(repoRoot) {
 				existsSync(prePushHook) && isExecutable(prePushHook)
 					? `${PRE_PUSH_PATH} is executable.`
 					: `${PRE_PUSH_PATH} is not executable.`,
+		},
+		{
+			id: "pre_push_generated_artifact_drift_check",
+			ok: prePushContent.includes("npm run generated:drift:check"),
+			detail: prePushContent.includes("npm run generated:drift:check")
+				? `${PRE_PUSH_PATH} checks generated artifact drift after verify.`
+				: `${PRE_PUSH_PATH} must run npm run generated:drift:check after verify.`,
 		},
 	];
 	const ready = checks.every((check) => check.ok);

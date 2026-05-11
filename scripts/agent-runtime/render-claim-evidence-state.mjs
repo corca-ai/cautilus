@@ -125,6 +125,65 @@ function sameCanonicalValue(left, right) {
 	return JSON.stringify(canonicalValue(left)) === JSON.stringify(canonicalValue(right));
 }
 
+function normalizeStatusForGeneratedArtifactDrift(value) {
+	const normalized = canonicalValue(value);
+	const gitState = asObject(normalized.gitState);
+	if (Object.keys(gitState).length === 0) {
+		return normalized;
+	}
+	delete gitState.currentGitCommit;
+	delete gitState.headDrift;
+	delete gitState.changedFileCount;
+	delete gitState.changedFiles;
+	delete gitState.changedSources;
+	delete gitState.comparisonStatus;
+	delete gitState.recommendedAction;
+	normalized.gitState = gitState;
+	return normalized;
+}
+
+function normalizeProjectionForGeneratedArtifactDrift(value) {
+	const normalized = canonicalValue(value);
+	if (normalized.sourceOfTruth) {
+		delete normalized.sourceOfTruth.statusHash;
+	}
+	if (normalized.gitState) {
+		delete normalized.gitState.currentGitCommit;
+		delete normalized.gitState.headDrift;
+		delete normalized.gitState.changedFileCount;
+		delete normalized.gitState.changedFiles;
+		delete normalized.gitState.changedSources;
+		delete normalized.gitState.comparisonStatus;
+		delete normalized.gitState.recommendedAction;
+	}
+	return normalized;
+}
+
+function normalizeMarkdownForGeneratedArtifactDrift(value) {
+	return String(value)
+		.replace(/^- Status hash: sha256:[a-f0-9]+$/m, "- Status hash: <generated-artifact-commit-drift>")
+		.replace(/^- Git state: [^;]+; stale=no$/m, "- Git state: <generated-artifact-commit-drift>; stale=no")
+		.replace(/^- Snapshot current commit: [0-9a-f]+$/m, "- Snapshot current commit: <generated-artifact-commit-drift>");
+}
+
+function generatedArtifactCommitDriftOnly(checkedStatus, refreshedStatus) {
+	const checkedGitState = asObject(checkedStatus?.gitState);
+	const refreshedGitState = asObject(refreshedStatus?.gitState);
+	if (checkedGitState.isStale === true || refreshedGitState.isStale === true) {
+		return false;
+	}
+	if ((checkedGitState.changedSourceCount ?? 0) !== 0 || (refreshedGitState.changedSourceCount ?? 0) !== 0) {
+		return false;
+	}
+	if (checkedGitState.packetGitCommit !== refreshedGitState.packetGitCommit) {
+		return false;
+	}
+	return sameCanonicalValue(
+		normalizeStatusForGeneratedArtifactDrift(checkedStatus),
+		normalizeStatusForGeneratedArtifactDrift(refreshedStatus),
+	);
+}
+
 function assertStatusSummaryMatchesClaimPacket(claimsPacket, statusPacket) {
 	const claimSummary = selectedClaimSummary(claimsPacket);
 	const statusSummary = asObject(statusPacket.claimSummary);
@@ -357,18 +416,24 @@ function readInputs(args) {
 	return { claimsPacket, statusPacket };
 }
 
-function compareFile(path, expected) {
+function compareFile(path, expected, { equivalent } = {}) {
 	if (!fs.existsSync(path)) {
 		throw new Error(`${path} is missing; run npm run claims:evidence-state`);
 	}
 	const actual = fs.readFileSync(path, "utf8");
 	if (actual !== expected) {
+		if (equivalent?.(actual, expected) === true) {
+			return;
+		}
 		throw new Error(`${path} is stale; run npm run claims:evidence-state`);
 	}
 }
 
 export function run(args) {
 	const { claimsPacket, statusPacket } = readInputs(args);
+	const checkedStatusPacket = args.refreshStatus && args.check && fs.existsSync(args.status) ? readJSON(args.status) : null;
+	const allowGeneratedArtifactCommitDrift =
+		checkedStatusPacket && generatedArtifactCommitDriftOnly(checkedStatusPacket, statusPacket);
 	if (args.refreshStatus && !args.check) {
 		writeFile(args.status, canonicalJSON(statusPacket));
 	}
@@ -385,10 +450,28 @@ export function run(args) {
 	const markdown = renderMarkdown(projection);
 	if (args.check) {
 		if (args.refreshStatus) {
-			compareFile(args.status, canonicalJSON(statusPacket));
+			compareFile(args.status, canonicalJSON(statusPacket), {
+				equivalent: (actual) =>
+					allowGeneratedArtifactCommitDrift &&
+					sameCanonicalValue(
+						normalizeStatusForGeneratedArtifactDrift(JSON.parse(actual)),
+						normalizeStatusForGeneratedArtifactDrift(statusPacket),
+					),
+			});
 		}
-		compareFile(args.outputJson, json);
-		compareFile(args.outputMd, markdown);
+		compareFile(args.outputJson, json, {
+			equivalent: (actual) =>
+				allowGeneratedArtifactCommitDrift &&
+				sameCanonicalValue(
+					normalizeProjectionForGeneratedArtifactDrift(JSON.parse(actual)),
+					normalizeProjectionForGeneratedArtifactDrift(projection),
+				),
+		});
+		compareFile(args.outputMd, markdown, {
+			equivalent: (actual, expected) =>
+				allowGeneratedArtifactCommitDrift &&
+				normalizeMarkdownForGeneratedArtifactDrift(actual) === normalizeMarkdownForGeneratedArtifactDrift(expected),
+		});
 		return { projection, checked: true };
 	}
 	writeFile(args.outputJson, json);

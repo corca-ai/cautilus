@@ -25,7 +25,11 @@ function initRepo(root) {
 function writePrePush(root, executable = true) {
 	const hookPath = join(root, ".githooks", "pre-push");
 	mkdirSync(join(root, ".githooks"), { recursive: true });
-	writeFileSync(hookPath, "#!/usr/bin/env sh\nset -eu\nnpm run verify\n", "utf-8");
+	writeFileSync(
+		hookPath,
+		"#!/usr/bin/env sh\nset -eu\nnpm run verify\nnpm run generated:drift:check\n",
+		"utf-8",
+	);
 	chmodSync(hookPath, executable ? 0o755 : 0o644);
 	return hookPath;
 }
@@ -68,6 +72,30 @@ test("install-git-hooks configures core.hooksPath and check-git-hooks passes", (
 		const payload = JSON.parse(result.stdout);
 		assert.equal(payload.ready, true);
 		assert.equal(payload.configuredHooksPath, ".githooks");
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("check-git-hooks fails when pre-push omits generated artifact drift check", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-hooks-no-generated-check-"));
+	try {
+		initRepo(root);
+		const hookPath = writePrePush(root);
+		writeFileSync(hookPath, "#!/usr/bin/env sh\nset -eu\nnpm run verify\n", "utf-8");
+		git(root, ["config", "--local", "core.hooksPath", ".githooks"]);
+
+		const result = spawnSync("node", [CHECK_SCRIPT, "--repo-root", root], {
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 1);
+		const payload = JSON.parse(result.stdout);
+		assert.equal(payload.ready, false);
+		const generatedCheck = payload.checks.find(
+			(check) => check.id === "pre_push_generated_artifact_drift_check",
+		);
+		assert.equal(generatedCheck.ok, false);
+		assert.match(generatedCheck.detail, /generated:drift:check/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

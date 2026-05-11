@@ -211,3 +211,31 @@ test("refresh check mode detects stale checked-in status snapshot", () => {
 		/status\.json is stale; run npm run claims:evidence-state/,
 	);
 });
+
+test("refresh check mode tolerates generated artifact commit drift", () => {
+	const root = tempDir();
+	const paths = fixturePackets(root);
+	run({ ...paths, check: false, refreshStatus: false, cautilusBin: "./bin/cautilus" });
+
+	const refreshedStatus = JSON.parse(fs.readFileSync(paths.status, "utf8"));
+	refreshedStatus.gitState = {
+		...refreshedStatus.gitState,
+		comparisonStatus: "fresh-with-head-drift",
+		headDrift: true,
+		currentGitCommit: "def456",
+		packetGitCommit: "abc123",
+		changedFileCount: 3,
+		changedFiles: [
+			".cautilus/claims/evidence-state.json",
+			".cautilus/claims/status-summary.json",
+			"docs/specs/proof/claim-evidence-state.md",
+		],
+		changedSourceCount: 0,
+		changedSources: [],
+		recommendedAction: "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+	};
+	const fixtureBin = writeFixtureCautilus(root, refreshedStatus);
+
+	const result = run({ ...paths, check: true, refreshStatus: true, cautilusBin: fixtureBin });
+	assert.equal(result.checked, true);
+});

@@ -6,3 +6,5 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 printf 'pre-push: running npm run verify\n'
 cd "$REPO_ROOT"
 npm run verify
+printf 'pre-push: checking generated artifact drift\n'
+npm run generated:drift:check
