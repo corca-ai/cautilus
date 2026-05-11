@@ -751,18 +751,17 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:1144c7344aef35da821c28184a12be601240e26fee39012ffc58096e8ed1b50d",
+          "contentHash": "sha256:0a4ceca6e3f280e44ff3bf6c26f56bee5ceed65acfcd5079acfcd0bc9b5d29a9",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-skill-episode-and-evaluate-boundary-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-refresh-flow-fixture-eval-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-readme-md-163",
-            "claim-docs-guides-evaluation-process-md-269"
+            "claim-readme-md-163"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-skill-episode-and-evaluate-boundary-2026-05-03.json does not list current claimId claim-readme-md-163 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by running `cautilus eval test --runtime fixture` through the self-dogfood refresh-flow adapter after fixing the adapter template to pass the checked-in fixture results file. The resulting eval-cases packet preserves two turns and the eval-observed/eval-summary packets complete the fixture-backed eval path.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -770,7 +769,7 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep this scoped to fixture-backed multi-turn eval; use Codex/Claude dogfood evidence for semantic runtime quality claims.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -782,8 +781,9 @@
         }
       ],
       "summary": "The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names a dev/skill eval path over a fixture that contains multi-turn `turns`."
     },
     {
       "claimAudience": "user",
@@ -994,24 +994,24 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:a04b61f283d57ee0dc7783b1f95f63fc0ad9ac5d60cf3cf02e1cf4d301e0aaa7",
+          "contentHash": "sha256:7c27d0f0c80a9a77e9fb5f993af3b38dfe41fe427392326dd5b0deb13f7d4908",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-machine-readable-packets-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-machine-readable-packet-family-2026-05-11.json",
           "supportsClaimIds": [
             "claim-readme-md-247"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-machine-readable-packets-2026-05-03.json does not list current claimId claim-readme-md-247 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused packet-flow tests covering eval, report, review, evidence, optimize, proposal, and revision packet schema families.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep HTML projection proof separate from this machine-readable packet family claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1022,8 +1022,9 @@
         }
       ],
       "summary": "machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names machine-readable packet families and agent-consumable fields."
     },
     {
       "claimAudience": "user",
@@ -1478,27 +1479,27 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:dfd876b815d1bf606503b516dfe1df877dac676f4503190dd33721b0f941fe50",
+          "contentHash": "sha256:ae7b6ecb82ad295c8473dd13229c39714ce4ea5bda05d0712e995f49944a95e2",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-scenario-attention-and-conversation-review-2026-05-11.json",
           "supportsClaimIds": [
             "claim-docs-cli-reference-md-259",
-            "claim-docs-cli-reference-md-258"
+            "claim-docs-cli-reference-md-261"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-scenario-review-attention-linkage-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-259 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused scenario propose tests and live proposal output showing a full proposals packet with bounded attentionView keys derived from the ranked proposal set.",
       "groupHints": [
         "audience:user",
+        "deterministic",
         "docs",
-        "human-auditable",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
-      "recommendedProof": "human-auditable",
+      "nextAction": "Keep attentionView bounded without hiding the full ranked proposals list from agents.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -1508,8 +1509,9 @@
         }
       ],
       "summary": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "whyThisLayer": "The claim names a deterministic packet projection: full proposal list plus bounded attentionView."
     },
     {
       "claimAudience": "user",
@@ -1519,29 +1521,27 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:dfd876b815d1bf606503b516dfe1df877dac676f4503190dd33721b0f941fe50",
+          "contentHash": "sha256:ae7b6ecb82ad295c8473dd13229c39714ce4ea5bda05d0712e995f49944a95e2",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-scenario-review-attention-linkage-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-scenario-attention-and-conversation-review-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-256",
+            "claim-docs-cli-reference-md-259",
             "claim-docs-cli-reference-md-261"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-scenario-review-attention-linkage-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-261 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused scenario review-conversations tests and live output showing linked normalized thread records, linked proposals, existing coverage hints, and bounded attention reasons.",
       "groupHints": [
-        "app/chat",
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
-      "recommendedEvalSurface": "app/chat",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Do not treat this as proof that live operator turns were crawled; the command consumes normalized input packets.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -1551,8 +1551,9 @@
         }
       ],
       "summary": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names deterministic scenario conversation review packet linkage over normalized chatbot threads."
     },
     {
       "claimAudience": "user",
@@ -1691,29 +1692,26 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:c09d813fd1e7a32f1f11fb893d631255bc5df9fb338b821f68bf24546630e930",
+          "contentHash": "sha256:c86bd49436399d8c052fdb0225e9a16b30e6a6f45e7fc2abec33a5a5bfbecd12",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-review-variants-status-and-output-text-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-review-output-text-key-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-427",
             "claim-docs-cli-reference-md-458"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-review-variants-status-and-output-text-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-458 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused review prompt tests and CLI review variants smoke covering `--output-text-key` extraction into `## Output Under Test Text`.",
       "groupHints": [
-        "app/prompt",
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep judge-quality claims separate from output-under-test text extraction.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -1723,8 +1721,9 @@
         }
       ],
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim names deterministic JSON span extraction into a rendered review prompt."
     },
     {
       "claimAudience": "user",
@@ -3299,17 +3298,17 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+          "contentHash": "sha256:7d02413e53b521ae616b2199e5a01e8d1353807c1aad112ad2ce34f8e071c4ea",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-deterministic-gates-and-consumer-smoke-2026-05-11.json",
           "supportsClaimIds": [
             "claim-docs-master-plan-md-57"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-deterministic-gates-2026-05-01.json does not list current claimId claim-docs-master-plan-md-57 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by checked-in verify workflow/script wiring and a live `npm run consumer:onboard:smoke` that completed install, adapter init, minimal wiring, adapter resolve, doctor ready, and one bounded eval test with accept-now recommendation.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -3317,7 +3316,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep this as onboarding smoke proof, not broad external consumer product-behavior proof.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -3328,8 +3327,9 @@
         }
       ],
       "summary": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `eval test`",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names deterministic local gates, checked-in GitHub workflow wiring, and external consumer onboarding smoke."
     },
     {
       "claimAudience": "developer",
@@ -3381,17 +3381,17 @@
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+          "contentHash": "sha256:5fa8671eb71bc6bed0656c6814c6f03e85c1d8ea08f110814fc48f85b0751cfd",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-scenario-normalizer-surface-contract-2026-05-11.json",
           "supportsClaimIds": [
             "claim-docs-master-plan-md-84"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-deterministic-gates-2026-05-01.json does not list current claimId claim-docs-master-plan-md-84 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by `lint:specs`, `lint:scenario-normalizers`, direct scenario normalizer completeness output, and maintainer spec citations that keep scenario normalization aligned with the current dev/app surface and repo/skill/chat/prompt preset vocabulary.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -3399,7 +3399,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Continue treating new broad user-facing copy as requiring spec alignment review, not just scenario-normalizer lint.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -3410,8 +3410,9 @@
         }
       ],
       "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim combines deterministic scenario-normalizer completeness gates with a human-auditable surface/preset vocabulary contract."
     },
     {
       "claimAudience": "developer",
@@ -12272,17 +12273,16 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 88,
-      "stale": 7,
+      "satisfied": 95,
       "unknown": 270
     },
     "byLifecycle": {
       "new": 365
     },
     "byRecommendedProof": {
-      "cautilus-eval": 117,
-      "deterministic": 150,
-      "human-auditable": 98
+      "cautilus-eval": 115,
+      "deterministic": 153,
+      "human-auditable": 97
     },
     "byReviewStatus": {
       "agent-reviewed": 148,
@@ -12561,6 +12561,7 @@
       ".cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
     "skippedReviewResultPaths": [
@@ -12599,9 +12600,9 @@
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 54,
+    "appliedResultCount": 55,
     "skippedResultCount": 34,
-    "keptUpdateCount": 180,
+    "keptUpdateCount": 187,
     "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },

@@ -19,9 +19,9 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 88, stale: 7, unknown: 270 |
+| Evidence | satisfied: 95, unknown: 270 |
 | Review | agent-reviewed: 148, heuristic: 216, human-reviewed: 1 |
-| Recommended proof | cautilus-eval: 117, deterministic: 150, human-auditable: 98 |
+| Recommended proof | cautilus-eval: 115, deterministic: 153, human-auditable: 97 |
 | Verification readiness | blocked: 32, needs-alignment: 34, needs-scenario: 6, ready-for-proof: 293 |
 | Audience | developer: 259, user: 106 |
 
@@ -41,8 +41,8 @@ Review readiness: heuristicClaimsReadyForReview: 192, needsAlignment: 34, needsS
 
 | User claim | Title | Raw claims | Evidence | Review |
 | --- | --- | --- | --- | --- |
-| U1 | Readiness | 27 | satisfied: 12, stale: 1, unknown: 14 | agent-reviewed: 14, heuristic: 13 |
-| U2 | Claim Discovery | 59 | satisfied: 20, stale: 4, unknown: 35 | agent-reviewed: 38, heuristic: 21 |
+| U1 | Readiness | 27 | satisfied: 13, unknown: 14 | agent-reviewed: 14, heuristic: 13 |
+| U2 | Claim Discovery | 59 | satisfied: 24, unknown: 35 | agent-reviewed: 38, heuristic: 21 |
 | U3 | Behavior Evaluation | 4 | unknown: 4 | heuristic: 4 |
 | U4 | Bounded Optimization | 3 | unknown: 3 | agent-reviewed: 1, heuristic: 2 |
 | U5 | Reviewable Artifacts | 4 | unknown: 4 | heuristic: 4 |
@@ -54,8 +54,8 @@ Review readiness: heuristicClaimsReadyForReview: 192, needsAlignment: 34, needsS
 | M1 | Maintainer Shared Concern Policy | 5 | cautilus-eval: 3, human-auditable: 2 | unknown: 5 | agent-reviewed: 1, heuristic: 4 |
 | M2 | Claim Discovery Workflow | 12 | deterministic: 5, human-auditable: 7 | satisfied: 4, unknown: 8 | agent-reviewed: 6, heuristic: 6 |
 | M3 | Binary And Skill Boundary | 55 | cautilus-eval: 23, deterministic: 18, human-auditable: 14 | satisfied: 8, unknown: 47 | agent-reviewed: 15, heuristic: 39, human-reviewed: 1 |
-| M4 | Adapter And Host Ownership | 74 | cautilus-eval: 32, deterministic: 23, human-auditable: 19 | satisfied: 16, stale: 1, unknown: 57 | agent-reviewed: 28, heuristic: 46 |
-| M5 | Evaluation Surfaces And Runners | 16 | cautilus-eval: 9, deterministic: 7 | satisfied: 4, stale: 1, unknown: 11 | agent-reviewed: 6, heuristic: 10 |
+| M4 | Adapter And Host Ownership | 74 | cautilus-eval: 32, deterministic: 23, human-auditable: 19 | satisfied: 17, unknown: 57 | agent-reviewed: 28, heuristic: 46 |
+| M5 | Evaluation Surfaces And Runners | 16 | cautilus-eval: 9, deterministic: 7 | satisfied: 5, unknown: 11 | agent-reviewed: 6, heuristic: 10 |
 | M6 | Evidence State And Review Artifacts | 7 | cautilus-eval: 1, deterministic: 3, human-auditable: 3 | satisfied: 1, unknown: 6 | agent-reviewed: 2, heuristic: 5 |
 | M7 | Optimization Loop | 14 | cautilus-eval: 7, deterministic: 3, human-auditable: 4 | satisfied: 3, unknown: 11 | agent-reviewed: 4, heuristic: 10 |
 | M8 | Readiness And Runtime Status | 24 | cautilus-eval: 3, deterministic: 18, human-auditable: 3 | satisfied: 7, unknown: 17 | agent-reviewed: 9, heuristic: 15 |
@@ -107,26 +107,24 @@ Semantic sampling recommended for 300 raw claim(s): claim-agents-md-12, claim-ag
 
 ## Next Work
 
-- Human review is still meaningful for human-align-surfaces=34, human-confirm-or-decompose=33, split-or-defer=32.
-- Agent next proof work: connect deterministic gates for 61 claim(s), starting with agent-reviewed items before heuristic items.
-- Agent eval work: plan Cautilus eval scenarios for 111 claim(s), after reviewing heuristic labels where needed.
+- Human review is still meaningful for human-align-surfaces=34, human-confirm-or-decompose=32, split-or-defer=32.
+- Agent next proof work: connect deterministic gates for 58 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent eval work: plan Cautilus eval scenarios for 108 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 6 claim(s).
 
 ## Action Buckets
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 88 | agent-reviewed: 88 | satisfied: 88 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 61 | agent-reviewed: 13, heuristic: 48 | stale: 3, unknown: 58 | Add or connect unit, lint, build, schema, spec, or CI proof. |
-| agent-plan-cautilus-eval | agent | 111 | agent-reviewed: 8, heuristic: 102, human-reviewed: 1 | stale: 3, unknown: 108 | Draft or select Cautilus eval scenarios for ready eval claims. |
+| already-satisfied | none | 95 | agent-reviewed: 95 | satisfied: 95 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 58 | agent-reviewed: 10, heuristic: 48 | unknown: 58 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| agent-plan-cautilus-eval | agent | 108 | agent-reviewed: 5, heuristic: 102, human-reviewed: 1 | unknown: 108 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 6 | heuristic: 6 | unknown: 6 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 34 | agent-reviewed: 16, heuristic: 18 | unknown: 34 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
-| human-confirm-or-decompose | human | 33 | agent-reviewed: 1, heuristic: 32 | stale: 1, unknown: 32 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
+| human-confirm-or-decompose | human | 32 | heuristic: 32 | unknown: 32 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 32 | agent-reviewed: 22, heuristic: 10 | unknown: 32 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
 Cross-cutting signal: heuristic-review-needed (216) - Review heuristic labels before spending proof or eval budget.
-
-Cross-cutting signal: stale-evidence (7) - Refresh or recheck stale evidence before consuming it as proof.
 
 ### agent-add-deterministic-proof
 
@@ -136,9 +134,9 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 | --- | --- | --- | --- | --- | --- | --- |
 | claim-readme-md-82 | README.md:82 | deterministic | ready-for-proof | heuristic | unknown | The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or optimization work. |
 | claim-readme-md-90 | README.md:90 | deterministic | ready-for-proof | heuristic | unknown | This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets. |
-| claim-readme-md-247 | README.md:247 | deterministic | ready-for-proof | agent-reviewed | stale | machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly |
 | claim-docs-contracts-adapter-contract-md-219 | docs/contracts/adapter-contract.md:219 | deterministic | ready-for-proof | heuristic | unknown | The binary uses these hints before portable path defaults to label review queues, while the Cautilus Agent or a human reviewer may still correct semantic edge cases. |
 | claim-docs-contracts-adapter-contract-md-432 | docs/contracts/adapter-contract.md:432 | deterministic | ready-for-proof | heuristic | unknown | point review prompts at the same path so human and machine review can refer to the same compare output |
+| claim-docs-contracts-adapter-contract-md-478 | docs/contracts/adapter-contract.md:478 | deterministic | ready-for-proof | heuristic | unknown | Each review prompt should point at human-visible failure: |
 
 ### agent-plan-cautilus-eval
 
@@ -150,7 +148,7 @@ Draft or select Cautilus eval scenarios for ready eval claims.
 | claim-agents-md-80 | AGENTS.md:80 | cautilus-eval | ready-for-proof | agent-reviewed | unknown | When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available. |
 | claim-readme-md-18 | README.md:18 | cautilus-eval | ready-for-proof | heuristic | unknown | Host repos can use `cautilus eval test` and `cautilus eval evaluate` with checked-in fixtures, host-owned adapters, and the current `cautilus.evaluation_input.v1`, `cautilus.evaluation_observed.v1`, and `cautilus.evaluation_summary.v1` packets. |
 | claim-readme-md-105 | README.md:105 | cautilus-eval | ready-for-proof | heuristic | unknown | `Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen. |
-| claim-readme-md-163 | README.md:163 | cautilus-eval | ready-for-proof | agent-reviewed | stale | The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`. |
+| claim-readme-md-227 | README.md:227 | cautilus-eval | ready-for-proof | heuristic | unknown | Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a Cautilus Agent at `.agents/skills/cautilus-agent/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally. |
 
 ### agent-design-scenario
 
@@ -217,10 +215,10 @@ Confirm, decompose, or accept a human-auditable claim before treating it as prov
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
 | claim-readme-md-80 | README.md:80 | human-auditable | ready-for-proof | heuristic | unknown | Raw `claim discover` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review. |
-| claim-docs-cli-reference-md-259 | docs/cli-reference.md:259 | human-auditable | ready-for-proof | agent-reviewed | stale | The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set. |
 | claim-docs-contracts-adapter-contract-md-426 | docs/contracts/adapter-contract.md:426 | human-auditable | ready-for-proof | heuristic | unknown | A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers. |
 | claim-docs-specs-index-spec-md-11 | docs/specs/index.spec.md:11 | human-auditable | ready-for-proof | heuristic | unknown | A gap is missing or weak evidence that stays visible. |
 | claim-docs-specs-index-spec-md-22 | docs/specs/index.spec.md:22 | human-auditable | ready-for-proof | heuristic | unknown | Each spec page should still carry its own local proof or visible proof gap. |
+| claim-docs-specs-user-index-spec-md-27 | docs/specs/user/index.spec.md:27 | human-auditable | ready-for-proof | heuristic | unknown | Evidence Gaps (evidence-gaps.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed. |
 
 ### split-or-defer
 
@@ -303,6 +301,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-evidence-live-run-workspace-boundary-2026-05-03.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
 | .cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-proof-class-downstream-summary-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json | - | - | 6 | 7 | 0 | cautilus-eval: 1, deterministic: 6 | ready-for-proof: 7 |
 | .cautilus/claims/review-result-evidence-review-summary-telemetry-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-runner-readiness-branch-shape-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-runner-readiness-schema-fields-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |

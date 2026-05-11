@@ -1,0 +1,204 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-11T00:00:00Z",
+    "evidencePolicy": "Apply refreshed evidence only to the seven remaining stale claims covered by current focused tests, live command packets, checked-in contract citations, and bounded non-claim statements."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-refresh-flow-fixture-eval-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-163",
+          "claimFingerprint": "sha256:afaff338e3a44ec8eeb8b39d25319e27d26e908ac17a00c2f46c5af9979e5e1f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a dev/skill eval path over a fixture that contains multi-turn `turns`.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by running `cautilus eval test --runtime fixture` through the self-dogfood refresh-flow adapter after fixing the adapter template to pass the checked-in fixture results file. The resulting eval-cases packet preserves two turns and the eval-observed/eval-summary packets complete the fixture-backed eval path.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-refresh-flow-fixture-eval-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:0a4ceca6e3f280e44ff3bf6c26f56bee5ceed65acfcd5079acfcd0bc9b5d29a9",
+              "supportsClaimIds": [
+                "claim-readme-md-163"
+              ]
+            }
+          ],
+          "nextAction": "Keep this scoped to fixture-backed multi-turn eval; use Codex/Claude dogfood evidence for semantic runtime quality claims.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-machine-readable-packet-family-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-247",
+          "claimFingerprint": "sha256:3022b028802b2727ebdc3d4e058efe037c29d529aa9580f5229aa3ac00dd2027",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names machine-readable packet families and agent-consumable fields.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused packet-flow tests covering eval, report, review, evidence, optimize, proposal, and revision packet schema families.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-machine-readable-packet-family-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7c27d0f0c80a9a77e9fb5f993af3b38dfe41fe427392326dd5b0deb13f7d4908",
+              "supportsClaimIds": [
+                "claim-readme-md-247"
+              ]
+            }
+          ],
+          "nextAction": "Keep HTML projection proof separate from this machine-readable packet family claim.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-scenario-attention-and-conversation-review-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-259",
+          "claimFingerprint": "sha256:313275317465567a22c5d4992ec031f8aa811338e2281d6c84520f52f8f7b556",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a deterministic packet projection: full proposal list plus bounded attentionView.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused scenario propose tests and live proposal output showing a full proposals packet with bounded attentionView keys derived from the ranked proposal set.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-scenario-attention-and-conversation-review-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:ae7b6ecb82ad295c8473dd13229c39714ce4ea5bda05d0712e995f49944a95e2",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-259",
+                "claim-docs-cli-reference-md-261"
+              ]
+            }
+          ],
+          "nextAction": "Keep attentionView bounded without hiding the full ranked proposals list from agents.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-261",
+          "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic scenario conversation review packet linkage over normalized chatbot threads.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused scenario review-conversations tests and live output showing linked normalized thread records, linked proposals, existing coverage hints, and bounded attention reasons.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-scenario-attention-and-conversation-review-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:ae7b6ecb82ad295c8473dd13229c39714ce4ea5bda05d0712e995f49944a95e2",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-259",
+                "claim-docs-cli-reference-md-261"
+              ]
+            }
+          ],
+          "nextAction": "Do not treat this as proof that live operator turns were crawled; the command consumes normalized input packets.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-review-output-text-key-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-458",
+          "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic JSON span extraction into a rendered review prompt.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused review prompt tests and CLI review variants smoke covering `--output-text-key` extraction into `## Output Under Test Text`.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-review-output-text-key-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c86bd49436399d8c052fdb0225e9a16b30e6a6f45e7fc2abec33a5a5bfbecd12",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-458"
+              ]
+            }
+          ],
+          "nextAction": "Keep judge-quality claims separate from output-under-test text extraction.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-deterministic-gates-and-consumer-smoke-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-master-plan-md-57",
+          "claimFingerprint": "sha256:43afeafb11ef51bf56fcffc35f717e1f2f116bc2e6c4660fd9333f19cde6f59b",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic local gates, checked-in GitHub workflow wiring, and external consumer onboarding smoke.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by checked-in verify workflow/script wiring and a live `npm run consumer:onboard:smoke` that completed install, adapter init, minimal wiring, adapter resolve, doctor ready, and one bounded eval test with accept-now recommendation.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-deterministic-gates-and-consumer-smoke-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7d02413e53b521ae616b2199e5a01e8d1353807c1aad112ad2ce34f8e071c4ea",
+              "supportsClaimIds": [
+                "claim-docs-master-plan-md-57"
+              ]
+            }
+          ],
+          "nextAction": "Keep this as onboarding smoke proof, not broad external consumer product-behavior proof.",
+          "unresolvedQuestions": []
+        }
+      ]
+    },
+    {
+      "clusterId": "cluster-scenario-normalizer-surface-contract-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-master-plan-md-84",
+          "claimFingerprint": "sha256:6523f7c5fcd4585bdecf8007f4d0e451f467a90452d544e69ccbd7e292b45a47",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim combines deterministic scenario-normalizer completeness gates with a human-auditable surface/preset vocabulary contract.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `lint:specs`, `lint:scenario-normalizers`, direct scenario normalizer completeness output, and maintainer spec citations that keep scenario normalization aligned with the current dev/app surface and repo/skill/chat/prompt preset vocabulary.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-scenario-normalizer-surface-contract-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:5fa8671eb71bc6bed0656c6814c6f03e85c1d8ea08f110814fc48f85b0751cfd",
+              "supportsClaimIds": [
+                "claim-docs-master-plan-md-84"
+              ]
+            }
+          ],
+          "nextAction": "Continue treating new broad user-facing copy as requiring spec alignment review, not just scenario-normalizer lint.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

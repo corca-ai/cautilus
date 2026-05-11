@@ -11,7 +11,7 @@ preflight_commands:
   - ./bin/cautilus doctor --repo-root . --scope agent-surface
 evaluation_input_default: fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json
 eval_test_command_templates:
-  - node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --sandbox workspace-write --timeout-ms 240000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(*)'
+  - node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root . --output-dir {output_dir} --cases-file {eval_cases_file} --output-file {eval_observed_file} --backend {backend} --fixture-results-file fixtures/eval/dev/skill/cautilus-refresh-flow-fixture-results.json --sandbox workspace-write --timeout-ms 240000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(*)'
 artifact_paths:
   - skills/cautilus-agent/SKILL.md
   - fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json

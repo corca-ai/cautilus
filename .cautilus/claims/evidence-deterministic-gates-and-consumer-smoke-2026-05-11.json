@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-deterministic-gates-and-consumer-smoke-2026-05-11",
+  "createdForClaimIds": [
+    "claim-docs-master-plan-md-57"
+  ],
+  "repoCommit": "6bb759f938156e90b2b19268938cd91af02abd41",
+  "summary": "Deterministic proof for local verify gates, GitHub verify workflow, and external consumer onboarding smoke.",
+  "evidenceScope": {
+    "targetSurface": "repo deterministic gates and consumer onboarding smoke",
+    "claimBoundary": "This proves checked-in local gate wiring, GitHub workflow wiring to npm run verify, and a current external consumer smoke through one bounded eval test.",
+    "notClaimed": [
+      "GitHub Actions ran in this local session.",
+      "Every external consumer app is ready.",
+      "The consumer smoke proves product behavior beyond install, adapter init, resolve, doctor ready, and one bounded eval test."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run consumer:onboard:smoke",
+      "exitCode": 0,
+      "observed": {
+        "ok": true,
+        "ready": true,
+        "evalRecommendation": "accept-now",
+        "steps": [
+          "install",
+          "adapter init",
+          "minimal wiring",
+          "adapter resolve",
+          "doctor ready",
+          "eval test"
+        ]
+      }
+    },
+    {
+      "command": "npm run verify",
+      "exitCode": 0,
+      "reason": "The current work unit previously ran the full local verify gate successfully after the preceding evidence projection commit."
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/master-plan.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:aaccc2794b4e4496fb762cf6ff6933b4e36adc45b80f51651e8065306152405f"
+    },
+    {
+      "path": "package.json",
+      "kind": "npm-script-registry",
+      "contentHash": "sha256:24cf1482a1debc2c025f4e298467ece5a93091dbeb4e57fd46ca0b1bd04527a9"
+    },
+    {
+      "path": ".github/workflows/verify.yml",
+      "kind": "github-verify-workflow",
+      "contentHash": "sha256:ceef2b93af1ee5eacef8a3bf12fc9127a72eeed8ba5552880fe5960a72b2a2b4"
+    },
+    {
+      "path": "scripts/run-verify.mjs",
+      "kind": "verify-runner",
+      "contentHash": "sha256:e1d11403960341ff9dc7304985842bfd6e511a8ad43813472cf7c09bbba631f0"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.mjs",
+      "kind": "consumer-onboarding-smoke-runner",
+      "contentHash": "sha256:9bc46625d38b716a18bd71c8f1921629d6e1c0b90a53bfd4cbbb7a1f02a3cb98"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.test.mjs",
+      "kind": "consumer-onboarding-smoke-test",
+      "contentHash": "sha256:c246166e8b608dfad02df3d9badddf689a07896b31ca17dd61fb2ef2d2099a05"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Checked-in script/workflow wiring and the live consumer onboarding smoke prove the claimed deterministic gate boundary."
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-scenario-normalizer-surface-contract-2026-05-11",
+  "createdForClaimIds": [
+    "claim-docs-master-plan-md-84"
+  ],
+  "repoCommit": "6bb759f938156e90b2b19268938cd91af02abd41",
+  "summary": "Deterministic and human-auditable proof that scenario normalizer runtime completeness and surface/preset vocabulary are gated.",
+  "evidenceScope": {
+    "targetSurface": "scenario normalize helpers and evaluation surface vocabulary",
+    "claimBoundary": "The runtime completeness half is deterministic; the copy-reconciliation half is human-auditable through maintainer spec citations.",
+    "notClaimed": [
+      "Every future user-facing copy change is automatically semantically reviewed.",
+      "Scenario normalizers are still evaluation surfaces.",
+      "The lint gate proves app behavior quality."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:specs && npm run lint:scenario-normalizers",
+      "exitCode": 0,
+      "observed": {
+        "specCount": 43,
+        "scenarioNormalizerCompleteness": "3 families pass 7-surface check"
+      }
+    },
+    {
+      "command": "node scripts/check-scenario-normalization-completeness.mjs",
+      "exitCode": 0,
+      "observed": {
+        "scenarioNormalizerCompleteness": "3 families pass 7-surface check"
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/master-plan.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:aaccc2794b4e4496fb762cf6ff6933b4e36adc45b80f51651e8065306152405f"
+    },
+    {
+      "path": "package.json",
+      "kind": "npm-script-registry",
+      "contentHash": "sha256:24cf1482a1debc2c025f4e298467ece5a93091dbeb4e57fd46ca0b1bd04527a9"
+    },
+    {
+      "path": "scripts/check-scenario-normalization-completeness.mjs",
+      "kind": "scenario-normalizer-lint-runner",
+      "contentHash": "sha256:d72254a5e13bc30c535710aef8401d8395e93e3d384ef9c191ea365caaefb992"
+    },
+    {
+      "path": "docs/specs/maintainer/evaluation-surfaces-runners.spec.md",
+      "kind": "surface-preset-contract",
+      "contentHash": "sha256:12da6b13bd53b73b8c4ad950393b35f53ece0c3e086777eb2a2df0d883582685"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Lint gates and maintainer spec citations prove the surviving scenario normalizer runtime completeness and current surface/preset vocabulary boundary."
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-review-output-text-key-2026-05-11",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-458"
+  ],
+  "repoCommit": "6bb759f938156e90b2b19268938cd91af02abd41",
+  "summary": "Deterministic proof that --output-text-key extracts a JSON narrative span into rendered review prompts.",
+  "evidenceScope": {
+    "targetSurface": "review prompt output-under-test text extraction",
+    "claimBoundary": "This proves JSON span extraction and prompt rendering, not judge quality or model agreement.",
+    "notClaimed": [
+      "The judge's verdict is semantically correct.",
+      "Every possible JSON path shape is accepted.",
+      "A live external reviewer was called."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 4,
+        "protectedBehavior": "buildReviewPromptInput can switch into output-under-test mode and render output-under-test text."
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIReviewVariantsSupportsOutputUnderTest' -count=1",
+      "exitCode": 0,
+      "reason": "CLI smoke verifies `review variants --output-text-key summary` renders `## Output Under Test Text` containing the realized JSON span."
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:0dc3583c7c90493d22e13963ffc25596dddceb7ad427dc53fbb3124bb937570b"
+    },
+    {
+      "path": "scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "kind": "review-prompt-tests",
+      "contentHash": "sha256:d4bd8df8cb961250890b5de285e2974ac91327f3e600a3489b31f5bf1c8acfb5"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "review-variants-cli-tests",
+      "contentHash": "sha256:d88a5a712eb0c70c05131aea82fe3c11946fa6426bd762a79ef6afa6a28cbe0e"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused Node and Go tests verify JSON output text extraction and rendered prompt inclusion."
+  }
+}

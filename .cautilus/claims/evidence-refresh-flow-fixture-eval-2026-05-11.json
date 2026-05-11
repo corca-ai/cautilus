@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-refresh-flow-fixture-eval-2026-05-11",
+  "createdForClaimIds": [
+    "claim-readme-md-163"
+  ],
+  "repoCommit": "6bb759f938156e90b2b19268938cd91af02abd41",
+  "summary": "Fixture-backed eval proof that the dev/skill preset can evaluate a multi-turn agent episode when the fixture provides turns.",
+  "evidenceScope": {
+    "targetSurface": "self-dogfood refresh-flow dev/skill fixture runtime",
+    "claimBoundary": "This proves the fixture-backed multi-turn eval path, not semantic live Codex or Claude refresh-flow quality.",
+    "notClaimed": [
+      "The model-backed refresh-flow episode passes today.",
+      "Every flow adapter supports fixture runtime.",
+      "The fixture result proves natural-language behavior quality beyond the checked-in audit-backed packet."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-refresh-flow --runtime fixture --output-dir /tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval",
+      "exitCode": 0,
+      "observed": {
+        "summaryPath": "/tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval/eval-summary.json",
+        "recommendation": "accept-now",
+        "casesContainTurns": true,
+        "turnCount": 2,
+        "observedSchemaVersion": "cautilus.skill_evaluation_inputs.v1",
+        "summarySchemaVersion": "cautilus.skill_evaluation_summary.v1"
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval/eval-cases.json",
+      "kind": "eval-cases",
+      "contentHash": "sha256:4e2a092426b71598af530cc001c68c318ce94e729b7b73f0f24ad88d311bfb9c",
+      "observed": {
+        "schemaVersion": "cautilus.skill_test_cases.v1",
+        "caseId": "episode-cautilus-refresh-flow",
+        "turnCount": 2,
+        "auditKind": "cautilus_refresh_flow"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval/eval-observed.json",
+      "kind": "eval-observed",
+      "contentHash": "sha256:6da29298fcac24f491f103f7e8853541aa79b98507a82f8b70cd0b6a5aebd100",
+      "observed": {
+        "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+        "evaluationId": "episode-cautilus-refresh-flow"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval/eval-summary.json",
+      "kind": "eval-summary",
+      "contentHash": "sha256:b6c5a8a67c9ddd77c4a9bd0cb34b86fce5e172311983157a699dd27788d98e1a",
+      "observed": {
+        "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+        "recommendation": "accept-now"
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-refresh-flow.yaml",
+      "kind": "adapter-template",
+      "contentHash": "sha256:9fb7a658c6eb2c0d767027a1b7f3ffced9e451a62c0ffe4ef84eb24f25ee36d2"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json",
+      "kind": "multi-turn-fixture",
+      "contentHash": "sha256:5f307eafb74bce52d7b8ca12f2062ed301eba68009976e4563a3d10965bed6a8"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-refresh-flow-fixture-results.json",
+      "kind": "fixture-results",
+      "contentHash": "sha256:7a67e6e9409f3762cacacde6498c53d3a04195bdda4f841df41dd9b60470aca2"
+    },
+    {
+      "path": "scripts/run-self-dogfood-skill-refresh-flow-eval.mjs",
+      "kind": "adapter-runner-wrapper",
+      "contentHash": "sha256:ef52afcb2112cccd61057b117a0232a8bdabd2b132db13bbd6f1f4e07e47518e"
+    },
+    {
+      "path": "scripts/agent-runtime/run-local-skill-test.mjs",
+      "kind": "skill-test-runtime",
+      "contentHash": "sha256:7e585c433ec00522e19410c230ffc398a1fa5170d3f333eff9df7762f9a5db5d"
+    },
+    {
+      "path": "charness-artifacts/debug/debug-2026-05-11-self-dogfood-refresh-flow-fixture-results.md",
+      "kind": "debug-artifact",
+      "contentHash": "sha256:38bdf7e5e71104e45f46877010f11294a2c2e15aa8bdbf89a85b4d70e5ad78fb"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The fixed adapter template ran the checked-in two-turn refresh-flow fixture through `cautilus eval test --runtime fixture` and produced eval cases, observed, and summary packets."
+  }
+}
