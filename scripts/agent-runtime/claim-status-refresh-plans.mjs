@@ -37,7 +37,6 @@ export function refreshPlanDigest(filePath) {
 	const summary = asObject(packet.refreshSummary);
 	return {
 		path: filePath,
-		mtimeMs: fs.statSync(filePath).mtimeMs,
 		status: summary.status ?? "-",
 		changedSourceCount: summary.changedSourceCount ?? 0,
 		changedClaimCount: summary.changedClaimCount ?? 0,
@@ -49,6 +48,29 @@ export function refreshPlanDigest(filePath) {
 		nextActions: asArray(summary.nextActions),
 		summary: summary.summary ?? "",
 	};
+}
+
+function refreshPlanRank(digest, claimsPacket, statusPacket) {
+	if (refreshPlanMatchesCurrentPacket(digest, claimsPacket, statusPacket)) {
+		return 0;
+	}
+	if (digest.status === "up-to-date") {
+		return 1;
+	}
+	return 2;
+}
+
+function compareRefreshPlans(left, right, claimsPacket, statusPacket) {
+	const leftRank = refreshPlanRank(left, claimsPacket, statusPacket);
+	const rightRank = refreshPlanRank(right, claimsPacket, statusPacket);
+	if (leftRank !== rightRank) {
+		return leftRank - rightRank;
+	}
+	return String(right.path ?? "").localeCompare(String(left.path ?? ""));
+}
+
+export function selectedRefreshPlan(refreshPlans, claimsPacket, statusPacket) {
+	return [...refreshPlans].sort((left, right) => compareRefreshPlans(left, right, claimsPacket, statusPacket))[0] ?? null;
 }
 
 export function renderRefreshPlans(lines, refreshPlans, claimsPacket, statusPacket) {
@@ -67,7 +89,7 @@ export function renderRefreshPlans(lines, refreshPlans, claimsPacket, statusPack
 		digest.carriedForwardClaimCount,
 	])));
 	lines.push("");
-	const latest = [...refreshPlans].sort((left, right) => Number(right.mtimeMs ?? 0) - Number(left.mtimeMs ?? 0))[0];
+	const latest = selectedRefreshPlan(refreshPlans, claimsPacket, statusPacket);
 	if (!latest) {
 		return;
 	}

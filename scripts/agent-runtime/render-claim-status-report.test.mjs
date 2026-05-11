@@ -355,3 +355,72 @@ test("renderStatusReport treats refresh plans against an older base packet as hi
 	assert.match(report, /Latest refresh plan is historical for this status packet/);
 	assert.doesNotMatch(report, /Run claim discovery again/);
 });
+
+test("renderStatusReport selects refresh plan summaries without filesystem mtime", () => {
+	const claimsPacket = {
+		gitCommit: "current123",
+		candidateCount: 0,
+		sourceCount: 0,
+		discoveryEngine: {
+			name: "cautilus.claim_discovery",
+			ruleset: "claim-discovery-rules.v4",
+		},
+		claimCandidates: [],
+	};
+	const statusPacket = {
+		gitCommit: "current123",
+		gitState: {
+			currentGitCommit: "current123",
+			comparisonStatus: "fresh",
+			isStale: false,
+		},
+		actionSummary: { primaryBuckets: [] },
+	};
+	const report = renderStatusReport({
+		claimsPacket,
+		statusPacket,
+		digests: {
+			reviewResults: [],
+			validationReports: [],
+			evalPlans: [],
+			refreshPlans: [
+				{
+					path: ".cautilus/claims/refresh-plan.json",
+					status: "changes-detected",
+					baseCommit: "old123",
+					targetCommit: "older123",
+					changedSourceCount: 1,
+					changedClaimCount: 1,
+					carriedForwardClaimCount: 1,
+					currentDiscoveryEngine: claimsPacket.discoveryEngine,
+					summary: "A historical work queue should not win only because checkout mtimes changed.",
+					changedClaimSources: [],
+					nextActions: [],
+				},
+				{
+					path: ".cautilus/claims/refresh-plan-typed-runners.json",
+					status: "up-to-date",
+					baseCommit: "typed123",
+					targetCommit: "typed123",
+					changedSourceCount: 0,
+					changedClaimCount: 0,
+					carriedForwardClaimCount: 1,
+					currentDiscoveryEngine: claimsPacket.discoveryEngine,
+					summary: "The saved claim map already matches the current checkout.",
+					changedClaimSources: [],
+					nextActions: [],
+				},
+			],
+			canonicalMap: null,
+		},
+		args: {
+			claims: ".cautilus/claims/evidenced-typed-runners.json",
+			status: ".cautilus/claims/status-summary.json",
+			samplePerBucket: 2,
+			reviewSample: 2,
+		},
+	});
+
+	assert.match(report, /Latest refresh summary: The saved claim map already matches the current checkout/);
+	assert.doesNotMatch(report, /Latest refresh summary: A historical work queue should not win/);
+});
