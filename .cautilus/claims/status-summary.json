@@ -22,20 +22,20 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 23
+          "stale": 22
         },
         "byReviewStatus": {
-          "agent-reviewed": 23
+          "agent-reviewed": 22
         },
-        "count": 23,
+        "count": 22,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-163",
-          "claim-readme-md-175",
           "claim-readme-md-247",
           "claim-docs-cli-reference-md-117",
-          "claim-docs-cli-reference-md-118"
+          "claim-docs-cli-reference-md-118",
+          "claim-docs-cli-reference-md-123"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 72
+          "satisfied": 73
         },
         "byReviewStatus": {
-          "agent-reviewed": 72
+          "agent-reviewed": 73
         },
-        "count": 72,
+        "count": 73,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,22 +62,22 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 18,
+          "stale": 17,
           "unknown": 58
         },
         "byReviewStatus": {
-          "agent-reviewed": 28,
+          "agent-reviewed": 27,
           "heuristic": 48
         },
-        "count": 76,
+        "count": 75,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-82",
           "claim-readme-md-90",
-          "claim-readme-md-175",
           "claim-readme-md-247",
-          "claim-docs-cli-reference-md-117"
+          "claim-docs-cli-reference-md-117",
+          "claim-docs-cli-reference-md-118"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -218,8 +218,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 72,
-      "stale": 23,
+      "satisfied": 73,
+      "stale": 22,
       "unknown": 270
     },
     "byLifecycle": {
@@ -439,7 +439,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 72,
+    "satisfiedClaimCount": 73,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-124",
@@ -617,6 +617,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval."
+      },
+      {
+        "claimId": "claim-readme-md-175",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:1d1280156a860b8219244aaf99472e62da034680bb6e1e00442d4243d46176fb",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-readme-md-175"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first."
       },
       {
         "claimId": "claim-docs-cli-reference-md-32",
@@ -1862,15 +1881,17 @@
   },
   "gitCommit": "128e15454ff634d446a95c7408b95379ce009788",
   "gitState": {
-    "changedFileCount": 12,
+    "changedFileCount": 14,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-chatbot-normalize-proposals-2026-05-11.json",
       ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/status-summary.json",
@@ -1885,7 +1906,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "95edaf7b8f4201526f093fe4d06ff1c4fcf6e1c5",
+    "currentGitCommit": "f692eed47ce006f0fd8c3dd22004a9f6470a5b40",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",

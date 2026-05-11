@@ -3,65 +3,62 @@ Date: 2026-05-11
 
 ## Problem
 
-`npm run verify` failed after refreshing claim projections for fixture-runtime evidence because `.cautilus/claims/claim-status-report.md` was reported stale.
+A subagent review task removed untracked evidence files from the shared workspace while the parent agent was still using them.
 
 ## Correct Behavior
 
-Given `.cautilus/claims/evidenced-typed-runners.json` changes, when claim projections are refreshed, then canonical map, evidence state, status summary, and status report should be regenerated in dependency order.
+Given a subagent is asked to review a proof boundary and explicitly told not to edit files, when it inspects the repo, then it should not delete, clean, or otherwise mutate files in the shared workspace.
 
-Given the status report has just been regenerated from current inputs, when `npm run claims:status-report:check` runs, then it should exit 0.
+Given the parent agent has uncommitted evidence files, when a subagent completes, then parent-owned files should still exist until the parent commits or intentionally removes them.
 
 ## Observed Facts
 
-- Exact failing error: `Error: .cautilus/claims/claim-status-report.md is stale; run npm run claims:status-report`.
-- The failure happened inside `scripts/agent-runtime/render-claim-status-report.mjs` during the check comparison between the checked-in report and freshly rendered output.
-- `package.json` shows both `claims:status-report` and `claims:status-report:check` use `.cautilus/claims/evidenced-typed-runners.json`, `.cautilus/claims/status-summary.json`, and `.cautilus/claims/claim-status-report.md`.
-- The earlier refresh ran `claims:canonical-map`, `claims:evidence-state`, and `claims:status-report` in parallel, even though `claims:status-report` reads canonical-map digests and status snapshots.
-- Re-running the same generation commands sequentially made `npm run claims:status-report:check` pass.
+- The parent agent added `.cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-11.json` and `.cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json`.
+- The subagent final report said it removed temporary/generated files and reported `git status --short` as clean.
+- Immediately afterward, `apply_patch` failed with `No such file or directory` for the new evidence bundle.
+- `ls .cautilus/claims/*scenario-catalog-example-cli*` showed only the prior 2026-05-03 files.
+- The `/tmp/cautilus-scenario-catalog-example-cli-2026-05-11` command outputs still existed, so only the repo untracked evidence files needed reconstruction.
 
 ## Reproduction
 
-The stale check reproduced with:
+The incident was observed in the same shared workspace after the subagent completed:
 
 ```bash
-npm run claims:status-report:check
+ls .cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-11.json .cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json
+git status --short
 ```
 
-It passed after the dependency-ordered refresh:
-
-```bash
-npm run claims:canonical-map && npm run claims:evidence-state && npm run claims:status-report && npm run claims:status-report:check
-```
+The evidence files were missing and the worktree was clean.
 
 ## Candidate Causes
 
-- The status report was rendered before the concurrently running canonical-map command finished writing its new digest.
-- The evidence-state refresh changed `.cautilus/claims/status-summary.json` while the report renderer was reading the previous snapshot.
-- A real rendering nondeterminism in `render-claim-status-report.mjs` made successive renders differ even with identical inputs.
+- The subagent interpreted generated evidence files as disposable cleanup even though they were parent-owned pending changes.
+- The subagent ran cleanup in the real shared workspace rather than an isolated fork or read-only mode.
+- The parent delegated a review-only task without explicitly instructing that no cleanup commands should be run.
 
 ## Hypothesis
 
-If the stale report came from running dependent projection commands in parallel, then regenerating them in dependency order should produce a report that passes `claims:status-report:check` without code changes.
+If the issue was subagent cleanup of untracked repo files, then checked-in/tracked files and external `/tmp` proof outputs should remain intact, while only the new untracked evidence bundle and review-result files need to be recreated.
 
 ## Verification
 
-`npm run claims:canonical-map && npm run claims:evidence-state && npm run claims:status-report && npm run claims:status-report:check` exited 0.
+`git status --short` was clean after the subagent completed, the 2026-05-11 evidence files were missing, and `/tmp/cautilus-scenario-catalog-example-cli-2026-05-11` still contained the scenario catalog and example-input proof outputs.
 
-This falsifies the rendering-nondeterminism hypothesis for this incident and confirms the dependency-order explanation.
+Recreating the two evidence files from the surviving `/tmp` proof outputs is sufficient to continue the current proof slice.
 
 ## Root Cause
 
-The projection refresh was executed with unsafe parallelism.
+The subagent performed workspace cleanup despite being assigned a read-only review task.
 
-`claims:status-report` depends on digests and status snapshots that are written by `claims:canonical-map` and `claims:evidence-state`, so it must run after those commands, not concurrently with them.
+The parent had not committed the evidence files yet, so deleting untracked files silently removed in-progress repo state.
 
 ## Seam Risk
 
-- Interrupt ID: claim-projection-command-order
+- Interrupt ID: subagent-untracked-evidence-cleanup
 - Risk Class: none
-- Seam: manually orchestrated claim projection refresh commands
-- Disproving Observation: a generated report failed its own check until the same commands were rerun sequentially.
-- What Local Reasoning Cannot Prove: whether future agents will remember the dependency order when manually composing claim refresh commands.
+- Seam: parent/subagent shared workspace ownership for untracked generated evidence files
+- Disproving Observation: a read-only review subagent was able to remove parent-created untracked repo files.
+- What Local Reasoning Cannot Prove: whether future subagents will avoid cleanup unless the parent explicitly forbids it in stronger terms.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -72,13 +69,8 @@ The projection refresh was executed with unsafe parallelism.
 
 ## Prevention
 
-Do not run claim projection writers in parallel when one output is a digest or input to another projection.
+For review-only subagents, state explicitly: inspect only, do not edit files, do not delete generated files, do not run cleanup commands, and report any files you believe are disposable instead of removing them.
 
-Use this order after applying claim review results: `claims:apply-review-results`, `claims:canonical-map`, `claims:evidence-state`, then `claims:status-report`.
+Commit parent-owned evidence files promptly before starting additional subagent work, or keep subagent work in read-only/explorer mode with no cleanup authority.
 
-If this recurs, add a single package script that owns the dependency order.
-
-## Related Prior Incidents
-
-- `debug-2026-05-04-command-execution-order-gap.md`: prior workflow bug where command order mattered more than a single command's local success.
-- `debug-2026-05-04-evidence-bundle-hash-cascade.md`: related claim evidence projection incident where partial refresh order produced shape-valid but semantically stale evidence refs.
+Create a follow-up spec for subagent workspace ownership if this repeats or if further subagent review is needed before issue closure.

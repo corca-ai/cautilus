@@ -864,24 +864,24 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:5733aa3d6263b4b396194bcdb6915ca9646d1c5e06d79676556d3a17fd5e9eeb",
+          "contentHash": "sha256:1d1280156a860b8219244aaf99472e62da034680bb6e1e00442d4243d46176fb",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-11.json",
           "supportsClaimIds": [
             "claim-readme-md-175"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-scenario-catalog-example-cli-2026-05-03.json does not list current claimId claim-readme-md-175 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by `cautilus scenarios --json`, focused scenario catalog tests, scenario-normalizer completeness lint, and running each cataloged `scenario normalize <family> --example-input` command through the matching normalizer via a temporary file.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep exampleInputCli coverage with the scenario catalog whenever adding or renaming normalization families.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -892,8 +892,9 @@
         }
       ],
       "summary": "Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
+      "whyThisLayer": "The claim names a machine-readable CLI catalog field and executable example-input commands, which are deterministic CLI and packet-shape behavior."
     },
     {
       "claimAudience": "user",
@@ -12233,8 +12234,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 72,
-      "stale": 23,
+      "satisfied": 73,
+      "stale": 22,
       "unknown": 270
     },
     "byLifecycle": {
@@ -12458,13 +12459,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-agents-md-124",
-        "clusterId": "cluster-on-demand-test-gate-2026-05-11"
+        "claimId": "claim-readme-md-175",
+        "clusterId": "cluster-scenario-catalog-example-cli-2026-05-11"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12515,7 +12516,8 @@
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json"
+      ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
@@ -12553,9 +12555,9 @@
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 47,
+    "appliedResultCount": 48,
     "skippedResultCount": 34,
-    "keptUpdateCount": 164,
+    "keptUpdateCount": 165,
     "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },

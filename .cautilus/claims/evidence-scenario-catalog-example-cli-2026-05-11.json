@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-scenario-catalog-example-cli-2026-05-11",
+  "createdForClaimIds": [
+    "claim-readme-md-175"
+  ],
+  "repoCommit": "f692eed47ce006f0fd8c3dd22004a9f6470a5b40",
+  "summary": "Deterministic proof that every scenario-normalization catalog entry exposes `exampleInputCli` and that the advertised example-input commands print minimal packets that can be consumed by the matching normalize command.",
+  "evidenceScope": {
+    "targetSurface": "scenario normalization catalog example-input CLI",
+    "claimBoundary": "Only the README claim that catalog entries include `exampleInputCli` for inspecting minimal valid packet shapes is marked satisfied.",
+    "notClaimed": [
+      "The catalog documents every scenario proposal command.",
+      "The example input CLI proves scenario quality.",
+      "The example packets should be promoted into held-out eval fixtures.",
+      "Piped `/dev/stdin` consumption is part of this claim."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus scenarios --json > /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/scenarios.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.scenario_normalization_catalog.v1",
+        "normalizationFamilyCount": 3,
+        "missingExampleInputCli": [],
+        "families": [
+          {
+            "family": "chatbot",
+            "exampleInputCli": "cautilus scenario normalize chatbot --example-input",
+            "inputSchema": "cautilus.chatbot_normalization_inputs.v1"
+          },
+          {
+            "family": "skill",
+            "exampleInputCli": "cautilus scenario normalize skill --example-input",
+            "inputSchema": "cautilus.skill_normalization_inputs.v2"
+          },
+          {
+            "family": "workflow",
+            "exampleInputCli": "cautilus scenario normalize workflow --example-input",
+            "inputSchema": "cautilus.workflow_normalization_inputs.v1"
+          }
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunScenariosJSONReturnsThreeNormalizationFamilies|TestCLIScenariosExposeExampleInputCLI|TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand'",
+      "exitCode": 0,
+      "reason": "Focused app tests protect the scenario catalog JSON schema, presence of exampleInputCli, and --example-input round-trip through the same command."
+    },
+    {
+      "command": "npm run lint:scenario-normalizers",
+      "exitCode": 0,
+      "reason": "The runtime-completeness lint confirms the chatbot, skill, and workflow normalizer families still have schema constants, helpers, CLI commands, handlers, catalog entries, contract docs, and example fixtures."
+    },
+    {
+      "command": "./bin/cautilus scenario normalize chatbot --example-input > /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/chatbot-example-input.json && ./bin/cautilus scenario normalize chatbot --input /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/chatbot-example-input.json --output /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/chatbot-candidates.json",
+      "exitCode": 0,
+      "reason": "The chatbot example-input command emitted a minimal valid chatbot packet and the matching normalizer consumed it into one candidate."
+    },
+    {
+      "command": "./bin/cautilus scenario normalize skill --example-input > /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/skill-example-input.json && ./bin/cautilus scenario normalize skill --input /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/skill-example-input.json --output /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/skill-candidates.json",
+      "exitCode": 0,
+      "reason": "The skill example-input command emitted a minimal valid skill packet and the matching normalizer consumed it into one candidate."
+    },
+    {
+      "command": "./bin/cautilus scenario normalize workflow --example-input > /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/workflow-example-input.json && ./bin/cautilus scenario normalize workflow --input /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/workflow-example-input.json --output /tmp/cautilus-scenario-catalog-example-cli-2026-05-11/workflow-candidates.json",
+      "exitCode": 0,
+      "reason": "The workflow example-input command emitted a minimal valid workflow packet and the matching normalizer consumed it into one candidate."
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-scenario-catalog-example-cli-2026-05-11/scenarios.json",
+      "kind": "scenario-normalization-catalog",
+      "contentHash": "sha256:e2a4c111f37a68921179b55e8bbc59bee812287ebd9bd6be64df5821b385f2bc",
+      "schemaVersion": "cautilus.scenario_normalization_catalog.v1"
+    },
+    {
+      "path": "/tmp/cautilus-scenario-catalog-example-cli-2026-05-11/chatbot-example-input.json",
+      "kind": "example-input-packet",
+      "contentHash": "sha256:7a9104482629fbc4500b3d969314e214400017c84c3fd2fa1fbf82d47493e1ff",
+      "schemaVersion": "cautilus.chatbot_normalization_inputs.v1"
+    },
+    {
+      "path": "/tmp/cautilus-scenario-catalog-example-cli-2026-05-11/chatbot-candidates.json",
+      "kind": "scenario-proposal-candidates",
+      "contentHash": "sha256:267cf71de3e1365adc33c45be4c93bbcb33f8b7833563c59f129914e93e1142f",
+      "observed": {
+        "candidateCount": 1,
+        "firstCandidateFamily": "fast_regression"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-scenario-catalog-example-cli-2026-05-11/skill-example-input.json",
+      "kind": "example-input-packet",
+      "contentHash": "sha256:96d6c4e652f9d61fc973e085b74d7f8adba50b3fbf491dbd988e3072f76e6ca6",
+      "schemaVersion": "cautilus.skill_normalization_inputs.v2"
+    },
+    {
+      "path": "/tmp/cautilus-scenario-catalog-example-cli-2026-05-11/skill-candidates.json",
+      "kind": "scenario-proposal-candidates",
+      "contentHash": "sha256:353acc222278c7138c9ac9907e3299d6cc36833a552b1e8dbe2f79367c0a41cf",
+      "observed": {
+        "candidateCount": 1,
+        "firstCandidateFamily": "fast_regression"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-scenario-catalog-example-cli-2026-05-11/workflow-example-input.json",
+      "kind": "example-input-packet",
+      "contentHash": "sha256:895e38662af170fe798dc354ab12fa7ecc2a3273a060d7ff0a45381c15037055",
+      "schemaVersion": "cautilus.workflow_normalization_inputs.v1"
+    },
+    {
+      "path": "/tmp/cautilus-scenario-catalog-example-cli-2026-05-11/workflow-candidates.json",
+      "kind": "scenario-proposal-candidates",
+      "contentHash": "sha256:228667f9c364befe1f6cdd4257051491c33a3aad1ff909ff0d044898e081eb96",
+      "observed": {
+        "candidateCount": 1,
+        "firstCandidateFamily": "fast_regression"
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "README.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:54541982e7de8d1b2a9deac27a1444ae21113ed04927ceff5394e12e5dd0771f"
+    },
+    {
+      "path": "internal/runtime/scenarios.go",
+      "kind": "scenario-catalog-source",
+      "contentHash": "sha256:db3db0c334e9e7998cad85b8d68066b8275213bd46a69fe47e4553803b6a1917"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "example-input-cli-handler",
+      "contentHash": "sha256:e15cef8b1322c520c628b77bb1d914396598ce2975e6ec97478b40b04a589343"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "scenario-catalog-json-tests",
+      "contentHash": "sha256:768fa1077ca18927aed56217974800fbec418ffe1350776d37f631d38b9ef6b2"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "example-input-round-trip-tests",
+      "contentHash": "sha256:d88a5a712eb0c70c05131aea82fe3c11946fa6426bd762a79ef6afa6a28cbe0e"
+    },
+    {
+      "path": "scripts/check-scenario-normalization-completeness.mjs",
+      "kind": "scenario-normalizer-completeness-lint",
+      "contentHash": "sha256:d72254a5e13bc30c535710aef8401d8395e93e3d384ef9c191ea365caaefb992"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The live catalog has three normalization entries with non-empty exampleInputCli values, focused tests and lint protect the catalog/completeness shape, and each advertised --example-input command emitted a minimal valid packet consumed by its matching normalizer."
+  }
+}

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:81ea7a60378c5bbbb7ae9324608d6af6d6db446453d8baefd19ea34d477fd4a5"
+      "contentHash": "sha256:8a449fc76c6710b331d0e8be780df69c0baca40725e9be6fbe41aff3272a88f7"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -1563,8 +1563,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 11,
-        "stale": 15,
+        "satisfied": 12,
+        "stale": 14,
         "unknown": 35
       },
       "byReviewStatus": {
@@ -5167,14 +5167,14 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "stale",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
       "canonicalClaimId": "U2",
-      "score": 18,
+      "score": 17,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 11,
-      "scoreMargin": 7,
+      "scoreMargin": 6,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -5183,14 +5183,14 @@
         "catalog",
         "deterministic",
         "entry",
-        "evidence",
+        "family",
         "first",
         "fixture",
         "include",
         "inspect",
+        "keep",
         "operator",
-        "packet",
-        "path"
+        "packet"
       ]
     },
     {

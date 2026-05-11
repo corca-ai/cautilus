@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-11T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the README scenario catalog exampleInputCli claim covered by live catalog output, focused tests, normalizer completeness lint, executable example-input probes, and subagent boundary review."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-scenario-catalog-example-cli-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-175",
+          "claimFingerprint": "sha256:cb717dd9c88c18787242dd04a0d050f2d64914b8a1b7c17ce68f7ed09436899c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a machine-readable CLI catalog field and executable example-input commands, which are deterministic CLI and packet-shape behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `cautilus scenarios --json`, focused scenario catalog tests, scenario-normalizer completeness lint, and running each cataloged `scenario normalize <family> --example-input` command through the matching normalizer via a temporary file.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:1d1280156a860b8219244aaf99472e62da034680bb6e1e00442d4243d46176fb",
+              "supportsClaimIds": [
+                "claim-readme-md-175"
+              ]
+            }
+          ],
+          "nextAction": "Keep exampleInputCli coverage with the scenario catalog whenever adding or renaming normalization families.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
