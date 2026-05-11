@@ -3,64 +3,70 @@ Date: 2026-05-11
 
 ## Problem
 
-`cautilus eval test --repo-root . --adapter-name self-dogfood-refresh-flow --runtime fixture --output-dir /tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval` failed before writing `eval-observed.json`.
+The `v0.15.0` tag-triggered `release-artifacts` workflow failed during `npm run verify`.
 
 ## Correct Behavior
 
-Given the `self-dogfood-refresh-flow` adapter declares a checked-in multi-turn fixture and checked-in fixture results, when `cautilus eval test` runs that adapter with `--runtime fixture`, then the adapter-owned runner should receive the fixture results file and produce `eval-cases.json`, `eval-observed.json`, and `eval-summary.json`.
-
-Given the same adapter is run with Codex or Claude backends, when the optional fixture results argument is present, then the wrapper should continue to ignore it unless the backend is `fixture`.
+Given a release tag points at a commit after the checked-in claim packet was generated, when CI runs `npm run claims:evidence-state:check`, then the checkout should include enough git history to compare the packet commit with the tag commit and distinguish source drift from generated-artifact commit drift.
 
 ## Observed Facts
 
-- The failed command printed `eval test (dev/skill) commands failed before producing /tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval/eval-observed.json`.
-- `/tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval/eval-test-1.stderr` contained `--fixture-results-file is required when --backend fixture`.
-- `.agents/cautilus-adapters/self-dogfood-refresh-flow.yaml` listed `fixtures/eval/dev/skill/cautilus-refresh-flow-fixture-results.json` under `artifact_paths`, but its `eval_test_command_templates` did not pass `--fixture-results-file`.
-- `fixtures/eval/dev/skill/cautilus-refresh-flow.fixture.json` contains one execution case with two `turns`.
-- `fixtures/eval/dev/skill/cautilus-refresh-flow-fixture-results.json` contains the matching `episode-cautilus-refresh-flow` fixture result.
+- GitHub Actions run `25649021254` failed in the `release-artifacts` workflow at `Run npm run verify`.
+- The failed log showed `.cautilus/claims/status-summary.json is stale; run npm run claims:evidence-state`.
+- The failure happened after the tag was pushed, before release assets were built or published.
+- Local `npm run verify`, `npm run claims:evidence-state:check`, and `npm run generated:drift:check` passed on the same commit.
+- A full local clone of commit `8426b5b8b6d103f15672e66c377e2d51d6c3f53e` passed `npm run claims:evidence-state:check`.
+- A shallow local clone reproduced the CI failure with the same stale status-summary message.
+- `.github/workflows/release-artifacts.yml` and `.github/workflows/verify.yml` used `actions/checkout@v6` without `fetch-depth: 0`.
 
 ## Reproduction
 
 ```bash
-./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-refresh-flow --runtime fixture --output-dir /tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval
-sed -n '1,160p' /tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval/eval-test-1.stderr
+rm -rf /tmp/cautilus-shallow-repro
+git clone --quiet --depth 1 --no-local file:///home/hwidong/codes/cautilus /tmp/cautilus-shallow-repro
+cd /tmp/cautilus-shallow-repro
+npm run claims:evidence-state:check
 ```
 
-Before the fix, the command exited non-zero and stderr showed `--fixture-results-file is required when --backend fixture`.
+The shallow clone failed with:
+
+```text
+.cautilus/claims/status-summary.json is stale; run npm run claims:evidence-state
+```
+
+A full-history clone of the same commit passed the same command.
 
 ## Candidate Causes
 
-- The adapter template did not pass the checked-in fixture results file to the wrapper.
-- The wrapper failed to substitute `{backend}` into `fixture` correctly.
-- The fixture results file existed but had a mismatched case id, so the wrapper rejected it.
+- The release workflow did not fetch enough history for claim freshness comparison.
+- The checked-in claim packet was actually stale against the release commit.
+- CI had different evidence files or generated artifacts than the local checkout.
 
 ## Hypothesis
 
-If the adapter template omission is the cause, then adding `--fixture-results-file fixtures/eval/dev/skill/cautilus-refresh-flow-fixture-results.json` to the `self-dogfood-refresh-flow` `eval_test_command_templates` entry should make the same `cautilus eval test --runtime fixture` command pass without changing the fixture or runner code.
+If shallow checkout history is the cause, then reproducing with `--depth 1` should fail while a full-history clone should pass, and setting `fetch-depth: 0` in the CI checkout should give `claim show` enough history to compute `fresh-with-head-drift` instead of stale.
 
 ## Verification
 
-After adding the fixture results argument to the adapter template, the exact same command passed:
+The hypothesis was confirmed locally:
 
-```bash
-./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-refresh-flow --runtime fixture --output-dir /tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval
-```
+- full-history clone: `npm run claims:evidence-state:check` passed
+- shallow clone: `npm run claims:evidence-state:check` failed with the CI error
 
-It produced `/tmp/cautilus-remaining-stale-proof-2026-05-11/refresh-flow-eval/eval-summary.json` with `recommendation=accept-now`.
+The repair sets `fetch-depth: 0` in both release and branch verify workflows so claim freshness checks can compare packet commit to current HEAD.
 
 ## Root Cause
 
-The `self-dogfood-refresh-flow` adapter declared the fixture result artifact but did not pass it to the adapter-owned runner template.
-
-The wrapper correctly required `--fixture-results-file` for `--backend fixture`; the adapter command template was incomplete.
+The claim freshness gate depends on git history between the claim packet commit and current HEAD.
+GitHub Actions shallow checkout omitted the packet commit, so the gate could not prove that changed committed files were generated-only or content-matching claim sources.
 
 ## Seam Risk
 
-- Interrupt ID: self-dogfood-refresh-flow-fixture-template-missing-results
+- Interrupt ID: release-ci-shallow-claim-freshness
 - Risk Class: contract-freeze-risk
-- Seam: Cautilus adapter template to adapter-owned runner wrapper
-- Disproving Observation: a checked-in fixture-results artifact existed, but the runtime command template did not pass it when the selected backend was `fixture`.
-- What Local Reasoning Cannot Prove: whether every other multi-turn dogfood adapter should support fixture runtime; only `self-dogfood-refresh-flow` currently has a dedicated fixture-results file.
+- Seam: GitHub Actions checkout history to claim freshness verification
+- Disproving Observation: the same command passed in a full clone and failed in a shallow clone.
+- What Local Reasoning Cannot Prove: whether future CI providers will default to shallow clones with enough reachable history for claim freshness checks.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -71,6 +77,5 @@ The wrapper correctly required `--fixture-results-file` for `--backend fixture`;
 
 ## Prevention
 
-When a self-dogfood adapter advertises a checked-in fixture-results artifact and can be selected with `--runtime fixture`, its `eval_test_command_templates` should pass that fixture results file explicitly.
-
-The repair risk is low because the wrapper only requires fixture results for the `fixture` backend and already accepts the argument as optional for non-fixture backends.
+CI workflows that run `npm run verify` must use a full-history checkout while claim freshness depends on comparing packet and current commits.
+Release retries should not move failed public tags; create the next patch tag after fixing the workflow.

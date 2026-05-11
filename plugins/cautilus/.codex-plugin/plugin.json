@@ -1,6 +1,6 @@
 {
   "name": "cautilus",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "Standalone intentful behavior evaluation CLI and Cautilus Agent.",
   "author": {
     "name": "Corca",
