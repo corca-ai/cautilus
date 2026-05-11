@@ -22,12 +22,12 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 10
+          "stale": 7
         },
         "byReviewStatus": {
-          "agent-reviewed": 10
+          "agent-reviewed": 7
         },
-        "count": 10,
+        "count": 7,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -35,7 +35,7 @@
           "claim-readme-md-247",
           "claim-docs-cli-reference-md-259",
           "claim-docs-cli-reference-md-261",
-          "claim-docs-cli-reference-md-454"
+          "claim-docs-cli-reference-md-458"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 85
+          "satisfied": 88
         },
         "byReviewStatus": {
-          "agent-reviewed": 85
+          "agent-reviewed": 88
         },
-        "count": 85,
+        "count": 88,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,22 +62,22 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 6,
+          "stale": 3,
           "unknown": 58
         },
         "byReviewStatus": {
-          "agent-reviewed": 16,
+          "agent-reviewed": 13,
           "heuristic": 48
         },
-        "count": 64,
+        "count": 61,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-82",
           "claim-readme-md-90",
           "claim-readme-md-247",
-          "claim-docs-cli-reference-md-454",
-          "claim-docs-cli-reference-md-490"
+          "claim-docs-contracts-adapter-contract-md-219",
+          "claim-docs-contracts-adapter-contract-md-432"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -218,8 +218,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 85,
-      "stale": 10,
+      "satisfied": 88,
+      "stale": 7,
       "unknown": 270
     },
     "byLifecycle": {
@@ -439,7 +439,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 85,
+    "satisfiedClaimCount": 88,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-124",
@@ -860,6 +860,69 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-454",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:402d8fd39b0d27835e20f94c836bb5c062fcbcb15c2e5149b2fdee47b8021998",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-454",
+              "claim-docs-cli-reference-md-490",
+              "claim-docs-cli-reference-md-526"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-490",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:402d8fd39b0d27835e20f94c836bb5c062fcbcb15c2e5149b2fdee47b8021998",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-454",
+              "claim-docs-cli-reference-md-490",
+              "claim-docs-cli-reference-md-526"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\""
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-526",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:402d8fd39b0d27835e20f94c836bb5c062fcbcb15c2e5149b2fdee47b8021998",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-454",
+              "claim-docs-cli-reference-md-490",
+              "claim-docs-cli-reference-md-526"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\""
       },
       {
         "claimId": "claim-docs-cli-reference-md-544",
@@ -2129,7 +2192,7 @@
   },
   "gitCommit": "128e15454ff634d446a95c7408b95379ce009788",
   "gitState": {
-    "changedFileCount": 24,
+    "changedFileCount": 26,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -2138,6 +2201,7 @@
       ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
       ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
+      ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
       ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-11.json",
@@ -2149,6 +2213,7 @@
       ".cautilus/claims/review-result-evidence-claim-cli-packet-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
@@ -2164,7 +2229,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a009bad59d2441d09a0029b5ba186983fa7ea645",
+    "currentGitCommit": "18a9484ae0be5d7e40aa94d5b71bf13c3e21898f",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",

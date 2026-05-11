@@ -1648,18 +1648,19 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:c09d813fd1e7a32f1f11fb893d631255bc5df9fb338b821f68bf24546630e930",
+          "contentHash": "sha256:402d8fd39b0d27835e20f94c836bb5c062fcbcb15c2e5149b2fdee47b8021998",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-review-variants-status-and-output-text-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
           "supportsClaimIds": [
             "claim-docs-cli-reference-md-454",
-            "claim-docs-cli-reference-md-431"
+            "claim-docs-cli-reference-md-490",
+            "claim-docs-cli-reference-md-526"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-review-variants-status-and-output-text-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-454 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused review variants tests covering blocked, failed, concern, unavailable_executor, partialSuccess, successfulVariantOutputs, and machine-readable reasonCodes, plus checked-in reporting contract guidance.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1667,7 +1668,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep execution envelope proof separate from semantic correctness of any review verdict.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1678,8 +1679,9 @@
         }
       ],
       "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names a deterministic product-owned review variant execution envelope."
     },
     {
       "claimAudience": "user",
@@ -1732,17 +1734,19 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "contentHash": "sha256:402d8fd39b0d27835e20f94c836bb5c062fcbcb15c2e5149b2fdee47b8021998",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-490"
+            "claim-docs-cli-reference-md-454",
+            "claim-docs-cli-reference-md-490",
+            "claim-docs-cli-reference-md-526"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-current-deterministic-proof-batch-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-490 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by live `evidence prepare-input` and `evidence bundle` commands that combine report, scenario_results, run_audit, and scenario_history into explicit source refs and prioritized signals, plus focused evidence-bundle flow and schema tests.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1750,7 +1754,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep evidence-bundle proof scoped to explicit normalized inputs; raw host reader ownership remains outside this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1761,8 +1765,9 @@
         }
       ],
       "summary": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names a deterministic evidence aggregation packet boundary."
     },
     {
       "claimAudience": "user",
@@ -1772,17 +1777,19 @@
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:fa58758d3ea66920d3af6eb193cf671b5344061322caba247b62edc38fd3263e",
+          "contentHash": "sha256:402d8fd39b0d27835e20f94c836bb5c062fcbcb15c2e5149b2fdee47b8021998",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-self-dogfood-html-renderers-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
           "supportsClaimIds": [
+            "claim-docs-cli-reference-md-454",
+            "claim-docs-cli-reference-md-490",
             "claim-docs-cli-reference-md-526"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-self-dogfood-html-renderers-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-526 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused self-dogfood renderer CLI and runtime tests, live renders from checked-in latest bundles, and generated HTML containing Decision Summary, review-first inspection text, and source-packet notices.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1790,7 +1797,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep HTML projections read-only over JSON source packets; do not treat rendered HTML as a replacement source of truth.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1801,8 +1808,9 @@
         }
       ],
       "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
+      "whyThisLayer": "The claim names deterministic reviewer-first HTML projection over existing packets."
     },
     {
       "claimAudience": "user",
@@ -12264,8 +12272,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 85,
-      "stale": 10,
+      "satisfied": 88,
+      "stale": 7,
       "unknown": 270
     },
     "byLifecycle": {
@@ -12548,6 +12556,7 @@
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-cli-packet-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-cli-decision-packet-projections-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
@@ -12590,9 +12599,9 @@
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 53,
+    "appliedResultCount": 54,
     "skippedResultCount": 34,
-    "keptUpdateCount": 177,
+    "keptUpdateCount": 180,
     "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },

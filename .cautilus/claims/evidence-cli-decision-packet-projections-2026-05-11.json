@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-cli-decision-packet-projections-2026-05-11",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-454",
+    "claim-docs-cli-reference-md-490",
+    "claim-docs-cli-reference-md-526"
+  ],
+  "repoCommit": "18a9484ae0be5d7e40aa94d5b71bf13c3e21898f",
+  "summary": "Deterministic proof for review variant execution envelopes, evidence bundle aggregation, and self-dogfood reviewer-first HTML projections.",
+  "evidenceScope": {
+    "targetSurface": "CLI decision packets and reviewable projections",
+    "claimBoundary": "Only the three listed docs/cli-reference claims are marked satisfied.",
+    "notClaimed": [
+      "A real external judge or model provider was called.",
+      "Every possible blocked or failed reason code is enumerated.",
+      "A reviewer verdict is semantically correct just because the execution envelope is valid.",
+      "Raw host logs, scenario history, or audit records are automatically discovered without explicit inputs.",
+      "Rendered HTML replaces JSON packets as the source of truth.",
+      "All browser or responsive visual qualities are exhaustively validated.",
+      "Self-dogfood renderer proof generalizes to every HTML renderer."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIReviewVariantsReturnsBlockedSummaryWhenVariantEmitsBlockedPayload|TestCLIReviewVariantsReturnsFailedSummaryWhenVariantEmitsFailedPayload|TestCLIReviewVariantsPreservesConcernVerdictAndFindings|TestCLIReviewVariantsClassifiesUnavailableExecutorAsBlockedPartialSuccess|TestCLISelfDogfoodRenderHTMLWritesDecisionFirstIndex|TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle' -count=1",
+      "exitCode": 0,
+      "reason": "Focused app tests cover review variant blocked and failed envelopes, concern verdict preservation, unavailable_executor partial success, and both self-dogfood renderer CLI entrypoints writing decision-first HTML."
+    },
+    {
+      "command": "node --test scripts/agent-runtime/evidence-bundle-flow.test.mjs scripts/agent-runtime/evidence-contract-schemas.test.mjs",
+      "exitCode": 0,
+      "reason": "Agent-runtime tests cover explicit evidence input assembly, evidence bundle signal aggregation, active-run defaults, and checked-in evidence input/bundle schema examples."
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestRenderSelfDogfoodHTMLIncludesHeadlineFields|TestWriteSelfDogfoodHTMLWritesIndexNextToLatestBundle|TestRenderSelfDogfoodHTMLRewritesMarkdownAndJSONLinks|TestRenderSelfDogfoodExperimentsHTMLIncludesComparisonRows|TestWriteSelfDogfoodExperimentsHTMLWritesIndexNextToLatestBundle' -count=1",
+      "exitCode": 0,
+      "reason": "Runtime renderer tests cover self-dogfood headline fields, index writing, artifact link rewriting, and experiment comparison projection."
+    },
+    {
+      "command": "./bin/cautilus evidence prepare-input --repo-root . --report-file /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/report.json --scenario-results-file /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/scenario-results.json --run-audit-file /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/run-audit.json --history-file /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/scenario-history.snapshot.json --output /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/evidence-input.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.evidence_bundle_inputs.v1",
+        "sourceKinds": [
+          "report",
+          "scenario_results",
+          "run_audit",
+          "scenario_history"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus evidence bundle --input /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/evidence-input.json --output /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/evidence-bundle.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.evidence_bundle.v1",
+        "signalCount": 6,
+        "sourceKinds": [
+          "report.noisy",
+          "report.regressed",
+          "run_audit.depth",
+          "run_audit.warning",
+          "scenario_history",
+          "scenario_results"
+        ],
+        "historySignal": "scenario_history:operator-recovery"
+      }
+    },
+    {
+      "command": "./bin/cautilus self-dogfood render-html --latest-dir ./artifacts/self-dogfood/latest --output /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/self-dogfood.html",
+      "exitCode": 0,
+      "observed": {
+        "containsDecisionSummary": true,
+        "containsWhatHappened": true,
+        "containsWhatToInspectNext": true,
+        "statesGeneratedFromSourcePackets": true
+      }
+    },
+    {
+      "command": "./bin/cautilus self-dogfood render-experiments-html --latest-dir ./artifacts/self-dogfood/experiments/latest --output /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/self-dogfood-experiments.html",
+      "exitCode": 0,
+      "observed": {
+        "containsExperimentsTitle": true,
+        "containsDecisionSummary": true,
+        "statesGeneratedFromSourcePackets": true
+      }
+    },
+    {
+      "command": "./bin/cautilus commands --json > /tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/commands.json",
+      "exitCode": 0,
+      "observed": {
+        "selectedCommands": [
+          "evidence prepare-input",
+          "evidence bundle",
+          "review variants",
+          "self-dogfood render-html",
+          "self-dogfood render-experiments-html"
+        ]
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/evidence-input.json",
+      "kind": "evidence-input-packet",
+      "contentHash": "sha256:d1af53ea423f7bd25f4c948c952681bb70adb1691926e277ee5d8a0e81ca37bd",
+      "observed": {
+        "schemaVersion": "cautilus.evidence_bundle_inputs.v1",
+        "sourceKinds": [
+          "report",
+          "scenario_results",
+          "run_audit",
+          "scenario_history"
+        ]
+      }
+    },
+    {
+      "path": "/tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/evidence-bundle.json",
+      "kind": "evidence-bundle-packet",
+      "contentHash": "sha256:e65c0b48a205e3f968dc2006daaead4476052e1958d3b54677967bafc06c678e",
+      "observed": {
+        "schemaVersion": "cautilus.evidence_bundle.v1",
+        "summary": {
+          "signalCount": 6,
+          "highSignalCount": 3,
+          "mediumSignalCount": 3,
+          "lowSignalCount": 0
+        }
+      }
+    },
+    {
+      "path": "/tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/selected-commands.json",
+      "kind": "command-registry-slice",
+      "contentHash": "sha256:17d5c72a77603912c64d7a4fe9cdc8a982ddb44bd9c1b7b121a57fed8d98335a",
+      "observed": {
+        "commands": [
+          "evidence prepare-input",
+          "evidence bundle",
+          "review variants",
+          "self-dogfood render-html",
+          "self-dogfood render-experiments-html"
+        ]
+      }
+    },
+    {
+      "path": "/tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/self-dogfood.html",
+      "kind": "self-dogfood-html-render",
+      "contentHash": "sha256:42b6538e15742c74acde250d34afc35ee438dc854e76ecb5579d3e7dbe9fd496",
+      "observed": {
+        "decisionSummaryLine": 305,
+        "sourcePacketNoticeLine": 428
+      }
+    },
+    {
+      "path": "/tmp/cautilus-cli-review-evidence-rendering-proof-2026-05-11/self-dogfood-experiments.html",
+      "kind": "self-dogfood-experiments-html-render",
+      "contentHash": "sha256:53ab7de0f0c5f26c66555d145d72f1af1f131690052e8a6092d2cb2ea9159322",
+      "observed": {
+        "decisionSummaryLine": 305,
+        "sourcePacketNoticeLine": 419
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:0dc3583c7c90493d22e13963ffc25596dddceb7ad427dc53fbb3124bb937570b"
+    },
+    {
+      "path": "docs/contracts/reporting.md",
+      "kind": "review-variants-contract",
+      "contentHash": "sha256:bf309380f38e3bc836e2864fa836c48f57a169d57c5d832f533a1f3f9b58acde"
+    },
+    {
+      "path": "docs/contracts/evidence-bundle.md",
+      "kind": "evidence-bundle-contract",
+      "contentHash": "sha256:e22dbc8981c69d463b68eb5561140e39076d573d7ca0d4c00e4509db2f414ca6"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "review-variants-and-evidence-cli-implementation",
+      "contentHash": "sha256:227cf7ac4d1861f14742d61268ee3f61e49e28b9a34469e96c48198a917e9504"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-smoke-tests",
+      "contentHash": "sha256:d88a5a712eb0c70c05131aea82fe3c11946fa6426bd762a79ef6afa6a28cbe0e"
+    },
+    {
+      "path": "internal/runtime/evidence.go",
+      "kind": "evidence-bundle-runtime",
+      "contentHash": "sha256:b7dc8fc075f8609e570a5c8e3066d1bc0ace160f271f9ec95a2ada9b5902124d"
+    },
+    {
+      "path": "internal/runtime/self_dogfood_html.go",
+      "kind": "self-dogfood-html-runtime",
+      "contentHash": "sha256:c320dc471bea20b53244ad16016aa9c30cc039db23b3fd4c6f988ec1181d89eb"
+    },
+    {
+      "path": "internal/runtime/self_dogfood_html_test.go",
+      "kind": "self-dogfood-html-tests",
+      "contentHash": "sha256:9628016624d5581a45a4bf11b578c3fd2778af530e3edfbaf9b10b02d97f7102"
+    },
+    {
+      "path": "scripts/agent-runtime/evidence-bundle-flow.test.mjs",
+      "kind": "evidence-bundle-flow-tests",
+      "contentHash": "sha256:09e5c5bbe354a8c7e346de86258ba1c5bb8b2bdf69eeb7f2178afd148506b480"
+    },
+    {
+      "path": "scripts/agent-runtime/evidence-contract-schemas.test.mjs",
+      "kind": "evidence-schema-tests",
+      "contentHash": "sha256:dc51fbbe6d37ae3f350a3f733b96c8032cccd9f4f0956541068f8fd9fc400f15"
+    },
+    {
+      "path": "scripts/agent-runtime/build-evidence-input.mjs",
+      "kind": "portable-evidence-input-builder",
+      "contentHash": "sha256:30c2eaebae045f93dcaf3133dd6866876f972b3b2bba2966e85e345191749a0b"
+    },
+    {
+      "path": "scripts/agent-runtime/build-evidence-bundle.mjs",
+      "kind": "portable-evidence-bundle-builder",
+      "contentHash": "sha256:c0e55b755852d86cac38a5950632f58eb20a373eae885093035588bfe8a59ab0"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused tests, live packet generation, command registry output, and checked-in contracts prove the three CLI packet/projection claims without claiming external provider success or semantic reviewer correctness."
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-11T00:00:00Z",
+    "evidencePolicy": "Mark evidenceStatus=satisfied only for the three CLI decision packet and reviewable projection claims covered by focused tests, live packet generation, command registry output, and explicit non-claims."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cli-decision-packet-projections-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-454",
+          "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a deterministic product-owned review variant execution envelope.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused review variants tests covering blocked, failed, concern, unavailable_executor, partialSuccess, successfulVariantOutputs, and machine-readable reasonCodes, plus checked-in reporting contract guidance.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:402d8fd39b0d27835e20f94c836bb5c062fcbcb15c2e5149b2fdee47b8021998",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-454",
+                "claim-docs-cli-reference-md-490",
+                "claim-docs-cli-reference-md-526"
+              ]
+            }
+          ],
+          "nextAction": "Keep execution envelope proof separate from semantic correctness of any review verdict.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-490",
+          "claimFingerprint": "sha256:003038663b54c623858fe0d30f37af8e7554c1f8f79b8750306cdff272f893a5",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a deterministic evidence aggregation packet boundary.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by live `evidence prepare-input` and `evidence bundle` commands that combine report, scenario_results, run_audit, and scenario_history into explicit source refs and prioritized signals, plus focused evidence-bundle flow and schema tests.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:402d8fd39b0d27835e20f94c836bb5c062fcbcb15c2e5149b2fdee47b8021998",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-454",
+                "claim-docs-cli-reference-md-490",
+                "claim-docs-cli-reference-md-526"
+              ]
+            }
+          ],
+          "nextAction": "Keep evidence-bundle proof scoped to explicit normalized inputs; raw host reader ownership remains outside this claim.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-526",
+          "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic reviewer-first HTML projection over existing packets.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused self-dogfood renderer CLI and runtime tests, live renders from checked-in latest bundles, and generated HTML containing Decision Summary, review-first inspection text, and source-packet notices.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:402d8fd39b0d27835e20f94c836bb5c062fcbcb15c2e5149b2fdee47b8021998",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-454",
+                "claim-docs-cli-reference-md-490",
+                "claim-docs-cli-reference-md-526"
+              ]
+            }
+          ],
+          "nextAction": "Keep HTML projections read-only over JSON source packets; do not treat rendered HTML as a replacement source of truth.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
