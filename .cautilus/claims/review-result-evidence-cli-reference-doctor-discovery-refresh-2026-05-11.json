@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-11T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the three CLI reference claims covered by focused tests, live CLI packets, and read-only subagent boundary review."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cli-reference-doctor-discovery-refresh-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-117",
+          "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic doctor adapter selection and CLI guidance behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused doctor tests showing plain doctor does not guess a named adapter, CLI help preserving --adapter-name guidance, and a live `doctor --adapter-name self-dogfood-eval` run that validates the explicit named adapter.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a4ec47cd0802d790b7afee043a8b8019a229461ab24cf094a8d6d14c5cc31fb0",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-117",
+                "claim-docs-cli-reference-md-118",
+                "claim-docs-cli-reference-md-123"
+              ]
+            }
+          ],
+          "nextAction": "Keep named-adapter doctor guidance and explicit adapter validation separate from any future auto-selection behavior.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-118",
+          "claimFingerprint": "sha256:677531528b5130a8cb2c449a6df5177abb7ee7d925262299b9123f87c1e7e60c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names claim-discovery inventory and proof routing behavior before any eval fixture authoring.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused claim-discover tests and a live tiny-repo `claim discover` run that emitted a cautilus.claim_proof_plan.v1 packet with human-auditable, deterministic, and cautilus-eval proof routes without writing eval fixtures.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a4ec47cd0802d790b7afee043a8b8019a229461ab24cf094a8d6d14c5cc31fb0",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-117",
+                "claim-docs-cli-reference-md-118",
+                "claim-docs-cli-reference-md-123"
+              ]
+            }
+          ],
+          "nextAction": "Keep claim discover as proof planning and inventory; fixture writing remains host-owned or handled by later eval-planning steps.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-123",
+          "claimFingerprint": "sha256:a42ab6736d2ebe2beeb0ba10487b85347c0d81a5444e77f1d95d0f8fc7292e95",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a deterministic CLI guard that prevents refresh-plan packets from overwriting saved claim-state paths.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the refresh-plan overwrite regression test: `claim discover --previous <state> --refresh-plan --output <state>` exits 1, reports the saved-state overwrite guard, and leaves the existing cautilus.claim_proof_plan.v1 packet intact.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a4ec47cd0802d790b7afee043a8b8019a229461ab24cf094a8d6d14c5cc31fb0",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-117",
+                "claim-docs-cli-reference-md-118",
+                "claim-docs-cli-reference-md-123"
+              ]
+            }
+          ],
+          "nextAction": "Keep refresh-plan outputs separate from configured saved claim-state paths.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

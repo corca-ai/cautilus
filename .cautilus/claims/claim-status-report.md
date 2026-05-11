@@ -19,7 +19,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 73, stale: 22, unknown: 270 |
+| Evidence | satisfied: 76, stale: 19, unknown: 270 |
 | Review | agent-reviewed: 148, heuristic: 216, human-reviewed: 1 |
 | Recommended proof | cautilus-eval: 118, deterministic: 149, human-auditable: 98 |
 | Verification readiness | blocked: 32, needs-alignment: 34, needs-scenario: 6, ready-for-proof: 293 |
@@ -34,15 +34,15 @@ Review readiness: heuristicClaimsReadyForReview: 192, needsAlignment: 34, needsS
 - User raw claims: 106
 - User claims mapped to U1-U7: 106
 - User claims not mapped to U1-U7: 0
-- User mappings recommended for semantic sampling: 43
+- User mappings recommended for semantic sampling: 45
 - Maintainer claims mapped to M1-M34: M1: 5, M10: 11, M11: 28, M12: 9, M2: 9, M3: 56, M4: 74, M5: 16, M6: 6, M7: 15, M8: 24, M9: 6
 - All raw claims by disposition: mapped-to-maintainer-canonical: 259, mapped-to-user-canonical: 106
-- Mapping confidence: high: 66, low: 16, medium: 283
+- Mapping confidence: high: 64, low: 16, medium: 285
 
 | User claim | Title | Raw claims | Evidence | Review |
 | --- | --- | --- | --- | --- |
-| U1 | Readiness | 26 | satisfied: 11, stale: 1, unknown: 14 | agent-reviewed: 13, heuristic: 13 |
-| U2 | Claim Discovery | 61 | satisfied: 12, stale: 14, unknown: 35 | agent-reviewed: 40, heuristic: 21 |
+| U1 | Readiness | 27 | satisfied: 12, stale: 1, unknown: 14 | agent-reviewed: 14, heuristic: 13 |
+| U2 | Claim Discovery | 60 | satisfied: 14, stale: 11, unknown: 35 | agent-reviewed: 39, heuristic: 21 |
 | U3 | Behavior Evaluation | 4 | unknown: 4 | heuristic: 4 |
 | U4 | Bounded Optimization | 3 | unknown: 3 | agent-reviewed: 1, heuristic: 2 |
 | U5 | Reviewable Artifacts | 4 | unknown: 4 | heuristic: 4 |
@@ -103,12 +103,12 @@ Maintainer semantic sampling queue:
 | M11 | Reporting And Review Variants | claim-docs-contracts-adapter-contract-md-426 (medium), claim-docs-contracts-adapter-contract-md-432 (medium), claim-docs-contracts-adapter-contract-md-478 (medium), claim-docs-contracts-review-packet-md-3 (medium) |
 | M12 | Scenario History And Proposal Normalization | claim-agents-md-62 (medium), claim-docs-contracts-claim-discovery-workflow-md-262 (medium), claim-docs-contracts-claim-discovery-workflow-md-586 (medium), claim-docs-contracts-scenario-history-md-3 (medium) |
 
-Semantic sampling recommended for 299 raw claim(s): claim-agents-md-12, claim-agents-md-26, claim-agents-md-29, claim-agents-md-62, claim-agents-md-74, claim-agents-md-79, claim-agents-md-80, claim-agents-md-124, ...
+Semantic sampling recommended for 301 raw claim(s): claim-agents-md-12, claim-agents-md-26, claim-agents-md-29, claim-agents-md-62, claim-agents-md-74, claim-agents-md-79, claim-agents-md-80, claim-agents-md-124, ...
 
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=34, human-confirm-or-decompose=33, split-or-defer=32.
-- Agent next proof work: connect deterministic gates for 75 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 72 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 112 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 6 claim(s).
 
@@ -116,8 +116,8 @@ Semantic sampling recommended for 299 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 73 | agent-reviewed: 73 | satisfied: 73 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 75 | agent-reviewed: 27, heuristic: 48 | stale: 17, unknown: 58 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 76 | agent-reviewed: 76 | satisfied: 76 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 72 | agent-reviewed: 24, heuristic: 48 | stale: 14, unknown: 58 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 112 | agent-reviewed: 9, heuristic: 102, human-reviewed: 1 | stale: 4, unknown: 108 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 6 | heuristic: 6 | unknown: 6 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 34 | agent-reviewed: 16, heuristic: 18 | unknown: 34 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
@@ -126,7 +126,7 @@ Semantic sampling recommended for 299 raw claim(s): claim-agents-md-12, claim-ag
 
 Cross-cutting signal: heuristic-review-needed (216) - Review heuristic labels before spending proof or eval budget.
 
-Cross-cutting signal: stale-evidence (22) - Refresh or recheck stale evidence before consuming it as proof.
+Cross-cutting signal: stale-evidence (19) - Refresh or recheck stale evidence before consuming it as proof.
 
 ### agent-add-deterministic-proof
 
@@ -137,8 +137,8 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 | claim-readme-md-82 | README.md:82 | deterministic | ready-for-proof | heuristic | unknown | The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or optimization work. |
 | claim-readme-md-90 | README.md:90 | deterministic | ready-for-proof | heuristic | unknown | This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets. |
 | claim-readme-md-247 | README.md:247 | deterministic | ready-for-proof | agent-reviewed | stale | machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly |
-| claim-docs-cli-reference-md-117 | docs/cli-reference.md:117 | deterministic | ready-for-proof | agent-reviewed | stale | When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean. |
-| claim-docs-cli-reference-md-118 | docs/cli-reference.md:118 | deterministic | ready-for-proof | agent-reviewed | stale | Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work. |
+| claim-docs-cli-reference-md-176 | docs/cli-reference.md:176 | deterministic | ready-for-proof | agent-reviewed | stale | An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id. |
+| claim-docs-cli-reference-md-188 | docs/cli-reference.md:188 | deterministic | ready-for-proof | agent-reviewed | stale | When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags. |
 
 ### agent-plan-cautilus-eval
 
@@ -284,6 +284,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-eval-heuristic-batch-2026-05-03.json | - | - | 1 | 3 | 8 | deterministic: 1, human-auditable: 2 | blocked: 1, needs-alignment: 1, ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
 | .cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
 | .cautilus/claims/review-result-evidence-consumer-doctor-onboarding-2026-05-03.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
 | .cautilus/claims/review-result-evidence-consumer-surface-alias-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json | - | - | 1 | 4 | 2 | deterministic: 4 | ready-for-proof: 4 |

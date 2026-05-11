@@ -1156,17 +1156,19 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+          "contentHash": "sha256:a4ec47cd0802d790b7afee043a8b8019a229461ab24cf094a8d6d14c5cc31fb0",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-117"
+            "claim-docs-cli-reference-md-117",
+            "claim-docs-cli-reference-md-118",
+            "claim-docs-cli-reference-md-123"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-runtime-claims-2026-05-01.json does not list current claimId claim-docs-cli-reference-md-117 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused doctor tests showing plain doctor does not guess a named adapter, CLI help preserving --adapter-name guidance, and a live `doctor --adapter-name self-dogfood-eval` run that validates the explicit named adapter.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1174,7 +1176,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep named-adapter doctor guidance and explicit adapter validation separate from any future auto-selection behavior.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1185,8 +1187,9 @@
         }
       ],
       "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic doctor adapter selection and CLI guidance behavior."
     },
     {
       "claimAudience": "user",
@@ -1196,17 +1199,19 @@
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:b9db2cd61f9820ee664a0a9d84f7b7550b39c0f1526d18e6480611075ca77e87",
+          "contentHash": "sha256:a4ec47cd0802d790b7afee043a8b8019a229461ab24cf094a8d6d14c5cc31fb0",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-118"
+            "claim-docs-cli-reference-md-117",
+            "claim-docs-cli-reference-md-118",
+            "claim-docs-cli-reference-md-123"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-claim-discover-proof-routing-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-118 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused claim-discover tests and a live tiny-repo `claim discover` run that emitted a cautilus.claim_proof_plan.v1 packet with human-auditable, deterministic, and cautilus-eval proof routes without writing eval fixtures.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1214,7 +1219,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep claim discover as proof planning and inventory; fixture writing remains host-owned or handled by later eval-planning steps.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1225,8 +1230,9 @@
         }
       ],
       "summary": "Use `cautilus claim discover` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names claim-discovery inventory and proof routing behavior before any eval fixture authoring."
     },
     {
       "claimAudience": "user",
@@ -1236,17 +1242,19 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "contentHash": "sha256:a4ec47cd0802d790b7afee043a8b8019a229461ab24cf094a8d6d14c5cc31fb0",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
           "supportsClaimIds": [
+            "claim-docs-cli-reference-md-117",
+            "claim-docs-cli-reference-md-118",
             "claim-docs-cli-reference-md-123"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-current-deterministic-proof-batch-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-123 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the refresh-plan overwrite regression test: `claim discover --previous <state> --refresh-plan --output <state>` exits 1, reports the saved-state overwrite guard, and leaves the existing cautilus.claim_proof_plan.v1 packet intact.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1254,7 +1262,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep refresh-plan outputs separate from configured saved claim-state paths.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1265,8 +1273,9 @@
         }
       ],
       "summary": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names a deterministic CLI guard that prevents refresh-plan packets from overwriting saved claim-state paths."
     },
     {
       "claimAudience": "user",
@@ -12234,8 +12243,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 73,
-      "stale": 22,
+      "satisfied": 76,
+      "stale": 19,
       "unknown": 270
     },
     "byLifecycle": {
@@ -12515,6 +12524,7 @@
       ".cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json",
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
@@ -12555,9 +12565,9 @@
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 48,
+    "appliedResultCount": 49,
     "skippedResultCount": 34,
-    "keptUpdateCount": 165,
+    "keptUpdateCount": 168,
     "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },
