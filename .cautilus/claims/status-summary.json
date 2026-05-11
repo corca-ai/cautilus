@@ -22,20 +22,20 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 24
+          "stale": 23
         },
         "byReviewStatus": {
-          "agent-reviewed": 24
+          "agent-reviewed": 23
         },
-        "count": 24,
+        "count": 23,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-readme-md-152",
           "claim-readme-md-163",
           "claim-readme-md-175",
           "claim-readme-md-247",
-          "claim-docs-cli-reference-md-117"
+          "claim-docs-cli-reference-md-117",
+          "claim-docs-cli-reference-md-118"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 71
+          "satisfied": 72
         },
         "byReviewStatus": {
-          "agent-reviewed": 71
+          "agent-reviewed": 72
         },
-        "count": 71,
+        "count": 72,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,22 +62,22 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 19,
+          "stale": 18,
           "unknown": 58
         },
         "byReviewStatus": {
-          "agent-reviewed": 29,
+          "agent-reviewed": 28,
           "heuristic": 48
         },
-        "count": 77,
+        "count": 76,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-82",
           "claim-readme-md-90",
-          "claim-readme-md-152",
           "claim-readme-md-175",
-          "claim-readme-md-247"
+          "claim-readme-md-247",
+          "claim-docs-cli-reference-md-117"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -218,8 +218,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 71,
-      "stale": 24,
+      "satisfied": 72,
+      "stale": 23,
       "unknown": 270
     },
     "byLifecycle": {
@@ -439,7 +439,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 71,
+    "satisfiedClaimCount": 72,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-124",
@@ -558,6 +558,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy."
+      },
+      {
+        "claimId": "claim-readme-md-152",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7d61d2ba3886ef02c17f33683134721047029352e281b5c4c7e0a7b68c6bc7b3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-chatbot-normalize-proposals-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-readme-md-152"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "CLI: `cautilus scenario normalize chatbot --input logs.json` For agent: \"Run a chatbot regression with these logs and my new system prompt.\" You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks."
       },
       {
         "claimId": "claim-readme-md-159",
@@ -1843,16 +1862,19 @@
   },
   "gitCommit": "128e15454ff634d446a95c7408b95379ce009788",
   "gitState": {
-    "changedFileCount": 9,
+    "changedFileCount": 12,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/latest.md",
       "docs/specs/proof/claim-evidence-state.md"
     ],
     "changedFilesBasis": {
@@ -1863,7 +1885,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "cad6b845c6bc604f1f90571221a17878a5efa0d8",
+    "currentGitCommit": "95edaf7b8f4201526f093fe4d06ff1c4fcf6e1c5",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",

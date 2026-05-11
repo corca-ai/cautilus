@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-11T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the README chatbot normalization claim covered by focused CLI tests, checked-in fixture inputs, and a live normalize -> prepare-input -> propose command chain."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-chatbot-normalize-proposals-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-152",
+          "claimFingerprint": "sha256:278d2b24e86fda13b675714aeb0c57ae685fd07d2c02ed6320572f06d476cdb7",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names CLI normalization and packet generation behavior that is covered by deterministic smoke tests and live commands against checked-in fixtures.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the focused CLI smoke test and a live `scenario normalize chatbot` -> `scenario prepare-input` -> `scenario propose` chain that produced three normalized candidates and a reopenable cautilus.scenario_proposals.v1 packet.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-chatbot-normalize-proposals-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7d61d2ba3886ef02c17f33683134721047029352e281b5c4c7e0a7b68c6bc7b3",
+              "supportsClaimIds": [
+                "claim-readme-md-152"
+              ]
+            }
+          ],
+          "nextAction": "Keep chatbot normalization as proposal-input evidence until an operator explicitly promotes accepted proposals into protected eval fixtures.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

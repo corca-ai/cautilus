@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-chatbot-normalize-proposals-2026-05-11",
+  "createdForClaimIds": [
+    "claim-readme-md-152"
+  ],
+  "repoCommit": "95edaf7b8f4201526f093fe4d06ff1c4fcf6e1c5",
+  "summary": "Deterministic proof that `cautilus scenario normalize chatbot` emits proposal candidates from chatbot conversation logs and that those candidates can be reopened through prepare-input and propose into a durable scenario proposals packet.",
+  "evidenceScope": {
+    "targetSurface": "chatbot scenario normalization proposal path",
+    "claimBoundary": "Only the README claim that chatbot normalization produces reopenable proposal candidates for protected scenario checks is marked satisfied.",
+    "notClaimed": [
+      "The generated proposals are automatically promoted into held-out eval fixtures.",
+      "The chatbot normalizer covers every possible conversation-log format.",
+      "The proposals prove live chatbot behavior by themselves.",
+      "A human has accepted any generated scenario proposal."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose",
+      "exitCode": 0,
+      "reason": "The focused CLI smoke test verifies chatbot normalization produces candidates and chains them through scenario prepare-input and scenario propose."
+    },
+    {
+      "command": "./bin/cautilus scenario normalize chatbot --input fixtures/scenario-proposals/chatbot-input.json --output /tmp/cautilus-chatbot-normalize-proof-2026-05-11/chatbot-candidates.json",
+      "exitCode": 0,
+      "reason": "The checked-in chatbot input fixture normalized into three proposal candidates."
+    },
+    {
+      "command": "./bin/cautilus scenario prepare-input --candidates /tmp/cautilus-chatbot-normalize-proof-2026-05-11/chatbot-candidates.json --registry fixtures/scenario-proposals/registry.json --coverage fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z --output /tmp/cautilus-chatbot-normalize-proof-2026-05-11/scenario-proposal-input.json",
+      "exitCode": 0,
+      "reason": "The normalized chatbot candidates were assembled into a cautilus.scenario_proposal_inputs.v1 packet."
+    },
+    {
+      "command": "./bin/cautilus scenario propose --input /tmp/cautilus-chatbot-normalize-proof-2026-05-11/scenario-proposal-input.json --output /tmp/cautilus-chatbot-normalize-proof-2026-05-11/proposals.json",
+      "exitCode": 0,
+      "reason": "The prepared input produced a reopenable cautilus.scenario_proposals.v1 packet with three ranked proposals."
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-chatbot-normalize-proof-2026-05-11/chatbot-candidates.json",
+      "kind": "scenario-proposal-candidates",
+      "contentHash": "sha256:47028b63b905fccb54dda42e668a29f0271835a934eaef584372f6dfa3cf7d3b",
+      "observed": {
+        "candidateCount": 3,
+        "firstCandidate": {
+          "proposalKey": "repo-review-needs-target-clarification",
+          "family": "fast_regression",
+          "evidenceCount": 1,
+          "hasIntentProfile": true
+        }
+      }
+    },
+    {
+      "path": "/tmp/cautilus-chatbot-normalize-proof-2026-05-11/scenario-proposal-input.json",
+      "kind": "scenario-proposal-input-packet",
+      "contentHash": "sha256:23843e7fc40726806c918bb4c7b4908e11ca89784702a8f571a866b69c50d0f7",
+      "schemaVersion": "cautilus.scenario_proposal_inputs.v1",
+      "observed": {
+        "proposalCandidateCount": 3,
+        "families": [
+          "fast_regression"
+        ],
+        "windowDays": 14
+      }
+    },
+    {
+      "path": "/tmp/cautilus-chatbot-normalize-proof-2026-05-11/proposals.json",
+      "kind": "scenario-proposals-packet",
+      "contentHash": "sha256:fe58f35448b31ffbd0468b7a6e51c6bad55d338d395b0f4219065e8a7eaeb1b2",
+      "schemaVersion": "cautilus.scenario_proposals.v1",
+      "observed": {
+        "proposalCount": 3,
+        "firstProposal": {
+          "proposalKey": "ambiguous-confirmation-needs-context",
+          "family": "fast_regression",
+          "action": "add_new_scenario",
+          "hasDraftScenario": true
+        }
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "README.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:54541982e7de8d1b2a9deac27a1444ae21113ed04927ceff5394e12e5dd0771f"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "focused-cli-smoke-test",
+      "contentHash": "sha256:d88a5a712eb0c70c05131aea82fe3c11946fa6426bd762a79ef6afa6a28cbe0e"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "scenario-normalize-cli-handler",
+      "contentHash": "sha256:e15cef8b1322c520c628b77bb1d914396598ce2975e6ec97478b40b04a589343"
+    },
+    {
+      "path": "internal/runtime/proposals.go",
+      "kind": "scenario-proposal-runtime",
+      "contentHash": "sha256:52ac423061937b57132a9ac8ed0c6861f68e515fea9fc055a3f552ad0d44df0d"
+    },
+    {
+      "path": "fixtures/scenario-proposals/chatbot-input.json",
+      "kind": "chatbot-normalization-fixture",
+      "contentHash": "sha256:06d9eb767740b8599b4c560bfe299b85e9f28fd3f41f7085140bc2a4befade13"
+    },
+    {
+      "path": "fixtures/scenario-proposals/registry.json",
+      "kind": "scenario-registry-fixture",
+      "contentHash": "sha256:38e4cc1b22e18fa9eb0d9bebed13c5df05219008a9f114525b633d479d201b68"
+    },
+    {
+      "path": "fixtures/scenario-proposals/coverage.json",
+      "kind": "scenario-coverage-fixture",
+      "contentHash": "sha256:fae0a0b60144945ee758f3934c63736839382eb825809ab8b8033da8de8cc76e"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused test and live CLI chain show chatbot logs normalizing into proposal candidates and then into a durable scenario proposals packet that can be reopened without promoting it into tuning or held-out fixtures."
+  }
+}
