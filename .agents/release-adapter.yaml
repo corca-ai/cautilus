@@ -9,6 +9,10 @@ checked_in_plugin_root: plugins/cautilus
 
 sync_command: npm run skills:sync-packaged
 quality_command: npm run verify
+fresh_checkout_probes:
+  - "npm run claims:evidence-state:check"
+  - "npm run claims:status-report:check"
+  - "npm run generated:drift:check"
 
 update_instructions:
   - "Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`. Any legacy Homebrew copy should be removed first with `brew uninstall cautilus`."
