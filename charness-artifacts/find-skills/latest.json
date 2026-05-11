@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-10T03:05:00Z",
+  "generated_at": "2026-05-11T02:35:13Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -119,6 +119,7 @@
         ],
         "referenced_paths": [
           "shared/references/fresh-eye-subagent-review.md",
+          "skills/critique/references/autonomous-trigger.md",
           "skills/critique/references/premortem-decision.md",
           "skills/critique/references/code-critique.md",
           "skills/critique/references/release-critique.md",
@@ -972,7 +973,20 @@
         "support_skill_path": null,
         "discovery_stub_path": null,
         "capability_requirements": {},
-        "intent_triggers": [],
+        "intent_triggers": [
+          "browser automation",
+          "headless browser",
+          "headless screenshot",
+          "browser screenshot",
+          "playwright",
+          "js-rendered",
+          "javascript-rendered",
+          "dom inspection",
+          "live dom",
+          "browser debugging",
+          "headed verification",
+          "browser-mediated gather"
+        ],
         "config_layers": [
           {
             "layer_id": "agent-browser-saved-auth-state",
@@ -1048,7 +1062,15 @@
         "support_skill_path": null,
         "discovery_stub_path": null,
         "capability_requirements": {},
-        "intent_triggers": [],
+        "intent_triggers": [
+          "github issue",
+          "github pull request",
+          "github discussion",
+          "github repository",
+          "github gather",
+          "gh cli",
+          "github private"
+        ],
         "config_layers": [
           {
             "layer_id": "authenticated-gh",
@@ -1081,7 +1103,14 @@
         "support_skill_path": null,
         "discovery_stub_path": null,
         "capability_requirements": {},
-        "intent_triggers": [],
+        "intent_triggers": [
+          "secret scan",
+          "secret detection",
+          "credential scan",
+          "secret leak detection",
+          "gitleaks",
+          "git secret scan"
+        ],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1103,7 +1132,14 @@
         "support_skill_path": null,
         "discovery_stub_path": null,
         "capability_requirements": {},
-        "intent_triggers": [],
+        "intent_triggers": [
+          "render markdown",
+          "markdown render",
+          "rendered markdown",
+          "glow",
+          "rendered review",
+          "narrative render"
+        ],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1134,7 +1170,18 @@
             "https://www.googleapis.com/auth/presentations.readonly"
           ]
         },
-        "intent_triggers": [],
+        "intent_triggers": [
+          "google docs",
+          "google drive",
+          "google sheets",
+          "google slides",
+          "gmail api",
+          "gmail message",
+          "google calendar",
+          "google workspace",
+          "gws gather",
+          "workspace gather"
+        ],
         "config_layers": [
           {
             "layer_id": "authenticated-gws-cli",
@@ -1171,7 +1218,14 @@
         "support_skill_path": null,
         "discovery_stub_path": null,
         "capability_requirements": {},
-        "intent_triggers": [],
+        "intent_triggers": [
+          "python lint",
+          "lint python",
+          "ruff",
+          "mccabe",
+          "python complexity check",
+          "python complexity"
+        ],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1230,7 +1284,15 @@
         "support_skill_path": null,
         "discovery_stub_path": null,
         "capability_requirements": {},
-        "intent_triggers": [],
+        "intent_triggers": [
+          "sloc",
+          "source lines of code",
+          "lines of code",
+          "tokei",
+          "code count",
+          "sloc inventory",
+          "language inventory"
+        ],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1252,7 +1314,14 @@
         "support_skill_path": null,
         "discovery_stub_path": null,
         "capability_requirements": {},
-        "intent_triggers": [],
+        "intent_triggers": [
+          "dead code",
+          "dead file",
+          "vulture",
+          "unused python",
+          "unreachable python",
+          "stale module"
+        ],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1269,6 +1338,7 @@
     "tool_recommendations": [],
     "tool_recommendation_query": null,
     "support_skill_recommendations": [],
-    "support_recommendation_query": null
+    "support_recommendation_query": null,
+    "support_recommendation_note": null
   }
 }
