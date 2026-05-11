@@ -1,14 +1,14 @@
 {
-  "candidateCount": 365,
+  "candidateCount": 366,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 0,
+    "evidenceSupportIdRewriteCount": 5,
     "matchedClaimCount": 365,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
-    "staleEvidenceClaimCount": 31,
+    "staleEvidenceClaimCount": 6,
     "strategy": "claimFingerprint",
-    "unsupportedEvidenceRefCount": 31
+    "unsupportedEvidenceRefCount": 6
   },
   "claimCandidates": [
     {
@@ -1644,8 +1644,39 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:2c9f6771e1acf04ef4ee061d75e361ba6f8916c3ac6b38be60e58d6ce9b816ba",
+      "claimId": "claim-docs-cli-reference-md-312",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/skill",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus eval test.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`cautilus eval skill-experiment compare` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.",
+          "line": 312,
+          "path": "docs/cli-reference.md"
+        }
+      ],
+      "summary": "`cautilus eval skill-experiment compare` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
-      "claimId": "claim-docs-cli-reference-md-454",
+      "claimId": "claim-docs-cli-reference-md-462",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -1654,14 +1685,14 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-454",
+            "claim-docs-cli-reference-md-462",
             "claim-docs-cli-reference-md-490",
             "claim-docs-cli-reference-md-526"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by focused review variants tests covering blocked, failed, concern, unavailable_executor, partialSuccess, successfulVariantOutputs, and machine-readable reasonCodes, plus checked-in reporting contract guidance.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-decision-packet-projections-2026-05-11.json does not list current claimId claim-docs-cli-reference-md-462 in createdForClaimIds.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1669,26 +1700,25 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep execution envelope proof separate from semantic correctness of any review verdict.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
-          "line": 454,
+          "line": 462,
           "path": "docs/cli-reference.md"
         }
       ],
       "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic product-owned review variant execution envelope."
+      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
-      "claimId": "claim-docs-cli-reference-md-458",
+      "claimId": "claim-docs-cli-reference-md-466",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -1697,39 +1727,40 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-review-output-text-key-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-458"
+            "claim-docs-cli-reference-md-466"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by focused review prompt tests and CLI review variants smoke covering `--output-text-key` extraction into `## Output Under Test Text`.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-review-output-text-key-2026-05-11.json does not list current claimId claim-docs-cli-reference-md-466 in createdForClaimIds.",
       "groupHints": [
+        "app/prompt",
         "audience:user",
-        "deterministic",
+        "cautilus-eval",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep judge-quality claims separate from output-under-test text extraction.",
-      "recommendedProof": "deterministic",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
-          "line": 458,
+          "line": 466,
           "path": "docs/cli-reference.md"
         }
       ],
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names deterministic JSON span extraction into a rendered review prompt."
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:003038663b54c623858fe0d30f37af8e7554c1f8f79b8750306cdff272f893a5",
-      "claimId": "claim-docs-cli-reference-md-490",
+      "claimId": "claim-docs-cli-reference-md-498",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -1739,13 +1770,13 @@
           "path": ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
           "supportsClaimIds": [
             "claim-docs-cli-reference-md-454",
-            "claim-docs-cli-reference-md-490",
+            "claim-docs-cli-reference-md-498",
             "claim-docs-cli-reference-md-526"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by live `evidence prepare-input` and `evidence bundle` commands that combine report, scenario_results, run_audit, and scenario_history into explicit source refs and prioritized signals, plus focused evidence-bundle flow and schema tests.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-decision-packet-projections-2026-05-11.json does not list current claimId claim-docs-cli-reference-md-498 in createdForClaimIds.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1753,26 +1784,25 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep evidence-bundle proof scoped to explicit normalized inputs; raw host reader ownership remains outside this claim.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
-          "line": 490,
+          "line": 498,
           "path": "docs/cli-reference.md"
         }
       ],
       "summary": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
-      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic evidence aggregation packet boundary."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
-      "claimId": "claim-docs-cli-reference-md-526",
+      "claimId": "claim-docs-cli-reference-md-534",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -1783,12 +1813,12 @@
           "supportsClaimIds": [
             "claim-docs-cli-reference-md-454",
             "claim-docs-cli-reference-md-490",
-            "claim-docs-cli-reference-md-526"
+            "claim-docs-cli-reference-md-534"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by focused self-dogfood renderer CLI and runtime tests, live renders from checked-in latest bundles, and generated HTML containing Decision Summary, review-first inspection text, and source-packet notices.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-decision-packet-projections-2026-05-11.json does not list current claimId claim-docs-cli-reference-md-534 in createdForClaimIds.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1796,26 +1826,25 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep HTML projections read-only over JSON source packets; do not treat rendered HTML as a replacement source of truth.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
-          "line": 526,
+          "line": 534,
           "path": "docs/cli-reference.md"
         }
       ],
       "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
-      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names deterministic reviewer-first HTML projection over existing packets."
+      "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
     },
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0d2d0ae18ce22c8340114c00a1c819ca126769c3214c11aeeb592815afda81e2",
-      "claimId": "claim-docs-cli-reference-md-544",
+      "claimId": "claim-docs-cli-reference-md-552",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -1826,12 +1855,12 @@
           "supportsClaimIds": [
             "claim-docs-cli-reference-md-176",
             "claim-docs-cli-reference-md-188",
-            "claim-docs-cli-reference-md-544"
+            "claim-docs-cli-reference-md-552"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by the Go command router for `eval live discover`, `eval live run`, and `eval live run-simulator-persona`, command registry output exposing those CLI commands, focused CLI tests using the Go entrypoints, and absence of the old direct Node helper paths in this checkout.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-eval-live-cli-boundary-2026-05-11.json does not list current claimId claim-docs-cli-reference-md-552 in createdForClaimIds.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1839,20 +1868,19 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep eval-live runtime entrypoint guidance in the CLI reference aligned with the Go command router.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Shipped runtime entrypoints such as `cautilus eval live discover` and `cautilus eval live run` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
-          "line": 544,
+          "line": 552,
           "path": "docs/cli-reference.md"
         }
       ],
       "summary": "Shipped runtime entrypoints such as `cautilus eval live discover` and `cautilus eval live run` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names the shipped Go-owned CLI command surface for eval-live runtime entrypoints."
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
       "claimAudience": "developer",
@@ -12258,11 +12286,11 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 259,
-      "user": 106
+      "user": 107
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 61,
-      "Agent and skill workflow": 77,
+      "Agent and skill workflow": 78,
       "Claim discovery and review": 43,
       "Documentation and contracts": 86,
       "Evaluation surfaces": 1,
@@ -12273,27 +12301,28 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 95,
-      "unknown": 270
+      "satisfied": 90,
+      "stale": 5,
+      "unknown": 271
     },
     "byLifecycle": {
-      "new": 365
+      "new": 366
     },
     "byRecommendedProof": {
-      "cautilus-eval": 115,
-      "deterministic": 153,
+      "cautilus-eval": 117,
+      "deterministic": 152,
       "human-auditable": 97
     },
     "byReviewStatus": {
       "agent-reviewed": 148,
-      "heuristic": 216,
+      "heuristic": 217,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 32,
       "needs-alignment": 34,
       "needs-scenario": 6,
-      "ready-for-proof": 293
+      "ready-for-proof": 294
     }
   },
   "discoveryEngine": {
@@ -12479,7 +12508,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "128e15454ff634d446a95c7408b95379ce009788",
+  "gitCommit": "f44aaa48fe3ba6acb6bd64c0c682032cd2b6bebe",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -12556,7 +12585,6 @@
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-cli-packet-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-cli-decision-packet-projections-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
@@ -12598,12 +12626,13 @@
       ".cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json",
       ".cautilus/claims/review-result-claim-discovery-routing-flow-2026-05-04.json",
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
-      ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
+      ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json",
+      ".cautilus/claims/review-result-evidence-cli-decision-packet-projections-2026-05-11.json"
     ],
-    "appliedResultCount": 55,
-    "skippedResultCount": 34,
-    "keptUpdateCount": 187,
-    "droppedUpdateCount": 227,
+    "appliedResultCount": 54,
+    "skippedResultCount": 35,
+    "keptUpdateCount": 182,
+    "droppedUpdateCount": 232,
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
@@ -14241,7 +14270,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:0dc3583c7c90493d22e13963ffc25596dddceb7ad427dc53fbb3124bb937570b",
+      "contentHash": "sha256:d0e83199406ef0533e6b879cb0023cf712678c5ea4d5bac4a2b08d63f0c190f0",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",

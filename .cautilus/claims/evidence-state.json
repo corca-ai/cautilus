@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:5c430eab12eb33cba1dd174b934e0283aaad1852166c7e194df96d8195f5efc2",
+    "claimsHash": "sha256:769328f6e3a60d120d859b34d86509c1cbb6ab1bf270a14a49639bfbe6e580d5",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:7c23a0ba73de6bfabeb386e230edc8874b9d2abd73dfe61c799e726b10c5db29",
+    "statusHash": "sha256:1326f4f93630d88c0c05a339240f4bb9e243ae5c98b5295bdd1dff26b6766e86",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,127 +12,66 @@
     }
   },
   "gitState": {
-    "changedFileCount": 59,
-    "changedFiles": [
-      ".agents/cautilus-adapters/self-dogfood-refresh-flow.yaml",
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/evidence-cautilus-agent-source-launcher-2026-05-11.json",
-      ".cautilus/claims/evidence-chatbot-normalize-proposals-2026-05-11.json",
-      ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
-      ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
-      ".cautilus/claims/evidence-cli-decision-packet-projections-2026-05-11.json",
-      ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
-      ".cautilus/claims/evidence-deterministic-gates-and-consumer-smoke-2026-05-11.json",
-      ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
-      ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
-      ".cautilus/claims/evidence-machine-readable-packet-family-2026-05-11.json",
-      ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
-      ".cautilus/claims/evidence-refresh-flow-fixture-eval-2026-05-11.json",
-      ".cautilus/claims/evidence-review-output-text-key-2026-05-11.json",
-      ".cautilus/claims/evidence-scenario-attention-and-conversation-review-2026-05-11.json",
-      ".cautilus/claims/evidence-scenario-catalog-example-cli-2026-05-11.json",
-      ".cautilus/claims/evidence-scenario-normalizer-surface-contract-2026-05-11.json",
-      ".cautilus/claims/evidence-state.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/review-result-evidence-cautilus-agent-source-launcher-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-claim-cli-packet-boundary-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-cli-decision-packet-projections-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
-      ".cautilus/claims/status-summary.json",
-      ".githooks/pre-push",
-      "charness-artifacts/debug/2026-05-11-skill-experiment-patch-context.md",
-      "charness-artifacts/debug/debug-2026-05-11-pre-push-generated-drift.md",
-      "charness-artifacts/debug/debug-2026-05-11-self-dogfood-refresh-flow-fixture-results.md",
-      "charness-artifacts/debug/latest.md",
-      "charness-artifacts/find-skills/latest.json",
-      "charness-artifacts/find-skills/latest.md",
-      "docs/cli-reference.md",
-      "docs/contracts/skill-clone-experiment.md",
-      "docs/specs/proof/claim-evidence-state.md",
-      "fixtures/skill-clone-experiment/example-input.json",
-      "internal/app/app.go",
-      "internal/app/cli_smoke_test.go",
-      "internal/app/skill_experiment_command.go",
-      "internal/cli/command-registry.json",
-      "internal/contracts/constants.go",
-      "internal/runtime/skill_clone_experiment.go",
-      "internal/runtime/skill_clone_experiment_test.go",
-      "package.json",
-      "scripts/agent-runtime/render-claim-evidence-state.mjs",
-      "scripts/agent-runtime/render-claim-evidence-state.test.mjs",
-      "scripts/check-generated-artifact-drift.mjs",
-      "scripts/check-generated-artifact-drift.test.mjs",
-      "scripts/check-git-hooks.mjs",
-      "scripts/check-git-hooks.test.mjs"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
       "workingTreePolicy": "excluded"
     },
-    "changedSourceCount": 1,
-    "changedSources": [
-      "docs/cli-reference.md"
-    ],
-    "comparisonStatus": "stale",
-    "currentGitCommit": "94979bfca4bed02f8a9354e740782f00d1ffe63c",
-    "headDrift": true,
-    "isStale": true,
-    "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",
-    "recommendedAction": "Run claim discover --previous <claims.json> --refresh-plan before review, review application, or eval planning.",
+    "changedSourceCount": 0,
+    "changedSources": [],
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "f44aaa48fe3ba6acb6bd64c0c682032cd2b6bebe",
+    "headDrift": false,
+    "isStale": false,
+    "packetGitCommit": "f44aaa48fe3ba6acb6bd64c0c682032cd2b6bebe",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
-    "candidateCount": 365,
+    "candidateCount": 366,
     "sourceCount": 66,
     "byEvidenceStatus": {
-      "satisfied": 95,
-      "unknown": 270
+      "satisfied": 90,
+      "stale": 5,
+      "unknown": 271
     },
     "byRecommendedProof": {
-      "cautilus-eval": 115,
-      "deterministic": 153,
+      "cautilus-eval": 117,
+      "deterministic": 152,
       "human-auditable": 97
     },
     "byVerificationReadiness": {
       "blocked": 32,
       "needs-alignment": 34,
       "needs-scenario": 6,
-      "ready-for-proof": 293
+      "ready-for-proof": 294
     },
     "byReviewStatus": {
       "agent-reviewed": 148,
-      "heuristic": 216,
+      "heuristic": 217,
       "human-reviewed": 1
     }
   },
   "openCautilusEval": {
-    "total": 114,
-    "readyForProof": 108,
+    "total": 116,
+    "readyForProof": 110,
     "needsScenario": 6,
     "bySurface": {
       "(none)": 5,
       "app/chat": 2,
-      "app/prompt": 9,
+      "app/prompt": 10,
       "dev/repo": 73,
-      "dev/skill": 25
+      "dev/skill": 26
     },
     "byReadiness": {
       "needs scenario": 6,
-      "ready for proof": 108
+      "ready for proof": 110
     },
     "rawByReadiness": {
       "needs-scenario": 6,
-      "ready-for-proof": 108
+      "ready-for-proof": 110
     },
     "proofReadySamples": [
       {
@@ -181,6 +120,24 @@
         "summary": "Agent track — Claude / Codex plugin.** The `cautilus install` step also lands a Cautilus Agent at `.agents/skills/cautilus-agent/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."
       },
       {
+        "claimId": "claim-docs-cli-reference-md-312",
+        "source": "docs/cli-reference.md:312",
+        "surface": "dev/skill",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-for-proof",
+        "review": "heuristic",
+        "summary": "`cautilus eval skill-experiment compare` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation."
+      },
+      {
+        "claimId": "claim-docs-cli-reference-md-466",
+        "source": "docs/cli-reference.md:466",
+        "surface": "app/prompt",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-for-proof",
+        "review": "agent-reviewed",
+        "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly."
+      },
+      {
         "claimId": "claim-docs-contracts-adapter-contract-md-209",
         "source": "docs/contracts/adapter-contract.md:209",
         "surface": "dev/repo",
@@ -188,24 +145,6 @@
         "rawReadiness": "ready-for-proof",
         "review": "heuristic",
         "summary": "When an eval run uses `runtime=product`, the adapter-owned command is expected to exercise a headless product path; the runtime label does not make product proof ready without a current runner assessment."
-      },
-      {
-        "claimId": "claim-docs-contracts-adapter-contract-md-222",
-        "source": "docs/contracts/adapter-contract.md:222",
-        "surface": "dev/repo",
-        "readiness": "ready for proof",
-        "rawReadiness": "ready-for-proof",
-        "review": "heuristic",
-        "summary": "If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy."
-      },
-      {
-        "claimId": "claim-docs-internal-working-patterns-md-59",
-        "source": "docs/internal/working-patterns.md:59",
-        "surface": "dev/repo",
-        "readiness": "ready for proof",
-        "rawReadiness": "ready-for-proof",
-        "review": "heuristic",
-        "summary": "\"aspect\" 라는 설명보다 \"every workflow leaves reviewable artifacts\" 나 \"missing evidence remains visible\" 이 더 좋은 product language 다."
       }
     ],
     "scenarioSamples": [
@@ -268,39 +207,41 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 95,
+      "count": 90,
       "actor": "none",
       "evidence": {
-        "satisfied": 95
+        "satisfied": 90
       },
       "review": {
-        "agent-reviewed": 95
+        "agent-reviewed": 90
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 58,
+      "count": 62,
       "actor": "agent",
       "evidence": {
+        "stale": 4,
         "unknown": 58
       },
       "review": {
-        "agent-reviewed": 10,
+        "agent-reviewed": 14,
         "heuristic": 48
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 108,
+      "count": 110,
       "actor": "agent",
       "evidence": {
-        "unknown": 108
+        "stale": 1,
+        "unknown": 109
       },
       "review": {
-        "agent-reviewed": 5,
-        "heuristic": 102,
+        "agent-reviewed": 6,
+        "heuristic": 103,
         "human-reviewed": 1
       },
       "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
@@ -359,7 +300,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 216,
+      "count": 217,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [
@@ -368,6 +309,19 @@
         "claim-readme-md-82",
         "claim-readme-md-90",
         "claim-readme-md-105"
+      ]
+    },
+    {
+      "id": "stale-evidence",
+      "count": 5,
+      "actor": "agent",
+      "summary": "Refresh or recheck stale evidence before consuming it as proof.",
+      "sampleClaimIds": [
+        "claim-docs-cli-reference-md-462",
+        "claim-docs-cli-reference-md-466",
+        "claim-docs-cli-reference-md-498",
+        "claim-docs-cli-reference-md-534",
+        "claim-docs-cli-reference-md-552"
       ]
     }
   ]
