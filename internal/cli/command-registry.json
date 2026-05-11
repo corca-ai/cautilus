@@ -135,6 +135,17 @@
       ]
     },
     {
+      "path": ["eval", "skill-experiment", "compare"],
+      "group": "run",
+      "usage": "cautilus eval skill-experiment compare --input <skill-clone-experiment.json> [--output <report.json>]",
+      "example": "cautilus eval skill-experiment compare --input ./fixtures/skill-clone-experiment/example-input.json",
+      "notes": [
+        "Compares a sandboxed temporary skill variant against a baseline run, optional exemplar, rubric phrases, and declared source-coverage obligations.",
+        "The command does not install, mutate, or execute skills; host-owned runners provide the preserved baseline and variant outputs.",
+        "Emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, coverage delta, rubric match, isolation notes, and a promotion recommendation."
+      ]
+    },
+    {
       "path": ["eval", "live", "discover"],
       "group": "run",
       "usage": "cautilus eval live discover [args]",

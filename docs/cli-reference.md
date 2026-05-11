@@ -285,6 +285,11 @@ cautilus eval test \
 cautilus eval evaluate \
   --input ./eval-observed.json \
   --output /tmp/cautilus-eval-summary.json
+
+# compare one sandboxed skill-clone experiment after host-owned execution
+cautilus eval skill-experiment compare \
+  --input ./fixtures/skill-clone-experiment/example-input.json \
+  --output /tmp/cautilus-skill-clone-report.json
 ```
 
 The npm wrapper is the canonical maintainer-facing self-dogfood path for this repo.
@@ -303,6 +308,9 @@ The fixture variants prove the `app / chat` and `app / prompt` fixture translati
 The Codex variants run the same checked-in fixtures through the Codex backend.
 The Claude variants run the same fixtures through the Claude backend, proving that the app surface runner can use more than one provider backend.
 These backend variants are not `eval live` product-runner proof, and their current summaries report `productProofReady=false` until an app-owned runner assessment exists for the selected surface.
+
+`cautilus eval skill-experiment compare` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.
+The command does not install, mutate, or execute skills; host-owned runners provide the preserved baseline and variant outputs.
 
 ## Skill testing & evaluation
 

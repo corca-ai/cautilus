@@ -4237,6 +4237,76 @@ func TestCLIEvalEvaluateAcceptsSkillObservedPacket(t *testing.T) {
 	}
 }
 
+func TestCLIEvalSkillExperimentCompareWritesPromotionReport(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "skill-clone-experiment.json")
+	outputPath := filepath.Join(root, "report.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.SkillCloneExperimentInputSchema,
+		"experimentId":  "announcement-style-lab",
+		"taskPacket": map[string]any{
+			"path": "style-lab-input.md",
+		},
+		"baseline": map[string]any{
+			"skillId": "announcement",
+			"status":  "passed",
+			"output": map[string]any{
+				"text":       "Draft covers Slack thread.",
+				"sourceRefs": []any{"Slack thread"},
+			},
+		},
+		"variant": map[string]any{
+			"skillId": "announcement-style-lab",
+			"status":  "passed",
+			"output": map[string]any{
+				"text":       "Draft covers Slack thread, Ceal control repo, and user-facing in-progress coverage.",
+				"sourceRefs": []any{"Slack thread", "Ceal control repo", "user-facing in-progress coverage"},
+			},
+		},
+		"sourceCoverageObligations": []any{
+			map[string]any{"id": "control-repo", "ref": "Ceal control repo", "required": true},
+			map[string]any{"id": "progress", "ref": "user-facing in-progress coverage", "required": true},
+		},
+		"isolation": map[string]any{
+			"sandbox":                "temporary skill clone",
+			"productionSkillTouched": false,
+		},
+	})
+
+	_, stderr, exitCode := runCLI(t, root, "eval", "skill-experiment", "compare", "--input", inputPath, "--output", outputPath)
+	if exitCode != 0 {
+		t.Fatalf("skill experiment compare failed: %s", stderr)
+	}
+	report := readJSONObjectFile(t, outputPath)
+	if report["schemaVersion"] != contracts.SkillCloneExperimentReportSchema || report["promotion_recommendation"] != "promote" {
+		t.Fatalf("unexpected report: %#v", report)
+	}
+	if report["variant_ran"] != true {
+		t.Fatalf("expected variant to run, got %#v", report["variant_ran"])
+	}
+}
+
+func TestCLIEvalSkillExperimentCompareRejectsMalformedInput(t *testing.T) {
+	root := t.TempDir()
+	inputPath := filepath.Join(root, "bad-skill-clone-experiment.json")
+	writeJSONFile(t, inputPath, map[string]any{
+		"schemaVersion": contracts.SkillCloneExperimentInputSchema,
+		"experimentId":  "bad-style-lab",
+		"taskPacket":    map[string]any{"opaque": "value"},
+		"baseline":      map[string]any{"status": "passed", "text": "baseline"},
+		"variant":       map[string]any{"status": "passed", "text": "variant"},
+		"isolation":     map[string]any{"productionSkillTouched": false},
+	})
+
+	_, stderr, exitCode := runCLI(t, root, "eval", "skill-experiment", "compare", "--input", inputPath)
+	if exitCode == 0 {
+		t.Fatalf("expected malformed skill experiment input to fail")
+	}
+	if !strings.Contains(stderr, "taskPacket must include at least one of") {
+		t.Fatalf("expected taskPacket identity error, got %s", stderr)
+	}
+}
+
 func TestCLIEvalEvaluateDoesNotLaunchAdapterRunner(t *testing.T) {
 	root := t.TempDir()
 	adapterDir := filepath.Join(root, ".agents")

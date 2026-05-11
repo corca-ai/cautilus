@@ -193,6 +193,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleEvalTest
 	case "eval evaluate":
 		return handleEvalEvaluate
+	case "eval skill-experiment compare":
+		return handleEvalSkillExperimentCompare
 	case "eval live discover":
 		return handleWorkbenchDiscover
 	case "eval live run":
