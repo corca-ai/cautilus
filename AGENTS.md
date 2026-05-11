@@ -51,7 +51,8 @@ This repo is the standalone product boundary for `Cautilus`.
 
 ## Skill Routing
 
-For task-oriented sessions in this repo, call the shared/public charness skill `find-skills` once at startup before broader exploration.
+Call the shared/public charness skill `find-skills` once on the first turn of any session in this repo before broader exploration.
+The canonical inventory artifact no-ops when content is unchanged, so over-applying the bootstrap is cheap and skipping it is the documented failure mode.
 
 Use its capability inventory as the default map of installed public skills, support skills, synced support surfaces, and integrations.
 
