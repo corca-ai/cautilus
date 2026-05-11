@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-11T00:00:00Z",
+    "evidencePolicy": "Mark evidenceStatus=satisfied only for the three eval-live CLI boundary claims covered by focused tests, command registry output, adapter validation, and explicit non-claims."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-eval-live-cli-boundary-2026-05-11",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-cli-reference-md-176",
+          "claimFingerprint": "sha256:10dc5fd8f817011f748f06bba796f3567abb6cfd596947ecff3ff1f6fdf00e95",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic live instance catalog and selected instance-id packet behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by eval live discover tests for explicit and command-discovered instances, checked-in workbench catalog examples with stable instanceId values, and eval live run tests that dispatch one selected instance id into a bounded request/result packet.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-176",
+                "claim-docs-cli-reference-md-188",
+                "claim-docs-cli-reference-md-544"
+              ]
+            }
+          ],
+          "nextAction": "Keep stable instance selection separate from proof of any real consumer runtime behavior.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-188",
+          "claimFingerprint": "sha256:d3e7739baffe7430517819e439f1f2430e91a74ff7123b0de3241b8c17aceef8",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic adapter template validation and persona simulator CLI routing.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by adapter validation preserving simulator_persona_command_template, eval live persona_prompt loop tests that call `cautilus eval live run-simulator-persona`, and simulator request examples with stable instanceId/requestId fields.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-176",
+                "claim-docs-cli-reference-md-188",
+                "claim-docs-cli-reference-md-544"
+              ]
+            }
+          ],
+          "nextAction": "Keep product-owned persona result semantics separate from adapter-owned backend choice and credentials.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-cli-reference-md-544",
+          "claimFingerprint": "sha256:0d2d0ae18ce22c8340114c00a1c819ca126769c3214c11aeeb592815afda81e2",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the shipped Go-owned CLI command surface for eval-live runtime entrypoints.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the Go command router for `eval live discover`, `eval live run`, and `eval live run-simulator-persona`, command registry output exposing those CLI commands, focused CLI tests using the Go entrypoints, and absence of the old direct Node helper paths in this checkout.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-176",
+                "claim-docs-cli-reference-md-188",
+                "claim-docs-cli-reference-md-544"
+              ]
+            }
+          ],
+          "nextAction": "Keep eval-live runtime entrypoint guidance in the CLI reference aligned with the Go command router.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

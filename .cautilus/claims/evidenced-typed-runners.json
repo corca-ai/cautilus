@@ -1327,17 +1327,19 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+          "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-176"
+            "claim-docs-cli-reference-md-176",
+            "claim-docs-cli-reference-md-188",
+            "claim-docs-cli-reference-md-544"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-runtime-claims-2026-05-01.json does not list current claimId claim-docs-cli-reference-md-176 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by eval live discover tests for explicit and command-discovered instances, checked-in workbench catalog examples with stable instanceId values, and eval live run tests that dispatch one selected instance id into a bounded request/result packet.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1345,7 +1347,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep stable instance selection separate from proof of any real consumer runtime behavior.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1356,8 +1358,9 @@
         }
       ],
       "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic live instance catalog and selected instance-id packet behavior."
     },
     {
       "claimAudience": "user",
@@ -1398,17 +1401,19 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+          "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-188"
+            "claim-docs-cli-reference-md-176",
+            "claim-docs-cli-reference-md-188",
+            "claim-docs-cli-reference-md-544"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-runtime-claims-2026-05-01.json does not list current claimId claim-docs-cli-reference-md-188 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by adapter validation preserving simulator_persona_command_template, eval live persona_prompt loop tests that call `cautilus eval live run-simulator-persona`, and simulator request examples with stable instanceId/requestId fields.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1416,7 +1421,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep product-owned persona result semantics separate from adapter-owned backend choice and credentials.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1427,8 +1432,9 @@
         }
       ],
       "summary": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus eval live run-simulator-persona` with repo-specific backend flags.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic adapter template validation and persona simulator CLI routing."
     },
     {
       "claimAudience": "user",
@@ -1806,17 +1812,19 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+          "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
           "supportsClaimIds": [
+            "claim-docs-cli-reference-md-176",
+            "claim-docs-cli-reference-md-188",
             "claim-docs-cli-reference-md-544"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-runtime-claims-2026-05-01.json does not list current claimId claim-docs-cli-reference-md-544 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the Go command router for `eval live discover`, `eval live run`, and `eval live run-simulator-persona`, command registry output exposing those CLI commands, focused CLI tests using the Go entrypoints, and absence of the old direct Node helper paths in this checkout.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1824,7 +1832,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep eval-live runtime entrypoint guidance in the CLI reference aligned with the Go command router.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1835,8 +1843,9 @@
         }
       ],
       "summary": "Shipped runtime entrypoints such as `cautilus eval live discover` and `cautilus eval live run` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names the shipped Go-owned CLI command surface for eval-live runtime entrypoints."
     },
     {
       "claimAudience": "developer",
@@ -12255,8 +12264,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 82,
-      "stale": 13,
+      "satisfied": 85,
+      "stale": 10,
       "unknown": 270
     },
     "byLifecycle": {
@@ -12540,6 +12549,7 @@
       ".cautilus/claims/review-result-evidence-claim-cli-packet-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
@@ -12580,9 +12590,9 @@
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 52,
+    "appliedResultCount": 53,
     "skippedResultCount": 34,
-    "keptUpdateCount": 174,
+    "keptUpdateCount": 177,
     "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },

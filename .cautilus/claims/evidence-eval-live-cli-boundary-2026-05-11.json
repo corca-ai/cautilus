@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-eval-live-cli-boundary-2026-05-11",
+  "createdForClaimIds": [
+    "claim-docs-cli-reference-md-176",
+    "claim-docs-cli-reference-md-188",
+    "claim-docs-cli-reference-md-544"
+  ],
+  "repoCommit": "a009bad59d2441d09a0029b5ba186983fa7ea645",
+  "summary": "Deterministic proof for eval live stable instance ids, persona simulator adapter templates, and Go-owned eval live CLI entrypoints.",
+  "evidenceScope": {
+    "targetSurface": "eval live CLI and adapter live invocation boundary",
+    "claimBoundary": "Only the three listed docs/cli-reference eval-live claims are marked satisfied.",
+    "notClaimed": [
+      "A real Ceal or other consumer runtime was launched.",
+      "The example fixture paths prove live app behavior quality.",
+      "Every adapter must use persona_prompt simulation; only adapters with persona_prompt scenarios need simulator_persona_command_template.",
+      "All historical direct Node helper scripts are unsupported; only the shipped eval-live runtime entrypoints named here are Go-owned CLI surfaces."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestEveryRegisteredCommandHasAGoHandler|TestCLIEvalLiveDiscoverNormalizesExplicitInstances|TestCLILiveEvalDiscoverExecutesConsumerProbeCommand|TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr|TestCLILiveEvalRunLiveDispatchesConsumerCommand|TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop|TestCLILiveEvalRunSimulatorPersonaCanContinueFromFixture|TestCLILiveEvalRunSimulatorPersonaCanStopFromFixture|TestFixtureExamplesValidateAgainstPublishedSchemas' -count=1",
+      "exitCode": 0,
+      "reason": "Focused app tests cover Go-handler registration, explicit instance discovery, command-based instance discovery, probe stderr warnings, one selected instance id for eval live run, persona_prompt simulation through simulator_persona_command_template, the run-simulator-persona CLI surface, and published fixture schemas."
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestValidateAdapterDataAcceptsExplicitInstanceDiscovery|TestValidateAdapterDataAcceptsCommandInstanceDiscovery|TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation|TestValidateAdapterDataAcceptsLiveRunInvocation' -count=1",
+      "exitCode": 0,
+      "reason": "Adapter validation covers explicit and command instance discovery, rejects explicit instances without a stable location, and preserves live_run_invocation command templates including simulator_persona_command_template."
+    },
+    {
+      "command": "./bin/cautilus commands --json > /tmp/cautilus-eval-live-proof-2026-05-11/commands.json",
+      "exitCode": 0,
+      "observed": {
+        "containsEvalLiveDiscover": true,
+        "containsEvalLiveRun": true,
+        "containsEvalLiveRunScenarios": true,
+        "containsEvalLiveRunSimulatorPersona": true
+      }
+    },
+    {
+      "command": "ls scripts/agent-runtime/discover-workbench-instances.mjs scripts/agent-runtime/run-live-instance-scenario.mjs 2>/dev/null || true",
+      "exitCode": 0,
+      "observed": {
+        "stdout": "",
+        "meaning": "The old direct Node helper paths named by the recursive-command guard are not shipped as direct script entrypoints in this checkout."
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-eval-live-proof-2026-05-11/eval-live-commands.json",
+      "kind": "command-registry-slice",
+      "contentHash": "sha256:faf7b8873f211bc617dd3b2c18bb0c13510e74514930d46485a675967f0490e4",
+      "observed": {
+        "commands": [
+          "eval live discover",
+          "eval live run",
+          "eval live run-scenarios",
+          "eval live run-simulator-persona"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/cli-reference.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:0dc3583c7c90493d22e13963ffc25596dddceb7ad427dc53fbb3124bb937570b"
+    },
+    {
+      "path": "docs/contracts/workbench-instance-discovery.md",
+      "kind": "instance-discovery-contract",
+      "contentHash": "sha256:366450d81705bf430c5273eec7454c4d10968b936d17aecf9b3a712b0b37f85e"
+    },
+    {
+      "path": "docs/contracts/live-run-invocation.md",
+      "kind": "live-run-invocation-contract",
+      "contentHash": "sha256:e5e6de878b5b5958edd68768c3013b0d5e04aabda0b19acd5367e875ba73382c"
+    },
+    {
+      "path": "docs/contracts/adapter-contract.md",
+      "kind": "adapter-contract",
+      "contentHash": "sha256:762607471143fcc548cd396f7baf43d7a1535e3d6638fa3d92452d0e6151ef50"
+    },
+    {
+      "path": "docs/contracts/go-runtime-consolidation.md",
+      "kind": "go-runtime-consolidation-contract",
+      "contentHash": "sha256:2f35fa3ec3537617ba4278d54b59c5a676d30ff10ffd78c199718e741531958b"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "go-cli-command-registry",
+      "contentHash": "sha256:7df99c2191eef3dac8382ef1fe7f991e71c95d940ec6a309979cdc20d8cdffc1"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "go-cli-command-router",
+      "contentHash": "sha256:e15cef8b1322c520c628b77bb1d914396598ce2975e6ec97478b40b04a589343"
+    },
+    {
+      "path": "internal/app/workbench_commands.go",
+      "kind": "eval-live-go-command-implementation",
+      "contentHash": "sha256:46acc0773b9a1ad1871709d124dfa979580f91ad20a4b3c879eb961006075f0d"
+    },
+    {
+      "path": "internal/app/workbench_persona_command.go",
+      "kind": "eval-live-persona-command-implementation",
+      "contentHash": "sha256:0a1e55852b1575d67eafb62e4de015ecb3783978a4125f0677dcca628fe6416e"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "eval-live-cli-tests",
+      "contentHash": "sha256:d88a5a712eb0c70c05131aea82fe3c11946fa6426bd762a79ef6afa6a28cbe0e"
+    },
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "adapter-live-invocation-validation",
+      "contentHash": "sha256:44d3c645cc8094154e2953e602a89b3d9fcfb79fc104ee10fe3e1cd6f7e312c9"
+    },
+    {
+      "path": "internal/runtime/adapter_test.go",
+      "kind": "adapter-live-invocation-tests",
+      "contentHash": "sha256:bf0ab5beae81eec3515fc95f05ead6b85da7ef3b3a6c6df26207eac680deae98"
+    },
+    {
+      "path": "fixtures/workbench-instance-discovery/example-catalog.json",
+      "kind": "workbench-instance-catalog-example",
+      "contentHash": "sha256:e737e5bcdeedb6f18a5d93aa5685a513119219158ecf5085ddce9768cc46f221"
+    },
+    {
+      "path": "fixtures/live-run-invocation/example-request.json",
+      "kind": "live-run-request-example",
+      "contentHash": "sha256:e7de25a484fd8c24ab16cfac74e6fab6c3028a9c82d29de332582b53918fc63c"
+    },
+    {
+      "path": "fixtures/live-run-invocation/example-simulator-request.json",
+      "kind": "live-run-simulator-request-example",
+      "contentHash": "sha256:37cd4f4fda9cea6a3fb16e023686cca017684dfbec448555d84f629d7a919ab4"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused tests, adapter validation, Go command routing, command registry output, and checked-in packet examples prove the eval-live CLI boundary without claiming real consumer runtime execution."
+  }
+}

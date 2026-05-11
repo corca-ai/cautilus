@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:5d7b897e74dc0fed155a97a30399cd5d6581749bee036da3b3a612ea091ccbb5",
+    "claimsHash": "sha256:ac64115cbd4832e84a1529c8fdd23897e1e866e54961bc2d4daf822b7aa45b09",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:02b71f274c9629beda984a2cc9a50ff8ff183a8ce0d49ddbcdd91b0fe33349c0",
+    "statusHash": "sha256:c4b2957c07a96d2a6fe0f86c337f657191abe2b32a5f4570916386f449de6659",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,11 +12,13 @@
     }
   },
   "gitState": {
-    "changedFileCount": 20,
+    "changedFileCount": 24,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-cautilus-agent-source-launcher-2026-05-11.json",
       ".cautilus/claims/evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
       ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
@@ -25,7 +27,9 @@
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-cautilus-agent-source-launcher-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-claim-cli-packet-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
@@ -43,7 +47,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a8e0d4aa25b558baab59e90df3882b19c6789326",
+    "currentGitCommit": "a009bad59d2441d09a0029b5ba186983fa7ea645",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",
@@ -54,8 +58,8 @@
     "candidateCount": 365,
     "sourceCount": 66,
     "byEvidenceStatus": {
-      "satisfied": 82,
-      "stale": 13,
+      "satisfied": 85,
+      "stale": 10,
       "unknown": 270
     },
     "byRecommendedProof": {
@@ -228,26 +232,26 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 82,
+      "count": 85,
       "actor": "none",
       "evidence": {
-        "satisfied": 82
+        "satisfied": 85
       },
       "review": {
-        "agent-reviewed": 82
+        "agent-reviewed": 85
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 67,
+      "count": 64,
       "actor": "agent",
       "evidence": {
-        "stale": 9,
+        "stale": 6,
         "unknown": 58
       },
       "review": {
-        "agent-reviewed": 19,
+        "agent-reviewed": 16,
         "heuristic": 48
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
@@ -336,15 +340,15 @@
     },
     {
       "id": "stale-evidence",
-      "count": 13,
+      "count": 10,
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [
         "claim-readme-md-163",
         "claim-readme-md-247",
-        "claim-docs-cli-reference-md-176",
-        "claim-docs-cli-reference-md-188",
-        "claim-docs-cli-reference-md-259"
+        "claim-docs-cli-reference-md-259",
+        "claim-docs-cli-reference-md-261",
+        "claim-docs-cli-reference-md-454"
       ]
     }
   ]
