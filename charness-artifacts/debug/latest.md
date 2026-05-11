@@ -1,57 +1,67 @@
-# Claim Evidence Projection Source Loop Debug
+# Debug Review
 Date: 2026-05-11
 
 ## Problem
 
-Refreshing the claim packet made `docs/specs/proof/claim-evidence-state.md` appear as a changed claim source.
+`npm run verify` failed after refreshing claim projections for fixture-runtime evidence because `.cautilus/claims/claim-status-report.md` was reported stale.
 
 ## Correct Behavior
 
-Given `docs/specs/proof/claim-evidence-state.md` is generated from the claim packet and status snapshot, when claim discovery decides whether a saved claim map is stale, then this generated projection should not itself create claim candidates or make the next claim packet stale.
+Given `.cautilus/claims/evidenced-typed-runners.json` changes, when claim projections are refreshed, then canonical map, evidence state, status summary, and status report should be regenerated in dependency order.
+
+Given the status report has just been regenerated from current inputs, when `npm run claims:status-report:check` runs, then it should exit 0.
 
 ## Observed Facts
 
-- `./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan-2026-05-11-post-skill-triage.json` reported `changedSourceCount: 2`.
-- The changed sources were `skills/cautilus-agent/SKILL.md` and `docs/specs/proof/claim-evidence-state.md`.
-- The generated evidence-state page says `This file is generated from the claim packet and status snapshot` and `Do not edit it by hand`.
-- The page also embeds volatile projection fields such as claims hash, status hash, current commit, packet commit, and changed claim source count.
+- Exact failing error: `Error: .cautilus/claims/claim-status-report.md is stale; run npm run claims:status-report`.
+- The failure happened inside `scripts/agent-runtime/render-claim-status-report.mjs` during the check comparison between the checked-in report and freshly rendered output.
+- `package.json` shows both `claims:status-report` and `claims:status-report:check` use `.cautilus/claims/evidenced-typed-runners.json`, `.cautilus/claims/status-summary.json`, and `.cautilus/claims/claim-status-report.md`.
+- The earlier refresh ran `claims:canonical-map`, `claims:evidence-state`, and `claims:status-report` in parallel, even though `claims:status-report` reads canonical-map digests and status snapshots.
+- Re-running the same generation commands sequentially made `npm run claims:status-report:check` pass.
 
 ## Reproduction
 
-Run:
+The stale check reproduced with:
 
 ```bash
-./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan-2026-05-11-post-skill-triage.json
+npm run claims:status-report:check
+```
+
+It passed after the dependency-ordered refresh:
+
+```bash
+npm run claims:canonical-map && npm run claims:evidence-state && npm run claims:status-report && npm run claims:status-report:check
 ```
 
 ## Candidate Causes
 
-- The Cautilus adapter lists `docs/specs/proof/claim-evidence-state.md` as an artifact path but does not exclude it from claim discovery.
-- The linked Markdown scan can reach generated proof projection pages under `docs/specs/proof/`.
-- The generated page contains claim-shaped explanatory text, so it can produce claim candidates even though it is not a source-of-truth promise document.
+- The status report was rendered before the concurrently running canonical-map command finished writing its new digest.
+- The evidence-state refresh changed `.cautilus/claims/status-summary.json` while the report renderer was reading the previous snapshot.
+- A real rendering nondeterminism in `render-claim-status-report.mjs` made successive renders differ even with identical inputs.
 
 ## Hypothesis
 
-If the adapter excludes `docs/specs/proof/claim-evidence-state.md` from claim discovery while keeping it as an artifact path, then the projection remains inspectable but stops participating in claim candidate discovery and stale-source detection.
+If the stale report came from running dependent projection commands in parallel, then regenerating them in dependency order should produce a report that passes `claims:status-report:check` without code changes.
 
 ## Verification
 
-Added `docs/specs/proof/claim-evidence-state.md` to `.agents/cautilus-adapter.yaml` claim discovery excludes.
-Re-ran the refresh plan, claim discovery, review-result application, canonical map generation, evidence-state generation, and status-report generation.
-The new refresh plan reports `status: up-to-date`, `changedSourceCount: 0`, and no changed claim lifecycle rows.
+`npm run claims:canonical-map && npm run claims:evidence-state && npm run claims:status-report && npm run claims:status-report:check` exited 0.
+
+This falsifies the rendering-nondeterminism hypothesis for this incident and confirms the dependency-order explanation.
 
 ## Root Cause
 
-The generated evidence-state projection was treated as both a derived status artifact and a claim source.
-That made the status projection self-referential: refreshing the projection could create another changed claim-source signal.
+The projection refresh was executed with unsafe parallelism.
+
+`claims:status-report` depends on digests and status snapshots that are written by `claims:canonical-map` and `claims:evidence-state`, so it must run after those commands, not concurrently with them.
 
 ## Seam Risk
 
-- Interrupt ID: claim-evidence-projection-source-loop
+- Interrupt ID: claim-projection-command-order
 - Risk Class: none
-- Seam: generated claim-status projection to claim-discovery source selection
-- Disproving Observation: a refresh plan after adapter exclusion no longer lists `docs/specs/proof/claim-evidence-state.md` as a changed source.
-- What Local Reasoning Cannot Prove: whether other generated proof projection pages under `docs/specs/proof/` should also be excluded.
+- Seam: manually orchestrated claim projection refresh commands
+- Disproving Observation: a generated report failed its own check until the same commands were rerun sequentially.
+- What Local Reasoning Cannot Prove: whether future agents will remember the dependency order when manually composing claim refresh commands.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -62,4 +72,13 @@ That made the status projection self-referential: refreshing the projection coul
 
 ## Prevention
 
-Keep generated claim/status projections in adapter artifact paths for review, but exclude them from claim discovery unless they are intentionally authored promise sources.
+Do not run claim projection writers in parallel when one output is a digest or input to another projection.
+
+Use this order after applying claim review results: `claims:apply-review-results`, `claims:canonical-map`, `claims:evidence-state`, then `claims:status-report`.
+
+If this recurs, add a single package script that owns the dependency order.
+
+## Related Prior Incidents
+
+- `debug-2026-05-04-command-execution-order-gap.md`: prior workflow bug where command order mattered more than a single command's local success.
+- `debug-2026-05-04-evidence-bundle-hash-cascade.md`: related claim evidence projection incident where partial refresh order produced shape-valid but semantically stale evidence refs.

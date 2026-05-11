@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:df6807e88e1cf9aa937379082cbae700daa8366210c4c9d939c5d1de221ec52f",
+    "claimsHash": "sha256:01fd90ad7124d23028bd801ba01e8cfe729c37fc65e665eb299681a3598f2723",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:233a288afa0283c5383f9937a1403bfbc39858f25b6f0f216e1fdcc562969c66",
+    "statusHash": "sha256:989d0005fcb64a4a603dad21d572fd38f2e8146aae4c0561ba98df09b0b75141",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,8 +12,18 @@
     }
   },
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 9,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
+      ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json",
+      ".cautilus/claims/status-summary.json",
+      "docs/specs/proof/claim-evidence-state.md"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -21,20 +31,20 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "128e15454ff634d446a95c7408b95379ce009788",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "cad6b845c6bc604f1f90571221a17878a5efa0d8",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "128e15454ff634d446a95c7408b95379ce009788",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
     "candidateCount": 365,
     "sourceCount": 66,
     "byEvidenceStatus": {
-      "satisfied": 68,
-      "stale": 27,
+      "satisfied": 71,
+      "stale": 24,
       "unknown": 270
     },
     "byRecommendedProof": {
@@ -207,26 +217,26 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 68,
+      "count": 71,
       "actor": "none",
       "evidence": {
-        "satisfied": 68
+        "satisfied": 71
       },
       "review": {
-        "agent-reviewed": 68
+        "agent-reviewed": 71
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 80,
+      "count": 77,
       "actor": "agent",
       "evidence": {
-        "stale": 22,
+        "stale": 19,
         "unknown": 58
       },
       "review": {
-        "agent-reviewed": 32,
+        "agent-reviewed": 29,
         "heuristic": 48
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
@@ -315,15 +325,15 @@
     },
     {
       "id": "stale-evidence",
-      "count": 27,
+      "count": 24,
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [
         "claim-readme-md-152",
         "claim-readme-md-163",
-        "claim-readme-md-165",
         "claim-readme-md-175",
-        "claim-readme-md-247"
+        "claim-readme-md-247",
+        "claim-docs-cli-reference-md-117"
       ]
     }
   ]

@@ -792,24 +792,26 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:6b85828fd24500299d40a1dde8a26b80ccd57991b8eb0b6ff95fd9e9d5657a53",
+          "contentHash": "sha256:b70f2a1e3d94cd9bffdf752abf03ae9e6b9bae358b9e5e834f832d0207450afe",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-fixture-runtime-proof-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-readme-md-165"
+            "claim-readme-md-165",
+            "claim-docs-cli-reference-md-269",
+            "claim-docs-cli-reference-md-273"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-fixture-runtime-proof-2026-05-03.json does not list current claimId claim-readme-md-165 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI tests and a live `cautilus eval test --runtime fixture` run that produced eval-cases, eval-observed, and eval-summary packets while using the adapter-owned fixture backend.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep fixture runtime positioned as command-routing and packet-evaluation proof, not live product-runner proof.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -820,8 +822,9 @@
         }
       ],
       "summary": "When the goal is only to prove command routing and packet evaluation, `cautilus eval test --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names CLI routing and packet output behavior that is covered by focused smoke tests plus a live fixture-runtime command."
     },
     {
       "claimAudience": "user",
@@ -1542,17 +1545,19 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+          "contentHash": "sha256:b70f2a1e3d94cd9bffdf752abf03ae9e6b9bae358b9e5e834f832d0207450afe",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-docs-cli-reference-md-269"
+            "claim-readme-md-165",
+            "claim-docs-cli-reference-md-269",
+            "claim-docs-cli-reference-md-273"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-runtime-claims-2026-05-01.json does not list current claimId claim-docs-cli-reference-md-269 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a live fixture-runtime eval-test run whose eval-observed and eval-summary packets both record proof.runtime=fixture, proof.proofClass=fixture-smoke, proof.proofClassSource=runtime, and proof.targetSurface=dev/skill.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1560,7 +1565,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep proof metadata assertions covered when changing eval packet schemas or runner readiness projection.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1571,8 +1576,9 @@
         }
       ],
       "summary": "`cautilus eval test` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names eval-test packet and proof metadata behavior that is visible in generated JSON packets."
     },
     {
       "claimAudience": "user",
@@ -1582,17 +1588,19 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
+          "contentHash": "sha256:b70f2a1e3d94cd9bffdf752abf03ae9e6b9bae358b9e5e834f832d0207450afe",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-fixture-runtime-eval-path-2026-05-11.json",
           "supportsClaimIds": [
+            "claim-readme-md-165",
+            "claim-docs-cli-reference-md-269",
             "claim-docs-cli-reference-md-273"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-current-deterministic-proof-batch-2026-05-03.json does not list current claimId claim-docs-cli-reference-md-273 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI smoke tests and `cautilus eval evaluate --input eval-observed.json`, which produced an accept-now recheck summary from the observed packet without launching the adapter runner.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1600,7 +1608,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep eval-evaluate tests separate from runner launch tests so packet-only evaluation remains auditable.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1611,8 +1619,9 @@
         }
       ],
       "summary": "`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names the eval-evaluate no-runner boundary, which is covered by focused smoke tests and a recheck summary generated from an observed packet."
     },
     {
       "claimAudience": "user",
@@ -12223,8 +12232,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 68,
-      "stale": 27,
+      "satisfied": 71,
+      "stale": 24,
       "unknown": 270
     },
     "byLifecycle": {
@@ -12503,6 +12512,7 @@
       ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json",
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
+      ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json"
     ],
     "skippedReviewResultPaths": [
@@ -12541,9 +12551,9 @@
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json"
     ],
-    "appliedResultCount": 45,
+    "appliedResultCount": 46,
     "skippedResultCount": 34,
-    "keptUpdateCount": 160,
+    "keptUpdateCount": 163,
     "droppedUpdateCount": 227,
     "provenanceMode": "aggregate-current-review-results"
   },

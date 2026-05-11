@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-fixture-runtime-eval-path-2026-05-11",
+  "createdForClaimIds": [
+    "claim-readme-md-165",
+    "claim-docs-cli-reference-md-269",
+    "claim-docs-cli-reference-md-273"
+  ],
+  "repoCommit": "cad6b845c6bc604f1f90571221a17878a5efa0d8",
+  "summary": "Deterministic proof that fixture-runtime eval uses the normal eval-test packet path, emits proof metadata in observed and summary packets, and lets eval evaluate re-score the observed packet without launching the runner again.",
+  "evidenceScope": {
+    "targetSurface": "fixture runtime eval-test and eval-evaluate packet path",
+    "claimBoundary": "Only the README and CLI reference claims about fixture-runtime routing, emitted eval packets, proof metadata, and observed-packet re-evaluation are marked satisfied.",
+    "notClaimed": [
+      "Fixture runtime proves live model behavior.",
+      "Fixture runtime replaces product-runner proof for user-facing app behavior.",
+      "Every adapter has equivalent fixture runtime coverage.",
+      "The default eval runner currently has a completed runner assessment."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIEvalTestAcceptsFixtureRuntime|TestCLIEvalEvaluateAcceptsSkillObservedPacket|TestCLIEvalEvaluateDoesNotLaunchAdapterRunner'",
+      "exitCode": 0,
+      "reason": "Focused CLI smoke tests cover fixture-runtime routing, observed-packet evaluation, and the no-runner boundary for eval evaluate."
+    },
+    {
+      "command": "./bin/cautilus eval test --repo-root . --adapter-name self-dogfood-eval-skill --runtime fixture --skip-preflight --output-dir /tmp/cautilus-fixture-runtime-proof-2026-05-11",
+      "exitCode": 0,
+      "reason": "The checked-in self-dogfood dev/skill adapter ran the eval-test product path with --backend fixture and emitted eval-cases, eval-observed, and eval-summary packets with recommendation=accept-now."
+    },
+    {
+      "command": "./bin/cautilus eval evaluate --input /tmp/cautilus-fixture-runtime-proof-2026-05-11/eval-observed.json --output /tmp/cautilus-fixture-runtime-proof-2026-05-11/eval-summary.recheck.json",
+      "exitCode": 0,
+      "reason": "The already-observed packet was evaluated again into a summary packet without invoking the adapter runner."
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-fixture-runtime-proof-2026-05-11/eval-summary.json",
+      "kind": "eval-summary-packet",
+      "contentHash": "sha256:cbcf0e0d6b94aafd8c353ec10049209947ac4ea088ba3c00ea79d4d8c3d0346d",
+      "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "proofClassSource": "runtime",
+        "targetSurface": "dev/skill"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-fixture-runtime-proof-2026-05-11/eval-observed.json",
+      "kind": "eval-observed-packet",
+      "contentHash": "sha256:86a87f7eb523b1e7750b6a965b4091b8efb963c85b93ed6806f92b797f4988a4",
+      "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "proofClassSource": "runtime",
+        "targetSurface": "dev/skill"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-fixture-runtime-proof-2026-05-11/eval-cases.json",
+      "kind": "eval-cases-packet",
+      "contentHash": "sha256:180f39712c169238a7fce677198de334c2c9a0138dc7a4261921bad5168a13c8"
+    },
+    {
+      "path": "/tmp/cautilus-fixture-runtime-proof-2026-05-11/eval-summary.recheck.json",
+      "kind": "eval-summary-packet",
+      "contentHash": "sha256:d72940fc6d4f75a798f585c239182acd2322e9449f76a48e17646974880a2f00",
+      "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "proofClassSource": "runtime",
+        "targetSurface": "dev/skill"
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "focused-cli-smoke-test",
+      "contentHash": "sha256:d88a5a712eb0c70c05131aea82fe3c11946fa6426bd762a79ef6afa6a28cbe0e"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-eval-skill.yaml",
+      "kind": "adapter-owned-runner-template",
+      "contentHash": "sha256:dc61bbd6528e776afa5b4a4b32af7c15c40a12131617f3edf9679b1cfe94906f"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/internal-runner-fixture-results.json",
+      "kind": "adapter-owned-fixture-results",
+      "contentHash": "sha256:68109bfd3a4433394ddc4185350e83f9da4c1e4bb5fff7aa7faef7fa4d371062"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused tests and live fixture-runtime run show that eval test uses the normal packet path, emits observed and summary proof metadata with proofClass=fixture-smoke, and that eval evaluate can re-score the observed packet without launching a runner."
+  }
+}
