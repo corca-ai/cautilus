@@ -49,8 +49,12 @@ A minimal adapter must wire at least one real runnable path to reach `doctor rea
 
 ```yaml
 eval_test_command_templates:
-  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
+  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only --codex-home-mode isolated --codex-auth-mode inherit
 ```
+
+For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home.
+Use `--codex-auth-mode env` when the wrapper intentionally relies on `OPENAI_API_KEY`.
+When neither source is available, the runner reports `runner_auth_missing` before spending the whole live run on cases that cannot authenticate.
 
 Repos with multiple surfaces can use typed runner metadata instead:
 

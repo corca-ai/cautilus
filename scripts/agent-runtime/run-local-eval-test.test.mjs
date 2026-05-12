@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
 import {
 	buildObservedInstructionSurfaceInput,
+	codexFailureBlockerKind,
 	codexArgs,
+	prepareCodexRuntimeEnv,
 	renderPrompt,
 } from "./run-local-eval-test.mjs";
 import {
@@ -140,6 +142,76 @@ test("codexArgs omits --ephemeral when session mode is persistent", () => {
 			"-",
 		],
 	);
+});
+
+test("codexArgs ignores user config when CODEX_HOME is isolated", () => {
+	assert.deepEqual(
+		codexArgs({
+			workspace: "/repo",
+			sandbox: "read-only",
+			codexSessionMode: "ephemeral",
+			codexHomeMode: "isolated",
+			codexConfigOverrides: [],
+		}, "/tmp/schema.json", "/tmp/result.json"),
+		[
+			"exec",
+			"-C",
+			"/repo",
+			"--sandbox",
+			"read-only",
+			"--ignore-user-config",
+			"--ephemeral",
+			"--output-schema",
+			"/tmp/schema.json",
+			"-o",
+			"/tmp/result.json",
+			"-",
+		],
+	);
+});
+
+test("prepareCodexRuntimeEnv copies only auth into an isolated Codex home", () => {
+	const tempRoot = mkdtempSync(join(tmpdir(), "cautilus-codex-home-"));
+	const sourceHome = join(tempRoot, "source-home");
+	const outputDir = join(tempRoot, "output");
+	mkdirSync(sourceHome, { recursive: true });
+	mkdirSync(outputDir, { recursive: true });
+	writeFileSync(join(sourceHome, "auth.json"), "{\"token\":\"test\"}\n");
+	writeFileSync(join(sourceHome, "config.toml"), "model = \"local\"\n");
+
+	const prepared = prepareCodexRuntimeEnv(
+		{ codexHomeMode: "isolated", codexAuthMode: "inherit" },
+		{ CODEX_HOME: sourceHome, PATH: "/usr/bin" },
+	);
+
+	assert.equal(prepared.preflightBlocker, null);
+	assert.equal(prepared.env.CODEX_HOME.startsWith(outputDir), false);
+	assert.equal(readFileSync(join(prepared.env.CODEX_HOME, "auth.json"), "utf-8"), "{\"token\":\"test\"}\n");
+	assert.equal(existsSync(join(prepared.env.CODEX_HOME, "config.toml")), false);
+	prepared.cleanup();
+	assert.equal(existsSync(prepared.env.CODEX_HOME), false);
+});
+
+test("prepareCodexRuntimeEnv reports runner_auth_missing before isolated Codex runs", () => {
+	const tempRoot = mkdtempSync(join(tmpdir(), "cautilus-codex-home-missing-"));
+	const prepared = prepareCodexRuntimeEnv(
+		{ codexHomeMode: "isolated", codexAuthMode: "inherit" },
+		{ CODEX_HOME: join(tempRoot, "empty-home"), PATH: "/usr/bin" },
+	);
+
+	assert.equal(prepared.env.CODEX_HOME.startsWith(join(tempRoot, "output")), false);
+	assert.equal(prepared.preflightBlocker.blockerKind, "runner_auth_missing");
+	assert.match(prepared.preflightBlocker.summary, /cannot authenticate/);
+	prepared.cleanup();
+	assert.equal(existsSync(prepared.env.CODEX_HOME), false);
+});
+
+test("codexFailureBlockerKind classifies 401 auth stderr separately", () => {
+	assert.equal(
+		codexFailureBlockerKind("ERROR: unexpected status 401 Unauthorized: Missing bearer or basic authentication in header"),
+		"runner_auth_missing",
+	);
+	assert.equal(codexFailureBlockerKind("process exited with code 2"), "runner_execution_failed");
 });
 
 test("normalizeRoutingDecision canonicalizes deferred none values and tool prefixes", () => {

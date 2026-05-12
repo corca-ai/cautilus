@@ -13,10 +13,18 @@ import {
 	normalizeRoutingDecision,
 	relativizeObservedPath,
 } from "./instruction-surface-support.mjs";
+import {
+	CODEX_AUTH_MODES,
+	CODEX_HOME_MODES,
+	codexArgs,
+	codexFailureBlockerKind,
+	prepareCodexRuntimeEnv,
+} from "./codex-eval-runtime.mjs";
 import { writeTextOutput } from "./output-files.mjs";
 import { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
 
 export { normalizeInstructionSurfaceCaseSuite } from "./instruction-surface-case-suite.mjs";
+export { codexArgs, codexFailureBlockerKind, prepareCodexRuntimeEnv } from "./codex-eval-runtime.mjs";
 
 const CODEX_SESSION_MODES = ["ephemeral", "persistent"];
 
@@ -34,7 +42,7 @@ const CLAUDE_CLI_ENV = {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/run-local-eval-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-session-mode ephemeral|persistent] [--codex-ephemeral true|false] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
+		"  node ./scripts/agent-runtime/run-local-eval-test.mjs --repo-root <dir> --workspace <dir> --cases-file <file> --output-file <file> [--artifact-dir <dir>] [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--model <model>] [--reasoning-effort <level>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-session-mode ephemeral|persistent] [--codex-ephemeral true|false] [--codex-home-mode inherit|isolated] [--codex-auth-mode inherit|env|none] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -94,6 +102,8 @@ function defaultOptions() {
 		codexModel: null,
 		codexReasoningEffort: null,
 		codexSessionMode: "ephemeral",
+		codexHomeMode: "inherit",
+		codexAuthMode: "inherit",
 		codexConfigOverrides: [],
 		claudeModel: null,
 		claudePermissionMode: null,
@@ -116,6 +126,8 @@ const VALUE_OPTIONS = {
 	"--codex-reasoning-effort": (options, value) => { options.codexReasoningEffort = value; },
 	"--codex-session-mode": (options, value) => { options.codexSessionMode = parseCodexSessionMode(value, "--codex-session-mode"); },
 	"--codex-ephemeral": (options, value) => { options.codexSessionMode = parseCodexSessionMode(value, "--codex-ephemeral"); },
+	"--codex-home-mode": (options, value) => { options.codexHomeMode = value; },
+	"--codex-auth-mode": (options, value) => { options.codexAuthMode = value; },
 	"--codex-config": (options, value) => { options.codexConfigOverrides.push(value); },
 	"--claude-model": (options, value) => { options.claudeModel = value; },
 	"--claude-permission-mode": (options, value) => { options.claudePermissionMode = value; },
@@ -159,6 +171,12 @@ function parseArgs(argv) {
 	}
 	if (!CODEX_SESSION_MODES.includes(options.codexSessionMode)) {
 		fail("--codex-session-mode must be ephemeral or persistent");
+	}
+	if (!CODEX_HOME_MODES.includes(options.codexHomeMode)) {
+		fail("--codex-home-mode must be inherit or isolated");
+	}
+	if (!CODEX_AUTH_MODES.includes(options.codexAuthMode)) {
+		fail("--codex-auth-mode must be inherit, env, or none");
 	}
 	if (options.backend === "fixture" && !options.fixtureResultsFile) {
 		fail("--fixture-results-file is required when --backend fixture");
@@ -285,37 +303,6 @@ export function renderPrompt(evaluation) {
 	}
 	lines.push("", "User request:", evaluation.prompt);
 	return `${lines.join("\n")}\n`;
-}
-
-export function codexArgs(options, schemaFile, outputFile) {
-	const sessionMode = options.codexSessionMode ?? "ephemeral";
-	const args = [
-		"exec",
-		"-C",
-		options.workspace,
-		"--sandbox",
-		options.sandbox,
-	];
-	if (sessionMode === "ephemeral") {
-		args.push("--ephemeral");
-	}
-	args.push(
-		"--output-schema",
-		schemaFile,
-		"-o",
-		outputFile,
-	);
-	if (options.codexModel ?? options.model) {
-		args.push("--model", options.codexModel ?? options.model);
-	}
-	if (options.codexReasoningEffort ?? options.reasoningEffort) {
-		args.push("-c", `model_reasoning_effort="${options.codexReasoningEffort ?? options.reasoningEffort}"`);
-	}
-	for (const override of options.codexConfigOverrides ?? []) {
-		args.push("-c", override);
-	}
-	args.push("-");
-	return args;
 }
 
 function normalizeExpectedFields(evaluation) {
@@ -457,6 +444,20 @@ function runFixtureEvaluation(evaluation, fixtureResults, outputDir, startedAt) 
 	);
 }
 
+function normalizeCodexProcessFailure(result, options, evaluation, artifactRefs, startedAt) {
+	if (result.error?.code === "ETIMEDOUT") {
+		return normalizeObservedResult(evaluation, backendFailureResult(`The codex_exec runner timed out after ${options.timeoutMs}ms.`), artifactRefs, startedAt);
+	}
+	if (result.status === 0) {
+		return null;
+	}
+	const blockerKind = codexFailureBlockerKind(result.stderr);
+	const summary = blockerKind === "runner_auth_missing"
+		? `The codex_exec runner could not authenticate and exited with status ${result.status}.`
+		: `The codex_exec runner exited with status ${result.status}.`;
+	return normalizeObservedResult(evaluation, backendFailureResult(summary, blockerKind), artifactRefs, startedAt);
+}
+
 function runCodexEvaluation(options, evaluation, outputDir, startedAt) {
 	const promptFile = join(outputDir, "prompt.md");
 	const schemaFile = join(outputDir, "schema.json");
@@ -465,28 +466,38 @@ function runCodexEvaluation(options, evaluation, outputDir, startedAt) {
 	const prompt = renderPrompt(evaluation);
 	writeFileSync(promptFile, prompt);
 	writeFileSync(schemaFile, `${JSON.stringify(baseSchema(), null, 2)}\n`);
-
-	const result = spawnSync("codex", codexArgs(options, schemaFile, outputFile), {
-		cwd: options.workspace,
-		encoding: "utf-8",
-		env: {
-			...process.env,
-			PATH: `${join(options.repoRoot, "bin")}:${process.env.PATH ?? ""}`,
-		},
-		input: prompt,
-		timeout: options.timeoutMs,
-	});
-	writeFileSync(stderrFile, result.stderr ?? "");
 	const artifactRefs = [
 		artifactRef("prompt", promptFile),
 		artifactRef("schema", schemaFile),
 		artifactRef("stderr", stderrFile),
 	];
-	if (result.error?.code === "ETIMEDOUT") {
-		return normalizeObservedResult(evaluation, backendFailureResult(`The codex_exec runner timed out after ${options.timeoutMs}ms.`), artifactRefs, startedAt);
+	const runtimeEnv = prepareCodexRuntimeEnv(options);
+	if (runtimeEnv.preflightBlocker) {
+		writeFileSync(stderrFile, `${runtimeEnv.preflightBlocker.summary}\n`);
+		runtimeEnv.cleanup?.();
+		return normalizeObservedResult(
+			evaluation,
+			backendFailureResult(runtimeEnv.preflightBlocker.summary, runtimeEnv.preflightBlocker.blockerKind),
+			artifactRefs,
+			startedAt,
+		);
 	}
-	if (result.status !== 0) {
-		return normalizeObservedResult(evaluation, backendFailureResult(`The codex_exec runner exited with status ${result.status}.`), artifactRefs, startedAt);
+
+	const result = spawnSync("codex", codexArgs(options, schemaFile, outputFile), {
+		cwd: options.workspace,
+		encoding: "utf-8",
+		env: {
+			...runtimeEnv.env,
+			PATH: `${join(options.repoRoot, "bin")}:${runtimeEnv.env.PATH ?? ""}`,
+		},
+		input: prompt,
+		timeout: options.timeoutMs,
+	});
+	runtimeEnv.cleanup?.();
+	writeFileSync(stderrFile, result.stderr ?? "");
+	const failure = normalizeCodexProcessFailure(result, options, evaluation, artifactRefs, startedAt);
+	if (failure) {
+		return failure;
 	}
 	let observed;
 	try {

@@ -27,7 +27,7 @@ function fail(message) {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/run-self-dogfood-eval.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
+		"  node ./scripts/run-self-dogfood-eval.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-home-mode inherit|isolated] [--codex-auth-mode inherit|env|none] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -62,6 +62,8 @@ function defaultOptions() {
 		timeoutMs: 180000,
 		codexModel: null,
 		codexReasoningEffort: null,
+		codexHomeMode: null,
+		codexAuthMode: null,
 		claudeModel: null,
 		claudePermissionMode: null,
 		claudeAllowedTools: null,
@@ -78,6 +80,8 @@ const VALUE_OPTIONS = {
 	"--sandbox": (options, value) => { options.sandbox = value; },
 	"--codex-model": (options, value) => { options.codexModel = value; },
 	"--codex-reasoning-effort": (options, value) => { options.codexReasoningEffort = value; },
+	"--codex-home-mode": (options, value) => { options.codexHomeMode = value; },
+	"--codex-auth-mode": (options, value) => { options.codexAuthMode = value; },
 	"--claude-model": (options, value) => { options.claudeModel = value; },
 	"--claude-permission-mode": (options, value) => { options.claudePermissionMode = value; },
 	"--claude-allowed-tools": (options, value) => { options.claudeAllowedTools = value; },
@@ -244,6 +248,12 @@ function buildRunnerArgs(options, candidateRepo) {
 	}
 	if (options.codexReasoningEffort) {
 		args.push("--codex-reasoning-effort", options.codexReasoningEffort);
+	}
+	if (options.codexHomeMode) {
+		args.push("--codex-home-mode", options.codexHomeMode);
+	}
+	if (options.codexAuthMode) {
+		args.push("--codex-auth-mode", options.codexAuthMode);
 	}
 	if (options.claudeModel) {
 		args.push("--claude-model", options.claudeModel);

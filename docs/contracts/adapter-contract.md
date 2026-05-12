@@ -44,14 +44,14 @@ runtime_policy:
   mode: observe
 evaluation_input_default: fixtures/eval/dev/repo/example.fixture.json
 eval_test_command_templates:
-  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
+  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only --codex-home-mode isolated --codex-auth-mode inherit
 runner_readiness:
   runners:
     - id: dev-repo-agent
       surfaces:
         - dev/repo
       proof_class: coding-agent-messaging
-      command_template: node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
+      command_template: node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only --codex-home-mode isolated --codex-auth-mode inherit
       assessment_path: .cautilus/runners/dev-repo-agent.assessment.json
       default_runtime: codex
 claim_discovery:
@@ -528,6 +528,10 @@ For `codex exec`, do not invent approval-policy flags from older wrappers.
 Use `--sandbox` and your surrounding runtime sandbox instead.
 Keep ephemeral mode as the default, but allow explicit opt-out when a behavior probe intentionally depends on session or fork tool surface.
 When opt-out is used, emit the selected session mode in runtime telemetry so reviewers can audit whether a result was session-independent.
+For local eval runners, treat Codex state/config isolation and Codex auth as separate axes.
+Use `--codex-home-mode isolated` when the eval should not load the operator's `CODEX_HOME` config, plugins, or sessions.
+Pair that with `--codex-auth-mode inherit` to copy only `auth.json` into the isolated home, or `--codex-auth-mode env` when the command intentionally relies on `OPENAI_API_KEY`.
+If neither auth source is available, the runner should block early with `runner_auth_missing` rather than reporting a generic runner execution failure for every case.
 For stdin-driven commands, prefer file redirection or a checked-in wrapper so the process receives EOF and does not wait on an open terminal pipe.
 `Reading additional input from stdin...` is expected when the process is reading from a bounded file redirect.
 It is only a bug when stdin is left attached to an interactive terminal and never closes.

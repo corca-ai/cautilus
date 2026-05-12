@@ -10,7 +10,7 @@ required_prerequisites:
 preflight_commands:
   - npm run check
 eval_test_command_templates:
-  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only
+  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only --codex-home-mode isolated --codex-auth-mode inherit
 claim_discovery:
   entries:
     - README.md
