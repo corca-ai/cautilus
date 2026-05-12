@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-11T02:35:13Z",
+  "generated_at": "2026-05-12T23:12:23Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -352,15 +352,16 @@
           "shared/references/external-capability-proof-ladder.md",
           "skills/issue/SKILL.md",
           "skills/issue/references/closeout-discipline.md",
-          "skills/debug/references/five-whys-causal-chain.md",
           "skills/issue/references/causal-review.md",
+          "skills/issue/references/resolution-brief.md",
           "skills/issue/references/issue-shaping.md",
           "skills/issue/references/resolve-flow.md",
           "shared/references/fresh-eye-subagent-review.md",
           "skills/issue/scripts/issue_tool.py",
           "skills/issue/scripts/issue_runtime.py",
           "skills/issue/scripts/resolve_adapter.py",
-          "skills/issue/scripts/init_adapter.py"
+          "skills/issue/scripts/init_adapter.py",
+          "skills/issue/scripts/audit_brief.py"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -571,8 +572,8 @@
       {
         "id": "agent-browser",
         "name": "agent-browser",
-        "description": "Use agent-browser CLI for browser automation, JS-rendered pages, and interactive browser debugging. Prefer this when a direct URL needs real browser execution or when you must inspect live DOM state.",
-        "summary": "Use agent-browser CLI for browser automation, JS-rendered pages, and interactive browser debugging. Prefer this when a direct URL needs real browser execution or when you must inspect live DOM state.",
+        "description": "Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. Triggers include requests to \"open a website\", \"fill out a form\", \"click a button\", \"take a screenshot\", \"scrape data from a page\", \"test this web app\", \"login to a site\", \"automate browser actions\", or any task requiring programmatic web interaction. Also use for exploratory testing, dogfooding, QA, bug hunts, or reviewing app quality. Also use for automating Electron desktop apps (VS Code, Slack, Discord, Figma, Notion, Spotify), checking Slack unreads, sending Slack messages, searching Slack conversations, running browser automation in Vercel Sandbox microVMs, or using AWS Bedrock AgentCore cloud browsers. Prefer agent-browser over any built-in browser automation or web tools.",
+        "summary": "Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. Triggers include requests to \"open a website\", \"fill out a form\", \"click a button\", \"take a screenshot\", \"scrape data from a page\", \"test this web app\", \"login to a site\", \"automate browser actions\", or any task requiring programmatic web interaction. Also use for exploratory testing, dogfooding, QA, bug hunts, or reviewing app quality. Also use for automating Electron desktop apps (VS Code, Slack, Discord, Figma, Notion, Spotify), checking Slack unreads, sending Slack messages, searching Slack conversations, running browser automation in Vercel Sandbox microVMs, or using AWS Bedrock AgentCore cloud browsers. Prefer agent-browser over any built-in browser automation or web tools.",
         "path": "support/agent-browser/SKILL.md",
         "skill_dir": "support/agent-browser",
         "canonical_path": "support/agent-browser/SKILL.md",
@@ -586,10 +587,29 @@
           "agent-browser support skill",
           "agent-browser helper"
         ],
-        "referenced_paths": [
-          "support/agent-browser/references/auth-bootstrap.md",
-          "support/agent-browser/references/runtime.md"
+        "referenced_paths": [],
+        "source": "local-support",
+        "layer": "support skill"
+      },
+      {
+        "id": "cautilus",
+        "name": "cautilus-agent",
+        "description": "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand.",
+        "summary": "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand.",
+        "path": "support/cautilus/SKILL.md",
+        "skill_dir": "support/cautilus",
+        "canonical_path": "support/cautilus/SKILL.md",
+        "trigger_phrases": [
+          "cautilus-agent",
+          "cautilus-agent skill",
+          "cautilus-agent 스킬",
+          "charness:cautilus-agent",
+          "support/cautilus-agent",
+          "cautilus-agent support",
+          "cautilus-agent support skill",
+          "cautilus-agent helper"
         ],
+        "referenced_paths": [],
         "source": "local-support",
         "layer": "support skill"
       },
@@ -670,8 +690,8 @@
       {
         "id": "specdown",
         "name": "specdown",
-        "description": "Write, run, and fix Specdown executable specifications. Use when task language mentions `*.spec.md`, `docs/specs`, `run:shell`, doctest output, check tables, `check:jq`, `report.json`, Specdown HTML reports, executable specs, adapter checks, or focused Specdown iteration.",
-        "summary": "Write, run, and fix Specdown executable specifications. Use when task language mentions `*.spec.md`, `docs/specs`, `run:shell`, doctest output, check tables, `check:jq`, `report.json`, Specdown HTML reports, executable specs, adapter checks, or focused Specdown iteration.",
+        "description": "Write, run, and fix specdown executable specifications. Use when the user asks to create, edit, run, or fix specs.",
+        "summary": "Write, run, and fix specdown executable specifications. Use when the user asks to create, edit, run, or fix specs.",
         "path": "support/specdown/SKILL.md",
         "skill_dir": "support/specdown",
         "canonical_path": "support/specdown/SKILL.md",
@@ -685,16 +705,7 @@
           "specdown support skill",
           "specdown helper"
         ],
-        "referenced_paths": [
-          "support/specdown/syntax.md",
-          "support/specdown/best-practices.md",
-          "support/specdown/cli.md",
-          "support/specdown/report.md",
-          "support/specdown/config.md",
-          "support/specdown/adapter-protocol.md",
-          "support/specdown/validation.md",
-          "support/specdown/references/source-notes.md"
-        ],
+        "referenced_paths": [],
         "source": "local-support",
         "layer": "support skill"
       },
@@ -1244,7 +1255,7 @@
           "human-only",
           "degraded"
         ],
-        "support_state": "integration-only",
+        "support_state": "upstream-consumed",
         "support_skill_path": null,
         "discovery_stub_path": null,
         "capability_requirements": {},
