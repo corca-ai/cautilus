@@ -2070,7 +2070,7 @@
   },
   "gitCommit": "c729a90421957649840ac0a158ef843f1af41d9f",
   "gitState": {
-    "changedFileCount": 44,
+    "changedFileCount": 45,
     "changedFiles": [
       ".agents/cautilus-adapter.yaml",
       ".agents/quality-adapter.yaml",
@@ -2089,6 +2089,7 @@
       "AGENTS.md",
       "README.md",
       "charness-artifacts/debug/debug-2026-05-12-codex-home-auth-isolation.md",
+      "charness-artifacts/debug/debug-2026-05-12-release-claim-state-stale.md",
       "charness-artifacts/debug/latest.md",
       "charness-artifacts/release/latest.md",
       "docs/claims/maintainer-facing.md",
@@ -2130,7 +2131,7 @@
       "docs/specs/maintainer/reporting-review-variants.spec.md"
     ],
     "comparisonStatus": "stale",
-    "currentGitCommit": "455e3305d9526c5b756caabec23baca3ddeac300",
+    "currentGitCommit": "6eed6cfa0b65ba1e8e70f1dc823367900703c1a7",
     "headDrift": true,
     "isStale": true,
     "packetGitCommit": "c729a90421957649840ac0a158ef843f1af41d9f",

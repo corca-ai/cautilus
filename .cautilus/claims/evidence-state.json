@@ -4,7 +4,7 @@
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
     "claimsHash": "sha256:2a04e8ba4b692bd08eddaa95b1ae79b31dc63791490793dcdfb202c8e06741be",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:6bfa6402592bb1ccc97cb7e17556ecfbcbe331b111b01447afc4e1d6a4ff3d41",
+    "statusHash": "sha256:ab65e4972426509fa61e08a693d6e8052f26a0ceece2b5bb9162ecc4f0eb2799",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun claim show for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,7 +12,7 @@
     }
   },
   "gitState": {
-    "changedFileCount": 44,
+    "changedFileCount": 45,
     "changedFiles": [
       ".agents/cautilus-adapter.yaml",
       ".agents/quality-adapter.yaml",
@@ -31,6 +31,7 @@
       "AGENTS.md",
       "README.md",
       "charness-artifacts/debug/debug-2026-05-12-codex-home-auth-isolation.md",
+      "charness-artifacts/debug/debug-2026-05-12-release-claim-state-stale.md",
       "charness-artifacts/debug/latest.md",
       "charness-artifacts/release/latest.md",
       "docs/claims/maintainer-facing.md",
@@ -72,7 +73,7 @@
       "docs/specs/maintainer/reporting-review-variants.spec.md"
     ],
     "comparisonStatus": "stale",
-    "currentGitCommit": "455e3305d9526c5b756caabec23baca3ddeac300",
+    "currentGitCommit": "6eed6cfa0b65ba1e8e70f1dc823367900703c1a7",
     "headDrift": true,
     "isStale": true,
     "packetGitCommit": "c729a90421957649840ac0a158ef843f1af41d9f",
