@@ -40,7 +40,7 @@
         "internal/**",
         "skills/cautilus-agent/**",
         "plugins/cautilus/**",
-        "docs/cli-reference.md",
+        "docs/guides/cli.md",
         "docs/guides/consumer-adoption.md"
       ],
       "derived_paths": [

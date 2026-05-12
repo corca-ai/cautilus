@@ -49,7 +49,7 @@ cli_skill_surface_probe_commands:
   - ./bin/cautilus doctor --repo-root . --scope agent-surface
 cli_skill_surface_command_docs:
   - README.md
-  - docs/cli-reference.md
+  - docs/guides/cli.md
   - docs/guides/consumer-adoption.md
   - docs/specs/user/evaluation.spec.md
 cli_skill_surface_skill_paths:
@@ -63,7 +63,7 @@ cli_skill_surface_change_globs:
   - internal/runtime/**
   - skills/cautilus-agent/**
   - plugins/cautilus/**
-  - docs/cli-reference.md
+  - docs/guides/cli.md
   - docs/guides/consumer-adoption.md
   - docs/specs/user/evaluation.spec.md
 canonical_markdown_surfaces:
@@ -128,7 +128,7 @@ startup_probes:
 concept_paths:
   - AGENTS.md
   - README.md
-  - docs/cli-reference.md
+  - docs/guides/cli.md
   - docs/master-plan.md
   - docs/guides/evaluation-process.md
   - docs/maintainers/consumer-readiness.md

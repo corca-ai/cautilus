@@ -11,9 +11,9 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Source count: 66
 - Packet source commit: c729a90421957649840ac0a158ef843f1af41d9f
 - Snapshot notice: gitState is computed when this status packet is generated; rerun claim show for live checkout state.
-- Git state snapshot: fresh; stale=no
+- Git state snapshot: stale; stale=yes
 - Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded
-- Snapshot recommendation: The claim packet commit matches the inspected checkout.
+- Snapshot recommendation: Run claim discover --previous <claims.json> --refresh-plan before review, review application, or eval planning.
 
 ## Scoreboard
 
