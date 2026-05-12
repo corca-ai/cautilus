@@ -13,12 +13,13 @@ Given a release branch has merged the intended mainline and issue-fix commits, w
 
 The exact failing output was `.cautilus/claims/status-summary.json is stale; run npm run claims:evidence-state`.
 The branch had merged local `main` and the issue 35 fix before `npm run release:prepare -- 0.15.3`.
-Running `npm run claims:evidence-state` updated `.cautilus/claims/status-summary.json`, `.cautilus/claims/evidence-state.json`, and `docs/specs/proof/claim-evidence-state.md`.
-The generated diff updated the status hash, `currentGitCommit`, and the committed changed-file/source summaries from the previous release baseline to the merged release head.
+Running `npm run claims:evidence-state` updated `.cautilus/claims/status-summary.json`, `.cautilus/claims/evidence-state.json`, and `docs/specs/proof/claim-evidence-state.md`, but the packet remained `stale=true`.
+The release branch had changed claim sources, so a projection-only refresh could pass only before commit and would fail again in a fresh checkout.
+Running `cautilus claim discover --previous .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/evidenced-typed-runners.json` produced a fresh packet with `stale=false`, `candidateCount=368`, and `changedSourceCount=0`.
 
 ## Reproduction
 
-Run `npm run verify` on the release-prep branch after merging local `main` and before refreshing claim evidence state.
+Run `npm run verify` or the release fresh checkout probe on the release-prep branch after merging local `main` and before refreshing the stale claim packet.
 The `claims:evidence-state:check` step exits with status 1 and reports the stale status summary.
 
 ## Candidate Causes
@@ -29,17 +30,18 @@ The `claims:evidence-state:check` step exits with status 1 and reports the stale
 
 ## Hypothesis
 
-The claim evidence snapshot intentionally records committed diff metadata, so merging the release inputs changed the expected generated snapshot and `claims:evidence-state` should produce a bounded generated-only diff.
+The claim evidence snapshot intentionally records committed source drift.
+Because the release branch changed claim sources, `claims:evidence-state` alone can only refresh the stale projection; the saved claim packet itself must be refreshed with `claim discover --previous`.
 
 ## Verification
 
-`npm run claims:evidence-state` succeeded.
-The resulting diff was limited to generated claim state files and reflected the merged release head metadata.
+`npm run claims:evidence-state` succeeded but left `gitState.isStale=true`.
+`cautilus claim discover --previous .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/evidenced-typed-runners.json` produced a packet whose `claim show` summary reported `isStale=false`, `changedSourceCount=0`, and `packetGitCommit` equal to the inspected checkout.
 
 ## Root Cause
 
-The release branch advanced from the prior checked-in claim evidence state to a merged head that included local main and issue 35 commits.
-The checked-in claim evidence snapshot had not yet been refreshed for that head.
+The release branch advanced from the prior checked-in claim packet to a merged head that changed claim source documents.
+Refreshing only the derived status and projection left the saved packet stale, so any fresh checkout at the release commit would regenerate different claim state.
 
 ## Seam Risk
 
@@ -58,4 +60,4 @@ The checked-in claim evidence snapshot had not yet been refreshed for that head.
 
 ## Prevention
 
-Refresh claim evidence state after merging release inputs and before the final pre-tag `npm run verify`.
+When release input commits change claim sources, refresh the saved claim packet with `claim discover --previous` before regenerating canonical maps, status summaries, and Evidence State projections.
