@@ -22,7 +22,7 @@ const FORBIDDEN_COMMAND_PATTERNS = [
 	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+test\b/],
 	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+evaluate\b/],
 	["review_variants", /\breview\s+variants\b/],
-	["optimize", /\boptimize\b/],
+	["improve", /\bimprove\b/],
 	["npm_verify", /\bnpm\s+run\s+verify\b/],
 	["npm_test", /\bnpm\s+run\s+test\b/],
 	["npm_lint", /\bnpm\s+run\s+lint\b/],

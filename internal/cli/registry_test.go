@@ -82,18 +82,18 @@ func TestRenderTopicUsageIncludesLeafCommandUsageAndExamples(t *testing.T) {
 }
 
 func TestRenderTopicUsageIncludesGroupedSubcommandsForPrefixes(t *testing.T) {
-	usage, err := RenderTopicUsage([]string{"optimize", "search"})
+	usage, err := RenderTopicUsage([]string{"improve", "search"})
 	if err != nil {
 		t.Fatalf("RenderTopicUsage returned error: %v", err)
 	}
-	if !strings.Contains(usage, "cautilus optimize search prepare-input [args]") {
-		t.Fatalf("topic usage missing optimize search prepare-input usage:\n%s", usage)
+	if !strings.Contains(usage, "cautilus improve search prepare-input [args]") {
+		t.Fatalf("topic usage missing improve search prepare-input usage:\n%s", usage)
 	}
 	if !strings.Contains(usage, "Subcommands:") {
 		t.Fatalf("topic usage missing subcommands section:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus optimize search run") {
-		t.Fatalf("topic usage missing optimize search run subcommand:\n%s", usage)
+	if !strings.Contains(usage, "cautilus improve search run") {
+		t.Fatalf("topic usage missing improve search run subcommand:\n%s", usage)
 	}
 }
 

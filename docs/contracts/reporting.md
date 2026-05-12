@@ -15,9 +15,9 @@
 - `modes_run`: iterate, held-out, comparison, full gate
 - `commands`: rendered commands with concrete placeholder values
 - optional `command_observations`: executed command records with timing, exit code, and stdout/stderr artifact paths
-- optional `adapter_context`: product-owned adapter identity such as `adapter` or `adapterName` when downstream review or optimize bridges must reuse the same adapter without operator restatement
+- optional `adapter_context`: product-owned adapter identity such as `adapter` or `adapterName` when downstream review or improve bridges must reuse the same adapter without operator restatement
 - optional `telemetry`: wall-clock latency plus any adapter- or provider-owned cost and token metrics
-- optional `telemetry.runtimeFingerprint` signals derived from explicit telemetry; see [runtime-fingerprint-optimization.md](./runtime-fingerprint-optimization.md)
+- optional `telemetry.runtimeFingerprint` signals derived from explicit telemetry; see [runtime-fingerprint-improvement.md](./runtime-fingerprint-improvement.md)
 - optional `runtimeContext` when `cautilus report build --prior-evidence-file <path>` or packet-level `priorEvidence` is provided
 - optional `reasonCodes`: machine-readable report-level outcome classification such as `behavior_regression`, `provider_rate_limit_contamination`, or `infrastructure_failure`
 - optional `warnings`: machine-readable warnings promoted from persisted artifacts when the evidence is contaminated or otherwise narrow
@@ -66,7 +66,7 @@ The minimum valid object shape is:
 Required fields:
 
 - `severity`: operator-visible level such as `concern`, `warning`, or `blocker`
-- `message`: the concrete human-review feedback that should survive into review, evidence, and optimize flows
+- `message`: the concrete human-review feedback that should survive into review, evidence, and improve flows
 
 Optional fields:
 
@@ -81,7 +81,7 @@ For a fuller canonical packet, see `./fixtures/reports/report-input.json`.
 
 - `review prepare-input`
 - `evidence prepare-input`
-- `optimize prepare-input`
+- `improve prepare-input`
 
 all reject legacy `cautilus.report_packet.v1` packets at the boundary.
 Rebuild checked-in examples and consumer artifacts with `cautilus report build` instead of relying on deep fallback behavior.

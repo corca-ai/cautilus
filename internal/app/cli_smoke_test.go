@@ -2350,7 +2350,7 @@ func TestCLIReviewPrepareInputFallsBackToSoleNamedAdapterWhenReportLacksAdapterC
 	}
 }
 
-func TestCLIOptimizeSearchPrepareInputFallsBackToSoleNamedAdapterWhenReportLacksAdapterContext(t *testing.T) {
+func TestCLIImproveSearchPrepareInputFallsBackToSoleNamedAdapterWhenReportLacksAdapterContext(t *testing.T) {
 	root := t.TempDir()
 	initGitRepo(t, root)
 	namedAdapterDir := filepath.Join(root, ".agents", "cautilus-adapters")
@@ -2411,9 +2411,9 @@ func TestCLIOptimizeSearchPrepareInputFallsBackToSoleNamedAdapterWhenReportLacks
 		"humanReviewFindings": []any{},
 		"recommendation":      "defer",
 	})
-	optimizeInputPath := filepath.Join(root, "optimize-input.json")
-	if _, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--report-file", reportPath, "--repo-root", root, "--target", "prompt", "--target-file", targetFile, "--output", optimizeInputPath); exitCode != 0 {
-		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	improveInputPath := filepath.Join(root, "improve-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "improve", "prepare-input", "--report-file", reportPath, "--repo-root", root, "--target", "prompt", "--target-file", targetFile, "--output", improveInputPath); exitCode != 0 {
+		t.Fatalf("improve prepare-input failed: %s", stderr)
 	}
 	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
 	writeJSONFile(t, heldOutResultsPath, map[string]any{
@@ -2427,9 +2427,9 @@ func TestCLIOptimizeSearchPrepareInputFallsBackToSoleNamedAdapterWhenReportLacks
 			},
 		},
 	})
-	searchInputPath := filepath.Join(root, "optimize-search-input.json")
-	if _, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetFile, "--output", searchInputPath); exitCode != 0 {
-		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	searchInputPath := filepath.Join(root, "improve-search-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "improve", "search", "prepare-input", "--improve-input", improveInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetFile, "--output", searchInputPath); exitCode != 0 {
+		t.Fatalf("improve search prepare-input failed: %s", stderr)
 	}
 	searchInput := readJSONObjectFile(t, searchInputPath)
 	evaluationContext := searchInput["evaluationContext"].(map[string]any)
@@ -2438,7 +2438,7 @@ func TestCLIOptimizeSearchPrepareInputFallsBackToSoleNamedAdapterWhenReportLacks
 	}
 }
 
-func TestCLIOptimizeSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T) {
+func TestCLIImproveSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T) {
 	root := t.TempDir()
 	initGitRepo(t, root)
 	adapterDir := filepath.Join(root, ".agents")
@@ -2454,7 +2454,7 @@ func TestCLIOptimizeSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T)
 		"  - baseline git ref via {baseline_ref}",
 		"eval_test_command_templates:",
 		"  - echo eval-test",
-		"optimize_search:",
+		"improve_search:",
 		"  default_budget: heavy",
 		"  budgets:",
 		"    heavy:",
@@ -2512,9 +2512,9 @@ func TestCLIOptimizeSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T)
 		"humanReviewFindings": []any{},
 		"recommendation":      "defer",
 	})
-	optimizeInputPath := filepath.Join(root, "optimize-input.json")
-	if _, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--report-file", reportPath, "--repo-root", root, "--target", "prompt", "--target-file", targetFile, "--output", optimizeInputPath); exitCode != 0 {
-		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	improveInputPath := filepath.Join(root, "improve-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "improve", "prepare-input", "--report-file", reportPath, "--repo-root", root, "--target", "prompt", "--target-file", targetFile, "--output", improveInputPath); exitCode != 0 {
+		t.Fatalf("improve prepare-input failed: %s", stderr)
 	}
 	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
 	writeJSONFile(t, heldOutResultsPath, map[string]any{
@@ -2528,9 +2528,9 @@ func TestCLIOptimizeSearchPrepareInputAppliesAdapterSearchDefaults(t *testing.T)
 			},
 		},
 	})
-	searchInputPath := filepath.Join(root, "optimize-search-input.json")
-	if _, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetFile, "--output", searchInputPath); exitCode != 0 {
-		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	searchInputPath := filepath.Join(root, "improve-search-input.json")
+	if _, stderr, exitCode := runCLI(t, root, "improve", "search", "prepare-input", "--improve-input", improveInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetFile, "--output", searchInputPath); exitCode != 0 {
+		t.Fatalf("improve search prepare-input failed: %s", stderr)
 	}
 	searchInput := readJSONObjectFile(t, searchInputPath)
 	searchConfig := searchInput["searchConfig"].(map[string]any)
@@ -2775,14 +2775,14 @@ func TestCLIReviewVariantsUsesDefaultSchemaFromReviewPromptInput(t *testing.T) {
 	}
 }
 
-func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
+func TestCLIImprovePrepareInputProposeAndBuildArtifact(t *testing.T) {
 	root := t.TempDir()
 	reportPath := filepath.Join(root, "report.json")
 	reviewSummaryPath := filepath.Join(root, "review-summary.json")
 	historyPath := filepath.Join(root, "scenario-history.snapshot.json")
 	targetPath := filepath.Join(root, "prompt.md")
-	inputPath := filepath.Join(root, "optimize-input.json")
-	proposalPath := filepath.Join(root, "optimize-proposal.json")
+	inputPath := filepath.Join(root, "improve-input.json")
+	proposalPath := filepath.Join(root, "improve-proposal.json")
 	artifactPath := filepath.Join(root, "revision-artifact.json")
 	if err := os.WriteFile(targetPath, []byte("Keep operator guidance explicit.\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
@@ -2858,28 +2858,28 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 		"recentRuns": []any{},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--review-summary", reviewSummaryPath, "--history-file", historyPath, "--target", "prompt", "--target-file", targetPath, "--output", inputPath)
+	_, stderr, exitCode := runCLI(t, root, "improve", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--review-summary", reviewSummaryPath, "--history-file", historyPath, "--target", "prompt", "--target-file", targetPath, "--output", inputPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize prepare-input failed: %s", stderr)
+		t.Fatalf("improve prepare-input failed: %s", stderr)
 	}
 	prepared := readJSONObjectFile(t, inputPath)
-	if prepared["schemaVersion"] != contracts.OptimizeInputsSchema {
-		t.Fatalf("unexpected optimize input schema: %#v", prepared["schemaVersion"])
+	if prepared["schemaVersion"] != contracts.ImproveInputsSchema {
+		t.Fatalf("unexpected improve input schema: %#v", prepared["schemaVersion"])
 	}
-	if prepared["optimizationTarget"] != "prompt" {
-		t.Fatalf("unexpected optimization target: %#v", prepared["optimizationTarget"])
+	if prepared["improvementTarget"] != "prompt" {
+		t.Fatalf("unexpected improvement target: %#v", prepared["improvementTarget"])
 	}
 	intentProfile := prepared["intentProfile"].(map[string]any)
 	if intentProfile["intentId"] != "intent-operator-workflow-recovery" {
-		t.Fatalf("unexpected optimize input intent profile: %#v", intentProfile)
+		t.Fatalf("unexpected improve input intent profile: %#v", intentProfile)
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--input", inputPath, "--output", proposalPath)
+	_, stderr, exitCode = runCLI(t, root, "improve", "propose", "--input", inputPath, "--output", proposalPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize propose failed: %s", stderr)
+		t.Fatalf("improve propose failed: %s", stderr)
 	}
 	proposal := readJSONObjectFile(t, proposalPath)
-	if proposal["schemaVersion"] != contracts.OptimizeProposalSchema || proposal["decision"] != "revise" {
+	if proposal["schemaVersion"] != contracts.ImproveProposalSchema || proposal["decision"] != "revise" {
 		t.Fatalf("unexpected proposal: %#v", proposal)
 	}
 	if proposal["intentProfile"].(map[string]any)["intentId"] != "intent-operator-workflow-recovery" {
@@ -2889,9 +2889,9 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 		t.Fatalf("unexpected revision brief: %#v", proposal["revisionBrief"])
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "optimize", "build-artifact", "--proposal-file", proposalPath, "--output", artifactPath)
+	_, stderr, exitCode = runCLI(t, root, "improve", "build-artifact", "--proposal-file", proposalPath, "--output", artifactPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize build-artifact failed: %s", stderr)
+		t.Fatalf("improve build-artifact failed: %s", stderr)
 	}
 	revisionArtifact := readJSONObjectFile(t, artifactPath)
 	if revisionArtifact["schemaVersion"] != contracts.RevisionArtifactSchema {
@@ -2910,12 +2910,12 @@ func TestCLIOptimizePrepareInputProposeAndBuildArtifact(t *testing.T) {
 	}
 }
 
-func TestCLIOptimizeProposePrioritizesResidualReportHotspotsBeforeImprovedFallback(t *testing.T) {
+func TestCLIImproveProposePrioritizesResidualReportHotspotsBeforeImprovedFallback(t *testing.T) {
 	root := t.TempDir()
 	reportPath := filepath.Join(root, "report.json")
 	targetPath := filepath.Join(root, "prompt.md")
-	inputPath := filepath.Join(root, "optimize-input.json")
-	proposalPath := filepath.Join(root, "optimize-proposal.json")
+	inputPath := filepath.Join(root, "improve-input.json")
+	proposalPath := filepath.Join(root, "improve-proposal.json")
 	if err := os.WriteFile(targetPath, []byte("Keep operator escalation wording explicit.\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
@@ -2978,13 +2978,13 @@ func TestCLIOptimizeProposePrioritizesResidualReportHotspotsBeforeImprovedFallba
 		"recommendation": "defer",
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", inputPath)
+	_, stderr, exitCode := runCLI(t, root, "improve", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", inputPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize prepare-input failed: %s", stderr)
+		t.Fatalf("improve prepare-input failed: %s", stderr)
 	}
-	_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--input", inputPath, "--output", proposalPath)
+	_, stderr, exitCode = runCLI(t, root, "improve", "propose", "--input", inputPath, "--output", proposalPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize propose failed: %s", stderr)
+		t.Fatalf("improve propose failed: %s", stderr)
 	}
 	proposal := readJSONObjectFile(t, proposalPath)
 	prioritizedEvidence := proposal["prioritizedEvidence"].([]any)
@@ -3009,17 +3009,17 @@ func TestCLIOptimizeProposePrioritizesResidualReportHotspotsBeforeImprovedFallba
 	}
 }
 
-func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
+func TestCLIImproveSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 	root := t.TempDir()
 	reportPath := filepath.Join(root, "report.json")
 	reviewSummaryPath := filepath.Join(root, "review-summary.json")
 	historyPath := filepath.Join(root, "scenario-history.snapshot.json")
 	targetPath := filepath.Join(root, "review.prompt.md")
-	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	improveInputPath := filepath.Join(root, "improve-input.json")
 	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
-	searchInputPath := filepath.Join(root, "optimize-search-input.json")
-	searchResultPath := filepath.Join(root, "optimize-search-result.json")
-	proposalPath := filepath.Join(root, "optimize-proposal.json")
+	searchInputPath := filepath.Join(root, "improve-search-input.json")
+	searchResultPath := filepath.Join(root, "improve-search-result.json")
+	proposalPath := filepath.Join(root, "improve-proposal.json")
 	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
@@ -3096,32 +3096,32 @@ func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--review-summary", reviewSummaryPath, "--history-file", historyPath, "--target", "prompt", "--target-file", targetPath, "--output", optimizeInputPath)
+	_, stderr, exitCode := runCLI(t, root, "improve", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--review-summary", reviewSummaryPath, "--history-file", historyPath, "--target", "prompt", "--target-file", targetPath, "--output", improveInputPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize prepare-input failed: %s", stderr)
+		t.Fatalf("improve prepare-input failed: %s", stderr)
 	}
-	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetPath, "--output", searchInputPath)
+	_, stderr, exitCode = runCLI(t, root, "improve", "search", "prepare-input", "--improve-input", improveInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetPath, "--output", searchInputPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+		t.Fatalf("improve search prepare-input failed: %s", stderr)
 	}
 	searchInput := readJSONObjectFile(t, searchInputPath)
-	if searchInput["schemaVersion"] != contracts.OptimizeSearchInputsSchema {
+	if searchInput["schemaVersion"] != contracts.ImproveSearchInputsSchema {
 		t.Fatalf("unexpected search input schema: %#v", searchInput["schemaVersion"])
 	}
 	if len(searchInput["scenarioSets"].(map[string]any)["heldOutScenarioSet"].([]any)) != 1 {
 		t.Fatalf("unexpected held-out scenario set: %#v", searchInput["scenarioSets"])
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	stdout, stderr, exitCode := runCLI(t, root, "improve", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
 	if exitCode != 0 {
 		resultPayload := ""
 		if payload, err := os.ReadFile(searchResultPath); err == nil {
 			resultPayload = string(payload)
 		}
-		t.Fatalf("optimize search run failed: stdout=%s stderr=%s result=%s", stdout, stderr, resultPayload)
+		t.Fatalf("improve search run failed: stdout=%s stderr=%s result=%s", stdout, stderr, resultPayload)
 	}
 	searchResult := readJSONObjectFile(t, searchResultPath)
-	if searchResult["schemaVersion"] != contracts.OptimizeSearchResultSchema || searchResult["status"] != "completed" {
+	if searchResult["schemaVersion"] != contracts.ImproveSearchResultSchema || searchResult["status"] != "completed" {
 		t.Fatalf("unexpected search result: %#v", searchResult)
 	}
 	if searchResult["selectedCandidateId"] != "seed" {
@@ -3150,12 +3150,12 @@ func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 		t.Fatalf("unexpected token completeness: %#v", telemetryCompleteness)
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "optimize", "propose", "--from-search", searchResultPath, "--output", proposalPath)
+	_, stderr, exitCode = runCLI(t, root, "improve", "propose", "--from-search", searchResultPath, "--output", proposalPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize propose --from-search failed: %s", stderr)
+		t.Fatalf("improve propose --from-search failed: %s", stderr)
 	}
 	proposal := readJSONObjectFile(t, proposalPath)
-	if proposal["schemaVersion"] != contracts.OptimizeProposalSchema {
+	if proposal["schemaVersion"] != contracts.ImproveProposalSchema {
 		t.Fatalf("unexpected proposal schema: %#v", proposal["schemaVersion"])
 	}
 	if proposal["searchResultFile"] != searchResultPath {
@@ -3166,14 +3166,14 @@ func TestCLIOptimizeSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 	}
 }
 
-func TestCLIOptimizeSearchRunReportsWhyNoCandidatesWereGenerated(t *testing.T) {
+func TestCLIImproveSearchRunReportsWhyNoCandidatesWereGenerated(t *testing.T) {
 	root := t.TempDir()
 	reportPath := filepath.Join(root, "report.json")
 	targetPath := filepath.Join(root, "review.prompt.md")
-	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	improveInputPath := filepath.Join(root, "improve-input.json")
 	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
-	searchInputPath := filepath.Join(root, "optimize-search-input.json")
-	searchResultPath := filepath.Join(root, "optimize-search-result.json")
+	searchInputPath := filepath.Join(root, "improve-search-input.json")
+	searchResultPath := filepath.Join(root, "improve-search-result.json")
 	if err := os.WriteFile(targetPath, []byte("Keep escalation handling explicit.\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
@@ -3236,17 +3236,17 @@ func TestCLIOptimizeSearchRunReportsWhyNoCandidatesWereGenerated(t *testing.T) {
 	writeExecutableFile(t, root, "codex", "#!/bin/sh\nexit 23\n")
 	t.Setenv("PATH", root+string(os.PathListSeparator)+os.Getenv("PATH"))
 
-	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", optimizeInputPath)
+	_, stderr, exitCode := runCLI(t, root, "improve", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", improveInputPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize prepare-input failed: %s", stderr)
+		t.Fatalf("improve prepare-input failed: %s", stderr)
 	}
-	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "light", "--output", searchInputPath)
+	_, stderr, exitCode = runCLI(t, root, "improve", "search", "prepare-input", "--improve-input", improveInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "light", "--output", searchInputPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+		t.Fatalf("improve search prepare-input failed: %s", stderr)
 	}
-	_, stderr, exitCode = runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	_, stderr, exitCode = runCLI(t, root, "improve", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize search run failed: %s", stderr)
+		t.Fatalf("improve search run failed: %s", stderr)
 	}
 	searchResult := readJSONObjectFile(t, searchResultPath)
 	if searchResult["selectedCandidateId"] != "seed" {
@@ -3275,13 +3275,13 @@ func TestCLIOptimizeSearchRunReportsWhyNoCandidatesWereGenerated(t *testing.T) {
 	}
 }
 
-func TestCLIOptimizeSearchUsesHeldOutCompareArtifactReasonsAsFeedback(t *testing.T) {
+func TestCLIImproveSearchUsesHeldOutCompareArtifactReasonsAsFeedback(t *testing.T) {
 	root := t.TempDir()
 	reportPath := filepath.Join(root, "report.json")
 	targetPath := filepath.Join(root, "review.prompt.md")
-	optimizeInputPath := filepath.Join(root, "optimize-input.json")
+	improveInputPath := filepath.Join(root, "improve-input.json")
 	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
-	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	searchInputPath := filepath.Join(root, "improve-search-input.json")
 	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
@@ -3309,8 +3309,8 @@ func TestCLIOptimizeSearchUsesHeldOutCompareArtifactReasonsAsFeedback(t *testing
 		"humanReviewFindings": []any{},
 		"recommendation":      "defer",
 	})
-	if _, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", optimizeInputPath); exitCode != 0 {
-		t.Fatalf("optimize prepare-input failed: %s", stderr)
+	if _, stderr, exitCode := runCLI(t, root, "improve", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", improveInputPath); exitCode != 0 {
+		t.Fatalf("improve prepare-input failed: %s", stderr)
 	}
 	writeJSONFile(t, heldOutResultsPath, map[string]any{
 		"schemaVersion": contracts.ScenarioResultsSchema,
@@ -3330,25 +3330,25 @@ func TestCLIOptimizeSearchUsesHeldOutCompareArtifactReasonsAsFeedback(t *testing
 			},
 		},
 	})
-	if _, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetPath, "--output", searchInputPath); exitCode != 0 {
-		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+	if _, stderr, exitCode := runCLI(t, root, "improve", "search", "prepare-input", "--improve-input", improveInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetPath, "--output", searchInputPath); exitCode != 0 {
+		t.Fatalf("improve search prepare-input failed: %s", stderr)
 	}
-	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--json")
+	stdout, stderr, exitCode := runCLI(t, root, "improve", "search", "run", "--input", searchInputPath, "--json")
 	if exitCode != 0 {
-		t.Fatalf("optimize search run unexpectedly blocked: stdout=%s stderr=%s", stdout, stderr)
+		t.Fatalf("improve search run unexpectedly blocked: stdout=%s stderr=%s", stdout, stderr)
 	}
 	result := parseJSONObject(t, stdout)
 	if result["status"] != "completed" {
-		t.Fatalf("unexpected optimize search result: %#v", result)
+		t.Fatalf("unexpected improve search result: %#v", result)
 	}
 }
 
-func TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayload(t *testing.T) {
+func TestCLIImproveSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayload(t *testing.T) {
 	root := t.TempDir()
 	reportPath := filepath.Join(root, "report.json")
 	targetPath := filepath.Join(root, "review.prompt.md")
-	optimizeInputPath := filepath.Join(root, "optimize-input.json")
-	searchInputPath := filepath.Join(root, "optimize-search-input.json")
+	improveInputPath := filepath.Join(root, "improve-input.json")
+	searchInputPath := filepath.Join(root, "improve-search-input.json")
 	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
@@ -3376,14 +3376,14 @@ func TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayl
 		"humanReviewFindings": []any{},
 		"recommendation":      "defer",
 	})
-	_, stderr, exitCode := runCLI(t, root, "optimize", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", optimizeInputPath)
+	_, stderr, exitCode := runCLI(t, root, "improve", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", improveInputPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize prepare-input failed: %s", stderr)
+		t.Fatalf("improve prepare-input failed: %s", stderr)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--input-json", fmt.Sprintf("{\"optimizeInputFile\":%q}", optimizeInputPath), "--output", searchInputPath, "--json")
+	stdout, stderr, exitCode := runCLI(t, root, "improve", "search", "prepare-input", "--input-json", fmt.Sprintf("{\"improveInputFile\":%q}", improveInputPath), "--output", searchInputPath, "--json")
 	if exitCode != 0 {
-		t.Fatalf("optimize search prepare-input --input-json failed: %s", stderr)
+		t.Fatalf("improve search prepare-input --input-json failed: %s", stderr)
 	}
 	preparePayload := parseJSONObject(t, stdout)
 	if preparePayload["status"] != "ready" {
@@ -3392,11 +3392,11 @@ func TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayl
 	if preparePayload["inputFile"] != searchInputPath {
 		t.Fatalf("unexpected input file: %#v", preparePayload["inputFile"])
 	}
-	if _, err := os.Stat(filepath.Join(root, "optimize-search-input.raw.json")); err != nil {
+	if _, err := os.Stat(filepath.Join(root, "improve-search-input.raw.json")); err != nil {
 		t.Fatalf("expected raw input file to exist: %v", err)
 	}
 
-	stdout, stderr, exitCode = runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--json")
+	stdout, stderr, exitCode = runCLI(t, root, "improve", "search", "run", "--input", searchInputPath, "--json")
 	if exitCode != 1 {
 		t.Fatalf("expected blocked exit code, got %d, stderr=%s", exitCode, stderr)
 	}
@@ -3420,14 +3420,14 @@ func TestCLIOptimizeSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayl
 	}
 }
 
-func TestCLIOptimizeSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
+func TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 	root := t.TempDir()
 	artifactRoot := t.TempDir()
 	targetPath := filepath.Join(root, "prompt.md")
 	heldOutResultsPath := filepath.Join(root, "held-out-results.json")
-	optimizeInputPath := filepath.Join(root, "optimize-input.json")
-	searchInputPath := filepath.Join(root, "optimize-search-input.json")
-	searchResultPath := filepath.Join(artifactRoot, "optimize-search-result.json")
+	improveInputPath := filepath.Join(root, "improve-input.json")
+	searchInputPath := filepath.Join(root, "improve-search-input.json")
+	searchResultPath := filepath.Join(artifactRoot, "improve-search-result.json")
 
 	if err := os.MkdirAll(filepath.Join(root, ".agents"), 0o755); err != nil {
 		t.Fatalf("MkdirAll returned error: %v", err)
@@ -3494,7 +3494,7 @@ func TestCLIOptimizeSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 	}, "\n"))
 	if err := os.WriteFile(filepath.Join(root, ".agents", "cautilus-adapter.yaml"), []byte(strings.Join([]string{
 		"version: 1",
-		"repo: temp-optimize-search",
+		"repo: temp-improve-search",
 		"evaluation_surfaces:",
 		"  - app / prompt",
 		"baseline_options:",
@@ -3543,18 +3543,18 @@ func TestCLIOptimizeSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 			},
 		},
 	})
-	writeJSONFile(t, optimizeInputPath, map[string]any{
-		"schemaVersion":      contracts.OptimizeInputsSchema,
+	writeJSONFile(t, improveInputPath, map[string]any{
+		"schemaVersion":      contracts.ImproveInputsSchema,
 		"generatedAt":        "2026-04-26T09:58:00.000Z",
 		"repoRoot":           root,
-		"optimizationTarget": "prompt",
+		"improvementTarget": "prompt",
 		"intentProfile": map[string]any{
 			"schemaVersion":   contracts.BehaviorIntentSchema,
 			"intentId":        "intent-operator-recovery-guidance",
 			"summary":         "Operator guidance should stay legible under recovery pressure.",
 			"behaviorSurface": cautilusruntime.BehaviorSurfaces["OPERATOR_BEHAVIOR"],
 		},
-		"optimizer": map[string]any{
+		"improver": map[string]any{
 			"budget": "light",
 			"plan": map[string]any{
 				"evidenceLimit":        3,
@@ -3594,14 +3594,14 @@ func TestCLIOptimizeSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 	runGit(t, root, "commit", "-m", "initial")
 	t.Setenv("PATH", root+string(os.PathListSeparator)+os.Getenv("PATH"))
 
-	_, stderr, exitCode := runCLI(t, root, "optimize", "search", "prepare-input", "--optimize-input", optimizeInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "light", "--output", searchInputPath)
+	_, stderr, exitCode := runCLI(t, root, "improve", "search", "prepare-input", "--improve-input", improveInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "light", "--output", searchInputPath)
 	if exitCode != 0 {
-		t.Fatalf("optimize search prepare-input failed: %s", stderr)
+		t.Fatalf("improve search prepare-input failed: %s", stderr)
 	}
-	stdout, stderr, exitCode := runCLI(t, root, "optimize", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
+	stdout, stderr, exitCode := runCLI(t, root, "improve", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
 	if exitCode != 0 {
 		resultPayload, _ := os.ReadFile(searchResultPath)
-		t.Fatalf("optimize search run failed: stdout=%s stderr=%s result=%s", stdout, stderr, string(resultPayload))
+		t.Fatalf("improve search run failed: stdout=%s stderr=%s result=%s", stdout, stderr, string(resultPayload))
 	}
 	searchResult := readJSONObjectFile(t, searchResultPath)
 	if searchResult["status"] != "completed" {

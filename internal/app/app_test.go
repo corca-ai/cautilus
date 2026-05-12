@@ -371,7 +371,7 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 	if !strings.Contains(body, "cautilus claim discover --repo-root '"+repoRoot+"' --output '"+filepath.Join(repoRoot, "state dir", "latest claims.json")+"'") {
 		t.Fatalf("expected claim branch to keep the requested repo root and quote paths, got %s", body)
 	}
-	for _, forbidden := range []string{"eval test", "review variants", "optimize", "git commit"} {
+	for _, forbidden := range []string{"eval test", "review variants", "cautilus improve", "git commit"} {
 		if strings.Contains(body, forbidden) {
 			t.Fatalf("agent status should not offer %q, got %s", forbidden, body)
 		}
@@ -1205,12 +1205,18 @@ func TestRunPrefixHelpWorksForCommandGroups(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"optimize", "search", "--help"}, &stdout, &stderr)
+	exitCode := Run([]string{"improve", "search", "--help"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
-	if !strings.Contains(stdout.String(), "cautilus optimize search prepare-input [args]") {
-		t.Fatalf("expected grouped optimize search help, got %q", stdout.String())
+	if !strings.Contains(stdout.String(), "cautilus improve search prepare-input [args]") {
+		t.Fatalf("expected grouped improve search help, got %q", stdout.String())
+	}
+}
+
+func TestUpdateSkipsPostRunUpdateCheck(t *testing.T) {
+	if shouldCheckForUpdates([]string{"update"}) {
+		t.Fatal("update installs the latest release itself and must not emit a stale post-run update notice")
 	}
 }
 

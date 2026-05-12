@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.improve_inputs.v1",
+  "title": "Cautilus Improve Inputs",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "repoRoot",
+    "improvementTarget",
+    "intentProfile",
+    "improver",
+    "reportFile",
+    "report",
+    "objective"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.improve_inputs.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "repoRoot": {
+      "type": "string"
+    },
+    "improvementTarget": {
+      "type": "string",
+      "enum": [
+        "prompt",
+        "adapter"
+      ]
+    },
+    "intentProfile": {
+      "type": "object"
+    },
+    "improver": {
+      "type": "object",
+      "required": [
+        "budget",
+        "plan"
+      ],
+      "properties": {
+        "budget": {
+          "type": "string",
+          "enum": [
+            "light",
+            "medium",
+            "heavy"
+          ]
+        },
+        "plan": {
+          "type": "object",
+          "required": [
+            "evidenceLimit",
+            "suggestedChangeLimit",
+            "reviewVariantLimit",
+            "historySignalLimit"
+          ],
+          "properties": {
+            "evidenceLimit": {
+              "type": "integer"
+            },
+            "suggestedChangeLimit": {
+              "type": "integer"
+            },
+            "reviewVariantLimit": {
+              "type": "integer"
+            },
+            "historySignalLimit": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "targetFile": {
+      "type": "object",
+      "required": [
+        "path",
+        "exists"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "exists": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "reportFile": {
+      "type": "string"
+    },
+    "report": {
+      "type": "object"
+    },
+    "reviewSummaryFile": {
+      "type": "string"
+    },
+    "reviewSummary": {
+      "type": "object"
+    },
+    "scenarioHistoryFile": {
+      "type": "string"
+    },
+    "scenarioHistory": {
+      "type": "object"
+    },
+    "objective": {
+      "type": "object",
+      "required": [
+        "summary",
+        "constraints"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

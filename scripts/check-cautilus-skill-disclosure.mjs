@@ -12,7 +12,7 @@ const REQUIRED_FRAGMENTS = [
 	"cautilus scenarios --json",
 	"--example-input",
 	"## Declared Claim Discovery",
-	"`claim`, `eval`, and `optimize`",
+	"`claim`, `eval`, and `improve`",
 	"eval-summary.json",
 	"dev / repo",
 	"app / prompt",

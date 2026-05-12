@@ -59,7 +59,7 @@ claim_discovery:
   evidence_roots:
     - docs/specs
     - fixtures
-optimize_search:
+improve_search:
   default_budget: medium
   budgets:
     light:
@@ -149,7 +149,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   `state_path` tells agents where the repo expects the current claim-state packet to live.
   `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation; it does not prove claims by itself.
 - `executor_variants`: optional backend-specific review or simulation runners.
-- `optimize_search`: optional repo-owned defaults for `cautilus optimize search`.
+- `improve_search`: optional repo-owned defaults for `cautilus improve search`.
   The product still owns the shared tier labels `light`, `medium`, and `heavy`.
   The adapter may override the repo's default budget tier, per-tier numeric limits, review checkpoint defaults, and selection policy.
   `merge_enabled` and `three_parent_policy` are currently preserved into the canonical search packet for replay and future expansion, but the current runner does not yet synthesize merge candidates from them.
@@ -183,7 +183,7 @@ Each named adapter should define its own:
 - command templates
 - artifacts to inspect
 - human review prompts
-- optional `optimize_search` defaults when that surface needs a different bounded search policy from the repo root adapter
+- optional `improve_search` defaults when that surface needs a different bounded search policy from the repo root adapter
 
 This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.
 When a repo runs review variants repeatedly, add a checked-in runner that loads the adapter and fans out `executor_variants` instead of asking operators to retype each shell command by hand.

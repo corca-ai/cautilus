@@ -79,7 +79,7 @@ These do not need to block runtime consolidation:
 - rewriting release automation from Node to Go
 - removing all JS utility code from the repo
 - changing packet schemas only to make the migration more convenient
-- reworking experimental optimize-search harnesses that are already explicitly non-shipping
+- reworking experimental improve-search harnesses that are already explicitly non-shipping
 
 ## Non-Goals
 

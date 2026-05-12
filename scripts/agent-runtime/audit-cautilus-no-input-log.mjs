@@ -22,7 +22,7 @@ const FORBIDDEN_COMMAND_PATTERNS = [
 	["eval_test", /\beval\s+test\b/],
 	["eval_evaluate", /\beval\s+evaluate\b/],
 	["review_variants", /\breview\s+variants\b/],
-	["optimize", /\boptimize\b/],
+	["improve", /\bimprove\b/],
 	["scenario_propose", /\bscenario\s+propose\b/],
 	["scenarios_catalog", /\bscenarios\s+--json\b/],
 	["doctor_next_action", /\bdoctor\b.*--next-action\b/],

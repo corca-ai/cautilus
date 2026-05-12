@@ -69,7 +69,7 @@ A half-finished migration could leave the code more correct than the docs, which
 ## Deliberately Not Doing
 
 - We are not using this migration to justify unrelated packet redesign.
-- We are not treating experimental optimize-search harnesses as part of the immediate shipped runtime boundary.
+- We are not treating experimental improve-search harnesses as part of the immediate shipped runtime boundary.
 - We are not promising a zero-shim cutover before checking whether current adapters still depend on Node entrypoints.
 
 ## Next Move

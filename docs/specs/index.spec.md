@@ -1,40 +1,19 @@
-# Cautilus Promise Specs
+# Cautilus
 
-This is the entry point for the Cautilus design specs.
-Cautilus is a CLI plus Cautilus Agent workflow for discovering, evaluating, and improving behavior promises while keeping evidence, ownership, and review state inspectable.
+**Cautilus** is a CLI bundled with the `cautilus-agent` skill for discovering, evaluating, and improving behavior promises while keeping evidence, ownership, and review state inspectable.
 
-## Words Used Here
+## Vocabulary
 
-- A promise is something Cautilus currently says it can help with.
-- A candidate claim is a possible promise found during Claim Discovery.
-- Evidence is the packet, fixture, command result, or durable artifact that supports a promise.
-- A gap is missing or weak evidence that stays visible.
-- A shared concern is a rule or risk that applies across workflows, such as host ownership, evidence visibility, or packet freshness.
+- A `promise` means something Cautilus currently says it can help with.
+- A `candidate claim` means a possible promise found during `Claim Discovery`.
+- `evidence` means a packet, fixture, command result, or durable artifact that supports a promise.
+- A `gap` means missing or weak evidence that stays visible.
+- A `cross-cutting rule` means a rule or risk that applies across workflows, such as host ownership, evidence visibility, or packet freshness.
 
 ## Reading Path
 
-1. Start with the [User Workflow](user/index.spec.md) to see what Cautilus helps a user do.
-2. Read the [Maintainer View](maintainer/index.spec.md) to see which contracts, fixtures, and evidence routes keep those workflows true.
-3. Use the [Promise Model](model/index.spec.md) when you need the compact map of names, keys, and links.
-4. Use [Shared Concerns](concerns/index.spec.md) when checking reviewability, evidence visibility, ownership, vocabulary, or packet freshness across workflows.
-5. Use [Evidence State](proof/index.spec.md) to see the product-wide proof status without rereading every spec, including expensive evidence selected instead of rerun, stale evidence that needs refresh, and proof gaps that remain open.
-
-Each spec page should still carry its own local proof or visible proof gap.
-Evidence State summarizes cross-spec status; it does not replace the proof owned by each spec.
-
-## Reference Pages
-
-- [User Workflow](user/index.spec.md)
-- [Maintainer View](maintainer/index.spec.md)
-- [Shared Concerns](concerns/index.spec.md)
-- [Evidence State](proof/index.spec.md)
-- [Promise Model](model/index.spec.md)
-- [Promise Ledger](model/promise-ledger.spec.md)
-- [How The Views Relate](model/how-views-relate.spec.md)
-- [Names And Keys](model/names-and-keys.spec.md)
-
-## Archive
-
-- [Archived Specs](archive/index.spec.md)
-
-The archive preserves older spec pages for comparison while the promise model remains the current reading path.
+1. Start with the [User Workflow](user/index.spec.md) to see how people use the `cautilus` CLI and the `cautilus-agent` skill to discover, evaluate, and improve behavior against explicit evidence.
+2. Read [Contracts](contracts/index.spec.md) to see the command, packet, adapter, fixture, and evidence contracts that keep the user-facing workflow buildable and reviewable.
+3. Read [Promise Ledger](ledger/index.spec.md) to understand which behavior claims Cautilus currently makes, how they relate, and which workflow or contract owns each claim.
+4. Read [Cross-Cutting Rules](rules/index.spec.md) to understand the reviewability, ownership, vocabulary, freshness, cost, and resumability rules that apply across workflow steps.
+5. Read [Evidence State](evidence/index.spec.md) to see which claims are supported now, which proof was selected instead of rerun, and which gaps remain open.

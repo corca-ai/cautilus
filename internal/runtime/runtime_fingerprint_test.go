@@ -229,7 +229,7 @@ func TestBuildEvaluationSummaryBlocksPinnedRuntimeMismatch(t *testing.T) {
 	}
 }
 
-func TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange(t *testing.T) {
+func TestGenerateImproveProposalAddsPassingSimplificationForRuntimeChange(t *testing.T) {
 	repoRoot := t.TempDir()
 	targetPath := filepath.Join(repoRoot, "skills", "cautilus-agent", "SKILL.md")
 	originalTarget := "Use the existing skill instructions.\n"
@@ -260,31 +260,31 @@ func TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange(t *te
 		"runtimeContext":      modelRuntimeChangedContext(),
 	}
 	packet := map[string]any{
-		"schemaVersion":      contracts.OptimizeInputsSchema,
-		"generatedAt":        "2026-04-24T00:00:00Z",
-		"repoRoot":           ".",
-		"optimizationTarget": "prompt",
-		"intentProfile":      report["intentProfile"],
-		"optimizer":          buildOptimizerPlan("medium"),
-		"reportFile":         "report.json",
-		"report":             report,
-		"runtimeContext":     report["runtimeContext"],
-		"objective":          map[string]any{"constraints": []any{}},
+		"schemaVersion":     contracts.ImproveInputsSchema,
+		"generatedAt":       "2026-04-24T00:00:00Z",
+		"repoRoot":          ".",
+		"improvementTarget": "prompt",
+		"intentProfile":     report["intentProfile"],
+		"improver":          buildImproverPlan("medium"),
+		"reportFile":        "report.json",
+		"report":            report,
+		"runtimeContext":    report["runtimeContext"],
+		"objective":         map[string]any{"constraints": []any{}},
 		"targetFile": map[string]any{
 			"path": targetPath,
 			"kind": "skill",
 		},
 	}
-	proposal, err := GenerateOptimizeProposal(packet, nil, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
+	proposal, err := GenerateImproveProposal(packet, nil, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
 	if err != nil {
-		t.Fatalf("GenerateOptimizeProposal returned error: %v", err)
+		t.Fatalf("GenerateImproveProposal returned error: %v", err)
 	}
 	afterTarget, err := os.ReadFile(targetPath)
 	if err != nil {
 		t.Fatalf("failed to read target file: %v", err)
 	}
 	if string(afterTarget) != originalTarget {
-		t.Fatalf("GenerateOptimizeProposal must not directly edit consumer-owned target files; got %q", string(afterTarget))
+		t.Fatalf("GenerateImproveProposal must not directly edit consumer-owned target files; got %q", string(afterTarget))
 	}
 	if asMap(proposal["targetFile"])["path"] != targetPath {
 		t.Fatalf("proposal should carry target metadata without mutating the target, got %#v", proposal["targetFile"])
@@ -308,7 +308,7 @@ func TestGenerateOptimizeProposalAddsPassingSimplificationForRuntimeChange(t *te
 	}
 }
 
-func TestGenerateOptimizeProposalKeepsBaselineFollowUpForHoldWithoutSuggestedChanges(t *testing.T) {
+func TestGenerateImproveProposalKeepsBaselineFollowUpForHoldWithoutSuggestedChanges(t *testing.T) {
 	report := map[string]any{
 		"schemaVersion": contracts.ReportPacketSchema,
 		"generatedAt":   "2026-04-24T00:00:00Z",
@@ -333,19 +333,19 @@ func TestGenerateOptimizeProposalKeepsBaselineFollowUpForHoldWithoutSuggestedCha
 		"recommendation":      "accept-now",
 	}
 	packet := map[string]any{
-		"schemaVersion":      contracts.OptimizeInputsSchema,
-		"generatedAt":        "2026-04-24T00:00:00Z",
-		"repoRoot":           ".",
-		"optimizationTarget": "prompt",
-		"intentProfile":      report["intentProfile"],
-		"optimizer":          buildOptimizerPlan("medium"),
-		"reportFile":         "report.json",
-		"report":             report,
-		"objective":          map[string]any{"constraints": []any{}},
+		"schemaVersion":     contracts.ImproveInputsSchema,
+		"generatedAt":       "2026-04-24T00:00:00Z",
+		"repoRoot":          ".",
+		"improvementTarget": "prompt",
+		"intentProfile":     report["intentProfile"],
+		"improver":          buildImproverPlan("medium"),
+		"reportFile":        "report.json",
+		"report":            report,
+		"objective":         map[string]any{"constraints": []any{}},
 	}
-	proposal, err := GenerateOptimizeProposal(packet, nil, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
+	proposal, err := GenerateImproveProposal(packet, nil, time.Date(2026, 4, 24, 0, 0, 0, 0, time.UTC))
 	if err != nil {
-		t.Fatalf("GenerateOptimizeProposal returned error: %v", err)
+		t.Fatalf("GenerateImproveProposal returned error: %v", err)
 	}
 	if proposal["decision"] != "hold" || len(arrayOrEmpty(proposal["suggestedChanges"])) != 0 {
 		t.Fatalf("expected hold without suggested changes, got decision=%#v changes=%#v", proposal["decision"], proposal["suggestedChanges"])
@@ -356,7 +356,7 @@ func TestGenerateOptimizeProposalKeepsBaselineFollowUpForHoldWithoutSuggestedCha
 	}
 }
 
-func TestOptimizeSearchRankCandidateIDsPrefersShorterTargetAfterBehaviorTie(t *testing.T) {
+func TestImproveSearchRankCandidateIDsPrefersShorterTargetAfterBehaviorTie(t *testing.T) {
 	matrix := []any{
 		map[string]any{"candidateId": "long", "scenarioId": "case", "score": 1.0},
 		map[string]any{"candidateId": "short", "scenarioId": "case", "score": 1.0},
@@ -365,11 +365,11 @@ func TestOptimizeSearchRankCandidateIDsPrefersShorterTargetAfterBehaviorTie(t *t
 		{"id": "long", "targetSnapshot": map[string]any{"sizeBytes": 100}, "telemetry": map[string]any{"totalCostUsd": 0.01}},
 		{"id": "short", "targetSnapshot": map[string]any{"sizeBytes": 40}, "telemetry": map[string]any{"totalCostUsd": 0.02}},
 	}
-	ranked := optimizeSearchRankCandidateIDs([]string{"long", "short"}, matrix, candidates, []string{"case"})
+	ranked := improveSearchRankCandidateIDs([]string{"long", "short"}, matrix, candidates, []string{"case"})
 	if len(ranked) == 0 || ranked[0] != "short" {
 		t.Fatalf("expected shorter candidate to win behavioral tie, got %#v", ranked)
 	}
-	registry := optimizeSearchCandidateRegistry(candidates)
+	registry := improveSearchCandidateRegistry(candidates)
 	delta := asMap(asMap(registry[1])["targetSizeDelta"])
 	if delta["sizeBytes"] != float64(-60) {
 		t.Fatalf("expected target size delta to be recorded, got %#v", registry)

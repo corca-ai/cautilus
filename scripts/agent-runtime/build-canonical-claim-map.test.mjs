@@ -150,7 +150,7 @@ test("parseUserCatalog reads only same-directory claim pages from spec index", (
 			"",
 			"- [Claim Discovery](claim-discovery.spec.md)",
 			"- [Evaluation](evaluation.spec.md)",
-			"- [Maintainer](../maintainer/index.spec.md)",
+			"- [Maintainer](../contracts/index.spec.md)",
 			"- [Root](../index.spec.md)",
 			"",
 		].join("\n");
@@ -180,7 +180,7 @@ test("parseMaintainerCatalog keeps bullet-index keywords scoped to each claim ar
 			"- Eval surfaces, fixtures, and runner readiness.",
 			"",
 		].join("\n"),
-		"docs/specs/maintainer/index.spec.md",
+		"docs/specs/contracts/index.spec.md",
 	);
 
 	assert.equal(catalog.length, 2);
@@ -188,13 +188,13 @@ test("parseMaintainerCatalog keeps bullet-index keywords scoped to each claim ar
 	assert.deepEqual(catalog[1].keywords, ["eval", "fixture", "readines", "runner", "surface"]);
 });
 
-test("parseMaintainerCatalog reads same-directory maintainer spec pages", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-maintainer-spec-tree-"));
+test("parseMaintainerCatalog reads same-directory contract spec pages", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-contract-spec-tree-"));
 	try {
-		const maintainerDir = join(root, "docs", "specs", "maintainer");
-		mkdirSync(maintainerDir, { recursive: true });
+		const contractsDir = join(root, "docs", "specs", "contracts");
+		mkdirSync(contractsDir, { recursive: true });
 		writeFileSync(
-			join(maintainerDir, "claim-discovery.spec.md"),
+			join(contractsDir, "claim-discovery.spec.md"),
 			[
 				"# Claim Discovery Workflow",
 				"",
@@ -207,17 +207,17 @@ test("parseMaintainerCatalog reads same-directory maintainer spec pages", () => 
 			].join("\n"),
 			"utf-8",
 		);
-		writeFileSync(join(maintainerDir, "index.spec.md"), "# Maintainer\n", "utf-8");
+		writeFileSync(join(contractsDir, "index.spec.md"), "# Contracts\n", "utf-8");
 
 		const catalog = parseMaintainerCatalog(
 			[
-				"# Maintainer Index",
+				"# Contracts Index",
 				"",
 				"- [Claim Discovery Workflow](claim-discovery.spec.md)",
 				"- [User](../user/index.spec.md)",
 				"",
 			].join("\n"),
-			join(maintainerDir, "index.spec.md"),
+			join(contractsDir, "index.spec.md"),
 		);
 
 		assert.equal(catalog.length, 1);
@@ -233,25 +233,25 @@ test("parseMaintainerCatalog reads same-directory maintainer spec pages", () => 
 test("buildCanonicalClaimMap absorbs scenario history, proposal source, and normalizer claims together", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-scenario-coverage-"));
 	try {
-		const maintainerDir = join(root, "docs", "specs", "maintainer");
-		mkdirSync(maintainerDir, { recursive: true });
+		const contractsDir = join(root, "docs", "specs", "contracts");
+		mkdirSync(contractsDir, { recursive: true });
 		writeFileSync(
-			join(maintainerDir, "scenario-history-normalization.spec.md"),
+			join(contractsDir, "scenario-history-normalization.spec.md"),
 			[
 				"# Scenario History And Proposal Normalization",
 				"",
 				"Aligned user claims: U2, U3, U7.",
 				"Proof route: deterministic plus held-out eval.",
 				"Current evidence status: proof-planning.",
-				"Next action: connect scenario proposal sources, scenario history cadence, normalizer coverage, and held-out selection to eval and optimize packets.",
+				"Next action: connect scenario proposal sources, scenario history cadence, normalizer coverage, and held-out selection to eval and improve packets.",
 				"Absorbs: scenario proposal, scenario history, protected check, held-out, iterate cadence, train cadence, normalizer, proposal packet, context recovery, skill failure episode.",
 				"",
 			].join("\n"),
 			"utf-8",
 		);
-		const maintainerIndexPath = join(maintainerDir, "index.spec.md");
+		const maintainerIndexPath = join(contractsDir, "index.spec.md");
 		const maintainerIndexMarkdown = [
-			"# Maintainer Index",
+			"# Contracts Index",
 			"",
 			"- [Scenario History And Proposal Normalization](scenario-history-normalization.spec.md)",
 			"",
@@ -292,7 +292,7 @@ test("buildCanonicalClaimMap absorbs scenario history, proposal source, and norm
 						claimFingerprint: "sha256:normalizer",
 						claimAudience: "developer",
 						summary: "Normalizers should produce inspectable proposal packets rather than hidden one-off shapers.",
-						sourceRefs: [{ path: "docs/specs/maintainer/scenario-history-normalization.spec.md", line: 14 }],
+						sourceRefs: [{ path: "docs/specs/contracts/scenario-history-normalization.spec.md", line: 14 }],
 						recommendedProof: "deterministic",
 						verificationReadiness: "ready-for-proof",
 						evidenceStatus: "unknown",

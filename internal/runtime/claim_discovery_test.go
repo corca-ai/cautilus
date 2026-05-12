@@ -554,7 +554,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Commands should emit durable packets with enough state for the next agent to resume.",
 		"",
-		"machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly",
+		"machine-readable eval, report, review, evidence, and improvement packets that agents can consume directly",
 		"",
 		"Use when a stateful automation keeps stalling on the same step.",
 		"",
@@ -821,7 +821,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if durablePackets == nil || durablePackets["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected durable packet claim to be deterministic, got %#v", durablePackets)
 	}
-	machineReadable := bySummary["machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly"]
+	machineReadable := bySummary["machine-readable eval, report, review, evidence, and improvement packets that agents can consume directly"]
 	if machineReadable == nil || machineReadable["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected machine-readable packet claim to be deterministic, got %#v", machineReadable)
 	}
@@ -1093,7 +1093,7 @@ func TestDiscoverClaimProofPlanSkipsFutureProofPlaceholders(t *testing.T) {
 		"",
 		"Evidence is pending.",
 		"This page should later link report-rendering specs, status-server proof, and packet freshness checks.",
-		"Future proof should connect concrete optimize packets and held-out eval results.",
+		"Future proof should connect concrete improve packets and held-out eval results.",
 		"Deeper proof should be added by linking a fresh claim packet, a reviewed status summary, and at least one skill-driven review result.",
 		"Per-claim evidence pages should later link concrete fixtures and result packets.",
 		"",

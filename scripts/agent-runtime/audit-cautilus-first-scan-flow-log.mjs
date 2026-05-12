@@ -26,7 +26,7 @@ const FORBIDDEN_COMMAND_PATTERNS = [
 	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+test\b/],
 	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+evaluate\b/],
 	["review_variants", /\breview\s+variants\b/],
-	["optimize", /\boptimize\b/],
+	["improve", /\bimprove\b/],
 	["git_add", /\bgit\s+add\b/],
 	["git_commit", /\bgit\s+commit\b/],
 	["npm_verify", /\bnpm\s+run\s+verify\b/],

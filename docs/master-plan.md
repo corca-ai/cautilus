@@ -10,11 +10,11 @@ The target product is:
 - declared-claim discovery that turns repo-owned truth surfaces into proof backlogs
 - host-repo adapters that define baselines, iterate loops, held-out checks, compare passes, and full gates
 - optional executor-variant runners for bounded external review
-- product-owned helper scripts and Cautilus Agent references for bounded evidence mining and optimization loops
+- product-owned helper scripts and Cautilus Agent references for bounded evidence mining and improvement loops
 - train-vs-held-out discipline backed by scenario history
 - scenario proposal flows that mine runtime logs and audit traces into draft evaluation cases
 - first-class evaluation surfaces for chatbot, skill, and durable workflow behavior
-- runner readiness as a setup substrate under `claim`, `eval`, and `optimize`, especially for app behavior proof
+- runner readiness as a setup substrate under `claim`, `eval`, and `improve`, especially for app behavior proof
 - `eval live` as the command surface for live app runner discovery, single-run invocation, and batched live scenarios
 - agent-first command and packet surfaces that reveal user intent while hiding lower-level helper detail
 - an intent-first workflow where prompts are mutable implementation details and evaluation contracts define success
@@ -23,12 +23,12 @@ The product has three connected jobs:
 
 1. discover declared behavior claims worth proving from adapter-owned entry docs, README.md, AGENTS.md, CLAUDE.md, and linked repo-local Markdown
 2. verify selected claims through bounded evaluation fixtures, observed packets, summaries, reports, and review surfaces
-3. improve behavior through bounded optimization and GEPA-style search after the proof surface is honest
+3. improve behavior through bounded improvement and GEPA-style search after the proof surface is honest
 
 README proof is one instance of the first job, not a product-specific concept.
 Cautilus owns the generic claim-to-proof workflow; consumer repos own their local fixtures, runners, prompts, wrappers, and policy.
 Cautilus exposes machine-readable packets, provenance, status summaries, and bounded next-work routes that other tools can consume.
-Each job now has a first-class command family: `claim`, `eval`, and `optimize`.
+Each job now has a first-class command family: `claim`, `eval`, and `improve`.
 The product surface should keep following the same discipline as `charness`: expose the user's intent at the public command boundary, keep tool-specific mechanics underneath it, and preserve durable artifacts that another agent can resume.
 Do not hide arbitrary caps or host-specific defaults inside generic discovery; use explicit packet fields, adapter-owned policy, or explicit command options when selection is needed.
 
@@ -66,15 +66,15 @@ Current `product-owned helper surface`:
 - scenario-adjacent conversation review packet and HTML surface over normalized chatbot threads plus proposal candidates
 - scenario-level telemetry summaries for cost and token transparency
 - normalized evidence-bundle input and merge helpers
-- bounded optimization input and proposal helpers
-- durable revision-artifact builder (`cautilus.revision_artifact.v1`) above optimize proposals
-- GEPA-style bounded prompt-search helpers (`optimize-search v2`) with multi-generation reflective mutation, optional bounded two- or three-parent merge synthesis, frontier-promotion review checkpoints, scenario-aware checkpoint feedback reinjection, severity-aware rejected-sibling merge tie-breaking, concern-level repair-first mutation prioritization, selection-cap reason codes, and final-only full-gate fallback
+- bounded improvement input and proposal helpers
+- durable revision-artifact builder (`cautilus.revision_artifact.v1`) above improve proposals
+- GEPA-style bounded prompt-search helpers (`improve-search v2`) with multi-generation reflective mutation, optional bounded two- or three-parent merge synthesis, frontier-promotion review checkpoints, scenario-aware checkpoint feedback reinjection, severity-aware rejected-sibling merge tie-breaking, concern-level repair-first mutation prioritization, selection-cap reason codes, and final-only full-gate fallback
 
 Dogfood and migration evidence now lives separately from the product concept.
 Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in host evidence instead of treating any one consumer repo as the product definition.
 
-The three command-family promise map lives in [specs/user/index.spec.md](./specs/user/index.spec.md): `claim` for declared-claim discovery and proof planning, `eval` for verification, and `optimize` for bounded improvement.
-The maintainer-facing proof map for those promises lives in [specs/maintainer/index.spec.md](./specs/maintainer/index.spec.md).
+The three command-family promise map lives in [specs/user/index.spec.md](./specs/user/index.spec.md): `claim` for declared-claim discovery and proof planning, `eval` for verification, and `improve` for bounded improvement.
+The contract proof map for those promises lives in [specs/contracts/index.spec.md](./specs/contracts/index.spec.md).
 The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict.
 The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the Cautilus Agent owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.
 The deterministic binary slice, first Cautilus Agent control-flow slice, deterministic review-input helper slice, possible-evidence preflight, guarded review-result application slice, review-to-eval branch proof, eval planning, fixture-authoring guidance, and first carried-evidence reconciliation slice are now implemented.
@@ -103,7 +103,7 @@ Their public command namespace is `eval live`; the `workbench` name is reserved 
 
 - standalone Go binary and Cautilus Agent feel like one product surface
 - durable runtime boundary for review prompts, schemas, and compare artifacts
-- stable versioned JSON contracts (`cautilus.report_packet.v2`, review/evidence/optimize/revision/scenario variants)
+- stable versioned JSON contracts (`cautilus.report_packet.v2`, review/evidence/improve/revision/scenario variants)
 - tagged-release installer surface without npm publication, including checksums, attestations, and post-release verification helpers
 
 ### Phase 3: Evaluation Engine — mostly done
@@ -136,20 +136,20 @@ Still open:
 - keep raw log readers, storage access, and host-specific trace retrieval consumer-owned
 - expand normalization coverage as new consumer patterns show up
 
-### Phase 5: Intent-First Optimization Surface — mostly done
+### Phase 5: Intent-First Improvement Surface — mostly done
 
 Product-owned pieces shipped:
 
 - `cautilus.behavior_intent.v1` framing for chatbot, skill, and durable-workflow
-- report, compare, review, history, evidence, optimize, and revision packets flow end-to-end
-- GEPA-style `optimize-search v2` with reflective mutation, bounded merge, checkpoint feedback, severity-aware rejected-sibling handling, and selection caps — implementation and dogfood evidence both closed
+- report, compare, review, history, evidence, improve, and revision packets flow end-to-end
+- GEPA-style `improve-search v2` with reflective mutation, bounded merge, checkpoint feedback, severity-aware rejected-sibling handling, and selection caps — implementation and dogfood evidence both closed
 - Cautilus Agent meta-prompts read report packets, compare artifacts, review verdicts, and scenario history
-- product-owned helper scripts carry the bounded optimization loop orchestration (input build, propose, build-artifact)
+- product-owned helper scripts carry the bounded improvement loop orchestration (input build, propose, build-artifact)
 
 Still open:
 
 - decide whether richer merge heuristics are actually needed — dogfood evidence should justify the next seam rather than adding heuristics speculatively
-- keep every optimizer surface bounded by held-out, comparison, and structured review gates
+- keep every improver surface bounded by held-out, comparison, and structured review gates
 
 Still intentionally excluded:
 
@@ -172,7 +172,7 @@ Still open:
 
 ## Immediate Next Moves
 
-1. Pick the next bounded improvement seam for the optimization layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
+1. Pick the next bounded improvement seam for the improvement layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 2. Expand typed multi-runner metadata from the shipped `runner_readiness.runners` base only when real consumer adapters need additional fields; source-code inference remains deferred.
 3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 4. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.

@@ -113,7 +113,7 @@ func shouldPrimeVersionState(path []string) bool {
 
 func shouldCheckForUpdates(path []string) bool {
 	switch strings.Join(path, " ") {
-	case "version", "commands", "healthcheck":
+	case "version", "commands", "healthcheck", "update":
 		return false
 	default:
 		return true
@@ -253,16 +253,16 @@ func nativeHandler(path []string) handlerFunc {
 		return handleEvidencePrepareInput
 	case "evidence bundle":
 		return handleEvidenceBundle
-	case "optimize prepare-input":
-		return handleOptimizePrepareInput
-	case "optimize search prepare-input":
-		return handleOptimizeSearchPrepareInput
-	case "optimize search run":
-		return handleOptimizeSearchRun
-	case "optimize propose":
-		return handleOptimizePropose
-	case "optimize build-artifact":
-		return handleOptimizeBuildArtifact
+	case "improve prepare-input":
+		return handleImprovePrepareInput
+	case "improve search prepare-input":
+		return handleImproveSearchPrepareInput
+	case "improve search run":
+		return handleImproveSearchRun
+	case "improve propose":
+		return handleImprovePropose
+	case "improve build-artifact":
+		return handleImproveBuildArtifact
 	default:
 		return nil
 	}
@@ -426,7 +426,7 @@ type inputOutputArgs struct {
 	priorEvidenceFile *string
 }
 
-type optimizeProposeArgs struct {
+type improveProposeArgs struct {
 	input      string
 	fromSearch *string
 	output     *string
@@ -478,7 +478,7 @@ type evidencePrepareArgs struct {
 	output              *string
 }
 
-type optimizePrepareArgs struct {
+type improvePrepareArgs struct {
 	repoRoot      string
 	reportFile    string
 	reviewSummary *string
@@ -489,8 +489,8 @@ type optimizePrepareArgs struct {
 	output        *string
 }
 
-type optimizeSearchPrepareArgs struct {
-	optimizeInputFile        string
+type improveSearchPrepareArgs struct {
+	improveInputFile         string
 	inputJSON                map[string]any
 	targetFile               *string
 	heldOutResultsFile       *string
@@ -510,13 +510,13 @@ type optimizeSearchPrepareArgs struct {
 	json                     bool
 }
 
-type optimizeSearchRunArgs struct {
+type improveSearchRunArgs struct {
 	input  string
 	output *string
 	json   bool
 }
 
-type optimizeBuildArtifactArgs struct {
+type improveBuildArtifactArgs struct {
 	proposalFile string
 	inputFile    *string
 	output       *string
@@ -1722,8 +1722,8 @@ func handleEvidenceBundle(repoRoot string, cwd string, args []string, stdout io.
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
-func handleOptimizePrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseOptimizePrepareArgs(args, cwd)
+func handleImprovePrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseImprovePrepareArgs(args, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1733,7 +1733,7 @@ func handleOptimizePrepareInput(repoRoot string, cwd string, args []string, stdo
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	packet, err := runtime.BuildOptimizeInput(options.repoRoot, options.reportFile, options.reviewSummary, options.historyFile, options.target, options.targetFile, options.budget, activeRunDir, time.Now())
+	packet, err := runtime.BuildImproveInput(options.repoRoot, options.reportFile, options.reviewSummary, options.historyFile, options.target, options.targetFile, options.budget, activeRunDir, time.Now())
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1746,8 +1746,8 @@ func handleOptimizePrepareInput(repoRoot string, cwd string, args []string, stdo
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
-func handleOptimizePropose(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseOptimizeProposeArgs(args, cwd)
+func handleImprovePropose(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseImproveProposeArgs(args, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1759,32 +1759,32 @@ func handleOptimizePropose(repoRoot string, cwd string, args []string, stdout io
 			fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", *options.fromSearch, err)
 			return 1
 		}
-		if searchResult["schemaVersion"] != contracts.OptimizeSearchResultSchema {
-			fmt.Fprintf(stderr, "search result must use schemaVersion %s\n", contracts.OptimizeSearchResultSchema)
+		if searchResult["schemaVersion"] != contracts.ImproveSearchResultSchema {
+			fmt.Fprintf(stderr, "search result must use schemaVersion %s\n", contracts.ImproveSearchResultSchema)
 			return 1
 		}
 		if anyString(searchResult["status"]) != "completed" {
 			fmt.Fprintf(stderr, "search result must be completed before generating a proposal from it\n")
 			return 1
 		}
-		optimizeInputFile := anyString(mapOrEmpty(searchResult["proposalBridge"])["optimizeInputFile"])
-		if optimizeInputFile == "" {
-			optimizeInputFile = anyString(searchResult["optimizeInputFile"])
+		improveInputFile := anyString(mapOrEmpty(searchResult["proposalBridge"])["improveInputFile"])
+		if improveInputFile == "" {
+			improveInputFile = anyString(searchResult["improveInputFile"])
 		}
-		if optimizeInputFile == "" {
-			fmt.Fprintf(stderr, "search result must carry proposalBridge.optimizeInputFile\n")
+		if improveInputFile == "" {
+			fmt.Fprintf(stderr, "search result must carry proposalBridge.improveInputFile\n")
 			return 1
 		}
-		input, err := readJSONObject(optimizeInputFile)
+		input, err := readJSONObject(improveInputFile)
 		if err != nil {
-			fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", optimizeInputFile, err)
+			fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", improveInputFile, err)
 			return 1
 		}
-		if input["schemaVersion"] != contracts.OptimizeInputsSchema {
-			fmt.Fprintf(stderr, "optimize input must use schemaVersion %s\n", contracts.OptimizeInputsSchema)
+		if input["schemaVersion"] != contracts.ImproveInputsSchema {
+			fmt.Fprintf(stderr, "improve input must use schemaVersion %s\n", contracts.ImproveInputsSchema)
 			return 1
 		}
-		packet, err = runtime.GenerateOptimizeProposalFromSearch(searchResult, *options.fromSearch, input, optimizeInputFile, time.Now())
+		packet, err = runtime.GenerateImproveProposalFromSearch(searchResult, *options.fromSearch, input, improveInputFile, time.Now())
 		if err != nil {
 			fmt.Fprintf(stderr, "%s\n", err)
 			return 1
@@ -1795,11 +1795,11 @@ func handleOptimizePropose(repoRoot string, cwd string, args []string, stdout io
 			fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
 			return 1
 		}
-		if input["schemaVersion"] != contracts.OptimizeInputsSchema {
-			fmt.Fprintf(stderr, "optimize input must use schemaVersion %s\n", contracts.OptimizeInputsSchema)
+		if input["schemaVersion"] != contracts.ImproveInputsSchema {
+			fmt.Fprintf(stderr, "improve input must use schemaVersion %s\n", contracts.ImproveInputsSchema)
 			return 1
 		}
-		packet, err = runtime.GenerateOptimizeProposal(input, &options.input, time.Now())
+		packet, err = runtime.GenerateImproveProposal(input, &options.input, time.Now())
 		if err != nil {
 			fmt.Fprintf(stderr, "%s\n", err)
 			return 1
@@ -1813,8 +1813,8 @@ func handleOptimizePropose(repoRoot string, cwd string, args []string, stdout io
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
-func handleOptimizeSearchPrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseOptimizeSearchPrepareArgs(args, cwd)
+func handleImproveSearchPrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseImproveSearchPrepareArgs(args, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1824,18 +1824,18 @@ func handleOptimizeSearchPrepareInput(repoRoot string, cwd string, args []string
 	if len(options.inputJSON) > 0 {
 		rawInput = options.inputJSON
 	}
-	optimizeInputFile, buildOptions, err := resolveOptimizeSearchBuildInputs(options, cwd)
+	improveInputFile, buildOptions, err := resolveImproveSearchBuildInputs(options, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	optimizeInput, err := readJSONObject(optimizeInputFile)
+	improveInput, err := readJSONObject(improveInputFile)
 	if err != nil {
-		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", optimizeInputFile, err)
+		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", improveInputFile, err)
 		return 1
 	}
-	if optimizeInput["schemaVersion"] != contracts.OptimizeInputsSchema {
-		fmt.Fprintf(stderr, "optimize input must use schemaVersion %s\n", contracts.OptimizeInputsSchema)
+	if improveInput["schemaVersion"] != contracts.ImproveInputsSchema {
+		fmt.Fprintf(stderr, "improve input must use schemaVersion %s\n", contracts.ImproveInputsSchema)
 		return 1
 	}
 	if buildOptions.HeldOutResultsFile != nil {
@@ -1846,7 +1846,7 @@ func handleOptimizeSearchPrepareInput(repoRoot string, cwd string, args []string
 		}
 		buildOptions.HeldOutResults = heldOutResults
 	}
-	packet, err := runtime.BuildOptimizeSearchInput(optimizeInput, optimizeInputFile, buildOptions, time.Now())
+	packet, err := runtime.BuildImproveSearchInput(improveInput, improveInputFile, buildOptions, time.Now())
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1867,7 +1867,7 @@ func handleOptimizeSearchPrepareInput(repoRoot string, cwd string, args []string
 				return 1
 			}
 		}
-		return writeOptimizeSearchPrepareReady(stdout, options.output, rawInputFile, stderr)
+		return writeImproveSearchPrepareReady(stdout, options.output, rawInputFile, stderr)
 	}
 	if err := writeOutputResolved(stdout, options.output, packet); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -1877,8 +1877,8 @@ func handleOptimizeSearchPrepareInput(repoRoot string, cwd string, args []string
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
-func handleOptimizeSearchRun(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseOptimizeSearchRunArgs(args, cwd)
+func handleImproveSearchRun(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseImproveSearchRunArgs(args, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1888,11 +1888,11 @@ func handleOptimizeSearchRun(repoRoot string, cwd string, args []string, stdout 
 		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.input, err)
 		return 1
 	}
-	if packet["schemaVersion"] != contracts.OptimizeSearchInputsSchema {
-		fmt.Fprintf(stderr, "search input must use schemaVersion %s\n", contracts.OptimizeSearchInputsSchema)
+	if packet["schemaVersion"] != contracts.ImproveSearchInputsSchema {
+		fmt.Fprintf(stderr, "search input must use schemaVersion %s\n", contracts.ImproveSearchInputsSchema)
 		return 1
 	}
-	result := runtime.RunOptimizeSearch(packet, options.input, time.Now())
+	result := runtime.RunImproveSearch(packet, options.input, time.Now())
 	if err := writeOutputResolved(stdout, options.output, result); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1910,8 +1910,8 @@ func handleOptimizeSearchRun(repoRoot string, cwd string, args []string, stdout 
 }
 
 //nolint:errcheck // CLI stderr reporting is best-effort.
-func handleOptimizeBuildArtifact(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseOptimizeBuildArtifactArgs(args, cwd)
+func handleImproveBuildArtifact(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	options, err := parseImproveBuildArtifactArgs(args, cwd)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -1921,8 +1921,8 @@ func handleOptimizeBuildArtifact(repoRoot string, cwd string, args []string, std
 		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", options.proposalFile, err)
 		return 1
 	}
-	if proposal["schemaVersion"] != contracts.OptimizeProposalSchema {
-		fmt.Fprintf(stderr, "optimize proposal must use schemaVersion %s\n", contracts.OptimizeProposalSchema)
+	if proposal["schemaVersion"] != contracts.ImproveProposalSchema {
+		fmt.Fprintf(stderr, "improve proposal must use schemaVersion %s\n", contracts.ImproveProposalSchema)
 		return 1
 	}
 	inputFile := options.inputFile
@@ -1933,7 +1933,7 @@ func handleOptimizeBuildArtifact(repoRoot string, cwd string, args []string, std
 		}
 	}
 	if inputFile == nil {
-		_, _ = fmt.Fprintln(stderr, "optimize proposal must carry inputFile or use --input-file")
+		_, _ = fmt.Fprintln(stderr, "improve proposal must carry inputFile or use --input-file")
 		return 1
 	}
 	input, err := readJSONObject(*inputFile)
@@ -1941,8 +1941,8 @@ func handleOptimizeBuildArtifact(repoRoot string, cwd string, args []string, std
 		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", *inputFile, err)
 		return 1
 	}
-	if input["schemaVersion"] != contracts.OptimizeInputsSchema {
-		fmt.Fprintf(stderr, "optimize input must use schemaVersion %s\n", contracts.OptimizeInputsSchema)
+	if input["schemaVersion"] != contracts.ImproveInputsSchema {
+		fmt.Fprintf(stderr, "improve input must use schemaVersion %s\n", contracts.ImproveInputsSchema)
 		return 1
 	}
 	packet, err := runtime.BuildRevisionArtifact(proposal, options.proposalFile, input, *inputFile, time.Now())
@@ -3047,8 +3047,8 @@ func parseEvidencePrepareArgs(args []string, cwd string) (*evidencePrepareArgs, 
 	return options, nil
 }
 
-func parseOptimizePrepareArgs(args []string, cwd string) (*optimizePrepareArgs, error) {
-	options := &optimizePrepareArgs{
+func parseImprovePrepareArgs(args []string, cwd string) (*improvePrepareArgs, error) {
+	options := &improvePrepareArgs{
 		repoRoot: cwd,
 		target:   "prompt",
 		budget:   "medium",
@@ -3137,7 +3137,7 @@ func parseOptimizePrepareArgs(args []string, cwd string) (*optimizePrepareArgs, 
 		return nil, fmt.Errorf("--report-file is required")
 	}
 	if options.output == nil && activeRunDir != nil {
-		value := filepath.Join(*activeRunDir, "optimize-input.json")
+		value := filepath.Join(*activeRunDir, "improve-input.json")
 		options.output = &value
 	}
 	return options, nil
@@ -3172,20 +3172,20 @@ func parseSelfDogfoodRenderArgs(args []string, cwd string, defaultLatestDir stri
 	return options, nil
 }
 
-func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchPrepareArgs, error) {
-	options := &optimizeSearchPrepareArgs{
+func parseImproveSearchPrepareArgs(args []string, cwd string) (*improveSearchPrepareArgs, error) {
+	options := &improveSearchPrepareArgs{
 		budget: "medium",
 	}
 	for index := 0; index < len(args); index++ {
 		arg := args[index]
 		switch arg {
-		case "--optimize-input":
+		case "--improve-input":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
 				return nil, err
 			}
 			index = next
-			options.optimizeInputFile = resolvePath(cwd, value)
+			options.improveInputFile = resolvePath(cwd, value)
 		case "--input-json":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {
@@ -3306,11 +3306,11 @@ func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchP
 			return nil, fmt.Errorf("unknown argument: %s", arg)
 		}
 	}
-	if strings.TrimSpace(options.optimizeInputFile) != "" && len(options.inputJSON) > 0 {
-		return nil, fmt.Errorf("use either --optimize-input or --input-json, not both")
+	if strings.TrimSpace(options.improveInputFile) != "" && len(options.inputJSON) > 0 {
+		return nil, fmt.Errorf("use either --improve-input or --input-json, not both")
 	}
-	if strings.TrimSpace(options.optimizeInputFile) == "" && len(options.inputJSON) == 0 {
-		return nil, fmt.Errorf("use one of --optimize-input or --input-json")
+	if strings.TrimSpace(options.improveInputFile) == "" && len(options.inputJSON) == 0 {
+		return nil, fmt.Errorf("use one of --improve-input or --input-json")
 	}
 	if options.adapter != nil && options.adapterName != nil {
 		return nil, fmt.Errorf("use either --adapter or --adapter-name, not both")
@@ -3320,7 +3320,7 @@ func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchP
 		return nil, err
 	}
 	if options.output == nil && activeRunDir != nil {
-		value := filepath.Join(*activeRunDir, "optimize-search-input.json")
+		value := filepath.Join(*activeRunDir, "improve-search-input.json")
 		options.output = &value
 	}
 	if len(options.inputJSON) > 0 && options.output == nil {
@@ -3329,8 +3329,8 @@ func parseOptimizeSearchPrepareArgs(args []string, cwd string) (*optimizeSearchP
 	return options, nil
 }
 
-func parseOptimizeSearchRunArgs(args []string, cwd string) (*optimizeSearchRunArgs, error) {
-	options := &optimizeSearchRunArgs{}
+func parseImproveSearchRunArgs(args []string, cwd string) (*improveSearchRunArgs, error) {
+	options := &improveSearchRunArgs{}
 	for index := 0; index < len(args); index++ {
 		arg := args[index]
 		switch arg {
@@ -3360,20 +3360,20 @@ func parseOptimizeSearchRunArgs(args []string, cwd string) (*optimizeSearchRunAr
 		return nil, err
 	}
 	if strings.TrimSpace(options.input) == "" && activeRunDir != nil {
-		options.input = filepath.Join(*activeRunDir, "optimize-search-input.json")
+		options.input = filepath.Join(*activeRunDir, "improve-search-input.json")
 	}
 	if strings.TrimSpace(options.input) == "" {
 		return nil, fmt.Errorf("--input is required")
 	}
 	if options.output == nil && activeRunDir != nil {
-		value := filepath.Join(*activeRunDir, "optimize-search-result.json")
+		value := filepath.Join(*activeRunDir, "improve-search-result.json")
 		options.output = &value
 	}
 	return options, nil
 }
 
-func parseOptimizeProposeArgs(args []string, cwd string) (*optimizeProposeArgs, error) {
-	options := &optimizeProposeArgs{}
+func parseImproveProposeArgs(args []string, cwd string) (*improveProposeArgs, error) {
+	options := &improveProposeArgs{}
 	for index := 0; index < len(args); index++ {
 		arg := args[index]
 		switch arg {
@@ -3412,20 +3412,20 @@ func parseOptimizeProposeArgs(args []string, cwd string) (*optimizeProposeArgs, 
 		return nil, err
 	}
 	if strings.TrimSpace(options.input) == "" && options.fromSearch == nil && activeRunDir != nil {
-		options.input = filepath.Join(*activeRunDir, "optimize-input.json")
+		options.input = filepath.Join(*activeRunDir, "improve-input.json")
 	}
 	if strings.TrimSpace(options.input) == "" && options.fromSearch == nil {
 		return nil, fmt.Errorf("use one of --input or --from-search")
 	}
 	if options.output == nil && activeRunDir != nil {
-		value := filepath.Join(*activeRunDir, "optimize-proposal.json")
+		value := filepath.Join(*activeRunDir, "improve-proposal.json")
 		options.output = &value
 	}
 	return options, nil
 }
 
-func parseOptimizeBuildArtifactArgs(args []string, cwd string) (*optimizeBuildArtifactArgs, error) {
-	options := &optimizeBuildArtifactArgs{}
+func parseImproveBuildArtifactArgs(args []string, cwd string) (*improveBuildArtifactArgs, error) {
+	options := &improveBuildArtifactArgs{}
 	for index := 0; index < len(args); index++ {
 		arg := args[index]
 		switch arg {
@@ -3461,7 +3461,7 @@ func parseOptimizeBuildArtifactArgs(args []string, cwd string) (*optimizeBuildAr
 		return nil, err
 	}
 	if strings.TrimSpace(options.proposalFile) == "" && activeRunDir != nil {
-		options.proposalFile = filepath.Join(*activeRunDir, "optimize-proposal.json")
+		options.proposalFile = filepath.Join(*activeRunDir, "improve-proposal.json")
 	}
 	if strings.TrimSpace(options.proposalFile) == "" {
 		return nil, fmt.Errorf("--proposal-file is required")
@@ -3615,8 +3615,8 @@ func mapOrEmpty(value any) map[string]any {
 	return record
 }
 
-func resolveOptimizeSearchBuildInputs(options *optimizeSearchPrepareArgs, cwd string) (string, runtime.OptimizeSearchBuildOptions, error) {
-	buildOptions := runtime.OptimizeSearchBuildOptions{
+func resolveImproveSearchBuildInputs(options *improveSearchPrepareArgs, cwd string) (string, runtime.ImproveSearchBuildOptions, error) {
+	buildOptions := runtime.ImproveSearchBuildOptions{
 		TargetFileOverride:       options.targetFile,
 		HeldOutResultsFile:       options.heldOutResultsFile,
 		Budget:                   options.budget,
@@ -3633,14 +3633,14 @@ func resolveOptimizeSearchBuildInputs(options *optimizeSearchPrepareArgs, cwd st
 		Split:                    options.split,
 	}
 	if len(options.inputJSON) == 0 {
-		return options.optimizeInputFile, buildOptions, nil
+		return options.improveInputFile, buildOptions, nil
 	}
 	rawInput := options.inputJSON
-	optimizeInputFile := firstNonEmptyJSONString(rawInput["optimizeInputFile"], options.optimizeInputFile)
-	if optimizeInputFile == "" {
-		return "", runtime.OptimizeSearchBuildOptions{}, fmt.Errorf("input JSON must include optimizeInputFile")
+	improveInputFile := firstNonEmptyJSONString(rawInput["improveInputFile"], options.improveInputFile)
+	if improveInputFile == "" {
+		return "", runtime.ImproveSearchBuildOptions{}, fmt.Errorf("input JSON must include improveInputFile")
 	}
-	optimizeInputFile = resolvePath(cwd, optimizeInputFile)
+	improveInputFile = resolvePath(cwd, improveInputFile)
 	if targetFile := firstNonEmptyJSONString(rawInput["targetFile"], derefString(options.targetFile)); targetFile != "" {
 		resolved := resolvePath(cwd, targetFile)
 		buildOptions.TargetFileOverride = &resolved
@@ -3685,10 +3685,10 @@ func resolveOptimizeSearchBuildInputs(options *optimizeSearchPrepareArgs, cwd st
 	if selectionPolicy := mapOrEmpty(rawInput["selectionPolicy"]); len(selectionPolicy) > 0 {
 		buildOptions.SelectionPolicy = selectionPolicy
 	}
-	return optimizeInputFile, buildOptions, nil
+	return improveInputFile, buildOptions, nil
 }
 
-func writeOptimizeSearchPrepareReady(stdout io.Writer, inputFile *string, rawInputFile *string, stderr io.Writer) int {
+func writeImproveSearchPrepareReady(stdout io.Writer, inputFile *string, rawInputFile *string, stderr io.Writer) int {
 	payload := map[string]any{
 		"status":       "ready",
 		"inputFile":    nil,

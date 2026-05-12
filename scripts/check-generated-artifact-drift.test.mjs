@@ -26,7 +26,7 @@ function initRepo(root) {
 	git(root, ["config", "user.name", "Cautilus Test"]);
 	git(root, ["config", "user.email", "test@example.com"]);
 	mkdirSync(join(root, ".cautilus", "claims"), { recursive: true });
-	mkdirSync(join(root, "docs", "specs", "proof"), { recursive: true });
+	mkdirSync(join(root, "docs", "specs", "evidence"), { recursive: true });
 	for (const path of DEFAULT_GENERATED_ARTIFACTS) {
 		writeFileSync(join(root, path), `${path}: clean\n`, "utf-8");
 	}
@@ -112,7 +112,7 @@ test("generated artifact drift check text CLI reports clean and dirty states", (
 		assert.match(clean.stdout, /generated artifact drift check: clean/);
 
 		writeFileSync(
-			join(root, "docs", "specs", "proof", "claim-evidence-state.md"),
+			join(root, "docs", "specs", "evidence", "claim-evidence-state.md"),
 			"dirty\n",
 			"utf-8",
 		);
@@ -121,7 +121,7 @@ test("generated artifact drift check text CLI reports clean and dirty states", (
 		});
 		assert.equal(dirty.status, 1);
 		assert.match(dirty.stdout, /uncommitted generated artifacts detected/);
-		assert.match(dirty.stdout, /docs\/specs\/proof\/claim-evidence-state\.md/);
+		assert.match(dirty.stdout, /docs\/specs\/evidence\/claim-evidence-state\.md/);
 		assert.match(dirty.stdout, /Commit the generated artifact changes before pushing/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

@@ -13,7 +13,7 @@ eval_test_command_templates:
 artifact_paths:
   - skills/cautilus-agent/SKILL.md
   - docs/specs/user/index.spec.md
-  - docs/specs/maintainer/index.spec.md
+  - docs/specs/contracts/index.spec.md
   - fixtures/eval/dev/skill/cautilus-canonical-spec-curation-flow.fixture.json
   - scripts/run-self-dogfood-skill-refresh-flow-eval.mjs
   - scripts/agent-runtime/run-local-skill-test.mjs

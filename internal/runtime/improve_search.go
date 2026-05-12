@@ -1,0 +1,3299 @@
+package runtime
+
+import (
+	"encoding/json"
+	"fmt"
+	"math"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"sort"
+	"strings"
+	"time"
+
+	"github.com/corca-ai/cautilus/internal/contracts"
+)
+
+var improveSearchBudgets = map[string]map[string]any{
+	"light": {
+		"generationLimit":        1,
+		"populationLimit":        3,
+		"mutationBatchSize":      3,
+		"reviewCheckpointPolicy": "final_only",
+		"mergeEnabled":           false,
+		"threeParentPolicy":      "coverage_expansion",
+	},
+	"medium": {
+		"generationLimit":        2,
+		"populationLimit":        5,
+		"mutationBatchSize":      4,
+		"reviewCheckpointPolicy": "frontier_promotions",
+		"mergeEnabled":           false,
+		"threeParentPolicy":      "coverage_expansion",
+	},
+	"heavy": {
+		"generationLimit":        3,
+		"populationLimit":        8,
+		"mutationBatchSize":      5,
+		"reviewCheckpointPolicy": "frontier_promotions",
+		"mergeEnabled":           false,
+		"threeParentPolicy":      "coverage_expansion",
+	},
+}
+
+type ImproveSearchBuildOptions struct {
+	TargetFileOverride       *string
+	HeldOutResultsFile       *string
+	HeldOutResults           map[string]any
+	Budget                   string
+	BudgetExplicit           bool
+	ReviewCheckpointPolicy   *string
+	ReviewCheckpointExplicit bool
+	ThreeParentPolicy        *string
+	ThreeParentExplicit      bool
+	MergeEnabled             *bool
+	SelectionPolicy          map[string]any
+	Adapter                  *string
+	AdapterName              *string
+	Intent                   *string
+	BaselineRef              *string
+	Profile                  *string
+	Split                    *string
+}
+
+func BuildImproveSearchInput(improveInput map[string]any, improveInputFile string, options ImproveSearchBuildOptions, now time.Time) (map[string]any, error) {
+	if improveInput["schemaVersion"] != contracts.ImproveInputsSchema {
+		return nil, fmt.Errorf("improve input must use schemaVersion %s", contracts.ImproveInputsSchema)
+	}
+	if stringOrEmpty(improveInput["improvementTarget"]) != "prompt" {
+		return nil, fmt.Errorf("improve search currently supports prompt targets only")
+	}
+	targetPath := stringOrEmpty(asMap(improveInput["targetFile"])["path"])
+	if options.TargetFileOverride != nil && strings.TrimSpace(*options.TargetFileOverride) != "" {
+		targetPath = *options.TargetFileOverride
+	}
+	if targetPath == "" {
+		return nil, fmt.Errorf("search input requires a target prompt file")
+	}
+	targetFile := map[string]any{
+		"path":   targetPath,
+		"exists": fileExists(targetPath),
+	}
+	reportAdapterContext := asMap(asMap(improveInput["report"])["adapterContext"])
+	inferredNamedAdapter := ""
+	if derefString(options.Adapter) == "" && derefString(options.AdapterName) == "" {
+		if stringOrEmpty(reportAdapterContext["adapter"]) == "" && stringOrEmpty(reportAdapterContext["adapterName"]) == "" {
+			if namedAdapter := SoleNamedAdapter(stringOrEmpty(improveInput["repoRoot"])); namedAdapter != nil {
+				inferredNamedAdapter = namedAdapter.Name
+			}
+		}
+	}
+	resolvedAdapterPath, resolvedAdapterName := resolveImproveSearchAdapterSelection(options, reportAdapterContext, inferredNamedAdapter)
+	adapterPayload, err := LoadAdapter(stringOrEmpty(improveInput["repoRoot"]), resolvedAdapterPath, resolvedAdapterName)
+	if err != nil {
+		return nil, err
+	}
+	if !adapterPayload.Valid {
+		return nil, fmt.Errorf("adapter is invalid: %s", strings.Join(adapterPayload.Errors, "; "))
+	}
+	searchConfig, searchConfigSources := buildImproveSearchResolvedConfig(options, adapterPayload)
+	packet := map[string]any{
+		"schemaVersion":     contracts.ImproveSearchInputsSchema,
+		"generatedAt":       now.UTC().Format(time.RFC3339Nano),
+		"repoRoot":          improveInput["repoRoot"],
+		"improveInputFile":  improveInputFile,
+		"improveInput":      improveInput,
+		"improvementTarget": "prompt",
+		"targetFile":        targetFile,
+		"seedCandidate": map[string]any{
+			"id": "seed",
+			"targetFile": map[string]any{
+				"path":   targetPath,
+				"exists": fileExists(targetPath),
+			},
+			"targetSnapshot": collectTargetSnapshot(map[string]any{
+				"path":   targetPath,
+				"exists": fileExists(targetPath),
+			}),
+		},
+		"searchConfig":        searchConfig,
+		"searchConfigSources": searchConfigSources,
+		"mutationConfig": map[string]any{
+			"backends":           defaultImproveSearchBackends(stringOrEmpty(searchConfig["budget"])),
+			"trainScenarioLimit": atLeastOne(int(numberOrDefault(searchConfig["mutationBatchSize"], 1)) - 1),
+			"promptVariantLimit": int(numberOrDefault(searchConfig["mutationBatchSize"], 1)),
+		},
+		"mutationEvidencePolicy": map[string]any{
+			"reportBuckets":             []any{"regressed", "noisy"},
+			"reviewFindingLimit":        numberOrDefault(asMap(asMap(improveInput["improver"])["plan"])["reviewVariantLimit"], 1),
+			"includeScenarioHistory":    improveInput["scenarioHistory"] != nil,
+			"includeCheckpointFeedback": stringOrEmpty(searchConfig["reviewCheckpointPolicy"]) == "frontier_promotions",
+		},
+		"scenarioSets": map[string]any{
+			"trainScenarioSet":   improveSearchTrainScenarioSet(improveInput),
+			"heldOutScenarioSet": improveSearchHeldOutScenarioSet(asMap(improveInput["report"])),
+		},
+		"evaluationFiles": map[string]any{
+			"reportFile":          improveInput["reportFile"],
+			"reviewSummaryFile":   firstNonNil(improveInput["reviewSummaryFile"], nil),
+			"scenarioHistoryFile": firstNonNil(improveInput["scenarioHistoryFile"], nil),
+		},
+		"evaluationContext": map[string]any{
+			"mode": "held_out",
+			"adapter": firstNonEmpty(
+				derefString(options.Adapter),
+				stringOrEmpty(reportAdapterContext["adapter"]),
+			),
+			"adapterName": firstNonEmpty(
+				derefString(options.AdapterName),
+				stringOrEmpty(reportAdapterContext["adapterName"]),
+				inferredNamedAdapter,
+			),
+			"intent": firstNonEmpty(
+				derefString(options.Intent),
+				stringOrEmpty(asMap(improveInput["report"])["intent"]),
+				stringOrEmpty(asMap(improveInput["intentProfile"])["summary"]),
+			),
+			"baselineRef": firstNonEmpty(
+				derefString(options.BaselineRef),
+				stringOrEmpty(asMap(improveInput["report"])["baseline"]),
+				"HEAD",
+			),
+			"profile": derefString(options.Profile),
+			"split":   derefString(options.Split),
+		},
+		"objective": improveInput["objective"],
+	}
+	if options.HeldOutResultsFile != nil && strings.TrimSpace(*options.HeldOutResultsFile) != "" {
+		asMap(packet["evaluationFiles"])["heldOutResultsFile"] = *options.HeldOutResultsFile
+	}
+	if len(options.HeldOutResults) > 0 {
+		packet["heldOutResults"] = options.HeldOutResults
+		packet["scenarioSets"] = map[string]any{
+			"trainScenarioSet":   improveSearchTrainScenarioSet(improveInput),
+			"heldOutScenarioSet": improveSearchHeldOutScenarioSetFromResults(options.HeldOutResults),
+		}
+	}
+	return packet, nil
+}
+
+func DefaultImproveSearchReviewCheckpointPolicy(budget string) string {
+	return stringOrEmpty(improveSearchBudgets[normalizeImproveSearchBudget(budget)]["reviewCheckpointPolicy"])
+}
+
+func DefaultImproveSearchThreeParentPolicy() string {
+	return stringOrEmpty(improveSearchBudgets["medium"]["threeParentPolicy"])
+}
+
+func normalizeImproveSearchBudget(budget string) string {
+	if _, ok := improveSearchBudgets[budget]; ok {
+		return budget
+	}
+	return "medium"
+}
+
+func defaultImproveSearchBackends(budget string) []any {
+	if normalizeImproveSearchBudget(budget) == "light" {
+		return []any{
+			map[string]any{
+				"id":      "codex-mutate",
+				"backend": "codex_exec",
+			},
+		}
+	}
+	return []any{
+		map[string]any{
+			"id":      "codex-mutate",
+			"backend": "codex_exec",
+		},
+		map[string]any{
+			"id":      "claude-mutate",
+			"backend": "claude_p",
+		},
+	}
+}
+
+func buildImproveSearchResolvedConfig(options ImproveSearchBuildOptions, adapterPayload *AdapterPayload) (map[string]any, map[string]any) {
+	budget := normalizeImproveSearchBudget(options.Budget)
+	sources := map[string]any{
+		"adapterPath":            adapterPayload.Path,
+		"budget":                 "product_default",
+		"preset":                 "product_default",
+		"selectionPolicy":        "product_default",
+		"reviewCheckpointPolicy": "product_default",
+		"mergeEnabled":           "product_default",
+		"threeParentPolicy":      "product_default",
+	}
+	adapterImproveSearch := asMap(adapterPayload.Data["improve_search"])
+	if !options.BudgetExplicit {
+		if defaultBudget := stringOrEmpty(adapterImproveSearch["default_budget"]); defaultBudget != "" {
+			budget = normalizeImproveSearchBudget(defaultBudget)
+			sources["budget"] = "adapter_default"
+		}
+	} else {
+		sources["budget"] = "explicit_override"
+	}
+	preset, presetSource := resolveImproveSearchBudgetPreset(budget, adapterImproveSearch)
+	sources["preset"] = presetSource
+
+	reviewCheckpointPolicy := stringOrEmpty(preset["reviewCheckpointPolicy"])
+	if options.ReviewCheckpointExplicit && options.ReviewCheckpointPolicy != nil && strings.TrimSpace(*options.ReviewCheckpointPolicy) != "" {
+		reviewCheckpointPolicy = strings.TrimSpace(*options.ReviewCheckpointPolicy)
+		sources["reviewCheckpointPolicy"] = "explicit_override"
+	} else {
+		sources["reviewCheckpointPolicy"] = presetSource
+	}
+
+	mergeEnabled := false
+	if value, ok := preset["mergeEnabled"].(bool); ok {
+		mergeEnabled = value
+	}
+	if options.MergeEnabled != nil {
+		mergeEnabled = *options.MergeEnabled
+		sources["mergeEnabled"] = "explicit_override"
+	} else {
+		sources["mergeEnabled"] = presetSource
+	}
+
+	threeParentPolicy := stringOrEmpty(preset["threeParentPolicy"])
+	if options.ThreeParentExplicit && options.ThreeParentPolicy != nil && strings.TrimSpace(*options.ThreeParentPolicy) != "" {
+		threeParentPolicy = strings.TrimSpace(*options.ThreeParentPolicy)
+		sources["threeParentPolicy"] = "explicit_override"
+	} else {
+		sources["threeParentPolicy"] = presetSource
+	}
+
+	selectionPolicy := normalizeAdapterImproveSearchSelectionPolicy(asMap(adapterImproveSearch["selection_policy"]))
+	if len(selectionPolicy) > 0 {
+		sources["selectionPolicy"] = "adapter_default"
+	}
+	if len(options.SelectionPolicy) > 0 {
+		selectionPolicy = options.SelectionPolicy
+		sources["selectionPolicy"] = "explicit_override"
+	}
+	return buildImproveSearchConfig(budget, preset, reviewCheckpointPolicy, selectionPolicy, mergeEnabled, threeParentPolicy), sources
+}
+
+func normalizeAdapterImproveSearchSelectionPolicy(value map[string]any) map[string]any {
+	if len(value) == 0 {
+		return map[string]any{}
+	}
+	normalized := map[string]any{}
+	if primaryObjective := stringOrEmpty(value["primary_objective"]); primaryObjective != "" {
+		normalized["primaryObjective"] = primaryObjective
+	}
+	if tieBreakers := arrayOrEmpty(value["tie_breakers"]); len(tieBreakers) > 0 {
+		normalized["tieBreakers"] = tieBreakers
+	}
+	if constraintCaps := asMap(value["constraint_caps"]); len(constraintCaps) > 0 {
+		normalized["constraintCaps"] = constraintCaps
+	}
+	return normalized
+}
+
+func resolveImproveSearchAdapterSelection(options ImproveSearchBuildOptions, reportAdapterContext map[string]any, inferredNamedAdapter string) (*string, *string) {
+	if derefString(options.Adapter) != "" {
+		return options.Adapter, nil
+	}
+	if reportAdapter := stringOrEmpty(reportAdapterContext["adapter"]); reportAdapter != "" {
+		return &reportAdapter, nil
+	}
+	if derefString(options.AdapterName) != "" {
+		return nil, options.AdapterName
+	}
+	if reportAdapterName := stringOrEmpty(reportAdapterContext["adapterName"]); reportAdapterName != "" {
+		return nil, &reportAdapterName
+	}
+	if inferredNamedAdapter != "" {
+		return nil, &inferredNamedAdapter
+	}
+	return nil, nil
+}
+
+func resolveImproveSearchBudgetPreset(budget string, adapterImproveSearch map[string]any) (map[string]any, string) {
+	base, _ := cloneJSON(improveSearchBudgets[normalizeImproveSearchBudget(budget)])
+	presetSource := "product_default"
+	adapterBudgets := asMap(adapterImproveSearch["budgets"])
+	if customPreset := asMap(adapterBudgets[budget]); len(customPreset) > 0 {
+		for key, value := range customPreset {
+			switch key {
+			case "generation_limit":
+				base["generationLimit"] = value
+			case "population_limit":
+				base["populationLimit"] = value
+			case "mutation_batch_size":
+				base["mutationBatchSize"] = value
+			case "review_checkpoint_policy":
+				base["reviewCheckpointPolicy"] = value
+			case "merge_enabled":
+				base["mergeEnabled"] = value
+			case "three_parent_policy":
+				base["threeParentPolicy"] = value
+			}
+		}
+		presetSource = "adapter_preset"
+	}
+	return base, presetSource
+}
+
+func buildImproveSearchConfig(budget string, preset map[string]any, reviewCheckpointPolicy string, selectionPolicy map[string]any, mergeEnabled bool, threeParentPolicy string) map[string]any {
+	config := map[string]any{
+		"algorithm":                "reflective_pareto",
+		"budget":                   normalizeImproveSearchBudget(budget),
+		"candidateSelection":       "pareto",
+		"reviewCheckpointPolicy":   reviewCheckpointPolicy,
+		"fullGateCheckpointPolicy": "final_only",
+		"selectionPolicy":          normalizeImproveSearchSelectionPolicy(selectionPolicy),
+		"mergeEnabled":             mergeEnabled,
+		"threeParentPolicy":        threeParentPolicy,
+	}
+	for key, value := range preset {
+		if key == "reviewCheckpointPolicy" || key == "mergeEnabled" || key == "threeParentPolicy" {
+			continue
+		}
+		config[key] = value
+	}
+	return config
+}
+
+func normalizeImproveSearchSelectionPolicy(value map[string]any) map[string]any {
+	result := map[string]any{
+		"primaryObjective": "held_out_behavior",
+		"tieBreakers":      []any{"shorter_target", "lower_cost", "lower_latency"},
+		"constraintCaps":   map[string]any{},
+	}
+	if len(value) == 0 {
+		return result
+	}
+	if primaryObjective := stringOrEmpty(value["primaryObjective"]); primaryObjective != "" {
+		result["primaryObjective"] = primaryObjective
+	}
+	if tieBreakers := arrayOrEmpty(value["tieBreakers"]); len(tieBreakers) > 0 {
+		items := make([]any, 0, len(tieBreakers))
+		for _, raw := range tieBreakers {
+			if text := stringOrEmpty(raw); text != "" {
+				items = append(items, text)
+			}
+		}
+		if len(items) > 0 {
+			result["tieBreakers"] = items
+		}
+	}
+	if constraintCaps := asMap(value["constraintCaps"]); len(constraintCaps) > 0 {
+		normalized := map[string]any{}
+		for key, raw := range constraintCaps {
+			if cap, ok := toFloat(raw); ok && cap >= 0 {
+				normalized[key] = cap
+			}
+		}
+		result["constraintCaps"] = normalized
+	}
+	return result
+}
+
+func improveSearchTrainScenarioSet(improveInput map[string]any) []any {
+	ids := []string{}
+	report := asMap(improveInput["report"])
+	for _, key := range []string{"regressed", "noisy", "improved", "unchanged"} {
+		for index, raw := range arrayOrEmpty(report[key]) {
+			ids = append(ids, normalizeScenarioKey(raw, index, key))
+		}
+	}
+	for scenarioID := range asMap(asMap(improveInput["scenarioHistory"])["scenarioStats"]) {
+		ids = append(ids, scenarioID)
+	}
+	ids = uniqueStrings(ids)
+	result := make([]any, 0, len(ids))
+	for _, id := range ids {
+		result = append(result, id)
+	}
+	return result
+}
+
+func improveSearchHeldOutScenarioSet(report map[string]any) []any {
+	seen := []string{}
+	modeRuns := arrayOrEmpty(report["modeRuns"])
+	for _, rawModeRun := range modeRuns {
+		modeRun := asMap(rawModeRun)
+		mode := stringOrEmpty(modeRun["mode"])
+		if mode != "held_out" && mode != "full_gate" {
+			continue
+		}
+		results := arrayOrEmpty(asMap(asMap(modeRun["scenarioResults"])["results"]))
+		for index, rawResult := range results {
+			result := asMap(rawResult)
+			seen = append(seen, normalizeScenarioKey(result["scenarioId"], index, "held_out"))
+		}
+	}
+	seen = uniqueStrings(seen)
+	result := make([]any, 0, len(seen))
+	for _, id := range seen {
+		result = append(result, id)
+	}
+	return result
+}
+
+func improveSearchHeldOutScenarioSetFromResults(results map[string]any) []any {
+	ids := []string{}
+	for index, rawResult := range arrayOrEmpty(results["results"]) {
+		ids = append(ids, normalizeScenarioKey(asMap(rawResult)["scenarioId"], index, "held_out"))
+	}
+	ids = uniqueStrings(ids)
+	result := make([]any, 0, len(ids))
+	for _, id := range ids {
+		result = append(result, id)
+	}
+	return result
+}
+
+func RunImproveSearch(packet map[string]any, inputFile string, now time.Time) map[string]any {
+	heldOutEntries := improveSearchHeldOutEntries(packet)
+	reasonCodes := []any{}
+	missingEvidence := []any{}
+	if len(heldOutEntries) == 0 {
+		reasonCodes = append(reasonCodes, "missing_held_out_scenarios")
+		missingEvidence = append(missingEvidence, "held_out scenario ids")
+	}
+	scoreCount := 0
+	for _, entry := range heldOutEntries {
+		if entry["score"] != nil {
+			scoreCount++
+		}
+	}
+	if scoreCount == 0 {
+		reasonCodes = append(reasonCodes, "missing_per_scenario_scores")
+		missingEvidence = append(missingEvidence, "per-scenario score or pass/fail records")
+	}
+	if len(improveSearchFeedbackSignals(packet)) == 0 {
+		reasonCodes = append(reasonCodes, "missing_textual_feedback")
+		missingEvidence = append(missingEvidence, "compareArtifact reasons or humanReviewFindings")
+	}
+	if len(reasonCodes) > 0 {
+		return map[string]any{
+			"schemaVersion":           contracts.ImproveSearchResultSchema,
+			"generatedAt":             now.UTC().Format(time.RFC3339Nano),
+			"status":                  "blocked",
+			"inputFile":               inputFile,
+			"repoRoot":                packet["repoRoot"],
+			"improveInputFile":        packet["improveInputFile"],
+			"searchConfig":            packet["searchConfig"],
+			"searchConfigSources":     firstNonNil(packet["searchConfigSources"], map[string]any{}),
+			"experimentContext":       improveSearchExperimentContext(packet),
+			"telemetryCompleteness":   improveSearchTelemetryCompleteness(nil, nil),
+			"candidateRegistry":       []any{},
+			"generationSummaries":     []any{},
+			"heldOutEvaluationMatrix": []any{},
+			"pareto": map[string]any{
+				"frontierCandidateIds":        []any{},
+				"perScenarioBestCandidateIds": []any{},
+			},
+			"checkpointOutcomes": map[string]any{
+				"review":   []any{},
+				"fullGate": []any{},
+			},
+			"searchTelemetry": map[string]any{
+				"candidateCount":          0,
+				"generationCount":         0,
+				"mutationInvocationCount": 0,
+				"heldOutEvaluationCount":  0,
+				"reviewCheckpointCount":   0,
+				"stopReason":              "blocked",
+			},
+			"proposalBridge": map[string]any{
+				"improveInputFile": packet["improveInputFile"],
+			},
+			"reasonCodes":        reasonCodes,
+			"missingEvidence":    missingEvidence,
+			"suggestedNextSteps": []any{"run held_out evaluation with scenario results enabled", "build a report packet with compare artifacts", "collect at least one review summary for the target behavior"},
+		}
+	}
+
+	seedCandidate := improveSearchSeedCandidate(packet, heldOutEntries)
+	candidates := []map[string]any{seedCandidate}
+	generationSummaries := []any{}
+	checkpointLedger := map[string]any{
+		"review":   []any{},
+		"fullGate": []any{},
+	}
+	stopReason := "seed_only"
+	mutationInvocations := 0
+	mergeInvocations := 0
+	generatedCandidateCount := 0
+	candidateGenerationAttempts := []any{}
+	generationLimit := improveSearchConfigInt(packet, "generationLimit", 1)
+	populationLimit := improveSearchConfigInt(packet, "populationLimit", generationLimit+1)
+	artifactRoot := filepath.Dir(firstNonEmpty(inputFile, stringOrEmpty(packet["improveInputFile"])))
+
+	for generationIndex := 1; generationIndex <= generationLimit; generationIndex++ {
+		if len(candidates) >= populationLimit {
+			stopReason = "population_limit"
+			break
+		}
+		matrix := improveSearchHeldOutMatrix(candidates)
+		scenarioIDs := improveSearchScenarioIDs(packet, matrix)
+		candidateIDs := improveSearchCandidateIDs(candidates)
+		parentFrontierIDs := improveSearchFrontierCandidateIDs(matrix, candidateIDs, scenarioIDs)
+		rankedParentFrontierIDs := improveSearchRankCandidateIDs(parentFrontierIDs, matrix, candidates, scenarioIDs)
+		mutationParentEligibility := improveSearchMutationParentEligibility(candidates, rankedParentFrontierIDs, generationIndex)
+		eligibleMutationParentIDs := improveSearchPrioritizeMutationCandidateIDs(candidates, rankedParentFrontierIDs, generationIndex)
+		parentCandidate := improveSearchPreferredCandidate(candidates, eligibleMutationParentIDs)
+		if parentCandidate == nil {
+			stopReason = "no_parent_candidate"
+			candidateGenerationAttempts = append(candidateGenerationAttempts, map[string]any{
+				"generationIndex":             generationIndex,
+				"parentFrontierCandidateIds":  stringSliceToAny(parentFrontierIDs),
+				"rankedParentFrontierIds":     stringSliceToAny(rankedParentFrontierIDs),
+				"eligibleMutationParentIds":   stringSliceToAny(eligibleMutationParentIDs),
+				"mutationParentEligibility":   mutationParentEligibility,
+				"selectedParentCandidateId":   nil,
+				"backendInvoked":              false,
+				"status":                      "no_parent_candidate",
+				"prerequisites":               improveSearchMutationPrerequisites(packet),
+				"mutationBackend":             nilIfEmpty(improveSearchMutationBackend(packet)),
+				"generatedCandidateIds":       []any{},
+				"generatedCandidateCount":     0,
+				"selectionConstraintEligible": false,
+			})
+			break
+		}
+		mutationInvocations++
+		candidate, attemptDiagnostics, err := improveSearchEvaluateMutation(packet, inputFile, improveSearchMutationOptions{
+			GenerationIndex: generationIndex,
+			AttemptIndex:    1,
+			ParentCandidate: parentCandidate,
+		})
+		attemptRecord := map[string]any{
+			"generationIndex":            generationIndex,
+			"parentFrontierCandidateIds": stringSliceToAny(parentFrontierIDs),
+			"rankedParentFrontierIds":    stringSliceToAny(rankedParentFrontierIDs),
+			"eligibleMutationParentIds":  stringSliceToAny(eligibleMutationParentIDs),
+			"mutationParentEligibility":  mutationParentEligibility,
+			"selectedParentCandidateId":  stringOrEmpty(parentCandidate["id"]),
+			"generatedCandidateIds":      []any{},
+			"generatedCandidateCount":    0,
+		}
+		for key, value := range attemptDiagnostics {
+			attemptRecord[key] = value
+		}
+		if err != nil || candidate == nil {
+			reason := firstNonEmpty(stringOrEmpty(attemptDiagnostics["status"]), "mutation_unavailable")
+			stopReason = reason
+			if err != nil {
+				message := strings.TrimSpace(err.Error())
+				if message != "" {
+					attemptRecord["message"] = message
+				}
+			}
+			candidateGenerationAttempts = append(candidateGenerationAttempts, attemptRecord)
+			break
+		}
+		proposedCandidates := []map[string]any{candidate}
+		candidates = append(candidates, candidate)
+		generatedCandidateCount++
+		updatedMatrix := improveSearchHeldOutMatrix(candidates)
+		updatedScenarioIDs := improveSearchScenarioIDs(packet, updatedMatrix)
+		updatedFrontierIDs := improveSearchFrontierCandidateIDs(updatedMatrix, improveSearchCandidateIDs(candidates), updatedScenarioIDs)
+		improveSearchRecordFrontierPromotionReviews(packet, artifactRoot, []map[string]any{candidate}, updatedFrontierIDs, checkpointLedger)
+		if mergeCandidate, err := improveSearchEvaluateMerge(packet, inputFile, generationIndex, candidates, updatedFrontierIDs, updatedScenarioIDs); err == nil && mergeCandidate != nil {
+			if !improveSearchHasFingerprint(candidates, stringOrEmpty(asMap(mergeCandidate["targetSnapshot"])["sha256"])) {
+				proposedCandidates = append(proposedCandidates, mergeCandidate)
+				candidates = append(candidates, mergeCandidate)
+				mergeInvocations++
+				generatedCandidateCount++
+				updatedMatrix = improveSearchHeldOutMatrix(candidates)
+				updatedScenarioIDs = improveSearchScenarioIDs(packet, updatedMatrix)
+				updatedFrontierIDs = improveSearchFrontierCandidateIDs(updatedMatrix, improveSearchCandidateIDs(candidates), updatedScenarioIDs)
+			}
+		}
+		attemptRecord["generatedCandidateIds"] = candidateIDList(proposedCandidates)
+		attemptRecord["generatedCandidateCount"] = len(proposedCandidates)
+		candidateGenerationAttempts = append(candidateGenerationAttempts, attemptRecord)
+		generationSummaries = append(generationSummaries, map[string]any{
+			"generationIndex":            generationIndex,
+			"parentFrontierCandidateIds": stringSliceToAny(parentFrontierIDs),
+			"proposedCandidateIds":       candidateIDList(proposedCandidates),
+			"promotedCandidateIds":       candidateIDList(proposedCandidates),
+			"frontierCandidateIds":       stringSliceToAny(updatedFrontierIDs),
+		})
+		if len(candidates) >= populationLimit {
+			stopReason = "population_limit"
+			break
+		}
+		if generationIndex == generationLimit {
+			stopReason = "generation_limit"
+		}
+	}
+
+	matrix := improveSearchHeldOutMatrix(candidates)
+	scenarioIDs := improveSearchScenarioIDs(packet, matrix)
+	candidateIDs := improveSearchCandidateIDs(candidates)
+	frontierIDs := improveSearchFrontierCandidateIDs(matrix, candidateIDs, scenarioIDs)
+	rankedFrontierIDs := improveSearchRankCandidateIDs(frontierIDs, matrix, candidates, scenarioIDs)
+	selectionOutcome := improveSearchSelectionOutcome(packet, artifactRoot, candidates, rankedFrontierIDs, checkpointLedger)
+	perScenarioBest := make([]any, 0, len(scenarioIDs))
+	for _, scenarioID := range scenarioIDs {
+		bestIDs := []any{}
+		bestScore := -1.0
+		for _, candidateID := range candidateIDs {
+			score := improveSearchScoreForCandidate(matrix, candidateID, scenarioID)
+			if score > bestScore {
+				bestScore = score
+				bestIDs = []any{candidateID}
+				continue
+			}
+			if score == bestScore {
+				bestIDs = append(bestIDs, candidateID)
+			}
+		}
+		perScenarioBest = append(perScenarioBest, map[string]any{
+			"scenarioId":   scenarioID,
+			"candidateIds": bestIDs,
+		})
+	}
+	selectedCandidate := candidates[0]
+	selectedCandidateID := "seed"
+	if selectionOutcome != nil {
+		selectedCandidateID = firstNonEmpty(stringOrEmpty(selectionOutcome["selectedCandidateId"]), selectedCandidateID)
+	} else if len(rankedFrontierIDs) > 0 {
+		selectedCandidateID = rankedFrontierIDs[0]
+	}
+	for _, candidate := range candidates {
+		if stringOrEmpty(candidate["id"]) == selectedCandidateID {
+			selectedCandidate = candidate
+			break
+		}
+	}
+	status := "completed"
+	proposalBridge := map[string]any{
+		"improveInputFile":    packet["improveInputFile"],
+		"selectedCandidateId": selectedCandidateID,
+		"selectedTargetFile":  selectedCandidate["targetFile"],
+	}
+	reasonCodes = []any{}
+	missingEvidence = []any{}
+	suggestedNextSteps := []any{}
+	if selectionOutcome != nil && stringOrEmpty(selectionOutcome["status"]) == "blocked" {
+		status = "blocked"
+		proposalBridge = map[string]any{
+			"improveInputFile": packet["improveInputFile"],
+		}
+		reasonCodes = arrayOrEmpty(selectionOutcome["reasonCodes"])
+		suggestedNextSteps = []any{
+			"inspect checkpoint outcomes for the rejected frontier candidates",
+			"tighten the prompt or search brief to satisfy review and full-gate constraints",
+			"rerun improve search after updating the bounded evidence or selection policy",
+		}
+	}
+	checkpointOutcomes := map[string]any{
+		"review":   []any{},
+		"fullGate": []any{},
+	}
+	selectionTelemetry := map[string]any{
+		"rankedFrontierCandidateIds": stringSliceToAny(rankedFrontierIDs),
+	}
+	reviewCheckpointCount := 0
+	fullGateCheckpointCount := 0
+	if selectionOutcome != nil {
+		checkpointOutcomes = asMap(selectionOutcome["checkpointOutcomes"])
+		selectionTelemetry = asMap(selectionOutcome["selectionTelemetry"])
+		reviewCheckpointCount = improveSearchCountExecutedCheckpoints(arrayOrEmpty(checkpointOutcomes["review"]))
+		fullGateCheckpointCount = improveSearchCountExecutedCheckpoints(arrayOrEmpty(checkpointOutcomes["fullGate"]))
+	}
+	return map[string]any{
+		"schemaVersion":           contracts.ImproveSearchResultSchema,
+		"generatedAt":             now.UTC().Format(time.RFC3339Nano),
+		"status":                  status,
+		"inputFile":               inputFile,
+		"repoRoot":                packet["repoRoot"],
+		"improveInputFile":        packet["improveInputFile"],
+		"searchConfig":            packet["searchConfig"],
+		"searchConfigSources":     firstNonNil(packet["searchConfigSources"], map[string]any{}),
+		"experimentContext":       improveSearchExperimentContext(packet),
+		"telemetryCompleteness":   improveSearchTelemetryCompleteness(matrix, candidates),
+		"selectedCandidateId":     selectedCandidateID,
+		"candidateRegistry":       improveSearchCandidateRegistry(candidates),
+		"generationSummaries":     generationSummaries,
+		"heldOutEvaluationMatrix": matrix,
+		"pareto": map[string]any{
+			"frontierCandidateIds":        stringSliceToAny(frontierIDs),
+			"perScenarioBestCandidateIds": perScenarioBest,
+		},
+		"checkpointOutcomes": checkpointOutcomes,
+		"searchTelemetry": map[string]any{
+			"candidateCount":          len(candidates),
+			"generatedCandidateCount": generatedCandidateCount,
+			"generationCount":         len(generationSummaries),
+			"mutationInvocationCount": mutationInvocations,
+			"mergeInvocationCount":    mergeInvocations,
+			"heldOutEvaluationCount":  len(candidates),
+			"reviewCheckpointCount":   reviewCheckpointCount,
+			"fullGateCheckpointCount": fullGateCheckpointCount,
+			"candidateAttemptCount":   len(candidateGenerationAttempts),
+			"stopReason":              stopReason,
+		},
+		"candidateGenerationDiagnostics": improveSearchCandidateGenerationDiagnostics(packet, candidateGenerationAttempts, generatedCandidateCount, stopReason),
+		"proposalBridge":                 proposalBridge,
+		"selectionTelemetry":             selectionTelemetry,
+		"reasonCodes":                    reasonCodes,
+		"missingEvidence":                missingEvidence,
+		"suggestedNextSteps":             suggestedNextSteps,
+	}
+}
+
+func improveSearchSelectionOutcome(packet map[string]any, artifactRoot string, candidates []map[string]any, rankedFrontierIDs []string, checkpointLedger map[string]any) map[string]any {
+	checkpointOutcomes := map[string]any{
+		"review":   append([]any{}, arrayOrEmpty(checkpointLedger["review"])...),
+		"fullGate": append([]any{}, arrayOrEmpty(checkpointLedger["fullGate"])...),
+	}
+	rejectedFinalistCandidateIDs := []any{}
+	selectionConstraintIneligibleCandidateIDs := []any{}
+	rejectionReasons := map[string]any{}
+	for _, candidateID := range rankedFrontierIDs {
+		candidate := improveSearchCandidateByID(candidates, candidateID)
+		if candidate == nil {
+			continue
+		}
+		constraintReasons := improveSearchCandidateConstraintRejectionReasons(packet, candidate)
+		if len(constraintReasons) > 0 {
+			rejectedFinalistCandidateIDs = append(rejectedFinalistCandidateIDs, candidateID)
+			selectionConstraintIneligibleCandidateIDs = append(selectionConstraintIneligibleCandidateIDs, candidateID)
+			rejectionReasons[candidateID] = stringSliceToAny(constraintReasons)
+			continue
+		}
+		checkpointOutcome := improveSearchEvaluateCandidateCheckpoints(packet, artifactRoot, candidate)
+		if executed, _ := checkpointOutcome["reviewExecuted"].(bool); executed {
+			checkpointOutcomes["review"] = improveSearchRecordCheckpointOutcome(arrayOrEmpty(checkpointOutcomes["review"]), asMap(checkpointOutcome["review"]))
+		}
+		if executed, _ := checkpointOutcome["fullGateExecuted"].(bool); executed {
+			checkpointOutcomes["fullGate"] = improveSearchRecordCheckpointOutcome(arrayOrEmpty(checkpointOutcomes["fullGate"]), asMap(checkpointOutcome["fullGate"]))
+		}
+		if admissible, _ := checkpointOutcome["admissible"].(bool); admissible {
+			return map[string]any{
+				"selectedCandidateId": candidateID,
+				"checkpointOutcomes":  checkpointOutcomes,
+				"selectionTelemetry": map[string]any{
+					"rankedFrontierCandidateIds":                stringSliceToAny(rankedFrontierIDs),
+					"rejectedFinalistCandidateIds":              rejectedFinalistCandidateIDs,
+					"selectionConstraintIneligibleCandidateIds": selectionConstraintIneligibleCandidateIDs,
+					"rejectionReasons":                          rejectionReasons,
+				},
+				"status":      "completed",
+				"reasonCodes": []any{},
+			}
+		}
+		rejectedFinalistCandidateIDs = append(rejectedFinalistCandidateIDs, candidateID)
+		rejectionReasons[candidateID] = firstNonNil(checkpointOutcome["rejectionReasons"], []any{})
+	}
+	reasonCodes := []any{"no_checkpoint_admissible_candidate"}
+	if len(rankedFrontierIDs) > 0 && len(selectionConstraintIneligibleCandidateIDs) == len(rankedFrontierIDs) {
+		reasonCodes = []any{"no_selection_policy_eligible_candidate"}
+	}
+	return map[string]any{
+		"selectedCandidateId": nil,
+		"checkpointOutcomes":  checkpointOutcomes,
+		"selectionTelemetry": map[string]any{
+			"rankedFrontierCandidateIds":                stringSliceToAny(rankedFrontierIDs),
+			"rejectedFinalistCandidateIds":              rejectedFinalistCandidateIDs,
+			"selectionConstraintIneligibleCandidateIds": selectionConstraintIneligibleCandidateIDs,
+			"rejectionReasons":                          rejectionReasons,
+		},
+		"status":      "blocked",
+		"reasonCodes": reasonCodes,
+	}
+}
+
+func improveSearchCandidateGenerationDiagnostics(packet map[string]any, attempts []any, generatedCandidateCount int, stopReason string) map[string]any {
+	whyNoCandidates := []any{}
+	if generatedCandidateCount == 0 {
+		for _, rawAttempt := range attempts {
+			status := stringOrEmpty(asMap(rawAttempt)["status"])
+			if status == "" || status == "candidate_generated" {
+				continue
+			}
+			whyNoCandidates = append(whyNoCandidates, map[string]any{
+				"generationIndex": asMap(rawAttempt)["generationIndex"],
+				"status":          status,
+				"message":         nilIfEmpty(asMap(rawAttempt)["message"]),
+			})
+		}
+	}
+	return map[string]any{
+		"generatedCandidateCount": generatedCandidateCount,
+		"attemptCount":            len(attempts),
+		"stopReason":              stopReason,
+		"prerequisites":           improveSearchMutationPrerequisites(packet),
+		"attempts":                attempts,
+		"whyNoCandidates":         whyNoCandidates,
+	}
+}
+
+func improveSearchCandidateByID(candidates []map[string]any, candidateID string) map[string]any {
+	for _, candidate := range candidates {
+		if stringOrEmpty(candidate["id"]) == candidateID {
+			return candidate
+		}
+	}
+	return nil
+}
+
+func improveSearchCandidateConstraintRejectionReasons(packet map[string]any, candidate map[string]any) []string {
+	caps := asMap(asMap(asMap(packet["searchConfig"])["selectionPolicy"])["constraintCaps"])
+	reasons := []string{}
+	if maxCostUsd, ok := toFloat(caps["maxCostUsd"]); ok {
+		if totalCostUsd, ok := toFloat(asMap(candidate["telemetry"])["totalCostUsd"]); ok && totalCostUsd > maxCostUsd {
+			reasons = append(reasons, "selection_constraint_max_cost_exceeded")
+		}
+	}
+	if maxDurationMs, ok := toFloat(caps["maxDurationMs"]); ok {
+		if totalDurationMs, ok := toFloat(asMap(candidate["telemetry"])["totalDurationMs"]); ok && totalDurationMs > maxDurationMs {
+			reasons = append(reasons, "selection_constraint_max_duration_exceeded")
+		}
+	}
+	return reasons
+}
+
+func improveSearchRecordFrontierPromotionReviews(packet map[string]any, artifactRoot string, promotedCandidates []map[string]any, frontierIDs []string, checkpointLedger map[string]any) {
+	if stringOrEmpty(asMap(packet["searchConfig"])["reviewCheckpointPolicy"]) != "frontier_promotions" {
+		return
+	}
+	frontierSet := map[string]struct{}{}
+	for _, candidateID := range frontierIDs {
+		frontierSet[candidateID] = struct{}{}
+	}
+	reviewOutcomes := arrayOrEmpty(checkpointLedger["review"])
+	for _, candidate := range promotedCandidates {
+		candidateID := stringOrEmpty(candidate["id"])
+		if candidateID == "" {
+			continue
+		}
+		if _, ok := frontierSet[candidateID]; !ok {
+			continue
+		}
+		if _, ok := candidate["promotionReviewOutcome"].(map[string]any); ok {
+			continue
+		}
+		outcome := improveSearchRunReviewCheckpoint(packet, artifactRoot, candidate)
+		outcome["reviewedAtGeneration"] = firstNonNil(candidate["generationIndex"], nil)
+		candidate["promotionReviewOutcome"] = outcome
+		if admissible, _ := outcome["admissible"].(bool); !admissible {
+			if feedback := improveSearchBuildCheckpointFeedback(packet, outcome); len(feedback) > 0 {
+				candidate["checkpointFeedback"] = feedback
+			}
+		}
+		reviewOutcomes = improveSearchRecordCheckpointOutcome(reviewOutcomes, outcome)
+	}
+	checkpointLedger["review"] = reviewOutcomes
+}
+
+func improveSearchRecordCheckpointOutcome(collection []any, outcome map[string]any) []any {
+	if len(outcome) == 0 || stringOrEmpty(outcome["status"]) == "skipped" {
+		return collection
+	}
+	outcomeType := stringOrEmpty(outcome["type"])
+	candidateID := stringOrEmpty(outcome["candidateId"])
+	for _, raw := range collection {
+		existing := asMap(raw)
+		if stringOrEmpty(existing["type"]) == outcomeType && stringOrEmpty(existing["candidateId"]) == candidateID {
+			return collection
+		}
+	}
+	return append(collection, outcome)
+}
+
+func improveSearchEvaluateCandidateCheckpoints(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
+	review := map[string]any{}
+	reviewExecuted := true
+	if stringOrEmpty(asMap(packet["searchConfig"])["reviewCheckpointPolicy"]) == "frontier_promotions" {
+		if existing := asMap(candidate["promotionReviewOutcome"]); len(existing) > 0 {
+			review = existing
+			reviewExecuted = false
+		}
+	}
+	if len(review) == 0 {
+		review = improveSearchRunReviewCheckpoint(packet, artifactRoot, candidate)
+		reviewExecuted = stringOrEmpty(review["status"]) != "skipped"
+	}
+	reviewAdmissible, _ := review["admissible"].(bool)
+	if !reviewAdmissible {
+		return map[string]any{
+			"admissible":       false,
+			"rejectionReasons": firstNonNil(review["rejectionReasons"], []any{}),
+			"review":           review,
+			"reviewExecuted":   reviewExecuted,
+			"fullGate":         improveSearchSkipCheckpointOutcome("full_gate", stringOrEmpty(candidate["id"]), "review_rejected"),
+			"fullGateExecuted": false,
+		}
+	}
+	fullGate := improveSearchRunFullGateCheckpoint(packet, artifactRoot, candidate)
+	fullGateExecuted := stringOrEmpty(fullGate["status"]) != "skipped"
+	fullGateAdmissible, _ := fullGate["admissible"].(bool)
+	return map[string]any{
+		"admissible":       fullGateAdmissible,
+		"rejectionReasons": append(arrayOrEmpty(review["rejectionReasons"]), arrayOrEmpty(fullGate["rejectionReasons"])...),
+		"review":           review,
+		"reviewExecuted":   reviewExecuted,
+		"fullGate":         fullGate,
+		"fullGateExecuted": fullGateExecuted,
+	}
+}
+
+func improveSearchRunReviewCheckpoint(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
+	adapterPayload, err := improveSearchLoadCheckpointAdapter(packet)
+	if err != nil {
+		return improveSearchSkipCheckpointOutcome("review", stringOrEmpty(candidate["id"]), "adapter_not_found")
+	}
+	if !adapterPayload.Found || !adapterPayload.Valid || len(arrayOrEmpty(adapterPayload.Data["executor_variants"])) == 0 {
+		reason := "surface_unavailable"
+		if !adapterPayload.Found {
+			reason = "adapter_not_found"
+		}
+		return improveSearchSkipCheckpointOutcome("review", stringOrEmpty(candidate["id"]), reason)
+	}
+	reportFile := improveSearchCandidateReportFile(packet, candidate)
+	if reportFile == "" || !fileExists(reportFile) {
+		return improveSearchSkipCheckpointOutcome("review", stringOrEmpty(candidate["id"]), "report_missing")
+	}
+	outputDir := filepath.Join(artifactRoot, "improve-search-checkpoints", stringOrEmpty(candidate["id"]), "review")
+	if err := os.MkdirAll(outputDir, 0o755); err != nil {
+		return map[string]any{
+			"type":             "review",
+			"candidateId":      candidate["id"],
+			"status":           "failed",
+			"admissible":       false,
+			"rejectionReasons": []any{"review:output_dir_failed"},
+		}
+	}
+	args := []string{
+		"review", "variants",
+		"--repo-root", stringOrEmpty(packet["repoRoot"]),
+		"--workspace", improveSearchCandidateWorkspace(packet, candidate),
+		"--report-file", reportFile,
+		"--output-dir", outputDir,
+		"--quiet",
+	}
+	args = append(args, improveSearchAdapterArgs(packet)...)
+	command := exec.Command(improveSearchBinaryPath(), args...)
+	command.Env = improveSearchCommandEnv()
+	output, runErr := command.CombinedOutput()
+	summaryFile := filepath.Join(outputDir, "review-summary.json")
+	if !fileExists(summaryFile) {
+		return map[string]any{
+			"type":             "review",
+			"candidateId":      candidate["id"],
+			"status":           "failed",
+			"admissible":       false,
+			"rejectionReasons": []any{"review:summary_missing"},
+			"outputDir":        outputDir,
+			"summaryFile":      summaryFile,
+			"stdout":           string(output),
+			"stderr":           string(output),
+		}
+	}
+	summary, err := readJSONFile(summaryFile)
+	if err != nil {
+		return map[string]any{
+			"type":             "review",
+			"candidateId":      candidate["id"],
+			"status":           "failed",
+			"admissible":       false,
+			"rejectionReasons": []any{"review:summary_invalid"},
+			"outputDir":        outputDir,
+			"summaryFile":      summaryFile,
+		}
+	}
+	rejectionReasons := improveSearchReviewRejectionReasons(summary)
+	feedbackEntries := improveSearchReviewFeedbackEntries(summary)
+	feedbackMessages := improveSearchReviewFeedbackMessages(summary)
+	variants := []any{}
+	for _, rawVariant := range arrayOrEmpty(summary["variants"]) {
+		variant := asMap(rawVariant)
+		variants = append(variants, map[string]any{
+			"id":            firstNonNil(variant["id"], nil),
+			"status":        firstNonNil(variant["status"], nil),
+			"verdict":       firstNonNil(asMap(variant["output"])["verdict"], nil),
+			"findingsCount": len(arrayOrEmpty(asMap(variant["output"])["findings"])),
+			"outputFile":    firstNonNil(variant["outputFile"], nil),
+		})
+	}
+	return map[string]any{
+		"type":             "review",
+		"candidateId":      candidate["id"],
+		"status":           ternaryStatus(runErr == nil, "passed", "failed"),
+		"admissible":       len(rejectionReasons) == 0,
+		"rejectionReasons": stringSliceToAny(rejectionReasons),
+		"feedbackEntries":  mapsToAny(feedbackEntries),
+		"feedbackMessages": stringSliceToAny(feedbackMessages),
+		"outputDir":        outputDir,
+		"summaryFile":      summaryFile,
+		"telemetry":        firstNonNil(summary["telemetry"], nil),
+		"variants":         variants,
+	}
+}
+
+func improveSearchReviewFeedbackEntries(summary map[string]any) []map[string]any {
+	entries := []map[string]any{}
+	for _, rawVariant := range arrayOrEmpty(summary["variants"]) {
+		variant := asMap(rawVariant)
+		variantID := firstNonEmpty(stringOrEmpty(variant["id"]), "variant")
+		defaultSeverity := improveSearchReviewStatusFromVariant(variant)
+		output := asMap(variant["output"])
+		findings := arrayOrEmpty(output["findings"])
+		if len(findings) > 0 {
+			for _, rawFinding := range findings {
+				finding := asMap(rawFinding)
+				message := stringOrEmpty(finding["message"])
+				if message == "" {
+					continue
+				}
+				severity := firstNonEmpty(stringOrEmpty(finding["severity"]), defaultSeverity)
+				entries = append(entries, map[string]any{
+					"message":         message,
+					"severity":        severity,
+					"rejectionReason": fmt.Sprintf("review:%s:%s", variantID, severity),
+				})
+			}
+			continue
+		}
+		if summaryText := stringOrEmpty(output["summary"]); summaryText != "" {
+			entries = append(entries, map[string]any{
+				"message":         summaryText,
+				"severity":        defaultSeverity,
+				"rejectionReason": fmt.Sprintf("review:%s:%s", variantID, defaultSeverity),
+			})
+		}
+	}
+	return entries
+}
+
+func improveSearchReviewFeedbackMessages(summary map[string]any) []string {
+	messages := []string{}
+	for _, rawEntry := range improveSearchReviewFeedbackEntries(summary) {
+		if message := stringOrEmpty(rawEntry["message"]); message != "" {
+			messages = append(messages, message)
+		}
+	}
+	return uniqueStrings(messages)
+}
+
+func improveSearchBuildCheckpointFeedback(packet map[string]any, reviewOutcome map[string]any) []any {
+	entries := arrayOrEmpty(reviewOutcome["feedbackEntries"])
+	rejectionReasons := stringSliceValue(reviewOutcome["rejectionReasons"])
+	if len(entries) == 0 {
+		fallbackSeverity := "concern"
+		for _, reason := range rejectionReasons {
+			if strings.HasSuffix(reason, ":blocker") {
+				fallbackSeverity = "blocker"
+				break
+			}
+		}
+		for _, message := range stringSliceValue(reviewOutcome["feedbackMessages"]) {
+			entries = append(entries, map[string]any{
+				"message":         message,
+				"severity":        fallbackSeverity,
+				"rejectionReason": firstNonEmpty(firstNonEmptySliceString(rejectionReasons), ""),
+			})
+		}
+	}
+	if len(entries) == 0 {
+		return []any{}
+	}
+	scenarioIDs := improveSearchCheckpointScenarioIDs(packet)
+	feedbackByScenarioID := map[string][]map[string]any{}
+	genericEntries := []map[string]any{}
+	for _, rawEntry := range entries {
+		entry := asMap(rawEntry)
+		message := stringOrEmpty(entry["message"])
+		matchedScenarioIDs := improveSearchFeedbackScenarioIDs(message, scenarioIDs)
+		if len(matchedScenarioIDs) == 0 {
+			genericEntries = append(genericEntries, entry)
+			continue
+		}
+		for _, scenarioID := range matchedScenarioIDs {
+			feedbackByScenarioID[scenarioID] = append(feedbackByScenarioID[scenarioID], entry)
+		}
+	}
+	result := []any{}
+	for _, scenarioID := range scenarioIDs {
+		scopedEntries := feedbackByScenarioID[scenarioID]
+		if len(scopedEntries) == 0 {
+			continue
+		}
+		result = append(result, map[string]any{
+			"source":           "frontier_promotion_review",
+			"scope":            "scenario",
+			"scenarioIds":      []any{scenarioID},
+			"severity":         improveSearchCheckpointEntrySeverity(scopedEntries),
+			"rejectionReasons": stringSliceToAny(improveSearchCheckpointEntryReasons(scopedEntries, rejectionReasons)),
+			"feedbackMessages": stringSliceToAny(improveSearchCheckpointEntryMessages(scopedEntries)),
+		})
+	}
+	if len(genericEntries) > 0 || len(result) == 0 {
+		sourceEntries := genericEntries
+		scope := "generic"
+		if len(sourceEntries) == 0 {
+			scope = "candidate"
+			sourceEntries = []map[string]any{}
+			for _, rawEntry := range entries {
+				sourceEntries = append(sourceEntries, asMap(rawEntry))
+			}
+		}
+		result = append(result, map[string]any{
+			"source":           "frontier_promotion_review",
+			"scope":            scope,
+			"scenarioIds":      []any{},
+			"severity":         improveSearchCheckpointEntrySeverity(sourceEntries),
+			"rejectionReasons": stringSliceToAny(improveSearchCheckpointEntryReasons(sourceEntries, rejectionReasons)),
+			"feedbackMessages": stringSliceToAny(improveSearchCheckpointEntryMessages(sourceEntries)),
+		})
+	}
+	return result
+}
+
+func improveSearchCheckpointScenarioIDs(packet map[string]any) []string {
+	ordered := []string{}
+	for _, raw := range append(arrayOrEmpty(asMap(packet["scenarioSets"])["trainScenarioSet"]), arrayOrEmpty(asMap(packet["scenarioSets"])["heldOutScenarioSet"])...) {
+		if scenarioID := strings.TrimSpace(stringOrEmpty(raw)); scenarioID != "" {
+			ordered = append(ordered, scenarioID)
+		}
+	}
+	return uniqueStrings(ordered)
+}
+
+func improveSearchFeedbackScenarioIDs(message string, scenarioIDs []string) []string {
+	normalizedMessage := improveSearchNormalizedMatchText(message)
+	if normalizedMessage == "" {
+		return []string{}
+	}
+	matches := []string{}
+	for _, scenarioID := range scenarioIDs {
+		if strings.Contains(normalizedMessage, improveSearchNormalizedMatchText(scenarioID)) {
+			matches = append(matches, scenarioID)
+		}
+	}
+	return matches
+}
+
+func improveSearchNormalizedMatchText(value string) string {
+	builder := strings.Builder{}
+	lastSpace := false
+	for _, r := range strings.ToLower(value) {
+		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
+			builder.WriteRune(r)
+			lastSpace = false
+			continue
+		}
+		if !lastSpace {
+			builder.WriteRune(' ')
+			lastSpace = true
+		}
+	}
+	return strings.TrimSpace(builder.String())
+}
+
+func improveSearchCheckpointEntrySeverity(entries []map[string]any) string {
+	best := "concern"
+	for _, entry := range entries {
+		severity := stringOrEmpty(entry["severity"])
+		if severity == "blocker" {
+			return "blocker"
+		}
+		if severity == "concern" {
+			best = "concern"
+		}
+	}
+	return best
+}
+
+func improveSearchCheckpointEntryReasons(entries []map[string]any, fallback []string) []string {
+	reasons := []string{}
+	for _, entry := range entries {
+		if reason := stringOrEmpty(entry["rejectionReason"]); reason != "" {
+			reasons = append(reasons, reason)
+		}
+	}
+	reasons = uniqueStrings(reasons)
+	if len(reasons) > 0 {
+		return reasons
+	}
+	return uniqueStrings(fallback)
+}
+
+func improveSearchCheckpointEntryMessages(entries []map[string]any) []string {
+	messages := []string{}
+	for _, entry := range entries {
+		if message := stringOrEmpty(entry["message"]); message != "" {
+			messages = append(messages, message)
+		}
+	}
+	return uniqueStrings(messages)
+}
+
+func mapsToAny(items []map[string]any) []any {
+	result := make([]any, 0, len(items))
+	for _, item := range items {
+		result = append(result, item)
+	}
+	return result
+}
+
+func firstNonEmptySliceString(items []string) string {
+	for _, item := range items {
+		if strings.TrimSpace(item) != "" {
+			return item
+		}
+	}
+	return ""
+}
+
+func improveSearchRunFullGateCheckpoint(packet map[string]any, artifactRoot string, candidate map[string]any) map[string]any {
+	outputDir := filepath.Join(artifactRoot, "improve-search-candidates", stringOrEmpty(candidate["id"]), "full-gate-eval")
+	result := improveSearchRunEvalTestForCandidate(packet, improveSearchCandidateWorkspace(packet, candidate), outputDir)
+	if stringOrEmpty(result["status"]) == "skipped" {
+		result["type"] = "full_gate"
+		result["candidateId"] = candidate["id"]
+		return result
+	}
+	admissible := stringOrEmpty(result["status"]) == "passed"
+	rejectionReasons := []any{}
+	if !admissible {
+		rejectionReasons = append(rejectionReasons, "full_gate:eval_test_failed")
+	}
+	result["type"] = "full_gate"
+	result["candidateId"] = candidate["id"]
+	result["admissible"] = admissible
+	result["rejectionReasons"] = rejectionReasons
+	return result
+}
+
+func improveSearchLoadCheckpointAdapter(packet map[string]any) (*AdapterPayload, error) {
+	evaluationContext := asMap(packet["evaluationContext"])
+	return LoadAdapter(
+		stringOrEmpty(packet["repoRoot"]),
+		improveSearchOptionalStringPointer(evaluationContext["adapter"]),
+		improveSearchOptionalStringPointer(evaluationContext["adapterName"]),
+	)
+}
+
+func improveSearchAdapterArgs(packet map[string]any) []string {
+	evaluationContext := asMap(packet["evaluationContext"])
+	args := []string{}
+	if adapter := stringOrEmpty(evaluationContext["adapter"]); adapter != "" {
+		args = append(args, "--adapter", adapter)
+	}
+	if adapterName := stringOrEmpty(evaluationContext["adapterName"]); adapterName != "" {
+		args = append(args, "--adapter-name", adapterName)
+	}
+	return args
+}
+
+func improveSearchCandidateWorkspace(packet map[string]any, candidate map[string]any) string {
+	if worktreeRoot := stringOrEmpty(asMap(candidate["evaluationArtifacts"])["worktreeRoot"]); worktreeRoot != "" {
+		return worktreeRoot
+	}
+	return stringOrEmpty(packet["repoRoot"])
+}
+
+func improveSearchCandidateReportFile(packet map[string]any, candidate map[string]any) string {
+	if reportFile := stringOrEmpty(asMap(candidate["evaluationArtifacts"])["reportFile"]); reportFile != "" {
+		return reportFile
+	}
+	if reportFile := stringOrEmpty(asMap(packet["evaluationFiles"])["reportFile"]); reportFile != "" {
+		return reportFile
+	}
+	return stringOrEmpty(asMap(asMap(packet["improveInput"])["reportFile"])["path"])
+}
+
+func improveSearchSkipCheckpointOutcome(checkpointType string, candidateID string, reason string) map[string]any {
+	return map[string]any{
+		"type":             checkpointType,
+		"candidateId":      candidateID,
+		"status":           "skipped",
+		"admissible":       true,
+		"rejectionReasons": []any{},
+		"skipReason":       reason,
+	}
+}
+
+func improveSearchCommandEnv() []string {
+	env := []string{}
+	for _, entry := range os.Environ() {
+		if strings.HasPrefix(entry, "CAUTILUS_RUN_DIR=") {
+			continue
+		}
+		env = append(env, entry)
+	}
+	return append(env, "CAUTILUS_RUN_DIR=")
+}
+
+func improveSearchReviewRejectionReasons(summary map[string]any) []string {
+	reasons := []string{}
+	for _, rawVariant := range arrayOrEmpty(summary["variants"]) {
+		variant := asMap(rawVariant)
+		status := improveSearchReviewStatusFromVariant(variant)
+		if status == "pass" {
+			continue
+		}
+		reasons = append(reasons, fmt.Sprintf("review:%s:%s", firstNonEmpty(stringOrEmpty(variant["id"]), "variant"), status))
+	}
+	return reasons
+}
+
+func improveSearchReviewStatusFromVariant(variant map[string]any) string {
+	if stringOrEmpty(variant["status"]) != "passed" {
+		return "blocker"
+	}
+	verdict := stringOrEmpty(asMap(variant["output"])["verdict"])
+	switch verdict {
+	case "pass", "concern", "blocker":
+		return verdict
+	default:
+		return "concern"
+	}
+}
+
+func improveSearchCountExecutedCheckpoints(items []any) int {
+	count := 0
+	for _, raw := range items {
+		status := stringOrEmpty(asMap(raw)["status"])
+		if status != "" && status != "skipped" {
+			count++
+		}
+	}
+	return count
+}
+
+func ternaryStatus(condition bool, whenTrue string, whenFalse string) string {
+	if condition {
+		return whenTrue
+	}
+	return whenFalse
+}
+
+func improveSearchOptionalStringPointer(value any) *string {
+	text := strings.TrimSpace(stringOrEmpty(value))
+	if text == "" {
+		return nil
+	}
+	return &text
+}
+
+func GenerateImproveProposalFromSearch(searchResult map[string]any, searchResultFile string, improveInput map[string]any, improveInputFile string, now time.Time) (map[string]any, error) {
+	proposal, err := GenerateImproveProposal(improveInput, &improveInputFile, now)
+	if err != nil {
+		return nil, err
+	}
+	if selectedTargetFile := asMap(asMap(searchResult["proposalBridge"])["selectedTargetFile"]); len(selectedTargetFile) > 0 {
+		proposal["targetFile"] = selectedTargetFile
+	}
+	proposal["searchResultFile"] = searchResultFile
+	proposal["rationale"] = fmt.Sprintf("%s Selected candidate: %s.", stringOrEmpty(proposal["rationale"]), firstNonEmpty(stringOrEmpty(asMap(searchResult["proposalBridge"])["selectedCandidateId"]), stringOrEmpty(searchResult["selectedCandidateId"])))
+	return proposal, nil
+}
+
+func improveSearchHeldOutEntries(packet map[string]any) []map[string]any {
+	if heldOutResults := asMap(packet["heldOutResults"]); len(heldOutResults) > 0 {
+		return improveSearchHeldOutEntriesFromResults(heldOutResults, "seed")
+	}
+	report := asMap(asMap(packet["improveInput"])["report"])
+	result := []map[string]any{}
+	for _, rawModeRun := range arrayOrEmpty(report["modeRuns"]) {
+		modeRun := asMap(rawModeRun)
+		mode := stringOrEmpty(modeRun["mode"])
+		if mode != "held_out" && mode != "full_gate" {
+			continue
+		}
+		for index, rawScenario := range arrayOrEmpty(asMap(asMap(modeRun["scenarioResults"])["results"])) {
+			scenario := asMap(rawScenario)
+			scenarioID := normalizeScenarioKey(scenario["scenarioId"], index, "held_out")
+			entry := map[string]any{
+				"candidateId": "seed",
+				"scenarioId":  scenarioID,
+				"mode":        mode,
+				"score":       improveSearchScenarioScore(scenario),
+				"status":      nilIfEmpty(scenario["status"]),
+				"telemetry":   firstNonNil(scenario["telemetry"], map[string]any{}),
+			}
+			result = append(result, entry)
+		}
+	}
+	sort.Slice(result, func(left, right int) bool {
+		return stringOrEmpty(result[left]["scenarioId"]) < stringOrEmpty(result[right]["scenarioId"])
+	})
+	return result
+}
+
+func improveSearchHeldOutEntriesFromResults(results map[string]any, candidateID string) []map[string]any {
+	result := []map[string]any{}
+	mode := firstNonEmpty(stringOrEmpty(results["mode"]), "held_out")
+	for index, rawScenario := range arrayOrEmpty(results["results"]) {
+		scenario := asMap(rawScenario)
+		scenarioID := normalizeScenarioKey(scenario["scenarioId"], index, "held_out")
+		result = append(result, map[string]any{
+			"candidateId": candidateID,
+			"scenarioId":  scenarioID,
+			"mode":        mode,
+			"score":       improveSearchScenarioScore(scenario),
+			"status":      nilIfEmpty(scenario["status"]),
+			"telemetry":   firstNonNil(scenario["telemetry"], map[string]any{}),
+		})
+	}
+	sort.Slice(result, func(left, right int) bool {
+		return stringOrEmpty(result[left]["scenarioId"]) < stringOrEmpty(result[right]["scenarioId"])
+	})
+	return result
+}
+
+func improveSearchScenarioScore(scenario map[string]any) any {
+	if score, ok := toFloat(scenario["overallScore"]); ok {
+		return score
+	}
+	if passRate, ok := toFloat(scenario["passRate"]); ok {
+		return passRate * 100
+	}
+	status := stringOrEmpty(scenario["status"])
+	if status == "passed" {
+		return 100
+	}
+	if status != "" {
+		return 0
+	}
+	return nil
+}
+
+func improveSearchFeedbackSignals(packet map[string]any) []string {
+	signals := []string{}
+	report := asMap(asMap(packet["improveInput"])["report"])
+	for _, rawModeRun := range arrayOrEmpty(report["modeRuns"]) {
+		modeRun := asMap(rawModeRun)
+		signals = append(signals, collectCompareArtifactFeedbackSignals(asMap(asMap(modeRun["scenarioResults"])["compareArtifact"]))...)
+	}
+	signals = append(signals, collectCompareArtifactFeedbackSignals(asMap(asMap(packet["heldOutResults"])["compareArtifact"]))...)
+	for _, rawFinding := range arrayOrEmpty(report["humanReviewFindings"]) {
+		finding := asMap(rawFinding)
+		if message := stringOrEmpty(finding["message"]); message != "" {
+			signals = append(signals, message)
+		}
+	}
+	for _, rawVariant := range arrayOrEmpty(asMap(asMap(packet["improveInput"])["reviewSummary"])["variants"]) {
+		variant := asMap(rawVariant)
+		for _, rawFinding := range arrayOrEmpty(asMap(variant["output"])["findings"]) {
+			finding := asMap(rawFinding)
+			if message := stringOrEmpty(finding["message"]); message != "" {
+				signals = append(signals, message)
+			}
+		}
+	}
+	for scenarioID, rawStats := range asMap(asMap(asMap(packet["improveInput"])["scenarioHistory"])["scenarioStats"]) {
+		stats := asMap(rawStats)
+		latest := asMap(firstArrayItem(asMap(stats)["recentTrainResults"]))
+		if len(latest) == 0 {
+			continue
+		}
+		status := stringOrEmpty(latest["status"])
+		score, _ := toFloat(latest["overallScore"])
+		passRate, _ := toFloat(latest["passRate"])
+		if status != "passed" || score != 100 || passRate != 1 {
+			signals = append(signals, fmt.Sprintf("%s remains unstable in recent train history", scenarioID))
+		}
+	}
+	return uniqueStrings(signals)
+}
+
+func collectCompareArtifactFeedbackSignals(compareArtifact map[string]any) []string {
+	signals := []string{}
+	if summary := stringOrEmpty(compareArtifact["summary"]); summary != "" {
+		signals = append(signals, summary)
+	}
+	for _, bucket := range []string{"regressed", "noisy"} {
+		for _, rawItem := range arrayOrEmpty(compareArtifact[bucket]) {
+			item := asMap(rawItem)
+			if reason := stringOrEmpty(item["reason"]); reason != "" {
+				signals = append(signals, reason)
+			}
+		}
+	}
+	for _, reason := range stringSliceValue(compareArtifact["reasons"]) {
+		if strings.TrimSpace(reason) != "" {
+			signals = append(signals, reason)
+		}
+	}
+	return signals
+}
+
+func improveSearchCandidateTelemetry(entries []map[string]any) map[string]any {
+	totalCost := 0.0
+	totalDuration := 0.0
+	totalTokens := 0.0
+	sawCost := false
+	sawDuration := false
+	sawTokens := false
+	for _, entry := range entries {
+		telemetry := asMap(entry["telemetry"])
+		if cost, ok := toFloat(telemetry["cost_usd"]); ok {
+			totalCost += cost
+			sawCost = true
+		}
+		if duration, ok := toFloat(firstNonNil(telemetry["durationMs"], telemetry["duration_ms"])); ok {
+			totalDuration += duration
+			sawDuration = true
+		}
+		if tokens, ok := toFloat(telemetry["total_tokens"]); ok {
+			totalTokens += tokens
+			sawTokens = true
+		}
+	}
+	result := map[string]any{}
+	if sawCost {
+		result["totalCostUsd"] = round12(totalCost)
+	}
+	if sawDuration {
+		result["totalDurationMs"] = round12(totalDuration)
+	}
+	if sawTokens {
+		result["totalTokens"] = round12(totalTokens)
+	}
+	return result
+}
+
+func improveSearchExperimentContext(packet map[string]any) map[string]any {
+	evaluationContext := asMap(packet["evaluationContext"])
+	mutationBackends := []any{}
+	for _, rawBackend := range arrayOrEmpty(asMap(packet["mutationConfig"])["backends"]) {
+		backend := asMap(rawBackend)
+		mutationBackends = append(mutationBackends, map[string]any{
+			"id":      nilIfEmpty(backend["id"]),
+			"backend": nilIfEmpty(backend["backend"]),
+		})
+	}
+	return map[string]any{
+		"mode":             nilIfEmpty(evaluationContext["mode"]),
+		"intent":           nilIfEmpty(evaluationContext["intent"]),
+		"baselineRef":      nilIfEmpty(evaluationContext["baselineRef"]),
+		"adapter":          nilIfEmpty(evaluationContext["adapter"]),
+		"adapterName":      nilIfEmpty(evaluationContext["adapterName"]),
+		"adapterPath":      nilIfEmpty(asMap(packet["searchConfigSources"])["adapterPath"]),
+		"profile":          nilIfEmpty(evaluationContext["profile"]),
+		"split":            nilIfEmpty(evaluationContext["split"]),
+		"targetFile":       firstNonNil(packet["targetFile"], map[string]any{}),
+		"searchBudget":     nilIfEmpty(asMap(packet["searchConfig"])["budget"]),
+		"mutationBackends": mutationBackends,
+	}
+}
+
+func improveSearchTelemetryCompleteness(matrix []any, candidates []map[string]any) map[string]any {
+	heldOutValues := func(extract func(map[string]any) bool) string {
+		if len(matrix) == 0 {
+			return "absent"
+		}
+		count := 0
+		for _, rawEntry := range matrix {
+			entry := asMap(rawEntry)
+			if extract(entry) {
+				count++
+			}
+		}
+		return telemetryCompletenessStatus(len(matrix), count)
+	}
+	candidateValues := func(extract func(map[string]any) bool) string {
+		if len(candidates) == 0 {
+			return "absent"
+		}
+		count := 0
+		for _, candidate := range candidates {
+			if extract(asMap(candidate["telemetry"])) {
+				count++
+			}
+		}
+		return telemetryCompletenessStatus(len(candidates), count)
+	}
+	return map[string]any{
+		"heldOutDurationMs": heldOutValues(func(entry map[string]any) bool {
+			_, ok := toFloat(firstNonNil(asMap(entry["telemetry"])["durationMs"], asMap(entry["telemetry"])["duration_ms"]))
+			return ok
+		}),
+		"heldOutTotalTokens": heldOutValues(func(entry map[string]any) bool {
+			_, ok := toFloat(asMap(entry["telemetry"])["total_tokens"])
+			return ok
+		}),
+		"heldOutCostUsd":               heldOutValues(func(entry map[string]any) bool { _, ok := toFloat(asMap(entry["telemetry"])["cost_usd"]); return ok }),
+		"candidateAggregateDurationMs": candidateValues(func(telemetry map[string]any) bool { _, ok := toFloat(telemetry["totalDurationMs"]); return ok }),
+		"candidateAggregateTotalTokens": candidateValues(func(telemetry map[string]any) bool {
+			_, ok := toFloat(telemetry["totalTokens"])
+			return ok
+		}),
+		"candidateAggregateCostUsd": candidateValues(func(telemetry map[string]any) bool {
+			_, ok := toFloat(telemetry["totalCostUsd"])
+			return ok
+		}),
+	}
+}
+
+func telemetryCompletenessStatus(total, present int) string {
+	if total == 0 || present == 0 {
+		return "absent"
+	}
+	if present == total {
+		return "complete"
+	}
+	return "partial"
+}
+
+func improveSearchSeedCandidate(packet map[string]any, heldOutEntries []map[string]any) map[string]any {
+	return map[string]any{
+		"id":                 "seed",
+		"generationIndex":    0,
+		"parentCandidateIds": []any{},
+		"origin":             "seed",
+		"targetFile":         packet["targetFile"],
+		"targetSnapshot":     asMap(asMap(packet["seedCandidate"])["targetSnapshot"]),
+		"mutationRationale":  "Use the current target prompt file as the seed candidate.",
+		"telemetry":          improveSearchCandidateTelemetry(heldOutEntries),
+		"heldOutEntries":     heldOutEntries,
+	}
+}
+
+type improveSearchMutationOptions struct {
+	GenerationIndex int
+	AttemptIndex    int
+	ParentCandidate map[string]any
+}
+
+func improveSearchEvaluateMutation(packet map[string]any, inputFile string, options improveSearchMutationOptions) (map[string]any, map[string]any, error) {
+	prerequisites := improveSearchMutationPrerequisites(packet)
+	diagnostics := map[string]any{
+		"mutationBackend": nil,
+		"backendInvoked":  false,
+		"status":          "",
+		"prerequisites":   prerequisites,
+	}
+	if !truthy(prerequisites["intentPresent"]) || !truthy(prerequisites["baselineRefPresent"]) {
+		diagnostics["status"] = "mutation_prerequisites_missing"
+		return nil, diagnostics, fmt.Errorf("mutation prerequisites missing")
+	}
+	toolRoot := strings.TrimSpace(os.Getenv("CAUTILUS_TOOL_ROOT"))
+	reviewWrapperPath := filepath.Join(toolRoot, "scripts", "agent-runtime", "run-review-variant.sh")
+	if toolRoot == "" || !fileExists(reviewWrapperPath) {
+		diagnostics["status"] = "review_wrapper_unavailable"
+		return nil, diagnostics, fmt.Errorf("review wrapper unavailable")
+	}
+	artifactRoot := filepath.Dir(firstNonEmpty(inputFile, stringOrEmpty(packet["improveInputFile"])))
+	backend := improveSearchMutationBackend(packet)
+	diagnostics["mutationBackend"] = nilIfEmpty(backend)
+	if backend == "" {
+		diagnostics["status"] = "mutation_backend_unavailable"
+		return nil, diagnostics, fmt.Errorf("mutation backend unavailable")
+	}
+	generationIndex := atLeastOne(options.GenerationIndex)
+	attemptIndex := atLeastOne(options.AttemptIndex)
+	parentCandidate := options.ParentCandidate
+	candidateID := fmt.Sprintf("g%d-%d-%s", generationIndex, attemptIndex, strings.ReplaceAll(strings.ReplaceAll(backend, "_", "-"), " ", "-"))
+	candidateRoot := filepath.Join(artifactRoot, "improve-search-candidates", candidateID)
+	if err := os.MkdirAll(candidateRoot, 0o755); err != nil {
+		diagnostics["status"] = "candidate_setup_failed"
+		return nil, diagnostics, err
+	}
+	promptFile := filepath.Join(candidateRoot, "mutation.prompt.md")
+	schemaFile := filepath.Join(candidateRoot, "mutation.schema.json")
+	outputFile := filepath.Join(candidateRoot, "mutation.output.json")
+	candidatePromptPath := filepath.Join(candidateRoot, "candidate.prompt.md")
+	if err := os.WriteFile(promptFile, []byte(improveSearchMutationPrompt(packet, parentCandidate, backend)), 0o644); err != nil {
+		diagnostics["status"] = "candidate_setup_failed"
+		return nil, diagnostics, err
+	}
+	if err := writeJSONFile(schemaFile, improveSearchMutationSchema()); err != nil {
+		diagnostics["status"] = "candidate_setup_failed"
+		return nil, diagnostics, err
+	}
+	command := exec.Command("bash", reviewWrapperPath,
+		"--backend", backend,
+		"--workspace", stringOrEmpty(packet["repoRoot"]),
+		"--prompt-file", promptFile,
+		"--schema-file", schemaFile,
+		"--output-file", outputFile,
+	)
+	command.Env = append(os.Environ(), "CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS="+firstNonEmpty(os.Getenv("CAUTILUS_OPTIMIZE_SEARCH_TIMEOUT_SECONDS"), "180"))
+	diagnostics["backendInvoked"] = true
+	output, err := command.CombinedOutput()
+	if err != nil {
+		diagnostics["status"] = "mutation_backend_failed"
+		return nil, diagnostics, fmt.Errorf("mutation backend failed: %s", strings.TrimSpace(string(output)))
+	}
+	mutationOutput, err := readJSONFile(outputFile)
+	if err != nil {
+		diagnostics["status"] = "mutation_output_invalid"
+		return nil, diagnostics, err
+	}
+	promptMarkdown := strings.TrimSpace(stringOrEmpty(mutationOutput["promptMarkdown"]))
+	if promptMarkdown == "" {
+		diagnostics["status"] = "mutation_output_missing_prompt"
+		return nil, diagnostics, fmt.Errorf("mutation output omitted promptMarkdown")
+	}
+	if err := os.WriteFile(candidatePromptPath, []byte(promptMarkdown+"\n"), 0o644); err != nil {
+		diagnostics["status"] = "candidate_setup_failed"
+		return nil, diagnostics, err
+	}
+	heldOutEntries, evaluationArtifacts := improveSearchEvaluateCandidate(packet, artifactRoot, candidateID, candidatePromptPath)
+	diagnostics["status"] = "candidate_generated"
+	diagnostics["candidateId"] = candidateID
+	return map[string]any{
+		"id":                 candidateID,
+		"generationIndex":    generationIndex,
+		"parentCandidateIds": []any{stringOrEmpty(parentCandidate["id"])},
+		"origin":             "mutation",
+		"targetFile": map[string]any{
+			"path":   candidatePromptPath,
+			"exists": true,
+		},
+		"targetSnapshot": collectTargetSnapshot(map[string]any{
+			"path":   candidatePromptPath,
+			"exists": true,
+		}),
+		"mutationRationale":    stringOrEmpty(mutationOutput["rationaleSummary"]),
+		"expectedImprovements": arrayOrEmpty(mutationOutput["expectedImprovements"]),
+		"preservedStrengths":   arrayOrEmpty(mutationOutput["preservedStrengths"]),
+		"riskNotes":            arrayOrEmpty(mutationOutput["riskNotes"]),
+		"backend":              backend,
+		"artifacts": map[string]any{
+			"promptFile": promptFile,
+			"schemaFile": schemaFile,
+			"outputFile": outputFile,
+		},
+		"evaluationArtifacts": evaluationArtifacts,
+		"telemetry":           improveSearchCandidateTelemetry(heldOutEntries),
+		"heldOutEntries":      heldOutEntries,
+	}, diagnostics, nil
+}
+
+func improveSearchMutationPrerequisites(packet map[string]any) map[string]any {
+	evaluationContext := asMap(packet["evaluationContext"])
+	targetFile := asMap(packet["targetFile"])
+	backend := improveSearchMutationBackend(packet)
+	toolRoot := strings.TrimSpace(os.Getenv("CAUTILUS_TOOL_ROOT"))
+	reviewWrapperPath := filepath.Join(toolRoot, "scripts", "agent-runtime", "run-review-variant.sh")
+	return map[string]any{
+		"intentPresent":             stringOrEmpty(evaluationContext["intent"]) != "",
+		"baselineRefPresent":        stringOrEmpty(evaluationContext["baselineRef"]) != "",
+		"targetFilePath":            nilIfEmpty(targetFile["path"]),
+		"targetFileExists":          truthy(targetFile["exists"]),
+		"reviewWrapperAvailable":    toolRoot != "" && fileExists(reviewWrapperPath),
+		"mutationBackendConfigured": backend != "",
+	}
+}
+
+func improveSearchConfigInt(packet map[string]any, key string, defaultValue int) int {
+	value := int(numberOrDefault(asMap(packet["searchConfig"])[key], float64(defaultValue)))
+	return atLeastOne(value)
+}
+
+func improveSearchMutationBackend(packet map[string]any) string {
+	for _, rawBackend := range arrayOrEmpty(asMap(packet["mutationConfig"])["backends"]) {
+		if backend := stringOrEmpty(asMap(rawBackend)["backend"]); backend != "" {
+			return backend
+		}
+	}
+	return ""
+}
+
+func improveSearchEvaluateMerge(packet map[string]any, inputFile string, generationIndex int, candidates []map[string]any, rankedFrontierIDs []string, scenarioIDs []string) (map[string]any, error) {
+	mergeEnabled, _ := asMap(packet["searchConfig"])["mergeEnabled"].(bool)
+	if !mergeEnabled {
+		return nil, nil
+	}
+	parents := improveSearchSelectMergeParents(candidates, rankedFrontierIDs, scenarioIDs, stringOrEmpty(asMap(packet["searchConfig"])["threeParentPolicy"]))
+	if len(parents) < 2 {
+		return nil, nil
+	}
+	toolRoot := strings.TrimSpace(os.Getenv("CAUTILUS_TOOL_ROOT"))
+	reviewWrapperPath := filepath.Join(toolRoot, "scripts", "agent-runtime", "run-review-variant.sh")
+	if toolRoot == "" || !fileExists(reviewWrapperPath) {
+		return nil, fmt.Errorf("review wrapper unavailable")
+	}
+	artifactRoot := filepath.Dir(firstNonEmpty(inputFile, stringOrEmpty(packet["improveInputFile"])))
+	backend := improveSearchMutationBackend(packet)
+	if backend == "" {
+		return nil, fmt.Errorf("mutation backend unavailable")
+	}
+	candidateID := fmt.Sprintf("g%d-merge-1-%s", atLeastOne(generationIndex), strings.ReplaceAll(strings.ReplaceAll(backend, "_", "-"), " ", "-"))
+	candidateRoot := filepath.Join(artifactRoot, "improve-search-candidates", candidateID)
+	if err := os.MkdirAll(candidateRoot, 0o755); err != nil {
+		return nil, err
+	}
+	promptFile := filepath.Join(candidateRoot, "mutation.prompt.md")
+	schemaFile := filepath.Join(candidateRoot, "mutation.schema.json")
+	outputFile := filepath.Join(candidateRoot, "mutation.output.json")
+	candidatePromptPath := filepath.Join(candidateRoot, "candidate.prompt.md")
+	parentPrompts := make([]string, 0, len(parents))
+	for _, parent := range parents {
+		targetPath := stringOrEmpty(asMap(parent["targetFile"])["path"])
+		payload, err := os.ReadFile(targetPath)
+		if err != nil {
+			return nil, err
+		}
+		parentPrompts = append(parentPrompts, string(payload))
+	}
+	mergeCheckpointFeedback := improveSearchCollectMergeCheckpointFeedback(candidates, rankedFrontierIDs, scenarioIDs)
+	promptText := improveSearchMergePrompt(packet, parents, parentPrompts, backend, scenarioIDs, mergeCheckpointFeedback)
+	if err := os.WriteFile(promptFile, []byte(promptText), 0o644); err != nil {
+		return nil, err
+	}
+	if err := writeJSONFile(schemaFile, improveSearchMutationSchema()); err != nil {
+		return nil, err
+	}
+	command := exec.Command("bash", reviewWrapperPath,
+		"--backend", backend,
+		"--workspace", stringOrEmpty(packet["repoRoot"]),
+		"--prompt-file", promptFile,
+		"--schema-file", schemaFile,
+		"--output-file", outputFile,
+	)
+	command.Env = append(os.Environ(), "CAUTILUS_REVIEW_VARIANT_TIMEOUT_SECONDS="+firstNonEmpty(os.Getenv("CAUTILUS_OPTIMIZE_SEARCH_TIMEOUT_SECONDS"), "180"))
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("merge backend failed: %s", strings.TrimSpace(string(output)))
+	}
+	mutationOutput, err := readJSONFile(outputFile)
+	if err != nil {
+		return nil, err
+	}
+	promptMarkdown := strings.TrimSpace(stringOrEmpty(mutationOutput["promptMarkdown"]))
+	if promptMarkdown == "" {
+		return nil, fmt.Errorf("merge output omitted promptMarkdown")
+	}
+	if err := os.WriteFile(candidatePromptPath, []byte(promptMarkdown+"\n"), 0o644); err != nil {
+		return nil, err
+	}
+	heldOutEntries, evaluationArtifacts := improveSearchEvaluateCandidate(packet, artifactRoot, candidateID, candidatePromptPath)
+	parentIDs := make([]any, 0, len(parents))
+	for _, parent := range parents {
+		parentIDs = append(parentIDs, stringOrEmpty(parent["id"]))
+	}
+	return map[string]any{
+		"id":                 candidateID,
+		"generationIndex":    atLeastOne(generationIndex),
+		"parentCandidateIds": parentIDs,
+		"origin":             "merge",
+		"targetFile": map[string]any{
+			"path":   candidatePromptPath,
+			"exists": true,
+		},
+		"targetSnapshot": collectTargetSnapshot(map[string]any{
+			"path":   candidatePromptPath,
+			"exists": true,
+		}),
+		"mutationRationale":    stringOrEmpty(mutationOutput["rationaleSummary"]),
+		"expectedImprovements": arrayOrEmpty(mutationOutput["expectedImprovements"]),
+		"preservedStrengths":   arrayOrEmpty(mutationOutput["preservedStrengths"]),
+		"riskNotes":            arrayOrEmpty(mutationOutput["riskNotes"]),
+		"backend":              backend,
+		"artifacts": map[string]any{
+			"promptFile": promptFile,
+			"schemaFile": schemaFile,
+			"outputFile": outputFile,
+		},
+		"evaluationArtifacts": evaluationArtifacts,
+		"telemetry":           improveSearchCandidateTelemetry(heldOutEntries),
+		"heldOutEntries":      heldOutEntries,
+	}, nil
+}
+
+func improveSearchSelectMergeParents(candidates []map[string]any, rankedFrontierIDs []string, scenarioIDs []string, threeParentPolicy string) []map[string]any {
+	if len(rankedFrontierIDs) < 2 {
+		return nil
+	}
+	frontierCandidates := []map[string]any{}
+	for _, candidateID := range rankedFrontierIDs {
+		candidate := improveSearchCandidateByID(candidates, candidateID)
+		if candidate != nil {
+			frontierCandidates = append(frontierCandidates, candidate)
+		}
+	}
+	if len(frontierCandidates) < 2 {
+		return nil
+	}
+	scenarioWeights := improveSearchMergeScenarioPriorityWeights(frontierCandidates, scenarioIDs, candidates)
+	checkpointRepairWeights := improveSearchMergeCheckpointRepairWeights(candidates, scenarioIDs)
+	bestFrontierScores := improveSearchMergeFrontierBestScores(frontierCandidates, scenarioIDs)
+	bestPair := improveSearchBestMergeGroup(frontierCandidates, 2, scenarioIDs, scenarioWeights, checkpointRepairWeights, bestFrontierScores)
+	if bestPair == nil {
+		return nil
+	}
+	if len(frontierCandidates) < 3 || threeParentPolicy == "disabled" {
+		return bestPair.Candidates
+	}
+	bestTriple := improveSearchBestMergeGroup(frontierCandidates, 3, scenarioIDs, scenarioWeights, checkpointRepairWeights, bestFrontierScores)
+	if bestTriple == nil {
+		return bestPair.Candidates
+	}
+	if threeParentPolicy == "coverage_expansion" && bestTriple.Metrics.Coverage <= bestPair.Metrics.Coverage {
+		return bestPair.Candidates
+	}
+	if improveSearchCompareMergeGroupMetrics(bestTriple.Metrics, bestPair.Metrics) > 0 {
+		return bestTriple.Candidates
+	}
+	return bestPair.Candidates
+}
+
+func improveSearchHasFingerprint(candidates []map[string]any, fingerprint string) bool {
+	if strings.TrimSpace(fingerprint) == "" {
+		return false
+	}
+	for _, candidate := range candidates {
+		if stringOrEmpty(asMap(candidate["targetSnapshot"])["sha256"]) == fingerprint {
+			return true
+		}
+	}
+	return false
+}
+
+func candidateIDList(candidates []map[string]any) []any {
+	result := make([]any, 0, len(candidates))
+	for _, candidate := range candidates {
+		if id := stringOrEmpty(candidate["id"]); id != "" {
+			result = append(result, id)
+		}
+	}
+	return result
+}
+
+type improveSearchMergeGroup struct {
+	Candidates []map[string]any
+	Metrics    improveSearchMergeGroupMetrics
+}
+
+type improveSearchMergeGroupMetrics struct {
+	Coverage                  int
+	WeakestScore              float64
+	Average                   float64
+	CheckpointRepairWeight    float64
+	CheckpointRepairCoverage  int
+	ParentCount               int
+	PriorityImprovementWeight float64
+	ImprovementCoverage       int
+	ImprovementDiversity      int
+	StrengthCount             int
+	PriorityRiskPenalty       float64
+	RiskPenalty               int
+	TotalCostUsd              float64
+	TotalDurationMs           float64
+}
+
+func improveSearchBestMergeGroup(frontierCandidates []map[string]any, size int, scenarioIDs []string, scenarioWeights map[string]float64, checkpointRepairWeights map[string]float64, bestFrontierScores map[string]float64) *improveSearchMergeGroup {
+	if len(frontierCandidates) < size || size < 2 {
+		return nil
+	}
+	var best *improveSearchMergeGroup
+	for _, indexes := range improveSearchCombinationIndexes(len(frontierCandidates), size) {
+		group := make([]map[string]any, 0, size)
+		for _, index := range indexes {
+			group = append(group, frontierCandidates[index])
+		}
+		candidateGroup := &improveSearchMergeGroup{
+			Candidates: group,
+			Metrics:    improveSearchMergeGroupMetricsForCandidates(group, scenarioIDs, scenarioWeights, checkpointRepairWeights, bestFrontierScores),
+		}
+		if best == nil || improveSearchCompareMergeGroupMetrics(candidateGroup.Metrics, best.Metrics) > 0 {
+			best = candidateGroup
+		}
+	}
+	return best
+}
+
+func improveSearchCompareMergeGroupMetrics(left improveSearchMergeGroupMetrics, right improveSearchMergeGroupMetrics) int {
+	switch {
+	case left.Coverage != right.Coverage:
+		return compareInt(left.Coverage, right.Coverage)
+	case left.WeakestScore != right.WeakestScore:
+		return compareFloat(left.WeakestScore, right.WeakestScore)
+	case left.Average != right.Average:
+		return compareFloat(left.Average, right.Average)
+	case left.CheckpointRepairWeight != right.CheckpointRepairWeight:
+		return compareFloat(left.CheckpointRepairWeight, right.CheckpointRepairWeight)
+	case left.CheckpointRepairCoverage != right.CheckpointRepairCoverage:
+		return compareInt(left.CheckpointRepairCoverage, right.CheckpointRepairCoverage)
+	case left.ParentCount != right.ParentCount:
+		return compareInt(right.ParentCount, left.ParentCount)
+	case left.PriorityImprovementWeight != right.PriorityImprovementWeight:
+		return compareFloat(left.PriorityImprovementWeight, right.PriorityImprovementWeight)
+	case left.ImprovementCoverage != right.ImprovementCoverage:
+		return compareInt(left.ImprovementCoverage, right.ImprovementCoverage)
+	case left.ImprovementDiversity != right.ImprovementDiversity:
+		return compareInt(left.ImprovementDiversity, right.ImprovementDiversity)
+	case left.StrengthCount != right.StrengthCount:
+		return compareInt(left.StrengthCount, right.StrengthCount)
+	case left.PriorityRiskPenalty != right.PriorityRiskPenalty:
+		return compareFloat(right.PriorityRiskPenalty, left.PriorityRiskPenalty)
+	case left.RiskPenalty != right.RiskPenalty:
+		return compareInt(right.RiskPenalty, left.RiskPenalty)
+	case left.TotalCostUsd != right.TotalCostUsd:
+		return compareFloat(right.TotalCostUsd, left.TotalCostUsd)
+	case left.TotalDurationMs != right.TotalDurationMs:
+		return compareFloat(right.TotalDurationMs, left.TotalDurationMs)
+	default:
+		return 0
+	}
+}
+
+func improveSearchMergeGroupMetricsForCandidates(candidates []map[string]any, scenarioIDs []string, scenarioWeights map[string]float64, checkpointRepairWeights map[string]float64, bestFrontierScores map[string]float64) improveSearchMergeGroupMetrics {
+	coverage := 0
+	weakestScore := math.Inf(1)
+	average := 0.0
+	expectedImprovements := []string{}
+	preservedStrengths := []string{}
+	riskNotes := []string{}
+	totalCostUsd := 0.0
+	totalDurationMs := 0.0
+	for _, scenarioID := range scenarioIDs {
+		bestScore := math.Inf(-1)
+		for _, candidate := range candidates {
+			score := improveSearchHeldOutScoreForCandidate(candidate, scenarioID)
+			if score > bestScore {
+				bestScore = score
+			}
+		}
+		if bestScore == bestFrontierScores[scenarioID] {
+			coverage++
+			if bestScore < weakestScore {
+				weakestScore = bestScore
+			}
+		}
+		average += bestScore
+	}
+	if weakestScore == math.Inf(1) {
+		weakestScore = math.Inf(-1)
+	}
+	for _, candidate := range candidates {
+		expectedImprovements = append(expectedImprovements, stringSliceOrEmptyRuntime(candidate["expectedImprovements"])...)
+		preservedStrengths = append(preservedStrengths, stringSliceOrEmptyRuntime(candidate["preservedStrengths"])...)
+		riskNotes = append(riskNotes, stringSliceOrEmptyRuntime(candidate["riskNotes"])...)
+		telemetry := asMap(candidate["telemetry"])
+		if cost, ok := toFloat(telemetry["totalCostUsd"]); ok {
+			totalCostUsd += cost
+		} else {
+			totalCostUsd += math.Inf(1)
+		}
+		if duration, ok := toFloat(telemetry["totalDurationMs"]); ok {
+			totalDurationMs += duration
+		} else {
+			totalDurationMs += math.Inf(1)
+		}
+	}
+	if len(scenarioIDs) > 0 {
+		average = average / float64(len(scenarioIDs))
+	}
+	checkpointScenarioIDs := []string{}
+	for scenarioID, weight := range checkpointRepairWeights {
+		if weight > 0 {
+			checkpointScenarioIDs = append(checkpointScenarioIDs, scenarioID)
+		}
+	}
+	return improveSearchMergeGroupMetrics{
+		Coverage:                  coverage,
+		WeakestScore:              weakestScore,
+		Average:                   average,
+		CheckpointRepairWeight:    improveSearchWeightedScenarioMentions(expectedImprovements, scenarioIDs, checkpointRepairWeights),
+		CheckpointRepairCoverage:  improveSearchCountScenarioMentions(expectedImprovements, checkpointScenarioIDs),
+		ParentCount:               len(candidates),
+		PriorityImprovementWeight: improveSearchWeightedScenarioMentions(expectedImprovements, scenarioIDs, scenarioWeights),
+		ImprovementCoverage:       improveSearchCountScenarioMentions(expectedImprovements, scenarioIDs),
+		ImprovementDiversity:      len(uniqueStrings(expectedImprovements)),
+		StrengthCount:             len(uniqueStrings(preservedStrengths)),
+		PriorityRiskPenalty:       improveSearchWeightedScenarioMentions(riskNotes, scenarioIDs, scenarioWeights),
+		RiskPenalty:               len(riskNotes),
+		TotalCostUsd:              totalCostUsd,
+		TotalDurationMs:           totalDurationMs,
+	}
+}
+
+func improveSearchMergeScenarioPriorityWeights(frontierCandidates []map[string]any, scenarioIDs []string, feedbackCandidates []map[string]any) map[string]float64 {
+	bonuses := improveSearchMergeCheckpointFeedbackBonuses(feedbackCandidates, scenarioIDs)
+	weights := map[string]float64{}
+	for _, scenarioID := range scenarioIDs {
+		scores := []float64{}
+		for _, candidate := range frontierCandidates {
+			score := improveSearchHeldOutScoreForCandidate(candidate, scenarioID)
+			if !math.IsInf(score, -1) {
+				scores = append(scores, score)
+			}
+		}
+		if len(scores) == 0 {
+			weights[scenarioID] = 1 + bonuses[scenarioID]
+			continue
+		}
+		total := 0.0
+		for _, score := range scores {
+			total += score
+		}
+		weights[scenarioID] = math.Max(1, 100-(total/float64(len(scores)))) + bonuses[scenarioID]
+	}
+	return weights
+}
+
+func improveSearchMergeCheckpointRepairWeights(feedbackCandidates []map[string]any, scenarioIDs []string) map[string]float64 {
+	selectedScenarioIDs := map[string]struct{}{}
+	weights := map[string]float64{}
+	for _, scenarioID := range scenarioIDs {
+		selectedScenarioIDs[scenarioID] = struct{}{}
+		weights[scenarioID] = 0
+	}
+	for _, candidate := range feedbackCandidates {
+		for _, entry := range improveSearchScopedCheckpointFeedbackEntries(candidate) {
+			severity := improveSearchMergeCheckpointReasonSeverity(entry)
+			for _, scenarioID := range stringSliceOrEmptyRuntime(entry["scenarioIds"]) {
+				if _, ok := selectedScenarioIDs[scenarioID]; ok {
+					weights[scenarioID] += severity
+				}
+			}
+		}
+	}
+	return weights
+}
+
+func improveSearchMergeCheckpointFeedbackBonuses(feedbackCandidates []map[string]any, scenarioIDs []string) map[string]float64 {
+	selectedScenarioIDs := map[string]struct{}{}
+	bonuses := map[string]float64{}
+	for _, scenarioID := range scenarioIDs {
+		selectedScenarioIDs[scenarioID] = struct{}{}
+		bonuses[scenarioID] = 0
+	}
+	for _, candidate := range feedbackCandidates {
+		for _, entry := range improveSearchScopedCheckpointFeedbackEntries(candidate) {
+			bonus := float64(max(1, len(stringSliceOrEmptyRuntime(entry["feedbackMessages"]))) * 100)
+			for _, scenarioID := range stringSliceOrEmptyRuntime(entry["scenarioIds"]) {
+				if _, ok := selectedScenarioIDs[scenarioID]; ok {
+					bonuses[scenarioID] += bonus
+				}
+			}
+		}
+	}
+	return bonuses
+}
+
+func improveSearchScopedCheckpointFeedbackEntries(candidate map[string]any) []map[string]any {
+	entries := []map[string]any{}
+	for _, rawEntry := range arrayOrEmpty(candidate["checkpointFeedback"]) {
+		entry := asMap(rawEntry)
+		if len(stringSliceOrEmptyRuntime(entry["scenarioIds"])) == 0 {
+			continue
+		}
+		entries = append(entries, entry)
+	}
+	return entries
+}
+
+func improveSearchMergeCheckpointReasonSeverity(entry map[string]any) float64 {
+	severity := 1.0
+	for _, reason := range stringSliceOrEmptyRuntime(entry["rejectionReasons"]) {
+		switch {
+		case strings.HasPrefix(reason, "full_gate:"):
+			if severity < 3 {
+				severity = 3
+			}
+		case strings.HasSuffix(reason, ":blocker"):
+			if severity < 3 {
+				severity = 3
+			}
+		case strings.HasSuffix(reason, ":concern"):
+			if severity < 2 {
+				severity = 2
+			}
+		}
+	}
+	return severity
+}
+
+func improveSearchMergeFrontierBestScores(frontierCandidates []map[string]any, scenarioIDs []string) map[string]float64 {
+	scores := map[string]float64{}
+	for _, scenarioID := range scenarioIDs {
+		best := math.Inf(-1)
+		for _, candidate := range frontierCandidates {
+			score := improveSearchHeldOutScoreForCandidate(candidate, scenarioID)
+			if score > best {
+				best = score
+			}
+		}
+		scores[scenarioID] = best
+	}
+	return scores
+}
+
+func improveSearchHeldOutScoreForCandidate(candidate map[string]any, scenarioID string) float64 {
+	for _, rawEntry := range arrayOrEmpty(candidate["heldOutEntries"]) {
+		entry := asMap(rawEntry)
+		if stringOrEmpty(entry["scenarioId"]) != scenarioID {
+			continue
+		}
+		if score, ok := toFloat(entry["score"]); ok {
+			return score
+		}
+		return math.Inf(-1)
+	}
+	return math.Inf(-1)
+}
+
+func improveSearchCountScenarioMentions(items []string, scenarioIDs []string) int {
+	count := 0
+	for _, scenarioID := range scenarioIDs {
+		scenarioToken := strings.ToLower(strings.TrimSpace(scenarioID))
+		if scenarioToken == "" {
+			continue
+		}
+		for _, item := range items {
+			if strings.Contains(strings.ToLower(item), scenarioToken) {
+				count++
+				break
+			}
+		}
+	}
+	return count
+}
+
+func improveSearchWeightedScenarioMentions(items []string, scenarioIDs []string, weights map[string]float64) float64 {
+	total := 0.0
+	for _, scenarioID := range scenarioIDs {
+		scenarioToken := strings.ToLower(strings.TrimSpace(scenarioID))
+		if scenarioToken == "" {
+			continue
+		}
+		for _, item := range items {
+			if strings.Contains(strings.ToLower(item), scenarioToken) {
+				total += weights[scenarioID]
+				break
+			}
+		}
+	}
+	return total
+}
+
+func improveSearchScenarioSignalMap(packet map[string]any, feedbackSignals []string) map[string]map[string]any {
+	signals := map[string]map[string]any{}
+	report := asMap(asMap(packet["improveInput"])["report"])
+	for _, bucket := range []string{"regressed", "noisy", "improved", "unchanged"} {
+		for _, rawItem := range arrayOrEmpty(report[bucket]) {
+			item := asMap(rawItem)
+			scenarioID := firstNonEmpty(stringOrEmpty(rawItem), stringOrEmpty(item["scenarioId"]))
+			if scenarioID == "" {
+				continue
+			}
+			entry := signals[scenarioID]
+			if entry == nil {
+				entry = map[string]any{
+					"scenarioId": scenarioID,
+					"buckets":    []string{},
+					"feedback":   []string{},
+				}
+			}
+			entry["buckets"] = append(stringSliceOrEmptyRuntime(entry["buckets"]), bucket)
+			if reason := stringOrEmpty(item["reason"]); reason != "" {
+				entry["feedback"] = append(stringSliceOrEmptyRuntime(entry["feedback"]), reason)
+			}
+			signals[scenarioID] = entry
+		}
+	}
+	for _, rawScenarioID := range arrayOrEmpty(asMap(packet["scenarioSets"])["trainScenarioSet"]) {
+		scenarioID := strings.TrimSpace(stringOrEmpty(rawScenarioID))
+		if scenarioID == "" {
+			continue
+		}
+		entry := signals[scenarioID]
+		if entry == nil {
+			entry = map[string]any{
+				"scenarioId": scenarioID,
+				"buckets":    []string{},
+				"feedback":   []string{},
+			}
+		}
+		for _, feedback := range feedbackSignals {
+			if strings.Contains(feedback, scenarioID) {
+				entry["feedback"] = append(stringSliceOrEmptyRuntime(entry["feedback"]), feedback)
+			}
+		}
+		entry["buckets"] = uniqueStrings(stringSliceOrEmptyRuntime(entry["buckets"]))
+		entry["feedback"] = uniqueStrings(stringSliceOrEmptyRuntime(entry["feedback"]))
+		signals[scenarioID] = entry
+	}
+	return signals
+}
+
+func improveSearchCheckpointPriorityForScenario(candidate map[string]any, scenarioID string) int {
+	total := 0
+	for _, rawEntry := range arrayOrEmpty(candidate["checkpointFeedback"]) {
+		entry := asMap(rawEntry)
+		matchesScenario := false
+		for _, scopedScenarioID := range stringSliceOrEmptyRuntime(entry["scenarioIds"]) {
+			if scopedScenarioID == scenarioID {
+				matchesScenario = true
+				break
+			}
+		}
+		if !matchesScenario {
+			continue
+		}
+		severityWeight := 1
+		switch stringOrEmpty(entry["severity"]) {
+		case "blocker":
+			severityWeight = 100
+		case "concern":
+			severityWeight = 10
+		}
+		total += severityWeight + max(1, len(stringSliceOrEmptyRuntime(entry["feedbackMessages"])))
+	}
+	return total
+}
+
+func improveSearchBuildReflectionBatch(packet map[string]any, parentCandidate map[string]any) []map[string]any {
+	scenarioIDs := []string{}
+	for _, rawScenarioID := range arrayOrEmpty(asMap(packet["scenarioSets"])["trainScenarioSet"]) {
+		if scenarioID := strings.TrimSpace(stringOrEmpty(rawScenarioID)); scenarioID != "" {
+			scenarioIDs = append(scenarioIDs, scenarioID)
+		}
+	}
+	if len(scenarioIDs) == 0 {
+		return []map[string]any{}
+	}
+	feedbackSignals := improveSearchFeedbackSignals(packet)
+	signalMap := improveSearchScenarioSignalMap(packet, feedbackSignals)
+	sort.SliceStable(scenarioIDs, func(i, j int) bool {
+		leftID := scenarioIDs[i]
+		rightID := scenarioIDs[j]
+		leftCheckpoint := improveSearchCheckpointPriorityForScenario(parentCandidate, leftID)
+		rightCheckpoint := improveSearchCheckpointPriorityForScenario(parentCandidate, rightID)
+		if leftCheckpoint != rightCheckpoint {
+			return leftCheckpoint > rightCheckpoint
+		}
+		leftScore := improveSearchHeldOutScoreForCandidate(parentCandidate, leftID)
+		rightScore := improveSearchHeldOutScoreForCandidate(parentCandidate, rightID)
+		leftHasScore := !math.IsInf(leftScore, -1)
+		rightHasScore := !math.IsInf(rightScore, -1)
+		switch {
+		case leftHasScore && rightHasScore && leftScore != rightScore:
+			return leftScore < rightScore
+		case leftHasScore && !rightHasScore:
+			return true
+		case !leftHasScore && rightHasScore:
+			return false
+		default:
+			return leftID < rightID
+		}
+	})
+	limit := atLeastOne(int(numberOrDefault(asMap(packet["mutationConfig"])["trainScenarioLimit"], 1)))
+	if len(scenarioIDs) > limit {
+		scenarioIDs = scenarioIDs[:limit]
+	}
+	batch := make([]map[string]any, 0, len(scenarioIDs))
+	for _, scenarioID := range scenarioIDs {
+		entry := signalMap[scenarioID]
+		if entry == nil {
+			entry = map[string]any{
+				"scenarioId": scenarioID,
+				"buckets":    []string{},
+				"feedback":   []string{},
+			}
+		}
+		feedback := stringSliceOrEmptyRuntime(entry["feedback"])
+		if len(feedback) > 3 {
+			feedback = feedback[:3]
+		}
+		batch = append(batch, map[string]any{
+			"scenarioId": scenarioID,
+			"buckets":    stringSliceToAny(stringSliceOrEmptyRuntime(entry["buckets"])),
+			"feedback":   stringSliceToAny(feedback),
+		})
+	}
+	return batch
+}
+
+func improveSearchFilterCheckpointFeedbackForReflectionBatch(checkpointFeedback []any, reflectionBatch []map[string]any) []any {
+	if len(checkpointFeedback) == 0 {
+		return []any{}
+	}
+	selectedScenarioIDs := map[string]struct{}{}
+	for _, entry := range reflectionBatch {
+		if scenarioID := strings.TrimSpace(stringOrEmpty(entry["scenarioId"])); scenarioID != "" {
+			selectedScenarioIDs[scenarioID] = struct{}{}
+		}
+	}
+	if len(selectedScenarioIDs) == 0 {
+		return checkpointFeedback
+	}
+	filtered := []any{}
+	for _, rawEntry := range checkpointFeedback {
+		entry := asMap(rawEntry)
+		scopedScenarioIDs := stringSliceOrEmptyRuntime(entry["scenarioIds"])
+		if len(scopedScenarioIDs) == 0 {
+			filtered = append(filtered, rawEntry)
+			continue
+		}
+		for _, scenarioID := range scopedScenarioIDs {
+			if _, ok := selectedScenarioIDs[scenarioID]; ok {
+				filtered = append(filtered, rawEntry)
+				break
+			}
+		}
+	}
+	return filtered
+}
+
+func improveSearchCombinationIndexes(length int, size int) [][]int {
+	results := [][]int{}
+	if size <= 0 || size > length {
+		return results
+	}
+	var walk func(start int, prefix []int)
+	walk = func(start int, prefix []int) {
+		if len(prefix) == size {
+			results = append(results, append([]int{}, prefix...))
+			return
+		}
+		for index := start; index <= length-(size-len(prefix)); index++ {
+			walk(index+1, append(prefix, index))
+		}
+	}
+	walk(0, []int{})
+	return results
+}
+
+func compareFloat(left float64, right float64) int {
+	switch {
+	case left > right:
+		return 1
+	case left < right:
+		return -1
+	default:
+		return 0
+	}
+}
+
+func compareInt(left int, right int) int {
+	switch {
+	case left > right:
+		return 1
+	case left < right:
+		return -1
+	default:
+		return 0
+	}
+}
+
+func improveSearchMutationPrompt(packet map[string]any, parentCandidate map[string]any, backend string) string {
+	targetPath := stringOrEmpty(asMap(parentCandidate["targetFile"])["path"])
+	if targetPath == "" {
+		targetPath = stringOrEmpty(asMap(packet["targetFile"])["path"])
+	}
+	currentPrompt := ""
+	if targetPath != "" && fileExists(targetPath) {
+		payload, err := os.ReadFile(targetPath)
+		if err == nil {
+			currentPrompt = string(payload)
+		}
+	}
+	reflectionBatch := improveSearchBuildReflectionBatch(packet, parentCandidate)
+	reflectionBatchJSON := "[]"
+	if payload, err := json.MarshalIndent(reflectionBatch, "", "  "); err == nil {
+		reflectionBatchJSON = string(payload)
+	}
+	constraints := []string{}
+	for _, rawConstraint := range arrayOrEmpty(asMap(packet["objective"])["constraints"]) {
+		if constraint := strings.TrimSpace(stringOrEmpty(rawConstraint)); constraint != "" {
+			constraints = append(constraints, constraint)
+		}
+	}
+	heldOutScenarioIDs := []string{}
+	for _, rawScenarioID := range arrayOrEmpty(asMap(packet["scenarioSets"])["heldOutScenarioSet"]) {
+		if scenarioID := strings.TrimSpace(stringOrEmpty(rawScenarioID)); scenarioID != "" {
+			heldOutScenarioIDs = append(heldOutScenarioIDs, scenarioID)
+		}
+	}
+	checkpointFeedback := "[]"
+	if includeCheckpointFeedback, _ := asMap(packet["mutationEvidencePolicy"])["includeCheckpointFeedback"].(bool); includeCheckpointFeedback {
+		filteredEntries := improveSearchFilterCheckpointFeedbackForReflectionBatch(arrayOrEmpty(parentCandidate["checkpointFeedback"]), reflectionBatch)
+		if len(filteredEntries) > 0 {
+			if payload, err := json.MarshalIndent(filteredEntries, "", "  "); err == nil {
+				checkpointFeedback = string(payload)
+			}
+		}
+	}
+	sections := []string{
+		"# Task",
+		"Return one improved prompt candidate as structured JSON.",
+		"",
+		"## Constraints",
+		"- Output valid JSON matching the provided schema.",
+		"- Rewrite the prompt body only; do not describe shell commands or repo edits.",
+		"- Preserve working behavior unless the evidence explicitly says it is harmful.",
+		"- Prefer concrete operator-facing recovery guidance over generic wording.",
+		"- Do not improve for lower cost by merely making the prompt shorter.",
+		"- If checkpoint feedback exists, repair that rejection before widening scope.",
+		"",
+		"## Search Context",
+		fmt.Sprintf("- backend: %s", backend),
+		fmt.Sprintf("- objective: %s", stringOrEmpty(asMap(packet["objective"])["summary"])),
+		fmt.Sprintf("- parentCandidateId: %s", stringOrEmpty(parentCandidate["id"])),
+		fmt.Sprintf("- targetFile: %s", targetPath),
+		fmt.Sprintf("- heldOutScenarioSet: %s", firstNonEmpty(strings.Join(heldOutScenarioIDs, ", "), "none")),
+		"",
+		"## Guardrails",
+	}
+	for _, constraint := range constraints {
+		sections = append(sections, "- "+constraint)
+	}
+	sections = append(sections,
+		"- Keep the prompt self-contained and legible.",
+		"- Do not claim success that the evidence does not support.",
+		"",
+		"## Reflection Batch",
+		reflectionBatchJSON,
+		"",
+		"## Checkpoint Feedback",
+		checkpointFeedback,
+		"",
+		"## Current Prompt",
+		"```md",
+		currentPrompt,
+		"```",
+		"",
+		"## Response Shape",
+		"- promptMarkdown: full revised prompt body",
+		"- rationaleSummary: 1-2 sentence explanation of what changed and why",
+		"- expectedImprovements: list of scenarios or failure modes this candidate should improve",
+		"- preservedStrengths: list of strengths intentionally kept from the parent candidate",
+		"- riskNotes: list of residual risks that still need held-out validation",
+	)
+	return strings.Join(sections, "\n") + "\n"
+}
+
+func improveSearchCollectMergeCheckpointFeedback(candidates []map[string]any, frontierIDs []string, scenarioIDs []string) []any {
+	allowedScenarioIDs := map[string]struct{}{}
+	for _, scenarioID := range scenarioIDs {
+		if strings.TrimSpace(scenarioID) != "" {
+			allowedScenarioIDs[scenarioID] = struct{}{}
+		}
+	}
+	feedback := []any{}
+	for _, candidateID := range frontierIDs {
+		candidate := improveSearchCandidateByID(candidates, candidateID)
+		if candidate == nil {
+			continue
+		}
+		for _, rawEntry := range arrayOrEmpty(candidate["checkpointFeedback"]) {
+			entry := asMap(rawEntry)
+			entryScenarioIDs := stringSliceOrEmptyRuntime(entry["scenarioIds"])
+			if len(allowedScenarioIDs) > 0 && len(entryScenarioIDs) > 0 {
+				matchesScenario := false
+				for _, scenarioID := range entryScenarioIDs {
+					if _, ok := allowedScenarioIDs[scenarioID]; ok {
+						matchesScenario = true
+						break
+					}
+				}
+				if !matchesScenario {
+					continue
+				}
+			}
+			enriched := map[string]any{}
+			for key, value := range entry {
+				enriched[key] = value
+			}
+			enriched["sourceCandidateId"] = candidateID
+			feedback = append(feedback, enriched)
+		}
+	}
+	return feedback
+}
+
+func improveSearchMergePrompt(packet map[string]any, parentCandidates []map[string]any, parentPrompts []string, backend string, scenarioIDs []string, mergeCheckpointFeedback []any) string {
+	constraints := []string{}
+	for _, rawConstraint := range arrayOrEmpty(asMap(packet["objective"])["constraints"]) {
+		if constraint := strings.TrimSpace(stringOrEmpty(rawConstraint)); constraint != "" {
+			constraints = append(constraints, constraint)
+		}
+	}
+	mergeFeedback := []any{}
+	if includeCheckpointFeedback, _ := asMap(packet["mutationEvidencePolicy"])["includeCheckpointFeedback"].(bool); includeCheckpointFeedback {
+		mergeFeedback = append(mergeFeedback, mergeCheckpointFeedback...)
+	}
+	feedbackJSON := "[]"
+	if payload, err := json.MarshalIndent(mergeFeedback, "", "  "); err == nil {
+		feedbackJSON = string(payload)
+	}
+	sections := []string{
+		"Return one JSON object matching the schema.",
+		"",
+		"# Merge context",
+		fmt.Sprintf("- backend: %s", backend),
+		fmt.Sprintf("- objective: %s", stringOrEmpty(asMap(packet["objective"])["summary"])),
+		fmt.Sprintf("- parentCandidateIds: %s", strings.Join(improveSearchCandidateIDs(parentCandidates), ", ")),
+		fmt.Sprintf("- targetFile: %s", stringOrEmpty(asMap(packet["targetFile"])["path"])),
+		fmt.Sprintf("- heldOutScenarioSet: %s", strings.Join(scenarioIDs, ", ")),
+		"",
+		"# Guardrails",
+		"- Output valid JSON matching the provided schema.",
+		"- Synthesize one coherent prompt body instead of concatenating the parent prompts verbatim.",
+		"- Preserve complementary strengths from the selected frontier parents when they do not conflict.",
+		"- Do not weaken the stronger held-out behaviors already achieved by either parent.",
+		"- Do not improve for lower cost by merely making the prompt shorter.",
+	}
+	for _, constraint := range constraints {
+		sections = append(sections, "- "+constraint)
+	}
+	sections = append(sections,
+		"",
+		"# Frontier checkpoint feedback",
+		feedbackJSON,
+	)
+	for index, candidate := range parentCandidates {
+		parentMetadata := map[string]any{
+			"id":                   candidate["id"],
+			"expectedImprovements": arrayOrEmpty(candidate["expectedImprovements"]),
+			"preservedStrengths":   arrayOrEmpty(candidate["preservedStrengths"]),
+			"riskNotes":            arrayOrEmpty(candidate["riskNotes"]),
+		}
+		parentJSON := "{}"
+		if payload, err := json.MarshalIndent(parentMetadata, "", "  "); err == nil {
+			parentJSON = string(payload)
+		}
+		parentPrompt := ""
+		if index < len(parentPrompts) {
+			parentPrompt = strings.TrimSpace(parentPrompts[index])
+		}
+		sections = append(sections,
+			"",
+			fmt.Sprintf("# Parent %s", stringOrEmpty(candidate["id"])),
+			parentJSON,
+			"```md",
+			parentPrompt,
+			"```",
+		)
+	}
+	sections = append(sections,
+		"",
+		"# Response shape",
+		"- promptMarkdown: full revised prompt body",
+		"- rationaleSummary: 1-2 sentence explanation of what changed and why",
+		"- expectedImprovements: list of scenarios or failure modes this candidate should improve",
+		"- preservedStrengths: list of strengths intentionally kept from the parents",
+		"- riskNotes: list of residual risks that still need held-out validation",
+	)
+	return strings.Join(sections, "\n") + "\n"
+}
+
+func improveSearchPreferredCandidate(candidates []map[string]any, candidateIDs []string) map[string]any {
+	if len(candidateIDs) == 0 {
+		return nil
+	}
+	targetID := candidateIDs[0]
+	for _, candidate := range candidates {
+		if stringOrEmpty(candidate["id"]) == targetID {
+			return candidate
+		}
+	}
+	if len(candidates) == 0 {
+		return nil
+	}
+	return candidates[0]
+}
+
+func improveSearchPrioritizeMutationCandidateIDs(candidates []map[string]any, candidateIDs []string, nextGenerationIndex int) []string {
+	type prioritizedCandidate struct {
+		id       string
+		priority int
+		index    int
+	}
+	prioritized := []prioritizedCandidate{}
+	for index, candidateID := range candidateIDs {
+		candidate := improveSearchCandidateByID(candidates, candidateID)
+		if candidate == nil || !improveSearchCandidateCanSeedMutation(candidate, nextGenerationIndex) {
+			continue
+		}
+		prioritized = append(prioritized, prioritizedCandidate{
+			id:       candidateID,
+			priority: improveSearchMutationRepairPriority(candidate),
+			index:    index,
+		})
+	}
+	sort.SliceStable(prioritized, func(i, j int) bool {
+		if prioritized[i].priority != prioritized[j].priority {
+			return prioritized[i].priority > prioritized[j].priority
+		}
+		return prioritized[i].index < prioritized[j].index
+	})
+	result := make([]string, 0, len(prioritized))
+	for _, entry := range prioritized {
+		result = append(result, entry.id)
+	}
+	return result
+}
+
+func improveSearchMutationParentEligibility(candidates []map[string]any, candidateIDs []string, nextGenerationIndex int) []any {
+	records := make([]any, 0, len(candidateIDs))
+	for _, candidateID := range candidateIDs {
+		candidate := improveSearchCandidateByID(candidates, candidateID)
+		record := map[string]any{
+			"candidateId": candidateID,
+		}
+		if candidate == nil {
+			record["eligible"] = false
+			record["reason"] = "candidate_missing"
+			records = append(records, record)
+			continue
+		}
+		outcome := asMap(candidate["promotionReviewOutcome"])
+		severity := improveSearchReviewOutcomeSeverity(outcome)
+		record["severity"] = nilIfEmpty(severity)
+		record["repairPriority"] = improveSearchMutationRepairPriority(candidate)
+		if len(outcome) == 0 {
+			record["eligible"] = true
+			record["reason"] = "frontier_candidate"
+			records = append(records, record)
+			continue
+		}
+		reviewedAtGeneration := int(numberOrDefault(firstNonNil(outcome["reviewedAtGeneration"], candidate["generationIndex"]), 0))
+		record["reviewedAtGeneration"] = reviewedAtGeneration
+		if admissible, _ := outcome["admissible"].(bool); admissible {
+			record["eligible"] = true
+			record["reason"] = "frontier_candidate"
+			records = append(records, record)
+			continue
+		}
+		budget := improveSearchMutationRepairGenerationBudget(outcome)
+		record["repairGenerationBudget"] = budget
+		record["repairExpiresAfterGeneration"] = reviewedAtGeneration + budget
+		if severity == "blocker" {
+			record["eligible"] = false
+			record["reason"] = "frontier_promotion_review_blocker"
+			records = append(records, record)
+			continue
+		}
+		if nextGenerationIndex <= reviewedAtGeneration+budget {
+			record["eligible"] = true
+			record["reason"] = "bounded_repair_generation"
+			records = append(records, record)
+			continue
+		}
+		record["eligible"] = false
+		record["reason"] = "repair_window_expired"
+		records = append(records, record)
+	}
+	return records
+}
+
+func improveSearchCandidateCanSeedMutation(candidate map[string]any, nextGenerationIndex int) bool {
+	outcome := asMap(candidate["promotionReviewOutcome"])
+	if len(outcome) == 0 {
+		return true
+	}
+	if admissible, _ := outcome["admissible"].(bool); admissible {
+		return true
+	}
+	reviewedAtGeneration := int(numberOrDefault(firstNonNil(outcome["reviewedAtGeneration"], candidate["generationIndex"]), 0))
+	return nextGenerationIndex <= reviewedAtGeneration+improveSearchMutationRepairGenerationBudget(outcome)
+}
+
+func improveSearchMutationRepairPriority(candidate map[string]any) int {
+	outcome := asMap(candidate["promotionReviewOutcome"])
+	if len(outcome) == 0 {
+		return 0
+	}
+	if admissible, _ := outcome["admissible"].(bool); admissible {
+		return 0
+	}
+	if improveSearchReviewOutcomeSeverity(outcome) == "blocker" {
+		return 2
+	}
+	return 1
+}
+
+func improveSearchMutationRepairGenerationBudget(outcome map[string]any) int {
+	if len(outcome) == 0 {
+		return math.MaxInt
+	}
+	if admissible, _ := outcome["admissible"].(bool); admissible {
+		return math.MaxInt
+	}
+	if improveSearchReviewOutcomeSeverity(outcome) == "blocker" {
+		return 0
+	}
+	return 1
+}
+
+func improveSearchReviewOutcomeSeverity(outcome map[string]any) string {
+	severity := "pass"
+	severityRank := map[string]int{
+		"pass":    0,
+		"concern": 1,
+		"blocker": 2,
+	}
+	for _, rawVariant := range arrayOrEmpty(outcome["variants"]) {
+		variant := asMap(rawVariant)
+		verdict := firstNonEmpty(stringOrEmpty(variant["verdict"]), "pass")
+		if severityRank[verdict] > severityRank[severity] {
+			severity = verdict
+		}
+	}
+	if admissible, _ := outcome["admissible"].(bool); !admissible && severity == "pass" {
+		return "concern"
+	}
+	return severity
+}
+
+func improveSearchMutationSchema() map[string]any {
+	return map[string]any{
+		"type":                 "object",
+		"additionalProperties": false,
+		"required": []any{
+			"promptMarkdown",
+			"rationaleSummary",
+			"expectedImprovements",
+			"preservedStrengths",
+			"riskNotes",
+		},
+		"properties": map[string]any{
+			"promptMarkdown":   map[string]any{"type": "string"},
+			"rationaleSummary": map[string]any{"type": "string"},
+			"expectedImprovements": map[string]any{
+				"type":  "array",
+				"items": map[string]any{"type": "string"},
+			},
+			"preservedStrengths": map[string]any{
+				"type":  "array",
+				"items": map[string]any{"type": "string"},
+			},
+			"riskNotes": map[string]any{
+				"type":  "array",
+				"items": map[string]any{"type": "string"},
+			},
+		},
+	}
+}
+
+func improveSearchEvaluateCandidate(packet map[string]any, artifactRoot string, candidateID string, candidatePromptPath string) ([]map[string]any, map[string]any) {
+	outputDir := filepath.Join(artifactRoot, "improve-search-candidates", candidateID, "held-out-eval")
+	worktreeRoot, err := improveSearchCreateCandidateWorktree(packet, artifactRoot, candidateID, candidatePromptPath)
+	if err != nil {
+		return []map[string]any{}, map[string]any{
+			"outputDir":        outputDir,
+			"status":           "failed",
+			"failureReason":    "candidate_worktree_failed",
+			"rejectionReasons": []any{"held_out:candidate_worktree_failed"},
+			"error":            err.Error(),
+		}
+	}
+	artifacts := improveSearchRunEvalTestForCandidate(packet, worktreeRoot, outputDir)
+	artifacts["worktreeRoot"] = worktreeRoot
+	if stringOrEmpty(artifacts["status"]) != "passed" {
+		return []map[string]any{}, artifacts
+	}
+	summary, err := readJSONFile(stringOrEmpty(artifacts["summaryFile"]))
+	if err != nil {
+		artifacts["status"] = "failed"
+		artifacts["failureReason"] = "eval_summary_invalid"
+		artifacts["error"] = err.Error()
+		return []map[string]any{}, artifacts
+	}
+	return improveSearchHeldOutEntriesFromEvalSummary(summary, candidateID), artifacts
+}
+
+func improveSearchCreateCandidateWorktree(packet map[string]any, artifactRoot string, candidateID string, candidatePromptPath string) (string, error) {
+	repoRoot := stringOrEmpty(packet["repoRoot"])
+	if repoRoot == "" {
+		return "", fmt.Errorf("repoRoot is required")
+	}
+	targetPath := stringOrEmpty(asMap(packet["targetFile"])["path"])
+	if targetPath == "" {
+		return "", fmt.Errorf("targetFile.path is required")
+	}
+	relativeTarget, err := filepath.Rel(filepath.Clean(repoRoot), filepath.Clean(targetPath))
+	if err != nil {
+		return "", err
+	}
+	if relativeTarget == "." || strings.HasPrefix(relativeTarget, ".."+string(os.PathSeparator)) || relativeTarget == ".." || filepath.IsAbs(relativeTarget) {
+		return "", fmt.Errorf("target file must stay within repoRoot: %s", targetPath)
+	}
+	worktreeRoot := filepath.Join(artifactRoot, "improve-search-worktrees", candidateID)
+	_ = exec.Command("git", "-C", repoRoot, "worktree", "remove", "--force", worktreeRoot).Run()
+	if err := os.RemoveAll(worktreeRoot); err != nil {
+		return "", err
+	}
+	if err := os.MkdirAll(filepath.Dir(worktreeRoot), 0o755); err != nil {
+		return "", err
+	}
+	if output, err := exec.Command("git", "-C", repoRoot, "worktree", "add", "--detach", worktreeRoot, "HEAD").CombinedOutput(); err != nil {
+		return "", fmt.Errorf("git worktree add failed: %s", strings.TrimSpace(string(output)))
+	}
+	promptBytes, err := os.ReadFile(candidatePromptPath)
+	if err != nil {
+		return "", err
+	}
+	worktreeTarget := filepath.Join(worktreeRoot, relativeTarget)
+	if err := os.MkdirAll(filepath.Dir(worktreeTarget), 0o755); err != nil {
+		return "", err
+	}
+	if err := os.WriteFile(worktreeTarget, promptBytes, 0o644); err != nil {
+		return "", err
+	}
+	return worktreeRoot, nil
+}
+
+func improveSearchRunEvalTestForCandidate(packet map[string]any, repoRoot string, outputDir string) map[string]any {
+	if repoRoot == "" {
+		return map[string]any{
+			"outputDir":   outputDir,
+			"status":      "skipped",
+			"skipReason":  "workspace_unavailable",
+			"admissible":  true,
+			"summaryFile": filepath.Join(outputDir, "eval-summary.json"),
+		}
+	}
+	adapterPayload, err := improveSearchLoadCheckpointAdapter(packet)
+	if err != nil {
+		return map[string]any{"outputDir": outputDir, "status": "skipped", "skipReason": "adapter_not_found", "admissible": true}
+	}
+	if !adapterPayload.Found || !adapterPayload.Valid {
+		reason := "surface_unavailable"
+		if !adapterPayload.Found {
+			reason = "adapter_not_found"
+		}
+		return map[string]any{"outputDir": outputDir, "status": "skipped", "skipReason": reason, "admissible": true}
+	}
+	if strings.TrimSpace(stringOrEmpty(adapterPayload.Data["evaluation_input_default"])) == "" {
+		return map[string]any{"outputDir": outputDir, "status": "skipped", "skipReason": "surface_unavailable", "admissible": true}
+	}
+	args := []string{
+		"eval", "test",
+		"--repo-root", repoRoot,
+		"--workspace", repoRoot,
+		"--output-dir", outputDir,
+		"--quiet",
+	}
+	evaluationContext := asMap(packet["evaluationContext"])
+	if adapterName := stringOrEmpty(evaluationContext["adapterName"]); adapterName != "" {
+		args = append(args, "--adapter-name", adapterName)
+	} else if adapter := stringOrEmpty(evaluationContext["adapter"]); adapter != "" {
+		args = append(args, "--adapter", adapter)
+	}
+	command := exec.Command(improveSearchBinaryPath(), args...)
+	command.Env = improveSearchCommandEnv()
+	output, runErr := command.CombinedOutput()
+	summaryFile := filepath.Join(outputDir, "eval-summary.json")
+	if !fileExists(summaryFile) {
+		status := "failed"
+		if runErr == nil {
+			status = "skipped"
+		}
+		return map[string]any{
+			"outputDir":     outputDir,
+			"summaryFile":   summaryFile,
+			"status":        status,
+			"skipReason":    "summary_missing",
+			"admissible":    runErr == nil,
+			"commandOutput": strings.TrimSpace(string(output)),
+		}
+	}
+	summary, err := readJSONFile(summaryFile)
+	if err != nil {
+		return map[string]any{
+			"outputDir":     outputDir,
+			"summaryFile":   summaryFile,
+			"status":        "failed",
+			"admissible":    false,
+			"failureReason": "summary_invalid",
+			"error":         err.Error(),
+		}
+	}
+	recommendation := stringOrEmpty(summary["recommendation"])
+	status := "passed"
+	if runErr != nil || recommendation != "accept-now" {
+		status = "failed"
+	}
+	return map[string]any{
+		"outputDir":        outputDir,
+		"summaryFile":      summaryFile,
+		"status":           status,
+		"admissible":       status == "passed",
+		"recommendation":   recommendation,
+		"evaluationCounts": firstNonNil(summary["evaluationCounts"], nil),
+	}
+}
+
+func improveSearchHeldOutEntriesFromEvalSummary(summary map[string]any, candidateID string) []map[string]any {
+	entries := []map[string]any{}
+	for _, rawEvaluation := range arrayOrEmpty(summary["evaluations"]) {
+		evaluation := asMap(rawEvaluation)
+		caseID := firstNonEmpty(stringOrEmpty(evaluation["caseId"]), stringOrEmpty(evaluation["displayName"]))
+		if caseID == "" {
+			continue
+		}
+		status := firstNonEmpty(stringOrEmpty(evaluation["status"]), "unknown")
+		score := 0.0
+		if status == "passed" {
+			score = 100
+		}
+		entry := map[string]any{
+			"candidateId":    candidateID,
+			"mode":           "held_out",
+			"scenarioId":     caseID,
+			"status":         status,
+			"overallScore":   score,
+			"score":          score,
+			"summary":        firstNonNil(evaluation["summary"], nil),
+			"recommendation": stringOrEmpty(summary["recommendation"]),
+		}
+		telemetry := map[string]any{}
+		if duration, ok := toFloat(evaluation["durationMs"]); ok {
+			telemetry["durationMs"] = duration
+		}
+		if provider := stringOrEmpty(evaluation["provider"]); provider != "" {
+			telemetry["provider"] = provider
+		}
+		if model := stringOrEmpty(evaluation["model"]); model != "" {
+			telemetry["model"] = model
+		}
+		if harness := stringOrEmpty(evaluation["harness"]); harness != "" {
+			telemetry["harness"] = harness
+		}
+		if len(telemetry) > 0 {
+			entry["telemetry"] = telemetry
+		}
+		entries = append(entries, entry)
+	}
+	return entries
+}
+
+func improveSearchBinaryPath() string {
+	if toolRoot := strings.TrimSpace(os.Getenv("CAUTILUS_TOOL_ROOT")); toolRoot != "" {
+		candidate := filepath.Join(toolRoot, "bin", "cautilus")
+		if fileExists(candidate) {
+			return candidate
+		}
+	}
+	executable, err := os.Executable()
+	if err == nil && strings.TrimSpace(executable) != "" {
+		return executable
+	}
+	return "cautilus"
+}
+
+func improveSearchCandidateRegistry(candidates []map[string]any) []any {
+	result := make([]any, 0, len(candidates))
+	for _, candidate := range candidates {
+		entry := map[string]any{
+			"id":                 candidate["id"],
+			"generationIndex":    candidate["generationIndex"],
+			"parentCandidateIds": candidate["parentCandidateIds"],
+			"origin":             candidate["origin"],
+			"targetFile":         candidate["targetFile"],
+			"targetSnapshot":     candidate["targetSnapshot"],
+			"mutationRationale":  candidate["mutationRationale"],
+			"telemetry":          firstNonNil(candidate["telemetry"], map[string]any{}),
+			"targetSizeDelta":    improveSearchTargetSizeDelta(candidate, candidates[0]),
+		}
+		for _, key := range []string{"expectedImprovements", "preservedStrengths", "riskNotes", "checkpointFeedback", "artifacts", "evaluationArtifacts"} {
+			if value := candidate[key]; value != nil {
+				entry[key] = value
+			}
+		}
+		result = append(result, entry)
+	}
+	return result
+}
+
+func improveSearchHeldOutMatrix(candidates []map[string]any) []any {
+	matrix := []any{}
+	for _, candidate := range candidates {
+		for _, entry := range improveSearchEntrySlice(candidate["heldOutEntries"]) {
+			matrix = append(matrix, entry)
+		}
+	}
+	return matrix
+}
+
+func improveSearchEntrySlice(value any) []map[string]any {
+	if typed, ok := value.([]map[string]any); ok {
+		return append([]map[string]any{}, typed...)
+	}
+	result := []map[string]any{}
+	for _, raw := range arrayOrEmpty(value) {
+		result = append(result, asMap(raw))
+	}
+	return result
+}
+
+func improveSearchCandidateIDs(candidates []map[string]any) []string {
+	result := make([]string, 0, len(candidates))
+	for _, candidate := range candidates {
+		if id := stringOrEmpty(candidate["id"]); id != "" {
+			result = append(result, id)
+		}
+	}
+	return result
+}
+
+func improveSearchScenarioIDs(packet map[string]any, matrix []any) []string {
+	explicit := stringSliceOrEmptyRuntime(asMap(packet["scenarioSets"])["heldOutScenarioSet"])
+	if len(explicit) > 0 {
+		return explicit
+	}
+	ids := []string{}
+	for _, raw := range matrix {
+		if scenarioID := stringOrEmpty(asMap(raw)["scenarioId"]); scenarioID != "" {
+			ids = append(ids, scenarioID)
+		}
+	}
+	return uniqueStrings(ids)
+}
+
+func improveSearchFrontierCandidateIDs(matrix []any, candidateIDs []string, scenarioIDs []string) []string {
+	frontier := []string{}
+	for _, candidateID := range candidateIDs {
+		dominated := false
+		for _, otherID := range candidateIDs {
+			if otherID == candidateID {
+				continue
+			}
+			if improveSearchCandidateDominates(matrix, otherID, candidateID, scenarioIDs) {
+				dominated = true
+				break
+			}
+		}
+		if !dominated {
+			frontier = append(frontier, candidateID)
+		}
+	}
+	return frontier
+}
+
+func improveSearchCandidateDominates(matrix []any, leftID string, rightID string, scenarioIDs []string) bool {
+	strictlyBetter := false
+	for _, scenarioID := range scenarioIDs {
+		leftScore := improveSearchScoreForCandidate(matrix, leftID, scenarioID)
+		rightScore := improveSearchScoreForCandidate(matrix, rightID, scenarioID)
+		if leftScore < rightScore {
+			return false
+		}
+		if leftScore > rightScore {
+			strictlyBetter = true
+		}
+	}
+	return strictlyBetter
+}
+
+func improveSearchRankCandidateIDs(candidateIDs []string, matrix []any, candidates []map[string]any, scenarioIDs []string) []string {
+	telemetryByID := map[string]map[string]any{}
+	for _, candidate := range candidates {
+		telemetryByID[stringOrEmpty(candidate["id"])] = asMap(candidate["telemetry"])
+	}
+	ranked := append([]string{}, candidateIDs...)
+	sort.Slice(ranked, func(left, right int) bool {
+		leftID := ranked[left]
+		rightID := ranked[right]
+		scoreDelta := improveSearchAverageHeldOutScore(matrix, rightID, scenarioIDs) - improveSearchAverageHeldOutScore(matrix, leftID, scenarioIDs)
+		if scoreDelta != 0 {
+			return scoreDelta > 0
+		}
+		leftTelemetry := telemetryByID[leftID]
+		rightTelemetry := telemetryByID[rightID]
+		leftCandidate := improveSearchCandidateByID(candidates, leftID)
+		rightCandidate := improveSearchCandidateByID(candidates, rightID)
+		leftSize, leftSizeOK := toFloat(asMap(asMap(leftCandidate)["targetSnapshot"])["sizeBytes"])
+		rightSize, rightSizeOK := toFloat(asMap(asMap(rightCandidate)["targetSnapshot"])["sizeBytes"])
+		if leftSizeOK && rightSizeOK && leftSize != rightSize {
+			return leftSize < rightSize
+		}
+		leftCost, _ := toFloat(leftTelemetry["totalCostUsd"])
+		rightCost, _ := toFloat(rightTelemetry["totalCostUsd"])
+		if leftCost != rightCost {
+			return leftCost < rightCost
+		}
+		leftDuration, _ := toFloat(leftTelemetry["totalDurationMs"])
+		rightDuration, _ := toFloat(rightTelemetry["totalDurationMs"])
+		if leftDuration != rightDuration {
+			return leftDuration < rightDuration
+		}
+		return leftID < rightID
+	})
+	return ranked
+}
+
+func improveSearchTargetSizeDelta(candidate map[string]any, seed map[string]any) any {
+	candidateSize, candidateOK := toFloat(asMap(candidate["targetSnapshot"])["sizeBytes"])
+	seedSize, seedOK := toFloat(asMap(seed["targetSnapshot"])["sizeBytes"])
+	if !candidateOK || !seedOK {
+		return "unknown"
+	}
+	return map[string]any{
+		"basisCandidateId": stringOrEmpty(seed["id"]),
+		"sizeBytes":        candidateSize - seedSize,
+	}
+}
+
+func improveSearchAverageHeldOutScore(matrix []any, candidateID string, scenarioIDs []string) float64 {
+	if len(scenarioIDs) == 0 {
+		return 0
+	}
+	total := 0.0
+	for _, scenarioID := range scenarioIDs {
+		total += improveSearchScoreForCandidate(matrix, candidateID, scenarioID)
+	}
+	return total / float64(len(scenarioIDs))
+}
+
+func improveSearchScoreForCandidate(matrix []any, candidateID string, scenarioID string) float64 {
+	for _, raw := range matrix {
+		entry := asMap(raw)
+		if stringOrEmpty(entry["candidateId"]) != candidateID || stringOrEmpty(entry["scenarioId"]) != scenarioID {
+			continue
+		}
+		if score, ok := toFloat(entry["score"]); ok {
+			return score
+		}
+	}
+	return -1
+}
+
+func stringSliceOrEmptyRuntime(value any) []string {
+	result := []string{}
+	for _, raw := range arrayOrEmpty(value) {
+		if text := stringOrEmpty(raw); text != "" {
+			result = append(result, text)
+		}
+	}
+	return result
+}
+
+func stringSliceToAny(values []string) []any {
+	result := make([]any, 0, len(values))
+	for _, value := range values {
+		result = append(result, value)
+	}
+	return result
+}
+
+func derefString(value *string) string {
+	if value == nil {
+		return ""
+	}
+	return strings.TrimSpace(*value)
+}
+
+func atLeastOne(value int) int {
+	if value < 1 {
+		return 1
+	}
+	return value
+}
+
+func firstArrayItem(value any) any {
+	items := arrayOrEmpty(value)
+	if len(items) == 0 {
+		return nil
+	}
+	return items[0]
+}
+
+func firstNonEmpty(values ...string) string {
+	for _, value := range values {
+		if value != "" {
+			return value
+		}
+	}
+	return ""
+}

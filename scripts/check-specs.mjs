@@ -27,7 +27,7 @@ function listSpecFiles(rootDir) {
 	const result = [];
 	for (const entry of readdirSync(rootDir)) {
 		const fullPath = resolve(rootDir, entry);
-		if (entry === "old") {
+		if (entry === "old" || entry === "archive") {
 			continue;
 		}
 		if (statSync(fullPath).isDirectory()) {

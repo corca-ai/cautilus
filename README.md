@@ -3,7 +3,7 @@
 `Cautilus` keeps agent and workflow behavior honest while prompts keep changing.
 It is a repo-local contract layer for agent and workflow behavior evaluation: define the behavior you are trying to protect once, then verify it survives prompt, skill, and wrapper changes.
 The product has three connected jobs:
-discover declared behavior claims worth proving from selected source docs, verify curated claims through bounded evaluation packets, and improve behavior with budgeted optimization once the proof surface is honest.
+discover declared behavior claims worth proving from selected source docs, verify curated claims through bounded evaluation packets, and improve behavior with budgeted improvement once the proof surface is honest.
 Ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.
 Agents are first-class users of the product surface.
 Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.
@@ -14,10 +14,10 @@ They stay checked into each host repo so evaluation behavior remains reproducibl
 
 ## Current Release Boundary
 
-The current external-adoption slice is eval-only while the broader claim, optimize, live app-runner, and review-learning contracts are still being rewritten.
+The current external-adoption slice is eval-only while the broader claim, improve, live app-runner, and review-learning contracts are still being rewritten.
 Host repos can use `cautilus eval test`, `cautilus eval evaluate`, and post-run `cautilus eval skill-experiment compare` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.
 `skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.
-Treat claim discovery automation, optimize automation, live `eval` app-runner workflows, and review-learning packet capture or selected-packet summaries as opt-in product slices until the rewrite closes.
+Treat claim discovery automation, improve automation, live `eval` app-runner workflows, and review-learning packet capture or selected-packet summaries as opt-in product slices until the rewrite closes.
 
 ## Who It Is For
 
@@ -71,7 +71,7 @@ If the repo has only named adapters under `.agents/cautilus-adapters/`, follow t
 Quick links:
 
 - What Cautilus promises: [docs/specs/user/index.spec.md](./docs/specs/user/index.spec.md)
-- Maintainer claim map: [docs/specs/maintainer/index.spec.md](./docs/specs/maintainer/index.spec.md)
+- Maintainer claim map: [docs/specs/contracts/index.spec.md](./docs/specs/contracts/index.spec.md)
 - Claim spec report entry: [docs/specs/index.spec.md](./docs/specs/index.spec.md)
 - Full command catalog: [docs/guides/cli.md](./docs/guides/cli.md)
 - Fresh consumer bootstrap after the binary is on `PATH`: [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md)
@@ -80,7 +80,7 @@ Quick links:
 The user and maintainer spec indexes are the curated claim source of truth, and [docs/specs/index.spec.md](./docs/specs/index.spec.md) is the executable report entry that includes both views.
 Raw `claim discover` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.
 The Cautilus Agent curates that packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.
-The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or optimization work.
+The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.
 Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.
 Read the user spec index to understand what Cautilus promises, then use the maintainer index to inspect proof routes, adapters, fixtures, and known gaps.
 
@@ -115,7 +115,7 @@ It is the shortest currently stable external-adoption example of the product cla
 Cautilus has three connected product layers.
 First, `cautilus claim discover` finds broad behavior-claim candidates from adapter-owned entry docs, README.md, AGENTS.md, CLAUDE.md, and linked repo-local Markdown, then the Cautilus Agent curates those candidates against the repo.
 Second, `cautilus eval test` / `eval evaluate` verify selected claims through explicit fixtures and summary packets.
-Third, optimize and GEPA-style search improve prompts or behavior only after the proof surface is clear.
+Third, improve and GEPA-style search improve prompts or behavior only after the proof surface is clear.
 During the current contract rewrite, external host repos should treat this full chain as opt-in and use the eval-only slice above for ordinary adoption.
 
 For the generic first pass, ask for a proof plan:
@@ -195,7 +195,7 @@ The stance, in four contrasts:
 - Unlike a prompt manager, `Cautilus` does not freeze one prompt string as the contract — it treats the behavior under evaluation as the contract (`intent-first`).
 - Unlike a benchmark scrapbook, `Cautilus` separates iteration from protected validation and keeps evidence reopenable from files (`held-out honesty`, `packet-first`).
 - Unlike ad hoc eval scripts, `Cautilus` makes adapters, reports, review files, and compare artifacts first-class product boundaries (`structured review`).
-- Unlike open-ended optimizer loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`).
+- Unlike open-ended improver loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`).
 
 The proof layers are deliberately split because humans, code, and AI are good at different work.
 Human-auditable claims stay readable.
@@ -203,8 +203,8 @@ Deterministic claims belong in ordinary tests and CI.
 Evaluator-dependent behavior goes through `cautilus eval`.
 Improvement work waits until the proof surface is explicit.
 
-`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot optimizer: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.
-Deep dive: `docs/guides/optimize.md`.
+`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.
+Deep dive: `docs/guides/improve.md`.
 
 The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.
 
@@ -245,7 +245,7 @@ artifacts/<run>/eval-summary.json
 What the operator gets back is not just a pass/fail bit:
 
 - a repo-local adapter that declares the evaluation surface explicitly
-- machine-readable eval, report, review, evidence, and optimization packets that agents can consume directly
+- machine-readable eval, report, review, evidence, and improvement packets that agents can consume directly
 - static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop
 See [docs/specs/user/reviewable-artifacts.spec.md](./docs/specs/user/reviewable-artifacts.spec.md) for the rendered-artifact claim and [docs/specs/old/html-report.spec.md](./docs/specs/old/html-report.spec.md) for the archived proof page.
 - bounded compare and review surfaces reopenable from files
@@ -275,13 +275,13 @@ Top picks:
 - [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md) — canonical fresh-consumer bootstrap path after the binary is on `PATH`
 - [docs/guides/evaluation-process.md](./docs/guides/evaluation-process.md) — canonical evaluation loop
 - [docs/specs/user/index.spec.md](./docs/specs/user/index.spec.md) — user-facing claim spec index
-- [docs/specs/maintainer/index.spec.md](./docs/specs/maintainer/index.spec.md) — maintainer-facing claim spec index
+- [docs/specs/contracts/index.spec.md](./docs/specs/contracts/index.spec.md) — maintainer-facing claim spec index
 - [docs/contracts/adapter-contract.md](./docs/contracts/adapter-contract.md) — adapter schema
 - [docs/contracts/review-packet.md](./docs/contracts/review-packet.md) — review packet boundary
 - [docs/guides/cli.md](./docs/guides/cli.md) — full CLI reference
 - [docs/maintainers/development.md](./docs/maintainers/development.md) — maintainer dev + self-dogfood
 - [docs/maintainers/operator-acceptance.md](./docs/maintainers/operator-acceptance.md) — human takeover and acceptance checklist
-- [docs/guides/optimize.md](./docs/guides/optimize.md) — GEPA-style prompt search
+- [docs/guides/improve.md](./docs/guides/improve.md) — GEPA-style prompt search
 - [docs/master-plan.md](./docs/master-plan.md) — roadmap
 - [examples/starters/](./examples/starters/) — normalization-family starter kits
 

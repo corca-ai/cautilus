@@ -5,8 +5,8 @@ description: "Use when intentful behavior evaluation itself is the task and the 
 
 # Cautilus Agent
 
-Use Cautilus Agent when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding eval fixtures, packets, reports, claim discovery, review, or optimize commands by hand.
-For external host repos during the current contract rewrite, treat `eval test`, `eval evaluate`, and post-run `eval skill-experiment compare` as stable; claim discovery automation, optimize automation, live app-runner workflows, and review-learning capture remain opt-in.
+Use Cautilus Agent when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding eval fixtures, packets, reports, claim discovery, review, or improve commands by hand.
+For external host repos during the current contract rewrite, treat `eval test`, `eval evaluate`, and post-run `eval skill-experiment compare` as stable; claim discovery automation, improve automation, live app-runner workflows, and review-learning capture remain opt-in.
 `eval skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.
 
 Cautilus Agent assumes a Cautilus binary is available.
@@ -21,11 +21,11 @@ To materialize Cautilus Agent in a host repo, run `cautilus install --repo-root 
 Host repos own adapters, fixtures, prompts, wrappers, and policy.
 The binary owns command discovery, packet examples, deterministic scans, validation, and reusable evaluation artifacts.
 Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
-`eval` and `optimize` may still exercise model-involving behavior through adapter-owned runners.
+`eval` and `improve` may still exercise model-involving behavior through adapter-owned runners.
 
 The current external-adoption front door is `eval`: verify bounded intentful behavior with explicit fixtures and adapters, and compare host-preserved skill experiment outputs after a run.
-The broader product also includes opt-in `claim` and `optimize` surfaces.
-During the contract rewrite, do not present `claim`, `optimize`, live app-runner workflows, or review-learning packet capture as stable cross-repo defaults.
+The broader product also includes opt-in `claim` and `improve` surfaces.
+During the contract rewrite, do not present `claim`, `improve`, live app-runner workflows, or review-learning packet capture as stable cross-repo defaults.
 
 ## CLI First
 
@@ -118,11 +118,11 @@ If the maintainer is reviewing from a constrained terminal or phone, run `npm ru
 When raw candidates are too granular for product judgment, curate a canonical claim spec tree before continuing HITL.
 Treat raw candidates as high-recall proof-planning inputs, not as the human-facing promise map.
 For Cautilus itself, keep the curated user-facing promises in `docs/specs/user/index.spec.md` and per-claim pages under `docs/specs/user/`.
-Keep the maintainer-facing index in `docs/specs/maintainer/index.spec.md`.
+Keep the maintainer-facing index in `docs/specs/contracts/index.spec.md`.
 In the Cautilus product repo, product-meaning review should start from those spec docs; use the status report for packet audit, debugging, or deciding which remaining raw candidates are not yet absorbed.
 User-facing claims must use plain product language.
 Order user-facing spec indexes by the user's feature mental model before cross-cutting implementation promises.
-For Cautilus itself, lead with `claim`, `eval`, `optimize`, then `doctor` or readiness, then supporting promises such as portability, packet/reporting surfaces, and proof-debt visibility.
+For Cautilus itself, lead with `claim`, `eval`, `improve`, then `doctor` or readiness, then supporting promises such as portability, packet/reporting surfaces, and proof-debt visibility.
 For other repos, infer the equivalent top user jobs from the adapter, README, and source docs instead of copying Cautilus-specific command names.
 Use adapter `semantic_groups`, source-doc headings, declared product surfaces, and README or guide structure as the portable signal for those top user jobs.
 Keep each index short; put subclaims and evidence placeholders in the per-claim spec pages.
@@ -168,7 +168,7 @@ After a human review, HITL chunk, issue, pull request review, `review.json`, or 
 `Cautilus` has two top-level evaluation surfaces and four fixture presets.
 Use `dev` for AI-assisted development work such as repo contracts, tools, and skills.
 Use `app` for AI-powered product behavior such as chat, prompt, and service responses.
-The canonical command families are `claim`, `eval`, and `optimize`.
+The canonical command families are `claim`, `eval`, and `improve`.
 Use `cautilus eval test --fixture <fixture.json>` when the repo already has a checked-in fixture and adapter-owned runner.
 When the agent runtime is read-only, pass an explicit writable `--output-dir`; prefer `/dev/shm/cautilus-<label>` when available, otherwise a writable external temp directory.
 For a fixture-runtime smoke where `doctor --scope agent-surface` or `agent status` already shows the local skill surface is ready, `--skip-preflight` is the right boundary in a read-only agent runtime; state that preflight was skipped because the ready state was already observed.
@@ -191,11 +191,11 @@ Use `cautilus doctor --repo-root . --scope agent-surface` or `doctor --scope age
 4. Use `workspace prepare-compare` when the run needs clean git-ref A/B workspaces.
 5. Run adapter-defined preflight commands before long evaluations.
 6. Run `cautilus eval test` for checked-in fixtures and read `eval-summary.json` as the first bounded evaluation decision.
-7. Build `report.json` only when the workflow needs the broader report/review/evidence/optimize packet layer.
+7. Build `report.json` only when the workflow needs the broader report/review/evidence/improve packet layer.
 8. If the adapter defines `executor_variants`, run `cautilus review variants` instead of retyping ad hoc shell commands.
 If review variants are requested but unavailable on the selected adapter, treat that as a gate defect to fix or explicitly waive before release.
 9. Use `scenario propose` when normalized proposal candidates already exist and the next move is a checked-in scenario packet.
-10. Use optimize or GEPA-style search only after the claim and held-out proof surface are explicit.
+10. Use improve or GEPA-style search only after the claim and held-out proof surface are explicit.
 11. Report exact commands, exact adapter selection, exact artifact paths, and the final recommendation.
 
 When the target repo is `Cautilus` itself, prefer the checked-in self-dogfood wrappers over rebuilding the mode/report/review chain by hand; see [self-dogfood-runner.md](references/self-dogfood-runner.md) for wrapper entries and claim boundaries.
@@ -213,7 +213,7 @@ Use product-owned outputs instead of paraphrasing command results from memory.
 - `eval-observed.json`: observed behavior packet written by the runner.
 - `eval-summary.json`: first bounded evaluation decision packet.
 - `report.json`, `review.json`, `review-summary.json`, `evidence-bundle.json`: broader decision packets for review, evidence, and improvement workflows.
-- `optimize-input.json`, `optimize-search-result.json`, `optimize-proposal.json`, `revision-artifact.json`: bounded optimization and handoff packets.
+- `improve-input.json`, `improve-search-result.json`, `improve-proposal.json`, `revision-artifact.json`: bounded improvement and handoff packets.
 
 Humans usually read HTML renders first, then the underlying packet if they need exact fields.
 Agents should read the packet first, then cite HTML only when a browser view is the deliverable.
@@ -223,4 +223,4 @@ Agents should read the packet first, then cite HTML only when a browser view is 
 - Keep host-repo fixtures, prompts, wrappers, and acceptance policy outside the product boundary.
 - Prefer CLI examples and schemas over hand-written packet JSON.
 - Treat deterministic tests and CI checks as host-owned proof when they are cheaper and stronger than an LLM behavior evaluation.
-- Treat review loops and optimizer output as bounded decision artifacts, not open-ended retries.
+- Treat review loops and improver output as bounded decision artifacts, not open-ended retries.

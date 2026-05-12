@@ -88,7 +88,7 @@ When raw candidates are too granular to review directly, the Cautilus Agent shou
 - a maintainer-facing spec index that may use internal vocabulary but maps back to the user-facing claims
 
 For a product with clear top-level jobs, the user-facing spec index should order claims by the user's feature mental model before cross-cutting implementation promises.
-In this repo's Cautilus spec tree, that means `claim`, `eval`, `optimize`, then `doctor` or readiness, followed by supporting promises such as portability, packet/reporting surfaces, and proof-debt visibility.
+In this repo's Cautilus spec tree, that means `claim`, `eval`, `improve`, then `doctor` or readiness, followed by supporting promises such as portability, packet/reporting surfaces, and proof-debt visibility.
 In other repos, the same rule should be driven by the repo's adapter, README, and source docs rather than by Cautilus-specific command names.
 The user-facing index should stay short and link to one spec page per major claim.
 Each claim spec page should keep subclaims, source references, intended proof route, evidence status, and the next action needed to prove or repair the claim.
@@ -590,7 +590,7 @@ Valid but defer:
 ## Fixed Decisions
 
 - The binary does not directly call an LLM provider for claim discovery or claim review.
-  `eval` and `optimize` workflows may still orchestrate model-involving behavior through adapter-owned runners.
+  `eval` and `improve` workflows may still orchestrate model-involving behavior through adapter-owned runners.
 - In the claim discovery workflow, the Cautilus Agent owns LLM-backed claim review, review-budget explanation, and subagent orchestration.
 - First discovery uses entry sources plus linked repo-local Markdown.
 - Default linked Markdown depth is `3`.

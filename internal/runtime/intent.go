@@ -176,7 +176,7 @@ var behaviorDimensionCatalog = map[string]dimensionCatalogEntry{
 
 var defaultSuccessDimensionsBySurface = map[string][]string{
 	BehaviorSurfaces["OPERATOR_BEHAVIOR"]:          {BehaviorDimensions["OPERATOR_GUIDANCE_CLARITY"]},
-	BehaviorSurfaces["CONVERSATION_CONTINUITY"]:      {BehaviorDimensions["WORKFLOW_CONTINUITY"]},
+	BehaviorSurfaces["CONVERSATION_CONTINUITY"]:    {BehaviorDimensions["WORKFLOW_CONTINUITY"]},
 	BehaviorSurfaces["THREAD_FOLLOWUP"]:            {BehaviorDimensions["WORKFLOW_CONTINUITY"]},
 	BehaviorSurfaces["THREAD_CONTEXT_RECOVERY"]:    {BehaviorDimensions["TARGET_CLARIFICATION"]},
 	BehaviorSurfaces["SKILL_VALIDATION"]:           {BehaviorDimensions["VALIDATION_INTEGRITY"]},

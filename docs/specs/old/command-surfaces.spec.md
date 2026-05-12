@@ -4,7 +4,7 @@
 
 1. `claim` — discover declared behavior claims and turn them into a proof plan
 2. `eval` — verify selected claims through bounded evaluation fixtures and summary packets
-3. `optimize` — improve behavior after the proof surface is honest
+3. `improve` — improve behavior after the proof surface is honest
 
 This spec defines the command-surface contract and the deterministic `claim` packet helpers around `claim discover`.
 The goal is to keep `Cautilus` repo-agnostic while making the product understandable from the binary and Cautilus Agent alone.
@@ -13,7 +13,7 @@ The goal is to keep `Cautilus` repo-agnostic while making the product understand
 
 The product has converged on three jobs, but the command surface still exposes them unevenly.
 `eval` is now the verification front door.
-`optimize` already owns most improvement surfaces, including GEPA-style search.
+`improve` already owns most improvement surfaces, including GEPA-style search.
 The first job, declared-claim discovery and proof planning, is still mostly expressed in Cautilus Agent prose plus scenario proposal helpers.
 
 That creates two risks:
@@ -23,7 +23,7 @@ That creates two risks:
 
 ## Current Slice
 
-Define the stable command-family map and ship the first `claim` commands without disturbing the already-shipped `eval` and `optimize` families.
+Define the stable command-family map and ship the first `claim` commands without disturbing the already-shipped `eval` and `improve` families.
 The implemented slice is intentionally deterministic: it inventories explicit truth surfaces and emits source-ref-backed proof-plan candidates.
 Default output is not silently capped; agents are first-class readers of the packet and should filter or select claims explicitly instead of inheriting a hidden product limit.
 Current discovery starts from adapter-owned entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
@@ -31,7 +31,7 @@ Discovery must also respect the repo's `.gitignore`; ignored generated reports, 
 Existing-packet helpers summarize a proof plan and prepare bounded review clusters without calling an LLM.
 The reviewed-claim helper plans eval fixtures from reviewed `cautilus-eval` claims without writing host-owned fixtures, prompts, runners, or policy.
 The validation helper gives automation a packet-shape and evidence-ref gate before a reviewed claim packet is reused.
-The no-input agent entry point is `agent status`: it emits a read-only orientation packet so the Cautilus Agent can summarize readiness, claim-state availability, scan scope, and branch choices before running discovery, evaluation, review, optimization, edits, or commits.
+The no-input agent entry point is `agent status`: it emits a read-only orientation packet so the Cautilus Agent can summarize readiness, claim-state availability, scan scope, and branch choices before running discovery, evaluation, review, improvement, edits, or commits.
 Live app execution is now exposed under `cautilus eval live ...`.
 
 ## See It Work
@@ -95,10 +95,10 @@ grep -q '"recommendedEvalSurface": "dev/repo"' "$tmpdir/claims.json"
 | --- | --- | --- | --- |
 | discover declared behavior claims and proof layers | `cautilus claim ...` | deterministic discovery slice shipped | `cautilus.claim_proof_plan.v1` |
 | verify a selected claim | `cautilus eval ...` | shipped | `eval-cases.json`, `eval-observed.json`, `eval-summary.json` |
-| improve behavior against an honest proof surface | `cautilus optimize ...` | shipped | `cautilus.optimize_*` and `cautilus.revision_artifact.v1` |
+| improve behavior against an honest proof surface | `cautilus improve ...` | shipped | `cautilus.improve_*` and `cautilus.revision_artifact.v1` |
 
 The command family names are singular nouns on purpose.
-They match existing CLI style (`scenario`, `eval`, `optimize`) and avoid a README-specific product concept.
+They match existing CLI style (`scenario`, `eval`, `improve`) and avoid a README-specific product concept.
 
 ### Claim Surface
 
@@ -221,13 +221,13 @@ cautilus eval live run-scenarios --repo-root . --instance-id <id> --requests-fil
 
 These commands reuse the existing live-run invocation packets.
 
-### Optimize Surface
+### Improve Surface
 
-`optimize` remains the improvement family.
+`improve` remains the improvement family.
 It should not be the first step for an unproven claim.
 It consumes existing report, evidence, scenario, review, or eval-derived packets and produces bounded proposals or revision artifacts.
 
-GEPA-style search belongs under `optimize`, not under `claim` or `eval`, because it changes behavior after the proof surface exists.
+GEPA-style search belongs under `improve`, not under `claim` or `eval`, because it changes behavior after the proof surface exists.
 
 ### Relationship To Scenario Commands
 
@@ -254,8 +254,8 @@ It should point to the relevant scenario command rather than duplicating scenari
 
 - Whether `claim` gets companion commands such as `claim render-html`.
 - Whether `scenario` commands eventually move under `claim` or stay as their own long-lived family.
-- Whether `optimize` should gain a user-facing `improve` alias.
-  The current command remains `optimize`.
+- Whether `improve` should gain a user-facing `improve` alias.
+  The current command remains `improve`.
 - Whether the future GUI workbench becomes a separate product surface for browsing and editing claims, scenarios, and evidence.
   That future workbench is not the current live app runner surface.
 
@@ -264,7 +264,7 @@ It should point to the relevant scenario command rather than duplicating scenari
 - Do not build a repo-specific README auditor.
 - Do not make Cautilus ingest private host data without an explicit host-owned source packet or wrapper.
 - Do not make `claim discover` verify behavior.
-- Do not make `optimize` run before an eval or evidence surface exists.
+- Do not make `improve` run before an eval or evidence surface exists.
 
 ## Deliberately Not Doing
 
@@ -278,7 +278,7 @@ It should point to the relevant scenario command rather than duplicating scenari
 ## Constraints
 
 - The three families must be discoverable from `cautilus commands --json`.
-- The Cautilus Agent must route claim discovery, evaluation, and optimization to the same family names as the binary.
+- The Cautilus Agent must route claim discovery, evaluation, and improvement to the same family names as the binary.
 - Generated claim plans must be repo-agnostic and source-ref based.
 - `claim discover` must be useful before a repo has a runnable eval adapter.
 - `claim discover` must not imply that deterministic unit-test claims belong in Cautilus eval fixtures.
@@ -288,8 +288,8 @@ It should point to the relevant scenario command rather than duplicating scenari
 1. A fresh consumer can ask Cautilus what declared behavior claims still need proof before writing eval fixtures.
 2. A proof plan can distinguish human-auditable, deterministic, eval-backed, scenario-candidate, and alignment-work claims.
 3. Claims that need Cautilus eval are mapped to one of the four current eval presets.
-4. The command registry and Cautilus Agent present `claim`, `eval`, and `optimize` as the three product front doors.
-5. Existing `eval` and `optimize` behavior remains unchanged while the first deterministic `claim` surface lands.
+4. The command registry and Cautilus Agent present `claim`, `eval`, and `improve` as the three product front doors.
+5. Existing `eval` and `improve` behavior remains unchanged while the first deterministic `claim` surface lands.
 
 ## Acceptance Checks
 
@@ -307,7 +307,7 @@ The first implementation slice includes:
 - fixture-backed unit tests for `cautilus.claim_eval_plan.v1` selection over reviewed eval claims
 - fixture-backed unit tests for `cautilus.claim_validation_report.v1` over valid and invalid evidence refs
 - a CLI smoke test that discovers claims from a tiny temp repo with README, AGENTS.md, and one deterministic-test-like claim
-- a Cautilus Agent disclosure check that requires the `claim`, `eval`, and `optimize` family names and forbids README-specific naming as the core concept
+- a Cautilus Agent disclosure check that requires the `claim`, `eval`, and `improve` family names and forbids README-specific naming as the core concept
 - public spec proof that the command can emit at least one `human-auditable`, one `deterministic`, and one `cautilus-eval` candidate from checked-in fixtures
 
 ## Premortem

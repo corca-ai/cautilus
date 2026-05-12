@@ -1,6 +1,6 @@
 # Revision Artifact
 
-`Cautilus` should expose one durable revision-artifact seam above an optimize
+`Cautilus` should expose one durable revision-artifact seam above an improve
 proposal.
 
 The proposal answers:
@@ -20,12 +20,12 @@ Use `cautilus.revision_artifact.v1` for that boundary.
 
 The artifact should include:
 
-- the source `cautilus.optimize_proposal.v1` file reference and packet
-- the source `cautilus.optimize_inputs.v1` file reference
+- the source `cautilus.improve_proposal.v1` file reference and packet
+- the source `cautilus.improve_inputs.v1` file reference
 - repo root
 - shared behavior intent profile: `cautilus.behavior_intent.v1`
-- optimization target and optimizer configuration
-- optimization objective and guardrails
+- improvement target and improver configuration
+- improvement objective and guardrails
 - target file reference and optional target snapshot fingerprint
 - source evidence file references
   - report file
@@ -44,20 +44,20 @@ The artifact should include:
 The point is not to inline arbitrary repo state.
 The point is to materialize one machine-readable revision object that can be
 reviewed, stored, or handed to a bounded follow-up step without rediscovering
-the optimize context from scratch.
+the improve context from scratch.
 
 ## Current Use
 
 The first standalone surface is:
 
 ```bash
-cautilus optimize build-artifact \
-  --proposal-file /tmp/cautilus-optimize/proposal.json
+cautilus improve build-artifact \
+  --proposal-file /tmp/cautilus-improve/proposal.json
 ```
 
 ## Guardrails
 
-- Keep the artifact bounded to explicit optimize inputs and proposal outputs.
+- Keep the artifact bounded to explicit improve inputs and proposal outputs.
 - Do not treat the artifact as permission to auto-apply edits.
 - Do not inline large prompt or adapter bodies into the product-owned packet.
 - Prefer file references plus stable fingerprints for consumer-owned targets.

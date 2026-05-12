@@ -1,7 +1,7 @@
 # Cautilus Maintainer-Facing Claims
 
 Deprecated planning context.
-The active maintainer-facing source of truth is [docs/specs/maintainer/index.spec.md](../specs/maintainer/index.spec.md), aligned to [docs/specs/user/index.spec.md](../specs/user/index.spec.md).
+The active contract source of truth is [docs/specs/contracts/index.spec.md](../specs/contracts/index.spec.md), aligned to [docs/specs/user/index.spec.md](../specs/user/index.spec.md).
 This page is kept temporarily until useful content is absorbed or deleted in a later cleanup slice.
 
 This page maps the user-facing claim catalog to maintainer-owned contracts, proof routes, and known implementation boundaries.
@@ -178,25 +178,25 @@ Required evidence:
 
 Source anchors: docs/contracts/reporting.md, docs/specs/user/reviewable-artifacts.spec.md, scripts/agent-runtime/.
 
-## M9. Optimization Requires An Honest Proof Surface
+## M9. Improvement Requires An Honest Proof Surface
 
-Aligned user claims: U3 Optimize.
+Aligned user claims: U3 Improve.
 
-`optimize` and GEPA-style search must run against explicit claim, budget, protected validation, and revision-artifact boundaries.
-Optimization output is a bounded proposal and evidence packet, not an instruction to blindly apply changes.
+`improve` and GEPA-style search must run against explicit claim, budget, protected validation, and revision-artifact boundaries.
+Improvement output is a bounded proposal and evidence packet, not an instruction to blindly apply changes.
 
 Proof route: deterministic plus eval fixtures.
 Current evidence status: proof-planning.
-Next action: prove optimization packet boundaries before promoting any optimizer output as a recommended behavior change.
-Absorbs: raw claims about optimize, GEPA-style search, budgets, checkpoints, protected validation, frontier promotion, and revision artifacts.
+Next action: prove improvement packet boundaries before promoting any improver output as a recommended behavior change.
+Absorbs: raw claims about improve, GEPA-style search, budgets, checkpoints, protected validation, frontier promotion, and revision artifacts.
 
 Required evidence:
 
-- optimize input and search-result schema tests
-- evaluation summary tests used by optimize scoring
+- improve input and search-result schema tests
+- evaluation summary tests used by improve scoring
 - revision artifact tests that preserve budget, checkpoint, and recommendation state
 
-Source anchors: docs/contracts/optimization.md, docs/contracts/optimization-search.md, docs/guides/optimize.md.
+Source anchors: docs/contracts/improvement.md, docs/contracts/improvement-search.md, docs/guides/improve.md.
 
 ## M10. Public Specs And Claim Catalogs Have Different Jobs
 

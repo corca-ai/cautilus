@@ -415,47 +415,47 @@
       ]
     },
     {
-      "path": ["optimize", "prepare-input"],
+      "path": ["improve", "prepare-input"],
       "group": "results",
-      "usage": "cautilus optimize prepare-input [args]",
-      "example": "cautilus optimize prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --budget medium",
+      "usage": "cautilus improve prepare-input [args]",
+      "example": "cautilus improve prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --budget medium",
       "notes": [
-        "`optimize` is the improvement front door; use it only after the claim and eval proof surface are explicit.",
+        "`improve` is the improvement front door; use it only after the claim and eval proof surface are explicit.",
         "This command prepares a bounded improvement packet from report, review, and history evidence."
       ]
     },
     {
-      "path": ["optimize", "search", "prepare-input"],
+      "path": ["improve", "search", "prepare-input"],
       "group": "results",
-      "usage": "cautilus optimize search prepare-input [args]",
-      "example": "cautilus optimize search prepare-input --optimize-input /tmp/cautilus-optimize/input.json --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json --target-file .agents/review.prompt.md --budget light",
+      "usage": "cautilus improve search prepare-input [args]",
+      "example": "cautilus improve search prepare-input --improve-input /tmp/cautilus-improve/input.json --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json --target-file .agents/review.prompt.md --budget light",
       "notes": [
-        "Prepares a bounded search packet above an explicit optimize input and held-out evidence."
+        "Prepares a bounded search packet above an explicit improve input and held-out evidence."
       ]
     },
     {
-      "path": ["optimize", "search", "run"],
+      "path": ["improve", "search", "run"],
       "group": "results",
-      "usage": "cautilus optimize search run [args]",
-      "example": "cautilus optimize search run --input /tmp/cautilus-optimize/search-input.json --json",
+      "usage": "cautilus improve search run [args]",
+      "example": "cautilus improve search run --input /tmp/cautilus-improve/search-input.json --json",
       "notes": [
         "Runs the bounded search and emits a checkpointed result packet; it is not an open-ended retry loop."
       ]
     },
     {
-      "path": ["optimize", "propose"],
+      "path": ["improve", "propose"],
       "group": "results",
-      "usage": "cautilus optimize propose [args]",
-      "example": "cautilus optimize propose --input /tmp/cautilus-optimize/input.json",
+      "usage": "cautilus improve propose [args]",
+      "example": "cautilus improve propose --input /tmp/cautilus-improve/input.json",
       "notes": [
-        "Produces a bounded improvement proposal from an explicit optimize input."
+        "Produces a bounded improvement proposal from an explicit improve input."
       ]
     },
     {
-      "path": ["optimize", "build-artifact"],
+      "path": ["improve", "build-artifact"],
       "group": "results",
-      "usage": "cautilus optimize build-artifact [args]",
-      "example": "cautilus optimize build-artifact --proposal-file /tmp/cautilus-optimize/proposal.json",
+      "usage": "cautilus improve build-artifact [args]",
+      "example": "cautilus improve build-artifact --proposal-file /tmp/cautilus-improve/proposal.json",
       "notes": [
         "Builds the reviewable revision artifact from an accepted improvement proposal."
       ]

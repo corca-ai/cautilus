@@ -38,7 +38,7 @@
 - Accepted At: 2026-05-09T16:33:49+00:00
 - Text:
   <md>
-  - [Agent-Human Resumability](../../../../docs/specs/concerns/agent-human-resumability.spec.md): workflow packets, next actions, and source-bound review feedback should let a human or agent resume without relying on chat memory, and can become reusable learning evidence about which discovery or evaluation work was useful.
+  - [Agent-Human Resumability](../../../../docs/specs/rules/agent-human-resumability.spec.md): workflow packets, next actions, and source-bound review feedback should let a human or agent resume without relying on chat memory, and can become reusable learning evidence about which discovery or evaluation work was useful.
   </md>
 
 ## Full Target Review

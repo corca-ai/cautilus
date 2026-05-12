@@ -12,7 +12,7 @@ This repo is the standalone product boundary for `Cautilus`.
   Deterministic behavior belongs in code, scripts, adapters, tests, and specs.
 - Keep product surfaces agent-first, but human-auditable by design.
   Prefer explicit artifacts, normalized packets, and inspectable intermediate files over hidden discovery or product-owned ingestion of raw host-specific shapes.
-- Optimize for `Cautilus` as an independent binary plus Cautilus Agent before optimizing any host repo as a consumer.
+- Improve for `Cautilus` as an independent binary plus Cautilus Agent before optimizing any host repo as a consumer.
 - Prose markdown uses semantic line breaks: one sentence per line, no hard-wrap at a column width.
   This is so fixed-pattern assertions in specs cannot be broken by incidental wrap positions and so prose edits produce clean sentence-level diffs.
   Applies to all `.md` files except `docs/specs/*.md` (tables plus executable patterns), `docs/internal/handoff.md`, and `docs/maintainers/operator-acceptance.md`.
@@ -44,7 +44,7 @@ This repo is the standalone product boundary for `Cautilus`.
 - [docs/master-plan.md](./docs/master-plan.md): durable product direction and priority order
 - [docs/specs/index.spec.md](./docs/specs/index.spec.md): claim spec report entry covering user-facing and maintainer-facing indexes
 - [docs/specs/user/index.spec.md](./docs/specs/user/index.spec.md): user-facing claim spec index and current product promise SOT
-- [docs/specs/maintainer/index.spec.md](./docs/specs/maintainer/index.spec.md): maintainer-facing claim spec index mapping user promises to internal contracts and proof routes
+- [docs/specs/contracts/index.spec.md](./docs/specs/contracts/index.spec.md): maintainer-facing claim spec index mapping user promises to internal contracts and proof routes
 - [docs/maintainers/operator-acceptance.md](./docs/maintainers/operator-acceptance.md): tiered human acceptance checklist
 - [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md): generic consumer adoption path
 - [charness-artifacts/retro/recent-lessons.md](./charness-artifacts/retro/recent-lessons.md): compact digest of recent retro repeat-traps and next-time checklist, auto-refreshed from durable retro artifacts

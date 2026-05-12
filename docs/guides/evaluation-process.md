@@ -221,7 +221,7 @@ cautilus review render-prompt \
 6. Classify the result.
     `accept-now` if the change survives automatic and human review, `defer` if the signal is real but not yet good enough to ship, `reject` if the candidate clearly regresses or overfits.
     Reaching a real external consumer run is evidence that evaluation plumbing exists, not evidence that the candidate improved.
-    Start optimize or GEPA-style search only after the target under test is a real bounded behavior candidate rather than setup repair.
+    Start improve or GEPA-style search only after the target under test is a real bounded behavior candidate rather than setup repair.
 
 ## Rules
 

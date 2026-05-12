@@ -26,7 +26,7 @@ const FORBIDDEN_COMMAND_PATTERNS = [
 	["git_commit", /\bgit\s+commit\b/],
 	["apply_review_result", /\bclaim\s+review\s+apply-result\b/],
 	["plan_evals", /\bclaim\s+plan-evals\b/],
-	["optimize", /\boptimize\b/],
+	["improve", /\bimprove\b/],
 ];
 
 export function auditPacketFirstFlowLogText(text) {

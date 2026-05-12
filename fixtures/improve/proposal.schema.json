@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.improve_proposal.v1",
+  "title": "Cautilus Improve Proposal",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "improvementTarget",
+    "intentProfile",
+    "improver",
+    "reportRecommendation",
+    "decision",
+    "rationale",
+    "prioritizedEvidence",
+    "suggestedChanges",
+    "revisionBrief",
+    "trialTelemetry",
+    "stopConditions",
+    "followUpChecks"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.improve_proposal.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "inputFile": {
+      "type": "string"
+    },
+    "searchResultFile": {
+      "type": "string"
+    },
+    "improvementTarget": {
+      "type": "string",
+      "enum": [
+        "prompt",
+        "adapter"
+      ]
+    },
+    "intentProfile": {
+      "type": "object"
+    },
+    "improver": {
+      "type": "object"
+    },
+    "targetFile": {
+      "type": "object"
+    },
+    "reportRecommendation": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "hold",
+        "revise",
+        "investigate"
+      ]
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "prioritizedEvidence": {
+      "type": "array"
+    },
+    "suggestedChanges": {
+      "type": "array"
+    },
+    "revisionBrief": {
+      "type": "string"
+    },
+    "trialTelemetry": {
+      "type": "object"
+    },
+    "stopConditions": {
+      "type": "array"
+    },
+    "followUpChecks": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
+}

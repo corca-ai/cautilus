@@ -108,7 +108,7 @@ A new value on either axis must pass the taxonomy-axis checkpoint and update the
 
 ### Result packet
 
-Every result records `{provider, model, harness, mode (workspace|messaging), durationMs, costUsd?}` so cost / time / provider analysis works uniformly across surfaces and downstream tools (`optimize prepare-input`, `report.json`).
+Every result records `{provider, model, harness, mode (workspace|messaging), durationMs, costUsd?}` so cost / time / provider analysis works uniformly across surfaces and downstream tools (`improve prepare-input`, `report.json`).
 
 **Cross-runtime equivalence rules** (for `app` surface running same fixture under different harnesses):
 
@@ -157,7 +157,7 @@ Answers should land through implementation slices, not through more spec churn:
 
 ## Non-Goals
 
-- Replacing `optimize`, `evidence`, `report`, `review` packet flows.
+- Replacing `improve`, `evidence`, `report`, `review` packet flows.
   Those stay; the new evaluation packets feed them.
 - Replacing `scenario propose` and the proposal pipeline.
 - Adding a fifth preset before the four ship.
@@ -181,7 +181,7 @@ Answers should land through implementation slices, not through more spec churn:
 - `dev` surface MUST work with the operator's installed Claude Code or Codex without re-pinning model versions.
 - `app` surface MUST work without an API key when the user has Claude or Codex CLI installed.
 - Preset is deterministic from `(surface, preset)` and validated offline.
-- Result packet schema MUST stay stable across surfaces so downstream consumers (`optimize prepare-input`, `report.json`) treat all four presets uniformly.
+- Result packet schema MUST stay stable across surfaces so downstream consumers (`improve prepare-input`, `report.json`) treat all four presets uniformly.
 - No backward compatibility for prior public commands or schemas. Cuts are clean.
 
 ## Success Criteria
@@ -272,7 +272,7 @@ Follow-up slices proceed in this order:
    The matching cut shipped 2026-04-26: `cautilus mode evaluate`, the `iterate / held_out / comparison / full_gate` adapter slots, and the chatbot scenario init scaffold were removed without aliases.
    Codex backend proof shipped 2026-04-27: `npm run dogfood:app-chat:fixture` and `npm run dogfood:app-chat:codex` both run the checked-in `app / chat` fixture through `cautilus eval test`; the Codex run returned `recommendation=accept-now` while still reporting `productProofReady=false`.
    Claude backend proof shipped 2026-04-27: `npm run dogfood:app-chat:claude` runs the same checked-in fixture with `--runtime claude`; the Claude run returned `recommendation=accept-now` while remaining backend proof, not app product-runner proof.
-   Optimize-search candidate held-out evaluation and final full-gate checkpoints now use `cautilus eval test` when the selected adapter exposes `evaluation_input_default`; they still honest-skip with `status=skipped` and `skipReason=surface_unavailable` when no eval-test surface is declared.
+   Improve-search candidate held-out evaluation and final full-gate checkpoints now use `cautilus eval test` when the selected adapter exposes `evaluation_input_default`; they still honest-skip with `status=skipped` and `skipReason=surface_unavailable` when no eval-test surface is declared.
 3. ~~`app / prompt` preset — new.~~ Shipped 2026-04-26.
    `cautilus.evaluation_input.v1` now accepts `surface=app, preset=prompt` and translates fixtures to `cautilus.app_prompt_test_cases.v1`; `cautilus eval evaluate` dispatches `BuildAppPromptEvaluationSummary` on `cautilus.app_prompt_evaluation_inputs.v1`.
    The result packet keeps the app-surface runtime fields from `app/chat` (`provider`, `model`, `harness`, `mode=messaging`, `durationMs`, `observed.messages`, `observed.finalText`) and adds required `observed.input` for the single-turn I/O boundary.

@@ -19,7 +19,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 - **Angle 수는 슬라이스 규모에 맞춘다.**
   단일 슬라이스 = 1각, 2–3 슬라이스 = 2각, 스펙 리네임·스키마 bump·다수 파일 카스케이드 = 3–4각.
 - **premortem 직후 카운터웨이트 1회.**
-  여러 에이전트 결과가 쌓이면 **하나의 카운터웨이트 에이전트** 에게 "과한 걱정 / YAGNI / premature optimization 을 솔직히 지적해줘" 를 돌린다.
+  여러 에이전트 결과가 쌓이면 **하나의 카운터웨이트 에이전트** 에게 "과한 걱정 / YAGNI / premature improvement 을 솔직히 지적해줘" 를 돌린다.
   카운터웨이트는 각 finding 을 (a) 출시 전 반드시 고침, (b) 같은 변경에 끼워넣기 cheap, (c) 과한 걱정 → 무시, (d) 유효하지만 defer 로 분류한다.
   **1각 결과가 작으면 카운터웨이트 skip**.
 - **Premortem 의 한 agent 가 devil's-advocate 역할을 제대로 하면 별도 카운터웨이트 agent 를 생략 가능.**
@@ -50,7 +50,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   단순 rename 처럼 보여도 사용자 문서와 binary output 이 어긋나면 제품 의미가 분리된다.
   rename 은 public prose, JSON field/meaning, tests, maintainer mapping 을 한 slice 에서 같이 갱신하거나 명시적으로 defer 한다.
 - **User-facing stories 는 main concern 이고, cross-cutting concerns 는 숨기지 않는다.**
-  Readiness, Claim Discovery, Behavior Evaluation, Bounded Optimization 은 workflow 중심 dominant decomposition 이다.
+  Readiness, Claim Discovery, Behavior Evaluation, Bounded Improvement 은 workflow 중심 dominant decomposition 이다.
   Host-owned execution, Reviewable Artifacts, Evidence Gaps, vocabulary/packet consistency 같은 concern 은 별도 workflow 가 아니어도 index 에서 보이고 각 story 안의 proof 로 다시 투영되어야 한다.
   이 concern 들은 "또 하나의 audience view" 가 아니라 canonical promise model 위에 얹는 concern-first lens 다.
   User / Maintainer 는 독자 축이고, Primary workflow / Cross-cutting concern 은 분해 축이다.
@@ -60,7 +60,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 - **한 분해 축이 다른 관심사를 지우는지 self-check 한다.**
   user story 순서가 workflow 를 잘 설명해도, evidence visibility / host ownership / cost-budget / agent-human readability 가 특정 story 에 묻혀 사라지면 설계가 퇴행한 것이다.
   index 에 cross-cutting 항목을 남기고, maintainer side 에는 어떤 invariant 가 어느 story 를 제한하는지 mapping 을 둔다.
-  구조가 커지면 `docs/specs/concerns/` 같은 concern lens 를 추가하되, 그것을 user/maintainer 와 같은 종류의 view 로 설명하지 않는다.
+  구조가 커지면 `docs/specs/rules/` 같은 concern lens 를 추가하되, 그것을 user/maintainer 와 같은 종류의 view 로 설명하지 않는다.
 - **Cautilus 제품 책임은 artifact-first 로 쓴다.**
   Cautilus 의 독립 책임은 좋은 바이너리와 머신이 이해하기 쉬운 패킷, provenance, status, next-work route 를 내는 것이다.
   Cautilus Agent 는 그 패킷을 해석하고 workflow branch 를 돕는다.

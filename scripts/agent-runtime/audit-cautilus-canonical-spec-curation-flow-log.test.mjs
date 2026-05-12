@@ -33,7 +33,7 @@ test("passes when packet and both canonical spec indexes are inspected before HI
 	const audit = auditCanonicalSpecCurationFlowLogText(jsonl([
 		toolCall("./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 8"),
 		toolCall("sed -n '1,120p' docs/specs/user/index.spec.md"),
-		toolCall("sed -n '1,120p' docs/specs/maintainer/index.spec.md"),
+		toolCall("sed -n '1,120p' docs/specs/contracts/index.spec.md"),
 		assistant("The raw candidates are too granular. The user-facing spec index and maintainer-facing spec index are the canonical curation surface before continuing HITL."),
 	]));
 	assert.equal(audit.status, "passed");
@@ -54,7 +54,7 @@ test("fails when the flow launches claim review before the curation boundary", (
 	const audit = auditCanonicalSpecCurationFlowLogText(jsonl([
 		toolCall("./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 8"),
 		toolCall("sed -n '1,120p' docs/specs/user/index.spec.md"),
-		toolCall("sed -n '1,120p' docs/specs/maintainer/index.spec.md"),
+		toolCall("sed -n '1,120p' docs/specs/contracts/index.spec.md"),
 		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/evidenced-typed-runners.json --output /tmp/review-input.json"),
 		assistant("The user-facing and maintainer-facing indexes were checked before continuing HITL."),
 	]));

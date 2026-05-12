@@ -107,7 +107,7 @@ cautilus claim plan-evals --claims /tmp/cautilus-reviewed-claims.json --output /
 cautilus scenarios --json
 ```
 
-`cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus optimize search --help`.
+`cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus improve search --help`.
 Use `agent status --json` when a Cautilus Agent or agent is invoked without a detailed task.
 It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.
 Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.
@@ -503,25 +503,25 @@ This command answers:
 "what single packet should I hand to the next decision step when report,
 scenario, audit, and history evidence all matter together?"
 
-## Optimization
+## Improvement
 
-`cautilus optimize` is the improvement front door.
-Use it only after the claim and eval proof surface are explicit enough that an improvement loop has something honest to optimize against.
-For app behavior claims, reports whose `proofSummary.productRunnerProofReadiness` is blocked cannot become optimize inputs until runner-backed product proof is ready.
-The bounded one-shot optimizer:
+`cautilus improve` is the improvement front door.
+Use it only after the claim and eval proof surface are explicit enough that an improvement loop has something honest to improve against.
+For app behavior claims, reports whose `proofSummary.productRunnerProofReadiness` is blocked cannot become improve inputs until runner-backed product proof is ready.
+The bounded one-shot improver:
 
 ```bash
-cautilus optimize prepare-input \
+cautilus improve prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
   --review-summary /tmp/cautilus-review/summary.json \
   --history-file /tmp/cautilus-history/history.json \
   --target prompt
 
-cautilus optimize propose \
-  --input /tmp/cautilus-optimize/input.json
+cautilus improve propose \
+  --input /tmp/cautilus-improve/input.json
 ```
 
-For the GEPA-style bounded prompt search seam layered above that optimizer — multi-generation reflective mutation, held-out reevaluation, frontier selection — see [optimize.md](./optimize.md).
+For the GEPA-style bounded prompt search seam layered above that improver — multi-generation reflective mutation, held-out reevaluation, frontier selection — see [improve.md](./improve.md).
 
 ## Self-dogfood rendering
 
@@ -564,8 +564,8 @@ node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixt
 node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
 node scripts/agent-runtime/build-evidence-input.mjs --report-file /tmp/cautilus-mode/report.json --scenario-results-file ./fixtures/scenario-results/example-results.json
 node scripts/agent-runtime/build-evidence-bundle.mjs --input /tmp/cautilus-evidence/input.json
-node scripts/agent-runtime/build-optimize-input.mjs --report-file /tmp/cautilus-mode/report.json --target prompt
-node scripts/agent-runtime/generate-optimize-proposal.mjs --input /tmp/cautilus-optimize/input.json
+node scripts/agent-runtime/build-improve-input.mjs --report-file /tmp/cautilus-mode/report.json --target prompt
+node scripts/agent-runtime/generate-improve-proposal.mjs --input /tmp/cautilus-improve/input.json
 node scripts/agent-runtime/summarize-scenario-telemetry.mjs --results ./fixtures/scenario-proposals/results.json
 node scripts/agent-runtime/build-report-packet.mjs --input ./fixtures/reports/report-input.json
 ./bin/cautilus eval test --repo-root . --fixture fixtures/eval/app/prompt/cautilus-tagline.fixture.json --output-dir /tmp/cautilus-eval

@@ -131,13 +131,13 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 | 3.14 | `cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
 | 3.15 | `cautilus evidence bundle --input ./fixtures/evidence/example-input.json` | JSON 출력, exit 0 | 기계적 |
 
-### 3e. Optimize
+### 3e. Improve
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.16 | `cautilus optimize prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --budget light` | JSON 출력, exit 0 | 기계적 |
-| 3.17 | `cautilus optimize propose --input ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.18 | `cautilus optimize build-artifact --proposal-file ./fixtures/optimize/example-proposal.json --input-file ./fixtures/optimize/example-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.16 | `cautilus improve prepare-input --report-file ./fixtures/reports/report-input.json --target prompt --budget light` | JSON 출력, exit 0 | 기계적 |
+| 3.17 | `cautilus improve propose --input ./fixtures/improve/example-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.18 | `cautilus improve build-artifact --proposal-file ./fixtures/improve/example-proposal.json --input-file ./fixtures/improve/example-input.json` | JSON 출력, exit 0 | 기계적 |
 
 ### 3f. Eval 비교
 
@@ -245,8 +245,8 @@ Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이
 
 | # | 리드미 주장 | 검증 명령 | 통과 조건 |
 |---|---|---|---|
-| 6.1 | GEPA-style bounded prompt search — prepare | `cautilus optimize search prepare-input --optimize-input ./fixtures/optimize/example-input.json --held-out-results-file ./fixtures/scenario-results/example-results.json --budget light` | JSON 출력, exit 0 |
-| 6.2 | GEPA search — run (blocked-readiness 포함) | `cautilus optimize search run --input <6.1 출력>` | JSON 출력 (blocked result도 통과로 간주), exit 0 |
+| 6.1 | GEPA-style bounded prompt search — prepare | `cautilus improve search prepare-input --improve-input ./fixtures/improve/example-input.json --held-out-results-file ./fixtures/scenario-results/example-results.json --budget light` | JSON 출력, exit 0 |
+| 6.2 | GEPA search — run (blocked-readiness 포함) | `cautilus improve search run --input <6.1 출력>` | JSON 출력 (blocked result도 통과로 간주), exit 0 |
 | 6.3 | Agent track — plugin surface doctor | `cautilus doctor --repo-root . --scope agent-surface` | `ready` 출력, exit 0 |
 | 6.4 | Claude marketplace manifest | `claude plugins validate ./.claude-plugin/marketplace.json` | exit 0 |
 | 6.5 | Claude plugin manifest (packaged) | `claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json` | exit 0 |

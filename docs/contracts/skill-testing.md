@@ -73,7 +73,7 @@ By default, skill tests should exercise the runtime that the local CLI would act
 They should not pin a model unless the adapter command template or a pinned-runtime policy explicitly does so.
 When runtime telemetry is available, downstream summaries should preserve enough runtime identity to report model-runtime changes without making ordinary default-runtime changes fail the test.
 A pinned-runtime mismatch blocks the workflow because the run did not test the declared runtime.
-See [runtime-fingerprint-optimization.md](./runtime-fingerprint-optimization.md).
+See [runtime-fingerprint-improvement.md](./runtime-fingerprint-improvement.md).
 
 ## Adapter Boundary
 

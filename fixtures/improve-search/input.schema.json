@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.improve_search_inputs.v1",
+  "title": "Cautilus Improve Search Inputs",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "repoRoot",
+    "improveInputFile",
+    "improveInput",
+    "improvementTarget",
+    "targetFile",
+    "seedCandidate",
+    "searchConfig",
+    "searchConfigSources",
+    "mutationConfig",
+    "mutationEvidencePolicy",
+    "scenarioSets",
+    "evaluationFiles",
+    "evaluationContext",
+    "objective"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.improve_search_inputs.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "repoRoot": {
+      "type": "string"
+    },
+    "improveInputFile": {
+      "type": "string"
+    },
+    "improveInput": {
+      "type": "object"
+    },
+    "improvementTarget": {
+      "type": "string",
+      "enum": [
+        "prompt"
+      ]
+    },
+    "targetFile": {
+      "type": "object"
+    },
+    "seedCandidate": {
+      "type": "object"
+    },
+    "searchConfig": {
+      "type": "object"
+    },
+    "searchConfigSources": {
+      "type": "object"
+    },
+    "mutationConfig": {
+      "type": "object"
+    },
+    "mutationEvidencePolicy": {
+      "type": "object"
+    },
+    "scenarioSets": {
+      "type": "object"
+    },
+    "evaluationFiles": {
+      "type": "object"
+    },
+    "evaluationContext": {
+      "type": "object"
+    },
+    "objective": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

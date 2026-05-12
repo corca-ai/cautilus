@@ -115,34 +115,34 @@ cautilus evidence bundle \
   --input /tmp/cautilus-evidence/input.json
 ```
 
-## Optimize prepare-input / search / propose / build-artifact
+## Improve prepare-input / search / propose / build-artifact
 
 ```bash
-cautilus optimize prepare-input \
+cautilus improve prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
   --review-summary /tmp/cautilus-review/review-summary.json \
   --history-file /tmp/cautilus-history/scenario-history.snapshot.json \
   --target prompt \
   --budget medium
 
-cautilus optimize search prepare-input \
-  --optimize-input /tmp/cautilus-optimize/input.json \
+cautilus improve search prepare-input \
+  --improve-input /tmp/cautilus-improve/input.json \
   --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
   --target-file ./prompts/system.md \
   --budget light
 
-cautilus optimize search run \
-  --input /tmp/cautilus-optimize/search-input.json \
+cautilus improve search run \
+  --input /tmp/cautilus-improve/search-input.json \
   --json
 
-cautilus optimize propose \
-  --input /tmp/cautilus-optimize/input.json
+cautilus improve propose \
+  --input /tmp/cautilus-improve/input.json
 
-cautilus optimize propose \
-  --from-search /tmp/cautilus-optimize/search-result.json
+cautilus improve propose \
+  --from-search /tmp/cautilus-improve/search-result.json
 
-cautilus optimize build-artifact \
-  --proposal-file /tmp/cautilus-optimize/proposal.json
+cautilus improve build-artifact \
+  --proposal-file /tmp/cautilus-improve/proposal.json
 ```
 
 ## Review variants

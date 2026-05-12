@@ -7,7 +7,7 @@ The goal is to preserve source-bound review feedback from host repo workflows so
 
 ## Problem
 
-`Cautilus` already keeps evaluation packets, reports, review packets, and optimization feedback reopenable.
+`Cautilus` already keeps evaluation packets, reports, review packets, and improvement feedback reopenable.
 Those artifacts answer what happened in one workflow.
 
 They do not yet answer a higher-level product question:
@@ -42,7 +42,7 @@ This slice establishes the first packet materializer and a selected-packet summa
 - The learning record belongs to Cautilus-owned artifacts, not host-specific chat memory.
 - The first durable surface is a standalone `review-feedback.json` packet.
 - The first design target is claim-discovery and evaluation methods.
-  Optimization search already has a more specific checkpoint-feedback reinjection loop.
+  Improvement search already has a more specific checkpoint-feedback reinjection loop.
 
 ## Proposed Record
 
@@ -111,7 +111,7 @@ This is a design-readiness question, not a requirement that the current spec alr
 ## Non-Goals
 
 - importing Engelbart language into Cautilus user-facing specs
-- adding five philosophy-derived shared concerns directly to `docs/specs/concerns/`
+- adding five philosophy-derived cross-cutting rules directly to `docs/specs/rules/`
 - treating Cautilus Agent as the final review authority
 - making `eval-cases.json` carry all review outcome history
 - implementing automatic heuristic ranking in the first slice
@@ -135,5 +135,5 @@ Active-run packet discovery and default packet location remain deferred.
 - [Claim Discovery Workflow](claim-discovery-workflow.md)
 - [Review Packet](review-packet.md)
 - [Scenario Results](scenario-results.md)
-- [Optimization Search](optimization-search.md)
+- [Improvement Search](improvement-search.md)
 - [Active Run](active-run.md)

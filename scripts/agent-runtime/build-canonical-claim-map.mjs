@@ -5,7 +5,7 @@ import path from "node:path";
 
 const DEFAULT_CLAIMS = ".cautilus/claims/evidenced-typed-runners.json";
 const DEFAULT_USER_CATALOG = "docs/specs/user/index.spec.md";
-const DEFAULT_MAINTAINER_CATALOG = "docs/specs/maintainer/index.spec.md";
+const DEFAULT_MAINTAINER_CATALOG = "docs/specs/contracts/index.spec.md";
 const DEFAULT_OUTPUT = ".cautilus/claims/canonical-claim-map.json";
 
 const STOPWORDS = new Set([
@@ -256,7 +256,7 @@ function parseMaintainerSpecTree(markdown, filePath) {
 
 export function parseMaintainerCatalog(markdown, filePath = DEFAULT_MAINTAINER_CATALOG) {
 	const sections = sectionBlocks(markdown, "M\\d+");
-	if (sections.length === 0 && filePath.includes("docs/specs/maintainer/")) {
+	if (sections.length === 0 && filePath.includes("docs/specs/contracts/")) {
 		const linkedClaims = parseMaintainerSpecTree(markdown, filePath);
 		return linkedClaims.length > 0 ? linkedClaims : parseMaintainerSpecIndex(markdown, filePath);
 	}

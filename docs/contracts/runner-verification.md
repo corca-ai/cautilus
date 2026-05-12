@@ -12,7 +12,7 @@ The host repo owns the runner, the production-path reuse argument, and the asses
 The Cautilus Agent may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet.
 
 Runner verification is not a fourth product command family.
-It is setup evidence consumed by `doctor`, `agent status`, `eval`, and later `optimize`.
+It is setup evidence consumed by `doctor`, `agent status`, `eval`, and later `improve`.
 
 ## Reference Pattern
 

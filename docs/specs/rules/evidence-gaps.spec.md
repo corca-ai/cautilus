@@ -1,0 +1,20 @@
+# Evidence Gaps
+
+Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
+
+Key: `rule.evidence-gaps`.
+
+## Where To Check This
+
+- User-facing page: [Evidence Gaps](../user/evidence-gaps.spec.md)
+- Primary workflow attachments: [Readiness](../ledger/readiness.spec.md), [Claim Discovery](../ledger/claim-discovery.spec.md), [Bounded Improvement](../ledger/improvement.spec.md)
+- Maintainer evidence routes: [Evidence State And Review Artifacts](../contracts/evidence-state-artifacts.spec.md), [Improvement Loop](../contracts/improvement-loop.spec.md), [Readiness And Runtime Status](../contracts/readiness-runtime-status.spec.md)
+
+## Link Checks
+
+```run:shell
+# Verify the user-facing evidence-gaps page exists.
+test -f docs/specs/user/evidence-gaps.spec.md
+```
+
+Current open proof gaps live in [Proof Gaps](../evidence/gaps.spec.md).

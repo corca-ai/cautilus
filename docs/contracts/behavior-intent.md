@@ -5,7 +5,7 @@
 Use `cautilus.behavior_intent.v1` for that object.
 
 The point is not to freeze one prompt verbatim.
-The point is to make the evaluated behavior explicit enough that `report`, `review`, `optimize`, `revision artifact`, and `scenario proposal` packets can point at the same intent without re-deriving it from prose.
+The point is to make the evaluated behavior explicit enough that `report`, `review`, `improve`, `revision artifact`, and `scenario proposal` packets can point at the same intent without re-deriving it from prose.
 
 ## Contents
 
@@ -88,7 +88,7 @@ Current derivation rules:
 - `summary` copies the explicit intent text
 - `behaviorSurface` falls back to one product-owned default for the seam
 - `successDimensions` fall back to one product-owned default set for that seam or surface
-- `guardrailDimensions` stay empty unless the seam has explicit product-owned defaults, such as optimize guardrails
+- `guardrailDimensions` stay empty unless the seam has explicit product-owned defaults, such as improve guardrails
 
 ## Current Default Sets
 
@@ -120,7 +120,7 @@ Current seam-level defaults:
   - `operator_workflow_recovery`
   - `workflow_recovery`
   - `recovery_next_step`
-- optimize default guardrails
+- improve default guardrails
   - `repair_explicit_regressions_first`
   - `review_findings_binding`
   - `history_focuses_next_probe`
@@ -132,7 +132,7 @@ This slice keeps the contract intentionally thin but now makes the reusable dime
 
 - `report` materializes the intent profile once from explicit inputs
 - `review` reuses that same object when building the meta-prompt packet
-- `optimize` copies the same object into the bounded revision packet and may add product-owned guardrail defaults when none were declared
+- `improve` copies the same object into the bounded revision packet and may add product-owned guardrail defaults when none were declared
 - `revision artifact` carries the same object forward so the next operator can see what behavior the bounded revision is trying to repair
 - `scenario proposal` may carry the same object when a normalization helper or host packet already knows the intended behavior behind a reusable scenario
 

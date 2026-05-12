@@ -73,8 +73,8 @@ test("resolve_adapter can load an explicit adapter path", () => {
 	}
 });
 
-test("resolve_adapter preserves nested optimize_search mappings", () => {
-	const root = mkdtempSync(join(tmpdir(), "cautilus-review-adapter-optimize-search-"));
+test("resolve_adapter preserves nested improve_search mappings", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-review-adapter-improve-search-"));
 	try {
 		const adapterDir = join(root, ".agents", "cautilus-adapters");
 		mkdirSync(adapterDir, { recursive: true });
@@ -87,7 +87,7 @@ test("resolve_adapter preserves nested optimize_search mappings", () => {
 				"  - code quality",
 				"baseline_options:",
 				"  - baseline git ref via {baseline_ref}",
-				"optimize_search:",
+				"improve_search:",
 				"  default_budget: heavy",
 				"  budgets:",
 				"    heavy:",
@@ -102,9 +102,9 @@ test("resolve_adapter preserves nested optimize_search mappings", () => {
 		const stdout = runNode([RESOLVE_SCRIPT, "--repo-root", root, "--adapter-name", "code-quality"]);
 		const payload = JSON.parse(stdout);
 		assert.equal(payload.valid, true);
-		assert.equal(payload.data.optimize_search.default_budget, "heavy");
-		assert.equal(payload.data.optimize_search.budgets.heavy.generation_limit, 4);
-		assert.equal(payload.data.optimize_search.budgets.heavy.merge_enabled, true);
+		assert.equal(payload.data.improve_search.default_budget, "heavy");
+		assert.equal(payload.data.improve_search.budgets.heavy.generation_limit, 4);
+		assert.equal(payload.data.improve_search.budgets.heavy.merge_enabled, true);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

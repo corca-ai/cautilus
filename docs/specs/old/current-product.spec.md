@@ -19,7 +19,7 @@ It is not:
 
 - an admin UI
 - a benchmark scrapbook
-- an open-ended autonomous optimizer
+- an open-ended autonomous improver
 
 The detailed packet contracts live under `docs/contracts/`.
 The main seams referenced by this page are `docs/contracts/scenario-proposal-inputs.md`, `docs/contracts/scenario-conversation-review.md`, `docs/contracts/reporting.md`, `docs/contracts/evidence-bundle.md`, and `docs/contracts/review-packet.md`.
@@ -41,7 +41,7 @@ The promise is that another maintainer can reopen the same evaluation decision, 
 - a web admin surface
 - host-owned raw log readers or storage adapters
 - automatic prompt application back into a consumer repo
-- every optimizer or self-dogfood path as part of the standing public proof
+- every improver or self-dogfood path as part of the standing public proof
 
 Those seams may exist elsewhere in the product, but they are not the core public proof on this page.
 

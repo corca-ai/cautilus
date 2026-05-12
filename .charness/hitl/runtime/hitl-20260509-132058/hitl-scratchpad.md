@@ -38,7 +38,7 @@
 - Accepted At: 2026-05-09T13:26:58+00:00
 - Text:
   <md>
-  | [Agent-Human Resumability](../../../../docs/specs/concerns/agent-human-resumability.spec.md) | users and agents need durable packets, next actions, and source-bound review feedback that can become reusable learning evidence instead of chat memory | readiness, claim discovery, host ownership | mapped through binary/skill boundary, active-run, and reporting routes |
+  | [Agent-Human Resumability](../../../../docs/specs/rules/agent-human-resumability.spec.md) | users and agents need durable packets, next actions, and source-bound review feedback that can become reusable learning evidence instead of chat memory | readiness, claim discovery, host ownership | mapped through binary/skill boundary, active-run, and reporting routes |
   </md>
 
 ## Full Target Review

@@ -42,7 +42,7 @@ const FORBIDDEN_COMMAND_PATTERNS = [
 	["claim_review_prepare_input", /\bclaim\s+review\s+prepare-input\b/],
 	["claim_review_apply_result", /\bclaim\s+review\s+apply-result\b/],
 	["claim_plan_evals", /\bclaim\s+plan-evals\b/],
-	["optimize", /\boptimize\b/],
+	["improve", /\bimprove\b/],
 ];
 
 export function auditCanonicalSpecCurationFlowLogText(text) {

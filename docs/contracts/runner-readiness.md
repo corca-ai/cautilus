@@ -1,6 +1,6 @@
 # Runner Readiness Contract
 
-`Cautilus` has three product command families: `claim`, `eval`, and `optimize`.
+`Cautilus` has three product command families: `claim`, `eval`, and `improve`.
 Those families only produce honest app-behavior evidence when the host repo exposes an appropriate headless runner.
 This contract defines runner readiness as the setup substrate below the three product jobs, not as a fourth product job.
 
@@ -27,14 +27,14 @@ Do not make `doctor` infer semantic honesty from source code alone.
 
 The immediate design change is conceptual and packet-shaped.
 The first implementation slice should be read-only readiness visibility through `doctor` and `agent status`, plus a minimal runner assessment schema and example.
-`claim`, `eval`, and `optimize` behavior changes consume this readiness data in later slices or only when the data already exists.
+`claim`, `eval`, and `improve` behavior changes consume this readiness data in later slices or only when the data already exists.
 
 The durable product model is:
 
 - `claim` records proof requirements.
 - `doctor` and `agent status` report runner readiness evidence.
 - `eval` executes adapter-declared runners and records the observed behavior packet.
-- `optimize` requires runner-backed proof before changing behavior.
+- `improve` requires runner-backed proof before changing behavior.
 
 ## Concept Model
 
@@ -42,7 +42,7 @@ The durable product model is:
 
 `claim` discovers and organizes declared behavior claims into proof requirements.
 `eval` runs bounded behavior evaluations through adapter-declared runners.
-`optimize` improves behavior only after the proof surface is honest.
+`improve` improves behavior only after the proof surface is honest.
 
 ### Setup Substrate
 
@@ -141,12 +141,12 @@ The observed packet should distinguish fixture-backed smoke, coding-agent messag
 
 The evaluation summary should preserve that proof class so downstream reports do not overread a cheap smoke as app E2E evidence.
 
-### Optimize Requires Runner-Backed Evidence
+### Improve Requires Runner-Backed Evidence
 
-`optimize` should not start from a claim whose proof requirement needs an app runner that is absent, stale, or only smoke-backed.
-When only fixture smoke exists, optimize may prepare or explain missing proof, but it should not claim behavior improvement.
-Default rule: `app/chat` and `app/prompt` claims that require product behavior proof require `in-process-product-runner` or `live-product-runner` plus a `ready-for-selected-surface` assessment before `optimize` may claim behavior improvement.
-`fixture-smoke` and `coding-agent-messaging` may support setup validation, scenario shaping, or explanation-only optimize output.
+`improve` should not start from a claim whose proof requirement needs an app runner that is absent, stale, or only smoke-backed.
+When only fixture smoke exists, improve may prepare or explain missing proof, but it should not claim behavior improvement.
+Default rule: `app/chat` and `app/prompt` claims that require product behavior proof require `in-process-product-runner` or `live-product-runner` plus a `ready-for-selected-surface` assessment before `improve` may claim behavior improvement.
+`fixture-smoke` and `coding-agent-messaging` may support setup validation, scenario shaping, or explanation-only improve output.
 They must be marked non-actionable for app behavior improvement unless the claim explicitly targets that proof class.
 
 ## Runner Proof Classes
@@ -277,20 +277,20 @@ The shipped schema uses `id`, `surfaces`, `proof_class`, `command_template`, opt
 ## Skill Design
 
 The Cautilus Agent should keep one progressive surface.
-It should not split into separate discover, eval, optimize, and runner skills.
+It should not split into separate discover, eval, improve, and runner skills.
 
 The skill should use the binary for command discovery and examples.
 It should not duplicate the command catalog.
 Its value is sequencing and judgment:
 
 - orient from `agent status`
-- decide whether the user is in `claim`, `eval`, `optimize`, or setup/readiness work
+- decide whether the user is in `claim`, `eval`, `improve`, or setup/readiness work
 - explain when app proof is only smoke-backed
 - help create or review a headless product runner
 - help produce a runner assessment packet
 - keep `claim` focused on proof requirements
 - keep `eval` focused on observed behavior
-- stop `optimize` when runner-backed proof is missing
+- stop `improve` when runner-backed proof is missing
 
 For app repos, the skill should prefer creating a headless product runner over extracting prompts into a standalone mock.
 Prompt-only fixtures are useful smoke tests, not the highest-confidence app proof.
@@ -338,11 +338,11 @@ Do not make `claim discover` scan source code until it can explain the proof req
 Source-code prompt mining may become a future explicit source or adapter-owned probe, but it is not the default claim job.
 
 Do not add a fourth user-facing product job called runner.
-Runner readiness is a setup substrate under `claim`, `eval`, and `optimize`.
+Runner readiness is a setup substrate under `claim`, `eval`, and `improve`.
 
 ## Constraints
 
-The three command-family vocabulary stays `claim`, `eval`, and `optimize`.
+The three command-family vocabulary stays `claim`, `eval`, and `improve`.
 The binary remains repo-agnostic.
 Host repos own runners, prompts, wrappers, fixtures, and policy.
 The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests.
@@ -355,7 +355,7 @@ Proof class must remain visible in downstream summaries and reports.
 2. `claim` output can name the runner capability required without claiming the current runner is ready.
 3. `doctor` and `agent status` can show runner assessment existence and freshness without pretending to perform semantic review.
 4. `eval` summaries preserve proof class so humans and agents do not overread weak runs.
-5. `optimize` refuses or blocks when an app claim requires runner-backed proof and only smoke evidence exists.
+5. `improve` refuses or blocks when an app claim requires runner-backed proof and only smoke evidence exists.
 6. A simple app repo can adopt Cautilus with one headless product runner without adopting the full eval-live instance model.
 
 ## Acceptance Checks
@@ -374,7 +374,7 @@ Follow-up slices should include:
 
 - claim packet tests proving `requiredRunnerCapability` is a requirement field, not a readiness verdict
 - eval-summary tests preserving proof class from observed packets
-- optimize preflight tests blocking app improvement when runner-backed proof is missing
+- improve preflight tests blocking app improvement when runner-backed proof is missing
 - one eval-live-backed runner example showing live-run compatibility while preserving `knownGaps`, not claiming full app E2E coverage
 
 ## Premortem
@@ -383,9 +383,9 @@ Fresh-Eye Satisfaction: parent-delegated.
 
 Act Before Ship:
 
-- Keep the first implementation slice read-only for `doctor` and `agent status`, with a minimal runner assessment schema and example before changing `claim`, `eval`, or `optimize` behavior.
+- Keep the first implementation slice read-only for `doctor` and `agent status`, with a minimal runner assessment schema and example before changing `claim`, `eval`, or `improve` behavior.
 - Ensure plain `eval_test_command_templates` imply only `declared-eval-runner`, not an app proof class.
-- Fix the app optimize threshold: product-behavior improvement needs `in-process-product-runner` or `live-product-runner` plus `ready-for-selected-surface`.
+- Fix the app improve threshold: product-behavior improvement needs `in-process-product-runner` or `live-product-runner` plus `ready-for-selected-surface`.
 - Define assessment freshness with concrete repo commit, adapter hash, and runner file hash rules.
 - Provide an operator-copyable assessment scaffold path and deterministic branch ordering.
 
@@ -407,7 +407,7 @@ Valid But Defer:
 `docs/contracts/runner-readiness.md`.
 
 This document is the current design contract for runner readiness.
-Implementation notes should update this document before changing adapter, doctor, status, claim, eval, or optimize behavior in ways that affect the runner substrate.
+Implementation notes should update this document before changing adapter, doctor, status, claim, eval, or improve behavior in ways that affect the runner substrate.
 
 ## First Implementation Slice
 
@@ -423,6 +423,6 @@ Implemented slices:
 
 1. `claim plan-evals` adds `proofRequirement.requiredRunnerCapability` and `proofRequirement.requiredObservability` without using those fields as readiness verdicts.
 2. `eval test` adds `proof.proofClass` and runner-readiness metadata to `eval-observed.json` and preserves it in `eval-summary.json`.
-3. `optimize` blocks behavior-changing work for reports whose `proofSummary` says product-runner proof is required but not ready.
+3. `improve` blocks behavior-changing work for reports whose `proofSummary` says product-runner proof is required but not ready.
 4. The fixture set includes a live-run-backed runner assessment example that references the existing eval-live contracts without making instance discovery mandatory for simple app repos.
 5. Adapters can declare typed multi-runner metadata under `runner_readiness.runners`, and `eval test` selects the runner by fixture surface.

@@ -158,7 +158,7 @@ func currentProductSurfaceSummary() ProductSurfaceSummary {
 		DecisionLoop: []string{
 			"normalize or evaluate one bounded behavior surface",
 			"run held-out or full-gate evaluation against an explicit baseline",
-			"turn the result into report, review, evidence, or bounded optimization input",
+			"turn the result into report, review, evidence, or bounded improvement input",
 		},
 		ReportSurface: []string{
 			"report.json stays the first machine-readable decision surface",

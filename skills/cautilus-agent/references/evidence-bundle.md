@@ -9,7 +9,7 @@ The host repo still owns:
 - app- or runtime-specific extraction logic
 
 `Cautilus` owns the portable packet boundary that combines normalized sources
-before scenario mining or optimization.
+before scenario mining or improvement.
 
 ## Input Packet
 

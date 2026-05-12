@@ -19,7 +19,7 @@ It does not own:
 
 - adapter-specific artifacts inside the `runDir` (host-owned)
 - per-run telemetry, cost, or token schema (owned by `reporting.md`,
-  `scenario-results.md`, `optimization.md`, and sibling contracts)
+  `scenario-results.md`, `improvement.md`, and sibling contracts)
 - pruning policy (owned by `workspace prune-artifacts`, explicitly opt-in)
 
 ## Env Var Contract
@@ -44,7 +44,7 @@ Consumer commands resolve their target `runDir` through one shared helper,
 
 This is a load-bearing invariant. A workflow is one evaluation intent; its
 mode runs, compare worktrees, review packets, review variants, and
-optimization outputs belong under one marker-bearing directory.
+improvement outputs belong under one marker-bearing directory.
 
 The pruner (`scripts/agent-runtime/prune-workspace-artifacts.mjs`) is
 designed around it — its `EXACT_MARKERS` set is intentionally
@@ -104,23 +104,23 @@ as overrides for automation and tests.
 | `eval-observed.json`              | adapter-owned eval runner plus `eval test` proof augmentation | `eval test`, `eval evaluate`                                | Product-owned observed packet. Schema depends on the selected evaluation surface and preset; `eval test` may add a top-level `proof` object from runner readiness before scoring. |
 | `eval-summary.json`               | `eval test`, `eval evaluate`    | operator                                                    | Product-owned evaluation summary. Schema depends on the selected evaluation surface and preset and preserves top-level `proof` metadata when present. For `dev/repo`, route-only allowlists such as `allowedFirstToolCalls` are scored and preserved when the observed packet provides them. |
 | `report-input.json`               | operator / agent                | `report build` (optional)                                   | Assembled report packet inputs. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `report build --input` is omitted. |
-| `report.json`                     | `report build`                  | `review prepare-input`, `evidence prepare-input`, `optimize prepare-input` | `cautilus.report_packet.v2`. Defaults here when an active-run-aware helper omits `--report-file`. |
+| `report.json`                     | `report build`                  | `review prepare-input`, `evidence prepare-input`, `improve prepare-input` | `cautilus.report_packet.v2`. Defaults here when an active-run-aware helper omits `--report-file`. |
 | `baseline/`                       | `workspace prepare-compare`         | adapter commands                                            | Git worktree. Directory marker.                     |
 | `candidate/`                      | `workspace prepare-compare`         | adapter commands                                            | Git worktree. Directory marker.                     |
 | `review-packet.json`              | `review prepare-input`              | `review build-prompt-input`, `review variants`              | `cautilus.review_packet.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `--output` is omitted. |
 | `review-prompt-input.json`        | `review build-prompt-input`         | `review render-prompt`                                      | `cautilus.review_prompt_inputs.v1`.                 |
 | `review.prompt.md`                | `review render-prompt`              | executor variants (optional)                                | Rendered meta-prompt.                               |
-| `review-summary.json`             | `review variants`                   | `optimize prepare-input`                                    | Executor-variant summary. Used as the default `--review-summary` target inside an active run when the file exists. |
+| `review-summary.json`             | `review variants`                   | `improve prepare-input`                                    | Executor-variant summary. Used as the default `--review-summary` target inside an active run when the file exists. |
 | `run-audit-summary.json`          | host audit tooling                  | `evidence prepare-input`                                    | Product-owned canonical filename for host-normalized run-audit summary inside an active run. Used as the default `--run-audit-file` when the file exists. |
-| `scenario-history.snapshot.json`  | operator / agent                | `evidence prepare-input`, `optimize prepare-input`          | Snapshot artifact copied from the repo-level scenario-history source of truth when a workflow needs historical evidence. Used as the default history input when the file exists. |
+| `scenario-history.snapshot.json`  | operator / agent                | `evidence prepare-input`, `improve prepare-input`          | Snapshot artifact copied from the repo-level scenario-history source of truth when a workflow needs historical evidence. Used as the default history input when the file exists. |
 | `evidence-input.json`             | `evidence prepare-input`            | `evidence bundle`                                           | `cautilus.evidence_bundle_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `evidence prepare-input --output` or `evidence bundle --input` is omitted. |
-| `evidence-bundle.json`            | `evidence bundle`                   | `optimize prepare-input` (optional)                         | `cautilus.evidence_bundle.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `evidence bundle --output` is omitted. |
-| `optimize-input.json`             | `optimize prepare-input`            | `optimize propose`                                          | `cautilus.optimize_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize prepare-input --output` or `optimize propose --input` is omitted. |
-| `optimize-search-input.raw.json`  | `optimize search prepare-input`     | operator / agent                                            | Raw direct-JSON ingress snapshot. Written only when `--input-json` is used and the canonical search input is materialized to a file. |
-| `optimize-search-input.json`      | `optimize search prepare-input`     | `optimize search run`                                       | `cautilus.optimize_search_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize search prepare-input --output` or `optimize search run --input` is omitted. |
-| `optimize-search-result.json`     | `optimize search run`               | `optimize propose --from-search`                            | `cautilus.optimize_search_result.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize search run --output` is omitted. |
-| `optimize-proposal.json`          | `optimize propose`                  | `optimize build-artifact`                                   | `cautilus.optimize_proposal.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize propose --output` or `optimize build-artifact --proposal-file` is omitted. |
-| `revision-artifact.json`          | `optimize build-artifact`           | operator                                                    | `cautilus.revision_artifact.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `optimize build-artifact --output` is omitted. |
+| `evidence-bundle.json`            | `evidence bundle`                   | `improve prepare-input` (optional)                         | `cautilus.evidence_bundle.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `evidence bundle --output` is omitted. |
+| `improve-input.json`             | `improve prepare-input`            | `improve propose`                                          | `cautilus.improve_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `improve prepare-input --output` or `improve propose --input` is omitted. |
+| `improve-search-input.raw.json`  | `improve search prepare-input`     | operator / agent                                            | Raw direct-JSON ingress snapshot. Written only when `--input-json` is used and the canonical search input is materialized to a file. |
+| `improve-search-input.json`      | `improve search prepare-input`     | `improve search run`                                       | `cautilus.improve_search_inputs.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `improve search prepare-input --output` or `improve search run --input` is omitted. |
+| `improve-search-result.json`     | `improve search run`               | `improve propose --from-search`                            | `cautilus.improve_search_result.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `improve search run --output` is omitted. |
+| `improve-proposal.json`          | `improve propose`                  | `improve build-artifact`                                   | `cautilus.improve_proposal.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `improve propose --output` or `improve build-artifact --proposal-file` is omitted. |
+| `revision-artifact.json`          | `improve build-artifact`           | operator                                                    | `cautilus.revision_artifact.v1`. Defaults here when `CAUTILUS_RUN_DIR` is pinned and `improve build-artifact --output` is omitted. |
 | `variant-*.json`                  | `review variants`                   | operator / review                                           | One file per executor variant.                      |
 | `<stage>-<index>.stdout`          | `review variants`, `eval test`  | debug, audit                                                | Captured process stdout.                            |
 | `<stage>-<index>.stderr`          | `review variants`, `eval test`  | debug, audit                                                | Captured process stderr.                            |
@@ -149,11 +149,11 @@ one of two helpers in `scripts/agent-runtime/active-run.mjs`:
 | `review prepare-input`      | wired   | `review-packet.json`                                             | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `review-packet.json` inside the active run; keeps stdout fallback when no active run is pinned. |
 | `evidence prepare-input`    | wired   | `evidence-input.json`                                            | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `evidence-input.json` inside the active run. Optional `--run-audit-file` and `--history-file` default to `run-audit-summary.json` and `scenario-history.snapshot.json` only when those files already exist. `--scenario-results-file` defaults to `<scenario-mode>-scenario-results.json` only when the operator passes `--scenario-mode`; otherwise it stays explicit. |
 | `evidence bundle`           | wired   | `evidence-bundle.json`                                           | Consume-only helper. Defaults `--input` to `evidence-input.json` and `--output` to `evidence-bundle.json` inside the active run; keeps stdout fallback when no active run is pinned. |
-| `optimize prepare-input`    | wired   | `optimize-input.json`                                            | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `optimize-input.json` inside the active run. Optional `--review-summary` and `--history-file` default to `review-summary.json` and `scenario-history.snapshot.json` only when those files already exist. |
-| `optimize search prepare-input` | wired | `optimize-search-input.json`, `optimize-search-input.raw.json` | Consume-only helper. Defaults `--output` to `optimize-search-input.json` inside the active run. When `--input-json` is used, it also materializes `optimize-search-input.raw.json` beside the canonical packet. |
-| `optimize search run`      | wired   | `optimize-search-result.json`                                    | Consume-only helper. Defaults `--input` to `optimize-search-input.json` and `--output` to `optimize-search-result.json` inside the active run; emits blocked JSON to stdout when `--json` is requested. |
-| `optimize propose`          | wired   | `optimize-proposal.json`                                         | Consume-only helper. Defaults `--input` to `optimize-input.json` and `--output` to `optimize-proposal.json` inside the active run; keeps stdout fallback when no active run is pinned. |
-| `optimize build-artifact`   | wired   | `revision-artifact.json`                                         | Consume-only helper. Defaults `--proposal-file` to `optimize-proposal.json` and `--output` to `revision-artifact.json` inside the active run; preserves the proposal-carried `inputFile` fallback. |
+| `improve prepare-input`    | wired   | `improve-input.json`                                            | Consume-only helper. Defaults `--report-file` to `report.json` and `--output` to `improve-input.json` inside the active run. Optional `--review-summary` and `--history-file` default to `review-summary.json` and `scenario-history.snapshot.json` only when those files already exist. |
+| `improve search prepare-input` | wired | `improve-search-input.json`, `improve-search-input.raw.json` | Consume-only helper. Defaults `--output` to `improve-search-input.json` inside the active run. When `--input-json` is used, it also materializes `improve-search-input.raw.json` beside the canonical packet. |
+| `improve search run`      | wired   | `improve-search-result.json`                                    | Consume-only helper. Defaults `--input` to `improve-search-input.json` and `--output` to `improve-search-result.json` inside the active run; emits blocked JSON to stdout when `--json` is requested. |
+| `improve propose`          | wired   | `improve-proposal.json`                                         | Consume-only helper. Defaults `--input` to `improve-input.json` and `--output` to `improve-proposal.json` inside the active run; keeps stdout fallback when no active run is pinned. |
+| `improve build-artifact`   | wired   | `revision-artifact.json`                                         | Consume-only helper. Defaults `--proposal-file` to `improve-proposal.json` and `--output` to `revision-artifact.json` inside the active run; preserves the proposal-carried `inputFile` fallback. |
 | `review variants`           | wired    | `review-summary.json`, `variant-*.json`, `<stage>-<index>.stdout/stderr` | Workflow-creating helper. `--output-dir` is optional; explicit path wins, otherwise it uses `CAUTILUS_RUN_DIR`, otherwise it auto-materializes a fresh runDir and emits `Active run:` once. |
 
 ### Consume-Only Helpers
@@ -181,13 +181,13 @@ Commands that follow this pattern:
 
 - `review prepare-input` (wired in slice 5)
 - `evidence prepare-input` (wired with report, run-audit, history, and output defaults; scenario-results defaults stay operator-selected via `--scenario-mode`)
-- `optimize prepare-input` (wired with report, review summary, history, and output defaults)
-- `optimize search prepare-input` (wired with canonical search-input and raw-input defaults)
-- `optimize search run` (wired)
+- `improve prepare-input` (wired with report, review summary, history, and output defaults)
+- `improve search prepare-input` (wired with canonical search-input and raw-input defaults)
+- `improve search run` (wired)
 - `report build` (wired)
 - `evidence bundle` (wired)
-- `optimize propose` (wired)
-- `optimize build-artifact` (wired)
+- `improve propose` (wired)
+- `improve build-artifact` (wired)
 
 Each consume-only slice decides which canonical filenames become the
 default for its `--input`-style and `--output`-style flags, records the
@@ -258,8 +258,8 @@ Record these so future sessions do not re-propose them:
 - Should `run.json` carry workflow metadata (mode, baseline ref, adapter
   name) so the pruner and HTML views can present richer summaries?
   Currently defer: per-command artifacts already carry that context.
-- Should `evidence prepare-input`, `optimize prepare-input`, `report
-  build`, `optimize propose`, and sibling helpers auto-resolve their
+- Should `evidence prepare-input`, `improve prepare-input`, `report
+  build`, `improve propose`, and sibling helpers auto-resolve their
   `--input` / `--output` to canonical names inside the active run?
   **Resolved (slice 5 decision)**: yes, via a new `readActiveRunDir`
   helper rather than `resolveRunDir`. The full rule is captured in the
@@ -291,4 +291,4 @@ Record these so future sessions do not re-propose them:
 - [prune-workspace-artifacts.mjs](../../../../scripts/agent-runtime/prune-workspace-artifacts.mjs)
 - [./reporting.md](./reporting.md)
 - [./review-packet.md](./review-packet.md)
-- [./optimization.md](./optimization.md)
+- [./improvement.md](./improvement.md)

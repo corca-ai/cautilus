@@ -47,20 +47,20 @@ Executable specs, CLI tests, and evaluation fixtures should prove that these sav
 **Source anchors.**
 README.md, docs/specs/user/evaluation.spec.md, docs/guides/evaluation-process.md.
 
-## U3. Optimize: Improve Only After The Proof Surface Is Clear
+## U3. Improve: Improve Only After The Proof Surface Is Clear
 
 **Promise.**
 `Cautilus` should only help improve behavior after the target claim, budget, and protected checks are clear.
 
 **What this means.**
 Improvement work should not be an open-ended retry loop.
-Optimization work must preserve what was tested, what changed, and which checks still protect against regressions.
+Improvement work must preserve what was tested, what changed, and which checks still protect against regressions.
 
 **How Cautilus checks it.**
-Optimization tests and reports should prove that budgets, checkpoints, review reuse, and blocked-readiness states are recorded.
+Improvement tests and reports should prove that budgets, checkpoints, review reuse, and blocked-readiness states are recorded.
 
 **Source anchors.**
-README.md, docs/contracts/optimization.md, docs/contracts/optimization-search.md, docs/guides/optimize.md.
+README.md, docs/contracts/improvement.md, docs/contracts/improvement-search.md, docs/guides/improve.md.
 
 ## U4. Doctor: Show Setup And Runner Readiness
 
@@ -86,7 +86,7 @@ README.md, docs/guides/cli.md, docs/guides/consumer-adoption.md, docs/contracts/
 **What this means.**
 The product can standardize the shape of requests, results, and status.
 It should not secretly take over a consumer repo's prompt text, model choice, runtime wiring, or acceptance rules.
-This is the supporting ownership rule behind `claim`, `eval`, `optimize`, and `doctor`.
+This is the supporting ownership rule behind `claim`, `eval`, `improve`, and `doctor`.
 
 **How Cautilus checks it.**
 Adapter and command tests should prove that Cautilus keeps host-owned runner commands explicit instead of hiding them inside product logic.

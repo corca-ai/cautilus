@@ -73,7 +73,7 @@ function resolveCommandOptions(options, { env = process.env } = {}) {
 		output: options.output,
 	};
 	if (!resolved.proposalFile && activeRunDir) {
-		resolved.proposalFile = join(activeRunDir, "optimize-proposal.json");
+		resolved.proposalFile = join(activeRunDir, "improve-proposal.json");
 	}
 	if (!resolved.proposalFile) {
 		fail("--proposal-file is required");
@@ -153,47 +153,47 @@ function resolveInputFile(options, proposal) {
 	if (typeof proposal.inputFile === "string" && proposal.inputFile.length > 0) {
 		return proposal.inputFile;
 	}
-	fail("optimize proposal must carry inputFile or use --input-file");
+	fail("improve proposal must carry inputFile or use --input-file");
 }
 
-function resolveRevisionIntentProfile(proposalPacket, optimizeInputPacket) {
+function resolveRevisionIntentProfile(proposalPacket, improveInputPacket) {
 	return buildBehaviorIntentProfile({
-		intent: optimizeInputPacket.report?.intent ?? optimizeInputPacket.intentProfile?.summary,
-		intentProfile: proposalPacket.intentProfile ?? optimizeInputPacket.intentProfile,
-		defaultGuardrailDimensions: optimizeInputPacket.objective?.constraints ?? [],
+		intent: improveInputPacket.report?.intent ?? improveInputPacket.intentProfile?.summary,
+		intentProfile: proposalPacket.intentProfile ?? improveInputPacket.intentProfile,
+		defaultGuardrailDimensions: improveInputPacket.objective?.constraints ?? [],
 	});
 }
 
-function buildArtifactSourceFiles(optimizeInputPacket) {
+function buildArtifactSourceFiles(improveInputPacket) {
 	return {
-		reportFile: collectOptionalFile(optimizeInputPacket.reportFile),
-		reviewSummaryFile: collectOptionalFile(optimizeInputPacket.reviewSummaryFile),
-		scenarioHistoryFile: collectOptionalFile(optimizeInputPacket.scenarioHistoryFile),
+		reportFile: collectOptionalFile(improveInputPacket.reportFile),
+		reviewSummaryFile: collectOptionalFile(improveInputPacket.reviewSummaryFile),
+		scenarioHistoryFile: collectOptionalFile(improveInputPacket.scenarioHistoryFile),
 	};
 }
 
 export function buildRevisionArtifact(inputOptions, { now = new Date() } = {}) {
 	const options = resolveCommandOptions(parseArgs(inputOptions));
-	const proposal = parseJsonFile(options.proposalFile, OPTIMIZE_PROPOSAL_SCHEMA, "optimize proposal");
+	const proposal = parseJsonFile(options.proposalFile, OPTIMIZE_PROPOSAL_SCHEMA, "improve proposal");
 	const inputFile = resolveInputFile(options, proposal.packet);
-	const optimizeInput = parseJsonFile(inputFile, OPTIMIZE_INPUTS_SCHEMA, "optimize input");
-	const intentProfile = resolveRevisionIntentProfile(proposal.packet, optimizeInput.packet);
-	const targetFile = proposal.packet.targetFile ?? optimizeInput.packet.targetFile ?? null;
+	const improveInput = parseJsonFile(inputFile, OPTIMIZE_INPUTS_SCHEMA, "improve input");
+	const intentProfile = resolveRevisionIntentProfile(proposal.packet, improveInput.packet);
+	const targetFile = proposal.packet.targetFile ?? improveInput.packet.targetFile ?? null;
 	return {
 		schemaVersion: REVISION_ARTIFACT_SCHEMA,
 		generatedAt: now.toISOString(),
 		proposalFile: proposal.path,
 		proposal: proposal.packet,
-		optimizeInputFile: optimizeInput.path,
-		repoRoot: optimizeInput.packet.repoRoot,
-		optimizationTarget: proposal.packet.optimizationTarget,
+		improveInputFile: improveInput.path,
+		repoRoot: improveInput.packet.repoRoot,
+		improvementTarget: proposal.packet.improvementTarget,
 		intentProfile,
-		optimizer: proposal.packet.optimizer ?? optimizeInput.packet.optimizer ?? null,
-		objective: optimizeInput.packet.objective,
+		improver: proposal.packet.improver ?? improveInput.packet.improver ?? null,
+		objective: improveInput.packet.objective,
 		targetFile,
 		targetSnapshot: collectTargetSnapshot(targetFile),
-		sourceFiles: buildArtifactSourceFiles(optimizeInput.packet),
-		reportContext: buildReportContext(optimizeInput.packet.report),
+		sourceFiles: buildArtifactSourceFiles(improveInput.packet),
+		reportContext: buildReportContext(improveInput.packet.report),
 		decision: proposal.packet.decision,
 		reportRecommendation: proposal.packet.reportRecommendation,
 		revisionBrief: proposal.packet.revisionBrief,

@@ -215,16 +215,16 @@ function nonEmptyString(value, field, errors) {
 	return value.trim();
 }
 
-function validateOptimizeSearchBudget(name, value, errors) {
+function validateImproveSearchBudget(name, value, errors) {
 	if (!isObjectRecord(value)) {
-		errors.push(`optimize_search.budgets.${name} must be a mapping`);
+		errors.push(`improve_search.budgets.${name} must be a mapping`);
 		return null;
 	}
 	const budget = {};
-	validateOptimizeSearchBudgetNumbers(name, value, budget, errors);
+	validateImproveSearchBudgetNumbers(name, value, budget, errors);
 	validateEnumStringField(
 		value.review_checkpoint_policy,
-		`optimize_search.budgets.${name}.review_checkpoint_policy`,
+		`improve_search.budgets.${name}.review_checkpoint_policy`,
 		REVIEW_CHECKPOINT_POLICIES,
 		errors,
 		budget,
@@ -232,14 +232,14 @@ function validateOptimizeSearchBudget(name, value, errors) {
 	);
 	validateBooleanField(
 		value.merge_enabled,
-		`optimize_search.budgets.${name}.merge_enabled`,
+		`improve_search.budgets.${name}.merge_enabled`,
 		errors,
 		budget,
 		"merge_enabled",
 	);
 	validateEnumStringField(
 		value.three_parent_policy,
-		`optimize_search.budgets.${name}.three_parent_policy`,
+		`improve_search.budgets.${name}.three_parent_policy`,
 		THREE_PARENT_POLICIES,
 		errors,
 		budget,
@@ -248,9 +248,9 @@ function validateOptimizeSearchBudget(name, value, errors) {
 	return budget;
 }
 
-function validateOptimizeSearchBudgetNumbers(name, value, budget, errors) {
+function validateImproveSearchBudgetNumbers(name, value, budget, errors) {
 	for (const field of ["generation_limit", "population_limit", "mutation_batch_size"]) {
-		const normalized = positiveInteger(value[field], `optimize_search.budgets.${name}.${field}`, errors);
+		const normalized = positiveInteger(value[field], `improve_search.budgets.${name}.${field}`, errors);
 		if (normalized !== null) {
 			budget[field] = normalized;
 		}
@@ -280,21 +280,21 @@ function validateBooleanField(value, field, errors, target, targetKey) {
 	target[targetKey] = value;
 }
 
-function validateOptimizeSearchBudgets(value, errors) {
+function validateImproveSearchBudgets(value, errors) {
 	if (value === undefined || value === null) {
 		return null;
 	}
 	if (!isObjectRecord(value)) {
-		errors.push("optimize_search.budgets must be a mapping");
+		errors.push("improve_search.budgets must be a mapping");
 		return null;
 	}
 	const budgets = {};
 	for (const [name, budgetValue] of Object.entries(value)) {
 		if (!OPTIMIZE_SEARCH_BUDGETS.has(name)) {
-			errors.push(`optimize_search.budgets.${name} is not a supported tier`);
+			errors.push(`improve_search.budgets.${name} is not a supported tier`);
 			continue;
 		}
-		const normalized = validateOptimizeSearchBudget(name, budgetValue, errors);
+		const normalized = validateImproveSearchBudget(name, budgetValue, errors);
 		if (normalized) {
 			budgets[name] = normalized;
 		}
@@ -302,30 +302,30 @@ function validateOptimizeSearchBudgets(value, errors) {
 	return budgets;
 }
 
-function validateOptimizeSearchSelectionPolicy(value, errors) {
+function validateImproveSearchSelectionPolicy(value, errors) {
 	if (value === undefined || value === null) {
 		return null;
 	}
 	if (!isObjectRecord(value)) {
-		errors.push("optimize_search.selection_policy must be a mapping");
+		errors.push("improve_search.selection_policy must be a mapping");
 		return null;
 	}
 	const selectionPolicy = {};
 	const primaryObjective = nonEmptyString(
 		value.primary_objective,
-		"optimize_search.selection_policy.primary_objective",
+		"improve_search.selection_policy.primary_objective",
 		errors,
 	);
 	if (primaryObjective !== null) {
 		selectionPolicy.primary_objective = primaryObjective;
 	}
-	const tieBreakers = stringList(value.tie_breakers, "optimize_search.selection_policy.tie_breakers", errors);
+	const tieBreakers = stringList(value.tie_breakers, "improve_search.selection_policy.tie_breakers", errors);
 	if (tieBreakers !== null) {
 		selectionPolicy.tie_breakers = tieBreakers;
 	}
 	if (value.constraint_caps !== undefined && value.constraint_caps !== null) {
 		if (!isObjectRecord(value.constraint_caps)) {
-			errors.push("optimize_search.selection_policy.constraint_caps must be a mapping");
+			errors.push("improve_search.selection_policy.constraint_caps must be a mapping");
 		} else {
 			constraintCapsFromEntries(Object.entries(value.constraint_caps), errors, selectionPolicy);
 		}
@@ -338,7 +338,7 @@ function constraintCapsFromEntries(entries, errors, selectionPolicy) {
 	for (const [key, rawValue] of entries) {
 		const normalized = nonNegativeNumber(
 			rawValue,
-			`optimize_search.selection_policy.constraint_caps.${key}`,
+			`improve_search.selection_policy.constraint_caps.${key}`,
 			errors,
 		);
 		if (normalized !== null) {
@@ -348,32 +348,32 @@ function constraintCapsFromEntries(entries, errors, selectionPolicy) {
 	selectionPolicy.constraint_caps = constraintCaps;
 }
 
-function validateOptimizeSearch(value, errors) {
+function validateImproveSearch(value, errors) {
 	if (value === undefined || value === null) {
 		return null;
 	}
 	if (!isObjectRecord(value)) {
-		errors.push("optimize_search must be a mapping");
+		errors.push("improve_search must be a mapping");
 		return null;
 	}
-	const optimizeSearch = {};
+	const improveSearch = {};
 	validateEnumStringField(
 		value.default_budget,
-		"optimize_search.default_budget",
+		"improve_search.default_budget",
 		OPTIMIZE_SEARCH_BUDGETS,
 		errors,
-		optimizeSearch,
+		improveSearch,
 		"default_budget",
 	);
-	const budgets = validateOptimizeSearchBudgets(value.budgets, errors);
+	const budgets = validateImproveSearchBudgets(value.budgets, errors);
 	if (budgets !== null) {
-		optimizeSearch.budgets = budgets;
+		improveSearch.budgets = budgets;
 	}
-	const selectionPolicy = validateOptimizeSearchSelectionPolicy(value.selection_policy, errors);
+	const selectionPolicy = validateImproveSearchSelectionPolicy(value.selection_policy, errors);
 	if (selectionPolicy !== null) {
-		optimizeSearch.selection_policy = selectionPolicy;
+		improveSearch.selection_policy = selectionPolicy;
 	}
-	return optimizeSearch;
+	return improveSearch;
 }
 
 function copyTypedStringFields(data, target, errors) {
@@ -426,9 +426,9 @@ export function validateAdapterData(data) {
 		validated.executor_variants = executorVariants;
 	}
 
-	const optimizeSearch = validateOptimizeSearch(data.optimize_search, errors);
-	if (optimizeSearch !== null) {
-		validated.optimize_search = optimizeSearch;
+	const improveSearch = validateImproveSearch(data.improve_search, errors);
+	if (improveSearch !== null) {
+		validated.improve_search = improveSearch;
 	}
 
 	const instanceDiscovery = validateInstanceDiscovery(data.instance_discovery, errors);

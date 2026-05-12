@@ -264,7 +264,7 @@ func TestReportPacketSummarizesBlockedProductRunnerProof(t *testing.T) {
 	}
 }
 
-func TestOptimizeInputRejectsBlockedProductRunnerProof(t *testing.T) {
+func TestImproveInputRejectsBlockedProductRunnerProof(t *testing.T) {
 	report := map[string]any{
 		"schemaVersion":       contracts.ReportPacketSchema,
 		"generatedAt":         "2026-04-30T00:00:00Z",
@@ -288,7 +288,7 @@ func TestOptimizeInputRejectsBlockedProductRunnerProof(t *testing.T) {
 			"productRunnerProofReadiness": "blocked",
 		},
 	}
-	if err := requireOptimizeRunnerProof(report); err == nil || !strings.Contains(err.Error(), "runner-backed product proof") {
-		t.Fatalf("expected optimize proof gate error, got %v", err)
+	if err := requireImproveRunnerProof(report); err == nil || !strings.Contains(err.Error(), "runner-backed product proof") {
+		t.Fatalf("expected improve proof gate error, got %v", err)
 	}
 }

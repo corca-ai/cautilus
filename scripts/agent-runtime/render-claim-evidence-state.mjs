@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 const DEFAULT_CLAIMS = ".cautilus/claims/evidenced-typed-runners.json";
 const DEFAULT_STATUS = ".cautilus/claims/status-summary.json";
 const DEFAULT_OUTPUT_JSON = ".cautilus/claims/evidence-state.json";
-const DEFAULT_OUTPUT_MD = "docs/specs/proof/claim-evidence-state.md";
+const DEFAULT_OUTPUT_MD = "docs/specs/evidence/claim-evidence-state.md";
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
 const asObject = (value) => (!value || Array.isArray(value) || typeof value !== "object" ? {} : value);

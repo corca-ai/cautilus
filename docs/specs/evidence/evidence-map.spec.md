@@ -1,0 +1,26 @@
+# Evidence Map
+
+This page maps Cautilus promises and cross-cutting rules to the current durable evidence routes.
+Completeness is handled by [Proof Gaps](gaps.spec.md).
+The human name comes first; compact keys are included for packets and checks.
+
+## Evidence Routes
+
+| evidence route | key | supports | where to inspect | state |
+| --- | --- | --- | --- | --- |
+| Readiness CLI | `evidence.readiness-cli` | [Readiness](../ledger/readiness.spec.md), [Vocabulary Consistency](../rules/vocabulary-consistency.spec.md) | [Readiness](../user/doctor-readiness.spec.md), [Readiness And Runtime Status](../contracts/readiness-runtime-status.spec.md) | current |
+| Claim Discovery Fixtures | `evidence.claim-discovery-fixtures` | [Claim Discovery](../ledger/claim-discovery.spec.md), [Reviewable Artifacts](../rules/reviewable-artifacts.spec.md), [Evidence Gaps](../rules/evidence-gaps.spec.md) | [Claim Discovery](../user/claim-discovery.spec.md), [Claim Discovery Workflow](../contracts/claim-discovery-workflow.spec.md) | open gap |
+| Claim Evidence State Projection | `evidence.claim-evidence-state` | [Claim Discovery](../ledger/claim-discovery.spec.md), [Evidence Gaps](../rules/evidence-gaps.spec.md), [Agent-Human Resumability](../rules/agent-human-resumability.spec.md) | [Claim Evidence State](claim-evidence-state.md), [.cautilus/claims/evidence-state.json](../../../.cautilus/claims/evidence-state.json), [.cautilus/claims/evidenced-typed-runners.json](../../../.cautilus/claims/evidenced-typed-runners.json) | generated; packet freshness shown |
+| Evaluation Selected Evidence | `evidence.evaluation-selected` | [Behavior Evaluation](../ledger/evaluation.spec.md), [Packet Freshness](../rules/packet-freshness.spec.md), [Cost And Proof Freshness](../rules/cost-and-proof-freshness.spec.md) | [Behavior Evaluation](../user/evaluation.spec.md), [Evaluation Surfaces And Runners](../contracts/evaluation-surfaces-runners.spec.md) | selected |
+| Improvement Packets | `evidence.improvement-packets` | [Bounded Improvement](../ledger/improvement.spec.md), [Reviewable Artifacts](../rules/reviewable-artifacts.spec.md), [Cost And Proof Freshness](../rules/cost-and-proof-freshness.spec.md) | [Bounded Improvement](../user/improvement.spec.md), [Improvement Loop](../contracts/improvement-loop.spec.md) | open gap |
+| Host Boundary | `evidence.host-boundary` | [Host-Owned Execution](../rules/host-owned-execution.spec.md) | [Host Ownership](../user/ownership.spec.md), [Adapter And Host Ownership](../contracts/adapter-host-ownership.spec.md), [Live Invocation Runtime](../contracts/live-invocation-runtime.spec.md) | open gap |
+| Review Artifact Rendering | `evidence.review-artifact-rendering` | [Reviewable Artifacts](../rules/reviewable-artifacts.spec.md), [Packet Freshness](../rules/packet-freshness.spec.md), [Agent-Human Resumability](../rules/agent-human-resumability.spec.md) | [Evidence State And Review Artifacts](../contracts/evidence-state-artifacts.spec.md), [Reporting And Review Variants](../contracts/reporting-review-variants.spec.md), [Active Run And Workspace Lifecycle](../contracts/active-run-workspace.spec.md) | current |
+| Review Learning Packet Builder | `evidence.review-learning-packet-builder` | [Agent-Human Resumability](../rules/agent-human-resumability.spec.md), [Reviewable Artifacts](../rules/reviewable-artifacts.spec.md), [Packet Freshness](../rules/packet-freshness.spec.md) | [Review Learning](../../contracts/review-learning.md), [Evidence State And Review Artifacts](../contracts/evidence-state-artifacts.spec.md), [Reporting And Review Variants](../contracts/reporting-review-variants.spec.md), [Binary And Skill Boundary](../contracts/binary-skill-boundary.spec.md) | current |
+| Review Learning Summary CLI | `evidence.review-learning-summary-cli` | [Agent-Human Resumability](../rules/agent-human-resumability.spec.md), [Reviewable Artifacts](../rules/reviewable-artifacts.spec.md), [Packet Freshness](../rules/packet-freshness.spec.md) | [Review Learning](../../contracts/review-learning.md), [Reporting And Review Variants](../contracts/reporting-review-variants.spec.md), [Binary And Skill Boundary](../contracts/binary-skill-boundary.spec.md), [Proof Gaps](gaps.spec.md) | current |
+
+```run:shell
+# Verify evidence map can reach the ledger and gap view.
+test -f docs/specs/ledger/promise-ledger.spec.md
+test -f docs/specs/evidence/claim-evidence-state.md
+test -f docs/specs/evidence/gaps.spec.md
+```

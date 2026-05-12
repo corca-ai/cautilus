@@ -1,6 +1,6 @@
 # Readiness
 
-Before a repo spends agent time on claim discovery, evaluation, or optimization, the user needs to know whether Cautilus can safely operate there and what setup is still missing.
+Before a repo spends agent time on claim discovery, evaluation, or improvement, the user needs to know whether Cautilus can safely operate there and what setup is still missing.
 Using the `cautilus doctor` CLI command and the `cautilus-agent` skill, a user can have an agent inspect setup, explain or fix blockers, choose whether to inspect claims or run a first eval, and stop before spending workflow budget on a repo that is not ready.
 
 Readiness means the repo has enough Cautilus setup to choose and run the next bounded workflow.
@@ -70,7 +70,7 @@ Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
 | path | equals | meaning |
 | --- | --- | --- |
 | checks[id=evaluation_surfaces].ok | true | The repo names the behavior surfaces Cautilus may evaluate. |
-| checks[id=baseline_options].ok | true | Eval and optimize work have explicit comparison targets. |
+| checks[id=baseline_options].ok | true | Eval and improve work have explicit comparison targets. |
 | checks[id=execution_surface].ok | true | Cautilus can point the user to an executable first run. |
 
 ## A user can see the exact blocker and next setup action.
@@ -217,7 +217,7 @@ For the generated sample adapter, `doctor` keeps the first bounded eval loop vis
 
 A ready setup still needs a safe next branch before the agent spends workflow budget.
 `doctor` gives the human-facing readiness result: whether setup is ready and what a user should fix or run next.
-`agent status --json` gives Cautilus Agent an orientation packet so it can choose an allowed next branch, such as claim discovery, eval, optimize, setup, inspection, or stop, before running discovery, evaluation, optimization, edits, or commits.
+`agent status --json` gives Cautilus Agent an orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.
 
 ```run:shell
 # Show the raw agent orientation packet for this repo.
@@ -230,4 +230,4 @@ A ready setup still needs a safe next branch before the agent spends workflow bu
 | schemaVersion | cautilus.agent_status.v1 | | |
 | mode | orientation | | |
 | nextBranches.length | | 1 | |
-| notice | | | before running discovery, evaluation, review, optimization, edits, or commits |
+| notice | | | before running discovery, evaluation, review, improvement, edits, or commits |

@@ -48,7 +48,7 @@ func BuildAgentStatus(repoRoot string, options AgentStatusOptions) (map[string]a
 		"claimState":      claimOrientation["claimState"],
 		"scanScope":       claimOrientation["scanScope"],
 		"nextBranches":    mergeAgentStatusBranches(adapter, runnerReadiness, claimOrientation["nextBranches"], repoRoot),
-		"notice":          "Orientation packet only: it reads product readiness and claim-state availability so the agent can offer a branch before running discovery, evaluation, review, optimization, edits, or commits.",
+		"notice":          "Orientation packet only: it reads product readiness and claim-state availability so the agent can offer a branch before running discovery, evaluation, review, improvement, edits, or commits.",
 	}
 	return payload, 0, nil
 }

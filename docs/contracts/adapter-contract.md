@@ -112,7 +112,7 @@ live_run_invocation:
   consumer_evaluator_command_template: node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --input-file {evaluator_input_file} --output-file {evaluation_output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
-optimize_search:
+improve_search:
   default_budget: medium
   budgets:
     light:
@@ -225,7 +225,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.workbench_instance_catalog.v1` to stdout.
 - `live_run_invocation`: optional command contract for running one bounded scenario packet against one selected live instance.
 - `executor_variants`: optional backend-specific review or simulation runners.
-- `optimize_search`: optional repo-owned defaults for `cautilus optimize search`.
+- `improve_search`: optional repo-owned defaults for `cautilus improve search`.
   The product still owns the shared tier labels `light`, `medium`, and `heavy`.
   The adapter may override the repo's default budget tier, per-tier numeric limits, review checkpoint defaults, and selection policy.
   `merge_enabled` and `three_parent_policy` are currently preserved into the canonical search packet for replay and future expansion, but the current runner does not yet synthesize merge candidates from them.
@@ -402,7 +402,7 @@ Each named adapter should define its own:
 - command templates
 - artifacts to inspect
 - human review prompts
-- optional `optimize_search` defaults when that surface needs a different bounded search policy from the repo root adapter
+- optional `improve_search` defaults when that surface needs a different bounded search policy from the repo root adapter
 
 This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.
 When a repo runs review variants repeatedly, add a checked-in wrapper that loads the adapter and fans out `executor_variants`, but keep it as a thin delegate to `cautilus review variants` instead of letting it become a second runtime authority.

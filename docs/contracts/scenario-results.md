@@ -43,7 +43,7 @@ That artifact should summarize:
 - optional artifact paths worth reading directly
 
 This gives `report build`, `review prepare-input`, and review prompt rendering one shared machine-readable compare surface.
-It also gives `optimize search` a textual feedback path that does not depend on separately authored `humanReviewFindings`.
+It also gives `improve search` a textual feedback path that does not depend on separately authored `humanReviewFindings`.
 
 ## Current Use
 

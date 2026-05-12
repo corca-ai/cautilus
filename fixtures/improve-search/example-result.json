@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "cautilus.improve_search_result.v1",
+  "generatedAt": "2026-04-13T10:01:00.000Z",
+  "status": "completed",
+  "inputFile": "/tmp/cautilus-improve-search/improve-search-input.json",
+  "repoRoot": "/tmp/cautilus-improve-search",
+  "improveInputFile": "/tmp/cautilus-improve-search/improve-input.json",
+  "searchConfig": {
+    "algorithm": "reflective_pareto",
+    "budget": "light",
+    "generationLimit": 1,
+    "populationLimit": 3,
+    "mutationBatchSize": 3,
+    "candidateSelection": "pareto",
+    "reviewCheckpointPolicy": "final_only",
+    "fullGateCheckpointPolicy": "final_only",
+    "selectionPolicy": {
+      "primaryObjective": "held_out_behavior",
+      "tieBreakers": [
+        "lower_cost",
+        "lower_latency"
+      ],
+      "constraintCaps": {}
+    },
+    "mergeEnabled": false,
+    "threeParentPolicy": "coverage_expansion"
+  },
+  "searchConfigSources": {
+    "adapterPath": "/tmp/cautilus-improve-search/.agents/cautilus-adapter.yaml",
+    "budget": "product_default",
+    "preset": "product_default",
+    "selectionPolicy": "product_default",
+    "reviewCheckpointPolicy": "product_default",
+    "mergeEnabled": "product_default",
+    "threeParentPolicy": "product_default"
+  },
+  "experimentContext": {
+    "mode": "held_out",
+    "intent": "Operator recovery guidance should stay legible.",
+    "baselineRef": "origin/main",
+    "adapter": null,
+    "adapterName": "data-final-prompt-ab",
+    "adapterPath": "/tmp/cautilus-improve-search/.agents/cautilus-adapter.yaml",
+    "profile": null,
+    "split": null,
+    "targetFile": {
+      "path": "/tmp/cautilus-improve-search/prompt.md",
+      "exists": true
+    },
+    "searchBudget": "light",
+    "mutationBackends": [
+      {
+        "id": "codex-mutate",
+        "backend": "codex_exec"
+      }
+    ]
+  },
+  "telemetryCompleteness": {
+    "heldOutDurationMs": "complete",
+    "heldOutTotalTokens": "absent",
+    "heldOutCostUsd": "complete",
+    "candidateAggregateDurationMs": "complete",
+    "candidateAggregateTotalTokens": "absent",
+    "candidateAggregateCostUsd": "complete"
+  },
+  "selectedCandidateId": "seed",
+  "candidateRegistry": [
+    {
+      "id": "seed",
+      "generationIndex": 0,
+      "parentCandidateIds": [],
+      "origin": "seed",
+      "targetFile": {
+        "path": "/tmp/cautilus-improve-search/prompt.md",
+        "exists": true
+      },
+      "targetSnapshot": {
+        "path": "/tmp/cautilus-improve-search/prompt.md",
+        "exists": true,
+        "sizeBytes": 28,
+        "lineCount": 1
+      },
+      "mutationRationale": "Use the current target prompt file as the seed candidate.",
+      "telemetry": {
+        "totalCostUsd": 0.03,
+        "totalDurationMs": 2100
+      }
+    }
+  ],
+  "generationSummaries": [],
+  "heldOutEvaluationMatrix": [
+    {
+      "candidateId": "seed",
+      "scenarioId": "operator-recovery",
+      "mode": "held_out",
+      "score": 40,
+      "status": "failed",
+      "telemetry": {
+        "cost_usd": 0.02,
+        "durationMs": 1200
+      }
+    },
+    {
+      "candidateId": "seed",
+      "scenarioId": "operator-follow-up",
+      "mode": "held_out",
+      "score": 95,
+      "status": "passed",
+      "telemetry": {
+        "cost_usd": 0.01,
+        "durationMs": 900
+      }
+    }
+  ],
+  "pareto": {
+    "frontierCandidateIds": [
+      "seed"
+    ],
+    "perScenarioBestCandidateIds": [
+      {
+        "scenarioId": "operator-recovery",
+        "candidateIds": [
+          "seed"
+        ]
+      },
+      {
+        "scenarioId": "operator-follow-up",
+        "candidateIds": [
+          "seed"
+        ]
+      }
+    ]
+  },
+  "checkpointOutcomes": {
+    "review": [],
+    "fullGate": []
+  },
+  "searchTelemetry": {
+    "candidateCount": 1,
+    "generatedCandidateCount": 0,
+    "generationCount": 0,
+    "mutationInvocationCount": 1,
+    "mergeInvocationCount": 0,
+    "heldOutEvaluationCount": 1,
+    "reviewCheckpointCount": 0,
+    "fullGateCheckpointCount": 0,
+    "candidateAttemptCount": 1,
+    "stopReason": "mutation_backend_failed"
+  },
+  "candidateGenerationDiagnostics": {
+    "generatedCandidateCount": 0,
+    "attemptCount": 1,
+    "stopReason": "mutation_backend_failed",
+    "prerequisites": {
+      "intentPresent": true,
+      "baselineRefPresent": true,
+      "targetFilePath": "/tmp/cautilus-improve-search/prompt.md",
+      "targetFileExists": true,
+      "reviewWrapperAvailable": true,
+      "mutationBackendConfigured": true
+    },
+    "attempts": [
+      {
+        "generationIndex": 1,
+        "parentFrontierCandidateIds": [
+          "seed"
+        ],
+        "rankedParentFrontierIds": [
+          "seed"
+        ],
+        "eligibleMutationParentIds": [
+          "seed"
+        ],
+        "mutationParentEligibility": [
+          {
+            "candidateId": "seed",
+            "eligible": true,
+            "reason": "frontier_candidate"
+          }
+        ],
+        "selectedParentCandidateId": "seed",
+        "generatedCandidateIds": [],
+        "generatedCandidateCount": 0,
+        "mutationBackend": "codex_exec",
+        "backendInvoked": true,
+        "status": "mutation_backend_failed",
+        "prerequisites": {
+          "intentPresent": true,
+          "baselineRefPresent": true,
+          "targetFilePath": "/tmp/cautilus-improve-search/prompt.md",
+          "targetFileExists": true,
+          "reviewWrapperAvailable": true,
+          "mutationBackendConfigured": true
+        },
+        "message": "mutation backend failed: command exited non-zero"
+      }
+    ],
+    "whyNoCandidates": [
+      {
+        "generationIndex": 1,
+        "status": "mutation_backend_failed",
+        "message": "mutation backend failed: command exited non-zero"
+      }
+    ]
+  },
+  "proposalBridge": {
+    "improveInputFile": "/tmp/cautilus-improve-search/improve-input.json",
+    "selectedCandidateId": "seed",
+    "selectedTargetFile": {
+      "path": "/tmp/cautilus-improve-search/prompt.md",
+      "exists": true
+    }
+  },
+  "selectionTelemetry": {
+    "rankedFrontierCandidateIds": [
+      "seed"
+    ],
+    "rejectedFinalistCandidateIds": [],
+    "selectionConstraintIneligibleCandidateIds": [],
+    "rejectionReasons": {}
+  }
+}

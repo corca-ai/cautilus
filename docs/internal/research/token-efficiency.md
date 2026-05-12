@@ -13,7 +13,7 @@ The runtime lives in `scripts/agent-runtime/skill-test-claude-backend.mjs` and
 ## Core tension
 
 Skill evaluation must stay faithful to what an end user's Claude Code / Codex
-session actually sees when they invoke a skill. A hyper-optimized evaluation
+session actually sees when they invoke a skill. A hyper-improved evaluation
 harness would produce lower per-run token counts but no longer represent the
 real deployment surface. The goal here is not "minimum tokens"; it is
 "minimum tokens **without compromising evaluation fidelity or
@@ -207,7 +207,7 @@ Before widening what is stripped by default, measure:
 
 3. **Per-skill baseline token measurement** — capture input/output tokens
    from the Claude stream-json for each test case in the current suite.
-   Establish a baseline so later optimizations can be attributed correctly.
+   Establish a baseline so later improvements can be attributed correctly.
 
 4. **Codex `project_doc_max_bytes` sweep** — for each skill, measure whether
    setting `project_doc_max_bytes=0` vs the default `32768` changes the
@@ -284,7 +284,7 @@ passed again on Codex:
 - trigger: `2/2` matched `must_invoke`
 - execution: `passed`
 
-This makes those Codex settings applied repo-local adapter optimizations for
+This makes those Codex settings applied repo-local adapter improvements for
 the current `Cautilus` self-dogfood surface, not yet generic product defaults.
 
 ### Skill-test telemetry surface

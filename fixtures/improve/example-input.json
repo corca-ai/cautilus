@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "cautilus.improve_inputs.v1",
+  "generatedAt": "2026-04-11T00:05:00.000Z",
+  "repoRoot": "/tmp/cautilus-improve",
+  "improvementTarget": "prompt",
+  "intentProfile": {
+    "schemaVersion": "cautilus.behavior_intent.v1",
+    "intentId": "intent-operator-recovery-guidance",
+    "summary": "Operator guidance should stay legible under recovery pressure.",
+    "behaviorSurface": "operator_behavior",
+    "successDimensions": [
+      {
+        "id": "recovery_next_step",
+        "summary": "Make the next safe recovery step explicit without operator guesswork."
+      }
+    ],
+    "guardrailDimensions": [
+      {
+        "id": "repair_explicit_regressions_first",
+        "summary": "Prefer repairing explicit regressions over widening scope."
+      },
+      {
+        "id": "review_findings_binding",
+        "summary": "Treat review findings as first-class evidence, not optional commentary."
+      },
+      {
+        "id": "history_focuses_next_probe",
+        "summary": "Use scenario history only to focus the next bounded probe, not to justify overfitting."
+      },
+      {
+        "id": "rerun_relevant_gates",
+        "summary": "Stop after one bounded revision and rerun the relevant gates."
+      }
+    ]
+  },
+  "improver": {
+    "budget": "medium",
+    "plan": {
+      "evidenceLimit": 5,
+      "suggestedChangeLimit": 3,
+      "reviewVariantLimit": 2,
+      "historySignalLimit": 2
+    }
+  },
+  "targetFile": {
+    "path": "/tmp/cautilus-improve/prompt.md",
+    "exists": true
+  },
+  "reportFile": "/tmp/cautilus-improve/report.json",
+  "report": {
+    "schemaVersion": "cautilus.report_packet.v2",
+    "generatedAt": "2026-04-11T00:02:00.000Z",
+    "candidate": "feature/operator-guidance",
+    "baseline": "origin/main",
+    "intent": "Operator guidance should stay legible under recovery pressure.",
+    "intentProfile": {
+      "schemaVersion": "cautilus.behavior_intent.v1",
+      "intentId": "intent-operator-recovery-guidance",
+      "summary": "Operator guidance should stay legible under recovery pressure.",
+      "behaviorSurface": "operator_behavior",
+      "successDimensions": [
+        {
+          "id": "recovery_next_step",
+          "summary": "Make the next safe recovery step explicit without operator guesswork."
+        }
+      ],
+      "guardrailDimensions": []
+    },
+    "commands": [],
+    "commandObservations": [],
+    "modesRun": [
+      "held_out",
+      "comparison"
+    ],
+    "modeSummaries": [],
+    "telemetry": {
+      "modeCount": 2
+    },
+    "improved": [],
+    "regressed": [
+      "operator-recovery"
+    ],
+    "unchanged": [],
+    "noisy": [
+      "workflow-retry-budget"
+    ],
+    "humanReviewFindings": [],
+    "recommendation": "defer"
+  },
+  "reviewSummaryFile": "/tmp/cautilus-improve/summary.json",
+  "reviewSummary": {
+    "variants": [
+      {
+        "id": "codex-review",
+        "status": "failed",
+        "output": {
+          "findings": [
+            {
+              "severity": "blocker",
+              "message": "The operator still cannot tell whether retry is safe.",
+              "path": "variant/codex-review"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "scenarioHistoryFile": "/tmp/cautilus-improve/history.json",
+  "scenarioHistory": {
+    "schemaVersion": "cautilus.scenario_history.v1",
+    "profileId": "default-train",
+    "trainRunCount": 3,
+    "scenarioStats": {
+      "operator-recovery": {
+        "lastTrainRunIndex": 3,
+        "graduationInterval": 1,
+        "recentTrainResults": [
+          {
+            "runIndex": 3,
+            "timestamp": "2026-04-10T23:58:00.000Z",
+            "overallScore": 80,
+            "passRate": 0,
+            "status": "failed",
+            "fullCheck": false
+          }
+        ]
+      }
+    },
+    "recentRuns": []
+  },
+  "objective": {
+    "summary": "Propose one bounded next revision without weakening held-out, comparison, or review discipline.",
+    "constraints": [
+      "Prefer repairing explicit regressions over widening scope.",
+      "Treat review findings as first-class evidence, not optional commentary.",
+      "Use scenario history only to focus the next bounded probe, not to justify overfitting.",
+      "Stop after one bounded revision and rerun the relevant gates."
+    ]
+  }
+}

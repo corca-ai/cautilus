@@ -40,7 +40,7 @@ claim_discovery:
     - .cautilus/claims
   exclude:
     - docs/specs/old/**
-    - docs/specs/proof/claim-evidence-state.md
+    - docs/specs/evidence/claim-evidence-state.md
     - docs/claims/**
     - docs/maintainers/**
     - docs/internal/handoff.md
@@ -52,7 +52,7 @@ claim_discovery:
       - docs/guides/**
     developer:
       - AGENTS.md
-      - docs/specs/maintainer/**
+      - docs/specs/contracts/**
       - skills/cautilus-agent/**
       - plugins/cautilus/skills/cautilus-agent/**
       - docs/contracts/**
@@ -75,9 +75,9 @@ claim_discovery:
         - readiness
         - evidence state
         - status report
-    - label: Improvement and optimization
+    - label: Improvement and improvement
       terms:
-        - optimize
+        - improve
         - gepa
         - improve
         - search
@@ -149,7 +149,7 @@ artifact_paths:
   - README.md
   - docs/guides/evaluation-process.md
   - docs/specs/user/index.spec.md
-  - docs/specs/proof/claim-evidence-state.md
+  - docs/specs/evidence/claim-evidence-state.md
   - .cautilus/claims/evidenced-typed-runners.json
   - .cautilus/claims/status-summary.json
   - .cautilus/claims/claim-status-report.md

@@ -7,7 +7,7 @@ import { resolve } from "node:path";
 export const DEFAULT_GENERATED_ARTIFACTS = [
 	".cautilus/claims/evidence-state.json",
 	".cautilus/claims/status-summary.json",
-	"docs/specs/proof/claim-evidence-state.md",
+	"docs/specs/evidence/claim-evidence-state.md",
 ];
 
 function usage(exitCode = 0) {
