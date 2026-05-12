@@ -14,7 +14,7 @@ function writeExecutable(root, name, body) {
 	return filePath;
 }
 
-test("run-executor-variants delegates to cautilus review variants", () => {
+test("run-executor-variants delegates to cautilus evaluate review variants", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-review-shim-"));
 	try {
 		const argsFile = join(root, "args.txt");
@@ -36,6 +36,7 @@ exit 7
 		assert.equal(result.stdout, "shim-stdout\n");
 		assert.equal(result.stderr, "shim-stderr\n");
 		assert.deepEqual(readFileSync(argsFile, "utf-8").trim().split("\n"), [
+			"evaluate",
 			"review",
 			"variants",
 			"--workspace",

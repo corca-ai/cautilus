@@ -98,7 +98,7 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.1 | `cautilus adapter resolve --repo-root .` | adapter 경로 출력, exit 0 | 기계적 |
+| 3.1 | `cautilus doctor adapter --repo-root .` | adapter 경로 출력, exit 0 | 기계적 |
 | 3.2 | `cautilus doctor --repo-root .` | stdout에 `ready` 포함, exit 0 | 기계적 |
 | 3.3 | `node ./scripts/init_adapter.mjs --repo-root /tmp/cautilus-oa-check --output /tmp/cautilus-oa-check/cautilus-adapter.yaml --force` | YAML 파일 생성, exit 0 | 기계적 |
 | 3.3a | `go test ./internal/app -run 'TestCLIEvalLive|TestCLILiveEval'` | synthetic consumer repo에서 `eval live` 표면과 `eval live` smoke 통과, exit 0 | 기계적 |
@@ -107,29 +107,29 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.4 | `cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-oa-compare` | baseline/, candidate/ 디렉토리 생성, exit 0 | 기계적 |
-| 3.5 | `cautilus workspace prune-artifacts --root /tmp/cautilus-oa-runs --keep-last 20` | exit 0 (대상 없어도 통과) | 기계적 |
-| 3.6 | `mkdir -p /tmp/cautilus-oa-runs && cautilus workspace start --root /tmp/cautilus-oa-runs --label oa-check --json` | JSON 출력에 `runDir` 포함, exit 0 | 기계적 |
+| 3.4 | `cautilus evaluate comparison prepare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-oa-compare` | baseline/, candidate/ 디렉토리 생성, exit 0 | 기계적 |
+| 3.5 | `cautilus doctor artifacts prune --root /tmp/cautilus-oa-runs --keep-last 20` | exit 0 (대상 없어도 통과) | 기계적 |
+| 3.6 | `mkdir -p /tmp/cautilus-oa-runs && cautilus init run --root /tmp/cautilus-oa-runs --label oa-check --json` | JSON 출력에 `runDir` 포함, exit 0 | 기계적 |
 
 ### 3c. Scenario 명령
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.7 | `cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.8 | `cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.9 | `cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.10 | `cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z` | JSON 출력, exit 0 | 기계적 |
-| 3.11 | `cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json` | JSON 출력, exit 0 | 기계적 |
-| 3.12 | `cautilus scenario summarize-telemetry --results ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
-| 3.12a | `cautilus scenario review-conversations --input ./fixtures/scenario-conversation-review/input.json` | JSON 출력에 `cautilus.scenario_conversation_review.v1` 포함, exit 0 | 기계적 |
+| 3.7 | `cautilus discover scenarios normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.8 | `cautilus discover scenarios normalize skill --input ./fixtures/scenario-proposals/skill-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.9 | `cautilus discover scenarios normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.10 | `cautilus discover scenarios prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z` | JSON 출력, exit 0 | 기계적 |
+| 3.11 | `cautilus discover scenarios propose --input ./fixtures/scenario-proposals/standalone-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.12 | `cautilus discover scenarios summarize-telemetry --results ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
+| 3.12a | `cautilus discover scenarios review-conversations --input ./fixtures/scenario-conversation-review/input.json` | JSON 출력에 `cautilus.scenario_conversation_review.v1` 포함, exit 0 | 기계적 |
 
 ### 3d. Report 및 Evidence
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.13 | `cautilus report build --input ./fixtures/reports/report-input.json` | JSON 출력에 `cautilus.report_packet.v2` 포함, exit 0 | 기계적 |
-| 3.14 | `cautilus evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
-| 3.15 | `cautilus evidence bundle --input ./fixtures/evidence/example-input.json` | JSON 출력, exit 0 | 기계적 |
+| 3.13 | `cautilus evaluate report build --input ./fixtures/reports/report-input.json` | JSON 출력에 `cautilus.report_packet.v2` 포함, exit 0 | 기계적 |
+| 3.14 | `cautilus evaluate evidence prepare-input --report-file ./fixtures/reports/report-input.json --scenario-results-file ./fixtures/scenario-results/example-results.json` | JSON 출력, exit 0 | 기계적 |
+| 3.15 | `cautilus evaluate evidence bundle --input ./fixtures/evidence/example-input.json` | JSON 출력, exit 0 | 기계적 |
 
 ### 3e. Improve
 
@@ -143,19 +143,19 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.18a | `cautilus eval skill-experiment compare --input ./fixtures/skill-clone-experiment/example-input.json --output /tmp/cautilus-oa-skill-experiment-report.json` | report JSON에 `cautilus.skill_clone_experiment_report.v1` 포함, exit 0 | 기계적 |
+| 3.18a | `cautilus evaluate skill-experiment --input ./fixtures/skill-clone-experiment/example-input.json --output /tmp/cautilus-oa-skill-experiment-report.json` | report JSON에 `cautilus.skill_clone_experiment_report.v1` 포함, exit 0 | 기계적 |
 
 ### 3g. Review (fixture 기반, LLM 없음)
 
 의존: review 입력은 체크인된 report fixture에서 만든 `report.json`을 사용한다.
-`cautilus eval test`는 현재 `eval-observed.json`과 `eval-summary.json`을 만들며, review packet 입력을 직접 만들지는 않는다.
+`cautilus evaluate fixture`는 현재 `eval-observed.json`과 `eval-summary.json`을 만들며, review packet 입력을 직접 만들지는 않는다.
 
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 3.19 | `cautilus eval test --repo-root . --fixture fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json --output-dir /tmp/cautilus-oa-eval` | observed packet 생성, exit 0 | 기계적 |
-| 3.20 | `cautilus report build --input ./fixtures/reports/report-input.json --output /tmp/cautilus-oa-eval/report.json && cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-oa-eval/report.json --output /tmp/cautilus-oa-eval/review.json` | review.json 생성, exit 0. 의존: report fixture | 기계적 |
-| 3.21 | `cautilus review build-prompt-input --review-packet /tmp/cautilus-oa-eval/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.20 | 기계적 |
-| 3.22 | `cautilus review render-prompt --input /tmp/cautilus-oa-eval/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.21 | 기계적 |
+| 3.19 | `cautilus evaluate fixture --repo-root . --fixture fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json --output-dir /tmp/cautilus-oa-eval` | observed packet 생성, exit 0 | 기계적 |
+| 3.20 | `cautilus evaluate report build --input ./fixtures/reports/report-input.json --output /tmp/cautilus-oa-eval/report.json && cautilus evaluate evaluate review prepare-input --repo-root . --report-file /tmp/cautilus-oa-eval/report.json --output /tmp/cautilus-oa-eval/review.json` | review.json 생성, exit 0. 의존: report fixture | 기계적 |
+| 3.21 | `cautilus evaluate evaluate review build-prompt-input --review-packet /tmp/cautilus-oa-eval/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.20 | 기계적 |
+| 3.22 | `cautilus evaluate evaluate review render-prompt --input /tmp/cautilus-oa-eval/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.21 | 기계적 |
 
 ---
 
@@ -205,9 +205,9 @@ source of truth다.
 
 | # | 명령 (각 repo에서) | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 5.0 | `npm run consumer:onboard:smoke` | temp consumer repo가 `install -> adapter init -> doctor ready -> eval test`까지 통과, `eval-summary.json` recommendation이 `accept-now`, exit 0 | 기계적 |
+| 5.0 | `npm run consumer:onboard:smoke` | temp consumer repo가 `install -> adapter init -> doctor ready -> evaluate fixture`까지 통과, `eval-summary.json` recommendation이 `accept-now`, exit 0 | 기계적 |
 | 5.1 | `cautilus doctor --repo-root <repo-path>` | `ready` 출력, exit 0 | 기계적 |
-| 5.2 | `cautilus adapter resolve --repo-root <repo-path>` | adapter 경로 출력, exit 0 | 기계적 |
+| 5.2 | `cautilus doctor adapter --repo-root <repo-path>` | adapter 경로 출력, exit 0 | 기계적 |
 
 현재 확인 중인 consumer normalization family:
 
@@ -225,8 +225,8 @@ consumer-readiness.md에 기록된 deeper evidence path. 전부 돌릴 필요는
 
 | # | 대상 | 명령 예시 | 통과 조건 | 비용 |
 |---|---|---|---|---|
-| 5.3 | workflow consumer | `cautilus eval test --repo-root <workflow-consumer-path> --fixture <fixture.json> --output-dir /tmp/cautilus-workflow-eval` | observed packet의 recommendation이 `accept-now` | 무료 |
-| 5.4 | workflow consumer | `cautilus review variants --repo-root <workflow-consumer-path> --adapter-name operator-recovery ...` | review summary에 passing variant 존재 | LLM |
+| 5.3 | workflow consumer | `cautilus evaluate fixture --repo-root <workflow-consumer-path> --fixture <fixture.json> --output-dir /tmp/cautilus-workflow-eval` | observed packet의 recommendation이 `accept-now` | 무료 |
+| 5.4 | workflow consumer | `cautilus evaluate evaluate review variants --repo-root <workflow-consumer-path> --adapter-name operator-recovery ...` | review summary에 passing variant 존재 | LLM |
 
 ---
 
@@ -251,8 +251,8 @@ Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이
 | 6.4 | Claude marketplace manifest | `claude plugins validate ./.claude-plugin/marketplace.json` | exit 0 |
 | 6.5 | Claude plugin manifest (packaged) | `claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json` | exit 0 |
 | 6.6 | Codex marketplace 발견 | `node ./scripts/release/check-codex-marketplace.mjs --repo-root .` | exit 0 |
-| 6.7 | Starter kits — normalization families | `npm run consumer:starters:smoke` | 3개 starter가 `adapter resolve`, `doctor`, `scenario normalize` 통과 |
-| 6.10 | Packet shape — 3 normalization families (optional, `jq` 필요) | `cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json \| jq -e '.candidates\|length>0'` (skill, workflow도 동일 패턴으로) | 각각 exit 0 |
+| 6.7 | Starter kits — normalization families | `npm run consumer:starters:smoke` | 3개 starter가 `adapter resolve`, `doctor`, `discover scenarios normalize` 통과 |
+| 6.10 | Packet shape — 3 normalization families (optional, `jq` 필요) | `cautilus discover scenarios normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json \| jq -e '.candidates\|length>0'` (skill, workflow도 동일 패턴으로) | 각각 exit 0 |
 
 `jq`가 없는 환경에서는 6.10을 스킵해도 된다. 나머지 행은 의존성 없이 돈다.
 
@@ -267,14 +267,14 @@ Tier 3이 "CLI가 돌아가는가"라면 이 tier는 "리드미의 각 문장이
 |---|---|---|---|
 | 6.13 | Self-dogfood latest | 브라우저에서 `artifacts/self-dogfood/latest/index.html` 열기 | Decision Summary 가 먼저 보이고 `what happened / why it matters / what to inspect next` 가 raw JSON field 보다 먼저 인지 가능 |
 | 6.14 | Self-dogfood experiments | `artifacts/self-dogfood/experiments/latest/index.html` 열기 | 전체 blocker/pass, deterministic gate, review recommendation 의 차이가 상단에서 설명되고 실패 experiment 의 inspect link 로 바로 이동 가능 |
-| 6.15 | Eval report HTML | `cautilus report render-html --input <report.json>` 실행 후 `report.html` 열기 | intent / decision signals / modes / scenario outcomes / command observations / human review findings 가 TOC 와 함께 한 페이지에서 읽히고 contamination warning 이 recommendation 보다 먼저 눈에 들어옴 |
-| 6.16 | Review packet HTML | `cautilus review render-html --input <review.json>` 실행 후 `review.html` 열기 | intent / review path / comparison questions / human review prompts / artifactFiles 가 연결 탐색 가능하고 reviewer 가 무엇부터 읽어야 하는지 먼저 보임 |
-| 6.17 | Review variants summary HTML | `cautilus review render-variants-summary-html --input <review-summary.json>` 실행 후 `review-summary.html` 열기 | overall verdict / consensus-or-divergence / telemetry / variant별 execution + verdict + findings / reasonCodes 가 구조적으로 읽힘 |
-| 6.18 | Compare artifact HTML | `cautilus workspace render-compare-html --input <compare-artifact.json>` 실행 후 `compare.html` 열기 | signal map / scenario buckets / deltas / threshold reasons / artifactPaths 가 단일 diff 페이지에서 읽히고 어떤 layer 가 decision 을 carry 하는지 먼저 보임 |
-| 6.19 | Scenario proposals HTML | `cautilus scenario render-proposals-html --input <proposals.json>` 실행 후 `proposals.html` 열기 | selection signals / attention view / full ranked proposals 가 순서대로 읽히고 각 proposal 의 proposalKey / title / action / family / rationale / attention reason 이 카드 단위로 보임 |
-| 6.19a | Scenario conversation review HTML | `cautilus scenario render-conversation-review-html --input <conversation-review.json>` 실행 후 `conversation-review.html` 열기 | selection signals / attention threads / all threads 가 순서대로 읽히고 각 thread 안에서 linked proposals 와 transcript 가 분리되어 읽힘 |
-| 6.20 | Evidence bundle HTML | `cautilus evidence render-html --input <evidence-bundle.json>` 실행 후 `evidence-bundle.html` 열기 | summary counts / sourceKind grouped signals / severity chips / guidance / sources 가 읽혀서 mining signal 이 flat list 로 뭉개지지 않음 |
-| 6.21 | Run index HTML (global TOC) | `cautilus artifacts render-index-html --run-dir <path>` 실행 후 `index.html` 열기 | run 의 모든 artifact 가 사이드바에서 한눈에 보이고 aggregate 상태 chip 이 정확하며 review flow 순서로 읽힘 |
+| 6.15 | Eval report HTML | `cautilus evaluate report render-html --input <report.json>` 실행 후 `report.html` 열기 | intent / decision signals / modes / scenario outcomes / command observations / human review findings 가 TOC 와 함께 한 페이지에서 읽히고 contamination warning 이 recommendation 보다 먼저 눈에 들어옴 |
+| 6.16 | Review packet HTML | `cautilus evaluate review render-html --input <review.json>` 실행 후 `review.html` 열기 | intent / review path / comparison questions / human review prompts / artifactFiles 가 연결 탐색 가능하고 reviewer 가 무엇부터 읽어야 하는지 먼저 보임 |
+| 6.17 | Review variants summary HTML | `cautilus evaluate review render-variants-summary-html --input <review-summary.json>` 실행 후 `review-summary.html` 열기 | overall verdict / consensus-or-divergence / telemetry / variant별 execution + verdict + findings / reasonCodes 가 구조적으로 읽힘 |
+| 6.18 | Compare artifact HTML | `cautilus evaluate comparison render-html --input <compare-artifact.json>` 실행 후 `compare.html` 열기 | signal map / scenario buckets / deltas / threshold reasons / artifactPaths 가 단일 diff 페이지에서 읽히고 어떤 layer 가 decision 을 carry 하는지 먼저 보임 |
+| 6.19 | Scenario proposals HTML | `cautilus discover scenarios render-proposals-html --input <proposals.json>` 실행 후 `proposals.html` 열기 | selection signals / attention view / full ranked proposals 가 순서대로 읽히고 각 proposal 의 proposalKey / title / action / family / rationale / attention reason 이 카드 단위로 보임 |
+| 6.19a | Scenario conversation review HTML | `cautilus discover scenarios render-conversation-review-html --input <conversation-review.json>` 실행 후 `conversation-review.html` 열기 | selection signals / attention threads / all threads 가 순서대로 읽히고 각 thread 안에서 linked proposals 와 transcript 가 분리되어 읽힘 |
+| 6.20 | Evidence bundle HTML | `cautilus evaluate evidence render-html --input <evidence-bundle.json>` 실행 후 `evidence-bundle.html` 열기 | summary counts / sourceKind grouped signals / severity chips / guidance / sources 가 읽혀서 mining signal 이 flat list 로 뭉개지지 않음 |
+| 6.21 | Run index HTML (global TOC) | `cautilus doctor artifacts render-index-html --run-dir <path>` 실행 후 `index.html` 열기 | run 의 모든 artifact 가 사이드바에서 한눈에 보이고 aggregate 상태 chip 이 정확하며 review flow 순서로 읽힘 |
 
 이 tier 의 모든 row 는 각 HTML 이 브라우저에서 실제로 열릴 때 인간이 판정한다.
 자동 guard (`npm run verify`) 는 렌더러 함수 / 핸들러 / CLI 등록이 살아 있음을 확인할 뿐, 시각 품질은 사람이 본다.

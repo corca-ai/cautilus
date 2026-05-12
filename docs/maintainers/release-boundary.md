@@ -40,7 +40,7 @@ The current honest install story is:
 1. install the standalone CLI from a tagged GitHub release with [install.sh](../../install.sh)
 2. let `install.sh` detect the host OS and architecture and download the matching tagged binary asset
 3. require `cautilus --version` to work on `PATH`
-4. in each consumer repo, run `cautilus install --repo-root .`
+4. in each consumer repo, run `cautilus init --repo-root .`
 5. treat `.agents/skills/cautilus-agent/` as the canonical checked-in skill path and `.claude/skills -> ../.agents/skills` as the Claude compatibility shim
 6. keep adapters and repo-local assets in the consumer repo
 7. for local Codex plugin testing, expose the repo marketplace through [.agents/plugins/marketplace.json](../../.agents/plugins/marketplace.json) so Codex resolves `./plugins/cautilus` as the installable local plugin

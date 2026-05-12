@@ -45,7 +45,7 @@ func buildRepoNextAction(result map[string]any, repoRoot string, adapterName *st
 		return doctorAction(
 			"run_command",
 			"Scaffold the default adapter so Cautilus can inspect a checked-in evaluation surface.",
-			fmt.Sprintf("cautilus adapter init --repo-root %s", ShellSingleQuote(repoRoot)),
+			fmt.Sprintf("cautilus init adapter --repo-root %s", ShellSingleQuote(repoRoot)),
 			currentDoctorCommand,
 		)
 	case "missing_default_adapter":
@@ -82,7 +82,7 @@ func buildRepoNextAction(result map[string]any, repoRoot string, adapterName *st
 		}
 		discoveryCommand := strings.TrimSpace(stringOrEmpty(asMap(result["first_bounded_run"])["discoveryCommand"]))
 		if discoveryCommand == "" {
-			discoveryCommand = "cautilus scenarios --json"
+			discoveryCommand = "cautilus discover scenarios --json"
 		}
 		return doctorAction(
 			"complete_first_bounded_run",
@@ -130,7 +130,7 @@ func buildAgentSurfaceNextAction(result map[string]any, repoRoot string) map[str
 		return doctorAction(
 			"run_command",
 			"Materialize the Cautilus Agent surface in this repo before asking an in-repo assistant to use Cautilus.",
-			fmt.Sprintf("cautilus install --repo-root %s", ShellSingleQuote(repoRoot)),
+			fmt.Sprintf("cautilus init --repo-root %s", ShellSingleQuote(repoRoot)),
 			currentDoctorCommand,
 		)
 	case "ready":

@@ -1,7 +1,7 @@
 # Behavior Evaluation
 
 When deterministic checks pass but behavior is still uncertain, the user needs a bounded way to compare observed intentful behavior.
-Using the `cautilus eval` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state.
+Using the `cautilus evaluate` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state.
 
 ## A user can choose the behavior surface that matches the evaluation intent.
 

@@ -21,5 +21,5 @@ After the inventory:
   the actual question
 - if the repo has one surface, start with the matching evaluation surface and preset from `SKILL.md` § Evaluation Surface Routing before widening adapter YAML
 - if the repo has several surfaces, prefer one adapter per surface over a
-  single omnibus adapter; `cautilus adapter init --repo-root .` scaffolds
+  single omnibus adapter; `cautilus init adapter --repo-root .` scaffolds
   per-adapter YAML

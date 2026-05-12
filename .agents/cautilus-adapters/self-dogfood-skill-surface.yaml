@@ -5,7 +5,7 @@ evaluation_surfaces:
 baseline_options:
   - baseline git ref in the same repo via {baseline_ref}
 required_prerequisites:
-  - refresh the current full-gate report before running review variants
+  - refresh the current full-gate report before running evaluate review variants
 review_timeout_ms: 30000
 executor_variants:
   - id: codex-review-skill-surface
@@ -13,7 +13,7 @@ executor_variants:
     purpose: bounded review of whether the Cautilus Agent is actually usable
     command_template: CAUTILUS_REVIEW_CODEX_MODEL=gpt-5.4-mini CAUTILUS_REVIEW_CODEX_REASONING_EFFORT=low bash scripts/agent-runtime/run-review-variant.sh --backend codex_exec --workspace {candidate_repo} --prompt-file {prompt_file} --schema-file {schema_file} --output-file {output_file}
     required_prerequisites:
-      - generate the latest full-gate report before review variants
+      - generate the latest full-gate report before evaluate review variants
     safety_notes:
       - focus on the checked-in skill surfaces, not unrelated repo docs
 artifact_paths:

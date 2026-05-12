@@ -19,7 +19,7 @@ func RenderReportHTML(report map[string]any) string {
 	var builder strings.Builder
 	title := fmt.Sprintf("Cautilus Report — %s", selfDogfoodStatusLabel(stringOrEmpty(report["recommendation"])))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus report render-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus evaluate report render-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderReportHeader(report))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
@@ -509,7 +509,7 @@ func renderReportFooter(report map[string]any) string {
 <footer class="footer">
 	%s
 	<p>Generated from <code>report.json</code> (schemaVersion <code>%s</code>).
-	Do not hand-edit this file — rerun <code>cautilus report render-html</code> to refresh.</p>
+	Do not hand-edit this file — rerun <code>cautilus evaluate report render-html</code> to refresh.</p>
 </footer>`,
 		telemetryLine,
 		escapeHTML(defaultString(report["schemaVersion"], "n/a")),

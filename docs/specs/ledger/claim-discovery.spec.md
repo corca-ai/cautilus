@@ -13,7 +13,7 @@ Claim Discovery turns selected source docs into broad source-referenced candidat
 ## Evidence State
 
 Evidence status: open gap.
-The deterministic `claim discover` surface has executable proof, while full Cautilus Agent curation proof remains prepared or fixture-backed rather than a completed live dogfood verdict.
+The deterministic `discover claims` surface has executable proof, while full Cautilus Agent curation proof remains prepared or fixture-backed rather than a completed live dogfood verdict.
 
 ```run:shell
 # Verify claim-discovery links point to existing docs.

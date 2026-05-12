@@ -12,7 +12,7 @@ That standing gate is affordable because the public specs only exercise cheap fi
 ```run:shell
 # Turn a checked-in proposal input into a browser-readable scenario page.
 tmpdir=$(mktemp -d)
-./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json --output "$tmpdir/proposals.json" >/dev/null
+./bin/cautilus discover scenarios propose --input ./fixtures/scenario-proposals/standalone-input.json --output "$tmpdir/proposals.json" >/dev/null
 ./bin/cautilus scenario render-proposals-html --input "$tmpdir/proposals.json" --output "$tmpdir/proposals.html" >/dev/null
 grep -q '"title": "Refresh review-after-retro scenario from recent activity"' "$tmpdir/proposals.json"
 grep -q '<title>Cautilus Scenario Proposals — 1</title>' "$tmpdir/proposals.html"
@@ -36,7 +36,7 @@ The first proof deliberately shows a small end-to-end product move: `Cautilus` t
 - [Self-Dogfood Publication](self-dogfood.spec.md)
   Defines the narrow claim of the published latest self-dogfood bundle: record the result honestly and reopen it without replaying the expensive review.
 - [Evaluation Surfaces](evaluation-surfaces.spec.md)
-  The current implementation contract for `cautilus eval test`/`evaluate`: two surfaces (`dev`, `app`), four presets (`repo`, `skill`, `chat`, `prompt`), and the four fixture composition primitives that replace the older first-class archetype boundary.
+  The current implementation contract for `cautilus evaluate fixture`/`evaluate`: two surfaces (`dev`, `app`), four presets (`repo`, `skill`, `chat`, `prompt`), and the four fixture composition primitives that replace the older first-class archetype boundary.
 - [HTML Report Surface](html-report.spec.md)
   Proves the currently shipped static HTML outputs that let a human review packet-based artifacts in a browser.
 - [Git Preconditions And Runtime Choice](git-precondition.spec.md)

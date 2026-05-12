@@ -42,16 +42,16 @@ That artifact should summarize:
 - optional finer-grained deltas
 - optional artifact paths worth reading directly
 
-This gives `report build`, `review prepare-input`, and review prompt rendering one shared machine-readable compare surface.
+This gives `report build`, `evaluate review prepare-input`, and review prompt rendering one shared machine-readable compare surface.
 It also gives `improve search` a textual feedback path that does not depend on separately authored `humanReviewFindings`.
 
 ## Current Use
 
 The current standalone chain is:
 
-1. `eval test` asks the adapter command to write one scenario-results file
+1. `evaluate fixture` asks the adapter command to write one scenario-results file
 2. `report build` lifts that packet into `cautilus.report_packet.v2`
-3. `review prepare-input` and `review build-prompt-input` keep the same compare surface visible to review variants
+3. `evaluate review prepare-input` and `evaluate review build-prompt-input` keep the same compare surface visible to evaluate review variants
 
 ## Guardrails
 

@@ -335,7 +335,7 @@ test("build-improve-input CLI rejects legacy report packet schema versions at th
 		});
 		assert.equal(result.status, 1);
 		assert.match(result.stderr, /legacy schemaVersion cautilus\.report_packet\.v1/);
-		assert.match(result.stderr, /cautilus report build/);
+		assert.match(result.stderr, /cautilus evaluate report build/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

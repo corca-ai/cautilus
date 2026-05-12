@@ -11,7 +11,7 @@ function usage(exitCode = 0) {
 	stream.write(
 		[
 			"Usage:",
-			"  node ./scripts/release/publish-release.mjs --version <0.5.1> [--repo-root <dir>] [--remote <name>] [--dry-run] [--json]",
+			"  node ./scripts/release/publish-release.mjs --version <0.5.1> [--repo-root <dir>] [--remote <name>] [--target-branch <branch>] [--dry-run] [--json]",
 		].join("\n") + "\n",
 	);
 	process.exit(exitCode);
@@ -43,6 +43,7 @@ function applyArg(options, argv, index) {
 	const valueMap = {
 		"--repo-root": "repoRoot",
 		"--remote": "remote",
+		"--target-branch": "targetBranch",
 		"--version": "version",
 	};
 	if (flagMap[arg]) {
@@ -62,6 +63,7 @@ function parseArgs(argv = process.argv.slice(2)) {
 		repoRoot: process.cwd(),
 		remote: "origin",
 		version: "",
+		targetBranch: "",
 		dryRun: false,
 		json: false,
 	};
@@ -90,9 +92,12 @@ function gitStatus(repoRoot) {
 	return runGit(repoRoot, ["status", "--short"]).stdout.split(/\r?\n/).filter(Boolean);
 }
 
-function currentBranch(repoRoot) {
+function currentBranch(repoRoot, { allowDetached = false } = {}) {
 	const branch = runGit(repoRoot, ["rev-parse", "--abbrev-ref", "HEAD"]).stdout.trim();
 	if (!branch || branch === "HEAD") {
+		if (allowDetached) {
+			return "HEAD";
+		}
 		throw new Error("release publish requires a named branch, not a detached HEAD");
 	}
 	return branch;
@@ -107,12 +112,48 @@ function localTagSha(repoRoot, tagName) {
 	return result.status === 0 ? result.stdout.trim() : null;
 }
 
-function remoteTagExists(repoRoot, remote, tagName) {
-	const result = runGit(repoRoot, ["ls-remote", "--tags", remote, `refs/tags/${tagName}`], { allowFailure: true });
+function remoteRefSha(repoRoot, remote, ref) {
+	const result = runGit(repoRoot, ["ls-remote", remote, ref], { allowFailure: true });
 	if (result.status !== 0) {
-		throw new Error(`failed to query ${remote} for ${tagName}: ${(result.stderr || result.stdout || "").trim()}`);
+		throw new Error(`failed to query ${remote} for ${ref}: ${(result.stderr || result.stdout || "").trim()}`);
 	}
-	return result.stdout.trim().length > 0;
+	const line = result.stdout.trim().split(/\r?\n/).find(Boolean);
+	return line ? line.split(/\s+/)[0] : null;
+}
+
+function remoteTagExists(repoRoot, remote, tagName) {
+	return remoteRefSha(repoRoot, remote, `refs/tags/${tagName}`) !== null;
+}
+
+function assertCleanWorktree(repoRoot) {
+	const status = gitStatus(repoRoot);
+	if (status.length > 0) {
+		throw new Error(`release publish requires a clean worktree before tagging.\n${status.join("\n")}`);
+	}
+}
+
+function assertReleaseSurfaceMatches(repoRoot, expectedVersion) {
+	const surfaceVersions = readReleaseSurfaceVersions(repoRoot);
+	const drift = detectReleaseSurfaceDrift(surfaceVersions, expectedVersion);
+	if (drift.length > 0) {
+		throw new Error(`release surface drift detected:\n${drift.join("\n")}`);
+	}
+}
+
+function assertTagAvailable(repoRoot, remote, tagName) {
+	if (localTagSha(repoRoot, tagName)) {
+		throw new Error(`tag ${tagName} already exists locally`);
+	}
+	if (remoteTagExists(repoRoot, remote, tagName)) {
+		throw new Error(`tag ${tagName} already exists on ${remote}`);
+	}
+}
+
+function assertRemoteRef(repoRoot, remote, ref, expectedSha, label) {
+	const remoteSha = remoteRefSha(repoRoot, remote, ref);
+	if (remoteSha !== expectedSha) {
+		throw new Error(`${label} points at ${remoteSha || "<missing>"} instead of ${expectedSha}`);
+	}
 }
 
 function readJson(repoRoot, relativePath) {
@@ -143,45 +184,38 @@ export function detectReleaseSurfaceDrift(surfaceVersions, expectedVersion) {
 		.map(([surface, actualVersion]) => `${surface}=${actualVersion} != expected=${expectedVersion}`);
 }
 
-export function publishPreparedRelease({ repoRoot, version, remote = "origin", dryRun = false }) {
+export function publishPreparedRelease({ repoRoot, version, remote = "origin", targetBranch = "", dryRun = false }) {
 	const expectedVersion = normalizeVersion(version);
-	const status = gitStatus(repoRoot);
-	if (status.length > 0) {
-		throw new Error(`release publish requires a clean worktree before tagging.\n${status.join("\n")}`);
-	}
-	const branch = currentBranch(repoRoot);
+	assertCleanWorktree(repoRoot);
+	const branch = currentBranch(repoRoot, { allowDetached: Boolean(targetBranch) });
+	const publishBranch = targetBranch || branch;
 	const currentHead = headSha(repoRoot);
-	const surfaceVersions = readReleaseSurfaceVersions(repoRoot);
-	const drift = detectReleaseSurfaceDrift(surfaceVersions, expectedVersion);
-	if (drift.length > 0) {
-		throw new Error(`release surface drift detected:\n${drift.join("\n")}`);
-	}
+	assertReleaseSurfaceMatches(repoRoot, expectedVersion);
 	const tagName = `v${expectedVersion}`;
-	if (localTagSha(repoRoot, tagName)) {
-		throw new Error(`tag ${tagName} already exists locally`);
-	}
-	if (remoteTagExists(repoRoot, remote, tagName)) {
-		throw new Error(`tag ${tagName} already exists on ${remote}`);
-	}
+	assertTagAvailable(repoRoot, remote, tagName);
 	const payload = {
 		version: expectedVersion,
 		tagName,
 		repoRoot,
 		remote,
 		branch,
+		targetBranch: publishBranch,
+		branchRefspec: `HEAD:refs/heads/${publishBranch}`,
 		headSha: currentHead,
 		dryRun,
 	};
 	if (dryRun) {
 		return payload;
 	}
-	runGit(repoRoot, ["push", remote, branch]);
+	runGit(repoRoot, ["push", remote, `HEAD:refs/heads/${publishBranch}`]);
+	assertRemoteRef(repoRoot, remote, `refs/heads/${publishBranch}`, currentHead, `remote ${remote}/${publishBranch}`);
 	runGit(repoRoot, ["tag", tagName, currentHead]);
 	const createdTagSha = localTagSha(repoRoot, tagName);
 	if (createdTagSha !== currentHead) {
 		throw new Error(`tag ${tagName} does not point at HEAD ${currentHead}`);
 	}
 	runGit(repoRoot, ["push", remote, `refs/tags/${tagName}`]);
+	assertRemoteRef(repoRoot, remote, `refs/tags/${tagName}`, currentHead, `remote tag ${tagName}`);
 	return payload;
 }
 
@@ -189,6 +223,8 @@ function renderText(result) {
 	return [
 		`Prepared release publish for ${result.tagName}${result.dryRun ? " (dry-run)" : ""}.`,
 		`- branch: ${result.branch}`,
+		`- target branch: ${result.targetBranch}`,
+		`- branch refspec: ${result.branchRefspec}`,
 		`- remote: ${result.remote}`,
 		`- head: ${result.headSha}`,
 	].join("\n");

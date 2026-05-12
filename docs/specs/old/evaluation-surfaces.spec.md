@@ -76,8 +76,8 @@ A new value on either axis must pass the taxonomy-axis checkpoint and update the
 
 ### Uniform CLI
 
-- `cautilus eval test --fixture <file>` — produce observed input packet
-- `cautilus eval evaluate --input <file>` — score the packet against expectations
+- `cautilus evaluate fixture --fixture <file>` — produce observed input packet
+- `cautilus evaluate observation --input <file>` — score the packet against expectations
 - Preset is read from the fixture, not from the CLI. Operators learn one command shape.
 
 ### Fixture composition (all required)
@@ -85,7 +85,7 @@ A new value on either axis must pass the taxonomy-axis checkpoint and update the
 - **C1 — multi-case suite**: one fixture file holds N cases under `cases: [...]`.
   Carries N evaluations through the same surface/preset and shares fields like `system` or `workspace` at the suite level.
 - **C2 — inheritance**: `extends: <path>` deep-merges a base fixture before applying overrides.
-  Shipped 2026-05-01 for file-backed `cautilus eval test` fixtures: object fields deep-merge, arrays replace, scalar child fields override, and `extends` paths must be relative to the child fixture.
+  Shipped 2026-05-01 for file-backed `cautilus evaluate fixture` fixtures: object fields deep-merge, arrays replace, scalar child fields override, and `extends` paths must be relative to the child fixture.
   Lets users compare model variants, prompt variants, or workspace variants without copy-paste.
 - **C3 — multi-step composition**: `steps: [...]` carries a sequence where each step references another fixture (`$ref`) or is inline.
   Shipped 2026-05-01 with strict explicit projection: every step must declare `outputProjection`, a mapping from output keys to dotted paths in that step's eval summary.
@@ -124,7 +124,7 @@ These rules are validated by acceptance check in this spec, not invented at impl
 The redesign cuts cleanly with no backward compatibility (no external users yet).
 Removed in this slice:
 
-- `cautilus instruction-surface test/evaluate` — replaced by `cautilus eval test/evaluate` with `surface=dev, preset=repo`.
+- `cautilus instruction-surface test/evaluate` — replaced by `cautilus evaluate fixture/evaluate` with `surface=dev, preset=repo`.
 - The `workflow` first-class archetype — multi-step composition (C3) replaces it.
 - `cautilus.instruction_surface_*` schemas — replaced by `cautilus.evaluation_*` schemas.
 - `instruction_surface_*` adapter fields — replaced by `eval_test_command_templates` and `evaluation_input_default`.
@@ -186,8 +186,8 @@ Answers should land through implementation slices, not through more spec churn:
 
 ## Success Criteria
 
-1. A user with Claude Code installed and no other config can run `cautilus eval test --fixture <dev-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.
-2. A user with Claude CLI but no API key can run `cautilus eval test --fixture <chat.fixture.json>` and get a usable result.
+1. A user with Claude Code installed and no other config can run `cautilus evaluate fixture --fixture <dev-repo.fixture.json>` against their own repo and get a usable result with provider, model, harness, durationMs, and costUsd recorded.
+2. A user with Claude CLI but no API key can run `cautilus evaluate fixture --fixture <chat.fixture.json>` and get a usable result.
 3. A fixture using `extends: ./base.fixture.json` correctly inherits base fields and applies overrides.
 4. A `steps: [...]` fixture executes each step in order, and step N can read step (N-1)'s output.
 5. A fixture with `expected.snapshot: ./golden.txt` passes when app `finalText` matches the snapshot text and fails with a diff when it doesn't.
@@ -252,7 +252,7 @@ Per-slice impl notes live in commits and the migration tracking issue.
 
 `dev / repo` preset shipped:
 
-- `cautilus eval test`, `cautilus eval evaluate` accept `cautilus.evaluation_input.v1` fixtures.
+- `cautilus evaluate fixture`, `cautilus evaluate observation` accept `cautilus.evaluation_input.v1` fixtures.
 - Schema validates `surface=dev, preset=repo` only; C2/C3/C4 fields stub-error until their slices land.
 - Self-dogfood fixture lives at `fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json`; runner under `scripts/run-self-dogfood-eval.mjs`.
 - Prior `cautilus instruction-surface test/evaluate`, `cautilus.instruction_surface_*` schemas, `instruction_surface_*` adapter fields, and the `workflow` archetype framing in this layer are removed without aliases.
@@ -260,7 +260,7 @@ Per-slice impl notes live in commits and the migration tracking issue.
 Follow-up slices proceed in this order:
 
 1. ~~`dev / skill` preset — replace `cautilus skill test/evaluate`.~~ Shipped 2026-04-25.
-   `cautilus.evaluation_input.v1` now translates `surface=dev, preset=skill` cases into the existing `cautilus.skill_test_cases.v1` shape, the `cautilus eval evaluate` handler dispatches to `BuildSkillEvaluationSummary` when the observed packet uses `cautilus.skill_evaluation_inputs.v1`, and the `cautilus skill test/evaluate` commands plus their adapter slots and example fixtures were cut without aliases.
+   `cautilus.evaluation_input.v1` now translates `surface=dev, preset=skill` cases into the existing `cautilus.skill_test_cases.v1` shape, the `cautilus evaluate observation` handler dispatches to `BuildSkillEvaluationSummary` when the observed packet uses `cautilus.skill_evaluation_inputs.v1`, and the `cautilus skill test/evaluate` commands plus their adapter slots and example fixtures were cut without aliases.
    Multi-turn episode support shipped 2026-04-27 for audit-backed `dev / skill` cases: fixtures may use `turns` and `auditKind`, and the local skill runner can drive persistent Codex and Claude episodes, write transcript artifacts, and derive the observed case result from the audit packet.
    Live refresh-flow proof shipped for both runtimes: `npm run dogfood:cautilus-refresh-flow:eval:codex` and `npm run dogfood:cautilus-refresh-flow:eval:claude` both returned `recommendation=accept-now`.
    Live first-scan proof shipped for both runtimes: `npm run dogfood:cautilus-first-scan-flow:eval:codex` and `npm run dogfood:cautilus-first-scan-flow:eval:claude` both returned `recommendation=accept-now`.
@@ -268,21 +268,21 @@ Follow-up slices proceed in this order:
    Live reviewer-launch proof shipped for both runtimes: `npm run dogfood:cautilus-reviewer-launch-flow:eval:codex` and `npm run dogfood:cautilus-reviewer-launch-flow:eval:claude` both returned `recommendation=accept-now`.
    Live review-to-eval proof shipped for both runtimes: `npm run dogfood:cautilus-review-to-eval-flow:eval:codex` and `npm run dogfood:cautilus-review-to-eval-flow:eval:claude` both returned `recommendation=accept-now`.
 2. `app / chat` preset — replace `cautilus mode evaluate` chatbot mode.
-   Additive accept shipped 2026-04-25: `cautilus.evaluation_input.v1` accepts `surface=app, preset=chat` and translates fixtures to `cautilus.app_chat_test_cases.v1`; `cautilus eval evaluate` dispatches `BuildAppChatEvaluationSummary` on `cautilus.app_chat_evaluation_inputs.v1`; the result packet enforces the cross-runtime equivalence rules (provider/model/harness/mode=`messaging`/durationMs/observed.messages/observed.finalText required) at the evaluator boundary.
+   Additive accept shipped 2026-04-25: `cautilus.evaluation_input.v1` accepts `surface=app, preset=chat` and translates fixtures to `cautilus.app_chat_test_cases.v1`; `cautilus evaluate observation` dispatches `BuildAppChatEvaluationSummary` on `cautilus.app_chat_evaluation_inputs.v1`; the result packet enforces the cross-runtime equivalence rules (provider/model/harness/mode=`messaging`/durationMs/observed.messages/observed.finalText required) at the evaluator boundary.
    The matching cut shipped 2026-04-26: `cautilus mode evaluate`, the `iterate / held_out / comparison / full_gate` adapter slots, and the chatbot scenario init scaffold were removed without aliases.
-   Codex backend proof shipped 2026-04-27: `npm run dogfood:app-chat:fixture` and `npm run dogfood:app-chat:codex` both run the checked-in `app / chat` fixture through `cautilus eval test`; the Codex run returned `recommendation=accept-now` while still reporting `productProofReady=false`.
+   Codex backend proof shipped 2026-04-27: `npm run dogfood:app-chat:fixture` and `npm run dogfood:app-chat:codex` both run the checked-in `app / chat` fixture through `cautilus evaluate fixture`; the Codex run returned `recommendation=accept-now` while still reporting `productProofReady=false`.
    Claude backend proof shipped 2026-04-27: `npm run dogfood:app-chat:claude` runs the same checked-in fixture with `--runtime claude`; the Claude run returned `recommendation=accept-now` while remaining backend proof, not app product-runner proof.
-   Improve-search candidate held-out evaluation and final full-gate checkpoints now use `cautilus eval test` when the selected adapter exposes `evaluation_input_default`; they still honest-skip with `status=skipped` and `skipReason=surface_unavailable` when no eval-test surface is declared.
+   Improve-search candidate held-out evaluation and final full-gate checkpoints now use `cautilus evaluate fixture` when the selected adapter exposes `evaluation_input_default`; they still honest-skip with `status=skipped` and `skipReason=surface_unavailable` when no eval-test surface is declared.
 3. ~~`app / prompt` preset — new.~~ Shipped 2026-04-26.
-   `cautilus.evaluation_input.v1` now accepts `surface=app, preset=prompt` and translates fixtures to `cautilus.app_prompt_test_cases.v1`; `cautilus eval evaluate` dispatches `BuildAppPromptEvaluationSummary` on `cautilus.app_prompt_evaluation_inputs.v1`.
+   `cautilus.evaluation_input.v1` now accepts `surface=app, preset=prompt` and translates fixtures to `cautilus.app_prompt_test_cases.v1`; `cautilus evaluate observation` dispatches `BuildAppPromptEvaluationSummary` on `cautilus.app_prompt_evaluation_inputs.v1`.
    The result packet keeps the app-surface runtime fields from `app/chat` (`provider`, `model`, `harness`, `mode=messaging`, `durationMs`, `observed.messages`, `observed.finalText`) and adds required `observed.input` for the single-turn I/O boundary.
-   Codex backend proof shipped 2026-04-27: `npm run dogfood:app-prompt:fixture` and `npm run dogfood:app-prompt:codex` both run the checked-in `app / prompt` fixture through `cautilus eval test`; the Codex run returned `recommendation=accept-now` while still reporting `productProofReady=false`.
+   Codex backend proof shipped 2026-04-27: `npm run dogfood:app-prompt:fixture` and `npm run dogfood:app-prompt:codex` both run the checked-in `app / prompt` fixture through `cautilus evaluate fixture`; the Codex run returned `recommendation=accept-now` while still reporting `productProofReady=false`.
    Claude backend proof shipped 2026-04-27: `npm run dogfood:app-prompt:claude` runs the same checked-in fixture with `--runtime claude`; the Claude run returned `recommendation=accept-now` while remaining backend proof, not app product-runner proof.
 4. ~~C2 `extends` composition primitive.~~ Shipped 2026-05-01.
-   File-backed `cautilus eval test` fixtures can extend a relative base fixture; object fields deep-merge, arrays replace, and scalar child fields override.
+   File-backed `cautilus evaluate fixture` fixtures can extend a relative base fixture; object fields deep-merge, arrays replace, and scalar child fields override.
 5. ~~C3 `steps` composition primitive.~~ Shipped 2026-05-01.
    Multi-step `eval test` fixtures execute each step in order, require explicit `outputProjection`, and allow only prior projected outputs to feed later step placeholders.
 6. ~~C4 `expected.snapshot` composition primitive.~~ Shipped 2026-05-01 for app `finalText` snapshots.
 7. ~~Rescope `scenario normalize` proposal-input lineage.~~ Shipped 2026-05-01.
    The `archetype-boundary.spec.md` retirement was absorbed into the `mode evaluate` cut slice (2026-04-26): the spec was removed, the runtime-completeness check for surviving `scenario normalize` plumbing was later renamed to `lint:scenario-normalizers`, and AGENTS.md / CLAUDE.md / README.md / master-plan.md were realigned to point at this spec instead.
-   This slice completes the vocabulary cut: `cautilus scenarios --json` emits `cautilus.scenario_normalization_catalog.v1` with `normalizationFamilies`, `first_bounded_run` uses the same field, and the lint command is now `lint:scenario-normalizers`.
+   This slice completes the vocabulary cut: `cautilus discover scenarios --json` emits `cautilus.scenario_normalization_catalog.v1` with `normalizationFamilies`, `first_bounded_run` uses the same field, and the lint command is now `lint:scenario-normalizers`.

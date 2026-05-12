@@ -303,7 +303,7 @@ func TestGenerateImproveProposalAddsPassingSimplificationForRuntimeChange(t *tes
 	}
 	followUpChecks := stringSliceValue(proposal["followUpChecks"])
 	if !containsString(followUpChecks, "Rerun held-out before accepting the revision.") ||
-		!containsString(followUpChecks, "Rerun comparison and review variants when those surfaces exist for the target repo.") {
+		!containsString(followUpChecks, "Rerun comparison and evaluate review variants when those surfaces exist for the target repo.") {
 		t.Fatalf("expected follow-up checks to require held-out, comparison, and review gates, got %#v", proposal["followUpChecks"])
 	}
 }

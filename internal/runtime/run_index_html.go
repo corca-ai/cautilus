@@ -33,7 +33,7 @@ func RenderRunIndexHTML(runLabel string, entries []RunIndexEntry) string {
 	title := fmt.Sprintf("Cautilus Run Index — %s", runLabel)
 	aggregate := runIndexAggregateStatus(entries)
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus artifacts render-index-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus doctor artifacts render-index-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(fmt.Sprintf(`
 <header class="banner" style="border-left:8px solid %s">
@@ -53,7 +53,7 @@ func RenderRunIndexHTML(runLabel string, entries []RunIndexEntry) string {
 	builder.WriteString(renderRunIndexSidebar(entries))
 	builder.WriteString(`
 <footer class="footer">
-	<p>Generated from discovered artifacts. Rerun <code>cautilus artifacts render-index-html --run-dir &lt;path&gt;</code> after any artifact changes.</p>
+	<p>Generated from discovered artifacts. Rerun <code>cautilus doctor artifacts render-index-html --run-dir &lt;path&gt;</code> after any artifact changes.</p>
 </footer>
 </main>
 </body>

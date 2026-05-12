@@ -1,25 +1,25 @@
 # Skill Testing Contract
 
-`Cautilus` exposes the `dev / skill` preset under `cautilus eval test` for the common operator request:
+`Cautilus` exposes the `dev / skill` preset under `cautilus evaluate fixture` for the common operator request:
 
 `Use Cautilus to test this skill.`
 
-`cautilus eval evaluate` remains the packet summarizer for already observed runs.
-`cautilus eval test --fixture <skill.fixture.json>` sits one step earlier and owns the bounded workflow that turns a checked-in case suite plus adapter-owned runner into the observed evaluation packet.
+`cautilus evaluate observation` remains the packet summarizer for already observed runs.
+`cautilus evaluate fixture --fixture <skill.fixture.json>` sits one step earlier and owns the bounded workflow that turns a checked-in case suite plus adapter-owned runner into the observed evaluation packet.
 
 ## Problem
 
-`eval evaluate` is valuable once a host already has a normalized `cautilus.skill_evaluation_inputs.v1` packet, but that starts too late for the operator flow where an agent should be able to run a local skill test with one explicit command path.
+`evaluate observation` is valuable once a host already has a normalized `cautilus.skill_evaluation_inputs.v1` packet, but that starts too late for the operator flow where an agent should be able to run a local skill test with one explicit command path.
 
 The product-owned first slice is:
 
-`checked-in skill cases -> cautilus eval test -> observed skill evaluation input -> cautilus eval evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
+`checked-in skill cases -> cautilus evaluate fixture -> observed skill evaluation input -> cautilus evaluate observation -> skill evaluation summary -> cautilus discover scenarios normalize skill`
 
 This keeps host execution ownership in the adapter while letting `Cautilus` own the operator-facing command, output paths, runDir behavior, and downstream chaining.
 
 ## Input Boundary
 
-`cautilus eval test` accepts a checked-in fixture with schema `cautilus.evaluation_input.v1` and `surface=dev, preset=skill`.
+`cautilus evaluate fixture` accepts a checked-in fixture with schema `cautilus.evaluation_input.v1` and `surface=dev, preset=skill`.
 
 Minimum shape:
 
@@ -96,7 +96,7 @@ When that opt-out is used, the emitted telemetry should include `session_mode`.
 
 ## Output Boundary
 
-`cautilus eval test` creates one bounded workflow directory containing:
+`cautilus evaluate fixture` creates one bounded workflow directory containing:
 
 - `eval-cases.json` — translated case suite written by the product
 - `eval-observed.json` — observed packet written by the runner
@@ -109,7 +109,7 @@ The summary is a product-owned output even when the adapter-owned runner produce
 
 ## Guardrails
 
-- Do not make `eval test` parse raw host logs directly inside the product.
+- Do not make `evaluate fixture` parse raw host logs directly inside the product.
 - Do not require every host to expose provider telemetry before the seam is usable.
 - Do not collapse deterministic packaging or bootstrap validation into this workflow.
   Keep those as repo-owned cheap gates.

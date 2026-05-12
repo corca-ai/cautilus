@@ -323,7 +323,7 @@ func RenderSelfDogfoodHTML(summary map[string]any, report map[string]any, review
 	var builder strings.Builder
 	title := fmt.Sprintf("Cautilus Self-Dogfood — %s", selfDogfoodStatusLabel(stringOrEmpty(summary["overallStatus"])))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus self-dogfood render-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus doctor artifacts render-self-dogfood-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderSelfDogfoodHeader(summary, "Cautilus Self-Dogfood"))
 	builder.WriteString(renderSelfDogfoodDecisionSummary(summary, report, reviewSummary))
@@ -335,7 +335,7 @@ func RenderSelfDogfoodHTML(summary map[string]any, report map[string]any, review
 	builder.WriteString(renderSelfDogfoodIntentPanel(summary, report))
 	builder.WriteString(renderSelfDogfoodObservations(report))
 	builder.WriteString(renderSelfDogfoodReviewVariants(summary, reviewSummary))
-	builder.WriteString(renderSelfDogfoodFooter(summary, "Generated from <code>summary.json</code>, <code>report.json</code>, and <code>review-summary.json</code>.\n\tDo not hand-edit this file — rerun <code>cautilus self-dogfood render-html</code> to refresh."))
+	builder.WriteString(renderSelfDogfoodFooter(summary, "Generated from <code>summary.json</code>, <code>report.json</code>, and <code>review-summary.json</code>.\n\tDo not hand-edit this file — rerun <code>cautilus doctor artifacts render-self-dogfood-html</code> to refresh."))
 	builder.WriteString("\n</main>\n</body>\n</html>\n")
 	return rewriteSelfDogfoodLinks(builder.String())
 }
@@ -344,7 +344,7 @@ func RenderSelfDogfoodExperimentsHTML(summary map[string]any, report map[string]
 	var builder strings.Builder
 	title := fmt.Sprintf("Cautilus Self-Dogfood Experiments — %s", selfDogfoodStatusLabel(stringOrEmpty(summary["overallStatus"])))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus self-dogfood render-experiments-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus doctor artifacts render-self-dogfood-experiments-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderSelfDogfoodHeader(summary, "Cautilus Self-Dogfood Experiments"))
 	builder.WriteString(renderSelfDogfoodExperimentsDecisionSummary(summary))
@@ -356,7 +356,7 @@ func RenderSelfDogfoodExperimentsHTML(summary map[string]any, report map[string]
 	builder.WriteString(renderSelfDogfoodExperimentsIntentPanel(summary, report))
 	builder.WriteString(renderSelfDogfoodComparison(summary))
 	builder.WriteString(renderSelfDogfoodExperimentCards(summary))
-	builder.WriteString(renderSelfDogfoodFooter(summary, "Generated from <code>summary.json</code> and <code>report.json</code>. The comparison view exists so A/B experiment outcomes can be inspected side by side instead of as isolated summaries.\n\tDo not hand-edit this file — rerun <code>cautilus self-dogfood render-experiments-html</code> to refresh."))
+	builder.WriteString(renderSelfDogfoodFooter(summary, "Generated from <code>summary.json</code> and <code>report.json</code>. The comparison view exists so A/B experiment outcomes can be inspected side by side instead of as isolated summaries.\n\tDo not hand-edit this file — rerun <code>cautilus doctor artifacts render-self-dogfood-experiments-html</code> to refresh."))
 	builder.WriteString("\n</main>\n</body>\n</html>\n")
 	return rewriteSelfDogfoodLinks(builder.String())
 }
@@ -537,9 +537,9 @@ func selfDogfoodNextStep(report map[string]any, reviewSummary map[string]any) st
 		return "Start with command observations; a command did not pass."
 	}
 	if reviewVariantsAggregateStatus(reviewSummary) != "pass" {
-		return "Start with review variants; at least one reviewer did not pass cleanly."
+		return "Start with evaluate review variants; at least one reviewer did not pass cleanly."
 	}
-	return "Start with review variants if you need evidence, otherwise the command observations are enough for a quick audit."
+	return "Start with evaluate review variants if you need evidence, otherwise the command observations are enough for a quick audit."
 }
 
 func experimentsNextStep(summary map[string]any) string {
@@ -683,7 +683,7 @@ func renderSelfDogfoodReviewVariants(summary map[string]any, reviewSummary map[s
 		return `
 <section class="panel" aria-labelledby="review-heading">
 	<h2 id="review-heading">Review Variants</h2>
-	<p class="empty">No review variants recorded.</p>
+	<p class="empty">No evaluate review variants recorded.</p>
 </section>`
 	}
 	var blocks strings.Builder

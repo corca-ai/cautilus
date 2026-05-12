@@ -249,7 +249,7 @@ function seedFirstBoundedRunAssets(summary, repoRoot) {
 
 function runFirstBoundedEval(summary, cautilusBin, repoRoot, execCommand) {
 	const evalOutputDir = join(repoRoot, "tmp", "cautilus-eval");
-	const args = ["eval", "test", "--repo-root", repoRoot, "--output-dir", evalOutputDir];
+	const args = ["evaluate", "fixture", "--repo-root", repoRoot, "--output-dir", evalOutputDir];
 	const evalTest = execCommand(cautilusBin, args);
 	summary.commands.push(summarizeCommand(cautilusBin, args, evalTest));
 	const evalSummaryPath = evalTest.stdout.trim().split(/\r?\n/).at(-1);
@@ -317,11 +317,11 @@ export async function runExternalConsumerOnboardingSmoke(
 			),
 		);
 
-		const install = execCommand(cautilusBin, ["install", "--repo-root", workspace.repoRoot, "--json"]);
-		summary.commands.push(summarizeCommand(cautilusBin, ["install", "--repo-root", workspace.repoRoot, "--json"], install));
+		const install = execCommand(cautilusBin, ["init", "--repo-root", workspace.repoRoot, "--json"]);
+		summary.commands.push(summarizeCommand(cautilusBin, ["init", "--repo-root", workspace.repoRoot, "--json"], install));
 
-		const adapterInit = execCommand(cautilusBin, ["adapter", "init", "--repo-root", workspace.repoRoot]);
-		summary.commands.push(summarizeCommand(cautilusBin, ["adapter", "init", "--repo-root", workspace.repoRoot], adapterInit));
+		const adapterInit = execCommand(cautilusBin, ["init", "adapter", "--repo-root", workspace.repoRoot]);
+		summary.commands.push(summarizeCommand(cautilusBin, ["init", "adapter", "--repo-root", workspace.repoRoot], adapterInit));
 
 		const adapterPath = join(workspace.repoRoot, ".agents", "cautilus-adapter.yaml");
 		const { fixturePath, runnerPath } = seedFirstBoundedRunAssets(summary, workspace.repoRoot);
@@ -349,9 +349,9 @@ export async function runExternalConsumerOnboardingSmoke(
 			),
 		);
 
-		const adapterResolve = execCommand(cautilusBin, ["adapter", "resolve", "--repo-root", workspace.repoRoot]);
+		const adapterResolve = execCommand(cautilusBin, ["doctor", "adapter", "--repo-root", workspace.repoRoot]);
 		summary.commands.push(
-			summarizeCommand(cautilusBin, ["adapter", "resolve", "--repo-root", workspace.repoRoot], adapterResolve),
+			summarizeCommand(cautilusBin, ["doctor", "adapter", "--repo-root", workspace.repoRoot], adapterResolve),
 		);
 
 		const doctor = execCommand(cautilusBin, ["doctor", "--repo-root", workspace.repoRoot]);

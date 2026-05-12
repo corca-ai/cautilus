@@ -164,7 +164,7 @@ func TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches(t *testing.
 		t.Fatalf("BuildAgentStatus returned error: %v", err)
 	}
 	if exitCode != 0 || payload["status"] != "ready" {
-		t.Fatalf("expected ready agent status, got exit=%d payload=%#v", exitCode, payload)
+		t.Fatalf("expected ready doctor status, got exit=%d payload=%#v", exitCode, payload)
 	}
 	readiness := asMap(payload["runnerReadiness"])
 	if readiness["state"] != "missing-assessment" {
@@ -401,7 +401,7 @@ func TestAgentStatusIncludesRelatedClaimStates(t *testing.T) {
 		t.Fatalf("BuildAgentStatus returned error: %v", err)
 	}
 	if exitCode != 0 {
-		t.Fatalf("expected successful agent status, got exit=%d payload=%#v", exitCode, status)
+		t.Fatalf("expected successful doctor status, got exit=%d payload=%#v", exitCode, status)
 	}
 	claimState := asMap(status["claimState"])
 	relatedStates := arrayOrEmpty(claimState["relatedStates"])
@@ -493,10 +493,10 @@ func TestRunnerReadinessSupportsTypedMultiRunnerAdapters(t *testing.T) {
 	}
 	branches := arrayOrEmpty(status["nextBranches"])
 	if !branchIDPresent(branches, "run_runner_smoke") {
-		t.Fatalf("expected agent status top-level branches to expose runner smoke command, got %#v", branches)
+		t.Fatalf("expected doctor status top-level branches to expose runner smoke command, got %#v", branches)
 	}
 	if branchIDPresent(branches, "run_eval_with_assessed_runner") {
-		t.Fatalf("agent status top-level branches should not promote ready eval without selected claim context, got %#v", branches)
+		t.Fatalf("doctor status top-level branches should not promote ready eval without selected claim context, got %#v", branches)
 	}
 }
 

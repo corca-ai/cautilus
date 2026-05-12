@@ -113,7 +113,7 @@ func shouldPrimeVersionState(path []string) bool {
 
 func shouldCheckForUpdates(path []string) bool {
 	switch strings.Join(path, " ") {
-	case "version", "commands", "healthcheck", "update":
+	case "version", "doctor commands", "doctor binary", "update":
 		return false
 	default:
 		return true
@@ -145,113 +145,113 @@ func helpTopicArgs(args []string) ([]string, bool) {
 
 func nativeHandler(path []string) handlerFunc {
 	switch strings.Join(path, " ") {
-	case "commands":
+	case "doctor commands":
 		return handleCommands
-	case "scenarios":
+	case "discover scenarios":
 		return handleScenarios
-	case "healthcheck":
+	case "doctor binary":
 		return handleHealthcheck
-	case "agent status":
+	case "doctor status":
 		return handleAgentStatus
-	case "adapter resolve":
+	case "doctor adapter":
 		return handleAdapterResolve
-	case "adapter init":
+	case "init adapter":
 		return handleAdapterInit
 	case "version":
 		return handleVersion
 	case "doctor":
 		return handleDoctor
-	case "claim discover":
+	case "discover claims":
 		return handleClaimDiscover
-	case "claim show":
+	case "discover claims status":
 		return handleClaimShow
-	case "claim review prepare-input":
+	case "discover claims review-input":
 		return handleClaimReviewPrepareInput
-	case "claim review apply-result":
+	case "discover claims apply-review":
 		return handleClaimReviewApplyResult
-	case "claim plan-evals":
+	case "evaluate claims plan":
 		return handleClaimPlanEvals
-	case "claim validate":
+	case "discover claims validate":
 		return handleClaimValidate
-	case "packet inspect":
+	case "doctor packet inspect":
 		return handlePacketInspect
-	case "install":
+	case "init":
 		return handleInstall
 	case "update":
 		return handleUpdate
-	case "workspace prepare-compare":
+	case "evaluate comparison prepare":
 		return handleWorkspacePrepareCompare
-	case "workspace prune-artifacts":
+	case "doctor artifacts prune":
 		return handleWorkspacePruneArtifacts
-	case "workspace start":
+	case "init run":
 		return handleWorkspaceStart
-	case "self-dogfood render-html":
+	case "doctor artifacts render-self-dogfood-html":
 		return handleSelfDogfoodRenderHTML
-	case "self-dogfood render-experiments-html":
+	case "doctor artifacts render-self-dogfood-experiments-html":
 		return handleSelfDogfoodRenderExperimentsHTML
-	case "eval test":
+	case "evaluate fixture":
 		return handleEvalTest
-	case "eval evaluate":
+	case "evaluate observation":
 		return handleEvalEvaluate
-	case "eval skill-experiment compare":
+	case "evaluate skill-experiment":
 		return handleEvalSkillExperimentCompare
-	case "eval live discover":
+	case "discover live-targets":
 		return handleWorkbenchDiscover
-	case "eval live run":
+	case "evaluate live":
 		return handleWorkbenchRunLive
-	case "eval live prepare-request-batch":
+	case "evaluate live prepare-request-batch":
 		return handleWorkbenchPrepareRequestBatch
-	case "eval live run-scenarios":
+	case "evaluate live scenarios":
 		return handleWorkbenchRunScenarios
-	case "eval live run-simulator-persona":
+	case "evaluate live persona":
 		return handleWorkbenchRunSimulatorPersona
-	case "scenario normalize chatbot":
+	case "discover scenarios normalize chatbot":
 		return handleScenarioNormalizeChatbot
-	case "scenario normalize skill":
+	case "discover scenarios normalize skill":
 		return handleScenarioNormalizeSkill
-	case "scenario normalize workflow":
+	case "discover scenarios normalize workflow":
 		return handleScenarioNormalizeWorkflow
-	case "scenario summarize-telemetry":
+	case "discover scenarios summarize-telemetry":
 		return handleScenarioSummarizeTelemetry
-	case "scenario prepare-input":
+	case "discover scenarios prepare-input":
 		return handleScenarioPrepareInput
-	case "scenario propose":
+	case "discover scenarios propose":
 		return handleScenarioPropose
-	case "scenario review-conversations":
+	case "discover scenarios review-conversations":
 		return handleScenarioReviewConversations
-	case "report build":
+	case "evaluate report build":
 		return handleReportBuild
-	case "report render-html":
+	case "evaluate report render-html":
 		return handleReportRenderHTML
-	case "review prepare-input":
+	case "evaluate review prepare-input":
 		return handleReviewPrepareInput
-	case "review feedback build":
+	case "evaluate review feedback build":
 		return handleReviewFeedbackBuild
-	case "review feedback summarize":
+	case "evaluate review feedback summarize":
 		return handleReviewFeedbackSummarize
-	case "review build-prompt-input":
+	case "evaluate review build-prompt-input":
 		return handleReviewBuildPromptInput
-	case "review render-prompt":
+	case "evaluate review render-prompt":
 		return handleReviewRenderPrompt
-	case "review variants":
+	case "evaluate review variants":
 		return handleReviewVariants
-	case "review render-html":
+	case "evaluate review render-html":
 		return handleReviewRenderHTML
-	case "review render-variants-summary-html":
+	case "evaluate review render-variants-summary-html":
 		return handleReviewRenderVariantsSummaryHTML
-	case "workspace render-compare-html":
+	case "evaluate comparison render-html":
 		return handleWorkspaceRenderCompareHTML
-	case "scenario render-proposals-html":
+	case "discover scenarios render-proposals-html":
 		return handleScenarioRenderProposalsHTML
-	case "scenario render-conversation-review-html":
+	case "discover scenarios render-conversation-review-html":
 		return handleScenarioRenderConversationReviewHTML
-	case "evidence render-html":
+	case "evaluate evidence render-html":
 		return handleEvidenceRenderHTML
-	case "artifacts render-index-html":
+	case "doctor artifacts render-index-html":
 		return handleArtifactsRenderIndexHTML
-	case "evidence prepare-input":
+	case "evaluate evidence prepare-input":
 		return handleEvidencePrepareInput
-	case "evidence bundle":
+	case "evaluate evidence bundle":
 		return handleEvidenceBundle
 	case "improve prepare-input":
 		return handleImprovePrepareInput
@@ -636,8 +636,8 @@ func handleScenarios(repoRoot string, cwd string, args []string, stdout io.Write
 	lines = append(lines,
 		"Every normalize command also accepts --example-input, which prints a",
 		"minimal valid packet you can pipe back into the same command:",
-		"  cautilus scenario normalize chatbot --example-input | \\",
-		"    cautilus scenario normalize chatbot --input /dev/stdin",
+		"  cautilus discover scenarios normalize chatbot --example-input | \\",
+		"    cautilus discover scenarios normalize chatbot --input /dev/stdin",
 		"",
 		"Pass --json for the machine-readable catalog (schema: "+runtime.ScenarioCatalogSchema+").",
 	)
@@ -877,7 +877,7 @@ func rejectRefreshPlanClaimStateOverwrite(cwd string, repoRoot string, output *s
 			return err
 		}
 		if outputPath == filepath.Clean(resolvedStatePath) {
-			return fmt.Errorf("refusing to write claim refresh plan over saved claim state %s; use a refresh-plan output path, or rerun claim discover without --refresh-plan to update saved claims", statePath)
+			return fmt.Errorf("refusing to write claim refresh plan over saved claim state %s; use a refresh-plan output path, or rerun discover claims without --refresh-plan to update saved claims", statePath)
 		}
 	}
 	return nil
@@ -1166,7 +1166,7 @@ func buildEvalEvaluateSummary(input map[string]any) (map[string]any, error) {
 	case contracts.AppPromptEvaluationInputsSchema:
 		return runtime.BuildAppPromptEvaluationSummary(input, time.Now())
 	default:
-		return nil, fmt.Errorf("unsupported schemaVersion %v: cautilus eval evaluate accepts %s, %s, %s, or %s", input["schemaVersion"], contracts.EvaluationObservedSchema, contracts.SkillEvaluationInputsSchema, contracts.AppChatEvaluationInputsSchema, contracts.AppPromptEvaluationInputsSchema)
+		return nil, fmt.Errorf("unsupported schemaVersion %v: cautilus evaluate observation accepts %s, %s, %s, or %s", input["schemaVersion"], contracts.EvaluationObservedSchema, contracts.SkillEvaluationInputsSchema, contracts.AppChatEvaluationInputsSchema, contracts.AppPromptEvaluationInputsSchema)
 	}
 }
 
@@ -1207,7 +1207,7 @@ func handleScenarioNormalize(args []string, cwd string, stdout io.Writer, stderr
 		candidates, err = runtime.NormalizeChatbotProposalCandidates(arrayOrEmpty(input["conversationSummaries"]), arrayOrEmpty(input["runSummaries"]))
 	case "skill":
 		if input["schemaVersion"] == contracts.WorkflowNormalizationInputsSchema {
-			fmt.Fprintf(stderr, "Input uses %s; use `cautilus scenario normalize workflow` instead.\n", contracts.WorkflowNormalizationInputsSchema)
+			fmt.Fprintf(stderr, "Input uses %s; use `cautilus discover scenarios normalize workflow` instead.\n", contracts.WorkflowNormalizationInputsSchema)
 			return 1
 		}
 		switch input["schemaVersion"] {

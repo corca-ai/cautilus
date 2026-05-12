@@ -12,21 +12,21 @@ export const NO_INPUT_AUDIT_SCHEMA = "cautilus.no_input_audit.v1";
 const REQUIRED_COMMAND_PATTERNS = [
 	{
 		id: "agent_status",
-		pattern: /\bcautilus\b.*\bagent\s+status\b|\b\.\/bin\/cautilus\b.*\bagent\s+status\b/,
+		pattern: /\bcautilus\b.*\bdoctor\s+status\b|\b\.\/bin\/cautilus\b.*\bdoctor\s+status\b/,
 		message: "No-input Cautilus runs should read the binary-owned orientation packet.",
 	},
 ];
 
 const FORBIDDEN_COMMAND_PATTERNS = [
-	["claim_discover", /\bclaim\s+discover\b/],
-	["eval_test", /\beval\s+test\b/],
-	["eval_evaluate", /\beval\s+evaluate\b/],
-	["review_variants", /\breview\s+variants\b/],
+	["claim_discover", /\bdiscover\s+claims\b/],
+	["eval_test", /\bevaluate\s+fixture\b/],
+	["eval_evaluate", /\bevaluate\s+observation\b/],
+	["review_variants", /\bevaluate\s+review\s+variants\b/],
 	["improve", /\bimprove\b/],
-	["scenario_propose", /\bscenario\s+propose\b/],
+	["scenario_propose", /\bdiscover\s+scenarios\s+propose\b/],
 	["scenarios_catalog", /\bscenarios\s+--json\b/],
 	["doctor_next_action", /\bdoctor\b.*--next-action\b/],
-	["repo_doctor", /\bdoctor\b(?=.*--repo-root)(?!.*--scope\s+agent-surface)/],
+	["repo_doctor", /\bdoctor\b(?!\s+status\b)(?=.*--repo-root)(?!.*--scope\s+agent-surface)/],
 	["git_add", /\bgit\s+add\b/],
 	["git_commit", /\bgit\s+commit\b/],
 	["npm_verify", /\bnpm\s+run\s+verify\b/],
@@ -37,7 +37,7 @@ const FORBIDDEN_COMMAND_PATTERNS = [
 
 const FORBIDDEN_MESSAGE_PATTERNS = [
 	["eval_readiness", /eval readiness|bounded run|first_bounded_run/i],
-	["eval_command", /\beval\s+test\b/i],
+	["eval_command", /\bevaluate\s+fixture\b/i],
 	["debug_artifact", /debug artifact|charness-artifacts\/debug/i],
 	["commit", /\bgit\s+commit\b|\bcommitted\b/i],
 ];

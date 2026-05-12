@@ -39,29 +39,29 @@ Current `core validated surface`:
 - generic workflow, adapter, and reporting contracts
 - `cautilus.behavior_intent.v1` contract scoring operator-facing behavior surfaces (`operator_behavior`, `operator_workflow_recovery`, `operator_guidance_clarity`, `repair_explicit_regressions_first`)
 - Go CLI entrypoint (`toolchain go1.26.3`) with checked-in `golangci-lint`, `govulncheck`, and an attestation-backed release artifact workflow
-- registry-backed command discovery (`cautilus commands`, `cautilus healthcheck`) for safe probing and wrapper tooling
+- registry-backed command discovery (`cautilus doctor commands`, `cautilus doctor binary`) for safe probing and wrapper tooling
 - Node adapter bootstrap scripts
 - a minimal CLI plus a Cautilus Agent entrypoint embedded through `skills/bundled.go`
 - repo-local Codex and Claude plugin packages, marketplace wiring, and local proof paths for the Cautilus Agent
 - adapter readiness checks through `doctor`
-- bounded runtime execution through `eval test`
+- bounded runtime execution through `evaluate fixture`
 - scenario-history-aware profile selection and history updates for profile-backed mode runs
 - comparison-mode baseline-cache seed materialization for profile-backed runs
-- explicit workspace preparation through `workspace prepare-compare`
-- explicit artifact-root pruning through `workspace prune-artifacts`
+- explicit workspace preparation through `evaluate comparison prepare`
+- explicit artifact-root pruning through `doctor artifacts prune`
 - explicit per-run artifact-root materialization through `workspace start`, with a `CAUTILUS_RUN_DIR` env var contract documented in [active-run.md](./contracts/active-run.md).
-  `eval test` is wired into `resolveRunDir`; remaining consumer commands are being pulled in one slice at a time.
+  `evaluate fixture` is wired into `resolveRunDir`; remaining consumer commands are being pulled in one slice at a time.
 - report packet assembly, review packet assembly, and review-variant fanout
-- native self-dogfood HTML rendering through `cautilus self-dogfood render-html` and `render-experiments-html`
+- native self-dogfood HTML rendering through `cautilus doctor artifacts render-self-dogfood-html` and `render-experiments-html`
 - tagged-release install surface (`install.sh`, checksum + `actions/attest` subject attestation) plus product-owned public-release verification and `release:smoke-install` helpers
-- checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `eval test`
+- checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture`
 
 Current `product-owned helper surface`:
 
-- `eval test` with the `dev/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
-- `eval evaluate` packet summarizer dispatches to `cautilus.skill_evaluation_summary.v1` for trigger and execution behavior when the observed packet's schema is `cautilus.skill_evaluation_inputs.v1`
+- `evaluate fixture` with the `dev/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
+- `evaluate observation` packet summarizer dispatches to `cautilus.skill_evaluation_summary.v1` for trigger and execution behavior when the observed packet's schema is `cautilus.skill_evaluation_inputs.v1`
 - `eval live` commands expose the live app runner seam; it is not a fourth product job
-- `chatbot`, `skill`, and `workflow` `scenario normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation.spec.md](./specs/user/evaluation.spec.md))
+- `chatbot`, `skill`, and `workflow` `discover scenarios normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation.spec.md](./specs/user/evaluation.spec.md))
 - scenario proposal packet assembly and proposal generation
 - scenario-adjacent conversation review packet and HTML surface over normalized chatbot threads plus proposal candidates
 - scenario-level telemetry summaries for cost and token transparency
@@ -75,17 +75,17 @@ Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in 
 
 The three command-family promise map lives in [specs/user/index.spec.md](./specs/user/index.spec.md): `claim` for declared-claim discovery and proof planning, `eval` for verification, and `improve` for bounded improvement.
 The contract proof map for those promises lives in [specs/contracts/index.spec.md](./specs/contracts/index.spec.md).
-The first `claim` slice ships as deterministic `cautilus claim discover`, which emits a source-ref-backed proof plan rather than a verdict.
+The first `claim` slice ships as deterministic `cautilus discover claims`, which emits a source-ref-backed proof plan rather than a verdict.
 The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the Cautilus Agent owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.
 The deterministic binary slice, first Cautilus Agent control-flow slice, deterministic review-input helper slice, possible-evidence preflight, guarded review-result application slice, review-to-eval branch proof, eval planning, fixture-authoring guidance, and first carried-evidence reconciliation slice are now implemented.
 The next claim-discovery hardening seam should come from fresh dogfood evidence rather than the old review-result application / evidence reconciliation backlog.
 The current reader-facing evaluation claim lives in [specs/user/evaluation.spec.md](./specs/user/evaluation.spec.md); the archived implementation-surface spec lives in [specs/old/evaluation-surfaces.spec.md](./specs/old/evaluation-surfaces.spec.md).
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
-`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `scenario normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
+`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
 The runner readiness contract lives in [runner-readiness.md](./contracts/runner-readiness.md).
 It keeps headless product runners as setup/readiness substrate rather than a fourth command family, and it separates proof requirements from readiness verdicts.
 The runner verification capability contract lives in [runner-verification.md](./contracts/runner-verification.md).
-It requires product-proof runner assessments to explain input simulation, external substitution, trigger control, and external observation before `doctor` or `agent status` can present product-behavior proof as ready.
+It requires product-proof runner assessments to explain input simulation, external substitution, trigger control, and external observation before `doctor` or `doctor status` can present product-behavior proof as ready.
 The live app runner contracts live in [workbench-instance-discovery.md](./contracts/workbench-instance-discovery.md), [live-run-invocation.md](./contracts/live-run-invocation.md), and [live-run-invocation-batch.md](./contracts/live-run-invocation-batch.md).
 Their public command namespace is `eval live`; the `workbench` name is reserved for a possible future GUI where operators can browse and edit claims, scenarios, and evidence.
 
@@ -113,7 +113,7 @@ Moved into the product runtime:
 - scenario split selection rules (train / held-out / full-gate)
 - history update and scenario graduation logic for profile-backed runs
 - baseline-cache key materialization for profile-backed comparison runs
-- compare artifact conventions shared by `eval test` and `review variants`
+- compare artifact conventions shared by `evaluate fixture` and `evaluate review variants`
 
 Still open (both deferred 2026-04-15 pending dogfood evidence — see [scenario-history.md § Deferred Expansion](./contracts/scenario-history.md) for premortem findings and the triggers that would unlock the slice):
 
@@ -126,8 +126,8 @@ Guardrail: do not import a host repo's built-in benchmark profiles unchanged if 
 
 Product-owned pieces shipped:
 
-- `chatbot`, `skill`, and `workflow` `scenario normalize` commands plus candidate helpers (proposal-input pipeline; the evaluation-surface archetype framing was retired)
-- `scenario prepare-input`, `scenario propose`, `scenario summarize-telemetry`
+- `chatbot`, `skill`, and `workflow` `discover scenarios normalize` commands plus candidate helpers (proposal-input pipeline; the evaluation-surface archetype framing was retired)
+- `discover scenarios prepare-input`, `discover scenarios propose`, `discover scenarios summarize-telemetry`
 - checked-in schema artifacts and normalization-family fixtures (chatbot, skill-validation, durable-workflow)
 - Cautilus Agent reference prompts point at these helpers
 
@@ -161,7 +161,7 @@ Still intentionally excluded:
 
 Shipped:
 
-- [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready → one bounded `eval test` in a temp git repo
+- [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready → one bounded `evaluate fixture` in a temp git repo
 - release discipline boundary documented in [release-boundary.md](./maintainers/release-boundary.md)
 
 Still open:

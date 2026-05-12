@@ -7,18 +7,18 @@ const MAX_NONEMPTY_LINES = 180;
 const REQUIRED_FRAGMENTS = [
 	"## CLI First",
 	"cautilus --help",
-	"cautilus commands --json",
-	"cautilus claim discover --repo-root .",
-	"cautilus scenarios --json",
+	"cautilus doctor commands --json",
+	"cautilus discover claims --repo-root .",
+	"cautilus discover scenarios --json",
 	"--example-input",
 	"## Declared Claim Discovery",
 	"`claim`, `eval`, and `improve`",
 	"eval-summary.json",
 	"dev / repo",
 	"app / prompt",
-	"cautilus install --repo-root",
+	"cautilus init --repo-root",
 	"doctor --scope agent-surface",
-	"review variants are requested but unavailable",
+	"evaluate review variants are requested but unavailable",
 	"command-cookbook.md",
 ];
 
@@ -29,17 +29,17 @@ const FORBIDDEN_FRAGMENTS = [
 	"fixtures/scenario-proposals/chatbot-input.json",
 	"fixtures/scenario-proposals/skill-input.json",
 	"fixtures/scenario-proposals/workflow-input.json",
-	"When `eval test` or `report build` emits `report.json`",
+	"When `evaluate fixture` or `report build` emits `report.json`",
 	"Build `report.json` and treat it as the first decision surface.",
 	"Use iterate mode for tuning, held-out mode for validation, and full gate for ship decisions.",
 ];
 
 const GLOBAL_FORBIDDEN_FRAGMENTS = [
-	"When `eval test` or `report build` emits `report.json`",
+	"When `evaluate fixture` or `report build` emits `report.json`",
 	"Build `report.json` and treat it as the first decision surface.",
 	"Use iterate mode for tuning, held-out mode for validation, and full gate for ship decisions.",
-	"| `report.json`                     | `eval test`, `report build`",
-	"| `eval test`       | wired      | `report-input.json`, `report.json`",
+	"| `report.json`                     | `evaluate fixture`, `report build`",
+	"| `evaluate fixture`       | wired      | `report-input.json`, `report.json`",
 	"The legacy `dogfood:self`",
 	"README proof",
 ];

@@ -43,9 +43,9 @@ product_surfaces:
 cli_skill_surface_probe_commands:
   - ./bin/cautilus --version
   - ./bin/cautilus --help
-  - ./bin/cautilus healthcheck --json
-  - ./bin/cautilus commands --json
-  - ./bin/cautilus scenarios --json
+  - ./bin/cautilus doctor binary --json
+  - ./bin/cautilus doctor commands --json
+  - ./bin/cautilus discover scenarios --json
   - ./bin/cautilus doctor --repo-root . --scope agent-surface
 cli_skill_surface_command_docs:
   - README.md
@@ -120,7 +120,7 @@ startup_probes:
     command:
       - sh
       - "-c"
-      - tmpdir="$(mktemp -d /tmp/cautilus-agent-surface-XXXXXX)" && ./bin/cautilus install --repo-root "$tmpdir" --json >/dev/null && ./bin/cautilus doctor --repo-root "$tmpdir" --scope agent-surface >/dev/null
+      - tmpdir="$(mktemp -d /tmp/cautilus-agent-surface-XXXXXX)" && ./bin/cautilus init --repo-root "$tmpdir" --json >/dev/null && ./bin/cautilus doctor --repo-root "$tmpdir" --scope agent-surface >/dev/null
     class: release
     startup_mode: first-launch
     surface: cautilus_agent
@@ -140,14 +140,14 @@ concept_paths:
   - charness-artifacts/quality/quality.md
   - charness-artifacts/quality/latest.md
 preflight_commands:
-  - ./bin/cautilus adapter resolve --repo-root .
+  - ./bin/cautilus doctor adapter --repo-root .
 gate_commands:
   - npm run verify
   - npm run dogfood:self
 review_commands:
   - npm run lint:skill-disclosure
-  - ./bin/cautilus commands --json
-  - ./bin/cautilus scenarios --json
+  - ./bin/cautilus doctor commands --json
+  - ./bin/cautilus discover scenarios --json
 security_commands:
   - npm run security:govulncheck
   - npm run security:secrets

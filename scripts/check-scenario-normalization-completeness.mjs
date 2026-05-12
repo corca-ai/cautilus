@@ -6,7 +6,7 @@ import process from "node:process";
 //
 // The original first-class evaluation archetype boundary spec was retired
 // alongside the evaluation-surfaces redesign; the chatbot / skill / workflow
-// `scenario normalize` plumbing still ships, and this lint keeps that
+// `discover scenarios normalize` plumbing still ships, and this lint keeps that
 // plumbing whole.
 //
 // What remains gated here for each scenario-normalize family:
@@ -26,7 +26,7 @@ const NORMALIZATION_FAMILIES = [
 		schemaId: "cautilus.chatbot_normalization_inputs.v1",
 		helperFunc: "NormalizeChatbotProposalCandidates",
 		handlerFunc: "handleScenarioNormalizeChatbot",
-		cliPath: ["scenario", "normalize", "chatbot"],
+		cliPath: ["discover", "scenarios", "normalize", "chatbot"],
 		contractDoc: "docs/contracts/chatbot-normalization.md",
 		exampleInput: "fixtures/scenario-proposals/chatbot-input.json",
 	},
@@ -35,7 +35,7 @@ const NORMALIZATION_FAMILIES = [
 		schemaId: "cautilus.skill_normalization_inputs.v2",
 		helperFunc: "NormalizeSkillProposalCandidates",
 		handlerFunc: "handleScenarioNormalizeSkill",
-		cliPath: ["scenario", "normalize", "skill"],
+		cliPath: ["discover", "scenarios", "normalize", "skill"],
 		contractDoc: "docs/contracts/skill-normalization.md",
 		exampleInput: "fixtures/scenario-proposals/skill-input.json",
 	},
@@ -44,7 +44,7 @@ const NORMALIZATION_FAMILIES = [
 		schemaId: "cautilus.workflow_normalization_inputs.v1",
 		helperFunc: "NormalizeWorkflowProposalCandidates",
 		handlerFunc: "handleScenarioNormalizeWorkflow",
-		cliPath: ["scenario", "normalize", "workflow"],
+		cliPath: ["discover", "scenarios", "normalize", "workflow"],
 		contractDoc: "docs/contracts/workflow-normalization.md",
 		exampleInput: "fixtures/scenario-proposals/workflow-input.json",
 	},
@@ -61,6 +61,11 @@ function readRequired(relPath) {
 
 function registryPathPattern(parts) {
 	return `"path": [${parts.map((part) => `"${part}"`).join(", ")}]`;
+}
+
+function registryHasPath(registryText, parts) {
+	const registry = JSON.parse(registryText);
+	return registry.commands?.some((command) => JSON.stringify(command.path) === JSON.stringify(parts)) === true;
 }
 
 function loadSources() {
@@ -83,7 +88,7 @@ function checkNormalizationFamily(def, sources, issues) {
 	if (!sources.proposals.includes(`func ${def.helperFunc}`)) {
 		fail(`helper func ${def.helperFunc} missing from internal/runtime/proposals.go`);
 	}
-	if (!sources.registry.includes(registryPathPattern(def.cliPath))) {
+	if (!registryHasPath(sources.registry, def.cliPath)) {
 		fail(`command-registry.json missing ${registryPathPattern(def.cliPath)}`);
 	}
 	if (!sources.app.includes(`func ${def.handlerFunc}`)) {

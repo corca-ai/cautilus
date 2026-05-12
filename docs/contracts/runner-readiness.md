@@ -22,17 +22,17 @@ Does this repo have a headless runner that can execute the selected behavior sur
 
 Define the contract and vocabulary for runner readiness.
 Do not implement a new public command family in this slice.
-Do not make `claim discover` judge whether a runner is honest.
+Do not make `discover claims` judge whether a runner is honest.
 Do not make `doctor` infer semantic honesty from source code alone.
 
 The immediate design change is conceptual and packet-shaped.
-The first implementation slice should be read-only readiness visibility through `doctor` and `agent status`, plus a minimal runner assessment schema and example.
+The first implementation slice should be read-only readiness visibility through `doctor` and `doctor status`, plus a minimal runner assessment schema and example.
 `claim`, `eval`, and `improve` behavior changes consume this readiness data in later slices or only when the data already exists.
 
 The durable product model is:
 
 - `claim` records proof requirements.
-- `doctor` and `agent status` report runner readiness evidence.
+- `doctor` and `doctor status` report runner readiness evidence.
 - `eval` executes adapter-declared runners and records the observed behavior packet.
 - `improve` requires runner-backed proof before changing behavior.
 
@@ -74,7 +74,7 @@ The binary should not pretend it can prove semantic honesty from adapter existen
 
 ### Claim Records Requirements, Not Readiness Verdicts
 
-`claim discover`, claim review, and `claim plan-evals` may classify a behavior claim as evaluator-dependent.
+`discover claims`, claim review, and `evaluate claims plan` may classify a behavior claim as evaluator-dependent.
 They may also record the runner capability required to prove it.
 They must not decide that the current repo runner is honest enough.
 
@@ -113,11 +113,11 @@ That judgment belongs in a runner assessment.
 
 ### Agent Status Orients The Next Step
 
-`agent status` should remain a read-only orientation packet.
+`doctor status` should remain a read-only orientation packet.
 It should combine binary health, skill surface readiness, adapter state, claim state, and runner readiness status.
 Top-level `nextBranches` should expose safe orientation branches, including adapter setup, claim refresh, runner assessment, declared runner smoke, claim-map inspection, and stop, without promoting eval execution.
 
-`agent status` may say a runner assessment is missing or stale.
+`doctor status` may say a runner assessment is missing or stale.
 It should not silently downgrade app proof to prompt-only smoke when the selected claim requires a headless product runner.
 It must not create assessments, run smoke commands, refresh claim state, or mark semantic readiness by itself.
 
@@ -135,7 +135,7 @@ Each branch should expose a stable id, human label, blocking reason, required co
 
 ### Eval Executes The Runner
 
-`eval test` remains the execution surface.
+`evaluate fixture` remains the execution surface.
 It should run the selected adapter-declared runner and write the observed packet.
 The observed packet should distinguish fixture-backed smoke, coding-agent messaging, in-process product runner, and live/server product runner.
 
@@ -167,7 +167,7 @@ App claims that depend on route policy, tools, retrieval, state, middleware, or 
 ## Runner Assessment Packet
 
 The first implementation should define a minimal `cautilus.runner_assessment.v1` packet.
-The packet should be checkable by `doctor` and readable by `agent status`.
+The packet should be checkable by `doctor` and readable by `doctor status`.
 Runner assessment shape now has two layers.
 This document owns assessment existence, scope, freshness, proof class, and recommendation.
 [Runner verification](./runner-verification.md) owns the optional-to-required capability evidence that explains whether product-proof classes are honest enough for the selected surface.
@@ -195,7 +195,7 @@ Minimum fields:
 `adapterHash` is a `sha256:<hex>` hash of the adapter file.
 `repoCommit` is provenance, not the primary freshness key.
 An assessment is stale when the current adapter hash differs from `adapterHash`, any listed runner file is missing, or any listed runner file hash differs.
-If the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `agent status` should expose the drift as assessment provenance without marking the assessment stale.
+If the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `doctor status` should expose the drift as assessment provenance without marking the assessment stale.
 `runnerFiles` must include every host-owned file the assessment relies on for production path reuse, not only the wrapper script.
 If the host cannot enumerate transitive files, `knownGaps` must say so.
 A claim that depends on untracked production-path components cannot receive `ready-for-selected-surface`.
@@ -210,11 +210,11 @@ It means the assessed runner is fit for the listed requirement with the listed k
 `knownGaps` should be explicit so a runner can be useful without pretending to be full E2E.
 `verificationCapabilities` should be present when `proofClass` is `in-process-product-runner` or `live-product-runner` and `recommendation` is `ready-for-selected-surface`.
 For those product proof classes, the four required capability legs are `inputSimulation`, `externalSubstitution`, `triggerControl`, and `externalObservation`.
-Each required leg must be `present` or explicitly `not-required` with a reason before `doctor` and `agent status` may present the runner as ready for product-behavior proof.
+Each required leg must be `present` or explicitly `not-required` with a reason before `doctor` and `doctor status` may present the runner as ready for product-behavior proof.
 
 The default assessment path is `.cautilus/runners/<runner-id>.assessment.json`.
 The first implementation must provide one operator-copyable assessment scaffold path through the existing product surface without introducing a public `runner` command family.
-`agent status` and `doctor --next-action` should name the expected assessment path, runner id, selected surface, proof class, and one concrete scaffold source.
+`doctor status` and `doctor --next-action` should name the expected assessment path, runner id, selected surface, proof class, and one concrete scaffold source.
 The Cautilus Agent may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone.
 
 Recommendation values should be narrow:
@@ -249,7 +249,7 @@ Rules:
 
 - `id`, `surfaces`, and `command_template` are required.
 - `surfaces` entries use the canonical eval surface keys: `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt`.
-- `cautilus eval test` selects the typed runner whose `surfaces` contains the fixture's surface key.
+- `cautilus evaluate fixture` selects the typed runner whose `surfaces` contains the fixture's surface key.
 - `{runner_id}` is available as a command-template placeholder alongside `{candidate_repo}`, `{output_dir}`, `{eval_cases_file}`, `{eval_observed_file}`, and `{backend}`.
 - `default_runtime` may be `codex`, `claude`, `fixture`, or `product` and is used only when the operator does not pass `--runtime`.
 - `proof_class` may describe the declared proof class, but it is not enough to make app product proof ready.
@@ -258,7 +258,7 @@ Rules:
 - For `dev/repo` and `dev/skill`, a non-fixture coding-agent runtime may report adapter-declared `coding-agent-messaging` as observed proof while preserving any smoke-only assessment as assessment metadata, but only when the observed packet reports matching runtime telemetry such as `codex_exec` or `claude_code`.
 - `assessment_path` defaults to `.cautilus/runners/<runner-id>.assessment.json`.
 
-`doctor` and `agent status` report aggregate runner readiness plus per-runner readiness entries when multiple typed runners exist.
+`doctor` and `doctor status` report aggregate runner readiness plus per-runner readiness entries when multiple typed runners exist.
 The first blocking runner-readiness branch remains the next setup action.
 
 ## Adapter Boundary
@@ -283,7 +283,7 @@ The skill should use the binary for command discovery and examples.
 It should not duplicate the command catalog.
 Its value is sequencing and judgment:
 
-- orient from `agent status`
+- orient from `doctor status`
 - decide whether the user is in `claim`, `eval`, `improve`, or setup/readiness work
 - explain when app proof is only smoke-backed
 - help create or review a headless product runner
@@ -307,7 +307,7 @@ More complex apps can use instance discovery and live-run invocation when select
 ## Probe Questions
 
 - Should runner readiness be a new adapter section or an extension of `eval_test_command_templates`?
-- Should `claim plan-evals` emit `requiredRunnerCapability` in the first slice or should that wait until runner assessment packets exist?
+- Should `evaluate claims plan` emit `requiredRunnerCapability` in the first slice or should that wait until runner assessment packets exist?
 - How much of `cautilus.runner_assessment.v1` should be written by a binary helper versus by the Cautilus Agent?
 - How much output observability is required for tool-using app claims before the product should call an evaluation result actionable?
 
@@ -334,7 +334,7 @@ More complex apps can use instance discovery and live-run invocation when select
 Do not move app prompt extraction into the binary.
 The host repo understands how its prompt is composed and how its tools and state are wired.
 
-Do not make `claim discover` scan source code until it can explain the proof requirement without pretending to prove runner readiness.
+Do not make `discover claims` scan source code until it can explain the proof requirement without pretending to prove runner readiness.
 Source-code prompt mining may become a future explicit source or adapter-owned probe, but it is not the default claim job.
 
 Do not add a fourth user-facing product job called runner.
@@ -353,7 +353,7 @@ Proof class must remain visible in downstream summaries and reports.
 
 1. A maintainer can tell whether a selected app claim lacks a runner, has only fixture smoke, or has runner-backed proof.
 2. `claim` output can name the runner capability required without claiming the current runner is ready.
-3. `doctor` and `agent status` can show runner assessment existence and freshness without pretending to perform semantic review.
+3. `doctor` and `doctor status` can show runner assessment existence and freshness without pretending to perform semantic review.
 4. `eval` summaries preserve proof class so humans and agents do not overread weak runs.
 5. `improve` refuses or blocks when an app claim requires runner-backed proof and only smoke evidence exists.
 6. A simple app repo can adopt Cautilus with one headless product runner without adopting the full eval-live instance model.
@@ -365,7 +365,7 @@ The first implementation slice should include:
 - doctor packet tests proving top-level `ready` semantics do not change when `runnerReadiness` is missing or stale
 - doctor packet tests for `runnerReadiness.state`: `missing-assessment`, `smoke-only`, `assessed`, `stale`, and `unknown`
 - doctor packet tests proving product-proof readiness is blocked when `verificationCapabilities` omits required legs
-- agent status tests showing runner readiness next branches and branch ordering
+- doctor status tests showing runner readiness next branches and branch ordering
 - schema or fixture tests for one valid `cautilus.runner_assessment.v1` packet and one stale packet
 - adapter fixture coverage proving plain `eval_test_command_templates` imply only `declared-eval-runner`, not a product proof class
 - one fixture-backed simple app runner assessment example that does not use workbench instance discovery
@@ -383,7 +383,7 @@ Fresh-Eye Satisfaction: parent-delegated.
 
 Act Before Ship:
 
-- Keep the first implementation slice read-only for `doctor` and `agent status`, with a minimal runner assessment schema and example before changing `claim`, `eval`, or `improve` behavior.
+- Keep the first implementation slice read-only for `doctor` and `doctor status`, with a minimal runner assessment schema and example before changing `claim`, `eval`, or `improve` behavior.
 - Ensure plain `eval_test_command_templates` imply only `declared-eval-runner`, not an app proof class.
 - Fix the app improve threshold: product-behavior improvement needs `in-process-product-runner` or `live-product-runner` plus `ready-for-selected-surface`.
 - Define assessment freshness with concrete repo commit, adapter hash, and runner file hash rules.
@@ -395,7 +395,7 @@ Bundle Anyway:
 
 Over-Worry:
 
-- Treating `agent status` branch labels as a fourth product workflow is over-worry once the branch ordering keeps ownership visible and status remains read-only.
+- Treating `doctor status` branch labels as a fourth product workflow is over-worry once the branch ordering keeps ownership visible and status remains read-only.
 - Renaming the already-shipped packet schemas is over-worry for this slice; the public command surface is already `eval live`.
 
 Valid But Defer:
@@ -413,16 +413,16 @@ Implementation notes should update this document before changing adapter, doctor
 
 Start with read-only packet and status visibility before broad behavior changes.
 
-1. Add a separate `runnerReadiness` object to `doctor` and `agent status` without changing top-level adapter `ready` semantics.
+1. Add a separate `runnerReadiness` object to `doctor` and `doctor status` without changing top-level adapter `ready` semantics.
 2. Define `cautilus.runner_assessment.v1` and one checked example under the default assessment path shape.
 3. Implement stale assessment detection for adapter hash and listed runner file hashes, with repo commit drift exposed as provenance.
 4. Treat plain `eval_test_command_templates` as `declared-eval-runner` only.
-5. Teach `agent status` to surface missing, stale, smoke-only, not-ready, and ready runner states as read-only next branches.
+5. Teach `doctor status` to surface missing, stale, smoke-only, not-ready, and ready runner states as read-only next branches.
 
 Implemented slices:
 
-1. `claim plan-evals` adds `proofRequirement.requiredRunnerCapability` and `proofRequirement.requiredObservability` without using those fields as readiness verdicts.
-2. `eval test` adds `proof.proofClass` and runner-readiness metadata to `eval-observed.json` and preserves it in `eval-summary.json`.
+1. `evaluate claims plan` adds `proofRequirement.requiredRunnerCapability` and `proofRequirement.requiredObservability` without using those fields as readiness verdicts.
+2. `evaluate fixture` adds `proof.proofClass` and runner-readiness metadata to `eval-observed.json` and preserves it in `eval-summary.json`.
 3. `improve` blocks behavior-changing work for reports whose `proofSummary` says product-runner proof is required but not ready.
 4. The fixture set includes a live-run-backed runner assessment example that references the existing eval-live contracts without making instance discovery mandatory for simple app repos.
-5. Adapters can declare typed multi-runner metadata under `runner_readiness.runners`, and `eval test` selects the runner by fixture surface.
+5. Adapters can declare typed multi-runner metadata under `runner_readiness.runners`, and `evaluate fixture` selects the runner by fixture surface.

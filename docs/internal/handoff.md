@@ -7,13 +7,13 @@ Issue #33은 닫혔고, 이번 세션의 후속 작업은 claim Evidence State S
 
 ## Current State
 
-- Issue #33 closeout은 `cautilus review feedback build`와 `cautilus review feedback summarize`까지 좁혀 완료되었습니다.
+- Issue #33 closeout은 `cautilus evaluate review feedback build`와 `cautilus evaluate review feedback summarize`까지 좁혀 완료되었습니다.
   관련 커밋은 `1d5024b Close review-learning concern loop`와 로컬 커밋 `815a3de Add review feedback summary CLI`입니다.
 - 사용자가 Evidence State와 raw claim backlog가 둘로 갈라져 SOT가 흐려진다고 지적했습니다.
   현재 개선은 raw audit source를 `.cautilus/claims/evidenced-typed-runners.json`로 고정하고, 사람이 읽는 Evidence State projection을 생성물로 둡니다.
 - 새 projection은 `.cautilus/claims/evidence-state.json`와 [Claim Evidence State](../specs/evidence/claim-evidence-state.md)입니다.
   이 파일은 Cautilus eval로 증명해야 하지만 아직 열려 있는 claim 총량, ready-for-proof/needs-scenario queue, surface별 분포, 샘플 claim, action bucket, stale 신호를 보여줍니다.
-- `npm run claims:evidence-state`는 `cautilus claim show`로 `.cautilus/claims/status-summary.json`를 새로 만들고 Evidence State projection을 다시 렌더링합니다.
+- `npm run claims:evidence-state`는 `cautilus discover claims status`로 `.cautilus/claims/status-summary.json`를 새로 만들고 Evidence State projection을 다시 렌더링합니다.
   `npm run claims:evidence-state:check`와 `npm run verify`는 status snapshot, JSON projection, Markdown projection의 drift를 잡습니다.
 - `claim-status-report.md`도 같은 status snapshot을 읽으므로 `claims:status-report:check`를 추가해 `verify`에서 함께 검사합니다.
 - 현재 claim packet은 HEAD 기준 stale입니다.
@@ -33,7 +33,7 @@ Issue #33은 닫혔고, 이번 세션의 후속 작업은 claim Evidence State S
 2. 변경 내용을 읽을 때는 [Claim Evidence State](../specs/evidence/claim-evidence-state.md)부터 보고, 그 다음 `.cautilus/claims/evidence-state.json`, `.cautilus/claims/status-summary.json`, `.cautilus/claims/claim-status-report.md` 순서로 보세요.
 3. 커밋 전이면 `npm run claims:evidence-state:check`, `npm run claims:status-report:check`, `npm run verify`, `npm run hooks:check`를 유지하세요.
 4. 다음 실제 product work는 stale claim packet refresh입니다.
-   `claim discover --previous .cautilus/claims/evidenced-typed-runners.json --refresh-plan ...` 계열로 33 changed claim sources를 갱신한 뒤, projection을 다시 렌더링해야 합니다.
+   `discover claims --previous .cautilus/claims/evidenced-typed-runners.json --refresh-plan ...` 계열로 33 changed claim sources를 갱신한 뒤, projection을 다시 렌더링해야 합니다.
 
 ## Discuss
 

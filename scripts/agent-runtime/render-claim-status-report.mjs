@@ -328,7 +328,7 @@ function renderHeader(lines, claimsPacket, statusPacket, args) {
 	if (statusPacket?.gitStateSnapshotNotice) {
 		lines.push(`- Snapshot notice: ${compactText(statusPacket.gitStateSnapshotNotice)}`);
 	} else {
-		lines.push("- Snapshot notice: git state is a generated status snapshot; rerun `cautilus claim show` for live checkout state.");
+		lines.push("- Snapshot notice: git state is a generated status snapshot; rerun `cautilus discover claims status` for live checkout state.");
 	}
 	lines.push(...gitStateLines(gitState));
 	lines.push("");

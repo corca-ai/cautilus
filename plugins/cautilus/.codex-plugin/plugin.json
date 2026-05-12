@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Cautilus",
     "shortDescription": "Intentful behavior evaluation with bounded review gates.",
-    "longDescription": "Install Cautilus Agent and the workflow surface for adapter-driven baseline comparison, held-out validation, and bounded review variants.",
+    "longDescription": "Install Cautilus Agent and the workflow surface for adapter-driven baseline comparison, held-out validation, and bounded evaluate review variants.",
     "developerName": "Corca",
     "category": "Productivity",
     "capabilities": [
@@ -28,7 +28,7 @@
     ],
     "websiteURL": "https://github.com/corca-ai/cautilus",
     "defaultPrompt": [
-      "Use Cautilus to evaluate the current change, workflow, or skill against an explicit baseline with held-out validation and bounded review variants."
+      "Use Cautilus to evaluate the current change, workflow, or skill against an explicit baseline with held-out validation and bounded evaluate review variants."
     ]
   }
 }

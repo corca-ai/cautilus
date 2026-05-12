@@ -36,15 +36,15 @@ The current HTML surface should let a reviewer answer questions like:
 ```run:shell
 # Render report, review, scenario review, proposals, and evidence packets into standalone HTML pages.
 tmpdir=$(mktemp -d)
-./bin/cautilus report build --input ./fixtures/reports/report-input.json --output "$tmpdir/report.json" >/dev/null
-./bin/cautilus review prepare-input --repo-root . --report-file "$tmpdir/report.json" --output "$tmpdir/review.json" >/dev/null
-./bin/cautilus scenario review-conversations --input ./fixtures/scenario-conversation-review/input.json --output "$tmpdir/conversation-review.json" >/dev/null
-./bin/cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json --output "$tmpdir/proposals.json" >/dev/null
-./bin/cautilus report render-html --input "$tmpdir/report.json" --output "$tmpdir/report.html" >/dev/null
-./bin/cautilus review render-html --input "$tmpdir/review.json" --output "$tmpdir/review.html" >/dev/null
+./bin/cautilus evaluate report build --input ./fixtures/reports/report-input.json --output "$tmpdir/report.json" >/dev/null
+./bin/cautilus evaluate review prepare-input --repo-root . --report-file "$tmpdir/report.json" --output "$tmpdir/review.json" >/dev/null
+./bin/cautilus discover scenarios review-conversations --input ./fixtures/scenario-conversation-review/input.json --output "$tmpdir/conversation-review.json" >/dev/null
+./bin/cautilus discover scenarios propose --input ./fixtures/scenario-proposals/standalone-input.json --output "$tmpdir/proposals.json" >/dev/null
+./bin/cautilus evaluate report render-html --input "$tmpdir/report.json" --output "$tmpdir/report.html" >/dev/null
+./bin/cautilus evaluate review render-html --input "$tmpdir/review.json" --output "$tmpdir/review.html" >/dev/null
 ./bin/cautilus scenario render-conversation-review-html --input "$tmpdir/conversation-review.json" --output "$tmpdir/conversation-review.html" >/dev/null
 ./bin/cautilus scenario render-proposals-html --input "$tmpdir/proposals.json" --output "$tmpdir/proposals.html" >/dev/null
-./bin/cautilus evidence render-html --input ./fixtures/evidence/example-bundle.json --output "$tmpdir/evidence.html" >/dev/null
+./bin/cautilus evaluate evidence render-html --input ./fixtures/evidence/example-bundle.json --output "$tmpdir/evidence.html" >/dev/null
 grep -q '<title>Cautilus Report — defer</title>' "$tmpdir/report.html"
 grep -q '<title>Cautilus Review Packet — defer</title>' "$tmpdir/review.html"
 grep -q '<title>Cautilus Scenario Conversation Review — 2</title>' "$tmpdir/conversation-review.html"
@@ -67,8 +67,8 @@ grep -q 'Signals By Source' "$tmpdir/evidence.html"
 ```run:shell
 # Regenerate the published self-dogfood page and a run index page from an existing artifact directory.
 tmpdir=$(mktemp -d)
-./bin/cautilus self-dogfood render-html --latest-dir ./artifacts/self-dogfood/latest --output "$tmpdir/self-dogfood.html" >/dev/null
-./bin/cautilus artifacts render-index-html --run-dir ./artifacts/self-dogfood/latest --output "$tmpdir/index.html" >/dev/null
+./bin/cautilus doctor artifacts render-self-dogfood-html --latest-dir ./artifacts/self-dogfood/latest --output "$tmpdir/self-dogfood.html" >/dev/null
+./bin/cautilus doctor artifacts render-index-html --run-dir ./artifacts/self-dogfood/latest --output "$tmpdir/index.html" >/dev/null
 grep -q '<title>Cautilus Self-Dogfood — pass</title>' "$tmpdir/self-dogfood.html"
 grep -q '<title>Cautilus Run Index — latest</title>' "$tmpdir/index.html"
 grep -q 'Decision Summary' "$tmpdir/self-dogfood.html"
@@ -86,7 +86,7 @@ This page keeps a minimal inline sample so the public proof stays current withou
 # Render a minimal review summary packet into standalone HTML.
 tmpdir=$(mktemp -d)
 printf '%s\n' '{"schemaVersion":"cautilus.review_summary.v1","generatedAt":"2026-04-16T00:00:00Z","status":"passed","reviewVerdict":"concern","reasonCodes":["RC_NO_BENCHMARK_EVIDENCE"],"findingsCount":1,"telemetry":{"variantCount":2,"passedVariantCount":2,"failedVariantCount":0,"durationMs":12000},"variants":[{"id":"codex-review-a","status":"passed","durationMs":6000,"output":{"verdict":"concern","summary":"Evidence is promising but shallow.","findings":[{"severity":"concern","message":"needs more held_out evidence","path":"docs/specs/review.spec.md"}]}},{"id":"codex-review-b","status":"passed","durationMs":6000,"output":{"verdict":"pass","summary":"Second reviewer is satisfied.","findings":[]}}],"humanReviewFindings":[{"severity":"concern","message":"needs more held_out evidence","path":"docs/specs/review.spec.md"}]}' > "$tmpdir/review-summary.json"
-./bin/cautilus review render-variants-summary-html --input "$tmpdir/review-summary.json" --output "$tmpdir/review-summary.html" >/dev/null
+./bin/cautilus evaluate review render-variants-summary-html --input "$tmpdir/review-summary.json" --output "$tmpdir/review-summary.html" >/dev/null
 grep -q '<title>Cautilus Review Summary — concern</title>' "$tmpdir/review-summary.html"
 grep -q 'Execution aligned, but verdicts diverged across variants.' "$tmpdir/review-summary.html"
 ```

@@ -11,7 +11,7 @@ Quick rules:
 - Schemas use the `cautilus.<name>_prototype.v0` naming pattern.
 - No source-guard rows required.
 - Not advertised in `README.md`, `skills/cautilus-agent/SKILL.md`, or
-  `cautilus scenarios`.
+  `cautilus discover scenarios`.
 - Not referenced from any shipped surface helper or from
   `internal/runtime/scenarios.go`.
 - Top-of-file lifetime comment required:

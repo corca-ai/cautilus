@@ -21,7 +21,7 @@ Evidence:
 - checked-in named adapter: [.agents/cautilus-adapters/self-dogfood.yaml](../../.agents/cautilus-adapters/self-dogfood.yaml)
 - explicit self-dogfood command: `npm run dogfood:self`
 - explicit `dev / repo` self-dogfood command: `npm run dogfood:self:eval`
-- prior tuning-experiment path: retired until it is rebuilt on the current `cautilus eval` surfaces
+- prior tuning-experiment path: retired until it is rebuilt on the current `cautilus evaluate` surfaces
 
 What this means:
 
@@ -65,13 +65,13 @@ Current role: external durable-workflow consumer pattern
 Evidence:
 
 - `workflow` normalization owns a checked-in durable-workflow fixture: [fixtures/scenario-proposals/samples/workflow-recovery-input.json](../../fixtures/scenario-proposals/samples/workflow-recovery-input.json).
-  Routed through `cautilus scenario normalize workflow`; the proposal-input lineage stays in this surface even though the legacy archetype boundary was retired (see [evaluation.spec.md](../specs/user/evaluation.spec.md)).
-- `eval test`, `review variants`, and comparison flows are all exercised in-tree against workflow-shaped packets and adapters
+  Routed through `cautilus discover scenarios normalize workflow`; the proposal-input lineage stays in this surface even though the legacy archetype boundary was retired (see [evaluation.spec.md](../specs/user/evaluation.spec.md)).
+- `evaluate fixture`, `evaluate review variants`, and comparison flows are all exercised in-tree against workflow-shaped packets and adapters
 - the external proof bar remains:
   - `cautilus doctor --repo-root <workflow-consumer-path>` returns `ready`
-  - one deep path such as `eval test` or `review variants` passes against that consumer before release
+  - one deep path such as `evaluate fixture` or `evaluate review variants` passes against that consumer before release
 - one real external workflow-style consumer run now exists in internal research:
-  it reached `doctor ready`, completed `eval test`, and completed `review variants` with an explicit schema-file override.
+  it reached `doctor ready`, completed `evaluate fixture`, and completed `evaluate review variants` with an explicit schema-file override.
   The value of that run was twofold:
   it exposed repairable consumer-readiness gaps, and after those were fixed it produced an honest rejection rather than a false positive.
   The report surface is now also expected to distinguish a clean behavior regression from provider-contaminated evidence when persisted artifacts carry signatures such as repeated rate limits.
@@ -86,8 +86,8 @@ Current role: external bootstrap-heavy agent-runtime consumer pattern
 
 Evidence:
 
-- one real external bootstrap-heavy consumer validated the released `instruction-surface` split on `Cautilus v0.5.5` (now folded into the `dev / repo` preset under `cautilus eval`).
-- the consumer seam now exercises `cautilus eval test --repo-root .` (formerly `cautilus instruction-surface test`) against a routing case that expects `bootstrapHelper=find-skills` and `workSkill=impl`
+- one real external bootstrap-heavy consumer validated the released `instruction-surface` split on `Cautilus v0.5.5` (now folded into the `dev / repo` preset under `cautilus evaluate`).
+- the consumer seam now exercises `cautilus evaluate fixture --repo-root .` (formerly `cautilus instruction-surface test`) against a routing case that expects `bootstrapHelper=find-skills` and `workSkill=impl`
 - the same consumer keeps its standing repo-owned evaluator path green on the released binary:
   `python3 scripts/run-evals.py --repo-root .` passed its maintained scenario set and `pytest tests/test_cautilus_scenarios.py` stayed green
 - the checked validation artifact records `recommendation=accept-now` plus explicit `bootstrapHelperCounts` / `workSkillCounts` output instead of the older collapsed single-lane interpretation
@@ -117,6 +117,6 @@ It keeps one official adapter contract while still grounding the normalization l
 1. Keep proving the deepest binary and Cautilus Agent behavior against `cautilus` itself.
 2. Keep checked-in consumer-shaped normalized packet examples for the chatbot, skill-validation, and durable-workflow normalization families.
 3. Keep one explicit external bootstrap-heavy consumer proof for the `dev / repo` preset, but treat it as pattern validation rather than named-repo product ownership.
-4. Treat the next external-consumer question as whether the first bounded run should expand beyond `eval test` into the first review loop, not as whether `bootstrapHelper` / `workSkill` works at all.
+4. Treat the next external-consumer question as whether the first bounded run should expand beyond `evaluate fixture` into the first review loop, not as whether `bootstrapHelper` / `workSkill` works at all.
 5. If a stronger claim needs one real external consumer, record that proof as an appendix update without turning the named repo into canonical vocabulary.
-6. Keep the current product-owned onboarding smoke honest: today it proves fresh-consumer install to `doctor ready` and one completed bounded `eval test` run; the next proof question is whether that smoke should also reach `review prepare-input` without turning the helper into a consumer-specific workflow.
+6. Keep the current product-owned onboarding smoke honest: today it proves fresh-consumer install to `doctor ready` and one completed bounded `evaluate fixture` run; the next proof question is whether that smoke should also reach `evaluate review prepare-input` without turning the helper into a consumer-specific workflow.

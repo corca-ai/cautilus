@@ -2,7 +2,7 @@
 
 Host repos own the step that turns raw recent activity into normalized proposal candidates.
 
-`Cautilus` does not yet own those heuristics, but it should provide one bounded reference seam that proves how host-owned normalized sources become the input packet consumed by `cautilus scenario propose`.
+`Cautilus` does not yet own those heuristics, but it should provide one bounded reference seam that proves how host-owned normalized sources become the input packet consumed by `cautilus discover scenarios propose`.
 
 ## Scope
 
@@ -21,7 +21,7 @@ This seam does not own:
 The first executable reference surface is:
 
 ```bash
-cautilus scenario prepare-input \
+cautilus discover scenarios prepare-input \
   --candidates ./fixtures/scenario-proposals/candidates.json \
   --registry ./fixtures/scenario-proposals/registry.json \
   --coverage ./fixtures/scenario-proposals/coverage.json \
@@ -38,7 +38,7 @@ This command is intentionally narrow:
 - `--coverage` points at recent execution counts
 - `--family`, `--window-days`, and `--now` add packet-level metadata
 
-The command emits a single `cautilus.scenario_proposal_inputs.v1` packet that can be passed directly to `cautilus scenario propose`.
+The command emits a single `cautilus.scenario_proposal_inputs.v1` packet that can be passed directly to `cautilus discover scenarios propose`.
 
 ## Split Source Files
 
@@ -87,8 +87,8 @@ The first reference seam expects JSON arrays in three separate files.
 
 - Host repos still own normalization heuristics before `candidates.json` exists.
 - The first executable seam is file-based and explicit, not hidden behind a repo-local database query or storage SDK.
-- `scenario prepare-input` is a reference assembler, not a mining engine.
-- `scenario propose` stays downstream of this seam.
+- `discover scenarios prepare-input` is a reference assembler, not a mining engine.
+- `discover scenarios propose` stays downstream of this seam.
 
 ## Probe Questions
 
@@ -98,7 +98,7 @@ The first reference seam expects JSON arrays in three separate files.
 ## Deferred Decisions
 
 - any generic library helpers for mapping raw source ports into `candidates.json`
-- whether `scenario prepare-input` should eventually move registry and coverage path discovery into adapter config
+- whether `discover scenarios prepare-input` should eventually move registry and coverage path discovery into adapter config
 
 ## Source References
 

@@ -29,7 +29,7 @@ git -C "$tmp" config user.name "Cautilus Spec"
 printf '# sample skill repo\n' > "$tmp/README.md"
 git -C "$tmp" add README.md
 git -C "$tmp" commit -q -m init
-"$bin" adapter init --repo-root "$tmp" --repo-name sample-skill-repo --scenario skill >/dev/null
+"$bin" init adapter --repo-root "$tmp" --repo-name sample-skill-repo --scenario skill >/dev/null
 printf '%s\n%s\n' "$tmp" "$bin"
 ```
 
@@ -140,7 +140,7 @@ printf '%s\n' "$repo"
 | --- | --- | --- |
 | status | missing_adapter | |
 | next_action.kind | run_command | |
-| next_action.command | | cautilus adapter init |
+| next_action.command | | cautilus init adapter |
 
 ### Invalid Adapter
 
@@ -209,22 +209,22 @@ For the generated sample adapter, `doctor` keeps the first bounded eval loop vis
 | next_action.kind | runner_readiness | |
 | runnerReadiness.nextBranch.id | create_runner_assessment | |
 | first_bounded_run.summary | | bounded eval |
-| first_bounded_run.discoveryCommand | cautilus scenarios --json | |
-| first_bounded_run.decisionLoopCommands[0] | | cautilus eval test |
-| first_bounded_run.decisionLoopCommands[1] | | cautilus eval evaluate |
+| first_bounded_run.discoveryCommand | cautilus discover scenarios --json | |
+| first_bounded_run.decisionLoopCommands[0] | | cautilus evaluate fixture |
+| first_bounded_run.decisionLoopCommands[1] | | cautilus evaluate observation |
 
 ## A user can get a safe next workflow branch before spending workflow budget.
 
 A ready setup still needs a safe next branch before the agent spends workflow budget.
 `doctor` gives the human-facing readiness result: whether setup is ready and what a user should fix or run next.
-`agent status --json` gives Cautilus Agent an orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.
+`doctor status --json` gives Cautilus Agent an orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.
 
 ```run:shell
 # Show the raw agent orientation packet for this repo.
-"${sample_cautilus}" agent status --repo-root . --json
+"${sample_cautilus}" doctor status --repo-root . --json
 ```
 
-> check:cautilus-json-command(command=${sample_cautilus} agent status --repo-root . --json)
+> check:cautilus-json-command(command=${sample_cautilus} doctor status --repo-root . --json)
 | path | equals | min_number | includes |
 | --- | --- | --- | --- |
 | schemaVersion | cautilus.agent_status.v1 | | |

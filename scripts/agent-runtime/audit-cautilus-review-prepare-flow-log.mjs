@@ -10,21 +10,21 @@ import { writeTextOutput } from "./output-files.mjs";
 export const REVIEW_PREPARE_FLOW_AUDIT_SCHEMA = "cautilus.review_prepare_flow_audit.v1";
 
 const CAUTILUS_COMMAND_PATTERN = /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)/;
-const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bagent\\s+status\\b`);
-const FIRST_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+discover\\b(?=[\\s\\S]*--repo-root\\b)(?![\\s\\S]*--previous\\b)(?![\\s\\S]*--refresh-plan\\b)`);
-const CLAIM_SHOW_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+show\\b(?=[\\s\\S]*--sample-claims\\b)`);
-const REVIEW_PREPARE_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+review\\s+prepare-input\\b(?=[\\s\\S]*--claims\\b)`);
-const AGENT_STATUS_TOKEN_PATTERN = /\bagent\s+status\b/;
-const FIRST_DISCOVER_TOKEN_PATTERN = /\bclaim\s+discover\b/;
-const CLAIM_SHOW_TOKEN_PATTERN = /\bclaim\s+show\b/;
-const REVIEW_PREPARE_TOKEN_PATTERN = /\bclaim\s+review\s+prepare-input\b/;
+const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdoctor\\s+status\\b`);
+const FIRST_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdiscover\\s+claims\\b(?=[\\s\\S]*--repo-root\\b)(?![\\s\\S]*--previous\\b)(?![\\s\\S]*--refresh-plan\\b)`);
+const CLAIM_SHOW_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdiscover\\s+claims\\s+status\\b(?=[\\s\\S]*--sample-claims\\b)`);
+const REVIEW_PREPARE_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdiscover\\s+claims\\s+review-input\\b(?=[\\s\\S]*--claims\\b)`);
+const AGENT_STATUS_TOKEN_PATTERN = /\bdoctor\s+status\b/;
+const FIRST_DISCOVER_TOKEN_PATTERN = /\bdiscover\s+claims\b/;
+const CLAIM_SHOW_TOKEN_PATTERN = /\bdiscover\s+claims\s+status\b/;
+const REVIEW_PREPARE_TOKEN_PATTERN = /\bdiscover\s+claims\s+review-input\b/;
 
 const FORBIDDEN_COMMAND_PATTERNS = [
-	["claim_review_apply", /\bclaim\s+review\s+apply-result\b/],
-	["claim_plan_evals", /\bclaim\s+plan-evals\b/],
-	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+test\b/],
-	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+evaluate\b/],
-	["review_variants", /\breview\s+variants\b/],
+	["claim_review_apply", /\bdiscover\s+claims\s+apply-review\b/],
+	["claim_plan_evals", /\bevaluate\s+claims\s+plan\b/],
+	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\bevaluate\s+fixture\b/],
+	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\bevaluate\s+observation\b/],
+	["review_variants", /\bevaluate\s+review\s+variants\b/],
 	["improve", /\bimprove\b/],
 	["git_add", /\bgit\s+add\b/],
 	["git_commit", /\bgit\s+commit\b/],
@@ -58,10 +58,10 @@ export function auditReviewPrepareFlowLogText(text) {
 
 function requiredCommandFindings(commands) {
 	const requirements = [
-		["missing_agent_status", AGENT_STATUS_PATTERN, "The review-prepare flow should start from agent status."],
+		["missing_agent_status", AGENT_STATUS_PATTERN, "The review-prepare flow should start from doctor status."],
 		["missing_first_discover", FIRST_DISCOVER_PATTERN, "The flow should materialize a fresh first claim scan before review preparation."],
 		["missing_claim_show", CLAIM_SHOW_PATTERN, "The flow should summarize the saved claim map before review preparation."],
-		["missing_review_prepare", REVIEW_PREPARE_PATTERN, "The selected branch should run claim review prepare-input."],
+		["missing_review_prepare", REVIEW_PREPARE_PATTERN, "The selected branch should run discover claims review-input."],
 	];
 	return requirements
 		.filter(([, pattern]) => !commands.some((command) => pattern.test(command)))
@@ -87,7 +87,7 @@ function commandOrderFindings(commands) {
 	return [{
 		severity: "error",
 		id: "wrong_command_order",
-		message: "Expected agent status, first claim discover, claim show, then claim review prepare-input.",
+		message: "Expected doctor status, first discover claims, discover claims status, then discover claims review-input.",
 	}];
 }
 

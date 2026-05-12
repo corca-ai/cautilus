@@ -28,7 +28,7 @@ lives.
 The first standalone surface is:
 
 ```bash
-cautilus review prepare-input \
+cautilus evaluate evaluate review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
 ```
@@ -37,7 +37,7 @@ This packet is the intended bridge between:
 
 - adapter-driven mode execution
 - compare/report artifacts
-- product-owned meta-prompt rendering for bounded review variants
+- product-owned meta-prompt rendering for bounded evaluate review variants
 
 ## Guardrails
 

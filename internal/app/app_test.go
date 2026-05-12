@@ -156,7 +156,7 @@ func TestRunDoctorDoesNotBlockWhenSpecdownMissingAndPacketsValidate(t *testing.T
 
 	stdout.Reset()
 	stderr.Reset()
-	exitCode = Run([]string{"claim", "validate", "--input", packetPath}, &stdout, &stderr)
+	exitCode = Run([]string{"discover", "claims", "validate", "--input", packetPath}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("raw claim packets should remain readable without specdown, stdout=%s stderr=%s", stdout.String(), stderr.String())
 	}
@@ -193,7 +193,7 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"commands", "--json"}, &stdout, &stderr)
+	exitCode := Run([]string{"doctor", "commands", "--json"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -220,28 +220,28 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 	for _, raw := range commands {
 		command := raw.(map[string]any)
 		path := command["path"].([]any)
-		if len(path) == 2 && path[0] == "claim" && path[1] == "discover" {
+		if len(path) == 2 && path[0] == "discover" && path[1] == "claims" {
 			foundClaimDiscover = true
 		}
-		if len(path) == 2 && path[0] == "claim" && path[1] == "show" {
+		if len(path) == 3 && path[0] == "discover" && path[1] == "claims" && path[2] == "status" {
 			foundClaimShow = true
 		}
-		if len(path) == 3 && path[0] == "claim" && path[1] == "review" && path[2] == "prepare-input" {
+		if len(path) == 3 && path[0] == "discover" && path[1] == "claims" && path[2] == "review-input" {
 			foundClaimReviewPrepare = true
 		}
-		if len(path) == 3 && path[0] == "claim" && path[1] == "review" && path[2] == "apply-result" {
+		if len(path) == 3 && path[0] == "discover" && path[1] == "claims" && path[2] == "apply-review" {
 			foundClaimReviewApply = true
 		}
-		if len(path) == 2 && path[0] == "claim" && path[1] == "plan-evals" {
+		if len(path) == 3 && path[0] == "evaluate" && path[1] == "claims" && path[2] == "plan" {
 			foundClaimPlanEvals = true
 		}
-		if len(path) == 2 && path[0] == "claim" && path[1] == "validate" {
+		if len(path) == 3 && path[0] == "discover" && path[1] == "claims" && path[2] == "validate" {
 			foundClaimValidate = true
 		}
-		if len(path) == 2 && path[0] == "agent" && path[1] == "status" {
+		if len(path) == 2 && path[0] == "doctor" && path[1] == "status" {
 			foundAgentStatus = true
 		}
-		if len(path) == 3 && path[0] == "eval" && path[1] == "live" && path[2] == "run" {
+		if len(path) == 2 && path[0] == "evaluate" && path[1] == "live" {
 			foundEvalLiveRun = true
 		}
 		if len(path) > 0 && path[0] == "workbench" {
@@ -323,7 +323,7 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"agent", "status", "--repo-root", repoRoot, "--json"}, &stdout, &stderr)
+	exitCode := Run([]string{"doctor", "status", "--repo-root", repoRoot, "--json"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -339,15 +339,15 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 	}
 	binary := payload["binary"].(map[string]any)
 	if binary["status"] != "healthy" || binary["current"] == nil {
-		t.Fatalf("expected binary health in agent status, got %#v", binary)
+		t.Fatalf("expected binary health in doctor status, got %#v", binary)
 	}
 	agentSurface := payload["agentSurface"].(map[string]any)
 	if agentSurface["status"] != "ready" {
-		t.Fatalf("expected skill surface readiness in agent status, got %#v", agentSurface)
+		t.Fatalf("expected skill surface readiness in doctor status, got %#v", agentSurface)
 	}
 	adapterStatus := payload["adapter"].(map[string]any)
 	if adapterStatus["valid"] != true || adapterStatus["path"] == "" {
-		t.Fatalf("expected adapter state in agent status, got %#v", adapterStatus)
+		t.Fatalf("expected adapter state in doctor status, got %#v", adapterStatus)
 	}
 	claimState := payload["claimState"].(map[string]any)
 	if claimState["status"] != "missing" {
@@ -355,7 +355,7 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 	}
 	runnerReadiness := payload["runnerReadiness"].(map[string]any)
 	if runnerReadiness["state"] == "" || runnerReadiness["reason"] == "" {
-		t.Fatalf("expected runner readiness status in agent status, got %#v", runnerReadiness)
+		t.Fatalf("expected runner readiness status in doctor status, got %#v", runnerReadiness)
 	}
 	scanScope := payload["scanScope"].(map[string]any)
 	if scanScope["linkedMarkdownDepth"] != float64(3) {
@@ -368,12 +368,12 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 	if !strings.Contains(body, "Confirm the current scan scope") || !strings.Contains(body, "LLM claim review is a separate branch") {
 		t.Fatalf("expected first scan branch to expose scope confirmation and review budget boundary, got %s", body)
 	}
-	if !strings.Contains(body, "cautilus claim discover --repo-root '"+repoRoot+"' --output '"+filepath.Join(repoRoot, "state dir", "latest claims.json")+"'") {
+	if !strings.Contains(body, "cautilus discover claims --repo-root '"+repoRoot+"' --output '"+filepath.Join(repoRoot, "state dir", "latest claims.json")+"'") {
 		t.Fatalf("expected claim branch to keep the requested repo root and quote paths, got %s", body)
 	}
-	for _, forbidden := range []string{"eval test", "review variants", "cautilus improve", "git commit"} {
+	for _, forbidden := range []string{"evaluate fixture", "evaluate review variants", "cautilus improve", "git commit"} {
 		if strings.Contains(body, forbidden) {
-			t.Fatalf("agent status should not offer %q, got %s", forbidden, body)
+			t.Fatalf("doctor status should not offer %q, got %s", forbidden, body)
 		}
 	}
 }
@@ -404,7 +404,7 @@ func TestRunClaimDiscoverWritesProofPlanFromTinyRepo(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "claims", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -442,7 +442,7 @@ func TestRunClaimDiscoverAutoUsesExistingOutputAsPrevious(t *testing.T) {
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
 
 	var stdout, stderr bytes.Buffer
-	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+	if exitCode := Run([]string{"discover", "claims", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
 		t.Fatalf("first run: exit=%d stderr=%s", exitCode, stderr.String())
 	}
 
@@ -463,7 +463,7 @@ func TestRunClaimDiscoverAutoUsesExistingOutputAsPrevious(t *testing.T) {
 
 	stdout.Reset()
 	stderr.Reset()
-	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+	if exitCode := Run([]string{"discover", "claims", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
 		t.Fatalf("second run: exit=%d stderr=%s", exitCode, stderr.String())
 	}
 	refreshed := readJSONObjectFile(t, outputPath)
@@ -506,13 +506,13 @@ func TestRunClaimDiscoverFromScratchSkipsAutoPrevious(t *testing.T) {
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
 
 	var stdout, stderr bytes.Buffer
-	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+	if exitCode := Run([]string{"discover", "claims", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
 		t.Fatalf("first run: exit=%d stderr=%s", exitCode, stderr.String())
 	}
 
 	stdout.Reset()
 	stderr.Reset()
-	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--from-scratch", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+	if exitCode := Run([]string{"discover", "claims", "--repo-root", ".", "--from-scratch", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
 		t.Fatalf("from-scratch run: exit=%d stderr=%s", exitCode, stderr.String())
 	}
 	refreshed := readJSONObjectFile(t, outputPath)
@@ -535,7 +535,7 @@ func TestRunClaimDiscoverNewOutputStartsFromFirstDiscovery(t *testing.T) {
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
 
 	var stdout, stderr bytes.Buffer
-	if exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
+	if exitCode := Run([]string{"discover", "claims", "--repo-root", ".", "--output", outputPath}, &stdout, &stderr); exitCode != 0 {
 		t.Fatalf("first-time run: exit=%d stderr=%s", exitCode, stderr.String())
 	}
 	packet := readJSONObjectFile(t, outputPath)
@@ -558,7 +558,7 @@ func TestRunPacketInspectEmitsSchemaVersionAndArrayCounts(t *testing.T) {
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
 
 	var stdout, stderr bytes.Buffer
-	exitCode := Run([]string{"packet", "inspect", "--input", packetPath}, &stdout, &stderr)
+	exitCode := Run([]string{"doctor", "packet", "inspect", "--input", packetPath}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit 0, got %d stderr=%s", exitCode, stderr.String())
 	}
@@ -598,7 +598,7 @@ func TestRunClaimDiscoverFromScratchAndPreviousMutuallyExclusive(t *testing.T) {
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")
 
 	var stdout, stderr bytes.Buffer
-	exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--previous", "anything.json", "--from-scratch"}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "claims", "--repo-root", ".", "--previous", "anything.json", "--from-scratch"}, &stdout, &stderr)
 	if exitCode == 0 {
 		t.Fatalf("expected non-zero exit when both --previous and --from-scratch are given")
 	}
@@ -631,7 +631,7 @@ func TestRunClaimDiscoverRefreshPlanRefusesSavedClaimStateOutput(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"claim", "discover", "--repo-root", ".", "--previous", statePath, "--refresh-plan", "--output", statePath}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "claims", "--repo-root", ".", "--previous", statePath, "--refresh-plan", "--output", statePath}, &stdout, &stderr)
 	if exitCode != 1 {
 		t.Fatalf("expected exit code 1, got %d, stdout=%s stderr=%s", exitCode, stdout.String(), stderr.String())
 	}
@@ -677,7 +677,7 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"claim", "show", "--input", claimsPath, "--sample-claims", "1"}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "claims", "status", "--input", claimsPath, "--sample-claims", "1"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -686,7 +686,7 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
 	if payload["schemaVersion"] != "cautilus.claim_status_summary.v1" || payload["candidateCount"] != float64(1) {
-		t.Fatalf("unexpected claim show payload: %#v", payload)
+		t.Fatalf("unexpected discover claims status payload: %#v", payload)
 	}
 	if payload["inputPath"] != "claims.json" {
 		t.Fatalf("expected repo-relative display input path, got %#v", payload["inputPath"])
@@ -713,7 +713,7 @@ func TestRunClaimShowReportsStaleGitState(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"claim", "show", "--input", claimsPath}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "claims", "status", "--input", claimsPath}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -753,7 +753,7 @@ func TestRunClaimShowTreatsNonSourceHeadDriftAsFresh(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"claim", "show", "--input", claimsPath}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "claims", "status", "--input", claimsPath}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -810,7 +810,7 @@ func TestRunClaimReviewPrepareInputWritesClusters(t *testing.T) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	exitCode := Run([]string{
-		"claim", "review", "prepare-input",
+		"discover", "claims", "review-input",
 		"--claims", claimsPath,
 		"--max-clusters", "1",
 		"--output", outputPath,
@@ -856,7 +856,7 @@ func TestRunClaimReviewPrepareInputRejectsStaleClaimPacket(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"claim", "review", "prepare-input", "--claims", claimsPath, "--output", outputPath}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "claims", "review-input", "--claims", claimsPath, "--output", outputPath}, &stdout, &stderr)
 	if exitCode != 1 {
 		t.Fatalf("expected stale claim packet rejection, got exit %d stdout=%s stderr=%s", exitCode, stdout.String(), stderr.String())
 	}
@@ -866,7 +866,7 @@ func TestRunClaimReviewPrepareInputRejectsStaleClaimPacket(t *testing.T) {
 
 	stdout.Reset()
 	stderr.Reset()
-	exitCode = Run([]string{"claim", "review", "prepare-input", "--claims", claimsPath, "--allow-stale-claims", "--output", outputPath}, &stdout, &stderr)
+	exitCode = Run([]string{"discover", "claims", "review-input", "--claims", claimsPath, "--allow-stale-claims", "--output", outputPath}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected override to succeed, got exit %d stderr=%s", exitCode, stderr.String())
 	}
@@ -937,7 +937,7 @@ func TestRunClaimReviewApplyResultWritesReviewedClaims(t *testing.T) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	exitCode := Run([]string{
-		"claim", "review", "apply-result",
+		"discover", "claims", "apply-review",
 		"--claims", claimsPath,
 		"--review-result", reviewResultPath,
 		"--output", outputPath,
@@ -1014,7 +1014,7 @@ func TestRunClaimPlanEvalsWritesIntermediatePlan(t *testing.T) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	exitCode := Run([]string{
-		"claim", "plan-evals",
+		"evaluate", "claims", "plan",
 		"--claims", claimsPath,
 		"--output", outputPath,
 	}, &stdout, &stderr)
@@ -1081,7 +1081,7 @@ func TestRunClaimValidateWritesReportAndFailsInvalidEvidence(t *testing.T) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	exitCode := Run([]string{
-		"claim", "validate",
+		"discover", "claims", "validate",
 		"--claims", claimsPath,
 		"--output", outputPath,
 	}, &stdout, &stderr)
@@ -1106,7 +1106,7 @@ func TestRunClaimDiscoverExampleOutputMatchesFixture(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"claim", "discover", "--example-output"}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "claims", "--example-output"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -1125,7 +1125,7 @@ func TestRunScenariosReturnsCatalog(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"scenarios"}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "scenarios"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -1142,7 +1142,7 @@ func TestRunScenariosJSONReturnsThreeNormalizationFamilies(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"scenarios", "--json"}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "scenarios", "--json"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -1186,7 +1186,7 @@ func TestRunHealthcheckJSONReturnsHealthyPayload(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"healthcheck", "--json"}, &stdout, &stderr)
+	exitCode := Run([]string{"doctor", "binary", "--json"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -1230,7 +1230,7 @@ func TestRunInstallDoesNotRequireToolRoot(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"install", "--repo-root", "."}, &stdout, &stderr)
+	exitCode := Run([]string{"init", "--repo-root", "."}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -1252,7 +1252,7 @@ func TestRunAdapterInitSkillScenarioPrefillsEvalTestSlot(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"adapter", "init", "--repo-root", repoRoot, "--scenario", "skill"}, &stdout, &stderr)
+	exitCode := Run([]string{"init", "adapter", "--repo-root", repoRoot, "--scenario", "skill"}, &stdout, &stderr)
 	if exitCode != 0 {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
@@ -1262,7 +1262,7 @@ func TestRunAdapterInitSkillScenarioPrefillsEvalTestSlot(t *testing.T) {
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
 	yaml := string(contents)
-	if !strings.Contains(yaml, "eval_test_command_templates:") || !strings.Contains(yaml, "- cautilus eval test") {
+	if !strings.Contains(yaml, "eval_test_command_templates:") || !strings.Contains(yaml, "- cautilus evaluate fixture") {
 		t.Fatalf("expected eval_test_command_templates to be pre-filled, got:\n%s", yaml)
 	}
 	if !strings.Contains(yaml, "--fixture fixtures/eval/dev/skill/") {
@@ -1297,11 +1297,11 @@ func TestRunScenarioNormalizeSkillRejectsWorkflowSchema(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"scenario", "normalize", "skill", "--input", inputPath}, &stdout, &stderr)
+	exitCode := Run([]string{"discover", "scenarios", "normalize", "skill", "--input", inputPath}, &stdout, &stderr)
 	if exitCode == 0 {
 		t.Fatalf("expected non-zero exit code, stdout=%s", stdout.String())
 	}
-	if !strings.Contains(stderr.String(), "scenario normalize workflow") {
+	if !strings.Contains(stderr.String(), "discover scenarios normalize workflow") {
 		t.Fatalf("expected stderr to mention workflow command, got %q", stderr.String())
 	}
 	if stdout.Len() != 0 {
@@ -1316,7 +1316,7 @@ func TestRunAdapterInitRejectsUnknownScenario(t *testing.T) {
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	exitCode := Run([]string{"adapter", "init", "--repo-root", repoRoot, "--scenario", "bogus"}, &stdout, &stderr)
+	exitCode := Run([]string{"init", "adapter", "--repo-root", repoRoot, "--scenario", "bogus"}, &stdout, &stderr)
 	if exitCode == 0 {
 		t.Fatalf("expected non-zero exit code for unknown scenario, stdout=%s", stdout.String())
 	}

@@ -10,19 +10,19 @@ import { writeTextOutput } from "./output-files.mjs";
 export const REVIEWER_LAUNCH_FLOW_AUDIT_SCHEMA = "cautilus.reviewer_launch_flow_audit.v1";
 
 const CAUTILUS_COMMAND_PATTERN = /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)/;
-const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bagent\\s+status\\b`);
-const FIRST_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+discover\\b(?=[\\s\\S]*--repo-root\\b)(?![\\s\\S]*--previous\\b)(?![\\s\\S]*--refresh-plan\\b)`);
-const CLAIM_SHOW_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+show\\b(?=[\\s\\S]*--sample-claims\\b)`);
-const REVIEW_PREPARE_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+review\\s+prepare-input\\b(?=[\\s\\S]*(?:--claims\\b|--input\\b))`);
+const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdoctor\\s+status\\b`);
+const FIRST_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdiscover\\s+claims\\b(?=[\\s\\S]*--repo-root\\b)(?![\\s\\S]*--previous\\b)(?![\\s\\S]*--refresh-plan\\b)`);
+const CLAIM_SHOW_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdiscover\\s+claims\\s+status\\b(?=[\\s\\S]*--sample-claims\\b)`);
+const REVIEW_PREPARE_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdiscover\\s+claims\\s+review-input\\b(?=[\\s\\S]*(?:--claims\\b|--input\\b))`);
 const REVIEWER_SMOKE_PATTERN = /\bnode\b[\s\S]*\bscripts\/agent-runtime\/run-claim-reviewer-smoke\.mjs\b(?=[\s\S]*--review-input\b)(?=[\s\S]*--output\b)/;
 const REVIEWER_RESULT_WRITE_PATTERN = /(?:claim_review_result\.v1|review-result\.json|review_result\.json)/;
 
 const FORBIDDEN_COMMAND_PATTERNS = [
-	["claim_review_apply", /\bclaim\s+review\s+apply-result\b(?=[\s\S]*--claims\b)(?=[\s\S]*--review-result\b)/],
-	["claim_plan_evals", /\bclaim\s+plan-evals\b/],
-	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+test\b/],
-	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+evaluate\b/],
-	["review_variants", /\breview\s+variants\b/],
+	["claim_review_apply", /\bdiscover\s+claims\s+apply-review\b(?=[\s\S]*--claims\b)(?=[\s\S]*--review-result\b)/],
+	["claim_plan_evals", /\bevaluate\s+claims\s+plan\b/],
+	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\bevaluate\s+fixture\b/],
+	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\bevaluate\s+observation\b/],
+	["review_variants", /\bevaluate\s+review\s+variants\b/],
 	["improve", /\bimprove\b/],
 	["git_add", /\bgit\s+add\b/],
 	["git_commit", /\bgit\s+commit\b/],
@@ -58,7 +58,7 @@ function requiredCommandFindings(commands, rawText) {
 	const fileChangeReviewResult = /"type":"file_change"[\s\S]*(?:review-result\.json|cautilus\.claim_review_result\.v1)/.test(rawText);
 	const writeToolReviewResult = /"name":"Write"[\s\S]*(?:review-result\.json|cautilus\.claim_review_result\.v1)/.test(rawText);
 	const requirements = [
-		["missing_agent_status", AGENT_STATUS_PATTERN, "The reviewer-launch flow should start from agent status."],
+		["missing_agent_status", AGENT_STATUS_PATTERN, "The reviewer-launch flow should start from doctor status."],
 		["missing_first_discover", FIRST_DISCOVER_PATTERN, "The flow should materialize a fresh first claim scan before reviewer launch."],
 		["missing_claim_show", CLAIM_SHOW_PATTERN, "The flow should summarize the saved claim map before reviewer launch."],
 		["missing_review_prepare", REVIEW_PREPARE_PATTERN, "The flow should prepare deterministic review input before reviewer launch."],
@@ -86,7 +86,7 @@ function commandOrderFindings(commands) {
 	return [{
 		severity: "error",
 		id: "wrong_command_order",
-		message: "Expected status, first discover, claim show, review prepare-input, then reviewer smoke launch.",
+		message: "Expected status, first discover, discover claims status, evaluate review prepare-input, then reviewer smoke launch.",
 	}];
 }
 

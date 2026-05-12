@@ -16,7 +16,7 @@ package runtime
 // in the same slice as the schema constant, contract document, fixtures, CLI
 // subcommand, README block, and `internal/runtime/scenarios.go` catalog entry.
 // Widening this file without the matching scenarios.go entry will pass
-// `npm run lint` and break `cautilus scenarios` only at runtime.
+// `npm run lint` and break `cautilus discover scenarios` only at runtime.
 
 import (
 	"fmt"
@@ -290,7 +290,7 @@ func NormalizeWorkflowProposalCandidates(evaluationRuns []any) ([]any, error) {
 func assertSkillTargetKind(run map[string]any, index int) error {
 	targetKind := stringOrEmpty(run["targetKind"])
 	if targetKind == "cli_workflow" {
-		return fmt.Errorf("evaluationRuns[%d].targetKind is %q; this belongs to the workflow normalization family. Use `cautilus scenario normalize workflow` with the %s schema", index, targetKind, contracts.WorkflowNormalizationInputsSchema)
+		return fmt.Errorf("evaluationRuns[%d].targetKind is %q; this belongs to the workflow normalization family. Use `cautilus discover scenarios normalize workflow` with the %s schema", index, targetKind, contracts.WorkflowNormalizationInputsSchema)
 	}
 	if !containsString([]string{"public_skill", "profile", "integration"}, targetKind) {
 		return fmt.Errorf("evaluationRuns[%d].targetKind must be one of public_skill, profile, integration for the skill normalization family", index)

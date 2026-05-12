@@ -13,6 +13,7 @@ In this repo today that resolves to:
 - Go `1.26.3+`, `golangci-lint`, and `govulncheck` are installed in the maintainer clone
 - `npm run hooks:check` passes in the maintainer clone
 - `npm run verify` passes on `main`
+- `npm run release:claim-freshness` passes before the tag is prepared
 - [release-boundary.md](./release-boundary.md) still matches the product-owned surface
 
 ## Release Steps
@@ -53,8 +54,9 @@ git commit -am "Prepare v<next-version> release"
 npm run release:publish -- --version <next-version>
 ```
 
-This helper refuses a dirty worktree, verifies the checked-in release surface already matches the target version, pushes the current branch first, then creates `v<version>` at `HEAD`, verifies the tag target, and pushes only that tag.
+This helper refuses a dirty worktree, verifies the checked-in release surface already matches the target version, pushes `HEAD` to the target branch first, verifies the remote branch target, then creates `v<version>` at `HEAD`, verifies both local and remote tag targets, and pushes only that tag.
 Do not replace it with ad-hoc parallel `git commit` / `git tag` / `git push --tags` invocations.
+Use `--target-branch main` when publishing from a prepared release branch or detached release worktree that should update `main`.
 
 The checked-in release workflow at [release-artifacts.yml](../../.github/workflows/release-artifacts.yml) will re-run `verify`, build the tagged binary assets, compute checksums, generate GitHub artifact attestations from the checksum manifest, and attach those artifacts to the GitHub release.
 After those artifacts are published, the same workflow now retries [verify-public-release.mjs](../../scripts/release/verify-public-release.mjs) until the public release API reflects the tagged version, so a green workflow run means the product-owned public release surface is visible from GitHub.

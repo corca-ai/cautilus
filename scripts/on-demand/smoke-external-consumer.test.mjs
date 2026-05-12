@@ -31,7 +31,7 @@ test("external consumer onboarding smoke bootstraps a repo through the first bou
 		assert.equal(result.commands.some((entry) => /git$/.test(entry.command)), true);
 		assert.equal(result.commands.some((entry) => /cautilus$/.test(entry.command)), true);
 		assert.equal(
-			result.commands.some((entry) => entry.args.includes("eval") && entry.args.includes("test")),
+			result.commands.some((entry) => entry.args.includes("evaluate") && entry.args.includes("fixture")),
 			true,
 		);
 	} finally {

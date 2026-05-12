@@ -508,7 +508,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"**Input (For Agent)**: \"Turn this behavior input into reusable scenarios and render an HTML page I can review.\"",
 		"",
-		"The `cautilus scenario normalize chatbot` command emits reopenable proposal packets for review.",
+		"The `cautilus discover scenarios normalize chatbot` command emits reopenable proposal packets for review.",
 		"",
 		"Context-recovery should become a protected scenario for follow-up behavior.",
 		"",
@@ -522,13 +522,13 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Dogfood fixture results should derive from audit packets.",
 		"",
-		"When the goal is only to prove command routing, `cautilus eval test --runtime fixture` can run adapter-owned fixture results.",
+		"When the goal is only to prove command routing, `cautilus evaluate fixture --runtime fixture` can run adapter-owned fixture results.",
 		"",
-		"For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
+		"For reviewed `cautilus-eval` claims, `evaluate claims plan` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.",
 		"",
-		"`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again.",
+		"`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.",
 		"",
-		"The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.",
+		"The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios --json` catalog nearby only for proposal-input examples.",
 		"",
 		"Cautilus leaves evidence that another person or agent can reopen instead of relying on terminal scrollback or memory.",
 		"",
@@ -538,7 +538,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Tool-call JSON returned by the model should match the schema.",
 		"",
-		"`eval evaluate` remains the first-class packet boundary for skill trigger and execution quality.",
+		"`evaluate observation` remains the first-class packet boundary for skill trigger and execution quality.",
 		"",
 		"Cautilus supports development-facing behavior, such as agent workflows, repo contracts, tools, and skills.",
 		"",
@@ -546,7 +546,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"The same product workflow can be reused across repos because repo-specific behavior lives in adapters and fixtures.",
 		"",
-		"The Agent track provides Cautilus Agent and plugin manifests through cautilus install.",
+		"The Agent track provides Cautilus Agent and plugin manifests through cautilus init.",
 		"",
 		"The static HTML renderer emits browser-readable views for human review.",
 		"",
@@ -558,7 +558,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"Use when a stateful automation keeps stalling on the same step.",
 		"",
-		"The `cautilus install` step also lands a Cautilus Agent with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
+		"The `cautilus init` step also lands a Cautilus Agent with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.",
 		"",
 		"The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
 		"",
@@ -618,11 +618,11 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"If the user already delegated autonomous continuation, the skill may proceed within the recorded budget, but the budget still must be written to the packet.",
 		"",
-		"The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
+		"The binary may provide helper flags such as `discover claims --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
 		"",
-		"`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
+		"`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
 		"",
-		"`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` when agents need concrete candidates before choosing the next branch.",
+		"`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` when agents need concrete candidates before choosing the next branch.",
 		"",
 		"Review prompts point at the same path so human and machine review can refer to the same compare output.",
 		"",
@@ -653,7 +653,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"## Probe Questions",
 		"",
 		"- Should `run.json` carry workflow metadata so HTML views can present richer summaries?",
-		"- Is `review variants` a workflow-creating command that mints runDirs?",
+		"- Is `evaluate review variants` a workflow-creating command that mints runDirs?",
 		"",
 		"Whether Cautilus emits durable packet state is recorded as a deterministic command contract.",
 		"",
@@ -691,7 +691,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"## Deferred Decisions",
 		"",
-		"- Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
+		"- Whether `discover claims status` should grow Markdown or HTML rendering beyond its JSON summary packet.",
 		"1. Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.",
 		"> Whether adapter configuration should support non-Markdown truth surfaces beyond explicit `--source` paths in the next slice.",
 		"> Does this repo have a headless runner for selected behavior?",
@@ -714,8 +714,8 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	}
 	for _, question := range []string{
 		"Should `run.json` carry workflow metadata so HTML views can present richer summaries?",
-		"Is `review variants` a workflow-creating command that mints runDirs?",
-		"Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.",
+		"Is `evaluate review variants` a workflow-creating command that mints runDirs?",
+		"Whether `discover claims status` should grow Markdown or HTML rendering beyond its JSON summary packet.",
 		"Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.",
 		"Whether adapter configuration should support non-Markdown truth surfaces beyond explicit `--source` paths in the next slice.",
 		"Does this repo have a headless runner for selected behavior?",
@@ -724,7 +724,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 			t.Fatalf("expected open question to be excluded from claims, got %#v", bySummary[question])
 		}
 	}
-	scenarioCommand := bySummary["The `cautilus scenario normalize chatbot` command emits reopenable proposal packets for review."]
+	scenarioCommand := bySummary["The `cautilus discover scenarios normalize chatbot` command emits reopenable proposal packets for review."]
 	if scenarioCommand == nil || scenarioCommand["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected scenario command documentation to be deterministic, got %#v", scenarioCommand)
 	}
@@ -748,19 +748,19 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if auditPacketProvenance == nil || auditPacketProvenance["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected narrow audit-packet provenance claim to be deterministic, got %#v", auditPacketProvenance)
 	}
-	fixtureRuntime := bySummary["When the goal is only to prove command routing, `cautilus eval test --runtime fixture` can run adapter-owned fixture results."]
+	fixtureRuntime := bySummary["When the goal is only to prove command routing, `cautilus evaluate fixture --runtime fixture` can run adapter-owned fixture results."]
 	if fixtureRuntime == nil || fixtureRuntime["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected fixture runtime routing claim to be deterministic, got %#v", fixtureRuntime)
 	}
-	planEvalsPacket := bySummary["For reviewed `cautilus-eval` claims, `claim plan-evals` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy."]
+	planEvalsPacket := bySummary["For reviewed `cautilus-eval` claims, `evaluate claims plan` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy."]
 	if planEvalsPacket == nil || planEvalsPacket["recommendedProof"] != "deterministic" {
-		t.Fatalf("expected claim plan-evals packet boundary to be deterministic, got %#v", planEvalsPacket)
+		t.Fatalf("expected evaluate claims plan packet boundary to be deterministic, got %#v", planEvalsPacket)
 	}
-	evaluateObserved := bySummary["`cautilus eval evaluate` evaluates an already-observed packet without launching the runner again."]
+	evaluateObserved := bySummary["`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again."]
 	if evaluateObserved == nil || evaluateObserved["recommendedProof"] != "deterministic" {
-		t.Fatalf("expected no-launch eval evaluate packet claim to be deterministic, got %#v", evaluateObserved)
+		t.Fatalf("expected no-launch evaluate observation packet claim to be deterministic, got %#v", evaluateObserved)
 	}
-	readyPayload := bySummary["The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples."]
+	readyPayload := bySummary["The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios --json` catalog nearby only for proposal-input examples."]
 	if readyPayload == nil || readyPayload["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected ready payload claim to be deterministic, got %#v", readyPayload)
 	}
@@ -770,7 +770,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	}
 	agentStatusReadiness := bySummary["Agent status should share the same readiness facts when an agent is driving the workflow."]
 	if agentStatusReadiness == nil || agentStatusReadiness["recommendedProof"] != "deterministic" {
-		t.Fatalf("expected agent status readiness fact claim to be deterministic, got %#v", agentStatusReadiness)
+		t.Fatalf("expected doctor status readiness fact claim to be deterministic, got %#v", agentStatusReadiness)
 	}
 	assistantJSON := bySummary["The assistant should output JSON matching the schema."]
 	if assistantJSON == nil || assistantJSON["recommendedProof"] != "cautilus-eval" || assistantJSON["recommendedEvalSurface"] != "app/chat" {
@@ -780,9 +780,9 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if toolCallJSON == nil || toolCallJSON["recommendedProof"] != "cautilus-eval" {
 		t.Fatalf("expected model tool-call JSON to remain eval proof, got %#v", toolCallJSON)
 	}
-	evalEvaluateQuality := bySummary["`eval evaluate` remains the first-class packet boundary for skill trigger and execution quality."]
+	evalEvaluateQuality := bySummary["`evaluate observation` remains the first-class packet boundary for skill trigger and execution quality."]
 	if evalEvaluateQuality == nil || evalEvaluateQuality["recommendedProof"] != "cautilus-eval" || evalEvaluateQuality["recommendedEvalSurface"] != "dev/skill" {
-		t.Fatalf("expected eval evaluate skill-quality claim to remain dev/skill eval, got %#v", evalEvaluateQuality)
+		t.Fatalf("expected evaluate observation skill-quality claim to remain dev/skill eval, got %#v", evalEvaluateQuality)
 	}
 	devBehaviorSupport := bySummary["Cautilus supports development-facing behavior, such as agent workflows, repo contracts, tools, and skills."]
 	if devBehaviorSupport == nil || devBehaviorSupport["recommendedProof"] != "cautilus-eval" || devBehaviorSupport["verificationReadiness"] != "needs-scenario" {
@@ -805,7 +805,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if _, exists := reusedWorkflow["recommendedEvalSurface"]; exists {
 		t.Fatalf("expected broad reused workflow claim not to pick one surface before scenario selection, got %#v", reusedWorkflow)
 	}
-	install := bySummary["The Agent track provides Cautilus Agent and plugin manifests through cautilus install."]
+	install := bySummary["The Agent track provides Cautilus Agent and plugin manifests through cautilus init."]
 	if install == nil || install["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected install and plugin materialization to be deterministic, got %#v", install)
 	}
@@ -829,7 +829,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if stalledGuidance == nil || stalledGuidance["recommendedProof"] != "human-auditable" || stalledGuidance["verificationReadiness"] != "blocked" {
 		t.Fatalf("expected broad stalled-workflow guidance to be blocked human-auditable, got %#v", stalledGuidance)
 	}
-	conversationalAgent := bySummary["The `cautilus install` step also lands a Cautilus Agent with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."]
+	conversationalAgent := bySummary["The `cautilus init` step also lands a Cautilus Agent with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally."]
 	if conversationalAgent == nil || conversationalAgent["recommendedProof"] != "cautilus-eval" || conversationalAgent["recommendedEvalSurface"] != "dev/skill" {
 		t.Fatalf("expected conversational installed-agent claim to route to dev/skill eval, got %#v", conversationalAgent)
 	}
@@ -854,7 +854,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	}
 	agentStatusPacket := bySummary["It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health and branch choices."]
 	if agentStatusPacket == nil || agentStatusPacket["recommendedProof"] != "deterministic" {
-		t.Fatalf("expected agent status packet claim to be deterministic, got %#v", agentStatusPacket)
+		t.Fatalf("expected doctor status packet claim to be deterministic, got %#v", agentStatusPacket)
 	}
 	pathCheck := bySummary["`cautilus --version` must work on `PATH` before any consumer adapter or skill wiring is treated as valid."]
 	if pathCheck == nil || pathCheck["recommendedProof"] != "deterministic" {
@@ -948,17 +948,17 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if delegatedBudget == nil || delegatedBudget["recommendedProof"] != "human-auditable" || delegatedBudget["verificationReadiness"] != "needs-alignment" {
 		t.Fatalf("expected mixed delegated continuation and packet budget claim to need alignment, got %#v", delegatedBudget)
 	}
-	helperFlags := bySummary["The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`."]
+	helperFlags := bySummary["The binary may provide helper flags such as `discover claims --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`."]
 	if helperFlags == nil || helperFlags["recommendedProof"] != "human-auditable" || helperFlags["verificationReadiness"] != "needs-alignment" {
 		t.Fatalf("expected optional helper flag workflow claim to need alignment, got %#v", helperFlags)
 	}
-	reviewPrepare := bySummary["`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."]
+	reviewPrepare := bySummary["`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."]
 	if reviewPrepare == nil || reviewPrepare["recommendedProof"] != "deterministic" || reviewPrepare["verificationReadiness"] != "ready-for-proof" {
-		t.Fatalf("expected claim review prepare-input packet contract to be deterministic, got %#v", reviewPrepare)
+		t.Fatalf("expected discover claims review-input packet contract to be deterministic, got %#v", reviewPrepare)
 	}
-	claimShowSummary := bySummary["`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` when agents need concrete candidates before choosing the next branch."]
+	claimShowSummary := bySummary["`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` when agents need concrete candidates before choosing the next branch."]
 	if claimShowSummary == nil || claimShowSummary["recommendedProof"] != "deterministic" || claimShowSummary["verificationReadiness"] != "ready-for-proof" {
-		t.Fatalf("expected claim show summary packet contract not to be treated as scenario design, got %#v", claimShowSummary)
+		t.Fatalf("expected discover claims status summary packet contract not to be treated as scenario design, got %#v", claimShowSummary)
 	}
 	reviewPromptPath := bySummary["Review prompts point at the same path so human and machine review can refer to the same compare output."]
 	if reviewPromptPath == nil || reviewPromptPath["recommendedProof"] != "deterministic" || reviewPromptPath["verificationReadiness"] != "ready-for-proof" {
@@ -1155,7 +1155,7 @@ func TestBuildClaimStatusSummarySummarizesExistingPacket(t *testing.T) {
 	if boundary["sourceBasis"] != "entry-docs-and-linked-markdown" || !strings.Contains(stringFromAny(boundary["omissionPolicy"]), "outside deterministic discovery scope") {
 		t.Fatalf("expected explicit discovery boundary, got %#v", boundary)
 	}
-	if !strings.Contains(stringFromAny(boundary["productSignal"]), "in-scope promise missed by discovery is a claim discover bug") ||
+	if !strings.Contains(stringFromAny(boundary["productSignal"]), "in-scope promise missed by discovery is a discover claims bug") ||
 		!strings.Contains(stringFromAny(boundary["agentEscapeHatch"]), "out-of-scope alignment and documentation work") {
 		t.Fatalf("expected discoveryBoundary to separate in-scope discovery bugs from out-of-scope narrative gaps, got %#v", boundary)
 	}
@@ -3521,7 +3521,7 @@ func TestClaimGitStateIgnoresCommittedSourceDriftWhenContentHashMatches(t *testi
 	if changedFilesBasis["scope"] != "committed-diff-between-packet-and-current-head" || gitState["workingTreePolicy"] != "excluded" {
 		t.Fatalf("expected git state to describe committed-diff basis, got %#v", gitState)
 	}
-	if err := RequireFreshClaimPacket(packet, repoRoot, "claim review prepare-input", false); err != nil {
+	if err := RequireFreshClaimPacket(packet, repoRoot, "discover claims review-input", false); err != nil {
 		t.Fatalf("expected matching content hash to satisfy freshness: %v", err)
 	}
 }

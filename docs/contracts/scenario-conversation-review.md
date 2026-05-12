@@ -3,21 +3,21 @@
 ## Problem
 
 Consumer repos already have real chatbot conversation logs that can explain why a new scenario should exist or why an existing scenario needs refresh.
-Before this slice, `Cautilus` could turn those signals into `scenario propose` packets, but it did not own a dedicated review surface that let an operator inspect the linked conversations without reopening consumer-specific audit UIs.
+Before this slice, `Cautilus` could turn those signals into `discover scenarios propose` packets, but it did not own a dedicated review surface that let an operator inspect the linked conversations without reopening consumer-specific audit UIs.
 That gap kept `#16` open even after proposal generation and static proposal HTML already existed.
 
 ## Current Slice
 
 `Cautilus` now ships a read-only scenario-centric conversation review boundary.
-`cautilus scenario review-conversations` reads normalized chatbot conversation summaries plus proposal candidates and emits `cautilus.scenario_conversation_review.v1`.
-`cautilus scenario render-conversation-review-html` renders the same packet into a browser-readable page.
+`cautilus discover scenarios review-conversations` reads normalized chatbot conversation summaries plus proposal candidates and emits `cautilus.scenario_conversation_review.v1`.
+`cautilus discover scenarios render-conversation-review-html` renders the same packet into a browser-readable page.
 
 ## Fixed Decisions
 
 - The shipped surface is local-first and read-only.
 - The input starts from normalized chatbot conversation summaries, not raw consumer logs.
 - The input also carries proposal candidates so the surface stays explicitly scenario-centric instead of becoming a generic traffic browser.
-- Linked proposal summaries reuse the same `scenario propose` logic for `action`, `family`, `rationale`, and coverage hints.
+- Linked proposal summaries reuse the same `discover scenarios propose` logic for `action`, `family`, `rationale`, and coverage hints.
 - The HTML page is a projection over the packet, not a writable second source of truth.
 - This slice does not force one consumer storage root such as `.cautilus/`.
 
@@ -57,14 +57,14 @@ That gap kept `#16` open even after proposal generation and static proposal HTML
 
 - An operator can inspect which normalized conversation threads currently link to scenario work.
 - The packet distinguishes linked scenario work from unlinked threads.
-- Linked proposals carry consistent action and coverage semantics with `scenario propose`.
+- Linked proposals carry consistent action and coverage semantics with `discover scenarios propose`.
 - The rendered HTML makes thread transcript plus linked proposal context readable in one page.
 - The surface stays clearly separate from generic admin or audit browsing.
 
 ## Acceptance Checks
 
-- `cautilus scenario review-conversations --input ./fixtures/scenario-conversation-review/input.json`
-- `cautilus scenario render-conversation-review-html --input <conversation-review.json>`
+- `cautilus discover scenarios review-conversations --input ./fixtures/scenario-conversation-review/input.json`
+- `cautilus discover scenarios render-conversation-review-html --input <conversation-review.json>`
 - `go test ./internal/runtime ./internal/app ./internal/cli`
 - `npm run verify`
 - `npm run hooks:check`

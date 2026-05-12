@@ -31,8 +31,8 @@ function assistant(text) {
 
 test("passes packet-first flow without browser citations", () => {
 	const audit = auditPacketFirstFlowLogText(jsonl([
-		toolCall("./bin/cautilus agent status --repo-root . --json"),
-		toolCall("./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 5"),
+		toolCall("./bin/cautilus doctor status --repo-root . --json"),
+		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 5"),
 		assistant("The evidenced claim map is ready. Satisfied claims are explicit, and remaining work is grouped by action bucket."),
 	]));
 	assert.equal(audit.status, "passed");
@@ -42,7 +42,7 @@ test("passes packet-first flow without browser citations", () => {
 test("fails when the flow cites HTML before reading packets", () => {
 	const audit = auditPacketFirstFlowLogText(jsonl([
 		toolCall("open artifacts/self-dogfood-html/index.html"),
-		toolCall("./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 5"),
+		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 5"),
 		assistant("I used the packet after the HTML report."),
 	]));
 	assert.equal(audit.status, "failed");
@@ -51,7 +51,7 @@ test("fails when the flow cites HTML before reading packets", () => {
 
 test("fails when non-browser deliverable cites HTML in the answer", () => {
 	const audit = auditPacketFirstFlowLogText(jsonl([
-		toolCall("./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 5"),
+		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 5"),
 		assistant("Read artifacts/self-dogfood-html/index.html for the answer."),
 	]));
 	assert.equal(audit.status, "failed");

@@ -11,19 +11,19 @@ npm run dogfood:self:eval
 ```
 
 Use this when the job is to refresh the canonical operator-facing record of the current self-dogfood eval-test result.
-Rebuilds the checked-in `artifacts/self-dogfood/eval/latest/` bundle by invoking `cautilus eval test --adapter-name self-dogfood-eval` against the repo.
+Rebuilds the checked-in `artifacts/self-dogfood/eval/latest/` bundle by invoking `cautilus evaluate fixture --adapter-name self-dogfood-eval` against the repo.
 `dogfood:self` is the canonical maintainer entry point and currently delegates to `dogfood:self:eval`.
 
 ## Checked-in bundle HTML view
 
 ```bash
 npm run dogfood:self:html
-cautilus self-dogfood render-html
+cautilus doctor artifacts render-self-dogfood-html
 ```
 
 Refreshes the static HTML view of the current checked-in self-dogfood bundle (for example after hand-editing the markdown narrative or regenerating JSON offline).
 Treat this as a read-only view of the checked-in JSON bundle, not as a separate source of truth.
-The product-owned renderer is `cautilus self-dogfood render-html`; the `npm run` entry is a repo-local wrapper for maintainers.
+The product-owned renderer is `cautilus doctor artifacts render-self-dogfood-html`; the `npm run` entry is a repo-local wrapper for maintainers.
 
 ## Claim boundaries
 

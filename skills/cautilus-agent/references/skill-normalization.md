@@ -24,7 +24,7 @@ If `Cautilus` starts too early, it becomes a repo-specific log reader.
 
 The product boundary is:
 
-`host skill run summaries -> skill normalization helper -> proposalCandidates -> scenario prepare-input -> scenario propose`
+`host skill run summaries -> skill normalization helper -> proposalCandidates -> discover scenarios prepare-input -> discover scenarios propose`
 
 When the host already uses the first-class `skill evaluate` seam, the chain
 can be:
@@ -40,12 +40,12 @@ be:
 
 The shipped `skill` normalization helper is `NormalizeSkillProposalCandidates`
 in [internal/runtime/proposals.go](../../../internal/runtime/proposals.go),
-exposed on the CLI as `cautilus scenario normalize skill`.
+exposed on the CLI as `cautilus discover scenarios normalize skill`.
 
 This slice accepts `cautilus.skill_normalization_inputs.v2` or the newer
 `cautilus.skill_evaluation_summary.v1` summary packet. It rejects
 `cautilus.workflow_normalization_inputs.v1` inputs and points the caller at
-`cautilus scenario normalize workflow` instead.
+`cautilus discover scenarios normalize workflow` instead.
 
 ## Representative Consumers
 
@@ -132,7 +132,7 @@ instead of repo-specific validation IDs.
 - `cli_workflow` inputs are handled by the workflow normalization family and
   rejected here with an actionable pointer.
 - The helper outputs proposal candidates that can feed the existing
-  `scenario prepare-input` and `scenario propose` chain unchanged.
+  `discover scenarios prepare-input` and `discover scenarios propose` chain unchanged.
 
 ## Non-Goals
 
@@ -167,7 +167,7 @@ instead of repo-specific validation IDs.
 - fixture: evaluation-summary-shaped trigger and execution regressions also
   become stable `proposalKey`s without extra host mapping
 - `cli_workflow` input returns a non-zero exit with stderr mentioning
-  `cautilus scenario normalize workflow`
+  `cautilus discover scenarios normalize workflow`
 
 ## Canonical Artifact
 

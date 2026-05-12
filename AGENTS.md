@@ -128,8 +128,8 @@ Run it when changing release-prep flow, self-dogfood workflow scripts, or operat
 Key direct commands:
 
 ```bash
-cautilus adapter resolve --repo-root .
-cautilus adapter init --repo-root .
+cautilus doctor adapter --repo-root .
+cautilus init adapter --repo-root .
 cautilus doctor --repo-root .
-cautilus review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review
+cautilus evaluate review variants --repo-root . --workspace . --output-dir /tmp/cautilus-review
 ```

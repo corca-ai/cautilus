@@ -6,8 +6,8 @@ The point is not to find a flattering benchmark slice.
 The point is to decide whether the candidate change survives comparison, held-out checks, and human review with enough evidence to ship for the behavior the operator actually cares about.
 When the user wants a repeated quality bar, prefer a bounded evaluation loop with explicit stop conditions over an open-ended "retry until clean" loop.
 
-When the user asks to test a local skill rather than a code or prompt delta, prefer `cautilus eval test --fixture <skill.fixture.json>` first.
-That seam owns the checked-in case suite, adapter-runner invocation, and chained summary artifacts before the flow returns to packet-level `cautilus eval evaluate` and proposal normalization.
+When the user asks to test a local skill rather than a code or prompt delta, prefer `cautilus evaluate fixture --fixture <skill.fixture.json>` first.
+That seam owns the checked-in case suite, adapter-runner invocation, and chained summary artifacts before the flow returns to packet-level `cautilus evaluate observation` and proposal normalization.
 
 ## Bootstrap
 
@@ -43,22 +43,22 @@ node scripts/init_adapter.mjs --repo-root . --adapter-name code-quality
 If the run should compare clean git refs rather than a live checkout, prepare the explicit A/B worktrees first:
 
 ```bash
-cautilus workspace prepare-compare \
+cautilus evaluate comparison prepare \
   --repo-root . \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-compare
 ```
 
-The helper emits machine-readable baseline and candidate paths you can pass back into `eval test` or `review variants`.
+The helper emits machine-readable baseline and candidate paths you can pass back into `evaluate fixture` or `evaluate review variants`.
 
 `--output-dir` is optional.
-When `cautilus workspace start` has already pinned `CAUTILUS_RUN_DIR`, omit it and the helper materializes `baseline/` and `candidate/` inside that active `runDir`.
+When `cautilus init run` has already pinned `CAUTILUS_RUN_DIR`, omit it and the helper materializes `baseline/` and `candidate/` inside that active `runDir`.
 When nothing is pinned, it auto-materializes a fresh `runDir` under `./.cautilus/runs/` and prints `Active run: <path>` to stderr.
 
 If repeated bounded runs are accumulating too many artifact directories under one artifact root, prune older recognized bundles instead of letting stdout, stderr, review packets, and compare workspaces grow forever:
 
 ```bash
-cautilus workspace prune-artifacts \
+cautilus doctor artifacts prune \
   --root /tmp/cautilus-runs \
   --keep-last 20
 ```
@@ -67,11 +67,11 @@ When a new bounded run should land under the same artifact root, start a fresh p
 Default stdout is a single shell-evalable line so `eval` is the happy path; the helper also writes a `run.json` manifest inside the new directory so the pruner recognizes it even before any other bundle file is written:
 
 ```bash
-eval "$(cautilus workspace start --label mode-held-out)"
+eval "$(cautilus init run --label mode-held-out)"
 ```
 
 `workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on first use).
-After the `eval`, `CAUTILUS_RUN_DIR` is set in the current shell and consumer commands like `eval test`, `review variants`, `review prepare-input`, and `workspace prepare-compare` resolve their runDir from that env var without operator path-threading.
+After the `eval`, `CAUTILUS_RUN_DIR` is set in the current shell and consumer commands like `evaluate fixture`, `evaluate review variants`, `evaluate review prepare-input`, and `evaluate comparison prepare` resolve their runDir from that env var without operator path-threading.
 Pass `--json` instead of `eval` if a script needs the machine-readable payload.
 
 If interpretation or reporting is getting sloppy, read [reporting.md](../contracts/reporting.md) before continuing.
@@ -152,30 +152,30 @@ When that run is `comparison`, `Cautilus` also materializes a `baseline-cache.js
    Name the candidate change surface, baseline choice, and intended decision.
 2. Run adapter-defined `preflight_commands`.
    Stop if a prerequisite is missing or the baseline is still vague.
-3. Run the adapter's eval-test command via `cautilus eval test`.
+3. Run the adapter's eval-test command via `cautilus evaluate fixture`.
    The fixture's translated case suite drives the runner; iterate / held-out / comparison / full-gate framing now lives inside the surface preset rather than as separate CLI modes.
    Prefer the checked-in eval runner over ad-hoc manual rendering:
 
 ```bash
-cautilus eval test \
+cautilus evaluate fixture \
   --repo-root . \
   --fixture fixtures/eval/dev/repo/example.fixture.json \
   --output-dir /tmp/cautilus-eval
 ```
 
 `--output-dir` is optional.
-When `cautilus workspace start` has already pinned `CAUTILUS_RUN_DIR`, omit it and `eval test` writes its observed packet into that active `runDir`.
-When nothing is pinned, `eval test` auto-materializes a fresh `runDir` under `./.cautilus/runs/` and prints `Active run: <path>` to stderr.
+When `cautilus init run` has already pinned `CAUTILUS_RUN_DIR`, omit it and `evaluate fixture` writes its observed packet into that active `runDir`.
+When nothing is pinned, `evaluate fixture` auto-materializes a fresh `runDir` under `./.cautilus/runs/` and prints `Active run: <path>` to stderr.
 4. Review artifacts and run the adapter's `human_review_prompts`.
    Benchmark wins do not override obvious human-visible failures.
-   When useful, run 2-3 independent review variants that judge the same candidate from different lenses.
+   When useful, run 2-3 independent evaluate review variants that judge the same candidate from different lenses.
    Require structured findings such as `blocker`, `concern`, or `pass`.
    If the adapter defines `executor_variants`, use those checked-in command templates instead of retyping ad-hoc `codex exec` or `claude -p` commands.
-   When the repo keeps a checked-in wrapper such as `scripts/agent-runtime/run-executor-variants.mjs`, it should delegate to `cautilus review variants` and stay a thin fanout shim instead of owning runtime semantics itself.
+   When the repo keeps a checked-in wrapper such as `scripts/agent-runtime/run-executor-variants.mjs`, it should delegate to `cautilus evaluate evaluate review variants` and stay a thin fanout shim instead of owning runtime semantics itself.
    When the repo already has a report packet but no fixed prompt file, let the runner synthesize the review packet and meta-prompt artifacts directly:
 
 ```bash
-cautilus review variants \
+cautilus evaluate evaluate review variants \
   --repo-root . \
   --workspace . \
   --report-file /tmp/cautilus-mode/report.json \
@@ -186,7 +186,7 @@ cautilus review variants \
 For one-scenario output review, the same surface can start from a checked-in scenario file instead of a report packet:
 
 ```bash
-cautilus review variants \
+cautilus evaluate evaluate review variants \
   --repo-root . \
   --workspace . \
   --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
@@ -198,22 +198,22 @@ cautilus review variants \
 When the repo already has explicit mode results, assemble one checked-in report packet instead of leaving held-out and full-gate telemetry spread across ad-hoc files:
 
 ```bash
-cautilus report build --input ./fixtures/reports/report-input.json
+cautilus evaluate report build --input ./fixtures/reports/report-input.json
 ```
 Before generating or selecting a review prompt, prefer one durable review packet that binds the report, artifact paths, and review questions:
 
 ```bash
-cautilus review prepare-input \
+cautilus evaluate evaluate review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
 ```
 Then prefer the product-owned meta-prompt seam before hand-written prompt glue:
 
 ```bash
-cautilus review build-prompt-input \
+cautilus evaluate evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 
-cautilus review render-prompt \
+cautilus evaluate evaluate review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 ```
 5. If the user wants a repeatable local evaluator and none exists, create a checked-in bounded runner first.
@@ -253,21 +253,21 @@ Typical examples:
 When repeated workflow failures should become durable scenario coverage, prefer the checked-in `skill` normalization helper over repo-local one-off shapers:
 
 ```bash
-cautilus eval test \
+cautilus evaluate fixture \
   --repo-root . \
   --adapter-name self-dogfood-eval-skill
 
-cautilus eval evaluate \
+cautilus evaluate observation \
   --input ./eval-observed.json \
   --output /tmp/cautilus-skill-summary.json
 
-cautilus scenario normalize skill \
+cautilus discover scenarios normalize skill \
   --input /tmp/cautilus-skill-summary.json
 ```
 
-`eval test` with a `surface=dev, preset=skill` fixture is the operator-facing workflow seam above adapter-owned local skill runners.
-`eval evaluate` remains the first-class packet boundary for skill trigger and execution quality.
-The host still owns raw invocation and transcript capture; `Cautilus` owns the case-suite/runDir workflow, packet-level recommendation, behavior-intent framing, and the direct chain into `scenario normalize skill`.
+`evaluate fixture` with a `surface=dev, preset=skill` fixture is the operator-facing workflow seam above adapter-owned local skill runners.
+`evaluate observation` remains the first-class packet boundary for skill trigger and execution quality.
+The host still owns raw invocation and transcript capture; `Cautilus` owns the case-suite/runDir workflow, packet-level recommendation, behavior-intent framing, and the direct chain into `discover scenarios normalize skill`.
 
 For this pattern:
 

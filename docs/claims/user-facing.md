@@ -5,7 +5,7 @@ The active user-facing source of truth is [docs/specs/user/index.spec.md](../spe
 This page is kept temporarily until useful content is absorbed or deleted in a later cleanup slice.
 
 This page is the reader-facing claim catalog for `Cautilus`.
-It is not a raw `claim discover` dump.
+It is not a raw `discover claims` dump.
 It groups repeated source sentences into a small set of product promises a user can understand before reading implementation contracts or proof packets.
 The short orientation here is not a separate canonical claim:
 every proof-bearing promise should appear again in a numbered claim below.
@@ -69,7 +69,7 @@ README.md, docs/contracts/improvement.md, docs/contracts/improvement-search.md, 
 
 **What this means.**
 Setup and readiness should not depend on private operator memory.
-`doctor` and agent status output should explain what is ready, what is blocked, and what the next action is.
+`doctor` and doctor status output should explain what is ready, what is blocked, and what the next action is.
 A ready doctor result means the selected Cautilus surface can run; it does not prove the repo's behavior claims by itself.
 
 **How Cautilus checks it.**

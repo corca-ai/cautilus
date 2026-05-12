@@ -18,7 +18,7 @@ func RenderReviewPacketHTML(packet map[string]any) string {
 	report := asMap(packet["report"])
 	title := fmt.Sprintf("Cautilus Review Packet — %s", selfDogfoodStatusLabel(stringOrEmpty(report["recommendation"])))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus review render-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus evaluate review render-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderReviewPacketHeader(packet, report))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
@@ -77,7 +77,7 @@ func RenderReviewSummaryHTML(summary map[string]any) string {
 	verdict := stringOrEmpty(summary["reviewVerdict"])
 	title := fmt.Sprintf("Cautilus Review Summary — %s", selfDogfoodStatusLabel(verdict))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus review render-variants-summary-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus evaluate review render-variants-summary-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderReviewSummaryHeader(summary, status, verdict))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
@@ -308,7 +308,7 @@ func renderReviewPacketFooter(packet map[string]any) string {
 	return fmt.Sprintf(`
 <footer class="footer">
 	<p>Generated from <code>review.json</code> (schemaVersion <code>%s</code>).
-	Do not hand-edit this file — rerun <code>cautilus review render-html</code> to refresh.</p>
+	Do not hand-edit this file — rerun <code>cautilus evaluate review render-html</code> to refresh.</p>
 </footer>`,
 		escapeHTML(defaultString(packet["schemaVersion"], "n/a")),
 	)
@@ -529,7 +529,7 @@ func renderReviewSummaryFooter(summary map[string]any) string {
 	return fmt.Sprintf(`
 <footer class="footer">
 	<p>Generated from <code>review-summary.json</code> (schemaVersion <code>%s</code>).
-	Do not hand-edit this file — rerun <code>cautilus review render-variants-summary-html</code> to refresh.</p>
+	Do not hand-edit this file — rerun <code>cautilus evaluate review render-variants-summary-html</code> to refresh.</p>
 </footer>`,
 		escapeHTML(defaultString(summary["schemaVersion"], "n/a")),
 	)
@@ -648,7 +648,7 @@ func reviewSummaryConsensusHeadline(summary map[string]any) string {
 	})
 	switch {
 	case len(verdictCounts) == 0:
-		return "No review variants recorded."
+		return "No evaluate review variants recorded."
 	case len(verdictCounts) == 1 && len(executionCounts) == 1:
 		return "All variants align on both execution state and review verdict."
 	case len(verdictCounts) > 1 && len(executionCounts) == 1:

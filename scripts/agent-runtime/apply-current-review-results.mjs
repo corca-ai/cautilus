@@ -324,13 +324,13 @@ export function filterReviewResultForClaimIds(reviewResult, claimIds) {
 function runApplyResult({ cautilusBin, claims, reviewResult, output }) {
 	const result = spawnSync(
 		cautilusBin,
-		["claim", "review", "apply-result", "--claims", claims, "--review-result", reviewResult, "--output", output],
+		["discover", "claims", "apply-review", "--claims", claims, "--review-result", reviewResult, "--output", output],
 		{ encoding: "utf8" },
 	);
 	if (result.status !== 0) {
 		throw new Error(
 			[
-				`claim review apply-result failed for ${reviewResult}`,
+				`discover claims apply-review failed for ${reviewResult}`,
 				result.stdout?.trim(),
 				result.stderr?.trim(),
 			]

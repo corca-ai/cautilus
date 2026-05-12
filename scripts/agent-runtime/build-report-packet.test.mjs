@@ -50,7 +50,7 @@ function createReportInputFixture() {
 			},
 			{
 				mode: "full_gate",
-				command: "cautilus review variants --repo-root /tmp/repo --workspace /tmp/repo --output-dir /tmp/out",
+				command: "cautilus evaluate review variants --repo-root /tmp/repo --workspace /tmp/repo --output-dir /tmp/out",
 			},
 		],
 		modeRuns: [

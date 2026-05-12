@@ -1,6 +1,6 @@
 # Skill Clone Experiment Contract
 
-`Cautilus` exposes sandboxed skill-clone experiment comparison through `cautilus eval skill-experiment compare`.
+`Cautilus` exposes sandboxed skill-clone experiment comparison through `cautilus evaluate skill-experiment`.
 
 The command starts after a host-owned runner has already executed the baseline skill and the temporary variant.
 It does not install skills, mutate production skill state, call an LLM, or parse raw host logs.

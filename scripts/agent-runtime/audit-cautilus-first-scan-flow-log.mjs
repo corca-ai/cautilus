@@ -10,22 +10,22 @@ import { writeTextOutput } from "./output-files.mjs";
 export const FIRST_SCAN_FLOW_AUDIT_SCHEMA = "cautilus.first_scan_flow_audit.v1";
 
 const CAUTILUS_COMMAND_PATTERN = /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)/;
-const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bagent\\s+status\\b`);
-const FIRST_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+discover\\b(?=[\\s\\S]*--repo-root\\b)(?![\\s\\S]*--previous\\b)(?![\\s\\S]*--refresh-plan\\b)`);
-const CLAIM_SHOW_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+show\\b(?=[\\s\\S]*--sample-claims\\b)`);
+const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdoctor\\s+status\\b`);
+const FIRST_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdiscover\\s+claims\\b(?=[\\s\\S]*--repo-root\\b)(?![\\s\\S]*--previous\\b)(?![\\s\\S]*--refresh-plan\\b)`);
+const CLAIM_SHOW_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdiscover\\s+claims\\s+status\\b(?=[\\s\\S]*--sample-claims\\b)`);
 const POSITION_PATTERNS = {
-	agentStatus: /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)[^;&|\n]*\bagent\s+status\b/g,
-	firstDiscover: /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)[^;&|\n]*\bclaim\s+discover\b(?=[^;&|\n]*--repo-root\b)(?![^;&|\n]*--previous\b)(?![^;&|\n]*--refresh-plan\b)/g,
-	claimShow: /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)[^;&|\n]*\bclaim\s+show\b(?=[^;&|\n]*--sample-claims\b)/g,
+	agentStatus: /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)[^;&|\n]*\bdoctor\s+status\b/g,
+	firstDiscover: /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)[^;&|\n]*\bdiscover\s+claims\b(?=[^;&|\n]*--repo-root\b)(?![^;&|\n]*--previous\b)(?![^;&|\n]*--refresh-plan\b)/g,
+	claimShow: /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)[^;&|\n]*\bdiscover\s+claims\s+status\b(?=[^;&|\n]*--sample-claims\b)/g,
 };
 
 const FORBIDDEN_COMMAND_PATTERNS = [
-	["claim_review_prepare", /\bclaim\s+review\s+prepare-input\b/],
-	["claim_review_apply", /\bclaim\s+review\s+apply-result\b/],
-	["claim_plan_evals", /\bclaim\s+plan-evals\b/],
-	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+test\b/],
-	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+evaluate\b/],
-	["review_variants", /\breview\s+variants\b/],
+	["claim_review_prepare", /\bdiscover\s+claims\s+review-input\b/],
+	["claim_review_apply", /\bdiscover\s+claims\s+apply-review\b/],
+	["claim_plan_evals", /\bevaluate\s+claims\s+plan\b/],
+	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\bevaluate\s+fixture\b/],
+	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\bevaluate\s+observation\b/],
+	["review_variants", /\bevaluate\s+review\s+variants\b/],
 	["improve", /\bimprove\b/],
 	["git_add", /\bgit\s+add\b/],
 	["git_commit", /\bgit\s+commit\b/],
@@ -60,9 +60,9 @@ export function auditFirstScanFlowLogText(text) {
 
 function requiredCommandFindings(commands) {
 	const requirements = [
-		["missing_agent_status", AGENT_STATUS_PATTERN, "The first-scan flow should start from agent status."],
-		["missing_first_discover", FIRST_DISCOVER_PATTERN, "The selected branch should run claim discover without --previous or --refresh-plan."],
-		["missing_claim_show", CLAIM_SHOW_PATTERN, "After first discovery, the agent should summarize the saved claim map with claim show --sample-claims."],
+		["missing_agent_status", AGENT_STATUS_PATTERN, "The first-scan flow should start from doctor status."],
+		["missing_first_discover", FIRST_DISCOVER_PATTERN, "The selected branch should run discover claims without --previous or --refresh-plan."],
+		["missing_claim_show", CLAIM_SHOW_PATTERN, "After first discovery, the agent should summarize the saved claim map with discover claims status --sample-claims."],
 	];
 	return requirements
 		.filter(([, pattern]) => !commands.some((command) => pattern.test(command)))
@@ -82,7 +82,7 @@ function commandOrderFindings(commands) {
 	return [{
 		severity: "error",
 		id: "wrong_command_order",
-		message: "Expected agent status before first claim discover, and claim show after discovery.",
+		message: "Expected doctor status before first discover claims, and discover claims status after discovery.",
 	}];
 }
 
@@ -175,14 +175,14 @@ function messageFindings(messageRecords, messages, firstDiscoverIndex) {
 		findings.push({
 			severity: "error",
 			id: "missing_pre_discover_entries_and_depth",
-			message: "Before first claim discover, the skill should state the scan entries and linked Markdown depth.",
+			message: "Before first discover claims, the skill should state the scan entries and linked Markdown depth.",
 		});
 	}
 	if (!/(?:confirm|확인).*(?:scope|범위)|(?:adjust|조정).*(?:scope|범위)|(?:scope|범위).*(?:confirm|확인|adjust|조정)|narrower explicit source set|명시.*소스/i.test(beforeDiscover)) {
 		findings.push({
 			severity: "error",
 			id: "missing_pre_discover_scope_confirmation",
-			message: "Before first claim discover, the skill should ask the user to confirm or adjust the scan scope.",
+			message: "Before first discover claims, the skill should ask the user to confirm or adjust the scan scope.",
 		});
 	}
 	if (!/review budget|LLM(?:-backed)?(?:\s+\w+){0,3}\s+review|bounded\s+LLM|budgeted\s+(?:claim\s+)?review|리뷰 예산|LLM 리뷰|리뷰를 .*하지|리뷰.*별도/i.test(joined)) {

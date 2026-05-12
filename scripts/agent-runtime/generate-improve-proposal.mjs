@@ -472,7 +472,7 @@ function buildProposalFollowUpChecks(decision) {
 		: [
 			"Rerun the bounded iterate probe on the cited surfaces first.",
 			"Rerun held-out before accepting the revision.",
-			"Rerun comparison and review variants when those surfaces exist for the target repo.",
+			"Rerun comparison and evaluate review variants when those surfaces exist for the target repo.",
 		];
 }
 

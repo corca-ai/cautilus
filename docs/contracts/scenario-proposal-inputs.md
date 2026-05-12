@@ -1,6 +1,6 @@
 # Scenario Proposal Input Packet Contract
 
-`cautilus scenario propose` is the first standalone product surface for turning host-normalized scenario signals into operator-reviewable proposal packets.
+`cautilus discover scenarios propose` is the first standalone product surface for turning host-normalized scenario signals into operator-reviewable proposal packets.
 
 This contract defines the exact input packet boundary that host repos must produce before `Cautilus` ranks, merges, and emits draft scenario proposals.
 
@@ -8,7 +8,7 @@ This contract defines the exact input packet boundary that host repos must produ
 
 This contract owns:
 
-- the checked-in or generated JSON packet consumed by `cautilus scenario propose`
+- the checked-in or generated JSON packet consumed by `cautilus discover scenarios propose`
 - normalized proposal-candidate shape
 - scenario registry and coverage payload shape at the CLI handoff boundary
 
@@ -105,7 +105,7 @@ The host-owned normalization seam should:
 - keep host-private storage details out of the product packet unless they are needed for review context
 - pass scenario registry and coverage as separate inputs so refresh decisions do not depend on guessed state
 
-The product-owned `scenario propose` command then:
+The product-owned `discover scenarios propose` command then:
 
 - validates the packet
 - merges duplicate `proposalKey` entries
@@ -117,7 +117,7 @@ The product-owned `scenario propose` command then:
 
 ## Fixed Decisions
 
-- `cautilus scenario propose` reads a normalized packet, not raw host logs.
+- `cautilus discover scenarios propose` reads a normalized packet, not raw host logs.
 - Host repos own topic detection, blocked-run clustering, and other pattern-mining heuristics.
 - Product-owned proposal generation starts at candidate merge and ranking.
 - Registry presence and recent coverage remain separate inputs.

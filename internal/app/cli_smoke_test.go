@@ -155,11 +155,11 @@ func TestCLIDoctorScopeAgentSurfaceTracksInstalledSkillSurface(t *testing.T) {
 		t.Fatalf("expected missing_agent_surface payload, got %#v", payload)
 	}
 	suggestions, ok := payload["suggestions"].([]any)
-	if !ok || len(suggestions) == 0 || !strings.Contains(anyToString(suggestions[0]), "cautilus install") {
+	if !ok || len(suggestions) == 0 || !strings.Contains(anyToString(suggestions[0]), "cautilus init") {
 		t.Fatalf("expected install suggestion, got %#v", payload["suggestions"])
 	}
 
-	installStdout, installStderr, installExitCode := runCLI(t, root, "install", "--repo-root", root, "--json")
+	installStdout, installStderr, installExitCode := runCLI(t, root, "init", "--repo-root", root, "--json")
 	if installExitCode != 0 {
 		t.Fatalf("install failed: %s%s", installStdout, installStderr)
 	}
@@ -219,7 +219,7 @@ func TestCLIAdapterResolveDelegatesToBundledResolver(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "adapter", "resolve", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "adapter", "--repo-root", root)
 	if exitCode != 0 {
 		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr)
 	}
@@ -328,18 +328,18 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected first_bounded_run payload, got %#v", payload["first_bounded_run"])
 	}
-	if anyToString(firstBoundedRun["discoveryCommand"]) != "cautilus scenarios --json" {
+	if anyToString(firstBoundedRun["discoveryCommand"]) != "cautilus discover scenarios --json" {
 		t.Fatalf("unexpected first_bounded_run discovery command: %#v", firstBoundedRun["discoveryCommand"])
 	}
 	decisionLoopCommands, ok := firstBoundedRun["decisionLoopCommands"].([]any)
 	if !ok || len(decisionLoopCommands) != 2 {
 		t.Fatalf("expected two decision loop commands, got %#v", firstBoundedRun["decisionLoopCommands"])
 	}
-	if !strings.Contains(anyToString(decisionLoopCommands[0]), "cautilus eval test --repo-root '"+root+"'") {
-		t.Fatalf("expected eval test first bounded run command, got %#v", decisionLoopCommands[0])
+	if !strings.Contains(anyToString(decisionLoopCommands[0]), "cautilus evaluate fixture --repo-root '"+root+"'") {
+		t.Fatalf("expected evaluate fixture first bounded run command, got %#v", decisionLoopCommands[0])
 	}
-	if !strings.Contains(anyToString(decisionLoopCommands[1]), "cautilus eval evaluate --input '"+filepath.Join(root, ".cautilus", "runs", "first-bounded-run", "eval-observed.json")+"'") {
-		t.Fatalf("expected eval evaluate packet recheck command, got %#v", decisionLoopCommands[1])
+	if !strings.Contains(anyToString(decisionLoopCommands[1]), "cautilus evaluate observation --input '"+filepath.Join(root, ".cautilus", "runs", "first-bounded-run", "eval-observed.json")+"'") {
+		t.Fatalf("expected evaluate observation packet recheck command, got %#v", decisionLoopCommands[1])
 	}
 	families, ok := firstBoundedRun["normalizationFamilies"].([]any)
 	if !ok || len(families) != 3 {
@@ -405,7 +405,7 @@ func TestCLIDoctorDoesNotTreatExecutorVariantsAsFirstBoundedRun(t *testing.T) {
 
 func TestCLIScenariosExposeExampleInputCLI(t *testing.T) {
 	root := t.TempDir()
-	stdout, stderr, exitCode := runCLI(t, root, "scenarios", "--json")
+	stdout, stderr, exitCode := runCLI(t, root, "discover", "scenarios", "--json")
 	if exitCode != 0 {
 		t.Fatalf("scenarios --json failed: %s", stderr)
 	}
@@ -435,11 +435,11 @@ func TestCLIDoctorFailsWithoutCheckedInAdapter(t *testing.T) {
 		t.Fatalf("expected missing_adapter payload, got %#v", payload)
 	}
 	nextAction, ok := payload["next_action"].(map[string]any)
-	if !ok || anyToString(nextAction["command"]) != "cautilus adapter init --repo-root '"+root+"'" {
+	if !ok || anyToString(nextAction["command"]) != "cautilus init adapter --repo-root '"+root+"'" {
 		t.Fatalf("expected adapter init next_action command, got %#v", payload["next_action"])
 	}
 	suggestions, ok := payload["suggestions"].([]any)
-	if !ok || len(suggestions) == 0 || !strings.Contains(anyToString(suggestions[0]), "adapter init") {
+	if !ok || len(suggestions) == 0 || !strings.Contains(anyToString(suggestions[0]), "init adapter") {
 		t.Fatalf("expected adapter init suggestion, got %#v", payload["suggestions"])
 	}
 }
@@ -502,7 +502,7 @@ func TestCLIDoctorNextActionPrintsLoopPrompt(t *testing.T) {
 	if exitCode != 1 {
 		t.Fatalf("expected exit code 1, got %d, stderr=%s", exitCode, stderr)
 	}
-	if !strings.Contains(stdout, "cautilus adapter init --repo-root") {
+	if !strings.Contains(stdout, "cautilus init adapter --repo-root") {
 		t.Fatalf("expected next-action prompt to mention adapter init, got %q", stdout)
 	}
 	if !strings.Contains(stdout, "continue from the returned next action") {
@@ -558,7 +558,7 @@ output_file="$1"
 printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"pass","message":"standalone","path":"variant/sh"}]}\n' > "$output_file"
 `)
 
-	if _, stderr, exitCode := runCLI(t, root, "adapter", "init", "--repo-root", root); exitCode != 0 {
+	if _, stderr, exitCode := runCLI(t, root, "init", "adapter", "--repo-root", root); exitCode != 0 {
 		t.Fatalf("adapter init failed: %s", stderr)
 	}
 	adapterPath := filepath.Join(root, ".agents", "cautilus-adapter.yaml")
@@ -581,9 +581,9 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 	}
 
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("review variants failed: %s", stderr)
+		t.Fatalf("evaluate review variants failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	if summary["schemaVersion"] != contracts.ReviewSummarySchema {
@@ -621,6 +621,7 @@ func TestCLIReviewFeedbackBuildEmitsSourceBoundLearningPacket(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
+		"evaluate",
 		"review",
 		"feedback",
 		"build",
@@ -694,6 +695,7 @@ func TestCLIReviewFeedbackBuildRejectsTestStatusDisposition(t *testing.T) {
 	_, stderr, exitCode := runCLI(
 		t,
 		root,
+		"evaluate",
 		"review",
 		"feedback",
 		"build",
@@ -721,6 +723,7 @@ func TestCLIReviewFeedbackBuildRejectsMissingReviewedProposal(t *testing.T) {
 	_, stderr, exitCode := runCLI(
 		t,
 		root,
+		"evaluate",
 		"review",
 		"feedback",
 		"build",
@@ -748,6 +751,7 @@ func TestCLIReviewFeedbackBuildAllowsMissingCriticalWithoutProposal(t *testing.T
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
+		"evaluate",
 		"review",
 		"feedback",
 		"build",
@@ -783,6 +787,7 @@ func TestCLIReviewFeedbackSummarizeCountsDispositionsByMethodFamily(t *testing.T
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
+		"evaluate",
 		"review",
 		"feedback",
 		"summarize",
@@ -847,6 +852,7 @@ func TestCLIReviewFeedbackSummarizeRejectsNonFeedbackPacket(t *testing.T) {
 	_, stderr, exitCode := runCLI(
 		t,
 		root,
+		"evaluate",
 		"review",
 		"feedback",
 		"summarize",
@@ -866,6 +872,7 @@ func buildReviewFeedbackPacketForTest(t *testing.T, root string, outputPath stri
 	_, stderr, exitCode := runCLI(
 		t,
 		root,
+		"evaluate",
 		"review",
 		"feedback",
 		"build",
@@ -944,7 +951,7 @@ EOF
 	}
 
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
 	if exitCode != 1 {
 		t.Fatalf("expected blocked exit code, got %d, stderr=%s", exitCode, stderr)
 	}
@@ -1016,7 +1023,7 @@ EOF
 	}
 
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
 	if exitCode != 1 {
 		t.Fatalf("expected failed exit code, got %d, stderr=%s", exitCode, stderr)
 	}
@@ -1090,9 +1097,9 @@ EOF
 	}
 
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("review variants failed: %s", stderr)
+		t.Fatalf("evaluate review variants failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	if summary["status"] != "passed" {
@@ -1164,7 +1171,7 @@ exit 1
 	}
 
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
 	if exitCode != 1 {
 		t.Fatalf("expected blocked exit code, got %d, stderr=%s", exitCode, stderr)
 	}
@@ -1275,9 +1282,9 @@ EOF
 	}
 
 	outputDir := filepath.Join(root, "outputs")
-	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "review", "variants", "--repo-root", root, "--workspace", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("review variants failed: %s", stderr)
+		t.Fatalf("evaluate review variants failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	telemetry := summary["telemetry"].(map[string]any)
@@ -1355,7 +1362,7 @@ func TestCLIReviewVariantsSupportsOutputUnderTest(t *testing.T) {
 		"recommendation":      "defer",
 	})
 
-	if _, stderr, exitCode := runCLI(t, root, "adapter", "init", "--repo-root", root); exitCode != 0 {
+	if _, stderr, exitCode := runCLI(t, root, "init", "adapter", "--repo-root", root); exitCode != 0 {
 		t.Fatalf("adapter init failed: %s", stderr)
 	}
 	adapterPath := filepath.Join(root, ".agents", "cautilus-adapter.yaml")
@@ -1381,6 +1388,7 @@ func TestCLIReviewVariantsSupportsOutputUnderTest(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
+		"evaluate",
 		"review",
 		"variants",
 		"--repo-root",
@@ -1397,7 +1405,7 @@ func TestCLIReviewVariantsSupportsOutputUnderTest(t *testing.T) {
 		outputDir,
 	)
 	if exitCode != 0 {
-		t.Fatalf("review variants failed: %s", stderr)
+		t.Fatalf("evaluate review variants failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	outputUnderTest := summary["outputUnderTestFile"].(map[string]any)
@@ -1454,7 +1462,7 @@ func TestCLIReviewVariantsCanUseDirectScenarioOutputReview(t *testing.T) {
 	})
 	writeExecutableFile(t, root, "variant.sh", "#!/bin/sh\noutput_file=\"$1\"\nprompt_file=\"$2\"\nprompt_text=\"$(cat \"$prompt_file\")\"\nnode - \"$output_file\" \"$prompt_text\" <<'EOF'\nconst [outputFile, promptText] = process.argv.slice(2);\nconst { writeFileSync } = await import(\"node:fs\");\nwriteFileSync(outputFile, JSON.stringify({\n  verdict: \"pass\",\n  summary: promptText,\n  findings: [{ severity: \"pass\", message: \"scenario-output-review\", path: \"variant/sh\" }],\n}) + \"\\n\", \"utf-8\");\nEOF\n")
 
-	if _, stderr, exitCode := runCLI(t, root, "adapter", "init", "--repo-root", root); exitCode != 0 {
+	if _, stderr, exitCode := runCLI(t, root, "init", "adapter", "--repo-root", root); exitCode != 0 {
 		t.Fatalf("adapter init failed: %s", stderr)
 	}
 	adapterPath := filepath.Join(root, ".agents", "cautilus-adapter.yaml")
@@ -1479,6 +1487,7 @@ func TestCLIReviewVariantsCanUseDirectScenarioOutputReview(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
+		"evaluate",
 		"review",
 		"variants",
 		"--repo-root",
@@ -1495,7 +1504,7 @@ func TestCLIReviewVariantsCanUseDirectScenarioOutputReview(t *testing.T) {
 		outputDir,
 	)
 	if exitCode != 0 {
-		t.Fatalf("review variants failed: %s", stderr)
+		t.Fatalf("evaluate review variants failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	promptInput := readJSONObjectFile(t, anyString(summary["reviewPromptInputFile"]))
@@ -1520,7 +1529,7 @@ func TestCLIReviewVariantsCanUseDirectScenarioOutputReview(t *testing.T) {
 func TestCLIInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	root := t.TempDir()
 
-	stdout, stderr, exitCode := runCLI(t, root, "install", "--repo-root", ".")
+	stdout, stderr, exitCode := runCLI(t, root, "init", "--repo-root", ".")
 	if exitCode != 0 {
 		t.Fatalf("install failed: %s", stderr)
 	}
@@ -1540,7 +1549,7 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
-	if !strings.Contains(string(skill), "cautilus install --repo-root .") {
+	if !strings.Contains(string(skill), "cautilus init --repo-root .") {
 		t.Fatalf("expected install guidance in skill")
 	}
 	if !strings.Contains(string(skill), "cautilus doctor --repo-root .") {
@@ -1576,7 +1585,7 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkill(t *testing.T) {
 		t.Fatalf("unexpected symlink target: %s", target)
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "install", "--repo-root", ".")
+	_, stderr, exitCode = runCLI(t, root, "init", "--repo-root", ".")
 	if exitCode != 1 || !strings.Contains(stderr, "already exists") {
 		t.Fatalf("expected already exists failure, got exit=%d stderr=%q", exitCode, stderr)
 	}
@@ -1630,7 +1639,7 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkillAndReportsCurrentCLI(t *testing
 	root := t.TempDir()
 	t.Setenv("CAUTILUS_VERSION", "v1.2.3")
 
-	stdout, stderr, exitCode := runCLI(t, root, "install", "--repo-root", ".", "--json")
+	stdout, stderr, exitCode := runCLI(t, root, "init", "--repo-root", ".", "--json")
 	if exitCode != 0 {
 		t.Fatalf("install failed: %s", stderr)
 	}
@@ -1668,7 +1677,7 @@ func TestCLIInstallMigratesLegacyClaudeSkills(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	_, stderr, exitCode := runCLI(t, root, "install", "--repo-root", ".", "--overwrite")
+	_, stderr, exitCode := runCLI(t, root, "init", "--repo-root", ".", "--overwrite")
 	if exitCode != 0 {
 		t.Fatalf("install --overwrite failed: %s", stderr)
 	}
@@ -1771,7 +1780,7 @@ func TestCLIWorkspacePrepareCompareCreatesBaselineAndCandidateWorktrees(t *testi
 	runGit(t, root, "commit", "-am", "candidate")
 	outputDir := filepath.Join(root, "compare")
 
-	stdout, stderr, exitCode := runCLI(t, root, "workspace", "prepare-compare", "--repo-root", root, "--baseline-ref", baselineCommit, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "comparison", "prepare", "--repo-root", root, "--baseline-ref", baselineCommit, "--output-dir", outputDir)
 	if exitCode != 0 {
 		t.Fatalf("prepare-compare failed: %s", stderr)
 	}
@@ -1823,7 +1832,7 @@ func TestCLIWorkspacePruneArtifactsPrunesOlderRecognizedDirectories(t *testing.T
 		t.Fatalf("Chtimes returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "workspace", "prune-artifacts", "--root", artifactRoot, "--keep-last", "1")
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "artifacts", "prune", "--root", artifactRoot, "--keep-last", "1")
 	if exitCode != 0 {
 		t.Fatalf("prune-artifacts failed: %s", stderr)
 	}
@@ -1891,9 +1900,9 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	_, stderr, exitCode := runCLI(t, root, "scenario", "propose", "--input", inputPath, "--output", outputPath)
+	_, stderr, exitCode := runCLI(t, root, "discover", "scenarios", "propose", "--input", inputPath, "--output", outputPath)
 	if exitCode != 0 {
-		t.Fatalf("scenario propose failed: %s", stderr)
+		t.Fatalf("discover scenarios propose failed: %s", stderr)
 	}
 	payload := readJSONObjectFile(t, outputPath)
 	if payload["schemaVersion"] != contracts.ScenarioProposalsSchema {
@@ -1953,9 +1962,9 @@ func TestCLIScenarioProposePreservesFullRankedOutputAndDerivesAttentionView(t *t
 		"now":                      "2026-04-19T00:00:00.000Z",
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "scenario", "propose", "--input", inputPath, "--output", outputPath)
+	_, stderr, exitCode := runCLI(t, root, "discover", "scenarios", "propose", "--input", inputPath, "--output", outputPath)
 	if exitCode != 0 {
-		t.Fatalf("scenario propose failed: %s", stderr)
+		t.Fatalf("discover scenarios propose failed: %s", stderr)
 	}
 	payload := readJSONObjectFile(t, outputPath)
 	proposalTelemetry := payload["proposalTelemetry"].(map[string]any)
@@ -2053,7 +2062,7 @@ func TestCLIScenarioReviewConversationsBuildsScenarioCentricThreadPacket(t *test
 		"now": "2026-04-11T00:00:00.000Z",
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "scenario", "review-conversations", "--input", inputPath, "--output", outputPath)
+	_, stderr, exitCode := runCLI(t, root, "discover", "scenarios", "review-conversations", "--input", inputPath, "--output", outputPath)
 	if exitCode != 0 {
 		t.Fatalf("scenario review-conversations failed: %s", stderr)
 	}
@@ -2132,7 +2141,7 @@ func TestCLIScenarioSummarizeTelemetryAggregatesScenarioCosts(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "scenario", "summarize-telemetry", "--results", inputPath)
+	stdout, stderr, exitCode := runCLI(t, root, "discover", "scenarios", "summarize-telemetry", "--results", inputPath)
 	if exitCode != 0 {
 		t.Fatalf("summarize-telemetry failed: %s", stderr)
 	}
@@ -2175,7 +2184,7 @@ func TestCLISelfDogfoodRenderHTMLWritesDecisionFirstIndex(t *testing.T) {
 		"variants":      []any{map[string]any{"id": "agent-review", "status": "passed", "verdict": "pass", "summary": "review passed"}},
 	})
 
-	stdout, stderr, exitCode := runCLI(t, root, "self-dogfood", "render-html")
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "artifacts", "render-self-dogfood-html")
 	if exitCode != 0 {
 		t.Fatalf("render-html failed: %s", stderr)
 	}
@@ -2242,7 +2251,7 @@ func TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle(t *testi
 		"commandObservations": []any{},
 	})
 
-	stdout, stderr, exitCode := runCLI(t, root, "self-dogfood", "render-experiments-html")
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "artifacts", "render-self-dogfood-experiments-html")
 	if exitCode != 0 {
 		t.Fatalf("render-experiments-html failed: %s", stderr)
 	}
@@ -2341,8 +2350,8 @@ func TestCLIReviewPrepareInputFallsBackToSoleNamedAdapterWhenReportLacksAdapterC
 		"recommendation":      "defer",
 	})
 	reviewPacketPath := filepath.Join(root, "review-packet.json")
-	if _, stderr, exitCode := runCLI(t, root, "review", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--output", reviewPacketPath); exitCode != 0 {
-		t.Fatalf("review prepare-input failed without adapter context: %s", stderr)
+	if _, stderr, exitCode := runCLI(t, root, "evaluate", "review", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--output", reviewPacketPath); exitCode != 0 {
+		t.Fatalf("evaluate review prepare-input failed without adapter context: %s", stderr)
 	}
 	reviewPacket := readJSONObjectFile(t, reviewPacketPath)
 	if !strings.HasSuffix(anyToString(reviewPacket["adapterPath"]), filepath.Join(".agents", "cautilus-adapters", "data-final-prompt-ab.yaml")) {
@@ -2643,9 +2652,9 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath, "--output-text-key", "summary", "--output", promptInputPath)
+	_, stderr, exitCode := runCLI(t, root, "evaluate", "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath, "--output-text-key", "summary", "--output", promptInputPath)
 	if exitCode != 0 {
-		t.Fatalf("review build-prompt-input failed: %s", stderr)
+		t.Fatalf("evaluate review build-prompt-input failed: %s", stderr)
 	}
 	promptInput := readJSONObjectFile(t, promptInputPath)
 	if promptInput["schemaVersion"] != contracts.ReviewPromptInputsSchema {
@@ -2666,9 +2675,9 @@ func TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam(t *testing.
 	if outputUnderTestText["key"] != "summary" || outputUnderTestText["text"] != "realized output" {
 		t.Fatalf("unexpected output-under-test text: %#v", outputUnderTestText)
 	}
-	_, stderr, exitCode = runCLI(t, root, "review", "render-prompt", "--input", promptInputPath, "--output", promptPath)
+	_, stderr, exitCode = runCLI(t, root, "evaluate", "review", "render-prompt", "--input", promptInputPath, "--output", promptPath)
 	if exitCode != 0 {
-		t.Fatalf("review render-prompt failed: %s", stderr)
+		t.Fatalf("evaluate review render-prompt failed: %s", stderr)
 	}
 	promptBytes, err := os.ReadFile(promptPath)
 	if err != nil {
@@ -2762,12 +2771,12 @@ func TestCLIReviewVariantsUsesDefaultSchemaFromReviewPromptInput(t *testing.T) {
 		"humanReviewPrompts":  []any{},
 	})
 
-	if _, stderr, exitCode := runCLI(t, root, "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output", promptInputPath); exitCode != 0 {
-		t.Fatalf("review build-prompt-input failed: %s", stderr)
+	if _, stderr, exitCode := runCLI(t, root, "evaluate", "review", "build-prompt-input", "--review-packet", reviewPacketPath, "--output", promptInputPath); exitCode != 0 {
+		t.Fatalf("evaluate review build-prompt-input failed: %s", stderr)
 	}
-	stdout, stderr, exitCode := runCLI(t, root, "review", "variants", "--repo-root", root, "--workspace", root, "--review-prompt-input", promptInputPath, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "review", "variants", "--repo-root", root, "--workspace", root, "--review-prompt-input", promptInputPath, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("review variants failed: %s", stderr)
+		t.Fatalf("evaluate review variants failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	if anyString(summary["schemaFile"]) != schemaPath {
@@ -3544,9 +3553,9 @@ func TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 		},
 	})
 	writeJSONFile(t, improveInputPath, map[string]any{
-		"schemaVersion":      contracts.ImproveInputsSchema,
-		"generatedAt":        "2026-04-26T09:58:00.000Z",
-		"repoRoot":           root,
+		"schemaVersion":     contracts.ImproveInputsSchema,
+		"generatedAt":       "2026-04-26T09:58:00.000Z",
+		"repoRoot":          root,
 		"improvementTarget": "prompt",
 		"intentProfile": map[string]any{
 			"schemaVersion":   contracts.BehaviorIntentSchema,
@@ -3701,9 +3710,9 @@ func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPro
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "scenario", "normalize", "chatbot", "--input", chatbotInputPath, "--output", candidatesPath)
+	_, stderr, exitCode := runCLI(t, root, "discover", "scenarios", "normalize", "chatbot", "--input", chatbotInputPath, "--output", candidatesPath)
 	if exitCode != 0 {
-		t.Fatalf("scenario normalize chatbot failed: %s", stderr)
+		t.Fatalf("discover scenarios normalize chatbot failed: %s", stderr)
 	}
 	candidates := readJSONArrayFile(t, candidatesPath)
 	if len(candidates) != 2 {
@@ -3713,13 +3722,13 @@ func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPro
 		t.Fatalf("unexpected intent profile: %#v", candidates[0])
 	}
 
-	_, stderr, exitCode = runCLI(t, root, "scenario", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
+	_, stderr, exitCode = runCLI(t, root, "discover", "scenarios", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
 	if exitCode != 0 {
-		t.Fatalf("scenario prepare-input failed: %s", stderr)
+		t.Fatalf("discover scenarios prepare-input failed: %s", stderr)
 	}
-	_, stderr, exitCode = runCLI(t, root, "scenario", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
+	_, stderr, exitCode = runCLI(t, root, "discover", "scenarios", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
 	if exitCode != 0 {
-		t.Fatalf("scenario propose failed: %s", stderr)
+		t.Fatalf("discover scenarios propose failed: %s", stderr)
 	}
 	proposals := readJSONObjectFile(t, proposalOutputPath)
 	proposalList := proposals["proposals"].([]any)
@@ -3839,17 +3848,17 @@ JSON
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("eval test failed: %s", stderr)
+		t.Fatalf("evaluate fixture failed: %s", stderr)
 	}
 	if strings.Contains(stderr, "deprecation:") {
-		t.Fatalf("eval test must not emit a deprecation pointer, got: %s", stderr)
+		t.Fatalf("evaluate fixture must not emit a deprecation pointer, got: %s", stderr)
 	}
 	summaryPath := strings.TrimSpace(stdout)
 	summary := readJSONObjectFile(t, summaryPath)
 	if summary["schemaVersion"] != contracts.EvaluationSummarySchema || summary["recommendation"] != "accept-now" {
-		t.Fatalf("unexpected eval test summary: %#v", summary)
+		t.Fatalf("unexpected evaluate fixture summary: %#v", summary)
 	}
 	casesPath := filepath.Join(outputDir, "eval-cases.json")
 	cases := readJSONObjectFile(t, casesPath)
@@ -3985,9 +3994,9 @@ EOF
 			},
 		},
 	})
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--fixture", filepath.Join(fixtureDir, "multi-step.fixture.json"), "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--fixture", filepath.Join(fixtureDir, "multi-step.fixture.json"), "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("multi-step eval test failed: %s", stderr)
+		t.Fatalf("multi-step evaluate fixture failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	if summary["recommendation"] != "accept-now" {
@@ -4033,7 +4042,7 @@ EOF
 			},
 		},
 	})
-	_, stderr, exitCode = runCLI(t, root, "eval", "test", "--repo-root", root, "--fixture", badFixturePath, "--output-dir", filepath.Join(root, "bad-output"))
+	_, stderr, exitCode = runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--fixture", badFixturePath, "--output-dir", filepath.Join(root, "bad-output"))
 	if exitCode == 0 || !strings.Contains(stderr, "invalid step placeholder") {
 		t.Fatalf("expected invalid placeholder error, exit=%d stderr=%s", exitCode, stderr)
 	}
@@ -4107,14 +4116,14 @@ JSON
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("eval test failed: %s", stderr)
+		t.Fatalf("evaluate fixture failed: %s", stderr)
 	}
 	summaryPath := strings.TrimSpace(stdout)
 	summary := readJSONObjectFile(t, summaryPath)
 	if summary["schemaVersion"] != contracts.SkillEvaluationSummarySchema || summary["recommendation"] != "accept-now" {
-		t.Fatalf("unexpected eval test summary: %#v", summary)
+		t.Fatalf("unexpected evaluate fixture summary: %#v", summary)
 	}
 	casesPath := filepath.Join(outputDir, "eval-cases.json")
 	cases := readJSONObjectFile(t, casesPath)
@@ -4191,13 +4200,13 @@ JSON
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--runtime", "fixture", "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--runtime", "fixture", "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("eval test failed: %s", stderr)
+		t.Fatalf("evaluate fixture failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	if summary["recommendation"] != "accept-now" {
-		t.Fatalf("unexpected eval test summary: %#v", summary)
+		t.Fatalf("unexpected evaluate fixture summary: %#v", summary)
 	}
 	observed := readJSONObjectFile(t, filepath.Join(outputDir, "eval-observed.json"))
 	proof := observed["proof"].(map[string]any)
@@ -4227,9 +4236,9 @@ func TestCLIEvalEvaluateAcceptsSkillObservedPacket(t *testing.T) {
 			},
 		},
 	})
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "evaluate", "--input", inputPath)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "observation", "--input", inputPath)
 	if exitCode != 0 {
-		t.Fatalf("eval evaluate failed: %s", stderr)
+		t.Fatalf("evaluate observation failed: %s", stderr)
 	}
 	summary := parseJSONObject(t, stdout)
 	if summary["schemaVersion"] != contracts.SkillEvaluationSummarySchema {
@@ -4273,7 +4282,7 @@ func TestCLIEvalSkillExperimentCompareWritesPromotionReport(t *testing.T) {
 		},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "eval", "skill-experiment", "compare", "--input", inputPath, "--output", outputPath)
+	_, stderr, exitCode := runCLI(t, root, "evaluate", "skill-experiment", "--input", inputPath, "--output", outputPath)
 	if exitCode != 0 {
 		t.Fatalf("skill experiment compare failed: %s", stderr)
 	}
@@ -4298,7 +4307,7 @@ func TestCLIEvalSkillExperimentCompareRejectsMalformedInput(t *testing.T) {
 		"isolation":     map[string]any{"productionSkillTouched": false},
 	})
 
-	_, stderr, exitCode := runCLI(t, root, "eval", "skill-experiment", "compare", "--input", inputPath)
+	_, stderr, exitCode := runCLI(t, root, "evaluate", "skill-experiment", "--input", inputPath)
 	if exitCode == 0 {
 		t.Fatalf("expected malformed skill experiment input to fail")
 	}
@@ -4351,12 +4360,12 @@ func TestCLIEvalEvaluateDoesNotLaunchAdapterRunner(t *testing.T) {
 		},
 	})
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "evaluate", "--input", inputPath)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "observation", "--input", inputPath)
 	if exitCode != 0 {
-		t.Fatalf("eval evaluate failed: stdout=%s stderr=%s", stdout, stderr)
+		t.Fatalf("evaluate observation failed: stdout=%s stderr=%s", stdout, stderr)
 	}
 	if _, err := os.Stat(sentinelPath); !os.IsNotExist(err) {
-		t.Fatalf("eval evaluate must not launch adapter runner, sentinel err=%v", err)
+		t.Fatalf("evaluate observation must not launch adapter runner, sentinel err=%v", err)
 	}
 }
 
@@ -4436,14 +4445,14 @@ JSON
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("eval test failed: %s", stderr)
+		t.Fatalf("evaluate fixture failed: %s", stderr)
 	}
 	summaryPath := strings.TrimSpace(stdout)
 	summary := readJSONObjectFile(t, summaryPath)
 	if summary["schemaVersion"] != contracts.AppChatEvaluationSummarySchema || summary["recommendation"] != "accept-now" {
-		t.Fatalf("unexpected eval test summary: %#v", summary)
+		t.Fatalf("unexpected evaluate fixture summary: %#v", summary)
 	}
 	proof := mapOrEmpty(summary["proof"])
 	if proof["targetSurface"] != "app/chat" || proof["proofClass"] != "declared-eval-runner" || proof["productProofReady"] != false {
@@ -4541,9 +4550,9 @@ EOF
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("snapshot eval test failed: %s", stderr)
+		t.Fatalf("snapshot evaluate fixture failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	if summary["recommendation"] != "accept-now" {
@@ -4583,9 +4592,9 @@ EOF
 			},
 		},
 	})
-	_, stderr, exitCode = runCLI(t, root, "eval", "evaluate", "--input", mismatchInput, "--output", mismatchOutput)
+	_, stderr, exitCode = runCLI(t, root, "evaluate", "observation", "--input", mismatchInput, "--output", mismatchOutput)
 	if exitCode != 0 {
-		t.Fatalf("snapshot mismatch eval evaluate failed: %s", stderr)
+		t.Fatalf("snapshot mismatch evaluate observation failed: %s", stderr)
 	}
 	mismatch := readJSONObjectFile(t, mismatchOutput)
 	if mismatch["recommendation"] != "reject" {
@@ -4683,9 +4692,9 @@ JSON
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("eval test failed: %s", stderr)
+		t.Fatalf("evaluate fixture failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	if summary["recommendation"] != "accept-now" {
@@ -4723,9 +4732,9 @@ func TestCLIEvalEvaluateAcceptsAppChatObservedPacket(t *testing.T) {
 			},
 		},
 	})
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "evaluate", "--input", inputPath)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "observation", "--input", inputPath)
 	if exitCode != 0 {
-		t.Fatalf("eval evaluate failed: %s", stderr)
+		t.Fatalf("evaluate observation failed: %s", stderr)
 	}
 	summary := parseJSONObject(t, stdout)
 	if summary["schemaVersion"] != contracts.AppChatEvaluationSummarySchema {
@@ -4808,14 +4817,14 @@ JSON
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("eval test failed: %s", stderr)
+		t.Fatalf("evaluate fixture failed: %s", stderr)
 	}
 	summaryPath := strings.TrimSpace(stdout)
 	summary := readJSONObjectFile(t, summaryPath)
 	if summary["schemaVersion"] != contracts.AppPromptEvaluationSummarySchema || summary["recommendation"] != "accept-now" {
-		t.Fatalf("unexpected eval test summary: %#v", summary)
+		t.Fatalf("unexpected evaluate fixture summary: %#v", summary)
 	}
 	casesPath := filepath.Join(outputDir, "eval-cases.json")
 	cases := readJSONObjectFile(t, casesPath)
@@ -4904,9 +4913,9 @@ EOF
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--output-dir", outputDir)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--output-dir", outputDir)
 	if exitCode != 0 {
-		t.Fatalf("snapshot eval test failed: %s", stderr)
+		t.Fatalf("snapshot evaluate fixture failed: %s", stderr)
 	}
 	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
 	if summary["recommendation"] != "accept-now" {
@@ -4947,9 +4956,9 @@ EOF
 			},
 		},
 	})
-	_, stderr, exitCode = runCLI(t, root, "eval", "evaluate", "--input", mismatchInput, "--output", mismatchOutput)
+	_, stderr, exitCode = runCLI(t, root, "evaluate", "observation", "--input", mismatchInput, "--output", mismatchOutput)
 	if exitCode != 0 {
-		t.Fatalf("snapshot mismatch eval evaluate failed: %s", stderr)
+		t.Fatalf("snapshot mismatch evaluate observation failed: %s", stderr)
 	}
 	mismatch := readJSONObjectFile(t, mismatchOutput)
 	if mismatch["recommendation"] != "reject" {
@@ -4987,9 +4996,9 @@ func TestCLIEvalEvaluateAcceptsAppPromptObservedPacket(t *testing.T) {
 			},
 		},
 	})
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "evaluate", "--input", inputPath)
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "observation", "--input", inputPath)
 	if exitCode != 0 {
-		t.Fatalf("eval evaluate failed: %s", stderr)
+		t.Fatalf("evaluate observation failed: %s", stderr)
 	}
 	summary := parseJSONObject(t, stdout)
 	if summary["schemaVersion"] != contracts.AppPromptEvaluationSummarySchema {
@@ -5027,7 +5036,7 @@ func TestCLIEvalTestRejectsUnsupportedSurfacePresetCombo(t *testing.T) {
 	}, "\n")), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
-	_, stderr, exitCode := runCLI(t, root, "eval", "test", "--repo-root", root, "--fixture", filepath.Join(fixtureDir, "bad.fixture.json"))
+	_, stderr, exitCode := runCLI(t, root, "evaluate", "fixture", "--repo-root", root, "--fixture", filepath.Join(fixtureDir, "bad.fixture.json"))
 	if exitCode == 0 {
 		t.Fatalf("expected non-zero exit, got success with stderr: %s", stderr)
 	}
@@ -5064,7 +5073,7 @@ func TestCLIEvalLiveDiscoverNormalizesExplicitInstances(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "live", "discover", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "discover", "live-targets", "--repo-root", root)
 	if exitCode != 0 {
 		t.Fatalf("eval live discover failed: %s", stderr)
 	}
@@ -5130,7 +5139,7 @@ func TestCLILiveEvalDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "live", "discover", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "discover", "live-targets", "--repo-root", root)
 	if exitCode != 0 {
 		t.Fatalf("eval live discover failed: %s", stderr)
 	}
@@ -5181,7 +5190,7 @@ func TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	stdout, stderr, exitCode := runCLI(t, root, "eval", "live", "discover", "--repo-root", root)
+	stdout, stderr, exitCode := runCLI(t, root, "discover", "live-targets", "--repo-root", root)
 	if exitCode != 0 {
 		t.Fatalf("eval live discover failed: %s", stderr)
 	}
@@ -5231,7 +5240,7 @@ func TestCLILiveEvalRunLiveDispatchesConsumerCommand(t *testing.T) {
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus evaluate live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_command_template: ./run-live.sh {instance_id} {request_file} {output_file}",
 		"",
 	}, "\n")
@@ -5258,7 +5267,7 @@ func TestCLILiveEvalRunLiveDispatchesConsumerCommand(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "run",
+		"evaluate", "live",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -5323,7 +5332,7 @@ func TestCLILiveEvalRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus evaluate live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_command_template: ./run-live.sh {instance_id} {request_file} {output_file}",
 		"",
 	}, "\n")
@@ -5350,7 +5359,7 @@ func TestCLILiveEvalRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "run",
+		"evaluate", "live",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -5454,7 +5463,7 @@ func TestCLILiveEvalRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus evaluate live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}",
 		"  workspace_prepare_command_template: ./prepare-live-run.sh {workspace_dir}",
 		"  consumer_evaluator_command_template: ./evaluate-live-run.sh {evaluator_input_file} {evaluation_output_file}",
@@ -5493,7 +5502,7 @@ func TestCLILiveEvalRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "run",
+		"evaluate", "live",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -5609,7 +5618,7 @@ func TestCLILiveEvalRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus evaluate live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}",
 		"  workspace_prepare_command_template: ./prepare-live-run.sh {workspace_dir}",
 		"",
@@ -5659,7 +5668,7 @@ func TestCLILiveEvalRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 	prepareStdout, prepareStderr, prepareExitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "prepare-request-batch",
+		"evaluate", "live", "prepare-request-batch",
 		"--input",
 		prepareInputPath,
 		"--output",
@@ -5684,7 +5693,7 @@ func TestCLILiveEvalRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "run-scenarios",
+		"evaluate", "live", "scenarios",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -5805,7 +5814,7 @@ func TestCLILiveEvalPrepareRequestBatchAcceptsCatalogCandidates(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "prepare-request-batch",
+		"evaluate", "live", "prepare-request-batch",
 		"--input",
 		inputPath,
 		"--output",
@@ -5941,7 +5950,7 @@ func TestCLILiveEvalRunScenariosRetriesTransientFailures(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "run-scenarios",
+		"evaluate", "live", "scenarios",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -6043,9 +6052,9 @@ func TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
 		"live_run_invocation:",
-		"  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
+		"  command_template: cautilus evaluate live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 		"  consumer_single_turn_command_template: ./run-live-turn.sh {turn_request_file} {turn_result_file}",
-		fmt.Sprintf("  simulator_persona_command_template: %s eval live run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file %s", cautilusBin, fixtureFile),
+		fmt.Sprintf("  simulator_persona_command_template: %s evaluate live persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file %s", cautilusBin, fixtureFile),
 		"",
 	}, "\n")
 	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
@@ -6079,7 +6088,7 @@ func TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "run",
+		"evaluate", "live",
 		"--repo-root",
 		root,
 		"--instance-id",
@@ -6171,7 +6180,7 @@ func TestCLILiveEvalRunSimulatorPersonaCanContinueFromFixture(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "run-simulator-persona",
+		"evaluate", "live", "persona",
 		"--workspace",
 		root,
 		"--simulator-request-file",
@@ -6237,7 +6246,7 @@ func TestCLILiveEvalRunSimulatorPersonaCanStopFromFixture(t *testing.T) {
 	stdout, stderr, exitCode := runCLI(
 		t,
 		root,
-		"eval", "live", "run-simulator-persona",
+		"evaluate", "live", "persona",
 		"--workspace",
 		root,
 		"--simulator-request-file",
@@ -6267,12 +6276,12 @@ func TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand(t *testin
 		args           []string
 		expectedSchema string
 	}{
-		{"chatbot", []string{"scenario", "normalize", "chatbot"}, contracts.ChatbotNormalizationInputsSchema},
-		{"skill", []string{"scenario", "normalize", "skill"}, contracts.SkillNormalizationInputsSchema},
-		{"workflow", []string{"scenario", "normalize", "workflow"}, contracts.WorkflowNormalizationInputsSchema},
-		{"scenario-review-conversations", []string{"scenario", "review-conversations"}, contracts.ScenarioConversationReviewInputsSchema},
-		{"eval-evaluate", []string{"eval", "evaluate"}, contracts.EvaluationObservedSchema},
-		{"report-build", []string{"report", "build"}, contracts.ReportInputsSchema},
+		{"chatbot", []string{"discover", "scenarios", "normalize", "chatbot"}, contracts.ChatbotNormalizationInputsSchema},
+		{"skill", []string{"discover", "scenarios", "normalize", "skill"}, contracts.SkillNormalizationInputsSchema},
+		{"workflow", []string{"discover", "scenarios", "normalize", "workflow"}, contracts.WorkflowNormalizationInputsSchema},
+		{"scenario-review-conversations", []string{"discover", "scenarios", "review-conversations"}, contracts.ScenarioConversationReviewInputsSchema},
+		{"eval-evaluate", []string{"evaluate", "observation"}, contracts.EvaluationObservedSchema},
+		{"report-build", []string{"evaluate", "report", "build"}, contracts.ReportInputsSchema},
 	}
 
 	for _, tc := range cases {
@@ -6332,7 +6341,7 @@ func TestCLIReportBuildHumanReviewFindingErrorsIncludeMinimumShape(t *testing.T)
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
-	_, stderr, exitCode := runCLI(t, root, "report", "build", "--input", inputPath)
+	_, stderr, exitCode := runCLI(t, root, "evaluate", "report", "build", "--input", inputPath)
 	if exitCode == 0 {
 		t.Fatalf("report build unexpectedly succeeded")
 	}

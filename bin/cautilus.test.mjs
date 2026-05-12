@@ -90,7 +90,7 @@ test("repo shim preserves caller cwd while resolving doctor against a consumer r
 test("repo shim keeps lifecycle install working from a consumer repo", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-repo-shim-skill-install-"));
 	try {
-		const install = spawnSync(BIN_PATH, ["install", "--repo-root", "."], {
+		const install = spawnSync(BIN_PATH, ["init", "--repo-root", "."], {
 			cwd: root,
 			encoding: "utf-8",
 		});

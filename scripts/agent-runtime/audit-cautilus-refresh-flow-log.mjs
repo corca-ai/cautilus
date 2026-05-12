@@ -10,18 +10,18 @@ import { writeTextOutput } from "./output-files.mjs";
 export const REFRESH_FLOW_AUDIT_SCHEMA = "cautilus.refresh_flow_audit.v1";
 
 const CAUTILUS_COMMAND_PATTERN = /(?:\b(?:\.\/bin\/)?cautilus\b|\$CAUTILUS_BIN)/;
-const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bagent\\s+status\\b`);
-const REFRESH_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bclaim\\s+discover\\b(?=[\\s\\S]*--previous\\b)(?=[\\s\\S]*--refresh-plan\\b)`);
+const AGENT_STATUS_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdoctor\\s+status\\b`);
+const REFRESH_DISCOVER_PATTERN = new RegExp(`${CAUTILUS_COMMAND_PATTERN.source}[\\s\\S]*\\bdiscover\\s+claims\\b(?=[\\s\\S]*--previous\\b)(?=[\\s\\S]*--refresh-plan\\b)`);
 const REFRESH_SUMMARY_PATTERN = /\brefreshSummary\b/;
 
 const FORBIDDEN_COMMAND_PATTERNS = [
-	["claim_review_prepare", /\bclaim\s+review\s+prepare-input\b/],
-	["claim_review_apply", /\bclaim\s+review\s+apply-result\b/],
-	["claim_plan_evals", /\bclaim\s+plan-evals\b/],
-	["claim_validate", /\bclaim\s+validate\b/],
-	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+test\b/],
-	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\beval\s+evaluate\b/],
-	["review_variants", /\breview\s+variants\b/],
+	["claim_review_prepare", /\bdiscover\s+claims\s+review-input\b/],
+	["claim_review_apply", /\bdiscover\s+claims\s+apply-review\b/],
+	["claim_plan_evals", /\bevaluate\s+claims\s+plan\b/],
+	["claim_validate", /\bdiscover\s+claims\s+validate\b/],
+	["eval_test", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\bevaluate\s+fixture\b/],
+	["eval_evaluate", /(?:^|[;&|]\s*)(?:\.\/bin\/)?cautilus\b[^\n;&|]*\bevaluate\s+observation\b/],
+	["review_variants", /\bevaluate\s+review\s+variants\b/],
 	["improve", /\bimprove\b/],
 	["npm_verify", /\bnpm\s+run\s+verify\b/],
 	["npm_test", /\bnpm\s+run\s+test\b/],
@@ -74,14 +74,14 @@ function requiredCommandFindings(commandRecords) {
 		findings.push({
 			severity: "error",
 			id: "missing_agent_status",
-			message: "The refresh flow should start from the binary-owned agent status packet.",
+			message: "The refresh flow should start from the binary-owned doctor status packet.",
 		});
 	}
 	if (!commandRecords.some((record) => REFRESH_DISCOVER_PATTERN.test(record.command))) {
 		findings.push({
 			severity: "error",
 			id: "missing_refresh_plan",
-			message: "The selected branch should produce a refresh plan with claim discover --previous --refresh-plan.",
+			message: "The selected branch should produce a refresh plan with discover claims --previous --refresh-plan.",
 		});
 	}
 	if (!commandRecords.some((record) => REFRESH_SUMMARY_PATTERN.test(record.command))) {
@@ -106,7 +106,7 @@ function commandOrderFindings(commandRecords) {
 		return [{
 			severity: "warning",
 			id: "missing_branch_recheck",
-			message: "The refresh branch ran from the previous orientation without a second agent status. This is acceptable for refresh-plan-only work when the agent does not claim it rechecked.",
+			message: "The refresh branch ran from the previous orientation without a second doctor status. This is acceptable for refresh-plan-only work when the agent does not claim it rechecked.",
 		}];
 	}
 	return [];
@@ -146,7 +146,7 @@ function messageFindings(messages) {
 			message: "The final response should say the saved claim map was not updated by the refresh plan.",
 		});
 	}
-	if (/다시 확인|재확인|rerun agent status|recheck/i.test(joined) && !messages.some((message) => /agent status/.test(message))) {
+	if (/다시 확인|재확인|rerun doctor status|recheck/i.test(joined) && !messages.some((message) => /doctor status/.test(message))) {
 		findings.push({
 			severity: "warning",
 			id: "claimed_recheck_needs_command_review",

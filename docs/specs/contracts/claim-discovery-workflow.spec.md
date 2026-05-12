@@ -10,7 +10,7 @@ Terms covered here: source inventory, entry Markdown, linked Markdown, `.gitigno
 
 ## Maintainer Promise
 
-`claim discover` emits source-ref-backed candidates from configured entry documents and the linked Markdown they reach, preferring recall and preserving the scan boundary so curation can distinguish binary false negatives from out-of-scope narrative gaps.
+`discover claims` emits source-ref-backed candidates from configured entry documents and the linked Markdown they reach, preferring recall and preserving the scan boundary so curation can distinguish binary false negatives from out-of-scope narrative gaps.
 
 ## Subclaims
 

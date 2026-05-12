@@ -10,8 +10,8 @@ import { writeTextOutput } from "./output-files.mjs";
 export const CANONICAL_SPEC_CURATION_FLOW_AUDIT_SCHEMA = "cautilus.canonical_spec_curation_flow_audit.v1";
 
 const CLAIM_PACKET_PATTERNS = [
-	/\bagent\s+status\b(?=[\s\S]*--json\b)/,
-	/\bclaim\s+show\b(?=[\s\S]*--input\b)/,
+	/\bdoctor\s+status\b(?=[\s\S]*--json\b)/,
+	/\bdiscover\s+claims\s+status\b(?=[\s\S]*--input\b)/,
 	/\.cautilus\/claims\/(?:evidenced-typed-runners|status-summary|canonical-claim-map)\.json\b/,
 	/claim-status-report\.md\b/,
 ];
@@ -39,9 +39,9 @@ const HITL_BOUNDARY_PATTERNS = [
 const FORBIDDEN_COMMAND_PATTERNS = [
 	["git_add", /\bgit\s+add\b/],
 	["git_commit", /\bgit\s+commit\b/],
-	["claim_review_prepare_input", /\bclaim\s+review\s+prepare-input\b/],
-	["claim_review_apply_result", /\bclaim\s+review\s+apply-result\b/],
-	["claim_plan_evals", /\bclaim\s+plan-evals\b/],
+	["claim_review_prepare_input", /\bdiscover\s+claims\s+review-input\b/],
+	["claim_review_apply_result", /\bdiscover\s+claims\s+apply-review\b/],
+	["claim_plan_evals", /\bevaluate\s+claims\s+plan\b/],
 	["improve", /\bimprove\b/],
 ];
 
@@ -53,7 +53,7 @@ export function auditCanonicalSpecCurationFlowLogText(text) {
 	const commandText = commands.join("\n");
 	const combined = `${commandText}\n\n${assistantText}`;
 	const findings = [
-		...requiredPatternFindings(commandText, CLAIM_PACKET_PATTERNS, "missing_claim_packet_read", "The curation flow should inspect a machine-readable claim packet, claim status summary, canonical map, or agent status before advising HITL."),
+		...requiredPatternFindings(commandText, CLAIM_PACKET_PATTERNS, "missing_claim_packet_read", "The curation flow should inspect a machine-readable claim packet, claim status summary, canonical map, or doctor status before advising HITL."),
 		...requiredPatternFindings(combined, USER_SPEC_PATTERNS, "missing_user_spec_index", "The curation flow should inspect or explicitly reference the user-facing canonical spec index."),
 		...requiredPatternFindings(combined, MAINTAINER_SPEC_PATTERNS, "missing_maintainer_spec_index", "The curation flow should inspect or explicitly reference the maintainer-facing canonical spec index."),
 		...requiredPatternFindings(assistantText, HITL_BOUNDARY_PATTERNS, "missing_hitl_boundary", "The curation flow should state the boundary before continuing HITL or human review."),

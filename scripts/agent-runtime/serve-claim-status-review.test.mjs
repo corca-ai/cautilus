@@ -79,9 +79,9 @@ test("splitMarkdownSections groups h1-h3 sections with stable ids", () => {
 });
 
 test("renderMarkdownFragment renders tables, lists, and inline code", () => {
-	const html = renderMarkdownFragment(["- Use `claim show`", "", "| A | B |", "| --- | --- |", "| x | y |"].join("\n"));
+	const html = renderMarkdownFragment(["- Use `discover claims status`", "", "| A | B |", "| --- | --- |", "| x | y |"].join("\n"));
 	assert.match(html, /<ul>/);
-	assert.match(html, /<code>claim show<\/code>/);
+	assert.match(html, /<code>discover claims status<\/code>/);
 	assert.match(html, /<table>/);
 	assert.match(html, /<td>x<\/td>/);
 });

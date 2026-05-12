@@ -42,7 +42,7 @@ test("summarizes Codex rollout messages, tool calls, outputs, and commit signals
 				call_id: "call-1",
 				name: "exec_command",
 				arguments: JSON.stringify({
-					cmd: "./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json",
+					cmd: "./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json",
 					workdir: "/repo",
 				}),
 			},
@@ -62,7 +62,7 @@ test("summarizes Codex rollout messages, tool calls, outputs, and commit signals
 	assert.equal(summary.schemaVersion, CODEX_SESSION_SUMMARY_SCHEMA);
 	assert.equal(summary.userMessages[0].text, "1");
 	assert.equal(summary.assistantMessages[0].text, "첫 bounded claim scan을 실행하겠습니다.");
-	assert.equal(summary.commands[0], "./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json");
+	assert.equal(summary.commands[0], "./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json");
 	assert.equal(summary.toolCalls[0].workdir, "/repo");
 	assert.equal(summary.commandOutputs[0].exitCode, 0);
 	assert.equal(summary.commandOutputs[0].toolCall.command, summary.commands[0]);
@@ -80,7 +80,7 @@ test("summarizes codex exec json item.completed command events", () => {
 			item: {
 				id: "item_1",
 				type: "command_execution",
-				command: "/usr/bin/zsh -lc './bin/cautilus agent status --repo-root . --json'",
+				command: "/usr/bin/zsh -lc './bin/cautilus doctor status --repo-root . --json'",
 				aggregated_output: "{}",
 				exit_code: 0,
 				status: "completed",
@@ -97,7 +97,7 @@ test("summarizes codex exec json item.completed command events", () => {
 	]);
 
 	const summary = summarizeCodexSessionLogText(text);
-	assert.equal(summary.commands[0], "/usr/bin/zsh -lc './bin/cautilus agent status --repo-root . --json'");
+	assert.equal(summary.commands[0], "/usr/bin/zsh -lc './bin/cautilus doctor status --repo-root . --json'");
 	assert.equal(summary.assistantMessages[0].text, "상태를 읽었습니다.");
 });
 
@@ -119,7 +119,7 @@ test("summarizes Claude stream-json assistant text and Bash tool calls", () => {
 						id: "toolu_1",
 						name: "Bash",
 						input: {
-							command: "./bin/cautilus agent status --repo-root . --json",
+							command: "./bin/cautilus doctor status --repo-root . --json",
 							description: "Read Cautilus status",
 						},
 					},
@@ -135,8 +135,8 @@ test("summarizes Claude stream-json assistant text and Bash tool calls", () => {
 	const summary = summarizeCodexSessionLogText(text);
 	assert.equal(summary.assistantMessages[0].text, "상태를 확인하겠습니다.");
 	assert.equal(summary.toolCalls[0].name, "Bash");
-	assert.equal(summary.toolCalls[0].command, "./bin/cautilus agent status --repo-root . --json");
-	assert.equal(summary.commands[0], "./bin/cautilus agent status --repo-root . --json");
+	assert.equal(summary.toolCalls[0].command, "./bin/cautilus doctor status --repo-root . --json");
+	assert.equal(summary.commands[0], "./bin/cautilus doctor status --repo-root . --json");
 	assert.equal(summary.assistantMessages.at(-1).text, "완료했습니다.");
 });
 
@@ -144,7 +144,7 @@ test("cli writes a nested session summary artifact", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-session-summary-"));
 	const input = join(root, "session.jsonl");
 	const output = join(root, "artifacts", "summary", "session.json");
-	writeFileSync(input, jsonl([{ type: "command_execution", command: "cautilus agent status --repo-root . --json" }]), "utf-8");
+	writeFileSync(input, jsonl([{ type: "command_execution", command: "cautilus doctor status --repo-root . --json" }]), "utf-8");
 
 	const result = spawnSync("node", [
 		join(process.cwd(), "scripts", "agent-runtime", "summarize-codex-session-log.mjs"),
@@ -156,5 +156,5 @@ test("cli writes a nested session summary artifact", () => {
 
 	assert.equal(result.status, 0, result.stderr);
 	assert.equal(existsSync(output), true);
-	assert.equal(JSON.parse(readFileSync(output, "utf-8")).commands[0], "cautilus agent status --repo-root . --json");
+	assert.equal(JSON.parse(readFileSync(output, "utf-8")).commands[0], "cautilus doctor status --repo-root . --json");
 });

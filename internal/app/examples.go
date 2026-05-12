@@ -109,7 +109,7 @@ const claimDiscoverExampleOutput = `{
         "dev/repo"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus eval test.",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",

@@ -1,16 +1,27 @@
 {
   "groups": [
-    { "id": "run", "label": "Discover claims and run bounded evals" },
-    { "id": "setup", "label": "Set up and check a repo" },
-    { "id": "results", "label": "Review proof packets and improve behavior" },
-    { "id": "introspection", "label": "Introspection" }
+    {
+      "id": "lifecycle",
+      "label": "Initialize, check, and update Cautilus"
+    },
+    {
+      "id": "workflow",
+      "label": "Discover, evaluate, and improve behavior"
+    },
+    {
+      "id": "support",
+      "label": "Inspect packets and render review artifacts"
+    }
   ],
   "commands": [
     {
-      "path": ["claim", "discover"],
-      "group": "run",
-      "usage": "cautilus claim discover --repo-root <path> [--source <path>] [--previous <claims.json> | --from-scratch] [--refresh-plan] [--output <claims-or-refresh-plan.json>]",
-      "example": "cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json",
+      "path": [
+        "discover",
+        "claims"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover claims --repo-root <path> [--source <path>] [--previous <claims.json> | --from-scratch] [--refresh-plan] [--output <claims-or-refresh-plan.json>]",
+      "example": "cautilus discover claims --repo-root . --output /tmp/cautilus-claims.json",
       "notes": [
         "`--example-output` prints a minimal proof-plan packet.",
         "The command emits `cautilus.claim_proof_plan.v1`: a source-ref-backed plan, not a verdict that the repo is correct.",
@@ -24,20 +35,27 @@
       ]
     },
     {
-      "path": ["agent", "status"],
-      "group": "introspection",
-      "usage": "cautilus agent status --repo-root <path> [--json]",
-      "example": "cautilus agent status --repo-root . --json",
+      "path": [
+        "doctor",
+        "status"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus doctor status --repo-root <path> [--json]",
+      "example": "cautilus doctor status --repo-root . --json",
       "notes": [
         "Emits the no-input orientation packet for Cautilus Agent.",
         "The packet reads binary, agent-surface, adapter, and claim-state availability before a branch is selected."
       ]
     },
     {
-      "path": ["packet", "inspect"],
-      "group": "introspection",
-      "usage": "cautilus packet inspect --input <packet.json> [--output <inspection.json>]",
-      "example": "cautilus packet inspect --input .cautilus/claims/eval-plan-2026-05-04.json",
+      "path": [
+        "doctor",
+        "packet",
+        "inspect"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus doctor packet inspect --input <packet.json> [--output <inspection.json>]",
+      "example": "cautilus doctor packet inspect --input .cautilus/claims/eval-plan-2026-05-04.json",
       "notes": [
         "Emits `cautilus.packet_inspection.v1` with `schemaVersion`, `topLevelKeys`, `arrayCounts`, and `selectorHints`.",
         "`arrayCounts` reflects the literal top-level array fields of any JSON object input, even for unknown schemas.",
@@ -45,10 +63,14 @@
       ]
     },
     {
-      "path": ["claim", "show"],
-      "group": "results",
-      "usage": "cautilus claim show --input <claims.json> [--sample-claims <n>] [--output <summary.json>]",
-      "example": "cautilus claim show --input /tmp/cautilus-claims.json --sample-claims 10",
+      "path": [
+        "discover",
+        "claims",
+        "status"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover claims status --input <claims.json> [--sample-claims <n>] [--output <summary.json>]",
+      "example": "cautilus discover claims status --input /tmp/cautilus-claims.json --sample-claims 10",
       "notes": [
         "Summarizes an existing `cautilus.claim_proof_plan.v1` packet without rescanning.",
         "`--sample-claims` includes a bounded set of stable claim fields for agents that need examples before choosing the next branch.",
@@ -57,10 +79,14 @@
       ]
     },
     {
-      "path": ["claim", "review", "prepare-input"],
-      "group": "results",
-      "usage": "cautilus claim review prepare-input --claims <claims.json> [--action-bucket <bucket>] [--max-clusters <n>] [--max-claims-per-cluster <n>] [--excerpt-chars <n>] [--allow-stale-claims] [--output <review-input.json>]",
-      "example": "cautilus claim review prepare-input --claims /tmp/cautilus-claims.json --action-bucket human-align-surfaces --max-clusters 20 --output /tmp/cautilus-claim-review-input.json",
+      "path": [
+        "discover",
+        "claims",
+        "review-input"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover claims review-input --claims <claims.json> [--action-bucket <bucket>] [--max-clusters <n>] [--max-claims-per-cluster <n>] [--excerpt-chars <n>] [--allow-stale-claims] [--output <review-input.json>]",
+      "example": "cautilus discover claims review-input --claims /tmp/cautilus-claims.json --action-bucket human-align-surfaces --max-clusters 20 --output /tmp/cautilus-claim-review-input.json",
       "notes": [
         "Prepares deterministic `cautilus.claim_review_input.v1` clusters for agent or subagent review.",
         "Rejects stale claim packets by default; staleness means recorded claim sources changed, not merely that generated claim artifacts were committed later.",
@@ -71,10 +97,14 @@
       ]
     },
     {
-      "path": ["claim", "review", "apply-result"],
-      "group": "results",
-      "usage": "cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json> [--allow-stale-claims] [--output <reviewed-claims.json>]",
-      "example": "cautilus claim review apply-result --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json",
+      "path": [
+        "discover",
+        "claims",
+        "apply-review"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover claims apply-review --claims <claims.json> --review-result <review-result.json> [--allow-stale-claims] [--output <reviewed-claims.json>]",
+      "example": "cautilus discover claims apply-review --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json",
       "notes": [
         "Applies deterministic label and evidence updates from `cautilus.claim_review_result.v1` to an existing claim packet.",
         "Rejects stale claim packets by default before merging review results; packet-only HEAD drift is reported without blocking this command.",
@@ -82,10 +112,14 @@
       ]
     },
     {
-      "path": ["claim", "plan-evals"],
-      "group": "results",
-      "usage": "cautilus claim plan-evals --claims <reviewed-claims.json> [--max-claims <n>] [--allow-stale-claims] [--output <eval-plan.json>]",
-      "example": "cautilus claim plan-evals --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json",
+      "path": [
+        "evaluate",
+        "claims",
+        "plan"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate claims plan --claims <reviewed-claims.json> [--max-claims <n>] [--allow-stale-claims] [--output <eval-plan.json>]",
+      "example": "cautilus evaluate claims plan --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json",
       "notes": [
         "Emits `cautilus.claim_eval_plan.v1` for reviewed `cautilus-eval` claims that are ready to verify.",
         "Skips claims that already have `evidenceStatus=satisfied`; they do not need a new eval fixture plan by default.",
@@ -94,30 +128,41 @@
       ]
     },
     {
-      "path": ["claim", "validate"],
-      "group": "results",
-      "usage": "cautilus claim validate --claims <claims.json> [--output <validation-report.json>]",
-      "example": "cautilus claim validate --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-claim-validation.json",
+      "path": [
+        "discover",
+        "claims",
+        "validate"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover claims validate --claims <claims.json> [--output <validation-report.json>]",
+      "example": "cautilus discover claims validate --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-claim-validation.json",
       "notes": [
         "Emits `cautilus.claim_validation_report.v1` and exits non-zero when packet shape or evidence refs are invalid.",
         "The command validates existing packets but does not mutate claims or search for evidence."
       ]
     },
     {
-      "path": ["scenario", "review-conversations"],
-      "group": "results",
-      "usage": "cautilus scenario review-conversations [args]",
-      "example": "cautilus scenario review-conversations --input ./fixtures/scenario-conversation-review/input.json",
+      "path": [
+        "discover",
+        "scenarios",
+        "review-conversations"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios review-conversations [args]",
+      "example": "cautilus discover scenarios review-conversations --input ./fixtures/scenario-conversation-review/input.json",
       "notes": [
         "`--example-input` prints a minimal valid conversation-review input packet.",
         "This read-only surface stays scenario-centric: it links normalized chatbot threads to scenario proposals instead of acting like a generic audit browser."
       ]
     },
     {
-      "path": ["eval", "test"],
-      "group": "run",
-      "usage": "cautilus eval test [args]",
-      "example": "cautilus eval test --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
+      "path": [
+        "evaluate",
+        "fixture"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate fixture [args]",
+      "example": "cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
       "notes": [
         "Runs one checked-in evaluation fixture through an adapter-owned runner, then evaluates the observed packet.",
         "The four first-class presets are `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt`.",
@@ -125,20 +170,26 @@
       ]
     },
     {
-      "path": ["eval", "evaluate"],
-      "group": "run",
-      "usage": "cautilus eval evaluate [args]",
-      "example": "cautilus eval evaluate --input ./eval-observed.json",
+      "path": [
+        "evaluate",
+        "observation"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate observation [args]",
+      "example": "cautilus evaluate observation --input ./eval-observed.json",
       "notes": [
         "Evaluates one already-observed packet without launching the host runner again.",
         "The packet schema selects the preset: `dev/repo`, `dev/skill`, `app/chat`, or `app/prompt`."
       ]
     },
     {
-      "path": ["eval", "skill-experiment", "compare"],
-      "group": "run",
-      "usage": "cautilus eval skill-experiment compare --input <skill-clone-experiment.json> [--output <report.json>]",
-      "example": "cautilus eval skill-experiment compare --input ./fixtures/skill-clone-experiment/example-input.json",
+      "path": [
+        "evaluate",
+        "skill-experiment"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate skill-experiment --input <skill-clone-experiment.json> [--output <report.json>]",
+      "example": "cautilus evaluate skill-experiment --input ./fixtures/skill-clone-experiment/example-input.json",
       "notes": [
         "Compares a sandboxed temporary skill variant against a baseline run, optional exemplar, rubric phrases, and declared source-coverage obligations.",
         "The command does not install, mutate, or execute skills; host-owned runners provide the preserved baseline and variant outputs.",
@@ -146,277 +197,421 @@
       ]
     },
     {
-      "path": ["eval", "live", "discover"],
-      "group": "run",
-      "usage": "cautilus eval live discover [args]",
-      "example": "cautilus eval live discover --repo-root .",
+      "path": [
+        "discover",
+        "live-targets"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover live-targets [args]",
+      "example": "cautilus discover live-targets --repo-root .",
       "notes": [
         "Discovers live app targets for app evals."
       ]
     },
     {
-      "path": ["eval", "live", "run"],
-      "group": "run",
-      "usage": "cautilus eval live run --instance-id <id> --request-file <request.json> --output-file <result.json> [args]",
-      "example": "cautilus eval live run --repo-root . --instance-id ceal --request-file /tmp/request.json --output-file /tmp/result.json",
+      "path": [
+        "evaluate",
+        "live"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate live --instance-id <id> --request-file <request.json> --output-file <result.json> [args]",
+      "example": "cautilus evaluate live --repo-root . --instance-id ceal --request-file /tmp/request.json --output-file /tmp/result.json",
       "notes": [
         "Runs one bounded live app request and writes `cautilus.live_run_invocation_result.v1`.",
         "The adapter may still delegate actual runtime launch to a consumer-owned command template."
       ]
     },
     {
-      "path": ["eval", "live", "prepare-request-batch"],
-      "group": "run",
-      "usage": "cautilus eval live prepare-request-batch --input <prepare-input.json> [--output <request-batch.json>]",
-      "example": "cautilus eval live prepare-request-batch --input /tmp/prepare-input.json --output /tmp/request-batch.json",
+      "path": [
+        "evaluate",
+        "live",
+        "prepare-request-batch"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate live prepare-request-batch --input <prepare-input.json> [--output <request-batch.json>]",
+      "example": "cautilus evaluate live prepare-request-batch --input /tmp/prepare-input.json --output /tmp/request-batch.json",
       "notes": [
         "Turns draft scenarios or normalized catalog candidates into `cautilus.live_run_invocation_request_batch.v1`."
       ]
     },
     {
-      "path": ["eval", "live", "run-scenarios"],
-      "group": "run",
-      "usage": "cautilus eval live run-scenarios --instance-id <id> --requests-file <batch.json> --output-file <result.json> [--concurrency <n>] [args]",
-      "example": "cautilus eval live run-scenarios --repo-root . --instance-id ceal --requests-file /tmp/request-batch.json --output-file /tmp/batch-result.json --concurrency 4",
+      "path": [
+        "evaluate",
+        "live",
+        "scenarios"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate live scenarios --instance-id <id> --requests-file <batch.json> --output-file <result.json> [--concurrency <n>] [args]",
+      "example": "cautilus evaluate live scenarios --repo-root . --instance-id ceal --requests-file /tmp/request-batch.json --output-file /tmp/batch-result.json --concurrency 4",
       "notes": [
         "Runs an explicit live request batch for app evals and writes `cautilus.live_run_invocation_batch_result.v1`.",
         "Each attempt writes nested request/result artifacts under `<output-file>.d/runs/`."
       ]
     },
     {
-      "path": ["eval", "live", "run-simulator-persona"],
-      "group": "run",
-      "usage": "cautilus eval live run-simulator-persona --workspace <dir> --simulator-request-file <request.json> --simulator-result-file <result.json> --backend codex_exec|claude_p|fixture [args]",
-      "example": "cautilus eval live run-simulator-persona --workspace . --simulator-request-file /tmp/simulator-request.json --simulator-result-file /tmp/simulator-result.json --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json",
+      "path": [
+        "evaluate",
+        "live",
+        "persona"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate live persona --workspace <dir> --simulator-request-file <request.json> --simulator-result-file <result.json> --backend codex_exec|claude_p|fixture [args]",
+      "example": "cautilus evaluate live persona --workspace . --simulator-request-file /tmp/simulator-request.json --simulator-result-file /tmp/simulator-result.json --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json",
       "notes": [
         "Turns one persona_prompt simulator request into one canonical simulator result packet for app evals."
       ]
     },
     {
-      "path": ["scenario", "propose"],
-      "group": "run",
-      "usage": "cautilus scenario propose [args]",
-      "example": "cautilus scenario propose --input ./fixtures/scenario-proposals/standalone-input.json",
+      "path": [
+        "discover",
+        "scenarios",
+        "propose"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios propose [args]",
+      "example": "cautilus discover scenarios propose --input ./fixtures/scenario-proposals/standalone-input.json",
       "notes": [
         "The canonical JSON output preserves the full ranked proposal list for agents.",
         "The output packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
       ]
     },
     {
-      "path": ["scenario", "prepare-input"],
-      "group": "run",
-      "usage": "cautilus scenario prepare-input [args]",
-      "example": "cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json"
+      "path": [
+        "discover",
+        "scenarios",
+        "prepare-input"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios prepare-input [args]",
+      "example": "cautilus discover scenarios prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json"
     },
     {
-      "path": ["scenario", "normalize", "chatbot"],
-      "group": "run",
-      "usage": "cautilus scenario normalize chatbot [args]",
-      "example": "cautilus scenario normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json"
+      "path": [
+        "discover",
+        "scenarios",
+        "normalize",
+        "chatbot"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios normalize chatbot [args]",
+      "example": "cautilus discover scenarios normalize chatbot --input ./fixtures/scenario-proposals/chatbot-input.json"
     },
     {
-      "path": ["scenario", "normalize", "skill"],
-      "group": "run",
-      "usage": "cautilus scenario normalize skill [args]",
-      "example": "cautilus scenario normalize skill --input ./fixtures/scenario-proposals/skill-input.json"
+      "path": [
+        "discover",
+        "scenarios",
+        "normalize",
+        "skill"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios normalize skill [args]",
+      "example": "cautilus discover scenarios normalize skill --input ./fixtures/scenario-proposals/skill-input.json"
     },
     {
-      "path": ["scenario", "normalize", "workflow"],
-      "group": "run",
-      "usage": "cautilus scenario normalize workflow [args]",
-      "example": "cautilus scenario normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json"
+      "path": [
+        "discover",
+        "scenarios",
+        "normalize",
+        "workflow"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios normalize workflow [args]",
+      "example": "cautilus discover scenarios normalize workflow --input ./fixtures/scenario-proposals/workflow-input.json"
     },
     {
-      "path": ["workspace", "start"],
-      "group": "run",
-      "usage": "cautilus workspace start [args]",
-      "example": "eval \"$(cautilus workspace start --label mode-held-out)\""
+      "path": [
+        "init",
+        "run"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus init run [args]",
+      "example": "eval \"$(cautilus init run --label mode-held-out)\""
     },
     {
-      "path": ["install"],
-      "group": "setup",
-      "usage": "cautilus install [--repo-root <path>] [--overwrite] [--json]",
-      "example": "cautilus install --repo-root ."
+      "path": [
+        "init"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus init [--repo-root <path>] [--overwrite] [--json]",
+      "example": "cautilus init --repo-root ."
     },
     {
-      "path": ["update"],
-      "group": "setup",
+      "path": [
+        "update"
+      ],
+      "group": "lifecycle",
       "usage": "cautilus update [--repo-root <path>] [--json]",
       "example": "cautilus update --repo-root ."
     },
     {
-      "path": ["adapter", "resolve"],
-      "group": "setup",
-      "usage": "cautilus adapter resolve [args]",
-      "example": "cautilus adapter resolve --repo-root ."
+      "path": [
+        "doctor",
+        "adapter"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus doctor adapter [args]",
+      "example": "cautilus doctor adapter --repo-root ."
     },
     {
-      "path": ["adapter", "init"],
-      "group": "setup",
-      "usage": "cautilus adapter init [--scenario <chatbot|skill|workflow>] [args]",
-      "example": "cautilus adapter init --repo-root . --scenario skill"
+      "path": [
+        "init",
+        "adapter"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus init adapter [--scenario <chatbot|skill|workflow>] [args]",
+      "example": "cautilus init adapter --repo-root . --scenario skill"
     },
     {
-      "path": ["doctor"],
-      "group": "setup",
+      "path": [
+        "doctor"
+      ],
+      "group": "lifecycle",
       "usage": "cautilus doctor [args]",
       "example": "cautilus doctor --repo-root .",
       "notes": [
         "Default `doctor` validates the unnamed checked-in adapter path.",
         "Use `cautilus doctor --repo-root . --next-action` when you want one current onboarding step plus the exact follow-up loop.",
         "If your repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --repo-root . --adapter-name <name>` for repo-scope validation.",
-        "A ready repo payload includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop."
+        "A ready repo payload includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop."
       ]
     },
     {
-      "path": ["healthcheck"],
-      "group": "setup",
-      "usage": "cautilus healthcheck [--json]",
-      "example": "cautilus healthcheck --json"
+      "path": [
+        "doctor",
+        "binary"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus doctor binary [--json]",
+      "example": "cautilus doctor binary --json"
     },
     {
-      "path": ["workspace", "prepare-compare"],
-      "group": "setup",
-      "usage": "cautilus workspace prepare-compare [args]",
-      "example": "cautilus workspace prepare-compare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare"
+      "path": [
+        "evaluate",
+        "comparison",
+        "prepare"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate comparison prepare [args]",
+      "example": "cautilus evaluate comparison prepare --repo-root . --baseline-ref origin/main --output-dir /tmp/cautilus-compare"
     },
     {
-      "path": ["workspace", "prune-artifacts"],
-      "group": "setup",
-      "usage": "cautilus workspace prune-artifacts [args]",
-      "example": "cautilus workspace prune-artifacts --root /tmp/cautilus-runs --keep-last 20"
+      "path": [
+        "doctor",
+        "artifacts",
+        "prune"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus doctor artifacts prune [args]",
+      "example": "cautilus doctor artifacts prune --root /tmp/cautilus-runs --keep-last 20"
     },
     {
-      "path": ["scenario", "summarize-telemetry"],
-      "group": "results",
-      "usage": "cautilus scenario summarize-telemetry [args]",
-      "example": "cautilus scenario summarize-telemetry --results ./results.json"
+      "path": [
+        "discover",
+        "scenarios",
+        "summarize-telemetry"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios summarize-telemetry [args]",
+      "example": "cautilus discover scenarios summarize-telemetry --results ./results.json"
     },
     {
-      "path": ["evidence", "prepare-input"],
-      "group": "results",
-      "usage": "cautilus evidence prepare-input [args]",
-      "example": "cautilus evidence prepare-input --report-file /tmp/cautilus-mode/report.json --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json"
+      "path": [
+        "evaluate",
+        "evidence",
+        "prepare-input"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate evidence prepare-input [args]",
+      "example": "cautilus evaluate evidence prepare-input --report-file /tmp/cautilus-mode/report.json --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json"
     },
     {
-      "path": ["evidence", "bundle"],
-      "group": "results",
-      "usage": "cautilus evidence bundle [args]",
-      "example": "cautilus evidence bundle --input /tmp/cautilus-evidence/input.json"
+      "path": [
+        "evaluate",
+        "evidence",
+        "bundle"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate evidence bundle [args]",
+      "example": "cautilus evaluate evidence bundle --input /tmp/cautilus-evidence/input.json"
     },
     {
-      "path": ["report", "build"],
-      "group": "results",
-      "usage": "cautilus report build [args]",
-      "example": "cautilus report build --example-input",
+      "path": [
+        "evaluate",
+        "report",
+        "build"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate report build [args]",
+      "example": "cautilus evaluate report build --example-input",
       "notes": [
         "`--example-input` prints a minimal valid report-input packet.",
         "`humanReviewFindings` entries require `severity` and `message`, with optional `path`."
       ]
     },
     {
-      "path": ["report", "render-html"],
-      "group": "results",
-      "usage": "cautilus report render-html --input <report.json> [--output <report.html>]",
-      "example": "cautilus report render-html --input /tmp/cautilus-mode/report.json"
+      "path": [
+        "evaluate",
+        "report",
+        "render-html"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate report render-html --input <report.json> [--output <report.html>]",
+      "example": "cautilus evaluate report render-html --input /tmp/cautilus-mode/report.json"
     },
     {
-      "path": ["review", "render-html"],
-      "group": "results",
-      "usage": "cautilus review render-html --input <review.json> [--output <review.html>]",
-      "example": "cautilus review render-html --input /tmp/cautilus-review/review.json"
+      "path": [
+        "evaluate",
+        "review",
+        "render-html"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate review render-html --input <review.json> [--output <review.html>]",
+      "example": "cautilus evaluate review render-html --input /tmp/cautilus-review/review.json"
     },
     {
-      "path": ["review", "render-variants-summary-html"],
-      "group": "results",
-      "usage": "cautilus review render-variants-summary-html --input <review-summary.json> [--output <review-summary.html>]",
-      "example": "cautilus review render-variants-summary-html --input /tmp/cautilus-review/review-summary.json"
+      "path": [
+        "evaluate",
+        "review",
+        "render-variants-summary-html"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate review render-variants-summary-html --input <review-summary.json> [--output <review-summary.html>]",
+      "example": "cautilus evaluate review render-variants-summary-html --input /tmp/cautilus-review/review-summary.json"
     },
     {
-      "path": ["workspace", "render-compare-html"],
-      "group": "results",
-      "usage": "cautilus workspace render-compare-html --input <compare-artifact.json> [--output <compare.html>]",
-      "example": "cautilus workspace render-compare-html --input /tmp/cautilus-compare/compare-artifact.json"
+      "path": [
+        "evaluate",
+        "comparison",
+        "render-html"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate comparison render-html --input <compare-artifact.json> [--output <compare.html>]",
+      "example": "cautilus evaluate comparison render-html --input /tmp/cautilus-compare/compare-artifact.json"
     },
     {
-      "path": ["scenario", "render-proposals-html"],
-      "group": "results",
-      "usage": "cautilus scenario render-proposals-html --input <proposals.json> [--output <proposals.html>]",
-      "example": "cautilus scenario render-proposals-html --input /tmp/cautilus-proposals/proposals.json"
+      "path": [
+        "discover",
+        "scenarios",
+        "render-proposals-html"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios render-proposals-html --input <proposals.json> [--output <proposals.html>]",
+      "example": "cautilus discover scenarios render-proposals-html --input /tmp/cautilus-proposals/proposals.json"
     },
     {
-      "path": ["scenario", "render-conversation-review-html"],
-      "group": "results",
-      "usage": "cautilus scenario render-conversation-review-html --input <conversation-review.json> [--output <conversation-review.html>]",
-      "example": "cautilus scenario render-conversation-review-html --input /tmp/cautilus-review/conversation-review.json"
+      "path": [
+        "discover",
+        "scenarios",
+        "render-conversation-review-html"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios render-conversation-review-html --input <conversation-review.json> [--output <conversation-review.html>]",
+      "example": "cautilus discover scenarios render-conversation-review-html --input /tmp/cautilus-review/conversation-review.json"
     },
     {
-      "path": ["evidence", "render-html"],
-      "group": "results",
-      "usage": "cautilus evidence render-html --input <evidence-bundle.json> [--output <evidence-bundle.html>]",
-      "example": "cautilus evidence render-html --input /tmp/cautilus-evidence/evidence-bundle.json"
+      "path": [
+        "evaluate",
+        "evidence",
+        "render-html"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate evidence render-html --input <evidence-bundle.json> [--output <evidence-bundle.html>]",
+      "example": "cautilus evaluate evidence render-html --input /tmp/cautilus-evidence/evidence-bundle.json"
     },
     {
-      "path": ["artifacts", "render-index-html"],
-      "group": "results",
-      "usage": "cautilus artifacts render-index-html --run-dir <path> [--output <index.html>]",
-      "example": "cautilus artifacts render-index-html --run-dir artifacts/self-dogfood/latest"
+      "path": [
+        "doctor",
+        "artifacts",
+        "render-index-html"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus doctor artifacts render-index-html --run-dir <path> [--output <index.html>]",
+      "example": "cautilus doctor artifacts render-index-html --run-dir artifacts/self-dogfood/latest"
     },
     {
-      "path": ["review", "prepare-input"],
-      "group": "results",
-      "usage": "cautilus review prepare-input [args]",
-      "example": "cautilus review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
+      "path": [
+        "evaluate",
+        "review",
+        "prepare-input"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate evaluate review prepare-input [args]",
+      "example": "cautilus evaluate evaluate review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
       "notes": [
-        "If you need a minimal valid report packet before running review, start with `cautilus report build --example-input`.",
+        "If you need a minimal valid report packet before running review, start with `cautilus evaluate report build --example-input`.",
         "That example shows the minimum `humanReviewFindings` shape: `{ \"severity\": \"concern\", \"message\": \"...\", \"path\": \"optional\" }`."
       ]
     },
     {
-      "path": ["review", "feedback", "build"],
-      "group": "results",
-      "usage": "cautilus review feedback build --source-kind <hitl|issue|pull_request_review|review_packet|review_summary> --source-ref <ref> --method-family <claim_discovery|evaluation|manual_seed> --disposition <accepted|narrowed|reframed|rejected|missing_critical> --review-note <text> [--method-id <id>] [--source-scope <ref>] [--proposal-id <id>] [--proposal-source-ref <ref>] [--follow-up-ref <ref>] [--output <review-feedback.json>]",
-      "example": "cautilus review feedback build --source-kind hitl --source-ref docs/internal/handoff.md --method-family claim_discovery --method-id linked_markdown_scan --source-scope docs/specs/index.spec.md --proposal-source-ref docs/specs/index.spec.md:14 --disposition reframed --review-note \"Useful signal, but the claim name needed narrowing.\" --output /tmp/cautilus-review/review-feedback.json",
+      "path": [
+        "evaluate",
+        "review",
+        "feedback",
+        "build"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate review feedback build --source-kind <hitl|issue|pull_request_review|review_packet|review_summary> --source-ref <ref> --method-family <claim_discovery|evaluation|manual_seed> --disposition <accepted|narrowed|reframed|rejected|missing_critical> --review-note <text> [--method-id <id>] [--source-scope <ref>] [--proposal-id <id>] [--proposal-source-ref <ref>] [--follow-up-ref <ref>] [--output <review-feedback.json>]",
+      "example": "cautilus evaluate review feedback build --source-kind hitl --source-ref docs/internal/handoff.md --method-family claim_discovery --method-id linked_markdown_scan --source-scope docs/specs/index.spec.md --proposal-source-ref docs/specs/index.spec.md:14 --disposition reframed --review-note \"Useful signal, but the claim name needed narrowing.\" --output /tmp/cautilus-review/review-feedback.json",
       "notes": [
         "Emits `cautilus.review_feedback.v1` so Cautilus Agent can normalize source-bound review outcomes without becoming the review authority.",
         "The disposition vocabulary is about review usefulness, not test pass/fail status."
       ]
     },
     {
-      "path": ["review", "feedback", "summarize"],
-      "group": "results",
-      "usage": "cautilus review feedback summarize --input <review-feedback.json> [--input <review-feedback.json> ...] [--output <review-feedback-summary.json>]",
-      "example": "cautilus review feedback summarize --input /tmp/cautilus-review/review-feedback.json --output /tmp/cautilus-review/review-feedback-summary.json",
+      "path": [
+        "evaluate",
+        "review",
+        "feedback",
+        "summarize"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate review feedback summarize --input <review-feedback.json> [--input <review-feedback.json> ...] [--output <review-feedback-summary.json>]",
+      "example": "cautilus evaluate review feedback summarize --input /tmp/cautilus-review/review-feedback.json --output /tmp/cautilus-review/review-feedback-summary.json",
       "notes": [
         "Emits `cautilus.review_feedback_summary.v1` for explicitly selected `cautilus.review_feedback.v1` packets.",
         "Counts review-useful dispositions by method family without discovering active-run defaults or treating dispositions as pass/fail status."
       ]
     },
     {
-      "path": ["review", "build-prompt-input"],
-      "group": "results",
-      "usage": "cautilus review build-prompt-input [args]",
-      "example": "cautilus review build-prompt-input --review-packet /tmp/cautilus-mode/review.json"
+      "path": [
+        "evaluate",
+        "review",
+        "build-prompt-input"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate evaluate review build-prompt-input [args]",
+      "example": "cautilus evaluate evaluate review build-prompt-input --review-packet /tmp/cautilus-mode/review.json"
     },
     {
-      "path": ["review", "render-prompt"],
-      "group": "results",
-      "usage": "cautilus review render-prompt [args]",
-      "example": "cautilus review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json"
+      "path": [
+        "evaluate",
+        "review",
+        "render-prompt"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate evaluate review render-prompt [args]",
+      "example": "cautilus evaluate evaluate review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json"
     },
     {
-      "path": ["review", "variants"],
-      "group": "results",
-      "usage": "cautilus review variants --repo-root <repo> --workspace <dir> [--prompt-file <review.md> --schema-file <schema.json>] [--output-dir <dir>]",
-      "example": "cautilus review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review",
+      "path": [
+        "evaluate",
+        "review",
+        "variants"
+      ],
+      "group": "support",
+      "usage": "cautilus evaluate evaluate review variants --repo-root <repo> --workspace <dir> [--prompt-file <review.md> --schema-file <schema.json>] [--output-dir <dir>]",
+      "example": "cautilus evaluate evaluate review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review",
       "notes": [
         "Use `--prompt-file` plus `--schema-file` for ad-hoc bounded review without first building a review packet.",
         "Omit those flags when the adapter or review prompt input provides the default prompt and schema."
       ]
     },
     {
-      "path": ["improve", "prepare-input"],
-      "group": "results",
+      "path": [
+        "improve",
+        "prepare-input"
+      ],
+      "group": "workflow",
       "usage": "cautilus improve prepare-input [args]",
       "example": "cautilus improve prepare-input --report-file /tmp/cautilus-mode/report.json --review-summary /tmp/cautilus-review/review-summary.json --history-file /tmp/cautilus-history/scenario-history.snapshot.json --target prompt --budget medium",
       "notes": [
@@ -425,8 +620,12 @@
       ]
     },
     {
-      "path": ["improve", "search", "prepare-input"],
-      "group": "results",
+      "path": [
+        "improve",
+        "search",
+        "prepare-input"
+      ],
+      "group": "workflow",
       "usage": "cautilus improve search prepare-input [args]",
       "example": "cautilus improve search prepare-input --improve-input /tmp/cautilus-improve/input.json --held-out-results-file /tmp/cautilus-mode/held_out-scenario-results.json --target-file .agents/review.prompt.md --budget light",
       "notes": [
@@ -434,8 +633,12 @@
       ]
     },
     {
-      "path": ["improve", "search", "run"],
-      "group": "results",
+      "path": [
+        "improve",
+        "search",
+        "run"
+      ],
+      "group": "workflow",
       "usage": "cautilus improve search run [args]",
       "example": "cautilus improve search run --input /tmp/cautilus-improve/search-input.json --json",
       "notes": [
@@ -443,8 +646,11 @@
       ]
     },
     {
-      "path": ["improve", "propose"],
-      "group": "results",
+      "path": [
+        "improve",
+        "propose"
+      ],
+      "group": "workflow",
       "usage": "cautilus improve propose [args]",
       "example": "cautilus improve propose --input /tmp/cautilus-improve/input.json",
       "notes": [
@@ -452,8 +658,11 @@
       ]
     },
     {
-      "path": ["improve", "build-artifact"],
-      "group": "results",
+      "path": [
+        "improve",
+        "build-artifact"
+      ],
+      "group": "workflow",
       "usage": "cautilus improve build-artifact [args]",
       "example": "cautilus improve build-artifact --proposal-file /tmp/cautilus-improve/proposal.json",
       "notes": [
@@ -461,32 +670,48 @@
       ]
     },
     {
-      "path": ["self-dogfood", "render-html"],
-      "group": "results",
-      "usage": "cautilus self-dogfood render-html [args]",
-      "example": "cautilus self-dogfood render-html --latest-dir ./artifacts/self-dogfood/latest"
+      "path": [
+        "doctor",
+        "artifacts",
+        "render-self-dogfood-html"
+      ],
+      "group": "support",
+      "usage": "cautilus doctor artifacts render-self-dogfood-html [args]",
+      "example": "cautilus doctor artifacts render-self-dogfood-html --latest-dir ./artifacts/self-dogfood/latest"
     },
     {
-      "path": ["self-dogfood", "render-experiments-html"],
-      "group": "results",
-      "usage": "cautilus self-dogfood render-experiments-html [args]",
-      "example": "cautilus self-dogfood render-experiments-html --latest-dir ./artifacts/self-dogfood/experiments/latest"
+      "path": [
+        "doctor",
+        "artifacts",
+        "render-self-dogfood-experiments-html"
+      ],
+      "group": "support",
+      "usage": "cautilus doctor artifacts render-self-dogfood-experiments-html [args]",
+      "example": "cautilus doctor artifacts render-self-dogfood-experiments-html --latest-dir ./artifacts/self-dogfood/experiments/latest"
     },
     {
-      "path": ["commands"],
-      "group": "introspection",
-      "usage": "cautilus commands [--json]",
-      "example": "cautilus commands --json"
+      "path": [
+        "doctor",
+        "commands"
+      ],
+      "group": "lifecycle",
+      "usage": "cautilus doctor commands [--json]",
+      "example": "cautilus doctor commands --json"
     },
     {
-      "path": ["scenarios"],
-      "group": "introspection",
-      "usage": "cautilus scenarios [--json]",
-      "example": "cautilus scenarios --json"
+      "path": [
+        "discover",
+        "scenarios"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover scenarios [--json]",
+      "example": "cautilus discover scenarios --json"
     },
     {
-      "path": ["version"],
-      "group": "introspection",
+      "path": [
+        "version"
+      ],
+      "group": "lifecycle",
       "usage": "cautilus version [--verbose] [--check]",
       "example": "cautilus version --verbose --check"
     }

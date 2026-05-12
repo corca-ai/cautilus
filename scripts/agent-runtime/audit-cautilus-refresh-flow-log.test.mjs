@@ -53,10 +53,10 @@ function claudeAssistantWithBash(text, command) {
 
 test("passes a bounded two-turn refresh branch flow", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
-		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
+		toolCall(1, "./bin/cautilus doctor status --repo-root . --json"),
 		assistant("1. Compare the saved claim map with recent repo changes (`refresh_claims_from_diff`)"),
-		toolCall(2, "./bin/cautilus agent status --repo-root . --json"),
-		toolCall(3, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(2, "./bin/cautilus doctor status --repo-root . --json"),
+		toolCall(3, "./bin/cautilus discover claims --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(4, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
 		assistant("What I did: recorded a comparison for the saved claim map. What I did not do: did not update the saved claim map, review claims, or plan evals."),
 	]));
@@ -68,15 +68,15 @@ test("passes a bounded Claude stream-json refresh branch flow", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
 		claudeAssistantWithBash(
 			"1. Compare the saved claim map with recent repo changes (`refresh_claims_from_diff`)",
-			"./bin/cautilus agent status --repo-root . --json",
+			"./bin/cautilus doctor status --repo-root . --json",
 		),
 		claudeAssistantWithBash(
-			"agent status를 재확인합니다.",
-			"./bin/cautilus agent status --repo-root . --json",
+			"doctor status를 재확인합니다.",
+			"./bin/cautilus doctor status --repo-root . --json",
 		),
 		claudeAssistantWithBash(
 			"refresh plan을 기록합니다.",
-			"./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json",
+			"./bin/cautilus discover claims --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json",
 		),
 		claudeAssistantWithBash(
 			"refreshSummary를 읽겠습니다.",
@@ -96,8 +96,8 @@ test("passes a bounded Claude stream-json refresh branch flow", () => {
 
 test("warns when the selected refresh branch skips rechecking status", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
-		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
-		toolCall(2, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(1, "./bin/cautilus doctor status --repo-root . --json"),
+		toolCall(2, "./bin/cautilus discover claims --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(3, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
 		assistant("The saved claim map was not updated."),
 	]));
@@ -107,12 +107,12 @@ test("warns when the selected refresh branch skips rechecking status", () => {
 
 test("fails when branch labels start from internal ids or flow overruns", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
-		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
+		toolCall(1, "./bin/cautilus doctor status --repo-root . --json"),
 		assistant("1. `refresh_claims_from_diff`\n2. `show_existing_claims`"),
-		toolCall(2, "./bin/cautilus agent status --repo-root . --json"),
-		toolCall(3, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(2, "./bin/cautilus doctor status --repo-root . --json"),
+		toolCall(3, "./bin/cautilus discover claims --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(4, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
-		toolCall(5, "./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json"),
+		toolCall(5, "./bin/cautilus discover claims review-input --claims .cautilus/claims/latest.json"),
 		assistant("Saved claim map was not updated."),
 	]));
 	assert.equal(audit.status, "failed");
@@ -123,21 +123,21 @@ test("fails when branch labels start from internal ids or flow overruns", () => 
 
 test("does not treat prose inside another shell command as an eval overrun", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
-		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
-		toolCall(2, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(1, "./bin/cautilus doctor status --repo-root . --json"),
+		toolCall(2, "./bin/cautilus discover claims --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(3, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
-		toolCall(4, "perl -0pi -e 's/Create a host-owned repo\\/skill fixture and run it through cautilus eval test/Create a host-owned dev\\/skill fixture and run it through cautilus eval test/g' .cautilus/claims/latest.json"),
+		toolCall(4, "perl -0pi -e 's/Create a host-owned repo\\/skill fixture and run it through cautilus evaluate fixture/Create a host-owned dev\\/skill fixture and run it through cautilus evaluate fixture/g' .cautilus/claims/latest.json"),
 		assistant("The saved claim map was not updated."),
 	]));
 	assert.equal(audit.findings.some((finding) => finding.id === "forbidden_command:eval_test"), false);
 });
 
-test("still rejects an actual eval test command during the refresh branch", () => {
+test("still rejects an actual evaluate fixture command during the refresh branch", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
-		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
-		toolCall(2, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(1, "./bin/cautilus doctor status --repo-root . --json"),
+		toolCall(2, "./bin/cautilus discover claims --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(3, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
-		toolCall(4, "./bin/cautilus eval test --repo-root ."),
+		toolCall(4, "./bin/cautilus evaluate fixture --repo-root ."),
 		assistant("The saved claim map was not updated."),
 	]));
 	assert(audit.findings.some((finding) => finding.id === "forbidden_command:eval_test"));
@@ -145,9 +145,9 @@ test("still rejects an actual eval test command during the refresh branch", () =
 
 test("accepts Korean wording that says the saved claim map was not refreshed", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
-		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
-		toolCall(2, "./bin/cautilus agent status --repo-root . --json"),
-		toolCall(3, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(1, "./bin/cautilus doctor status --repo-root . --json"),
+		toolCall(2, "./bin/cautilus doctor status --repo-root . --json"),
+		toolCall(3, "./bin/cautilus discover claims --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(4, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
 		assistant("저장된 claim map은 아직 갱신되지 않았고, 새 claim 패킷을 쓰지 않았습니다."),
 	]));
@@ -156,9 +156,9 @@ test("accepts Korean wording that says the saved claim map was not refreshed", (
 
 test("accepts Korean wording that says the saved claim map was left as-is", () => {
 	const audit = auditRefreshFlowLogText(jsonl([
-		toolCall(1, "./bin/cautilus agent status --repo-root . --json"),
-		toolCall(2, "./bin/cautilus agent status --repo-root . --json"),
-		toolCall(3, "./bin/cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(1, "./bin/cautilus doctor status --repo-root . --json"),
+		toolCall(2, "./bin/cautilus doctor status --repo-root . --json"),
+		toolCall(3, "./bin/cautilus discover claims --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(4, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
 		assistant("저장된 클레임 맵은 그대로 두었고 claim 리뷰와 eval 계획은 하지 않았습니다."),
 	]));
@@ -170,9 +170,9 @@ test("cli writes nested refresh-flow audit output paths", () => {
 	const input = join(root, "log.jsonl");
 	const output = join(root, "artifacts", "audit", "refresh-flow.json");
 	writeFileSync(input, jsonl([
-		toolCall(1, "cautilus agent status --repo-root . --json"),
-		toolCall(2, "cautilus agent status --repo-root . --json"),
-		toolCall(3, "cautilus claim discover --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
+		toolCall(1, "cautilus doctor status --repo-root . --json"),
+		toolCall(2, "cautilus doctor status --repo-root . --json"),
+		toolCall(3, "cautilus discover claims --repo-root . --previous .cautilus/claims/latest.json --refresh-plan --output .cautilus/claims/refresh-plan.json"),
 		toolCall(4, "jq '.refreshSummary' .cautilus/claims/refresh-plan.json"),
 		assistant("The saved claim map was not updated."),
 	]), "utf-8");

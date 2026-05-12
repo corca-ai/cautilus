@@ -7,7 +7,7 @@ baseline_options:
 required_prerequisites:
   - materialize the local Cautilus Agent surface before running nested skill evals
 preflight_commands:
-  - ./bin/cautilus install --repo-root . --overwrite
+  - ./bin/cautilus init --repo-root . --overwrite
   - ./bin/cautilus doctor --repo-root . --scope agent-surface
 evaluation_input_default: fixtures/eval/dev/skill/cautilus-skill-routing.fixture.json
 eval_test_command_templates:

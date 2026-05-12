@@ -1,18 +1,18 @@
 # Skill Testing Contract
 
-Use `eval test` with a `surface=dev, preset=skill` fixture when the operator
+Use `evaluate fixture` with a `surface=dev, preset=skill` fixture when the operator
 asks for the local flow:
 
 `Use Cautilus to test this skill.`
 
-`eval evaluate` remains the packet summarizer for already observed runs.
-`eval test` is the workflow seam one step earlier:
+`evaluate observation` remains the packet summarizer for already observed runs.
+`evaluate fixture` is the workflow seam one step earlier:
 
-`checked-in skill cases -> cautilus eval test -> observed skill evaluation input -> cautilus eval evaluate -> skill evaluation summary -> cautilus scenario normalize skill`
+`checked-in skill cases -> cautilus evaluate fixture -> observed skill evaluation input -> cautilus evaluate observation -> skill evaluation summary -> cautilus discover scenarios normalize skill`
 
 ## Checked-In Inputs
 
-`cautilus eval test` consumes a checked-in `cautilus.evaluation_input.v1`
+`cautilus evaluate fixture` consumes a checked-in `cautilus.evaluation_input.v1`
 fixture with:
 
 - `surface: dev`
@@ -65,7 +65,7 @@ runner already consumes.
 
 ## Product-Owned Outputs
 
-`eval test` should materialize one bounded run directory with:
+`evaluate fixture` should materialize one bounded run directory with:
 
 - `eval-cases.json`
 - `eval-observed.json`
@@ -75,8 +75,8 @@ runner already consumes.
 
 ## Guardrails
 
-- Prefer `eval test --fixture <skill.fixture.json>` when the repo has a
+- Prefer `evaluate fixture --fixture <skill.fixture.json>` when the repo has a
   checked-in case suite and runner.
-- Prefer `eval evaluate` only when the host already produced the observed
+- Prefer `evaluate observation` only when the host already produced the observed
   packet.
 - Keep deterministic packaging/bootstrap checks outside this seam.

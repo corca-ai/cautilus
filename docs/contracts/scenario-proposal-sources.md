@@ -30,10 +30,10 @@ They are product-owned only at the normalized-helper layer, not at the storage-r
 
 The first checked-in helper entrypoints now exist as:
 
-- `cautilus eval test` (any surface/preset combo, including `dev/skill`)
-- `cautilus eval evaluate`
-- `cautilus scenario normalize chatbot`
-- `cautilus scenario normalize skill`
+- `cautilus evaluate fixture` (any surface/preset combo, including `dev/skill`)
+- `cautilus evaluate observation`
+- `cautilus discover scenarios normalize chatbot`
+- `cautilus discover scenarios normalize skill`
 
 ## Source Ports
 

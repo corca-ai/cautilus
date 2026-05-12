@@ -5,22 +5,22 @@ The product should not need a host-specific migration story before an operator c
 
 Three discovery surfaces matter here:
 
-- `./bin/cautilus healthcheck --json` for binary health
-- `./bin/cautilus commands --json` and `./bin/cautilus scenarios --json` for safe machine-readable discovery
+- `./bin/cautilus doctor binary --json` for binary health
+- `./bin/cautilus doctor commands --json` and `./bin/cautilus discover scenarios --json` for safe machine-readable discovery
 - `./bin/cautilus doctor --repo-root <path>` for repo-local readiness plus the first bounded-run handoff once a repo is ready
-- `./bin/cautilus eval live discover` and `./bin/cautilus eval live run` when a repo exposes live local instances for app evals
+- `./bin/cautilus discover live-targets` and `./bin/cautilus evaluate live` when a repo exposes live local instances for app evals
 
 The Cautilus Agent matters because the standalone binary is not the only entry point.
-`cautilus install` materializes the same product surface for an in-repo assistant, while the operator still uses the CLI directly.
+`cautilus init` materializes the same product surface for an in-repo assistant, while the operator still uses the CLI directly.
 That install step does not pretend the repo is fully configured.
 The follow-up readiness check should report the next missing prerequisite honestly.
 
 ## Discovery Proof
 
 ```run:shell
-$ ./bin/cautilus healthcheck --json | grep '"schemaVersion": "cautilus.healthcheck.v1"'
+$ ./bin/cautilus doctor binary --json | grep '"schemaVersion": "cautilus.healthcheck.v1"'
   "schemaVersion": "cautilus.healthcheck.v1",
-$ ./bin/cautilus commands --json | grep '"path": \[' | head -n 1
+$ ./bin/cautilus doctor commands --json | grep '"path": \[' | head -n 1
       "path": [
 $ ./bin/cautilus doctor --repo-root . | grep '"status": "ready"'
   "status": "ready",
@@ -50,7 +50,7 @@ instance_discovery:
       paths:
         scenario_store: $tmpdir/runtime/default/scenarios.json
 live_run_invocation:
-  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: cautilus evaluate live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_single_turn_command_template: sh ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}
   workspace_prepare_command_template: sh ./prepare-live-run.sh {workspace_dir}
 EOF
@@ -108,8 +108,8 @@ cat > "$tmpdir/request.json" <<'EOF'
   }
 }
 EOF
-./bin/cautilus eval live discover --repo-root "$tmpdir" --output "$tmpdir/catalog.json" >/dev/null
-./bin/cautilus eval live run --repo-root "$tmpdir" --instance-id default --request-file "$tmpdir/request.json" --output-file "$tmpdir/result.json" >/dev/null
+./bin/cautilus discover live-targets --repo-root "$tmpdir" --output "$tmpdir/catalog.json" >/dev/null
+./bin/cautilus evaluate live --repo-root "$tmpdir" --instance-id default --request-file "$tmpdir/request.json" --output-file "$tmpdir/result.json" >/dev/null
 grep -q '"instanceId": "default"' "$tmpdir/catalog.json"
 grep -q '"displayLabel": "Local Default"' "$tmpdir/catalog.json"
 grep -q '"executionStatus": "completed"' "$tmpdir/result.json"
@@ -130,7 +130,7 @@ git -C "$tmpdir" config user.name test
 printf '# temp\n' > "$tmpdir/README.md"
 git -C "$tmpdir" add README.md
 git -C "$tmpdir" commit -m init >/dev/null 2>&1
-./bin/cautilus install --repo-root "$tmpdir" --json | grep -q '"status": "installed"'
+./bin/cautilus init --repo-root "$tmpdir" --json | grep -q '"status": "installed"'
 test -f "$tmpdir/.agents/skills/cautilus-agent/SKILL.md"
 ./bin/cautilus doctor --repo-root "$tmpdir" >"$tmpdir/doctor.json" 2>&1 || true
 grep -q '"status": "missing_adapter"' "$tmpdir/doctor.json"

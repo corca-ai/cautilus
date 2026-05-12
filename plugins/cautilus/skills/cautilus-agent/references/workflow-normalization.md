@@ -15,20 +15,20 @@ reusable evaluation case instead.
 Automation workflows that get stuck on the same step every week produce
 operator lore, not reusable coverage. Each team rediscovers the same failure
 mode and writes another recovery note. Without a normalized shape, there is
-no way to feed that signal back into the same `scenario propose` pipeline
+no way to feed that signal back into the same `discover scenarios propose` pipeline
 that already covers chatbot and skill regressions.
 
 If `Cautilus` starts too early, it becomes a repo-specific log reader.
 
 The product boundary is:
 
-`host workflow run summaries -> workflow normalization helper -> proposalCandidates -> scenario prepare-input -> scenario propose`
+`host workflow run summaries -> workflow normalization helper -> proposalCandidates -> discover scenarios prepare-input -> discover scenarios propose`
 
 ## Current Slice
 
 The shipped `workflow` normalization helper is `NormalizeWorkflowProposalCandidates`
 in [internal/runtime/proposals.go](../../../../../internal/runtime/proposals.go),
-exposed on the CLI as `cautilus scenario normalize workflow`.
+exposed on the CLI as `cautilus discover scenarios normalize workflow`.
 
 This slice accepts `cautilus.workflow_normalization_inputs.v1` and rejects
 every other input schema.
@@ -127,8 +127,8 @@ dimensions `workflow_recovery` plus `recovery_next_step`.
 
 - fixture: workflow-shaped degraded run with `blockedSteps` evidence
   becomes a candidate with operator-recovery rationale.
-- fixture: helper output feeds directly into `scenario prepare-input` or
-  `scenario propose` without extra mapping.
+- fixture: helper output feeds directly into `discover scenarios prepare-input` or
+  `discover scenarios propose` without extra mapping.
 - skill-shaped input returns a non-zero exit with stderr mentioning the
   workflow normalization family vocabulary.
 

@@ -64,40 +64,65 @@ function readFile(path) {
 	}
 }
 
+function prePushUsesWorktreeGuard(prePushContent) {
+	return (
+		prePushContent.includes("scripts/guard-worktree-unchanged.mjs -- npm run verify") &&
+		prePushContent.includes("scripts/guard-worktree-unchanged.mjs -- npm run generated:drift:check")
+	);
+}
+
+function hooksPathCheck(hooksPath) {
+	return {
+		id: "hooks_path_configured",
+		ok: hooksPath.ok && hooksPath.stdout === HOOKS_PATH,
+		detail: hooksPath.ok
+			? `core.hooksPath=${hooksPath.stdout || "<empty>"}`
+			: "core.hooksPath is not configured.",
+	};
+}
+
+function prePushExistsCheck(prePushHook) {
+	const ok = existsSync(prePushHook);
+	return {
+		id: "pre_push_exists",
+		ok,
+		detail: ok ? `Found ${PRE_PUSH_PATH}.` : `Missing checked-in hook: ${PRE_PUSH_PATH}`,
+	};
+}
+
+function prePushExecutableCheck(prePushHook) {
+	const ok = existsSync(prePushHook) && isExecutable(prePushHook);
+	return {
+		id: "pre_push_executable",
+		ok,
+		detail: ok ? `${PRE_PUSH_PATH} is executable.` : `${PRE_PUSH_PATH} is not executable.`,
+	};
+}
+
 export function checkGitHooks(repoRoot) {
 	const expectedHooksPath = join(repoRoot, HOOKS_PATH);
 	const prePushHook = join(repoRoot, PRE_PUSH_PATH);
 	const hooksPath = runGit(repoRoot, ["config", "--get", "core.hooksPath"]);
 	const prePushContent = readFile(prePushHook);
+	const hasGeneratedArtifactDriftCheck = prePushContent.includes("npm run generated:drift:check");
+	const hasWorktreeGuard = prePushUsesWorktreeGuard(prePushContent);
 	const checks = [
-		{
-			id: "hooks_path_configured",
-			ok: hooksPath.ok && hooksPath.stdout === HOOKS_PATH,
-			detail: hooksPath.ok
-				? `core.hooksPath=${hooksPath.stdout || "<empty>"}`
-				: "core.hooksPath is not configured.",
-		},
-		{
-			id: "pre_push_exists",
-			ok: existsSync(prePushHook),
-			detail: existsSync(prePushHook)
-				? `Found ${PRE_PUSH_PATH}.`
-				: `Missing checked-in hook: ${PRE_PUSH_PATH}`,
-		},
-		{
-			id: "pre_push_executable",
-			ok: existsSync(prePushHook) && isExecutable(prePushHook),
-			detail:
-				existsSync(prePushHook) && isExecutable(prePushHook)
-					? `${PRE_PUSH_PATH} is executable.`
-					: `${PRE_PUSH_PATH} is not executable.`,
-		},
+		hooksPathCheck(hooksPath),
+		prePushExistsCheck(prePushHook),
+		prePushExecutableCheck(prePushHook),
 		{
 			id: "pre_push_generated_artifact_drift_check",
-			ok: prePushContent.includes("npm run generated:drift:check"),
-			detail: prePushContent.includes("npm run generated:drift:check")
+			ok: hasGeneratedArtifactDriftCheck,
+			detail: hasGeneratedArtifactDriftCheck
 				? `${PRE_PUSH_PATH} checks generated artifact drift after verify.`
 				: `${PRE_PUSH_PATH} must run npm run generated:drift:check after verify.`,
+		},
+		{
+			id: "pre_push_worktree_guard",
+			ok: hasWorktreeGuard,
+			detail: hasWorktreeGuard
+				? `${PRE_PUSH_PATH} guards verify and generated drift checks against tracked repo mutations.`
+				: `${PRE_PUSH_PATH} must run verify and generated drift checks through scripts/guard-worktree-unchanged.mjs.`,
 		},
 	];
 	const ready = checks.every((check) => check.ok);

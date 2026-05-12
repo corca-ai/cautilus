@@ -15,7 +15,7 @@ golangci-lint --version
 govulncheck --version
 ```
 
-`hooks:install` is a once-per-clone setup step that points `core.hooksPath` at the checked-in `.githooks` directory, where `pre-push` runs `npm run verify`.
+`hooks:install` is a once-per-clone setup step that points `core.hooksPath` at the checked-in `.githooks` directory, where `pre-push` runs `npm run verify` and generated artifact drift checks through a tracked-worktree guard.
 
 Adapter bootstrap, release/install helpers, and provider-facing command wrappers still live in Node where that keeps the product boundary thinner.
 Shipped behavior semantics for native product surfaces belong in Go under `internal/runtime/`.
@@ -111,7 +111,7 @@ npm run dogfood:self
 
 `dogfood:self` is explicit quality work, not a standing pre-push or CI gate.
 It currently delegates to `dogfood:self:eval` and refreshes `artifacts/self-dogfood/eval/latest/`.
-Its canonical claim is intentionally narrow: the shipped `cautilus eval` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current evaluation summary packet without relying on one-off manual wiring.
+Its canonical claim is intentionally narrow: the shipped `cautilus evaluate` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current evaluation summary packet without relying on one-off manual wiring.
 
 Refresh the canonical `dev / repo` self-dogfood bundle:
 
@@ -121,7 +121,7 @@ npm run dogfood:self:eval
 
 This is also on-demand quality work, not a standing pre-push or CI gate.
 It refreshes `artifacts/self-dogfood/eval/latest/`.
-The canonical claim is the same as `dogfood:self`: the shipped `cautilus eval` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current evaluation summary packet without relying on one-off manual wiring.
+The canonical claim is the same as `dogfood:self`: the shipped `cautilus evaluate` runner can exercise the repo's checked-in self-dogfood adapter and materialize a current evaluation summary packet without relying on one-off manual wiring.
 The broader report/review self-dogfood and tuning-experiment runners were retired with `mode evaluate`.
 Rebuild them on the eval-test surface before restoring commands that claim report/review or experiment coverage.
 
@@ -131,7 +131,7 @@ Refresh the HTML views without replaying LLM-backed reviews:
 npm run dogfood:self:html
 ```
 
-This is a thin wrapper around the product-owned `cautilus self-dogfood render-html` command (see [cli.md](../guides/cli.md)).
+This is a thin wrapper around the product-owned `cautilus doctor artifacts render-self-dogfood-html` command (see [cli.md](../guides/cli.md)).
 
 ## Runtime ownership
 

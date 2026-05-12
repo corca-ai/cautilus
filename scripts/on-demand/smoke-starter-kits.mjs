@@ -122,14 +122,14 @@ export function runStarterKitSmoke({ cautilusBin = resolve(process.cwd(), "bin",
 			commands: [],
 		};
 		const resolveCommand = assertCommandOk(
-			runCommand(cautilusBin, ["adapter", "resolve", "--repo-root", starterRoot]),
+			runCommand(cautilusBin, ["doctor", "adapter", "--repo-root", starterRoot]),
 		);
 		entry.commands.push(summarizeCommandForOutput(resolveCommand));
 		const doctorCommand = assertCommandOk(runCommand(cautilusBin, ["doctor", "--repo-root", starterRoot]));
 		entry.commands.push(summarizeCommandForOutput(doctorCommand));
 		entry.doctorReady = readDoctorReady(doctorCommand.stdout, `${starter.family} doctor`);
 		const normalizeCommand = assertCommandOk(
-			runCommand(cautilusBin, ["scenario", "normalize", starter.normalize, "--input", inputPath]),
+			runCommand(cautilusBin, ["discover", "scenarios", "normalize", starter.normalize, "--input", inputPath]),
 		);
 		entry.commands.push(summarizeCommandForOutput(normalizeCommand));
 		entry.candidateCount = readCandidateCount(normalizeCommand.stdout, `${starter.family} normalize`);

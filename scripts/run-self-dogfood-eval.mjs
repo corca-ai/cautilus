@@ -216,7 +216,7 @@ function runCautilus(repoRoot, args) {
 }
 
 function installCandidateSurface(sourceRepoRoot, candidateRepo) {
-	runCautilus(sourceRepoRoot, ["install", "--repo-root", candidateRepo, "--overwrite"]);
+	runCautilus(sourceRepoRoot, ["init", "--repo-root", candidateRepo, "--overwrite"]);
 	runCautilus(sourceRepoRoot, ["doctor", "--repo-root", candidateRepo, "--scope", "agent-surface"]);
 }
 

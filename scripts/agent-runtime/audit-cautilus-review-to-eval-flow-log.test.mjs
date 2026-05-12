@@ -52,19 +52,19 @@ function user(text) {
 
 test("passes when review result is applied, validated, and planned into evals", () => {
 	const audit = auditReviewToEvalFlowLogText(jsonl([
-		toolCall("./bin/cautilus agent status --repo-root . --json"),
-		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json"),
-		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
-		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --max-clusters 1 --max-claims-per-cluster 1 --output .cautilus/review/review-input.json"),
+		toolCall("./bin/cautilus doctor status --repo-root . --json"),
+		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
+		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
+		toolCall("./bin/cautilus discover claims review-input --claims .cautilus/claims/latest.json --max-clusters 1 --max-claims-per-cluster 1 --output .cautilus/review/review-input.json"),
 		assistant("Review budget before launch: max clusters 1, claims per cluster 1, parallel lanes 1, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
 		user("Confirmed: use the stated default review budget and continue."),
 		toolCall("node scripts/agent-runtime/run-claim-reviewer-smoke.mjs --review-input .cautilus/review/review-input.json --output .cautilus/review/review-result.json --backend auto --max-clusters 1 --max-claims 1"),
 		toolOutput('{"reviewerExecuted":true,"backend":"codex_exec","output":".cautilus/review/review-result.json"}'),
-		toolCall("./bin/cautilus claim review apply-result --claims .cautilus/claims/latest.json --review-result .cautilus/review/review-result.json --output .cautilus/review/reviewed-claims.json"),
-		toolCall("./bin/cautilus claim validate --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/validation.json"),
+		toolCall("./bin/cautilus discover claims apply-review --claims .cautilus/claims/latest.json --review-result .cautilus/review/review-result.json --output .cautilus/review/reviewed-claims.json"),
+		toolCall("./bin/cautilus discover claims validate --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/validation.json"),
 		toolOutput('{"valid":true,"issueCount":0}'),
-		toolCall("./bin/cautilus claim plan-evals --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/eval-plan.json"),
-		assistant("The reviewer lane executed and produced a cautilus.claim_review_result.v1 review-result packet. I applied it with apply-result, claim validate returned valid true with issueCount 0, and claim plan-evals wrote an eval plan. I stopped before writing fixtures or editing product files."),
+		toolCall("./bin/cautilus evaluate claims plan --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/eval-plan.json"),
+		assistant("The reviewer lane executed and produced a cautilus.claim_review_result.v1 review-result packet. I applied it with apply-result, discover claims validate returned valid true with issueCount 0, and evaluate claims plan wrote an eval plan. I stopped before writing fixtures or editing product files."),
 	]));
 	assert.equal(audit.status, "passed");
 	assert.deepEqual(audit.findings, []);
@@ -72,17 +72,17 @@ test("passes when review result is applied, validated, and planned into evals", 
 
 test("fails when eval planning happens before validation", () => {
 	const audit = auditReviewToEvalFlowLogText(jsonl([
-		toolCall("./bin/cautilus agent status --repo-root . --json"),
-		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json"),
-		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
-		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
+		toolCall("./bin/cautilus doctor status --repo-root . --json"),
+		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
+		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
+		toolCall("./bin/cautilus discover claims review-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
 		assistant("Review budget before launch: one cluster, one claim per cluster, single reviewer lane, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
 		user("Confirmed, go ahead with the stated budget."),
 		toolCall("node scripts/agent-runtime/run-claim-reviewer-smoke.mjs --review-input .cautilus/review/review-input.json --output .cautilus/review/review-result.json"),
 		toolOutput('{"reviewerExecuted":true,"output":".cautilus/review/review-result.json"}'),
-		toolCall("./bin/cautilus claim review apply-result --claims .cautilus/claims/latest.json --review-result .cautilus/review/review-result.json --output .cautilus/review/reviewed-claims.json"),
-		toolCall("./bin/cautilus claim plan-evals --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/eval-plan.json"),
-		toolCall("./bin/cautilus claim validate --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/validation.json"),
+		toolCall("./bin/cautilus discover claims apply-review --claims .cautilus/claims/latest.json --review-result .cautilus/review/review-result.json --output .cautilus/review/reviewed-claims.json"),
+		toolCall("./bin/cautilus evaluate claims plan --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/eval-plan.json"),
+		toolCall("./bin/cautilus discover claims validate --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/validation.json"),
 		assistant("The reviewer lane executed, produced a review-result packet, applied it, validated it, and made an eval plan. I stopped before writing fixtures."),
 	]));
 	assert.equal(audit.status, "failed");
@@ -91,18 +91,18 @@ test("fails when eval planning happens before validation", () => {
 
 test("fails when branch overruns into eval execution", () => {
 	const audit = auditReviewToEvalFlowLogText(jsonl([
-		toolCall("./bin/cautilus agent status --repo-root . --json"),
-		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json"),
-		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
-		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
+		toolCall("./bin/cautilus doctor status --repo-root . --json"),
+		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
+		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
+		toolCall("./bin/cautilus discover claims review-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
 		assistant("Review budget before launch: one cluster, one claim per cluster, single reviewer lane, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
 		user("Confirmed, proceed with this review budget."),
 		toolCall("node scripts/agent-runtime/run-claim-reviewer-smoke.mjs --review-input .cautilus/review/review-input.json --output .cautilus/review/review-result.json"),
 		toolOutput('{"reviewerExecuted":true,"output":".cautilus/review/review-result.json"}'),
-		toolCall("./bin/cautilus claim review apply-result --claims .cautilus/claims/latest.json --review-result .cautilus/review/review-result.json --output .cautilus/review/reviewed-claims.json"),
-		toolCall("./bin/cautilus claim validate --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/validation.json"),
-		toolCall("./bin/cautilus claim plan-evals --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/eval-plan.json"),
-		toolCall("./bin/cautilus eval test --fixture fixtures/eval/dev/skill/example.json"),
+		toolCall("./bin/cautilus discover claims apply-review --claims .cautilus/claims/latest.json --review-result .cautilus/review/review-result.json --output .cautilus/review/reviewed-claims.json"),
+		toolCall("./bin/cautilus discover claims validate --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/validation.json"),
+		toolCall("./bin/cautilus evaluate claims plan --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/eval-plan.json"),
+		toolCall("./bin/cautilus evaluate fixture --fixture fixtures/eval/dev/skill/example.json"),
 		assistant("The reviewer lane executed, produced a review-result packet, applied it, validated it, and made an eval plan. I stopped before writing fixtures."),
 	]));
 	assert.equal(audit.status, "failed");
@@ -111,16 +111,16 @@ test("fails when branch overruns into eval execution", () => {
 
 test("fails when review-to-eval launch lacks user confirmation for the selected review budget", () => {
 	const audit = auditReviewToEvalFlowLogText(jsonl([
-		toolCall("./bin/cautilus agent status --repo-root . --json"),
-		toolCall("./bin/cautilus claim discover --repo-root . --output .cautilus/claims/latest.json"),
-		toolCall("./bin/cautilus claim show --input .cautilus/claims/latest.json --sample-claims 10"),
-		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
+		toolCall("./bin/cautilus doctor status --repo-root . --json"),
+		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
+		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
+		toolCall("./bin/cautilus discover claims review-input --claims .cautilus/claims/latest.json --output .cautilus/review/review-input.json"),
 		assistant("Review budget before launch: one cluster, one claim per cluster, single reviewer lane, excerpt chars 800, no retries, skipped-cluster policy is to defer."),
 		toolCall("node scripts/agent-runtime/run-claim-reviewer-smoke.mjs --review-input .cautilus/review/review-input.json --output .cautilus/review/review-result.json"),
 		toolOutput('{"reviewerExecuted":true,"output":".cautilus/review/review-result.json"}'),
-		toolCall("./bin/cautilus claim review apply-result --claims .cautilus/claims/latest.json --review-result .cautilus/review/review-result.json --output .cautilus/review/reviewed-claims.json"),
-		toolCall("./bin/cautilus claim validate --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/validation.json"),
-		toolCall("./bin/cautilus claim plan-evals --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/eval-plan.json"),
+		toolCall("./bin/cautilus discover claims apply-review --claims .cautilus/claims/latest.json --review-result .cautilus/review/review-result.json --output .cautilus/review/reviewed-claims.json"),
+		toolCall("./bin/cautilus discover claims validate --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/validation.json"),
+		toolCall("./bin/cautilus evaluate claims plan --claims .cautilus/review/reviewed-claims.json --output .cautilus/review/eval-plan.json"),
 		assistant("The reviewer lane executed, produced a review-result packet, applied it, validated it, and made an eval plan. I stopped before writing fixtures."),
 	]));
 	assert.equal(audit.status, "failed");

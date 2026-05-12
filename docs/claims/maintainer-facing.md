@@ -18,7 +18,7 @@ The exact raw-claim evidence state remains in `.cautilus/claims/evidenced-typed-
 
 Aligned user claims: U1 Claim, U9 Proof Debt.
 
-`claim discover` emits source-ref-backed candidates, rough labels, and proof-planning fields.
+`discover claims` emits source-ref-backed candidates, rough labels, and proof-planning fields.
 It should favor recall from configured entry documents and linked Markdown, then rely on Cautilus Agent or a reviewer to merge duplicates, split fragments, and project canonical user-facing and maintainer-facing claims.
 
 Proof route: deterministic.
@@ -81,7 +81,7 @@ Aligned user claims: U2 Eval, U8 Development and App Surfaces.
 
 The top-level surfaces are `dev` and `app`.
 The supported presets are `repo`, `skill`, `chat`, and `prompt`.
-The fixture declares the surface and preset; the CLI remains uniform around `cautilus eval test` and `cautilus eval evaluate`.
+The fixture declares the surface and preset; the CLI remains uniform around `cautilus evaluate fixture` and `cautilus evaluate observation`.
 
 Proof route: deterministic plus fixture-backed eval.
 Current evidence status: proof-planning.
@@ -111,9 +111,9 @@ Absorbs: raw claims about review labels, proof route updates, evidence refs, pos
 
 Required evidence:
 
-- `claim review apply-result` tests for label updates
+- `discover claims apply-review` tests for label updates
 - satisfied-evidence rejection tests
-- `claim validate` checks over evidence refs and supported claim IDs
+- `discover claims validate` checks over evidence refs and supported claim IDs
 
 Source anchors: docs/contracts/claim-discovery-workflow.md, docs/contracts/evidence-bundle.md.
 
@@ -143,11 +143,11 @@ Aligned user claims: U2 Eval, U4 Doctor, U5 Product/Host Ownership, U8 Developme
 
 Runner readiness should depend on the adapter hash and declared runner file hashes, not raw git commit equality.
 Commit drift should be exposed as provenance when the adapter and runner files still match.
-`doctor` and `agent status` should share the same assessment semantics.
+`doctor` and `doctor status` should share the same assessment semantics.
 
 Proof route: deterministic.
 Current evidence status: proof-planning.
-Next action: keep `doctor` and `agent status` on shared runner-readiness semantics, and prove adapter hash, runner file hash, and harmless commit drift cases.
+Next action: keep `doctor` and `doctor status` on shared runner-readiness semantics, and prove adapter hash, runner file hash, and harmless commit drift cases.
 Absorbs: raw claims about runner assessment, adapter hash drift, runner file drift, commit drift provenance, and readiness branch behavior.
 
 Required evidence:
@@ -204,7 +204,7 @@ Aligned user claims: all.
 
 The public spec report provides cheap executable proof pages.
 The claim catalog provides the curated promise map that a user or maintainer reads before diving into raw claim packets.
-Raw `claim discover` output should feed the catalog through curation; it should not be the primary human review surface.
+Raw `discover claims` output should feed the catalog through curation; it should not be the primary human review surface.
 
 Proof route: deterministic and human review.
 Current evidence status: proof-planning; README and link checks can prove reachability, while maintainer review must approve the catalog content.
@@ -214,7 +214,7 @@ Absorbs: raw claims about claim catalogs, public specs, raw discovery output, re
 Required evidence:
 
 - README links to the user-facing claim catalog and public spec report
-- claim review artifacts that record canonical curation decisions
+- discover claims review-input artifacts that record canonical curation decisions
 - lint and link checks that keep the catalog reachable
 
 Source anchors: README.md, docs/claims/user-facing.md, docs/claims/maintainer-facing.md.

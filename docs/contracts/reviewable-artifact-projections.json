@@ -10,17 +10,17 @@
     "truthSourcePolicy": "Each listed readable view is a projection over one or more machine-readable packet or source artifacts. Human comments, when supported, are written to a separate packet and do not mutate the rendered source."
   },
   "registryMatchers": [
-    {"path": ["report", "render-html"], "usageIncludes": ["--input <report.json>", "--output <report.html>"]},
-    {"path": ["review", "render-html"], "usageIncludes": ["--input <review.json>", "--output <review.html>"]},
-    {"path": ["review", "render-variants-summary-html"], "usageIncludes": ["--input <review-summary.json>", "--output <review-summary.html>"]},
-    {"path": ["workspace", "render-compare-html"], "usageIncludes": ["--input <compare-artifact.json>", "--output <compare.html>"]},
-    {"path": ["scenario", "render-proposals-html"], "usageIncludes": ["--input <proposals.json>", "--output <proposals.html>"]},
-    {"path": ["scenario", "render-conversation-review-html"], "usageIncludes": ["--input <conversation-review.json>", "--output <conversation-review.html>"]},
-    {"path": ["evidence", "render-html"], "usageIncludes": ["--input <evidence-bundle.json>", "--output <evidence-bundle.html>"]},
-    {"path": ["artifacts", "render-index-html"], "usageIncludes": ["--run-dir <path>", "--output <index.html>"]},
-    {"path": ["review", "render-prompt"], "usageIncludes": ["review render-prompt"]},
-    {"path": ["self-dogfood", "render-html"], "usageIncludes": ["self-dogfood render-html"]},
-    {"path": ["self-dogfood", "render-experiments-html"], "usageIncludes": ["self-dogfood render-experiments-html"]}
+    {"path": ["evaluate", "report", "render-html"], "usageIncludes": ["--input <report.json>", "--output <report.html>"]},
+    {"path": ["evaluate", "review", "render-html"], "usageIncludes": ["--input <review.json>", "--output <review.html>"]},
+    {"path": ["evaluate", "review", "render-variants-summary-html"], "usageIncludes": ["--input <review-summary.json>", "--output <review-summary.html>"]},
+    {"path": ["evaluate", "comparison", "render-html"], "usageIncludes": ["--input <compare-artifact.json>", "--output <compare.html>"]},
+    {"path": ["discover", "scenarios", "render-proposals-html"], "usageIncludes": ["--input <proposals.json>", "--output <proposals.html>"]},
+    {"path": ["discover", "scenarios", "render-conversation-review-html"], "usageIncludes": ["--input <conversation-review.json>", "--output <conversation-review.html>"]},
+    {"path": ["evaluate", "evidence", "render-html"], "usageIncludes": ["--input <evidence-bundle.json>", "--output <evidence-bundle.html>"]},
+    {"path": ["doctor", "artifacts", "render-index-html"], "usageIncludes": ["--run-dir <path>", "--output <index.html>"]},
+    {"path": ["evaluate", "review", "render-prompt"], "usageIncludes": ["evaluate review render-prompt"]},
+    {"path": ["doctor", "artifacts", "render-self-dogfood-html"], "usageIncludes": ["doctor artifacts render-self-dogfood-html"]},
+    {"path": ["doctor", "artifacts", "render-self-dogfood-experiments-html"], "usageIncludes": ["doctor artifacts render-self-dogfood-experiments-html"]}
   ],
   "surfaces": [
     {
@@ -30,7 +30,7 @@
       "sourceSchemas": ["cautilus.report_packet.v2"],
       "renderer": "internal/runtime/report_html.go",
       "tests": ["internal/runtime/report_html_test.go"],
-      "commands": ["cautilus report render-html"],
+      "commands": ["cautilus evaluate report render-html"],
       "proofMarkers": [
         {"path": "internal/runtime/report_html.go", "contains": ["RenderReportHTMLFromFile", "ValidateReportPacket", "Generated from <code>report.json</code>"]},
         {"path": "internal/runtime/report_html_test.go", "contains": ["TestRenderReportHTMLFromFileRejectsLegacySchema", "TestWriteReportHTMLFromFileWritesNextToInput"]}
@@ -43,7 +43,7 @@
       "sourceSchemas": ["cautilus.review_packet.v1"],
       "renderer": "internal/runtime/review_html.go",
       "tests": ["internal/runtime/review_html_test.go"],
-      "commands": ["cautilus review render-html"],
+      "commands": ["cautilus evaluate review render-html"],
       "proofMarkers": [
         {"path": "internal/runtime/review_html.go", "contains": ["RenderReviewPacketHTMLFromFile", "contracts.ReviewPacketSchema", "Generated from <code>review.json</code>"]},
         {"path": "internal/runtime/review_html_test.go", "contains": ["TestRenderReviewPacketHTMLFromFileRejectsWrongSchema", "TestWriteReviewPacketHTMLFromFileWritesNextToInput"]}
@@ -56,7 +56,7 @@
       "sourceSchemas": ["cautilus.review_summary.v1"],
       "renderer": "internal/runtime/review_html.go",
       "tests": ["internal/runtime/review_html_test.go"],
-      "commands": ["cautilus review render-variants-summary-html"],
+      "commands": ["cautilus evaluate review render-variants-summary-html"],
       "proofMarkers": [
         {"path": "internal/runtime/review_html.go", "contains": ["RenderReviewSummaryHTMLFromFile", "contracts.ReviewSummarySchema", "Generated from <code>review-summary.json</code>"]},
         {"path": "internal/runtime/review_html_test.go", "contains": ["TestRenderReviewSummaryHTMLFromFileRejectsWrongSchema", "TestWriteReviewSummaryHTMLFromFileWritesNextToInput"]}
@@ -69,7 +69,7 @@
       "sourceSchemas": ["cautilus.compare_artifact.v1"],
       "renderer": "internal/runtime/artifact_html.go",
       "tests": ["internal/runtime/artifact_html_test.go"],
-      "commands": ["cautilus workspace render-compare-html"],
+      "commands": ["cautilus evaluate comparison render-html"],
       "proofMarkers": [
         {"path": "internal/runtime/artifact_html.go", "contains": ["RenderCompareArtifactHTMLFromFile", "contracts.CompareArtifactSchema", "Generated from <code>compare-artifact.json</code>"]},
         {"path": "internal/runtime/artifact_html_test.go", "contains": ["TestRenderCompareArtifactHTMLFromFileRejectsWrongSchema", "TestWriteCompareArtifactHTMLFromFileWritesNextToInput"]}
@@ -82,7 +82,7 @@
       "sourceSchemas": ["cautilus.scenario_proposals.v1"],
       "renderer": "internal/runtime/artifact_html.go",
       "tests": ["internal/runtime/artifact_html_test.go"],
-      "commands": ["cautilus scenario render-proposals-html"],
+      "commands": ["cautilus discover scenarios render-proposals-html"],
       "proofMarkers": [
         {"path": "internal/runtime/artifact_html.go", "contains": ["RenderScenarioProposalsHTMLFromFile", "contracts.ScenarioProposalsSchema", "Generated from <code>proposals.json</code>"]},
         {"path": "internal/runtime/artifact_html_test.go", "contains": ["TestRenderScenarioProposalsHTMLFromFileRejectsWrongSchema", "TestWriteScenarioProposalsHTMLFromFileWritesNextToInput"]}
@@ -95,7 +95,7 @@
       "sourceSchemas": ["cautilus.scenario_conversation_review.v1"],
       "renderer": "internal/runtime/artifact_html.go",
       "tests": ["internal/runtime/artifact_html_test.go"],
-      "commands": ["cautilus scenario render-conversation-review-html"],
+      "commands": ["cautilus discover scenarios render-conversation-review-html"],
       "proofMarkers": [
         {"path": "internal/runtime/artifact_html.go", "contains": ["RenderScenarioConversationReviewHTMLFromFile", "contracts.ScenarioConversationReviewSchema", "Generated from <code>conversation-review.json</code>"]},
         {"path": "internal/runtime/artifact_html_test.go", "contains": ["TestRenderScenarioConversationReviewHTMLFromFileRejectsWrongSchema", "TestWriteScenarioConversationReviewHTMLFromFileWritesNextToInput"]}
@@ -108,7 +108,7 @@
       "sourceSchemas": ["cautilus.evidence_bundle.v1"],
       "renderer": "internal/runtime/artifact_html.go",
       "tests": ["internal/runtime/artifact_html_test.go"],
-      "commands": ["cautilus evidence render-html"],
+      "commands": ["cautilus evaluate evidence render-html"],
       "proofMarkers": [
         {"path": "internal/runtime/artifact_html.go", "contains": ["RenderEvidenceBundleHTMLFromFile", "contracts.EvidenceBundleSchema", "Generated from <code>evidence-bundle.json</code>"]},
         {"path": "internal/runtime/artifact_html_test.go", "contains": ["TestRenderEvidenceBundleHTMLFromFileRejectsWrongSchema", "TestRenderEvidenceBundleHTMLRendersSignalsAndSources"]}
@@ -121,7 +121,7 @@
       "sourceSchemas": ["run-index descriptor schemas"],
       "renderer": "internal/runtime/run_index_html.go",
       "tests": ["internal/runtime/run_index_html_test.go"],
-      "commands": ["cautilus artifacts render-index-html"],
+      "commands": ["cautilus doctor artifacts render-index-html"],
       "proofMarkers": [
         {"path": "internal/runtime/run_index_html.go", "contains": ["runIndexArtifactDescriptors", "descriptor.schema", "pending-html"]},
         {"path": "internal/runtime/run_index_html_test.go", "contains": ["TestDiscoverRunIndexEntriesSkipsMismatchedSchema", "TestRenderRunIndexHTMLIncludesSidebarEntriesAndStatus", "TestWriteRunIndexHTMLForDirWritesIndexHTML"]}
@@ -134,7 +134,7 @@
       "sourceSchemas": ["self-dogfood summary", "cautilus.report_packet.v2", "cautilus.review_summary.v1"],
       "renderer": "internal/runtime/self_dogfood_html.go",
       "tests": ["internal/runtime/self_dogfood_html_test.go"],
-      "commands": ["cautilus self-dogfood render-html"],
+      "commands": ["cautilus doctor artifacts render-self-dogfood-html"],
       "proofMarkers": [
         {"path": "internal/runtime/self_dogfood_html.go", "contains": ["Generated from <code>summary.json</code>, <code>report.json</code>, and <code>review-summary.json</code>", "Do not hand-edit this file"]},
         {"path": "internal/runtime/self_dogfood_html_test.go", "contains": ["TestWriteSelfDogfoodHTMLWritesIndexNextToLatestBundle", "TestRenderSelfDogfoodHTMLRewritesMarkdownAndJSONLinks"]}
@@ -147,7 +147,7 @@
       "sourceSchemas": ["self-dogfood experiments summary", "cautilus.report_packet.v2"],
       "renderer": "internal/runtime/self_dogfood_html.go",
       "tests": ["internal/runtime/self_dogfood_html_test.go"],
-      "commands": ["cautilus self-dogfood render-experiments-html"],
+      "commands": ["cautilus doctor artifacts render-self-dogfood-experiments-html"],
       "proofMarkers": [
         {"path": "internal/runtime/self_dogfood_html.go", "contains": ["Generated from <code>summary.json</code> and <code>report.json</code>", "Do not hand-edit this file"]},
         {"path": "internal/runtime/self_dogfood_html_test.go", "contains": ["TestWriteSelfDogfoodExperimentsHTMLWritesIndexNextToLatestBundle", "TestRenderSelfDogfoodExperimentsHTMLLinksInspectArtifactsWithoutRewritingRawJSON"]}
@@ -160,10 +160,10 @@
       "sourceSchemas": ["cautilus.review_prompt_inputs.v1"],
       "renderer": "internal/runtime/review.go",
       "tests": ["internal/app/cli_smoke_test.go", "scripts/agent-runtime/review-prompt-flow.test.mjs"],
-      "commands": ["cautilus review render-prompt"],
+      "commands": ["cautilus evaluate review render-prompt"],
       "proofMarkers": [
         {"path": "internal/runtime/review.go", "contains": ["RenderReviewPrompt", "promptInput", "# Cautilus Review"]},
-        {"path": "internal/app/cli_smoke_test.go", "contains": ["review", "render-prompt", "review.prompt.md"]},
+        {"path": "internal/app/cli_smoke_test.go", "contains": ["evaluate", "review", "render-prompt", "review.prompt.md"]},
         {"path": "scripts/agent-runtime/review-prompt-flow.test.mjs", "contains": ["renderReviewPrompt turns review prompt inputs into a portable meta-prompt", "## Current Report Evidence"]}
       ]
     },

@@ -17,11 +17,11 @@ Raw conversation logs are too host-shaped to make `Cautilus` portable, but fully
 
 The product boundary should therefore start after storage-specific ingestion and before generic proposal ranking:
 
-`host log reader -> chatbot normalization helper -> proposalCandidates -> scenario prepare-input -> scenario propose`
+`host log reader -> chatbot normalization helper -> proposalCandidates -> discover scenarios prepare-input -> discover scenarios propose`
 
 ## Current Slice
 
-The shipped `chatbot` normalization helper is `NormalizeChatbotProposalCandidates` in [internal/runtime/proposals.go](../../internal/runtime/proposals.go), exposed on the CLI as `cautilus scenario normalize chatbot`.
+The shipped `chatbot` normalization helper is `NormalizeChatbotProposalCandidates` in [internal/runtime/proposals.go](../../internal/runtime/proposals.go), exposed on the CLI as `cautilus discover scenarios normalize chatbot`.
 That Go helper is the single source of truth that turns normalized conversation/run summaries into `proposalCandidates`.
 
 ## Representative Consumers
@@ -142,7 +142,7 @@ The first `chatbot` helper should cover patterns already proven in checked-in co
 - no hidden repo traversal
 - no network requirements
 - input/output must stay deterministic and file-based
-- output must remain compatible with existing `scenario prepare-input` and `scenario propose` surfaces
+- output must remain compatible with existing `discover scenarios prepare-input` and `discover scenarios propose` surfaces
 
 ## Success Criteria
 
@@ -155,7 +155,7 @@ The first `chatbot` helper should cover patterns already proven in checked-in co
 - fixture: review clarification follow-up from two normalized user turns
 - fixture: event-triggered follow-up from one wake-up turn plus one plain turn
 - fixture: blocked ambiguous confirmation from a run summary with `blockedReason`
-- fixture: helper output feeds directly into `scenario prepare-input` or `scenario propose` without ad-hoc field rewriting
+- fixture: helper output feeds directly into `discover scenarios prepare-input` or `discover scenarios propose` without ad-hoc field rewriting
 
 ## Canonical Artifact
 

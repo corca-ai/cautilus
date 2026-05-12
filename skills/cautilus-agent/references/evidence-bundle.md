@@ -26,7 +26,7 @@ The packet may include:
 Current surface:
 
 ```bash
-cautilus evidence prepare-input \
+cautilus evaluate evidence prepare-input \
   --report-file /tmp/cautilus-mode/report.json \
   --scenario-results-file /tmp/cautilus-mode/held_out-scenario-results.json \
   --run-audit-file /tmp/cautilus-run-audit/run-audit-summary.json \
@@ -47,7 +47,7 @@ The bundle includes:
 Current surface:
 
 ```bash
-cautilus evidence bundle \
+cautilus evaluate evidence bundle \
   --input /tmp/cautilus-evidence/input.json
 ```
 

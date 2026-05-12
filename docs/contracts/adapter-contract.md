@@ -5,7 +5,7 @@ Use one default adapter for the repo's primary benchmark surface, then add named
 When the operator wants clean git-ref A/B workspaces, use the product-owned helper instead of copying repo-local `git worktree` shell glue:
 
 ```bash
-cautilus workspace prepare-compare \
+cautilus evaluate comparison prepare \
   --repo-root . \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-compare
@@ -105,10 +105,10 @@ instance_discovery:
   required_prerequisites:
     - keep instance ids stable and keep typed paths machine-readable
 live_run_invocation:
-  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: cautilus evaluate live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}
   workspace_prepare_command_template: node scripts/consumer/prepare-live-run-workspace.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --workspace-dir {workspace_dir}
-  simulator_persona_command_template: cautilus eval live run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
+  simulator_persona_command_template: cautilus evaluate live persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
   consumer_evaluator_command_template: node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --input-file {evaluator_input_file} --output-file {evaluation_output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
@@ -196,11 +196,11 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `runtime_policy`: optional runtime identity policy.
   `mode: observe` is the default and records runtime identity without blocking ordinary default-runtime changes.
   `mode: pinned` requires declared runtime fields to match observed `telemetry.runtimeFingerprint` fields and should block with `model_runtime_pinned_mismatch` when they do not.
-- `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
+- `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus evaluate fixture` when the operator does not pass `--fixture`.
 - `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed `cautilus.evaluation_observed.v1` packet.
-- `default_runtime`: optional runtime choice (`codex`, `claude`, `fixture`, or `product`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
-- `runner_readiness`: optional typed runner declarations used by `doctor`, `agent status`, and `eval test`.
-  When present, `runner_readiness.runners[]` is the preferred command source for `eval test`; the runner whose `surfaces` contains the fixture's surface/preset is selected.
+- `default_runtime`: optional runtime choice (`codex`, `claude`, `fixture`, or `product`), defaults to `codex`. Overridden by `cautilus evaluate fixture --runtime`.
+- `runner_readiness`: optional typed runner declarations used by `doctor`, `doctor status`, and `evaluate fixture`.
+  When present, `runner_readiness.runners[]` is the preferred command source for `evaluate fixture`; the runner whose `surfaces` contains the fixture's surface/preset is selected.
   Each runner needs `id`, `surfaces`, and `command_template`.
   `proof_class`, `smoke_command_template`, `assessment_path`, and `default_runtime` are optional metadata fields.
   `proof_class` must be one of `fixture-smoke`, `coding-agent-messaging`, `in-process-product-runner`, or `live-product-runner`.
@@ -208,12 +208,12 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata.
   When an eval run uses `runtime=product`, the adapter-owned command is expected to exercise a headless product path; the runtime label does not make product proof ready without a current runner assessment.
   For dev surfaces, a non-fixture coding-agent runtime may use adapter-declared `coding-agent-messaging` as observed proof while preserving assessment proof separately, but only when the observed packet reports matching runtime telemetry.
-- `claim_discovery`: optional bounded truth-surface configuration for `cautilus claim discover`.
+- `claim_discovery`: optional bounded truth-surface configuration for `cautilus discover claims`.
   `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).
   `linked_markdown_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries.
   `include` and `exclude` are repo-relative glob filters applied to discovered Markdown sources.
   `state_path` tells agents where the repo expects the current claim-state packet to live.
-  `related_state_paths` lets `agent status` summarize read-only reviewed, evidenced, or promoted claim packets without treating them as the writable discovery baseline.
+  `related_state_paths` lets `doctor status` summarize read-only reviewed, evidenced, or promoted claim packets without treating them as the writable discovery baseline.
   `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation and review-input possible-evidence preflight; it does not prove claims by itself.
   `audience_hints` optionally maps discovered sources into `user` and `developer` claim audiences.
   The binary uses these hints before portable path defaults to label review queues, while the Cautilus Agent or a human reviewer may still correct semantic edge cases.
@@ -277,7 +277,7 @@ Fixed rules:
 - `kind: command` is the default fit for consumers that enumerate multiple host-local instances dynamically.
 - `kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.
 - `command_template` should print `cautilus.workbench_instance_catalog.v1` JSON to stdout.
-`cautilus eval live discover` resolves either `kind: explicit` or `kind: command` into the canonical catalog packet.
+`cautilus discover live-targets` resolves either `kind: explicit` or `kind: command` into the canonical catalog packet.
 When the adapter uses `kind: command`, point `command_template` directly at a consumer-owned probe command instead of wrapping the product command around itself.
 
 Current placeholders for `instance_discovery.command_template`:
@@ -294,10 +294,10 @@ The adapter may therefore declare one optional `live_run_invocation` stanza.
 
 ```yaml
 live_run_invocation:
-  command_template: cautilus eval live run --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
+  command_template: cautilus evaluate live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_single_turn_command_template: node scripts/consumer/run-live-turn.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --turn-request-file {turn_request_file} --turn-result-file {turn_result_file}
   workspace_prepare_command_template: node scripts/consumer/prepare-live-run-workspace.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --workspace-dir {workspace_dir}
-  simulator_persona_command_template: cautilus eval live run-simulator-persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
+  simulator_persona_command_template: cautilus evaluate live persona --workspace {repo_root} --simulator-request-file {simulator_request_file} --simulator-result-file {simulator_result_file} --backend fixture --fixture-results-file fixtures/live-run/persona-fixture.json
   consumer_evaluator_command_template: node scripts/consumer/evaluate-live-run.mjs --repo-root {repo_root} --adapter-path {adapter_path} --request-file {request_file} --input-file {evaluator_input_file} --output-file {evaluation_output_file}
   required_prerequisites:
     - keep invocation bounded to one selected local instance and one request packet
@@ -306,11 +306,11 @@ live_run_invocation:
 Fixed rules:
 
 - The command handles exactly one selected `instance_id` per invocation.
-- `command_template` may point at the product-owned `cautilus eval live run` command.
+- `command_template` may point at the product-owned `cautilus evaluate live` command.
   For the legacy one-shot path, that command must then receive a consumer-owned `consumer_command_template` to avoid recursive self-invocation.
   For the product-owned chatbot loop, it must instead receive `consumer_single_turn_command_template`.
   When the public request uses `simulator.kind: persona_prompt`, it must also receive `simulator_persona_command_template`.
-  The canonical path is the product-owned `cautilus eval live run-simulator-persona` helper plus adapter-selected backend flags.
+  The canonical path is the product-owned `cautilus evaluate live persona` helper plus adapter-selected backend flags.
 - When the product-owned chatbot loop is active, `Cautilus` allocates one stable workspace directory at `<output_file>.d/workspace/`.
   If `workspace_prepare_command_template` is present, `Cautilus` runs it once per request before the first turn.
 - The command reads one request packet from `request_file`.
@@ -405,7 +405,7 @@ Each named adapter should define its own:
 - optional `improve_search` defaults when that surface needs a different bounded search policy from the repo root adapter
 
 This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.
-When a repo runs review variants repeatedly, add a checked-in wrapper that loads the adapter and fans out `executor_variants`, but keep it as a thin delegate to `cautilus review variants` instead of letting it become a second runtime authority.
+When a repo runs evaluate review variants repeatedly, add a checked-in wrapper that loads the adapter and fans out `executor_variants`, but keep it as a thin delegate to `cautilus evaluate evaluate review variants` instead of letting it become a second runtime authority.
 
 ## Split Criteria
 
@@ -463,7 +463,7 @@ Command-template placeholders currently include:
 - `{schema_file}`
 - `{output_file}`
 - `{variant_id}`
-- optional `{output_under_test}` when `review variants` is run with `--output-under-test`
+- optional `{output_under_test}` when `evaluate review variants` is run with `--output-under-test`
 
 Optional fields:
 

@@ -28,8 +28,8 @@ This slice establishes the first packet materializer and a selected-packet summa
 
 - The reviewer or host workflow remains the authority for disposition.
 - Cautilus Agent is responsible for routing post-review capture when it is installed in a host repo; an operator may also run the same packet builder directly.
-- The binary owns packet validation for `cautilus.review_feedback.v1` through `cautilus review feedback build`.
-- The binary owns selected-packet aggregation for `cautilus.review_feedback_summary.v1` through `cautilus review feedback summarize`.
+- The binary owns packet validation for `cautilus.review_feedback.v1` through `cautilus evaluate review feedback build`.
+- The binary owns selected-packet aggregation for `cautilus.review_feedback_summary.v1` through `cautilus evaluate review feedback summarize`.
 - The first packet lives beside review artifacts as `review-feedback.json` when the operator or agent chooses that output path.
 - Active-run defaults and automatic discovery of review-feedback packets remain deferred.
 - `eval-cases.json` provenance is supporting infrastructure, not the primary product promise.
@@ -120,14 +120,14 @@ This is a design-readiness question, not a requirement that the current spec alr
 
 The first implementation slice is useful when:
 
-- one host workflow can produce a source-bound review-learning record through `cautilus review feedback build`
+- one host workflow can produce a source-bound review-learning record through `cautilus evaluate review feedback build`
 - the record preserves the source review ref separately from normalized fields and records the normalization basis
 - the record names the method that produced the proposal
 - the record records review-useful disposition without collapsing into pass/fail
 - a later report or CLI view can count dispositions by method family
 
 The first four signals are implemented by the initial packet builder.
-The selected-packet aggregation signal is implemented by `cautilus review feedback summarize`.
+The selected-packet aggregation signal is implemented by `cautilus evaluate review feedback summarize`.
 Active-run packet discovery and default packet location remain deferred.
 
 ## Related Contracts

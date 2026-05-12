@@ -21,7 +21,7 @@ function check(id, ok, detail) {
 }
 
 function initCommand(repoRoot, adapterName) {
-	let command = `cautilus adapter init --repo-root ${repoRoot}`;
+	let command = `cautilus init adapter --repo-root ${repoRoot}`;
 	if (adapterName) {
 		command += ` --adapter-name ${adapterName}`;
 	}

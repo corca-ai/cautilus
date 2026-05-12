@@ -2,7 +2,7 @@
 
 ## Problem
 
-`cautilus claim discover` currently emits a deterministic, source-ref-backed proof-plan skeleton.
+`cautilus discover claims` currently emits a deterministic, source-ref-backed proof-plan skeleton.
 That is useful as a fast inventory, but it is not yet the workflow users expect when they ask an agent to "use Cautilus" on a repo.
 A real user wants to know which declared behavior claims exist, which ones are already covered by deterministic tests or existing Cautilus evidence, which ones still need evaluator-backed scenarios, and which surfaces must be aligned before verification is honest.
 
@@ -13,7 +13,7 @@ for claim discovery and claim review, the binary owns deterministic packet produ
 
 Design the next claim-discovery workflow contract.
 This slice is a design contract, not an implementation change.
-It refines the current `claim discover` direction around four decisions:
+It refines the current `discover claims` direction around four decisions:
 
 - `discover` remains the one high-level user action for initial claim discovery.
 - The binary performs the fast deterministic skeleton pass.
@@ -66,7 +66,7 @@ The Cautilus Agent should own orchestration that depends on an agent:
 
 - decide whether to run first discovery, refresh prior state, or show current status
 - explain the scan scope to the user and ask for confirmation before broad discovery
-- call `cautilus claim discover` with the agreed scope
+- call `cautilus discover claims` with the agreed scope
 - show the deterministic scan result and ask separately before launching LLM review
 - group and prioritize raw candidates for LLM review
 - run subagent review in bounded batches
@@ -79,7 +79,7 @@ This keeps the product agent-first without making the binary a host-specific age
 
 ### Canonical Claim Specs
 
-Raw `claim discover` candidates are high-recall proof-planning inputs.
+Raw `discover claims` candidates are high-recall proof-planning inputs.
 They are not the primary human review surface once the maintainer is judging product meaning, duplication, audience fit, or next-action grouping.
 
 When raw candidates are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL:
@@ -104,7 +104,7 @@ This avoids asking humans to approve hundreds of sentence-level candidates when 
 
 Default discovery starts from entry surfaces and follows only repo-local Markdown links.
 This is the next workflow default and intentionally narrows the older broad source-inventory language in the current command-surface spec.
-Until this contract is fully absorbed into the new claim spec tree, the archived [command-surfaces.spec.md](../specs/old/command-surfaces.spec.md) records the earlier shipped `claim discover` contract.
+Until this contract is fully absorbed into the new claim spec tree, the archived [command-surfaces.spec.md](../specs/old/command-surfaces.spec.md) records the earlier shipped `discover claims` contract.
 The default entry set is:
 
 - `README.md`
@@ -122,12 +122,12 @@ When different real files declare the same normalized claim text, discovery shou
 Semantic duplicates with different wording are grouping/review work, not deterministic source dedupe.
 
 This entry-surface boundary is also the product's false-negative boundary.
-`claim discover` is expected to find declared claims in README-like entry documents and linked Markdown, not every latent user-facing behavior hidden in code, transcripts, issue threads, or private operator memory.
-If a declared claim is inside the configured entry documents or their linked Markdown graph and deterministic discovery misses it, that is a `claim discover` false-negative bug.
+`discover claims` is expected to find declared claims in README-like entry documents and linked Markdown, not every latent user-facing behavior hidden in code, transcripts, issue threads, or private operator memory.
+If a declared claim is inside the configured entry documents or their linked Markdown graph and deterministic discovery misses it, that is a `discover claims` false-negative bug.
 If a core user-facing feature is not stated in that graph, deterministic discovery may miss it without being wrong.
 That out-of-scope miss is a product signal that the repo's public narrative or adoption surface is underspecified.
 The Cautilus Agent, `charness:quality`, `charness:narrative`, or a human reviewer may still explore the codebase and discover such missing public claims.
-Those findings should be recorded as narrative, catalog, alignment, or documentation work before expecting `claim discover` to emit them by default.
+Those findings should be recorded as narrative, catalog, alignment, or documentation work before expecting `discover claims` to emit them by default.
 
 The adapter may override entries, depth, include globs, and exclude globs:
 
@@ -175,8 +175,8 @@ When hints are absent, the binary applies portable path defaults: `README.md` an
 The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop.
 `semantic_groups` is also adapter-owned because product areas differ across repos.
 When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.
-`state_path` is the writable discovery baseline for `claim discover`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `agent status` can summarize without making them the next discovery target.
-`agent status` should use the most advanced non-stale related claim packet as the selected orientation map when it is more useful than the writable baseline.
+`state_path` is the writable discovery baseline for `discover claims`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `doctor status` can summarize without making them the next discovery target.
+`doctor status` should use the most advanced non-stale related claim packet as the selected orientation map when it is more useful than the writable baseline.
 That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.
 `evidence_roots` are read-only roots for deterministic possible-evidence preflight; they may add `possibleEvidenceRefs` to review input, but they never mark claims satisfied.
 Repos should use this split to keep executable specs and maintainer appendices out of ordinary prose claim discovery when those files are proof or operator evidence rather than public promises.
@@ -302,7 +302,7 @@ Line number is a locator, not identity.
 
 Review results may update `claimAudience` when agent or human review finds that the configured source hint was too narrow.
 For example, adapter-author or operator-facing contracts are still user-facing when the Cautilus user is the repo maintainer creating the adapter.
-When `claim review apply-result` applies such an update, `claimAudienceSource` becomes `review-result`.
+When `discover claims apply-review` applies such an update, `claimAudienceSource` becomes `review-result`.
 
 `claimSemanticGroup` is a deterministic review-batching hint.
 It is not a final taxonomy; the Cautilus Agent or human reviewer may correct it during review.
@@ -456,11 +456,11 @@ When a previous claim-state packet exists, Cautilus Agent should:
 8. retire claims whose source refs disappeared
 9. run LLM review only on changed clusters and high-impact stale evidence after review-budget confirmation
 
-The binary may provide helper flags such as `claim discover --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.
+The binary may provide helper flags such as `discover claims --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.
 No separate binary `claim refresh` command is planned for this stage.
-When Cautilus Agent runs `claim discover --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
+When Cautilus Agent runs `discover claims --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
 When `--output` points at an existing claim packet and neither `--previous` nor `--from-scratch` is given, the binary auto-uses the existing output as the previous packet so silent loss of reviewed state is not possible by omission; operators pass `--from-scratch` to opt into first-discovery semantics on top of an existing packet.
-`claim validate` also surfaces missing carry-forward audit summaries on packets that already carry reviewed or evidenced state, so refreshes that lost the audit block fail validation instead of passing silently.
+`discover claims validate` also surfaces missing carry-forward audit summaries on packets that already carry reviewed or evidenced state, so refreshes that lost the audit block fail validation instead of passing silently.
 If a line-number-derived display `claimId` changes while the fingerprint remains stable, carried evidence refs rewrite `supportsClaimIds` to the current claim id before validation.
 Direct or verified carried evidence refs with `contentHash` are not blindly trusted.
 The refreshed proof plan rechecks repo-local evidence files, marks the claim `evidenceStatus=stale` when a referenced file is missing, changed, outside the repo root, or when a `cautilus.claim_evidence_bundle.v1` does not list the current claim id in `createdForClaimIds`, and records stale evidence counts in `carryForward`.
@@ -509,7 +509,7 @@ Next actions should distinguish `plan only`, `top N`, `selected groups`, and `fu
 Full-batch work should show estimated claim count, affected files, and review or edit budget before it starts.
 Cautilus Agent should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.
 
-`claim show` should expose the same decision boundary in `cautilus.claim_status_summary.v1`.
+`discover claims status` should expose the same decision boundary in `cautilus.claim_status_summary.v1`.
 The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked Markdown.
 That block should separate in-scope false negatives from out-of-scope narrative gaps: a declared promise inside the boundary that discovery missed is a binary bug, while undeclared user-facing behavior outside the boundary is an entry-surface or catalog gap rather than a discoverable claim.
 The status packet should also include `actionSummary.primaryBuckets`, so a caller can separate work without rereading every claim:
@@ -534,14 +534,14 @@ Grouping is part of useful discovery output.
 
 Follow-on commands are justified only when they operate on an existing claim-state packet:
 
-- `claim show`: summarize an existing packet for agents without rescanning, optionally with bounded `sampleClaims` and git freshness state
-- `claim review prepare-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM, rejecting stale packets by default
-- `claim review prepare-input`: accepts an optional `--action-bucket <bucket>` focus so agents can prepare a human-alignment, human-confirmation, eval-planning, deterministic-proof, scenario-design, or split/defer review queue without hand-filtering raw JSON
-- `claim review apply-result`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM, rejecting stale packets by default; aggregate replay helpers apply historical results from oldest to newest using explicit review timestamps first and filename dates as a fallback, so later synthesis packets can intentionally override older HITL or reviewer decisions
-- `claim plan-evals`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures, rejecting stale packets by default
-- `claim plan-evals`: each plan carries `proofRequirement.requiredRunnerCapability`, `proofRequirement.requiredObservability`, and whether the target surface requires product-runner proof; these are requirements for later setup/eval work, not readiness verdicts
-- `claim plan-evals`: each plan carries `fixtureAuthoringGuidance` with the `cautilus.evaluation_input.v1` surface/preset, minimum suite and case fields, runner output schema, required runner capability, required observability, and a non-writer boundary so agents can author host-owned fixtures without guessing packet shape
-- `claim validate`: emit `cautilus.claim_validation_report.v1` for packet shape and evidence-ref checks without mutating claims
+- `discover claims status`: summarize an existing packet for agents without rescanning, optionally with bounded `sampleClaims` and git freshness state
+- `discover claims review-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM, rejecting stale packets by default
+- `discover claims review-input`: accepts an optional `--action-bucket <bucket>` focus so agents can prepare a human-alignment, human-confirmation, eval-planning, deterministic-proof, scenario-design, or split/defer review queue without hand-filtering raw JSON
+- `discover claims apply-review`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM, rejecting stale packets by default; aggregate replay helpers apply historical results from oldest to newest using explicit review timestamps first and filename dates as a fallback, so later synthesis packets can intentionally override older HITL or reviewer decisions
+- `evaluate claims plan`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures, rejecting stale packets by default
+- `evaluate claims plan`: each plan carries `proofRequirement.requiredRunnerCapability`, `proofRequirement.requiredObservability`, and whether the target surface requires product-runner proof; these are requirements for later setup/eval work, not readiness verdicts
+- `evaluate claims plan`: each plan carries `fixtureAuthoringGuidance` with the `cautilus.evaluation_input.v1` surface/preset, minimum suite and case fields, runner output schema, required runner capability, required observability, and a non-writer boundary so agents can author host-owned fixtures without guessing packet shape
+- `discover claims validate`: emit `cautilus.claim_validation_report.v1` for packet shape and evidence-ref checks without mutating claims
 
 These commands are optional later surfaces.
 They should not be required for the normal first discovery experience.
@@ -576,7 +576,7 @@ Bundle anyway:
 Over-worry:
 
 - A public `claim refresh` command is not required for this stage.
-  Helper flags under `claim discover` are enough if Cautilus Agent keeps the user-facing action as discover.
+  Helper flags under `discover claims` are enough if Cautilus Agent keeps the user-facing action as discover.
 - LLM-backed claim extraction or review should not move into the binary.
   In this workflow, the binary stays deterministic and provider-neutral.
 - HTML or a full report renderer does not block the first workflow value.
@@ -606,13 +606,13 @@ Valid but defer:
 
 - How much deterministic evidence preflight should the binary do before it risks false satisfaction?
 - What subagent batch size and cluster shape keeps review cost bounded on repos with hundreds of raw candidates?
-- How much fixture-template detail should `claim plan-evals` include before it starts to look like host-owned policy?
+- How much fixture-template detail should `evaluate claims plan` include before it starts to look like host-owned policy?
 - How much of the refresh-plan helper should ship in the first binary slice versus the first skill slice?
 
 ## Deferred Decisions
 
 - Whether to commit `.cautilus/claims/latest.json` by default in Cautilus itself.
-- Whether `claim show` should grow Markdown or HTML rendering beyond its JSON summary packet.
+- Whether `discover claims status` should grow Markdown or HTML rendering beyond its JSON summary packet.
 - Whether model-backed extraction should ever become a binary runner behind an explicit provider contract.
 - Whether adapter configuration should support non-Markdown truth surfaces beyond explicit `--source` paths in the next slice.
 
@@ -642,7 +642,7 @@ The implementation slice that follows this design should include:
 
 - fixture coverage for adapter-configured claim discovery entries and depth 3 Markdown link traversal
 - packet schema tests for the split claim fields
-- CLI tests proving `claim discover` records effective scan scope and source graph
+- CLI tests proving `discover claims` records effective scan scope and source graph
 - tests proving new packets use split proof fields without emitting `proofLayer`
 - Cautilus Agent tests or self-dogfood evidence showing no-input skill invocation chooses claim discovery status when no current claim state exists
 - refresh-plan tests showing a prior packet plus a changed source marks affected claims changed while carrying forward unchanged claims
@@ -687,20 +687,20 @@ The second implementation slice updated the Cautilus Agent control flow:
 
 This slice is covered by the Cautilus Agent text, adapter contract docs, and the `execution-cautilus-no-input-claim-discovery-status` self-dogfood fixture.
 LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.
-The next deterministic helper slice added `claim show` and `claim review prepare-input`.
-`claim show` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.
+The next deterministic helper slice added `discover claims status` and `discover claims review-input`.
+`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.
 It also includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible in the status packet without reading the full proof plan first.
 `gitState.isStale` is claim-source freshness, not raw commit equality.
 Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.
-`claim review prepare-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.
+`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.
 Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.
 Its optional `--action-bucket` focus records the selected bucket in `reviewBudget` and `selectionPolicy`, includes each candidate's `actionBucket`, and marks non-matching claims as `action-bucket-mismatch` in `skippedClaims`.
 It rejects stale claim packets by default unless `--allow-stale-claims` is explicitly passed.
-The review-result application slice added `claim review apply-result`.
+The review-result application slice added `discover claims apply-review`.
 It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
 For mutable reviewer state, explicit empty arrays are meaningful: `unresolvedQuestions: []` clears older questions, while an omitted field leaves them unchanged.
 It also rejects stale claim packets by default.
-The eval-planning slice added `claim plan-evals`.
+The eval-planning slice added `evaluate claims plan`.
 It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.
 It skips satisfied claims by default and records that exclusion in `selectionPolicy.excludesEvidenceStatus`.
 It also records `planSummary`, including skipped counts and a zero-plan reason, so `evalPlans=[]` is inspectable rather than silently ambiguous.
@@ -709,5 +709,5 @@ Skipped claims retain proof routing, readiness, evidence status, and review stat
 It rejects stale claim packets by default.
 The fixture-authoring guidance slice added surface/preset-specific `fixtureAuthoringGuidance` to each eval plan.
 That guidance names the minimum host-owned fixture fields, expected shape, runner output schema, required runner capability, and required observability without writing host repo fixtures or policy.
-The validation slice added `claim validate`.
+The validation slice added `discover claims validate`.
 It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.

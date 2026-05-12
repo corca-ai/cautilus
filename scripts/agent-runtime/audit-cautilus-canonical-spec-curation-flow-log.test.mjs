@@ -31,7 +31,7 @@ function assistant(text) {
 
 test("passes when packet and both canonical spec indexes are inspected before HITL", () => {
 	const audit = auditCanonicalSpecCurationFlowLogText(jsonl([
-		toolCall("./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 8"),
+		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 8"),
 		toolCall("sed -n '1,120p' docs/specs/user/index.spec.md"),
 		toolCall("sed -n '1,120p' docs/specs/contracts/index.spec.md"),
 		assistant("The raw candidates are too granular. The user-facing spec index and maintainer-facing spec index are the canonical curation surface before continuing HITL."),
@@ -42,7 +42,7 @@ test("passes when packet and both canonical spec indexes are inspected before HI
 
 test("fails when the flow skips the maintainer-facing index", () => {
 	const audit = auditCanonicalSpecCurationFlowLogText(jsonl([
-		toolCall("./bin/cautilus agent status --repo-root . --json"),
+		toolCall("./bin/cautilus doctor status --repo-root . --json"),
 		toolCall("sed -n '1,120p' docs/specs/user/index.spec.md"),
 		assistant("The user-facing spec index is ready before continuing HITL."),
 	]));
@@ -52,10 +52,10 @@ test("fails when the flow skips the maintainer-facing index", () => {
 
 test("fails when the flow launches claim review before the curation boundary", () => {
 	const audit = auditCanonicalSpecCurationFlowLogText(jsonl([
-		toolCall("./bin/cautilus claim show --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 8"),
+		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/evidenced-typed-runners.json --sample-claims 8"),
 		toolCall("sed -n '1,120p' docs/specs/user/index.spec.md"),
 		toolCall("sed -n '1,120p' docs/specs/contracts/index.spec.md"),
-		toolCall("./bin/cautilus claim review prepare-input --claims .cautilus/claims/evidenced-typed-runners.json --output /tmp/review-input.json"),
+		toolCall("./bin/cautilus discover claims review-input --claims .cautilus/claims/evidenced-typed-runners.json --output /tmp/review-input.json"),
 		assistant("The user-facing and maintainer-facing indexes were checked before continuing HITL."),
 	]));
 	assert.equal(audit.status, "failed");

@@ -6,7 +6,7 @@ import {
 	buildPublishedSummary,
 } from "./self-dogfood-published-snapshot.mjs";
 
-test("published self-dogfood artifacts keep diagnostic stderr paths for failed review variants", () => {
+test("published self-dogfood artifacts keep diagnostic stderr paths for failed evaluate review variants", () => {
 	const repoRoot = "/repo";
 	const reviewSummary = {
 		repoRoot,

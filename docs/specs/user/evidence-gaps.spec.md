@@ -1,7 +1,7 @@
 # Evidence Gaps
 
 When Cautilus finds or reviews a promise, the user needs to see whether evidence actually supports it or whether work is still missing.
-Using the `cautilus claim show` CLI command and the `cautilus-agent` skill, discovered or reviewed promises stay unsatisfied until valid evidence is attached, and missing or weak evidence remains visible until the claim is proven, narrowed, deferred, or removed.
+Using the `cautilus discover claims status` CLI command and the `cautilus-agent` skill, discovered or reviewed promises stay unsatisfied until valid evidence is attached, and missing or weak evidence remains visible until the claim is proven, narrowed, deferred, or removed.
 
 ## A user can see that discovered promises still need evidence.
 

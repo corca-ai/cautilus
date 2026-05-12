@@ -105,3 +105,34 @@ test("publishPreparedRelease pushes branch and tag in order", () => {
 		rmSync(tempRoot, { recursive: true, force: true });
 	}
 });
+
+test("publishPreparedRelease can push HEAD to an explicit target branch", () => {
+	const tempRoot = mkdtempSync(join(tmpdir(), "cautilus-release-target-branch-"));
+	const remoteRoot = join(tempRoot, "remote.git");
+	const workRoot = join(tempRoot, "work");
+	mkdirSync(workRoot, { recursive: true });
+	try {
+		git(tempRoot, ["init", "--bare", remoteRoot]);
+		seedReleaseRepo(workRoot, "0.5.1");
+		initGitRepo(workRoot);
+		git(workRoot, ["remote", "add", "origin", remoteRoot]);
+		git(workRoot, ["checkout", "-b", "release/v0.5.1"]);
+		git(workRoot, ["add", "."]);
+		git(workRoot, ["commit", "-m", "release-ready"]);
+		const expectedHead = git(workRoot, ["rev-parse", "HEAD"]);
+
+		const result = publishPreparedRelease({
+			repoRoot: workRoot,
+			version: "0.5.1",
+			remote: "origin",
+			targetBranch: "main",
+		});
+		assert.equal(result.branch, "release/v0.5.1");
+		assert.equal(result.targetBranch, "main");
+		assert.equal(result.branchRefspec, "HEAD:refs/heads/main");
+		assert.equal(git(remoteRoot, ["rev-parse", "refs/heads/main"]), expectedHead);
+		assert.equal(git(remoteRoot, ["rev-parse", "refs/tags/v0.5.1"]), expectedHead);
+	} finally {
+		rmSync(tempRoot, { recursive: true, force: true });
+	}
+});

@@ -2958,7 +2958,7 @@ func improveSearchRunEvalTestForCandidate(packet map[string]any, repoRoot string
 		return map[string]any{"outputDir": outputDir, "status": "skipped", "skipReason": "surface_unavailable", "admissible": true}
 	}
 	args := []string{
-		"eval", "test",
+		"evaluate", "fixture",
 		"--repo-root", repoRoot,
 		"--workspace", repoRoot,
 		"--output-dir", outputDir,

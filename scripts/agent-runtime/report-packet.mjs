@@ -25,7 +25,7 @@ function validateOptionalAdapterContext(value, field) {
 function failLegacySchemaVersion(schemaVersion) {
 	if (schemaVersion === "cautilus.report_packet.v1") {
 		throw new Error(
-			`report file uses legacy schemaVersion cautilus.report_packet.v1; rebuild it as ${REPORT_PACKET_SCHEMA} with \`cautilus report build\` and update any checked-in fixtures`,
+			`report file uses legacy schemaVersion cautilus.report_packet.v1; rebuild it as ${REPORT_PACKET_SCHEMA} with \`cautilus evaluate report build\` and update any checked-in fixtures`,
 		);
 	}
 }

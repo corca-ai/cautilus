@@ -33,7 +33,7 @@ End at:
 Inside the consumer repo:
 
 ```bash
-cautilus install
+cautilus init
 cautilus doctor
 cautilus doctor --next-action
 ```
@@ -45,7 +45,7 @@ What each step proves:
 3. `doctor --next-action` narrows that full state down to one current action plus the exact doctor command to continue with.
 4. Follow that loop until `doctor` returns `ready`.
 5. `doctor` then proves the repo is ready against the checked-in runtime contract.
-   The ready payload now includes `first_bounded_run`, which adds a starter `eval test -> eval evaluate` packet loop and keeps the `cautilus scenarios --json` catalog nearby only for proposal-input examples.
+   The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios --json` catalog nearby only for proposal-input examples.
    If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.
 6. After repo-scope `doctor` is ready, run one bounded evaluation path rather than stopping at wiring.
    Use `first_bounded_run.decisionLoopCommands[*]` for the generic packet loop, and use `first_bounded_run.normalizationFamilies[*].exampleInputCli` only when you want a minimal scenario-normalization packet before reaching for repo-local fixtures.
@@ -56,7 +56,7 @@ What each step proves:
 2. If the repo has multiple evaluation surfaces, add named adapters under `.agents/cautilus-adapters/`.
 3. Keep any existing `*-adapter.yaml` files only if they remain host-local tools.
 4. Point the root adapter at checked-in host-owned prompt files, schema files, wrappers, and command templates.
-5. Install the repo-local skill surface with `cautilus install` when the host environment wants a checked-in reusable `Cautilus` skill.
+5. Install the repo-local skill surface with `cautilus init` when the host environment wants a checked-in reusable `Cautilus` skill.
 6. Run `cautilus doctor --next-action` after install and keep following it until `cautilus doctor` returns `ready`.
 7. Run `cautilus doctor` and require `ready` before claiming live-consumer status.
 8. Add at least one repo-local executable check that exercises the adapter through `Cautilus` rather than only validating static YAML.
@@ -67,7 +67,7 @@ What each step proves:
 `cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit.
 Non-git directories receive `status: "missing_git"` and `ready: false`.
 Empty git repositories receive `status: "no_commits"`.
-This does not affect `cautilus install`, `cautilus doctor --scope agent-surface`, or `cautilus adapter init`, which still work without git.
+This does not affect `cautilus init`, `cautilus doctor --scope agent-surface`, or `cautilus init adapter`, which still work without git.
 
 ## Named Adapter Split Rule
 
@@ -93,12 +93,12 @@ npm run consumer:onboard:smoke
 This helper:
 
 - creates a temp git repo
-- runs `cautilus install` inside that temp repo
-- runs `cautilus adapter init` inside that temp repo
+- runs `cautilus init` inside that temp repo
+- runs `cautilus init adapter` inside that temp repo
 - seeds one minimal `eval_test_command_templates` entry into the generated adapter so the repo reaches `doctor ready`
-- runs `cautilus adapter resolve` inside that temp repo
+- runs `cautilus doctor adapter` inside that temp repo
 - runs `cautilus doctor` inside that temp repo
-- runs `cautilus eval test --fixture <fixture.json>` inside that temp repo
+- runs `cautilus evaluate fixture --fixture <fixture.json>` inside that temp repo
 - proves the fresh consumer reaches one bounded `eval-summary.json` instead of stopping at wiring
 
 ## Deprecated Surface Names

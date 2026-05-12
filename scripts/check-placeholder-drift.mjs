@@ -13,7 +13,7 @@ const TARGETS = [
 	{
 		label: "eval_test replacements",
 		goFile: "internal/app/remaining_commands.go",
-		mapAnchor: "eval_observed_file", // unique to the eval test pipeline replacements map
+		mapAnchor: "eval_observed_file", // unique to the evaluate fixture pipeline replacements map
 		contractDoc: "docs/contracts/skill-testing.md",
 	},
 ];

@@ -1297,7 +1297,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness:  "ready-for-proof",
 			recommendedEvalSurface: "app/prompt",
 			why:                    "The claim describes provider failover behavior, which needs behavior evidence rather than being treated as a caveat.",
-			next:                   "Create a host-owned app/prompt or equivalent provider-behavior fixture and run it through cautilus eval test.",
+			next:                   "Create a host-owned app/prompt or equivalent provider-behavior fixture and run it through cautilus evaluate fixture.",
 		}, true
 	case historicalObservationClaim(lower):
 		return claimClassification{
@@ -1342,7 +1342,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                    "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence.",
 			next:                   "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
 		}, true
-	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " executable test", " executable check", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " eval test ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
+	case containsAny(lower, []string{" unit test", " tests ", " tests.", " test:on-demand", " executable test", " executable check", " lint", " typecheck", " type-check", " build ", " ci ", " compile", " schema ", " deterministic", " evaluate fixture ", " eval live ", " --runtime fixture", " fixture runtime", " fixture-backed", " adapter-owned runner", " command template", " command_template", " run-simulator-persona", " --version", " on path ", " doctor --", " --adapter-name", " go-owned", " cli instead of", "cautilus.agent_status.v1"}):
 		return claimClassification{
 			recommendedProof:      "deterministic",
 			verificationReadiness: "ready-for-proof",
@@ -1474,7 +1474,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness:  "ready-for-proof",
 			recommendedEvalSurface: surface,
 			why:                    "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
-			next:                   fmt.Sprintf("Create a host-owned %s fixture and run it through cautilus eval test.", surface),
+			next:                   fmt.Sprintf("Create a host-owned %s fixture and run it through cautilus evaluate fixture.", surface),
 		}, true
 	case containsAny(lower, []string{" human", " auditable", " read ", " docs", " document", " visible", " inspect"}):
 		return claimClassification{
@@ -1641,22 +1641,22 @@ func broadPositioningClaim(lower string) bool {
 }
 
 func deterministicCommandPacketClaim(lower string) bool {
-	if strings.Contains(lower, "claim review prepare-input") &&
+	if strings.Contains(lower, "discover claims review-input") &&
 		containsAny(lower, []string{" emit", " emits", " emitted", " records", " bounded clusters", " skipped clusters", " skipped claims", " does not call an llm", " no llm", " merge review results"}) {
 		return true
 	}
 	if modelProducedStructuredOutputClaim(lower) {
 		return false
 	}
-	if containsAny(lower, []string{" claim plan-evals", " doctor", " agent status", " ready payload", " first_bounded_run"}) &&
+	if containsAny(lower, []string{" evaluate claims plan", " doctor", " doctor status", " readiness facts", " ready payload", " first_bounded_run"}) &&
 		containsAny(lower, []string{" emit", " emits", " emitted", " output", " outputs", " includes", " payload", " packet", " schema", " evaluates", " without launching", " readiness"}) {
 		return true
 	}
-	if containsAny(lower, []string{"claim show", "claim_status_summary", "sampleclaims", "gitstate"}) &&
+	if containsAny(lower, []string{"discover claims status", "claim_status_summary", "sampleclaims", "gitstate"}) &&
 		containsAny(lower, []string{" emit", " emits", " emitted", " include", " includes", " output", " outputs", " packet", " payload", " schema", " summary"}) {
 		return true
 	}
-	if strings.Contains(lower, " eval evaluate") &&
+	if strings.Contains(lower, " evaluate observation") &&
 		containsAny(lower, []string{" already-observed", " observed packet", " without launching", " no runner launch", " not launch", " does not launch"}) {
 		return true
 	}
@@ -1718,7 +1718,7 @@ func futureOrMixedWorkflowBoundaryClaim(lower string) bool {
 		return true
 	}
 	if containsAny(lower, []string{" may provide", " helper flags"}) &&
-		containsAny(lower, []string{" claim discover", " refresh-plan", " public user-level workflow", " command-surface"}) {
+		containsAny(lower, []string{" discover claims", " refresh-plan", " public user-level workflow", " command-surface"}) {
 		return true
 	}
 	if containsAny(lower, []string{" should not be folded into", " responsibility unless"}) {
@@ -1774,7 +1774,7 @@ func claimDocumentsCompoundScenarioNextStep(lower string) bool {
 }
 
 func claimDocumentsScenarioCommand(lower string) bool {
-	return containsAny(lower, []string{" cautilus scenario", " scenario normalize", " scenario propose", " proposal packet", " proposal candidates", " proposals.json", " render-proposals-html", " reopen the saved result"})
+	return containsAny(lower, []string{" cautilus discover scenarios", " discover scenarios normalize", " discover scenarios propose", " proposal packet", " proposal candidates", " proposals.json", " render-proposals-html", " reopen the saved result"})
 }
 
 func recommendedEvalSurface(lower string) string {
@@ -2190,7 +2190,7 @@ func BuildClaimStatusSummaryWithOptions(packet map[string]any, options ClaimStat
 	}
 	if strings.TrimSpace(options.RepoRoot) != "" {
 		status["gitState"] = ClaimPacketGitState(packet, options.RepoRoot)
-		status["gitStateSnapshotNotice"] = "gitState is computed when this status packet is generated; rerun claim show for live checkout state."
+		status["gitStateSnapshotNotice"] = "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state."
 	}
 	if options.SampleClaims > 0 {
 		status["sampleClaims"] = claimStatusSampleClaims(candidates, options.SampleClaims)
@@ -2269,7 +2269,7 @@ func ClaimPacketGitState(packet map[string]any, repoRoot string) map[string]any 
 			state["comparisonStatus"] = "stale-unknown-diff"
 			state["recommendedAction"] = "Regenerate the claim packet because Cautilus could not compare the packet commit with the current checkout."
 		} else {
-			state["recommendedAction"] = "Run claim discover --previous <claims.json> --refresh-plan before review, review application, or eval planning."
+			state["recommendedAction"] = "Run discover claims --previous <claims.json> --refresh-plan before review, review application, or eval planning."
 		}
 	case headDrift:
 		state["comparisonStatus"] = "fresh-with-head-drift"
@@ -2297,7 +2297,7 @@ func RequireFreshClaimPacket(packet map[string]any, repoRoot string, commandName
 	if gitState["isStale"] != true {
 		return nil
 	}
-	return fmt.Errorf("%s requires a fresh claim packet: recorded claim sources changed between packet gitCommit %s and current HEAD %s; run claim discover --previous <claims.json> --refresh-plan first or pass --allow-stale-claims",
+	return fmt.Errorf("%s requires a fresh claim packet: recorded claim sources changed between packet gitCommit %s and current HEAD %s; run discover claims --previous <claims.json> --refresh-plan first or pass --allow-stale-claims",
 		commandName,
 		stringFromAny(gitState["packetGitCommit"]),
 		stringFromAny(gitState["currentGitCommit"]),
@@ -2368,7 +2368,7 @@ func claimStatusDiscoveryBoundary(scanScope map[string]any) map[string]any {
 		"linkedDepth":      scanScope["linkedMarkdownDepth"],
 		"gitignorePolicy":  scanScope["gitignorePolicy"],
 		"omissionPolicy":   "Claims not declared in configured entry documents or linked Markdown are outside deterministic discovery scope.",
-		"productSignal":    "A declared in-scope promise missed by discovery is a claim discover bug; an important behavior outside the scan boundary is a narrative or catalog gap.",
+		"productSignal":    "A declared in-scope promise missed by discovery is a discover claims bug; an important behavior outside the scan boundary is a narrative or catalog gap.",
 		"agentEscapeHatch": "Agent-led quality or narrative review may explore the codebase for missing public claims, then record in-scope discovery bugs or out-of-scope alignment and documentation work before expecting deterministic discovery.",
 	}
 }
@@ -2545,7 +2545,7 @@ func BuildClaimReviewInput(packet map[string]any, options ClaimReviewInputOption
 	if err := ValidateClaimProofPlan(packet); err != nil {
 		return nil, err
 	}
-	if err := RequireFreshClaimPacket(packet, options.RepoRoot, "claim review prepare-input", options.AllowStaleClaims); err != nil {
+	if err := RequireFreshClaimPacket(packet, options.RepoRoot, "discover claims review-input", options.AllowStaleClaims); err != nil {
 		return nil, err
 	}
 	normalized := normalizeClaimReviewInputOptions(options)
@@ -3060,7 +3060,7 @@ func ApplyClaimReviewResult(claimPacket map[string]any, reviewResult map[string]
 	if err := ValidateClaimProofPlan(claimPacket); err != nil {
 		return nil, err
 	}
-	if err := RequireFreshClaimPacket(claimPacket, options.RepoRoot, "claim review apply-result", options.AllowStaleClaims); err != nil {
+	if err := RequireFreshClaimPacket(claimPacket, options.RepoRoot, "discover claims apply-review", options.AllowStaleClaims); err != nil {
 		return nil, err
 	}
 	if err := validateClaimReviewResult(reviewResult); err != nil {
@@ -3131,7 +3131,7 @@ func BuildClaimEvalPlan(packet map[string]any, options ClaimEvalPlanOptions) (ma
 	if err := ValidateClaimProofPlan(packet); err != nil {
 		return nil, err
 	}
-	if err := RequireFreshClaimPacket(packet, options.RepoRoot, "claim plan-evals", options.AllowStaleClaims); err != nil {
+	if err := RequireFreshClaimPacket(packet, options.RepoRoot, "evaluate claims plan", options.AllowStaleClaims); err != nil {
 		return nil, err
 	}
 	maxClaims := options.MaxClaims
@@ -3447,13 +3447,13 @@ func reportCarryForwardPresence(packet map[string]any) *claimValidationIssueDeta
 		if reviewStatus == "agent-reviewed" || reviewStatus == "human-reviewed" {
 			return &claimValidationIssueDetail{
 				path:    "$",
-				message: fmt.Sprintf("claimCandidates[%d].reviewStatus is %q but top-level carryForward audit summary is missing; rerun claim discover with --previous pointing at the saved packet, or pass --from-scratch when intentionally discarding reviewed state", index, reviewStatus),
+				message: fmt.Sprintf("claimCandidates[%d].reviewStatus is %q but top-level carryForward audit summary is missing; rerun discover claims with --previous pointing at the saved packet, or pass --from-scratch when intentionally discarding reviewed state", index, reviewStatus),
 			}
 		}
 		if refs := arrayOrEmpty(entry["evidenceRefs"]); len(refs) > 0 {
 			return &claimValidationIssueDetail{
 				path:    "$",
-				message: fmt.Sprintf("claimCandidates[%d] has %d evidenceRef(s) but top-level carryForward audit summary is missing; rerun claim discover with --previous pointing at the saved packet, or pass --from-scratch when intentionally discarding evidenced state", index, len(refs)),
+				message: fmt.Sprintf("claimCandidates[%d] has %d evidenceRef(s) but top-level carryForward audit summary is missing; rerun discover claims with --previous pointing at the saved packet, or pass --from-scratch when intentionally discarding evidenced state", index, len(refs)),
 			}
 		}
 	}
@@ -3969,7 +3969,7 @@ func renderClaimRefreshSummary(baseCommit string, targetCommit string, changedSo
 		map[string]any{
 			"id":     "update_saved_claim_map",
 			"label":  "Update the saved claim map before review or eval planning",
-			"detail": "Run claim discovery to write a fresh claim packet, then use claim show to inspect the updated status.",
+			"detail": "Run claim discovery to write a fresh claim packet, then use discover claims status to inspect the updated status.",
 		},
 		map[string]any{
 			"id":     "inspect_refresh_plan",
@@ -3987,7 +3987,7 @@ func renderClaimRefreshSummary(baseCommit string, targetCommit string, changedSo
 			map[string]any{
 				"id":     "show_saved_claim_map",
 				"label":  "Inspect the saved claim map",
-				"detail": "Use claim show to decide whether to review claims, add deterministic tests, or plan Cautilus eval scenarios.",
+				"detail": "Use discover claims status to decide whether to review claims, add deterministic tests, or plan Cautilus eval scenarios.",
 			},
 			map[string]any{
 				"id":     "stop",

@@ -385,7 +385,7 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 	log := progressLogger(options.quiet, stderr)
 	workspace := resolvePath(cwd, options.workspace)
 	outputDir := resolvedRun.RunDir
-	log(fmt.Sprintf("review variants start: repo=%s workspace=%s output=%s", options.repoRoot, workspace, outputDir))
+	log(fmt.Sprintf("evaluate review variants start: repo=%s workspace=%s output=%s", options.repoRoot, workspace, outputDir))
 	promptArtifacts, err := resolveReviewVariantPromptArtifacts(options, adapterPayload, outputDir)
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -396,7 +396,7 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	log(fmt.Sprintf("review variants artifacts ready: prompt=%s schema=%s", promptArtifacts.promptFile, schemaFile))
+	log(fmt.Sprintf("evaluate review variants artifacts ready: prompt=%s schema=%s", promptArtifacts.promptFile, schemaFile))
 	commandTimeout := reviewVariantCommandTimeout(adapterPayload.Data)
 	summaries := make([]any, 0, len(variants))
 	warnings := reviewVariantWarnings(variants, promptArtifacts.outputUnderTestFile)
@@ -495,7 +495,7 @@ func handleReviewVariants(repoRoot string, cwd string, args []string, stdout io.
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	log(fmt.Sprintf("review variants complete: status=%s summary=%s", status, summaryFile))
+	log(fmt.Sprintf("evaluate review variants complete: status=%s summary=%s", status, summaryFile))
 	fmt.Fprintf(stdout, "%s\n", summaryFile)
 	if status != "passed" {
 		return 1
@@ -763,7 +763,7 @@ func handleEvalTest(repoRoot string, cwd string, args []string, stdout io.Writer
 		return path, nil
 	}
 	targetSurface := runtime.EvalSurfaceKey(evaluation.Surface, evaluation.Preset)
-	return runEvalTestPipeline(options, adapterPayload, evaluation.SuiteID, targetSurface, prepareCasesFile, cwd, stdout, stderr, fmt.Sprintf("eval test (%s/%s)", evaluation.Surface, evaluation.Preset))
+	return runEvalTestPipeline(options, adapterPayload, evaluation.SuiteID, targetSurface, prepareCasesFile, cwd, stdout, stderr, fmt.Sprintf("evaluate fixture (%s/%s)", evaluation.Surface, evaluation.Preset))
 }
 
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.
@@ -822,7 +822,7 @@ func runEvalTestSteps(options *evalTestArgs, adapterPayload *runtime.AdapterPayl
 			return path, nil
 		}
 		targetSurface := runtime.EvalSurfaceKey(evaluation.Surface, evaluation.Preset)
-		exitCode := runEvalTestPipeline(&stepOptions, adapterPayload, evaluation.SuiteID, targetSurface, prepareCasesFile, cwd, io.Discard, stderr, fmt.Sprintf("eval test step %d (%s/%s)", index, evaluation.Surface, evaluation.Preset))
+		exitCode := runEvalTestPipeline(&stepOptions, adapterPayload, evaluation.SuiteID, targetSurface, prepareCasesFile, cwd, io.Discard, stderr, fmt.Sprintf("evaluate fixture step %d (%s/%s)", index, evaluation.Surface, evaluation.Preset))
 		summaryFile := filepath.Join(stepOutputDir, "eval-summary.json")
 		summary, readErr := readJSONObject(summaryFile)
 		if readErr != nil {

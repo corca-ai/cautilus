@@ -38,10 +38,10 @@ Live app execution is now exposed under `cautilus eval live ...`.
 
 ```run:shell
 tmpdir=$(mktemp -d)
-./bin/cautilus agent status --repo-root . --json >"$tmpdir/agent-status.json"
-./bin/cautilus claim discover --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
-./bin/cautilus claim show --input "$tmpdir/claims.json" --sample-claims 2 --output "$tmpdir/claim-status.json"
-./bin/cautilus claim review prepare-input --claims "$tmpdir/claims.json" --action-bucket agent-plan-cautilus-eval --max-clusters 2 --output "$tmpdir/claim-review-input.json"
+./bin/cautilus doctor status --repo-root . --json >"$tmpdir/agent-status.json"
+./bin/cautilus discover claims --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
+./bin/cautilus discover claims status --input "$tmpdir/claims.json" --sample-claims 2 --output "$tmpdir/claim-status.json"
+./bin/cautilus discover claims review-input --claims "$tmpdir/claims.json" --action-bucket agent-plan-cautilus-eval --max-clusters 2 --output "$tmpdir/claim-review-input.json"
 cat >"$tmpdir/claim-review-result.json" <<'JSON'
 {
   "schemaVersion": "cautilus.claim_review_result.v1",
@@ -69,9 +69,9 @@ cat >"$tmpdir/claim-review-result.json" <<'JSON'
   ]
 }
 JSON
-./bin/cautilus claim review apply-result --claims "$tmpdir/claims.json" --review-result "$tmpdir/claim-review-result.json" --output "$tmpdir/reviewed-claims.json"
-./bin/cautilus claim validate --claims "$tmpdir/reviewed-claims.json" --output "$tmpdir/claim-validation.json"
-./bin/cautilus claim plan-evals --claims "$tmpdir/reviewed-claims.json" --output "$tmpdir/claim-eval-plan.json"
+./bin/cautilus discover claims apply-review --claims "$tmpdir/claims.json" --review-result "$tmpdir/claim-review-result.json" --output "$tmpdir/reviewed-claims.json"
+./bin/cautilus discover claims validate --claims "$tmpdir/reviewed-claims.json" --output "$tmpdir/claim-validation.json"
+./bin/cautilus evaluate claims plan --claims "$tmpdir/reviewed-claims.json" --output "$tmpdir/claim-eval-plan.json"
 grep -q '"schemaVersion": "cautilus.agent_status.v1"' "$tmpdir/agent-status.json"
 grep -q '"schemaVersion": "cautilus.claim_proof_plan.v1"' "$tmpdir/claims.json"
 grep -q '"schemaVersion": "cautilus.claim_status_summary.v1"' "$tmpdir/claim-status.json"
@@ -105,7 +105,7 @@ They match existing CLI style (`scenario`, `eval`, `improve`) and avoid a README
 The first `claim` front door is:
 
 ```bash
-cautilus claim discover --repo-root . --output /tmp/cautilus-claims.json
+cautilus discover claims --repo-root . --output /tmp/cautilus-claims.json
 ```
 
 The command discovers candidate claims from explicit repo-owned truth surfaces.
@@ -125,7 +125,7 @@ When the same normalized claim text appears in multiple distinct files, it shoul
 
 ### Claim Output
 
-`cautilus claim discover` emits `cautilus.claim_proof_plan.v1`.
+`cautilus discover claims` emits `cautilus.claim_proof_plan.v1`.
 Each claim candidate records:
 
 - `claimId`
@@ -146,15 +146,15 @@ It does not claim that the repo is correct.
 It tells an operator or agent what should be proven where.
 It should preserve the discovered backlog honestly; prioritization belongs in the next agent step or a future explicit selection command, not in a hidden cap.
 
-When `cautilus claim discover --previous <claims.json> --refresh-plan` emits `cautilus.claim_refresh_plan.v1`, the packet includes `refreshSummary`.
+When `cautilus discover claims --previous <claims.json> --refresh-plan` emits `cautilus.claim_refresh_plan.v1`, the packet includes `refreshSummary`.
 `refreshSummary` gives the coordinator-facing status, changed source count, changed claim count, carried-forward claim count, changed claim source hotspots, and next actions.
 Agents should use that summary before hand-inspecting raw `changedSources` or `claimPlan`.
-When `cautilus claim discover --previous <claims.json>` emits a refreshed `cautilus.claim_proof_plan.v1`, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
+When `cautilus discover claims --previous <claims.json>` emits a refreshed `cautilus.claim_proof_plan.v1`, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.
 If the display `claimId` changes while the fingerprint stays stable, carried evidence refs rewrite `supportsClaimIds` to the current claim id so validation remains honest.
 Carried direct or verified evidence refs with `contentHash` are rechecked against repo-local evidence files before a satisfied state is preserved.
 If the evidence file is missing, its content hash changed, its path escapes the repo root, or a `cautilus.claim_evidence_bundle.v1` no longer lists the current claim id in `createdForClaimIds`, the refreshed claim becomes `evidenceStatus=stale` and `carryForward` records the stale evidence counts.
 
-`cautilus claim show --input <claims.json>` emits `cautilus.claim_status_summary.v1`.
+`cautilus discover claims status --input <claims.json>` emits `cautilus.claim_status_summary.v1`.
 It summarizes an existing proof-plan packet without rescanning.
 When called with `--sample-claims <n>`, it includes a bounded `sampleClaims` list so agents can inspect stable candidate fields without guessing raw packet keys.
 The summary includes `gitState`.
@@ -163,7 +163,7 @@ If `gitState.isStale=true`, review, review-application, and eval-planning comman
 `gitState.isStale` means a recorded claim source changed.
 A later commit that only records generated claim artifacts is reported as `headDrift=true` and `comparisonStatus=fresh-with-head-drift`, not as stale.
 
-`cautilus claim review prepare-input --claims <claims.json>` emits `cautilus.claim_review_input.v1`.
+`cautilus discover claims review-input --claims <claims.json>` emits `cautilus.claim_review_input.v1`.
 It groups candidates into deterministic review clusters and records the review budget.
 When called with `--action-bucket <bucket>`, it focuses the review queue on that status action bucket and records non-matching candidates under `skippedClaims`.
 Review clusters preserve `claimAudience` and `claimSemanticGroup` so user-facing, developer-facing, and unclear claims do not collapse into the same review queue.
@@ -172,17 +172,17 @@ When adapter-configured `evidence_roots` contain claim evidence bundles for know
 Those possible refs are reviewer hints only and cannot mark claims satisfied.
 It rejects stale claim packets by default.
 
-`cautilus claim review apply-result --claims <claims.json> --review-result <review-result.json>` consumes `cautilus.claim_review_result.v1` and emits an updated claim packet.
+`cautilus discover claims apply-review --claims <claims.json> --review-result <review-result.json>` consumes `cautilus.claim_review_result.v1` and emits an updated claim packet.
 It applies reviewed labels, evidence refs, provenance, merge decisions, and unresolved questions.
 An explicit empty `unresolvedQuestions` array clears prior reviewer questions; omitting the field leaves prior questions unchanged.
 It rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
 It rejects stale claim packets by default before merging review results.
 
-`cautilus claim validate --claims <claims.json>` emits `cautilus.claim_validation_report.v1`.
+`cautilus discover claims validate --claims <claims.json>` emits `cautilus.claim_validation_report.v1`.
 It checks packet shape and evidence refs without mutating claims or searching for new evidence.
 It exits non-zero when the packet is invalid.
 
-`cautilus claim plan-evals --claims <reviewed-claims.json>` emits `cautilus.claim_eval_plan.v1`.
+`cautilus evaluate claims plan --claims <reviewed-claims.json>` emits `cautilus.claim_eval_plan.v1`.
 It selects reviewed `cautilus-eval` claims whose `verificationReadiness` is `ready-for-proof`.
 It skips claims that already have `evidenceStatus=satisfied`.
 It records that default skip in `selectionPolicy.excludesEvidenceStatus`.
@@ -199,8 +199,8 @@ It does not write host-owned fixtures, prompts, runners, wrappers, or acceptance
 The canonical happy path is still:
 
 ```bash
-cautilus eval test --repo-root . --fixture <fixture.json> --output-dir <run-dir>
-cautilus eval evaluate --input <run-dir>/eval-observed.json --output <run-dir>/eval-summary.recheck.json
+cautilus evaluate fixture --repo-root . --fixture <fixture.json> --output-dir <run-dir>
+cautilus evaluate observation --input <run-dir>/eval-observed.json --output <run-dir>/eval-summary.recheck.json
 ```
 
 `eval` consumes selected claims only after a host repo turns them into fixtures and adapter-owned runners.
@@ -213,10 +213,10 @@ Live app execution belongs under `eval` because users should learn the top-level
 The supported command names are:
 
 ```bash
-cautilus eval live discover --repo-root .
-cautilus eval live run --repo-root . --instance-id <id> --request-file <request.json> --output-file <result.json>
-cautilus eval live prepare-request-batch --input <prepare-input.json> --output <request-batch.json>
-cautilus eval live run-scenarios --repo-root . --instance-id <id> --requests-file <batch.json> --output-file <result.json>
+cautilus discover live-targets --repo-root .
+cautilus evaluate live --repo-root . --instance-id <id> --request-file <request.json> --output-file <result.json>
+cautilus evaluate live prepare-request-batch --input <prepare-input.json> --output <request-batch.json>
+cautilus evaluate live scenarios --repo-root . --instance-id <id> --requests-file <batch.json> --output-file <result.json>
 ```
 
 These commands reuse the existing live-run invocation packets.
@@ -277,7 +277,7 @@ It should point to the relevant scenario command rather than duplicating scenari
 
 ## Constraints
 
-- The three families must be discoverable from `cautilus commands --json`.
+- The three families must be discoverable from `cautilus doctor commands --json`.
 - The Cautilus Agent must route claim discovery, evaluation, and improvement to the same family names as the binary.
 - Generated claim plans must be repo-agnostic and source-ref based.
 - `claim discover` must be useful before a repo has a runnable eval adapter.
@@ -295,12 +295,12 @@ It should point to the relevant scenario command rather than duplicating scenari
 
 The first implementation slice includes:
 
-- command registry entry for `cautilus claim discover`
-- command registry entries for `cautilus claim show` and `cautilus claim review prepare-input`
-- command registry entry for `cautilus claim review apply-result`
-- command registry entry for `cautilus claim plan-evals`
-- command registry entry for `cautilus claim validate`
-- `cautilus claim discover --example-output`
+- command registry entry for `cautilus discover claims`
+- command registry entries for `cautilus discover claims status` and `cautilus discover claims review-input`
+- command registry entry for `cautilus discover claims apply-review`
+- command registry entry for `cautilus evaluate claims plan`
+- command registry entry for `cautilus discover claims validate`
+- `cautilus discover claims --example-output`
 - fixture-backed unit tests for `cautilus.claim_proof_plan.v1`
 - fixture-backed unit tests for `cautilus.claim_status_summary.v1` and `cautilus.claim_review_input.v1`
 - fixture-backed unit tests for `cautilus.claim_review_result.v1` application and satisfied-evidence rejection
@@ -332,7 +332,7 @@ This file is the command-surface implementation contract.
 
 ## Implementation Slices
 
-The first implementation slice shipped `cautilus claim discover` with a conservative deterministic source inventory and a fixture-backed proof-plan packet.
+The first implementation slice shipped `cautilus discover claims` with a conservative deterministic source inventory and a fixture-backed proof-plan packet.
 The next slice shipped `claim show` and `claim review prepare-input` as existing-packet deterministic helpers.
 The next slice shipped `claim review apply-result` with guarded evidence satisfaction.
 The next slice shipped `claim plan-evals` as an intermediate planning packet over reviewed eval claims.

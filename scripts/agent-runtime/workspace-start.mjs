@@ -27,7 +27,7 @@ function usage(exitCode = 0) {
 		"  - A run.json manifest is written inside so prune-workspace-artifacts recognizes it.",
 		"  - Default stdout is a shell-evalable export line:",
 		"      export CAUTILUS_RUN_DIR='/abs/path/to/run-dir'",
-		"    Use it directly with eval, e.g. eval \"$(cautilus workspace start --label foo)\".",
+		"    Use it directly with eval, e.g. eval \"$(cautilus init run --label foo)\".",
 		"  - Pass --json to emit a machine-readable JSON payload instead.",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;

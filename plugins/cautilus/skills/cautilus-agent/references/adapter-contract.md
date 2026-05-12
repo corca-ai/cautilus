@@ -5,7 +5,7 @@ Use one default adapter for the repo's primary benchmark surface, then add named
 When the operator wants clean git-ref A/B workspaces, use the product-owned helper instead of copying repo-local `git worktree` shell glue:
 
 ```bash
-cautilus workspace prepare-compare \
+cautilus evaluate comparison prepare \
   --repo-root . \
   --baseline-ref origin/main \
   --output-dir /tmp/cautilus-compare
@@ -139,10 +139,10 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `baseline_options`: allowed baseline choices and how the agent should think about them.
 - `required_prerequisites`: conditions that should stop the evaluation early.
 - `preflight_commands`: fast commands to run before long evaluations.
-- `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus eval test` when the operator does not pass `--fixture`.
+- `evaluation_input_default`: optional checked-in `cautilus.evaluation_input.v1` path used by `cautilus evaluate fixture` when the operator does not pass `--fixture`.
 - `eval_test_command_templates`: commands that turn the validated fixture's translated case suite into an observed packet (`cautilus.evaluation_observed.v1` for `dev/repo`, `cautilus.skill_evaluation_inputs.v1` for `dev/skill`).
-- `default_runtime`: optional runtime choice (`codex`, `claude`, `fixture`, or `product`), defaults to `codex`. Overridden by `cautilus eval test --runtime`.
-- `claim_discovery`: optional bounded truth-surface configuration for `cautilus claim discover`.
+- `default_runtime`: optional runtime choice (`codex`, `claude`, `fixture`, or `product`), defaults to `codex`. Overridden by `cautilus evaluate fixture --runtime`.
+- `claim_discovery`: optional bounded truth-surface configuration for `cautilus discover claims`.
   `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).
   `linked_markdown_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries.
   `include` and `exclude` are repo-relative glob filters applied to discovered Markdown sources.
@@ -186,7 +186,7 @@ Each named adapter should define its own:
 - optional `improve_search` defaults when that surface needs a different bounded search policy from the repo root adapter
 
 This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.
-When a repo runs review variants repeatedly, add a checked-in runner that loads the adapter and fans out `executor_variants` instead of asking operators to retype each shell command by hand.
+When a repo runs evaluate review variants repeatedly, add a checked-in runner that loads the adapter and fans out `executor_variants` instead of asking operators to retype each shell command by hand.
 
 ## Split Criteria
 
@@ -244,7 +244,7 @@ Command-template placeholders currently include:
 - `{schema_file}`
 - `{output_file}`
 - `{variant_id}`
-- optional `{output_under_test}` when `review variants` is run with `--output-under-test`
+- optional `{output_under_test}` when `evaluate review variants` is run with `--output-under-test`
 
 Optional fields:
 

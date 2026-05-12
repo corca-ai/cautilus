@@ -75,7 +75,7 @@ func BuildClaimOrientation(repoRoot string) (map[string]any, error) {
 		claimState["status"] = "unsupported_state_path"
 		claimState["validation"] = map[string]any{
 			"valid": false,
-			"error": "claim_discovery.state_path must be repo-relative for agent status orientation",
+			"error": "claim_discovery.state_path must be repo-relative for doctor status orientation",
 		}
 	}
 	for _, raw := range relatedStates {
@@ -234,7 +234,7 @@ func mergeAgentStatusBranches(adapter *AdapterPayload, runnerReadiness map[strin
 		result = append(result, map[string]any{
 			"id":      "initialize_adapter",
 			"label":   "Initialize or repair the repo adapter",
-			"command": "cautilus adapter init --repo-root " + ShellSingleQuote(repoRoot),
+			"command": "cautilus init adapter --repo-root " + ShellSingleQuote(repoRoot),
 			"reason":  "Adapter readiness is separate from claim discovery and should be resolved before deeper Cautilus workflows.",
 		})
 	}
@@ -274,13 +274,13 @@ func claimOrientationBranches(claimState map[string]any, config claimDiscoveryCo
 		showBranch := map[string]any{
 			"id":      "show_existing_claims",
 			"label":   "Inspect the " + stateLabel,
-			"command": "cautilus claim show --input " + quotedStatePath + " --sample-claims 10",
+			"command": "cautilus discover claims status --input " + quotedStatePath + " --sample-claims 10",
 			"reason":  "Use this when the selected claim map is current enough to decide whether to review claims, add deterministic tests, or plan Cautilus eval scenarios.",
 		}
 		refreshBranch := map[string]any{
 			"id":      "refresh_claims_from_diff",
 			"label":   "Compare the " + stateLabel + " with recent repo changes",
-			"command": "cautilus claim discover --repo-root " + quotedRepoRoot + " --previous " + quotedStatePath + " --refresh-plan --output <refresh-plan.json>",
+			"command": "cautilus discover claims --repo-root " + quotedRepoRoot + " --previous " + quotedStatePath + " --refresh-plan --output <refresh-plan.json>",
 			"reason":  "This records what changed since the selected claim map was saved, without launching review or eval work.",
 		}
 		if asMap(asMap(claimState["summary"])["gitState"])["isStale"] == true {
@@ -294,7 +294,7 @@ func claimOrientationBranches(claimState map[string]any, config claimDiscoveryCo
 			map[string]any{
 				"id":      "run_first_claim_scan",
 				"label":   "Confirm the current scan scope and run the first bounded claim scan",
-				"command": "cautilus claim discover --repo-root " + quotedRepoRoot + " --output " + quotedStatePath,
+				"command": "cautilus discover claims --repo-root " + quotedRepoRoot + " --output " + quotedStatePath,
 				"reason":  "No repo-local claim packet exists yet; confirm the reported entry files and link depth, or adjust the scan scope before discovery. LLM claim review is a separate branch with its own review budget.",
 			},
 		}

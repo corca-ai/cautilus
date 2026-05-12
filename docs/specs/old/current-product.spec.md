@@ -53,12 +53,12 @@ The proof below checks both the machine-readable packet boundaries and the reade
 ```run:shell
 # Build one proposal-to-review evaluation bundle from checked-in fixtures.
 tmpdir=$(mktemp -d)
-./bin/cautilus scenario prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z --output "$tmpdir/proposal-input.json" >/dev/null
-./bin/cautilus scenario propose --input "$tmpdir/proposal-input.json" --output "$tmpdir/proposals.json" >/dev/null
-./bin/cautilus scenario review-conversations --input ./fixtures/scenario-conversation-review/input.json --output "$tmpdir/conversation-review.json" >/dev/null
-./bin/cautilus report build --input ./fixtures/reports/report-input.json --output "$tmpdir/report.json" >/dev/null
-./bin/cautilus evidence prepare-input --report-file "$tmpdir/report.json" --scenario-results-file ./fixtures/scenario-results/example-results.json --output "$tmpdir/evidence-input.json" >/dev/null
-./bin/cautilus review prepare-input --repo-root . --report-file "$tmpdir/report.json" --output "$tmpdir/review.json" >/dev/null
+./bin/cautilus discover scenarios prepare-input --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression --window-days 14 --now 2026-04-11T00:00:00.000Z --output "$tmpdir/proposal-input.json" >/dev/null
+./bin/cautilus discover scenarios propose --input "$tmpdir/proposal-input.json" --output "$tmpdir/proposals.json" >/dev/null
+./bin/cautilus discover scenarios review-conversations --input ./fixtures/scenario-conversation-review/input.json --output "$tmpdir/conversation-review.json" >/dev/null
+./bin/cautilus evaluate report build --input ./fixtures/reports/report-input.json --output "$tmpdir/report.json" >/dev/null
+./bin/cautilus evaluate evidence prepare-input --report-file "$tmpdir/report.json" --scenario-results-file ./fixtures/scenario-results/example-results.json --output "$tmpdir/evidence-input.json" >/dev/null
+./bin/cautilus evaluate review prepare-input --repo-root . --report-file "$tmpdir/report.json" --output "$tmpdir/review.json" >/dev/null
 grep -q '"schemaVersion": "cautilus.scenario_proposal_inputs.v1"' "$tmpdir/proposal-input.json"
 grep -q '"schemaVersion": "cautilus.scenario_proposals.v1"' "$tmpdir/proposals.json"
 grep -q '"schemaVersion": "cautilus.scenario_conversation_review.v1"' "$tmpdir/conversation-review.json"

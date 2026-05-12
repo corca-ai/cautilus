@@ -142,17 +142,17 @@ func currentProductSurfaceSummary() ProductSurfaceSummary {
 			{
 				Family:     "chatbot",
 				UseWhen:    "a multi-turn assistant gets worse after a prompt or wrapper change",
-				EntryPoint: "cautilus scenario normalize chatbot --input <conversation-logs.json>",
+				EntryPoint: "cautilus discover scenarios normalize chatbot --input <conversation-logs.json>",
 			},
 			{
 				Family:     "skill",
 				UseWhen:    "a checked-in skill or agent should still trigger, execute, and validate cleanly",
-				EntryPoint: "cautilus eval test --repo-root . --adapter-name <name>",
+				EntryPoint: "cautilus evaluate fixture --repo-root . --adapter-name <name>",
 			},
 			{
 				Family:     "workflow",
 				UseWhen:    "a stateful automation keeps stalling on the same recovery step",
-				EntryPoint: "cautilus scenario normalize workflow --input <workflow-runs.json>",
+				EntryPoint: "cautilus discover scenarios normalize workflow --input <workflow-runs.json>",
 			},
 		},
 		DecisionLoop: []string{
@@ -164,11 +164,11 @@ func currentProductSurfaceSummary() ProductSurfaceSummary {
 			"report.json stays the first machine-readable decision surface",
 			"mode summaries can distinguish comparison-backed rejection from pure execution failure",
 			"report reasonCodes and warnings can surface provider-rate-limit contamination from persisted artifacts",
-			"review build-prompt-input and review variants carry those warnings forward for human or agent review",
+			"evaluate review build-prompt-input and evaluate review variants carry those warnings forward for human or agent review",
 		},
 		CurrentSurfaceNote: []string{
 			"inspect report.json reasonCodes and warnings before treating reject as a clean regression",
-			"use cautilus scenarios or the Cautilus Agent when the right normalization family is unclear",
+			"use cautilus discover scenarios or the Cautilus Agent when the right normalization family is unclear",
 		},
 	}
 }

@@ -237,12 +237,12 @@ Current runtime note:
 
 - `generationLimit`, `populationLimit`, `mergeEnabled`, `threeParentPolicy`, and declared selection caps are preserved in the canonical packet for replay and future expansion
 - the shipped Go runner now enforces finalist eligibility against declared selection `constraintCaps`
-- the shipped Go runner now executes frontier-promotion review checkpoints for promoted frontier candidates when the policy requests them and the adapter exposes review variants
+- the shipped Go runner now executes frontier-promotion review checkpoints for promoted frontier candidates when the policy requests them and the adapter exposes evaluate review variants
 - the shipped Go runner reuses those frontier-promotion review checkpoints during final selection instead of rerunning the same candidate review
 - the shipped Go runner now preserves rejected frontier-promotion review feedback on the candidate record and reinjects that feedback into later mutation prompts when the policy enables checkpoint feedback
 - the shipped Go runner now uses `trainScenarioLimit` to choose a bounded reflection batch and filters reinjected checkpoint feedback to the reflected scenarios
 - the shipped Go runner now materializes mutation prompts as structured search-context artifacts instead of raw freeform evidence dumps
-- the shipped Go runner now evaluates mutation candidates through `cautilus eval test` in an isolated candidate worktree when the adapter exposes `evaluation_input_default`
+- the shipped Go runner now evaluates mutation candidates through `cautilus evaluate fixture` in an isolated candidate worktree when the adapter exposes `evaluation_input_default`
 - the shipped Go runner now executes final review and final full-gate checkpoints when the adapter exposes those surfaces
 - the current runner evaluates one reflective mutation per generation until `generationLimit` or total candidate count is exhausted
 - by default that mutation follows the best current frontier candidate, but a frontier-promotion review-rejected lineage may take one bounded repair generation before it is pruned
@@ -356,7 +356,7 @@ The current bounded loop works like this:
 
 Current implementation note:
 
-- v1 executes packet assembly, readiness blocking, one reflective mutation per generation, optional bounded merge synthesis, held-out reevaluation through `eval test` when available, frontier-promotion review reuse, checkpoint-feedback reinjection, telemetry-aware frontier ranking, finalist checkpoint execution, and proposal bridging
+- v1 executes packet assembly, readiness blocking, one reflective mutation per generation, optional bounded merge synthesis, held-out reevaluation through `evaluate fixture` when available, frontier-promotion review reuse, checkpoint-feedback reinjection, telemetry-aware frontier ranking, finalist checkpoint execution, and proposal bridging
 - v1 may temporarily prioritize one frontier-promotion review-rejected lineage for a bounded repair generation before returning to the default frontier-following path
 - v1 now consumes `trainScenarioLimit` when shaping each mutation prompt so checkpoint-scoped repair can outrank broader but less urgent reflection work
 - `mergeEnabled`, `threeParentPolicy`, and declared selection caps are consumed by the current runner

@@ -40,14 +40,14 @@ The consumer still owns:
 Build the packet:
 
 ```bash
-cautilus review build-prompt-input \
+cautilus evaluate evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 ```
 
 Build the packet for a realized output artifact instead of prompt text:
 
 ```bash
-cautilus review build-prompt-input \
+cautilus evaluate evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json \
   --output-under-test /tmp/cautilus-mode/analysis-output.json \
   --output-text-key analysis_text
@@ -56,7 +56,7 @@ cautilus review build-prompt-input \
 Build the packet directly from one scenario plus one realized output artifact:
 
 ```bash
-cautilus review build-prompt-input \
+cautilus evaluate evaluate review build-prompt-input \
   --repo-root . \
   --adapter-name analysis-prompts \
   --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
@@ -68,11 +68,11 @@ cautilus review build-prompt-input \
 Render the prompt:
 
 ```bash
-cautilus review render-prompt \
+cautilus evaluate evaluate review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 ```
 
-When the packet carries `defaultSchemaFile`, `review variants` may reuse that
+When the packet carries `defaultSchemaFile`, `evaluate review variants` may reuse that
 schema without requiring a second explicit `--schema-file` flag.
 
 ## Guardrails

@@ -12,7 +12,7 @@ The host repo owns the runner, the production-path reuse argument, and the asses
 The Cautilus Agent may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet.
 
 Runner verification is not a fourth product command family.
-It is setup evidence consumed by `doctor`, `agent status`, `eval`, and later `improve`.
+It is setup evidence consumed by `doctor`, `doctor status`, `eval`, and later `improve`.
 
 ## Reference Pattern
 
@@ -61,7 +61,7 @@ The supporting legs improve repeatability and auditability, but the first implem
 ## Product Proof Requirement
 
 For `in-process-product-runner` and `live-product-runner`, a `ready-for-selected-surface` recommendation requires the four product-proof legs to be present or explicitly not required.
-If the packet claims readiness but omits those legs, `doctor` and `agent status` must not report a clean ready branch.
+If the packet claims readiness but omits those legs, `doctor` and `doctor status` must not report a clean ready branch.
 They should surface `upgrade_runner_assessment` with missing capability diagnostics.
 
 For `fixture-smoke`, `coding-agent-messaging`, and plain `declared-eval-runner`, the same object is useful but not mandatory.
@@ -69,7 +69,7 @@ Those proof classes can support setup checks, fixture shaping, and deterministic
 
 ## Reporting Rules
 
-`doctor` and `agent status` should summarize capability state without overexplaining the host's implementation.
+`doctor` and `doctor status` should summarize capability state without overexplaining the host's implementation.
 The stable output should include:
 
 - capability state summary
@@ -85,7 +85,7 @@ A repo can be adapter-ready while its runner assessment is missing, stale, smoke
 Do not bake Craken, systemd, SSE, OpenAI, Vercel AI SDK, or any specific framework into the generic contract.
 Do not require live user-log replay as the primary repeatable proof.
 Do not make the binary run arbitrary smoke commands just because a capability is declared.
-Do not turn `claim discover` into the readiness judge.
+Do not turn `discover claims` into the readiness judge.
 
 ## Acceptance Checks
 
@@ -93,4 +93,4 @@ Do not turn `claim discover` into the readiness judge.
 - A product-proof assessment that claims `ready-for-selected-surface` but omits required legs is blocked with `upgrade_runner_assessment`.
 - A smoke-only assessment can omit `verificationCapabilities` and still report `smoke-only`.
 - Invalid leg states are reported as assessment-shape errors.
-- The capability summary is visible in the read-only readiness object returned by `doctor` and `agent status`.
+- The capability summary is visible in the read-only readiness object returned by `doctor` and `doctor status`.

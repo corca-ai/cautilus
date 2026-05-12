@@ -23,7 +23,7 @@ func RenderCompareArtifactHTML(packet map[string]any) string {
 	verdict := stringOrEmpty(packet["verdict"])
 	title := fmt.Sprintf("Cautilus Compare — %s", selfDogfoodStatusLabel(verdict))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus workspace render-compare-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus evaluate comparison render-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderCompareHeader(packet, verdict))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
@@ -266,7 +266,7 @@ func renderCompareFooter(packet map[string]any) string {
 	return fmt.Sprintf(`
 <footer class="footer">
 	<p>Generated from <code>compare-artifact.json</code> (schemaVersion <code>%s</code>).
-	Do not hand-edit this file — rerun <code>cautilus workspace render-compare-html</code> to refresh.</p>
+	Do not hand-edit this file — rerun <code>cautilus evaluate comparison render-html</code> to refresh.</p>
 </footer>`, escapeHTML(defaultString(packet["schemaVersion"], "n/a")))
 }
 
@@ -366,7 +366,7 @@ func RenderScenarioProposalsHTML(packet map[string]any) string {
 	attentionProposals := selectScenarioProposalAttentionSet(proposals, stringSliceOrEmptyRuntime(attentionView["proposalKeys"]))
 	title := fmt.Sprintf("Cautilus Scenario Proposals — %d", len(proposals))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus scenario render-proposals-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus discover scenarios render-proposals-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderProposalsHeader(packet, proposals, attentionProposals))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
@@ -391,7 +391,7 @@ func RenderScenarioConversationReviewHTML(packet map[string]any) string {
 	attentionThreads := selectScenarioConversationAttentionSet(threads, stringSliceOrEmptyRuntime(attentionView["threadKeys"]))
 	title := fmt.Sprintf("Cautilus Scenario Conversation Review — %d", len(threads))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus scenario render-conversation-review-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus discover scenarios render-conversation-review-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderScenarioConversationHeader(packet, threads, attentionThreads))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
@@ -583,7 +583,7 @@ func renderProposalsFooter(packet map[string]any) string {
 	return fmt.Sprintf(`
 <footer class="footer">
 	<p>Generated from <code>proposals.json</code> (schemaVersion <code>%s</code>).
-	Do not hand-edit this file — rerun <code>cautilus scenario render-proposals-html</code> to refresh.</p>
+	Do not hand-edit this file — rerun <code>cautilus discover scenarios render-proposals-html</code> to refresh.</p>
 </footer>`, escapeHTML(defaultString(packet["schemaVersion"], "n/a")))
 }
 
@@ -791,7 +791,7 @@ func renderScenarioConversationFooter(packet map[string]any) string {
 	return fmt.Sprintf(`
 <footer class="footer">
 	<p>Generated from <code>conversation-review.json</code> (schemaVersion <code>%s</code>).
-	Do not hand-edit this file — rerun <code>cautilus scenario render-conversation-review-html</code> to refresh.</p>
+	Do not hand-edit this file — rerun <code>cautilus discover scenarios render-conversation-review-html</code> to refresh.</p>
 </footer>`, escapeHTML(defaultString(packet["schemaVersion"], "n/a")))
 }
 
@@ -872,7 +872,7 @@ func RenderEvidenceBundleHTML(bundle map[string]any) string {
 	signals := arrayOrEmpty(bundle["signals"])
 	title := fmt.Sprintf("Cautilus Evidence Bundle — %d signals", len(signals))
 	builder.WriteString("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n")
-	builder.WriteString("<meta name=\"generator\" content=\"cautilus evidence render-html\">\n")
+	builder.WriteString("<meta name=\"generator\" content=\"cautilus evaluate evidence render-html\">\n")
 	builder.WriteString("<title>" + escapeHTML(title) + "</title>\n<style>" + selfDogfoodHTMLStyles + "</style>\n</head>\n<body>\n<main>\n")
 	builder.WriteString(renderEvidenceHeader(bundle, signals))
 	builder.WriteString(renderSelfDogfoodPageTOC([]tocNavEntry{
@@ -1086,7 +1086,7 @@ func renderEvidenceFooter(bundle map[string]any) string {
 	return fmt.Sprintf(`
 <footer class="footer">
 	<p>Generated from <code>evidence-bundle.json</code> (schemaVersion <code>%s</code>).
-	Do not hand-edit this file — rerun <code>cautilus evidence render-html</code> to refresh.</p>
+	Do not hand-edit this file — rerun <code>cautilus evaluate evidence render-html</code> to refresh.</p>
 </footer>`, escapeHTML(defaultString(bundle["schemaVersion"], "n/a")))
 }
 

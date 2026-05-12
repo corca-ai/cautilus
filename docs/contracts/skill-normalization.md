@@ -19,7 +19,7 @@ If `Cautilus` starts too early, it becomes a repo-specific log reader.
 
 The product boundary is:
 
-`host skill run summaries -> skill normalization helper -> proposalCandidates -> scenario prepare-input -> scenario propose`
+`host skill run summaries -> skill normalization helper -> proposalCandidates -> discover scenarios prepare-input -> discover scenarios propose`
 
 When the host already uses the first-class `skill evaluate` seam, the chain can be:
 
@@ -31,10 +31,10 @@ When the operator starts from a checked-in case suite instead, the chain can be:
 
 ## Current Slice
 
-The shipped `skill` normalization helper is `NormalizeSkillProposalCandidates` in [internal/runtime/proposals.go](../../internal/runtime/proposals.go), exposed on the CLI as `cautilus scenario normalize skill`.
+The shipped `skill` normalization helper is `NormalizeSkillProposalCandidates` in [internal/runtime/proposals.go](../../internal/runtime/proposals.go), exposed on the CLI as `cautilus discover scenarios normalize skill`.
 
 This slice accepts `cautilus.skill_normalization_inputs.v2` or the newer `cautilus.skill_evaluation_summary.v1` summary packet.
-It rejects `cautilus.workflow_normalization_inputs.v1` inputs and points the caller at `cautilus scenario normalize workflow` instead.
+It rejects `cautilus.workflow_normalization_inputs.v1` inputs and points the caller at `cautilus discover scenarios normalize workflow` instead.
 
 ## Representative Consumers
 
@@ -109,7 +109,7 @@ Those derived profiles should use the shared product-owned dimension catalog ins
 - `skill` normalization is product-owned; runtime readers and command runners stay consumer-owned.
 - The helper consumes normalized summaries, not repo-local scans of `skills/`, `profiles/`, `runs/`, or CI logs.
 - `cli_workflow` inputs are handled by the workflow normalization family and rejected here with an actionable pointer.
-- The helper outputs proposal candidates that can feed the existing `scenario prepare-input` and `scenario propose` chain unchanged.
+- The helper outputs proposal candidates that can feed the existing `discover scenarios prepare-input` and `discover scenarios propose` chain unchanged.
 
 ## Non-Goals
 
@@ -136,7 +136,7 @@ Those derived profiles should use the shared product-owned dimension catalog ins
 
 - fixture: validation-shaped failed smoke scenario for a public skill becomes a candidate with stable `proposalKey`
 - fixture: evaluation-summary-shaped trigger and execution regressions also become stable `proposalKey`s without extra host mapping
-- `cli_workflow` input returns a non-zero exit with stderr mentioning `cautilus scenario normalize workflow`
+- `cli_workflow` input returns a non-zero exit with stderr mentioning `cautilus discover scenarios normalize workflow`
 
 ## Canonical Artifact
 

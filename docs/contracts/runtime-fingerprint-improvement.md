@@ -25,7 +25,7 @@ The current slice should:
 - let `improve` consume the runtime-change context as one revision reason
 - keep prompt compression as a general selection preference instead of a new improver kind
 
-The explicit CLI comparison path is `cautilus report build --prior-evidence-file <path>`.
+The explicit CLI comparison path is `cautilus evaluate report build --prior-evidence-file <path>`.
 Runtime wrappers and adapter flows may also pass `priorEvidence` and `runtimePolicy` directly in packet input JSON.
 
 ## Fixed Decisions
@@ -185,7 +185,7 @@ Model-change-driven improve suggestions should preserve:
 
 ## Success Criteria
 
-- A skill or eval test can pass while still reporting that the observed runtime changed from the comparison evidence.
+- A skill or evaluate fixture can pass while still reporting that the observed runtime changed from the comparison evidence.
 - A pinned-runtime adapter can block when the observed runtime does not match its declared requirement.
 - Report and evidence packets can carry runtime-context reason codes without treating them as behavior regressions.
 - Improve can propose a bounded simplification candidate after a runtime change without adding a new user-facing improver kind.

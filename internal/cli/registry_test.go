@@ -9,14 +9,14 @@ import (
 )
 
 func TestMatchCommandPrefersLongestPath(t *testing.T) {
-	match, err := MatchCommand([]string{"scenario", "normalize", "skill", "--input", "fixture.json"})
+	match, err := MatchCommand([]string{"discover", "scenarios", "normalize", "skill", "--input", "fixture.json"})
 	if err != nil {
 		t.Fatalf("MatchCommand returned error: %v", err)
 	}
 	if match == nil {
 		t.Fatal("expected a command match")
 	}
-	if !slices.Equal(match.Command.Path, []string{"scenario", "normalize", "skill"}) {
+	if !slices.Equal(match.Command.Path, []string{"discover", "scenarios", "normalize", "skill"}) {
 		t.Fatalf("unexpected path: %#v", match.Command.Path)
 	}
 	if !slices.Equal(match.ForwardedArgs, []string{"--input", "fixture.json"}) {
@@ -39,13 +39,13 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if err != nil {
 		t.Fatalf("RenderUsage returned error: %v", err)
 	}
-	if !strings.Contains(usage, "cautilus commands [--json]") {
+	if !strings.Contains(usage, "cautilus doctor commands [--json]") {
 		t.Fatalf("usage missing commands line:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus healthcheck [--json]") {
+	if !strings.Contains(usage, "cautilus doctor binary [--json]") {
 		t.Fatalf("usage missing healthcheck line:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus install [--repo-root <path>] [--overwrite] [--json]") {
+	if !strings.Contains(usage, "cautilus init [--repo-root <path>] [--overwrite] [--json]") {
 		t.Fatalf("usage missing install line:\n%s", usage)
 	}
 	if strings.Contains(usage, "cautilus skills install") {
@@ -54,14 +54,14 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if !strings.Contains(usage, "cautilus update [--repo-root <path>] [--json]") {
 		t.Fatalf("usage missing update line:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus eval test --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json") {
-		t.Fatalf("usage missing eval test example:\n%s", usage)
+	if !strings.Contains(usage, "cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json") {
+		t.Fatalf("usage missing evaluate fixture example:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus eval evaluate --input ./eval-observed.json") {
-		t.Fatalf("usage missing eval evaluate example:\n%s", usage)
+	if !strings.Contains(usage, "cautilus evaluate observation --input ./eval-observed.json") {
+		t.Fatalf("usage missing evaluate observation example:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review") {
-		t.Fatalf("usage missing review variants example:\n%s", usage)
+	if !strings.Contains(usage, "cautilus evaluate evaluate review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review") {
+		t.Fatalf("usage missing evaluate review variants example:\n%s", usage)
 	}
 }
 
@@ -98,11 +98,11 @@ func TestRenderTopicUsageIncludesGroupedSubcommandsForPrefixes(t *testing.T) {
 }
 
 func TestRenderTopicUsageIncludesCommandNotes(t *testing.T) {
-	usage, err := RenderTopicUsage([]string{"review", "prepare-input"})
+	usage, err := RenderTopicUsage([]string{"evaluate", "review", "prepare-input"})
 	if err != nil {
 		t.Fatalf("RenderTopicUsage returned error: %v", err)
 	}
-	if !strings.Contains(usage, "cautilus report build --example-input") {
+	if !strings.Contains(usage, "cautilus evaluate report build --example-input") {
 		t.Fatalf("topic usage missing report example-input note:\n%s", usage)
 	}
 	if !strings.Contains(usage, "\"severity\": \"concern\"") {
@@ -111,7 +111,7 @@ func TestRenderTopicUsageIncludesCommandNotes(t *testing.T) {
 }
 
 func TestRenderTopicUsageShowsAdHocReviewVariantsPath(t *testing.T) {
-	usage, err := RenderTopicUsage([]string{"review", "variants"})
+	usage, err := RenderTopicUsage([]string{"evaluate", "review", "variants"})
 	if err != nil {
 		t.Fatalf("RenderTopicUsage returned error: %v", err)
 	}
@@ -129,10 +129,10 @@ func TestDecodeRegistryRejectsUnknownCommandFields(t *testing.T) {
 		"groups": [{"id": "setup", "label": "Set up and check a repo"}],
 		"commands": [
 			{
-				"path": ["install"],
+				"path": ["init"],
 				"group": "setup",
-				"usage": "cautilus install [--repo-root <path>] [--overwrite] [--json]",
-				"example": "cautilus install --repo-root .",
+				"usage": "cautilus init [--repo-root <path>] [--overwrite] [--json]",
+				"example": "cautilus init --repo-root .",
 				"script": "scripts/install-skills.mjs"
 			}
 		]
@@ -151,10 +151,9 @@ func TestRenderUsageGroupsCommandsByPurpose(t *testing.T) {
 		t.Fatalf("RenderUsage returned error: %v", err)
 	}
 	expectedGroups := []string{
-		"Discover claims and run bounded evals:",
-		"Set up and check a repo:",
-		"Review proof packets and improve behavior:",
-		"Introspection:",
+		"Initialize, check, and update Cautilus:",
+		"Discover, evaluate, and improve behavior:",
+		"Inspect packets and render review artifacts:",
 	}
 	previousIndex := -1
 	for _, label := range expectedGroups {
@@ -167,14 +166,15 @@ func TestRenderUsageGroupsCommandsByPurpose(t *testing.T) {
 		}
 		previousIndex = index
 	}
-	runIndex := strings.Index(usage, "Discover claims and run bounded evals:")
-	setupIndex := strings.Index(usage, "Set up and check a repo:")
-	scenarioLine := strings.Index(usage, "cautilus scenario normalize chatbot [args]")
-	installLine := strings.Index(usage, "cautilus install [--repo-root <path>] [--overwrite] [--json]")
-	if scenarioLine < runIndex || scenarioLine > setupIndex {
-		t.Fatalf("expected scenario normalize chatbot to sit inside the run group:\n%s", usage)
+	setupIndex := strings.Index(usage, "Initialize, check, and update Cautilus:")
+	runIndex := strings.Index(usage, "Discover, evaluate, and improve behavior:")
+	supportIndex := strings.Index(usage, "Inspect packets and render review artifacts:")
+	scenarioLine := strings.Index(usage, "cautilus discover scenarios normalize chatbot [args]")
+	installLine := strings.Index(usage, "cautilus init [--repo-root <path>] [--overwrite] [--json]")
+	if scenarioLine < runIndex || scenarioLine > supportIndex {
+		t.Fatalf("expected discover scenarios normalize chatbot to sit inside the run group:\n%s", usage)
 	}
-	if installLine < setupIndex {
+	if installLine < setupIndex || installLine > runIndex {
 		t.Fatalf("expected install to sit inside the setup group:\n%s", usage)
 	}
 }

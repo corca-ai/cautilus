@@ -16,7 +16,7 @@ fresh_checkout_probes:
 
 update_instructions:
   - "Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`. Any legacy Homebrew copy should be removed first with `brew uninstall cautilus`."
-  - "Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus install` in the host repo."
+  - "Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus init` in the host repo."
 
 real_host_required_surfaces: []
 real_host_required_path_globs: []
@@ -32,9 +32,9 @@ product_surfaces:
 cli_skill_surface_probe_commands:
   - "./bin/cautilus --version"
   - "./bin/cautilus --help"
-  - "./bin/cautilus healthcheck --json"
-  - "./bin/cautilus commands --json"
-  - "./bin/cautilus scenarios --json"
+  - "./bin/cautilus doctor binary --json"
+  - "./bin/cautilus doctor commands --json"
+  - "./bin/cautilus discover scenarios --json"
 
 cli_skill_surface_command_docs:
   - docs/guides/cli.md

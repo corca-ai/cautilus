@@ -97,7 +97,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 - **Standing gate 가 landed 되면 escape hatch 를 재평가.**
   임시로 남겨둔 enforcement escape (`Must*` 헬퍼 등) 는 gate 가 들어온 뒤 삭제 가능한지 확인.
 - **같은 generated artifact 를 쓰고 읽는 명령은 병렬화하지 않는다.**
-  `claim show --output X` 와 `jq X` 처럼 writer/reader 가 같은 파일을 공유하면 reader 가 이전 파일을 먼저 읽어 false bug signal 을 만든다.
+  `discover claims status --output X` 와 `jq X` 처럼 writer/reader 가 같은 파일을 공유하면 reader 가 이전 파일을 먼저 읽어 false bug signal 을 만든다.
   병렬화는 독립 read 나 서로 다른 output path 를 쓰는 명령에만 쓴다.
 
 ## Fixture 및 Copy 컨벤션
@@ -130,7 +130,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   `Go` 로 올릴 표면은 product-owned behavior 가 명확해야 한다.
   consumer-owned actual probe/launch/auth/runtime wiring 위에 얇게 얹는 helper 는 먼저 `JS` 에 두고, product 가 정확히 무엇을 책임질지 굳은 뒤 승격한다.
 - **셋째 기준은 operator expectation 이다.**
-  operator 가 이 기능을 `cautilus commands` 나 CLI reference 에서 찾아 쓰는 것이 자연스러운 상태가 되면 `Go` 로 승격할 압력이 생긴다.
+  operator 가 이 기능을 `cautilus doctor commands` 나 CLI reference 에서 찾아 쓰는 것이 자연스러운 상태가 되면 `Go` 로 승격할 압력이 생긴다.
   반대로 wrapper tool, self-dogfood script, adapter-owned flow 가 직접 `node scripts/...` 로 호출해도 괜찮은 seam 이면 아직 `JS` 에 머물 수 있다.
 - **넷째 기준은 binary promise cost 이다.**
   `Go` 로 승격하는 순간 그 seam 은 standalone binary release, install surface, 장기 backward compatibility 기대를 같이 짊어진다.
@@ -140,7 +140,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 
 - **live app discovery/invocation 은 `JS` 에서 먼저 proof 하고, operator-facing entrypoint 가 합의되면 `Go` 로 승격한다.**
   초기에는 `scripts/agent-runtime/` helper 로 explicit normalization, packet validation, synthetic consumer proof 를 먼저 닫았다.
-  그다음 `instance` 를 "이 호스트에서 `Cautilus` 가 선택하는 live consumer target 하나" 라는 사용자 언어로 설명할 수 있고, 현재처럼 `cautilus eval live discover` / `cautilus eval live run` 이 `eval` 의 하위 실행 표면으로 설명될 때 Go CLI 로 끌어올린다.
+  그다음 `instance` 를 "이 호스트에서 `Cautilus` 가 선택하는 live consumer target 하나" 라는 사용자 언어로 설명할 수 있고, 현재처럼 `cautilus discover live-targets` / `cautilus evaluate live` 이 `eval` 의 하위 실행 표면으로 설명될 때 Go CLI 로 끌어올린다.
 - **승격 후에도 consumer-owned seam 은 그대로 남는다.**
   `kind: command` discovery 는 여전히 consumer probe command 가 catalog 를 출력한다.
   live invocation 도 여전히 adapter 의 `consumer_command_template` 가 actual launch/runtime wiring 을 담당한다.
@@ -169,7 +169,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
 - **normalization family 확장 욕심**.
   네 번째 (`tool_use`, `pipeline` 등) 유혹이 와도 추가하지 말 것.
   새 family 는 schema + helper + CLI + contract + fixture + README + SKILL.md + scenarios.go + starter kit 까지 한 슬라이스에 같이 가져올 때만.
-  `npm run lint:scenario-normalizers` 가 survivor `scenario normalize` 런타임 완결성을 검증한다.
+  `npm run lint:scenario-normalizers` 가 survivor `discover scenarios normalize` 런타임 완결성을 검증한다.
 - **프로토타입 격리**.
   프로토타입은 `internal/runtime/prototypes/` 로 간다 (escape hatch).
   `cautilus.<name>_prototype.v0` 네이밍.

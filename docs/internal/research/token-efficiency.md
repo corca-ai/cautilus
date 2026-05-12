@@ -174,7 +174,7 @@ Runtime behavior:
   checks).
 - Evaluation runs become reproducible across operator machines — the
   capability matrix is derived from the skill file itself, not from whoever
-  happens to run `cautilus review`.
+  happens to run `cautilus evaluate review`.
 
 ### Implementation sketch
 

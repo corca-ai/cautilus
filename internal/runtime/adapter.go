@@ -1116,7 +1116,7 @@ func applyScenarioOverlay(scaffold map[string]any, scenario string) {
 	case "skill":
 		scaffold["evaluation_surfaces"] = []string{"skill trigger, execution, and validation behavior"}
 		scaffold["eval_test_command_templates"] = []string{
-			"cautilus eval test --repo-root {candidate_repo} --adapter-name {adapter_name} --fixture fixtures/eval/dev/skill/example.fixture.json",
+			"cautilus evaluate fixture --repo-root {candidate_repo} --adapter-name {adapter_name} --fixture fixtures/eval/dev/skill/example.fixture.json",
 		}
 	}
 }
@@ -1213,7 +1213,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 			detail = "No default checked-in adapter was found, but named adapters are available."
 		}
 		checks = append(checks, doctorCheck("adapter_found", false, detail))
-		command := fmt.Sprintf("cautilus adapter init --repo-root %s", repoRoot)
+		command := fmt.Sprintf("cautilus init adapter --repo-root %s", repoRoot)
 		if adapterName != nil && strings.TrimSpace(*adapterName) != "" {
 			command += " --adapter-name " + *adapterName
 		}
@@ -1221,7 +1221,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		if len(namedAdapters) > 0 {
 			firstNamedAdapter := discoveredNamedAdapters[0].Name
 			suggestions = append(suggestions, fmt.Sprintf("Run cautilus doctor --repo-root %s --adapter-name %s to validate a named adapter directly.", repoRoot, firstNamedAdapter))
-			suggestions = append(suggestions, fmt.Sprintf("Run cautilus adapter resolve --repo-root %s --adapter-name %s to inspect the named adapter path.", repoRoot, firstNamedAdapter))
+			suggestions = append(suggestions, fmt.Sprintf("Run cautilus doctor adapter --repo-root %s --adapter-name %s to inspect the named adapter path.", repoRoot, firstNamedAdapter))
 			suggestions = append(suggestions, "Add a default .agents/cautilus-adapter.yaml only if you want plain `cautilus doctor` to validate one unnamed adapter without `--adapter-name`.")
 		}
 		for _, warning := range payload.Warnings {
@@ -1259,14 +1259,14 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	appendFieldCheck(&checks, &suggestions, "baseline_options", len(stringArrayOrEmpty(data["baseline_options"])) > 0, "Adapter declares baseline options.", "Adapter is missing baseline_options.", "Add at least one baseline_options entry so comparisons stay explicit.")
 	automatedCommands := len(stringArrayOrEmpty(data["eval_test_command_templates"])) > 0 || len(arrayOrEmpty(asMap(data["runner_readiness"])["runners"])) > 0
 	hasVariants := len(arrayOrEmpty(data["executor_variants"])) > 0
-	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands, "Adapter declares runnable eval runner commands.", "Adapter has no eval runner command templates yet.", "Add at least one runner_readiness.runners entry or eval_test_command_templates entry so `cautilus eval test` and `first_bounded_run` are runnable.")
+	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands, "Adapter declares runnable eval runner commands.", "Adapter has no eval runner command templates yet.", "Add at least one runner_readiness.runners entry or eval_test_command_templates entry so `cautilus evaluate fixture` and `first_bounded_run` are runnable.")
 	if !automatedCommands && hasVariants {
-		suggestions = append(suggestions, "executor_variants can run bounded review after a report packet exists, but they do not provide the eval test runner required by first_bounded_run.")
+		suggestions = append(suggestions, "executor_variants can run bounded review after a report packet exists, but they do not provide the evaluate fixture runner required by first_bounded_run.")
 	}
 	if adapterLooksDeterministicOnly(data) {
 		warnings = append(warnings, "Adapter commands look like repo-local deterministic gates only. Keep pytest/lint/type/spec checks in CI or pre-push hooks; use Cautilus for LLM-behavior, judge, or operator-facing review surfaces.")
 		suggestions = append(suggestions, "Inventory LLM-behavior surfaces first (system prompts, agent/chat loops, LLM-backed analysis, operator copy reviewed by a judge) before hand-editing adapter YAML.")
-		suggestions = append(suggestions, "Run cautilus scenario propose against those LLM-behavior surfaces before adding more deterministic command wrappers.")
+		suggestions = append(suggestions, "Run cautilus discover scenarios propose against those LLM-behavior surfaces before adding more deterministic command wrappers.")
 	}
 	ready := allChecksReady(checks)
 	result := baseResult()
@@ -1276,7 +1276,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		result["summary"] = "Adapter is ready for standalone Cautilus use."
 		result["first_bounded_run"] = LoadFirstBoundedRunGuide(repoRoot)
 		result["next_steps"] = []any{
-			"Inspect `first_bounded_run` or run `cautilus scenarios --json` when you need the scenario-normalization catalog.",
+			"Inspect `first_bounded_run` or run `cautilus discover scenarios --json` when you need the scenario-normalization catalog.",
 		}
 		return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 0, nil
 	}
@@ -1301,14 +1301,14 @@ func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
 			path:       filepath.Join(repoRoot, ".agents", "skills", "cautilus-agent", "SKILL.md"),
 			okDetail:   "Cautilus Agent is installed under .agents/skills/cautilus-agent.",
 			failDetail: "Cautilus Agent is missing under .agents/skills/cautilus-agent.",
-			suggestion: fmt.Sprintf("Run cautilus install --repo-root %s to materialize the local Cautilus Agent surface.", repoRoot),
+			suggestion: fmt.Sprintf("Run cautilus init --repo-root %s to materialize the local Cautilus Agent surface.", repoRoot),
 		},
 		{
 			id:         "claude_skills_link",
 			path:       filepath.Join(repoRoot, ".claude", "skills"),
 			okDetail:   "Claude compatibility skills link is present.",
 			failDetail: "Claude compatibility skills link is missing.",
-			suggestion: fmt.Sprintf("Run cautilus install --repo-root %s to refresh the Claude skills link.", repoRoot),
+			suggestion: fmt.Sprintf("Run cautilus init --repo-root %s to refresh the Claude skills link.", repoRoot),
 		},
 	}
 

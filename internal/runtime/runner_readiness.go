@@ -451,7 +451,7 @@ func runnerReadinessBranchForRunner(runnerID string, id string, label string, re
 		branch["requiredArtifact"] = artifactPath
 	}
 	if strings.TrimSpace(stringFromAny(branch["requiredArtifact"])) == "" && id == "run_eval_with_assessed_runner" {
-		branch["requiredCommand"] = "cautilus eval test --fixture <fixture.json>"
+		branch["requiredCommand"] = "cautilus evaluate fixture --fixture <fixture.json>"
 	}
 	if id == "create_runner_assessment" || id == "upgrade_runner_assessment" || id == "repair_runner_assessment" {
 		branch["scaffoldSource"] = "fixtures/runner-readiness/example-assessment.json"

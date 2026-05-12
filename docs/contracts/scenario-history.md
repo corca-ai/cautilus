@@ -235,7 +235,7 @@ Recorded here so the next session does not re-run the same analysis.
 
 - **Part 1 — reusable baseline result store.** Re-key the baseline-cache from `(profileId, scenarioIds, baselineFingerprint, scenarioFingerprint)` to a broader key that lets multiple profiles and entry points share one baseline result per evaluated commit (e.g.
   `(commitSha, scenarioId, adapterId, mode)`).
-- **Part 2 — broader compare ownership.** Extend history / compare hooks beyond the single profile-backed eval path so `review variants`, profile-less eval test runs, and skill evaluation can also update history and materialize compare artifacts.
+- **Part 2 — broader compare ownership.** Extend history / compare hooks beyond the single profile-backed eval path so `evaluate review variants`, profile-less evaluate fixture runs, and skill evaluation can also update history and materialize compare artifacts.
 
 The two parts were planned as one coordinated slice, with README, [skills/cautilus-agent/SKILL.md](../../skills/cautilus-agent/SKILL.md), `cautilus --help` (registry), and this contract updated together.
 
@@ -243,10 +243,10 @@ The two parts were planned as one coordinated slice, with README, [skills/cautil
 
 Premortem (4 angles: cache migration / external consumer / devil's advocate / doc cascade) surfaced a devil's-advocate finding strong enough to block execution and verified against repo state:
 
-- The legacy `cautilus mode evaluate --mode comparison` path was the only one that materialized a baseline-cache file. That command was retired with the evaluation-surfaces redesign; rebuilding the cache materialization on the new `cautilus eval test` surface is itself a separate slice and has not been picked up.
+- The legacy `cautilus mode evaluate --mode comparison` path was the only one that materialized a baseline-cache file. That command was retired with the evaluation-surfaces redesign; rebuilding the cache materialization on the new `cautilus evaluate fixture` surface is itself a separate slice and has not been picked up.
 - The legacy `run-self-dogfood.mjs` script that drove the cache-materialization branch was also retired; the new `dogfood:self:eval` flow does not yet exercise the comparison cache.
 - Zero scenario profile files are checked in across `.agents/`, `fixtures/`, and the repo root.
-- `cautilus review variants` and `cautilus eval evaluate` still contain zero `scenario-history` or `baseline-cache` persistence hooks today, so Part 2 still has no current call site.
+- `cautilus evaluate evaluate review variants` and `cautilus evaluate observation` still contain zero `scenario-history` or `baseline-cache` persistence hooks today, so Part 2 still has no current call site.
 - Live external consumers are not yet tracked in [consumer-readiness.md](../maintainers/consumer-readiness.md); the chatbot, skill-validation, and workflow entries are normalization-family reference fixtures, not live deployments.
 
 Conclusion: the "shared baseline across multiple profiles" problem Part 1 solves has zero occurrences today, and the "other entry points also want history" problem Part 2 solves has zero requesters.
@@ -257,8 +257,8 @@ Master-plan Phase 5 guidance ("dogfood evidence should justify the next seam rat
 Any one of the following is enough to revisit:
 
 1. A live external consumer (not a normalization-family fixture) runs an eval-test path across two or more adapter commands and measures baseline recomputation cost that the shared store would eliminate.
-2. A live consumer or dogfood adapter begins materializing a baseline-cache file from the new `cautilus eval test` surface with a checked-in profile, so the cache path becomes hot enough to matter.
-3. A concrete request to make `review variants` or `skill evaluate` history-aware lands with a named use case (e.g.
+2. A live consumer or dogfood adapter begins materializing a baseline-cache file from the new `cautilus evaluate fixture` surface with a checked-in profile, so the cache path becomes hot enough to matter.
+3. A concrete request to make `evaluate review variants` or `skill evaluate` history-aware lands with a named use case (e.g.
    "remember which skill test cases already passed last week").
 
 ### If/when unlocked — required fixes
@@ -273,7 +273,7 @@ Must fix in the same slice:
 - Document the three entry points in README, SKILL.md, `--help` text (registry usage strings), and this contract in one slice.
   The user-facing requirement is that usage lands in all four surfaces together.
 - Keep `profile` optional for the non-profile entry points.
-  `skill evaluate` and `review variants` must not be forced to declare a profile file just to participate in history.
+  `skill evaluate` and `evaluate review variants` must not be forced to declare a profile file just to participate in history.
 
 Cheap to fold in:
 

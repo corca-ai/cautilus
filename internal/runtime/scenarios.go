@@ -2,14 +2,14 @@ package runtime
 
 import "path/filepath"
 
-// Scenario normalization catalog for `cautilus scenarios`.
+// Scenario normalization catalog for `cautilus discover scenarios`.
 //
 // This table is the user-facing pointer into the three proposal-input
-// normalization families that still feed `scenario normalize`.
+// normalization families that still feed `discover scenarios normalize`.
 // It stays next to the normalize helpers on purpose: adding a new family means
 // updating proposals.go AND this catalog in the same slice.
 // Widening proposals.go without a matching entry here will pass `npm run lint`
-// and silently leave the new family invisible to `cautilus scenarios`.
+// and silently leave the new family invisible to `cautilus discover scenarios`.
 
 const ScenarioCatalogSchema = "cautilus.scenario_normalization_catalog.v1"
 
@@ -44,8 +44,8 @@ func LoadScenarioCatalog() ScenarioCatalog {
 				Family:          "chatbot",
 				Summary:         "Multi-turn conversational behavior inside a single session.",
 				ExampleInput:    "fixtures/scenario-proposals/chatbot-input.json",
-				ExampleInputCLI: "cautilus scenario normalize chatbot --example-input",
-				NextStepCLI:     "cautilus scenario normalize chatbot --input <logs.json>",
+				ExampleInputCLI: "cautilus discover scenarios normalize chatbot --example-input",
+				NextStepCLI:     "cautilus discover scenarios normalize chatbot --input <logs.json>",
 				ContractDoc:     "docs/contracts/chatbot-normalization.md",
 				InputSchema:     "cautilus.chatbot_normalization_inputs.v1",
 				BehaviorFocus:   "follow-up, context recovery, preference retention",
@@ -54,8 +54,8 @@ func LoadScenarioCatalog() ScenarioCatalog {
 				Family:          "skill",
 				Summary:         "Single skill or agent invocation: trigger, task execution, and validation surfaces.",
 				ExampleInput:    "fixtures/scenario-proposals/skill-input.json",
-				ExampleInputCLI: "cautilus scenario normalize skill --example-input",
-				NextStepCLI:     "cautilus scenario normalize skill --input <summary.json>",
+				ExampleInputCLI: "cautilus discover scenarios normalize skill --example-input",
+				NextStepCLI:     "cautilus discover scenarios normalize skill --input <summary.json>",
 				ContractDoc:     "docs/contracts/skill-normalization.md",
 				InputSchema:     "cautilus.skill_normalization_inputs.v2",
 				BehaviorFocus:   "validation, trigger selection, execution quality",
@@ -64,8 +64,8 @@ func LoadScenarioCatalog() ScenarioCatalog {
 				Family:          "workflow",
 				Summary:         "Stateful automation that persists across invocations and must recover from known blockers.",
 				ExampleInput:    "fixtures/scenario-proposals/workflow-input.json",
-				ExampleInputCLI: "cautilus scenario normalize workflow --example-input",
-				NextStepCLI:     "cautilus scenario normalize workflow --input <workflow-runs.json>",
+				ExampleInputCLI: "cautilus discover scenarios normalize workflow --example-input",
+				NextStepCLI:     "cautilus discover scenarios normalize workflow --input <workflow-runs.json>",
 				ContractDoc:     "docs/contracts/workflow-normalization.md",
 				InputSchema:     "cautilus.workflow_normalization_inputs.v1",
 				BehaviorFocus:   "operator workflow recovery",
@@ -77,11 +77,11 @@ func LoadScenarioCatalog() ScenarioCatalog {
 func LoadFirstBoundedRunGuide(repoRoot string) FirstBoundedRunGuide {
 	outputDir := filepath.Join(repoRoot, ".cautilus", "runs", "first-bounded-run")
 	return FirstBoundedRunGuide{
-		Summary:          "Pick one checked-in fixture, then complete one bounded eval test and packet recheck instead of stopping at doctor.",
-		DiscoveryCommand: "cautilus scenarios --json",
+		Summary:          "Pick one checked-in fixture, then complete one bounded evaluate fixture run and packet recheck instead of stopping at doctor.",
+		DiscoveryCommand: "cautilus discover scenarios --json",
 		DecisionLoopCommands: []string{
-			"cautilus eval test --repo-root " + ShellSingleQuote(repoRoot) + " --fixture <fixture.json> --output-dir " + ShellSingleQuote(outputDir),
-			"cautilus eval evaluate --input " + ShellSingleQuote(filepath.Join(outputDir, "eval-observed.json")) + " --output " + ShellSingleQuote(filepath.Join(outputDir, "eval-summary.recheck.json")),
+			"cautilus evaluate fixture --repo-root " + ShellSingleQuote(repoRoot) + " --fixture <fixture.json> --output-dir " + ShellSingleQuote(outputDir),
+			"cautilus evaluate observation --input " + ShellSingleQuote(filepath.Join(outputDir, "eval-observed.json")) + " --output " + ShellSingleQuote(filepath.Join(outputDir, "eval-summary.recheck.json")),
 		},
 		NormalizationFamilies: LoadScenarioCatalog().NormalizationFamilies,
 	}

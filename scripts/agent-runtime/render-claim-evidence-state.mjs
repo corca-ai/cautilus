@@ -396,7 +396,7 @@ export function renderMarkdown(projection) {
 }
 
 function refreshedStatus(args) {
-	const result = spawnSync(args.cautilusBin, ["claim", "show", "--input", args.claims, "--sample-claims", "1"], {
+	const result = spawnSync(args.cautilusBin, ["discover", "claims", "status", "--input", args.claims, "--sample-claims", "1"], {
 		encoding: "utf8",
 	});
 	if (result.status !== 0) {

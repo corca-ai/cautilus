@@ -18,7 +18,7 @@
 - optional `adapter_context`: product-owned adapter identity such as `adapter` or `adapterName` when downstream review or improve bridges must reuse the same adapter without operator restatement
 - optional `telemetry`: wall-clock latency plus any adapter- or provider-owned cost and token metrics
 - optional `telemetry.runtimeFingerprint` signals derived from explicit telemetry; see [runtime-fingerprint-improvement.md](./runtime-fingerprint-improvement.md)
-- optional `runtimeContext` when `cautilus report build --prior-evidence-file <path>` or packet-level `priorEvidence` is provided
+- optional `runtimeContext` when `cautilus evaluate report build --prior-evidence-file <path>` or packet-level `priorEvidence` is provided
 - optional `reasonCodes`: machine-readable report-level outcome classification such as `behavior_regression`, `provider_rate_limit_contamination`, or `infrastructure_failure`
 - optional `warnings`: machine-readable warnings promoted from persisted artifacts when the evidence is contaminated or otherwise narrow
 - `improved`: scenarios or metrics that improved
@@ -39,7 +39,7 @@ The standalone builder should start from an explicit input packet:
 - optional `intentProfile` when present, it must use the product-owned behavior-intent catalog
 - `commands`: explicit mode-to-command mapping
 - optional `commandObservations`: bounded executed-command records
-- optional `adapterContext`: product-owned adapter identity preserved from `eval test` when the run was executed against an explicit adapter path or named adapter
+- optional `adapterContext`: product-owned adapter identity preserved from `evaluate fixture` when the run was executed against an explicit adapter path or named adapter
 - `modeRuns`: checked-in or persisted mode execution records Each mode run may include one `scenarioResults` packet using `cautilus.scenario_results.v1`.
 - optional `improved`, `regressed`, `unchanged`, `noisy`
 - optional `humanReviewFindings`
@@ -72,19 +72,19 @@ Optional fields:
 
 - `path`: the file or artifact path that the reviewer wants to anchor
 
-When an operator wants a minimal valid report-input packet without opening the checked-in fixtures, `cautilus report build --example-input` prints one to stdout.
+When an operator wants a minimal valid report-input packet without opening the checked-in fixtures, `cautilus evaluate report build --example-input` prints one to stdout.
 For a fuller canonical packet, see `./fixtures/reports/report-input.json`.
 
 ## Versioning
 
 `cautilus.report_packet.v2` is the current report contract.
 
-- `review prepare-input`
+- `evaluate review prepare-input`
 - `evidence prepare-input`
 - `improve prepare-input`
 
 all reject legacy `cautilus.report_packet.v1` packets at the boundary.
-Rebuild checked-in examples and consumer artifacts with `cautilus report build` instead of relying on deep fallback behavior.
+Rebuild checked-in examples and consumer artifacts with `cautilus evaluate report build` instead of relying on deep fallback behavior.
 
 ## Telemetry Shape
 
@@ -111,7 +111,7 @@ The same rule applies to runtime identity.
 Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.
 Runtime drift codes should be recorded as runtime context rather than primary behavior-outcome reason codes unless a pinned-runtime policy blocks the run.
 
-For `review variants`, the summary packet should use `cautilus.review_summary.v1`, and each per-variant file should use `cautilus.review_variant_result.v1`.
+For `evaluate review variants`, the summary packet should use `cautilus.review_summary.v1`, and each per-variant file should use `cautilus.review_variant_result.v1`.
 
 The product-owned execution contract is:
 

@@ -16,7 +16,7 @@ func ValidateReportPacket(packet map[string]any, label string) error {
 		return fmt.Errorf("%s must be a JSON object", label)
 	}
 	if schemaVersion, _ := packet["schemaVersion"].(string); schemaVersion == "cautilus.report_packet.v1" {
-		return fmt.Errorf("%s uses legacy schemaVersion cautilus.report_packet.v1; rebuild it as %s with `cautilus report build` and update any checked-in fixtures", label, contracts.ReportPacketSchema)
+		return fmt.Errorf("%s uses legacy schemaVersion cautilus.report_packet.v1; rebuild it as %s with `cautilus evaluate report build` and update any checked-in fixtures", label, contracts.ReportPacketSchema)
 	}
 	if packet["schemaVersion"] != contracts.ReportPacketSchema {
 		return fmt.Errorf("%s must use schemaVersion %s", label, contracts.ReportPacketSchema)

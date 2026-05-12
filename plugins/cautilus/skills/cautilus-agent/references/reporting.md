@@ -75,7 +75,7 @@ The key rule is that cost telemetry must come from an explicit checked-in
 wrapper or output payload. `Cautilus` should not guess cost from opaque CLI
 logs.
 
-For `review variants`, the summary packet should also aggregate any explicit
+For `evaluate review variants`, the summary packet should also aggregate any explicit
 numeric telemetry across variants so operators can inspect one top-level view
 without scraping each verdict file separately.
 

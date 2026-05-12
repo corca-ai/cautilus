@@ -16,7 +16,7 @@ for (const [name, command] of Object.entries(scripts)) {
 		violations.push({
 			name,
 			command,
-			reason: "dogfood script names ending in :live must call `cautilus eval live` so coding-agent messaging proof is not mislabeled as product-runner proof.",
+			reason: "dogfood script names ending in :live must call `cautilus evaluate live` so coding-agent messaging proof is not mislabeled as product-runner proof.",
 		});
 	}
 }

@@ -1,12 +1,12 @@
 # Reporting And Review Variants
 
-Reports and review variants keep evaluator-backed judgment inspectable.
+Reports and evaluate review variants keep evaluator-backed judgment inspectable.
 
 Map keys: `rule.reviewable-artifacts`, `rule.packet-freshness`, `rule.agent-human-resumability`.
 Evidence path: deterministic plus evaluator review.
 Evidence status: open gap.
 Next action: connect reporting packets, review packets, compare questions, schemas, variant verdicts, and rendered summaries to stale-state checks.
-Terms covered here: report packet, HTML report, Markdown report, review packet, review-feedback packet, review variants, compare questions, verdict schema, review-useful disposition, executor variant, numeric telemetry, human-visible failure.
+Terms covered here: report packet, HTML report, Markdown report, review packet, review-feedback packet, evaluate review variants, compare questions, verdict schema, review-useful disposition, executor variant, numeric telemetry, human-visible failure.
 
 ## Maintainer Promise
 
@@ -27,7 +27,7 @@ Cautilus writes machine-readable review packets first and renders readable repor
 - [scripts/agent-runtime/run-review-variant.test.mjs](../../../scripts/agent-runtime/run-review-variant.test.mjs) and [scripts/agent-runtime/run-executor-variants.test.mjs](../../../scripts/agent-runtime/run-executor-variants.test.mjs) cover variant routing so human and machine reviewer flows reach the same durable artifact.
 - [internal/app/cli_smoke_test.go](../../../internal/app/cli_smoke_test.go) `TestCLIReviewFeedbackBuildEmitsSourceBoundLearningPacket` and related invalid-disposition, missing-proposal, and `missing_critical` cases cover the `cautilus.review_feedback.v1` packet contract.
 - [internal/app/cli_smoke_test.go](../../../internal/app/cli_smoke_test.go) `TestCLIReviewFeedbackSummarizeCountsDispositionsByMethodFamily` and `TestCLIReviewFeedbackSummarizeRejectsNonFeedbackPacket` cover selected-packet aggregation for `cautilus.review_feedback_summary.v1`.
-- [docs/guides/cli.md](../../guides/cli.md) documents `cautilus review feedback build` and `cautilus review feedback summarize` as the commands that preserve source review refs, normalized method and proposal fields, review-useful dispositions, and selected-packet summary counts.
+- [docs/guides/cli.md](../../guides/cli.md) documents `cautilus evaluate review feedback build` and `cautilus evaluate review feedback summarize` as the commands that preserve source review refs, normalized method and proposal fields, review-useful dispositions, and selected-packet summary counts.
 
 ## Evidence Gaps
 

@@ -10,8 +10,8 @@ import { writeTextOutput } from "./output-files.mjs";
 export const PACKET_FIRST_FLOW_AUDIT_SCHEMA = "cautilus.packet_first_flow_audit.v1";
 
 const PACKET_READ_PATTERNS = [
-	/\bagent\s+status\b(?=[\s\S]*--json\b)/,
-	/\bclaim\s+show\b(?=[\s\S]*--input\b)/,
+	/\bdoctor\s+status\b(?=[\s\S]*--json\b)/,
+	/\bdiscover\s+claims\s+status\b(?=[\s\S]*--input\b)/,
 	/\.cautilus\/claims\/(?:evidenced-typed-runners|status-summary|latest)\.json\b/,
 	/\beval-summary\.json\b/,
 	/\beval-observed\.json\b/,
@@ -24,8 +24,8 @@ const BROWSER_DELIVERABLE_REQUEST_PATTERN = /browser deliverable|browser view|HT
 const FORBIDDEN_COMMAND_PATTERNS = [
 	["git_add", /\bgit\s+add\b/],
 	["git_commit", /\bgit\s+commit\b/],
-	["apply_review_result", /\bclaim\s+review\s+apply-result\b/],
-	["plan_evals", /\bclaim\s+plan-evals\b/],
+	["apply_review_result", /\bdiscover\s+claims\s+apply-review\b/],
+	["plan_evals", /\bevaluate\s+claims\s+plan\b/],
 	["improve", /\bimprove\b/],
 ];
 
