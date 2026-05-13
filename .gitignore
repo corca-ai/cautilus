@@ -15,3 +15,4 @@ artifacts/self-dogfood/latest/*
 !artifacts/self-dogfood/latest/latest.md
 !artifacts/self-dogfood/latest/index.html
 .charness/retro/
+.charness/hitl/runtime/
