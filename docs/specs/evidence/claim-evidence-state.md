@@ -7,13 +7,13 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:ce2f49b82e29676e48a537734b766b81016f8fe0c001e0a4d961b6bed02b7790
+- Claims hash: sha256:9572f6211ec553e4e4c3e878ed196a6e1822de2c50a49b31c779f4818675eef3
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:9afa163eee1f4c3cb72cd3eb416f9963160fa0359fc358e1dbd69965e373afff
-- Git state: stale; stale=yes
-- Snapshot current commit: e8fefa2258288435c601d40a5f2f70d61843f1ed
-- Packet commit: e1fd0d743623573e68618d6d2fbddb5d47a7718b
-- Changed claim sources: 1
+- Status hash: sha256:8cddff41d7ce237a8b097b75e59b1b5aaf40434a0102063784a4ef440e54e2d7
+- Git state: fresh; stale=no
+- Snapshot current commit: 047d22e3683fa7345c072509560513f50ab7a6ea
+- Packet commit: 047d22e3683fa7345c072509560513f50ab7a6ea
+- Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
 - Status snapshot role: derived command snapshot for git state, action buckets, and cross-cutting signals; its claimSummary must match the claim packet
 
@@ -52,7 +52,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | Claim | Source | Surface | Readiness | Review | Summary |
 | --- | --- | --- | --- | --- | --- |
 | claim-agents-md-26 | AGENTS.md:26 | dev/repo | ready for proof | agent-reviewed | `Cautilus` owns generic intentful behavior evaluation workflow contracts. |
-| claim-agents-md-91 | AGENTS.md:91 | dev/repo | ready for proof | agent-reviewed | When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available. |
+| claim-agents-md-94 | AGENTS.md:94 | dev/repo | ready for proof | agent-reviewed | When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available. |
 | claim-readme-md-106 | README.md:106 | dev/skill | ready for proof | heuristic | `Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen. |
 | claim-readme-md-160 | README.md:160 | dev/skill | ready for proof | agent-reviewed | Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing. |
 | claim-readme-md-164 | README.md:164 | dev/skill | ready for proof | agent-reviewed | The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`. |
