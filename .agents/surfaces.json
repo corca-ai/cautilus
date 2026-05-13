@@ -8,6 +8,8 @@
         ".agents/release-adapter.yaml",
         ".agents/surfaces.json",
         ".github/workflows/release-artifacts.yml",
+        "docs/maintainers/release-boundary.md",
+        "docs/maintainers/releasing.md",
         "install.sh",
         "package.json",
         "package-lock.json",

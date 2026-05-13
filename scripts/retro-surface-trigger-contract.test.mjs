@@ -57,6 +57,12 @@ test("retro auto trigger subscribes to release surface ids instead of duplicatin
 	assert.deepEqual(retroAdapter.auto_session_trigger_path_globs, []);
 	const releaseSurfacePaths = surfacePaths(releaseSurface);
 	const cases = [
+		[".agents/release-adapter.yaml", true],
+		["install.sh", true],
+		["package.json", true],
+		["package-lock.json", true],
+		["docs/maintainers/release-boundary.md", true],
+		["docs/maintainers/releasing.md", true],
 		["scripts/release/verify-public-release.mjs", true],
 		[".github/workflows/release-artifacts.yml", true],
 		[".agents/plugins/marketplace.json", true],
@@ -65,6 +71,7 @@ test("retro auto trigger subscribes to release surface ids instead of duplicatin
 		["plugins/cautilus/.codex-plugin/plugin.json", true],
 		["plugins/cautilus/skills/cautilus-agent/SKILL.md", true],
 		["plugins/cautilus/skills/cautilus-agent/references/skill-testing.md", true],
+		["skills/cautilus-agent/SKILL.md", false],
 		["charness-artifacts/retro/session-release-adapter-rerun.md", false],
 	];
 	for (const [path, expected] of cases) {

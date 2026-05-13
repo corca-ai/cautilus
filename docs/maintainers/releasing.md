@@ -33,6 +33,8 @@ This updates the maintained version surfaces together:
 - [plugins/cautilus/.codex-plugin/plugin.json](../../plugins/cautilus/.codex-plugin/plugin.json)
 - the packaged `plugins/cautilus/skills/cautilus-agent/` tree from the bundled `skills/cautilus-agent/` source (upward relative markdown links inside `.md` files are rewritten so they still resolve to the same repo-root targets from the two-levels-deeper packaged location; sibling `./X` links and non-markdown files stay byte-identical)
 
+The repo-local Codex marketplace at [.agents/plugins/marketplace.json](../../.agents/plugins/marketplace.json) is a release-packaging audit surface, but it has no version field and `release:prepare` does not rewrite it.
+
 2. Run:
 
 ```bash
