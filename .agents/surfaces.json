@@ -17,7 +17,8 @@
         ".agents/plugins/marketplace.json",
         ".claude-plugin/marketplace.json",
         "plugins/cautilus/.claude-plugin/plugin.json",
-        "plugins/cautilus/.codex-plugin/plugin.json"
+        "plugins/cautilus/.codex-plugin/plugin.json",
+        "plugins/cautilus/skills/cautilus-agent/**"
       ],
       "sync_commands": [
         "npm run skills:sync-packaged"

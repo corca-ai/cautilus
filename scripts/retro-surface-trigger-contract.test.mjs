@@ -63,6 +63,8 @@ test("retro auto trigger subscribes to release surface ids instead of duplicatin
 		[".claude-plugin/marketplace.json", true],
 		["plugins/cautilus/.claude-plugin/plugin.json", true],
 		["plugins/cautilus/.codex-plugin/plugin.json", true],
+		["plugins/cautilus/skills/cautilus-agent/SKILL.md", true],
+		["plugins/cautilus/skills/cautilus-agent/references/skill-testing.md", true],
 		["charness-artifacts/retro/session-release-adapter-rerun.md", false],
 	];
 	for (const [path, expected] of cases) {
