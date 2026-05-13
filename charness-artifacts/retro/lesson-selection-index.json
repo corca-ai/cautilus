@@ -11,8 +11,8 @@
     "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
   },
   "as_of_source_date": "2026-05-13",
-  "source_artifact_count": 3,
-  "candidate_count": 38,
+  "source_artifact_count": 4,
+  "candidate_count": 42,
   "top_candidates": [
     {
       "candidate_id": "current_focus:0d9959942f1b",
@@ -673,6 +673,86 @@
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
           "date": "2026-05-08",
           "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "current_focus:23c1d9ac059f",
+      "kind": "current_focus",
+      "lesson": "The session reviewed why the release verifier gaps were found only after a subagent critique rather than during the first hardening pass.",
+      "normalized_key": "the session reviewed why the release verifier gaps were found only after a subagent",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-release-verifier-critique-miss.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-release-verifier-critique-miss.md",
+          "date": null,
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:9ccfb13dae3d",
+      "kind": "next_improvement",
+      "lesson": "Add parity tests when two audit surfaces claim to reject the same class of stale or mutable pointer.",
+      "normalized_key": "add parity tests when two audit surfaces claim to reject the same class of",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-release-verifier-critique-miss.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-release-verifier-critique-miss.md",
+          "date": null,
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:4b3d4e8c629b",
+      "kind": "next_improvement",
+      "lesson": "For release hardening, inspect producer, preflight audit, and post-publish verifier as one contract before closing the slice.",
+      "normalized_key": "for release hardening inspect producer preflight audit and post publish verifier as one contract",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-release-verifier-critique-miss.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-release-verifier-critique-miss.md",
+          "date": null,
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:4fb21f8109b0",
+      "kind": "next_improvement",
+      "lesson": "Treat label-only checks in public artifacts as incomplete unless the value is compared to an independent source.",
+      "normalized_key": "treat label only checks in public artifacts as incomplete unless the value is compared",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-release-verifier-critique-miss.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-release-verifier-critique-miss.md",
+          "date": null,
+          "section": "Next Improvements"
         }
       ]
     },
