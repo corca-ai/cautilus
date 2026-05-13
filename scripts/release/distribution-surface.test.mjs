@@ -98,6 +98,13 @@ test("release workflow attaches provenance attestations for the public binary ma
 	assert.match(workflow, /node \.\/scripts\/release\/verify-public-release\.mjs \\/);
 	assert.match(workflow, /--retry-attempts 10/);
 	assert.match(workflow, /--retry-delay-ms 30000/);
+	assert.match(workflow, /# Cautilus \$\{VERSION\}/);
+	assert.match(workflow, /Public release surface for \$\{VERSION\}\./);
+	assert.match(workflow, /source archive checksum/);
+	assert.match(workflow, /binary artifacts/);
+	assert.match(workflow, /binary checksum manifest/);
+	assert.doesNotMatch(workflow, /charness-artifacts\/release\/latest\.md/);
+	assert.doesNotMatch(workflow, /\brelease\/latest\.md\b/);
 });
 
 test("dead runtime compatibility shims stay deleted", () => {

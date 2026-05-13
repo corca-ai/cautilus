@@ -14,8 +14,8 @@
 
 ## Next-Time Checklist
 
-- Capability: Charness release should add a public-release-notes audit that rejects unverifiable pointers to mutable or stale source-tree records. (source: `charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md`)
-- Capability: Charness release should expose release-state labels in closeout: local prepared, tag pushed, workflow completed, public verified, audit narrative committed. (source: `charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md`)
+- Capability: Charness release should add a public-release-notes audit that rejects unverifiable pointers to mutable or stale source-tree records. Filed as `corca-ai/charness#159`. (source: `charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md`)
+- Capability: Charness release should expose release-state labels in closeout: local prepared, tag pushed, workflow completed, public verified, audit narrative committed. Filed as `corca-ai/charness#159`. (source: `charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md`)
 - Memory: keep the stale release-note pointer debug artifact current so future release work starts from this failure mode. (source: `charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md`)
 - Workflow: before `release:publish`, require the release record or public release notes to be self-contained for the target version. (source: `charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md`)
 

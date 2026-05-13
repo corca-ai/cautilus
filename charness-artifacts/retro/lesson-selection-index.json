@@ -37,7 +37,7 @@
     {
       "candidate_id": "next_improvement:ede792a05044",
       "kind": "next_improvement",
-      "lesson": "Capability: Charness release should add a public-release-notes audit that rejects unverifiable pointers to mutable or stale source-tree records.",
+      "lesson": "Capability: Charness release should add a public-release-notes audit that rejects unverifiable pointers to mutable or stale source-tree records. Filed as `corca-ai/charness#159`.",
       "normalized_key": "capability charness release should add a public release notes audit that rejects unverifiable pointers",
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -57,7 +57,7 @@
     {
       "candidate_id": "next_improvement:d34affd8d0e9",
       "kind": "next_improvement",
-      "lesson": "Capability: Charness release should expose release-state labels in closeout: local prepared, tag pushed, workflow completed, public verified, audit narrative committed.",
+      "lesson": "Capability: Charness release should expose release-state labels in closeout: local prepared, tag pushed, workflow completed, public verified, audit narrative committed. Filed as `corca-ai/charness#159`.",
       "normalized_key": "capability charness release should expose release state labels in closeout local prepared tag pushed",
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -279,7 +279,7 @@
     {
       "candidate_id": "next_improvement:ede792a05044",
       "kind": "next_improvement",
-      "lesson": "Capability: Charness release should add a public-release-notes audit that rejects unverifiable pointers to mutable or stale source-tree records.",
+      "lesson": "Capability: Charness release should add a public-release-notes audit that rejects unverifiable pointers to mutable or stale source-tree records. Filed as `corca-ai/charness#159`.",
       "normalized_key": "capability charness release should add a public release notes audit that rejects unverifiable pointers",
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -299,7 +299,7 @@
     {
       "candidate_id": "next_improvement:d34affd8d0e9",
       "kind": "next_improvement",
-      "lesson": "Capability: Charness release should expose release-state labels in closeout: local prepared, tag pushed, workflow completed, public verified, audit narrative committed.",
+      "lesson": "Capability: Charness release should expose release-state labels in closeout: local prepared, tag pushed, workflow completed, public verified, audit narrative committed. Filed as `corca-ai/charness#159`.",
       "normalized_key": "capability charness release should expose release state labels in closeout local prepared tag pushed",
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",

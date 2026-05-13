@@ -140,6 +140,98 @@ function assertReleaseSurfaceMatches(repoRoot, expectedVersion) {
 	}
 }
 
+function readText(repoRoot, relativePath) {
+	try {
+		return readFileSync(resolve(repoRoot, relativePath), "utf-8");
+	} catch (error) {
+		throw new Error(
+			`release narrative audit requires ${relativePath}: ${
+				error instanceof Error ? error.message : String(error)
+			}`,
+		);
+	}
+}
+
+export class ReleasePublishError extends Error {
+	constructor(message, result, options = {}) {
+		super(message, options);
+		this.name = "ReleasePublishError";
+		this.result = result;
+	}
+}
+
+function releaseRecordDeclarationPattern(tagName) {
+	return new RegExp(`^Released Cautilus \`${tagName.replaceAll(".", "\\.")}\`\\.$`, "m");
+}
+
+function findSourceTreeReleaseRecordPointers(workflow) {
+	const patterns = [
+		/charness-artifacts\/release\/latest\.md/g,
+		/\brelease\/latest\.md\b/g,
+		/\blatest\.md\b[^"\n]*(?:at this tag|release scope|verification notes|release notes)/gi,
+		/\bcat\b[^"\n]*charness-artifacts\/release\/latest\.md/g,
+	];
+	const fragments = [];
+	for (const pattern of patterns) {
+		for (const match of workflow.matchAll(pattern)) {
+			fragments.push(match[0]);
+		}
+	}
+	return [...new Set(fragments)];
+}
+
+export function auditReleaseNarrative(repoRoot, expectedVersion) {
+	const tagName = `v${normalizeVersion(expectedVersion)}`;
+	const releaseRecordPath = "charness-artifacts/release/latest.md";
+	const workflowPath = ".github/workflows/release-artifacts.yml";
+	const releaseRecord = readText(repoRoot, releaseRecordPath);
+	const workflow = readText(repoRoot, workflowPath);
+	const disallowedFragments = findSourceTreeReleaseRecordPointers(workflow);
+	return {
+		tagName,
+		releaseRecordPath,
+		workflowPath,
+		releaseRecordMentionsTarget: releaseRecord.includes(tagName),
+		releaseRecordDeclaresTarget: releaseRecordDeclarationPattern(tagName).test(releaseRecord),
+		releaseRecordHasScope: releaseRecord.includes("## Release Scope"),
+		releaseRecordHasVerification: releaseRecord.includes("## Verification"),
+		publicNotesTemplateSelfContained:
+			workflow.includes('echo "# Cautilus ${VERSION}"') &&
+			workflow.includes('echo "Public release surface for ${VERSION}."') &&
+			workflow.includes("source archive checksum") &&
+			workflow.includes("binary artifacts") &&
+			workflow.includes("binary checksum manifest"),
+		disallowedFragments,
+	};
+}
+
+function assertReleaseNarrativeReady(repoRoot, expectedVersion) {
+	const audit = auditReleaseNarrative(repoRoot, expectedVersion);
+	const problems = [];
+	if (!audit.releaseRecordMentionsTarget) {
+		problems.push(`${audit.releaseRecordPath} does not mention ${audit.tagName}`);
+	}
+	if (!audit.releaseRecordDeclaresTarget) {
+		problems.push(`${audit.releaseRecordPath} does not declare Released Cautilus \`${audit.tagName}\``);
+	}
+	if (!audit.releaseRecordHasScope) {
+		problems.push(`${audit.releaseRecordPath} is missing ## Release Scope`);
+	}
+	if (!audit.releaseRecordHasVerification) {
+		problems.push(`${audit.releaseRecordPath} is missing ## Verification`);
+	}
+	if (!audit.publicNotesTemplateSelfContained) {
+		problems.push(`${audit.workflowPath} does not generate self-contained public release notes`);
+	}
+	for (const fragment of audit.disallowedFragments) {
+		problems.push(`${audit.workflowPath} contains unverifiable release-note pointer: ${fragment}`);
+	}
+	if (problems.length > 0) {
+		throw new Error(`release narrative audit failed:\n${problems.join("\n")}`);
+	}
+	return audit;
+}
+
 function assertTagAvailable(repoRoot, remote, tagName) {
 	if (localTagSha(repoRoot, tagName)) {
 		throw new Error(`tag ${tagName} already exists locally`);
@@ -147,6 +239,10 @@ function assertTagAvailable(repoRoot, remote, tagName) {
 	if (remoteTagExists(repoRoot, remote, tagName)) {
 		throw new Error(`tag ${tagName} already exists on ${remote}`);
 	}
+}
+
+function throwReleasePublishError(error, payload) {
+	throw new ReleasePublishError(error instanceof Error ? error.message : String(error), payload, { cause: error });
 }
 
 function assertRemoteRef(repoRoot, remote, ref, expectedSha, label) {
@@ -191,8 +287,17 @@ export function publishPreparedRelease({ repoRoot, version, remote = "origin", t
 	const publishBranch = targetBranch || branch;
 	const currentHead = headSha(repoRoot);
 	assertReleaseSurfaceMatches(repoRoot, expectedVersion);
+	const narrativeAudit = assertReleaseNarrativeReady(repoRoot, expectedVersion);
 	const tagName = `v${expectedVersion}`;
 	assertTagAvailable(repoRoot, remote, tagName);
+	const releaseState = {
+		localPrepared: "verified",
+		auditNarrativeCommitted: "verified",
+		branchPushed: dryRun ? "not-started" : "pending",
+		tagPushed: dryRun ? "not-started" : "pending",
+		workflowPublication: dryRun ? "not-started" : "pending-tag-workflow",
+		publicReleaseVerification: dryRun ? "not-started" : "pending-tag-workflow",
+	};
 	const payload = {
 		version: expectedVersion,
 		tagName,
@@ -203,36 +308,79 @@ export function publishPreparedRelease({ repoRoot, version, remote = "origin", t
 		branchRefspec: `HEAD:refs/heads/${publishBranch}`,
 		headSha: currentHead,
 		dryRun,
+		releaseState,
+		narrativeAudit,
 	};
 	if (dryRun) {
 		return payload;
 	}
-	runGit(repoRoot, ["push", remote, `HEAD:refs/heads/${publishBranch}`]);
-	assertRemoteRef(repoRoot, remote, `refs/heads/${publishBranch}`, currentHead, `remote ${remote}/${publishBranch}`);
-	runGit(repoRoot, ["tag", tagName, currentHead]);
-	const createdTagSha = localTagSha(repoRoot, tagName);
-	if (createdTagSha !== currentHead) {
-		throw new Error(`tag ${tagName} does not point at HEAD ${currentHead}`);
-	}
-	runGit(repoRoot, ["push", remote, `refs/tags/${tagName}`]);
-	assertRemoteRef(repoRoot, remote, `refs/tags/${tagName}`, currentHead, `remote tag ${tagName}`);
+	pushBranchOrThrow({ repoRoot, remote, publishBranch, currentHead, releaseState, payload });
+	pushTagOrThrow({ repoRoot, remote, tagName, currentHead, releaseState, payload });
 	return payload;
 }
 
-function renderText(result) {
+function pushBranchOrThrow({ repoRoot, remote, publishBranch, currentHead, releaseState, payload }) {
+	try {
+		runGit(repoRoot, ["push", remote, `HEAD:refs/heads/${publishBranch}`]);
+		assertRemoteRef(repoRoot, remote, `refs/heads/${publishBranch}`, currentHead, `remote ${remote}/${publishBranch}`);
+		releaseState.branchPushed = "verified";
+	} catch (error) {
+		releaseState.branchPushed = "failed";
+		throwReleasePublishError(error, payload);
+	}
+}
+
+function pushTagOrThrow({ repoRoot, remote, tagName, currentHead, releaseState, payload }) {
+	try {
+		runGit(repoRoot, ["tag", tagName, currentHead]);
+		const createdTagSha = localTagSha(repoRoot, tagName);
+		if (createdTagSha !== currentHead) {
+			throw new Error(`tag ${tagName} does not point at HEAD ${currentHead}`);
+		}
+		runGit(repoRoot, ["push", remote, `refs/tags/${tagName}`]);
+		assertRemoteRef(repoRoot, remote, `refs/tags/${tagName}`, currentHead, `remote tag ${tagName}`);
+		releaseState.tagPushed = "verified";
+	} catch (error) {
+		releaseState.tagPushed = "failed";
+		throwReleasePublishError(error, payload);
+	}
+}
+
+function renderStateLines(result) {
 	return [
-		`Prepared release publish for ${result.tagName}${result.dryRun ? " (dry-run)" : ""}.`,
 		`- branch: ${result.branch}`,
 		`- target branch: ${result.targetBranch}`,
 		`- branch refspec: ${result.branchRefspec}`,
 		`- remote: ${result.remote}`,
 		`- head: ${result.headSha}`,
+		`- local prepared: ${result.releaseState.localPrepared}`,
+		`- audit narrative committed: ${result.releaseState.auditNarrativeCommitted}`,
+		`- branch pushed: ${result.releaseState.branchPushed}`,
+		`- tag pushed: ${result.releaseState.tagPushed}`,
+		`- workflow publication: ${result.releaseState.workflowPublication}`,
+		`- public release verification: ${result.releaseState.publicReleaseVerification}`,
+	];
+}
+
+function renderText(result) {
+	return [
+		`Prepared release publish for ${result.tagName}${result.dryRun ? " (dry-run)" : ""}.`,
+		...renderStateLines(result),
+	].join("\n");
+}
+
+function renderFailureText(error) {
+	return [
+		error.message,
+		"Release state at failure:",
+		...renderStateLines(error.result),
 	].join("\n");
 }
 
 export function main(argv = process.argv.slice(2)) {
+	let options = null;
 	try {
-		const options = parseArgs(argv);
+		options = parseArgs(argv);
 		const result = publishPreparedRelease(options);
 		if (options.json) {
 			process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
@@ -240,6 +388,14 @@ export function main(argv = process.argv.slice(2)) {
 		}
 		process.stdout.write(`${renderText(result)}\n`);
 	} catch (error) {
+		if (error instanceof ReleasePublishError) {
+			if (options?.json) {
+				process.stderr.write(`${JSON.stringify({ ok: false, error: error.message, ...error.result }, null, 2)}\n`);
+			} else {
+				process.stderr.write(`${renderFailureText(error)}\n`);
+			}
+			process.exit(1);
+		}
 		process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
 		process.exit(1);
 	}

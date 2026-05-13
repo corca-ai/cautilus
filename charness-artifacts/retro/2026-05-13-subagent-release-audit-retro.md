@@ -46,7 +46,9 @@ The release completed, but the process exposed a stale public release-note point
 - Workflow: before `release:publish`, require the release record or public release notes to be self-contained for the target version.
 - Workflow: closeout should name dirty worktree state explicitly after any post-publish correction, even when the public release itself is already valid.
 - Capability: Charness release should add a public-release-notes audit that rejects unverifiable pointers to mutable or stale source-tree records.
+  Filed as `corca-ai/charness#159`.
 - Capability: Charness release should expose release-state labels in closeout: local prepared, tag pushed, workflow completed, public verified, audit narrative committed.
+  Filed as `corca-ai/charness#159`.
 - Memory: keep the stale release-note pointer debug artifact current so future release work starts from this failure mode.
 
 ## Persisted

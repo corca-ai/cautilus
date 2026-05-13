@@ -48,13 +48,18 @@ cautilus --version
 git commit -am "Prepare v<next-version> release"
 ```
 
+Before publishing, make sure [charness-artifacts/release/latest.md](../../charness-artifacts/release/latest.md) already mentions the target tag and includes release scope plus verification context.
+The publish helper audits this narrative surface together with the public release-note workflow template, so a stale release record or a release-note pointer back to mutable tagged source context blocks tagging.
+
 4. Publish the release ref in one ordered helper:
 
 ```bash
 npm run release:publish -- --version <next-version>
 ```
 
-This helper refuses a dirty worktree, verifies the checked-in release surface already matches the target version, pushes `HEAD` to the target branch first, verifies the remote branch target, then creates `v<version>` at `HEAD`, verifies both local and remote tag targets, and pushes only that tag.
+This helper refuses a dirty worktree, verifies the checked-in release surface already matches the target version, verifies the release narrative is target-specific and the public release-note template is self-contained, pushes `HEAD` to the target branch first, verifies the remote branch target, then creates `v<version>` at `HEAD`, verifies both local and remote tag targets, and pushes only that tag.
+Its JSON and text output separate release states: `localPrepared`, `auditNarrativeCommitted`, `branchPushed`, `tagPushed`, `workflowPublication`, and `publicReleaseVerification`.
+If a later publish step fails after an earlier step was verified, the helper reports the same release-state ledger on failure so the operator can see whether the branch, tag, workflow, or public release boundary is still open.
 Do not replace it with ad-hoc parallel `git commit` / `git tag` / `git push --tags` invocations.
 Use `--target-branch main` when publishing from a prepared release branch or detached release worktree that should update `main`.
 
