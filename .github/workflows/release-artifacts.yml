@@ -55,7 +55,7 @@ jobs:
           {
             echo "# Cautilus ${VERSION}"
             echo
-            echo "Operator-facing release scope and verification notes are recorded in \`charness-artifacts/release/latest.md\` at this tag."
+            echo "Public release surface for ${VERSION}."
             echo
             echo "- source archive checksum: \`${SHA256}\`"
             echo "- binary artifacts:"

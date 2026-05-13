@@ -159,11 +159,19 @@ function normalizeContent(content) {
 function buildReleaseNotesExpectations({ version, binaryAssets }) {
 	return [
 		`# Cautilus ${version}`,
+		`Public release surface for ${version}.`,
 		"- source archive checksum:",
 		"- binary artifacts:",
 		...binaryAssets.map((asset) => `\`${asset}\``),
 		`- binary checksum manifest: \`cautilus-${version}-checksums.txt\``,
 	];
+}
+
+function findDisallowedReleaseNotesFragments(notesText) {
+	const disallowed = [
+		"`charness-artifacts/release/latest.md` at this tag",
+	];
+	return disallowed.filter((fragment) => notesText.includes(fragment));
 }
 
 function summarizeText(result) {
@@ -210,6 +218,7 @@ function createResult({ version, repo }) {
 		releaseNotes: {
 			ok: false,
 			missingExpectations: [],
+			disallowedFragments: [],
 		},
 	};
 }
@@ -282,12 +291,22 @@ async function verifyReleaseNotes({ result, version, assetMap, fetchImplementati
 		version,
 		binaryAssets: expectedBinaryAssets(version),
 	});
+	result.releaseNotes.disallowedFragments = findDisallowedReleaseNotesFragments(notesText);
 	result.releaseNotes.missingExpectations = expectations.filter((fragment) => !notesText.includes(fragment));
-	result.releaseNotes.ok = result.releaseNotes.missingExpectations.length === 0;
+	result.releaseNotes.ok =
+		result.releaseNotes.missingExpectations.length === 0 &&
+		result.releaseNotes.disallowedFragments.length === 0;
 	if (!result.releaseNotes.ok) {
-		result.problems.push(
-			`release notes are missing expected fragments: ${result.releaseNotes.missingExpectations.join(" | ")}`,
-		);
+		if (result.releaseNotes.missingExpectations.length > 0) {
+			result.problems.push(
+				`release notes are missing expected fragments: ${result.releaseNotes.missingExpectations.join(" | ")}`,
+			);
+		}
+		if (result.releaseNotes.disallowedFragments.length > 0) {
+			result.problems.push(
+				`release notes contain unverifiable source-tree pointers: ${result.releaseNotes.disallowedFragments.join(" | ")}`,
+			);
+		}
 	}
 }
 
