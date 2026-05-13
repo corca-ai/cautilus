@@ -11,8 +11,8 @@
     "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
   },
   "as_of_source_date": "2026-05-13",
-  "source_artifact_count": 4,
-  "candidate_count": 42,
+  "source_artifact_count": 5,
+  "candidate_count": 46,
   "top_candidates": [
     {
       "candidate_id": "current_focus:0d9959942f1b",
@@ -677,6 +677,26 @@
       ]
     },
     {
+      "candidate_id": "current_focus:2ba51ea6957d",
+      "kind": "current_focus",
+      "lesson": "The improved retro adapter was rerun against the release hardening paths after adding `release-packaging` to `auto_session_trigger_surfaces`.",
+      "normalized_key": "the improved retro adapter was rerun against the release hardening paths after adding release",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-release-adapter-rerun.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-release-adapter-rerun.md",
+          "date": null,
+          "section": "Context"
+        }
+      ]
+    },
+    {
       "candidate_id": "current_focus:23c1d9ac059f",
       "kind": "current_focus",
       "lesson": "The session reviewed why the release verifier gaps were found only after a subagent critique rather than during the first hardening pass.",
@@ -737,6 +757,26 @@
       ]
     },
     {
+      "candidate_id": "next_improvement:41dcc4da27b1",
+      "kind": "next_improvement",
+      "lesson": "Keep release-related trigger scope on the repo surface manifest instead of duplicating path lists in the retro adapter.",
+      "normalized_key": "keep release related trigger scope on the repo surface manifest instead of duplicating path",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-release-adapter-rerun.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-release-adapter-rerun.md",
+          "date": null,
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
       "candidate_id": "next_improvement:4fb21f8109b0",
       "kind": "next_improvement",
       "lesson": "Treat label-only checks in public artifacts as incomplete unless the value is compared to an independent source.",
@@ -751,6 +791,46 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/session-release-verifier-critique-miss.md",
+          "date": null,
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:437cf1e4f209",
+      "kind": "next_improvement",
+      "lesson": "Treat `release-packaging` as a repeat-trap seam for producer, preflight, and public verifier parity.",
+      "normalized_key": "treat release packaging as a repeat trap seam for producer preflight and public verifier",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-release-adapter-rerun.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-release-adapter-rerun.md",
+          "date": null,
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:9850aee423f5",
+      "kind": "next_improvement",
+      "lesson": "When `check_auto_trigger.py` returns `triggered: true`, run a short session retro before closeout.",
+      "normalized_key": "when check auto trigger py returns triggered true run a short session retro before",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-release-adapter-rerun.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-release-adapter-rerun.md",
           "date": null,
           "section": "Next Improvements"
         }
