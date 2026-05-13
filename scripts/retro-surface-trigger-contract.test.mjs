@@ -49,7 +49,7 @@ test("retro auto trigger subscribes to release surface ids instead of duplicatin
 	const releaseSurface = surfaceForId(surfaceManifest.surfaces, "release-packaging");
 	const triggerSurfaces = retroAdapter.auto_session_trigger_surfaces || [];
 
-	assert.equal(triggerSurfaces.includes("release-packaging"), true);
+	assert.deepEqual(triggerSurfaces, ["release-packaging"]);
 	assert.deepEqual(
 		triggerSurfaces.filter((surfaceId) => !surfaceManifest.surfaces.some((surface) => surface.surface_id === surfaceId)),
 		[],
@@ -59,6 +59,8 @@ test("retro auto trigger subscribes to release surface ids instead of duplicatin
 	const cases = [
 		["scripts/release/verify-public-release.mjs", true],
 		[".github/workflows/release-artifacts.yml", true],
+		[".claude-plugin/marketplace.json", true],
+		["plugins/cautilus/.claude-plugin/plugin.json", true],
 		["plugins/cautilus/.codex-plugin/plugin.json", true],
 		["charness-artifacts/retro/session-release-adapter-rerun.md", false],
 	];
