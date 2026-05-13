@@ -14,6 +14,7 @@
         "scripts/release/**"
       ],
       "derived_paths": [
+        ".agents/plugins/marketplace.json",
         ".claude-plugin/marketplace.json",
         "plugins/cautilus/.claude-plugin/plugin.json",
         "plugins/cautilus/.codex-plugin/plugin.json"

@@ -59,6 +59,7 @@ test("retro auto trigger subscribes to release surface ids instead of duplicatin
 	const cases = [
 		["scripts/release/verify-public-release.mjs", true],
 		[".github/workflows/release-artifacts.yml", true],
+		[".agents/plugins/marketplace.json", true],
 		[".claude-plugin/marketplace.json", true],
 		["plugins/cautilus/.claude-plugin/plugin.json", true],
 		["plugins/cautilus/.codex-plugin/plugin.json", true],
