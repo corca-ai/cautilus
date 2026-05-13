@@ -1,7 +1,7 @@
 {
   "name": "cautilus",
   "private": true,
-  "version": "0.15.3",
+  "version": "0.15.4",
   "type": "module",
   "description": "Adapter-driven intentful behavior evaluation toolkit",
   "engines": {
@@ -41,7 +41,7 @@
     "consumer:onboard:smoke": "node scripts/on-demand/smoke-external-consumer.mjs",
     "skills:sync-packaged": "node scripts/release/sync-packaged-skill.mjs",
     "release:claim-freshness": "node scripts/release/check-claim-freshness.mjs",
-    "release:prepare": "npm run skills:sync-packaged && node scripts/release/bump-version.mjs && npm run release:claim-freshness",
+    "release:prepare": "node scripts/release/prepare-release.mjs",
     "release:publish": "node scripts/release/publish-release.mjs",
     "release:smoke-install": "node scripts/release/run-install-smoke.mjs",
     "consumer:starters:smoke": "node scripts/on-demand/smoke-starter-kits.mjs",
