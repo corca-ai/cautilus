@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 
 import { listReleaseTargets, binaryAssetName } from "./binary-assets.mjs";
+import { findSourceTreeReleaseRecordPointers } from "./release-notes-audit.mjs";
 import { resolveReleaseTargets } from "./resolve-release-targets.mjs";
 
 function usage(exitCode = 0) {
@@ -167,13 +168,6 @@ function buildReleaseNotesExpectations({ version, binaryAssets }) {
 	];
 }
 
-function findDisallowedReleaseNotesFragments(notesText) {
-	const disallowed = [
-		"`charness-artifacts/release/latest.md` at this tag",
-	];
-	return disallowed.filter((fragment) => notesText.includes(fragment));
-}
-
 function summarizeText(result) {
 	const lines = [];
 	lines.push(`release: ${result.version} (${result.repo})`);
@@ -219,6 +213,11 @@ function createResult({ version, repo }) {
 			ok: false,
 			missingExpectations: [],
 			disallowedFragments: [],
+			sourceArchiveChecksum: {
+				expected: "",
+				actual: "",
+				ok: false,
+			},
 		},
 	};
 }
@@ -264,6 +263,29 @@ async function readArchiveChecksum({ result, version, assetMap, fetchImplementat
 	return archiveSha256;
 }
 
+function extractReleaseNotesArchiveChecksum(notesText) {
+	const match = String(notesText || "").match(/- source archive checksum:\s*`?([a-f0-9]{64})`?/i);
+	return match ? match[1].toLowerCase() : "";
+}
+
+function appendReleaseNotesProblems({ result, archiveChecksumMismatch }) {
+	if (result.releaseNotes.missingExpectations.length > 0) {
+		result.problems.push(
+			`release notes are missing expected fragments: ${result.releaseNotes.missingExpectations.join(" | ")}`,
+		);
+	}
+	if (result.releaseNotes.disallowedFragments.length > 0) {
+		result.problems.push(
+			`release notes contain unverifiable source-tree pointers: ${result.releaseNotes.disallowedFragments.join(" | ")}`,
+		);
+	}
+	if (archiveChecksumMismatch) {
+		result.problems.push(
+			`release notes source archive checksum does not match checksum asset: expected ${result.releaseNotes.sourceArchiveChecksum.expected}, found ${result.releaseNotes.sourceArchiveChecksum.actual || "<missing>"}`,
+		);
+	}
+}
+
 async function verifyChecksumManifest({ result, version, assetMap, fetchImplementation }) {
 	const checksumAsset = assetMap.get(`cautilus-${version}-checksums.txt`);
 	if (!checksumAsset?.browser_download_url) {
@@ -281,32 +303,33 @@ async function verifyChecksumManifest({ result, version, assetMap, fetchImplemen
 	}
 }
 
-async function verifyReleaseNotes({ result, version, assetMap, fetchImplementation }) {
+async function verifyReleaseNotes({ result, version, assetMap, archiveSha256, fetchImplementation }) {
 	const notesAsset = assetMap.get(`release-notes-${version}.md`);
 	if (!notesAsset?.browser_download_url) {
 		return;
 	}
 	const notesText = await fetchText(notesAsset.browser_download_url, fetchImplementation);
+	const expectedArchiveChecksum = String(archiveSha256 || "").toLowerCase();
+	const actualArchiveChecksum = extractReleaseNotesArchiveChecksum(notesText);
 	const expectations = buildReleaseNotesExpectations({
 		version,
 		binaryAssets: expectedBinaryAssets(version),
 	});
-	result.releaseNotes.disallowedFragments = findDisallowedReleaseNotesFragments(notesText);
+	result.releaseNotes.disallowedFragments = findSourceTreeReleaseRecordPointers(notesText);
 	result.releaseNotes.missingExpectations = expectations.filter((fragment) => !notesText.includes(fragment));
+	result.releaseNotes.sourceArchiveChecksum = {
+		expected: expectedArchiveChecksum,
+		actual: actualArchiveChecksum,
+		ok: Boolean(expectedArchiveChecksum) && actualArchiveChecksum === expectedArchiveChecksum,
+	};
+	const archiveChecksumMismatch =
+		Boolean(expectedArchiveChecksum) && actualArchiveChecksum !== expectedArchiveChecksum;
 	result.releaseNotes.ok =
 		result.releaseNotes.missingExpectations.length === 0 &&
-		result.releaseNotes.disallowedFragments.length === 0;
+		result.releaseNotes.disallowedFragments.length === 0 &&
+		!archiveChecksumMismatch;
 	if (!result.releaseNotes.ok) {
-		if (result.releaseNotes.missingExpectations.length > 0) {
-			result.problems.push(
-				`release notes are missing expected fragments: ${result.releaseNotes.missingExpectations.join(" | ")}`,
-			);
-		}
-		if (result.releaseNotes.disallowedFragments.length > 0) {
-			result.problems.push(
-				`release notes contain unverifiable source-tree pointers: ${result.releaseNotes.disallowedFragments.join(" | ")}`,
-			);
-		}
+		appendReleaseNotesProblems({ result, archiveChecksumMismatch });
 	}
 }
 
@@ -321,9 +344,9 @@ export async function verifyPublicRelease(
 	);
 	applyReleaseMetadata(result, release);
 	const assetMap = collectReleaseAssets(result, release);
-	await readArchiveChecksum({ result, version, assetMap, fetchImplementation });
+	const archiveSha256 = await readArchiveChecksum({ result, version, assetMap, fetchImplementation });
 	await verifyChecksumManifest({ result, version, assetMap, fetchImplementation });
-	await verifyReleaseNotes({ result, version, assetMap, fetchImplementation });
+	await verifyReleaseNotes({ result, version, assetMap, archiveSha256, fetchImplementation });
 	result.ok = result.problems.length === 0;
 	return result;
 }

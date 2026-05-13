@@ -78,7 +78,7 @@ The helper checks the tagged GitHub release for:
 
 - the expected binary asset matrix
 - the release checksum assets
-- the checked-in release notes asset
+- the checked-in release notes asset, including source archive checksum agreement and source-tree release-record pointer rejection
 
 For eventual-consistency windows outside CI, the helper also supports bounded retries:
 

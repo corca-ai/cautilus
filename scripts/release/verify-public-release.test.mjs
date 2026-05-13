@@ -126,9 +126,14 @@ test("verifyPublicRelease validates the public release surface", async () => {
 	assert.deepEqual(result.assets.missing, []);
 	assert.equal(result.checksums.ok, true);
 	assert.equal(result.releaseNotes.ok, true);
+	assert.deepEqual(result.releaseNotes.sourceArchiveChecksum, {
+		expected: sha256,
+		actual: sha256,
+		ok: true,
+	});
 });
 
-test("verifyPublicRelease rejects release notes that delegate scope to an unverifiable tag tree pointer", async () => {
+test("verifyPublicRelease rejects release notes that delegate scope to source-tree release records", async () => {
 	const version = "v1.2.4";
 	const repo = "corca-ai/cautilus";
 	const sha256 = "c".repeat(64);
@@ -140,7 +145,7 @@ test("verifyPublicRelease rejects release notes that delegate scope to an unveri
 	const notes = [
 		`# Cautilus ${version}`,
 		"",
-		"Operator-facing release scope and verification notes are recorded in `charness-artifacts/release/latest.md` at this tag.",
+		"See charness-artifacts/release/latest.md for verification notes.",
 		"",
 		`- source archive checksum: \`${sha256}\``,
 		"- binary artifacts:",
@@ -173,6 +178,59 @@ test("verifyPublicRelease rejects release notes that delegate scope to an unveri
 	assert.equal(result.ok, false);
 	assert.equal(result.releaseNotes.ok, false);
 	assert.match(result.problems.join("\n"), /unverifiable source-tree pointers/);
+});
+
+test("verifyPublicRelease rejects release notes with a mismatched source archive checksum", async () => {
+	const version = "v1.2.5";
+	const repo = "corca-ai/cautilus";
+	const sha256 = "d".repeat(64);
+	const wrongSha256 = "e".repeat(64);
+	const binaryAssets = expectedBinaryAssets(version);
+	const releaseAssets = expectedReleaseAssets(version).map((name) => ({
+		name,
+		browser_download_url: `https://downloads.example/${name}`,
+	}));
+	const notes = [
+		`# Cautilus ${version}`,
+		"",
+		`Public release surface for ${version}.`,
+		"",
+		`- source archive checksum: \`${wrongSha256}\``,
+		"- binary artifacts:",
+		...binaryAssets.map((asset) => `  - \`${asset}\``),
+		`- binary checksum manifest: \`cautilus-${version}-checksums.txt\``,
+	].join("\n");
+	const checksums = binaryAssets
+		.map((asset, index) => `${String(index + 6).repeat(64)}  dist/${asset}`)
+		.join("\n");
+	const fetchMap = new Map([
+		[
+			`https://api.github.com/repos/${repo}/releases/tags/${version}`,
+			jsonResponse({
+				html_url: `https://github.com/${repo}/releases/tag/${version}`,
+				draft: false,
+				prerelease: false,
+				assets: releaseAssets,
+			}),
+		],
+		[`https://downloads.example/cautilus-${version}.sha256`, textResponse(`${sha256}\n`)],
+		[`https://downloads.example/cautilus-${version}-checksums.txt`, textResponse(`${checksums}\n`)],
+		[`https://downloads.example/release-notes-${version}.md`, textResponse(notes)],
+	]);
+
+	const result = await verifyPublicRelease(
+		{ version, repo },
+		{ fetchImplementation: createFetchStub(fetchMap) },
+	);
+
+	assert.equal(result.ok, false);
+	assert.equal(result.releaseNotes.ok, false);
+	assert.deepEqual(result.releaseNotes.sourceArchiveChecksum, {
+		expected: sha256,
+		actual: wrongSha256,
+		ok: false,
+	});
+	assert.match(result.problems.join("\n"), /source archive checksum does not match checksum asset/);
 });
 
 test("verifyPublicRelease reports missing assets", async () => {

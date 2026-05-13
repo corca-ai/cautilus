@@ -5,6 +5,7 @@ import { pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 
 import { normalizeVersion } from "./bump-version.mjs";
+import { findSourceTreeReleaseRecordPointers } from "./release-notes-audit.mjs";
 
 function usage(exitCode = 0) {
 	const stream = exitCode === 0 ? process.stdout : process.stderr;
@@ -162,22 +163,6 @@ export class ReleasePublishError extends Error {
 
 function releaseRecordDeclarationPattern(tagName) {
 	return new RegExp(`^Released Cautilus \`${tagName.replaceAll(".", "\\.")}\`\\.$`, "m");
-}
-
-function findSourceTreeReleaseRecordPointers(workflow) {
-	const patterns = [
-		/charness-artifacts\/release\/latest\.md/g,
-		/\brelease\/latest\.md\b/g,
-		/\blatest\.md\b[^"\n]*(?:at this tag|release scope|verification notes|release notes)/gi,
-		/\bcat\b[^"\n]*charness-artifacts\/release\/latest\.md/g,
-	];
-	const fragments = [];
-	for (const pattern of patterns) {
-		for (const match of workflow.matchAll(pattern)) {
-			fragments.push(match[0]);
-		}
-	}
-	return [...new Set(fragments)];
 }
 
 export function auditReleaseNarrative(repoRoot, expectedVersion) {
