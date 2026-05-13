@@ -33,6 +33,10 @@ function pathMatchesAny(path, patterns) {
 	return patterns.some((pattern) => globToRegex(pattern).test(path));
 }
 
+function surfacePaths(surface) {
+	return [...(surface.source_paths || []), ...(surface.derived_paths || [])];
+}
+
 function surfaceForId(surfaces, surfaceId) {
 	const surface = surfaces.find((candidate) => candidate.surface_id === surfaceId);
 	assert.ok(surface, `expected .agents/surfaces.json to declare ${surfaceId}`);
@@ -43,19 +47,22 @@ test("retro auto trigger subscribes to release surface ids instead of duplicatin
 	const retroAdapter = loadFile(join(REPO_ROOT, ".agents", "retro-adapter.yaml"));
 	const surfaceManifest = JSON.parse(readFileSync(join(REPO_ROOT, ".agents", "surfaces.json"), "utf-8"));
 	const releaseSurface = surfaceForId(surfaceManifest.surfaces, "release-packaging");
+	const triggerSurfaces = retroAdapter.auto_session_trigger_surfaces || [];
 
-	assert.deepEqual(retroAdapter.auto_session_trigger_surfaces, ["release-packaging"]);
+	assert.equal(triggerSurfaces.includes("release-packaging"), true);
+	assert.deepEqual(
+		triggerSurfaces.filter((surfaceId) => !surfaceManifest.surfaces.some((surface) => surface.surface_id === surfaceId)),
+		[],
+	);
 	assert.deepEqual(retroAdapter.auto_session_trigger_path_globs, []);
-	assert.equal(
-		pathMatchesAny("scripts/release/verify-public-release.mjs", releaseSurface.source_paths),
-		true,
-	);
-	assert.equal(
-		pathMatchesAny(".github/workflows/release-artifacts.yml", releaseSurface.source_paths),
-		true,
-	);
-	assert.equal(
-		pathMatchesAny("charness-artifacts/retro/session-release-adapter-rerun.md", releaseSurface.source_paths),
-		false,
-	);
+	const releaseSurfacePaths = surfacePaths(releaseSurface);
+	const cases = [
+		["scripts/release/verify-public-release.mjs", true],
+		[".github/workflows/release-artifacts.yml", true],
+		["plugins/cautilus/.codex-plugin/plugin.json", true],
+		["charness-artifacts/retro/session-release-adapter-rerun.md", false],
+	];
+	for (const [path, expected] of cases) {
+		assert.equal(pathMatchesAny(path, releaseSurfacePaths), expected, path);
+	}
 });
