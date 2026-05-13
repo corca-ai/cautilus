@@ -171,6 +171,7 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 |---|---|---|---|---|
 | 4.1 | `npm run dogfood:self` | `artifacts/self-dogfood/eval/latest/eval-summary.json` 생성, `recommendation=accept-now`, `evaluationCounts.failed=0`, `evaluationCounts.blocked=0`, `evaluationCounts.passed=evaluationCounts.total` | 인간 판단 | LLM |
 | 4.2 | `npm run dogfood:self:eval` | `artifacts/self-dogfood/eval/latest/eval-summary.json` 생성, `recommendation=accept-now`, `evaluationCounts.failed=0`, `evaluationCounts.blocked=0`, `evaluationCounts.passed=evaluationCounts.total` | 인간 판단 | LLM |
+| 4.3 | `npm run dogfood:subagent-execution-proof` | Codex와 Claude 산출물 각각에 `eval-summary.json` 생성, `recommendation=accept-now`, `audit.json`의 `status=passed`, `proofCount>0` | 인간 판단 | LLM |
 
 **통과 판정 기준 상세:**
 
@@ -178,6 +179,8 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 - `dogfood:self:eval`은 현재 checked-in `cautilus.evaluation_input.v1` fixture(`fixtures/eval/dev/repo/`)를 재실행해
   `eval-summary.json`을 갱신해야 한다.
   `recommendation=accept-now`와 `evaluationCounts.failed=0`, `evaluationCounts.blocked=0`, `evaluationCounts.passed=evaluationCounts.total`이 기본 통과선이다.
+- `dogfood:subagent-execution-proof`은 checked-in `dev / skill` fixture(`fixtures/eval/dev/skill/cautilus-subagent-execution-proof.fixture.json`)를 Codex와 Claude live runtime으로 실행한다.
+  이 gate는 consumer fixture template 이 아니라 shared `subagent_execution_proof` 감사 계약의 제품 repo dogfood 다.
 - broader report/review self-dogfood와 experiments runner는 `mode evaluate` cut 이후 아직 새 eval surface 위로 재구축되지 않았다.
 
 **HTML 뷰만 갱신 (LLM 호출 없음):**

@@ -125,6 +125,21 @@ The canonical claim is the same as `dogfood:self`: the shipped `cautilus evaluat
 The broader report/review self-dogfood and tuning-experiment runners were retired with `mode evaluate`.
 Rebuild them on the eval-test surface before restoring commands that claim report/review or experiment coverage.
 
+When a change touches subagent orchestration, fanout workers, or the `subagent_execution_proof` audit, run the live-runtime subagent dogfood gate:
+
+```bash
+npm run dogfood:subagent-execution-proof
+```
+
+Use the backend-specific wrappers while iterating:
+
+```bash
+npm run dogfood:subagent-execution-proof:codex
+npm run dogfood:subagent-execution-proof:claude
+```
+
+This uses the checked-in `dev / skill` fixture and named adapter to verify that the selected coding-agent CLI produced auditable completed child-result evidence.
+
 Refresh the HTML views without replaying LLM-backed reviews:
 
 ```bash

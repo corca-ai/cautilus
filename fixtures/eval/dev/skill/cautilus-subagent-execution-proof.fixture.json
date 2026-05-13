@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "skill",
+  "suiteId": "cautilus-subagent-execution-proof",
+  "suiteDisplayName": "Cautilus Subagent Execution Proof",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
+  "cases": [
+    {
+      "caseId": "episode-subagent-execution-proof",
+      "evaluationKind": "execution",
+      "turns": [
+        {
+          "input": "Prove that this non-interactive runtime can execute a real subagent. Spawn exactly one child agent or subagent and wait for it to finish. In Codex, use the subagent spawn tool and then wait for the child result. In Claude Code, use the built-in Task or Agent subagent tool. Ask the child to inspect the repo root briefly and return the exact marker CAUTILUS_SUBAGENT_PROOF_OK with one short sentence. Do not write files, do not hand-simulate the child result, and do not stop until the child has returned."
+        }
+      ],
+      "auditKind": "subagent_execution_proof",
+      "thresholds": {
+        "max_duration_ms": 240000
+      }
+    }
+  ]
+}

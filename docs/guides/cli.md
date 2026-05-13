@@ -350,6 +350,12 @@ cautilus evaluate fixture \
   --repo-root . \
   --adapter-name self-dogfood-reviewer-launch-flow
 
+# prove the dev / skill runner can audit completed subagent execution
+cautilus evaluate fixture \
+  --repo-root . \
+  --adapter-name self-dogfood-subagent-execution-proof \
+  --runtime codex
+
 # maintainer proof for both supported coding-agent CLI runtimes
 npm run dogfood:cautilus-first-scan-flow:eval:codex
 npm run dogfood:cautilus-first-scan-flow:eval:claude
@@ -361,6 +367,8 @@ npm run dogfood:cautilus-reviewer-launch-flow:eval:codex
 npm run dogfood:cautilus-reviewer-launch-flow:eval:claude
 npm run dogfood:cautilus-refresh-flow:eval:codex
 npm run dogfood:cautilus-refresh-flow:eval:claude
+npm run dogfood:subagent-execution-proof:codex
+npm run dogfood:subagent-execution-proof:claude
 
 # smoke the local skill routing path without recursively launching a model eval
 cautilus evaluate fixture \

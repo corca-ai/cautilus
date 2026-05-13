@@ -73,6 +73,9 @@ Episode audits may inspect structured runner logs when the selected `auditKind` 
 - Codex `spawn_agents_on_csv` output CSV rows with fanout metadata such as `job_id`, `item_id`, `attempt_count`, `status`, `result_json`, and completion timestamps.
 
 Plain final-answer claims, direct hand-written result files without fanout metadata, and spawn attempts without a completed child result are not sufficient proof for this audit.
+Consumer repos own the fixture prompts and adapter policy that decide when this audit is relevant.
+`Cautilus` only owns the shared audit contract and runner wiring.
+The product repo keeps one self-dogfood fixture at [cautilus-subagent-execution-proof.fixture.json](../../fixtures/eval/dev/skill/cautilus-subagent-execution-proof.fixture.json) so maintainers can verify the contract against live Codex and Claude CLI runtimes before release.
 The adapter-owned runner still owns:
 
 - how the local host runtime is actually invoked

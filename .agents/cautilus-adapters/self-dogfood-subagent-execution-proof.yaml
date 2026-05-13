@@ -1,0 +1,24 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - local dev / skill runner can prove actual subagent completion evidence under supported coding-agent CLI runtimes
+required_prerequisites:
+  - materialize the local Cautilus Agent surface before running the episode fixture
+  - use a live coding-agent runtime; fixture runtime is not subagent execution proof
+preflight_commands:
+  - ./bin/cautilus init --repo-root . --overwrite
+  - ./bin/cautilus doctor --repo-root . --scope agent-surface
+evaluation_input_default: fixtures/eval/dev/skill/cautilus-subagent-execution-proof.fixture.json
+eval_test_command_templates:
+  - node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/local-skill-test --backend {backend} --sandbox read-only --timeout-ms 240000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-model claude-haiku-4-5-20251001 --claude-permission-mode dontAsk --claude-allowed-tools 'Task,Agent'
+artifact_paths:
+  - fixtures/eval/dev/skill/cautilus-subagent-execution-proof.fixture.json
+  - scripts/agent-runtime/run-local-skill-test.mjs
+  - scripts/agent-runtime/skill-test-codex-episode.mjs
+  - scripts/agent-runtime/skill-test-claude-episode.mjs
+  - scripts/agent-runtime/audit-subagent-execution-proof.mjs
+comparison_questions:
+  - Can the dev / skill runner distinguish a completed child result from a prose claim or attempted spawn under both Codex and Claude CLI runtimes?
+human_review_prompts:
+  - id: subagent-execution-proof
+    prompt: Where would an operator still conclude that the run proved only an attempted spawn, not a completed child result?
