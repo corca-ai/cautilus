@@ -122,6 +122,7 @@
   "scripts/install-git-hooks.mjs": 71.54,
   "scripts/lint-specs.mjs": 68.62,
   "scripts/prepare-specdown-pages.mjs": 44.51,
+  "scripts/prepare-surface-critique-packet.mjs": 72.72,
   "scripts/preview-markdown.mjs": 82.62,
   "scripts/release/binary-assets.mjs": 85.8,
   "scripts/release/bump-version.mjs": 53.51,

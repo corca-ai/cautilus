@@ -58,6 +58,7 @@ test("retro auto trigger subscribes to release surface ids instead of duplicatin
 	const releaseSurfacePaths = surfacePaths(releaseSurface);
 	const cases = [
 		[".agents/release-adapter.yaml", true],
+		[".agents/surfaces.json", true],
 		["install.sh", true],
 		["package.json", true],
 		["package-lock.json", true],

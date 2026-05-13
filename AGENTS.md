@@ -62,6 +62,9 @@ Validation-shaped closeout or operator reading test requests go through `quality
 
 Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.
 
+Before repeated fresh-eye critique on `release-packaging`, run `npm run critique:surface-packet:check` and feed the packet findings into the first review pass.
+Fix deterministic packet findings before asking for another broad subagent critique.
+
 ## Subagent Delegation
 
 Required bounded review is already delegated when a repo artifact, installed skill, or explicit user delegation request calls for `critique`, fresh-eye review, counterweight review, premortem review, or task-completing `setup` / `quality` review.

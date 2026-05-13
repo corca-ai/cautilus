@@ -11,8 +11,8 @@
     "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
   },
   "as_of_source_date": "2026-05-13",
-  "source_artifact_count": 5,
-  "candidate_count": 46,
+  "source_artifact_count": 6,
+  "candidate_count": 50,
   "top_candidates": [
     {
       "candidate_id": "current_focus:0d9959942f1b",
@@ -717,6 +717,26 @@
       ]
     },
     {
+      "candidate_id": "current_focus:bd04933849e4",
+      "kind": "current_focus",
+      "lesson": "This slice added a Cautilus-owned surface critique packet scanner after repeated release-packaging critiques kept finding deterministic omissions one pass at a time.",
+      "normalized_key": "this slice added a cautilus owned surface critique packet scanner after repeated release packaging",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-surface-critique-packet.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-surface-critique-packet.md",
+          "date": null,
+          "section": "Context"
+        }
+      ]
+    },
+    {
       "candidate_id": "next_improvement:9ccfb13dae3d",
       "kind": "next_improvement",
       "lesson": "Add parity tests when two audit surfaces claim to reject the same class of stale or mutable pointer.",
@@ -777,6 +797,46 @@
       ]
     },
     {
+      "candidate_id": "next_improvement:2777605cfe1b",
+      "kind": "next_improvement",
+      "lesson": "Run `npm run critique:surface-packet:check` before broad release-packaging critique and fix deterministic findings first.",
+      "normalized_key": "run npm run critique surface packet check before broad release packaging critique and fix",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-surface-critique-packet.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-surface-critique-packet.md",
+          "date": null,
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:a02865e2d2d2",
+      "kind": "next_improvement",
+      "lesson": "Treat coverage floor updates as part of adding covered runtime scripts, but avoid unrelated floor churn.",
+      "normalized_key": "treat coverage floor updates as part of adding covered runtime scripts but avoid unrelated",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-surface-critique-packet.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-surface-critique-packet.md",
+          "date": null,
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
       "candidate_id": "next_improvement:4fb21f8109b0",
       "kind": "next_improvement",
       "lesson": "Treat label-only checks in public artifacts as incomplete unless the value is compared to an independent source.",
@@ -811,6 +871,26 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/session-release-adapter-rerun.md",
+          "date": null,
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:0780f9aae915",
+      "kind": "next_improvement",
+      "lesson": "Use Charness issue #161 as the upstream home for a portable packet schema and adapter-resolved prepare hook.",
+      "normalized_key": "use charness issue 161 as the upstream home for a portable packet schema and",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/session-surface-critique-packet.md",
+      "latest_source_date": null,
+      "age_days": null,
+      "recency_weight": 0.5,
+      "alpha": 0.07,
+      "selection_weight": 0.5,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/session-surface-critique-packet.md",
           "date": null,
           "section": "Next Improvements"
         }

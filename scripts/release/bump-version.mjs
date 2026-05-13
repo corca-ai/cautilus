@@ -5,7 +5,7 @@ import { pathToFileURL } from "node:url";
 
 const VERSION_PATTERN = /^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/;
 
-const JSON_VERSION_FILES = [
+export const RELEASE_VERSIONED_JSON_FILES = [
 	"package.json",
 	"package-lock.json",
 	".claude-plugin/marketplace.json",
@@ -128,7 +128,7 @@ function parseArgs(argv) {
 
 export function applyVersionBump({ repoRoot, version, dryRun = false }) {
 	const changedFiles = [];
-	for (const relativePath of JSON_VERSION_FILES) {
+	for (const relativePath of RELEASE_VERSIONED_JSON_FILES) {
 		const filePath = resolve(repoRoot, relativePath);
 		const current = readFileSync(filePath, "utf-8");
 		const next = updateVersionedJson(relativePath, current, version);
