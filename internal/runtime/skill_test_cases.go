@@ -256,8 +256,8 @@ func normalizeSkillCaseAuditKind(value any, field string) (*string, error) {
 	if err != nil || auditKind == nil {
 		return auditKind, err
 	}
-	if *auditKind != "cautilus_refresh_flow" && *auditKind != "cautilus_first_scan_flow" && *auditKind != "cautilus_review_prepare_flow" && *auditKind != "cautilus_reviewer_launch_flow" && *auditKind != "cautilus_review_to_eval_flow" && *auditKind != "cautilus_packet_first_flow" && *auditKind != "cautilus_canonical_spec_curation_flow" && *auditKind != "cautilus_claim_discovery_curation_flow" {
-		return nil, fmt.Errorf("%s must be cautilus_refresh_flow, cautilus_first_scan_flow, cautilus_review_prepare_flow, cautilus_reviewer_launch_flow, cautilus_review_to_eval_flow, cautilus_packet_first_flow, cautilus_canonical_spec_curation_flow, or cautilus_claim_discovery_curation_flow", field)
+	if *auditKind != "cautilus_refresh_flow" && *auditKind != "cautilus_first_scan_flow" && *auditKind != "cautilus_review_prepare_flow" && *auditKind != "cautilus_reviewer_launch_flow" && *auditKind != "cautilus_review_to_eval_flow" && *auditKind != "cautilus_packet_first_flow" && *auditKind != "cautilus_canonical_spec_curation_flow" && *auditKind != "cautilus_claim_discovery_curation_flow" && *auditKind != "subagent_execution_proof" {
+		return nil, fmt.Errorf("%s must be cautilus_refresh_flow, cautilus_first_scan_flow, cautilus_review_prepare_flow, cautilus_reviewer_launch_flow, cautilus_review_to_eval_flow, cautilus_packet_first_flow, cautilus_canonical_spec_curation_flow, cautilus_claim_discovery_curation_flow, or subagent_execution_proof", field)
 	}
 	return auditKind, nil
 }

@@ -161,6 +161,26 @@ test("skill case suites accept claim discovery curation audit episodes", () => {
 	assert.equal(suite.cases[0].turns.length, 2);
 });
 
+test("skill case suites accept subagent execution proof audit episodes", () => {
+	const suite = normalizeSkillTestCaseSuite({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "cautilus",
+		cases: [
+			{
+				caseId: "episode-subagent-execution-proof",
+				evaluationKind: "execution",
+				turns: [
+					{ input: "$cautilus-agent", injectSkill: true },
+					{ input: "Spawn one subagent and report the completed child result." },
+				],
+				auditKind: "subagent_execution_proof",
+			},
+		],
+	});
+	assert.equal(suite.cases[0].auditKind, "subagent_execution_proof");
+	assert.equal(suite.cases[0].turns.length, 2);
+});
+
 test("fixture-backed episode cases still materialize skill evaluation packets", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-test-episode-"));
 	const casesFile = join(root, "cases.json");

@@ -32,12 +32,16 @@ fixture with:
   - trigger-only `expectedTrigger`
   - optional execution `thresholds`
   - optional execution `auditKind` when the runner derives the result from a product-owned audit packet
+    - `subagent_execution_proof` when the skill must prove a subagent or fanout worker completed and returned a result
   - optional `repeatCount`
   - optional `minConsensusCount`
 
 Each `turns` entry must include an `input` string.
 Dev-surface runners may also accept adapter hints such as `injectSkill: true` when the coding-agent CLI needs an explicit skill body in the first turn.
 The first shipped audit-backed episodes are `auditKind: cautilus_first_scan_flow`, used when no saved claim map exists, `auditKind: cautilus_refresh_flow`, used when a saved claim map must be compared with current repo changes, `auditKind: cautilus_review_prepare_flow`, used when the agent should prepare deterministic claim review input after first scan without launching reviewers, `auditKind: cautilus_reviewer_launch_flow`, used when the agent should launch one bounded reviewer lane and stop at the review result boundary, and `auditKind: cautilus_review_to_eval_flow`, used when the agent should apply the bounded reviewer result, validate the reviewed packet, plan evals, and stop before fixture authoring.
+Use `auditKind: subagent_execution_proof` when the target behavior is subagent orchestration itself.
+That audit accepts Claude Code `Agent` tool results, Claude `SubagentStop` hook captures, Codex `spawn_agent` plus `wait` JSONL events, or Codex fanout CSV rows with job metadata.
+It rejects prose-only claims, spawn attempts without a completed child result, and hand-written result CSVs without fanout metadata.
 
 Repeated cases should be run multiple times by the checked-in runner and
 collapsed into one observed evaluation result. `minConsensusCount` is the

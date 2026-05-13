@@ -11,8 +11,21 @@ import { auditReviewToEvalFlowLogText } from "./audit-cautilus-review-to-eval-fl
 import { auditPacketFirstFlowLogText } from "./audit-cautilus-packet-first-flow-log.mjs";
 import { auditCanonicalSpecCurationFlowLogText } from "./audit-cautilus-canonical-spec-curation-flow-log.mjs";
 import { auditClaimDiscoveryCurationFlowLogText } from "./audit-cautilus-claim-discovery-curation-flow-log.mjs";
+import { auditSubagentExecutionProofText } from "./audit-subagent-execution-proof.mjs";
 import { applyObservationExpectations } from "./skill-test-expectations.mjs";
 import { CLAUDE_CLI_ENV } from "./skill-test-claude-backend.mjs";
+
+const AUDIT_HANDLERS = {
+	cautilus_refresh_flow: auditRefreshFlowLogText,
+	cautilus_first_scan_flow: auditFirstScanFlowLogText,
+	cautilus_review_prepare_flow: auditReviewPrepareFlowLogText,
+	cautilus_reviewer_launch_flow: auditReviewerLaunchFlowLogText,
+	cautilus_review_to_eval_flow: auditReviewToEvalFlowLogText,
+	cautilus_packet_first_flow: auditPacketFirstFlowLogText,
+	cautilus_canonical_spec_curation_flow: auditCanonicalSpecCurationFlowLogText,
+	cautilus_claim_discovery_curation_flow: auditClaimDiscoveryCurationFlowLogText,
+	subagent_execution_proof: auditSubagentExecutionProofText,
+};
 
 function renderTurnInput(options, testCase, turn) {
 	if (!turn.injectSkill) {
@@ -123,38 +136,14 @@ function turnFailureMessage(result, turnIndex, options) {
 }
 
 function auditEpisode(testCase, combined, artifactRefs, outputDir, started, artifactRef) {
-	let audit = null;
-	if (testCase.auditKind === "cautilus_refresh_flow") {
-		audit = auditRefreshFlowLogText(combined);
-	}
-	if (testCase.auditKind === "cautilus_first_scan_flow") {
-		audit = auditFirstScanFlowLogText(combined);
-	}
-	if (testCase.auditKind === "cautilus_review_prepare_flow") {
-		audit = auditReviewPrepareFlowLogText(combined);
-	}
-	if (testCase.auditKind === "cautilus_reviewer_launch_flow") {
-		audit = auditReviewerLaunchFlowLogText(combined);
-	}
-	if (testCase.auditKind === "cautilus_review_to_eval_flow") {
-		audit = auditReviewToEvalFlowLogText(combined);
-	}
-	if (testCase.auditKind === "cautilus_packet_first_flow") {
-		audit = auditPacketFirstFlowLogText(combined);
-	}
-	if (testCase.auditKind === "cautilus_canonical_spec_curation_flow") {
-		audit = auditCanonicalSpecCurationFlowLogText(combined);
-	}
-	if (testCase.auditKind === "cautilus_claim_discovery_curation_flow") {
-		audit = auditClaimDiscoveryCurationFlowLogText(combined);
-	}
+	const audit = AUDIT_HANDLERS[testCase.auditKind]?.(combined) ?? null;
 	if (!audit) {
 		return null;
 	}
 	const auditFile = join(outputDir, "audit.json");
 	writeFileSync(auditFile, `${JSON.stringify(audit, null, 2)}\n`);
 	artifactRefs.push(artifactRef("audit", auditFile));
-	const commandText = audit.commands.join("\n");
+	const commandText = (audit.commands ?? []).join("\n");
 	return applyObservationExpectations(testCase, {
 		invoked: audit.commandCount > 0,
 		outcome: audit.status === "passed" ? "passed" : "failed",

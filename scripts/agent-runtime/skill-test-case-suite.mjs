@@ -9,6 +9,7 @@ const AUDIT_KINDS = [
 	"cautilus_packet_first_flow",
 	"cautilus_canonical_spec_curation_flow",
 	"cautilus_claim_discovery_curation_flow",
+	"subagent_execution_proof",
 ];
 
 function assertObject(value, field) {

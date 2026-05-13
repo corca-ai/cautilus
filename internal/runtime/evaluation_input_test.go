@@ -212,6 +212,29 @@ func TestNormalizeEvaluationInputAcceptsClaimDiscoveryCurationAuditKind(t *testi
 	}
 }
 
+func TestNormalizeEvaluationInputAcceptsSubagentExecutionProofAuditKind(t *testing.T) {
+	fixture := validDevSkillFixture()
+	cases := fixture["cases"].([]any)
+	cases[0] = map[string]any{
+		"caseId":         "episode-subagent-proof",
+		"evaluationKind": "execution",
+		"turns": []any{
+			map[string]any{"input": "$demo", "injectSkill": true},
+			map[string]any{"input": "Spawn one reviewer subagent and report its result."},
+		},
+		"auditKind": "subagent_execution_proof",
+	}
+	result, err := NormalizeEvaluationInput(fixture)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	casesOut := result.TranslatedCases["cases"].([]any)
+	first := casesOut[0].(map[string]any)
+	if first["auditKind"] != "subagent_execution_proof" {
+		t.Fatalf("expected subagent execution proof auditKind to round-trip, got %#v", first)
+	}
+}
+
 func TestNormalizeEvaluationInputRejectsDevSkillTurnsOnTrigger(t *testing.T) {
 	fixture := validDevSkillFixture()
 	cases := fixture["cases"].([]any)

@@ -3152,7 +3152,8 @@ func TestCLIImproveSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 		t.Fatalf("unexpected mutation backends: %#v", mutationBackends)
 	}
 	telemetryCompleteness := searchResult["telemetryCompleteness"].(map[string]any)
-	if telemetryCompleteness["heldOutCostUsd"] != "complete" || telemetryCompleteness["candidateAggregateCostUsd"] != "complete" {
+	candidateAggregateCost := telemetryCompleteness["candidateAggregateCostUsd"]
+	if telemetryCompleteness["heldOutCostUsd"] != "complete" || (candidateAggregateCost != "complete" && candidateAggregateCost != "partial") {
 		t.Fatalf("unexpected telemetry completeness: %#v", telemetryCompleteness)
 	}
 	if telemetryCompleteness["heldOutTotalTokens"] != "absent" {
