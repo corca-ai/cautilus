@@ -10,6 +10,7 @@ checked_in_plugin_root: plugins/cautilus
 sync_command: npm run skills:sync-packaged
 quality_command: npm run verify
 fresh_checkout_probes:
+  - "git fetch --unshallow --quiet || true"
   - "npm run claims:evidence-state:check"
   - "npm run claims:status-report:check"
   - "npm run generated:drift:check"
