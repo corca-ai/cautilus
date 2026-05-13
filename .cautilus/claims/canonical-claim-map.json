@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:30a5f600552c8da51c962f79e72c083d6e67ecea12527242ce9bc2695fec4e02"
+      "contentHash": "sha256:1ada3c4ca9f95db29567bc34e669c3c5b3cf733c84eefc2c7de15771b5f434cb"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "0e97921f390d6eca48072daf81ac8e4ff398d0b9",
+  "claimsPacketGitCommit": "5e587fcc6ce34f6cf46d45f5c002fa591291d89f",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 364,
   "catalogs": {
@@ -620,10 +620,10 @@
       "claim-agents-md-26",
       "claim-agents-md-29",
       "claim-agents-md-63",
-      "claim-agents-md-75",
-      "claim-agents-md-80",
-      "claim-agents-md-81",
-      "claim-agents-md-125",
+      "claim-agents-md-85",
+      "claim-agents-md-90",
+      "claim-agents-md-91",
+      "claim-agents-md-132",
       "claim-readme-md-7",
       "claim-readme-md-9",
       "claim-readme-md-13",
@@ -1132,11 +1132,11 @@
         "claim-docs-guides-cli-md-265",
         "claim-docs-guides-cli-md-273",
         "claim-docs-guides-cli-md-316",
-        "claim-docs-guides-cli-md-466",
-        "claim-docs-guides-cli-md-470",
-        "claim-docs-guides-cli-md-502",
-        "claim-docs-guides-cli-md-538",
-        "claim-docs-guides-cli-md-556",
+        "claim-docs-guides-cli-md-474",
+        "claim-docs-guides-cli-md-478",
+        "claim-docs-guides-cli-md-510",
+        "claim-docs-guides-cli-md-546",
+        "claim-docs-guides-cli-md-564",
         "claim-docs-guides-consumer-adoption-md-29",
         "claim-docs-guides-consumer-adoption-md-83",
         "claim-docs-guides-consumer-adoption-md-106",
@@ -1352,31 +1352,31 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-guides-cli-md-466",
+          "claimId": "claim-docs-guides-cli-md-474",
           "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-guides-cli-md-470",
+          "claimId": "claim-docs-guides-cli-md-478",
           "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-guides-cli-md-502",
+          "claimId": "claim-docs-guides-cli-md-510",
           "claimFingerprint": "sha256:003038663b54c623858fe0d30f37af8e7554c1f8f79b8750306cdff272f893a5",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-guides-cli-md-538",
+          "claimId": "claim-docs-guides-cli-md-546",
           "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-guides-cli-md-556",
+          "claimId": "claim-docs-guides-cli-md-564",
           "claimFingerprint": "sha256:7c2d49633a39b3338744e1406b13dabbce1d42e37fbaf1c8984e8cfd06317f12",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -1839,7 +1839,7 @@
       "title": "Contract Cross-Cutting Rule Policy",
       "absorbedRawClaimCount": 5,
       "absorbedRawClaimIds": [
-        "claim-agents-md-81",
+        "claim-agents-md-91",
         "claim-docs-contracts-runner-readiness-md-172",
         "claim-docs-specs-contracts-rules-policy-spec-md-6",
         "claim-docs-specs-ledger-index-spec-md-4",
@@ -1847,7 +1847,7 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-agents-md-81",
+          "claimId": "claim-agents-md-91",
           "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1995,8 +1995,8 @@
       "title": "Binary And Skill Boundary",
       "absorbedRawClaimCount": 62,
       "absorbedRawClaimIds": [
-        "claim-agents-md-80",
-        "claim-agents-md-125",
+        "claim-agents-md-90",
+        "claim-agents-md-132",
         "claim-docs-contracts-adapter-contract-md-474",
         "claim-docs-contracts-adapter-contract-md-532",
         "claim-docs-contracts-adapter-contract-md-539",
@@ -2060,13 +2060,13 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-agents-md-80",
+          "claimId": "claim-agents-md-90",
           "claimFingerprint": "sha256:ff43dd3472f293c1135165ce80962d3f3fb5ac2ddc54d47e5280f03e701ef028",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-agents-md-125",
+          "claimId": "claim-agents-md-132",
           "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2459,7 +2459,7 @@
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-26",
-        "claim-agents-md-75",
+        "claim-agents-md-85",
         "claim-docs-contracts-adapter-contract-md-3",
         "claim-docs-contracts-adapter-contract-md-209",
         "claim-docs-contracts-adapter-contract-md-219",
@@ -2542,7 +2542,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-agents-md-75",
+          "claimId": "claim-agents-md-85",
           "claimFingerprint": "sha256:96b7f51516ba4c8a8d89e4e5a77652f179a81105dc574ab340fab051182ee0a8",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -4335,12 +4335,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-75",
+      "claimId": "claim-agents-md-85",
       "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 75,
+          "line": 85,
           "excerpt": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes."
         }
       ],
@@ -4371,12 +4371,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-80",
+      "claimId": "claim-agents-md-90",
       "summary": "Cautilus Agent should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 80,
+          "line": 90,
           "excerpt": "Cautilus Agent should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details."
         }
       ],
@@ -4412,12 +4412,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-81",
+      "claimId": "claim-agents-md-91",
       "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 81,
+          "line": 91,
           "excerpt": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available."
         }
       ],
@@ -4449,12 +4449,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-125",
+      "claimId": "claim-agents-md-132",
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 125,
+          "line": 132,
           "excerpt": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests."
         }
       ],
@@ -6569,12 +6569,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-guides-cli-md-466",
+      "claimId": "claim-docs-guides-cli-md-474",
       "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 466,
+          "line": 474,
           "excerpt": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text."
         }
       ],
@@ -6610,12 +6610,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-guides-cli-md-470",
+      "claimId": "claim-docs-guides-cli-md-478",
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 470,
+          "line": 478,
           "excerpt": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly."
         }
       ],
@@ -6651,12 +6651,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-guides-cli-md-502",
+      "claimId": "claim-docs-guides-cli-md-510",
       "summary": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 502,
+          "line": 510,
           "excerpt": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\""
         }
       ],
@@ -6692,12 +6692,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-guides-cli-md-538",
+      "claimId": "claim-docs-guides-cli-md-546",
       "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 538,
+          "line": 546,
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\""
         }
       ],
@@ -6733,12 +6733,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-guides-cli-md-556",
+      "claimId": "claim-docs-guides-cli-md-564",
       "summary": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 556,
+          "line": 564,
           "excerpt": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths."
         }
       ],

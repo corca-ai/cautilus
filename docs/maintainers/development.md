@@ -139,6 +139,8 @@ npm run dogfood:subagent-execution-proof:claude
 ```
 
 This uses the checked-in `dev / skill` fixture and named adapter to verify that the selected coding-agent CLI produced auditable completed child-result evidence.
+The aggregate wrapper runs the Codex and Claude backend checks independently and reports failure only after both have produced whatever readiness artifacts they can.
+The backend-specific wrappers pin lightweight live models, so model entitlement failures should be read as local runtime setup failures.
 
 Refresh the HTML views without replaying LLM-backed reviews:
 

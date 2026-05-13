@@ -181,6 +181,7 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
   `recommendation=accept-now`와 `evaluationCounts.failed=0`, `evaluationCounts.blocked=0`, `evaluationCounts.passed=evaluationCounts.total`이 기본 통과선이다.
 - `dogfood:subagent-execution-proof`은 checked-in `dev / skill` fixture(`fixtures/eval/dev/skill/cautilus-subagent-execution-proof.fixture.json`)를 Codex와 Claude live runtime으로 실행한다.
   이 gate는 consumer fixture template 이 아니라 shared `subagent_execution_proof` 감사 계약의 제품 repo dogfood 다.
+  aggregate wrapper 는 첫 backend 가 실패해도 두 번째 backend 를 계속 실행해 각 runtime 의 readiness artifact 를 남겨야 한다.
 - broader report/review self-dogfood와 experiments runner는 `mode evaluate` cut 이후 아직 새 eval surface 위로 재구축되지 않았다.
 
 **HTML 뷰만 갱신 (LLM 호출 없음):**

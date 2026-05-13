@@ -34,7 +34,7 @@
     "dogfood:cautilus-canonical-spec-curation-flow:eval:claude": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-canonical-spec-curation-flow --runtime claude --output-dir ./artifacts/self-dogfood/cautilus-canonical-spec-curation-flow-eval-claude/latest",
     "dogfood:cautilus-claim-discovery-curation-flow:eval:codex": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-claim-discovery-curation-flow --runtime codex --output-dir ./artifacts/self-dogfood/cautilus-claim-discovery-curation-flow-eval-codex/latest",
     "dogfood:cautilus-claim-discovery-curation-flow:eval:claude": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-claim-discovery-curation-flow --runtime claude --output-dir ./artifacts/self-dogfood/cautilus-claim-discovery-curation-flow-eval-claude/latest",
-    "dogfood:subagent-execution-proof": "npm run dogfood:subagent-execution-proof:codex && npm run dogfood:subagent-execution-proof:claude",
+    "dogfood:subagent-execution-proof": "node scripts/agent-runtime/run-subagent-execution-proof-dogfood.mjs",
     "dogfood:subagent-execution-proof:codex": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-subagent-execution-proof --runtime codex --output-dir ./artifacts/self-dogfood/subagent-execution-proof-codex/latest",
     "dogfood:subagent-execution-proof:claude": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-subagent-execution-proof --runtime claude --output-dir ./artifacts/self-dogfood/subagent-execution-proof-claude/latest",
     "dogfood:self:html": "./bin/cautilus doctor artifacts render-self-dogfood-html",

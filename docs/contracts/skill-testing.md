@@ -68,6 +68,7 @@ Episode audits may inspect structured runner logs when the selected `auditKind` 
 `subagent_execution_proof` accepts backend-owned evidence that a child actually finished:
 
 - Claude Code `Agent` tool results with `agentId`, `agentType`, completed status, and child result text.
+- Claude Code `Task` or `Agent` tool-result transcript entries that can be paired with a prior subagent tool use, even when the runtime does not emit a separate `agentId`.
 - Claude Code `SubagentStop` hook captures with `agent_transcript_path` and `last_assistant_message`, when the runner or host fixture installs such hooks.
 - Codex `codex exec --json` `collab_tool_call` events showing completed `spawn_agent` plus a completed `wait` result with the child thread message.
 - Codex `spawn_agents_on_csv` output CSV rows with fanout metadata such as `job_id`, `item_id`, `attempt_count`, `status`, `result_json`, and completion timestamps.
@@ -76,6 +77,7 @@ Plain final-answer claims, direct hand-written result files without fanout metad
 Consumer repos own the fixture prompts and adapter policy that decide when this audit is relevant.
 `Cautilus` only owns the shared audit contract and runner wiring.
 The product repo keeps one self-dogfood fixture at [cautilus-subagent-execution-proof.fixture.json](../../fixtures/eval/dev/skill/cautilus-subagent-execution-proof.fixture.json) so maintainers can verify the contract against live Codex and Claude CLI runtimes before release.
+When the selected runtime cannot reach the audit boundary, the runner should preserve diagnostics for common setup failures such as missing CLI binaries, unauthenticated providers, unsupported models, non-git Codex workspaces, unavailable Codex agent types, or Claude subagent tool policy mismatches.
 The adapter-owned runner still owns:
 
 - how the local host runtime is actually invoked

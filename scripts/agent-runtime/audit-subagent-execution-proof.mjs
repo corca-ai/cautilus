@@ -8,6 +8,51 @@ import { writeTextOutput } from "./output-files.mjs";
 
 export const SUBAGENT_EXECUTION_PROOF_AUDIT_SCHEMA = "cautilus.subagent_execution_proof_audit.v1";
 
+const DIAGNOSTIC_RULES = [
+	{
+		id: "codex_agent_type_unavailable",
+		backend: "codex_exec",
+		pattern: /unknown agent_type|Agent type '[^']+' not found|could not spawn/i,
+		message: "Codex reported that the requested subagent type could not be spawned.",
+		nextAction: "Run from a git workspace with a Codex CLI version and project agent configuration that expose the requested agent type.",
+	},
+	{
+		id: "codex_git_workspace_required",
+		backend: "codex_exec",
+		pattern: /not a git repository|must be run inside a git repository|outside a git repository/i,
+		message: "Codex did not treat the workspace as a git-backed project.",
+		nextAction: "Run the fixture from a git checkout or pass the appropriate Codex repo-check override only when the fixture is designed for it.",
+	},
+	{
+		id: "claude_subagent_tool_unavailable",
+		backend: "claude_code",
+		pattern: /Unknown tool|tool[^.\n]{0,80}not available|(?:Agent|Task)(?:\s+tool)?\s+(?:is\s+)?not\s+available|not allowed[^.\n]{0,80}(?:Agent|Task)|(?:Agent|Task)[^.\n]{0,80}not allowed/i,
+		message: "Claude did not expose or allow the subagent tool needed by the fixture.",
+		nextAction: "Check the installed Claude Code version and the adapter's --claude-allowed-tools policy; allow Task or Agent for this fixture.",
+	},
+	{
+		id: "runtime_auth_unavailable",
+		backend: null,
+		pattern: /not logged in|authentication(?:\s+failed)?|authenticate(?:\s+(?:first|with|before|required))?|api key(?:\s+(?:missing|invalid|required|not found))?|unauthorized|invalid api key|\b401\b|oauth(?:\s+(?:error|failed|token|required))?/i,
+		message: "The selected coding-agent runtime appears unauthenticated.",
+		nextAction: "Authenticate the selected CLI or configure the provider credentials before running live subagent dogfood.",
+	},
+	{
+		id: "runtime_model_unavailable",
+		backend: null,
+		pattern: /unknown model|model .*not found|model .*not available|invalid model/i,
+		message: "The selected model was rejected by the runtime or provider.",
+		nextAction: "Use a model available on this machine/provider or remove the adapter's model pin.",
+	},
+	{
+		id: "runtime_quota_or_rate_limit",
+		backend: null,
+		pattern: /rate limit|quota|insufficient_quota|billing|credits/i,
+		message: "The provider refused the run because of quota, billing, or rate limits.",
+		nextAction: "Retry after provider capacity recovers or use a configured account with available quota.",
+	},
+];
+
 export function auditSubagentExecutionProofText(text) {
 	const parsed = parseJsonLines(text);
 	const proofs = [
@@ -16,7 +61,9 @@ export function auditSubagentExecutionProofText(text) {
 		...claudeHookProofs(text),
 		...codexFanoutCsvProofs(parsed.events),
 	];
+	const diagnostics = diagnoseSubagentExecutionProofText(text);
 	const findings = [
+		...diagnostics.map((diagnostic) => diagnosticFinding(diagnostic, proofs)),
 		...spawnFailureFindings(text, parsed.events),
 		...proofCoverageFindings(proofs),
 	];
@@ -27,8 +74,64 @@ export function auditSubagentExecutionProofText(text) {
 		commands: [],
 		proofCount: proofs.length,
 		proofs,
+		diagnostics,
 		parseErrors: parsed.parseErrors,
 		findings,
+	};
+}
+
+export function diagnoseSubagentExecutionProofText(text, backend = null) {
+	const haystack = String(text ?? "");
+	const diagnostics = [];
+	for (const rule of DIAGNOSTIC_RULES) {
+		if (rule.backend && backend && rule.backend !== backend) {
+			continue;
+		}
+		if (rule.pattern.test(haystack)) {
+			diagnostics.push({
+				id: rule.id,
+				backend: rule.backend ?? backend,
+				message: rule.message,
+				nextAction: rule.nextAction,
+			});
+		}
+	}
+	return diagnostics;
+}
+
+export function formatSubagentExecutionProofFailure({ backend, stdout, stderr, error, status }) {
+	const diagnostics = [
+		...diagnoseProcessError(error, backend),
+		...diagnoseSubagentExecutionProofText(`${stdout ?? ""}\n${stderr ?? ""}`, backend),
+	];
+	if (diagnostics.length === 0) {
+		return "";
+	}
+	const summary = diagnostics
+		.map((diagnostic) => `${diagnostic.id}: ${diagnostic.nextAction}`)
+		.join(" ");
+	return ` Subagent readiness diagnostics for ${backend} status ${status ?? "unknown"}: ${summary}`;
+}
+
+function diagnoseProcessError(error, backend) {
+	if (error?.code !== "ENOENT") {
+		return [];
+	}
+	return [{
+		id: "runtime_cli_missing",
+		backend,
+		message: "The selected coding-agent CLI was not found on PATH.",
+		nextAction: `Install ${backend === "claude_code" ? "Claude Code" : "Codex CLI"} or adjust PATH before running this live fixture.`,
+	}];
+}
+
+function diagnosticFinding(diagnostic, proofs) {
+	const hasCompletedProof = proofs.some((proof) => proof.status === "completed" && proof.resultText?.trim());
+	return {
+		severity: hasCompletedProof ? "warning" : "error",
+		id: diagnostic.id,
+		message: diagnostic.message,
+		nextAction: diagnostic.nextAction,
 	};
 }
 
@@ -101,22 +204,71 @@ function completedAgentMessage(state) {
 }
 
 function claudeAgentResultProofs(records) {
+	const subagentToolUses = claudeSubagentToolUses(records);
 	return records.flatMap(({ index, event }) => {
-		const result = event?.tool_use_result;
-		if (!result || result.status !== "completed" || !result.agentId) {
+		const runtimeProof = claudeAgentRuntimeProof(index, event?.tool_use_result);
+		if (runtimeProof) {
+			return [runtimeProof];
+		}
+		return claudeMessageToolResultProofs(index, event, subagentToolUses);
+	});
+}
+
+function claudeSubagentToolUses(records) {
+	const toolUses = new Map();
+	for (const { index, event } of records) {
+		for (const entry of event?.message?.content ?? []) {
+			if (entry?.type !== "tool_use" || !["Agent", "Task"].includes(entry.name) || !entry.id) {
+				continue;
+			}
+			toolUses.set(entry.id, {
+				index,
+				toolName: entry.name,
+				agentType: entry.input?.subagent_type ?? null,
+			});
+		}
+	}
+	return toolUses;
+}
+
+function claudeAgentRuntimeProof(index, result) {
+	if (!result || result.status !== "completed" || !result.agentId) {
+		return null;
+	}
+	const resultText = claudeToolResultText(result.content);
+	if (!resultText) {
+		return null;
+	}
+	return {
+		backend: "claude_code",
+		kind: "agent_tool_result",
+		status: "completed",
+		resultEventIndex: index,
+		agentId: result.agentId,
+		agentType: result.agentType ?? null,
+		resultText,
+	};
+}
+
+function claudeMessageToolResultProofs(index, event, subagentToolUses) {
+	return (event?.message?.content ?? []).flatMap((entry) => {
+		if (entry?.type !== "tool_result" || entry.is_error === true) {
 			return [];
 		}
-		const resultText = claudeToolResultText(result.content);
-		if (!resultText) {
+		const toolUse = subagentToolUses.get(entry.tool_use_id);
+		const resultText = claudeToolResultText(entry.content);
+		if (!toolUse || !resultText) {
 			return [];
 		}
 		return [{
 			backend: "claude_code",
-			kind: "agent_tool_result",
+			kind: toolUse.toolName === "Task" ? "task_tool_result" : "agent_tool_result",
 			status: "completed",
+			spawnEventIndex: toolUse.index,
 			resultEventIndex: index,
-			agentId: result.agentId,
-			agentType: result.agentType ?? null,
+			toolUseId: entry.tool_use_id,
+			agentId: null,
+			agentType: toolUse.agentType,
 			resultText,
 		}];
 	});
@@ -256,7 +408,7 @@ function spawnFailureFindings(text, records) {
 
 function proofCoverageFindings(proofs) {
 	const hasSpawn = proofs.some((proof) =>
-		["collab_spawn", "collab_wait_result", "agent_tool_result", "subagent_stop_hook", "fanout_csv_result"].includes(proof.kind),
+		["collab_spawn", "collab_wait_result", "agent_tool_result", "task_tool_result", "subagent_stop_hook", "fanout_csv_result"].includes(proof.kind),
 	);
 	const hasCompletedResult = proofs.some((proof) => proof.status === "completed" && proof.resultText?.trim());
 	const findings = [];

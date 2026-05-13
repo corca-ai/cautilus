@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { auditSubagentExecutionProofText } from "./audit-subagent-execution-proof.mjs";
+import {
+	auditSubagentExecutionProofText,
+	formatSubagentExecutionProofFailure,
+} from "./audit-subagent-execution-proof.mjs";
 
 function jsonl(events) {
 	return events.map((event) => JSON.stringify(event)).join("\n");
@@ -79,6 +82,64 @@ test("passes Claude Agent tool result evidence", () => {
 	assert.equal(audit.status, "passed");
 	assert.equal(audit.proofs[0].kind, "agent_tool_result");
 	assert.equal(audit.proofs[0].agentType, "tiny-auditor");
+});
+
+test("passes Claude Task tool_result evidence without agentId", () => {
+	const audit = auditSubagentExecutionProofText(jsonl([
+		{
+			type: "assistant",
+			message: {
+				content: [{
+					type: "tool_use",
+					id: "toolu-task-1",
+					name: "Task",
+					input: { subagent_type: "Explore" },
+				}],
+			},
+		},
+		{
+			type: "user",
+			message: {
+				content: [{
+					type: "tool_result",
+					tool_use_id: "toolu-task-1",
+					content: [{ type: "text", text: "CAUTILUS_SUBAGENT_PROOF_OK from Task" }],
+				}],
+			},
+		},
+	]));
+	assert.equal(audit.status, "passed");
+	assert.equal(audit.proofs[0].kind, "task_tool_result");
+	assert.equal(audit.proofs[0].agentType, "Explore");
+	assert.equal(audit.proofs[0].resultText, "CAUTILUS_SUBAGENT_PROOF_OK from Task");
+});
+
+test("ignores non-subagent Claude tool_result evidence", () => {
+	const audit = auditSubagentExecutionProofText(jsonl([
+		{
+			type: "assistant",
+			message: {
+				content: [{
+					type: "tool_use",
+					id: "toolu-bash-1",
+					name: "Bash",
+					input: { command: "ls" },
+				}],
+			},
+		},
+		{
+			type: "user",
+			message: {
+				content: [{
+					type: "tool_result",
+					tool_use_id: "toolu-bash-1",
+					content: "CAUTILUS_SUBAGENT_PROOF_OK from shell",
+				}],
+			},
+		},
+	]));
+	assert.equal(audit.status, "failed");
+	assert(audit.findings.some((finding) => finding.id === "missing_spawn_evidence"));
 });
 
 test("passes Claude SubagentStop hook evidence with transcript path", () => {
@@ -162,4 +223,97 @@ test("reports failed custom Codex agent spawn", () => {
 	].join("\n"));
 	assert.equal(audit.status, "failed");
 	assert(audit.findings.some((finding) => finding.id === "spawn_failed"));
+	assert(audit.diagnostics.some((diagnostic) => diagnostic.id === "codex_agent_type_unavailable"));
+});
+
+test("diagnoses Claude subagent tool policy failures", () => {
+	const audit = auditSubagentExecutionProofText("Error: Tool Agent is not allowed by --allowedTools");
+	assert.equal(audit.status, "failed");
+	assert(audit.diagnostics.some((diagnostic) => diagnostic.id === "claude_subagent_tool_unavailable"));
+	assert(audit.findings.some((finding) => finding.nextAction?.includes("--claude-allowed-tools")));
+});
+
+test("does not diagnose Claude metadata as unavailable subagent tool", () => {
+	const audit = auditSubagentExecutionProofText(jsonl([
+		{
+			type: "system",
+			subtype: "init",
+			tools: ["Task", "Agent", "Bash"],
+			apiKeySource: "none",
+			usage: { cache_creation_input_tokens: 6401, inference_geo: "not_available" },
+		},
+		{
+			type: "assistant",
+			message: {
+					content: [{
+						type: "tool_use",
+						id: "toolu-agent-1",
+						name: "Agent",
+						input: { subagent_type: "Explore" },
+					}],
+				},
+			},
+			{
+				type: "user",
+				message: {
+					content: [{
+						type: "tool_result",
+						tool_use_id: "toolu-agent-1",
+						content: [{ type: "text", text: "CAUTILUS_SUBAGENT_PROOF_OK" }],
+					}],
+				},
+			},
+	]));
+	assert.equal(audit.status, "passed");
+	assert(!audit.diagnostics.some((diagnostic) => diagnostic.id === "claude_subagent_tool_unavailable"));
+});
+
+test("does not fail completed proof because diagnostic words appear in child text", () => {
+	const audit = auditSubagentExecutionProofText(jsonl([
+		{
+			type: "item.completed",
+			item: {
+				type: "collab_tool_call",
+				tool: "spawn_agent",
+				status: "completed",
+				receiver_thread_ids: ["child-1"],
+			},
+		},
+		{
+			type: "item.completed",
+			item: {
+				type: "collab_tool_call",
+				tool: "wait",
+				status: "completed",
+				agents_states: {
+					"child-1": {
+						status: "completed",
+						message: "The docs mention not logged in recovery, but this child completed.",
+					},
+				},
+			},
+		},
+	]));
+	assert.equal(audit.status, "passed");
+	assert(audit.findings.some((finding) =>
+		finding.id === "runtime_auth_unavailable" && finding.severity === "warning",
+	));
+});
+
+test("formats runner failure diagnostics for auth and missing CLIs", () => {
+	const auth = formatSubagentExecutionProofFailure({
+		backend: "codex_exec",
+		status: 1,
+		stdout: "",
+		stderr: "not logged in; run codex login",
+	});
+	assert.match(auth, /runtime_auth_unavailable/);
+
+	const missing = formatSubagentExecutionProofFailure({
+		backend: "claude_code",
+		status: null,
+		error: { code: "ENOENT" },
+	});
+	assert.match(missing, /runtime_cli_missing/);
+	assert.match(missing, /Claude Code/);
 });

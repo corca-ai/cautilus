@@ -7,12 +7,12 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:30a5f600552c8da51c962f79e72c083d6e67ecea12527242ce9bc2695fec4e02
+- Claims hash: sha256:1ada3c4ca9f95db29567bc34e669c3c5b3cf733c84eefc2c7de15771b5f434cb
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:6b8a2dbdb55f3ce378c487d13e7234538e35090ed2dbff488d395293c54c8d51
+- Status hash: sha256:2691c1048e7adb309d7edba9e12098dca86243a342900345d5db1c1c9e1e4e77
 - Git state: fresh; stale=no
-- Snapshot current commit: 0e97921f390d6eca48072daf81ac8e4ff398d0b9
-- Packet commit: 0e97921f390d6eca48072daf81ac8e4ff398d0b9
+- Snapshot current commit: 5e587fcc6ce34f6cf46d45f5c002fa591291d89f
+- Packet commit: 5e587fcc6ce34f6cf46d45f5c002fa591291d89f
 - Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
 - Status snapshot role: derived command snapshot for git state, action buckets, and cross-cutting signals; its claimSummary must match the claim packet
@@ -52,7 +52,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | Claim | Source | Surface | Readiness | Review | Summary |
 | --- | --- | --- | --- | --- | --- |
 | claim-agents-md-26 | AGENTS.md:26 | dev/repo | ready for proof | agent-reviewed | `Cautilus` owns generic intentful behavior evaluation workflow contracts. |
-| claim-agents-md-81 | AGENTS.md:81 | dev/repo | ready for proof | agent-reviewed | When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available. |
+| claim-agents-md-91 | AGENTS.md:91 | dev/repo | ready for proof | agent-reviewed | When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available. |
 | claim-readme-md-106 | README.md:106 | dev/skill | ready for proof | heuristic | `Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen. |
 | claim-readme-md-160 | README.md:160 | dev/skill | ready for proof | agent-reviewed | Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing. |
 | claim-readme-md-164 | README.md:164 | dev/skill | ready for proof | agent-reviewed | The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`. |

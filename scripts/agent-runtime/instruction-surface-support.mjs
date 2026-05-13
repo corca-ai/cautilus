@@ -64,7 +64,7 @@ function normalizeRoutingField(value, key) {
 		return "none";
 	}
 	if (key === "firstToolCall") {
-		if (value.startsWith("functions.exec_command")) {
+		if (/^(?:functions\.)?exec_command\b/.test(value)) {
 			return "functions.exec_command";
 		}
 		if (value.startsWith("web.")) {

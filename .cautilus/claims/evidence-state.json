@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:30a5f600552c8da51c962f79e72c083d6e67ecea12527242ce9bc2695fec4e02",
+    "claimsHash": "sha256:1ada3c4ca9f95db29567bc34e669c3c5b3cf733c84eefc2c7de15771b5f434cb",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:6b8a2dbdb55f3ce378c487d13e7234538e35090ed2dbff488d395293c54c8d51",
+    "statusHash": "sha256:2691c1048e7adb309d7edba9e12098dca86243a342900345d5db1c1c9e1e4e77",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,10 +22,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "0e97921f390d6eca48072daf81ac8e4ff398d0b9",
+    "currentGitCommit": "5e587fcc6ce34f6cf46d45f5c002fa591291d89f",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "0e97921f390d6eca48072daf81ac8e4ff398d0b9",
+    "packetGitCommit": "5e587fcc6ce34f6cf46d45f5c002fa591291d89f",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -84,8 +84,8 @@
         "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts."
       },
       {
-        "claimId": "claim-agents-md-81",
-        "source": "AGENTS.md:81",
+        "claimId": "claim-agents-md-91",
+        "source": "AGENTS.md:91",
         "surface": "dev/repo",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -338,7 +338,7 @@
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [
-        "claim-agents-md-125",
+        "claim-agents-md-132",
         "claim-readme-md-160",
         "claim-readme-md-164",
         "claim-readme-md-176",

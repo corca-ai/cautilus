@@ -11,7 +11,10 @@ import { auditReviewToEvalFlowLogText } from "./audit-cautilus-review-to-eval-fl
 import { auditPacketFirstFlowLogText } from "./audit-cautilus-packet-first-flow-log.mjs";
 import { auditCanonicalSpecCurationFlowLogText } from "./audit-cautilus-canonical-spec-curation-flow-log.mjs";
 import { auditClaimDiscoveryCurationFlowLogText } from "./audit-cautilus-claim-discovery-curation-flow-log.mjs";
-import { auditSubagentExecutionProofText } from "./audit-subagent-execution-proof.mjs";
+import {
+	auditSubagentExecutionProofText,
+	formatSubagentExecutionProofFailure,
+} from "./audit-subagent-execution-proof.mjs";
 import { applyObservationExpectations } from "./skill-test-expectations.mjs";
 
 const AUDIT_HANDLERS = {
@@ -145,12 +148,22 @@ function userTurnEvent(turnIndex, input) {
 	});
 }
 
-function turnFailureMessage(result, turnIndex, options) {
+function turnFailureMessage(result, turnIndex, options, testCase) {
 	if (result.error?.code === "ETIMEDOUT") {
 		return `The codex_exec episode runner timed out after ${options.timeoutMs}ms.`;
 	}
 	if (result.status !== 0) {
-		return `The codex_exec episode runner exited with status ${result.status} on turn ${turnIndex + 1}.`;
+		const base = `The codex_exec episode runner exited with status ${result.status} on turn ${turnIndex + 1}.`;
+		if (testCase.auditKind !== "subagent_execution_proof") {
+			return base;
+		}
+		return `${base}${formatSubagentExecutionProofFailure({
+			backend: "codex_exec",
+			stdout: result.stdout,
+			stderr: result.stderr,
+			error: result.error,
+			status: result.status,
+		})}`;
 	}
 	return null;
 }
@@ -195,7 +208,7 @@ export function runCodexEpisodeSample({ options, testCase, artifactDir, sampleIn
 			artifactRef("turn_stdout", paths.stdoutFile),
 			artifactRef("turn_stderr", paths.stderrFile),
 		);
-		const failure = turnFailureMessage(result, turnIndex, options);
+		const failure = turnFailureMessage(result, turnIndex, options, testCase);
 		if (failure) {
 			return backendFailureResult(testCase, failure, Date.now() - started, artifactRefs);
 		}

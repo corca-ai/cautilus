@@ -31,7 +31,7 @@
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-agents-md-125",
+          "claim-agents-md-132",
           "claim-readme-md-160",
           "claim-readme-md-164",
           "claim-readme-md-176",
@@ -74,7 +74,7 @@
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-12",
-          "claim-agents-md-125",
+          "claim-agents-md-132",
           "claim-readme-md-83",
           "claim-readme-md-91",
           "claim-readme-md-138"
@@ -96,7 +96,7 @@
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-26",
-          "claim-agents-md-81",
+          "claim-agents-md-91",
           "claim-readme-md-106",
           "claim-readme-md-160",
           "claim-readme-md-164"
@@ -136,7 +136,7 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-agents-md-63",
-          "claim-agents-md-80",
+          "claim-agents-md-90",
           "claim-docs-contracts-adapter-contract-md-407",
           "claim-docs-guides-cli-md-187",
           "claim-docs-guides-cli-md-193"
@@ -177,7 +177,7 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-agents-md-29",
-          "claim-agents-md-75",
+          "claim-agents-md-85",
           "claim-readme-md-3",
           "claim-readme-md-170",
           "claim-readme-md-209"
@@ -1379,7 +1379,7 @@
       }
     ]
   },
-  "gitCommit": "0e97921f390d6eca48072daf81ac8e4ff398d0b9",
+  "gitCommit": "5e587fcc6ce34f6cf46d45f5c002fa591291d89f",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1391,10 +1391,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "0e97921f390d6eca48072daf81ac8e4ff398d0b9",
+    "currentGitCommit": "5e587fcc6ce34f6cf46d45f5c002fa591291d89f",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "0e97921f390d6eca48072daf81ac8e4ff398d0b9",
+    "packetGitCommit": "5e587fcc6ce34f6cf46d45f5c002fa591291d89f",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

@@ -13,6 +13,7 @@
       "requiredInstructionFiles": ["AGENTS.md"],
       "allowedFirstToolCalls": [
         "functions.exec_command",
+        "multi_tool_use.parallel",
         "python3 .../find-skills/scripts/list_capabilities.py --repo-root ."
       ],
       "expectedRouting": {

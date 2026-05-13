@@ -233,6 +233,12 @@ test("normalizeRoutingDecision canonicalizes deferred none values and tool prefi
 			reasonSummary: "route first",
 		},
 	);
+	assert.equal(
+		normalizeRoutingDecision({
+			firstToolCall: "exec_command: sed -n '1,220p' AGENTS.md",
+		}).firstToolCall,
+		"functions.exec_command",
+	);
 });
 
 test("materializeInstructionSurface masks unspecified root aliases while a variant is active", () => {

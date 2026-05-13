@@ -1,66 +1,68 @@
-# Improve Search Telemetry Completeness Debug
+# Instruction Surface First Tool Debug
 Date: 2026-05-13
 
 ## Problem
 
-`npm run verify` failed in `test · go race` at `TestCLIImproveSearchPrepareRunAndProposeFromSearch`.
-The exact failing output was `unexpected telemetry completeness: map[string]interface {}{"candidateAggregateCostUsd":"partial", "candidateAggregateDurationMs":"partial", "candidateAggregateTotalTokens":"absent", "heldOutCostUsd":"complete", "heldOutDurationMs":"complete", "heldOutTotalTokens":"absent"}`.
+`npm run dogfood:self:eval` exited 0 but wrote `eval-summary.json` with `recommendation=reject`.
 
 ## Correct Behavior
 
-Given the CLI smoke test runs in an environment where the review wrapper and model backend are available, when `improve search run` generates an extra mutation candidate, then the test should still accept telemetry completeness that honestly reports partial aggregate coverage.
+Given the checked-in `dev / repo` self-dogfood fixture, when the Cautilus Agent reads `AGENTS.md` and selects `find-skills` plus `impl`, then `eval-summary.json` should report `recommendation=accept-now`.
 
 ## Observed Facts
 
-Public web search for the exact failure string returned no relevant external result.
-`go test -race ./internal/app -run TestCLIImproveSearchPrepareRunAndProposeFromSearch -count=1 -v` reproduced the failure locally.
-The failing packet reported held-out cost and duration as `complete`.
-The failing packet reported candidate aggregate cost and duration as `partial`, not `absent`.
-`runCLI` sets `CAUTILUS_TOOL_ROOT` to the current repo root, which makes `scripts/agent-runtime/run-review-variant.sh` available during the smoke test.
-When that wrapper and the local model backend can generate a mutation candidate, the candidate set includes more than the seed candidate.
+- The failed summary had `evaluationCounts.failed=1`.
+- Routing matched `bootstrapHelper=find-skills` and `workSkill=impl`.
+- The only failed expectation was `firstToolCall`.
+- The observed first tool call was `exec_command: sed -n '1,220p' AGENTS.md`.
+- The allowlist included `functions.exec_command`.
+- A later rerun exposed the same host-output-shape class with `multi_tool_use.parallel`, while the routing and loaded files still proved the required `find-skills` bootstrap.
+- Web search for the exact public phrase `"recommendation=reject" "Cautilus" "eval-summary"` produced no relevant external cause.
 
 ## Reproduction
 
-Run `go test -race ./internal/app -run TestCLIImproveSearchPrepareRunAndProposeFromSearch -count=1 -v` in an environment where the repo-local review wrapper and model backend are available.
-The test reaches `improve search run`, reads `telemetryCompleteness`, and fails if `candidateAggregateCostUsd` is `partial`.
+```bash
+npm run dogfood:self:eval
+jq '{recommendation,evaluationCounts,evaluations:[.evaluations[] | {status, expectationResults}]}' artifacts/self-dogfood/eval/latest/eval-summary.json
+```
 
 ## Candidate Causes
 
-- The implementation stopped preserving seed candidate held-out telemetry.
-- The smoke test assumed mutation generation would be unavailable or seed-only.
-- A generated mutation candidate can be evaluated without every telemetry field that the seed candidate has, making aggregate completeness partial by design.
+- The new `AGENTS.md` subagent delegation block changed routing enough that the model skipped the required first-turn bootstrap.
+- The fixture allowlist was too narrow for a valid first tool call variant emitted by the current Codex runtime.
+- The runner normalized `functions.exec_command` but not the shorter `exec_command` alias before Cautilus evaluated the allowlist.
 
 ## Hypothesis
 
-The smoke test expectation was too strict for environments where reflective mutation succeeds.
-The product behavior is still honest because `partial` means at least one candidate has aggregate cost telemetry and at least one candidate lacks it.
+The runner's instruction-surface normalizer accepted `functions.exec_command...` but did not canonicalize `exec_command...`, so a semantically valid first tool call failed an exact allowlist comparison.
 
 ## Verification
 
-Changing the test to accept `candidateAggregateCostUsd` values of `complete` or `partial` while still requiring `heldOutCostUsd=complete` made the focused command pass.
-The focused verification command was `go test -race ./internal/app -run TestCLIImproveSearchPrepareRunAndProposeFromSearch -count=1 -v`.
+- Added a unit assertion that `exec_command: sed -n '1,220p' AGENTS.md` normalizes to `functions.exec_command`.
+- Re-ran the targeted node test for the eval runner.
+- Re-ran `npm run dogfood:self:eval`; it returned `recommendation=accept-now` after the fix.
 
 ## Root Cause
 
-The test was written as if the search result would be seed-only or all generated candidates would carry complete aggregate cost telemetry.
-In this runtime, the review wrapper is available and mutation can succeed, so the candidate registry can mix seed telemetry with generated-candidate telemetry that lacks some aggregate fields.
-The implementation correctly labels that mixed coverage as `partial`.
+The observed runtime emitted the first tool call without the `functions.` namespace.
+`scripts/agent-runtime/instruction-surface-support.mjs` only canonicalized values starting with `functions.exec_command`, leaving `exec_command: ...` to fail the Go-side exact allowlist check.
 
 ## Seam Risk
 
-- Interrupt ID: improve-search-telemetry-completeness
-- Risk Class: none
-- Seam: local smoke test versus live mutation backend availability
-- Disproving Observation: the focused race test passes after the expectation accepts honest partial aggregate coverage
-- What Local Reasoning Cannot Prove: whether every external model backend will produce the same mutation candidate shape
+- Interrupt ID: instruction-surface-tool-alias
+- Risk Class: host-disproves-local
+- Seam: Codex JSON/routing output to Cautilus instruction-surface evaluation
+- Disproving Observation: The evaluation failed despite correct skill routing because the tool-call alias differed.
+- What Local Reasoning Cannot Prove: Future runtimes will not introduce another equivalent tool-call alias.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
 
-- Critique Required: no
-- Next Step: impl
-- Handoff Artifact: none
+- Critique Required: yes
+- Next Step: spec
+- Handoff Artifact: charness-artifacts/spec/evaluation-surfaces-runners-proof.md
 
 ## Prevention
 
-Smoke tests that intentionally run with repo-local wrappers available should distinguish must-have telemetry from aggregate completeness that can vary with optional generated candidates.
+Normalize both `functions.exec_command` and `exec_command` prefixes to the same canonical first-tool-call token before scoring the instruction-surface allowlist.
+Keep the checked-in `dev / repo` fixture allowlist broad enough for the current host's parallel read wrapper when the routing evidence still proves the required bootstrap.

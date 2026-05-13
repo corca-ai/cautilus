@@ -25,6 +25,8 @@ npm run dogfood:subagent-execution-proof:claude
 Use this before release when the changed surface includes subagent orchestration, fanout workers, or the `subagent_execution_proof` audit.
 The wrapper runs [cautilus-subagent-execution-proof.fixture.json](../../../fixtures/eval/dev/skill/cautilus-subagent-execution-proof.fixture.json) through the named `self-dogfood-subagent-execution-proof` adapter and expects `audit.json` to prove a completed child result, not just an attempted spawn.
 This is live coding-agent proof and requires local Codex and Claude CLI auth for the selected backend.
+The aggregate wrapper runs both backend-specific commands even when the first backend fails, so release artifacts can show both machines' readiness state.
+The checked-in adapter pins lightweight live models; a model-entitlement failure is a local runtime prerequisite failure, not a consumer fixture contract failure.
 
 ## Checked-in bundle HTML view
 

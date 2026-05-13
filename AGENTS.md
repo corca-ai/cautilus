@@ -62,6 +62,16 @@ Validation-shaped closeout or operator reading test requests go through `quality
 
 Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.
 
+## Subagent Delegation
+
+Required bounded review is already delegated when a repo artifact, installed skill, or explicit user delegation request calls for `critique`, fresh-eye review, counterweight review, premortem review, or task-completing `setup` / `quality` review.
+
+If the active host exposes subagent spawning for the current turn, spawn the bounded reviewer immediately instead of waiting for a second user message asking for delegation.
+Give each reviewer a narrow scope, keep write ownership explicit, and record the returned status or artifact in the closeout.
+
+If the active host blocks subagent spawning or requires a stricter explicit user authorization than this repo contract can provide, stop the delegated-review path and report that host signal directly.
+Do not replace the blocked review with a same-agent pass while still calling it delegated critique, fresh-eye review, or counterweight review.
+
 ## Working Rules
 
 - Keep the adapter schema repo-agnostic.
@@ -81,10 +91,7 @@ Keep this block short. Detailed routing belongs in installed skill metadata and 
 - When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.
   If the adapter cannot run it, fix the adapter or record an explicit waiver before release.
 - Premortem, counterweight, and bounded fresh-eye review are on-demand gates, not standing requirements.
-  Task-completing `init-repo` and `quality` review runs count as explicitly in scope.
-  When one is explicitly in scope or required by a repo artifact, treat the review as already delegated by the repo contract.
-  Do not wait for a second user message asking for delegation.
-  If the host blocks subagent spawning, stop and report that restriction explicitly instead of substituting a same-agent pass.
+  Task-completing `setup`, `critique`, and `quality` review runs count as explicitly in scope for the subagent delegation rule above.
 
 ## Before Stopping on a Spec-Driven Slice
 
