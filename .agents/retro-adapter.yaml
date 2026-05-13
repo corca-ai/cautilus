@@ -10,5 +10,6 @@ snapshot_path: .charness/retro/weekly-latest.json
 summary_path: charness-artifacts/retro/recent-lessons.md
 evidence_paths: []
 metrics_commands: []
-auto_session_trigger_surfaces: []
+auto_session_trigger_surfaces:
+  - release-packaging
 auto_session_trigger_path_globs: []
