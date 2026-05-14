@@ -1,0 +1,9 @@
+version: 1
+repo: cautilus
+language: en
+output_dir: charness-artifacts/critique
+packet_sections:
+  - id: surface-critique-release-packaging
+    title: Surface Critique — release-packaging
+    content_kind: script
+    command: "node scripts/prepare-surface-critique-packet.mjs --format md --surface-id release-packaging"
