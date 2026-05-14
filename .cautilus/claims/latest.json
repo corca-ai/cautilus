@@ -1,9 +1,9 @@
 {
-  "candidateCount": 364,
+  "candidateCount": 365,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 21,
-    "matchedClaimCount": 292,
+    "evidenceSupportIdRewriteCount": 1,
+    "matchedClaimCount": 364,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 26,
@@ -47,7 +47,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:367f95519e0813c875bfa7e39244a69fa73e6cad1dc133bc6338767ce229d3fa",
-      "claimId": "claim-agents-md-26",
+      "claimId": "claim-agents-md-29",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -66,7 +66,7 @@
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
-          "line": 26,
+          "line": 29,
           "path": "AGENTS.md"
         }
       ],
@@ -78,7 +78,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:23a867598176c24e844968b2700a44f31228da6e0f368e8194124a5ee0df47c9",
-      "claimId": "claim-agents-md-29",
+      "claimId": "claim-agents-md-32",
       "claimSemanticGroup": "Evaluation surfaces",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -96,7 +96,7 @@
       "sourceRefs": [
         {
           "excerpt": "The long-term direction is intent-first and intentful behavior evaluation: prompts can change if the evaluated behavior gets better.",
-          "line": 29,
+          "line": 32,
           "path": "AGENTS.md"
         }
       ],
@@ -111,7 +111,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:15e5fbc575df9af76ba40b6ba314c6fe604ab6b50f792524416b12e01e871e42",
-      "claimId": "claim-agents-md-63",
+      "claimId": "claim-agents-md-66",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -129,7 +129,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
-          "line": 63,
+          "line": 66,
           "path": "AGENTS.md"
         }
       ],
@@ -144,7 +144,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:96b7f51516ba4c8a8d89e4e5a77652f179a81105dc574ab340fab051182ee0a8",
-      "claimId": "claim-agents-md-90",
+      "claimId": "claim-agents-md-93",
       "claimSemanticGroup": "General product behavior",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -162,7 +162,7 @@
       "sourceRefs": [
         {
           "excerpt": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
-          "line": 90,
+          "line": 93,
           "path": "AGENTS.md"
         }
       ],
@@ -177,7 +177,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ff43dd3472f293c1135165ce80962d3f3fb5ac2ddc54d47e5280f03e701ef028",
-      "claimId": "claim-agents-md-95",
+      "claimId": "claim-agents-md-98",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -195,7 +195,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cautilus Agent should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
-          "line": 95,
+          "line": 98,
           "path": "AGENTS.md"
         }
       ],
@@ -210,7 +210,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
-      "claimId": "claim-agents-md-96",
+      "claimId": "claim-agents-md-99",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -229,7 +229,7 @@
       "sourceRefs": [
         {
           "excerpt": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
-          "line": 96,
+          "line": 99,
           "path": "AGENTS.md"
         }
       ],
@@ -245,7 +245,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
-      "claimId": "claim-agents-md-137",
+      "claimId": "claim-agents-md-140",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
@@ -254,7 +254,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-agents-md-137"
+            "claim-agents-md-140"
           ]
         }
       ],
@@ -272,7 +272,7 @@
       "sourceRefs": [
         {
           "excerpt": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
-          "line": 137,
+          "line": 140,
           "path": "AGENTS.md"
         }
       ],
@@ -3375,6 +3375,37 @@
         }
       ],
       "summary": "Read [Promise Ledger](ledger/index.spec.md) to understand which behavior claims Cautilus currently makes, how they relate, and which workflow or contract owns each claim.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:7e385a206d896daa95126209e573e4948b97d5b79e0dfbb809953ea89d08306a",
+      "claimId": "claim-docs-specs-index-spec-md-23",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Each subclaim on a claim spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
+          "line": 23,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "Each subclaim on a claim spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -11854,7 +11885,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 257,
+      "developer": 258,
       "user": 107
     },
     "byClaimSemanticGroup": {
@@ -11865,33 +11896,33 @@
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 30,
-      "Packets and reporting": 46,
+      "Packets and reporting": 47,
       "Quality gates": 19,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 47,
       "stale": 25,
-      "unknown": 292
+      "unknown": 293
     },
     "byLifecycle": {
-      "new": 364
+      "new": 365
     },
     "byRecommendedProof": {
-      "cautilus-eval": 140,
+      "cautilus-eval": 141,
       "deterministic": 121,
       "human-auditable": 103
     },
     "byReviewStatus": {
       "agent-reviewed": 118,
-      "heuristic": 245,
+      "heuristic": 246,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 18,
       "needs-alignment": 45,
       "needs-scenario": 13,
-      "ready-for-proof": 288
+      "ready-for-proof": 289
     }
   },
   "discoveryEngine": {
@@ -12074,7 +12105,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "612b580505db8f2e14c6497002043ed6cc74a50c",
+  "gitCommit": "5a5afeb7111244f3faa1111e2e703fcd4493332b",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -13482,7 +13513,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:892c266e99a55938aa8166a9ca794e1d7012f76fa2895a33bc3569b0df179231",
+      "contentHash": "sha256:43acaab0a8c96498e1aab5e148e9d21a4f6f2c00cf6fcdb06cdd4a4c90834982",
       "depth": 0,
       "kind": "repo-instructions",
       "path": "AGENTS.md",
@@ -13590,7 +13621,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:ea72f48a8655fa9b2ea4ef8d1bd657959c04c014d9dc618521bfe7e306409cd9",
+      "contentHash": "sha256:f43b0917c28cd6b7adff9c3664f68ecb857cddc4ad708fdbceabfb809d375bf7",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",

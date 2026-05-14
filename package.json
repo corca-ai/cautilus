@@ -86,6 +86,7 @@
     "claims:canonical-map": "node scripts/agent-runtime/build-canonical-claim-map.mjs --claims .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/canonical-claim-map.json",
     "claims:evidence-state": "node scripts/agent-runtime/render-claim-evidence-state.mjs --refresh-status",
     "claims:evidence-state:check": "node scripts/agent-runtime/render-claim-evidence-state.mjs --refresh-status --check",
+    "claims:refresh:all": "./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json && npm run claims:apply-review-results && npm run claims:canonical-map && npm run claims:evidence-state && npm run claims:status-report",
     "claims:review-input-summary": "node scripts/agent-runtime/render-claim-review-input-summary.mjs",
     "claims:review-worksheet": "node scripts/agent-runtime/render-claim-discovery-review.mjs --claims .cautilus/claims/evidenced-typed-runners.json --status .cautilus/claims/status-summary.json --output .cautilus/claims/discovery-review.md",
     "claims:status-report": "node scripts/agent-runtime/render-claim-status-report.mjs --claims .cautilus/claims/evidenced-typed-runners.json --status .cautilus/claims/status-summary.json --output .cautilus/claims/claim-status-report.md",

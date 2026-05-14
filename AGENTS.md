@@ -20,6 +20,9 @@ This repo is the standalone product boundary for `Cautilus`.
 - Treat `charness-artifacts/` changes as repo state.
   Commit meaningful review, debug, and release artifacts so other sessions inherit the evidence.
   When canonical content has not changed, current-pointer helpers such as `latest.md` should no-op instead of emitting timestamp-only diffs.
+- When a directional decision is about to land, first read AGENTS.md, README, master-plan, and CLAUDE.md for prior decisions that may conflict.
+  Surface any conflict to the user as "current doc says X — shall we realign together?" rather than silently overwriting, since the user may have forgotten the encoded decision.
+  After confirming, realign living docs in the same slice that lands the decision so stale references do not drift.
 
 ## Product Intent
 
@@ -136,6 +139,15 @@ npm run test:on-demand
 
 `npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.
 Run it when changing release-prep flow, self-dogfood workflow scripts, or operator-facing quality record behavior.
+
+When a slice has touched claim source files (AGENTS.md, scanner scripts, or anything the `latest.json` packet records as a source) and `git push` fails with `status-summary.json is stale`, run the full claim refresh chain before pushing again:
+
+```bash
+npm run claims:refresh:all
+```
+
+This regenerates `.cautilus/claims/latest.json` against the current HEAD and then propagates through `apply-review-results`, `canonical-map`, `evidence-state`, and `status-report`.
+`npm run claims:evidence-state` alone is not enough when claim sources changed — its `isStale` flag stays true and forces strict equality, which fails on the SHA difference.
 
 Key direct commands:
 
