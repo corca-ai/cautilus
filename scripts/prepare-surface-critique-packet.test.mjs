@@ -236,6 +236,49 @@ test("cli-agent-product packet flags files present in source but missing from pa
 	}
 });
 
+test("cli-agent-product packet flags content drift between source and packaged trees", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-cli-agent-packet-"));
+	try {
+		writeCliAgentRepo(root, {
+			sourceFiles: [
+				["SKILL.md", "# Skill source body\n"],
+				["references/a.md", "alpha\n"],
+			],
+			packagedFiles: [
+				["SKILL.md", "# Skill packaged body drifted\n"],
+				["references/a.md", "alpha\n"],
+			],
+		});
+		const packet = buildSurfaceCritiquePacket({ repoRoot: root, surfaceId: "cli-agent-product" });
+		assert.equal(packet.status, "blocked");
+		const drift = packet.findings.find((finding) => finding.id === "packaged_skill_content_sync");
+		assert(drift, "expected content drift finding");
+		assert.equal(drift.path, "plugins/cautilus/skills/cautilus-agent/SKILL.md");
+		assert.match(drift.message, /run `npm run skills:sync-packaged`/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("cli-agent-product packet treats upward-link-rewritten markdown as in-sync", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-cli-agent-packet-"));
+	try {
+		writeCliAgentRepo(root, {
+			sourceFiles: [
+				["references/links.md", "See [docs](../../docs/intro.md) for context.\n"],
+			],
+			packagedFiles: [
+				["references/links.md", "See [docs](../../../../docs/intro.md) for context.\n"],
+			],
+		});
+		const packet = buildSurfaceCritiquePacket({ repoRoot: root, surfaceId: "cli-agent-product" });
+		assert.equal(packet.status, "ready");
+		assert.deepEqual(packet.findings, []);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("cli-agent-product packet flags files present in packaged but missing from source tree", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-cli-agent-packet-"));
 	try {

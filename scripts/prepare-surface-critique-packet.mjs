@@ -6,6 +6,7 @@ import { pathToFileURL } from "node:url";
 
 import { loadFile } from "./_stdlib_yaml.mjs";
 import { RELEASE_VERSIONED_JSON_FILES } from "./release/bump-version.mjs";
+import { rewriteUpwardLinks } from "./release/sync-packaged-skill.mjs";
 
 export const SURFACE_CRITIQUE_PACKET_SCHEMA = "cautilus.surface_critique_packet.v1";
 
@@ -19,6 +20,7 @@ export const RELEASE_PACKAGING_RULE_FAMILIES = Object.freeze([
 
 export const CLI_AGENT_PRODUCT_RULE_FAMILIES = Object.freeze([
 	"packaged_skill_tree_parity",
+	"packaged_skill_content_sync",
 ]);
 
 const SUPPORTED_FORMATS = new Set(["json", "md"]);
@@ -445,6 +447,28 @@ function packagedSkillTreeParityFindings({ sourceFiles, packagedFiles, sourceRel
 	return findings;
 }
 
+function expectedPackagedContent(relPath, sourceContent) {
+	return relPath.endsWith(".md") ? rewriteUpwardLinks(sourceContent) : sourceContent;
+}
+
+function packagedSkillContentSyncFindings({ sourceDir, packagedDir, commonFiles, packagedRel }) {
+	const findings = [];
+	for (const rel of commonFiles) {
+		const sourceContent = readFileSync(resolve(sourceDir, rel), "utf-8");
+		const packagedContent = readFileSync(resolve(packagedDir, rel), "utf-8");
+		const expected = expectedPackagedContent(rel, sourceContent);
+		if (packagedContent !== expected) {
+			findings.push({
+				id: "packaged_skill_content_sync",
+				severity: "high",
+				message: `${packagedRel}/${rel} does not match the source after upward-link rewrites; run \`npm run skills:sync-packaged\`.`,
+				path: `${packagedRel}/${rel}`,
+			});
+		}
+	}
+	return findings;
+}
+
 function buildCliAgentProductPacket({ resolvedRepoRoot }) {
 	const surfaceId = "cli-agent-product";
 	const surfaceManifest = readJson(resolvedRepoRoot, ".agents/surfaces.json");
@@ -454,14 +478,16 @@ function buildCliAgentProductPacket({ resolvedRepoRoot }) {
 	}
 	const sourceRel = "skills/cautilus-agent";
 	const packagedRel = "plugins/cautilus/skills/cautilus-agent";
-	const sourceFiles = collectRelativeFiles(resolve(resolvedRepoRoot, sourceRel));
-	const packagedFiles = collectRelativeFiles(resolve(resolvedRepoRoot, packagedRel));
-	const findings = packagedSkillTreeParityFindings({
-		sourceFiles,
-		packagedFiles,
-		sourceRel,
-		packagedRel,
-	});
+	const sourceDir = resolve(resolvedRepoRoot, sourceRel);
+	const packagedDir = resolve(resolvedRepoRoot, packagedRel);
+	const sourceFiles = collectRelativeFiles(sourceDir);
+	const packagedFiles = collectRelativeFiles(packagedDir);
+	const packagedSet = new Set(packagedFiles);
+	const commonFiles = sourceFiles.filter((rel) => packagedSet.has(rel));
+	const findings = [
+		...packagedSkillTreeParityFindings({ sourceFiles, packagedFiles, sourceRel, packagedRel }),
+		...packagedSkillContentSyncFindings({ sourceDir, packagedDir, commonFiles, packagedRel }),
+	];
 	return wrapPacket({
 		surfaceId,
 		resolvedRepoRoot,

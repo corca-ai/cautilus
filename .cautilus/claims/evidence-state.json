@@ -4,7 +4,7 @@
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
     "claimsHash": "sha256:9572f6211ec553e4e4c3e878ed196a6e1822de2c50a49b31c779f4818675eef3",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:a45c6356de235ec7b79d78270b4a0efa21b73ce16fa747cc496b2fe57861e7f9",
+    "statusHash": "sha256:70ccafc5b0d10f016f526216a685229217a9c5b975036f650af8f5d425bedde0",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -35,7 +35,7 @@
       "AGENTS.md"
     ],
     "comparisonStatus": "stale",
-    "currentGitCommit": "116ba4ed8dbc0fcd79a7f28e6d103c85258d45b0",
+    "currentGitCommit": "22876ca68c7ba9d77f39663e49bba428cde5e609",
     "headDrift": true,
     "isStale": true,
     "packetGitCommit": "047d22e3683fa7345c072509560513f50ab7a6ea",
