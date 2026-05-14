@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:9572f6211ec553e4e4c3e878ed196a6e1822de2c50a49b31c779f4818675eef3"
+      "contentHash": "sha256:0603d31ac3d4d4583c6fe4e46503a366e34dbc90a3a7120ce923ad10c8abee69"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "047d22e3683fa7345c072509560513f50ab7a6ea",
+  "claimsPacketGitCommit": "612b580505db8f2e14c6497002043ed6cc74a50c",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 364,
   "catalogs": {
@@ -576,8 +576,8 @@
     "userRawClaimCount": 107,
     "userMappedToCanonicalCount": 107,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 297,
-    "userSemanticReviewRecommendedCount": 44,
+    "semanticReviewRecommendedCount": 296,
+    "userSemanticReviewRecommendedCount": 43,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 257,
       "mapped-to-user-canonical": 107
@@ -587,13 +587,13 @@
       "user": 107
     },
     "byMappingConfidence": {
-      "high": 67,
-      "low": 21,
+      "high": 68,
+      "low": 20,
       "medium": 276
     },
     "byUserCanonicalClaimId": {
-      "U1": 22,
-      "U2": 67,
+      "U1": 23,
+      "U2": 66,
       "U3": 3,
       "U4": 3,
       "U5": 4,
@@ -607,8 +607,8 @@
       "M12": 10,
       "M2": 10,
       "M3": 62,
-      "M4": 70,
-      "M5": 21,
+      "M4": 71,
+      "M5": 20,
       "M6": 5,
       "M7": 9,
       "M8": 15,
@@ -620,17 +620,15 @@
       "claim-agents-md-26",
       "claim-agents-md-29",
       "claim-agents-md-63",
-      "claim-agents-md-88",
-      "claim-agents-md-93",
-      "claim-agents-md-94",
-      "claim-agents-md-135",
+      "claim-agents-md-90",
+      "claim-agents-md-95",
+      "claim-agents-md-96",
+      "claim-agents-md-137",
       "claim-readme-md-7",
       "claim-readme-md-9",
       "claim-readme-md-13",
       "claim-readme-md-83",
-      "claim-readme-md-91",
       "claim-readme-md-106",
-      "claim-readme-md-153",
       "claim-readme-md-248",
       "claim-docs-contracts-adapter-contract-md-3",
       "claim-docs-contracts-adapter-contract-md-208",
@@ -666,6 +664,7 @@
       "claim-docs-guides-consumer-adoption-md-106",
       "claim-docs-guides-consumer-adoption-md-107",
       "claim-docs-guides-evaluation-process-md-52",
+      "claim-docs-guides-evaluation-process-md-253",
       "claim-docs-guides-evaluation-process-md-270",
       "claim-docs-guides-evaluation-process-md-289",
       "claim-docs-guides-evaluation-process-md-293",
@@ -919,7 +918,7 @@
     {
       "canonicalClaimId": "U1",
       "title": "Readiness",
-      "absorbedRawClaimCount": 22,
+      "absorbedRawClaimCount": 23,
       "absorbedRawClaimIds": [
         "claim-readme-md-13",
         "claim-readme-md-83",
@@ -931,6 +930,7 @@
         "claim-docs-guides-consumer-adoption-md-48",
         "claim-docs-guides-consumer-adoption-md-49",
         "claim-docs-guides-consumer-adoption-md-67",
+        "claim-docs-guides-evaluation-process-md-270",
         "claim-docs-specs-user-index-spec-md-5",
         "claim-docs-specs-user-index-spec-md-22",
         "claim-docs-specs-user-doctor-readiness-spec-md-3",
@@ -1004,6 +1004,12 @@
           "claimFingerprint": "sha256:8aac208866396b84c450be1369558a4a9accf00000d8711dc7e1a69c5467915d",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-270",
+          "claimFingerprint": "sha256:c4e3a1449eae3ee64e174c26d97bbf9deff1ae5b30fa9f26c18a8bdc11199ed3",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-specs-user-index-spec-md-5",
@@ -1081,26 +1087,26 @@
       "byEvidenceStatus": {
         "satisfied": 5,
         "stale": 1,
-        "unknown": 16
+        "unknown": 17
       },
       "byReviewStatus": {
-        "agent-reviewed": 6,
+        "agent-reviewed": 7,
         "heuristic": 16
       },
       "byRecommendedProof": {
         "cautilus-eval": 10,
         "deterministic": 9,
-        "human-auditable": 3
+        "human-auditable": 4
       },
       "byMappingConfidence": {
         "high": 11,
-        "medium": 11
+        "medium": 12
       }
     },
     {
       "canonicalClaimId": "U2",
       "title": "Claim Discovery",
-      "absorbedRawClaimCount": 67,
+      "absorbedRawClaimCount": 66,
       "absorbedRawClaimIds": [
         "claim-readme-md-3",
         "claim-readme-md-9",
@@ -1145,7 +1151,6 @@
         "claim-docs-guides-evaluation-process-md-52",
         "claim-docs-guides-evaluation-process-md-253",
         "claim-docs-guides-evaluation-process-md-269",
-        "claim-docs-guides-evaluation-process-md-270",
         "claim-docs-guides-evaluation-process-md-289",
         "claim-docs-guides-evaluation-process-md-293",
         "claim-docs-guides-evaluation-process-md-304",
@@ -1198,8 +1203,8 @@
         {
           "claimId": "claim-readme-md-91",
           "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-readme-md-106",
@@ -1216,8 +1221,8 @@
         {
           "claimId": "claim-readme-md-153",
           "claimFingerprint": "sha256:cb25778d0ec4736fe52109fe0b231b99e62b8335237dde420b6f0cf889bfe510",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-readme-md-160",
@@ -1420,20 +1425,14 @@
         {
           "claimId": "claim-docs-guides-evaluation-process-md-253",
           "claimFingerprint": "sha256:bd1727a2c94b086b9544d09769750e9a036855429b04810a8fa455b4a0238470",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-guides-evaluation-process-md-269",
           "claimFingerprint": "sha256:550093067158f008a45721d7da43358aaec5808471004247c16f2cc027c661d3",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
-        },
-        {
-          "claimId": "claim-docs-guides-evaluation-process-md-270",
-          "claimFingerprint": "sha256:c4e3a1449eae3ee64e174c26d97bbf9deff1ae5b30fa9f26c18a8bdc11199ed3",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-guides-evaluation-process-md-289",
@@ -1577,20 +1576,20 @@
       "byEvidenceStatus": {
         "satisfied": 5,
         "stale": 16,
-        "unknown": 46
+        "unknown": 45
       },
       "byReviewStatus": {
-        "agent-reviewed": 34,
-        "heuristic": 33
+        "agent-reviewed": 37,
+        "heuristic": 29
       },
       "byRecommendedProof": {
-        "cautilus-eval": 22,
-        "deterministic": 25,
-        "human-auditable": 20
+        "cautilus-eval": 17,
+        "deterministic": 27,
+        "human-auditable": 22
       },
       "byMappingConfidence": {
-        "high": 38,
-        "medium": 29
+        "high": 39,
+        "medium": 27
       }
     },
     {
@@ -1751,7 +1750,7 @@
         "agent-reviewed": 1
       },
       "byRecommendedProof": {
-        "human-auditable": 1
+        "deterministic": 1
       },
       "byMappingConfidence": {
         "high": 1
@@ -1823,9 +1822,9 @@
         "heuristic": 5
       },
       "byRecommendedProof": {
-        "cautilus-eval": 3,
+        "cautilus-eval": 2,
         "deterministic": 3,
-        "human-auditable": 1
+        "human-auditable": 2
       },
       "byMappingConfidence": {
         "high": 6,
@@ -1839,7 +1838,7 @@
       "title": "Contract Cross-Cutting Rule Policy",
       "absorbedRawClaimCount": 5,
       "absorbedRawClaimIds": [
-        "claim-agents-md-94",
+        "claim-agents-md-96",
         "claim-docs-contracts-runner-readiness-md-172",
         "claim-docs-specs-contracts-rules-policy-spec-md-6",
         "claim-docs-specs-ledger-index-spec-md-4",
@@ -1847,7 +1846,7 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-agents-md-94",
+          "claimId": "claim-agents-md-96",
           "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1995,8 +1994,8 @@
       "title": "Binary And Skill Boundary",
       "absorbedRawClaimCount": 62,
       "absorbedRawClaimIds": [
-        "claim-agents-md-93",
-        "claim-agents-md-135",
+        "claim-agents-md-95",
+        "claim-agents-md-137",
         "claim-docs-contracts-adapter-contract-md-474",
         "claim-docs-contracts-adapter-contract-md-532",
         "claim-docs-contracts-adapter-contract-md-539",
@@ -2060,13 +2059,13 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-agents-md-93",
+          "claimId": "claim-agents-md-95",
           "claimFingerprint": "sha256:ff43dd3472f293c1135165ce80962d3f3fb5ac2ddc54d47e5280f03e701ef028",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-agents-md-135",
+          "claimId": "claim-agents-md-137",
           "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2443,9 +2442,9 @@
         "human-reviewed": 1
       },
       "byRecommendedProof": {
-        "cautilus-eval": 23,
+        "cautilus-eval": 24,
         "deterministic": 24,
-        "human-auditable": 15
+        "human-auditable": 14
       },
       "byMappingConfidence": {
         "low": 5,
@@ -2455,11 +2454,11 @@
     {
       "canonicalClaimId": "M4",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 70,
+      "absorbedRawClaimCount": 71,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-26",
-        "claim-agents-md-88",
+        "claim-agents-md-90",
         "claim-docs-contracts-adapter-contract-md-3",
         "claim-docs-contracts-adapter-contract-md-209",
         "claim-docs-contracts-adapter-contract-md-219",
@@ -2492,6 +2491,7 @@
         "claim-docs-contracts-runner-readiness-md-13",
         "claim-docs-contracts-runner-readiness-md-37",
         "claim-docs-contracts-runner-readiness-md-43",
+        "claim-docs-contracts-runner-readiness-md-44",
         "claim-docs-contracts-runner-readiness-md-55",
         "claim-docs-contracts-runner-readiness-md-61",
         "claim-docs-contracts-runner-readiness-md-111",
@@ -2542,7 +2542,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-agents-md-88",
+          "claimId": "claim-agents-md-90",
           "claimFingerprint": "sha256:96b7f51516ba4c8a8d89e4e5a77652f179a81105dc574ab340fab051182ee0a8",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2736,6 +2736,12 @@
         {
           "claimId": "claim-docs-contracts-runner-readiness-md-43",
           "claimFingerprint": "sha256:eb47c06c34125c3243fb30e32a975319a8c7574eee035757c05368ca269306a0",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-44",
+          "claimFingerprint": "sha256:f10d9bd6fab59f1aab0554881c0e39bd41cdaf669e8abe2056655c4f31009d92",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2951,34 +2957,33 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 12,
+        "satisfied": 13,
         "stale": 2,
         "unknown": 56
       },
       "byReviewStatus": {
-        "agent-reviewed": 24,
+        "agent-reviewed": 25,
         "heuristic": 46
       },
       "byRecommendedProof": {
-        "cautilus-eval": 36,
-        "deterministic": 15,
-        "human-auditable": 19
+        "cautilus-eval": 31,
+        "deterministic": 22,
+        "human-auditable": 18
       },
       "byMappingConfidence": {
         "low": 3,
-        "medium": 67
+        "medium": 68
       }
     },
     {
       "canonicalClaimId": "M5",
       "title": "Evaluation Surfaces And Runners",
-      "absorbedRawClaimCount": 21,
+      "absorbedRawClaimCount": 20,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-208",
         "claim-docs-master-plan-md-84",
         "claim-docs-contracts-claim-discovery-workflow-md-409",
         "claim-docs-contracts-claim-discovery-workflow-md-468",
-        "claim-docs-contracts-runner-readiness-md-44",
         "claim-docs-contracts-runner-readiness-md-45",
         "claim-docs-contracts-runner-readiness-md-121",
         "claim-docs-contracts-runner-readiness-md-140",
@@ -3022,12 +3027,6 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-runner-readiness-md-44",
-          "claimFingerprint": "sha256:f10d9bd6fab59f1aab0554881c0e39bd41cdaf669e8abe2056655c4f31009d92",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
           "claimId": "claim-docs-contracts-runner-readiness-md-45",
           "claimFingerprint": "sha256:3bffa4f44b39bc9c951f4f49dabcf0d09667ad4e4d5e20fc1d0c7165be130990",
           "mappingConfidence": "medium",
@@ -3060,7 +3059,7 @@
         {
           "claimId": "claim-docs-contracts-runner-readiness-md-350",
           "claimFingerprint": "sha256:7b016906f7b4a987bed48fb072f9e7938a2045041b4ce989e1d00c4c4b59a310",
-          "mappingConfidence": "low",
+          "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
@@ -3125,20 +3124,20 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 5,
+        "satisfied": 4,
         "unknown": 16
       },
       "byReviewStatus": {
-        "agent-reviewed": 6,
+        "agent-reviewed": 5,
         "heuristic": 15
       },
       "byRecommendedProof": {
-        "cautilus-eval": 14,
-        "deterministic": 5,
-        "human-auditable": 2
+        "cautilus-eval": 12,
+        "deterministic": 7,
+        "human-auditable": 1
       },
       "byMappingConfidence": {
-        "low": 2,
+        "low": 1,
         "medium": 19
       }
     },
@@ -3193,8 +3192,8 @@
         "heuristic": 4
       },
       "byRecommendedProof": {
-        "deterministic": 1,
-        "human-auditable": 4
+        "deterministic": 2,
+        "human-auditable": 3
       },
       "byMappingConfidence": {
         "medium": 5
@@ -3406,13 +3405,13 @@
         "unknown": 11
       },
       "byReviewStatus": {
-        "agent-reviewed": 5,
-        "heuristic": 10
+        "agent-reviewed": 6,
+        "heuristic": 9
       },
       "byRecommendedProof": {
-        "cautilus-eval": 4,
-        "deterministic": 7,
-        "human-auditable": 4
+        "cautilus-eval": 2,
+        "deterministic": 11,
+        "human-auditable": 2
       },
       "byMappingConfidence": {
         "medium": 15
@@ -3476,8 +3475,8 @@
         "heuristic": 4
       },
       "byRecommendedProof": {
-        "cautilus-eval": 5,
-        "human-auditable": 1
+        "cautilus-eval": 4,
+        "human-auditable": 2
       },
       "byMappingConfidence": {
         "low": 1,
@@ -3571,8 +3570,8 @@
         "heuristic": 5
       },
       "byRecommendedProof": {
-        "cautilus-eval": 5,
-        "deterministic": 2,
+        "cautilus-eval": 4,
+        "deterministic": 3,
         "human-auditable": 3
       },
       "byMappingConfidence": {
@@ -3837,8 +3836,8 @@
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
-        "deterministic": 16,
-        "human-auditable": 14
+        "deterministic": 19,
+        "human-auditable": 11
       },
       "byMappingConfidence": {
         "low": 3,
@@ -3932,9 +3931,9 @@
         "heuristic": 6
       },
       "byRecommendedProof": {
-        "cautilus-eval": 3,
+        "cautilus-eval": 2,
         "deterministic": 4,
-        "human-auditable": 3
+        "human-auditable": 4
       },
       "byMappingConfidence": {
         "low": 1,
@@ -4198,8 +4197,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:0bae4dba5995735432a7ab4cf307999b1c1a2dda82841939daff988c016548a5",
@@ -4236,8 +4235,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:367f95519e0813c875bfa7e39244a69fa73e6cad1dc133bc6338767ce229d3fa",
@@ -4335,12 +4334,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-88",
+      "claimId": "claim-agents-md-90",
       "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 88,
+          "line": 90,
           "excerpt": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes."
         }
       ],
@@ -4371,12 +4370,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-93",
+      "claimId": "claim-agents-md-95",
       "summary": "Cautilus Agent should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 93,
+          "line": 95,
           "excerpt": "Cautilus Agent should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details."
         }
       ],
@@ -4412,12 +4411,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-94",
+      "claimId": "claim-agents-md-96",
       "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 94,
+          "line": 96,
           "excerpt": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available."
         }
       ],
@@ -4449,12 +4448,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-135",
+      "claimId": "claim-agents-md-137",
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 135,
+          "line": 137,
           "excerpt": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests."
         }
       ],
@@ -4785,26 +4784,26 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
       "canonicalClaimId": "U2",
       "score": 14,
       "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 12,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "runnerUpScore": 11,
+      "scoreMargin": 3,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
         "behavior",
         "candidate",
-        "deterministic",
         "example",
         "fixture",
+        "human-auditable",
         "input",
         "only",
         "packet",
@@ -4908,32 +4907,32 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-scenario",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:cb25778d0ec4736fe52109fe0b231b99e62b8335237dde420b6f0cf889bfe510",
       "canonicalClaimId": "U2",
-      "score": 21,
+      "score": 20,
       "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 19,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "runnerUpScore": 15,
+      "scoreMargin": 5,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "add",
         "agent",
         "candidate",
         "cautilu",
         "check",
         "cli",
-        "command",
-        "deterministic",
         "discover",
+        "fixture",
+        "human-auditable",
         "input",
         "keep",
-        "packet"
+        "product",
+        "prompt"
       ]
     },
     {
@@ -5318,15 +5317,15 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:91bf63bed1f252b0849096cb1ec6ab5b1453c2f60329227a39b11d7c92cdd08b",
       "canonicalClaimId": "M4",
-      "score": 11,
+      "score": 12,
       "runnerUpCanonicalClaimId": "M19",
-      "runnerUpScore": 11,
+      "runnerUpScore": 12,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -5335,6 +5334,7 @@
         "adapter",
         "cautilu",
         "command",
+        "deterministic",
         "keep",
         "portable",
         "repo-specific",
@@ -5358,7 +5358,7 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
@@ -5372,7 +5372,7 @@
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "dev/repo",
+        "deterministic",
         "eval",
         "fixture",
         "keep",
@@ -6867,8 +6867,8 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:696d0ed10d3b67a18729fca9b33c15fcac98a62f3f9aa7e7a3602a7dffde132b",
@@ -6882,10 +6882,10 @@
       "matchedAnchors": [],
       "matchedKeywords": [
         "cautilu",
-        "cautilus-eval",
         "cli",
         "deterministic",
         "documentation",
+        "human-auditable",
         "only",
         "ownership",
         "proof",
@@ -7027,8 +7027,8 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:23d83d6f72cc9755461377ad2ac8e6f2dafbf01128bd117a8efa793b71aeb95e",
@@ -7044,10 +7044,10 @@
         "adapter",
         "answer",
         "cautilu",
-        "cautilus-eval",
         "documentation",
         "evaluation",
         "evidence",
+        "human-auditable",
         "operator",
         "path",
         "repo",
@@ -7068,21 +7068,20 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:8edfa3ce4d6f43ef4031008bcdc6e4fa5fb4afb54762da4eb2a4ef061fd3d9fc",
       "canonicalClaimId": "U2",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 5,
+      "score": 7,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 4,
       "scoreMargin": 3,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "cautilus-eval",
         "deterministic",
         "documentation",
         "product",
@@ -7145,12 +7144,12 @@
       "recommendedProof": "human-auditable",
       "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:2f6ccbccc28babcf442204007ee02b972b63bb2132977f823d48234f5e5369b6",
       "canonicalClaimId": "U2",
-      "score": 15,
+      "score": 14,
       "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 10,
+      "runnerUpScore": 9,
       "scoreMargin": 5,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
@@ -7160,11 +7159,11 @@
         "artifact",
         "case",
         "cautilu",
-        "cli",
-        "doc",
+        "eval",
         "evaluate",
         "flow",
         "human-auditable",
+        "implementation",
         "matching",
         "satisfied",
         "summary"
@@ -7224,7 +7223,7 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
@@ -7232,17 +7231,17 @@
       "canonicalClaimId": "U2",
       "score": 13,
       "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 10,
-      "scoreMargin": 3,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
+      "runnerUpScore": 11,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
         "become",
         "behavior",
-        "cautilus-eval",
         "change",
+        "deterministic",
         "example",
         "keep",
         "over",
@@ -7309,13 +7308,13 @@
       "recommendedProof": "human-auditable",
       "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:c4e3a1449eae3ee64e174c26d97bbf9deff1ae5b30fa9f26c18a8bdc11199ed3",
-      "canonicalClaimId": "U2",
-      "score": 16,
-      "runnerUpCanonicalClaimId": "U1",
+      "canonicalClaimId": "U1",
+      "score": 14,
+      "runnerUpCanonicalClaimId": "U2",
       "runnerUpScore": 14,
-      "scoreMargin": 2,
+      "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -7323,15 +7322,15 @@
         "adapter",
         "agent",
         "cautilu",
-        "cli",
+        "contract",
         "discover",
-        "doc",
-        "human-auditable",
-        "matching",
-        "satisfied",
+        "host",
+        "packet",
+        "raw",
         "scenario",
         "skill",
-        "surface"
+        "still",
+        "test"
       ]
     },
     {
@@ -7386,16 +7385,16 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:bbd0cc15974f28949118cb1f8125d27772e524aa4827d8ff92875cd374b45fd3",
       "canonicalClaimId": "U2",
-      "score": 9,
+      "score": 8,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 6,
-      "scoreMargin": 3,
+      "scoreMargin": 2,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -7403,7 +7402,6 @@
         "candidate",
         "deterministic",
         "documentation",
-        "human-auditable",
         "inspect",
         "proof",
         "repo",
@@ -7946,8 +7944,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "needs-scenario",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:815dd0a63f977133f71cba4abf88a635f27ae1e6db6eee7884fc85f9acab52d4",
@@ -8677,15 +8675,15 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:a3e9d1b41016a93c606e82451a6da80d88f8a02bd0e06446782f080a7974a31c",
       "canonicalClaimId": "M4",
-      "score": 11,
+      "score": 12,
       "runnerUpCanonicalClaimId": "M9",
-      "runnerUpScore": 11,
+      "runnerUpScore": 12,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -8696,6 +8694,7 @@
         "cautilu",
         "command",
         "consumer",
+        "deterministic",
         "helper",
         "invocation",
         "keep",
@@ -8914,7 +8913,7 @@
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
       "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:45b653427563292b6418370c4faf5171a5c0bca05f568f9fc6df60bb5358c2f0",
@@ -9028,8 +9027,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:4755325a9090d9e679305b3a06a1b7a3f122c44037faed7396ff609ac753d572",
@@ -9641,8 +9640,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:0199de8fd884565e9188f0b9bb149d1a891fe510ec5971fc8294d1152b5d1fb3",
@@ -9946,7 +9945,7 @@
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
       "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:3ae052d2e69bce5fd477651716c93abdc26b8279663de5c98b4c7f3922bbea72",
@@ -11403,8 +11402,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:21c53f5ec4d397e49c7affa5c7be9dd23e9709e1649e3989c5fbaad619211e98",
@@ -11517,8 +11516,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
@@ -11667,15 +11666,15 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:ae0122e9a32cdc900075bb4a92bef7f3ed1984464ccba320f1a5824446ee45d2",
       "canonicalClaimId": "M8",
-      "score": 12,
+      "score": 13,
       "runnerUpCanonicalClaimId": "M9",
-      "runnerUpScore": 12,
+      "runnerUpScore": 13,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -11684,6 +11683,7 @@
         "active",
         "adapter",
         "cautilu",
+        "deterministic",
         "file",
         "first",
         "keep",
@@ -11691,8 +11691,7 @@
         "output",
         "run",
         "smoke",
-        "stable",
-        "test"
+        "stable"
       ]
     },
     {
@@ -11708,21 +11707,22 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:47034d0a3d9bd406d1f4ba72ec4165eaa08af324e5bd9c65bb7460a32e496aef",
       "canonicalClaimId": "M4",
-      "score": 8,
+      "score": 9,
       "runnerUpCanonicalClaimId": "M19",
-      "runnerUpScore": 8,
+      "runnerUpScore": 9,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
+        "deterministic",
         "invocation",
         "keep",
         "live-run",
@@ -11745,15 +11745,15 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:22dbd2b45769d7449806d56519b0926c85aa82e0359074dcab9be9f4143debe2",
       "canonicalClaimId": "M10",
-      "score": 13,
+      "score": 14,
       "runnerUpCanonicalClaimId": "M20",
-      "runnerUpScore": 13,
+      "runnerUpScore": 14,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -11761,6 +11761,7 @@
       "matchedKeywords": [
         "adapter",
         "boundary",
+        "deterministic",
         "invocation",
         "live-run",
         "loop",
@@ -11769,8 +11770,7 @@
         "persona",
         "product",
         "prompt",
-        "request",
-        "result"
+        "request"
       ]
     },
     {
@@ -11786,15 +11786,15 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:6059ec1e2738f23b3c184046049c654f0fa32b494859a6906da65b1a8a6fdfbc",
       "canonicalClaimId": "M4",
-      "score": 11,
+      "score": 12,
       "runnerUpCanonicalClaimId": "M19",
-      "runnerUpScore": 11,
+      "runnerUpScore": 12,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -11804,6 +11804,7 @@
         "backend",
         "command",
         "covered",
+        "deterministic",
         "flag",
         "keep",
         "packet",
@@ -12049,21 +12050,22 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:6a5975f5be8ff5f08f378525aa1963dc684e6d1d50395f4326e2788cdb47521f",
       "canonicalClaimId": "M4",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "M5",
-      "runnerUpScore": 8,
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M10",
+      "runnerUpScore": 9,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
+        "deterministic",
         "explicit",
         "keep",
         "model",
@@ -12086,8 +12088,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:c40280e0f0251c4fe6717805add31109eb82cf41e62faba97ebfb5d41cec0fde",
@@ -12162,21 +12164,22 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
       "canonicalClaimId": "M11",
-      "score": 15,
+      "score": 16,
       "runnerUpCanonicalClaimId": "M14",
-      "runnerUpScore": 15,
+      "runnerUpScore": 16,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "aggregation",
+        "deterministic",
         "explicit",
         "keep",
         "numeric",
@@ -12186,8 +12189,7 @@
         "shape",
         "summary",
         "telemetry",
-        "test",
-        "variant"
+        "test"
       ]
     },
     {
@@ -12427,27 +12429,27 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:f10d9bd6fab59f1aab0554881c0e39bd41cdaf669e8abe2056655c4f31009d92",
-      "canonicalClaimId": "M5",
+      "canonicalClaimId": "M4",
       "score": 7,
-      "runnerUpCanonicalClaimId": "M28",
+      "runnerUpCanonicalClaimId": "M5",
       "runnerUpScore": 7,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "adapter",
         "behavior",
-        "dev/repo",
-        "eval",
-        "evaluation",
+        "deterministic",
         "keep",
         "run",
-        "runner"
+        "runner",
+        "typed"
       ]
     },
     {
@@ -12499,15 +12501,15 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:60ae1ebcaf288176c291f3920581f54867c13dbce63bace0631a0b3113ebcee0",
       "canonicalClaimId": "M4",
-      "score": 8,
+      "score": 7,
       "runnerUpCanonicalClaimId": "M5",
-      "runnerUpScore": 8,
+      "runnerUpScore": 7,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -12515,7 +12517,6 @@
       "matchedKeywords": [
         "adapter",
         "command",
-        "deterministic",
         "packet",
         "proof",
         "runner",
@@ -12613,21 +12614,22 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:8fe51f062991ce657831e0fad6218ae8064d3f2b64317e2b7727b4e305a59a21",
       "canonicalClaimId": "M8",
-      "score": 10,
+      "score": 11,
       "runnerUpCanonicalClaimId": "M18",
-      "runnerUpScore": 10,
+      "runnerUpScore": 11,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
+        "deterministic",
         "keep",
         "packet",
         "readines",
@@ -12652,15 +12654,15 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:091b32f4a97da9bdda7a28b88cb71efe23fb840cf6780c3e44d8b710e36f77ab",
       "canonicalClaimId": "M8",
-      "score": 9,
+      "score": 10,
       "runnerUpCanonicalClaimId": "M18",
-      "runnerUpScore": 9,
+      "runnerUpScore": 10,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -12668,6 +12670,7 @@
       "matchedKeywords": [
         "adapter",
         "assessment",
+        "deterministic",
         "expose",
         "keep",
         "runner",
@@ -12729,15 +12732,15 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:9a1c2d9bc6d27fcaeeda00e4907d101b6e4dacbf5286223d4687ad82e9e272a5",
       "canonicalClaimId": "M11",
-      "score": 10,
+      "score": 11,
       "runnerUpCanonicalClaimId": "M14",
-      "runnerUpScore": 10,
+      "runnerUpScore": 11,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -12745,6 +12748,7 @@
       "matchedKeywords": [
         "artifact",
         "command",
+        "deterministic",
         "expose",
         "family",
         "human",
@@ -12956,15 +12960,15 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:d4042790d12276882b1da1b878bcf16ca3bd2493bcc6473a75a1a9e5b828ae79",
       "canonicalClaimId": "M8",
-      "score": 13,
+      "score": 11,
       "runnerUpCanonicalClaimId": "M18",
-      "runnerUpScore": 13,
+      "runnerUpScore": 11,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -12973,15 +12977,14 @@
         "adapter",
         "assessment",
         "but",
+        "deterministic",
         "doctor",
         "expose",
         "file",
         "git",
-        "named",
         "runner",
         "statu",
-        "surface",
-        "thi"
+        "without"
       ]
     },
     {
@@ -13386,20 +13389,21 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:7b016906f7b4a987bed48fb072f9e7938a2045041b4ce989e1d00c4c4b59a310",
       "canonicalClaimId": "M5",
-      "score": 6,
+      "score": 7,
       "runnerUpCanonicalClaimId": "M11",
-      "runnerUpScore": 6,
+      "runnerUpScore": 7,
       "scoreMargin": 0,
-      "mappingConfidence": "low",
+      "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "deterministic",
         "evaluation",
         "keep",
         "packet",
@@ -13615,8 +13619,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:314666ba59ccf0d491a3cf1af85b27d812ee82600fad678e1a1b1d98812f6a56",
@@ -13732,8 +13736,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "needs-scenario",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:fde2dba8906af77ca6a87865b51b67bfe1cdbe6055e706960f1164061dc20d4a",
@@ -13773,8 +13777,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "needs-scenario",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:011098fa8f0fb74f38fea92d734fd20899794fa138b4bd51484b07c3dd9a2f5b",
@@ -13844,21 +13848,22 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:9aa67d9d960873c3babfef7757cc09598c422c34c2ee669d1b412995289b98ca",
       "canonicalClaimId": "M4",
-      "score": 7,
+      "score": 8,
       "runnerUpCanonicalClaimId": "M19",
-      "runnerUpScore": 7,
+      "runnerUpScore": 8,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
+        "deterministic",
         "discovery",
         "every",
         "expose",
@@ -13916,8 +13921,8 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "needs-scenario",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:1d69d79140e7241bd365131d6dbac7a81739a91c58a9914a8a48980c64e44686",
@@ -13954,21 +13959,22 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:e1fbfb97b35f7b11b40f8460ec5ff20cf1b4b440f96dab535b1eeac095ba45da",
       "canonicalClaimId": "M11",
-      "score": 9,
+      "score": 10,
       "runnerUpCanonicalClaimId": "M14",
-      "runnerUpScore": 9,
+      "runnerUpScore": 10,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "contract",
+        "deterministic",
         "discovery",
         "fixture",
         "flow",
@@ -13993,7 +13999,7 @@
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
       "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:54a51cdc72f76d3d9714c0f3b87a4d83f8b95d55bc9fd0d34b5d5030c2f45389",
@@ -14026,21 +14032,22 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:9c1f075135cb7ca08c49b052194f720c714186b4f3df03aeb9bc3b399aa47e34",
       "canonicalClaimId": "M4",
-      "score": 11,
+      "score": 12,
       "runnerUpCanonicalClaimId": "M19",
-      "runnerUpScore": 11,
+      "runnerUpScore": 12,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
+        "deterministic",
         "keep",
         "key",
         "normalization",
@@ -15400,16 +15407,16 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "needs-scenario",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:2a8977ffbf9e63bf6e7035970e11a2be32155b92b317783492b41dbae10de45e",
       "canonicalClaimId": "U2",
-      "score": 37,
+      "score": 34,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 22,
-      "scoreMargin": 15,
+      "scoreMargin": 12,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
@@ -15419,15 +15426,15 @@
         "candidate",
         "cautilu",
         "cautilus-agent",
-        "cautilus-eval",
         "cli",
         "command",
+        "deterministic",
         "discover",
         "discovery",
-        "eval",
         "evidence",
-        "fixture",
-        "flow"
+        "found",
+        "look",
+        "may"
       ]
     },
     {
@@ -16216,16 +16223,16 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:4c2869e4e3b80325611de1405c7b61535118ce7f18e2b3c33e22f61b61aaa938",
       "canonicalClaimId": "U6",
       "score": 16,
       "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 9,
-      "scoreMargin": 7,
+      "runnerUpScore": 8,
+      "scoreMargin": 8,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
@@ -16427,8 +16434,8 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "needs-scenario",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:449959464c1d8b3cd75614523e8b7a2fb8819020a2f4a246327632951d3e31b8",
