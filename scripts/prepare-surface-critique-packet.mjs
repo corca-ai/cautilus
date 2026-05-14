@@ -9,12 +9,22 @@ import { RELEASE_VERSIONED_JSON_FILES } from "./release/bump-version.mjs";
 
 export const SURFACE_CRITIQUE_PACKET_SCHEMA = "cautilus.surface_critique_packet.v1";
 
+export const RELEASE_PACKAGING_RULE_FAMILIES = Object.freeze([
+	"retro_registration",
+	"release_control_docs",
+	"release_prepare_rewrites",
+	"versioned_json_audit",
+	"retro_contract_cases",
+]);
+
+const SUPPORTED_FORMATS = new Set(["json", "md"]);
+
 function usage(exitCode = 0) {
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(
 		[
 			"Usage:",
-			"  node ./scripts/prepare-surface-critique-packet.mjs [--repo-root .] [--surface-id release-packaging] [--check]",
+			"  node ./scripts/prepare-surface-critique-packet.mjs [--repo-root .] [--surface-id release-packaging] [--format json|md] [--check]",
 		].join("\n") + "\n",
 	);
 	process.exit(exitCode);
@@ -32,6 +42,7 @@ export function parseArgs(argv) {
 	const options = {
 		repoRoot: process.cwd(),
 		surfaceId: "release-packaging",
+		format: "json",
 		check: false,
 	};
 	for (let index = 0; index < argv.length; index += 1) {
@@ -49,15 +60,24 @@ export function parseArgs(argv) {
 			index += 1;
 			continue;
 		}
+		if (arg === "--format") {
+			options.format = readRequiredValue(argv, index, arg);
+			index += 1;
+			continue;
+		}
 		if (arg === "--check") {
 			options.check = true;
 			continue;
 		}
 		throw new Error(`Unknown argument: ${arg}`);
 	}
+	if (!SUPPORTED_FORMATS.has(options.format)) {
+		throw new Error(`Unsupported --format value: ${options.format} (expected: json|md)`);
+	}
 	return {
 		repoRoot: resolve(options.repoRoot),
 		surfaceId: options.surfaceId,
+		format: options.format,
 		check: options.check,
 	};
 }
@@ -337,6 +357,10 @@ export function buildSurfaceCritiquePacket({ repoRoot = process.cwd(), surfaceId
 		schemaVersion: SURFACE_CRITIQUE_PACKET_SCHEMA,
 		repoRoot: relative(process.cwd(), resolvedRepoRoot) || ".",
 		surfaceId,
+		coverage: {
+			surface_id: surfaceId,
+			rule_families: [...RELEASE_PACKAGING_RULE_FAMILIES],
+		},
 		status: findings.some((finding) => finding.severity === "high") ? "blocked" : findings.length > 0 ? "needs_attention" : "ready",
 		retroTrigger: {
 			subscribed,
@@ -350,11 +374,42 @@ export function buildSurfaceCritiquePacket({ repoRoot = process.cwd(), surfaceId
 	};
 }
 
+function renderFindingLine(finding) {
+	return `- **[${finding.severity}]** \`${finding.id}\` — ${finding.path || "(no path)"}: ${finding.message}`;
+}
+
+export function renderPacketMarkdown(packet) {
+	const lines = [];
+	lines.push(`# Surface Critique Packet — ${packet.surfaceId}`);
+	lines.push("");
+	lines.push(
+		"**Scope:** This packet only checks the deterministic rule families listed below for the named surface. A `ready` status here does **not** imply that other repo surfaces are clean — broader critique still applies.",
+	);
+	lines.push("");
+	lines.push(`- Surface ID: \`${packet.coverage.surface_id}\``);
+	lines.push(`- Covered rule families: ${packet.coverage.rule_families.map((id) => `\`${id}\``).join(", ")}`);
+	lines.push(`- Status: \`${packet.status}\``);
+	lines.push("");
+	if (packet.findings.length === 0) {
+		lines.push("## Findings");
+		lines.push("");
+		lines.push("_No findings in covered rule families._");
+	} else {
+		lines.push(`## Findings (${packet.findings.length})`);
+		lines.push("");
+		for (const finding of packet.findings) {
+			lines.push(renderFindingLine(finding));
+		}
+	}
+	return `${lines.join("\n")}\n`;
+}
+
 export function main(argv = process.argv.slice(2)) {
 	try {
 		const options = parseArgs(argv);
 		const packet = buildSurfaceCritiquePacket(options);
-		process.stdout.write(`${JSON.stringify(packet, null, 2)}\n`);
+		const rendered = options.format === "md" ? renderPacketMarkdown(packet) : `${JSON.stringify(packet, null, 2)}\n`;
+		process.stdout.write(rendered);
 		if (options.check && packet.findings.length > 0) {
 			process.exit(1);
 		}

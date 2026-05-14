@@ -4,7 +4,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { buildSurfaceCritiquePacket, SURFACE_CRITIQUE_PACKET_SCHEMA } from "./prepare-surface-critique-packet.mjs";
+import {
+	buildSurfaceCritiquePacket,
+	RELEASE_PACKAGING_RULE_FAMILIES,
+	renderPacketMarkdown,
+	SURFACE_CRITIQUE_PACKET_SCHEMA,
+} from "./prepare-surface-critique-packet.mjs";
 
 const REPO_ROOT = process.cwd();
 
@@ -67,6 +72,10 @@ test("current release surface critique packet is ready and separates audit-only 
 	assert.equal(packet.schemaVersion, SURFACE_CRITIQUE_PACKET_SCHEMA);
 	assert.equal(packet.status, "ready");
 	assert.deepEqual(packet.findings, []);
+	assert.deepEqual(packet.coverage, {
+		surface_id: "release-packaging",
+		rule_families: [...RELEASE_PACKAGING_RULE_FAMILIES],
+	});
 	assert.deepEqual(packet.releaseControlDocs, [
 		"docs/maintainers/release-boundary.md",
 		"docs/maintainers/releasing.md",
@@ -75,6 +84,42 @@ test("current release surface critique packet is ready and separates audit-only 
 	assert(marketplace);
 	assert(marketplace.roles.includes("release:audit-only"));
 	assert.equal(marketplace.roles.includes("release:prepare-rewrite"), false);
+});
+
+test("markdown render exposes scope and covered rule families so `ready` cannot be read as global", () => {
+	const packet = buildSurfaceCritiquePacket({ repoRoot: REPO_ROOT });
+	const md = renderPacketMarkdown(packet);
+	assert.match(md, /# Surface Critique Packet — release-packaging/);
+	assert.match(md, /\*\*Scope:\*\*/);
+	assert.match(md, /does \*\*not\*\* imply that other repo surfaces are clean/);
+	assert.match(md, /Surface ID: `release-packaging`/);
+	for (const family of RELEASE_PACKAGING_RULE_FAMILIES) {
+		assert(md.includes(`\`${family}\``), `markdown render must list rule family ${family}`);
+	}
+	assert.match(md, /Status: `ready`/);
+	assert.match(md, /_No findings in covered rule families\._/);
+});
+
+test("markdown render lists findings with severity, id, path, and message when present", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-surface-packet-md-"));
+	try {
+		writeMinimalRepo(root, [
+			".agents/release-adapter.yaml",
+			".agents/surfaces.json",
+			"docs/maintainers/releasing.md",
+			"install.sh",
+			"package.json",
+			"package-lock.json",
+			"scripts/release/**",
+		]);
+		const packet = buildSurfaceCritiquePacket({ repoRoot: root });
+		const md = renderPacketMarkdown(packet);
+		assert.match(md, /Status: `blocked`/);
+		assert.match(md, /## Findings \(\d+\)/);
+		assert.match(md, /\*\*\[high\]\*\* `release_control_doc_not_in_surface`/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
 });
 
 test("packet flags linked release control docs that are missing from the release surface", () => {
