@@ -64,8 +64,8 @@ Keep this block short. Detailed routing belongs in installed skill metadata and 
 
 Before repeated fresh-eye critique on `release-packaging`, run `npm run critique:surface-packet:check` and feed the packet findings into the first review pass.
 Fix deterministic packet findings before asking for another broad subagent critique.
-The same scanner is also registered as the `surface-critique-release-packaging` section in [.agents/critique-adapter.yaml](./.agents/critique-adapter.yaml), so Charness's `critique` skill consumes it through the portable `charness.critique_prepare_packet.v1` envelope when its prepare runner is invoked.
-A `ready` status in the section reports only the rule families enumerated in the packet's coverage block; it does not certify other repo surfaces.
+The same scanner also serves the `cli-agent-product` surface (packaged skill tree parity); both are registered as `packet_sections` in [.agents/critique-adapter.yaml](./.agents/critique-adapter.yaml), so Charness's `critique` skill consumes them through the portable `charness.critique_prepare_packet.v1` envelope when its prepare runner is invoked.
+A `ready` status in any section reports only the rule families enumerated in that section's coverage block; it does not certify other repo surfaces.
 
 ## Subagent Delegation
 

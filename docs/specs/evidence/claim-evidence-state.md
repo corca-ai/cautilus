@@ -9,11 +9,11 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
 - Claims hash: sha256:9572f6211ec553e4e4c3e878ed196a6e1822de2c50a49b31c779f4818675eef3
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:8cddff41d7ce237a8b097b75e59b1b5aaf40434a0102063784a4ef440e54e2d7
-- Git state: fresh; stale=no
-- Snapshot current commit: 047d22e3683fa7345c072509560513f50ab7a6ea
+- Status hash: sha256:a45c6356de235ec7b79d78270b4a0efa21b73ce16fa747cc496b2fe57861e7f9
+- Git state: stale; stale=yes
+- Snapshot current commit: 116ba4ed8dbc0fcd79a7f28e6d103c85258d45b0
 - Packet commit: 047d22e3683fa7345c072509560513f50ab7a6ea
-- Changed claim sources: 0
+- Changed claim sources: 1
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
 - Status snapshot role: derived command snapshot for git state, action buckets, and cross-cutting signals; its claimSummary must match the claim packet
 

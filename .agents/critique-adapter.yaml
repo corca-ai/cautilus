@@ -7,3 +7,7 @@ packet_sections:
     title: Surface Critique — release-packaging
     content_kind: script
     command: "node scripts/prepare-surface-critique-packet.mjs --format md --surface-id release-packaging"
+  - id: surface-critique-cli-agent-product
+    title: Surface Critique — cli-agent-product
+    content_kind: script
+    command: "node scripts/prepare-surface-critique-packet.mjs --format md --surface-id cli-agent-product"

@@ -6,8 +6,10 @@ import test from "node:test";
 
 import {
 	buildSurfaceCritiquePacket,
+	CLI_AGENT_PRODUCT_RULE_FAMILIES,
 	RELEASE_PACKAGING_RULE_FAMILIES,
 	renderPacketMarkdown,
+	SUPPORTED_SURFACE_IDS,
 	SURFACE_CRITIQUE_PACKET_SCHEMA,
 } from "./prepare-surface-critique-packet.mjs";
 
@@ -137,6 +139,121 @@ test("packet flags linked release control docs that are missing from the release
 		const packet = buildSurfaceCritiquePacket({ repoRoot: root });
 		assert.equal(packet.status, "blocked");
 		assert(packet.findings.some((finding) => finding.id === "release_control_doc_not_in_surface" && finding.path === "docs/maintainers/release-boundary.md"));
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("dispatcher rejects unknown surface ids and lists supported ones", () => {
+	assert.throws(
+		() => buildSurfaceCritiquePacket({ repoRoot: REPO_ROOT, surfaceId: "nonexistent-surface" }),
+		(error) => {
+			assert(error instanceof Error);
+			assert.match(error.message, /No rule bundle declared for surface id: nonexistent-surface/);
+			for (const id of SUPPORTED_SURFACE_IDS) {
+				assert(error.message.includes(id), `error message should list supported surface ${id}`);
+			}
+			return true;
+		},
+	);
+});
+
+function writeCliAgentRepo(root, { sourceFiles, packagedFiles }) {
+	writeFile(
+		root,
+		".agents/surfaces.json",
+		`${JSON.stringify(
+			{
+				version: 1,
+				surfaces: [
+					{
+						surface_id: "cli-agent-product",
+						source_paths: ["skills/cautilus-agent/**"],
+						derived_paths: ["plugins/cautilus/skills/cautilus-agent/**"],
+					},
+				],
+			},
+			null,
+			2,
+		)}\n`,
+	);
+	for (const [relPath, content] of sourceFiles) {
+		writeFile(root, `skills/cautilus-agent/${relPath}`, content);
+	}
+	for (const [relPath, content] of packagedFiles) {
+		writeFile(root, `plugins/cautilus/skills/cautilus-agent/${relPath}`, content);
+	}
+}
+
+test("cli-agent-product packet is ready when source and packaged skill trees have parity", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-cli-agent-packet-"));
+	try {
+		writeCliAgentRepo(root, {
+			sourceFiles: [
+				["SKILL.md", "# Skill\n"],
+				["references/a.md", "a\n"],
+			],
+			packagedFiles: [
+				["SKILL.md", "# Skill\n"],
+				["references/a.md", "a\n"],
+			],
+		});
+		const packet = buildSurfaceCritiquePacket({ repoRoot: root, surfaceId: "cli-agent-product" });
+		assert.equal(packet.surfaceId, "cli-agent-product");
+		assert.deepEqual(packet.coverage, {
+			surface_id: "cli-agent-product",
+			rule_families: [...CLI_AGENT_PRODUCT_RULE_FAMILIES],
+		});
+		assert.equal(packet.status, "ready");
+		assert.deepEqual(packet.findings, []);
+		assert.equal(packet.sourceFileCount, 2);
+		assert.equal(packet.packagedFileCount, 2);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("cli-agent-product packet flags files present in source but missing from packaged tree", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-cli-agent-packet-"));
+	try {
+		writeCliAgentRepo(root, {
+			sourceFiles: [
+				["SKILL.md", "# Skill\n"],
+				["references/added.md", "new\n"],
+			],
+			packagedFiles: [
+				["SKILL.md", "# Skill\n"],
+			],
+		});
+		const packet = buildSurfaceCritiquePacket({ repoRoot: root, surfaceId: "cli-agent-product" });
+		assert.equal(packet.status, "blocked");
+		const missing = packet.findings.find((finding) => finding.path === "plugins/cautilus/skills/cautilus-agent/references/added.md");
+		assert(missing, "expected packaged-side missing finding");
+		assert.equal(missing.id, "packaged_skill_tree_parity");
+		assert.match(missing.message, /run `npm run skills:sync-packaged`/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("cli-agent-product packet flags files present in packaged but missing from source tree", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-cli-agent-packet-"));
+	try {
+		writeCliAgentRepo(root, {
+			sourceFiles: [
+				["SKILL.md", "# Skill\n"],
+			],
+			packagedFiles: [
+				["SKILL.md", "# Skill\n"],
+				["references/stale.md", "stale\n"],
+			],
+		});
+		const packet = buildSurfaceCritiquePacket({ repoRoot: root, surfaceId: "cli-agent-product" });
+		assert.equal(packet.status, "blocked");
+		const orphan = packet.findings.find((finding) => finding.path === "plugins/cautilus/skills/cautilus-agent/references/stale.md");
+		assert(orphan, "expected source-side orphan finding");
+		assert.equal(orphan.id, "packaged_skill_tree_parity");
+		assert.match(orphan.message, /has no source counterpart/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

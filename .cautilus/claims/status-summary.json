@@ -1381,21 +1381,34 @@
   },
   "gitCommit": "047d22e3683fa7345c072509560513f50ab7a6ea",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 10,
+    "changedFiles": [
+      ".agents/critique-adapter.yaml",
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/status-summary.json",
+      "AGENTS.md",
+      "docs/specs/evidence/claim-evidence-state.md",
+      "scripts/prepare-surface-critique-packet.mjs",
+      "scripts/prepare-surface-critique-packet.test.mjs"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
       "workingTreePolicy": "excluded"
     },
-    "changedSourceCount": 0,
-    "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "047d22e3683fa7345c072509560513f50ab7a6ea",
-    "headDrift": false,
-    "isStale": false,
+    "changedSourceCount": 1,
+    "changedSources": [
+      "AGENTS.md"
+    ],
+    "comparisonStatus": "stale",
+    "currentGitCommit": "116ba4ed8dbc0fcd79a7f28e6d103c85258d45b0",
+    "headDrift": true,
+    "isStale": true,
     "packetGitCommit": "047d22e3683fa7345c072509560513f50ab7a6ea",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "Run discover claims --previous <claims.json> --refresh-plan before review, review application, or eval planning.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",

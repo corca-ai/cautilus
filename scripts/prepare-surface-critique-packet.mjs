@@ -1,5 +1,5 @@
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, relative, resolve } from "node:path";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { dirname, join, relative, resolve } from "node:path";
 import path from "node:path/posix";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -15,6 +15,10 @@ export const RELEASE_PACKAGING_RULE_FAMILIES = Object.freeze([
 	"release_prepare_rewrites",
 	"versioned_json_audit",
 	"retro_contract_cases",
+]);
+
+export const CLI_AGENT_PRODUCT_RULE_FAMILIES = Object.freeze([
+	"packaged_skill_tree_parity",
 ]);
 
 const SUPPORTED_FORMATS = new Set(["json", "md"]);
@@ -319,8 +323,30 @@ function collectFindings({ controlDocs, entries, matrix, rawTriggerGlobs, subscr
 	];
 }
 
-export function buildSurfaceCritiquePacket({ repoRoot = process.cwd(), surfaceId = "release-packaging" } = {}) {
-	const resolvedRepoRoot = resolve(repoRoot);
+function packetStatus(findings) {
+	if (findings.some((finding) => finding.severity === "high")) {
+		return "blocked";
+	}
+	return findings.length > 0 ? "needs_attention" : "ready";
+}
+
+function wrapPacket({ surfaceId, resolvedRepoRoot, ruleFamilies, findings, extras = {} }) {
+	return {
+		schemaVersion: SURFACE_CRITIQUE_PACKET_SCHEMA,
+		repoRoot: relative(process.cwd(), resolvedRepoRoot) || ".",
+		surfaceId,
+		coverage: {
+			surface_id: surfaceId,
+			rule_families: [...ruleFamilies],
+		},
+		status: packetStatus(findings),
+		...extras,
+		findings,
+	};
+}
+
+function buildReleasePackagingPacket({ resolvedRepoRoot }) {
+	const surfaceId = "release-packaging";
 	const surfaceManifest = readJson(resolvedRepoRoot, ".agents/surfaces.json");
 	const surface = surfaceManifest.surfaces.find((candidate) => candidate.surface_id === surfaceId);
 	if (!surface) {
@@ -353,25 +379,117 @@ export function buildSurfaceCritiquePacket({ repoRoot = process.cwd(), surfaceId
 		testSource,
 		versionFieldPaths,
 	});
-	return {
-		schemaVersion: SURFACE_CRITIQUE_PACKET_SCHEMA,
-		repoRoot: relative(process.cwd(), resolvedRepoRoot) || ".",
+	return wrapPacket({
 		surfaceId,
-		coverage: {
-			surface_id: surfaceId,
-			rule_families: [...RELEASE_PACKAGING_RULE_FAMILIES],
-		},
-		status: findings.some((finding) => finding.severity === "high") ? "blocked" : findings.length > 0 ? "needs_attention" : "ready",
-		retroTrigger: {
-			subscribed,
-			triggerSurfaces,
-			rawTriggerGlobs,
-		},
-		releaseControlDocs: controlDocs,
-		releasePrepareRewritePaths: RELEASE_VERSIONED_JSON_FILES,
-		roleMatrix: matrix,
+		resolvedRepoRoot,
+		ruleFamilies: RELEASE_PACKAGING_RULE_FAMILIES,
 		findings,
+		extras: {
+			retroTrigger: {
+				subscribed,
+				triggerSurfaces,
+				rawTriggerGlobs,
+			},
+			releaseControlDocs: controlDocs,
+			releasePrepareRewritePaths: RELEASE_VERSIONED_JSON_FILES,
+			roleMatrix: matrix,
+		},
+	});
+}
+
+function collectRelativeFiles(rootPath) {
+	if (!existsSync(rootPath)) {
+		return [];
+	}
+	const out = [];
+	const walk = (dir, prefix) => {
+		const entries = readdirSync(dir, { withFileTypes: true }).slice().sort((a, b) => a.name.localeCompare(b.name));
+		for (const entry of entries) {
+			const next = join(dir, entry.name);
+			const rel = prefix ? `${prefix}/${entry.name}` : entry.name;
+			if (entry.isDirectory()) {
+				walk(next, rel);
+			} else if (entry.isFile()) {
+				out.push(rel);
+			}
+		}
 	};
+	walk(rootPath, "");
+	return out;
+}
+
+function packagedSkillTreeParityFindings({ sourceFiles, packagedFiles, sourceRel, packagedRel }) {
+	const sourceSet = new Set(sourceFiles);
+	const packagedSet = new Set(packagedFiles);
+	const findings = [];
+	for (const rel of sourceFiles) {
+		if (!packagedSet.has(rel)) {
+			findings.push({
+				id: "packaged_skill_tree_parity",
+				severity: "high",
+				message: `${sourceRel}/${rel} is missing from the packaged skill tree; run \`npm run skills:sync-packaged\`.`,
+				path: `${packagedRel}/${rel}`,
+			});
+		}
+	}
+	for (const rel of packagedFiles) {
+		if (!sourceSet.has(rel)) {
+			findings.push({
+				id: "packaged_skill_tree_parity",
+				severity: "high",
+				message: `${packagedRel}/${rel} has no source counterpart; delete it or restore the source file in ${sourceRel}/.`,
+				path: `${packagedRel}/${rel}`,
+			});
+		}
+	}
+	return findings;
+}
+
+function buildCliAgentProductPacket({ resolvedRepoRoot }) {
+	const surfaceId = "cli-agent-product";
+	const surfaceManifest = readJson(resolvedRepoRoot, ".agents/surfaces.json");
+	const surface = surfaceManifest.surfaces.find((candidate) => candidate.surface_id === surfaceId);
+	if (!surface) {
+		throw new Error(`Unknown surface id: ${surfaceId}`);
+	}
+	const sourceRel = "skills/cautilus-agent";
+	const packagedRel = "plugins/cautilus/skills/cautilus-agent";
+	const sourceFiles = collectRelativeFiles(resolve(resolvedRepoRoot, sourceRel));
+	const packagedFiles = collectRelativeFiles(resolve(resolvedRepoRoot, packagedRel));
+	const findings = packagedSkillTreeParityFindings({
+		sourceFiles,
+		packagedFiles,
+		sourceRel,
+		packagedRel,
+	});
+	return wrapPacket({
+		surfaceId,
+		resolvedRepoRoot,
+		ruleFamilies: CLI_AGENT_PRODUCT_RULE_FAMILIES,
+		findings,
+		extras: {
+			packagedSkillTreeRoots: { source: sourceRel, packaged: packagedRel },
+			sourceFileCount: sourceFiles.length,
+			packagedFileCount: packagedFiles.length,
+		},
+	});
+}
+
+const SURFACE_BUNDLE_BUILDERS = {
+	"release-packaging": buildReleasePackagingPacket,
+	"cli-agent-product": buildCliAgentProductPacket,
+};
+
+export const SUPPORTED_SURFACE_IDS = Object.freeze(Object.keys(SURFACE_BUNDLE_BUILDERS));
+
+export function buildSurfaceCritiquePacket({ repoRoot = process.cwd(), surfaceId = "release-packaging" } = {}) {
+	const builder = SURFACE_BUNDLE_BUILDERS[surfaceId];
+	if (!builder) {
+		throw new Error(
+			`No rule bundle declared for surface id: ${surfaceId}. Known: ${SUPPORTED_SURFACE_IDS.join(", ")}`,
+		);
+	}
+	return builder({ resolvedRepoRoot: resolve(repoRoot) });
 }
 
 function renderFindingLine(finding) {
