@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-guides-cli-eval-live-instance-selection-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-guides-cli-md-180"
+  ],
+  "repoCommit": "01c774cc9cf983d34bbdbafc92af0482c726f83b",
+  "summary": "Deterministic proof for the current CLI guide claim that an eval live instance is one live consumer target on this host selected by stable id.",
+  "evidenceScope": {
+    "targetSurface": "eval-live instance selection and live-target catalog boundary",
+    "claimBoundary": "Only the current docs/guides/cli.md eval-live stable instance selection claim at line 180 is marked satisfied.",
+    "notClaimed": [
+      "A real Ceal or other consumer runtime was launched.",
+      "The example fixture paths prove live app behavior quality.",
+      "Every adapter must expose more than one instance.",
+      "The product owns consumer launch, auth, or runtime wiring.",
+      "This bundle satisfies adjacent eval-live batch, persona-loop, or workspace placeholder claims."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestEveryRegisteredCommandHasAGoHandler|TestCLIEvalLiveDiscoverNormalizesExplicitInstances|TestCLILiveEvalDiscoverExecutesConsumerProbeCommand|TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr|TestCLILiveEvalRunLiveDispatchesConsumerCommand|TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop|TestCLILiveEvalRunSimulatorPersonaCanContinueFromFixture|TestCLILiveEvalRunSimulatorPersonaCanStopFromFixture|TestFixtureExamplesValidateAgainstPublishedSchemas' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "discover live-targets normalizes explicit adapter instances into stable instanceId entries",
+          "discover live-targets normalizes consumer probe command output into the same workbench instance catalog packet",
+          "evaluate live dispatches one selected --instance-id into a bounded request/result packet",
+          "the command registry has Go handlers for the live-target and evaluate-live command family"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestValidateAdapterDataAcceptsExplicitInstanceDiscovery|TestValidateAdapterDataAcceptsCommandInstanceDiscovery|TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation|TestValidateAdapterDataAcceptsLiveRunInvocation' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "adapter validation accepts explicit and command-based instance discovery",
+          "explicit instances require stable location data",
+          "live_run_invocation command templates preserve the {instance_id} boundary"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor commands --json",
+      "exitCode": 0,
+      "observed": {
+        "containsDiscoverLiveTargets": true,
+        "containsEvaluateLive": true,
+        "containsEvaluateLivePrepareRequestBatch": true,
+        "containsEvaluateLiveScenarios": true,
+        "containsEvaluateLivePersona": true
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/cli.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:cbfe0cbb82c9fc4ede9f9606cdb5488b5995b0139d516b5948b8672495c36a98"
+    },
+    {
+      "path": "docs/contracts/workbench-instance-discovery.md",
+      "kind": "workbench-instance-discovery-contract",
+      "contentHash": "sha256:7a41d6b7ca9974fe346299a58b1227e470829cccc67cd7d0f1fb52e785b1e517"
+    },
+    {
+      "path": "docs/contracts/live-run-invocation.md",
+      "kind": "live-run-invocation-contract",
+      "contentHash": "sha256:7c32eea95fb799766dcfd7d38c4c035f021aa6039c93ad763672c22b4f1d981b"
+    },
+    {
+      "path": "docs/contracts/adapter-contract.md",
+      "kind": "adapter-live-boundary-contract",
+      "contentHash": "sha256:121aeef8723db6f4a0e5222874263c43b8071d49c653e2dd106a5587e66518c3"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "live-command-registry",
+      "contentHash": "sha256:66df6f5b8e3911690daa3d5757bb55078db1d0d2df99615c60625c2e55e993e7"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "eval-live-cli-tests",
+      "contentHash": "sha256:3117b2cecae89e8da55bf99b6eed35d8466877bd27580d07f5714594e9843b39"
+    },
+    {
+      "path": "internal/app/workbench_commands.go",
+      "kind": "eval-live-command-implementation",
+      "contentHash": "sha256:61fc40563ac1a5f71db4ca77648489d28d53a48a8713bfefabdf8deee4cc0540"
+    },
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "adapter-live-invocation-validation",
+      "contentHash": "sha256:c21a626304ac952544546eab07c6e6e1ef305be2d1346103d37848404d3fe038"
+    },
+    {
+      "path": "internal/runtime/adapter_test.go",
+      "kind": "adapter-live-invocation-tests",
+      "contentHash": "sha256:6dd81c5a750fefd5f7ac3b3a5241afa9e0eb3a7632e2519d13f5175efd6e8162"
+    },
+    {
+      "path": "fixtures/workbench-instance-discovery/example-catalog.json",
+      "kind": "workbench-instance-catalog-example",
+      "contentHash": "sha256:e737e5bcdeedb6f18a5d93aa5685a513119219158ecf5085ddce9768cc46f221"
+    },
+    {
+      "path": "fixtures/live-run-invocation/example-request.json",
+      "kind": "live-run-request-example",
+      "contentHash": "sha256:e7de25a484fd8c24ab16cfac74e6fab6c3028a9c82d29de332582b53918fc63c"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused CLI, runtime, and command-catalog checks verify that Cautilus discovers live targets into stable instance ids and routes evaluate-live requests through one selected instance id, while keeping real consumer runtime launch outside this deterministic proof."
+  }
+}

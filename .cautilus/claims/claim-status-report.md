@@ -19,7 +19,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 53, stale: 21, unknown: 285 |
+| Evidence | satisfied: 54, stale: 20, unknown: 285 |
 | Review | agent-reviewed: 124, heuristic: 234, human-reviewed: 1 |
 | Recommended proof | cautilus-eval: 122, deterministic: 140, human-auditable: 97 |
 | Verification readiness | blocked: 27, needs-alignment: 37, needs-scenario: 8, ready-for-proof: 287 |
@@ -42,7 +42,7 @@ Review readiness: heuristicClaimsReadyForReview: 209, needsAlignment: 37, needsS
 | User claim | Title | Raw claims | Evidence | Review |
 | --- | --- | --- | --- | --- |
 | U1 | Readiness | 25 | satisfied: 10, unknown: 15 | agent-reviewed: 11, heuristic: 14 |
-| U2 | Claim Discovery | 57 | satisfied: 8, stale: 9, unknown: 40 | agent-reviewed: 31, heuristic: 26 |
+| U2 | Claim Discovery | 57 | satisfied: 9, stale: 8, unknown: 40 | agent-reviewed: 31, heuristic: 26 |
 | U3 | Behavior Evaluation | 3 | unknown: 3 | heuristic: 3 |
 | U4 | Bounded Improvement | 3 | unknown: 3 | heuristic: 3 |
 | U5 | Reviewable Artifacts | 4 | unknown: 4 | heuristic: 4 |
@@ -108,7 +108,7 @@ Semantic sampling recommended for 301 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=37, human-confirm-or-decompose=34, split-or-defer=27.
-- Agent next proof work: connect deterministic gates for 86 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 85 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 114 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -116,8 +116,8 @@ Semantic sampling recommended for 301 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 53 | agent-reviewed: 53 | satisfied: 53 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 86 | agent-reviewed: 23, heuristic: 63 | stale: 14, unknown: 72 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 54 | agent-reviewed: 54 | satisfied: 54 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 85 | agent-reviewed: 22, heuristic: 63 | stale: 13, unknown: 72 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 114 | agent-reviewed: 8, heuristic: 105, human-reviewed: 1 | stale: 5, unknown: 109 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | agent-reviewed: 1, heuristic: 7 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 37 | agent-reviewed: 19, heuristic: 18 | unknown: 37 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
@@ -126,7 +126,7 @@ Semantic sampling recommended for 301 raw claim(s): claim-agents-md-12, claim-ag
 
 Cross-cutting signal: heuristic-review-needed (234) - Review heuristic labels before spending proof or eval budget.
 
-Cross-cutting signal: stale-evidence (21) - Refresh or recheck stale evidence before consuming it as proof.
+Cross-cutting signal: stale-evidence (20) - Refresh or recheck stale evidence before consuming it as proof.
 
 ### agent-add-deterministic-proof
 
@@ -138,7 +138,7 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 | claim-readme-md-152 | README.md:152 | deterministic | ready-for-proof | heuristic | unknown | The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen. |
 | claim-docs-contracts-adapter-contract-md-432 | docs/contracts/adapter-contract.md:432 | deterministic | ready-for-proof | heuristic | unknown | point review prompts at the same path so human and machine review can refer to the same compare output |
 | claim-docs-contracts-adapter-contract-md-478 | docs/contracts/adapter-contract.md:478 | deterministic | ready-for-proof | heuristic | unknown | Each review prompt should point at human-visible failure: |
-| claim-docs-guides-cli-md-180 | docs/guides/cli.md:180 | deterministic | ready-for-proof | agent-reviewed | stale | An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id. |
+| claim-docs-guides-cli-md-273 | docs/guides/cli.md:273 | deterministic | ready-for-proof | heuristic | unknown | `cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet. |
 
 ### agent-plan-cautilus-eval
 
@@ -294,6 +294,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json | - | - | 1 | 1 | 1 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-install-channel-policy-refresh-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json | - | - | 1 | 2 | 1 | deterministic: 2 | ready-for-proof: 2 |

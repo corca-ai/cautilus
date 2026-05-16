@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T06:05:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the current CLI guide eval-live stable instance selection claim covered by focused CLI, runtime, and command-catalog checks."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-guides-cli-eval-live-instance-selection-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-cli-md-180",
+          "claimFingerprint": "sha256:10dc5fd8f817011f748f06bba796f3567abb6cfd596947ecff3ff1f6fdf00e95",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic live-target catalog and selected instance-id packet behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI and runtime tests showing live targets normalize to stable instanceId entries, evaluate live dispatches one selected --instance-id into bounded request/result packets, and the current command catalog exposes the live-target and evaluate-live command family.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:468f007800393a0e686336b0952de5a5e0e3487d136a55a1ad7123e9e07420e4",
+              "supportsClaimIds": [
+                "claim-docs-guides-cli-md-180"
+              ]
+            }
+          ],
+          "nextAction": "Keep stable instance-id selection separate from proof of real consumer runtime behavior.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

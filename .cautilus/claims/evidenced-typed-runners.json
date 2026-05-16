@@ -1653,19 +1653,17 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
+          "contentHash": "sha256:468f007800393a0e686336b0952de5a5e0e3487d136a55a1ad7123e9e07420e4",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
+          "path": ".cautilus/claims/evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
           "supportsClaimIds": [
-            "claim-docs-guides-cli-md-180",
-            "claim-docs-cli-reference-md-188",
-            "claim-docs-cli-reference-md-544"
+            "claim-docs-guides-cli-md-180"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-eval-live-cli-boundary-2026-05-11.json does not list current claimId claim-docs-guides-cli-md-180 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI and runtime tests showing live targets normalize to stable instanceId entries, evaluate live dispatches one selected --instance-id into bounded request/result packets, and the current command catalog exposes the live-target and evaluate-live command family.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1673,7 +1671,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep stable instance-id selection separate from proof of real consumer runtime behavior.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1684,8 +1682,9 @@
         }
       ],
       "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic live-target catalog and selected instance-id packet behavior."
     },
     {
       "claimAudience": "user",
@@ -11813,8 +11812,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 53,
-      "stale": 21,
+      "satisfied": 54,
+      "stale": 20,
       "unknown": 285
     },
     "byLifecycle": {
@@ -12035,13 +12034,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-cli-md-122",
-        "clusterId": "cluster-guides-cli-claim-discovery-routing-2026-05-16"
+        "claimId": "claim-docs-guides-cli-md-180",
+        "clusterId": "cluster-guides-cli-eval-live-instance-selection-2026-05-16"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12092,7 +12091,8 @@
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
-      ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json"
+      ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12147,9 +12147,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 47,
+    "appliedResultCount": 48,
     "skippedResultCount": 51,
-    "keptUpdateCount": 129,
+    "keptUpdateCount": 130,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

@@ -22,20 +22,20 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 21
+          "stale": 20
         },
         "byReviewStatus": {
-          "agent-reviewed": 21
+          "agent-reviewed": 20
         },
-        "count": 21,
+        "count": 20,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-guides-cli-md-135",
-          "claim-docs-guides-cli-md-180",
           "claim-docs-guides-cli-md-263",
           "claim-docs-guides-cli-md-265",
-          "claim-docs-guides-cli-md-474"
+          "claim-docs-guides-cli-md-474",
+          "claim-docs-guides-cli-md-478"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 53
+          "satisfied": 54
         },
         "byReviewStatus": {
-          "agent-reviewed": 53
+          "agent-reviewed": 54
         },
-        "count": 53,
+        "count": 54,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,14 +62,14 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 14,
+          "stale": 13,
           "unknown": 72
         },
         "byReviewStatus": {
-          "agent-reviewed": 23,
+          "agent-reviewed": 22,
           "heuristic": 63
         },
-        "count": 86,
+        "count": 85,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -77,7 +77,7 @@
           "claim-readme-md-152",
           "claim-docs-contracts-adapter-contract-md-432",
           "claim-docs-contracts-adapter-contract-md-478",
-          "claim-docs-guides-cli-md-180"
+          "claim-docs-guides-cli-md-273"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,8 +219,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 53,
-      "stale": 21,
+      "satisfied": 54,
+      "stale": 20,
       "unknown": 285
     },
     "byLifecycle": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 53,
+    "satisfiedClaimCount": 54,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -819,6 +819,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-180",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:468f007800393a0e686336b0952de5a5e0e3487d136a55a1ad7123e9e07420e4",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-cli-md-180"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id."
       },
       {
         "claimId": "claim-docs-guides-consumer-adoption-md-20",
@@ -1494,23 +1513,27 @@
   },
   "gitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
   "gitState": {
-    "changedFileCount": 21,
+    "changedFileCount": 25,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
       ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/status-summary.json",
+      "charness-artifacts/critique/2026-05-16-guides-cli-claim-discovery-routing-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-doctor-refresh-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-runner-readiness-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-post-claim-evidence-refresh-result.md",
+      "charness-artifacts/debug/debug-2026-05-16-command-registry-surface-name.md",
       "charness-artifacts/debug/debug-2026-05-16-jq-claim-summary-shape.md",
       "charness-artifacts/debug/debug-2026-05-16-review-test-unparam.md",
       "charness-artifacts/debug/debug-2026-05-16-shell-backtick-search.md",
@@ -1526,7 +1549,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "eb8d1051ed65e6d7e418343882bce039857aa91d",
+    "currentGitCommit": "01c774cc9cf983d34bbdbafc92af0482c726f83b",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
