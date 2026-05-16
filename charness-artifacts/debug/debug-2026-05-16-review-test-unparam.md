@@ -36,7 +36,9 @@ If the failure is only over-generalized test helper shape, then removing the `ex
 
 ## Verification
 
-Pending after the helper is narrowed: rerun the focused Go test and `npm run verify`.
+- `go test ./internal/runtime -run TestBuildReviewPacketCollectsDurableReviewBoundary -count=1` passed after the helper was narrowed.
+- `npm run verify` passed after the helper was narrowed.
+- `npm run hooks:check` passed after the helper was narrowed.
 
 ## Root Cause
 
