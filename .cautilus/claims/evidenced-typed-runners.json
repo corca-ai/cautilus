@@ -753,17 +753,28 @@
       "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
       "claimId": "claim-readme-md-152",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:992f845a71c376c998e3e9884e2a8e28ae212f3c7a06a88a8409b99b0fb53e39",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-readme-reviewable-artifacts-2026-05-16.json",
+          "supportsClaimIds": [
+            "claim-readme-md-152"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a checked-in self-dogfood eval fixture producing eval-cases.json, eval-observed.json, and eval-summary.json; evaluate observation reopening the observed packet into a second summary packet; a repo-local packet snapshot preserving the proof for later readers; and readable renderer tests proving packet/source-backed Markdown, browser, and HTML views preserve JSON packets as the audit source.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep README Core Flow reviewable-artifact wording aligned with eval packet outputs, evaluate observation replay, and the reviewable artifact projection matrix.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
@@ -772,8 +783,9 @@
         }
       ],
       "summary": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names packet shape, durable outputs, and readable views, which can be proven by deterministic CLI command execution and renderer tests."
     },
     {
       "claimAudience": "developer",
@@ -11848,9 +11860,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 57,
+      "satisfied": 58,
       "stale": 20,
-      "unknown": 282
+      "unknown": 281
     },
     "byLifecycle": {
       "new": 359
@@ -11861,8 +11873,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 127,
-      "heuristic": 231,
+      "agent-reviewed": 128,
+      "heuristic": 230,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12126,6 +12138,7 @@
       ".cautilus/claims/review-result-evidence-install-channel-policy-refresh-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
@@ -12186,9 +12199,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 51,
+    "appliedResultCount": 52,
     "skippedResultCount": 51,
-    "keptUpdateCount": 133,
+    "keptUpdateCount": 134,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

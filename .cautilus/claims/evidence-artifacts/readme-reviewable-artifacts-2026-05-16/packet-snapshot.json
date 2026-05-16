@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "cautilus.evidence_packet_snapshot.v1",
+  "sourceBundle": ".cautilus/claims/evidence-readme-reviewable-artifacts-2026-05-16.json",
+  "cases": {
+    "schemaVersion": "cautilus.evaluation_cases.v1",
+    "suiteId": "instruction-surface-demo",
+    "suiteDisplayName": "Instruction Surface Demo",
+    "evaluationCount": 1,
+    "firstEvaluation": {
+      "evaluationId": "checked-in-agents-routing",
+      "displayName": "Checked-in AGENTS routing",
+      "expectedEntryFile": "AGENTS.md",
+      "expectedRouting": {
+        "bootstrapHelper": "find-skills",
+        "workSkill": "impl"
+      }
+    }
+  },
+  "observed": {
+    "schemaVersion": "cautilus.evaluation_observed.v1",
+    "suiteId": "instruction-surface-demo",
+    "suiteDisplayName": "Instruction Surface Demo",
+    "evaluationCount": 1,
+    "firstEvaluation": {
+      "evaluationId": "checked-in-agents-routing",
+      "observationStatus": "observed",
+      "entryFile": "AGENTS.md",
+      "expectedRouting": {
+        "bootstrapHelper": "find-skills",
+        "workSkill": "impl"
+      },
+      "routingDecision": {
+        "bootstrapHelper": "find-skills",
+        "firstToolCall": "functions.exec_command",
+        "selectedSkill": "impl",
+        "selectedSupport": "none",
+        "workSkill": "impl"
+      },
+      "telemetry": {
+        "model": "gpt-5.4-mini",
+        "runtime": "codex_exec",
+        "session_mode": "ephemeral"
+      }
+    }
+  },
+  "summary": {
+    "schemaVersion": "cautilus.evaluation_summary.v1",
+    "recommendation": "accept-now",
+    "evaluationCounts": {
+      "blocked": 0,
+      "failed": 0,
+      "passed": 1,
+      "total": 1
+    }
+  },
+  "observationReplay": {
+    "schemaVersion": "cautilus.evaluation_summary.v1",
+    "recommendation": "accept-now",
+    "evaluationCounts": {
+      "blocked": 0,
+      "failed": 0,
+      "passed": 1,
+      "total": 1
+    }
+  }
+}

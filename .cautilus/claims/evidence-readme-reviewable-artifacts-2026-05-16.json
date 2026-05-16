@@ -1,0 +1,217 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-readme-reviewable-artifacts-2026-05-16",
+  "createdForClaimIds": [
+    "claim-readme-md-152"
+  ],
+  "repoCommit": "fe3e943ff1027119f4a2538c9667390faf6acb22",
+  "summary": "Deterministic proof that the README Core Flow result is more than a pass/fail bit: the eval loop writes machine-readable packets, those packets can be reopened, a repo-local packet snapshot preserves the observed proof for later readers, and readable views are generated from packet/source artifacts while preserving packet-first auditability.",
+  "evidenceScope": {
+    "targetSurface": "README reviewable artifacts claim",
+    "claimBoundary": "Only the README claim that Cautilus results include machine-readable packets plus readable views that another maintainer or agent can reopen is marked satisfied.",
+    "notClaimed": [
+      "Every possible Cautilus command emits a readable view.",
+      "Every adapter runtime or fixture preset is proven by this one eval run.",
+      "The evaluated model output is a benchmark-quality behavior result.",
+      "The public website deployment is fresh.",
+      "The temporary runtime packet paths remain available after the local proof run."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json --output-dir /tmp/cautilus-readme-reviewable-artifacts-proof-codex",
+      "exitCode": 0,
+      "observed": {
+        "casesPath": "/tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-cases.json",
+        "casesSchemaVersion": "cautilus.evaluation_cases.v1",
+        "evaluationCount": 1,
+        "observedPath": "/tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-observed.json",
+        "observedSchemaVersion": "cautilus.evaluation_observed.v1",
+        "observedEvaluationCount": 1,
+        "summaryPath": "/tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-summary.json",
+        "summarySchemaVersion": "cautilus.evaluation_summary.v1",
+        "recommendation": "accept-now",
+        "evaluationCounts": {
+          "blocked": 0,
+          "failed": 0,
+          "passed": 1,
+          "total": 1
+        }
+      }
+    },
+    {
+      "command": "./bin/cautilus evaluate observation --input /tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-observed.json --output /tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-summary-rerun.json",
+      "exitCode": 0,
+      "observed": {
+        "summaryPath": "/tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-summary-rerun.json",
+        "summarySchemaVersion": "cautilus.evaluation_summary.v1",
+        "recommendation": "accept-now",
+        "evaluationCounts": {
+          "blocked": 0,
+          "failed": 0,
+          "passed": 1,
+          "total": 1
+        }
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/reviewable-artifact-projections.test.mjs scripts/agent-runtime/render-claim-discovery-review.test.mjs scripts/agent-runtime/review-prompt-flow.test.mjs scripts/agent-runtime/render-claim-status-report.test.mjs scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 21,
+        "pass": 21,
+        "protectedBehaviors": [
+          "projection matrix lists shipped Cautilus-owned readable artifact families covered by this claim",
+          "matrix rows name source artifacts, source schemas, renderer path, command, tests, and proof markers",
+          "claim discovery review Markdown is generated from claim/status packets and states that JSON remains the audit source",
+          "review prompt Markdown is generated from review prompt input packets",
+          "claim status Markdown and browser review preserve JSON packet audit-source and separate comment-packet boundaries"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestRender(CompareArtifact|ScenarioProposals|ScenarioConversationReview|EvidenceBundle|Report|ReviewPacket|ReviewSummary|RunIndex|SelfDogfood)HTML|TestWrite(CompareArtifact|ScenarioProposals|ScenarioConversationReview|Report|ReviewPacket|ReviewSummary|RunIndex|SelfDogfood)HTML|TestDiscoverRunIndexEntries|TestRenderReportHTMLFromFileRejectsLegacySchema|TestRenderReviewPacketHTMLFromFileRejectsWrongSchema|TestRenderReviewSummaryHTMLFromFileRejectsWrongSchema|TestWriteSelfDogfoodExperimentsHTMLWritesIndexNextToLatestBundle' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "HTML renderers read JSON packets and reject wrong schema versions where applicable",
+          "HTML write helpers render next to the JSON input instead of replacing the packet",
+          "run-index discovery recognizes known packet files and flags whether an HTML projection exists"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "README.md",
+      "kind": "readme-claim-source",
+      "contentHash": "sha256:38850e7df41159af041d367c0932ef7a17ed8893adaac052b3676b732cab9acb"
+    },
+    {
+      "path": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "reviewable-artifacts-user-spec",
+      "contentHash": "sha256:dde62241d12cffb9fcfc34a5abfab8ac3f32b4ca1182142ffe8a05c1ab9db56c"
+    },
+    {
+      "path": "docs/contracts/reviewable-artifact-projections.json",
+      "kind": "reviewable-artifact-projection-matrix",
+      "contentHash": "sha256:01867f50d474bbf0a931f4d8de7bf4e67db24a8866355738ee2353744b89a36d"
+    },
+    {
+      "path": "scripts/agent-runtime/reviewable-artifact-projections.test.mjs",
+      "kind": "reviewable-artifact-projection-matrix-tests",
+      "contentHash": "sha256:551eacf3331fc5c4dcc581a67ede7669a42d51803be5b77238406f012cf0fe3d"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-discovery-review.test.mjs",
+      "kind": "claim-discovery-review-markdown-tests",
+      "contentHash": "sha256:e46555c01212a596a4d820e839a952ce7acaa92d5ed934af84a1bb2a9fe1d07a"
+    },
+    {
+      "path": "scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "kind": "review-prompt-flow-tests",
+      "contentHash": "sha256:694643eef47777169e64d459a584407ee2f9190d49d19465a95c79b5802771af"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "kind": "claim-status-markdown-renderer-tests",
+      "contentHash": "sha256:7751d28d79b6696c75a649c944eeb51a3a686b6f26203049214a8c474cdb3366"
+    },
+    {
+      "path": "scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "kind": "claim-status-browser-review-tests",
+      "contentHash": "sha256:1dfbe0af4d28e8a126899181df3b43b63009c14faea8ecdd1f537c83ae5861da"
+    },
+    {
+      "path": "internal/runtime/artifact_html.go",
+      "kind": "artifact-html-renderers",
+      "contentHash": "sha256:7f3daf4b631578221cfbfa8db7aad593383dc6ee2bad5ce19f8581f03e8b4830"
+    },
+    {
+      "path": "internal/runtime/artifact_html_test.go",
+      "kind": "artifact-html-renderer-tests",
+      "contentHash": "sha256:3da79c03113cb24f64090345df1a60bb238b1c1277bae5f1771f34f841a63dc0"
+    },
+    {
+      "path": "internal/runtime/report_html.go",
+      "kind": "report-html-renderer",
+      "contentHash": "sha256:fad3914c7b135a9fbe1201cbefea3aca32dff1a0979b7f864ee57578f542bd1c"
+    },
+    {
+      "path": "internal/runtime/report_html_test.go",
+      "kind": "report-html-renderer-tests",
+      "contentHash": "sha256:73e4ddbff88e917882a7b65bc87827599fa86bb99b474b13bee563a8441d35de"
+    },
+    {
+      "path": "internal/runtime/review_html.go",
+      "kind": "review-html-renderers",
+      "contentHash": "sha256:e487564719985f969a2ddb9e77d194f693fdc516b2021126f7d6ebbf910442e3"
+    },
+    {
+      "path": "internal/runtime/review_html_test.go",
+      "kind": "review-html-renderer-tests",
+      "contentHash": "sha256:24caec3a099d73178c89281afc50173f1ab1f034b151b050016f928a5c9fb13b"
+    },
+    {
+      "path": "internal/runtime/run_index_html.go",
+      "kind": "run-index-html-renderer",
+      "contentHash": "sha256:be69f2d42579c87303d9674474caaacc45a3c00fe43eeca6dc26efb2a6f62047"
+    },
+    {
+      "path": "internal/runtime/run_index_html_test.go",
+      "kind": "run-index-html-renderer-tests",
+      "contentHash": "sha256:941562e39242c9dd507a9283f1dc896f9a2f2da4c066130cf0f9a6f7e6b122d7"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "evaluate-fixture-and-observation-tests",
+      "contentHash": "sha256:3117b2cecae89e8da55bf99b6eed35d8466877bd27580d07f5714594e9843b39"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-eval.yaml",
+      "kind": "eval-adapter",
+      "contentHash": "sha256:d37a356f6f3475cf7daf96c95b7f1b1908d3e38b3389aaf3433b77cd5851f5a6"
+    },
+    {
+      "path": "fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
+      "kind": "checked-in-eval-fixture",
+      "contentHash": "sha256:1b2c8191d4f4d8a017e780050117698dabfaea4853b560d73e4a1dbffbb3df12"
+    }
+  ],
+  "repoArtifactEvidence": [
+    {
+      "path": ".cautilus/claims/evidence-artifacts/readme-reviewable-artifacts-2026-05-16/packet-snapshot.json",
+      "kind": "eval-packet-snapshot",
+      "contentHash": "sha256:d01796ec02415505f7e0b7f6f6163a34b2b03856e7a33226dd03fc589725c3e1"
+    }
+  ],
+  "runtimeEvidence": [
+    {
+      "path": "/tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-cases.json",
+      "kind": "eval-cases",
+      "contentHash": "sha256:a152dd7b85c0da53bd000f1e79af3c19490f323aa5d08325f948cb5f62c429c8"
+    },
+    {
+      "path": "/tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-observed.json",
+      "kind": "eval-observed",
+      "contentHash": "sha256:0a4ac733c20a3a604754f962a72e9071ceab01b202b394cf4933c148bdac5a8f"
+    },
+    {
+      "path": "/tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-summary.json",
+      "kind": "eval-summary",
+      "contentHash": "sha256:e25b8ecfa9c528d2265a5d43597072e8c2b8c73e701d4b454bf75c85f8e3469a"
+    },
+    {
+      "path": "/tmp/cautilus-readme-reviewable-artifacts-proof-codex/eval-summary-rerun.json",
+      "kind": "eval-summary-rerun",
+      "contentHash": "sha256:a30364dc04d656f50462c4a607000fe9269fffcd01d6159c231b70aa50e3c60b"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The checked-in self-dogfood eval fixture wrote schema-versioned eval cases, observed, and summary packets; evaluate observation reopened the observed packet into a second summary; a repo-local packet snapshot preserves the proof for later readers; and renderer tests prove readable views are generated from declared packet/source artifacts while preserving JSON packets as the audit source."
+  }
+}

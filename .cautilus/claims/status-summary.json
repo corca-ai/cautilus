@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 231
+          "unknown": 230
         },
         "byReviewStatus": {
-          "heuristic": 231
+          "heuristic": 230
         },
-        "count": 231,
+        "count": 230,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 57
+          "satisfied": 58
         },
         "byReviewStatus": {
-          "agent-reviewed": 57
+          "agent-reviewed": 58
         },
-        "count": 57,
+        "count": 58,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 13,
-          "unknown": 69
+          "unknown": 68
         },
         "byReviewStatus": {
           "agent-reviewed": 22,
-          "heuristic": 60
+          "heuristic": 59
         },
-        "count": 82,
+        "count": 81,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-readme-md-152",
           "claim-docs-contracts-adapter-contract-md-432",
           "claim-docs-contracts-adapter-contract-md-478",
           "claim-docs-guides-cli-md-474",
-          "claim-docs-guides-cli-md-510"
+          "claim-docs-guides-cli-md-510",
+          "claim-docs-guides-cli-md-546"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 57,
+      "satisfied": 58,
       "stale": 20,
-      "unknown": 282
+      "unknown": 281
     },
     "byLifecycle": {
       "new": 359
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 127,
-      "heuristic": 231,
+      "agent-reviewed": 128,
+      "heuristic": 230,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 57,
+    "satisfiedClaimCount": 58,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -594,6 +594,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`."
+      },
+      {
+        "claimId": "claim-readme-md-152",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:992f845a71c376c998e3e9884e2a8e28ae212f3c7a06a88a8409b99b0fb53e39",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-readme-reviewable-artifacts-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-readme-md-152"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen."
       },
       {
         "claimId": "claim-docs-contracts-adapter-contract-md-3",
@@ -1570,7 +1589,7 @@
   },
   "gitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
   "gitState": {
-    "changedFileCount": 35,
+    "changedFileCount": 38,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1580,6 +1599,7 @@
       ".cautilus/claims/evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
+      ".cautilus/claims/evidence-readme-spec-report-renderer-independence-2026-05-16.json",
       ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
@@ -1590,6 +1610,7 @@
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/status-summary.json",
       "charness-artifacts/critique/2026-05-16-guides-cli-claim-discovery-routing-evidence-result.md",
@@ -1599,6 +1620,7 @@
       "charness-artifacts/critique/2026-05-16-guides-cli-evaluate-observation-no-runner-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-runner-readiness-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-post-claim-evidence-refresh-result.md",
+      "charness-artifacts/critique/2026-05-16-readme-spec-report-renderer-independence-evidence-result.md",
       "charness-artifacts/debug/debug-2026-05-16-command-registry-surface-name.md",
       "charness-artifacts/debug/debug-2026-05-16-dev-repo-fixture-backend-results.md",
       "charness-artifacts/debug/debug-2026-05-16-jq-claim-summary-shape.md",
@@ -1616,7 +1638,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "dafa138dbb5afb3d32d864736365eafa5903da96",
+    "currentGitCommit": "fe3e943ff1027119f4a2538c9667390faf6acb22",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
@@ -1643,7 +1665,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 206,
+    "heuristicClaimsReadyForReview": 205,
     "needsAlignment": 37,
     "needsScenario": 8
   },

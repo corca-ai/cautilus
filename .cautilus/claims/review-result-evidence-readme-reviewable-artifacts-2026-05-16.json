@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the README Core Flow claim covered by schema-versioned eval packets, evaluate observation replay, and packet-backed readable renderer tests."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-reviewable-artifacts-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-152",
+          "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names packet shape, durable outputs, and readable views, which can be proven by deterministic CLI command execution and renderer tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by a checked-in self-dogfood eval fixture producing eval-cases.json, eval-observed.json, and eval-summary.json; evaluate observation reopening the observed packet into a second summary packet; a repo-local packet snapshot preserving the proof for later readers; and readable renderer tests proving packet/source-backed Markdown, browser, and HTML views preserve JSON packets as the audit source.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-readme-reviewable-artifacts-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:992f845a71c376c998e3e9884e2a8e28ae212f3c7a06a88a8409b99b0fb53e39",
+              "supportsClaimIds": [
+                "claim-readme-md-152"
+              ]
+            }
+          ],
+          "nextAction": "Keep README Core Flow reviewable-artifact wording aligned with eval packet outputs, evaluate observation replay, and the reviewable artifact projection matrix.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
