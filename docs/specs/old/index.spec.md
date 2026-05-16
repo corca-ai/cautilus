@@ -16,7 +16,7 @@ node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/old/curr
 
 The report should feel legible to a reviewer who is not reading Go or Node code.
 The contract on each page is therefore written in user-facing terms first, then backed by one or two executable slices.
-The first proof deliberately shows a small end-to-end product move: `Cautilus` turns raw proposal inputs into a reusable scenario packet and then into a page a human can scan in a browser.
+The archive index proof only keeps the old page graph reachable; the product proofs live on the linked pages.
 
 ## Documents
 

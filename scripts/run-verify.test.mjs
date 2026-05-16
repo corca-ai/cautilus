@@ -237,6 +237,26 @@ test("runPhases reports spawn error with phase label", () => {
 	assert.match(err.text(), /✖ phase · x failed to start: ENOENT npm/);
 });
 
+test("runPhases writes a failed quality runtime signal when spawn fails", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-quality-runtime-spawn-"));
+	const outputPath = join(root, "runtime", "verify.json");
+	const out = makeSink();
+	const err = makeSink();
+	const { spawn } = makeSpawn([{ error: new Error("ENOENT npm") }]);
+	const result = runPhases([{ id: "x", label: "phase · x" }], {
+		spawn,
+		stdout: out.sink,
+		stderr: err.sink,
+		runtimeSignalPath: outputPath,
+	});
+	assert.equal(result.ok, false);
+	const payload = JSON.parse(readFileSync(outputPath, "utf-8"));
+	assert.equal(payload.status, "failed");
+	assert.equal(payload.failedPhase, "x");
+	assert.equal(payload.phases[0].status, "failed_to_start");
+	assert.equal(payload.phases[0].error, "ENOENT npm");
+});
+
 test("runPhases forwards verbose to resolveScript", () => {
 	const out = makeSink();
 	const err = makeSink();

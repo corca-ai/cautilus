@@ -53,6 +53,7 @@ The main risk was that setup and quality detectors could misread a mature repo a
 ## Advisory
 
 - inventory: `inventory_public_spec_quality.py` now reports `delegated_runner_specs=[]` and `duplicate_command_examples=[]`.
+- inventory: public spec source-guard heuristics may still report residual review pressure; this slice closed duplicate command examples, not every public-spec layering concern.
 - runtime: `runtime-latest.json` reports 17 verify phases, `status=passed`, and a total duration of 42808ms.
 - inventory: `inventory_entrypoint_docs_ergonomics.py` reports `README.md` with `heuristics=[]`.
 - inventory: `inventory_skill_ergonomics.py` reports `long_core` for both source and packaged Cautilus Agent copies.
