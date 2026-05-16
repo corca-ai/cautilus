@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-12T23:12:23Z",
+  "generated_at": "2026-05-16T01:06:57Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -56,6 +56,7 @@
         ],
         "referenced_paths": [
           "shared/references/binary-preflight.md",
+          "skills/create-cli/references/intent-first-grammar.md",
           "skills/create-cli/references/command-conventions.md",
           "skills/create-cli/references/command-surface.md",
           "skills/create-cli/references/external-capability-clis.md",
@@ -125,8 +126,10 @@
           "skills/critique/references/release-critique.md",
           "skills/critique/references/rename-critique.md",
           "skills/critique/references/spec-critique.md",
+          "skills/critique/references/prepare-packet.md",
           "skills/critique/references/angle-selection.md",
           "skills/critique/references/counterweight-triage.md",
+          "skills/critique/references/adapter-contract.md",
           "shared/references/agent-assessment-invariant.md"
         ],
         "source": "local-public",
@@ -151,6 +154,8 @@
           "skills/debug/SKILL.md",
           "skills/debug/references/named-target-verification.md",
           "skills/debug/references/five-whys-causal-chain.md",
+          "skills/debug/references/detection-gap.md",
+          "skills/debug/references/sibling-search.md",
           "skills/debug/references/adapter-contract.md",
           "skills/debug/references/five-steps.md",
           "skills/debug/references/debug-memory.md",
@@ -207,6 +212,7 @@
           "skills/gather/scripts/write_record.py",
           "shared/references/closeout-discipline.md",
           "skills/gather/references/adapter-contract.md",
+          "skills/gather/references/gather-provider.md",
           "skills/gather/references/source-priority.md",
           "skills/gather/references/document-seams.md",
           "skills/gather/references/capability-contract.md",
@@ -414,9 +420,10 @@
           "skills/quality/references/skill-ergonomics.md",
           "skills/quality/references/skill-quality.md",
           "shared/references/fresh-eye-subagent-review.md",
+          "skills/quality/references/cautilus-on-demand.md",
+          "skills/quality/references/inventory-consumer-fields.json",
           "shared/references/external-capability-proof-ladder.md",
           "skills/quality/references/maintainer-local-enforcement.md",
-          "skills/quality/scripts/inventory_ci_local_gate_parity.py",
           "skills/quality/references/adapter-contract.md",
           "skills/quality/references/adapter-gate-review.md",
           "skills/quality/references/automation-promotion.md",
@@ -1350,6 +1357,7 @@
     "tool_recommendation_query": null,
     "support_skill_recommendations": [],
     "support_recommendation_query": null,
+    "workflow_recommendations": [],
     "support_recommendation_note": null
   }
 }
