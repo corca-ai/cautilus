@@ -1,0 +1,12 @@
+version: 1
+repo: cautilus
+surfaces:
+  readme: README.md
+  agents: AGENTS.md
+  roadmap: docs/master-plan.md
+  operator_acceptance: docs/maintainers/operator-acceptance.md
+  handoff: docs/internal/handoff.md
+prose_wrap_policy: semantic
+recommendation_sets:
+  acknowledged:
+    - skill_routing_block_custom_or_drifted

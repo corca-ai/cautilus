@@ -3,8 +3,16 @@ set -eu
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
-printf 'pre-push: running npm run verify\n'
+run_phase() {
+	label="$1"
+	shift
+	start="$(date +%s)"
+	printf 'pre-push: %s started\n' "$label"
+	"$@"
+	end="$(date +%s)"
+	printf 'pre-push: %s passed in %ss\n' "$label" "$((end - start))"
+}
+
 cd "$REPO_ROOT"
-node scripts/guard-worktree-unchanged.mjs -- npm run verify
-printf 'pre-push: checking generated artifact drift\n'
-node scripts/guard-worktree-unchanged.mjs -- npm run generated:drift:check
+run_phase "verify" node scripts/guard-worktree-unchanged.mjs -- npm run verify
+run_phase "generated artifact drift" node scripts/guard-worktree-unchanged.mjs -- npm run generated:drift:check

@@ -103,7 +103,8 @@ sourceRefs=AGENTS.md:3,README.md:4
 
 ### Implementation evidence.
 
-The saved discovery packet records the heuristic families used for these behaviors, and the focused Go test proves the text scan, candidate filter, route classifier, and duplicate merge work together in one discovery run.
+The saved discovery packet records the heuristic families used for these behaviors.
+The checked-in evidence bundle records that the command-level behavior is satisfied without making this user-facing spec delegate to a lower-level unit-test runner.
 
 ```run:shell
 $ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." > "$tmp/README.md"; ./bin/cautilus discover claims --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'.discoveryEngine.heuristics[] | .id + ":" + .implementationFunction'"'"' "$tmp/claims.json"'
@@ -111,11 +112,6 @@ markdown-text-blocks:claimTextBlocks
 claim-shaped-line-filter:claimLineLooksUseful
 next-work-classifier:classifyClaimLine
 duplicate-summary-merge:mergeIdenticalClaimCandidates
-```
-
-```run:shell
-$ go test ./internal/runtime -run TestDiscoverClaimProofPlanUsesCandidateHeuristicsTogether -count=1 >/dev/null && echo heuristic-composition-test=passed
-heuristic-composition-test=passed
 ```
 
 > check:cautilus-json-file

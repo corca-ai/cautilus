@@ -1,83 +1,99 @@
 # Quality Review
-Date: 2026-05-10
+Date: 2026-05-16
 
 ## Scope
 
-Cautilus Agent skill and repo-local adapter improvements from the issue #33 claim-readiness dogfood session.
-The quality question is whether the learning is now in the agent-first product surface instead of remaining only in chat or maintainer memory.
+Repo-wide quality and setup posture after the cache-token telemetry closeout.
+The main risk was that setup and quality detectors could misread a mature repo as missing operating surfaces or hide public-spec proof layering debt behind passing gates.
 
 ## Current Gates
 
+- `npm run verify`
+- `npm run hooks:check`
 - `npm run lint:skill-disclosure`
-- `./bin/cautilus adapter resolve --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path skills/cautilus-agent/SKILL.md --json`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path plugins/cautilus/skills/cautilus-agent/SKILL.md --json`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/suggest_public_skill_dogfood.py --repo-root . --skill-id cautilus-agent`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/debug/scripts/scaffold_debug_artifact.py --repo-root . --json`
+- `npm run lint:specs -- docs/specs/user/claim-discovery.spec.md`
+- `./bin/cautilus doctor adapter --repo-root .`
+- `./bin/cautilus doctor commands --json`
+- `./bin/cautilus discover scenarios --json`
+- `python3 .../skills/setup/scripts/inspect_repo.py --repo-root .`
 
 ## Runtime Signals
 
-- runtime source: missing structured timing capture for this docs/skill slice; command results came from direct gate output, not runtime metrics JSON.
+- runtime source: missing structured runtime metrics for this quality slice; command results came from direct gate and inventory output.
 - runtime hot spots: unavailable because no structured timing source was collected for this slice.
-- coverage gate: not applicable for prose and adapter metadata changes; `npm run verify` remains the final stop gate.
-- evaluator depth: no evaluator run was used; this was a product-surface guidance change plus adapter-path update.
+- coverage gate: `npm run verify` remains the standing coverage and coverage-floor stop gate.
+- evaluator depth: no LLM evaluator was run; this slice used deterministic setup, inventory, spec, hook, and CLI probes.
 
 ## Healthy
 
-- The portable skill now says to keep proof class and readiness separate before creating fixtures.
-- The portable skill now routes `needs-scenario` and `needs-alignment` through normalized review-result packets and `claim review apply-result`, matching the dogfood path.
-- The portable skill now warns that only concrete command, packet, runner, schema, or skill-behavior claims should be promoted to proof-ready without further split or alignment.
-- The Cautilus adapter now names repo-local claim-status, evidence-state, and readiness terms and artifact paths so product-specific review context is discoverable without bloating the portable skill.
+- Setup inspection now resolves the mature operating surface through `.agents/setup-adapter.yaml` and reports `missing_surfaces=[]`.
+- CLI ergonomics inventory reports the command registry as clean with 59 grouped commands across seven namespaces.
+- Lint-ignore inventory reports zero inline, file-level, blanket, or tool-level suppressions.
+- Dual-implementation inventory reports `candidate_count=0`.
+- Cautilus Agent source and packaged skill disclosure stay synchronized under `npm run lint:skill-disclosure`.
 
 ## Weak
 
-- Skill ergonomics inventory reports `long_core` for `skills/cautilus-agent/SKILL.md`; the source and packaged copies are still close to the 180-line disclosure ceiling.
-- Consumer-side dogfood scaffolding for `cautilus-agent` is not automated by the current Charness public-skill helper because it only discovers `skills/public/*/SKILL.md`.
+- Public-spec quality inventory still reports 20 duplicated command examples across old or overlapping spec pages.
+- README remains a long entrypoint by docs inventory at 223 non-empty lines.
+- Cautilus Agent core remains close to the disclosure ceiling at 179 non-empty lines.
+- Standing-gate verbosity inventory still classifies `.githooks/pre-push` phase-level signal as weak, although the hook now prints phase start and elapsed-pass lines.
 
 ## Missing
 
-- No repo-owned helper currently maps `product_surfaces: cautilus_agent` to a consumer dogfood prompt/artifact the way `suggest_public_skill_dogfood.py` does for `skills/public`.
-- No structured runtime sample was recorded for this docs/skill quality slice.
+- No repo-owned quality runtime summary sample was captured for this slice.
+- No automated cleanup plan yet owns the public-spec duplicate-example reduction.
 
 ## Deferred
 
-- Do not move Cautilus Agent under `skills/public/` just to satisfy the Charness public-skill helper; that would blur the Cautilus product boundary.
-- Do not encode Cautilus-specific artifact paths into the portable skill body when the adapter can carry them.
+- Do not create default `docs/roadmap.md` or `docs/operator-acceptance.md`; this repo already owns those surfaces as `docs/master-plan.md` and `docs/maintainers/operator-acceptance.md`.
+- Do not shrink the Cautilus Agent core only to satisfy the line-pressure smell while the skill ergonomics gate is otherwise clean.
+- Do not fold local pytest temp-directory cleanup into this repo slice; the inventory signal is outside the checked-in repo state.
 
 ## Advisory
 
-- command: `inventory_skill_ergonomics.py` returned `status: clean` with `heuristics: ["long_core"]`, so this is a disclosure-pressure warning rather than a failing gate.
-- artifact: `charness-artifacts/debug/latest.md` records the public-skill dogfood helper registry mismatch and keeps the follow-up attached to quality instead of treating the helper failure as invisible.
+- inventory: `inventory_public_spec_quality.py` now reports `delegated_runner_specs=[]`, but duplicate command examples remain as active quality debt.
+- inventory: `inventory_entrypoint_docs_ergonomics.py` reports `README.md` with `long_entrypoint`.
+- inventory: `inventory_skill_ergonomics.py` reports `long_core` for both source and packaged Cautilus Agent copies.
+- inventory: `inventory_standing_test_economics.py` reports a multi-GB local pytest temp footprint outside repo state.
+- inventory: `inventory_cli_ergonomics.py`, `inventory_lint_ignores.py`, and `inventory_dual_implementation.py` found no active implementation cleanup.
 
 ## Delegated Review
 
-blocked. Host signal: the current tool contract limits new subagent spawning to tasks that ask for delegation; this focused patch used same-session quality and debug gates instead.
+executed: setup reviewer confirmed the adapter and AGENTS routing changes, quality reviewer flagged public-spec proof layering and hook signal, and counterweight kept README, skill-core, and local pytest temp footprint out of this slice.
+The standing test economics lens covered `fixture-economics`, `parallel-critical-path`, and `duplicated-proof`.
 
 ## Commands Run
 
-- `npm run skills:sync-packaged`
-- `npm run claims:evidence-state`
-- `npm run claims:evidence-state:check`
-- `npm run claims:status-report`
-- `npm run claims:status-report:check`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/resolve_adapter.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/bootstrap_adapter.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/resolve_quality_artifact.py --repo-root . --intent current`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/setup/scripts/inspect_repo.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/setup/scripts/render_skill_routing.py --repo-root . --json`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path skills/cautilus-agent/SKILL.md --json`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path plugins/cautilus/skills/cautilus-agent/SKILL.md --json`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/inventory_cli_ergonomics.py --repo-root . --json`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/inventory_entrypoint_docs_ergonomics.py --repo-root . --json`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/inventory_standing_test_economics.py --repo-root . --json`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/inventory_standing_gate_verbosity.py --repo-root . --json`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/inventory_dual_implementation.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/inventory_lint_ignores.py --repo-root . --json`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/inventory_public_spec_quality.py --repo-root . --json`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/skills/quality/scripts/suggest_public_skill_dogfood.py --repo-root . --skill-id cautilus-agent`
+- `./bin/cautilus doctor adapter --repo-root .`
 - `npm run lint:skill-disclosure`
-- `./bin/cautilus adapter resolve --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/resolve_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/bootstrap_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/resolve_quality_artifact.py --repo-root . --intent current`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --skill-path skills/cautilus-agent/SKILL.md --json`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/quality/scripts/suggest_public_skill_dogfood.py --repo-root . --skill-id cautilus-agent`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/debug/scripts/resolve_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/charness/skills/debug/scripts/scaffold_debug_artifact.py --repo-root . --json`
-- `python3 /home/hwidong/.codex/plugins/charness/scripts/validate_debug_artifact.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/charness/scripts/validate_quality_artifact.py --repo-root .`
-- `npm run verify`
-- `npm run hooks:check`
+- `./bin/cautilus doctor commands --json`
+- `./bin/cautilus discover scenarios --json`
+- `npm run lint:specs -- docs/specs/user/claim-discovery.spec.md`
+- `node --test scripts/check-git-hooks.test.mjs`
 
 ## Recommended Next Gates
 
-- active `AUTO_CANDIDATE`: add a Cautilus Agent dogfood suggestion helper or adapter mapping for `product_surfaces: cautilus_agent`.
-- passive `AUTO_CANDIDATE`: move detailed claim-readiness triage examples into a reference when the portable Cautilus Agent skill grows again because the core is already near the disclosure limit.
+- active `AUTO_CANDIDATE`: reduce duplicated public-spec command examples, starting with old spec pages that repeat the same happy-path proof as current user specs.
+- active `AUTO_CANDIDATE`: add a repo-local runtime-signal capture for future quality runs so hot spots are based on structured timing instead of prose.
+- active `AUTO_CANDIDATE`: add a docs-readability cleanup slice for the long README entrypoint.
+- passive `AUTO_CANDIDATE`: extract Cautilus Agent core detail into references before adding more user-facing skill prose because the core is already near the disclosure ceiling.
+- passive `NON_AUTOMATABLE`: revisit local pytest temp footprint only if it causes flaky cleanup, leaked state, or operator confusion outside this repo because the current signal is local machine state, not checked-in repo behavior.
 
 ## History
 

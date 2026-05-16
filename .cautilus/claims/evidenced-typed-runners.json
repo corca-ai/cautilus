@@ -1,9 +1,9 @@
 {
-  "candidateCount": 366,
+  "candidateCount": 365,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 366,
+    "evidenceSupportIdRewriteCount": 1,
+    "matchedClaimCount": 365,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 31,
@@ -112,7 +112,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:15e5fbc575df9af76ba40b6ba314c6fe604ab6b50f792524416b12e01e871e42",
-      "claimId": "claim-agents-md-66",
+      "claimId": "claim-agents-md-68",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -130,7 +130,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
-          "line": 66,
+          "line": 68,
           "path": "AGENTS.md"
         }
       ],
@@ -145,7 +145,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:96b7f51516ba4c8a8d89e4e5a77652f179a81105dc574ab340fab051182ee0a8",
-      "claimId": "claim-agents-md-93",
+      "claimId": "claim-agents-md-95",
       "claimSemanticGroup": "General product behavior",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -163,7 +163,7 @@
       "sourceRefs": [
         {
           "excerpt": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
-          "line": 93,
+          "line": 95,
           "path": "AGENTS.md"
         }
       ],
@@ -178,7 +178,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ff43dd3472f293c1135165ce80962d3f3fb5ac2ddc54d47e5280f03e701ef028",
-      "claimId": "claim-agents-md-98",
+      "claimId": "claim-agents-md-100",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -196,7 +196,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cautilus Agent should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
-          "line": 98,
+          "line": 100,
           "path": "AGENTS.md"
         }
       ],
@@ -211,7 +211,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
-      "claimId": "claim-agents-md-99",
+      "claimId": "claim-agents-md-101",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -230,7 +230,7 @@
       "sourceRefs": [
         {
           "excerpt": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
-          "line": 99,
+          "line": 101,
           "path": "AGENTS.md"
         }
       ],
@@ -246,7 +246,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
-      "claimId": "claim-agents-md-140",
+      "claimId": "claim-agents-md-142",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
@@ -255,7 +255,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
           "supportsClaimIds": [
-            "claim-agents-md-140"
+            "claim-agents-md-142"
           ]
         }
       ],
@@ -273,7 +273,7 @@
       "sourceRefs": [
         {
           "excerpt": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
-          "line": 140,
+          "line": 142,
           "path": "AGENTS.md"
         }
       ],
@@ -9574,39 +9574,8 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:f68fa27258da18af262f9fb006a37a04ca1435208f0da71dbc5c7605308ff3cf",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-106",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "The saved discovery packet records the heuristic families used for these behaviors, and the focused Go test proves the text scan, candidate filter, route classifier, and duplicate merge work together in one discovery run.",
-          "line": 106,
-          "path": "docs/specs/user/claim-discovery.spec.md"
-        }
-      ],
-      "summary": "The saved discovery packet records the heuristic families used for these behaviors, and the focused Go test proves the text scan, candidate filter, route classifier, and duplicate merge work together in one discovery run.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8df6d382126c2db553483936b1fb955ba4d47b831cf572fb543379dcb3b64599",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-135",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-131",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9623,7 +9592,7 @@
       "sourceRefs": [
         {
           "excerpt": "That means it should inspect the saved candidates, compare them with the repo, reduce false positives, raise possible false negatives, and preserve source refs when it asks the user what to do next.",
-          "line": 135,
+          "line": 131,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9635,7 +9604,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0c4ab653f7b1e02eaccfa00173062f5ec2afe2a77eca509019e274475abe05c0",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-164",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-160",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9652,7 +9621,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns the next-action summary over a saved discovery packet.",
-          "line": 164,
+          "line": 160,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9664,7 +9633,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-203",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-199",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9681,7 +9650,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet.",
-          "line": 203,
+          "line": 199,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9693,7 +9662,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-206",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-202",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9712,7 +9681,7 @@
       "sourceRefs": [
         {
           "excerpt": "This spec only verifies that the agent-run skill check is prepared.",
-          "line": 206,
+          "line": 202,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -11976,7 +11945,7 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 259,
-      "user": 107
+      "user": 106
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 59,
@@ -11987,33 +11956,33 @@
       "General product behavior": 1,
       "Improvement and improvement": 30,
       "Packets and reporting": 47,
-      "Quality gates": 19,
+      "Quality gates": 18,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 42,
       "stale": 30,
-      "unknown": 294
+      "unknown": 293
     },
     "byLifecycle": {
-      "new": 365,
+      "new": 364,
       "retired": 1
     },
     "byRecommendedProof": {
-      "cautilus-eval": 126,
+      "cautilus-eval": 125,
       "deterministic": 140,
       "human-auditable": 100
     },
     "byReviewStatus": {
       "agent-reviewed": 124,
-      "heuristic": 241,
+      "heuristic": 240,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 29,
       "needs-alignment": 37,
       "needs-scenario": 9,
-      "ready-for-proof": 291
+      "ready-for-proof": 290
     }
   },
   "discoveryEngine": {
@@ -12196,7 +12165,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "9d178e6c7667df78d974804eb2af4a194c6e1c98",
+  "gitCommit": "d941e6ca2487693e788d690e5f749acdeae4f61b",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -13619,7 +13588,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:43acaab0a8c96498e1aab5e148e9d21a4f6f2c00cf6fcdb06cdd4a4c90834982",
+      "contentHash": "sha256:7d40e5609a85e3576999a1c184b8aedc596806b7ade1a99aba3d296b412157cb",
       "depth": 0,
       "kind": "repo-instructions",
       "path": "AGENTS.md",
@@ -14077,7 +14046,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:4a5ae892b97dedeb13deb27809501fc7bbdca0b6bda54297d02bff11a0c9af2f",
+      "contentHash": "sha256:5f9b5c62d88bf33d2e81b8e4908b6081dcaa77453ef5ffdbf7363dbffb829c87",
       "depth": 2,
       "discoveredFrom": "docs/specs/user/index.spec.md",
       "kind": "spec",
