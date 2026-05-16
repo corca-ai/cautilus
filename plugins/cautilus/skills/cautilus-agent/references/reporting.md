@@ -66,7 +66,13 @@ Optional adapter- or provider-owned telemetry fields:
 
 - `provider`
 - `model`
+- `uncached_input_tokens`
+- `cache_creation_input_tokens`
+- `cache_read_input_tokens`
+- `cached_input_tokens`
 - `prompt_tokens`
+- `output_tokens`
+- `reasoning_output_tokens`
 - `completion_tokens`
 - `total_tokens`
 - `cost_usd`
@@ -74,6 +80,13 @@ Optional adapter- or provider-owned telemetry fields:
 The key rule is that cost telemetry must come from an explicit checked-in
 wrapper or output payload. `Cautilus` should not guess cost from opaque CLI
 logs.
+Cache-token breakdown follows the same rule: preserve it when a runtime or
+wrapper emits explicit machine-readable fields, and do not infer cache
+behavior from prose.
+`cache_creation_input_tokens` and `cache_read_input_tokens` preserve runtimes
+that split cache writes from reads.
+`cached_input_tokens` preserves runtimes that emit an aggregate cached-input
+count without that split.
 
 For `evaluate review variants`, the summary packet should also aggregate any explicit
 numeric telemetry across variants so operators can inspect one top-level view

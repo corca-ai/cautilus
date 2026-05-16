@@ -77,7 +77,7 @@ Use `danger-full-access` only for cases that must launch a nested provider CLI f
 
 Skill-test telemetry now preserves explicit cache-token breakdown when the runtime exposes it.
 Claude JSON envelopes keep uncached input, cache creation input, cache read input, output, aggregate prompt, completion, total token, and cost fields.
-Codex JSON streams keep uncached input, cached input, output, reasoning output, aggregate prompt, completion, total token, and derived cost fields when the selected model is covered by the checked-in pricing catalog.
+Codex JSON streams keep uncached input, cached input, cache read input, output, reasoning output, aggregate prompt, completion, total token, and derived cost fields when the selected model is covered by the checked-in pricing catalog.
 Codex `skill test` telemetry now reads the machine-readable `codex exec --json`
 event stream.
 For supported OpenAI Codex models, `Cautilus` also derives `cost_usd` from a

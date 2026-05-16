@@ -16,6 +16,8 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 			telemetry: {
 				provider: "openai",
 				model: "gpt-5.4",
+				cache_creation_input_tokens: 10,
+				cache_read_input_tokens: 30,
 				cached_input_tokens: 40,
 				total_tokens: 100,
 				cost_usd: 0.01,
@@ -28,6 +30,8 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 			telemetry: {
 				provider: "openai",
 				model: "gpt-5.4",
+				cache_creation_input_tokens: 20,
+				cache_read_input_tokens: 40,
 				cached_input_tokens: 60,
 				total_tokens: 120,
 				cost_usd: 0.012,
@@ -49,12 +53,16 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 	assert.equal(summary.overall.scenarioCount, 2);
 	assert.equal(summary.overall.runCount, 3);
 	assert.equal(summary.overall.total_tokens, 310);
+	assert.equal(summary.overall.cache_creation_input_tokens, 30);
+	assert.equal(summary.overall.cache_read_input_tokens, 70);
 	assert.equal(summary.overall.cached_input_tokens, 100);
 	assert.equal(summary.overall.cost_usd, 0.042);
 	assert.equal(summary.scenarios[0].scenarioId, "alpha");
 	assert.equal(summary.scenarios[0].cost_usd, 0.022);
 	assert.equal(summary.scenarios[0].runCount, 2);
 	assert.equal(summary.scenarios[0].total_tokens, 220);
+	assert.equal(summary.scenarios[0].cache_creation_input_tokens, 30);
+	assert.equal(summary.scenarios[0].cache_read_input_tokens, 70);
 	assert.equal(summary.scenarios[0].cached_input_tokens, 100);
 	assert.equal(summary.scenarios[0].averageDurationMs, 110);
 });
