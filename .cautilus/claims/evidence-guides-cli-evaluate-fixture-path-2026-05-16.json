@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-guides-cli-evaluate-fixture-path-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-guides-cli-md-273"
+  ],
+  "repoCommit": "3a08da09f78ce855ad19b0789b0852fa896f6049",
+  "summary": "Deterministic proof for the current CLI guide claim that `cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
+  "evidenceScope": {
+    "targetSurface": "evaluate fixture checked-in fixture, adapter-owned runner, and observed-packet evaluation path",
+    "claimBoundary": "Only the current docs/guides/cli.md evaluate-fixture path claim at line 273 is marked satisfied.",
+    "notClaimed": [
+      "Fixture runtime proves live model or app behavior.",
+      "Every adapter has an equivalent runnable runner.",
+      "This bundle satisfies the adjacent top-level proof object claim at docs/guides/cli.md line 274.",
+      "This bundle satisfies the adjacent runner-readiness selection claim at docs/guides/cli.md line 275.",
+      "This bundle satisfies the adjacent evaluate-observation no-runner claim at docs/guides/cli.md line 277."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIEvalTestRunsDevRepoFixture|TestCLIEvalTestRunsDevSkillFixture|TestCLIEvalTestAcceptsFixtureRuntime|TestCLIEvalEvaluateDoesNotLaunchAdapterRunner' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "evaluate fixture accepts dev/repo and dev/skill fixture inputs and runs them through adapter-owned eval_test_command_templates",
+          "the adapter-owned runner template receives eval-cases and eval-observed paths, writes eval-observed.json, and the product evaluates it into eval-summary.json",
+          "fixture runtime can satisfy the same runner path with backend=fixture",
+          "the adjacent evaluate observation surface is separately tested as a no-runner packet-only boundary and is not marked by this bundle"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-eval-skill --runtime fixture --skip-preflight --output-dir /tmp/cautilus-guides-cli-273-dev-skill-proof-2026-05-16",
+      "exitCode": 0,
+      "observed": {
+        "summaryPath": "/tmp/cautilus-guides-cli-273-dev-skill-proof-2026-05-16/eval-summary.json",
+        "suiteId": "cautilus-skill-routing",
+        "surface": "dev/skill",
+        "recommendation": "accept-now",
+        "notableAssertions": [
+          "the checked-in dev/skill fixture path from the adapter default was materialized into eval-cases.json",
+          "the adapter-owned runner wrote eval-observed.json",
+          "the product evaluated the observed packet into eval-summary.json"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor commands --json | jq '[.commands[] | select((.usage // \"\") == \"cautilus evaluate fixture [args]\" or (.usage // \"\") == \"cautilus evaluate observation [args]\") | .usage]'",
+      "exitCode": 0,
+      "observed": {
+        "contains": [
+          "cautilus evaluate fixture [args]",
+          "cautilus evaluate observation [args]"
+        ]
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-guides-cli-273-dev-skill-proof-2026-05-16/eval-cases.json",
+      "kind": "eval-cases-packet",
+      "contentHash": "sha256:180f39712c169238a7fce677198de334c2c9a0138dc7a4261921bad5168a13c8",
+      "schemaVersion": "cautilus.evaluation_cases.v1",
+      "suiteId": "cautilus-skill-routing"
+    },
+    {
+      "path": "/tmp/cautilus-guides-cli-273-dev-skill-proof-2026-05-16/eval-observed.json",
+      "kind": "eval-observed-packet",
+      "contentHash": "sha256:e175f480fb4543a86580de14ba5e52b63cdb901dd5b09eeabc65ff5f4a9bd985",
+      "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "proofClassSource": "runtime",
+        "targetSurface": "dev/skill"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-guides-cli-273-dev-skill-proof-2026-05-16/eval-summary.json",
+      "kind": "eval-summary-packet",
+      "contentHash": "sha256:5f9db3d09c849ec81105b235bfbcab0b76e7579954a1b0ae1e35957fdd7a3742",
+      "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "proofClassSource": "runtime",
+        "targetSurface": "dev/skill"
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/cli.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:cbfe0cbb82c9fc4ede9f9606cdb5488b5995b0139d516b5948b8672495c36a98"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "evaluate-fixture-cli-tests",
+      "contentHash": "sha256:3117b2cecae89e8da55bf99b6eed35d8466877bd27580d07f5714594e9843b39"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "evaluate-fixture-command-implementation",
+      "contentHash": "sha256:159cbd2e349f79ec5d0998474c3c3f6f015389bb7f89a69aad20dc6656ecd9e0"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "evaluate-command-registry",
+      "contentHash": "sha256:66df6f5b8e3911690daa3d5757bb55078db1d0d2df99615c60625c2e55e993e7"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-eval-skill.yaml",
+      "kind": "adapter-owned-runner-template",
+      "contentHash": "sha256:c4b45bcc1a3ea5778fd804505d2fc85fa9df727dd16bdf65211bbaf078ed1d4c"
+    },
+    {
+      "path": "fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
+      "kind": "checked-in-dev-repo-fixture-input",
+      "contentHash": "sha256:1b2c8191d4f4d8a017e780050117698dabfaea4853b560d73e4a1dbffbb3df12"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/cautilus-skill-routing.fixture.json",
+      "kind": "checked-in-dev-skill-fixture-input",
+      "contentHash": "sha256:ea1208ec319fe5a283dbbe4c2ec2caca77a55ea5f5e867e5c6a5f9d01ed073bf"
+    },
+    {
+      "path": "fixtures/eval/dev/skill/internal-runner-fixture-results.json",
+      "kind": "adapter-owned-fixture-results",
+      "contentHash": "sha256:68109bfd3a4433394ddc4185350e83f9da4c1e4bb5fff7aa7faef7fa4d371062"
+    },
+    {
+      "path": "docs/contracts/skill-testing.md",
+      "kind": "skill-testing-contract",
+      "contentHash": "sha256:c324148e79a38a520f8b30303558b072f3d7a1411a2d7c08040dc21cd7410439"
+    },
+    {
+      "path": "docs/contracts/active-run.md",
+      "kind": "active-run-artifact-contract",
+      "contentHash": "sha256:3543de3e8678f4aa9a92fd905d6dff282eab683ed7a3dd97cee1a6cde6a9d38d"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused CLI tests verify the checked-in fixture to adapter-owned runner to observed-packet evaluation path, while the command registry check verifies the current shipped surface name."
+  }
+}

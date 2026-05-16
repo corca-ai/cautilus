@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 234
+          "unknown": 233
         },
         "byReviewStatus": {
-          "heuristic": 234
+          "heuristic": 233
         },
-        "count": 234,
+        "count": 233,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 54
+          "satisfied": 55
         },
         "byReviewStatus": {
-          "agent-reviewed": 54
+          "agent-reviewed": 55
         },
-        "count": 54,
+        "count": 55,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,13 +63,13 @@
       {
         "byEvidenceStatus": {
           "stale": 13,
-          "unknown": 72
+          "unknown": 71
         },
         "byReviewStatus": {
           "agent-reviewed": 22,
-          "heuristic": 63
+          "heuristic": 62
         },
-        "count": 85,
+        "count": 84,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -77,7 +77,7 @@
           "claim-readme-md-152",
           "claim-docs-contracts-adapter-contract-md-432",
           "claim-docs-contracts-adapter-contract-md-478",
-          "claim-docs-guides-cli-md-273"
+          "claim-docs-guides-cli-md-277"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 54,
+      "satisfied": 55,
       "stale": 20,
-      "unknown": 285
+      "unknown": 284
     },
     "byLifecycle": {
       "new": 359
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 124,
-      "heuristic": 234,
+      "agent-reviewed": 125,
+      "heuristic": 233,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 54,
+    "satisfiedClaimCount": 55,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -838,6 +838,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-273",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:b9732421d5afd3510b94d6890808fe6987ec739cc0539406715263fb45c24711",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-cli-md-273"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet."
       },
       {
         "claimId": "claim-docs-guides-consumer-adoption-md-20",
@@ -1513,12 +1532,13 @@
   },
   "gitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
   "gitState": {
-    "changedFileCount": 25,
+    "changedFileCount": 28,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
+      ".cautilus/claims/evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
       ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/evidence-state.json",
@@ -1526,11 +1546,13 @@
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/status-summary.json",
       "charness-artifacts/critique/2026-05-16-guides-cli-claim-discovery-routing-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-doctor-refresh-evidence-result.md",
+      "charness-artifacts/critique/2026-05-16-guides-cli-eval-live-instance-selection-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-runner-readiness-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-post-claim-evidence-refresh-result.md",
       "charness-artifacts/debug/debug-2026-05-16-command-registry-surface-name.md",
@@ -1549,7 +1571,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "01c774cc9cf983d34bbdbafc92af0482c726f83b",
+    "currentGitCommit": "3a08da09f78ce855ad19b0789b0852fa896f6049",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
@@ -1576,7 +1598,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 209,
+    "heuristicClaimsReadyForReview": 208,
     "needsAlignment": 37,
     "needsScenario": 8
   },

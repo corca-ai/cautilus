@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:e6593f2b8e7f7f92cc440afdb43bb79c8729048a2011e5535fe74878561f92cc"
+      "contentHash": "sha256:403d182507b845918d455a3fdf1553a19517bae5d8f68b44488a83a2a87f2843"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -576,8 +576,8 @@
     "userRawClaimCount": 100,
     "userMappedToCanonicalCount": 100,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 301,
-    "userSemanticReviewRecommendedCount": 46,
+    "semanticReviewRecommendedCount": 302,
+    "userSemanticReviewRecommendedCount": 47,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 259,
       "mapped-to-user-canonical": 100
@@ -587,9 +587,9 @@
       "user": 100
     },
     "byMappingConfidence": {
-      "high": 58,
+      "high": 57,
       "low": 20,
-      "medium": 281
+      "medium": 282
     },
     "byUserCanonicalClaimId": {
       "U1": 25,
@@ -660,6 +660,7 @@
       "claim-docs-guides-cli-md-187",
       "claim-docs-guides-cli-md-193",
       "claim-docs-guides-cli-md-263",
+      "claim-docs-guides-cli-md-273",
       "claim-docs-guides-cli-md-277",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-29",
@@ -1302,8 +1303,8 @@
         {
           "claimId": "claim-docs-guides-cli-md-273",
           "claimFingerprint": "sha256:10543cfa7fe683eed032d52bbb2f2fabd74cd3e14f1e0c5ae0d56077713f9569",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-guides-cli-md-277",
@@ -1529,13 +1530,13 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 9,
+        "satisfied": 10,
         "stale": 8,
-        "unknown": 40
+        "unknown": 39
       },
       "byReviewStatus": {
-        "agent-reviewed": 31,
-        "heuristic": 26
+        "agent-reviewed": 32,
+        "heuristic": 25
       },
       "byRecommendedProof": {
         "cautilus-eval": 14,
@@ -1543,8 +1544,8 @@
         "human-auditable": 19
       },
       "byMappingConfidence": {
-        "high": 28,
-        "medium": 29
+        "high": 27,
+        "medium": 30
       }
     },
     {
@@ -6188,30 +6189,30 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:10543cfa7fe683eed032d52bbb2f2fabd74cd3e14f1e0c5ae0d56077713f9569",
       "canonicalClaimId": "U2",
-      "score": 18,
-      "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 14,
-      "scoreMargin": 4,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
+      "score": 13,
+      "runnerUpCanonicalClaimId": "U3",
+      "runnerUpScore": 12,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
-        "add",
-        "build",
         "cautilu",
-        "check",
         "checked-in",
         "deterministic",
         "evaluate",
         "fixture",
         "keep",
-        "lint",
-        "packet"
+        "packet",
+        "path",
+        "proof",
+        "run",
+        "runner"
       ]
     },
     {

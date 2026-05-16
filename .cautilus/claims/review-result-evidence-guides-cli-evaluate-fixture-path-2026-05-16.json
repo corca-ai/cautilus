@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T06:40:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the current CLI guide evaluate-fixture path claim covered by focused CLI tests and the shipped command catalog."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-guides-cli-evaluate-fixture-path-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-cli-md-273",
+          "claimFingerprint": "sha256:10543cfa7fe683eed032d52bbb2f2fabd74cd3e14f1e0c5ae0d56077713f9569",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic evaluate-fixture routing from a checked-in fixture through an adapter-owned runner into observed-packet evaluation.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI tests showing evaluate fixture routes dev/repo and dev/skill fixture inputs through adapter-owned runner templates, writes observed packets, and evaluates those packets into summaries; a direct run of the checked-in dev/skill fixture produced eval-cases, eval-observed, and eval-summary packets; the current command catalog exposes `cautilus evaluate fixture [args]`.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b9732421d5afd3510b94d6890808fe6987ec739cc0539406715263fb45c24711",
+              "supportsClaimIds": [
+                "claim-docs-guides-cli-md-273"
+              ]
+            }
+          ],
+          "nextAction": "Keep evaluate-fixture path proof separate from adjacent proof-metadata, runner-selection, and evaluate-observation no-runner claims.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

@@ -1841,8 +1841,19 @@
       "claimFingerprint": "sha256:10543cfa7fe683eed032d52bbb2f2fabd74cd3e14f1e0c5ae0d56077713f9569",
       "claimId": "claim-docs-guides-cli-md-273",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:b9732421d5afd3510b94d6890808fe6987ec739cc0539406715263fb45c24711",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-cli-md-273"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI tests showing evaluate fixture routes dev/repo and dev/skill fixture inputs through adapter-owned runner templates, writes observed packets, and evaluates those packets into summaries; a direct run of the checked-in dev/skill fixture produced eval-cases, eval-observed, and eval-summary packets; the current command catalog exposes `cautilus evaluate fixture [args]`.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1850,9 +1861,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep evaluate-fixture path proof separate from adjacent proof-metadata, runner-selection, and evaluate-observation no-runner claims.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
@@ -1861,8 +1872,9 @@
         }
       ],
       "summary": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic evaluate-fixture routing from a checked-in fixture through an adapter-owned runner into observed-packet evaluation."
     },
     {
       "claimAudience": "user",
@@ -11812,9 +11824,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 54,
+      "satisfied": 55,
       "stale": 20,
-      "unknown": 285
+      "unknown": 284
     },
     "byLifecycle": {
       "new": 359
@@ -11825,8 +11837,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 124,
-      "heuristic": 234,
+      "agent-reviewed": 125,
+      "heuristic": 233,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12034,13 +12046,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-cli-md-180",
-        "clusterId": "cluster-guides-cli-eval-live-instance-selection-2026-05-16"
+        "claimId": "claim-docs-guides-cli-md-273",
+        "clusterId": "cluster-guides-cli-evaluate-fixture-path-2026-05-16"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12092,7 +12104,8 @@
       ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
-      ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json"
+      ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12147,9 +12160,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 48,
+    "appliedResultCount": 49,
     "skippedResultCount": 51,
-    "keptUpdateCount": 130,
+    "keptUpdateCount": 131,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },
