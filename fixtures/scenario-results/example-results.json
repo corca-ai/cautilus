@@ -11,6 +11,9 @@
       "telemetry": {
         "provider": "openai",
         "model": "gpt-5.4",
+        "uncached_input_tokens": 150,
+        "cache_creation_input_tokens": 20,
+        "cache_read_input_tokens": 30,
         "total_tokens": 200,
         "cost_usd": 0.02
       }
