@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-guides-cli-evaluate-observation-no-runner-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-guides-cli-md-277"
+  ],
+  "repoCommit": "130ccfd6cfcc3caac8575bfa7b59fac3d58b3521",
+  "summary": "Deterministic proof for the current CLI guide claim that `cautilus evaluate observation` evaluates an already-observed packet without launching the adapter runner again.",
+  "evidenceScope": {
+    "targetSurface": "evaluate observation packet-only summary path",
+    "claimBoundary": "Only the current docs/guides/cli.md evaluate-observation no-runner claim at line 277 is marked satisfied.",
+    "notClaimed": [
+      "The observed packet came from live model or app behavior.",
+      "This bundle satisfies the adjacent evaluate-fixture runner claim at docs/guides/cli.md line 273.",
+      "This bundle satisfies proof metadata or runner-selection claims.",
+      "Every accepted observed-packet schema has equivalent semantic quality coverage.",
+      "Adapter runner readiness is complete."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIEvalEvaluateDoesNotLaunchAdapterRunner|TestCLIEvalEvaluateAcceptsSkillObservedPacket|TestCLIEvalEvaluateAcceptsAppChatObservedPacket|TestCLIEvalEvaluateAcceptsAppPromptObservedPacket' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "evaluate observation accepts already-observed packets for skill, app/chat, and app/prompt schemas",
+          "evaluate observation builds summaries from packet input without invoking adapter eval_test_command_templates",
+          "the no-runner sentinel test would create a runner-launched file if the adapter runner were invoked"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus evaluate observation --input /tmp/cautilus-guides-cli-273-dev-skill-proof-2026-05-16/eval-observed.json --output /tmp/cautilus-guides-cli-277-observation-recheck-2026-05-16.json",
+      "exitCode": 0,
+      "observed": {
+        "inputPath": "/tmp/cautilus-guides-cli-273-dev-skill-proof-2026-05-16/eval-observed.json",
+        "outputPath": "/tmp/cautilus-guides-cli-277-observation-recheck-2026-05-16.json",
+        "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+        "recommendation": "accept-now"
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor commands --json | jq '[.commands[] | select((.usage // \"\") == \"cautilus evaluate observation [args]\") | {usage, example}]'",
+      "exitCode": 0,
+      "observed": {
+        "usage": "cautilus evaluate observation [args]",
+        "example": "cautilus evaluate observation --input ./eval-observed.json"
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "/tmp/cautilus-guides-cli-273-dev-skill-proof-2026-05-16/eval-observed.json",
+      "kind": "eval-observed-packet",
+      "contentHash": "sha256:e175f480fb4543a86580de14ba5e52b63cdb901dd5b09eeabc65ff5f4a9bd985",
+      "schemaVersion": "cautilus.skill_evaluation_inputs.v1",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "proofClassSource": "runtime",
+        "targetSurface": "dev/skill"
+      }
+    },
+    {
+      "path": "/tmp/cautilus-guides-cli-277-observation-recheck-2026-05-16.json",
+      "kind": "eval-summary-packet",
+      "contentHash": "sha256:40b624f80c602a7825eef89e006cc77eeac21cb18367dd88c3c802f1363bdf66",
+      "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "proofClassSource": "runtime",
+        "targetSurface": "dev/skill"
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/cli.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:cbfe0cbb82c9fc4ede9f9606cdb5488b5995b0139d516b5948b8672495c36a98"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "evaluate-observation-cli-tests",
+      "contentHash": "sha256:3117b2cecae89e8da55bf99b6eed35d8466877bd27580d07f5714594e9843b39"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "evaluate-observation-command-implementation",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "evaluate-command-registry",
+      "contentHash": "sha256:66df6f5b8e3911690daa3d5757bb55078db1d0d2df99615c60625c2e55e993e7"
+    },
+    {
+      "path": "docs/contracts/skill-evaluation.md",
+      "kind": "skill-evaluation-contract",
+      "contentHash": "sha256:f84ef63c6d6612abf9c2cfe645b697a6e83fb8b896e203b5c382deed2cd2a0bd"
+    },
+    {
+      "path": "docs/contracts/skill-testing.md",
+      "kind": "skill-testing-contract",
+      "contentHash": "sha256:c324148e79a38a520f8b30303558b072f3d7a1411a2d7c08040dc21cd7410439"
+    },
+    {
+      "path": "docs/contracts/active-run.md",
+      "kind": "active-run-artifact-contract",
+      "contentHash": "sha256:3543de3e8678f4aa9a92fd905d6dff282eab683ed7a3dd97cee1a6cde6a9d38d"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused CLI tests verify the no-runner boundary with a sentinel adapter and accepted observed-packet schemas; a direct `evaluate observation` command re-scored an already-observed packet into a summary without adapter runner arguments."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T08:35:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the current CLI guide evaluate-observation no-runner claim covered by focused CLI tests, direct packet re-evaluation, and the shipped command catalog."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-guides-cli-evaluate-observation-no-runner-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-cli-md-277",
+          "claimFingerprint": "sha256:403dc2c5a7bb481b04a09127224a7bfc782fba56048029af5e7ddb02f2b2088f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic packet-only evaluation behavior and the no-runner launch boundary.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused CLI tests showing `evaluate observation` accepts already-observed packets and does not invoke adapter runner templates, plus a direct packet re-evaluation command that produced a summary from an existing observed packet; the current command catalog exposes `cautilus evaluate observation [args]`.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a5aca507605edd98dbcaa61c068f37b3b435ea1b1c71b16d51b956c2132f878f",
+              "supportsClaimIds": [
+                "claim-docs-guides-cli-md-277"
+              ]
+            }
+          ],
+          "nextAction": "Keep the no-runner packet-only boundary separate from evaluate-fixture runner execution and proof metadata claims.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

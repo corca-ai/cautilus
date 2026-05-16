@@ -1882,8 +1882,19 @@
       "claimFingerprint": "sha256:403dc2c5a7bb481b04a09127224a7bfc782fba56048029af5e7ddb02f2b2088f",
       "claimId": "claim-docs-guides-cli-md-277",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a5aca507605edd98dbcaa61c068f37b3b435ea1b1c71b16d51b956c2132f878f",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-cli-md-277"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused CLI tests showing `evaluate observation` accepts already-observed packets and does not invoke adapter runner templates, plus a direct packet re-evaluation command that produced a summary from an existing observed packet; the current command catalog exposes `cautilus evaluate observation [args]`.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1891,9 +1902,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep the no-runner packet-only boundary separate from evaluate-fixture runner execution and proof metadata claims.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.",
@@ -1902,8 +1913,9 @@
         }
       ],
       "summary": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names deterministic packet-only evaluation behavior and the no-runner launch boundary."
     },
     {
       "claimAudience": "user",
@@ -11824,9 +11836,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 55,
+      "satisfied": 56,
       "stale": 20,
-      "unknown": 284
+      "unknown": 283
     },
     "byLifecycle": {
       "new": 359
@@ -11837,8 +11849,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 125,
-      "heuristic": 233,
+      "agent-reviewed": 126,
+      "heuristic": 232,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12046,13 +12058,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-cli-md-273",
-        "clusterId": "cluster-guides-cli-evaluate-fixture-path-2026-05-16"
+        "claimId": "claim-docs-guides-cli-md-277",
+        "clusterId": "cluster-guides-cli-evaluate-observation-no-runner-2026-05-16"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12105,7 +12117,8 @@
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
-      ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json"
+      ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12160,9 +12173,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 49,
+    "appliedResultCount": 50,
     "skippedResultCount": 51,
-    "keptUpdateCount": 131,
+    "keptUpdateCount": 132,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },
