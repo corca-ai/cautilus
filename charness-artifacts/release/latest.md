@@ -47,14 +47,31 @@ This release also includes the checked-in claim, guide, critique, debug, and rel
 - `npm run test:on-demand`: green.
 - `./bin/cautilus --version`: `0.16.0`.
 - `npm run release:publish -- --version 0.16.0 --dry-run --json`: green at `fb7426a`.
+- `npm run release:publish -- --version 0.16.0`: branch push and tag push verified at `adc0142`.
+- GitHub Actions run `25975783126` for `main`: `verify` succeeded.
+- GitHub Actions run `25975783112` for `main`: `spec-report` succeeded.
+- GitHub Actions run `25975797176` for `v0.16.0`: `release-artifacts` and `verify-public-release` succeeded.
+- `node scripts/release/verify-public-release.mjs --version v0.16.0 --repo corca-ai/cautilus --json`: ok, all expected assets present and checksum manifest complete.
+- Pinned installer smoke: `npm run release:smoke-install -- --channel install_sh --version v0.16.0 --repo corca-ai/cautilus --installer-source local --skip-update --json`: ok, installed `0.16.0`.
 
-The remaining release-close gates are public workflow completion, public release verification, and install smoke after `v0.16.0` is tagged.
+The release-close gates are green.
 
 ## Public Release
 
-- Target tag: `v0.16.0`.
+- Released tag: `v0.16.0`.
+- Release commit: `adc0142f68761956adf54428f433298e022b96d3`.
+- URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.16.0`.
+- Published at: `2026-05-16T23:34:02Z`.
 - Public boundary: GitHub tagged binary/install surface.
 - npm publication and public Claude/Codex plugin distribution are not claimed by this release.
+- Assets:
+  - `cautilus_0.16.0_darwin_arm64.tar.gz`
+  - `cautilus_0.16.0_darwin_x64.tar.gz`
+  - `cautilus_0.16.0_linux_arm64.tar.gz`
+  - `cautilus_0.16.0_linux_x64.tar.gz`
+  - `cautilus-v0.16.0-checksums.txt`
+  - `cautilus-v0.16.0.sha256`
+  - `release-notes-v0.16.0.md`
 
 ## Operator Update Steps
 
@@ -69,4 +86,5 @@ The remaining release-close gates are public workflow completion, public release
 
 - Robustness schemas currently have positive fixture validation, not strict invalid-packet enforcement.
   The next implementation gate is to add non-empty core arrays, auditable ref shapes, mutation-kind exclusivity, and targeted negative validation tests.
-- The public GitHub release workflow and install smoke still need to be verified after `v0.16.0` is tagged.
+- The immutable `v0.16.0` tag contains the pre-public-verification release record.
+  This post-release record on `main` carries the public verification and install-smoke results.
