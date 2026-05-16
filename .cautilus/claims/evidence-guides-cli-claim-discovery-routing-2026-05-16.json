@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-guides-cli-claim-discovery-routing-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-guides-cli-md-122"
+  ],
+  "repoCommit": "eb8d1051ed65e6d7e418343882bce039857aa91d",
+  "summary": "Deterministic proof for the current CLI guide claim that `cautilus discover claims` should be used before eval fixture authoring to inventory declared behavior claims and route them into human review, deterministic proof, Cautilus eval, scenario design, or alignment work.",
+  "evidenceScope": {
+    "targetSurface": "CLI guide claim discovery proof routing",
+    "claimBoundary": "Only the current docs/guides/cli.md claim-discovery routing guidance at line 122 is marked satisfied.",
+    "notClaimed": [
+      "The binary enforces that every operator runs claim discovery before manually writing eval fixtures.",
+      "The claim discovery command writes host-owned eval fixtures.",
+      "Heuristic classification is a final verdict that the repo is correct.",
+      "The focused tests prove every future natural-language claim will be classified perfectly."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanClassifiesFixtureClaims|TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting|TestBuildClaimStatusSummarySummarizesExistingPacket|TestBuildClaimReviewInputCanFocusActionBucket' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "discover claims emits a cautilus.claim_proof_plan.v1 packet with source-ref-backed claim candidates",
+          "fixture claims include human-auditable, deterministic, and cautilus-eval recommendedProof routes",
+          "classifier coverage includes ready deterministic proof, Cautilus eval, needs-scenario behavior, blocked human-auditable work, and needs-alignment ownership or surface claims",
+          "status summaries include action buckets for agent-add-deterministic-proof, agent-plan-cautilus-eval, agent-design-scenario, human-align-surfaces, human-confirm-or-decompose, and split-or-defer",
+          "review-input preparation can focus the human-align-surfaces action bucket without hand-filtering raw JSON"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run TestRunClaimDiscoverWritesProofPlanFromTinyRepo -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "the public `discover claims` CLI writes a cautilus.claim_proof_plan.v1 packet",
+          "the output packet includes source-ref-backed claim candidates",
+          "the CLI proof plan includes human-auditable, deterministic, and cautilus-eval recommendedProof routes"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/cli.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:cbfe0cbb82c9fc4ede9f9606cdb5488b5995b0139d516b5948b8672495c36a98"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-classification-and-action-bucket-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-classification-and-action-bucket-implementation",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "discover-claims-cli-test",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "claim-discovery-user-spec",
+      "contentHash": "sha256:5f9b5c62d88bf33d2e81b8e4908b6081dcaa77453ef5ffdbf7363dbffb829c87"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused runtime and app tests verify the public `discover claims` command and underlying classifier produce a source-referenced proof plan with deterministic, Cautilus-eval, human-auditable, scenario-design, and alignment action routes before any eval fixture writer is involved."
+  }
+}

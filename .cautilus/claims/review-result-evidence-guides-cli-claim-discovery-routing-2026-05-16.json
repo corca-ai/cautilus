@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T05:46:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the current CLI guide claim-discovery routing claim covered by focused runtime and app tests."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-guides-cli-claim-discovery-routing-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-cli-md-122",
+          "claimFingerprint": "sha256:6901827714fc3a30a1ea3f7850ce66a84fa2062c820b38ddf31b50b64bd06f98",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic claim-discovery packet and action-routing behavior that should be protected by command and classifier tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused runtime and app tests showing `discover claims` emits a source-ref-backed proof plan and routes candidates into deterministic proof, Cautilus eval, human-auditable review, scenario design, and alignment action buckets before eval fixture authoring.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8b6d2812ecfddde3b874c68af180bd1356fb708594187a40430c4ce9d57187aa",
+              "supportsClaimIds": [
+                "claim-docs-guides-cli-md-122"
+              ]
+            }
+          ],
+          "nextAction": "Keep claim discovery as a proof-routing and next-work packet before adding or editing host-owned eval fixtures.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

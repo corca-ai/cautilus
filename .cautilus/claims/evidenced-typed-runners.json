@@ -1525,8 +1525,19 @@
       "claimFingerprint": "sha256:6901827714fc3a30a1ea3f7850ce66a84fa2062c820b38ddf31b50b64bd06f98",
       "claimId": "claim-docs-guides-cli-md-122",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:8b6d2812ecfddde3b874c68af180bd1356fb708594187a40430c4ce9d57187aa",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-cli-md-122"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused runtime and app tests showing `discover claims` emits a source-ref-backed proof plan and routes candidates into deterministic proof, Cautilus eval, human-auditable review, scenario design, and alignment action buckets before eval fixture authoring.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1534,9 +1545,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep claim discovery as a proof-routing and next-work packet before adding or editing host-owned eval fixtures.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Use `cautilus discover claims` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.",
@@ -1545,8 +1556,9 @@
         }
       ],
       "summary": "Use `cautilus discover claims` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic claim-discovery packet and action-routing behavior that should be protected by command and classifier tests."
     },
     {
       "claimAudience": "user",
@@ -11801,9 +11813,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 52,
+      "satisfied": 53,
       "stale": 21,
-      "unknown": 286
+      "unknown": 285
     },
     "byLifecycle": {
       "new": 359
@@ -11814,8 +11826,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 123,
-      "heuristic": 235,
+      "agent-reviewed": 124,
+      "heuristic": 234,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12023,13 +12035,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-review-packet-md-3",
-        "clusterId": "cluster-review-packet-boundary"
+        "claimId": "claim-docs-guides-cli-md-122",
+        "clusterId": "cluster-guides-cli-claim-discovery-routing-2026-05-16"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12079,7 +12091,8 @@
       ".cautilus/claims/review-result-evidence-install-channel-policy-refresh-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
-      ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json"
+      ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12134,9 +12147,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 46,
+    "appliedResultCount": 47,
     "skippedResultCount": 51,
-    "keptUpdateCount": 128,
+    "keptUpdateCount": 129,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },
