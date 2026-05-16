@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-on-demand-test-gate-2026-05-16",
+  "createdForClaimIds": [
+    "claim-agents-md-142"
+  ],
+  "repoCommit": "685339497ea08e8d639cea7a95883ff7b870fe46",
+  "summary": "Deterministic proof that the repo's on-demand check surface owns the heavier self-dogfood workflow script tests.",
+  "evidenceScope": {
+    "targetSurface": "maintainer on-demand test gate",
+    "claimBoundary": "Only the AGENTS.md claim that npm run test:on-demand owns heavier self-dogfood workflow script tests is marked satisfied.",
+    "notClaimed": [
+      "The on-demand suite covers every possible self-dogfood workflow.",
+      "The on-demand suite should run in the standing verify gate.",
+      "Every historical self-dogfood artifact is current."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run test:on-demand",
+      "exitCode": 0
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "AGENTS.md",
+      "kind": "repo-instruction-source",
+      "contentHash": "sha256:7d40e5609a85e3576999a1c184b8aedc596806b7ade1a99aba3d296b412157cb"
+    },
+    {
+      "path": "package.json",
+      "kind": "npm-script-registry",
+      "contentHash": "sha256:75c8d645b695e4dac92be5676154bd44990dde21bd99be779744babda2c8e546"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.test.mjs",
+      "kind": "on-demand-self-dogfood-test",
+      "contentHash": "sha256:06a7ab45c1a485aa6a2c5f2b96ba96ce309bcb84fce2cff2f6440e3096bd9253"
+    },
+    {
+      "path": "scripts/on-demand/smoke-starter-kits.test.mjs",
+      "kind": "on-demand-self-dogfood-test",
+      "contentHash": "sha256:b3aa5c6c8132b90a824adb5e5f83301db8714a6ec836468819d25ae27d6178f5"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "package.json maps npm run test:on-demand to the on-demand Node test suite under scripts/on-demand/*.test.mjs, the repo instructions name that command as the heavier self-dogfood workflow test gate, and the command exited 0 on 2026-05-16."
+  }
+}

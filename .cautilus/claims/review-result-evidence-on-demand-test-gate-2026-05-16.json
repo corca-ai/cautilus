@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the current on-demand test gate claim covered by package.json wiring, checked-in on-demand test files, and a passing npm run test:on-demand execution."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-on-demand-test-gate-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-agents-md-142",
+          "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a maintainer npm gate and its checked-in test ownership, which is deterministic repo behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by package.json wiring from test:on-demand to scripts/on-demand/*.test.mjs, checked-in on-demand test files, AGENTS.md gate wording, and a passing npm run test:on-demand execution.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-on-demand-test-gate-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b019047c6653729a37aabd5ae0acd37bb70c84641d0ba9b1f6c698a14a118b13",
+              "supportsClaimIds": [
+                "claim-agents-md-142"
+              ]
+            }
+          ],
+          "nextAction": "Keep npm run test:on-demand and scripts/on-demand/*.test.mjs aligned when moving heavier self-dogfood workflow checks.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

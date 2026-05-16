@@ -250,24 +250,24 @@
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:650414df533b0b310f7fedeae61b338057706db55e91c2219d911deaafb2a89a",
+          "contentHash": "sha256:b019047c6653729a37aabd5ae0acd37bb70c84641d0ba9b1f6c698a14a118b13",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-on-demand-test-gate-2026-05-11.json",
+          "path": ".cautilus/claims/evidence-on-demand-test-gate-2026-05-16.json",
           "supportsClaimIds": [
             "claim-agents-md-142"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-on-demand-test-gate-2026-05-11.json does not list current claimId claim-agents-md-137 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by package.json wiring from test:on-demand to scripts/on-demand/*.test.mjs, checked-in on-demand test files, AGENTS.md gate wording, and a passing npm run test:on-demand execution.",
       "groupHints": [
         "audience:developer",
         "deterministic",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep npm run test:on-demand and scripts/on-demand/*.test.mjs aligned when moving heavier self-dogfood workflow checks.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -278,8 +278,9 @@
         }
       ],
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names a maintainer npm gate and its checked-in test ownership, which is deterministic repo behavior."
     },
     {
       "claimAudience": "user",
@@ -11763,8 +11764,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 43,
-      "stale": 27,
+      "satisfied": 44,
+      "stale": 26,
       "unknown": 289
     },
     "byLifecycle": {
@@ -11967,11 +11968,11 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "12325e1aab364a609b1cd89715266296cd3e6c59",
+  "gitCommit": "685339497ea08e8d639cea7a95883ff7b870fe46",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
-    "appliedUpdateCount": 2,
+    "appliedUpdateCount": 1,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -11985,28 +11986,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-95",
-        "clusterId": "cluster-claim-workflow-canonical-review-input-2026-05-11"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "whyThisLayer",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-98",
-        "clusterId": "cluster-claim-workflow-canonical-review-input-2026-05-11"
+        "claimId": "claim-agents-md-142",
+        "clusterId": "cluster-on-demand-test-gate-2026-05-16"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12048,7 +12034,8 @@
       ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json",
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
-      ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json"
+      ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12103,9 +12090,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 38,
+    "appliedResultCount": 39,
     "skippedResultCount": 51,
-    "keptUpdateCount": 119,
+    "keptUpdateCount": 120,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

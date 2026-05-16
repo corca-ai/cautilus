@@ -22,20 +22,20 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 27
+          "stale": 26
         },
         "byReviewStatus": {
-          "agent-reviewed": 27
+          "agent-reviewed": 26
         },
-        "count": 27,
+        "count": 26,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-agents-md-142",
           "claim-docs-guides-cli-md-32",
           "claim-docs-guides-cli-md-112",
           "claim-docs-guides-cli-md-114",
-          "claim-docs-guides-cli-md-121"
+          "claim-docs-guides-cli-md-121",
+          "claim-docs-guides-cli-md-127"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,41 +43,41 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 43
+          "satisfied": 44
         },
         "byReviewStatus": {
-          "agent-reviewed": 43
+          "agent-reviewed": 44
         },
-        "count": 43,
+        "count": 44,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
+          "claim-agents-md-142",
           "claim-readme-md-7",
           "claim-readme-md-9",
           "claim-readme-md-10",
-          "claim-readme-md-13",
-          "claim-readme-md-149"
+          "claim-readme-md-13"
         ],
         "summary": "Proof is already attached and valid under packet semantics."
       },
       {
         "byEvidenceStatus": {
-          "stale": 19,
+          "stale": 18,
           "unknown": 76
         },
         "byReviewStatus": {
-          "agent-reviewed": 28,
+          "agent-reviewed": 27,
           "heuristic": 67
         },
-        "count": 95,
+        "count": 94,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-agents-md-142",
           "claim-readme-md-69",
           "claim-readme-md-77",
           "claim-readme-md-152",
-          "claim-docs-contracts-adapter-contract-md-219"
+          "claim-docs-contracts-adapter-contract-md-219",
+          "claim-docs-contracts-adapter-contract-md-432"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,8 +219,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 43,
-      "stale": 27,
+      "satisfied": 44,
+      "stale": 26,
       "unknown": 289
     },
     "byLifecycle": {
@@ -437,8 +437,27 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 43,
+    "satisfiedClaimCount": 44,
     "satisfiedClaims": [
+      {
+        "claimId": "claim-agents-md-142",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:b019047c6653729a37aabd5ae0acd37bb70c84641d0ba9b1f6c698a14a118b13",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-on-demand-test-gate-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-agents-md-142"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests."
+      },
       {
         "claimId": "claim-readme-md-7",
         "evidenceRefCount": 1,
@@ -1300,7 +1319,7 @@
       }
     ]
   },
-  "gitCommit": "12325e1aab364a609b1cd89715266296cd3e6c59",
+  "gitCommit": "685339497ea08e8d639cea7a95883ff7b870fe46",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1312,10 +1331,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "12325e1aab364a609b1cd89715266296cd3e6c59",
+    "currentGitCommit": "685339497ea08e8d639cea7a95883ff7b870fe46",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "12325e1aab364a609b1cd89715266296cd3e6c59",
+    "packetGitCommit": "685339497ea08e8d639cea7a95883ff7b870fe46",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
