@@ -24,7 +24,7 @@
               "path": ".cautilus/claims/evidence-readme-bounded-eval-loop-2026-05-16.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:d9390a6244880626e1c6e86c99d54b204f08fd97d83b652b187e9bcf057103a0",
+              "contentHash": "sha256:262f80f071c2b1caefc3e965a603ab312637aad3982a4266deff712824b72291",
               "supportsClaimIds": [
                 "claim-readme-md-77"
               ]

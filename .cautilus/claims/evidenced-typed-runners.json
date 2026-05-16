@@ -543,7 +543,7 @@
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:d9390a6244880626e1c6e86c99d54b204f08fd97d83b652b187e9bcf057103a0",
+          "contentHash": "sha256:262f80f071c2b1caefc3e965a603ab312637aad3982a4266deff712824b72291",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-readme-bounded-eval-loop-2026-05-16.json",
@@ -11992,7 +11992,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "49ec573628e2a7273e4cd0a0335588ddcf0ee98c",
+  "gitCommit": "90ccd3a78cda5d88ccd6e29e6977c913ad291d6e",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {

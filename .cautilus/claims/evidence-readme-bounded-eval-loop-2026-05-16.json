@@ -64,6 +64,11 @@
       "path": "fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
       "kind": "checked-in-eval-fixture",
       "contentHash": "sha256:1b2c8191d4f4d8a017e780050117698dabfaea4853b560d73e4a1dbffbb3df12"
+    },
+    {
+      "path": ".cautilus/claims/evidence-artifacts/readme-bounded-eval-loop-2026-05-16/packet-snapshot.json",
+      "kind": "eval-packet-snapshot",
+      "contentHash": "sha256:8571d6394c2938495aacf5cd742eb423e7656ed4cda0e5a4e8c0c5b1a5644849"
     }
   ],
   "runtimeEvidence": [
