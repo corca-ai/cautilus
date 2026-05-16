@@ -40,8 +40,5 @@ Evidence state: [Evidence State](../evidence/index.spec.md).
 
 ```run:shell
 # Verify all primary reading views exist.
-test -f docs/specs/user/index.spec.md
-test -f docs/specs/contracts/index.spec.md
-test -f docs/specs/rules/index.spec.md
-test -f docs/specs/evidence/index.spec.md
+node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/user/index.spec.md", "docs/specs/contracts/index.spec.md", "docs/specs/rules/index.spec.md", "docs/specs/evidence/index.spec.md"]) { if (!fs.existsSync(path)) throw new Error("missing " + path); }'
 ```

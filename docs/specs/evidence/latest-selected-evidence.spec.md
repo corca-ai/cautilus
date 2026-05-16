@@ -22,5 +22,5 @@ The standing spec report should show selected durable evidence and name stale or
 
 ```run:shell
 # Verify the selected-evidence policy has a gap page to point to.
-test -f docs/specs/evidence/gaps.spec.md
+node -e 'if (!require("node:fs").existsSync("docs/specs/evidence/gaps.spec.md")) throw new Error("missing evidence gap page")'
 ```

@@ -19,8 +19,8 @@ The main risk was that setup and quality detectors could misread a mature repo a
 
 ## Runtime Signals
 
-- runtime source: missing structured runtime metrics for this quality slice; command results came from direct gate and inventory output.
-- runtime hot spots: unavailable because no structured timing source was collected for this slice.
+- runtime source: `charness-artifacts/quality/runtime-latest.json` from `npm run verify -- --runtime-signal charness-artifacts/quality/runtime-latest.json`.
+- runtime hot spots: `test:coverage` 10442ms, `test:node` 8749ms, `lint:specs` 6839ms, `security:secrets` 4256ms, `claims:audit-evidence` 3935ms.
 - coverage gate: `npm run verify` remains the standing coverage and coverage-floor stop gate.
 - evaluator depth: no LLM evaluator was run; this slice used deterministic setup, inventory, spec, hook, and CLI probes.
 
@@ -31,18 +31,18 @@ The main risk was that setup and quality detectors could misread a mature repo a
 - Lint-ignore inventory reports zero inline, file-level, blanket, or tool-level suppressions.
 - Dual-implementation inventory reports `candidate_count=0`.
 - Cautilus Agent source and packaged skill disclosure stay synchronized under `npm run lint:skill-disclosure`.
+- `scripts/run-verify.mjs` can now emit a structured `cautilus.quality_runtime_signal.v1` timing packet for future quality reviews.
 
 ## Weak
 
-- Public-spec quality inventory still reports 20 duplicated command examples across old or overlapping spec pages.
-- README remains a long entrypoint by docs inventory at 223 non-empty lines.
+- Public-spec quality inventory now reports 0 duplicated command examples after the archive/index proof cleanup.
+- README entrypoint inventory now reports 140 non-empty lines and no `long_entrypoint` heuristic after moving detailed scenario and core-flow prose behind guide/spec links.
 - Cautilus Agent core remains close to the disclosure ceiling at 179 non-empty lines.
 - Standing-gate verbosity inventory still classifies `.githooks/pre-push` phase-level signal as weak, although the hook now prints phase start and elapsed-pass lines.
 
 ## Missing
 
-- No repo-owned quality runtime summary sample was captured for this slice.
-- No automated cleanup plan yet owns the public-spec duplicate-example reduction.
+- None active for this slice.
 
 ## Deferred
 
@@ -52,8 +52,9 @@ The main risk was that setup and quality detectors could misread a mature repo a
 
 ## Advisory
 
-- inventory: `inventory_public_spec_quality.py` now reports `delegated_runner_specs=[]`, but duplicate command examples remain as active quality debt.
-- inventory: `inventory_entrypoint_docs_ergonomics.py` reports `README.md` with `long_entrypoint`.
+- inventory: `inventory_public_spec_quality.py` now reports `delegated_runner_specs=[]` and `duplicate_command_examples=[]`.
+- runtime: `runtime-latest.json` reports 17 verify phases, `status=passed`, and a total duration of 42808ms.
+- inventory: `inventory_entrypoint_docs_ergonomics.py` reports `README.md` with `heuristics=[]`.
 - inventory: `inventory_skill_ergonomics.py` reports `long_core` for both source and packaged Cautilus Agent copies.
 - inventory: `inventory_standing_test_economics.py` reports a multi-GB local pytest temp footprint outside repo state.
 - inventory: `inventory_cli_ergonomics.py`, `inventory_lint_ignores.py`, and `inventory_dual_implementation.py` found no active implementation cleanup.
@@ -87,13 +88,11 @@ The standing test economics lens covered `fixture-economics`, `parallel-critical
 - `npm run lint:specs -- docs/specs/user/claim-discovery.spec.md`
 - `node --test scripts/check-git-hooks.test.mjs`
 - `npm run verify`
+- `npm run verify -- --runtime-signal charness-artifacts/quality/runtime-latest.json`
 - `npm run hooks:check`
 
 ## Recommended Next Gates
 
-- active `AUTO_CANDIDATE`: reduce duplicated public-spec command examples, starting with old spec pages that repeat the same happy-path proof as current user specs.
-- active `AUTO_CANDIDATE`: add a repo-local runtime-signal capture for future quality runs so hot spots are based on structured timing instead of prose.
-- active `AUTO_CANDIDATE`: add a docs-readability cleanup slice for the long README entrypoint.
 - passive `AUTO_CANDIDATE`: extract Cautilus Agent core detail into references before adding more user-facing skill prose because the core is already near the disclosure ceiling.
 - passive `NON_AUTOMATABLE`: revisit local pytest temp footprint only if it causes flaky cleanup, leaked state, or operator confusion outside this repo because the current signal is local machine state, not checked-in repo behavior.
 

@@ -34,7 +34,7 @@ $ ./bin/cautilus doctor --repo-root . | grep '"first_bounded_run": {'
 # A standalone checkout should also drive the generic live app eval contracts in a tiny synthetic consumer repo.
 tmpdir=$(mktemp -d)
 mkdir -p "$tmpdir/.agents"
-cat > "$tmpdir/.agents/cautilus-adapter.yaml" <<EOF
+cat > "$tmpdir/.agents/cautilus-adapter.yaml" <<ADAPTER_YAML
 version: 1
 repo: temp
 evaluation_surfaces:
@@ -53,7 +53,7 @@ live_run_invocation:
   command_template: cautilus evaluate live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}
   consumer_single_turn_command_template: sh ./run-live-turn.sh {turn_request_file} {turn_result_file} {workspace_dir}
   workspace_prepare_command_template: sh ./prepare-live-run.sh {workspace_dir}
-EOF
+ADAPTER_YAML
 cat > "$tmpdir/prepare-live-run.sh" <<'EOF'
 #!/bin/sh
 workspace_dir="$1"
@@ -62,12 +62,12 @@ printf '1\n' > "$workspace_dir/prepare-count.txt"
 printf 'prepared\n' > "$workspace_dir/prepared.txt"
 EOF
 chmod +x "$tmpdir/prepare-live-run.sh"
-cat > "$tmpdir/run-live-turn.sh" <<'EOF'
+cat > "$tmpdir/run-live-turn.sh" <<'TURN_SCRIPT'
 #!/bin/sh
 turn_request_file="$1"
 turn_result_file="$2"
 workspace_dir="$3"
-node - "$turn_request_file" "$turn_result_file" "$workspace_dir" <<'JSON'
+node - "$turn_request_file" "$turn_result_file" "$workspace_dir" <<'LIVE_TURN_JS'
 const [turnRequestFile, turnResultFile, workspaceDir] = process.argv.slice(2);
 const { appendFileSync, readFileSync, writeFileSync } = await import("node:fs");
 const { join } = await import("node:path");
@@ -84,10 +84,10 @@ writeFileSync(turnResultFile, JSON.stringify({
     text: "The synthetic consumer acknowledged the scripted prompt."
   }
 }) + "\n", "utf8");
-JSON
-EOF
+LIVE_TURN_JS
+TURN_SCRIPT
 chmod +x "$tmpdir/run-live-turn.sh"
-cat > "$tmpdir/request.json" <<'EOF'
+cat > "$tmpdir/request.json" <<'LIVE_REQUEST_JSON'
 {
   "schemaVersion": "cautilus.live_run_invocation_request.v1",
   "requestId": "req-live-eval-smoke",
@@ -107,7 +107,7 @@ cat > "$tmpdir/request.json" <<'EOF'
     }
   }
 }
-EOF
+LIVE_REQUEST_JSON
 ./bin/cautilus discover live-targets --repo-root "$tmpdir" --output "$tmpdir/catalog.json" >/dev/null
 ./bin/cautilus evaluate live --repo-root "$tmpdir" --instance-id default --request-file "$tmpdir/request.json" --output-file "$tmpdir/result.json" >/dev/null
 grep -q '"instanceId": "default"' "$tmpdir/catalog.json"
@@ -124,7 +124,7 @@ grep -q '^1:' "$tmpdir/result.json.d/workspace/turn-log.txt"
 ```run:shell
 # Install the Cautilus Agent into a fresh git repo and confirm `doctor` reports the next missing prerequisite honestly.
 tmpdir=$(mktemp -d)
-git -C "$tmpdir" init >/dev/null 2>&1
+git init "$tmpdir" >/dev/null 2>&1
 git -C "$tmpdir" config user.email test@example.com
 git -C "$tmpdir" config user.name test
 printf '# temp\n' > "$tmpdir/README.md"

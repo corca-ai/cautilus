@@ -1,10 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { mkdtempSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 import {
 	PHASES,
 	parseArgs,
 	resolveScript,
+	runtimeSignalPayload,
 	runPhases,
 } from "./run-verify.mjs";
 
@@ -55,15 +59,42 @@ test("PHASES covers every npm run verify sub-phase", () => {
 });
 
 test("parseArgs defaults to non-verbose", () => {
-	assert.deepEqual(parseArgs([]), { verbose: false, help: false });
+	assert.deepEqual(parseArgs([]), {
+		verbose: false,
+		help: false,
+		runtimeSignalPath: null,
+	});
 });
 
 test("parseArgs recognizes --verbose", () => {
-	assert.deepEqual(parseArgs(["--verbose"]), { verbose: true, help: false });
+	assert.deepEqual(parseArgs(["--verbose"]), {
+		verbose: true,
+		help: false,
+		runtimeSignalPath: null,
+	});
 });
 
 test("parseArgs recognizes --help", () => {
-	assert.deepEqual(parseArgs(["--help"]), { verbose: false, help: true });
+	assert.deepEqual(parseArgs(["--help"]), {
+		verbose: false,
+		help: true,
+		runtimeSignalPath: null,
+	});
+});
+
+test("parseArgs recognizes runtime signal output", () => {
+	assert.deepEqual(parseArgs(["--runtime-signal", "out/runtime.json"]), {
+		verbose: false,
+		help: false,
+		runtimeSignalPath: "out/runtime.json",
+	});
+});
+
+test("parseArgs rejects missing runtime signal path", () => {
+	assert.throws(
+		() => parseArgs(["--runtime-signal"]),
+		/--runtime-signal requires a path/,
+	);
 });
 
 test("parseArgs rejects unknown flags", () => {
@@ -105,6 +136,64 @@ test("runPhases emits one ▶ label per phase and ✔ on success", () => {
 	assert.match(text, /✔ lint · a/);
 	assert.match(text, /✔ lint · b/);
 	assert.match(text, /verify · all phases passed/);
+});
+
+test("runPhases writes a quality runtime signal when requested", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-quality-runtime-"));
+	const outputPath = join(root, "runtime", "verify.json");
+	const out = makeSink();
+	const err = makeSink();
+	const { spawn } = makeSpawn([]);
+	const phases = [{ id: "lint:a", label: "lint · a" }];
+	const result = runPhases(phases, {
+		spawn,
+		stdout: out.sink,
+		stderr: err.sink,
+		runtimeSignalPath: outputPath,
+	});
+	assert.equal(result.ok, true);
+	const payload = JSON.parse(readFileSync(outputPath, "utf-8"));
+	assert.equal(payload.schemaVersion, "cautilus.quality_runtime_signal.v1");
+	assert.equal(payload.status, "passed");
+	assert.equal(payload.phaseCount, 1);
+	assert.deepEqual(payload.phases[0].command, [
+		"npm",
+		"run",
+		"--silent",
+		"lint:a",
+	]);
+});
+
+test("runPhases writes a failed quality runtime signal when a phase fails", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-quality-runtime-fail-"));
+	const outputPath = join(root, "runtime", "verify.json");
+	const out = makeSink();
+	const err = makeSink();
+	const { spawn } = makeSpawn([{ status: 0 }, { status: 7 }]);
+	const phases = [
+		{ id: "lint:a", label: "lint · a" },
+		{ id: "lint:b", label: "lint · b" },
+	];
+	const result = runPhases(phases, {
+		spawn,
+		stdout: out.sink,
+		stderr: err.sink,
+		runtimeSignalPath: outputPath,
+	});
+	assert.equal(result.ok, false);
+	const payload = JSON.parse(readFileSync(outputPath, "utf-8"));
+	assert.equal(payload.schemaVersion, "cautilus.quality_runtime_signal.v1");
+	assert.equal(payload.status, "failed");
+	assert.equal(payload.exitCode, 7);
+	assert.equal(payload.failedPhase, "lint:b");
+	assert.equal(payload.phaseCount, 2);
+	assert.deepEqual(
+		payload.phases.map((phase) => [phase.id, phase.status, phase.exitCode]),
+		[
+			["lint:a", "passed", 0],
+			["lint:b", "failed", 7],
+		],
+	);
 });
 
 test("runPhases short-circuits on first non-zero exit and names the phase", () => {
@@ -162,4 +251,29 @@ test("runPhases forwards verbose to resolveScript", () => {
 		stderr: err.sink,
 	});
 	assert.equal(calls[0].script, "base:spec");
+});
+
+test("runtimeSignalPayload summarizes failed phases", () => {
+	const payload = runtimeSignalPayload(
+		{
+			ok: false,
+			status: 7,
+			failedPhase: "lint:a",
+			phaseResults: [
+				{
+					id: "lint:a",
+					label: "lint · a",
+					script: "lint:a",
+					status: "failed",
+					exitCode: 7,
+					durationMs: 12,
+				},
+			],
+		},
+		100,
+	);
+	assert.equal(payload.status, "failed");
+	assert.equal(payload.exitCode, 7);
+	assert.equal(payload.totalDurationMs, 12);
+	assert.equal(payload.failedPhase, "lint:a");
 });

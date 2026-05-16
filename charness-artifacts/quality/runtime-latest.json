@@ -1,0 +1,251 @@
+{
+  "schemaVersion": "cautilus.quality_runtime_signal.v1",
+  "generatedAt": "2026-05-16T02:41:46.424Z",
+  "command": "npm run verify",
+  "status": "passed",
+  "exitCode": 0,
+  "totalDurationMs": 42808,
+  "phaseCount": 17,
+  "failedPhase": null,
+  "startedAtEpochMs": 1778899263615,
+  "phases": [
+    {
+      "id": "lint:eslint",
+      "label": "lint · eslint",
+      "script": "lint:eslint",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "lint:eslint"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 2761
+    },
+    {
+      "id": "lint:specs",
+      "label": "lint · specs",
+      "script": "lint:specs",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "lint:specs"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 6839
+    },
+    {
+      "id": "lint:scenario-normalizers",
+      "label": "lint · scenario normalizers",
+      "script": "lint:scenario-normalizers",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "lint:scenario-normalizers"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 215
+    },
+    {
+      "id": "lint:contracts",
+      "label": "lint · contracts",
+      "script": "lint:contracts",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "lint:contracts"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 254
+    },
+    {
+      "id": "claims:audit-evidence",
+      "label": "lint · claim evidence hashes",
+      "script": "claims:audit-evidence",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "claims:audit-evidence"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 3935
+    },
+    {
+      "id": "claims:evidence-state:check",
+      "label": "lint · claim evidence state",
+      "script": "claims:evidence-state:check",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "claims:evidence-state:check"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 442
+    },
+    {
+      "id": "claims:status-report:check",
+      "label": "lint · claim status report",
+      "script": "claims:status-report:check",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "claims:status-report:check"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 232
+    },
+    {
+      "id": "lint:links",
+      "label": "lint · links",
+      "script": "lint:links",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "lint:links"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 290
+    },
+    {
+      "id": "lint:skill-disclosure",
+      "label": "lint · skill disclosure",
+      "script": "lint:skill-disclosure",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "lint:skill-disclosure"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 219
+    },
+    {
+      "id": "lint:go",
+      "label": "lint · golangci-lint",
+      "script": "lint:go",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "lint:go"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 1047
+    },
+    {
+      "id": "vet:go",
+      "label": "lint · go vet",
+      "script": "vet:go",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "vet:go"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 455
+    },
+    {
+      "id": "security:govulncheck",
+      "label": "security · govulncheck",
+      "script": "security:govulncheck",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "security:govulncheck"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 1861
+    },
+    {
+      "id": "security:secrets",
+      "label": "security · secret scan",
+      "script": "security:secrets",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "security:secrets"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 4256
+    },
+    {
+      "id": "test:go:race",
+      "label": "test · go race",
+      "script": "test:go:race",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "test:go:race"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 611
+    },
+    {
+      "id": "test:node",
+      "label": "test · node",
+      "script": "test:node",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "test:node"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 8749
+    },
+    {
+      "id": "test:coverage",
+      "label": "test · coverage",
+      "script": "test:coverage",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "test:coverage"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 10442
+    },
+    {
+      "id": "coverage:floor:check",
+      "label": "test · coverage floor",
+      "script": "coverage:floor:check",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "coverage:floor:check"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 196
+    }
+  ]
+}

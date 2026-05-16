@@ -10,6 +10,5 @@ open the route that owns the contract, then use [Cross-Cutting Rules](../rules/i
 
 ```run:shell
 # Verify the policy has both sides of the map available.
-test -f docs/specs/contracts/index.spec.md
-test -f docs/specs/rules/index.spec.md
+node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/contracts/index.spec.md", "docs/specs/rules/index.spec.md"]) { if (!fs.existsSync(path)) throw new Error("missing " + path); }'
 ```

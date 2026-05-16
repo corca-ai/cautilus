@@ -12,9 +12,5 @@ Evidence State keeps current support, stale evidence, selected durable proof, an
 
 ```run:shell
 # Verify evidence pages are present.
-test -f docs/specs/evidence/evidence-map.spec.md
-test -f docs/specs/evidence/claim-evidence-state.md
-test -f docs/specs/evidence/gaps.spec.md
-test -f docs/specs/evidence/latest-selected-evidence.spec.md
-test -f .cautilus/claims/evidence-state.json
+node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/evidence/evidence-map.spec.md", "docs/specs/evidence/claim-evidence-state.md", "docs/specs/evidence/gaps.spec.md", "docs/specs/evidence/latest-selected-evidence.spec.md", ".cautilus/claims/evidence-state.json"]) { if (!fs.existsSync(path)) throw new Error("missing " + path); }'
 ```

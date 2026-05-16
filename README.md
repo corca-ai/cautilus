@@ -52,21 +52,7 @@ brew uninstall cautilus
 curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
 ```
 
-If you want to hand setup to an agent, paste this:
-
-```md
-Set up Cautilus in this repo.
-
-Repeat this loop:
-
-1. Run `cautilus doctor --repo-root . --next-action`.
-2. Do exactly what it says.
-3. After each completed step, run `cautilus doctor --repo-root .` to inspect the full state when needed.
-4. Stop only when `cautilus doctor --repo-root .` returns `ready: true`.
-5. Then read `first_bounded_run` from `cautilus doctor --repo-root .` and complete one bounded run.
-
-If the repo has only named adapters under `.agents/cautilus-adapters/`, follow the `next_action` output and keep using the doctor command it tells you to continue with.
-```
+If you want to hand setup to an agent, ask it to repeat `cautilus doctor --repo-root . --next-action`, do exactly what the packet says, and stop only after `cautilus doctor --repo-root .` reports readiness plus a `first_bounded_run`.
 
 Quick links:
 
@@ -112,74 +98,22 @@ It is the shortest currently stable external-adoption example of the product cla
 
 ## Scenarios
 
-Cautilus has three connected product layers.
-First, `cautilus discover claims` finds broad behavior-claim candidates from adapter-owned entry docs, README.md, AGENTS.md, CLAUDE.md, and linked repo-local Markdown, then the Cautilus Agent curates those candidates against the repo.
-Second, `cautilus evaluate fixture` / `evaluate observation` verify selected claims through explicit fixtures and summary packets.
-Third, improve and GEPA-style search improve prompts or behavior only after the proof surface is clear.
-During the current contract rewrite, external host repos should treat this full chain as opt-in and use the eval-only slice above for ordinary adoption.
+Cautilus has three connected product layers:
+claim discovery, bounded evaluation, and bounded improvement.
+External host repos should start with the eval-only slice above unless they are intentionally adopting claim discovery or improvement during the current contract rewrite.
 
-For the generic first pass, ask for a proof plan:
+Claim discovery turns adapter-owned entry docs and linked Markdown into `cautilus.claim_proof_plan.v1` candidates.
+It is proof planning, not a verdict that the repo is correct.
+The Cautilus Agent curates false positives, likely missing promises, scan boundaries, and review budgets before any eval plan is trusted.
 
-```bash
-cautilus discover claims --repo-root . --output /tmp/cautilus-claims.json
-cautilus discover claims status --input /tmp/cautilus-claims.json
-cautilus discover claims review-input --claims /tmp/cautilus-claims.json --output /tmp/cautilus-claim-review-input.json
-cautilus discover claims apply-review --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json
-cautilus discover claims validate --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-claim-validation.json
-cautilus evaluate claims plan --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json
-```
-
-The output is `cautilus.claim_proof_plan.v1`: source-ref-backed candidate claims with split proof, readiness, evidence, review, lifecycle, scan-boundary, heuristic, and duplicate-ref fields.
-It is not a verdict that the repo is correct.
-For agents, the Cautilus Agent turns that packet into a status workflow: scan scope first, existing-packet summary via `discover claims status`, false-positive and possible false-negative curation, then a separate review budget before `discover claims review-input` creates deterministic clusters for LLM-backed review.
-If discovery misses a declared promise inside the recorded scan boundary, treat that as a `discover claims` bug; if an important behavior only appears outside that boundary, treat it as narrative, catalog, or alignment work.
-When reviewed clusters come back, `discover claims apply-review` merges reviewed labels and evidence refs while enforcing that possible evidence cannot satisfy a claim.
-`discover claims validate` emits `cautilus.claim_validation_report.v1` and exits non-zero when packet shape or evidence refs are invalid.
-For reviewed `cautilus-eval` claims, `evaluate claims plan` emits `cautilus.claim_eval_plan.v1`: an intermediate plan for host-owned eval fixtures, not a writer for prompts, runners, fixtures, or policy.
-Next branches stay explicit: deterministic proof, Cautilus scenarios, alignment work, or a full report.
-
-Cautilus exposes two top-level evaluation surfaces (`dev` and `app`) with four presets between them.
-Use `dev` for AI-assisted development work such as repo contracts, tools, and skills.
-Use `app` for AI-powered product behavior such as chat, prompt, and service responses.
-The legacy first-class archetype boundary (chatbot / skill / workflow) is retired.
+Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.
 For the live reader-facing contract, read [docs/specs/user/evaluation.spec.md](./docs/specs/user/evaluation.spec.md).
-The previous implementation-surface spec is temporarily archived at [docs/specs/old/evaluation-surfaces.spec.md](./docs/specs/old/evaluation-surfaces.spec.md) while the new claim spec tree absorbs the old proof pages.
-The `chatbot`, `skill`, and `workflow` `discover scenarios normalize` helpers below still ship; they feed the proposal-input pipeline rather than the evaluation surface.
-
-### 1. Chatbot conversation regression
-
-Use when a chat or assistant experience gets worse at multi-turn behavior after a prompt change.
-Typical failures are forgetting prior turns, answering when it should clarify, or ignoring a stated preference.
-CLI: `cautilus discover scenarios normalize chatbot --input logs.json`
-For agent: "Run a chatbot regression with these logs and my new system prompt."
-You get reopenable `proposals.json` candidates that can be kept out of tuning as protected checks.
-When you want a read-only operator page before promoting or refreshing scenarios, use `cautilus discover scenarios review-conversations --input ...` and `cautilus discover scenarios render-conversation-review-html --input ...` against normalized chatbot threads plus proposal candidates.
-
-### 2. Skill / agent execution regression
-
-Use when you change a skill or agent and want to know whether it still triggers on the right prompts, executes cleanly, and keeps its static validation passing.
-CLI: `cautilus evaluate fixture --repo-root . --adapter-name <name>` with a `surface=dev, preset=skill` fixture
-For agent: "Run the checked-in case suite against the skill I just edited."
-You get `eval-cases.json`, `eval-observed.json`, and `eval-summary.json` instead of one trigger-only smoke result.
-The same preset can evaluate a multi-turn agent episode when the fixture provides `turns`.
-Cautilus's own first-scan, refresh-flow, review-prepare, reviewer-launch, and review-to-eval dogfood fixture results derive from audit packets.
-When the goal is only to prove command routing and packet evaluation, `cautilus evaluate fixture --runtime fixture` can run the same product path with adapter-owned fixture results instead of launching a nested model eval.
-
-### 3. Durable workflow recovery
-
-Use when a stateful automation — a CLI workflow, long-running agent session, or pipeline that persists state across invocations — keeps stalling on the same step.
-CLI: `cautilus discover scenarios normalize workflow --input runs.json`
-For agent: "Look at last week's automation runs and flag anything that stalled on the same step twice."
-You get reusable workflow-recovery proposals that keep the operator question attached to concrete evidence.
-
-`cautilus discover scenarios --json` prints the same catalog for agents that need to discover proposal-input normalization families programmatically.
-Each catalog entry now also includes `exampleInputCli`, so an operator or wrapper can inspect a minimal valid packet shape without opening a fixture path first.
-Sample inputs for these normalization families live in `examples/starters/` and the checked-in fixture directories under `fixtures/`.
+For the full command catalog, including claim review, scenario normalization, live targets, and improvement commands, read [docs/guides/cli.md](./docs/guides/cli.md).
+Sample normalization inputs live in [examples/starters/](./examples/starters/) and the checked-in fixture directories under [fixtures/](./fixtures/).
 
 ## Why Cautilus
 
-Prompt strings change.
-That is not the real contract.
+Prompt strings change, but behavior is the real contract.
 
 Concrete picture: you tweak a chatbot system prompt.
 One user's follow-up experience improves.
@@ -210,53 +144,16 @@ The longer-term direction is close to the workflow philosophy behind DSPy: promp
 
 ## Core Flow
 
-Two entry points share one `cautilus-adapter.yaml` in the host repo and return the same durable decision surface.
+Two entry points share one host-owned `cautilus-adapter.yaml` and return the same durable decision surface.
+Operators use the standalone CLI.
+Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.
 
-**Operator track — standalone CLI.**
-You install Cautilus, declare the evaluation surface, and run bounded evaluation from the command line.
+The minimum host-repo shape is an adapter, an installed Cautilus Agent, and run artifacts such as `eval-cases.json`, `eval-observed.json`, and `eval-summary.json`.
+The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.
+See [docs/specs/user/reviewable-artifacts.spec.md](./docs/specs/user/reviewable-artifacts.spec.md) for the rendered-artifact claim.
 
-```bash
-curl -fsSL \
-  https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh \
-  | sh
-cd /path/to/host-repo
-cautilus init
-cautilus init adapter
-cautilus evaluate fixture --fixture <fixture.json>
-```
-
-**Agent track — Claude / Codex plugin.**
-The `cautilus init` step also lands a Cautilus Agent at `.agents/skills/cautilus-agent/` with Claude and Codex plugin manifests, so an in-editor agent can drive the same contracts conversationally.
-"Run a chatbot regression with these logs" feeds into the exact same adapter.
-Use `cautilus doctor --scope agent-surface` when you want to verify only this Cautilus Agent surface.
-If the repo treats `AGENTS.md`, `CLAUDE.md`, or linked instruction files as part of the behavior contract, verify that separately with the `cautilus evaluate` seam (preset `dev / repo`) rather than assuming install-time discoverability already proves routing fidelity.
-For the product repo itself, this is also a first-class on-demand self-dogfood surface through `npm run dogfood:self`; see [docs/specs/user/evaluation.spec.md](./docs/specs/user/evaluation.spec.md) for the reader-facing evaluation claim and [docs/specs/old/evaluation-surfaces.spec.md](./docs/specs/old/evaluation-surfaces.spec.md) for the archived implementation-surface design.
-
-Minimal host-repo layout:
-
-```text
-.agents/cautilus-adapter.yaml
-.agents/skills/cautilus-agent/
-artifacts/<run>/eval-cases.json
-artifacts/<run>/eval-observed.json
-artifacts/<run>/eval-summary.json
-```
-
-What the operator gets back is not just a pass/fail bit:
-
-- a repo-local adapter that declares the evaluation surface explicitly
-- machine-readable eval, report, review, evidence, and improvement packets that agents can consume directly
-- static HTML views of the same artifacts so a human reviewer can judge them in a browser without an agent in the loop
-See [docs/specs/user/reviewable-artifacts.spec.md](./docs/specs/user/reviewable-artifacts.spec.md) for the rendered-artifact claim and [docs/specs/old/html-report.spec.md](./docs/specs/old/html-report.spec.md) for the archived proof page.
-- bounded compare and review surfaces reopenable from files
-- a path from observed runtime evidence back to new scenario proposals and bounded revisions
-
-Verification gates:
-
-- `cautilus doctor --next-action` — one current onboarding step plus the exact continuation loop
-- `cautilus doctor --scope agent-surface` — Cautilus Agent and local agent-surface discoverability gate
-- `cautilus doctor` — repo wiring gate for a runnable evaluation path
-- `npm run consumer:onboard:smoke` — shortest end-to-end adoption proof (run from this repo against a fresh consumer)
+Use `cautilus doctor --next-action` for the next onboarding step, `cautilus doctor --scope agent-surface` for agent-surface discoverability, and `cautilus doctor` for repo wiring readiness.
+From this repo, `npm run consumer:onboard:smoke` is the shortest end-to-end adoption proof against a fresh consumer.
 
 ## Read More
 

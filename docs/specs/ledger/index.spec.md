@@ -30,13 +30,5 @@ Spec entry: [Cautilus](../index.spec.md).
 
 ```run:shell
 # Verify that the ledger's reading views exist.
-test -f docs/specs/user/index.spec.md
-test -f docs/specs/contracts/index.spec.md
-test -f docs/specs/rules/index.spec.md
-test -f docs/specs/evidence/index.spec.md
-test -f docs/specs/ledger/readiness.spec.md
-test -f docs/specs/ledger/claim-discovery.spec.md
-test -f docs/specs/ledger/evaluation.spec.md
-test -f docs/specs/ledger/improvement.spec.md
-test -f docs/specs/rules/host-owned-execution.spec.md
+node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/user/index.spec.md", "docs/specs/contracts/index.spec.md", "docs/specs/rules/index.spec.md", "docs/specs/evidence/index.spec.md", "docs/specs/ledger/readiness.spec.md", "docs/specs/ledger/claim-discovery.spec.md", "docs/specs/ledger/evaluation.spec.md", "docs/specs/ledger/improvement.spec.md", "docs/specs/rules/host-owned-execution.spec.md"]) { if (!fs.existsSync(path)) throw new Error("missing " + path); }'
 ```

@@ -36,14 +36,14 @@ The current HTML surface should let a reviewer answer questions like:
 ```run:shell
 # Render report, review, scenario review, proposals, and evidence packets into standalone HTML pages.
 tmpdir=$(mktemp -d)
-./bin/cautilus evaluate report build --input ./fixtures/reports/report-input.json --output "$tmpdir/report.json" >/dev/null
-./bin/cautilus evaluate review prepare-input --repo-root . --report-file "$tmpdir/report.json" --output "$tmpdir/review.json" >/dev/null
-./bin/cautilus discover scenarios review-conversations --input ./fixtures/scenario-conversation-review/input.json --output "$tmpdir/conversation-review.json" >/dev/null
-./bin/cautilus discover scenarios propose --input ./fixtures/scenario-proposals/standalone-input.json --output "$tmpdir/proposals.json" >/dev/null
-./bin/cautilus evaluate report render-html --input "$tmpdir/report.json" --output "$tmpdir/report.html" >/dev/null
-./bin/cautilus evaluate review render-html --input "$tmpdir/review.json" --output "$tmpdir/review.html" >/dev/null
-./bin/cautilus scenario render-conversation-review-html --input "$tmpdir/conversation-review.json" --output "$tmpdir/conversation-review.html" >/dev/null
-./bin/cautilus scenario render-proposals-html --input "$tmpdir/proposals.json" --output "$tmpdir/proposals.html" >/dev/null
+./bin/cautilus evaluate report build --input ./fixtures/reports/report-input.json --output "$tmpdir/html-report-source-report.json" >/dev/null
+./bin/cautilus evaluate review prepare-input --repo-root . --report-file "$tmpdir/html-report-source-report.json" --output "$tmpdir/html-report-source-review.json" >/dev/null
+./bin/cautilus discover scenarios review-conversations --input ./fixtures/scenario-conversation-review/input.json --output "$tmpdir/html-report-source-conversation-review.json" >/dev/null
+./bin/cautilus discover scenarios propose --input ./fixtures/scenario-proposals/standalone-input.json --output "$tmpdir/html-report-source-proposals.json" >/dev/null
+./bin/cautilus evaluate report render-html --input "$tmpdir/html-report-source-report.json" --output "$tmpdir/report.html" >/dev/null
+./bin/cautilus evaluate review render-html --input "$tmpdir/html-report-source-review.json" --output "$tmpdir/review.html" >/dev/null
+./bin/cautilus scenario render-conversation-review-html --input "$tmpdir/html-report-source-conversation-review.json" --output "$tmpdir/conversation-review.html" >/dev/null
+./bin/cautilus scenario render-proposals-html --input "$tmpdir/html-report-source-proposals.json" --output "$tmpdir/proposals.html" >/dev/null
 ./bin/cautilus evaluate evidence render-html --input ./fixtures/evidence/example-bundle.json --output "$tmpdir/evidence.html" >/dev/null
 grep -q '<title>Cautilus Report — defer</title>' "$tmpdir/report.html"
 grep -q '<title>Cautilus Review Packet — defer</title>' "$tmpdir/review.html"

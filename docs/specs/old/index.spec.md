@@ -10,13 +10,8 @@ That standing gate is affordable because the public specs only exercise cheap fi
 ## See It Work
 
 ```run:shell
-# Turn a checked-in proposal input into a browser-readable scenario page.
-tmpdir=$(mktemp -d)
-./bin/cautilus discover scenarios propose --input ./fixtures/scenario-proposals/standalone-input.json --output "$tmpdir/proposals.json" >/dev/null
-./bin/cautilus scenario render-proposals-html --input "$tmpdir/proposals.json" --output "$tmpdir/proposals.html" >/dev/null
-grep -q '"title": "Refresh review-after-retro scenario from recent activity"' "$tmpdir/proposals.json"
-grep -q '<title>Cautilus Scenario Proposals — 1</title>' "$tmpdir/proposals.html"
-grep -q 'Refresh review-after-retro scenario from recent activity' "$tmpdir/proposals.html"
+# Keep this archive index wired to the old public spec pages without repeating their product proofs.
+node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/old/current-product.spec.md", "docs/specs/old/standalone-surface.spec.md", "docs/specs/old/html-report.spec.md", "docs/specs/old/git-precondition.spec.md"]) { if (!fs.existsSync(path)) throw new Error("missing " + path); }'
 ```
 
 The report should feel legible to a reviewer who is not reading Go or Node code.

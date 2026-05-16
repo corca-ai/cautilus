@@ -42,7 +42,7 @@ tmpdir=$(mktemp -d)
 ./bin/cautilus discover claims --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
 ./bin/cautilus discover claims status --input "$tmpdir/claims.json" --sample-claims 2 --output "$tmpdir/claim-status.json"
 ./bin/cautilus discover claims review-input --claims "$tmpdir/claims.json" --action-bucket agent-plan-cautilus-eval --max-clusters 2 --output "$tmpdir/claim-review-input.json"
-cat >"$tmpdir/claim-review-result.json" <<'JSON'
+cat >"$tmpdir/claim-review-result.json" <<'CLAIM_REVIEW_JSON'
 {
   "schemaVersion": "cautilus.claim_review_result.v1",
   "reviewRun": {"reviewer": "spec-fixture"},
@@ -68,7 +68,7 @@ cat >"$tmpdir/claim-review-result.json" <<'JSON'
     }
   ]
 }
-JSON
+CLAIM_REVIEW_JSON
 ./bin/cautilus discover claims apply-review --claims "$tmpdir/claims.json" --review-result "$tmpdir/claim-review-result.json" --output "$tmpdir/reviewed-claims.json"
 ./bin/cautilus discover claims validate --claims "$tmpdir/reviewed-claims.json" --output "$tmpdir/claim-validation.json"
 ./bin/cautilus evaluate claims plan --claims "$tmpdir/reviewed-claims.json" --output "$tmpdir/claim-eval-plan.json"

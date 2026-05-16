@@ -20,7 +20,5 @@ The human name comes first; compact keys are included for packets and checks.
 
 ```run:shell
 # Verify evidence map can reach the ledger and gap view.
-test -f docs/specs/ledger/promise-ledger.spec.md
-test -f docs/specs/evidence/claim-evidence-state.md
-test -f docs/specs/evidence/gaps.spec.md
+node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/ledger/promise-ledger.spec.md", "docs/specs/evidence/claim-evidence-state.md", "docs/specs/evidence/gaps.spec.md"]) { if (!fs.existsSync(path)) throw new Error("missing " + path); }'
 ```

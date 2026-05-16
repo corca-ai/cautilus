@@ -46,7 +46,7 @@ The current durable-packet evidence proves that core command surfaces emit schem
 
 ```run:shell
 # Show the durable packet surfaces proven by the latest selected evidence bundle.
-jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-durable-packets-2026-05-03.json
+jq '[.commandEvidence[] | {command, schemaVersion: .observed.schemaVersion}]' .cautilus/claims/evidence-durable-packets-2026-05-03.json
 ```
 
 > check:cautilus-json-file
