@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 237
+          "unknown": 236
         },
         "byReviewStatus": {
-          "heuristic": 237
+          "heuristic": 236
         },
-        "count": 237,
+        "count": 236,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 45
+          "satisfied": 46
         },
         "byReviewStatus": {
-          "agent-reviewed": 45
+          "agent-reviewed": 46
         },
-        "count": 45,
+        "count": 46,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 18,
-          "unknown": 75
+          "unknown": 74
         },
         "byReviewStatus": {
           "agent-reviewed": 27,
-          "heuristic": 66
+          "heuristic": 65
         },
-        "count": 93,
+        "count": 92,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-69",
           "claim-readme-md-152",
-          "claim-docs-contracts-adapter-contract-md-219",
           "claim-docs-contracts-adapter-contract-md-432",
-          "claim-docs-contracts-adapter-contract-md-478"
+          "claim-docs-contracts-adapter-contract-md-478",
+          "claim-docs-contracts-review-packet-md-3"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 45,
+      "satisfied": 46,
       "stale": 26,
-      "unknown": 288
+      "unknown": 287
     },
     "byLifecycle": {
       "new": 359
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 121,
-      "heuristic": 237,
+      "agent-reviewed": 122,
+      "heuristic": 236,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 45,
+    "satisfiedClaimCount": 46,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -627,6 +627,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata."
+      },
+      {
+        "claimId": "claim-docs-contracts-adapter-contract-md-219",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dd0592d2293769c198c92e23fff8fc7252572fb4aaa6d960c3df5e4138a03812",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-adapter-claim-discovery-hints-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-adapter-contract-md-219"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The binary uses these hints before portable path defaults to label review queues, while the Cautilus Agent or a human reviewer may still correct semantic edge cases."
       },
       {
         "claimId": "claim-docs-contracts-adapter-contract-md-278",
@@ -1338,7 +1357,7 @@
       }
     ]
   },
-  "gitCommit": "b0d3a3088b4c8e81197084bc64681a20871a53fd",
+  "gitCommit": "20bcde4eeafa6fc3e1f88c808c6c1c0a27ed5f93",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1350,10 +1369,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "b0d3a3088b4c8e81197084bc64681a20871a53fd",
+    "currentGitCommit": "20bcde4eeafa6fc3e1f88c808c6c1c0a27ed5f93",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "b0d3a3088b4c8e81197084bc64681a20871a53fd",
+    "packetGitCommit": "20bcde4eeafa6fc3e1f88c808c6c1c0a27ed5f93",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -1377,7 +1396,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 212,
+    "heuristicClaimsReadyForReview": 211,
     "needsAlignment": 37,
     "needsScenario": 8
   },

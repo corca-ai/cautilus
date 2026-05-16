@@ -896,8 +896,19 @@
       "claimFingerprint": "sha256:5fea6f3ba8b3a4762dbf58e441f6a38ecb9c3c907910117743bd31d19123eaba",
       "claimId": "claim-docs-contracts-adapter-contract-md-219",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:dd0592d2293769c198c92e23fff8fc7252572fb4aaa6d960c3df5e4138a03812",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-adapter-claim-discovery-hints-2026-05-16.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-219"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a focused runtime test showing adapter claim_discovery entries override portable defaults, audience_hints label claim audiences, and semantic_groups label review queues.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -905,9 +916,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep adapter audience and semantic group tests aligned when changing claim_discovery adapter handling.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The binary uses these hints before portable path defaults to label review queues, while the Cautilus Agent or a human reviewer may still correct semantic edge cases.",
@@ -916,8 +927,9 @@
         }
       ],
       "summary": "The binary uses these hints before portable path defaults to label review queues, while the Cautilus Agent or a human reviewer may still correct semantic edge cases.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The binary's use of adapter audience hints and semantic group hints is deterministic claim-discovery behavior."
     },
     {
       "claimAudience": "developer",
@@ -11776,9 +11788,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 45,
+      "satisfied": 46,
       "stale": 26,
-      "unknown": 288
+      "unknown": 287
     },
     "byLifecycle": {
       "new": 359
@@ -11789,8 +11801,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 121,
-      "heuristic": 237,
+      "agent-reviewed": 122,
+      "heuristic": 236,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -11980,7 +11992,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "b0d3a3088b4c8e81197084bc64681a20871a53fd",
+  "gitCommit": "20bcde4eeafa6fc3e1f88c808c6c1c0a27ed5f93",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -12047,6 +12059,7 @@
       ".cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json",
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-adapter-claim-discovery-hints-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json"
     ],
@@ -12103,9 +12116,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 40,
+    "appliedResultCount": 41,
     "skippedResultCount": 51,
-    "keptUpdateCount": 121,
+    "keptUpdateCount": 122,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

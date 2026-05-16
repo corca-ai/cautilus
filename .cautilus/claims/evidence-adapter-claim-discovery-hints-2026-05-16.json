@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-adapter-claim-discovery-hints-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-contracts-adapter-contract-md-219"
+  ],
+  "repoCommit": "20bcde4eeafa6fc3e1f88c808c6c1c0a27ed5f93",
+  "summary": "Deterministic proof that adapter claim_discovery audience and semantic group hints are used before portable defaults when labeling claim review queues.",
+  "evidenceScope": {
+    "targetSurface": "adapter claim discovery hints",
+    "claimBoundary": "Only the adapter-contract claim that the binary uses audience_hints and semantic_groups before portable path defaults is marked satisfied.",
+    "notClaimed": [
+      "The Cautilus Agent or human reviewer corrects every semantic edge case.",
+      "Every possible path default is exhaustively covered.",
+      "Adapter hints prove claim evidence status by themselves."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "adapter entries override README defaults before discovery",
+          "adapter audience_hints label docs/start.md as user and docs/next.md as developer",
+          "adapter semantic_groups label the adapter-owned claim as Adapter setup"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/adapter-contract.md",
+      "kind": "adapter-contract-source",
+      "contentHash": "sha256:121aeef8723db6f4a0e5222874263c43b8071d49c653e2dd106a5587e66518c3"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-runtime-test",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused runtime test builds an adapter with claim_discovery entries, audience_hints, and semantic_groups, then verifies discovery uses those adapter hints for claim audience and semantic group labels before portable defaults."
+  }
+}
