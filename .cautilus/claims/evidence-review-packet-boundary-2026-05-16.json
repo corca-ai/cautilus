@@ -4,7 +4,7 @@
   "createdForClaimIds": [
     "claim-docs-contracts-review-packet-md-3"
   ],
-  "repoCommit": "d1c75f43e3e636cfac466c231b4cd145f7269506",
+  "repoCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
   "summary": "This bundle records deterministic proof that Cautilus review packet builders keep review prompts, schemas, compare questions, report artifacts, and the report packet on one durable review boundary before variant execution.",
   "evidenceScope": {
     "targetSurface": "review packet boundary",
@@ -55,7 +55,7 @@
     {
       "path": "internal/runtime/review_test.go",
       "kind": "review-packet-runtime-test",
-      "contentHash": "sha256:0db126038d410f53770931a4730fb507d4053d5fab9ea26e25ca7feaf68236ea"
+      "contentHash": "sha256:30bff99ff5349aeb51c98722323b38c2747b3a48513fbf14c1579833fbef4c79"
     },
     {
       "path": "scripts/agent-runtime/build-review-packet.mjs",

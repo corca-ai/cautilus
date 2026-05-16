@@ -690,7 +690,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:936418443ad4512210cdb0d9cc7cb7fe10e5b7e9c3fbdd8b63cca264ed17cc28",
+            "contentHash": "sha256:a893a8d786ce032228dc1577f64f17d4abfe44dd4b40bd2ff5dcdfb6c52f25e0",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
@@ -1414,7 +1414,7 @@
       }
     ]
   },
-  "gitCommit": "d49ce54328a96127db43000f44dc8374ce965b8c",
+  "gitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1426,10 +1426,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "d49ce54328a96127db43000f44dc8374ce965b8c",
+    "currentGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "d49ce54328a96127db43000f44dc8374ce965b8c",
+    "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
