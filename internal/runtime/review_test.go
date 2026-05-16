@@ -53,10 +53,10 @@ func TestBuildReviewPacketCollectsDurableReviewBoundary(t *testing.T) {
 	if got := packet["report"].(map[string]any)["intent"]; got != report["intent"] {
 		t.Fatalf("unexpected report intent: %#v", got)
 	}
-	assertFileRecord(t, packet["defaultPromptFile"], "prompts/review.md", true)
-	assertFileRecord(t, packet["defaultSchemaFile"], "schemas/review.schema.json", true)
-	assertFileRecord(t, packet["artifactFiles"].([]any)[0], "artifacts/compare-report.json", true)
-	assertFileRecord(t, packet["reportArtifacts"].([]any)[0], "reports/report.json", true)
+	assertExistingFileRecord(t, packet["defaultPromptFile"], "prompts/review.md")
+	assertExistingFileRecord(t, packet["defaultSchemaFile"], "schemas/review.schema.json")
+	assertExistingFileRecord(t, packet["artifactFiles"].([]any)[0], "artifacts/compare-report.json")
+	assertExistingFileRecord(t, packet["reportArtifacts"].([]any)[0], "reports/report.json")
 	if got := packet["comparisonQuestions"].([]string)[0]; got != "Which scenario-level deltas matter?" {
 		t.Fatalf("unexpected comparison question: %#v", got)
 	}
@@ -72,7 +72,7 @@ func writeRuntimeTestFile(t *testing.T, path string, payload string) {
 	}
 }
 
-func assertFileRecord(t *testing.T, value any, relativePath string, exists bool) {
+func assertExistingFileRecord(t *testing.T, value any, relativePath string) {
 	t.Helper()
 	record, ok := value.(map[string]any)
 	if !ok {
@@ -81,7 +81,7 @@ func assertFileRecord(t *testing.T, value any, relativePath string, exists bool)
 	if record["relativePath"] != relativePath {
 		t.Fatalf("unexpected relativePath: %#v", record["relativePath"])
 	}
-	if record["exists"] != exists {
+	if record["exists"] != true {
 		t.Fatalf("unexpected exists flag: %#v", record["exists"])
 	}
 }
