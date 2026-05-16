@@ -48,8 +48,8 @@ The first slice consumes one normalized packet with:
     - optional `provider`
     - optional `model`
     - optional `session_mode`
-    - `ephemeral`
-    - `persistent`
+      - `ephemeral`
+      - `persistent`
     - optional `uncached_input_tokens`
     - optional `cache_creation_input_tokens`
     - optional `cache_read_input_tokens`

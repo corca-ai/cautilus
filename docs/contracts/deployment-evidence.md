@@ -109,10 +109,10 @@ The output should include:
     - successful samples
     - success rate
     - status counts
-- p50 / p90 duration
-- p50 / p90 cache and token breakdown when present
-- p50 / p90 tokens
-- p50 / p90 cost
+    - p50 / p90 duration
+    - p50 / p90 cache and token breakdown when present
+    - p50 / p90 tokens
+    - p50 / p90 cost
 
 ## Current Limits
 
