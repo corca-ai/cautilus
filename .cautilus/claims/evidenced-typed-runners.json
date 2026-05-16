@@ -1288,8 +1288,19 @@
       "claimFingerprint": "sha256:7a256a68b3b5b117e42c73484d7f2bdaf782ad72ab06a420d4a44f65e120af4f",
       "claimId": "claim-docs-contracts-review-packet-md-3",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:936418443ad4512210cdb0d9cc7cb7fe10e5b7e9c3fbdd8b63cca264ed17cc28",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-review-packet-md-3"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a focused Go runtime test plus the existing agent-runtime packet builder test: both builders emit `cautilus.review_packet.v1` and preserve default prompt/schema references, artifact/report file records, comparison questions, human review prompts, and the report payload on the same packet.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -1297,9 +1308,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic review-prompt render, path, or packet-output proof for this claim.",
+      "nextAction": "Keep this claim covered when changing review packet assembly, active-run review packet defaults, adapter prompt/schema references, artifact path collection, or report artifact collection.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` should keep review prompts, schemas, compare questions, and report artifacts on one durable boundary before executor variants run.",
@@ -1308,8 +1319,9 @@
         }
       ],
       "summary": "`Cautilus` should keep review prompts, schemas, compare questions, and report artifacts on one durable boundary before executor variants run.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names review-prompt routing, rendering, or shared-path contract behavior that should be protected by deterministic command or golden-output checks."
+      "whyThisLayer": "The claim is deterministic packet-boundary behavior: the review packet either carries prompt/schema references, compare questions, report artifacts, and the report under review together before executor variants run, or it does not."
     },
     {
       "claimAudience": "user",
@@ -11788,9 +11800,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 46,
+      "satisfied": 47,
       "stale": 26,
-      "unknown": 287
+      "unknown": 286
     },
     "byLifecycle": {
       "new": 359
@@ -11801,8 +11813,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 122,
-      "heuristic": 236,
+      "agent-reviewed": 123,
+      "heuristic": 235,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -11992,7 +12004,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "edc4fe57d9f0f095a29992de0426984951e93ce4",
+  "gitCommit": "d1c75f43e3e636cfac466c231b4cd145f7269506",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -12010,13 +12022,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-77",
-        "clusterId": "cluster-readme-bounded-eval-loop-2026-05-16"
+        "claimId": "claim-docs-contracts-review-packet-md-3",
+        "clusterId": "cluster-review-packet-boundary"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12061,7 +12073,8 @@
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-adapter-claim-discovery-hints-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
-      ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json"
+      ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12116,9 +12129,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 41,
+    "appliedResultCount": 42,
     "skippedResultCount": 51,
-    "keptUpdateCount": 122,
+    "keptUpdateCount": 123,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

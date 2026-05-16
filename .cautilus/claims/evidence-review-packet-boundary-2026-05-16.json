@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-review-packet-boundary-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-contracts-review-packet-md-3"
+  ],
+  "repoCommit": "d1c75f43e3e636cfac466c231b4cd145f7269506",
+  "summary": "This bundle records deterministic proof that Cautilus review packet builders keep review prompts, schemas, compare questions, report artifacts, and the report packet on one durable review boundary before variant execution.",
+  "evidenceScope": {
+    "targetSurface": "review packet boundary",
+    "claimBoundary": "Only the docs/contracts/review-packet.md claim that `cautilus.review_packet.v1` binds review prompts, schema references, compare questions, report artifacts, and the report under review is marked satisfied.",
+    "notClaimed": [
+      "A review variant or external judge provider was invoked",
+      "The review prompt wording is behaviorally sufficient",
+      "Every adapter compare artifact pattern is proven",
+      "Human reviewers always interpret the packet correctly"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run TestBuildReviewPacketCollectsDurableReviewBoundary -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "notableAssertions": [
+          "BuildReviewPacket emits schemaVersion=cautilus.review_packet.v1",
+          "the packet keeps the report file and embedded report payload",
+          "defaultPromptFile and defaultSchemaFile are collected with existence metadata",
+          "artifactFiles and reportArtifacts are collected from adapter paths",
+          "comparisonQuestions and humanReviewPrompts are preserved on the same packet"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/build-review-packet.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "package": "scripts/agent-runtime",
+        "notableAssertions": [
+          "the agent-runtime packet builder emits cautilus.review_packet.v1",
+          "adapter artifact paths and report paths resolve to existing file records",
+          "comparison questions and human review prompts are copied from the adapter",
+          "default prompt and schema references are retained",
+          "active-run defaults write review-packet.json before later review execution"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/review.go",
+      "kind": "review-packet-runtime-builder",
+      "contentHash": "sha256:185d84941cf58d344295d509a34cffcde0fd7890d5486280aba0752a89675c06"
+    },
+    {
+      "path": "internal/runtime/review_test.go",
+      "kind": "review-packet-runtime-test",
+      "contentHash": "sha256:0db126038d410f53770931a4730fb507d4053d5fab9ea26e25ca7feaf68236ea"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-packet.mjs",
+      "kind": "review-packet-agent-runtime-builder",
+      "contentHash": "sha256:ec43241df9350eed0da8d2b459481e609b5f6d0b7b6a1d8126b84750815d696b"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-packet.test.mjs",
+      "kind": "review-packet-agent-runtime-test",
+      "contentHash": "sha256:7324449e88570ce888668a71dffb903146f6f5c17a6003d9b699315e206b852a"
+    },
+    {
+      "path": "docs/contracts/review-packet.md",
+      "kind": "review-packet-contract",
+      "contentHash": "sha256:7661381c4dd755a5452d404bd0ab28b6900c992514e298bb0edb024d841cc223"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused Go runtime test and existing agent-runtime test both exercise the packet boundary that binds prompt/schema references, report artifacts, comparison questions, human review prompts, and the report under review into `cautilus.review_packet.v1` before review variants execute."
+  }
+}

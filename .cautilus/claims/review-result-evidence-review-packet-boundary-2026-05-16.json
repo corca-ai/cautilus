@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for deterministic review packet boundary behavior; do not treat this as review variant execution, external judge proof, or semantic approval of prompt wording."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-review-packet-boundary",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-review-packet-md-3",
+          "claimFingerprint": "sha256:7a256a68b3b5b117e42c73484d7f2bdaf782ad72ab06a420d4a44f65e120af4f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim is deterministic packet-boundary behavior: the review packet either carries prompt/schema references, compare questions, report artifacts, and the report under review together before executor variants run, or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by a focused Go runtime test plus the existing agent-runtime packet builder test: both builders emit `cautilus.review_packet.v1` and preserve default prompt/schema references, artifact/report file records, comparison questions, human review prompts, and the report payload on the same packet.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:936418443ad4512210cdb0d9cc7cb7fe10e5b7e9c3fbdd8b63cca264ed17cc28",
+              "supportsClaimIds": [
+                "claim-docs-contracts-review-packet-md-3"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing review packet assembly, active-run review packet defaults, adapter prompt/schema references, artifact path collection, or report artifact collection.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
