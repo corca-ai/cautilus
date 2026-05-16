@@ -151,6 +151,7 @@ test("render claim evidence state from claim packet and status snapshot", () => 
 		"dev/skill": 1,
 	});
 	assert.match(markdown, /Do not edit it by hand\./);
+	assert.match(markdown, /Snapshot inspected commit: abc123/);
 	assert.match(markdown, /open Cautilus eval claims/);
 	assert.match(markdown, /ready for proof/);
 	assert.match(markdown, /does not mean a scenario fixture already exists/);

@@ -13,6 +13,7 @@
   `.agents/setup-adapter.yaml`가 mature repo surface를 가리키고, setup inspection은 `missing_surfaces=[]`로 통과합니다.
 - Claim state의 source of truth는 `.cautilus/claims/status-summary.json`와 [Claim Evidence State](../specs/evidence/claim-evidence-state.md)입니다.
   이 생성물의 `gitState`는 raw HEAD equality가 아니라 claim-source freshness를 표현하므로, 정확한 commit/hash/count는 파일을 직접 확인하고 `npm run claims:evidence-state:check`를 먼저 실행하세요.
+  생성물만 갱신한 refresh commit은 checked-in projection의 snapshot commit보다 HEAD가 앞설 수 있으며, claim-source freshness check가 통과하면 그 상태는 stale로 보지 않습니다.
 - 최신 Evidence State projection은 agent가 자율로 처리할 수 있는 deterministic proof, Cautilus eval planning, scenario design bucket과 human 판단이 필요한 bucket을 분리해서 보여줍니다.
   `human-align-surfaces`, `human-confirm-or-decompose`, `split-or-defer` bucket은 사용자 또는 maintainer 판단 전에는 proof로 밀지 마세요.
 - 최신 quality artifact에서 public spec 중복 command example 축소와 repo-local runtime signal capture는 처리되었습니다.

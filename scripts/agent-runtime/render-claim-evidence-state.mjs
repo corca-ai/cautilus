@@ -163,7 +163,7 @@ function normalizeMarkdownForGeneratedArtifactDrift(value) {
 	return String(value)
 		.replace(/^- Status hash: sha256:[a-f0-9]+$/m, "- Status hash: <generated-artifact-commit-drift>")
 		.replace(/^- Git state: [^;]+; stale=no$/m, "- Git state: <generated-artifact-commit-drift>; stale=no")
-		.replace(/^- Snapshot current commit: [0-9a-f]+$/m, "- Snapshot current commit: <generated-artifact-commit-drift>");
+		.replace(/^- Snapshot inspected commit: [0-9a-f]+$/m, "- Snapshot inspected commit: <generated-artifact-commit-drift>");
 }
 
 function generatedArtifactCommitDriftOnly(checkedStatus, refreshedStatus) {
@@ -313,7 +313,7 @@ export function renderMarkdown(projection) {
 		`- Status snapshot: ${projection.sourceOfTruth.statusSnapshot}`,
 		`- Status hash: ${projection.sourceOfTruth.statusHash}`,
 		`- Git state: ${projection.gitState.comparisonStatus ?? "unknown"}; stale=${projection.gitState.isStale === true ? "yes" : "no"}`,
-		`- Snapshot current commit: ${projection.gitState.currentGitCommit ?? "-"}`,
+		`- Snapshot inspected commit: ${projection.gitState.currentGitCommit ?? "-"}`,
 		`- Packet commit: ${projection.gitState.packetGitCommit ?? "-"}`,
 		`- Changed claim sources: ${projection.gitState.changedSourceCount ?? 0}`,
 		`- Claims packet role: ${projection.sourceOfTruth.sourceRoles.claimsPacket}`,
