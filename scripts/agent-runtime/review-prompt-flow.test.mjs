@@ -43,9 +43,11 @@ function createReviewPacketFixture() {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-review-prompt-"));
 	const schemaPath = join(process.cwd(), "fixtures", "review", "prompt-input.schema.json");
 	mkdirSync(join(root, "fixtures"), { recursive: true });
+	mkdirSync(join(root, "artifacts"), { recursive: true });
 	mkdirSync(join(root, "reports"), { recursive: true });
 	writeFileSync(join(root, "fixtures", "review.prompt.md"), "Prefer concrete operator-facing evidence.\n", "utf-8");
 	writeFileSync(join(root, "fixtures", "review.schema.json"), '{"type":"object"}\n', "utf-8");
+	writeFileSync(join(root, "artifacts", "compare-report.json"), '{"verdict":"regressed"}\n', "utf-8");
 	const reviewPacketPath = join(root, "review-packet.json");
 	writeFileSync(
 		reviewPacketPath,
@@ -152,9 +154,9 @@ function createReviewPacketFixture() {
 				},
 				artifactFiles: [
 					{
-						relativePath: "README.md",
-						absolutePath: join(root, "README.md"),
-						exists: false,
+						relativePath: "artifacts/compare-report.json",
+						absolutePath: join(root, "artifacts", "compare-report.json"),
+						exists: true,
 					},
 				],
 				reportArtifacts: [
@@ -235,6 +237,8 @@ test("buildReviewPromptInput emits the explicit meta-prompt contract", () => {
 		assert.equal(packet.modeSummaries[0].reasonCodes[1], "provider_rate_limit_contamination");
 		assert.equal(packet.currentReportEvidence.reportFile, join(root, "reports", "latest.json"));
 		assert.equal(packet.currentReportEvidence.commandObservations[0].command, "npm run verify");
+		assert.equal(packet.artifactFiles[0].relativePath, "artifacts/compare-report.json");
+		assert.equal(packet.humanReviewPrompts[0].id, "real-user");
 		assert.equal(packet.metaPrompt.instructions.length, 4);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -255,6 +259,10 @@ test("renderReviewPrompt turns review prompt inputs into a portable meta-prompt"
 		assert.match(prompt, /behavior surface: operator_behavior/);
 		assert.match(prompt, /Which scenario-level deltas actually matter to a real operator/);
 		assert.match(prompt, /Held-out operator guidance regressed\./);
+		assert.match(prompt, /## Human Review Lenses/);
+		assert.match(prompt, /Where would a real user still judge the candidate worse despite benchmark wins/);
+		assert.match(prompt, /## Artifact Files/);
+		assert.match(prompt, /artifacts\/compare-report\.json/);
 		assert.match(prompt, /provider_rate_limit_contamination/);
 		assert.match(prompt, /provider rate limits/);
 		assert.match(prompt, /telemetry: durationMs=1234, uncached_input_tokens=120, cache_creation_input_tokens=40, cache_read_input_tokens=60, cached_input_tokens=20, total_tokens=240, cost_usd=0\.024/);
