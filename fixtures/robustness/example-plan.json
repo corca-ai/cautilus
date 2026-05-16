@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "cautilus.robustness_plan.v1",
+  "generatedAt": "2026-05-17T07:32:00.000Z",
+  "requestRef": {
+    "path": "fixtures/robustness/example-request.json",
+    "schemaVersion": "cautilus.robustness_request.v1"
+  },
+  "subjectRef": {
+    "kind": "skill",
+    "ref": "skills/cautilus-agent",
+    "summary": "Cautilus Agent routing guidance for bounded evaluation work"
+  },
+  "intentProfile": {
+    "schemaVersion": "cautilus.behavior_intent.v1",
+    "intentId": "intent-agent-routing-recovery",
+    "summary": "The agent should recover from odd user turns without losing the active evaluation task.",
+    "behaviorSurface": "operator_workflow_recovery"
+  },
+  "caseSource": {
+    "kind": "declared_case",
+    "summary": "Maintainer-authored robustness cases derived from a Slack design note and existing Cautilus Agent fixtures."
+  },
+  "cases": [
+    {
+      "caseId": "interruption-keeps-eval-context",
+      "mutationKind": "stimulus",
+      "stimulusKind": "action_sequence",
+      "expectedRelation": "recover",
+      "baselineRef": {
+        "kind": "fixture",
+        "path": "fixtures/eval/dev/skill/cautilus-review-to-eval-flow.fixture.json"
+      },
+      "sourceEvidenceRefs": [
+        {
+          "kind": "slack-thread",
+          "path": "charness-artifacts/gather/2026-05-17-slack-mutation-testing-thread.md"
+        }
+      ],
+      "evaluationSurface": "dev/skill",
+      "artifactRefs": [
+        {
+          "kind": "planned-fixture",
+          "path": "fixtures/eval/dev/skill/<future-interruption-case>.fixture.json"
+        }
+      ],
+      "limitations": [
+        "The plan names the perturbation but does not execute a runner in this slice."
+      ]
+    },
+    {
+      "caseId": "removed-recovery-guardrail-is-detected",
+      "mutationKind": "implementation",
+      "implementationKind": "guardrail",
+      "expectedRelation": "surface_failure",
+      "baselineRef": {
+        "kind": "git-ref",
+        "ref": "origin/main"
+      },
+      "variantRef": {
+        "kind": "prompt-variant",
+        "summary": "Temporary variant removes the explicit recovery-next-step instruction."
+      },
+      "sourceEvidenceRefs": [
+        {
+          "kind": "contract",
+          "path": "docs/contracts/skill-testing.md"
+        }
+      ],
+      "evaluationSurface": "dev/skill",
+      "limitations": [
+        "The implementation mutation is an evaluated perturbation, not an improve-search candidate."
+      ]
+    }
+  ],
+  "limitations": [
+    "Automatic mutation generation and shrinking are deferred."
+  ]
+}

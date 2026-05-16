@@ -44,6 +44,15 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
 - the canonical search packet records both the resolved search configuration and the source of each resolved knob so operators can tell whether the final budget, packet-level merge toggle, and selection policy came from product defaults, adapter defaults, or explicit overrides
 - the search output stays reopenable as a durable artifact and can feed the existing bounded `improve propose` seam
 
+## Robustness Evidence
+
+`cautilus.robustness_report.v1` is evaluation evidence, not an improve-search mutation source.
+It may focus reflective prompt search by naming violated expected relations, brittle dimensions, reason codes, and artifact provenance.
+It does not grant `improve search` authority to generate user-action fuzz cases, execute behavior mutants, train on protected evidence, or patch consumer-owned prompts.
+
+Until a future schema bridge adds an explicit robustness-report reference to `cautilus.improve_search_inputs.v1`, robustness findings should enter search through explicit report evidence, review findings, or documented provenance.
+Do not imply a `cautilus improve search prepare-input --robustness-report` flag before the runtime contract exists.
+
 ## Fixed Decisions
 
 - `Cautilus` keeps the existing `improve prepare-input`, `improve propose`, and `improve build-artifact` seams.
@@ -63,6 +72,8 @@ This slice defines a first `GEPA`-inspired search contract for `Cautilus`:
   - final full-gate checkpoints reject it
 - Declared selection policy and optional merge knobs are preserved in the canonical packet, and the current runner consumes the bounded merge toggle plus three-parent policy.
 - Prompt mutation is reflective prompt rewriting based on explicit evidence, not random token- or substring-level crossover.
+- Prompt mutation in this contract is candidate generation for improvement.
+  It is distinct from robustness-evaluation implementation mutations, which are behavior-mutant cases evaluated under `cautilus.robustness_report.v1`.
 - Merge synthesis stays opt-in in the resolved search packet.
   When `mergeEnabled` is true, the current runner may synthesize one bounded merge candidate per generation from complementary frontier parents.
 - The search output recommends a best next candidate and preserves lineage, but does not auto-apply prompt edits.

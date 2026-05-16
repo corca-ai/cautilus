@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.robustness_report.v1",
+  "title": "Cautilus Robustness Report",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "planRef",
+    "subjectRef",
+    "intentProfile",
+    "summary",
+    "caseResults",
+    "recommendation",
+    "nextActions"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.robustness_report.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "planRef": {
+      "type": "object"
+    },
+    "subjectRef": {
+      "type": "object"
+    },
+    "intentProfile": {
+      "type": "object"
+    },
+    "summary": {
+      "type": "object"
+    },
+    "caseResults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "caseId",
+          "mutationKind",
+          "expectedRelation",
+          "observedRelation",
+          "relationStatus"
+        ],
+        "properties": {
+          "caseId": {
+            "type": "string"
+          },
+          "mutationKind": {
+            "type": "string",
+            "enum": [
+              "stimulus",
+              "implementation"
+            ]
+          },
+          "expectedRelation": {
+            "type": "string",
+            "enum": [
+              "preserve_behavior",
+              "surface_failure",
+              "recover",
+              "clarify",
+              "refuse"
+            ]
+          },
+          "observedRelation": {
+            "type": "string",
+            "enum": [
+              "preserved",
+              "changed",
+              "surfaced_failure",
+              "recovered",
+              "clarified",
+              "refused",
+              "blocked",
+              "unavailable",
+              "inconclusive"
+            ]
+          },
+          "relationStatus": {
+            "type": "string",
+            "enum": [
+              "satisfied",
+              "violated",
+              "blocked",
+              "invalid",
+              "inconclusive"
+            ]
+          },
+          "brittleDimensions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reasonCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sourceEvidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "artifactRefs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "recommendation": {
+      "type": "string",
+      "enum": [
+        "accept-now",
+        "defer",
+        "reject"
+      ]
+    },
+    "nextActions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "summary"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "improve",
+              "add-fixture",
+              "accept-risk",
+              "investigate",
+              "setup-runner"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "targetRefs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reasonCodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

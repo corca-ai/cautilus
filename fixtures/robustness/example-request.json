@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "cautilus.robustness_request.v1",
+  "generatedAt": "2026-05-17T07:30:00.000Z",
+  "subjectRef": {
+    "kind": "skill",
+    "ref": "skills/cautilus-agent",
+    "summary": "Cautilus Agent routing guidance for bounded evaluation work"
+  },
+  "intentProfile": {
+    "schemaVersion": "cautilus.behavior_intent.v1",
+    "intentId": "intent-agent-routing-recovery",
+    "summary": "The agent should recover from odd user turns without losing the active evaluation task.",
+    "behaviorSurface": "operator_workflow_recovery",
+    "successDimensions": [
+      {
+        "id": "workflow_recovery",
+        "summary": "Recover the workflow cleanly when the known blocker reappears."
+      },
+      {
+        "id": "recovery_next_step",
+        "summary": "Make the next safe recovery step explicit without operator guesswork."
+      }
+    ],
+    "guardrailDimensions": [
+      {
+        "id": "operator_state_truthfulness",
+        "summary": "Do not imply success, configuration, or completion state that has not happened."
+      }
+    ]
+  },
+  "baselineRef": {
+    "kind": "git-ref",
+    "ref": "origin/main"
+  },
+  "riskFocus": [
+    "interruption",
+    "context_loss",
+    "guardrail_weakening"
+  ],
+  "sourceEvidenceRefs": [
+    {
+      "kind": "slack-thread",
+      "path": "charness-artifacts/gather/2026-05-17-slack-mutation-testing-thread.md",
+      "summary": "Source discussion framed user behavior robustness as mutation or interaction fuzzing."
+    }
+  ],
+  "requestedMutationKinds": [
+    "stimulus",
+    "implementation"
+  ],
+  "limitations": [
+    "The request does not ask Cautilus to generate random action sequences."
+  ]
+}

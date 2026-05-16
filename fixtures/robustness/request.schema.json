@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.robustness_request.v1",
+  "title": "Cautilus Robustness Request",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "subjectRef",
+    "riskFocus",
+    "sourceEvidenceRefs",
+    "requestedMutationKinds"
+  ],
+  "anyOf": [
+    {
+      "type": "object",
+      "required": [
+        "intentProfile"
+      ]
+    },
+    {
+      "type": "object",
+      "required": [
+        "intent"
+      ]
+    }
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.robustness_request.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "subjectRef": {
+      "type": "object",
+      "required": [
+        "kind",
+        "ref"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "prompt",
+            "skill",
+            "app",
+            "workflow",
+            "adapter-target"
+          ]
+        },
+        "ref": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "intentProfile": {
+      "type": "object"
+    },
+    "intent": {
+      "type": "string"
+    },
+    "baselineRef": {
+      "type": "object"
+    },
+    "variantRef": {
+      "type": "object"
+    },
+    "riskFocus": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sourceEvidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "requestedMutationKinds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "stimulus",
+          "implementation"
+        ]
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

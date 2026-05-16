@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "cautilus.robustness_report.v1",
+  "generatedAt": "2026-05-17T07:40:00.000Z",
+  "planRef": {
+    "path": "fixtures/robustness/example-plan.json",
+    "schemaVersion": "cautilus.robustness_plan.v1"
+  },
+  "subjectRef": {
+    "kind": "skill",
+    "ref": "skills/cautilus-agent",
+    "summary": "Cautilus Agent routing guidance for bounded evaluation work"
+  },
+  "intentProfile": {
+    "schemaVersion": "cautilus.behavior_intent.v1",
+    "intentId": "intent-agent-routing-recovery",
+    "summary": "The agent should recover from odd user turns without losing the active evaluation task.",
+    "behaviorSurface": "operator_workflow_recovery"
+  },
+  "summary": {
+    "totalCases": 2,
+    "satisfied": 1,
+    "violated": 1,
+    "blocked": 0,
+    "invalid": 0,
+    "inconclusive": 0
+  },
+  "caseResults": [
+    {
+      "caseId": "interruption-keeps-eval-context",
+      "mutationKind": "stimulus",
+      "expectedRelation": "recover",
+      "observedRelation": "recovered",
+      "relationStatus": "satisfied",
+      "sourceEvidenceRefs": [
+        {
+          "kind": "eval-summary",
+          "path": "/tmp/cautilus-robustness/interruption/eval-summary.json"
+        }
+      ],
+      "artifactRefs": [
+        {
+          "kind": "eval-observed",
+          "path": "/tmp/cautilus-robustness/interruption/eval-observed.json"
+        }
+      ]
+    },
+    {
+      "caseId": "removed-recovery-guardrail-is-detected",
+      "mutationKind": "implementation",
+      "expectedRelation": "surface_failure",
+      "observedRelation": "preserved",
+      "relationStatus": "violated",
+      "brittleDimensions": [
+        "workflow_recovery",
+        "recovery_next_step"
+      ],
+      "reasonCodes": [
+        "harmful_mutation_not_detected"
+      ],
+      "sourceEvidenceRefs": [
+        {
+          "kind": "eval-summary",
+          "path": "/tmp/cautilus-robustness/guardrail-variant/eval-summary.json"
+        }
+      ],
+      "limitations": [
+        "The result shows a behavior-proof gap, not an automatically generated prompt fix."
+      ]
+    }
+  ],
+  "recommendation": "defer",
+  "nextActions": [
+    {
+      "kind": "add-fixture",
+      "summary": "Add a checked-in dev/skill fixture that catches recovery guardrail weakening.",
+      "targetRefs": [
+        {
+          "kind": "fixture-family",
+          "path": "fixtures/eval/dev/skill"
+        }
+      ]
+    },
+    {
+      "kind": "improve",
+      "summary": "Use the brittle recovery dimensions as evidence for a later bounded prompt or skill improvement search."
+    }
+  ],
+  "limitations": [
+    "The report is illustrative and does not claim automatic interaction fuzzing support."
+  ],
+  "reasonCodes": [
+    "robustness_gap_detected"
+  ]
+}

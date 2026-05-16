@@ -153,6 +153,21 @@ func TestFixtureExamplesValidateAgainstPublishedSchemas(t *testing.T) {
 			example:  filepath.Join("..", "..", "fixtures", "runner-readiness", "example-live-run-assessment.json"),
 			schemaAt: filepath.Join("..", "..", "fixtures", "runner-readiness", "assessment.schema.json"),
 		},
+		{
+			name:     "robustness_request",
+			example:  filepath.Join("..", "..", "fixtures", "robustness", "example-request.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "robustness", "request.schema.json"),
+		},
+		{
+			name:     "robustness_plan",
+			example:  filepath.Join("..", "..", "fixtures", "robustness", "example-plan.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "robustness", "plan.schema.json"),
+		},
+		{
+			name:     "robustness_report",
+			example:  filepath.Join("..", "..", "fixtures", "robustness", "example-report.json"),
+			schemaAt: filepath.Join("..", "..", "fixtures", "robustness", "report.schema.json"),
+		},
 	}
 
 	for _, tc := range cases {
@@ -203,6 +218,33 @@ func TestRunnerAssessmentSchemaAllowsReadinessBlockedProductProofPacket(t *testi
 	}
 }
 
+func TestRobustnessRequestSchemaRequiresIntentOrIntentProfile(t *testing.T) {
+	schemaBytes, err := os.ReadFile(filepath.Join("..", "..", "fixtures", "robustness", "request.schema.json"))
+	if err != nil {
+		t.Fatalf("read robustness request schema: %v", err)
+	}
+	var schema map[string]any
+	if err := json.Unmarshal(schemaBytes, &schema); err != nil {
+		t.Fatalf("parse robustness request schema: %v", err)
+	}
+	exampleBytes, err := os.ReadFile(filepath.Join("..", "..", "fixtures", "robustness", "example-request.json"))
+	if err != nil {
+		t.Fatalf("read robustness request example: %v", err)
+	}
+	var value map[string]any
+	if err := json.Unmarshal(exampleBytes, &value); err != nil {
+		t.Fatalf("parse robustness request example: %v", err)
+	}
+	delete(value, "intentProfile")
+	if err := validateAgainstJSONSchema(schema, value, "root"); err == nil {
+		t.Fatalf("schema should reject robustness requests that omit both intent and intentProfile")
+	}
+	value["intent"] = "The agent should recover from odd user turns without losing the active evaluation task."
+	if err := validateAgainstJSONSchema(schema, value, "root"); err != nil {
+		t.Fatalf("schema should allow an intent-only robustness request fallback: %v", err)
+	}
+}
+
 // validateAgainstJSONSchema is a minimal JSON Schema checker that mirrors the
 // Node-side helper in scripts/agent-runtime/scenario-proposal-schemas.test.mjs.
 // It covers the subset used by the checked-in fixture schemas: object with
@@ -223,6 +265,22 @@ func validateAgainstJSONSchema(schema map[string]any, value any, path string) er
 				if _, present := obj[key]; !present {
 					return fmt.Errorf("%s.%s must exist", path, key)
 				}
+			}
+		}
+		if anyOf, ok := schema["anyOf"].([]any); ok {
+			matched := false
+			for _, rawCandidate := range anyOf {
+				candidate, ok := rawCandidate.(map[string]any)
+				if !ok {
+					continue
+				}
+				if err := validateAgainstJSONSchema(candidate, value, path); err == nil {
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				return fmt.Errorf("%s must match at least one anyOf schema", path)
 			}
 		}
 		if props, ok := schema["properties"].(map[string]any); ok {

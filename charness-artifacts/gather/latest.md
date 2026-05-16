@@ -76,7 +76,7 @@ CAPS 고찰 감사합니다! 이거 잘 발전시키면 좋을 것 같아요.
 아 ABC 는 이겁니다!
 
 📎 **Attachments**
-- ![image.png](<attachments/image.png>)
+- ![image.png](2026-05-17-slack-mutation-testing-thread.attachments/image.png)
 
 ---
 
@@ -129,4 +129,3 @@ $ceal:exit
 **Ceal** · 2026-05-16 07:38
 
 이 thread는 종료되었습니다. 다시 열릴 때까지 더 이상 응답하지 않습니다.
-

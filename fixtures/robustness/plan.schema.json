@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cautilus.robustness_plan.v1",
+  "title": "Cautilus Robustness Plan",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "requestRef",
+    "subjectRef",
+    "intentProfile",
+    "caseSource",
+    "cases"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "cautilus.robustness_plan.v1"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "requestRef": {
+      "type": "object"
+    },
+    "subjectRef": {
+      "type": "object"
+    },
+    "intentProfile": {
+      "type": "object"
+    },
+    "caseSource": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "declared_case",
+            "adapter_selected",
+            "host_generator",
+            "manual_exploration",
+            "historical_trace"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "caseId",
+          "mutationKind",
+          "expectedRelation",
+          "evaluationSurface",
+          "sourceEvidenceRefs"
+        ],
+        "properties": {
+          "caseId": {
+            "type": "string"
+          },
+          "mutationKind": {
+            "type": "string",
+            "enum": [
+              "stimulus",
+              "implementation"
+            ]
+          },
+          "stimulusKind": {
+            "type": "string",
+            "enum": [
+              "user_input",
+              "action_sequence",
+              "context",
+              "invalid_value"
+            ]
+          },
+          "implementationKind": {
+            "type": "string",
+            "enum": [
+              "prompt",
+              "skill",
+              "instruction",
+              "guardrail"
+            ]
+          },
+          "expectedRelation": {
+            "type": "string",
+            "enum": [
+              "preserve_behavior",
+              "surface_failure",
+              "recover",
+              "clarify",
+              "refuse"
+            ]
+          },
+          "baselineRef": {
+            "type": "object"
+          },
+          "variantRef": {
+            "type": "object"
+          },
+          "sourceEvidenceRefs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "evaluationSurface": {
+            "type": "string",
+            "enum": [
+              "dev/repo",
+              "dev/skill",
+              "app/chat",
+              "app/prompt"
+            ]
+          },
+          "artifactRefs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

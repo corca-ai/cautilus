@@ -15,6 +15,9 @@ It is inspired by DSPy's `GEPA`, adapted to Cautilus's file-based, consumer-owne
 - Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates.
 - The selected candidate bridges back into the bounded `cautilus improve propose` and `cautilus improve build-artifact` flow.
 
+Robustness reports add an external eval lens for brittle behavior dimensions.
+They can focus reflection when they are carried as explicit report evidence, review findings, or provenance, but they do not make improve search own fuzzing, behavior-mutant execution, or automatic prompt patching.
+
 ## Commands
 
 Run the GEPA-style bounded prompt search seam above an improve packet:
