@@ -40,10 +40,15 @@ This release also includes the checked-in claim, guide, critique, debug, and rel
 - `npm run release:prepare -- 0.16.0`: green after refreshing the saved claim packet and generated claim projections.
 - `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/scripts/validate_debug_artifact.py --repo-root .`: green.
 - `npm run critique:surface-packet:check`: green for the registered `release-packaging` rule families.
-- Fresh checkout probes declared in `.agents/release-adapter.yaml`: claim evidence-state check and claim status-report check passed after claim refresh; generated drift check is expected to pass once this release-prep state is committed.
+- Fresh checkout probes declared in `.agents/release-adapter.yaml`: claim evidence-state check, claim status-report check, and generated drift check are green at the release-prep commit.
+- `npm run generated:drift:check`: green.
+- `npm run hooks:check`: green.
+- `npm run verify`: green.
+- `npm run test:on-demand`: green.
 - `./bin/cautilus --version`: `0.16.0`.
+- `npm run release:publish -- --version 0.16.0 --dry-run --json`: green at `fb7426a`.
 
-The remaining pre-publish gates for this release-prep commit are `npm run hooks:check`, `npm run verify`, `npm run test:on-demand`, `npm run generated:drift:check`, release publish dry-run, and public release verification after tag workflow completion.
+The remaining release-close gates are public workflow completion, public release verification, and install smoke after `v0.16.0` is tagged.
 
 ## Public Release
 
