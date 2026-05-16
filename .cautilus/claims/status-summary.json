@@ -1376,7 +1376,7 @@
       }
     ]
   },
-  "gitCommit": "d1c75f43e3e636cfac466c231b4cd145f7269506",
+  "gitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1388,10 +1388,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "d1c75f43e3e636cfac466c231b4cd145f7269506",
+    "currentGitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "d1c75f43e3e636cfac466c231b4cd145f7269506",
+    "packetGitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
