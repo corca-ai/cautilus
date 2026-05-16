@@ -19,6 +19,7 @@
 - 이번 proof-backlog batch는 `claim-agents-md-142`, `claim-readme-md-69`, `claim-readme-md-77`, `claim-docs-contracts-adapter-contract-md-219`, `claim-docs-contracts-review-packet-md-3`, `claim-docs-guides-cli-md-32`, `claim-docs-guides-cli-md-112`를 satisfied로 올렸습니다.
 - 이어서 `claim-docs-guides-cli-md-114`, `claim-docs-guides-cli-md-121`, `claim-docs-guides-cli-md-122`, `claim-docs-guides-cli-md-127`, `claim-docs-guides-cli-md-180`, `claim-docs-guides-cli-md-273`, `claim-docs-guides-cli-md-277`, `claim-readme-md-152`, `claim-docs-contracts-adapter-contract-md-432`도 current claim-id-bound evidence로 satisfied/deterministic 상태에 올렸습니다.
   최신 projection count는 satisfied 59, stale 20, unknown 280이며 deterministic proof backlog는 80입니다.
+  최신 관련 커밋은 `220a93d Satisfy README reviewable artifacts claim`, `6ad1068 Protect review prompt compare artifact path`, `885846e Satisfy adapter review prompt compare path claim`입니다.
 - 최신 quality artifact에서 public spec 중복 command example 축소와 repo-local runtime signal capture는 처리되었습니다.
   `inventory_public_spec_quality.py`는 `duplicate_command_examples=[]`를 보고하고, `charness-artifacts/quality/runtime-latest.json`는 `cautilus.quality_runtime_signal.v1` verify timing packet입니다.
 - README entrypoint 정리도 완료되었습니다.
@@ -35,7 +36,8 @@
 2. 남은 passive 후보는 지금 바로 밀지 마세요.
    Cautilus Agent core extraction은 다음 skill prose 증가 전의 예방 작업이고, local pytest temp footprint는 현재 repo behavior가 아닌 local machine state입니다.
 3. claim proof backlog를 건드릴 때는 agent bucket만 선택하고, human bucket은 claim을 쪼개거나 질문으로 남기세요.
-   다음 deterministic 후보는 claim-status-report의 `agent-add-deterministic-proof` 첫 항목부터 고르세요.
+   다음 deterministic 후보는 `claim-docs-contracts-adapter-contract-md-478`입니다.
+   `docs/contracts/adapter-contract.md`의 Human Review Prompt Shape 문맥에서 "Each review prompt should point at human-visible failure:"를 증거화할 수 있는지 먼저 확인하세요.
 
 ## Discuss
 
