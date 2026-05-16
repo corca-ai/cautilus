@@ -121,6 +121,7 @@ The first summary packet should include:
   - `execution_quality`
 - preserved per-evaluation runtime telemetry when the host runner exposes it explicitly
 - preserved cache-token breakdown when a runtime exposes cache creation, cache read, cached input, or uncached input token counts explicitly
+- `cache_creation_input_tokens` and `cache_read_input_tokens` preserve split cache-write and cache-read telemetry, while `cached_input_tokens` preserves provider-specific aggregate cached-input telemetry
 - preserved cost-truth provenance when cost is derived from a versioned
   pricing catalog instead of emitted directly by the runtime
 - derived product-owned `intentProfile`

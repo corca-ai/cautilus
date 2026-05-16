@@ -297,30 +297,32 @@ normalized packet instead of dropping it on the floor.
 
 - Claude backend:
   the structured `--output-format json` envelope now feeds
-  `telemetry.provider`, `telemetry.model`, `telemetry.prompt_tokens`,
-  `telemetry.completion_tokens`, `telemetry.total_tokens`, and
-  `telemetry.cost_usd`, and mirrors the budget-relevant fields into
-  `metrics.total_tokens` / `metrics.cost_usd`
+  `telemetry.provider`, `telemetry.model`, uncached input tokens, cache
+  creation input tokens, cache read input tokens, prompt tokens, output tokens,
+  completion tokens, total tokens, and cost, and mirrors the budget-relevant
+  fields into `metrics.total_tokens` / `metrics.cost_usd`
 - Codex backend:
   the normalized packet now preserves `telemetry.provider`,
-  `telemetry.model`, `telemetry.prompt_tokens`,
-  `telemetry.completion_tokens`, and `telemetry.total_tokens` from the
-  machine-readable `codex exec --json` event stream
+  `telemetry.model`, uncached input tokens, cached input tokens, cache read
+  input tokens, prompt tokens, output tokens, reasoning output tokens,
+  completion tokens, and total tokens from the machine-readable
+  `codex exec --json` event stream
   while still refusing to scrape human-oriented stderr output into product
   truth
 - Codex cost:
-  `cost_usd` remains absent until the runtime exposes a stable machine field
-  for it or cautilus grows a separately versioned derived-pricing seam
+  supported Codex models now carry `cost_usd`, `cost_truth`,
+  `pricing_source`, and `pricing_version` from the checked-in derived-pricing
+  seam
 
 That means the product-owned self-dogfood summary can now answer:
 
 - which evaluation case passed or failed
 - which runtime model was used
 - Claude time / token / cost per evaluation
-- Codex time / token per evaluation
+- Codex time / token / derived cost per evaluation
 
-It still cannot honestly answer Codex cost questions without a more explicit
-machine-readable surface from the Codex runtime.
+It still cannot honestly answer Codex cost questions for models that are not
+covered by the checked-in pricing catalog.
 
 ## Where this document should be surfaced
 

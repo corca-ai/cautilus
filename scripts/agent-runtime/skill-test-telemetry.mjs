@@ -156,6 +156,8 @@ function codexTotalsFromUsage(usage) {
 	return {
 		input,
 		output,
+		cachedInput,
+		cacheReadInput,
 		cached,
 		reasoning,
 	};
@@ -178,7 +180,8 @@ function codexTelemetryFromTotals(totals, provider, model, sessionMode) {
 		model,
 		session_mode: normalizeSessionMode(sessionMode),
 		uncached_input_tokens: totals.input > 0 ? totals.input : null,
-		cached_input_tokens: totals.cached > 0 ? totals.cached : null,
+		cached_input_tokens: totals.cachedInput,
+		cache_read_input_tokens: totals.cacheReadInput,
 		prompt_tokens: promptTokens > 0 ? promptTokens : null,
 		output_tokens: totals.output > 0 ? totals.output : null,
 		reasoning_output_tokens: totals.reasoning > 0 ? totals.reasoning : null,
@@ -197,6 +200,10 @@ function codexTokenTotalsState() {
 	};
 }
 
+function sumOptionalInteger(left, right) {
+	return left === null && right === null ? null : (left ?? 0) + (right ?? 0);
+}
+
 function addCodexUsageTotals(current, next) {
 	if (!next) {
 		return current;
@@ -207,6 +214,8 @@ function addCodexUsageTotals(current, next) {
 	return {
 		input: current.input + next.input,
 		output: current.output + next.output,
+		cachedInput: sumOptionalInteger(current.cachedInput, next.cachedInput),
+		cacheReadInput: sumOptionalInteger(current.cacheReadInput, next.cacheReadInput),
 		cached: current.cached + next.cached,
 		reasoning: current.reasoning + next.reasoning,
 	};

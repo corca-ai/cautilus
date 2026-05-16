@@ -475,6 +475,49 @@ test("extractCodexTelemetry preserves provider, model, and token totals from jso
 	});
 });
 
+test("extractCodexTelemetry preserves Codex cache read tokens under their emitted field name", () => {
+	const telemetry = extractCodexTelemetry([
+		{
+			type: "session_meta",
+			payload: {
+				source: "exec",
+				model_provider: "openai",
+				model_info: { slug: "gpt-5.4-mini" },
+			},
+		},
+		{
+			type: "event_msg",
+			payload: {
+				type: "token_count",
+				info: {
+					total_token_usage: {
+						input_tokens: 300,
+						output_tokens: 90,
+						cache_read_input_tokens: 500,
+						reasoning_output_tokens: 10,
+					},
+				},
+			},
+		},
+	]);
+	assert.deepEqual(telemetry, {
+		provider: "openai",
+		model: "gpt-5.4-mini",
+		session_mode: "ephemeral",
+		uncached_input_tokens: 300,
+		cache_read_input_tokens: 500,
+		prompt_tokens: 800,
+		output_tokens: 90,
+		reasoning_output_tokens: 10,
+		completion_tokens: 100,
+		total_tokens: 900,
+		cost_usd: 0.0007125,
+		cost_truth: "derived_pricing",
+		pricing_source: "openai_api_pricing",
+		pricing_version: "2026-04-19",
+	});
+});
+
 test("normalizeObservedResult preserves backend telemetry and numeric metrics", () => {
 	const observed = normalizeObservedResult(
 		{

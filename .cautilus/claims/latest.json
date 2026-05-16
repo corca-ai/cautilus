@@ -1,14 +1,14 @@
 {
-  "candidateCount": 365,
+  "candidateCount": 366,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 1,
-    "matchedClaimCount": 364,
+    "evidenceSupportIdRewriteCount": 5,
+    "matchedClaimCount": 365,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
-    "staleEvidenceClaimCount": 26,
+    "staleEvidenceClaimCount": 31,
     "strategy": "claimFingerprint",
-    "unsupportedEvidenceRefCount": 26
+    "unsupportedEvidenceRefCount": 31
   },
   "claimCandidates": [
     {
@@ -6563,7 +6563,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:84e20fceee7b13f03574081e031d1ebd73a26ab909f01a9ef7f75d864fe70b82",
-      "claimId": "claim-docs-contracts-reporting-md-108",
+      "claimId": "claim-docs-contracts-reporting-md-114",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -6572,12 +6572,12 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-reporting-md-108"
+            "claim-docs-contracts-reporting-md-114"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by explicit cost telemetry tests: report cost is carried from mode telemetry and not inferred from command observations or logs.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-current-deterministic-proof-batch-2026-05-03.json does not list current claimId claim-docs-contracts-reporting-md-114 in createdForClaimIds.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6585,13 +6585,13 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep telemetry tests payload-driven when adding provider fields.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload.",
-          "line": 108,
+          "line": 114,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6602,8 +6602,37 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:61f5bb9761b01d3606155273d9a26ede87cf888cf4badbcd861acb9b1f8d864e",
+      "claimId": "claim-docs-contracts-reporting-md-116",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/guides/evaluation-process.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Cache-token breakdown follows the same rule: preserve it when a runtime or wrapper emits explicit machine-readable fields, and do not infer cache behavior from prose.",
+          "line": 116,
+          "path": "docs/contracts/reporting.md"
+        }
+      ],
+      "summary": "Cache-token breakdown follows the same rule: preserve it when a runtime or wrapper emits explicit machine-readable fields, and do not infer cache behavior from prose.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6a5975f5be8ff5f08f378525aa1963dc684e6d1d50395f4326e2788cdb47521f",
-      "claimId": "claim-docs-contracts-reporting-md-111",
+      "claimId": "claim-docs-contracts-reporting-md-120",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
@@ -6613,13 +6642,13 @@
           "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-196",
-            "claim-docs-contracts-reporting-md-111",
+            "claim-docs-contracts-reporting-md-120",
             "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by report-packet tests proving provider/model/runtime identity are absent when only command text/log artifact pointers mention them and present when explicit mode telemetry supplies them.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-remaining-deterministic-proof-2026-05-04.json does not list current claimId claim-docs-contracts-reporting-md-120 in createdForClaimIds.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -6628,14 +6657,14 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep runtime identity provenance tests in place when changing report packet telemetry aggregation.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.",
-          "line": 111,
+          "line": 120,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6647,7 +6676,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c40280e0f0251c4fe6717805add31109eb82cf41e62faba97ebfb5d41cec0fde",
-      "claimId": "claim-docs-contracts-reporting-md-112",
+      "claimId": "claim-docs-contracts-reporting-md-121",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -6666,7 +6695,7 @@
       "sourceRefs": [
         {
           "excerpt": "Runtime drift codes should be recorded as runtime context rather than primary behavior-outcome reason codes unless a pinned-runtime policy blocks the run.",
-          "line": 112,
+          "line": 121,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6678,7 +6707,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3d9b56890a284b8382d97381cd68e2da53890933235ecf3a0508c44af42cd3a8",
-      "claimId": "claim-docs-contracts-reporting-md-120",
+      "claimId": "claim-docs-contracts-reporting-md-129",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -6687,12 +6716,12 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-final-deterministic-proof-debt-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-reporting-md-120"
+            "claim-docs-contracts-reporting-md-129"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by review-variant CLI smoke tests: blocked variants preserve machine-readable reason codes and concrete reasons, and unavailable executors become blocked unavailable_executor packets.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-final-deterministic-proof-debt-2026-05-03.json does not list current claimId claim-docs-contracts-reporting-md-129 in createdForClaimIds.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6700,13 +6729,13 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep blocked review variant tests strict about reasonCodes and concrete reason fields.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure",
-          "line": 120,
+          "line": 129,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6718,7 +6747,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
-      "claimId": "claim-docs-contracts-reporting-md-124",
+      "claimId": "claim-docs-contracts-reporting-md-133",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -6727,12 +6756,12 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-review-summary-telemetry-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-reporting-md-124"
+            "claim-docs-contracts-reporting-md-133"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by a review variants CLI smoke test that writes two variant result packets with explicit telemetry and confirms the top-level review summary aggregates counts, token totals, cost, provider, and model.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-review-summary-telemetry-2026-05-03.json does not list current claimId claim-docs-contracts-reporting-md-133 in createdForClaimIds.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6740,13 +6769,13 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep review-summary telemetry aggregation tests current when changing review variant result normalization or summary packet shape.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately.",
-          "line": 124,
+          "line": 133,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6758,7 +6787,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f837e4e0934106ad104956fd9d7e47ae5f9fa801b51a2ef9d30f008ea7e2158f",
-      "claimId": "claim-docs-contracts-reporting-md-129",
+      "claimId": "claim-docs-contracts-reporting-md-138",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -6767,12 +6796,12 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-reporting-md-129"
+            "claim-docs-contracts-reporting-md-138"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by the deterministic-ready batch evidence bundle after subagent review and focused repair of missing tests.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-deterministic-ready-batch-2026-05-03.json does not list current claimId claim-docs-contracts-reporting-md-138 in createdForClaimIds.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6780,13 +6809,13 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep this claim covered by the focused deterministic-ready batch checks when changing the corresponding binary, packet, adapter, runner, report, or skill-disclosure surface.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet.",
-          "line": 129,
+          "line": 138,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6798,7 +6827,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4c026c323498f2e3bdb8f8e9ae07bd3be82d64e0f8167b9899e5e0fc717f5db3",
-      "claimId": "claim-docs-contracts-reporting-md-150",
+      "claimId": "claim-docs-contracts-reporting-md-159",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -6815,7 +6844,7 @@
       "sourceRefs": [
         {
           "excerpt": "Human-review failures must be reported even when the benchmark score improves.",
-          "line": 150,
+          "line": 159,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -8125,7 +8154,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:011098fa8f0fb74f38fea92d734fd20899794fa138b4bd51484b07c3dd9a2f5b",
-      "claimId": "claim-docs-contracts-scenario-history-md-175",
+      "claimId": "claim-docs-contracts-scenario-history-md-181",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8144,7 +8173,7 @@
       "sourceRefs": [
         {
           "excerpt": "Compare runs often need a frozen baseline side so only the candidate reruns.",
-          "line": 175,
+          "line": 181,
           "path": "docs/contracts/scenario-history.md"
         }
       ],
@@ -8156,7 +8185,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:343a5d623c6429fb07ad8c6010324ec777d2c214046990a27723be95b35285e3",
-      "claimId": "claim-docs-contracts-scenario-history-md-289",
+      "claimId": "claim-docs-contracts-scenario-history-md-295",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8175,7 +8204,7 @@
       "sourceRefs": [
         {
           "excerpt": "Scenario-history is archetype-neutral and stays that way unless a skill-specific graduation policy is introduced.",
-          "line": 289,
+          "line": 295,
           "path": "docs/contracts/scenario-history.md"
         }
       ],
@@ -11885,14 +11914,14 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 258,
+      "developer": 259,
       "user": 107
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 59,
       "Agent and skill workflow": 80,
       "Claim discovery and review": 42,
-      "Documentation and contracts": 84,
+      "Documentation and contracts": 85,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 30,
@@ -11901,28 +11930,28 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 47,
-      "stale": 25,
-      "unknown": 293
+      "satisfied": 42,
+      "stale": 30,
+      "unknown": 294
     },
     "byLifecycle": {
-      "new": 365
+      "new": 366
     },
     "byRecommendedProof": {
       "cautilus-eval": 141,
-      "deterministic": 121,
+      "deterministic": 122,
       "human-auditable": 103
     },
     "byReviewStatus": {
       "agent-reviewed": 118,
-      "heuristic": 246,
+      "heuristic": 247,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 18,
       "needs-alignment": 45,
       "needs-scenario": 13,
-      "ready-for-proof": 289
+      "ready-for-proof": 290
     }
   },
   "discoveryEngine": {
@@ -12105,7 +12134,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "5a5afeb7111244f3faa1111e2e703fcd4493332b",
+  "gitCommit": "52b32ac6aed4573118d3ecca2b7c88749af340be",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -13701,7 +13730,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:c9cf8433030633500a3ae1e7866c4f828a4c27f3ff1cbd45b1d0e348063183d3",
+      "contentHash": "sha256:7df94cef99c2458cdc40d82b4faa98d2bda827d3b0e1564eb6cdb13954be77ad",
       "depth": 2,
       "discoveredFrom": "docs/guides/evaluation-process.md",
       "kind": "contract",
@@ -13731,7 +13760,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:ecb5e2db5830b7cbb582d596db4b627bae767e374b22c80c3d05182cbe461be5",
+      "contentHash": "sha256:23bd18a51381944360167ff19323d56c65b797071fdfb19bd54221a6a0e3e28c",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

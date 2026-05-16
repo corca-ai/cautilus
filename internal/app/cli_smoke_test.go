@@ -1229,7 +1229,13 @@ cat > "$output_file" <<'EOF'
   "telemetry": {
     "provider": "openai",
     "model": "gpt-test",
+    "uncached_input_tokens": 40,
+    "cache_creation_input_tokens": 10,
+    "cache_read_input_tokens": 20,
+    "cached_input_tokens": 5,
     "prompt_tokens": 100,
+    "output_tokens": 25,
+    "reasoning_output_tokens": 15,
     "completion_tokens": 40,
     "total_tokens": 140,
     "cost_usd": 0.01
@@ -1248,7 +1254,13 @@ cat > "$output_file" <<'EOF'
   "telemetry": {
     "provider": "openai",
     "model": "gpt-test",
+    "uncached_input_tokens": 30,
+    "cache_creation_input_tokens": 15,
+    "cache_read_input_tokens": 25,
+    "cached_input_tokens": 10,
     "prompt_tokens": 80,
+    "output_tokens": 20,
+    "reasoning_output_tokens": 10,
     "completion_tokens": 30,
     "total_tokens": 110,
     "cost_usd": 0.02
@@ -1293,6 +1305,12 @@ EOF
 	}
 	if telemetry["prompt_tokens"] != float64(180) || telemetry["completion_tokens"] != float64(70) || telemetry["total_tokens"] != float64(250) {
 		t.Fatalf("unexpected token telemetry totals: %#v", telemetry)
+	}
+	if telemetry["uncached_input_tokens"] != float64(70) || telemetry["cache_creation_input_tokens"] != float64(25) || telemetry["cache_read_input_tokens"] != float64(45) || telemetry["cached_input_tokens"] != float64(15) {
+		t.Fatalf("unexpected cache telemetry totals: %#v", telemetry)
+	}
+	if telemetry["output_tokens"] != float64(45) || telemetry["reasoning_output_tokens"] != float64(25) {
+		t.Fatalf("unexpected output telemetry totals: %#v", telemetry)
 	}
 	if telemetry["cost_usd"] != float64(0.03) {
 		t.Fatalf("unexpected cost telemetry total: %#v", telemetry)

@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:fc6aea8d155ff4392277f3c26e3e2003961240db898101195514acd3ed26cbeb",
+    "claimsHash": "sha256:ad325946d6780592a40bf9e68689598d07ded0635b10fb5c29f4d51a4e223873",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:2f9e8e7c64383bbd29a5170d43b8c5a87e58cdf4989de0db8719cfeda0dda633",
+    "statusHash": "sha256:3972a273b1b1aa45be0024d9e111edbeb3ee73456c93e171ac926d1185129139",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,56 +22,56 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "5a5afeb7111244f3faa1111e2e703fcd4493332b",
+    "currentGitCommit": "52b32ac6aed4573118d3ecca2b7c88749af340be",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "5a5afeb7111244f3faa1111e2e703fcd4493332b",
+    "packetGitCommit": "52b32ac6aed4573118d3ecca2b7c88749af340be",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
-    "candidateCount": 365,
+    "candidateCount": 366,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 47,
-      "stale": 25,
-      "unknown": 293
+      "satisfied": 42,
+      "stale": 30,
+      "unknown": 294
     },
     "byRecommendedProof": {
-      "cautilus-eval": 124,
-      "deterministic": 142,
-      "human-auditable": 99
+      "cautilus-eval": 126,
+      "deterministic": 140,
+      "human-auditable": 100
     },
     "byVerificationReadiness": {
-      "blocked": 30,
-      "needs-alignment": 36,
-      "needs-scenario": 8,
+      "blocked": 29,
+      "needs-alignment": 37,
+      "needs-scenario": 9,
       "ready-for-proof": 291
     },
     "byReviewStatus": {
       "agent-reviewed": 124,
-      "heuristic": 240,
+      "heuristic": 241,
       "human-reviewed": 1
     }
   },
   "openCautilusEval": {
-    "total": 124,
-    "readyForProof": 117,
-    "needsScenario": 7,
+    "total": 126,
+    "readyForProof": 118,
+    "needsScenario": 8,
     "bySurface": {
-      "(none)": 5,
+      "(none)": 6,
       "app/chat": 4,
       "app/prompt": 10,
-      "dev/repo": 75,
+      "dev/repo": 76,
       "dev/skill": 30
     },
     "byReadiness": {
-      "needs scenario": 7,
-      "ready for proof": 117
+      "needs scenario": 8,
+      "ready for proof": 118
     },
     "rawByReadiness": {
-      "needs-scenario": 7,
-      "ready-for-proof": 117
+      "needs-scenario": 8,
+      "ready-for-proof": 118
     },
     "proofReadySamples": [
       {
@@ -176,6 +176,15 @@
         "summary": "A user can evaluate behavior without Cautilus taking over host-owned execution."
       },
       {
+        "claimId": "claim-docs-contracts-scenario-history-md-181",
+        "source": "docs/contracts/scenario-history.md:181",
+        "surface": "surface undecided",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
+        "review": "agent-reviewed",
+        "summary": "Compare runs often need a frozen baseline side so only the candidate reruns."
+      },
+      {
         "claimId": "claim-docs-specs-user-improvement-spec-md-23",
         "source": "docs/specs/user/improvement.spec.md:23",
         "surface": "surface undecided",
@@ -216,40 +225,40 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 47,
+      "count": 42,
       "actor": "none",
       "evidence": {
-        "satisfied": 47
+        "satisfied": 42
       },
       "review": {
-        "agent-reviewed": 47
+        "agent-reviewed": 42
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 94,
+      "count": 97,
       "actor": "agent",
       "evidence": {
-        "stale": 17,
+        "stale": 20,
         "unknown": 77
       },
       "review": {
-        "agent-reviewed": 27,
-        "heuristic": 67
+        "agent-reviewed": 29,
+        "heuristic": 68
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 117,
+      "count": 118,
       "actor": "agent",
       "evidence": {
-        "stale": 7,
+        "stale": 8,
         "unknown": 110
       },
       "review": {
-        "agent-reviewed": 10,
+        "agent-reviewed": 11,
         "heuristic": 106,
         "human-reviewed": 1
       },
@@ -257,53 +266,53 @@
     },
     {
       "id": "agent-design-scenario",
-      "count": 8,
+      "count": 9,
       "actor": "agent",
       "evidence": {
-        "unknown": 8
+        "unknown": 9
       },
       "review": {
-        "agent-reviewed": 1,
+        "agent-reviewed": 2,
         "heuristic": 7
       },
       "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
     },
     {
       "id": "human-align-surfaces",
-      "count": 36,
+      "count": 37,
       "actor": "human",
       "evidence": {
-        "unknown": 36
+        "unknown": 37
       },
       "review": {
-        "agent-reviewed": 18,
+        "agent-reviewed": 19,
         "heuristic": 18
       },
       "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
     },
     {
       "id": "human-confirm-or-decompose",
-      "count": 33,
+      "count": 34,
       "actor": "human",
       "evidence": {
-        "stale": 1,
+        "stale": 2,
         "unknown": 32
       },
       "review": {
-        "agent-reviewed": 1,
+        "agent-reviewed": 2,
         "heuristic": 32
       },
       "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
     },
     {
       "id": "split-or-defer",
-      "count": 30,
+      "count": 29,
       "actor": "human",
       "evidence": {
-        "unknown": 30
+        "unknown": 29
       },
       "review": {
-        "agent-reviewed": 20,
+        "agent-reviewed": 19,
         "heuristic": 10
       },
       "summary": "Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification."
@@ -312,7 +321,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 240,
+      "count": 241,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [
@@ -325,7 +334,7 @@
     },
     {
       "id": "stale-evidence",
-      "count": 25,
+      "count": 30,
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [

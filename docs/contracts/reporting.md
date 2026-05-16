@@ -114,6 +114,8 @@ Optional adapter- or provider-owned telemetry fields:
 The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload.
 `Cautilus` should not guess cost from opaque CLI logs.
 Cache-token breakdown follows the same rule: preserve it when a runtime or wrapper emits explicit machine-readable fields, and do not infer cache behavior from prose.
+`cache_creation_input_tokens` and `cache_read_input_tokens` preserve runtimes that split cache writes from reads.
+`cached_input_tokens` preserves runtimes that emit an aggregate cached-input count without that split.
 The same rule applies to runtime identity.
 Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.
 Runtime drift codes should be recorded as runtime context rather than primary behavior-outcome reason codes unless a pinned-runtime policy blocks the run.
