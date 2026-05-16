@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-guides-cli-doctor-refresh-boundaries-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-guides-cli-md-121",
+    "claim-docs-guides-cli-md-127"
+  ],
+  "repoCommit": "7918102e24496ec789c290697060547afad87b28",
+  "summary": "Deterministic proof for current CLI guide claims covering named-adapter doctor guidance and refresh-plan overwrite protection for saved claim-state paths.",
+  "evidenceScope": {
+    "targetSurface": "CLI guide doctor and claim refresh boundaries",
+    "claimBoundary": "Only the current docs/guides/cli.md named-adapter doctor and refresh-plan overwrite claims are marked satisfied.",
+    "notClaimed": [
+      "Plain doctor should auto-select one of several named adapters.",
+      "Refresh-plan overwrite protection covers every arbitrary JSON path instead of configured saved claim-state paths.",
+      "The focused tests prove production app behavior beyond the named CLI boundaries."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIDoctorAcknowledgesNamedAdaptersWhenDefaultAdapterIsMissing|TestRunClaimDiscoverRefreshPlanRefusesSavedClaimStateOutput'",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "plain doctor does not guess a named adapter when the default adapter is missing",
+          "doctor suggestions mention --adapter-name for named adapter validation",
+          "refresh-plan output refuses to overwrite saved claim state",
+          "the saved claim state remains a cautilus.claim_proof_plan.v1 packet"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/cli -run TestRenderTopicUsageIncludesLeafCommandUsageAndExamples",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/cli",
+        "notableAssertions": [
+          "doctor help preserves named-adapter guidance in the registered command surface"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/cli.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:cbfe0cbb82c9fc4ede9f9606cdb5488b5995b0139d516b5948b8672495c36a98"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "doctor-named-adapter-cli-test",
+      "contentHash": "sha256:3117b2cecae89e8da55bf99b6eed35d8466877bd27580d07f5714594e9843b39"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "refresh-plan-overwrite-test",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "refresh-plan-overwrite-guard",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "doctor-help-registry",
+      "contentHash": "sha256:66df6f5b8e3911690daa3d5757bb55078db1d0d2df99615c60625c2e55e993e7"
+    },
+    {
+      "path": "internal/cli/registry_test.go",
+      "kind": "doctor-help-registry-test",
+      "contentHash": "sha256:96c64bb996b7051700b2b8e668530cc531e73648c18f9487d2bfb67f153674ca"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused app and CLI tests verify named-adapter doctor guidance and refresh-plan overwrite rejection for saved claim-state paths against the current CLI guide claims."
+  }
+}

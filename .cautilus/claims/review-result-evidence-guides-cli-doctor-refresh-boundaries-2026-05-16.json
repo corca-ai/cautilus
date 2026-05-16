@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the current CLI guide claims covered by focused doctor named-adapter and refresh-plan overwrite tests."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-guides-cli-doctor-refresh-boundaries-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-cli-md-121",
+          "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic doctor adapter selection and CLI guidance behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused doctor tests showing plain doctor does not guess a named adapter, CLI help preserving --adapter-name guidance, and explicit named-adapter validation guidance.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8bc174c8f52ddfd1a7ca3f0a93e90bb05f68e656181401e9b3dfddcc0aa68bbe",
+              "supportsClaimIds": [
+                "claim-docs-guides-cli-md-121",
+                "claim-docs-guides-cli-md-127"
+              ]
+            }
+          ],
+          "nextAction": "Keep named-adapter doctor guidance and explicit adapter validation separate from any future auto-selection behavior.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-127",
+          "claimFingerprint": "sha256:a42ab6736d2ebe2beeb0ba10487b85347c0d81a5444e77f1d95d0f8fc7292e95",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a deterministic CLI guard that prevents refresh-plan packets from overwriting saved claim-state paths.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the refresh-plan overwrite regression test: discover claims with --previous and --refresh-plan refuses to overwrite a saved claim-state path, and the saved packet remains cautilus.claim_proof_plan.v1.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8bc174c8f52ddfd1a7ca3f0a93e90bb05f68e656181401e9b3dfddcc0aa68bbe",
+              "supportsClaimIds": [
+                "claim-docs-guides-cli-md-121",
+                "claim-docs-guides-cli-md-127"
+              ]
+            }
+          ],
+          "nextAction": "Keep refresh-plan outputs separate from configured saved claim-state paths.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

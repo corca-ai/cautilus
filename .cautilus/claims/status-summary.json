@@ -22,20 +22,20 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 23
+          "stale": 21
         },
         "byReviewStatus": {
-          "agent-reviewed": 23
+          "agent-reviewed": 21
         },
-        "count": 23,
+        "count": 21,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-guides-cli-md-121",
-          "claim-docs-guides-cli-md-127",
           "claim-docs-guides-cli-md-135",
           "claim-docs-guides-cli-md-180",
-          "claim-docs-guides-cli-md-263"
+          "claim-docs-guides-cli-md-263",
+          "claim-docs-guides-cli-md-265",
+          "claim-docs-guides-cli-md-474"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 50
+          "satisfied": 52
         },
         "byReviewStatus": {
-          "agent-reviewed": 50
+          "agent-reviewed": 52
         },
-        "count": 50,
+        "count": 52,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,14 +62,14 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 16,
+          "stale": 14,
           "unknown": 73
         },
         "byReviewStatus": {
-          "agent-reviewed": 25,
+          "agent-reviewed": 23,
           "heuristic": 64
         },
-        "count": 89,
+        "count": 87,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -77,7 +77,7 @@
           "claim-readme-md-152",
           "claim-docs-contracts-adapter-contract-md-432",
           "claim-docs-contracts-adapter-contract-md-478",
-          "claim-docs-guides-cli-md-121"
+          "claim-docs-guides-cli-md-122"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,8 +219,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 50,
-      "stale": 23,
+      "satisfied": 52,
+      "stale": 21,
       "unknown": 286
     },
     "byLifecycle": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 50,
+    "satisfiedClaimCount": 52,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -760,6 +760,46 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-121",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:8bc174c8f52ddfd1a7ca3f0a93e90bb05f68e656181401e9b3dfddcc0aa68bbe",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-cli-md-121",
+              "claim-docs-guides-cli-md-127"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-127",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:8bc174c8f52ddfd1a7ca3f0a93e90bb05f68e656181401e9b3dfddcc0aa68bbe",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-cli-md-121",
+              "claim-docs-guides-cli-md-127"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`."
       },
       {
         "claimId": "claim-docs-guides-consumer-adoption-md-20",
@@ -1435,16 +1475,19 @@
   },
   "gitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
   "gitState": {
-    "changedFileCount": 12,
+    "changedFileCount": 15,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
       ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/status-summary.json",
+      "charness-artifacts/critique/2026-05-16-guides-cli-runner-readiness-evidence-result.md",
       "charness-artifacts/debug/debug-2026-05-16-review-test-unparam.md",
       "charness-artifacts/debug/latest.md",
       "docs/internal/handoff.md",
@@ -1458,7 +1501,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a37f723de8a6931b2dc57a302ca2a0f64987230e",
+    "currentGitCommit": "7918102e24496ec789c290697060547afad87b28",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",

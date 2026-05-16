@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:e837ce8b70000e81cf41a169a034782d2490d6609d4fc55c042d7ac1f66c08b0"
+      "contentHash": "sha256:7a584286b7aa6bcdff175b66b8f73c36d4b88808bc58508f5f65fecef4f4ab74"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -576,8 +576,8 @@
     "userRawClaimCount": 100,
     "userMappedToCanonicalCount": 100,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 298,
-    "userSemanticReviewRecommendedCount": 43,
+    "semanticReviewRecommendedCount": 300,
+    "userSemanticReviewRecommendedCount": 45,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 259,
       "mapped-to-user-canonical": 100
@@ -587,13 +587,13 @@
       "user": 100
     },
     "byMappingConfidence": {
-      "high": 61,
+      "high": 59,
       "low": 20,
-      "medium": 278
+      "medium": 280
     },
     "byUserCanonicalClaimId": {
-      "U1": 24,
-      "U2": 58,
+      "U1": 25,
+      "U2": 57,
       "U3": 3,
       "U4": 3,
       "U5": 4,
@@ -652,6 +652,8 @@
       "claim-docs-guides-cli-md-32",
       "claim-docs-guides-cli-md-55",
       "claim-docs-guides-cli-md-112",
+      "claim-docs-guides-cli-md-121",
+      "claim-docs-guides-cli-md-127",
       "claim-docs-guides-cli-md-135",
       "claim-docs-guides-cli-md-180",
       "claim-docs-guides-cli-md-187",
@@ -920,7 +922,7 @@
     {
       "canonicalClaimId": "U1",
       "title": "Readiness",
-      "absorbedRawClaimCount": 24,
+      "absorbedRawClaimCount": 25,
       "absorbedRawClaimIds": [
         "claim-readme-md-13",
         "claim-readme-md-69",
@@ -928,6 +930,7 @@
         "claim-docs-guides-cli-md-32",
         "claim-docs-guides-cli-md-112",
         "claim-docs-guides-cli-md-114",
+        "claim-docs-guides-cli-md-121",
         "claim-docs-guides-consumer-adoption-md-20",
         "claim-docs-guides-consumer-adoption-md-25",
         "claim-docs-guides-consumer-adoption-md-48",
@@ -983,6 +986,12 @@
           "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-121",
+          "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-guides-consumer-adoption-md-20",
@@ -1094,27 +1103,27 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 9,
+        "satisfied": 10,
         "unknown": 15
       },
       "byReviewStatus": {
-        "agent-reviewed": 10,
+        "agent-reviewed": 11,
         "heuristic": 14
       },
       "byRecommendedProof": {
         "cautilus-eval": 9,
-        "deterministic": 11,
+        "deterministic": 12,
         "human-auditable": 4
       },
       "byMappingConfidence": {
         "high": 12,
-        "medium": 12
+        "medium": 13
       }
     },
     {
       "canonicalClaimId": "U2",
       "title": "Claim Discovery",
-      "absorbedRawClaimCount": 58,
+      "absorbedRawClaimCount": 57,
       "absorbedRawClaimIds": [
         "claim-readme-md-3",
         "claim-readme-md-9",
@@ -1127,7 +1136,6 @@
         "claim-readme-md-149",
         "claim-readme-md-152",
         "claim-docs-guides-cli-md-55",
-        "claim-docs-guides-cli-md-121",
         "claim-docs-guides-cli-md-122",
         "claim-docs-guides-cli-md-127",
         "claim-docs-guides-cli-md-135",
@@ -1243,12 +1251,6 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-guides-cli-md-121",
-          "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
-        },
-        {
           "claimId": "claim-docs-guides-cli-md-122",
           "claimFingerprint": "sha256:6901827714fc3a30a1ea3f7850ce66a84fa2062c820b38ddf31b50b64bd06f98",
           "mappingConfidence": "high",
@@ -1257,8 +1259,8 @@
         {
           "claimId": "claim-docs-guides-cli-md-127",
           "claimFingerprint": "sha256:a42ab6736d2ebe2beeb0ba10487b85347c0d81a5444e77f1d95d0f8fc7292e95",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-guides-cli-md-135",
@@ -1526,22 +1528,22 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 6,
-        "stale": 11,
+        "satisfied": 7,
+        "stale": 9,
         "unknown": 41
       },
       "byReviewStatus": {
-        "agent-reviewed": 31,
+        "agent-reviewed": 30,
         "heuristic": 27
       },
       "byRecommendedProof": {
         "cautilus-eval": 14,
-        "deterministic": 25,
+        "deterministic": 24,
         "human-auditable": 19
       },
       "byMappingConfidence": {
-        "high": 31,
-        "medium": 27
+        "high": 29,
+        "medium": 28
       }
     },
     {
@@ -5823,30 +5825,30 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "stale",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
-      "canonicalClaimId": "U2",
-      "score": 18,
-      "runnerUpCanonicalClaimId": "U1",
+      "canonicalClaimId": "U1",
+      "score": 15,
+      "runnerUpCanonicalClaimId": "U2",
       "runnerUpScore": 15,
-      "scoreMargin": 3,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
-        "adapter-name",
+        "behavior",
         "cautilu",
         "deterministic",
-        "evidence",
+        "doctor",
+        "explicit",
+        "gues",
         "instead",
-        "intentionally",
         "keep",
         "mean",
         "name",
-        "only",
-        "ref"
+        "only"
       ]
     },
     {
@@ -5905,30 +5907,29 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "stale",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:a42ab6736d2ebe2beeb0ba10487b85347c0d81a5444e77f1d95d0f8fc7292e95",
       "canonicalClaimId": "U2",
-      "score": 12,
-      "runnerUpCanonicalClaimId": "U6",
-      "runnerUpScore": 8,
+      "score": 11,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 7,
       "scoreMargin": 4,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "cautilus.claim",
         "cli",
         "deterministic",
-        "evidence",
+        "keep",
         "map",
+        "output",
         "packet",
+        "path",
         "proof",
-        "ref",
         "remain",
-        "satisfied",
-        "saved",
-        "thi"
+        "saved"
       ]
     },
     {
