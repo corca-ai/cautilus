@@ -1,0 +1,87 @@
+package runtime
+
+import (
+	"os"
+	"path/filepath"
+	"testing"
+	"time"
+
+	"github.com/corca-ai/cautilus/internal/contracts"
+)
+
+func TestBuildReviewPacketCollectsDurableReviewBoundary(t *testing.T) {
+	repoRoot := t.TempDir()
+	for _, dir := range []string{"prompts", "schemas", "artifacts", "reports"} {
+		if err := os.MkdirAll(filepath.Join(repoRoot, dir), 0o755); err != nil {
+			t.Fatalf("MkdirAll returned error: %v", err)
+		}
+	}
+	writeRuntimeTestFile(t, filepath.Join(repoRoot, "prompts", "review.md"), "review prompt\n")
+	writeRuntimeTestFile(t, filepath.Join(repoRoot, "schemas", "review.schema.json"), "{\"type\":\"object\"}\n")
+	writeRuntimeTestFile(t, filepath.Join(repoRoot, "artifacts", "compare-report.json"), "{\"verdict\":\"defer\"}\n")
+	writeRuntimeTestFile(t, filepath.Join(repoRoot, "reports", "report.json"), "{\"schemaVersion\":\"cautilus.report_packet.v2\"}\n")
+
+	reportFile := filepath.Join(repoRoot, "reports", "report.json")
+	report := map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"intent":        "Operator can compare a candidate against a baseline.",
+		"intentProfile": map[string]any{
+			"schemaVersion": contracts.BehaviorIntentSchema,
+			"intentId":      "intent-review-boundary",
+		},
+		"recommendation": "defer",
+	}
+	adapterData := map[string]any{
+		"default_prompt_file":  "prompts/review.md",
+		"default_schema_file":  "schemas/review.schema.json",
+		"artifact_paths":       []string{"artifacts/compare-report.json"},
+		"report_paths":         []string{"reports/report.json"},
+		"comparison_questions": []string{"Which scenario-level deltas matter?"},
+		"human_review_prompts": []any{map[string]any{"id": "operator", "prompt": "Where is the workflow still misleading?"}},
+	}
+
+	packet, err := BuildReviewPacket(repoRoot, filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), adapterData, reportFile, report, time.Date(2026, 5, 16, 0, 0, 0, 0, time.UTC))
+	if err != nil {
+		t.Fatalf("BuildReviewPacket returned error: %v", err)
+	}
+	if packet["schemaVersion"] != contracts.ReviewPacketSchema {
+		t.Fatalf("unexpected schemaVersion: %#v", packet["schemaVersion"])
+	}
+	if packet["reportFile"] != reportFile {
+		t.Fatalf("unexpected reportFile: %#v", packet["reportFile"])
+	}
+	if got := packet["report"].(map[string]any)["intent"]; got != report["intent"] {
+		t.Fatalf("unexpected report intent: %#v", got)
+	}
+	assertFileRecord(t, packet["defaultPromptFile"], "prompts/review.md", true)
+	assertFileRecord(t, packet["defaultSchemaFile"], "schemas/review.schema.json", true)
+	assertFileRecord(t, packet["artifactFiles"].([]any)[0], "artifacts/compare-report.json", true)
+	assertFileRecord(t, packet["reportArtifacts"].([]any)[0], "reports/report.json", true)
+	if got := packet["comparisonQuestions"].([]string)[0]; got != "Which scenario-level deltas matter?" {
+		t.Fatalf("unexpected comparison question: %#v", got)
+	}
+	if got := packet["humanReviewPrompts"].([]any)[0].(map[string]any)["id"]; got != "operator" {
+		t.Fatalf("unexpected human review prompt id: %#v", got)
+	}
+}
+
+func writeRuntimeTestFile(t *testing.T, path string, payload string) {
+	t.Helper()
+	if err := os.WriteFile(path, []byte(payload), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+}
+
+func assertFileRecord(t *testing.T, value any, relativePath string, exists bool) {
+	t.Helper()
+	record, ok := value.(map[string]any)
+	if !ok {
+		t.Fatalf("expected file record map, got %#v", value)
+	}
+	if record["relativePath"] != relativePath {
+		t.Fatalf("unexpected relativePath: %#v", record["relativePath"])
+	}
+	if record["exists"] != exists {
+		t.Fatalf("unexpected exists flag: %#v", record["exists"])
+	}
+}
