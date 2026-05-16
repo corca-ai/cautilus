@@ -11897,7 +11897,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
+  "gitCommit": "ea77e575028ec5a74952d43476d24871e21e7f4e",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {

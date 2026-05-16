@@ -22,20 +22,20 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 26
+          "stale": 25
         },
         "byReviewStatus": {
-          "agent-reviewed": 26
+          "agent-reviewed": 25
         },
-        "count": 26,
+        "count": 25,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-guides-cli-md-32",
           "claim-docs-guides-cli-md-112",
           "claim-docs-guides-cli-md-114",
           "claim-docs-guides-cli-md-121",
-          "claim-docs-guides-cli-md-127"
+          "claim-docs-guides-cli-md-127",
+          "claim-docs-guides-cli-md-135"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 47
+          "satisfied": 48
         },
         "byReviewStatus": {
-          "agent-reviewed": 47
+          "agent-reviewed": 48
         },
-        "count": 47,
+        "count": 48,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,14 +62,14 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 18,
+          "stale": 17,
           "unknown": 73
         },
         "byReviewStatus": {
-          "agent-reviewed": 27,
+          "agent-reviewed": 26,
           "heuristic": 64
         },
-        "count": 91,
+        "count": 90,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -77,7 +77,7 @@
           "claim-readme-md-152",
           "claim-docs-contracts-adapter-contract-md-432",
           "claim-docs-contracts-adapter-contract-md-478",
-          "claim-docs-guides-cli-md-32"
+          "claim-docs-guides-cli-md-112"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,8 +219,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 47,
-      "stale": 26,
+      "satisfied": 48,
+      "stale": 25,
       "unknown": 286
     },
     "byLifecycle": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 47,
+    "satisfiedClaimCount": 48,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -703,6 +703,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "`Cautilus` should keep review prompts, schemas, compare questions, and report artifacts on one durable boundary before executor variants run."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-32",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:01e6f4533bec54ae71b210634206df0120885b6d695bbd26f528d17b7646f7ab",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-install-channel-policy-refresh-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-cli-md-32"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels."
       },
       {
         "claimId": "claim-docs-guides-consumer-adoption-md-20",
@@ -1376,7 +1395,7 @@
       }
     ]
   },
-  "gitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
+  "gitCommit": "ea77e575028ec5a74952d43476d24871e21e7f4e",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1388,10 +1407,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
+    "currentGitCommit": "ea77e575028ec5a74952d43476d24871e21e7f4e",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
+    "packetGitCommit": "ea77e575028ec5a74952d43476d24871e21e7f4e",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:72b2252408a70abd87e3c10c9724240c66bb71844f6f02a36ae203409ae276c4",
+    "claimsHash": "sha256:40d3da91a11a1fc3ead1ff079c79b60168c737adcb272e996a97bf4caa13819b",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:f048cd69867b2d86681910d10f9371c4b1d31c18e01122866a8d18ddc89c19fd",
+    "statusHash": "sha256:0c145b9bd686b22cb55e2f3c95aafde4214d960e9a5a44d3a9c8f837cbeef6fb",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,10 +22,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
+    "currentGitCommit": "ea77e575028ec5a74952d43476d24871e21e7f4e",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
+    "packetGitCommit": "ea77e575028ec5a74952d43476d24871e21e7f4e",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -33,8 +33,8 @@
     "candidateCount": 359,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 47,
-      "stale": 26,
+      "satisfied": 48,
+      "stale": 25,
       "unknown": 286
     },
     "byRecommendedProof": {
@@ -225,26 +225,26 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 47,
+      "count": 48,
       "actor": "none",
       "evidence": {
-        "satisfied": 47
+        "satisfied": 48
       },
       "review": {
-        "agent-reviewed": 47
+        "agent-reviewed": 48
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 91,
+      "count": 90,
       "actor": "agent",
       "evidence": {
-        "stale": 18,
+        "stale": 17,
         "unknown": 73
       },
       "review": {
-        "agent-reviewed": 27,
+        "agent-reviewed": 26,
         "heuristic": 64
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
@@ -334,15 +334,15 @@
     },
     {
       "id": "stale-evidence",
-      "count": 26,
+      "count": 25,
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [
-        "claim-docs-guides-cli-md-32",
         "claim-docs-guides-cli-md-112",
         "claim-docs-guides-cli-md-114",
         "claim-docs-guides-cli-md-121",
-        "claim-docs-guides-cli-md-127"
+        "claim-docs-guides-cli-md-127",
+        "claim-docs-guides-cli-md-135"
       ]
     }
   ]

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-install-channel-policy-refresh-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-guides-cli-md-32"
+  ],
+  "repoCommit": "ea77e575028ec5a74952d43476d24871e21e7f4e",
+  "summary": "This bundle refreshes deterministic proof that legacy Homebrew installs are not a supported update channel and should migrate to install.sh.",
+  "evidenceScope": {
+    "targetSurface": "CLI guide install-channel guidance",
+    "claimBoundary": "Only the docs/guides/cli.md claim that legacy Homebrew is not a supported update channel and should migrate to install.sh is marked satisfied.",
+    "notClaimed": [
+      "Cautilus can automatically migrate a live Homebrew installation",
+      "Homebrew formula metadata is inspected at runtime",
+      "Every user has already removed legacy Homebrew installs",
+      "Additional install channels are supported"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/release/run-install-smoke.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 5,
+        "pass": 5,
+        "notableSubtests": [
+          "renderInstallerUrl points at the public install.sh path",
+          "runInstallSmoke drives the install.sh channel through an isolated workspace",
+          "parseArgs rejects legacy Homebrew as an install smoke channel"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/release/distribution-surface.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 15,
+        "pass": 15,
+        "notableSubtests": [
+          "install.sh remains syntactically valid shell",
+          "install.sh downloads a tagged binary asset and writes a wrapper that preserves caller context",
+          "package metadata does not claim an npm bin install surface"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "scripts/release/run-install-smoke.mjs",
+      "kind": "supported-install-channel-runner",
+      "contentHash": "sha256:e62613993c707dbaec2c56cb43c4881e1ef892def50213ded1b643d955c51fb0"
+    },
+    {
+      "path": "scripts/release/run-install-smoke.test.mjs",
+      "kind": "supported-install-channel-test",
+      "contentHash": "sha256:73b7d3789f8e19037e11eb8bcc209cd32d2ecb2e98b3b2401f9c848dbaa2240b"
+    },
+    {
+      "path": "scripts/release/distribution-surface.test.mjs",
+      "kind": "release-distribution-surface-test",
+      "contentHash": "sha256:064873227ac11b935b1edbc6ab9c2d120331028674b74e34107dee6d26dba7ba"
+    },
+    {
+      "path": "install.sh",
+      "kind": "supported-installer",
+      "contentHash": "sha256:9663da76306992a157fbf693f30bef9648a2494dde6ef1e4bfa5bf94d5d048f7"
+    },
+    {
+      "path": "docs/guides/cli.md",
+      "kind": "operator-facing-channel-guidance",
+      "contentHash": "sha256:cbfe0cbb82c9fc4ede9f9606cdb5488b5995b0139d516b5948b8672495c36a98"
+    },
+    {
+      "path": "docs/maintainers/version-provenance.md",
+      "kind": "maintainer-channel-policy",
+      "contentHash": "sha256:b931a46a54b66170b26bc002960ce842426007bcea5d289e9b93c6722fc95c36"
+    },
+    {
+      "path": "docs/maintainers/releasing.md",
+      "kind": "release-channel-instructions",
+      "contentHash": "sha256:2e83266c398a8a8ffb00557db17708f6fbeede80392ae173397e0093122ed58b"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The release smoke runner accepts the install.sh channel, rejects legacy Homebrew as a smoke channel, the distribution-surface test keeps install.sh valid, and the current CLI guide plus maintainer docs direct legacy Homebrew users to uninstall and reinstall through install.sh."
+  }
+}

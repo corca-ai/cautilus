@@ -1331,17 +1331,17 @@
       "claimSemanticGroup": "Release and packaging",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:a2c49e4849923a73c41fb9c22657b47b9d28491bd7c4429367ae2d1d1245e383",
+          "contentHash": "sha256:01e6f4533bec54ae71b210634206df0120885b6d695bbd26f528d17b7646f7ab",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-install-channel-policy-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-install-channel-policy-refresh-2026-05-16.json",
           "supportsClaimIds": [
             "claim-docs-guides-cli-md-32"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-install-channel-policy-2026-05-03.json does not list current claimId claim-docs-guides-cli-md-32 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by refreshed install-channel evidence: release smoke accepts the install.sh path and rejects homebrew, distribution-surface tests keep install.sh valid, and current docs/guides/cli.md plus maintainer docs direct legacy Homebrew users to uninstall and reinstall through install.sh.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1349,7 +1349,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep this claim covered when adding install channels, update behavior, release smoke channels, or migration guidance.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1360,8 +1360,9 @@
         }
       ],
       "summary": "Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim is deterministic install-channel policy backed by release smoke tests, installer-surface tests, and current user-facing migration guidance."
     },
     {
       "claimAudience": "user",
@@ -11800,8 +11801,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 47,
-      "stale": 26,
+      "satisfied": 48,
+      "stale": 25,
       "unknown": 286
     },
     "byLifecycle": {
@@ -12004,7 +12005,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "5c86439a543e81c40546b28169519dd5f47ddeab",
+  "gitCommit": "ea77e575028ec5a74952d43476d24871e21e7f4e",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -12072,6 +12073,7 @@
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-adapter-claim-discovery-hints-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-install-channel-policy-refresh-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json"
@@ -12129,9 +12131,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 42,
+    "appliedResultCount": 43,
     "skippedResultCount": 51,
-    "keptUpdateCount": 123,
+    "keptUpdateCount": 124,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },
