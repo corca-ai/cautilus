@@ -1,73 +1,55 @@
 # Release Record
-Date: 2026-05-13
+Date: 2026-05-17
 
 ## Summary
 
-Released Cautilus `v0.15.4`.
+Released Cautilus `v0.16.0`.
 
 ## Release Scope
 
-Patch release for subagent execution proof, Cautilus Agent delegation stability, and release verification hardening.
-The release lets skill tests audit actual subagent execution results for Codex and Claude non-interactive backends instead of accepting a mere attempt to spawn.
-It also makes setup and AGENTS guidance more explicit about when requested critique or fresh-eye review must use a real subagent and when the host must stop instead of silently substituting same-agent review.
+Minor release for a portable robustness evaluation packet contract.
+This release introduces documented `cautilus.robustness_request.v1`, `cautilus.robustness_plan.v1`, and `cautilus.robustness_report.v1` shapes with example fixtures and positive schema/example checks.
+The new contract gives operators a packet-first way to describe behavior under robustness pressure, distinguish stimulus mutations from implementation mutations, record expected and observed behavior relations, and carry robustness findings as explicit improvement evidence.
+
+This release does not add a runtime that generates, replays, fuzzes, shrinks, or executes mutation cases.
+Host repos and adapters still own mutation selection, raw logs, replay, backend invocation, prompts, product policy, and product-specific oracles.
+Schema hardening remains the next implementation gate before callers should treat the robustness schemas as strict invalid-packet enforcement.
 
 ## Commits
 
-- `2398034` Verify subagent execution dogfood
-- `04b5fe2` Refresh claim state after subagent dogfood
-- `e1fd0d7` Prepare Cautilus 0.15.4 release
-- `4ec5c21` Refresh release claim state
-- `62e412f` Stabilize release fresh checkout probes
-- `f3d094f` Ignore HITL runtime scratch state
+- `517ad37` Define robustness evaluation packets
+- `f3bd5b2` Record robustness packet critique
+- `9e5d220` Record robustness schema hardening critique
+- `2c05d31` Record narrowed robustness hardening critique
+
+This release also includes the checked-in claim, guide, critique, debug, and release-surface hardening commits accumulated on `main` since `v0.15.4`.
 
 ## Review
 
-- Critique: delegated subagent critique after implementation.
-  It found a false-positive Claude unavailable diagnostic and a Claude `Task`/`Agent` transcript proof shape without `agentId`; both were fixed before release.
-- Critique: release-time self-review found a stale release-note pointer after publication.
-  The public release notes asset was replaced with a self-contained note, and the public verifier now rejects that unverifiable pointer in future releases.
+- Critique: delegated release critique confirmed `v0.16.0` is the lightest honest bump because the slice adds a new product-owned packet contract and fixtures without breaking existing commands.
+- Critique: release narrative review required the release notes to say "portable robustness evaluation packet contract" and avoid implying runtime generation, replay, fuzzing, execution, shrinking, automatic fixes, strict schema enforcement, or final schema status.
+- Critique: counterweight review classified npm/public plugin publication, full draft-2020-12 validator adoption, and robustness-specific critique packet scanner coverage as out of scope for this release.
 
 ## Debug Notes
 
-- `charness-artifacts/debug/debug-2026-05-13-release-prepare-arg-forwarding.md` records the `npm run release:prepare -- 0.15.4` argument-forwarding fix.
-- `charness-artifacts/debug/debug-2026-05-13-release-fresh-checkout-shallow-probe.md` records the shallow fresh-checkout probe fix.
-- `charness-artifacts/debug/debug-2026-05-13-release-notes-stale-record-pointer.md` records the release-note verifier blind spot fixed after initial publication.
+- `charness-artifacts/debug/debug-2026-05-17-release-prepare-claim-freshness.md` records the release-prepare claim freshness stop after the `0.16.0` version bump and the claim refresh sequence used before retrying release prepare.
 - The current debug pointer is [charness-artifacts/debug/latest.md](../debug/latest.md).
 
 ## Verification
 
-- `npm run dogfood:subagent-execution-proof`: green for Codex and Claude.
-  Codex and Claude both produced auditable subagent execution proof and `recommendation=accept-now`.
-- `npm run dogfood:self:eval`: green after the instruction-surface fixture allowed the current Codex `multi_tool_use.parallel` first-call wrapper.
-- Setup inspection for AGENTS delegation guidance: green for the new subagent delegation section and legacy `init-repo` wording removal.
-- `npm run lint:skill-disclosure`: green.
-- `./bin/cautilus doctor commands --json`: green.
-- `./bin/cautilus discover scenarios --json`: green.
-- `./bin/cautilus doctor --repo-root . --scope agent-surface`: green.
-- `npm run verify`: green at `f3d094f`.
-- `npm run hooks:check`: green at `f3d094f`.
-- Fresh checkout probes declared in `.agents/release-adapter.yaml`: green.
-- `node scripts/release/publish-release.mjs --version 0.15.4 --dry-run --json`: green at `f3d094f`.
-- GitHub Actions run `25772500202` for `main`: `verify` succeeded.
-- GitHub Actions run `25772500206` for `main`: `spec-report` succeeded.
-- GitHub Actions run `25772526897` for `v0.15.4`: `release-artifacts` and `verify-public-release` succeeded.
-- `node scripts/release/verify-public-release.mjs --version v0.15.4 --repo corca-ai/cautilus --json`: ok, all expected assets present and checksum manifest complete.
-- Pinned installer smoke: `npm run release:smoke-install -- --channel install_sh --version v0.15.4 --repo corca-ai/cautilus --installer-source local --skip-update --json`: ok, installed `0.15.4`.
+- `npm run release:prepare -- 0.16.0`: green after refreshing the saved claim packet and generated claim projections.
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.5.26/scripts/validate_debug_artifact.py --repo-root .`: green.
+- `npm run critique:surface-packet:check`: green for the registered `release-packaging` rule families.
+- Fresh checkout probes declared in `.agents/release-adapter.yaml`: claim evidence-state check and claim status-report check passed after claim refresh; generated drift check is expected to pass once this release-prep state is committed.
+- `./bin/cautilus --version`: `0.16.0`.
+
+The remaining pre-publish gates for this release-prep commit are `npm run hooks:check`, `npm run verify`, `npm run test:on-demand`, `npm run generated:drift:check`, release publish dry-run, and public release verification after tag workflow completion.
 
 ## Public Release
 
-- Released tag: `v0.15.4`.
-- Release commit: `f3d094f6f58c8a142c5ba8f5e812f815f1ae570e`.
-- URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.15.4`.
-- Published at: `2026-05-13T01:34:05Z`.
-- Assets:
-  - `cautilus_0.15.4_darwin_arm64.tar.gz`
-  - `cautilus_0.15.4_darwin_x64.tar.gz`
-  - `cautilus_0.15.4_linux_arm64.tar.gz`
-  - `cautilus_0.15.4_linux_x64.tar.gz`
-  - `cautilus-v0.15.4-checksums.txt`
-  - `cautilus-v0.15.4.sha256`
-  - `release-notes-v0.15.4.md`
+- Target tag: `v0.16.0`.
+- Public boundary: GitHub tagged binary/install surface.
+- npm publication and public Claude/Codex plugin distribution are not claimed by this release.
 
 ## Operator Update Steps
 
@@ -75,11 +57,11 @@ It also makes setup and AGENTS guidance more explicit about when requested criti
    `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`.
    Operators who previously installed via Homebrew should first run `brew uninstall cautilus` and clear shell command caches to avoid stale PATH shadows.
 2. Claude Code and Codex plugin consumers pick up the bundled Cautilus Agent refresh via `charness update` or by re-running `cautilus init` in the host repo.
-3. Host repos that evaluate subagent-spawning skills should keep repo-owned fixtures and prompts, then use Cautilus skill testing to require auditable subagent execution proof from the selected backend.
+3. Host repos that want robustness evaluation should treat this release as a packet contract and fixture baseline.
+   They still own mutation selection, replay, backend invocation, and product-specific oracles until a future Cautilus runtime explicitly claims those responsibilities.
 
 ## Open Risks
 
-- Subagent proof remains bounded by host runtime capability, authentication, model availability, and tool policy.
-  The release now surfaces those as readiness diagnostics instead of pretending every machine can run both backends.
-- The initial `v0.15.4` asset publication included a generic release-note pointer to a stale checked-in release record.
-  The public release notes asset has been replaced, and the verifier now rejects that pointer, but the immutable source tag still contains the older `charness-artifacts/release/latest.md` content.
+- Robustness schemas currently have positive fixture validation, not strict invalid-packet enforcement.
+  The next implementation gate is to add non-empty core arrays, auditable ref shapes, mutation-kind exclusivity, and targeted negative validation tests.
+- The public GitHub release workflow and install smoke still need to be verified after `v0.16.0` is tagged.
