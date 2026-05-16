@@ -17,8 +17,8 @@
 - 최신 Evidence State projection은 agent가 자율로 처리할 수 있는 deterministic proof, Cautilus eval planning, scenario design bucket과 human 판단이 필요한 bucket을 분리해서 보여줍니다.
   `human-align-surfaces`, `human-confirm-or-decompose`, `split-or-defer` bucket은 사용자 또는 maintainer 판단 전에는 proof로 밀지 마세요.
 - 이번 proof-backlog batch는 `claim-agents-md-142`, `claim-readme-md-69`, `claim-readme-md-77`, `claim-docs-contracts-adapter-contract-md-219`, `claim-docs-contracts-review-packet-md-3`, `claim-docs-guides-cli-md-32`, `claim-docs-guides-cli-md-112`를 satisfied로 올렸습니다.
-- 이어서 `claim-docs-guides-cli-md-114`, `claim-docs-guides-cli-md-121`, `claim-docs-guides-cli-md-122`, `claim-docs-guides-cli-md-127`, `claim-docs-guides-cli-md-180`, `claim-docs-guides-cli-md-273`, `claim-docs-guides-cli-md-277`, `claim-readme-md-152`도 current claim-id-bound evidence로 satisfied/deterministic 상태에 올렸습니다.
-  최신 projection count는 satisfied 58, stale 20, unknown 281이며 deterministic proof backlog는 81입니다.
+- 이어서 `claim-docs-guides-cli-md-114`, `claim-docs-guides-cli-md-121`, `claim-docs-guides-cli-md-122`, `claim-docs-guides-cli-md-127`, `claim-docs-guides-cli-md-180`, `claim-docs-guides-cli-md-273`, `claim-docs-guides-cli-md-277`, `claim-readme-md-152`, `claim-docs-contracts-adapter-contract-md-432`도 current claim-id-bound evidence로 satisfied/deterministic 상태에 올렸습니다.
+  최신 projection count는 satisfied 59, stale 20, unknown 280이며 deterministic proof backlog는 80입니다.
 - 최신 quality artifact에서 public spec 중복 command example 축소와 repo-local runtime signal capture는 처리되었습니다.
   `inventory_public_spec_quality.py`는 `duplicate_command_examples=[]`를 보고하고, `charness-artifacts/quality/runtime-latest.json`는 `cautilus.quality_runtime_signal.v1` verify timing packet입니다.
 - README entrypoint 정리도 완료되었습니다.
@@ -56,6 +56,7 @@
 - [charness-artifacts/critique/2026-05-16-guides-cli-evaluate-observation-no-runner-evidence-result.md](../../charness-artifacts/critique/2026-05-16-guides-cli-evaluate-observation-no-runner-evidence-result.md)
 - [charness-artifacts/critique/2026-05-16-readme-spec-report-renderer-independence-evidence-result.md](../../charness-artifacts/critique/2026-05-16-readme-spec-report-renderer-independence-evidence-result.md)
 - [charness-artifacts/critique/2026-05-16-readme-reviewable-artifacts-evidence-result.md](../../charness-artifacts/critique/2026-05-16-readme-reviewable-artifacts-evidence-result.md)
+- [charness-artifacts/critique/2026-05-16-adapter-review-prompt-compare-path-evidence-result.md](../../charness-artifacts/critique/2026-05-16-adapter-review-prompt-compare-path-evidence-result.md)
 - [charness-artifacts/debug/debug-2026-05-16-dev-repo-fixture-backend-results.md](../../charness-artifacts/debug/debug-2026-05-16-dev-repo-fixture-backend-results.md)
 - [charness-artifacts/debug/debug-2026-05-16-parallel-observation-output-race.md](../../charness-artifacts/debug/debug-2026-05-16-parallel-observation-output-race.md)
 - [docs/specs/evidence/claim-evidence-state.md](../specs/evidence/claim-evidence-state.md)

@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 230
+          "unknown": 229
         },
         "byReviewStatus": {
-          "heuristic": 230
+          "heuristic": 229
         },
-        "count": 230,
+        "count": 229,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 58
+          "satisfied": 59
         },
         "byReviewStatus": {
-          "agent-reviewed": 58
+          "agent-reviewed": 59
         },
-        "count": 58,
+        "count": 59,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 13,
-          "unknown": 68
+          "unknown": 67
         },
         "byReviewStatus": {
           "agent-reviewed": 22,
-          "heuristic": 59
+          "heuristic": 58
         },
-        "count": 81,
+        "count": 80,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-adapter-contract-md-432",
           "claim-docs-contracts-adapter-contract-md-478",
           "claim-docs-guides-cli-md-474",
           "claim-docs-guides-cli-md-510",
-          "claim-docs-guides-cli-md-546"
+          "claim-docs-guides-cli-md-546",
+          "claim-docs-guides-cli-md-564"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 58,
+      "satisfied": 59,
       "stale": 20,
-      "unknown": 281
+      "unknown": 280
     },
     "byLifecycle": {
       "new": 359
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 128,
-      "heuristic": 230,
+      "agent-reviewed": 129,
+      "heuristic": 229,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 58,
+    "satisfiedClaimCount": 59,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -722,6 +722,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`."
+      },
+      {
+        "claimId": "claim-docs-contracts-adapter-contract-md-432",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:8da3ce0b1c9e4fda46bddea23392caa181f805ab6e56ca9ed82b919411c24850",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-adapter-review-prompt-compare-path-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-adapter-contract-md-432"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "point review prompts at the same path so human and machine review can refer to the same compare output"
       },
       {
         "claimId": "claim-docs-contracts-review-packet-md-3",
@@ -1589,16 +1608,18 @@
   },
   "gitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
   "gitState": {
-    "changedFileCount": 38,
+    "changedFileCount": 44,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-artifacts/readme-reviewable-artifacts-2026-05-16/packet-snapshot.json",
       ".cautilus/claims/evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
+      ".cautilus/claims/evidence-readme-reviewable-artifacts-2026-05-16.json",
       ".cautilus/claims/evidence-readme-spec-report-renderer-independence-2026-05-16.json",
       ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/evidence-state.json",
@@ -1610,6 +1631,7 @@
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/status-summary.json",
@@ -1620,15 +1642,18 @@
       "charness-artifacts/critique/2026-05-16-guides-cli-evaluate-observation-no-runner-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-runner-readiness-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-post-claim-evidence-refresh-result.md",
+      "charness-artifacts/critique/2026-05-16-readme-reviewable-artifacts-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-readme-spec-report-renderer-independence-evidence-result.md",
       "charness-artifacts/debug/debug-2026-05-16-command-registry-surface-name.md",
       "charness-artifacts/debug/debug-2026-05-16-dev-repo-fixture-backend-results.md",
       "charness-artifacts/debug/debug-2026-05-16-jq-claim-summary-shape.md",
+      "charness-artifacts/debug/debug-2026-05-16-parallel-observation-output-race.md",
       "charness-artifacts/debug/debug-2026-05-16-review-test-unparam.md",
       "charness-artifacts/debug/debug-2026-05-16-shell-backtick-search.md",
       "charness-artifacts/debug/latest.md",
       "docs/internal/handoff.md",
-      "docs/specs/evidence/claim-evidence-state.md"
+      "docs/specs/evidence/claim-evidence-state.md",
+      "scripts/agent-runtime/review-prompt-flow.test.mjs"
     ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
@@ -1638,7 +1663,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "fe3e943ff1027119f4a2538c9667390faf6acb22",
+    "currentGitCommit": "6ad1068310181a07053ba09b940b6d091cd0afe0",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
@@ -1665,7 +1690,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 205,
+    "heuristicClaimsReadyForReview": 204,
     "needsAlignment": 37,
     "needsScenario": 8
   },

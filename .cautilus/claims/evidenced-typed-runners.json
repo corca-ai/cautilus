@@ -1133,8 +1133,19 @@
       "claimFingerprint": "sha256:f8a7b8b6077d204569c0fb22707b27e01368f625cf2f02abaa05ba5aa0b44a0d",
       "claimId": "claim-docs-contracts-adapter-contract-md-432",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:8da3ce0b1c9e4fda46bddea23392caa181f805ab6e56ca9ed82b919411c24850",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-adapter-review-prompt-compare-path-2026-05-16.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-432"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by review packet construction collecting the compare artifact path, comparison questions, and human review prompts into one packet; review prompt input preserving the artifact path and human review lens; and rendered review prompts exposing the same compare artifact path and compare summary.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -1142,9 +1153,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic review-prompt render, path, or packet-output proof for this claim.",
+      "nextAction": "Keep adapter compare artifact path, comparison questions, and human review prompts on the same review packet and rendered prompt boundary when review prompt surfaces change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "point review prompts at the same path so human and machine review can refer to the same compare output",
@@ -1153,8 +1164,9 @@
         }
       ],
       "summary": "point review prompts at the same path so human and machine review can refer to the same compare output",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names review-prompt routing, rendering, or shared-path contract behavior that should be protected by deterministic command or golden-output checks."
+      "whyThisLayer": "The claim names review-prompt routing and shared compare-output path behavior, which can be proven by deterministic packet and renderer tests."
     },
     {
       "claimAudience": "developer",
@@ -11860,9 +11872,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 58,
+      "satisfied": 59,
       "stale": 20,
-      "unknown": 281
+      "unknown": 280
     },
     "byLifecycle": {
       "new": 359
@@ -11873,8 +11885,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 128,
-      "heuristic": 230,
+      "agent-reviewed": 129,
+      "heuristic": 229,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12132,6 +12144,7 @@
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-adapter-claim-discovery-hints-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-adapter-review-prompt-compare-path-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-agent-status-orientation-refresh-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
@@ -12199,9 +12212,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 52,
+    "appliedResultCount": 53,
     "skippedResultCount": 51,
-    "keptUpdateCount": 134,
+    "keptUpdateCount": 135,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

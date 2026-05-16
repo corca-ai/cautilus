@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the adapter contract claim covered by review packet construction, review prompt input propagation, and rendered prompt path visibility tests."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-adapter-review-prompt-compare-path-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-432",
+          "claimFingerprint": "sha256:f8a7b8b6077d204569c0fb22707b27e01368f625cf2f02abaa05ba5aa0b44a0d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names review-prompt routing and shared compare-output path behavior, which can be proven by deterministic packet and renderer tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by review packet construction collecting the compare artifact path, comparison questions, and human review prompts into one packet; review prompt input preserving the artifact path and human review lens; and rendered review prompts exposing the same compare artifact path and compare summary.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-adapter-review-prompt-compare-path-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8da3ce0b1c9e4fda46bddea23392caa181f805ab6e56ca9ed82b919411c24850",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-432"
+              ]
+            }
+          ],
+          "nextAction": "Keep adapter compare artifact path, comparison questions, and human review prompts on the same review packet and rendered prompt boundary when review prompt surfaces change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

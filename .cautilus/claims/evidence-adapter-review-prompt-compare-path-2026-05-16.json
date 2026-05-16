@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-adapter-review-prompt-compare-path-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-contracts-adapter-contract-md-432"
+  ],
+  "repoCommit": "6ad1068310181a07053ba09b940b6d091cd0afe0",
+  "summary": "Deterministic proof that review prompt preparation keeps compare artifact paths and human review prompts on the same durable review boundary so human and machine reviewers can refer to the same compare output.",
+  "evidenceScope": {
+    "targetSurface": "adapter review prompt compare artifact path contract",
+    "claimBoundary": "Only the adapter-contract claim that review prompts point at the same compare output path as machine review evidence is marked satisfied.",
+    "notClaimed": [
+      "Every consumer adapter writes a compare-report.json file.",
+      "Every executor variant reads the compare artifact directly instead of through the rendered prompt or prompt input packet.",
+      "The compare artifact verdict is semantically correct for a real candidate."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 4,
+        "pass": 4,
+        "protectedBehaviors": [
+          "review prompt input preserves artifactFiles[0].relativePath as artifacts/compare-report.json",
+          "review prompt input preserves humanReviewPrompts[0].id as real-user",
+          "rendered review prompt includes the human review lens and the same artifacts/compare-report.json path",
+          "rendered review prompt includes the compare artifact summary from the report mode summary"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run TestBuildReviewPacketCollectsDurableReviewBoundary -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "BuildReviewPacket collects adapter artifact_paths including artifacts/compare-report.json",
+          "BuildReviewPacket keeps comparison_questions and human_review_prompts in the same cautilus.review_packet.v1 boundary"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok",
+        "protectedBehaviors": [
+          "CLI build-prompt-input carries current report evidence and compare artifact summary into the prompt input",
+          "CLI render-prompt emits the output-under-test and current report evidence sections for reviewer-visible failure"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/adapter-contract.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:121aeef8723db6f4a0e5222874263c43b8071d49c653e2dd106a5587e66518c3"
+    },
+    {
+      "path": "docs/contracts/review-packet.md",
+      "kind": "review-packet-contract",
+      "contentHash": "sha256:7661381c4dd755a5452d404bd0ab28b6900c992514e298bb0edb024d841cc223"
+    },
+    {
+      "path": "docs/contracts/review-prompt-inputs.md",
+      "kind": "review-prompt-input-contract",
+      "contentHash": "sha256:819729bb8e77be7f724a2c6d7de41c2d1d1a082766de7f6537eb8750c459a0ce"
+    },
+    {
+      "path": "scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "kind": "review-prompt-flow-tests",
+      "contentHash": "sha256:d5753d8a0c900f73458e182aa6559240aad6030202718fe4bbd2398c5bbb13ea"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-prompt-input.mjs",
+      "kind": "review-prompt-input-builder",
+      "contentHash": "sha256:918d748ed5eba4bc5063658e009bb17298942c82363358d81898f9391569bd32"
+    },
+    {
+      "path": "scripts/agent-runtime/render-review-prompt.mjs",
+      "kind": "review-prompt-renderer",
+      "contentHash": "sha256:2ffe844c890c51d3c87291b3367ee202676e204583a9a0e96c2cb0a5c3ded779"
+    },
+    {
+      "path": "internal/runtime/review.go",
+      "kind": "review-runtime",
+      "contentHash": "sha256:185d84941cf58d344295d509a34cffcde0fd7890d5486280aba0752a89675c06"
+    },
+    {
+      "path": "internal/runtime/review_test.go",
+      "kind": "review-runtime-tests",
+      "contentHash": "sha256:30bff99ff5349aeb51c98722323b38c2747b3a48513fbf14c1579833fbef4c79"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "review-prompt-cli-tests",
+      "contentHash": "sha256:3117b2cecae89e8da55bf99b6eed35d8466877bd27580d07f5714594e9843b39"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Review packet construction collects the compare artifact path, comparison questions, and human review prompts into one review packet; prompt input construction carries the artifact path and human review lens forward; and prompt rendering exposes the same compare artifact path and compare summary for human review."
+  }
+}

@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:32ce8f50cb91ae5d38433fe58cd20c2c6b93de0d821acd7f9e892f90f730b2c5",
+    "claimsHash": "sha256:ab8318f25a7bcd62d0665c5d6fc29396f4b09fe33d145b7615eefee7f56c0184",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:19aef8fcb5f437d26370eeee769147eb0e0fcbc024230097f520385e95e646f3",
+    "statusHash": "sha256:f2a1a34772df7fcc299e2baf2e97f43bb500eb0e323c3e160aa177132d1a20a0",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,16 +12,18 @@
     }
   },
   "gitState": {
-    "changedFileCount": 38,
+    "changedFileCount": 44,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-artifacts/readme-reviewable-artifacts-2026-05-16/packet-snapshot.json",
       ".cautilus/claims/evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
+      ".cautilus/claims/evidence-readme-reviewable-artifacts-2026-05-16.json",
       ".cautilus/claims/evidence-readme-spec-report-renderer-independence-2026-05-16.json",
       ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/evidence-state.json",
@@ -33,6 +35,7 @@
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/status-summary.json",
@@ -43,15 +46,18 @@
       "charness-artifacts/critique/2026-05-16-guides-cli-evaluate-observation-no-runner-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-runner-readiness-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-post-claim-evidence-refresh-result.md",
+      "charness-artifacts/critique/2026-05-16-readme-reviewable-artifacts-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-readme-spec-report-renderer-independence-evidence-result.md",
       "charness-artifacts/debug/debug-2026-05-16-command-registry-surface-name.md",
       "charness-artifacts/debug/debug-2026-05-16-dev-repo-fixture-backend-results.md",
       "charness-artifacts/debug/debug-2026-05-16-jq-claim-summary-shape.md",
+      "charness-artifacts/debug/debug-2026-05-16-parallel-observation-output-race.md",
       "charness-artifacts/debug/debug-2026-05-16-review-test-unparam.md",
       "charness-artifacts/debug/debug-2026-05-16-shell-backtick-search.md",
       "charness-artifacts/debug/latest.md",
       "docs/internal/handoff.md",
-      "docs/specs/evidence/claim-evidence-state.md"
+      "docs/specs/evidence/claim-evidence-state.md",
+      "scripts/agent-runtime/review-prompt-flow.test.mjs"
     ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
@@ -61,7 +67,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "fe3e943ff1027119f4a2538c9667390faf6acb22",
+    "currentGitCommit": "6ad1068310181a07053ba09b940b6d091cd0afe0",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
@@ -72,9 +78,9 @@
     "candidateCount": 359,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 58,
+      "satisfied": 59,
       "stale": 20,
-      "unknown": 281
+      "unknown": 280
     },
     "byRecommendedProof": {
       "cautilus-eval": 122,
@@ -88,8 +94,8 @@
       "ready-for-proof": 287
     },
     "byReviewStatus": {
-      "agent-reviewed": 128,
-      "heuristic": 230,
+      "agent-reviewed": 129,
+      "heuristic": 229,
       "human-reviewed": 1
     }
   },
@@ -264,27 +270,27 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 58,
+      "count": 59,
       "actor": "none",
       "evidence": {
-        "satisfied": 58
+        "satisfied": 59
       },
       "review": {
-        "agent-reviewed": 58
+        "agent-reviewed": 59
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 81,
+      "count": 80,
       "actor": "agent",
       "evidence": {
         "stale": 13,
-        "unknown": 68
+        "unknown": 67
       },
       "review": {
         "agent-reviewed": 22,
-        "heuristic": 59
+        "heuristic": 58
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
@@ -360,7 +366,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 230,
+      "count": 229,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [

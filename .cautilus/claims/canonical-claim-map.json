@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:32ce8f50cb91ae5d38433fe58cd20c2c6b93de0d821acd7f9e892f90f730b2c5"
+      "contentHash": "sha256:ab8318f25a7bcd62d0665c5d6fc29396f4b09fe33d145b7615eefee7f56c0184"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -3795,13 +3795,13 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 5,
+        "satisfied": 6,
         "stale": 7,
-        "unknown": 23
+        "unknown": 22
       },
       "byReviewStatus": {
-        "agent-reviewed": 14,
-        "heuristic": 21
+        "agent-reviewed": 15,
+        "heuristic": 20
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
@@ -5404,30 +5404,30 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:f8a7b8b6077d204569c0fb22707b27e01368f625cf2f02abaa05ba5aa0b44a0d",
       "canonicalClaimId": "M11",
-      "score": 12,
+      "score": 15,
       "runnerUpCanonicalClaimId": "M14",
-      "runnerUpScore": 12,
+      "runnerUpScore": 15,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "add",
+        "artifact",
         "compare",
         "contract",
         "deterministic",
         "human",
         "keep",
         "machine",
+        "packet",
         "path",
         "point",
-        "render",
-        "review",
-        "same"
+        "question",
+        "rendered"
       ]
     },
     {
