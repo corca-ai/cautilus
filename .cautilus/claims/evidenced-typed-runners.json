@@ -513,17 +513,28 @@
       "claimFingerprint": "sha256:25f326356227fb2317af75db3dca0b6ac32161558c644ef0f1b1073bce3c175f",
       "claimId": "claim-readme-md-69",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:43d0d224a76f46814e4ea452aefaf5c0a52b03fc3113c293f8bc56a2106dc9d2",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-readme-spec-report-renderer-independence-2026-05-16.json",
+          "supportsClaimIds": [
+            "claim-readme-md-69"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by specdown generation from docs/specs/index.spec.md, focused tests proving doctor readiness and claim packet validation do not require specdown in a host repo, command catalog proof that doctor, discover claims, evaluate, and improve surfaces are discoverable, and packet-inspection commands over eval-plan and improve-input packets.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
+      "nextAction": "Keep public website generation proof separate from host-repo CLI inspection and from behavior-quality proof for eval or improvement runs.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
@@ -532,8 +543,9 @@
         }
       ],
       "summary": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet, catalog, or renderer behavior that should be protected by deterministic command, schema, or render tests."
+      "whyThisLayer": "The claim names deterministic spec report generation and renderer-independent CLI inspection surfaces."
     },
     {
       "claimAudience": "user",
@@ -11836,9 +11848,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 56,
+      "satisfied": 57,
       "stale": 20,
-      "unknown": 283
+      "unknown": 282
     },
     "byLifecycle": {
       "new": 359
@@ -11849,8 +11861,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 126,
-      "heuristic": 232,
+      "agent-reviewed": 127,
+      "heuristic": 231,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12058,13 +12070,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-cli-md-277",
-        "clusterId": "cluster-guides-cli-evaluate-observation-no-runner-2026-05-16"
+        "claimId": "claim-readme-md-69",
+        "clusterId": "cluster-readme-spec-report-renderer-independence-2026-05-16"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12118,7 +12130,8 @@
       ".cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
-      ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json"
+      ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12173,9 +12186,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 50,
+    "appliedResultCount": 51,
     "skippedResultCount": 51,
-    "keptUpdateCount": 132,
+    "keptUpdateCount": 133,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

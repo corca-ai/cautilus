@@ -3,20 +3,20 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 232
+          "unknown": 231
         },
         "byReviewStatus": {
-          "heuristic": 232
+          "heuristic": 231
         },
-        "count": 232,
+        "count": 231,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-67",
-          "claim-readme-md-69",
           "claim-readme-md-92",
           "claim-readme-md-109",
-          "claim-readme-md-122"
+          "claim-readme-md-122",
+          "claim-readme-md-143"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
       },
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 56
+          "satisfied": 57
         },
         "byReviewStatus": {
-          "agent-reviewed": 56
+          "agent-reviewed": 57
         },
-        "count": 56,
+        "count": 57,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 13,
-          "unknown": 70
+          "unknown": 69
         },
         "byReviewStatus": {
           "agent-reviewed": 22,
-          "heuristic": 61
+          "heuristic": 60
         },
-        "count": 83,
+        "count": 82,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-readme-md-69",
           "claim-readme-md-152",
           "claim-docs-contracts-adapter-contract-md-432",
           "claim-docs-contracts-adapter-contract-md-478",
-          "claim-docs-guides-cli-md-474"
+          "claim-docs-guides-cli-md-474",
+          "claim-docs-guides-cli-md-510"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 56,
+      "satisfied": 57,
       "stale": 20,
-      "unknown": 283
+      "unknown": 282
     },
     "byLifecycle": {
       "new": 359
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 126,
-      "heuristic": 232,
+      "agent-reviewed": 127,
+      "heuristic": 231,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 56,
+    "satisfiedClaimCount": 57,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -537,6 +537,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it."
+      },
+      {
+        "claimId": "claim-readme-md-69",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:43d0d224a76f46814e4ea452aefaf5c0a52b03fc3113c293f8bc56a2106dc9d2",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-readme-spec-report-renderer-independence-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-readme-md-69"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work."
       },
       {
         "claimId": "claim-readme-md-77",
@@ -1551,7 +1570,7 @@
   },
   "gitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
   "gitState": {
-    "changedFileCount": 32,
+    "changedFileCount": 35,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1559,6 +1578,7 @@
       ".cautilus/claims/evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
+      ".cautilus/claims/evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
       ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/evidence-state.json",
@@ -1568,6 +1588,7 @@
       ".cautilus/claims/review-result-evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
       ".cautilus/claims/status-summary.json",
@@ -1575,6 +1596,7 @@
       "charness-artifacts/critique/2026-05-16-guides-cli-doctor-refresh-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-eval-live-instance-selection-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-evaluate-fixture-path-evidence-result.md",
+      "charness-artifacts/critique/2026-05-16-guides-cli-evaluate-observation-no-runner-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-guides-cli-runner-readiness-evidence-result.md",
       "charness-artifacts/critique/2026-05-16-post-claim-evidence-refresh-result.md",
       "charness-artifacts/debug/debug-2026-05-16-command-registry-surface-name.md",
@@ -1594,7 +1616,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "130ccfd6cfcc3caac8575bfa7b59fac3d58b3521",
+    "currentGitCommit": "dafa138dbb5afb3d32d864736365eafa5903da96",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
@@ -1621,7 +1643,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 207,
+    "heuristicClaimsReadyForReview": 206,
     "needsAlignment": 37,
     "needsScenario": 8
   },

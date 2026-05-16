@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-readme-spec-report-renderer-independence-2026-05-16",
+  "createdForClaimIds": [
+    "claim-readme-md-69"
+  ],
+  "repoCommit": "dafa138dbb5afb3d32d864736365eafa5903da96",
+  "summary": "Deterministic proof for the README claim that the public website report is generated from the claim spec tree, while host repos can inspect readiness, claim packets, eval surfaces, and improvement surfaces without needing the renderer.",
+  "evidenceScope": {
+    "targetSurface": "specdown report generation and renderer-independent Cautilus inspection commands",
+    "claimBoundary": "Only the current README.md line 69 claim is marked satisfied.",
+    "notClaimed": [
+      "The public website is freshly deployed.",
+      "Every host repo can run every eval or improve workflow without adapter setup.",
+      "The command catalog proves behavior quality for evals or improvement proposals.",
+      "Host repos never benefit from the public website renderer.",
+      "The full claim spec tree has no evidence gaps."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "specCount": 42,
+        "specdownEntry": "docs/specs/index.spec.md",
+        "reporters": [
+          ".artifacts/specdown/report",
+          ".artifacts/specdown/report.json"
+        ],
+        "notableAssertions": [
+          "the public spec graph validates from the checked-in spec tree",
+          "the specdown config generates both HTML and JSON reports from docs/specs/index.spec.md"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunDoctorDoesNotBlockWhenSpecdownMissingAndPacketsValidate|TestRunCommandsJSONReturnsRegistry|TestRunDoctorDoesNotRequireToolRootForNativeCommands|TestRunPrefixHelpWorksForCommandGroups' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "doctor readiness stays ready in a temp host repo when specdown is absent from PATH and claim packets validate",
+          "raw claim packets remain readable through discover claims validate without specdown",
+          "doctor commands JSON exposes claim, eval, and status inspection surfaces",
+          "improve command group help is available through the CLI"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/cli -run 'TestRenderUsageGroupsCommandsByPurpose|TestRenderUsageIncludesLifecycleCommands|TestRenderTopicUsageIncludesGroupedSubcommandsForPrefixes' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/cli",
+        "notableAssertions": [
+          "top-level usage groups discover, evaluate, and improve behavior commands together",
+          "doctor lifecycle commands remain in the CLI catalog",
+          "improve search topic usage renders grouped subcommands"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=dot --test-reporter-destination=stdout scripts/prepare-specdown-pages.test.mjs scripts/lint-specs.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "notableAssertions": [
+          "prepareSpecdownPages copies specdown HTML assets and report.json into a site directory",
+          "lint-specs target mode runs specdown with the selected spec file as the entry"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor commands --json | jq '{schemaVersion, commandCount:(.commands|length), hasDoctor:any(.commands[]; (.usage // \"\") == \"cautilus doctor [args]\"), hasClaims:any(.commands[]; (.usage // \"\")|startswith(\"cautilus discover claims \")), hasEvaluate:any(.commands[]; (.usage // \"\") == \"cautilus evaluate fixture [args]\"), hasImprove:any(.commands[]; (.usage // \"\") == \"cautilus improve prepare-input [args]\")}'",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.commands.v1",
+        "commandCount": 59,
+        "hasDoctor": true,
+        "hasClaims": true,
+        "hasEvaluate": true,
+        "hasImprove": true
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor packet inspect --input .cautilus/claims/eval-plan-evidenced-typed-runners.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.packet_inspection.v1",
+        "inputSchemaVersion": "cautilus.claim_eval_plan.v1",
+        "selectorHints": [
+          "plans",
+          "skipped"
+        ],
+        "arrayCounts": {
+          "evalPlans": 8,
+          "skippedClaims": 255
+        }
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor packet inspect --input fixtures/improve/example-input.json",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.packet_inspection.v1",
+        "inputSchemaVersion": "cautilus.improve_inputs.v1",
+        "topLevelKeysInclude": [
+          "improvementTarget",
+          "report",
+          "reviewSummary",
+          "scenarioHistory"
+        ]
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": ".artifacts/specdown/report.json",
+      "kind": "specdown-json-report",
+      "contentHash": "sha256:d03378a70bb93d42babf38d20925b7a33a37402a2a82d4857680e65b71174d73",
+      "title": "Cautilus",
+      "resultCount": 43
+    },
+    {
+      "path": ".cautilus/claims/eval-plan-evidenced-typed-runners.json",
+      "kind": "eval-plan-packet",
+      "contentHash": "sha256:d81722866d9392a12a9de763356353529302cd636ff04944c387e12681940f35",
+      "schemaVersion": "cautilus.claim_eval_plan.v1"
+    },
+    {
+      "path": "fixtures/improve/example-input.json",
+      "kind": "improve-input-packet-fixture",
+      "contentHash": "sha256:35d70c6dfad7c3d7fccfb8a03d3efb18e091759fd0d8a6132b46241fef8e84a5",
+      "schemaVersion": "cautilus.improve_inputs.v1"
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "README.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:38850e7df41159af041d367c0932ef7a17ed8893adaac052b3676b732cab9acb"
+    },
+    {
+      "path": "specdown.json",
+      "kind": "specdown-entry-config",
+      "contentHash": "sha256:b85b87820d318427b081cb7dfeacd5d06b95661e24cf727fecae6697384471fb"
+    },
+    {
+      "path": "docs/specs/index.spec.md",
+      "kind": "claim-spec-report-entry",
+      "contentHash": "sha256:f43b0917c28cd6b7adff9c3664f68ecb857cddc4ad708fdbceabfb809d375bf7"
+    },
+    {
+      "path": "docs/specs/user/index.spec.md",
+      "kind": "user-claim-spec-index",
+      "contentHash": "sha256:00fdcaee58c9bd1520b615f82091044919f78fe5c620430a6828c2cff16b386c"
+    },
+    {
+      "path": "docs/specs/contracts/index.spec.md",
+      "kind": "maintainer-claim-spec-index",
+      "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
+    },
+    {
+      "path": "scripts/lint-specs.mjs",
+      "kind": "specdown-lint-runner",
+      "contentHash": "sha256:4d9b157358317ac869b1552fa9b9ad96f61fe642f28cde41bc65fce46a570726"
+    },
+    {
+      "path": "scripts/prepare-specdown-pages.mjs",
+      "kind": "public-site-report-copy-helper",
+      "contentHash": "sha256:8dd801917a1216eb021015b0ad87a7e342524be25a627f66f3d33d85b7ed2b04"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "renderer-independent-command-tests",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "internal/cli/registry_test.go",
+      "kind": "command-catalog-tests",
+      "contentHash": "sha256:96c64bb996b7051700b2b8e668530cc531e73648c18f9487d2bfb67f153674ca"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "command-catalog",
+      "contentHash": "sha256:66df6f5b8e3911690daa3d5757bb55078db1d0d2df99615c60625c2e55e993e7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Specdown validates and emits reports from the checked-in spec tree, while focused app and CLI tests plus packet-inspection commands verify that readiness, claim packet validation, eval-plan packet inspection, improvement packet inspection, and CLI surface discovery remain available without requiring the renderer in host repos."
+  }
+}

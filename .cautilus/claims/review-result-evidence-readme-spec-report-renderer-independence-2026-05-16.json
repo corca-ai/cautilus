@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T08:55:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the current README spec-report renderer independence claim covered by specdown generation, focused renderer-independent CLI tests, and command catalog inspection."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-spec-report-renderer-independence-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-69",
+          "claimFingerprint": "sha256:25f326356227fb2317af75db3dca0b6ac32161558c644ef0f1b1073bce3c175f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic spec report generation and renderer-independent CLI inspection surfaces.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by specdown generation from docs/specs/index.spec.md, focused tests proving doctor readiness and claim packet validation do not require specdown in a host repo, command catalog proof that doctor, discover claims, evaluate, and improve surfaces are discoverable, and packet-inspection commands over eval-plan and improve-input packets.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-readme-spec-report-renderer-independence-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:43d0d224a76f46814e4ea452aefaf5c0a52b03fc3113c293f8bc56a2106dc9d2",
+              "supportsClaimIds": [
+                "claim-readme-md-69"
+              ]
+            }
+          ],
+          "nextAction": "Keep public website generation proof separate from host-repo CLI inspection and from behavior-quality proof for eval or improvement runs.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
