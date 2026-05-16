@@ -15,7 +15,18 @@ var (
 	}
 	compareVerdictValues     = map[string]struct{}{"improved": {}, "regressed": {}, "mixed": {}, "unchanged": {}, "inconclusive": {}}
 	compareDeltaStatusValues = map[string]struct{}{"improved": {}, "regressed": {}, "unchanged": {}, "noisy": {}}
-	telemetryNumericFields   = []string{"prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"}
+	telemetryNumericFields   = []string{
+		"uncached_input_tokens",
+		"cache_creation_input_tokens",
+		"cache_read_input_tokens",
+		"cached_input_tokens",
+		"prompt_tokens",
+		"output_tokens",
+		"reasoning_output_tokens",
+		"completion_tokens",
+		"total_tokens",
+		"cost_usd",
+	}
 )
 
 func normalizeCompareArtifact(value any, field string) (map[string]any, error) {

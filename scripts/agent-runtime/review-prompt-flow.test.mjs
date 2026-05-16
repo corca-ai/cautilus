@@ -97,6 +97,15 @@ function createReviewPacketFixture() {
 							status: "rejected",
 							summary: "held_out completed comparison and reported 1 regression. Warning: held_out evidence may be contaminated by provider rate limits (1 matching artifact).",
 							reasonCodes: ["behavior_regression", "provider_rate_limit_contamination"],
+							telemetry: {
+								durationMs: 1234,
+								uncached_input_tokens: 120,
+								cache_creation_input_tokens: 40,
+								cache_read_input_tokens: 60,
+								cached_input_tokens: 20,
+								total_tokens: 240,
+								cost_usd: 0.024,
+							},
 							warnings: [
 								{
 									code: "provider_rate_limit_contamination",
@@ -248,6 +257,7 @@ test("renderReviewPrompt turns review prompt inputs into a portable meta-prompt"
 		assert.match(prompt, /Held-out operator guidance regressed\./);
 		assert.match(prompt, /provider_rate_limit_contamination/);
 		assert.match(prompt, /provider rate limits/);
+		assert.match(prompt, /telemetry: durationMs=1234, uncached_input_tokens=120, cache_creation_input_tokens=40, cache_read_input_tokens=60, cached_input_tokens=20, total_tokens=240, cost_usd=0\.024/);
 		assert.match(prompt, /## Consumer Prompt Addendum/);
 		assert.match(prompt, /Prefer concrete operator-facing evidence\./);
 	} finally {

@@ -1,4 +1,13 @@
 import { deriveCodexCostTelemetry } from "./codex-pricing.mjs";
+import {
+	TELEMETRY_NUMERIC_FIELDS,
+	TELEMETRY_STRING_FIELDS,
+} from "./telemetry-fields.mjs";
+
+export {
+	TELEMETRY_NUMERIC_FIELDS,
+	TELEMETRY_STRING_FIELDS,
+} from "./telemetry-fields.mjs";
 
 function normalizeNonNegativeInteger(value) {
 	return Number.isInteger(value) && value >= 0 ? value : null;
@@ -168,7 +177,11 @@ function codexTelemetryFromTotals(totals, provider, model, sessionMode) {
 		provider,
 		model,
 		session_mode: normalizeSessionMode(sessionMode),
+		uncached_input_tokens: totals.input > 0 ? totals.input : null,
+		cached_input_tokens: totals.cached > 0 ? totals.cached : null,
 		prompt_tokens: promptTokens > 0 ? promptTokens : null,
+		output_tokens: totals.output > 0 ? totals.output : null,
+		reasoning_output_tokens: totals.reasoning > 0 ? totals.reasoning : null,
 		completion_tokens: completionTokens > 0 ? completionTokens : null,
 		total_tokens: promptTokens + completionTokens > 0 ? promptTokens + completionTokens : null,
 		...(costTelemetry ?? {}),
@@ -265,7 +278,7 @@ export function normalizeSkillTelemetry(value) {
 		return null;
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model", "cost_truth", "pricing_source", "pricing_version"]) {
+	for (const key of TELEMETRY_STRING_FIELDS) {
 		if (typeof value[key] === "string" && value[key].trim()) {
 			telemetry[key] = value[key];
 		}
@@ -275,7 +288,7 @@ export function normalizeSkillTelemetry(value) {
 	}
 	return {
 		...telemetry,
-		...(normalizeNumericFields(value, ["prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"]) ?? {}),
+		...(normalizeNumericFields(value, TELEMETRY_NUMERIC_FIELDS) ?? {}),
 	};
 }
 
@@ -287,7 +300,7 @@ export function aggregateSkillTelemetry(results) {
 		return null;
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model", "cost_truth", "pricing_source", "pricing_version", "session_mode"]) {
+	for (const key of [...TELEMETRY_STRING_FIELDS, "session_mode"]) {
 		const values = Array.from(new Set(
 			telemetryResults
 				.map((entry) => {
@@ -302,7 +315,7 @@ export function aggregateSkillTelemetry(results) {
 			telemetry[key] = values[0];
 		}
 	}
-	for (const key of ["prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"]) {
+	for (const key of TELEMETRY_NUMERIC_FIELDS) {
 		const values = telemetryResults
 			.map((entry) => Number(entry[key]))
 			.filter((value) => Number.isFinite(value));
@@ -321,12 +334,19 @@ export function extractClaudeTelemetry(raw, options = {}) {
 		return null;
 	}
 	const usage = isObjectRecord(envelope.usage) ? envelope.usage : {};
+	const uncachedInputTokens = normalizeNonNegativeInteger(usage.input_tokens);
+	const cacheCreationInputTokens = normalizeNonNegativeInteger(usage.cache_creation_input_tokens);
+	const cacheReadInputTokens = normalizeNonNegativeInteger(usage.cache_read_input_tokens);
 	const promptTokens = claudePromptTokens(usage);
 	const completionTokens = normalizeNonNegativeInteger(usage.output_tokens);
 	return compactTelemetry({
 		provider: "anthropic",
 		model: claudeTelemetryModel(envelope, options),
+		uncached_input_tokens: uncachedInputTokens,
+		cache_creation_input_tokens: cacheCreationInputTokens,
+		cache_read_input_tokens: cacheReadInputTokens,
 		prompt_tokens: promptTokens > 0 ? promptTokens : null,
+		output_tokens: completionTokens,
 		completion_tokens: completionTokens,
 		total_tokens: completionTokens === null && promptTokens === 0 ? null : promptTokens + (completionTokens ?? 0),
 		cost_usd: normalizeNonNegativeNumber(envelope.total_cost_usd),

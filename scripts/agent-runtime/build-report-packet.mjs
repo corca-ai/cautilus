@@ -13,11 +13,11 @@ import {
 	summarizeReportReasons,
 } from "./report-reason-classification.mjs";
 import { writeTextOutput } from "./output-files.mjs";
+import { TELEMETRY_NUMERIC_FIELDS } from "./telemetry-fields.mjs";
 
 export { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA } from "./contract-versions.mjs";
 
 const MODE_VALUES = new Set(["iterate", "held_out", "comparison", "full_gate"]);
-const NUMERIC_TELEMETRY_FIELDS = ["prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"];
 
 function usage(exitCode = 0) {
 	const text = [
@@ -141,7 +141,7 @@ function normalizeTelemetry(value, field) {
 			telemetry[key] = normalizeNonEmptyString(value[key], `${field}.${key}`);
 		}
 	}
-	for (const key of NUMERIC_TELEMETRY_FIELDS) {
+	for (const key of TELEMETRY_NUMERIC_FIELDS) {
 		const normalized = normalizeNonNegativeNumber(value[key], `${field}.${key}`);
 		if (normalized !== undefined) {
 			telemetry[key] = normalized;
@@ -338,7 +338,7 @@ function copyModeTiming(modeRun, telemetry) {
 
 function collectNumericTelemetry(modeRun, scenarioOverall) {
 	const telemetry = {};
-	for (const field of NUMERIC_TELEMETRY_FIELDS) {
+	for (const field of TELEMETRY_NUMERIC_FIELDS) {
 		const value = chooseNumber(modeRun.telemetry?.[field], scenarioOverall?.[field]);
 		if (typeof value === "number") {
 			telemetry[field] = value;
@@ -412,7 +412,7 @@ function summarizeReportTelemetry(modeSummaries) {
 	if (durationMs !== null) {
 		telemetry.durationMs = durationMs;
 	}
-	for (const field of NUMERIC_TELEMETRY_FIELDS) {
+	for (const field of TELEMETRY_NUMERIC_FIELDS) {
 		const total = sumModeTelemetryField(modeSummaries, field);
 		if (total !== null) {
 			telemetry[field] = total;

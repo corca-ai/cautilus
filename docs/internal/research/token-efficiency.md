@@ -75,6 +75,9 @@ Current args (`codexArgs` in `scripts/agent-runtime/run-local-skill-test.mjs`):
 Sandbox mode is intentionally caller-controlled (`read-only`, `workspace-write`, or `danger-full-access`) because different skills have different authority needs.
 Use `danger-full-access` only for cases that must launch a nested provider CLI from inside the evaluated agent runtime; ordinary review-only loops should stay read-only or workspace-write.
 
+Skill-test telemetry now preserves explicit cache-token breakdown when the runtime exposes it.
+Claude JSON envelopes keep uncached input, cache creation input, cache read input, output, aggregate prompt, completion, total token, and cost fields.
+Codex JSON streams keep uncached input, cached input, output, reasoning output, aggregate prompt, completion, total token, and derived cost fields when the selected model is covered by the checked-in pricing catalog.
 Codex `skill test` telemetry now reads the machine-readable `codex exec --json`
 event stream.
 For supported OpenAI Codex models, `Cautilus` also derives `cost_usd` from a

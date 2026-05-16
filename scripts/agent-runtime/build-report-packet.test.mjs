@@ -71,6 +71,7 @@ function createReportInputFixture() {
 							telemetry: {
 								provider: "openai",
 								model: "gpt-5.4",
+								cached_input_tokens: 50,
 								total_tokens: 200,
 								cost_usd: 0.02,
 							},
@@ -93,6 +94,8 @@ function createReportInputFixture() {
 				telemetry: {
 					provider: "anthropic",
 					model: "claude-3.7",
+					cache_creation_input_tokens: 100,
+					cache_read_input_tokens: 200,
 					total_tokens: 500,
 					cost_usd: 0.04,
 				},
@@ -134,8 +137,12 @@ test("buildReportPacket aggregates mode telemetry and scenario summaries", () =>
 	assert.equal(report.intentProfile.behaviorSurface, "operator_behavior");
 	assert.equal(report.modesRun.length, 2);
 	assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 200);
+	assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.cached_input_tokens, 50);
 	assert.equal(report.modeSummaries[0].compareArtifact.verdict, "improved");
 	assert.equal(report.modeSummaries[1].telemetry.total_tokens, 500);
+	assert.equal(report.telemetry.cached_input_tokens, 50);
+	assert.equal(report.telemetry.cache_creation_input_tokens, 100);
+	assert.equal(report.telemetry.cache_read_input_tokens, 200);
 	assert.equal(report.telemetry.total_tokens, 700);
 	assert.equal(report.telemetry.cost_usd, 0.06);
 	assert.equal(report.telemetry.durationMs, 35000);

@@ -48,9 +48,15 @@ The first slice consumes one normalized packet with:
     - optional `provider`
     - optional `model`
     - optional `session_mode`
-      - `ephemeral`
-      - `persistent`
+    - `ephemeral`
+    - `persistent`
+    - optional `uncached_input_tokens`
+    - optional `cache_creation_input_tokens`
+    - optional `cache_read_input_tokens`
+    - optional `cached_input_tokens`
     - optional `prompt_tokens`
+    - optional `output_tokens`
+    - optional `reasoning_output_tokens`
     - optional `completion_tokens`
     - optional `total_tokens`
     - optional `cost_usd`
@@ -114,6 +120,7 @@ The first summary packet should include:
   - `trigger_selection`
   - `execution_quality`
 - preserved per-evaluation runtime telemetry when the host runner exposes it explicitly
+- preserved cache-token breakdown when a runtime exposes cache creation, cache read, cached input, or uncached input token counts explicitly
 - preserved cost-truth provenance when cost is derived from a versioned
   pricing catalog instead of emitted directly by the runtime
 - derived product-owned `intentProfile`

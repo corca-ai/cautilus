@@ -2103,7 +2103,18 @@ func summarizeVariantTelemetry(summaries []any) any {
 	if len(models) > 0 {
 		packet["models"] = models
 	}
-	for _, field := range []string{"prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"} {
+	for _, field := range []string{
+		"uncached_input_tokens",
+		"cache_creation_input_tokens",
+		"cache_read_input_tokens",
+		"cached_input_tokens",
+		"prompt_tokens",
+		"output_tokens",
+		"reasoning_output_tokens",
+		"completion_tokens",
+		"total_tokens",
+		"cost_usd",
+	} {
 		if total, ok := sumTelemetryField(summaries, field); ok {
 			packet[field] = total
 		}

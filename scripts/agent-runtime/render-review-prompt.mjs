@@ -75,6 +75,16 @@ function renderTelemetry(telemetry) {
 	if (typeof telemetry.durationMs === "number") {
 		parts.push(`durationMs=${telemetry.durationMs}`);
 	}
+	for (const field of [
+		"uncached_input_tokens",
+		"cache_creation_input_tokens",
+		"cache_read_input_tokens",
+		"cached_input_tokens",
+	]) {
+		if (typeof telemetry[field] === "number") {
+			parts.push(`${field}=${telemetry[field]}`);
+		}
+	}
 	if (typeof telemetry.total_tokens === "number") {
 		parts.push(`total_tokens=${telemetry.total_tokens}`);
 	}

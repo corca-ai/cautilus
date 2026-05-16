@@ -2,6 +2,7 @@ import {
 	REVIEW_SUMMARY_SCHEMA,
 	REVIEW_VARIANT_RESULT_SCHEMA,
 } from "./contract-versions.mjs";
+import { TELEMETRY_NUMERIC_FIELDS } from "./telemetry-fields.mjs";
 
 const EXECUTION_STATUS_MAP = {
 	"": "passed",
@@ -278,12 +279,7 @@ export function summarizeReviewVariantTelemetry(variants) {
 	if (models.length > 0) {
 		summary.models = models;
 	}
-	for (const field of [
-		"prompt_tokens",
-		"completion_tokens",
-		"total_tokens",
-		"cost_usd",
-	]) {
+	for (const field of TELEMETRY_NUMERIC_FIELDS) {
 		const total = sumTelemetryField(variants, field);
 		if (total !== null) {
 			summary[field] = total;

@@ -1,5 +1,10 @@
 import { readFileSync } from "node:fs";
 
+import {
+	TELEMETRY_NUMERIC_FIELDS,
+	TELEMETRY_STRING_FIELDS,
+} from "./telemetry-fields.mjs";
+
 export const EXECUTION_STATUSES = new Set(["passed", "failed", "degraded", "blocked"]);
 
 export function parseJsonFile(path) {
@@ -94,7 +99,7 @@ export function normalizeOptionalTelemetry(value, field) {
 		throw new Error(`${field} must be an object`);
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model", "cost_truth", "pricing_source", "pricing_version"]) {
+	for (const key of TELEMETRY_STRING_FIELDS) {
 		const normalized = normalizeOptionalString(value[key], `${field}.${key}`);
 		if (normalized !== null) {
 			telemetry[key] = normalized;
@@ -104,7 +109,7 @@ export function normalizeOptionalTelemetry(value, field) {
 	if (sessionMode !== null) {
 		telemetry.session_mode = sessionMode;
 	}
-	for (const key of ["prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"]) {
+	for (const key of TELEMETRY_NUMERIC_FIELDS) {
 		const normalized = normalizeNonNegativeNumber(value[key], `${field}.${key}`);
 		if (normalized !== null) {
 			telemetry[key] = normalized;

@@ -163,7 +163,13 @@ Optional scenario-result telemetry fields:
 - `completedAt`
 - `telemetry.provider`
 - `telemetry.model`
+- `telemetry.uncached_input_tokens`
+- `telemetry.cache_creation_input_tokens`
+- `telemetry.cache_read_input_tokens`
+- `telemetry.cached_input_tokens`
 - `telemetry.prompt_tokens`
+- `telemetry.output_tokens`
+- `telemetry.reasoning_output_tokens`
 - `telemetry.completion_tokens`
 - `telemetry.total_tokens`
 - `telemetry.cost_usd`

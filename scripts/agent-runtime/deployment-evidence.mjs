@@ -4,6 +4,7 @@ import {
 	SCENARIO_RESULTS_SCHEMA,
 	SKILL_EVALUATION_SUMMARY_SCHEMA,
 } from "./contract-versions.mjs";
+import { TELEMETRY_NUMERIC_FIELDS } from "./telemetry-fields.mjs";
 
 const DEPLOYMENT_SURFACES = new Set(["chatbot", "skill", "workflow"]);
 const SOURCE_KINDS = new Set(["skill_evaluation_summary", "scenario_results"]);
@@ -94,7 +95,7 @@ function normalizeTelemetry(record, field) {
 			telemetry[key] = value;
 		}
 	}
-	for (const key of ["total_tokens", "cost_usd"]) {
+	for (const key of TELEMETRY_NUMERIC_FIELDS) {
 		const value = normalizeNonNegativeNumber(record[key], `${field}.${key}`);
 		if (value !== null) {
 			telemetry[key] = key === "cost_usd" ? Number(value.toFixed(12)) : Math.round(value);
@@ -169,11 +170,13 @@ function normalizeEvidenceRow(row, index) {
 			normalized[key] = value;
 		}
 	}
-	for (const [key, value] of Object.entries({
+	const numericFields = {
 		duration_ms: normalizeNonNegativeNumber(row.duration_ms, `rows[${index}].duration_ms`),
-		total_tokens: normalizeNonNegativeNumber(row.total_tokens, `rows[${index}].total_tokens`),
-		cost_usd: normalizeNonNegativeNumber(row.cost_usd, `rows[${index}].cost_usd`),
-	})) {
+	};
+	for (const key of TELEMETRY_NUMERIC_FIELDS) {
+		numericFields[key] = normalizeNonNegativeNumber(row[key], `rows[${index}].${key}`);
+	}
+	for (const [key, value] of Object.entries(numericFields)) {
 		if (value !== null) {
 			normalized[key] = key === "cost_usd" ? Number(value.toFixed(12)) : Math.round(value);
 		}
@@ -199,11 +202,28 @@ function skillSampling(evaluation, index) {
 	};
 }
 
+function rowTelemetryValue(key, telemetry, metrics) {
+	if (key === "total_tokens") {
+		return telemetry.total_tokens ?? metrics.total_tokens ?? null;
+	}
+	if (key === "cost_usd") {
+		return telemetry.cost_usd ?? metrics.cost_usd ?? null;
+	}
+	return telemetry[key] ?? null;
+}
+
+function attachTelemetryNumericFields(row, telemetry, metrics) {
+	for (const key of TELEMETRY_NUMERIC_FIELDS) {
+		row[key] = rowTelemetryValue(key, telemetry, metrics);
+	}
+	return row;
+}
+
 function buildSkillSummaryRow(evaluation, index, context) {
 	const sampling = skillSampling(evaluation, index);
 	const metrics = normalizeMetrics(evaluation.metrics, `evaluations[${index}].metrics`);
 	const telemetry = normalizeTelemetry(evaluation.telemetry, `evaluations[${index}].telemetry`);
-	return {
+	return attachTelemetryNumericFields({
 		surface: context.surface,
 		scenarioId: normalizeNonEmptyString(evaluation.evaluationId, `evaluations[${index}].evaluationId`),
 		scenarioLabel: resolveSkillScenarioLabel(evaluation, index),
@@ -216,9 +236,7 @@ function buildSkillSummaryRow(evaluation, index, context) {
 		provider: telemetry.provider ?? null,
 		model: telemetry.model ?? null,
 		duration_ms: metrics.duration_ms ?? null,
-		total_tokens: metrics.total_tokens ?? null,
-		cost_usd: metrics.cost_usd ?? null,
-	};
+	}, telemetry, metrics);
 }
 
 function skillSummaryRows(packet, context) {
@@ -234,29 +252,30 @@ function scenarioResultRows(packet, context) {
 		throw new Error(`scenario results must use schemaVersion ${SCENARIO_RESULTS_SCHEMA}`);
 	}
 	const passStatuses = new Set(context.passStatuses ?? ["passed"]);
-	return (Array.isArray(packet.results) ? packet.results : []).map((result, index) => {
-		const metrics = normalizeMetrics(result, `results[${index}]`);
-		const telemetry = normalizeTelemetry(result.telemetry, `results[${index}].telemetry`);
-		const status = normalizeNonEmptyString(result.status, `results[${index}].status`);
-		return {
-			surface: context.surface,
-			scenarioId: normalizeNonEmptyString(result.scenarioId, `results[${index}].scenarioId`),
-			scenarioLabel:
-				normalizeOptionalString(result.displayName, `results[${index}].displayName`) ??
-				normalizeNonEmptyString(result.scenarioId, `results[${index}].scenarioId`),
-			runtime: context.runtime,
-			sourceKind: context.sourceKind,
-			status,
-			sampleCount: 1,
-			successCount: passStatuses.has(status) ? 1 : 0,
-			sourcePath: context.sourcePath ?? null,
-			provider: telemetry.provider ?? null,
-			model: telemetry.model ?? null,
-			duration_ms: metrics.duration_ms ?? null,
-			total_tokens: telemetry.total_tokens ?? metrics.total_tokens ?? null,
-			cost_usd: telemetry.cost_usd ?? metrics.cost_usd ?? null,
-		};
-	});
+	return (Array.isArray(packet.results) ? packet.results : [])
+		.map((result, index) => buildScenarioResultRow(result, index, context, passStatuses));
+}
+
+function buildScenarioResultRow(result, index, context, passStatuses) {
+	const metrics = normalizeMetrics(result, `results[${index}]`);
+	const telemetry = normalizeTelemetry(result.telemetry, `results[${index}].telemetry`);
+	const status = normalizeNonEmptyString(result.status, `results[${index}].status`);
+	return attachTelemetryNumericFields({
+		surface: context.surface,
+		scenarioId: normalizeNonEmptyString(result.scenarioId, `results[${index}].scenarioId`),
+		scenarioLabel:
+			normalizeOptionalString(result.displayName, `results[${index}].displayName`) ??
+			normalizeNonEmptyString(result.scenarioId, `results[${index}].scenarioId`),
+		runtime: context.runtime,
+		sourceKind: context.sourceKind,
+		status,
+		sampleCount: 1,
+		successCount: passStatuses.has(status) ? 1 : 0,
+		sourcePath: context.sourcePath ?? null,
+		provider: telemetry.provider ?? null,
+		model: telemetry.model ?? null,
+		duration_ms: metrics.duration_ms ?? null,
+	}, telemetry, metrics);
 }
 
 export function prepareDeploymentEvidenceInput({ surface, runtime, sourceKind, packet, sourcePath = null, passStatuses = null }) {
@@ -312,10 +331,12 @@ function summarizeRows(rows, seed = {}) {
 		sourceKinds,
 		...metricSummary(rows, "duration_ms", "p50", 0.5),
 		...metricSummary(rows, "duration_ms", "p90", 0.9),
-		...metricSummary(rows, "total_tokens", "p50", 0.5),
-		...metricSummary(rows, "total_tokens", "p90", 0.9),
-		...metricSummary(rows, "cost_usd", "p50", 0.5),
-		...metricSummary(rows, "cost_usd", "p90", 0.9),
+		...Object.fromEntries(TELEMETRY_NUMERIC_FIELDS.flatMap((field) =>
+			Object.entries({
+				...metricSummary(rows, field, "p50", 0.5),
+				...metricSummary(rows, field, "p90", 0.9),
+			}),
+		)),
 	};
 }
 

@@ -1,14 +1,8 @@
 import { SCENARIO_TELEMETRY_SUMMARY_SCHEMA } from "./contract-versions.mjs";
 import { normalizeScenarioResult } from "./scenario-results.mjs";
+import { TELEMETRY_NUMERIC_FIELDS } from "./telemetry-fields.mjs";
 
 export { SCENARIO_TELEMETRY_SUMMARY_SCHEMA } from "./contract-versions.mjs";
-
-const TELEMETRY_NUMERIC_FIELDS = [
-	"prompt_tokens",
-	"completion_tokens",
-	"total_tokens",
-	"cost_usd",
-];
 
 function parseIsoTime(value) {
 	const millis = Date.parse(String(value || ""));

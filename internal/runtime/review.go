@@ -423,6 +423,16 @@ func renderTelemetry(telemetry map[string]any) string {
 	if duration, ok := toFloat(telemetry["durationMs"]); ok {
 		parts = append(parts, fmt.Sprintf("durationMs=%v", duration))
 	}
+	for _, field := range []string{
+		"uncached_input_tokens",
+		"cache_creation_input_tokens",
+		"cache_read_input_tokens",
+		"cached_input_tokens",
+	} {
+		if value, ok := toFloat(telemetry[field]); ok {
+			parts = append(parts, fmt.Sprintf("%s=%v", field, value))
+		}
+	}
 	if totalTokens, ok := toFloat(telemetry["total_tokens"]); ok {
 		parts = append(parts, fmt.Sprintf("total_tokens=%v", totalTokens))
 	}

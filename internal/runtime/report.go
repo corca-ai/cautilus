@@ -9,7 +9,18 @@ import (
 	"github.com/corca-ai/cautilus/internal/contracts"
 )
 
-var commandObservationNumericFields = []string{"prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"}
+var commandObservationNumericFields = []string{
+	"uncached_input_tokens",
+	"cache_creation_input_tokens",
+	"cache_read_input_tokens",
+	"cached_input_tokens",
+	"prompt_tokens",
+	"output_tokens",
+	"reasoning_output_tokens",
+	"completion_tokens",
+	"total_tokens",
+	"cost_usd",
+}
 
 func ValidateReportPacket(packet map[string]any, label string) error {
 	if packet == nil {

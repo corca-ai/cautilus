@@ -51,6 +51,14 @@ Each row should describe one already-observed evaluation unit:
 - optional `provider`
 - optional `model`
 - optional `duration_ms`
+- optional `uncached_input_tokens`
+- optional `cache_creation_input_tokens`
+- optional `cache_read_input_tokens`
+- optional `cached_input_tokens`
+- optional `prompt_tokens`
+- optional `output_tokens`
+- optional `reasoning_output_tokens`
+- optional `completion_tokens`
 - optional `total_tokens`
 - optional `cost_usd`
 - optional `sourcePath`
@@ -101,9 +109,10 @@ The output should include:
     - successful samples
     - success rate
     - status counts
-    - p50 / p90 duration
-    - p50 / p90 tokens
-    - p50 / p90 cost
+- p50 / p90 duration
+- p50 / p90 cache and token breakdown when present
+- p50 / p90 tokens
+- p50 / p90 cost
 
 ## Current Limits
 
@@ -127,6 +136,7 @@ The output should include:
 
 - Deployment evidence is a derived packet, not a new execution workflow.
 - The product may aggregate only explicit machine-readable telemetry.
+- Cache-token breakdown is a first-class explicit telemetry surface, not an inference from aggregate token totals.
 - Success-rate math should be driven by `sampleCount` and `successCount`, not
   by parsing prose summaries.
 - `chatbot`, `skill`, and `workflow` remain first-class top-level surfaces in

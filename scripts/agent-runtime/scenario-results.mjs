@@ -2,12 +2,15 @@ import {
 	COMPARE_ARTIFACT_SCHEMA,
 	SCENARIO_RESULTS_SCHEMA,
 } from "./contract-versions.mjs";
+import {
+	TELEMETRY_NUMERIC_FIELDS,
+	TELEMETRY_STRING_FIELDS,
+} from "./telemetry-fields.mjs";
 
 const MODE_VALUES = new Set(["iterate", "held_out", "comparison", "full_gate"]);
 const RESULT_STATUS_VALUES = new Set(["passed", "failed", "improved", "regressed", "unchanged", "noisy", "missing"]);
 const COMPARE_VERDICT_VALUES = new Set(["improved", "regressed", "mixed", "unchanged", "inconclusive"]);
 const COMPARE_DELTA_STATUS_VALUES = new Set(["improved", "regressed", "unchanged", "noisy"]);
-const TELEMETRY_NUMERIC_FIELDS = ["prompt_tokens", "completion_tokens", "total_tokens", "cost_usd"];
 
 function normalizeNonEmptyString(value, field) {
 	if (typeof value !== "string" || !value.trim()) {
@@ -73,7 +76,7 @@ function normalizeTelemetry(value, field) {
 		throw new Error(`${field} must be an object`);
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model"]) {
+	for (const key of TELEMETRY_STRING_FIELDS) {
 		const normalized = normalizeOptionalString(value[key], `${field}.${key}`);
 		if (normalized !== undefined) {
 			telemetry[key] = normalized;
