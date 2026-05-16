@@ -22,20 +22,20 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 25
+          "stale": 24
         },
         "byReviewStatus": {
-          "agent-reviewed": 25
+          "agent-reviewed": 24
         },
-        "count": 25,
+        "count": 24,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-guides-cli-md-112",
           "claim-docs-guides-cli-md-114",
           "claim-docs-guides-cli-md-121",
           "claim-docs-guides-cli-md-127",
-          "claim-docs-guides-cli-md-135"
+          "claim-docs-guides-cli-md-135",
+          "claim-docs-guides-cli-md-180"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 48
+          "satisfied": 49
         },
         "byReviewStatus": {
-          "agent-reviewed": 48
+          "agent-reviewed": 49
         },
-        "count": 48,
+        "count": 49,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,14 +62,14 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 17,
+          "stale": 16,
           "unknown": 73
         },
         "byReviewStatus": {
-          "agent-reviewed": 26,
+          "agent-reviewed": 25,
           "heuristic": 64
         },
-        "count": 90,
+        "count": 89,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -77,7 +77,7 @@
           "claim-readme-md-152",
           "claim-docs-contracts-adapter-contract-md-432",
           "claim-docs-contracts-adapter-contract-md-478",
-          "claim-docs-guides-cli-md-112"
+          "claim-docs-guides-cli-md-121"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,8 +219,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 48,
-      "stale": 25,
+      "satisfied": 49,
+      "stale": 24,
       "unknown": 286
     },
     "byLifecycle": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 48,
+    "satisfiedClaimCount": 49,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -722,6 +722,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-112",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:26099c4ba990c2df6a0a65ead1b1a26daf35185f80c33f42b5af8460d9bf4191",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-agent-status-orientation-refresh-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-cli-md-112"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices."
       },
       {
         "claimId": "claim-docs-guides-consumer-adoption-md-20",
@@ -1395,7 +1414,7 @@
       }
     ]
   },
-  "gitCommit": "dc98f9c1a56950abda99ccf8065512b5c9271ba2",
+  "gitCommit": "854fe5c14c48d5240636736e43bf134e75623e40",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1407,10 +1426,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "dc98f9c1a56950abda99ccf8065512b5c9271ba2",
+    "currentGitCommit": "854fe5c14c48d5240636736e43bf134e75623e40",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "dc98f9c1a56950abda99ccf8065512b5c9271ba2",
+    "packetGitCommit": "854fe5c14c48d5240636736e43bf134e75623e40",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

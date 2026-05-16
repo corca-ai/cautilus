@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-refresh",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for deterministic doctor status orientation packet behavior; do not treat this as proof that downstream agents choose the right branch or that other workflows were launched."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-agent-status-orientation-refresh",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-cli-md-112",
+          "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim is deterministic CLI packet behavior: `doctor status --json` either emits the read-only `cautilus.agent_status.v1` orientation packet with the named readiness and branch-choice fields, or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by a focused CLI test plus a current command run: `doctor status --json` emits `cautilus.agent_status.v1` in orientation mode and includes binary health, agent-surface readiness, adapter state, claim-state availability, scan scope, runner readiness, and next branch choices without launching eval, review, improvement, edit, or commit work.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-agent-status-orientation-refresh-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:26099c4ba990c2df6a0a65ead1b1a26daf35185f80c33f42b5af8460d9bf4191",
+              "supportsClaimIds": [
+                "claim-docs-guides-cli-md-112"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing doctor status schema, orientation mode, no-input branch recommendations, claim-state orientation, scan-scope rendering, or the no-launch boundary.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

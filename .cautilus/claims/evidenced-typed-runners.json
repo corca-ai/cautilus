@@ -1403,17 +1403,17 @@
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:927c11f634b7f52fabb4cca7e405f915eb70fb8a3af769aaca9b8a6bf207b8b7",
+          "contentHash": "sha256:26099c4ba990c2df6a0a65ead1b1a26daf35185f80c33f42b5af8460d9bf4191",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-cli-runtime-claims-2026-05-01.json",
+          "path": ".cautilus/claims/evidence-agent-status-orientation-refresh-2026-05-16.json",
           "supportsClaimIds": [
             "claim-docs-guides-cli-md-112"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cli-runtime-claims-2026-05-01.json does not list current claimId claim-docs-guides-cli-md-112 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a focused CLI test plus a current command run: `doctor status --json` emits `cautilus.agent_status.v1` in orientation mode and includes binary health, agent-surface readiness, adapter state, claim-state availability, scan scope, runner readiness, and next branch choices without launching eval, review, improvement, edit, or commit work.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1421,7 +1421,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep this claim covered when changing doctor status schema, orientation mode, no-input branch recommendations, claim-state orientation, scan-scope rendering, or the no-launch boundary.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1432,8 +1432,9 @@
         }
       ],
       "summary": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim is deterministic CLI packet behavior: `doctor status --json` either emits the read-only `cautilus.agent_status.v1` orientation packet with the named readiness and branch-choice fields, or it does not."
     },
     {
       "claimAudience": "user",
@@ -11801,8 +11802,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 48,
-      "stale": 25,
+      "satisfied": 49,
+      "stale": 24,
       "unknown": 286
     },
     "byLifecycle": {
@@ -12005,7 +12006,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "dc98f9c1a56950abda99ccf8065512b5c9271ba2",
+  "gitCommit": "854fe5c14c48d5240636736e43bf134e75623e40",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -12073,6 +12074,7 @@
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-adapter-claim-discovery-hints-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-agent-status-orientation-refresh-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-install-channel-policy-refresh-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
@@ -12131,9 +12133,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 43,
+    "appliedResultCount": 44,
     "skippedResultCount": 51,
-    "keptUpdateCount": 124,
+    "keptUpdateCount": 125,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

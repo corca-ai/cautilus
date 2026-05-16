@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-agent-status-orientation-refresh-2026-05-16",
+  "createdForClaimIds": [
+    "claim-docs-guides-cli-md-112"
+  ],
+  "repoCommit": "854fe5c14c48d5240636736e43bf134e75623e40",
+  "summary": "This bundle refreshes deterministic proof that `doctor status --json` emits a read-only `cautilus.agent_status.v1` orientation packet covering binary health, agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.",
+  "evidenceScope": {
+    "targetSurface": "doctor status agent orientation packet",
+    "claimBoundary": "Only the docs/guides/cli.md claim that `doctor status --json` emits `cautilus.agent_status.v1` as a read-only orientation packet over the listed readiness and branch-choice fields is marked satisfied.",
+    "notClaimed": [
+      "The agent must follow a particular branch after reading the packet",
+      "Evaluation, review, improvement, edits, or commits are launched by doctor status",
+      "Every possible adapter or claim-state shape is covered",
+      "The packet is a global product verdict"
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run TestRunAgentStatusJSONReturnsNoInputOrientation -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "notableAssertions": [
+          "doctor status --json returns schemaVersion=cautilus.agent_status.v1",
+          "the packet mode is orientation",
+          "binary health, agent surface readiness, adapter state, claim state, runner readiness, and scan scope are present",
+          "branch text preserves the claim scan command and review-budget boundary",
+          "orientation output does not offer evaluation, review variant execution, improvement, or git commit work"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor status --repo-root . --json | jq '{schemaVersion, mode, status, binary: .binary.status, agentSurface: .agentSurface.status, adapterValid: .adapter.valid, claimState: .claimState.status, scanScope: .scanScope, branchCount: (.nextBranches | length)}'",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.agent_status.v1",
+        "mode": "orientation",
+        "status": "ready",
+        "binary": "healthy",
+        "agentSurface": "ready",
+        "adapterValid": true,
+        "claimState": "present",
+        "scanScope": {
+          "adapterFound": true,
+          "adapterPath": ".agents/cautilus-adapter.yaml",
+          "linkedMarkdownDepth": 3,
+          "traversal": "entry-markdown-links"
+        },
+        "branchCount": 4
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "agent-status-cli-test",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "internal/runtime/agent_status.go",
+      "kind": "agent-status-runtime-builder",
+      "contentHash": "sha256:9c28db3f9bb2eb1ae4891f4932b32990945d099a25889e6aa7610da0f6d7a121"
+    },
+    {
+      "path": "internal/contracts/constants.go",
+      "kind": "agent-status-schema-constant",
+      "contentHash": "sha256:adb4b79266625e731241e0a2618dd31ba4428d46d51e0aeb50109525a9af4f98"
+    },
+    {
+      "path": "docs/guides/cli.md",
+      "kind": "operator-facing-agent-status-guidance",
+      "contentHash": "sha256:cbfe0cbb82c9fc4ede9f9606cdb5488b5995b0139d516b5948b8672495c36a98"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused CLI test proves the no-input orientation packet shape and non-launch boundary, and a current command run confirms `doctor status --json` emits `cautilus.agent_status.v1` with binary, agent-surface, adapter, claim-state, scan-scope, and branch-choice fields."
+  }
+}
