@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the current README bounded eval loop claim covered by a checked-in fixture, adapter-owned evaluate fixture run, observed packet, summary packet, and evaluate observation replay."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-bounded-eval-loop-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-77",
+          "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a concrete CLI loop and packet outputs, which can be proven by deterministic command execution and packet shape checks.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by a checked-in dev/repo fixture run through evaluate fixture producing eval-observed.json and eval-summary.json, plus evaluate observation reopening the observed packet into a summary packet.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-readme-bounded-eval-loop-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:d9390a6244880626e1c6e86c99d54b204f08fd97d83b652b187e9bcf057103a0",
+              "supportsClaimIds": [
+                "claim-readme-md-77"
+              ]
+            }
+          ],
+          "nextAction": "Keep README bounded eval loop examples aligned with the adapter-owned evaluate fixture and evaluate observation command surfaces.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

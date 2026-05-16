@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-readme-bounded-eval-loop-2026-05-16",
+  "createdForClaimIds": [
+    "claim-readme-md-77"
+  ],
+  "repoCommit": "786a2da64ffe2b6aff2ad1277732dc0256c44a69",
+  "summary": "Deterministic proof that the README bounded eval loop verifies a checked-in fixture and produces reopenable observed and summary packets.",
+  "evidenceScope": {
+    "targetSurface": "README bounded eval loop",
+    "claimBoundary": "Only the README claim that the bounded eval loop verifies a checked-in fixture and produces observed and summary packets is marked satisfied.",
+    "notClaimed": [
+      "Every adapter runtime can run without extra runtime-specific options.",
+      "Every fixture preset is covered by this one proof.",
+      "The observed packet's model output is a product-quality benchmark result."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-eval --fixture ./fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json --output-dir /tmp/cautilus-readme-bounded-eval-proof-codex",
+      "exitCode": 0,
+      "observed": {
+        "observedPath": "/tmp/cautilus-readme-bounded-eval-proof-codex/eval-observed.json",
+        "observedSchemaVersion": "cautilus.evaluation_observed.v1",
+        "summaryPath": "/tmp/cautilus-readme-bounded-eval-proof-codex/eval-summary.json",
+        "summarySchemaVersion": "cautilus.evaluation_summary.v1",
+        "recommendation": "accept-now",
+        "evaluationCounts": {
+          "blocked": 0,
+          "failed": 0,
+          "passed": 1,
+          "total": 1
+        }
+      }
+    },
+    {
+      "command": "./bin/cautilus evaluate observation --input /tmp/cautilus-readme-bounded-eval-proof-codex/eval-observed.json --output /tmp/cautilus-readme-bounded-eval-proof-codex/eval-summary-rerun.json",
+      "exitCode": 0,
+      "observed": {
+        "summaryPath": "/tmp/cautilus-readme-bounded-eval-proof-codex/eval-summary-rerun.json",
+        "summarySchemaVersion": "cautilus.evaluation_summary.v1",
+        "recommendation": "accept-now",
+        "evaluationCounts": {
+          "blocked": 0,
+          "failed": 0,
+          "passed": 1,
+          "total": 1
+        }
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "README.md",
+      "kind": "readme-claim-source",
+      "contentHash": "sha256:38850e7df41159af041d367c0932ef7a17ed8893adaac052b3676b732cab9acb"
+    },
+    {
+      "path": ".agents/cautilus-adapters/self-dogfood-eval.yaml",
+      "kind": "eval-adapter",
+      "contentHash": "sha256:d37a356f6f3475cf7daf96c95b7f1b1908d3e38b3389aaf3433b77cd5851f5a6"
+    },
+    {
+      "path": "fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json",
+      "kind": "checked-in-eval-fixture",
+      "contentHash": "sha256:1b2c8191d4f4d8a017e780050117698dabfaea4853b560d73e4a1dbffbb3df12"
+    }
+  ],
+  "runtimeEvidence": [
+    {
+      "path": "/tmp/cautilus-readme-bounded-eval-proof-codex/eval-observed.json",
+      "kind": "eval-observed",
+      "contentHash": "sha256:f965ff8040021cf281f22f29124a6afdc11df95dd8acb7cdd414b28a8645d3e1"
+    },
+    {
+      "path": "/tmp/cautilus-readme-bounded-eval-proof-codex/eval-summary.json",
+      "kind": "eval-summary",
+      "contentHash": "sha256:36cd7085019c5c048ad403c8180ff2c36ac8a411e57a9452bee818ad8a05c75b"
+    },
+    {
+      "path": "/tmp/cautilus-readme-bounded-eval-proof-codex/eval-summary-rerun.json",
+      "kind": "eval-summary-rerun",
+      "contentHash": "sha256:203cbd5e794aeaab09eaebc1f63ff620f7fe895628acb381e506131d668e4599"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The checked-in dev/repo fixture ran through the self-dogfood adapter, produced eval-observed.json and eval-summary.json, and evaluate observation reopened the observed packet into a second summary packet on 2026-05-16."
+  }
+}

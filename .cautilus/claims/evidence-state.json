@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:e50305c183c4c48a9559e4758caf4fcfa32a1501da9a1ace132919e32b7faecf",
+    "claimsHash": "sha256:119f23a1ea2f06f22e9e06bceb10ce50d4d0cdaf6ed9f7aff29137b34ce8aba0",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:f01c12fee5a12d98335146e7d2cff75f6d8cae07137a03f1a7461145a058351e",
+    "statusHash": "sha256:832c2c78f82e26e2b6cb6456da709bdb1aa7dfb06bd10a055eebe6ded7feb0bd",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,10 +22,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "9c94d6c2f82080079559d41aed098469e264aa19",
+    "currentGitCommit": "786a2da64ffe2b6aff2ad1277732dc0256c44a69",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "9c94d6c2f82080079559d41aed098469e264aa19",
+    "packetGitCommit": "786a2da64ffe2b6aff2ad1277732dc0256c44a69",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -33,9 +33,9 @@
     "candidateCount": 359,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 44,
+      "satisfied": 45,
       "stale": 26,
-      "unknown": 289
+      "unknown": 288
     },
     "byRecommendedProof": {
       "cautilus-eval": 123,
@@ -49,8 +49,8 @@
       "ready-for-proof": 287
     },
     "byReviewStatus": {
-      "agent-reviewed": 120,
-      "heuristic": 238,
+      "agent-reviewed": 121,
+      "heuristic": 237,
       "human-reviewed": 1
     }
   },
@@ -225,27 +225,27 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 44,
+      "count": 45,
       "actor": "none",
       "evidence": {
-        "satisfied": 44
+        "satisfied": 45
       },
       "review": {
-        "agent-reviewed": 44
+        "agent-reviewed": 45
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 94,
+      "count": 93,
       "actor": "agent",
       "evidence": {
         "stale": 18,
-        "unknown": 76
+        "unknown": 75
       },
       "review": {
         "agent-reviewed": 27,
-        "heuristic": 67
+        "heuristic": 66
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
@@ -321,15 +321,15 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 238,
+      "count": 237,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [
         "claim-readme-md-67",
         "claim-readme-md-69",
-        "claim-readme-md-77",
         "claim-readme-md-92",
-        "claim-readme-md-109"
+        "claim-readme-md-109",
+        "claim-readme-md-122"
       ]
     },
     {

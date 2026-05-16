@@ -541,17 +541,28 @@
       "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
       "claimId": "claim-readme-md-77",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:d9390a6244880626e1c6e86c99d54b204f08fd97d83b652b187e9bcf057103a0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-readme-bounded-eval-loop-2026-05-16.json",
+          "supportsClaimIds": [
+            "claim-readme-md-77"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a checked-in dev/repo fixture run through evaluate fixture producing eval-observed.json and eval-summary.json, plus evaluate observation reopening the observed packet into a summary packet.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep README bounded eval loop examples aligned with the adapter-owned evaluate fixture and evaluate observation command surfaces.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
@@ -560,8 +571,9 @@
         }
       ],
       "summary": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names a concrete CLI loop and packet outputs, which can be proven by deterministic command execution and packet shape checks."
     },
     {
       "claimAudience": "user",
@@ -11764,9 +11776,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 44,
+      "satisfied": 45,
       "stale": 26,
-      "unknown": 289
+      "unknown": 288
     },
     "byLifecycle": {
       "new": 359
@@ -11777,8 +11789,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 120,
-      "heuristic": 238,
+      "agent-reviewed": 121,
+      "heuristic": 237,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -11968,7 +11980,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "9c94d6c2f82080079559d41aed098469e264aa19",
+  "gitCommit": "786a2da64ffe2b6aff2ad1277732dc0256c44a69",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -11986,13 +11998,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-agents-md-142",
-        "clusterId": "cluster-on-demand-test-gate-2026-05-16"
+        "claimId": "claim-readme-md-77",
+        "clusterId": "cluster-readme-bounded-eval-loop-2026-05-16"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12035,7 +12047,8 @@
       ".cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json",
       ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json"
+      ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12090,9 +12103,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 39,
+    "appliedResultCount": 40,
     "skippedResultCount": 51,
-    "keptUpdateCount": 120,
+    "keptUpdateCount": 121,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

@@ -3,20 +3,20 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 238
+          "unknown": 237
         },
         "byReviewStatus": {
-          "heuristic": 238
+          "heuristic": 237
         },
-        "count": 238,
+        "count": 237,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-67",
           "claim-readme-md-69",
-          "claim-readme-md-77",
           "claim-readme-md-92",
-          "claim-readme-md-109"
+          "claim-readme-md-109",
+          "claim-readme-md-122"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
       },
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 44
+          "satisfied": 45
         },
         "byReviewStatus": {
-          "agent-reviewed": 44
+          "agent-reviewed": 45
         },
-        "count": 44,
+        "count": 45,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 18,
-          "unknown": 76
+          "unknown": 75
         },
         "byReviewStatus": {
           "agent-reviewed": 27,
-          "heuristic": 67
+          "heuristic": 66
         },
-        "count": 94,
+        "count": 93,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-69",
-          "claim-readme-md-77",
           "claim-readme-md-152",
           "claim-docs-contracts-adapter-contract-md-219",
-          "claim-docs-contracts-adapter-contract-md-432"
+          "claim-docs-contracts-adapter-contract-md-432",
+          "claim-docs-contracts-adapter-contract-md-478"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 44,
+      "satisfied": 45,
       "stale": 26,
-      "unknown": 289
+      "unknown": 288
     },
     "byLifecycle": {
       "new": 359
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 120,
-      "heuristic": 238,
+      "agent-reviewed": 121,
+      "heuristic": 237,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 44,
+    "satisfiedClaimCount": 45,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -537,6 +537,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it."
+      },
+      {
+        "claimId": "claim-readme-md-77",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:d9390a6244880626e1c6e86c99d54b204f08fd97d83b652b187e9bcf057103a0",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-readme-bounded-eval-loop-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-readme-md-77"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets."
       },
       {
         "claimId": "claim-readme-md-149",
@@ -1319,7 +1338,7 @@
       }
     ]
   },
-  "gitCommit": "9c94d6c2f82080079559d41aed098469e264aa19",
+  "gitCommit": "786a2da64ffe2b6aff2ad1277732dc0256c44a69",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1331,10 +1350,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "9c94d6c2f82080079559d41aed098469e264aa19",
+    "currentGitCommit": "786a2da64ffe2b6aff2ad1277732dc0256c44a69",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "9c94d6c2f82080079559d41aed098469e264aa19",
+    "packetGitCommit": "786a2da64ffe2b6aff2ad1277732dc0256c44a69",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -1358,7 +1377,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 213,
+    "heuristicClaimsReadyForReview": 212,
     "needsAlignment": 37,
     "needsScenario": 8
   },
