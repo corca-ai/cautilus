@@ -1444,28 +1444,26 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:2e59fda8709d059221c47b5ed2efde27af52bc604880d0a172cb548bdcd74133",
+          "contentHash": "sha256:dc3143fc732adbf826123db0a00b16d66b137b09cc5a9da85be350debb8cf0a4",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-doctor-runner-readiness-next-action-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
           "supportsClaimIds": [
             "claim-docs-guides-cli-md-114"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-doctor-runner-readiness-next-action-2026-05-03.json does not list current claimId claim-docs-guides-cli-md-114 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in doctor CLI smoke test, which asserts the ready payload can include a runner_readiness next action pointing at create_runner_assessment before first_bounded_run guidance.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep this claim covered when changing CLI guide doctor guidance, runner-readiness next actions, or first_bounded_run payload shape.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -1475,8 +1473,9 @@
         }
       ],
       "summary": "If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim is deterministic doctor packet behavior: the CLI either emits the runner-readiness next action or it does not."
     },
     {
       "claimAudience": "user",
@@ -11802,16 +11801,16 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 49,
-      "stale": 24,
+      "satisfied": 50,
+      "stale": 23,
       "unknown": 286
     },
     "byLifecycle": {
       "new": 359
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 139,
+      "cautilus-eval": 122,
+      "deterministic": 140,
       "human-auditable": 97
     },
     "byReviewStatus": {
@@ -12075,6 +12074,7 @@
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-adapter-claim-discovery-hints-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-agent-status-orientation-refresh-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-install-channel-policy-refresh-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json",
@@ -12133,9 +12133,9 @@
       ".cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json"
     ],
-    "appliedResultCount": 44,
+    "appliedResultCount": 45,
     "skippedResultCount": 51,
-    "keptUpdateCount": 125,
+    "keptUpdateCount": 126,
     "droppedUpdateCount": 295,
     "provenanceMode": "aggregate-current-review-results"
   },

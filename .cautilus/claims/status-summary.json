@@ -22,20 +22,20 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 24
+          "stale": 23
         },
         "byReviewStatus": {
-          "agent-reviewed": 24
+          "agent-reviewed": 23
         },
-        "count": 24,
+        "count": 23,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-guides-cli-md-114",
           "claim-docs-guides-cli-md-121",
           "claim-docs-guides-cli-md-127",
           "claim-docs-guides-cli-md-135",
-          "claim-docs-guides-cli-md-180"
+          "claim-docs-guides-cli-md-180",
+          "claim-docs-guides-cli-md-263"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 49
+          "satisfied": 50
         },
         "byReviewStatus": {
-          "agent-reviewed": 49
+          "agent-reviewed": 50
         },
-        "count": 49,
+        "count": 50,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -83,15 +83,15 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 6,
+          "stale": 5,
           "unknown": 109
         },
         "byReviewStatus": {
-          "agent-reviewed": 9,
+          "agent-reviewed": 8,
           "heuristic": 105,
           "human-reviewed": 1
         },
-        "count": 115,
+        "count": 114,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -219,16 +219,16 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 49,
-      "stale": 24,
+      "satisfied": 50,
+      "stale": 23,
       "unknown": 286
     },
     "byLifecycle": {
       "new": 359
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 139,
+      "cautilus-eval": 122,
+      "deterministic": 140,
       "human-auditable": 97
     },
     "byReviewStatus": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 49,
+    "satisfiedClaimCount": 50,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -741,6 +741,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-114",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dc3143fc732adbf826123db0a00b16d66b137b09cc5a9da85be350debb8cf0a4",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-cli-md-114"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop."
       },
       {
         "claimId": "claim-docs-guides-consumer-adoption-md-20",
@@ -1416,8 +1435,21 @@
   },
   "gitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 12,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
+      ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
+      ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/debug-2026-05-16-review-test-unparam.md",
+      "charness-artifacts/debug/latest.md",
+      "docs/internal/handoff.md",
+      "docs/specs/evidence/claim-evidence-state.md"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -1425,12 +1457,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "a37f723de8a6931b2dc57a302ca2a0f64987230e",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",

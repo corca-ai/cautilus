@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:25268afa0e57c9bb82365852fdc1d75260a8dd3ac8a5a2ca5a7349a2177c5ef2",
+    "claimsHash": "sha256:e837ce8b70000e81cf41a169a034782d2490d6609d4fc55c042d7ac1f66c08b0",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:c3647baf63e3b11301efd080ed224f453a7eb0bcc4aa954e2b0cc3bbf991c75a",
+    "statusHash": "sha256:0ec6f88e58dcc8eb08972efc24af51b95ca18c77807f7e75f4d1227448364784",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,8 +12,21 @@
     }
   },
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 12,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-review-packet-boundary-2026-05-16.json",
+      ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json",
+      ".cautilus/claims/status-summary.json",
+      "charness-artifacts/debug/debug-2026-05-16-review-test-unparam.md",
+      "charness-artifacts/debug/latest.md",
+      "docs/internal/handoff.md",
+      "docs/specs/evidence/claim-evidence-state.md"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -21,25 +34,25 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "a37f723de8a6931b2dc57a302ca2a0f64987230e",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
     "candidateCount": 359,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 49,
-      "stale": 24,
+      "satisfied": 50,
+      "stale": 23,
       "unknown": 286
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
-      "deterministic": 139,
+      "cautilus-eval": 122,
+      "deterministic": 140,
       "human-auditable": 97
     },
     "byVerificationReadiness": {
@@ -55,23 +68,23 @@
     }
   },
   "openCautilusEval": {
-    "total": 123,
-    "readyForProof": 115,
+    "total": 122,
+    "readyForProof": 114,
     "needsScenario": 8,
     "bySurface": {
       "(none)": 6,
       "app/chat": 4,
       "app/prompt": 10,
-      "dev/repo": 75,
+      "dev/repo": 74,
       "dev/skill": 28
     },
     "byReadiness": {
       "needs scenario": 8,
-      "ready for proof": 115
+      "ready for proof": 114
     },
     "rawByReadiness": {
       "needs-scenario": 8,
-      "ready-for-proof": 115
+      "ready-for-proof": 114
     },
     "proofReadySamples": [
       {
@@ -138,13 +151,13 @@
         "summary": "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home."
       },
       {
-        "claimId": "claim-docs-guides-cli-md-114",
-        "source": "docs/guides/cli.md:114",
+        "claimId": "claim-docs-guides-cli-md-135",
+        "source": "docs/guides/cli.md:135",
         "surface": "dev/repo",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
         "review": "agent-reviewed",
-        "summary": "If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop."
+        "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied."
       }
     ],
     "scenarioSamples": [
@@ -225,13 +238,13 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 49,
+      "count": 50,
       "actor": "none",
       "evidence": {
-        "satisfied": 49
+        "satisfied": 50
       },
       "review": {
-        "agent-reviewed": 49
+        "agent-reviewed": 50
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
@@ -251,14 +264,14 @@
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 115,
+      "count": 114,
       "actor": "agent",
       "evidence": {
-        "stale": 6,
+        "stale": 5,
         "unknown": 109
       },
       "review": {
-        "agent-reviewed": 9,
+        "agent-reviewed": 8,
         "heuristic": 105,
         "human-reviewed": 1
       },
@@ -334,15 +347,15 @@
     },
     {
       "id": "stale-evidence",
-      "count": 24,
+      "count": 23,
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [
-        "claim-docs-guides-cli-md-114",
         "claim-docs-guides-cli-md-121",
         "claim-docs-guides-cli-md-127",
         "claim-docs-guides-cli-md-135",
-        "claim-docs-guides-cli-md-180"
+        "claim-docs-guides-cli-md-180",
+        "claim-docs-guides-cli-md-263"
       ]
     }
   ]

@@ -7,11 +7,11 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:25268afa0e57c9bb82365852fdc1d75260a8dd3ac8a5a2ca5a7349a2177c5ef2
+- Claims hash: sha256:e837ce8b70000e81cf41a169a034782d2490d6609d4fc55c042d7ac1f66c08b0
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:c3647baf63e3b11301efd080ed224f453a7eb0bcc4aa954e2b0cc3bbf991c75a
-- Git state: fresh; stale=no
-- Snapshot inspected commit: 8a5803360814878dcff14f2ac8a5b1570c66d0b3
+- Status hash: sha256:0ec6f88e58dcc8eb08972efc24af51b95ca18c77807f7e75f4d1227448364784
+- Git state: fresh-with-head-drift; stale=no
+- Snapshot inspected commit: a37f723de8a6931b2dc57a302ca2a0f64987230e
 - Packet commit: 8a5803360814878dcff14f2ac8a5b1570c66d0b3
 - Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
@@ -21,8 +21,8 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 49, stale: 24, unknown: 286 |
-| Recommended proof | cautilus-eval: 123, deterministic: 139, human-auditable: 97 |
+| Evidence | satisfied: 50, stale: 23, unknown: 286 |
+| Recommended proof | cautilus-eval: 122, deterministic: 140, human-auditable: 97 |
 | Proof readiness | blocked: 27, needs alignment: 37, needs scenario: 8, ready for proof: 287 |
 | Review | agent-reviewed: 123, heuristic: 235, human-reviewed: 1 |
 
@@ -30,8 +30,8 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 
 | Queue | Count |
 | --- | --- |
-| open Cautilus eval claims | 123 |
-| ready for proof | 115 |
+| open Cautilus eval claims | 122 |
+| ready for proof | 114 |
 | needs scenario | 8 |
 
 Ready for proof means the claim is concrete enough to attach or create the selected proof now; it does not mean a scenario fixture already exists.
@@ -44,7 +44,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | (none) | 6 |
 | app/chat | 4 |
 | app/prompt | 10 |
-| dev/repo | 75 |
+| dev/repo | 74 |
 | dev/skill | 28 |
 
 ### Proof-Ready Samples
@@ -58,7 +58,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | claim-docs-contracts-adapter-contract-md-222 | docs/contracts/adapter-contract.md:222 | dev/repo | ready for proof | heuristic | If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy. |
 | claim-docs-contracts-adapter-contract-md-532 | docs/contracts/adapter-contract.md:532 | dev/skill | ready for proof | heuristic | Use `--codex-home-mode isolated` when the eval should not load the operator's `CODEX_HOME` config, plugins, or sessions. |
 | claim-docs-guides-cli-md-55 | docs/guides/cli.md:55 | dev/repo | ready for proof | heuristic | For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home. |
-| claim-docs-guides-cli-md-114 | docs/guides/cli.md:114 | dev/repo | ready for proof | agent-reviewed | If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop. |
+| claim-docs-guides-cli-md-135 | docs/guides/cli.md:135 | dev/repo | ready for proof | agent-reviewed | It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied. |
 
 ### Scenario Samples
 
@@ -77,9 +77,9 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 
 | Bucket | Actor | Count | Evidence | Review | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 49 | satisfied: 49 | agent-reviewed: 49 | Proof is already attached and valid under packet semantics. |
+| already-satisfied | none | 50 | satisfied: 50 | agent-reviewed: 50 | Proof is already attached and valid under packet semantics. |
 | agent-add-deterministic-proof | agent | 89 | stale: 16, unknown: 73 | agent-reviewed: 25, heuristic: 64 | Add or connect unit, lint, build, schema, spec, or CI proof. |
-| agent-plan-cautilus-eval | agent | 115 | stale: 6, unknown: 109 | agent-reviewed: 9, heuristic: 105, human-reviewed: 1 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
+| agent-plan-cautilus-eval | agent | 114 | stale: 5, unknown: 109 | agent-reviewed: 8, heuristic: 105, human-reviewed: 1 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
 | agent-design-scenario | agent | 8 | unknown: 8 | agent-reviewed: 1, heuristic: 7 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 37 | unknown: 37 | agent-reviewed: 19, heuristic: 18 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 34 | stale: 2, unknown: 32 | agent-reviewed: 2, heuristic: 32 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
@@ -90,7 +90,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | Signal | Actor | Count | Meaning |
 | --- | --- | --- | --- |
 | heuristic-review-needed | agent | 235 | Review heuristic labels before spending proof or eval budget. |
-| stale-evidence | agent | 24 | Refresh or recheck stale evidence before consuming it as proof. |
+| stale-evidence | agent | 23 | Refresh or recheck stale evidence before consuming it as proof. |
 
 ## How This Avoids A Split SOT
 

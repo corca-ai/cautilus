@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-16T00:00:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the current CLI guide claim covered by a checked-in doctor CLI smoke test and a current claim-id-bound evidence bundle."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-guides-cli-runner-readiness-next-action-2026-05-16",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-cli-md-114",
+          "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim is deterministic doctor packet behavior: the CLI either emits the runner-readiness next action or it does not.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the checked-in doctor CLI smoke test, which asserts the ready payload can include a runner_readiness next action pointing at create_runner_assessment before first_bounded_run guidance.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-guides-cli-runner-readiness-next-action-2026-05-16.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:dc3143fc732adbf826123db0a00b16d66b137b09cc5a9da85be350debb8cf0a4",
+              "supportsClaimIds": [
+                "claim-docs-guides-cli-md-114"
+              ]
+            }
+          ],
+          "nextAction": "Keep this claim covered when changing CLI guide doctor guidance, runner-readiness next actions, or first_bounded_run payload shape.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

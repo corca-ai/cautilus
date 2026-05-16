@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:25268afa0e57c9bb82365852fdc1d75260a8dd3ac8a5a2ca5a7349a2177c5ef2"
+      "contentHash": "sha256:e837ce8b70000e81cf41a169a034782d2490d6609d4fc55c042d7ac1f66c08b0"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -576,8 +576,8 @@
     "userRawClaimCount": 100,
     "userMappedToCanonicalCount": 100,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 299,
-    "userSemanticReviewRecommendedCount": 44,
+    "semanticReviewRecommendedCount": 298,
+    "userSemanticReviewRecommendedCount": 43,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 259,
       "mapped-to-user-canonical": 100
@@ -587,9 +587,9 @@
       "user": 100
     },
     "byMappingConfidence": {
-      "high": 60,
+      "high": 61,
       "low": 20,
-      "medium": 279
+      "medium": 278
     },
     "byUserCanonicalClaimId": {
       "U1": 24,
@@ -652,7 +652,6 @@
       "claim-docs-guides-cli-md-32",
       "claim-docs-guides-cli-md-55",
       "claim-docs-guides-cli-md-112",
-      "claim-docs-guides-cli-md-114",
       "claim-docs-guides-cli-md-135",
       "claim-docs-guides-cli-md-180",
       "claim-docs-guides-cli-md-187",
@@ -982,8 +981,8 @@
         {
           "claimId": "claim-docs-guides-cli-md-114",
           "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-docs-guides-consumer-adoption-md-20",
@@ -1095,8 +1094,7 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 8,
-        "stale": 1,
+        "satisfied": 9,
         "unknown": 15
       },
       "byReviewStatus": {
@@ -1104,13 +1102,13 @@
         "heuristic": 14
       },
       "byRecommendedProof": {
-        "cautilus-eval": 10,
-        "deterministic": 10,
+        "cautilus-eval": 9,
+        "deterministic": 11,
         "human-auditable": 4
       },
       "byMappingConfidence": {
-        "high": 11,
-        "medium": 13
+        "high": 12,
+        "medium": 12
       }
     },
     {
@@ -5782,32 +5780,32 @@
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "stale",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
       "canonicalClaimId": "U1",
-      "score": 17,
+      "score": 23,
       "runnerUpCanonicalClaimId": "U2",
       "runnerUpScore": 16,
-      "scoreMargin": 1,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "scoreMargin": 7,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "action",
         "assessment",
         "bounded",
         "but",
+        "cli",
         "contract",
+        "covered",
+        "deterministic",
+        "doctor",
         "eval",
-        "evidence",
         "first",
-        "loop",
-        "next",
-        "point",
-        "proof"
+        "keep"
       ]
     },
     {
