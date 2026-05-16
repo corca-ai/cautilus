@@ -23,3 +23,4 @@ The setup inspector now reports `repo_mode=NORMALIZE`, `missing_surfaces=[]`, a 
 ## Delegated Review
 
 executed: bounded setup reviewer confirmed the adapter and AGENTS routing tweak are the minimal fix, and warned against creating duplicate `docs/roadmap.md` or `docs/operator-acceptance.md`.
+Follow-up critique reviewer `019e2e93-3791-7d50-94b0-51666ce7429a` confirmed the operating-surface mapping and CLAUDE symlink policy fit the existing repo contract.

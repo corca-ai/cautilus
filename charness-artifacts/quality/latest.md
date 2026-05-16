@@ -86,6 +86,8 @@ The standing test economics lens covered `fixture-economics`, `parallel-critical
 - `./bin/cautilus discover scenarios --json`
 - `npm run lint:specs -- docs/specs/user/claim-discovery.spec.md`
 - `node --test scripts/check-git-hooks.test.mjs`
+- `npm run verify`
+- `npm run hooks:check`
 
 ## Recommended Next Gates
 
