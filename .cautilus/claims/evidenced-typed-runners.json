@@ -4183,8 +4183,19 @@
       "claimFingerprint": "sha256:fb36b6b34a6edbcea2f2a4a586280322069e9211f305ff1f8b79d553a8e83176",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:31ef3296438c1222ac5d40dfc132e770949ea43e567458f5fdfb3137dea9673a",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-refresh-selection-state-transition-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-21"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by Cautilus Agent skill disclosure parity, refresh-plan runtime tests, and discover-claims app tests for auto-previous, from-scratch opt-out, refreshSummary/state-transition packets, and saved-state overwrite protection.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -4192,9 +4203,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep Cautilus Agent refresh instructions, packaged skill parity, and refresh-plan packet tests aligned when changing prior-claim-state behavior.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Existing claim state refresh is selected by Cautilus Agent when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
@@ -4203,8 +4214,9 @@
         }
       ],
       "summary": "Existing claim state refresh is selected by Cautilus Agent when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim combines Cautilus Agent routing instructions with deterministic refresh-plan packet behavior, both of which can be checked by skill parity lint and focused runtime/app tests."
     },
     {
       "claimAudience": "developer",
@@ -12153,9 +12165,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 80,
+      "satisfied": 81,
       "stale": 16,
-      "unknown": 265
+      "unknown": 264
     },
     "byLifecycle": {
       "new": 361
@@ -12166,8 +12178,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 144,
-      "heuristic": 216,
+      "agent-reviewed": 145,
+      "heuristic": 215,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12445,6 +12457,7 @@
       ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json",
       ".cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-refresh-selection-state-transition-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
@@ -12509,9 +12522,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 68,
+    "appliedResultCount": 69,
     "skippedResultCount": 52,
-    "keptUpdateCount": 154,
+    "keptUpdateCount": 155,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

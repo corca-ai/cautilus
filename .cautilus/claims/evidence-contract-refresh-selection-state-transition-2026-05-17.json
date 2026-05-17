@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-refresh-selection-state-transition-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-21"
+  ],
+  "repoCommit": "b094db42c01e787a1bf2b8afd846c49df2b49fe6",
+  "summary": "Deterministic proof that the Cautilus Agent surface routes existing claim state to refresh-plan handling and the binary records refresh planning and state-transition facts in packets or helper output.",
+  "evidenceScope": {
+    "targetSurface": "existing claim-state refresh branch and deterministic refresh-plan packet boundary",
+    "claimBoundary": "Only the docs/contracts/claim-discovery-workflow.md claim that prior JSON selects refresh behavior while refresh plans and state transitions remain recorded in deterministic packets or helper output is marked satisfied.",
+    "notClaimed": [
+      "Every host agent always chooses the refresh branch correctly without reading the skill.",
+      "A refresh-plan packet mutates the saved claim map by itself.",
+      "LLM-backed review or eval planning is launched during refresh planning.",
+      "Every refresh workflow claim in the contract is satisfied by this slice.",
+      "The semantic quality of every changed-source decision is proven beyond the focused fixtures."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:skill-disclosure",
+      "exitCode": 0,
+      "observed": {
+        "status": "ok",
+        "sourceSkill": "skills/cautilus-agent/SKILL.md",
+        "packagedSkill": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+        "sourceNonemptyLines": 179,
+        "packagedNonemptyLines": 179,
+        "requiredFragments": 15,
+        "forbiddenFragments": 9,
+        "globalForbiddenFragments": 7
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimRefreshPlanMarksChangedSources|TestBuildClaimRefreshPlanRecordsStaleEvidenceReasons|TestBuildClaimRefreshPlanIgnoresCommittedClaimPacketDrift|TestDiscoverClaimProofPlanMarksChangedCarriedEvidenceStale|TestDiscoverClaimProofPlanMarksEvidenceBundleClaimMismatchStale' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "refresh-plan packets expose baseline and target state, policy, changed sources, claim plan, refresh summary, claim state, and effective scan scope",
+          "changed source claims become changed lifecycle entries while unchanged claims carry forward",
+          "stale evidence reasons and counts are recorded in packet fields",
+          "committed claim-packet drift is recorded without marking source claims changed"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunClaimDiscoverAutoUsesExistingOutputAsPrevious|TestRunClaimDiscoverFromScratchSkipsAutoPrevious|TestRunClaimDiscoverRefreshPlanRefusesSavedClaimStateOutput' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok",
+        "protectedBehaviors": [
+          "discover claims auto-uses an existing output packet as previous state when not run from scratch",
+          "--from-scratch opts out of prior-state carry-forward",
+          "refresh-plan output refuses to overwrite saved claim-state proof-plan paths"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    }
+  ],
+  "relatedEvidence": [
+    {
+      "path": ".cautilus/claims/evidence-refresh-plan-state-transition-2026-05-03.json",
+      "kind": "refresh-plan-state-transition-evidence-bundle",
+      "contentHash": "sha256:64760f3e89d05ec098a9d8f92fb2047ef847ee002e53698431bb39d62e30e17f",
+      "reason": "Records the earlier deterministic refresh-plan packet field contract and non-mutation boundary."
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-workflow-contract",
+      "contentHash": "sha256:f703e3ccf3be041a522bdf6e87640bca5680761ea0138ef439ed73471e91a9e4"
+    },
+    {
+      "path": "skills/cautilus-agent/SKILL.md",
+      "kind": "source-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+      "kind": "packaged-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "scripts/check-cautilus-skill-disclosure.mjs",
+      "kind": "skill-disclosure-parity-check",
+      "contentHash": "sha256:877820f918b648a67ae1aa81e1c24ca6292320ccc0fca823c9b96a41cee4e37f"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "refresh-plan-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "refresh-plan-runtime-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "discover-claims-cli-handler",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "discover-claims-cli-tests",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The Cautilus Agent skill instructs agents to read or refresh existing claim packets and to use `discover claims --previous ... --refresh-plan` plus `refreshSummary`; parity lint keeps the packaged skill aligned, while runtime and app tests prove refresh-plan packets and prior-state carry-forward behavior are deterministic and non-mutating."
+  }
+}

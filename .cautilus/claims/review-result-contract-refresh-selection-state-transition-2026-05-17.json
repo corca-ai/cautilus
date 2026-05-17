@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:01:21Z",
+    "evidencePolicy": "Only mark the existing-state refresh selection and deterministic packet boundary satisfied; do not infer every host runtime will choose the branch without following the Cautilus Agent skill."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-refresh-selection-state-transition-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-21",
+          "claimFingerprint": "sha256:fb36b6b34a6edbcea2f2a4a586280322069e9211f305ff1f8b79d553a8e83176",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim combines Cautilus Agent routing instructions with deterministic refresh-plan packet behavior, both of which can be checked by skill parity lint and focused runtime/app tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by Cautilus Agent skill disclosure parity, refresh-plan runtime tests, and discover-claims app tests for auto-previous, from-scratch opt-out, refreshSummary/state-transition packets, and saved-state overwrite protection.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-refresh-selection-state-transition-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:31ef3296438c1222ac5d40dfc132e770949ea43e567458f5fdfb3137dea9673a",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-21"
+              ]
+            }
+          ],
+          "nextAction": "Keep Cautilus Agent refresh instructions, packaged skill parity, and refresh-plan packet tests aligned when changing prior-claim-state behavior.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
