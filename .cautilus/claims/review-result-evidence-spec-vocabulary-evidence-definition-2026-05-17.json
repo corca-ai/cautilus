@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T11:30:00Z",
+    "evidencePolicy": "Only mark the evidence vocabulary definition satisfied; do not infer every evidence item is sufficient or complete."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-spec-vocabulary-evidence-definition-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-index-spec-md-9",
+          "claimFingerprint": "sha256:d304fd59bc29554230c0f6e525925f28e60c8d1926dbc28052cbc0444a7476a3",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim defines spec vocabulary that is protected by spec lint and evidence-artifact audit rather than behavior eval.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by spec lint over the vocabulary page and by the evidence hash audit over checked-in evidence bundles that carry auditable command and file references.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8f1890f5261d8679a3ac9307bcfc5ffa7932c57e0b1cea0ea7893112fa7f14b2",
+              "supportsClaimIds": [
+                "claim-docs-specs-index-spec-md-9"
+              ]
+            }
+          ],
+          "nextAction": "Keep spec vocabulary, evidence-map pages, and evidence hash audit aligned when introducing new evidence source types.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

@@ -3416,8 +3416,19 @@
       "claimFingerprint": "sha256:d304fd59bc29554230c0f6e525925f28e60c8d1926dbc28052cbc0444a7476a3",
       "claimId": "claim-docs-specs-index-spec-md-9",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:8f1890f5261d8679a3ac9307bcfc5ffa7932c57e0b1cea0ea7893112fa7f14b2",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-index-spec-md-9"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by spec lint over the vocabulary page and by the evidence hash audit over checked-in evidence bundles that carry auditable command and file references.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -3425,9 +3436,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep spec vocabulary, evidence-map pages, and evidence hash audit aligned when introducing new evidence source types.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise.",
@@ -3436,8 +3447,9 @@
         }
       ],
       "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim defines spec vocabulary that is protected by spec lint and evidence-artifact audit rather than behavior eval."
     },
     {
       "claimAudience": "developer",
@@ -12057,9 +12069,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 73,
+      "satisfied": 74,
       "stale": 16,
-      "unknown": 272
+      "unknown": 271
     },
     "byLifecycle": {
       "new": 361
@@ -12070,8 +12082,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 137,
-      "heuristic": 223,
+      "agent-reviewed": 138,
+      "heuristic": 222,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12279,13 +12291,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-master-plan-md-84",
-        "clusterId": "cluster-master-plan-spec-normalizer-gates-2026-05-17"
+        "claimId": "claim-docs-specs-index-spec-md-9",
+        "clusterId": "cluster-spec-vocabulary-evidence-definition-2026-05-17"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12353,7 +12365,8 @@
       ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
-      ".cautilus/claims/review-result-evidence-master-plan-spec-normalizer-gates-2026-05-17.json"
+      ".cautilus/claims/review-result-evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-spec-vocabulary-evidence-definition-2026-05-17.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12409,9 +12422,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 64,
+    "appliedResultCount": 65,
     "skippedResultCount": 52,
-    "keptUpdateCount": 147,
+    "keptUpdateCount": 148,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

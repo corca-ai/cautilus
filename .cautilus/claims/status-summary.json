@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 223
+          "unknown": 222
         },
         "byReviewStatus": {
-          "heuristic": 223
+          "heuristic": 222
         },
-        "count": 223,
+        "count": 222,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 73
+          "satisfied": 74
         },
         "byReviewStatus": {
-          "agent-reviewed": 73
+          "agent-reviewed": 74
         },
-        "count": 73,
+        "count": 74,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 9,
-          "unknown": 57
+          "unknown": 56
         },
         "byReviewStatus": {
           "agent-reviewed": 16,
-          "heuristic": 50
+          "heuristic": 49
         },
-        "count": 66,
+        "count": 65,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-specs-index-spec-md-9",
           "claim-docs-specs-user-evaluation-spec-md-36",
           "claim-docs-specs-user-index-spec-md-26",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-4"
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 73,
+      "satisfied": 74,
       "stale": 16,
-      "unknown": 272
+      "unknown": 271
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 137,
-      "heuristic": 223,
+      "agent-reviewed": 138,
+      "heuristic": 222,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 73,
+    "satisfiedClaimCount": 74,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1346,6 +1346,25 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
+        "claimId": "claim-docs-specs-index-spec-md-9",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:8f1890f5261d8679a3ac9307bcfc5ffa7932c57e0b1cea0ea7893112fa7f14b2",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-index-spec-md-9"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise."
+      },
+      {
         "claimId": "claim-docs-contracts-active-run-md-3",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1884,7 +1903,7 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 47,
+    "changedFileCount": 49,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1897,6 +1916,7 @@
       ".cautilus/claims/evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
       ".cautilus/claims/evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
       ".cautilus/claims/evidence-master-plan-packet-routes-2026-05-17.json",
+      ".cautilus/claims/evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
       ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
@@ -1911,6 +1931,7 @@
       ".cautilus/claims/review-result-evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
@@ -1942,7 +1963,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "ffaf70991bb4b8cd805e4f4a512a2d0065a58510",
+    "currentGitCommit": "beaebf4957f29a778c7d49c281cac1cf5e2e0ff3",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -1969,7 +1990,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 198,
+    "heuristicClaimsReadyForReview": 197,
     "needsAlignment": 37,
     "needsScenario": 8
   },

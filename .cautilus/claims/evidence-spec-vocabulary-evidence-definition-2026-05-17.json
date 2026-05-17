@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-spec-vocabulary-evidence-definition-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-specs-index-spec-md-9"
+  ],
+  "repoCommit": "beaebf4957f29a778c7d49c281cac1cf5e2e0ff3",
+  "summary": "Deterministic proof for the spec vocabulary boundary that evidence is represented by packets, fixtures, command results, or durable artifacts rather than chat-only assertions.",
+  "evidenceScope": {
+    "targetSurface": "spec vocabulary for evidence",
+    "claimBoundary": "Only the docs/specs/index.spec.md vocabulary definition of `evidence` is marked satisfied.",
+    "notClaimed": [
+      "Every evidence item is complete or sufficient.",
+      "Every open gap has been filled.",
+      "Every possible evidence type is exhaustively enumerated.",
+      "Readable reports replace packet or artifact sources of truth."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    },
+    {
+      "command": "npm run claims:audit-evidence",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.claim_evidence_hash_audit.v1",
+        "evidenceBundleCount": 98,
+        "scannedReferenceFileCount": 148,
+        "issueCount": 0,
+        "checkedInEvidencePolicy": "warn"
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/specs/index.spec.md",
+      "kind": "spec-vocabulary-source",
+      "contentHash": "sha256:f43b0917c28cd6b7adff9c3664f68ecb857cddc4ad708fdbceabfb809d375bf7"
+    },
+    {
+      "path": "docs/specs/evidence/evidence-map.spec.md",
+      "kind": "evidence-map-spec",
+      "contentHash": "sha256:7d3e2b43c2426c3df4f81fe2ff6e323878ae3b49010d1c42c35d23b4cf380308"
+    },
+    {
+      "path": "scripts/lint-specs.mjs",
+      "kind": "spec-lint-gate",
+      "contentHash": "sha256:4d9b157358317ac869b1552fa9b9ad96f61fe642f28cde41bc65fce46a570726"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-claim-evidence-hashes.mjs",
+      "kind": "evidence-hash-audit",
+      "contentHash": "sha256:3d6e78ae2396ac9c9009527c17a8c88cb22882f2c6015269a3f52e6cfa751765"
+    },
+    {
+      "path": ".cautilus/claims/evidence-master-plan-packet-routes-2026-05-17.json",
+      "kind": "representative-packet-command-artifact-evidence-bundle",
+      "contentHash": "sha256:0b0515db650052339a530cfe6cbe32371e23859f6847b7f81452aaaece96c043"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Spec lint keeps the vocabulary page in the checked spec graph, evidence-map.spec.md links evidence pages to packet and artifact sources, and the evidence hash audit proves checked-in evidence bundles contain auditable command and file references instead of relying on chat-only assertions."
+  }
+}
