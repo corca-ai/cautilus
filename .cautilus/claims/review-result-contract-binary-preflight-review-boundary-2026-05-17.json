@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:12:12Z",
+    "evidencePolicy": "Only mark the binary-label, possible-evidence preflight, and review-result evidence-upgrade boundaries satisfied; do not infer semantic approval of any possible evidence ref."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-binary-preflight-review-boundary-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-175",
+          "claimFingerprint": "sha256:65013747b67f063ffe2fcabc9c9b48ca6195e9e12ce8c3b0a7fca80e53f54f63",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names portable label validation and the boundary between binary labels and richer reviewer-owned grouping.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runtime and adapter tests covering portable user/developer/unclear audience labels, rejection of unsupported audience hints, adapter-owned semantic groups, and fallback semantic grouping.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-175",
+                "claim-docs-contracts-claim-discovery-workflow-md-361",
+                "claim-docs-contracts-claim-discovery-workflow-md-374"
+              ]
+            }
+          ],
+          "nextAction": "Keep adapter validation and review clustering tests aligned when changing audience labels or semantic grouping behavior.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-361",
+          "claimFingerprint": "sha256:996dbc23d320598234669cd5cbba5c96da8a0442b76d051e9ea31fd9bd63403c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic possible-evidence preflight and final interpretation ownership.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by review-input tests that possible evidence refs can be attached as preflight hints while evidenceStatus remains unknown until review-result semantics verify the evidence.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-175",
+                "claim-docs-contracts-claim-discovery-workflow-md-361",
+                "claim-docs-contracts-claim-discovery-workflow-md-374"
+              ]
+            }
+          ],
+          "nextAction": "Keep possible-evidence preflight output explicitly non-satisfying unless a verified review result upgrades the claim.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-374",
+          "claimFingerprint": "sha256:a12296e46e907c111fb127f103a7d588877ddb4496baf69318064a4639b458bf",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names evidence-status upgrade rules enforced by review-result application and claim validation.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by review-result and validation tests requiring direct or verified evidence refs before `evidenceStatus=satisfied`, while allowing review-result packets to update evidence state when semantics are met.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-175",
+                "claim-docs-contracts-claim-discovery-workflow-md-361",
+                "claim-docs-contracts-claim-discovery-workflow-md-374"
+              ]
+            }
+          ],
+          "nextAction": "Keep claim-review result validation strict when changing evidence status upgrade semantics.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

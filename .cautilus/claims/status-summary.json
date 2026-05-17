@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 214
+          "unknown": 211
         },
         "byReviewStatus": {
-          "heuristic": 214
+          "heuristic": 211
         },
-        "count": 214,
+        "count": 211,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 82
+          "satisfied": 85
         },
         "byReviewStatus": {
-          "agent-reviewed": 82
+          "agent-reviewed": 85
         },
-        "count": 82,
+        "count": 85,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 9,
-          "unknown": 48
+          "unknown": 45
         },
         "byReviewStatus": {
           "agent-reviewed": 16,
-          "heuristic": 41
+          "heuristic": 38
         },
-        "count": 57,
+        "count": 54,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-claim-discovery-workflow-md-175",
-          "claim-docs-contracts-claim-discovery-workflow-md-361",
-          "claim-docs-contracts-claim-discovery-workflow-md-374",
           "claim-docs-contracts-claim-discovery-workflow-md-382",
-          "claim-docs-contracts-claim-discovery-workflow-md-391"
+          "claim-docs-contracts-claim-discovery-workflow-md-391",
+          "claim-docs-contracts-claim-discovery-workflow-md-461",
+          "claim-docs-contracts-claim-discovery-workflow-md-483",
+          "claim-docs-contracts-claim-discovery-workflow-md-579"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 82,
+      "satisfied": 85,
       "stale": 16,
-      "unknown": 263
+      "unknown": 260
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 146,
-      "heuristic": 214,
+      "agent-reviewed": 149,
+      "heuristic": 211,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 82,
+    "satisfiedClaimCount": 85,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1590,6 +1590,48 @@
         "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-175",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-175",
+              "claim-docs-contracts-claim-discovery-workflow-md-361",
+              "claim-docs-contracts-claim-discovery-workflow-md-374"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-361",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-175",
+              "claim-docs-contracts-claim-discovery-workflow-md-361",
+              "claim-docs-contracts-claim-discovery-workflow-md-374"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The binary can do cheap deterministic preflight, but Cautilus Agent owns final interpretation."
+      },
+      {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-372",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1607,6 +1649,27 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The preflight should never assert that a claim is satisfied solely because a filename looks related."
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-374",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-175",
+              "claim-docs-contracts-claim-discovery-workflow-md-361",
+              "claim-docs-contracts-claim-discovery-workflow-md-374"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Cautilus Agent review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met."
       },
       {
         "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
@@ -2067,13 +2130,14 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 59,
+    "changedFileCount": 61,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
+      ".cautilus/claims/evidence-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
       ".cautilus/claims/evidence-contract-claim-discovery-proof-plan-2026-05-17.json",
       ".cautilus/claims/evidence-contract-refresh-selection-state-transition-2026-05-17.json",
       ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
@@ -2091,6 +2155,7 @@
       ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
       ".cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json",
       ".cautilus/claims/review-result-contract-refresh-selection-state-transition-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
@@ -2137,7 +2202,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a4d8b6bea9cbfbcdfadd04a69a4a6ad722dc3c76",
+    "currentGitCommit": "fbadec5e66dcda888078be21ac7a609ff02e3597",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -2164,7 +2229,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 189,
+    "heuristicClaimsReadyForReview": 186,
     "needsAlignment": 37,
     "needsScenario": 8
   },

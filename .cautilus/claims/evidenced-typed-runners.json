@@ -4572,8 +4572,21 @@
       "claimFingerprint": "sha256:65013747b67f063ffe2fcabc9c9b48ca6195e9e12ce8c3b0a7fca80e53f54f63",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-175",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-175",
+            "claim-docs-contracts-claim-discovery-workflow-md-361",
+            "claim-docs-contracts-claim-discovery-workflow-md-374"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by runtime and adapter tests covering portable user/developer/unclear audience labels, rejection of unsupported audience hints, adapter-owned semantic groups, and fallback semantic grouping.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -4581,9 +4594,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep adapter validation and review clustering tests aligned when changing audience labels or semantic grouping behavior.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop.",
@@ -4592,8 +4605,9 @@
         }
       ],
       "summary": "The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names portable label validation and the boundary between binary labels and richer reviewer-owned grouping."
     },
     {
       "claimAudience": "developer",
@@ -5181,8 +5195,21 @@
       "claimFingerprint": "sha256:996dbc23d320598234669cd5cbba5c96da8a0442b76d051e9ea31fd9bd63403c",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-361",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-175",
+            "claim-docs-contracts-claim-discovery-workflow-md-361",
+            "claim-docs-contracts-claim-discovery-workflow-md-374"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by review-input tests that possible evidence refs can be attached as preflight hints while evidenceStatus remains unknown until review-result semantics verify the evidence.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5190,9 +5217,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic readiness, preflight, or command-contract proof for this claim.",
+      "nextAction": "Keep possible-evidence preflight output explicitly non-satisfying unless a verified review result upgrades the claim.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The binary can do cheap deterministic preflight, but Cautilus Agent owns final interpretation.",
@@ -5201,8 +5228,9 @@
         }
       ],
       "summary": "The binary can do cheap deterministic preflight, but Cautilus Agent owns final interpretation.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names readiness, preflight, or command-contract behavior that should be protected by deterministic checks."
+      "whyThisLayer": "The claim names deterministic possible-evidence preflight and final interpretation ownership."
     },
     {
       "claimAudience": "developer",
@@ -5251,8 +5279,21 @@
       "claimFingerprint": "sha256:a12296e46e907c111fb127f103a7d588877ddb4496baf69318064a4639b458bf",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-374",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-175",
+            "claim-docs-contracts-claim-discovery-workflow-md-361",
+            "claim-docs-contracts-claim-discovery-workflow-md-374"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by review-result and validation tests requiring direct or verified evidence refs before `evidenceStatus=satisfied`, while allowing review-result packets to update evidence state when semantics are met.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5260,9 +5301,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep claim-review result validation strict when changing evidence status upgrade semantics.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Cautilus Agent review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met.",
@@ -5271,8 +5312,9 @@
         }
       ],
       "summary": "Cautilus Agent review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names evidence-status upgrade rules enforced by review-result application and claim validation."
     },
     {
       "claimAudience": "developer",
@@ -12177,9 +12219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 82,
+      "satisfied": 85,
       "stale": 16,
-      "unknown": 263
+      "unknown": 260
     },
     "byLifecycle": {
       "new": 361
@@ -12190,8 +12232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 146,
-      "heuristic": 214,
+      "agent-reviewed": 149,
+      "heuristic": 211,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12472,6 +12514,7 @@
       ".cautilus/claims/review-result-contract-refresh-selection-state-transition-2026-05-17.json",
       ".cautilus/claims/review-result-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
@@ -12535,9 +12578,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 70,
+    "appliedResultCount": 71,
     "skippedResultCount": 52,
-    "keptUpdateCount": 156,
+    "keptUpdateCount": 159,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

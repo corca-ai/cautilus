@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-binary-preflight-review-boundary-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-175",
+    "claim-docs-contracts-claim-discovery-workflow-md-361",
+    "claim-docs-contracts-claim-discovery-workflow-md-374"
+  ],
+  "repoCommit": "fbadec5e66dcda888078be21ac7a609ff02e3597",
+  "summary": "Deterministic proof that claim discovery keeps portable binary labels and possible-evidence preflight separate from Cautilus Agent or review-result interpretation.",
+  "evidenceScope": {
+    "targetSurface": "claim discovery label, preflight, and review-result boundary",
+    "claimBoundary": "Only the contract claims about portable binary audience labels, cheap deterministic preflight, and review-result-gated evidence upgrades are marked satisfied.",
+    "notClaimed": [
+      "The binary performs semantic duplicate merging or final product interpretation.",
+      "Possible evidence refs satisfy claims by themselves.",
+      "Unsupported audience labels or evidence-status upgrades are accepted.",
+      "Cautilus Agent has already reviewed every possible evidence ref.",
+      "Every future semantic grouping taxonomy is binary-owned."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanClassifiesLinkedDocAudienceAndOperatingRules|TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries|TestDiscoverClaimProofPlanUsesPortableSemanticFallbackWhenAdapterOmitsGroups|TestBuildClaimReviewInputIncludesPossibleEvidenceRefs|TestApplyClaimReviewResultUpdatesLabelsWithVerifiedEvidence|TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence|TestBuildClaimValidationReportValidatesEvidenceRefs|TestApplyClaimReviewResultCanUpdateClaimAudience' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "claim discovery emits portable audience labels and semantic group hints",
+          "adapter-owned audience hints can classify user/developer sources",
+          "missing semantic groups fall back to General product behavior",
+          "review input can include possibleEvidenceRefs without changing evidenceStatus from unknown",
+          "verified review results can update satisfied evidence",
+          "satisfied evidence is rejected without verified evidence refs",
+          "validation enforces supported evidence-ref semantics",
+          "review results, not raw binary discovery, can update claimAudience"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestValidateAdapterDataAcceptsClaimDiscoveryConfig|TestValidateAdapterDataRejectsInvalidClaimDiscoverySemanticGroups|TestValidateAdapterDataRejectsUnknownClaimDiscoveryAudienceHint' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "adapter claim discovery config accepts portable audience hints",
+          "invalid semantic-group configuration is rejected",
+          "unknown claim-discovery audience hints are rejected"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-workflow-contract",
+      "contentHash": "sha256:f703e3ccf3be041a522bdf6e87640bca5680761ea0138ef439ed73471e91a9e4"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-runtime-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "internal/runtime/adapter.go",
+      "kind": "adapter-claim-discovery-config",
+      "contentHash": "sha256:c21a626304ac952544546eab07c6e6e1ef305be2d1346103d37848404d3fe038"
+    },
+    {
+      "path": "internal/runtime/adapter_test.go",
+      "kind": "adapter-claim-discovery-config-tests",
+      "contentHash": "sha256:6dd81c5a750fefd5f7ac3b3a5241afa9e0eb3a7632e2519d13f5175efd6e8162"
+    },
+    {
+      "path": "scripts/lint-specs.mjs",
+      "kind": "spec-lint-gate",
+      "contentHash": "sha256:4d9b157358317ac869b1552fa9b9ad96f61fe642f28cde41bc65fce46a570726"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused runtime and adapter tests prove the binary emits only portable audience labels, keeps richer semantic grouping as hints/review work, attaches possible evidence as preflight rather than satisfaction, and requires verified review-result/evidence-ref semantics before evidenceStatus can become satisfied."
+  }
+}
