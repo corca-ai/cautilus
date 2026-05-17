@@ -5665,8 +5665,22 @@
       "claimFingerprint": "sha256:f90e997f4729dc3eb1be36b181ba3eadb44b03a8f73e4b61a32eba841bd2a66c",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-483",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:6ce50c70950552fc23f8ce12669902f26988b83d20bbecb445d71b0019db67c3",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-483",
+            "claim-docs-contracts-claim-discovery-workflow-md-630",
+            "claim-docs-contracts-claim-discovery-workflow-md-635",
+            "claim-docs-contracts-claim-discovery-workflow-md-691"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by Cautilus Agent skill parity plus status-summary runtime/app tests covering boundary, action buckets, sample claims, git state, and evidence satisfaction.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5674,9 +5688,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep Cautilus Agent status instructions and status-summary packet fields aligned when branch reporting changes.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "After discovery or refresh, Cautilus Agent should report status in a compact decision-oriented shape:",
@@ -5685,8 +5699,9 @@
         }
       ],
       "summary": "After discovery or refresh, Cautilus Agent should report status in a compact decision-oriented shape:",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names Cautilus Agent status reporting and status-summary packet behavior."
     },
     {
       "claimAudience": "developer",
@@ -6177,8 +6192,22 @@
       "claimFingerprint": "sha256:b64603dc391e90986d777c1d616a0650bb4900a82928039d5649e49dc8c9d538",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-630",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:6ce50c70950552fc23f8ce12669902f26988b83d20bbecb445d71b0019db67c3",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-483",
+            "claim-docs-contracts-claim-discovery-workflow-md-630",
+            "claim-docs-contracts-claim-discovery-workflow-md-635",
+            "claim-docs-contracts-claim-discovery-workflow-md-691"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by `doctor status` no-input orientation tests and Cautilus Agent skill instructions that start from status packets instead of raw claim dumps.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6186,9 +6215,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep no-input status orientation concise and packet-backed as claim counts grow.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "A user can invoke the Cautilus Agent without detailed input and get a clear status summary rather than a raw 500-claim dump.",
@@ -6197,8 +6226,9 @@
         }
       ],
       "summary": "A user can invoke the Cautilus Agent without detailed input and get a clear status summary rather than a raw 500-claim dump.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names no-input Cautilus Agent orientation rather than behavior evaluation."
     },
     {
       "claimAudience": "developer",
@@ -6206,8 +6236,22 @@
       "claimFingerprint": "sha256:2f006cdc0b2c26694835121869f8eb2d65ff4327e293477d439a86c4f58f58a7",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-635",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:6ce50c70950552fc23f8ce12669902f26988b83d20bbecb445d71b0019db67c3",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-483",
+            "claim-docs-contracts-claim-discovery-workflow-md-630",
+            "claim-docs-contracts-claim-discovery-workflow-md-635",
+            "claim-docs-contracts-claim-discovery-workflow-md-691"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by status-summary tests exposing evidenceSatisfaction and actionSummary buckets for deterministic proof, Cautilus eval scenario planning, alignment work, and other next branches.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6215,9 +6259,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep status-summary action buckets synchronized with claim action-bucket policy.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.",
@@ -6226,8 +6270,9 @@
         }
       ],
       "summary": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names evidence and next-work status buckets that are encoded in the status-summary packet."
     },
     {
       "claimAudience": "developer",
@@ -6325,8 +6370,22 @@
       "claimFingerprint": "sha256:54f451eb5c40a5f8f0dcf84b2d5c1c1de64658cc01ce6deff9e52c33d9fbbdff",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-691",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:6ce50c70950552fc23f8ce12669902f26988b83d20bbecb445d71b0019db67c3",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-483",
+            "claim-docs-contracts-claim-discovery-workflow-md-630",
+            "claim-docs-contracts-claim-discovery-workflow-md-635",
+            "claim-docs-contracts-claim-discovery-workflow-md-691"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by app tests that `discover claims status` emits `cautilus.claim_status_summary.v1`, supports bounded sampleClaims, and reports gitState for branch decisions.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6334,9 +6393,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep `discover claims status` schema and CLI tests current when status fields change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.",
@@ -6345,8 +6404,9 @@
         }
       ],
       "summary": "`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names the `discover claims status` packet schema and bounded sample/git-state fields."
     },
     {
       "claimAudience": "developer",
@@ -12287,9 +12347,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 90,
+      "satisfied": 94,
       "stale": 16,
-      "unknown": 255
+      "unknown": 251
     },
     "byLifecycle": {
       "new": 361
@@ -12300,8 +12360,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 154,
-      "heuristic": 206,
+      "agent-reviewed": 158,
+      "heuristic": 202,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12585,6 +12645,7 @@
       ".cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json",
       ".cautilus/claims/review-result-contract-review-clustering-curation-2026-05-17.json",
       ".cautilus/claims/review-result-contract-discover-refresh-carry-forward-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-compact-status-summary-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
@@ -12648,9 +12709,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 73,
+    "appliedResultCount": 74,
     "skippedResultCount": 52,
-    "keptUpdateCount": 164,
+    "keptUpdateCount": 168,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

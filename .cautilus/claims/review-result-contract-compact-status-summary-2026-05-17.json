@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:21:10Z",
+    "evidencePolicy": "Only mark compact status-summary behavior satisfied; do not infer status output launches review, eval, or edits."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-compact-status-summary-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-483",
+          "claimFingerprint": "sha256:f90e997f4729dc3eb1be36b181ba3eadb44b03a8f73e4b61a32eba841bd2a66c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names Cautilus Agent status reporting and status-summary packet behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by Cautilus Agent skill parity plus status-summary runtime/app tests covering boundary, action buckets, sample claims, git state, and evidence satisfaction.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:6ce50c70950552fc23f8ce12669902f26988b83d20bbecb445d71b0019db67c3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-483",
+                "claim-docs-contracts-claim-discovery-workflow-md-630",
+                "claim-docs-contracts-claim-discovery-workflow-md-635",
+                "claim-docs-contracts-claim-discovery-workflow-md-691"
+              ]
+            }
+          ],
+          "nextAction": "Keep Cautilus Agent status instructions and status-summary packet fields aligned when branch reporting changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-630",
+          "claimFingerprint": "sha256:b64603dc391e90986d777c1d616a0650bb4900a82928039d5649e49dc8c9d538",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names no-input Cautilus Agent orientation rather than behavior evaluation.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `doctor status` no-input orientation tests and Cautilus Agent skill instructions that start from status packets instead of raw claim dumps.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:6ce50c70950552fc23f8ce12669902f26988b83d20bbecb445d71b0019db67c3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-483",
+                "claim-docs-contracts-claim-discovery-workflow-md-630",
+                "claim-docs-contracts-claim-discovery-workflow-md-635",
+                "claim-docs-contracts-claim-discovery-workflow-md-691"
+              ]
+            }
+          ],
+          "nextAction": "Keep no-input status orientation concise and packet-backed as claim counts grow.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-635",
+          "claimFingerprint": "sha256:2f006cdc0b2c26694835121869f8eb2d65ff4327e293477d439a86c4f58f58a7",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names evidence and next-work status buckets that are encoded in the status-summary packet.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by status-summary tests exposing evidenceSatisfaction and actionSummary buckets for deterministic proof, Cautilus eval scenario planning, alignment work, and other next branches.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:6ce50c70950552fc23f8ce12669902f26988b83d20bbecb445d71b0019db67c3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-483",
+                "claim-docs-contracts-claim-discovery-workflow-md-630",
+                "claim-docs-contracts-claim-discovery-workflow-md-635",
+                "claim-docs-contracts-claim-discovery-workflow-md-691"
+              ]
+            }
+          ],
+          "nextAction": "Keep status-summary action buckets synchronized with claim action-bucket policy.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-691",
+          "claimFingerprint": "sha256:54f451eb5c40a5f8f0dcf84b2d5c1c1de64658cc01ce6deff9e52c33d9fbbdff",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the `discover claims status` packet schema and bounded sample/git-state fields.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by app tests that `discover claims status` emits `cautilus.claim_status_summary.v1`, supports bounded sampleClaims, and reports gitState for branch decisions.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:6ce50c70950552fc23f8ce12669902f26988b83d20bbecb445d71b0019db67c3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-483",
+                "claim-docs-contracts-claim-discovery-workflow-md-630",
+                "claim-docs-contracts-claim-discovery-workflow-md-635",
+                "claim-docs-contracts-claim-discovery-workflow-md-691"
+              ]
+            }
+          ],
+          "nextAction": "Keep `discover claims status` schema and CLI tests current when status fields change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

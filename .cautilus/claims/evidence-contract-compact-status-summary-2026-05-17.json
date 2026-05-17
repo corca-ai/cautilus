@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-compact-status-summary-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-483",
+    "claim-docs-contracts-claim-discovery-workflow-md-630",
+    "claim-docs-contracts-claim-discovery-workflow-md-635",
+    "claim-docs-contracts-claim-discovery-workflow-md-691"
+  ],
+  "repoCommit": "a2a3253765ae24b106a639092086c390fa35d961",
+  "summary": "Deterministic proof that Cautilus Agent and `discover claims status` expose compact, decision-oriented claim status instead of raw claim dumps.",
+  "evidenceScope": {
+    "targetSurface": "Cautilus Agent and discover-claims status summary",
+    "claimBoundary": "Only the contract claims about compact status reporting, no-input Cautilus Agent orientation, evidence/action bucket summaries, and `cautilus.claim_status_summary.v1` are marked satisfied.",
+    "notClaimed": [
+      "The status summary proves unresolved claims are correct.",
+      "Status automatically launches evals, review, or edits.",
+      "Every status report is suitable for final product-meaning review without canonical specs.",
+      "The readable Markdown report replaces the JSON status packet.",
+      "Every host runtime will follow the skill unless it reads the Cautilus Agent instructions."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:skill-disclosure",
+      "exitCode": 0,
+      "observed": {
+        "status": "ok",
+        "sourceSkill": "skills/cautilus-agent/SKILL.md",
+        "packagedSkill": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+        "requiredFragments": 15,
+        "forbiddenFragments": 9,
+        "globalForbiddenFragments": 7
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimStatusSummarySummarizesExistingPacket|TestBuildClaimStatusSummaryCanIncludeBoundedSampleClaims|TestBuildClaimStatusSummaryIncludesSatisfiedEvidence' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "claim status summary includes discoveryBoundary",
+          "actionSummary.primaryBuckets separates next-work buckets",
+          "bounded sampleClaims can be included",
+          "gitState is available for branch decisions",
+          "evidenceSatisfaction exposes satisfied claims and evidence refs"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunAgentStatusJSONReturnsNoInputOrientation|TestRunClaimShowSummarizesExistingProofPlan|TestRunClaimShowReportsStaleGitState|TestRunClaimShowTreatsNonSourceHeadDriftAsFresh' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok",
+        "protectedBehaviors": [
+          "doctor status emits no-input orientation instead of a raw claim dump",
+          "discover claims status emits `cautilus.claim_status_summary.v1`",
+          "discover claims status can include bounded sample claims",
+          "discover claims status reports stale git state",
+          "non-source generated claim artifact drift remains head drift without blocking review"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 5,
+        "pass": 5,
+        "protectedBehaviors": [
+          "status report summarizes status, review results, validation, and eval plans",
+          "status report is a readable projection over JSON packets",
+          "refresh plans are shown as historical when older than the status packet",
+          "refresh plan summaries are selected without filesystem mtime"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-workflow-contract",
+      "contentHash": "sha256:f703e3ccf3be041a522bdf6e87640bca5680761ea0138ef439ed73471e91a9e4"
+    },
+    {
+      "path": "skills/cautilus-agent/SKILL.md",
+      "kind": "source-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+      "kind": "packaged-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-status-summary-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-status-summary-runtime-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "claim-status-cli-handler",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "claim-status-cli-tests",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.mjs",
+      "kind": "claim-status-readable-report-renderer",
+      "contentHash": "sha256:c56fa48706f15911538b8ea8c4fc2e5797016adcb7d471b3f7bf576042d182c8"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "kind": "claim-status-readable-report-tests",
+      "contentHash": "sha256:7751d28d79b6696c75a649c944eeb51a3a686b6f26203049214a8c474cdb3366"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The Cautilus Agent skill routes no-input and claim-status work through status packets, runtime and app tests prove `cautilus.claim_status_summary.v1` with boundary, action buckets, sample claims, git state, and evidence satisfaction, and report tests prove readable projections remain packet-backed."
+  }
+}
