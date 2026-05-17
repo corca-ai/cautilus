@@ -58,8 +58,20 @@ function applyValueArg(options, argv, index) {
 	return index + 1;
 }
 
-export function repairCommands() {
-	return ["npm run claims:refresh:all"];
+function defaultClaimStateSelected(options = {}) {
+	return (options.claims ?? DEFAULT_CLAIMS) === DEFAULT_CLAIMS &&
+		(options.status ?? DEFAULT_STATUS) === DEFAULT_STATUS;
+}
+
+export function repairCommands(options = {}) {
+	if (defaultClaimStateSelected(options)) {
+		return ["npm run claims:refresh:all"];
+	}
+	const claims = options.claims ?? DEFAULT_CLAIMS;
+	const status = options.status ?? DEFAULT_STATUS;
+	return [
+		`./bin/cautilus discover claims status --input ${claims} --sample-claims 1 > ${status}`,
+	];
 }
 
 function renderRepairMessage(options, output) {
@@ -72,12 +84,29 @@ function renderRepairMessage(options, output) {
 	].filter(Boolean).join("\n");
 }
 
-function packetGitCommit(options) {
-	const statusPath = resolve(options.repoRoot, options.status ?? DEFAULT_STATUS);
-	if (!existsSync(statusPath)) {
-		return null;
+function resolveRepoPath(options, field, fallback) {
+	return resolve(options.repoRoot, options[field] ?? fallback);
+}
+
+function readJsonFile(path, label) {
+	try {
+		return JSON.parse(readFileSync(path, "utf-8"));
+	} catch (error) {
+		throw new Error(`${label} ${path} is not readable JSON: ${error.message}`);
 	}
-	const packet = JSON.parse(readFileSync(statusPath, "utf-8"));
+}
+
+function assertRequiredFile(options, field, fallback, label) {
+	const path = resolveRepoPath(options, field, fallback);
+	if (!existsSync(path)) {
+		throw new Error(renderRepairMessage(options, `${label} ${path} is missing.`));
+	}
+	return path;
+}
+
+function packetGitCommit(options) {
+	const statusPath = assertRequiredFile(options, "status", DEFAULT_STATUS, "claim status snapshot");
+	const packet = readJsonFile(statusPath, "claim status snapshot");
 	const commit = packet?.gitState?.packetGitCommit;
 	return typeof commit === "string" && commit.trim() ? commit.trim() : null;
 }
@@ -87,6 +116,80 @@ function runGit(repoRoot, args) {
 		cwd: repoRoot,
 		encoding: "utf-8",
 	});
+}
+
+function runClaimStatus(repoRoot, claims, cautilusBin = "./bin/cautilus") {
+	return spawnSync(cautilusBin, ["discover", "claims", "status", "--input", claims, "--sample-claims", "1"], {
+		cwd: repoRoot,
+		encoding: "utf-8",
+	});
+}
+
+function canonicalValue(value) {
+	if (Array.isArray(value)) {
+		return value.map(canonicalValue);
+	}
+	if (!value || typeof value !== "object") {
+		return value;
+	}
+	return Object.fromEntries(
+		Object.entries(value)
+			.sort(([left], [right]) => left.localeCompare(right))
+			.map(([key, child]) => [key, canonicalValue(child)]),
+	);
+}
+
+function normalizeStatusForFreshness(value) {
+	const normalized = canonicalValue(value);
+	const gitState = normalized?.gitState && typeof normalized.gitState === "object" ? normalized.gitState : null;
+	if (!gitState) {
+		return normalized;
+	}
+	delete gitState.currentGitCommit;
+	delete gitState.headDrift;
+	delete gitState.changedFileCount;
+	delete gitState.changedFiles;
+	delete gitState.changedSources;
+	delete gitState.comparisonStatus;
+	delete gitState.recommendedAction;
+	return normalized;
+}
+
+function sameFreshnessStatus(left, right) {
+	return JSON.stringify(normalizeStatusForFreshness(left)) === JSON.stringify(normalizeStatusForFreshness(right));
+}
+
+function assertSelectedStatusFresh(options) {
+	const claimsPath = assertRequiredFile(options, "claims", DEFAULT_CLAIMS, "claim packet");
+	const statusPath = assertRequiredFile(options, "status", DEFAULT_STATUS, "claim status snapshot");
+	const checkedStatus = readJsonFile(statusPath, "claim status snapshot");
+	const runner = options.statusRunner ?? runClaimStatus;
+	const result = runner(options.repoRoot, options.claims ?? DEFAULT_CLAIMS, options.cautilusBin);
+	if (result.status !== 0) {
+		throw new Error(renderRepairMessage(options, `${result.stdout || ""}${result.stderr || ""}`));
+	}
+	let refreshedStatus;
+	try {
+		refreshedStatus = JSON.parse(result.stdout || "");
+	} catch (error) {
+		throw new Error(renderRepairMessage(options, `failed to parse refreshed status for ${claimsPath}: ${error.message}`));
+	}
+	if (!sameFreshnessStatus(checkedStatus, refreshedStatus)) {
+		throw new Error(renderRepairMessage(
+			options,
+			`claim status snapshot ${statusPath} is stale for selected claim packet ${claimsPath}.`,
+		));
+	}
+}
+
+function runDefaultProjectionCheck(options) {
+	const result = spawnSync("npm", ["run", "claims:evidence-state:check"], {
+		cwd: options.repoRoot,
+		encoding: "utf-8",
+	});
+	if (result.status !== 0) {
+		throw new Error(renderRepairMessage(options, `${result.stdout || ""}${result.stderr || ""}`));
+	}
 }
 
 function assertPacketCommitReachable(options) {
@@ -111,15 +214,12 @@ function assertPacketCommitReachable(options) {
 }
 
 export function checkClaimFreshness(options) {
-	const result = spawnSync("npm", ["run", "claims:evidence-state:check"], {
-		cwd: options.repoRoot,
-		encoding: "utf-8",
-	});
-	if (result.status === 0) {
-		const reachablePacketGitCommit = assertPacketCommitReachable(options);
-		return { status: "fresh", repoRoot: options.repoRoot, claims: options.claims, reachablePacketGitCommit };
+	assertSelectedStatusFresh(options);
+	if (defaultClaimStateSelected(options)) {
+		runDefaultProjectionCheck(options);
 	}
-	throw new Error(renderRepairMessage(options, `${result.stdout || ""}${result.stderr || ""}`));
+	const reachablePacketGitCommit = assertPacketCommitReachable(options);
+	return { status: "fresh", repoRoot: options.repoRoot, claims: options.claims, reachablePacketGitCommit };
 }
 
 function main(argv = process.argv.slice(2)) {
