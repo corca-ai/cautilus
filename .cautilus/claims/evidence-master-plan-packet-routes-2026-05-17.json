@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-master-plan-packet-routes-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-master-plan-md-30"
+  ],
+  "repoCommit": "103f39af1808a31bee1bc89bf8a7c0637e468cfc",
+  "summary": "Representative deterministic proof that Cautilus exposes machine-readable packet surfaces with provenance, status summaries, and bounded next-work routes for other tools.",
+  "evidenceScope": {
+    "targetSurface": "core packet, provenance, status-summary, and next-work route surfaces",
+    "claimBoundary": "Only the master-plan claim about representative machine-readable packets, provenance, status summaries, and bounded next-work routes is marked satisfied.",
+    "notClaimed": [
+      "Every CLI command has the same resumability contract.",
+      "Every packet-consuming external tool is already implemented.",
+      "Human-readable reports replace JSON packets as the source of truth.",
+      "Every remaining claim has complete evidence or eval coverage."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestRunCommandsJSONReturnsRegistry|TestRunAgentStatusJSONReturnsNoInputOrientation|TestRunClaimShowSummarizesExistingProofPlan|TestRunClaimShowTreatsNonSourceHeadDriftAsFresh|TestRunClaimPlanEvalsWritesIntermediatePlan|TestRunClaimValidateWritesReportAndFailsInvalidEvidence' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "Command registry JSON uses `cautilus.commands.v1`.",
+          "`doctor status --json` emits orientation and next branches without an input packet.",
+          "`discover claims status` summarizes existing claim packets and preserves git freshness state.",
+          "`evaluate claims plan` writes a `cautilus.claim_eval_plan.v1` intermediate plan.",
+          "`discover claims validate` writes a `cautilus.claim_validation_report.v1` report and fails invalid evidence."
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimStatusSummary(SummarizesExistingPacket|CanIncludeBoundedSampleClaims|IncludesSatisfiedEvidence)' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "Claim status summaries preserve bounded sample claims for tool consumption.",
+          "Claim summaries include satisfied evidence state.",
+          "Status summaries expose action routing over the current claim packet."
+        ]
+      }
+    },
+    {
+      "command": "tmpdir=$(mktemp -d /tmp/cautilus-master-plan-packets-XXXXXX); ./bin/cautilus doctor commands --json > \"$tmpdir/commands.json\"; ./bin/cautilus doctor status --repo-root . --json > \"$tmpdir/doctor-status.json\"; ./bin/cautilus discover claims status --input .cautilus/claims/evidenced-typed-runners.json --output \"$tmpdir/claim-status-summary.json\" --sample-claims 2; ./bin/cautilus discover claims validate --claims .cautilus/claims/evidenced-typed-runners.json --output \"$tmpdir/claim-validation.json\"; ./bin/cautilus evaluate claims plan --claims .cautilus/claims/evidenced-typed-runners.json --output \"$tmpdir/claim-eval-plan.json\"",
+      "exitCode": 0,
+      "observed": {
+        "commandsSchema": "cautilus.commands.v1",
+        "doctorSchema": "cautilus.agent_status.v1",
+        "doctorNextBranchCount": 4,
+        "statusSchema": "cautilus.claim_status_summary.v1",
+        "statusHasGitState": true,
+        "statusPrimaryBucketCount": 7,
+        "statusCrossCuttingSignalCount": 2,
+        "recommendedNextActionCount": 3,
+        "validationSchema": "cautilus.claim_validation_report.v1",
+        "validationValid": true,
+        "planSchema": "cautilus.claim_eval_plan.v1",
+        "planHasSelectionPolicy": true
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/master-plan.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:545a2befb5caccb7dff4462931b7db63e805dd0734e468e9f4c3a32ca7b9b29f"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "core-packet-cli-tests",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-status-summary-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-status-and-next-work-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "cli-packet-command-routing",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.mjs",
+      "kind": "claim-status-readable-projection",
+      "contentHash": "sha256:c56fa48706f15911538b8ea8c4fc2e5797016adcb7d471b3f7bf576042d182c8"
+    },
+    {
+      "path": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "user-facing-packet-resumability-spec",
+      "contentHash": "sha256:dde62241d12cffb9fcfc34a5abfab8ac3f32b4ca1182142ffe8a05c1ab9db56c"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Representative app and runtime tests plus live CLI probes show schema-versioned command, doctor, claim-status, validation, and eval-plan packets with git provenance, status summaries, action buckets, cross-cutting signals, and recommended next actions consumable by other tools."
+  }
+}

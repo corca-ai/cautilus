@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 227
+          "unknown": 226
         },
         "byReviewStatus": {
-          "heuristic": 227
+          "heuristic": 226
         },
-        "count": 227,
+        "count": 226,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 69
+          "satisfied": 70
         },
         "byReviewStatus": {
-          "agent-reviewed": 69
+          "agent-reviewed": 70
         },
-        "count": 69,
+        "count": 70,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 9,
-          "unknown": 61
+          "unknown": 60
         },
         "byReviewStatus": {
           "agent-reviewed": 16,
-          "heuristic": 54
+          "heuristic": 53
         },
-        "count": 70,
+        "count": 69,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-master-plan-md-30",
           "claim-docs-master-plan-md-57",
           "claim-docs-master-plan-md-78",
           "claim-docs-master-plan-md-84",
-          "claim-docs-specs-index-spec-md-9"
+          "claim-docs-specs-index-spec-md-9",
+          "claim-docs-specs-user-evaluation-spec-md-36"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 69,
+      "satisfied": 70,
       "stale": 16,
-      "unknown": 276
+      "unknown": 275
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 133,
-      "heuristic": 227,
+      "agent-reviewed": 134,
+      "heuristic": 226,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 69,
+    "satisfiedClaimCount": 70,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1270,6 +1270,25 @@
         "summary": "Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates."
       },
       {
+        "claimId": "claim-docs-master-plan-md-30",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:0b0515db650052339a530cfe6cbe32371e23859f6847b7f81452aaaece96c043",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-master-plan-packet-routes-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-master-plan-md-30"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Cautilus exposes machine-readable packets, provenance, status summaries, and bounded next-work routes that other tools can consume."
+      },
+      {
         "claimId": "claim-docs-contracts-active-run-md-3",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1808,7 +1827,7 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 39,
+    "changedFileCount": 41,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1817,6 +1836,7 @@
       ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
+      ".cautilus/claims/evidence-improve-search-sparse-evidence-block-2026-05-17.json",
       ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
@@ -1827,6 +1847,7 @@
       ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
@@ -1858,7 +1879,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "ccc967793ff8189d49c3428f0c3e6cb4ff8d30c9",
+    "currentGitCommit": "103f39af1808a31bee1bc89bf8a7c0637e468cfc",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -1885,7 +1906,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 202,
+    "heuristicClaimsReadyForReview": 201,
     "needsAlignment": 37,
     "needsScenario": 8
   },

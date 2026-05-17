@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T10:25:00Z",
+    "evidencePolicy": "Mark the broad master-plan packet route claim satisfied only through representative core command surfaces; do not infer every command has identical resume semantics."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-master-plan-packet-routes-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-master-plan-md-30",
+          "claimFingerprint": "sha256:c441f8845a78fa8d0b880337d4911b0ddf10eb8dfb3301a68d035b4fa5d8f80d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names packet shape, provenance, status-summary, and bounded next-work route behavior that is protected by deterministic CLI and runtime tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by representative command and runtime tests plus live CLI probes showing schema-versioned command, doctor, claim-status, validation, and eval-plan packets with git provenance, status summaries, action buckets, cross-cutting signals, and recommended next actions.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-master-plan-packet-routes-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:0b0515db650052339a530cfe6cbe32371e23859f6847b7f81452aaaece96c043",
+              "supportsClaimIds": [
+                "claim-docs-master-plan-md-30"
+              ]
+            }
+          ],
+          "nextAction": "Keep representative packet route tests current when command packet schemas, claim status summaries, or next-work routing fields change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
