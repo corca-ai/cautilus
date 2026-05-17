@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T11:00:00Z",
+    "evidencePolicy": "Only mark the deterministic claim-discovery proof-plan packet boundary satisfied; do not infer discovered claims are verified."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-master-plan-claim-discover-proof-plan-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-master-plan-md-78",
+          "claimFingerprint": "sha256:f2038595d88883381c1a4e025a4f60ffb70c089f56db944e569539b9294ed41e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names shipped deterministic claim-discovery packet behavior rather than model-backed review or eval verdicts.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runtime and CLI tests: `discover claims` writes `cautilus.claim_proof_plan.v1`, preserves source refs, keeps proof routes distinct, and carries a non-verdict notice instead of marking discovered claims verified.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:40ebe56a57e4d6e1fbab7426c9545a6b23d54682ad07870c72569fd46aa12337",
+              "supportsClaimIds": [
+                "claim-docs-master-plan-md-78"
+              ]
+            }
+          ],
+          "nextAction": "Keep deterministic discovery tests current when changing candidate extraction, proof routing, source refs, or non-verdict packet semantics.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:fc1b67701e6923a4b052c9f8e1a628486878a4e28396aa14106b21abdd200c36",
+    "claimsHash": "sha256:7a51d99785fc10566a13a37ac19d7785e5cf445a35bb02bc1da9da5532f7d447",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:a339cde96f31999bb3d731d62916a78bb644f54c0abf7288e76882741caefd07",
+    "statusHash": "sha256:473721563c11e3d2c54cbe86ec5c7e97937264c589e7472056736d28bd173980",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,7 +12,7 @@
     }
   },
   "gitState": {
-    "changedFileCount": 43,
+    "changedFileCount": 45,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -22,6 +22,7 @@
       ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/evidence-improve-search-sparse-evidence-block-2026-05-17.json",
+      ".cautilus/claims/evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
       ".cautilus/claims/evidence-master-plan-packet-routes-2026-05-17.json",
       ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
@@ -34,6 +35,7 @@
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
@@ -66,7 +68,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "778800e4260745982e588278cb9ea0982adf460c",
+    "currentGitCommit": "4871b4cb5014e7c2317442f8cfdc07e00cd2dbc9",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -77,9 +79,9 @@
     "candidateCount": 361,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 71,
+      "satisfied": 72,
       "stale": 16,
-      "unknown": 274
+      "unknown": 273
     },
     "byRecommendedProof": {
       "cautilus-eval": 124,
@@ -93,8 +95,8 @@
       "ready-for-proof": 289
     },
     "byReviewStatus": {
-      "agent-reviewed": 135,
-      "heuristic": 225,
+      "agent-reviewed": 136,
+      "heuristic": 224,
       "human-reviewed": 1
     }
   },
@@ -269,27 +271,27 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 71,
+      "count": 72,
       "actor": "none",
       "evidence": {
-        "satisfied": 71
+        "satisfied": 72
       },
       "review": {
-        "agent-reviewed": 71
+        "agent-reviewed": 72
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 68,
+      "count": 67,
       "actor": "agent",
       "evidence": {
         "stale": 9,
-        "unknown": 59
+        "unknown": 58
       },
       "review": {
         "agent-reviewed": 16,
-        "heuristic": 52
+        "heuristic": 51
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
@@ -365,7 +367,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 225,
+      "count": 224,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [
