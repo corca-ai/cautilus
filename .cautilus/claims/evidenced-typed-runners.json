@@ -3742,8 +3742,22 @@
       "claimFingerprint": "sha256:9313745952e5568f9cbcb2f58bd22cf7259212aab3ba1a7fa3d8fccd232e2931",
       "claimId": "claim-docs-specs-user-index-spec-md-26",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-index-spec-md-26",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by current reviewable-artifacts evidence covering schema-versioned packet outputs and readable projections that preserve JSON/source-artifact audit boundaries.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -3751,9 +3765,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep the user workflow index aligned with reviewable-artifact packet and projection evidence when workflow stories change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "[Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen.",
@@ -3762,8 +3776,9 @@
         }
       ],
       "summary": "[Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The user index cross-links the reviewable-artifacts workflow contract, which is protected by deterministic packet and renderer tests."
     },
     {
       "claimAudience": "user",
@@ -3831,8 +3846,22 @@
       "claimFingerprint": "sha256:2fbd812914c2df271a3e305fabf2873543b0585f996f9611e59e1f8138d97881",
       "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-index-spec-md-26",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by command packet tests and readable projection tests showing durable packets and reopenable readable views without relying on chat memory.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -3840,9 +3869,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep durable packet and readable projection tests current when adding or changing Cautilus-owned workflows.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory.",
@@ -3851,8 +3880,9 @@
         }
       ],
       "summary": "After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names a cross-workflow artifact reviewability contract that is protected by deterministic packet and readable-projection tests."
     },
     {
       "claimAudience": "user",
@@ -3860,8 +3890,22 @@
       "claimFingerprint": "sha256:a1bf9ad5b836c138012e5898ffc5eba7daa704ece8e346906fd5aa6e390ddd81",
       "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-index-spec-md-26",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by Cautilus CLI packet tests, the reviewable artifact projection matrix, and readable-view renderer tests for the current shipped Cautilus-owned workflow surfaces.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -3869,9 +3913,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Add packet or readable-view proof before promoting a new workflow as covered by the reviewable-artifacts contract.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review.",
@@ -3880,8 +3924,9 @@
         }
       ],
       "summary": "Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names CLI packet outputs and readable reports that can be validated by command packet tests and renderer tests."
     },
     {
       "claimAudience": "user",
@@ -3889,8 +3934,22 @@
       "claimFingerprint": "sha256:6f1d53b63c55437a8dba5e2715e79937723944de9c742996061a11766aea838f",
       "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-6",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-index-spec-md-26",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+            "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by command packet outputs, status report tests, browser review tests, and HTML renderer tests that preserve JSON packets or declared source artifacts as the audit source.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -3898,9 +3957,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep JSON packet audit-source notices and schema checks current when readable artifact families change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "A user or agent can reopen JSON packets as the audit source of truth.",
@@ -3909,8 +3968,9 @@
         }
       ],
       "summary": "A user or agent can reopen JSON packets as the audit source of truth.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names JSON packet audit-source behavior that is directly protected by deterministic packet and projection tests."
     },
     {
       "claimAudience": "user",
@@ -12081,9 +12141,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 75,
+      "satisfied": 79,
       "stale": 16,
-      "unknown": 270
+      "unknown": 266
     },
     "byLifecycle": {
       "new": 361
@@ -12094,8 +12154,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 139,
-      "heuristic": 221,
+      "agent-reviewed": 143,
+      "heuristic": 217,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12371,6 +12431,7 @@
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
+      ".cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
@@ -12435,9 +12496,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 66,
+    "appliedResultCount": 67,
     "skippedResultCount": 52,
-    "keptUpdateCount": 149,
+    "keptUpdateCount": 153,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

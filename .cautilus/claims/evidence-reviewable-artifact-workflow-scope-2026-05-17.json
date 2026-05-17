@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-reviewable-artifact-workflow-scope-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-specs-user-index-spec-md-26",
+    "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+    "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+    "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+  ],
+  "repoCommit": "caafbb6854a112b11580b6e1467421d72dd4c9dc",
+  "summary": "Deterministic proof that the current Cautilus-owned workflow stories expose machine-readable packets and readable projections that preserve JSON packets or declared source artifacts as the audit source.",
+  "evidenceScope": {
+    "targetSurface": "user-facing reviewable artifacts workflow contract",
+    "claimBoundary": "Marks only the current user-facing index and reviewable-artifacts claims satisfied for checked-in Cautilus-owned workflow packet surfaces and shipped readable-view projections.",
+    "notClaimed": [
+      "Consumer-owned custom report views are covered without their own tests.",
+      "Every future Cautilus workflow is automatically covered before being added to the projection matrix or packet tests.",
+      "Readable views replace JSON packets as the audit source.",
+      "Readable projections independently prove behavior quality.",
+      "Every CLI subcommand has identical resume or packet semantics."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/reviewable-artifact-projections.test.mjs scripts/agent-runtime/render-claim-status-report.test.mjs scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 16,
+        "pass": 16,
+        "protectedBehaviors": [
+          "projection matrix covers shipped readable views",
+          "projection matrix markers point at executable proof",
+          "projection matrix covers shipped CLI readable renderers",
+          "claim status reports keep JSON packets as the audit source",
+          "browser comments are saved as separate packets and stale comments are ignored"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunCommandsJSONReturnsRegistry|TestRunClaimShowSummarizesExistingProofPlan|TestRunClaimShowTreatsNonSourceHeadDriftAsFresh|TestRunClaimPlanEvalsWritesIntermediatePlan|TestRunClaimValidateWritesReportAndFailsInvalidEvidence' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok",
+        "protectedBehaviors": [
+          "commands --json emits the command registry packet",
+          "claim show emits a status summary packet with resumable claim state",
+          "claim plan-evals writes a claim eval plan packet",
+          "claim validate writes a validation report packet"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestRender(CompareArtifact|ScenarioProposals|ScenarioConversationReview|EvidenceBundle|Report|ReviewPacket|ReviewSummary|RunIndex|SelfDogfood)HTML|TestWrite(CompareArtifact|ScenarioProposals|ScenarioConversationReview|Report|ReviewPacket|ReviewSummary|RunIndex|SelfDogfood)HTML|TestDiscoverRunIndexEntries|TestRenderReportHTMLFromFileRejectsLegacySchema|TestRenderReviewPacketHTMLFromFileRejectsWrongSchema|TestRenderReviewSummaryHTMLFromFileRejectsWrongSchema|TestWriteSelfDogfoodExperimentsHTMLWritesIndexNextToLatestBundle' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "HTML renderers read schema-versioned JSON packets or declared source artifacts",
+          "HTML write helpers render next to packet inputs instead of replacing them",
+          "wrong-schema packets are rejected where applicable",
+          "run-index discovery recognizes known packet files and projection availability"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    }
+  ],
+  "relatedEvidence": [
+    {
+      "path": ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
+      "kind": "durable-packet-surface-evidence-bundle",
+      "contentHash": "sha256:51ac3d2110942fd7f91c3a60337aa3dfe09cca869520bceb6a4eed2dd18b901e",
+      "reason": "Records representative command surfaces that emit schema-versioned packets with resumable state."
+    },
+    {
+      "path": ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
+      "kind": "readable-projection-evidence-bundle",
+      "contentHash": "sha256:ecb1ebd83b487400f378d1fc7348d910e3548e34ad76aacc74676dededcdea9b",
+      "reason": "Records matrix-backed readable views generated from machine-readable packets or declared source artifacts."
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/specs/user/index.spec.md",
+      "kind": "user-workflow-index-spec",
+      "contentHash": "sha256:00fdcaee58c9bd1520b615f82091044919f78fe5c620430a6828c2cff16b386c"
+    },
+    {
+      "path": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "reviewable-artifacts-user-spec",
+      "contentHash": "sha256:dde62241d12cffb9fcfc34a5abfab8ac3f32b4ca1182142ffe8a05c1ab9db56c"
+    },
+    {
+      "path": "docs/contracts/reviewable-artifact-projections.json",
+      "kind": "reviewable-artifact-projection-matrix",
+      "contentHash": "sha256:01867f50d474bbf0a931f4d8de7bf4e67db24a8866355738ee2353744b89a36d"
+    },
+    {
+      "path": "scripts/agent-runtime/reviewable-artifact-projections.test.mjs",
+      "kind": "projection-matrix-tests",
+      "contentHash": "sha256:551eacf3331fc5c4dcc581a67ede7669a42d51803be5b77238406f012cf0fe3d"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "kind": "claim-status-readable-view-tests",
+      "contentHash": "sha256:7751d28d79b6696c75a649c944eeb51a3a686b6f26203049214a8c474cdb3366"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "cli-packet-surface-tests",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "internal/runtime/artifact_html_test.go",
+      "kind": "artifact-html-renderer-tests",
+      "contentHash": "sha256:3da79c03113cb24f64090345df1a60bb238b1c1277bae5f1771f34f841a63dc0"
+    },
+    {
+      "path": "internal/runtime/review_html_test.go",
+      "kind": "review-html-renderer-tests",
+      "contentHash": "sha256:24caec3a099d73178c89281afc50173f1ab1f034b151b050016f928a5c9fb13b"
+    },
+    {
+      "path": "internal/runtime/report_html_test.go",
+      "kind": "report-html-renderer-tests",
+      "contentHash": "sha256:73e4ddbff88e917882a7b65bc87827599fa86bb99b474b13bee563a8441d35de"
+    },
+    {
+      "path": "internal/runtime/run_index_html_test.go",
+      "kind": "run-index-html-renderer-tests",
+      "contentHash": "sha256:941562e39242c9dd507a9283f1dc896f9a2f2da4c066130cf0f9a6f7e6b122d7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The user specs link workflow-wide reviewability to packet and readable-view behavior; command packet tests prove representative schema-versioned packet outputs, and projection matrix plus renderer tests prove shipped readable views preserve packet/source-artifact audit boundaries."
+  }
+}

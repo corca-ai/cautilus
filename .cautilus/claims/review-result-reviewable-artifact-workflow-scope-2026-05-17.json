@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T08:55:19Z",
+    "evidencePolicy": "Only mark current Cautilus-owned workflow packet and readable-view claims satisfied; keep consumer-owned custom views and future unlisted workflow surfaces out of scope."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-reviewable-artifact-workflow-scope-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-index-spec-md-26",
+          "claimFingerprint": "sha256:9313745952e5568f9cbcb2f58bd22cf7259212aab3ba1a7fa3d8fccd232e2931",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The user index cross-links the reviewable-artifacts workflow contract, which is protected by deterministic packet and renderer tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by current reviewable-artifacts evidence covering schema-versioned packet outputs and readable projections that preserve JSON/source-artifact audit boundaries.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-index-spec-md-26",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+              ]
+            }
+          ],
+          "nextAction": "Keep the user workflow index aligned with reviewable-artifact packet and projection evidence when workflow stories change.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+          "claimFingerprint": "sha256:2fbd812914c2df271a3e305fabf2873543b0585f996f9611e59e1f8138d97881",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a cross-workflow artifact reviewability contract that is protected by deterministic packet and readable-projection tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by command packet tests and readable projection tests showing durable packets and reopenable readable views without relying on chat memory.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-index-spec-md-26",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+              ]
+            }
+          ],
+          "nextAction": "Keep durable packet and readable projection tests current when adding or changing Cautilus-owned workflows.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+          "claimFingerprint": "sha256:a1bf9ad5b836c138012e5898ffc5eba7daa704ece8e346906fd5aa6e390ddd81",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names CLI packet outputs and readable reports that can be validated by command packet tests and renderer tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by Cautilus CLI packet tests, the reviewable artifact projection matrix, and readable-view renderer tests for the current shipped Cautilus-owned workflow surfaces.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-index-spec-md-26",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+              ]
+            }
+          ],
+          "nextAction": "Add packet or readable-view proof before promoting a new workflow as covered by the reviewable-artifacts contract.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-6",
+          "claimFingerprint": "sha256:6f1d53b63c55437a8dba5e2715e79937723944de9c742996061a11766aea838f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names JSON packet audit-source behavior that is directly protected by deterministic packet and projection tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by command packet outputs, status report tests, browser review tests, and HTML renderer tests that preserve JSON packets or declared source artifacts as the audit source.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-index-spec-md-26",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+                "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+              ]
+            }
+          ],
+          "nextAction": "Keep JSON packet audit-source notices and schema checks current when readable artifact families change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

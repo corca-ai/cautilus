@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 221
+          "unknown": 217
         },
         "byReviewStatus": {
-          "heuristic": 221
+          "heuristic": 217
         },
-        "count": 221,
+        "count": 217,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 75
+          "satisfied": 79
         },
         "byReviewStatus": {
-          "agent-reviewed": 75
+          "agent-reviewed": 79
         },
-        "count": 75,
+        "count": 79,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 9,
-          "unknown": 55
+          "unknown": 51
         },
         "byReviewStatus": {
           "agent-reviewed": 16,
-          "heuristic": 48
+          "heuristic": 44
         },
-        "count": 64,
+        "count": 60,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-specs-user-index-spec-md-26",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-6",
-          "claim-docs-contracts-claim-discovery-workflow-md-5"
+          "claim-docs-contracts-claim-discovery-workflow-md-5",
+          "claim-docs-contracts-claim-discovery-workflow-md-21",
+          "claim-docs-contracts-claim-discovery-workflow-md-85",
+          "claim-docs-contracts-claim-discovery-workflow-md-175",
+          "claim-docs-contracts-claim-discovery-workflow-md-361"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 75,
+      "satisfied": 79,
       "stale": 16,
-      "unknown": 270
+      "unknown": 266
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 139,
-      "heuristic": 221,
+      "agent-reviewed": 143,
+      "heuristic": 217,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 75,
+    "satisfiedClaimCount": 79,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1384,6 +1384,94 @@
         "summary": "A user can reopen observed behavior and summary packets after each eval."
       },
       {
+        "claimId": "claim-docs-specs-user-index-spec-md-26",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-index-spec-md-26",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "[Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen."
+      },
+      {
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-index-spec-md-26",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory."
+      },
+      {
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-index-spec-md-26",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review."
+      },
+      {
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-6",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-index-spec-md-26",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "A user or agent can reopen JSON packets as the audit source of truth."
+      },
+      {
         "claimId": "claim-docs-contracts-active-run-md-3",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1922,7 +2010,7 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 51,
+    "changedFileCount": 53,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1940,6 +2028,7 @@
       ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
@@ -1955,6 +2044,7 @@
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
+      ".cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-option-paths.md",
@@ -1984,7 +2074,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "d7c52beb34a8e1e3cdc999ec1e63ef61cb4e4f78",
+    "currentGitCommit": "caafbb6854a112b11580b6e1467421d72dd4c9dc",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -2011,7 +2101,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 196,
+    "heuristicClaimsReadyForReview": 192,
     "needsAlignment": 37,
     "needsScenario": 8
   },

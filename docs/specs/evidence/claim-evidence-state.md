@@ -7,11 +7,11 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:40554fee73126799712a39284251ec8e67e48d3b4d813d53627936943a605993
+- Claims hash: sha256:560e7ce57324d7fc49369b8161dfcee59b660d0b71ac0208dfe8081df9cb5f23
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:7bbe5befb284ca2696ae4f0ab32d7bd37468ee132ec8a790ceb5a1d1c6bdf9de
+- Status hash: sha256:7f821c4441662c744ec99fa574430ccb7f5533163b67eee9300fbec4432beea5
 - Git state: fresh-with-head-drift; stale=no
-- Snapshot inspected commit: d7c52beb34a8e1e3cdc999ec1e63ef61cb4e4f78
+- Snapshot inspected commit: caafbb6854a112b11580b6e1467421d72dd4c9dc
 - Packet commit: c944eef5e6e2336b33aa7652eb8d486a560f3773
 - Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
@@ -21,10 +21,10 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 75, stale: 16, unknown: 270 |
+| Evidence | satisfied: 79, stale: 16, unknown: 266 |
 | Recommended proof | cautilus-eval: 124, deterministic: 140, human-auditable: 97 |
 | Proof readiness | blocked: 27, needs alignment: 37, needs scenario: 8, ready for proof: 289 |
-| Review | agent-reviewed: 139, heuristic: 221, human-reviewed: 1 |
+| Review | agent-reviewed: 143, heuristic: 217, human-reviewed: 1 |
 
 ## Cautilus Eval Backlog
 
@@ -77,8 +77,8 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 
 | Bucket | Actor | Count | Evidence | Review | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 75 | satisfied: 75 | agent-reviewed: 75 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 64 | stale: 9, unknown: 55 | agent-reviewed: 16, heuristic: 48 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 79 | satisfied: 79 | agent-reviewed: 79 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 60 | stale: 9, unknown: 51 | agent-reviewed: 16, heuristic: 44 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 116 | stale: 5, unknown: 111 | agent-reviewed: 8, heuristic: 107, human-reviewed: 1 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
 | agent-design-scenario | agent | 8 | unknown: 8 | agent-reviewed: 1, heuristic: 7 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 37 | unknown: 37 | agent-reviewed: 19, heuristic: 18 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
@@ -89,7 +89,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 
 | Signal | Actor | Count | Meaning |
 | --- | --- | --- | --- |
-| heuristic-review-needed | agent | 221 | Review heuristic labels before spending proof or eval budget. |
+| heuristic-review-needed | agent | 217 | Review heuristic labels before spending proof or eval budget. |
 | stale-evidence | agent | 16 | Refresh or recheck stale evidence before consuming it as proof. |
 
 ## How This Avoids A Split SOT
