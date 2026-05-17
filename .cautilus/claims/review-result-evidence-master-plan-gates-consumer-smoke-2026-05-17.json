@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T10:45:00Z",
+    "evidencePolicy": "Mark the master-plan gate and onboarding-smoke claim satisfied only for checked-in gate definitions, workflow verify invocation, and the external consumer smoke path; do not claim GitHub executed the workflows for this commit."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-master-plan-gates-consumer-smoke-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-master-plan-md-57",
+          "claimFingerprint": "sha256:c0f12efa6b470d39e293f6a2b4959f875ce07fe91f4f47f6e2be03c3929ef54d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names checked-in local gates, GitHub workflow wiring, and an external consumer smoke path that can be protected by deterministic tests and smoke output.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by checked-in tests proving verify workflows call `npm run verify` and package scripts keep local gates plus `consumer:onboard:smoke`, and by an external consumer onboarding smoke run that reaches install, adapter init, minimal wiring, adapter resolve, doctor ready, and a bounded evaluate fixture packet.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c69b71816afac483549f64ea96cda219f1f3adf99403634401f5777d5952aaf2",
+              "supportsClaimIds": [
+                "claim-docs-master-plan-md-57"
+              ]
+            }
+          ],
+          "nextAction": "Keep the workflow/package-script test and external consumer smoke aligned when verify gates, hook gates, or onboarding command names change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

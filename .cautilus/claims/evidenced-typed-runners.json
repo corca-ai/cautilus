@@ -3231,8 +3231,19 @@
       "claimFingerprint": "sha256:c0f12efa6b470d39e293f6a2b4959f875ce07fe91f4f47f6e2be03c3929ef54d",
       "claimId": "claim-docs-master-plan-md-57",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c69b71816afac483549f64ea96cda219f1f3adf99403634401f5777d5952aaf2",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-master-plan-md-57"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by checked-in tests proving verify workflows call `npm run verify` and package scripts keep local gates plus `consumer:onboard:smoke`, and by an external consumer onboarding smoke run that reaches install, adapter init, minimal wiring, adapter resolve, doctor ready, and a bounded evaluate fixture packet.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -3240,9 +3251,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep the workflow/package-script test and external consumer smoke aligned when verify gates, hook gates, or onboarding command names change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture`",
@@ -3251,8 +3262,9 @@
         }
       ],
       "summary": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture`",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names checked-in local gates, GitHub workflow wiring, and an external consumer smoke path that can be protected by deterministic tests and smoke output."
     },
     {
       "claimAudience": "developer",
@@ -12021,9 +12033,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 70,
+      "satisfied": 71,
       "stale": 16,
-      "unknown": 275
+      "unknown": 274
     },
     "byLifecycle": {
       "new": 361
@@ -12034,8 +12046,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 134,
-      "heuristic": 226,
+      "agent-reviewed": 135,
+      "heuristic": 225,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12243,13 +12255,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-master-plan-md-30",
-        "clusterId": "cluster-master-plan-packet-routes-2026-05-17"
+        "claimId": "claim-docs-master-plan-md-57",
+        "clusterId": "cluster-master-plan-gates-consumer-smoke-2026-05-17"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12314,7 +12326,8 @@
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
-      ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json"
+      ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12370,9 +12383,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 61,
+    "appliedResultCount": 62,
     "skippedResultCount": 52,
-    "keptUpdateCount": 144,
+    "keptUpdateCount": 145,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-master-plan-gates-consumer-smoke-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-master-plan-md-57"
+  ],
+  "repoCommit": "778800e4260745982e588278cb9ea0982adf460c",
+  "summary": "Deterministic proof that local gate scripts are checked in, GitHub verify workflows invoke `npm run verify`, and the external consumer onboarding smoke exercises install, adapter init, minimal wiring, adapter resolve, doctor ready, and one bounded `evaluate fixture` run.",
+  "evidenceScope": {
+    "targetSurface": "local gates, GitHub verify workflows, and external consumer onboarding smoke",
+    "claimBoundary": "Only the docs/master-plan.md claim about checked-in gates, verify workflows, and the external consumer onboarding smoke path is marked satisfied.",
+    "notClaimed": [
+      "Every CI workflow has been executed by GitHub for this commit.",
+      "`npm run verify` was run in this evidence slice.",
+      "The external consumer smoke proves product-runner assessment readiness.",
+      "Every real consumer repo can onboard without repo-specific adapter work."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/github-actions.test.mjs scripts/on-demand/smoke-external-consumer.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 4,
+        "pass": 4,
+        "protectedBehaviors": [
+          "`.github/workflows/verify.yml` runs `npm run verify`.",
+          "`.github/workflows/release-artifacts.yml` runs `npm run verify` before release artifact build steps.",
+          "`package.json` keeps `verify`, `hooks:check`, and `consumer:onboard:smoke` script entries.",
+          "The external consumer onboarding smoke test bootstraps a temporary repo through install, adapter init, minimal fixture/runner wiring, adapter resolve, doctor ready, and one bounded evaluate fixture run."
+        ]
+      }
+    },
+    {
+      "command": "npm run consumer:onboard:smoke -- --json",
+      "exitCode": 0,
+      "observed": {
+        "ok": true,
+        "ready": true,
+        "installedSkill": true,
+        "adapterInitialized": true,
+        "adapterResolved": true,
+        "doctorReady": true,
+        "evaluateFixtureCommandObserved": true,
+        "evalSummarySchemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+        "evalObservedPathWritten": true,
+        "evalCasesPathWritten": true,
+        "recommendation": "accept-now"
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/master-plan.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:545a2befb5caccb7dff4462931b7db63e805dd0734e468e9f4c3a32ca7b9b29f"
+    },
+    {
+      "path": "package.json",
+      "kind": "checked-in-local-gate-scripts",
+      "contentHash": "sha256:0e1691dca56fac4e178692606de57be2b045ff3d77da66ea135314a8331375d6"
+    },
+    {
+      "path": ".github/workflows/verify.yml",
+      "kind": "github-verify-workflow",
+      "contentHash": "sha256:4e61a252475eba316c51a3487f2dd1b912ddb08f1a338e212f8fbd6dc4b6c5b4"
+    },
+    {
+      "path": ".github/workflows/release-artifacts.yml",
+      "kind": "github-release-workflow-verify-gate",
+      "contentHash": "sha256:eedfe0c5c51cab9789abdc7df725a2202eefd8e17ff44e394f043c9212f39a58"
+    },
+    {
+      "path": "scripts/github-actions.test.mjs",
+      "kind": "github-workflow-and-package-script-test",
+      "contentHash": "sha256:9a8116f366d5df0166287644d14f31a5f855a787c0cb19692989252cdf361ae5"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.mjs",
+      "kind": "external-consumer-onboarding-smoke",
+      "contentHash": "sha256:9a2f3c3e96a280038f191efede4cdec046330db003a865fc0dacfed66cb75c65"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.test.mjs",
+      "kind": "external-consumer-onboarding-smoke-test",
+      "contentHash": "sha256:06a7ab45c1a485aa6a2c5f2b96ba96ce309bcb84fce2cff2f6440e3096bd9253"
+    },
+    {
+      "path": "scripts/run-verify.mjs",
+      "kind": "verify-gate-runner",
+      "contentHash": "sha256:1136e6001f54fbfddec9efc80572ae00ff7be7849f40ba8415adb99b72ef2f21"
+    },
+    {
+      "path": "scripts/check-git-hooks.mjs",
+      "kind": "local-hooks-gate",
+      "contentHash": "sha256:dc57d14ce6b7c857543cb409a015a200b0432c78e8baf59e56bb9afea168c0d7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The new workflow/package-script test fixes the CI/local gate contract in checked-in tests, and the external consumer smoke exercises the first bounded onboarding path through install, adapter init, minimal wiring, adapter resolve, doctor ready, and evaluate fixture output packets."
+  }
+}
