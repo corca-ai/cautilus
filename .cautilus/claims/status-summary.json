@@ -3266,19 +3266,10 @@
       }
     ]
   },
-  "gitCommit": "bb7c6524243653a0aeed9f181d788a3dd34c293f",
+  "gitCommit": "000635ba3f484639b0d9616f0df41e548c7fa30a",
   "gitState": {
-    "changedFileCount": 8,
-    "changedFiles": [
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-17.json",
-      ".cautilus/claims/evidence-state.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/status-summary.json",
-      "docs/specs/evidence/claim-evidence-state.md"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -3286,12 +3277,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "8c3dfe6fe4df44a9147d6ca5a16d460214179219",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "000635ba3f484639b0d9616f0df41e548c7fa30a",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "bb7c6524243653a0aeed9f181d788a3dd34c293f",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "000635ba3f484639b0d9616f0df41e548c7fa30a",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
