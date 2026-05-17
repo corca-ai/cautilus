@@ -6426,9 +6426,21 @@
       "claimFingerprint": "sha256:21c53f5ec4d397e49c7affa5c7be9dd23e9709e1649e3989c5fbaad619211e98",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-694",
       "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Generated-artifact head drift behavior is a concrete git-state packet contract that can be checked deterministically.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:0e2ea7064b9837267b7c031155d121a2f5c2678b1f68ed82722a28da27b068ae",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-694",
+            "claim-docs-contracts-claim-discovery-workflow-md-695",
+            "claim-docs-contracts-claim-discovery-workflow-md-704"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "TestRunClaimShowTreatsNonSourceHeadDriftAsFresh verifies generated claim artifact head drift remains visible while claim-source freshness does not block planning.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6437,7 +6449,7 @@
         "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach or refresh deterministic claim git-state proof for generated-artifact head drift.",
+      "nextAction": "Keep claim-source freshness separate from generated artifact drift when changing status packet gitState handling.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -6450,7 +6462,7 @@
       "summary": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
+      "whyThisLayer": "The claim is a deterministic status-packet freshness rule, exercised by the app-level claim show regression test."
     },
     {
       "claimAudience": "developer",
@@ -6458,8 +6470,21 @@
       "claimFingerprint": "sha256:2a355e68ca6385415f36965dc2689f7f1d27014afc922e22e2703464b34100d2",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-695",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:0e2ea7064b9837267b7c031155d121a2f5c2678b1f68ed82722a28da27b068ae",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-694",
+            "claim-docs-contracts-claim-discovery-workflow-md-695",
+            "claim-docs-contracts-claim-discovery-workflow-md-704"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "The checked-in review-input tests verify bounded clusters, skipped clusters, skipped claims, action-bucket focus, stale-packet rejection, evidence carry-forward, and no overrun into review application or eval planning.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6467,9 +6492,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep review-input packet creation read-only and deterministic when adding reviewer budgeting or clustering fields.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
@@ -6478,8 +6503,9 @@
         }
       ],
       "summary": "`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names the review-input packet contract and the absence of LLM or review-application side effects, both covered by runtime, CLI, and flow-audit tests."
     },
     {
       "claimAudience": "developer",
@@ -6516,9 +6542,21 @@
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-704",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "`claim plan-evals` packet emission and non-writer behavior are deterministic command contracts.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:0e2ea7064b9837267b7c031155d121a2f5c2678b1f68ed82722a28da27b068ae",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-694",
+            "claim-docs-contracts-claim-discovery-workflow-md-695",
+            "claim-docs-contracts-claim-discovery-workflow-md-704"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "The eval-plan tests verify cautilus.claim_eval_plan.v1 emission from reviewed cautilus-eval claims, skip non-ready and satisfied claims, retain evidence context, and classify app claims without writing host-owned fixtures, prompts, runners, wrappers, or policy.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6527,7 +6565,7 @@
         "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach or refresh deterministic claim plan-evals packet and non-writer proof.",
+      "nextAction": "Keep evaluate-claims planning as an intermediate packet producer unless a separate host-owned fixture authoring contract is introduced.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -6540,7 +6578,7 @@
       "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+      "whyThisLayer": "The claim is an eval-plan helper packet boundary, covered by runtime selection tests and the app-level plan emission test."
     },
     {
       "claimAudience": "developer",
@@ -12359,9 +12397,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 95,
+      "satisfied": 98,
       "stale": 16,
-      "unknown": 250
+      "unknown": 247
     },
     "byLifecycle": {
       "new": 361
@@ -12372,8 +12410,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 159,
-      "heuristic": 201,
+      "agent-reviewed": 160,
+      "heuristic": 200,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12659,6 +12697,7 @@
       ".cautilus/claims/review-result-contract-discover-refresh-carry-forward-2026-05-17.json",
       ".cautilus/claims/review-result-contract-compact-status-summary-2026-05-17.json",
       ".cautilus/claims/review-result-contract-agent-review-ownership-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-claim-workflow-helper-packets-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
@@ -12722,9 +12761,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 75,
+    "appliedResultCount": 76,
     "skippedResultCount": 52,
-    "keptUpdateCount": 169,
+    "keptUpdateCount": 172,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

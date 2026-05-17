@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-claim-workflow-helper-packets-2026-05-17",
+  "createdAt": "2026-05-17T09:28:09Z",
+  "repoCommit": "c942011a9d5170bb5e7e84473f1fee1baa057b30",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-694",
+    "claim-docs-contracts-claim-discovery-workflow-md-695",
+    "claim-docs-contracts-claim-discovery-workflow-md-704"
+  ],
+  "summary": "Deterministic app/runtime tests cover generated-artifact head drift, review-input packet boundaries, and eval-plan host-boundary behavior for the claim discovery workflow helper packet slice.",
+  "evidenceScope": {
+    "covered": [
+      "Generated-only claim artifact drift remains visible as head drift while the claim-source stale flag stays fresh enough for review and eval planning.",
+      "The review-input helper emits a bounded cautilus.claim_review_input.v1 packet with clusters, skipped clusters, skipped claims, action-bucket focus, evidence carry-forward, and no LLM/application side effects.",
+      "The eval-plan helper emits a cautilus.claim_eval_plan.v1 packet from reviewed cautilus-eval claims, skips non-ready or already satisfied claims, and keeps fixture, prompt, runner, wrapper, and policy authoring outside the product boundary."
+    ],
+    "notClaimed": [
+      "This bundle does not prove live reviewer quality or host-owned fixture correctness.",
+      "This bundle does not claim that every future adapter mode can execute; it covers the checked-in helper packet contracts and regression tests."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app ./internal/runtime -run 'TestRunClaimShowTreatsNonSourceHeadDriftAsFresh|TestRunClaimReviewPrepareInputWritesClusters|TestRunClaimReviewPrepareInputRejectsStaleClaimPacket|TestRunClaimPlanEvalsWritesIntermediatePlan|TestBuildClaimReviewInputClustersAndSkipsDeterministically|TestBuildClaimReviewInputSkipsSatisfiedClaims|TestBuildClaimReviewInputCanFocusActionBucket|TestBuildClaimReviewInputIncludesPossibleEvidenceRefs|TestBuildClaimReviewInputSeparatesAudienceAndSemanticGroup|TestBuildClaimEvalPlanSelectsReviewedEvalClaims|TestBuildClaimEvalPlanMarksAppClaimsAsProductRunnerProof|TestBuildClaimEvalPlanSkipsHeuristicEvalClaims|TestBuildClaimEvalPlanSkipsSatisfiedEvalClaims|TestBuildClaimEvalPlanSkipsSatisfiedNonEvalClaimsWithEvidenceContext'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:28:09Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/app",
+        "ok github.com/corca-ai/cautilus/internal/runtime"
+      ]
+    },
+    {
+      "command": "node scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:28:09Z",
+      "outputSummary": [
+        "passes review prepare flow through deterministic packet creation only",
+        "fails when review prepare overruns into apply-result or eval planning",
+        "accepts natural Codex and Korean reviewer boundary wording"
+      ]
+    },
+    {
+      "command": "npm run lint:specs",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:28:09Z",
+      "outputSummary": [
+        "spec checks passed (42 specs)"
+      ]
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/app/app_test.go",
+      "tests": [
+        "TestRunClaimShowTreatsNonSourceHeadDriftAsFresh",
+        "TestRunClaimReviewPrepareInputWritesClusters",
+        "TestRunClaimReviewPrepareInputRejectsStaleClaimPacket",
+        "TestRunClaimPlanEvalsWritesIntermediatePlan"
+      ],
+      "proves": "CLI-level claim status, review-input, stale-packet, and eval-plan packet behavior."
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "tests": [
+        "TestBuildClaimReviewInputClustersAndSkipsDeterministically",
+        "TestBuildClaimReviewInputSkipsSatisfiedClaims",
+        "TestBuildClaimReviewInputCanFocusActionBucket",
+        "TestBuildClaimReviewInputIncludesPossibleEvidenceRefs",
+        "TestBuildClaimReviewInputSeparatesAudienceAndSemanticGroup",
+        "TestBuildClaimEvalPlanSelectsReviewedEvalClaims",
+        "TestBuildClaimEvalPlanMarksAppClaimsAsProductRunnerProof",
+        "TestBuildClaimEvalPlanSkipsHeuristicEvalClaims",
+        "TestBuildClaimEvalPlanSkipsSatisfiedEvalClaims",
+        "TestBuildClaimEvalPlanSkipsSatisfiedNonEvalClaimsWithEvidenceContext"
+      ],
+      "proves": "Runtime builder-level review packet selection, skipped-claim evidence context, action-bucket focus, eval-plan eligibility, product-runner proof classification, and satisfied-claim exclusion."
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs",
+      "tests": [
+        "passes review prepare flow through deterministic packet creation only",
+        "fails when review prepare overruns into apply-result or eval planning"
+      ],
+      "proves": "Operational review-prepare guidance stops at deterministic packet creation and does not drift into review application or eval planning."
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "reason": "The checked-in CLI/runtime tests and review-prepare audit exercise the exact packet contracts, stale/fresh boundary, selection policy, skipped-claim context, and host-boundary constraints asserted by the three claim-discovery workflow claims."
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:28:09Z",
+    "evidencePolicy": "Mark only the deterministic helper packet contracts covered by checked-in CLI/runtime tests and review-prepare flow audit evidence."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-claim-workflow-helper-packets-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-694",
+          "claimFingerprint": "sha256:21c53f5ec4d397e49c7affa5c7be9dd23e9709e1649e3989c5fbaad619211e98",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim is a deterministic status-packet freshness rule, exercised by the app-level claim show regression test.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "TestRunClaimShowTreatsNonSourceHeadDriftAsFresh verifies generated claim artifact head drift remains visible while claim-source freshness does not block planning.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:0e2ea7064b9837267b7c031155d121a2f5c2678b1f68ed82722a28da27b068ae",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-694",
+                "claim-docs-contracts-claim-discovery-workflow-md-695",
+                "claim-docs-contracts-claim-discovery-workflow-md-704"
+              ]
+            }
+          ],
+          "nextAction": "Keep claim-source freshness separate from generated artifact drift when changing status packet gitState handling.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-695",
+          "claimFingerprint": "sha256:2a355e68ca6385415f36965dc2689f7f1d27014afc922e22e2703464b34100d2",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the review-input packet contract and the absence of LLM or review-application side effects, both covered by runtime, CLI, and flow-audit tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "The checked-in review-input tests verify bounded clusters, skipped clusters, skipped claims, action-bucket focus, stale-packet rejection, evidence carry-forward, and no overrun into review application or eval planning.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:0e2ea7064b9837267b7c031155d121a2f5c2678b1f68ed82722a28da27b068ae",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-694",
+                "claim-docs-contracts-claim-discovery-workflow-md-695",
+                "claim-docs-contracts-claim-discovery-workflow-md-704"
+              ]
+            }
+          ],
+          "nextAction": "Keep review-input packet creation read-only and deterministic when adding reviewer budgeting or clustering fields.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-704",
+          "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim is an eval-plan helper packet boundary, covered by runtime selection tests and the app-level plan emission test.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "The eval-plan tests verify cautilus.claim_eval_plan.v1 emission from reviewed cautilus-eval claims, skip non-ready and satisfied claims, retain evidence context, and classify app claims without writing host-owned fixtures, prompts, runners, wrappers, or policy.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:0e2ea7064b9837267b7c031155d121a2f5c2678b1f68ed82722a28da27b068ae",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-694",
+                "claim-docs-contracts-claim-discovery-workflow-md-695",
+                "claim-docs-contracts-claim-discovery-workflow-md-704"
+              ]
+            }
+          ],
+          "nextAction": "Keep evaluate-claims planning as an intermediate packet producer unless a separate host-owned fixture authoring contract is introduced.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
