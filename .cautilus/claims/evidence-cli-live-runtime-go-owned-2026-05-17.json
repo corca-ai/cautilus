@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-cli-live-runtime-go-owned-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-guides-cli-md-564"
+  ],
+  "repoCommit": "5b632b501a4b0a1977f2b31a2f176b95e9dffc7e",
+  "summary": "Deterministic proof that shipped live runtime entrypoints are exposed through the Go CLI command registry and covered by Go CLI smoke tests, while the CLI guide does not instruct direct Node calls for the migrated live runtime scripts.",
+  "evidenceScope": {
+    "targetSurface": "CLI guide live runtime entrypoint ownership",
+    "claimBoundary": "Only the docs/guides/cli.md direct-script guidance for `discover live-targets` and `evaluate live` is marked satisfied.",
+    "notClaimed": [
+      "Every Node utility in `scripts/agent-runtime/` has migrated to Go.",
+      "Node-based tests, release scripts, packet builders, and maintainer utilities are forbidden.",
+      "Every consumer adapter already uses the Go CLI live runtime entrypoints.",
+      "The live runtime semantics are complete for every future interactive workbench workflow."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLILiveEvalDiscover(ResolvesExplicitInstances|ExecutesConsumerProbeCommand|IgnoresProbeWarningsOnStderr)|TestCLILiveEvalRunLiveDispatchesConsumerCommand' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "`cautilus discover live-targets` resolves explicit adapter instances into `cautilus.workbench_instance_catalog.v1`.",
+          "`cautilus discover live-targets` executes consumer-owned probe commands and ignores probe warnings on stderr while parsing stdout JSON.",
+          "`cautilus evaluate live` dispatches a bounded consumer command through the public CLI and writes a `cautilus.live_run_invocation_result.v1` artifact."
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor commands --json | jq -e '[.commands[].path | join(\" \")] as $paths | {hasDiscoverLiveTargets: ($paths | index(\"discover live-targets\") != null), hasEvaluateLive: ($paths | index(\"evaluate live\") != null), hasEvaluateLiveScenarios: ($paths | index(\"evaluate live scenarios\") != null)} | select(.hasDiscoverLiveTargets and .hasEvaluateLive and .hasEvaluateLiveScenarios)'",
+      "exitCode": 0,
+      "observed": {
+        "hasDiscoverLiveTargets": true,
+        "hasEvaluateLive": true,
+        "hasEvaluateLiveScenarios": true
+      }
+    },
+    {
+      "command": "! rg -n 'node scripts/agent-runtime/(discover-workbench-instances|run-live-instance-scenario|run-live-simulator-persona)\\.mjs' docs/guides/cli.md",
+      "exitCode": 0,
+      "observed": {
+        "directNodeLiveRuntimePathsInCliGuide": 0
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/cli.md",
+      "kind": "claim-source-and-direct-script-guidance",
+      "contentHash": "sha256:cbfe0cbb82c9fc4ede9f9606cdb5488b5995b0139d516b5948b8672495c36a98"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "go-cli-command-router",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "live-runtime-cli-smoke-tests",
+      "contentHash": "sha256:89dead77e9e07881f5d0eddeedc955ca345939ae1014f640e5fda2cd3e7605aa"
+    },
+    {
+      "path": "internal/app/workbench_commands.go",
+      "kind": "live-runtime-go-implementation-and-recursion-guards",
+      "contentHash": "sha256:61fc40563ac1a5f71db4ca77648489d28d53a48a8713bfefabdf8deee4cc0540"
+    },
+    {
+      "path": "docs/contracts/go-runtime-consolidation.md",
+      "kind": "go-runtime-ownership-contract",
+      "contentHash": "sha256:9fcbe177ef59b16e8b465c0abe6bb7fbd75f4ed2fc8386948ebaa5c38a2b8243"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The public command registry contains the live runtime entrypoints, focused Go CLI smoke tests execute the migrated discover and run-live surfaces, and the CLI guide's direct script section does not list the migrated live runtime Node scripts as direct operator entrypoints."
+  }
+}

@@ -2205,8 +2205,19 @@
       "claimFingerprint": "sha256:7c2d49633a39b3338744e1406b13dabbce1d42e37fbaf1c8984e8cfd06317f12",
       "claimId": "claim-docs-guides-cli-md-564",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:8a2841e49439051256d73b16bf5798604bdde332304d933238cc29b21f18185a",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-cli-live-runtime-go-owned-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-cli-md-564"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused Go CLI smoke tests for `discover live-targets` and `evaluate live`, the command registry showing the live runtime entrypoints, and a static check that the CLI guide does not instruct direct Node calls to the migrated live runtime scripts.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -2214,9 +2225,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep the CLI guide's direct-script section aligned with the Go command registry and live runtime smoke tests when migrating or renaming runtime entrypoints.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
@@ -2225,8 +2236,9 @@
         }
       ],
       "summary": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic CLI command ownership and direct-script guidance that can be verified by command registry, CLI smoke tests, and static documentation search."
     },
     {
       "claimAudience": "user",
@@ -11986,9 +11998,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 66,
+      "satisfied": 67,
       "stale": 17,
-      "unknown": 278
+      "unknown": 277
     },
     "byLifecycle": {
       "new": 361
@@ -11999,8 +12011,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 132,
-      "heuristic": 228,
+      "agent-reviewed": 133,
+      "heuristic": 227,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12208,13 +12220,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-evaluation-process-md-52",
-        "clusterId": "cluster-evaluation-process-compare-paths-2026-05-17"
+        "claimId": "claim-docs-guides-cli-md-564",
+        "clusterId": "cluster-cli-live-runtime-go-owned-2026-05-17"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12275,7 +12287,8 @@
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
-      ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json"
+      ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12331,9 +12344,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 57,
+    "appliedResultCount": 58,
     "skippedResultCount": 52,
-    "keptUpdateCount": 140,
+    "keptUpdateCount": 141,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

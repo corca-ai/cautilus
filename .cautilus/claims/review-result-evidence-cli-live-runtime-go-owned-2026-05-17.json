@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:35:00Z",
+    "evidencePolicy": "Only mark the CLI guide's migrated live runtime entrypoint claim satisfied; do not infer complete Node removal or consumer adapter adoption."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-cli-live-runtime-go-owned-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-cli-md-564",
+          "claimFingerprint": "sha256:7c2d49633a39b3338744e1406b13dabbce1d42e37fbaf1c8984e8cfd06317f12",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic CLI command ownership and direct-script guidance that can be verified by command registry, CLI smoke tests, and static documentation search.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused Go CLI smoke tests for `discover live-targets` and `evaluate live`, the command registry showing the live runtime entrypoints, and a static check that the CLI guide does not instruct direct Node calls to the migrated live runtime scripts.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-cli-live-runtime-go-owned-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8a2841e49439051256d73b16bf5798604bdde332304d933238cc29b21f18185a",
+              "supportsClaimIds": [
+                "claim-docs-guides-cli-md-564"
+              ]
+            }
+          ],
+          "nextAction": "Keep the CLI guide's direct-script section aligned with the Go command registry and live runtime smoke tests when migrating or renaming runtime entrypoints.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
