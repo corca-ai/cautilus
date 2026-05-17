@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-final-deterministic-queue-2026-05-17",
+  "createdAt": "2026-05-17T10:02:41Z",
+  "repoCommit": "7cc460514e3aa793e12acf8c3e9e4fc7738b6f1c",
+  "createdForClaimIds": [
+    "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+    "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
+    "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+    "claim-docs-contracts-scenario-proposal-sources-md-236",
+    "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+    "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+    "claim-skills-cautilus-agent-skill-md-13",
+    "claim-skills-cautilus-agent-skill-md-23"
+  ],
+  "summary": "Final deterministic proof queue bundle for runtime-change improvement guardrails, scenario proposal attention views, selected durable evidence, claim-discovery prepared/open-gap state, and Cautilus Agent source-launcher plus claim-review ownership guidance.",
+  "evidenceScope": {
+    "targetSurface": "remaining deterministic proof queue",
+    "claimBoundary": "Only the eight listed claims are marked satisfied.",
+    "notClaimed": [
+      "Full Cautilus Agent claim-discovery curation has passed a completed live dogfood verdict.",
+      "LLM-backed claim review correctness is proven by deterministic tests.",
+      "A passing simplification proposal is trusted without the normal tests and review gates.",
+      "Human-facing attention views replace canonical full ranked scenario proposal packets.",
+      "The installed machine `cautilus` binary is stale on this host."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIScenarioProposePreservesFullRankedOutputAndDerivesAttentionView|TestCLIScenarioProposeGeneratesStandaloneProposalPacket|TestCLIImprovePrepareInputProposeAndBuildArtifact' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "scenario propose preserves the full ranked proposals list",
+          "scenario propose derives a bounded attentionView without hiding full results from agents",
+          "standalone scenario proposal packets remain schema-versioned",
+          "improve prepare/propose/build-artifact emits durable schema-versioned packets"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildSkillEvaluationSummaryPreservesPassingRecommendationWithRuntimeChange|TestGenerateImproveProposalAddsPassingSimplificationForRuntimeChange|TestBuildReportPacketNormalizesAndComparesRuntimeFingerprint|TestRenderScenarioProposalsHTML|TestWriteScenarioProposalsHTMLFromFile' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "a skill/eval summary can preserve a passing recommendation while reporting model_runtime_changed",
+          "runtime-change simplification proposals remain proposals that require normal follow-up gates",
+          "report packets normalize comparable runtime fingerprints",
+          "scenario proposal HTML renders attention views while preserving canonical proposal packet semantics"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/scenario-proposal-schemas.test.mjs scripts/agent-runtime/improve-flow.test.mjs scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 26,
+        "pass": 26,
+        "protectedBehaviors": [
+          "scenario proposal output schema matches the generated proposal packet",
+          "improve flow keeps bounded input, proposal, and revision artifacts",
+          "Cautilus Agent curation flow audit requires false-positive and false-negative curation and stops before review/eval overrun",
+          "Cautilus Agent reviewer launch flow requires selected review budget, user confirmation, one reviewer lane, and stop-before-apply boundaries"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:skill-disclosure",
+      "exitCode": 0,
+      "observed": {
+        "status": "ok",
+        "sourceSkill": "skills/cautilus-agent/SKILL.md",
+        "packagedSkill": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+        "sourceNonemptyLines": 179,
+        "packagedNonemptyLines": 179,
+        "requiredFragments": 15,
+        "forbiddenFragments": 9,
+        "globalForbiddenFragments": 7
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/release/distribution-surface.test.mjs bin/cautilus.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 19,
+        "pass": 19,
+        "protectedBehaviors": [
+          "repo shim forwards --version to the Go CLI entry",
+          "repo shim preserves caller cwd while resolving doctor against a consumer repo",
+          "repo shim keeps lifecycle install working from a consumer repo",
+          "packaged cautilus-agent skill stays in sync with the repo-Cautilus Agent source"
+        ]
+      }
+    },
+    {
+      "command": "sh -lc 'CAUTILUS_BIN=cautilus; if [ -x ./bin/cautilus ]; then CAUTILUS_BIN=./bin/cautilus; fi; printf \"resolved=%s\\n\" \"$CAUTILUS_BIN\"; \"$CAUTILUS_BIN\" --version'",
+      "exitCode": 0,
+      "observed": {
+        "resolved": "./bin/cautilus",
+        "version": "0.16.0"
+      }
+    },
+    {
+      "command": "node -e 'const fs=require(\"node:fs\"); for (const p of [\"docs/specs/evidence/gaps.spec.md\",\".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json\",\".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json\",\".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json\"]) if (!fs.existsSync(p)) throw new Error(`missing ${p}`); console.log(\"selected-evidence-artifacts=present\")'",
+      "exitCode": 0,
+      "observed": {
+        "selectedEvidenceArtifacts": "present",
+        "gapPage": "docs/specs/evidence/gaps.spec.md",
+        "selectedBundles": [
+          ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
+          ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
+          ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/runtime-fingerprint-improvement.md",
+      "kind": "runtime-fingerprint-improvement-contract-source",
+      "contentHash": "sha256:b6cb66c5617b72582480649ff16338c0404f22251faeff9a406743fc2da2edb9"
+    },
+    {
+      "path": "docs/contracts/scenario-proposal-sources.md",
+      "kind": "scenario-proposal-sources-contract",
+      "contentHash": "sha256:4dae2dca7a2b601b996dcd3845d3519f5a445228a4bc17de705e4f62383730bc"
+    },
+    {
+      "path": "docs/specs/evidence/latest-selected-evidence.spec.md",
+      "kind": "latest-selected-evidence-spec",
+      "contentHash": "sha256:19b8dffafd5fe0d74a7acf17ff19e3d6da58bdc5c48bcc32d1894bea0688f5e1"
+    },
+    {
+      "path": "docs/specs/ledger/claim-discovery.spec.md",
+      "kind": "claim-discovery-ledger-spec",
+      "contentHash": "sha256:a42a9f0fbd779a3f45300dabd0a1ac475cf1fe62c09bcec280f77dcf4ece4b20"
+    },
+    {
+      "path": "skills/cautilus-agent/SKILL.md",
+      "kind": "source-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+      "kind": "packaged-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-scenario-improve-tests",
+      "contentHash": "sha256:a91f81b8a6353655371fd5c6b8a21b66db0145685e1841317c7b911fb7296778"
+    },
+    {
+      "path": "internal/runtime/runtime_fingerprint_test.go",
+      "kind": "runtime-fingerprint-tests",
+      "contentHash": "sha256:998441b3b512c09819c8df14f13dbffb6b67fe93de5a4b48436483b24a180b98"
+    },
+    {
+      "path": "internal/runtime/artifact_html_test.go",
+      "kind": "scenario-proposals-html-tests",
+      "contentHash": "sha256:3da79c03113cb24f64090345df1a60bb238b1c1277bae5f1771f34f841a63dc0"
+    },
+    {
+      "path": "scripts/agent-runtime/scenario-proposal-schemas.test.mjs",
+      "kind": "scenario-proposal-schema-tests",
+      "contentHash": "sha256:e9704a1aed0b68fa670555f5e4251d24d3cf242d74853a8a903f614dc0d60cf7"
+    },
+    {
+      "path": "scripts/agent-runtime/improve-flow.test.mjs",
+      "kind": "improve-flow-tests",
+      "contentHash": "sha256:8ea9b69d6e31e9b61b3944dbc7725cc75d6ef1b14d41975fbe62c4361a1b3644"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs",
+      "kind": "claim-discovery-curation-flow-audit-tests",
+      "contentHash": "sha256:9adb7b7fc47ac191d535d8f7125dfe26a80327d3aca738b77fb674eebd5bcbf3"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.test.mjs",
+      "kind": "reviewer-launch-flow-audit-tests",
+      "contentHash": "sha256:d187a172b9792bc131795ba77ec41997b1ce5155726fd778486e346d80763965"
+    },
+    {
+      "path": "scripts/check-cautilus-skill-disclosure.mjs",
+      "kind": "skill-disclosure-sync-check",
+      "contentHash": "sha256:877820f918b648a67ae1aa81e1c24ca6292320ccc0fca823c9b96a41cee4e37f"
+    },
+    {
+      "path": "scripts/release/distribution-surface.test.mjs",
+      "kind": "distribution-surface-tests",
+      "contentHash": "sha256:064873227ac11b935b1edbc6ab9c2d120331028674b74e34107dee6d26dba7ba"
+    },
+    {
+      "path": "bin/cautilus.test.mjs",
+      "kind": "source-launcher-tests",
+      "contentHash": "sha256:6c6ecf4ee5173a55bd8404b95e0a6306dbf8e840fb32fc1604ce878a262eaa44"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused tests and artifact checks prove the remaining deterministic queue: runtime-change improvement proposals stay gated, active-run and selected evidence artifacts remain reopenable, scenario proposal attention views do not hide full ranked packets, claim-discovery curation and reviewer launch remain prepared/fixture-backed rather than completed live dogfood verdicts, and Cautilus Agent source/packaged guidance preserves source-launcher and claim-review ownership boundaries."
+  }
+}

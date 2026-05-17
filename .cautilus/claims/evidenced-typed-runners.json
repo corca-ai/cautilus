@@ -11718,17 +11718,24 @@
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+          "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-runtime-fingerprint-improvement-md-154"
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+            "claim-docs-contracts-scenario-proposal-sources-md-236",
+            "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+            "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+            "claim-skills-cautilus-agent-skill-md-13",
+            "claim-skills-cautilus-agent-skill-md-23"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-deterministic-ready-batch-2026-05-03.json does not list current claimId claim-docs-contracts-runtime-fingerprint-improvement-md-154 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by runtime and improve-flow tests: runtime-change simplification is represented as proposal context and a bounded revision brief while preserving follow-up tests, review gates, and artifact boundaries before trust.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -11736,7 +11743,7 @@
         "linked-from:docs/contracts/reporting.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep runtime-change improve proposal tests aligned with simplification guardrail wording.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -11747,8 +11754,9 @@
         }
       ],
       "summary": "It should generate a candidate or revision brief, then require the same tests and review gates before the candidate is trusted.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names the runtime-change simplification guardrail: generate a candidate or brief, then require normal tests and review gates."
     },
     {
       "claimAudience": "developer",
@@ -11787,8 +11795,26 @@
       "claimFingerprint": "sha256:9bb24479bf1b412ee0dfbf9b9e643054d067eb3a3ab029a60821f2af103d18d8",
       "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
       "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+            "claim-docs-contracts-scenario-proposal-sources-md-236",
+            "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+            "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+            "claim-skills-cautilus-agent-skill-md-13",
+            "claim-skills-cautilus-agent-skill-md-23"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by improve-flow active-run default tests and selected durable evidence artifacts: improve input, proposal, and revision artifact packets are materialized with provenance that later passes can reopen.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -11796,9 +11822,9 @@
         "linked-from:docs/contracts/reporting.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep active-run improve artifact defaults and selected evidence references current when packet paths change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Keep active-run artifacts reopenable so a later improve pass can explain which runtime change triggered a simplification opportunity.",
@@ -11807,8 +11833,9 @@
         }
       ],
       "summary": "Keep active-run artifacts reopenable so a later improve pass can explain which runtime change triggered a simplification opportunity.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names reopenable active-run artifacts for later improve passes."
     },
     {
       "claimAudience": "developer",
@@ -11816,8 +11843,26 @@
       "claimFingerprint": "sha256:ae94cc27ad5f3f3effa1f2ac5df867541c1bfc564235f6329d8d09dd9b6eb6c1",
       "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+            "claim-docs-contracts-scenario-proposal-sources-md-236",
+            "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+            "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+            "claim-skills-cautilus-agent-skill-md-13",
+            "claim-skills-cautilus-agent-skill-md-23"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by runtime fingerprint tests: a skill/evaluate summary can preserve a passing recommendation while reporting `model_runtime_changed` against explicit comparison evidence.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -11825,9 +11870,9 @@
         "linked-from:docs/contracts/reporting.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep runtime comparison tests current when skill or eval summary telemetry changes.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "A skill or evaluate fixture can pass while still reporting that the observed runtime changed from the comparison evidence.",
@@ -11836,8 +11881,9 @@
         }
       ],
       "summary": "A skill or evaluate fixture can pass while still reporting that the observed runtime changed from the comparison evidence.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names passing evaluation with runtime-change reporting."
     },
     {
       "claimAudience": "developer",
@@ -12088,9 +12134,26 @@
       "claimFingerprint": "sha256:81c2f41f61c908940a6f17d086646de7edd84a7804d9db95d3c115425177c78d",
       "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The full ranked proposal list versus attention-view behavior is a deterministic packet and renderer projection contract.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+            "claim-docs-contracts-scenario-proposal-sources-md-236",
+            "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+            "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+            "claim-skills-cautilus-agent-skill-md-13",
+            "claim-skills-cautilus-agent-skill-md-23"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by CLI and HTML tests: scenario proposal JSON preserves the full ranked `proposals` list while deriving bounded `attentionView` fields for human review without hiding full results from agents.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -12098,7 +12161,7 @@
         "linked-from:docs/contracts/scenario-history.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach or refresh deterministic scenario proposal packet and renderer proof for preserving the full ranked result.",
+      "nextAction": "Keep scenario proposal packet and attention-view tests aligned when changing proposal ranking or renderer output.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -12111,7 +12174,7 @@
       "summary": "Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names provenance, ranked-output, or view projection behavior that should be protected by deterministic packet or renderer checks."
+      "whyThisLayer": "The claim names the canonical full ranked scenario proposal packet versus smaller human-facing attention views."
     },
     {
       "claimAudience": "developer",
@@ -12148,8 +12211,26 @@
       "claimFingerprint": "sha256:65c800aba762c631835340b51497116969daf19eb68269c62682ce9cabe60cbe",
       "claimId": "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
       "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+            "claim-docs-contracts-scenario-proposal-sources-md-236",
+            "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+            "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+            "claim-skills-cautilus-agent-skill-md-13",
+            "claim-skills-cautilus-agent-skill-md-23"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by selected checked-in evidence artifacts and improve-flow tests: expensive eval/improve evidence is represented by durable evidence bundles, improve input/proposal/revision packets, and a proof gap page instead of silently rerunning every expensive loop.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -12157,9 +12238,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep selected evidence specs and proof-gap references current when replacing expensive eval or improve evidence.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Expensive eval and improve loops should be represented by durable artifacts with enough provenance to reopen them.",
@@ -12168,8 +12249,9 @@
         }
       ],
       "summary": "Expensive eval and improve loops should be represented by durable artifacts with enough provenance to reopen them.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim names selected durable evidence for expensive eval and improve loops."
     },
     {
       "claimAudience": "developer",
@@ -12208,8 +12290,26 @@
       "claimFingerprint": "sha256:78ce9427a5914fcbdd9f0731fa4f3c66028d320d30e4e789c30a0cdbdd96c28b",
       "claimId": "claim-docs-specs-ledger-claim-discovery-spec-md-16",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+            "claim-docs-contracts-scenario-proposal-sources-md-236",
+            "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+            "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+            "claim-skills-cautilus-agent-skill-md-13",
+            "claim-skills-cautilus-agent-skill-md-23"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by claim-discovery curation and reviewer-launch audit tests plus selected evidence artifacts: deterministic discovery has executable proof, and the full curation/reviewer route remains prepared or fixture-backed with explicit stop boundaries instead of being claimed as a completed live verdict.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -12217,9 +12317,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep claim-discovery ledger wording honest until a completed live Cautilus Agent curation proof exists.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The deterministic `discover claims` surface has executable proof, while full Cautilus Agent curation proof remains prepared or fixture-backed rather than a completed live dogfood verdict.",
@@ -12228,8 +12328,9 @@
         }
       ],
       "summary": "The deterministic `discover claims` surface has executable proof, while full Cautilus Agent curation proof remains prepared or fixture-backed rather than a completed live dogfood verdict.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names the current evidence-state boundary: deterministic claim discovery is proven while full Cautilus Agent curation remains prepared/open rather than completed live dogfood."
     },
     {
       "claimAudience": "developer",
@@ -12452,17 +12553,24 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:148097e73227fbd9f6de2943eeeb3888016af4a007b7103eb89e0b40604064f1",
+          "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-cautilus-agent-source-launcher-2026-05-11.json",
+          "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-skills-cautilus-agent-skill-md-13"
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+            "claim-docs-contracts-scenario-proposal-sources-md-236",
+            "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+            "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+            "claim-skills-cautilus-agent-skill-md-13",
+            "claim-skills-cautilus-agent-skill-md-23"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-cautilus-agent-source-launcher-2026-05-11.json does not list current claimId claim-skills-cautilus-agent-skill-md-13 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by skill-disclosure lint, distribution/source-launcher tests, and a local resolution command: source and packaged Cautilus Agent guidance match, and the repo checkout resolves `CAUTILUS_BIN` to `./bin/cautilus`.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -12470,7 +12578,7 @@
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep source and packaged Cautilus Agent binary-resolution guidance synchronized before release.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -12481,8 +12589,9 @@
         }
       ],
       "summary": "In the Cautilus product repo itself, prefer the checked-in source launcher `./bin/cautilus` over `cautilus` on `PATH`, because the installed machine binary can lag the current checkout.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names the Cautilus product repo source-launcher preference in the Cautilus Agent skill."
     },
     {
       "claimAudience": "developer",
@@ -12524,8 +12633,26 @@
       "claimFingerprint": "sha256:5e1b96ae1d2595865dd18231f55e8983c86d8fc6166c4d12e3674c4c9d01fcae",
       "claimId": "claim-skills-cautilus-agent-skill-md-23",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+            "claim-docs-contracts-scenario-proposal-sources-md-236",
+            "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+            "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+            "claim-skills-cautilus-agent-skill-md-13",
+            "claim-skills-cautilus-agent-skill-md-23"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by source/packaged skill sync and Cautilus Agent flow audits: the skill owns routing and stop boundaries for curation and reviewer launch, including selected review-budget disclosure and stop-before-apply behavior for LLM-backed claim review work.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -12533,9 +12660,9 @@
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep Cautilus Agent flow audits and skill disclosure fragments current when changing claim review routing or decision boundaries.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.",
@@ -12544,8 +12671,9 @@
         }
       ],
       "summary": "Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names the Cautilus Agent ownership boundary for routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work."
     },
     {
       "claimAudience": "developer",
@@ -12802,9 +12930,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 129,
-      "stale": 9,
-      "unknown": 223
+      "satisfied": 137,
+      "stale": 7,
+      "unknown": 217
     },
     "byLifecycle": {
       "new": 361
@@ -12815,8 +12943,8 @@
       "human-auditable": 98
     },
     "byReviewStatus": {
-      "agent-reviewed": 182,
-      "heuristic": 178,
+      "agent-reviewed": 187,
+      "heuristic": 173,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -13112,6 +13240,7 @@
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-ownership-evidence-gaps-improvement-2026-05-17.json",
       ".cautilus/claims/review-result-improve-artifact-runtime-fingerprint-2026-05-17.json",
+      ".cautilus/claims/review-result-final-deterministic-queue-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
@@ -13173,9 +13302,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 83,
+    "appliedResultCount": 84,
     "skippedResultCount": 52,
-    "keptUpdateCount": 205,
+    "keptUpdateCount": 213,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },
