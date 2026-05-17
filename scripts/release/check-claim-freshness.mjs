@@ -58,19 +58,42 @@ function applyValueArg(options, argv, index) {
 	return index + 1;
 }
 
+function repoRoot(options = {}) {
+	return resolve(options.repoRoot ?? process.cwd());
+}
+
+function resolveRepoPath(options, field, fallback) {
+	return resolve(repoRoot(options), options[field] ?? fallback);
+}
+
 function defaultClaimStateSelected(options = {}) {
-	return (options.claims ?? DEFAULT_CLAIMS) === DEFAULT_CLAIMS &&
-		(options.status ?? DEFAULT_STATUS) === DEFAULT_STATUS;
+	return resolveRepoPath(options, "claims", DEFAULT_CLAIMS) === resolve(repoRoot(options), DEFAULT_CLAIMS) &&
+		resolveRepoPath(options, "status", DEFAULT_STATUS) === resolve(repoRoot(options), DEFAULT_STATUS);
+}
+
+function shellQuote(value) {
+	const text = String(value ?? "");
+	return `'${text.replaceAll("'", "'\\''")}'`;
 }
 
 export function repairCommands(options = {}) {
 	if (defaultClaimStateSelected(options)) {
-		return ["npm run claims:refresh:all"];
+		return [`cd ${shellQuote(repoRoot(options))} && npm run claims:refresh:all`];
 	}
 	const claims = options.claims ?? DEFAULT_CLAIMS;
 	const status = options.status ?? DEFAULT_STATUS;
 	return [
-		`./bin/cautilus discover claims status --input ${claims} --sample-claims 1 > ${status}`,
+		[
+			"cd",
+			shellQuote(repoRoot(options)),
+			"&&",
+			"./bin/cautilus discover claims status",
+			"--input",
+			shellQuote(claims),
+			"--sample-claims 1",
+			">",
+			shellQuote(status),
+		].join(" "),
 	];
 }
 
@@ -84,15 +107,12 @@ function renderRepairMessage(options, output) {
 	].filter(Boolean).join("\n");
 }
 
-function resolveRepoPath(options, field, fallback) {
-	return resolve(options.repoRoot, options[field] ?? fallback);
-}
-
-function readJsonFile(path, label) {
+function readJsonFile(path, label, options = null) {
 	try {
 		return JSON.parse(readFileSync(path, "utf-8"));
 	} catch (error) {
-		throw new Error(`${label} ${path} is not readable JSON: ${error.message}`);
+		const message = `${label} ${path} is not readable JSON: ${error.message}`;
+		throw new Error(options ? renderRepairMessage(options, message) : message);
 	}
 }
 
@@ -106,7 +126,7 @@ function assertRequiredFile(options, field, fallback, label) {
 
 function packetGitCommit(options) {
 	const statusPath = assertRequiredFile(options, "status", DEFAULT_STATUS, "claim status snapshot");
-	const packet = readJsonFile(statusPath, "claim status snapshot");
+	const packet = readJsonFile(statusPath, "claim status snapshot", options);
 	const commit = packet?.gitState?.packetGitCommit;
 	return typeof commit === "string" && commit.trim() ? commit.trim() : null;
 }
@@ -159,10 +179,19 @@ function sameFreshnessStatus(left, right) {
 	return JSON.stringify(normalizeStatusForFreshness(left)) === JSON.stringify(normalizeStatusForFreshness(right));
 }
 
+function assertStatusNotStale(statusPacket, options, statusPath) {
+	if (statusPacket?.gitState?.isStale === true) {
+		throw new Error(renderRepairMessage(
+			options,
+			`claim status snapshot ${statusPath} reports stale claim state.`,
+		));
+	}
+}
+
 function assertSelectedStatusFresh(options) {
 	const claimsPath = assertRequiredFile(options, "claims", DEFAULT_CLAIMS, "claim packet");
 	const statusPath = assertRequiredFile(options, "status", DEFAULT_STATUS, "claim status snapshot");
-	const checkedStatus = readJsonFile(statusPath, "claim status snapshot");
+	const checkedStatus = readJsonFile(statusPath, "claim status snapshot", options);
 	const runner = options.statusRunner ?? runClaimStatus;
 	const result = runner(options.repoRoot, options.claims ?? DEFAULT_CLAIMS, options.cautilusBin);
 	if (result.status !== 0) {
@@ -180,6 +209,7 @@ function assertSelectedStatusFresh(options) {
 			`claim status snapshot ${statusPath} is stale for selected claim packet ${claimsPath}.`,
 		));
 	}
+	assertStatusNotStale(refreshedStatus, options, statusPath);
 }
 
 function runDefaultProjectionCheck(options) {
