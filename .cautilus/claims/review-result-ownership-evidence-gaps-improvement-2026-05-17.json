@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:53:51Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the five current claims covered by the consumer onboarding smoke, durable packet/status checks, and bounded improvement tests."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-ownership-evidence-gaps-improvement-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-8",
+          "claimFingerprint": "sha256:4c2869e4e3b80325611de1405c7b61535118ce7f18e2b3c33e22f61b61aaa938",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names packet-visible candidate-not-proof status, which is directly covered by the current status summary packet and status report renderer tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the current status-summary packet and renderer tests: `nonVerdictNotice` states that discovered claims are not verified until evidence is attached, and evidence-state/status report projections preserve open proof work.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evidence-gaps-spec-md-8",
+                "claim-docs-specs-user-ownership-spec-md-27",
+                "claim-docs-specs-user-ownership-spec-md-45",
+                "claim-docs-contracts-improvement-md-27",
+                "claim-docs-contracts-improvement-md-34"
+              ]
+            }
+          ],
+          "nextAction": "Keep the candidate-not-proof notice and evidence-state projection checks current when status packet shape changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-ownership-spec-md-27",
+          "claimFingerprint": "sha256:6b377595aa4629cdc1ff1b75e790cb7750b3c57a2d38f1c7856c7ffce52595b0",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names standalone consumer onboarding through install, adapter init, doctor readiness, and a first bounded run without claiming ownership of host policy.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `npm run consumer:onboard:smoke -- --json` and the external smoke test: a temporary consumer repo installs the Cautilus Agent, initializes adapter wiring, reaches doctor ready, and completes one fixture-backed bounded eval run while runner proof readiness remains explicitly bounded.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evidence-gaps-spec-md-8",
+                "claim-docs-specs-user-ownership-spec-md-27",
+                "claim-docs-specs-user-ownership-spec-md-45",
+                "claim-docs-contracts-improvement-md-27",
+                "claim-docs-contracts-improvement-md-34"
+              ]
+            }
+          ],
+          "nextAction": "Keep the external consumer smoke aligned with install, adapter init, doctor readiness, and first bounded run behavior.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-ownership-spec-md-45",
+          "claimFingerprint": "sha256:85da31c828c4dbbb3a0dfa610157368d7b0b6c743405bf8512d48f5e28394853",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names representative durable command packet surfaces another agent can reopen.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused app tests and current status/evidence-state packets showing schema-versioned command, claim status, validation, eval-plan, and evidence-state outputs with repo-relative audit sources.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evidence-gaps-spec-md-8",
+                "claim-docs-specs-user-ownership-spec-md-27",
+                "claim-docs-specs-user-ownership-spec-md-45",
+                "claim-docs-contracts-improvement-md-27",
+                "claim-docs-contracts-improvement-md-34"
+              ]
+            }
+          ],
+          "nextAction": "Keep durable packet tests current when adding or changing core command packet schemas.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-md-27",
+          "claimFingerprint": "sha256:4bf05eb3e53c6a353bfe38c7164dc1470ffcf48c26a7e9e214a868eb8d863781",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names improvement evidence provenance, which is protected by deterministic improve proposal tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by Go and Node improve-flow tests: prioritized evidence entries carry packet and locator provenance, source-count telemetry records selected evidence categories, and review can trace proposals back to explicit inputs.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evidence-gaps-spec-md-8",
+                "claim-docs-specs-user-ownership-spec-md-27",
+                "claim-docs-specs-user-ownership-spec-md-45",
+                "claim-docs-contracts-improvement-md-27",
+                "claim-docs-contracts-improvement-md-34"
+              ]
+            }
+          ],
+          "nextAction": "Keep improve proposal provenance and telemetry checks aligned with `cautilus.improve_proposal.v1` changes.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-md-34",
+          "claimFingerprint": "sha256:9029347424b4b452e77a0767d06ba6e7c5944a424437b5f88d5c240880b4cf73",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the bounded improvement loop boundary: one next-revision brief and one durable artifact, not an open-ended compile loop.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by app and Node improve tests: prepare-input produces explicit evidence inputs, propose emits one bounded revision plan with guardrail wording, and build-artifact materializes one revision artifact packet.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evidence-gaps-spec-md-8",
+                "claim-docs-specs-user-ownership-spec-md-27",
+                "claim-docs-specs-user-ownership-spec-md-45",
+                "claim-docs-contracts-improvement-md-27",
+                "claim-docs-contracts-improvement-md-34"
+              ]
+            }
+          ],
+          "nextAction": "Keep improve prepare/propose/build-artifact tests aligned with bounded-loop wording in the improvement contract.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

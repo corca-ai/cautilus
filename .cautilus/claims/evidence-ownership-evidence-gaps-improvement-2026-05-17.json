@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-ownership-evidence-gaps-improvement-2026-05-17",
+  "createdAt": "2026-05-17T09:53:51Z",
+  "repoCommit": "6e87c829ec55634f685cfc194abb7996be282724",
+  "createdForClaimIds": [
+    "claim-docs-specs-user-evidence-gaps-spec-md-8",
+    "claim-docs-specs-user-ownership-spec-md-27",
+    "claim-docs-specs-user-ownership-spec-md-45",
+    "claim-docs-contracts-improvement-md-27",
+    "claim-docs-contracts-improvement-md-34"
+  ],
+  "summary": "Current deterministic proof for candidate-not-proof visibility, standalone consumer onboarding without host-policy takeover, durable command packets, and bounded improvement proposal provenance.",
+  "evidenceScope": {
+    "targetSurface": "evidence gaps, host ownership, durable packets, and bounded improvement",
+    "claimBoundary": "Only the five listed claims are marked satisfied.",
+    "notClaimed": [
+      "Every host-owned prompt, credential, model choice, or runtime launcher is proven.",
+      "A missing runner assessment is treated as product-proof readiness.",
+      "Improvement automatically edits prompts, adapters, or policy.",
+      "Improvement is an open-ended compile or retry loop.",
+      "Every Cautilus CLI subcommand is covered by the durable packet sample."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run consumer:onboard:smoke -- --json",
+      "exitCode": 0,
+      "observed": {
+        "ok": true,
+        "ready": true,
+        "installedSkillPath": ".agents/skills/cautilus-agent/SKILL.md",
+        "claudeSkillLink": ".claude/skills",
+        "adapterInitialized": true,
+        "doctorStatus": "ready",
+        "firstBoundedRunPresent": true,
+        "evalArtifacts": [
+          "eval-cases.json",
+          "eval-observed.json",
+          "eval-summary.json"
+        ],
+        "evalSummarySchemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+        "recommendation": "accept-now",
+        "runnerProofBoundary": "declared-eval-runner remains missing-assessment, so the smoke proves onboarding and a bounded fixture run without claiming product-proof readiness"
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunCommandsJSONReturnsRegistry|TestRunClaimShowSummarizesExistingProofPlan|TestRunClaimShowTreatsNonSourceHeadDriftAsFresh|TestRunClaimPlanEvalsWritesIntermediatePlan|TestRunClaimValidateWritesReportAndFailsInvalidEvidence|TestCLIImprovePrepareInputProposeAndBuildArtifact|TestCLIImproveProposePrioritizesResidualReportHotspotsBeforeImprovedFallback' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "commands --json, claim show, claim validate, and claim plan-evals emit schema-versioned packets",
+          "claim show preserves the candidate-not-proof boundary and saved-packet status summary",
+          "improve prepare-input writes cautilus.improve_inputs.v1 from explicit report/review/history evidence",
+          "improve propose writes one bounded proposal instead of a compile loop",
+          "improve build-artifact writes one durable revision artifact",
+          "proposal telemetry prioritizes residual review and compare evidence with source counts"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/on-demand/smoke-external-consumer.test.mjs scripts/agent-runtime/improve-flow.test.mjs scripts/agent-runtime/improvement-contract-schemas.test.mjs scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 15,
+        "pass": 15,
+        "protectedBehaviors": [
+          "external consumer onboarding smoke bootstraps a repo through first bounded run",
+          "improve input assembles a bounded packet from explicit evidence",
+          "improve proposal carries prioritized evidence provenance with packet and locator",
+          "revision artifact materializes one durable packet",
+          "checked-in improve schemas match examples",
+          "claim status report keeps packet-derived evidence and next-work state visible"
+        ]
+      }
+    },
+    {
+      "command": "jq '{schemaVersion, candidateCount, nonVerdictNotice}' .cautilus/claims/status-summary.json && jq '{schemaVersion, sourceOfTruth, openCautilusEval}' .cautilus/claims/evidence-state.json",
+      "exitCode": 0,
+      "observed": {
+        "statusSummarySchemaVersion": "cautilus.claim_status_summary.v1",
+        "candidateCount": 361,
+        "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
+        "evidenceStateSchemaVersion": "cautilus.claim_evidence_state.v1",
+        "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
+        "statusSnapshot": ".cautilus/claims/status-summary.json",
+        "openCautilusEvalTotal": 124,
+        "openCautilusEvalReadyForProof": 116
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/specs/user/evidence-gaps.spec.md",
+      "kind": "evidence-gaps-user-spec",
+      "contentHash": "sha256:2b115ac5a39e4d96909557e63d9b81fd2334c80cee1088676519d2dda46b73cc"
+    },
+    {
+      "path": "docs/specs/user/ownership.spec.md",
+      "kind": "ownership-user-spec",
+      "contentHash": "sha256:dfafec3d1ec7c4aa187bdf29720a21edc31e733a06120220b09e6bd056ad13d7"
+    },
+    {
+      "path": "docs/contracts/improvement.md",
+      "kind": "improvement-contract-source",
+      "contentHash": "sha256:48e0f9024eb3824a1b15469ebbd601b46d6bfd0baeb8f4800b694c0526fd72f0"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.mjs",
+      "kind": "external-consumer-onboarding-smoke",
+      "contentHash": "sha256:9a2f3c3e96a280038f191efede4cdec046330db003a865fc0dacfed66cb75c65"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.test.mjs",
+      "kind": "external-consumer-onboarding-smoke-tests",
+      "contentHash": "sha256:06a7ab45c1a485aa6a2c5f2b96ba96ce309bcb84fce2cff2f6440e3096bd9253"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "core-command-packet-tests",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "improvement-and-consumer-cli-tests",
+      "contentHash": "sha256:a91f81b8a6353655371fd5c6b8a21b66db0145685e1841317c7b911fb7296778"
+    },
+    {
+      "path": "internal/runtime/improve.go",
+      "kind": "improvement-runtime",
+      "contentHash": "sha256:24a47b2bc222604069bfee4e7afe45c11012ee143d9754137937b4163dc133d3"
+    },
+    {
+      "path": "scripts/agent-runtime/improve-flow.test.mjs",
+      "kind": "improvement-flow-tests",
+      "contentHash": "sha256:8ea9b69d6e31e9b61b3944dbc7725cc75d6ef1b14d41975fbe62c4361a1b3644"
+    },
+    {
+      "path": "scripts/agent-runtime/improvement-contract-schemas.test.mjs",
+      "kind": "improvement-schema-tests",
+      "contentHash": "sha256:261b3ab9540668ce27909a2a847ee4a9163facaeb275e8517a8b782829a71612"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "kind": "claim-status-report-renderer-tests",
+      "contentHash": "sha256:7751d28d79b6696c75a649c944eeb51a3a686b6f26203049214a8c474cdb3366"
+    },
+    {
+      "path": ".cautilus/claims/status-summary.json",
+      "kind": "current-claim-status-summary",
+      "contentHash": "sha256:048c929cc69c8163ce538118ef910cf331a42d1ffd2cbf2fde6fee16a2372041"
+    },
+    {
+      "path": ".cautilus/claims/evidence-state.json",
+      "kind": "current-claim-evidence-state",
+      "contentHash": "sha256:d543f01022bb6b341f3752803f822906da85f5f6a0a9be3a0953e35e30ae58ff"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The consumer smoke proves standalone install, adapter init, doctor readiness, and one bounded fixture run while preserving host-owned runner proof boundaries; app and Node tests prove durable packet surfaces, candidate-not-proof status visibility, and bounded improvement packets with provenance and a single revision artifact."
+  }
+}

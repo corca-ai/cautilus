@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:bb7202b1f129d1d81d9689286cd29ac9a1e33f64ce7de4c1ad2ee5aaf2269ea9"
+      "contentHash": "sha256:0362b5e223c096b1045b905ac2811af36fa95f9ce64209eaf0c47c1e4bee0ee9"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -1715,7 +1715,7 @@
         }
       ],
       "byEvidenceStatus": {
-        "unknown": 1
+        "satisfied": 1
       },
       "byReviewStatus": {
         "agent-reviewed": 1
@@ -1785,12 +1785,12 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 1,
-        "unknown": 6
+        "satisfied": 3,
+        "unknown": 4
       },
       "byReviewStatus": {
-        "agent-reviewed": 2,
-        "heuristic": 5
+        "agent-reviewed": 4,
+        "heuristic": 3
       },
       "byRecommendedProof": {
         "cautilus-eval": 2,
@@ -3264,11 +3264,12 @@
         }
       ],
       "byEvidenceStatus": {
-        "unknown": 9
+        "satisfied": 1,
+        "unknown": 8
       },
       "byReviewStatus": {
-        "agent-reviewed": 1,
-        "heuristic": 8
+        "agent-reviewed": 2,
+        "heuristic": 7
       },
       "byRecommendedProof": {
         "cautilus-eval": 3,
@@ -3805,8 +3806,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 15,
-        "stale": 4,
+        "satisfied": 16,
+        "stale": 3,
         "unknown": 16
       },
       "byReviewStatus": {
@@ -16086,14 +16087,14 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:4c2869e4e3b80325611de1405c7b61535118ce7f18e2b3c33e22f61b61aaa938",
       "canonicalClaimId": "U6",
       "score": 16,
-      "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 8,
-      "scoreMargin": 8,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 9,
+      "scoreMargin": 7,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
@@ -16102,10 +16103,10 @@
       "matchedKeywords": [
         "boundary",
         "candidate-not-proof",
+        "check",
         "keep",
         "packet",
         "projection",
-        "proof",
         "statu",
         "summary",
         "user",
@@ -16425,13 +16426,13 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:6b377595aa4629cdc1ff1b75e790cb7750b3c57a2d38f1c7856c7ffce52595b0",
       "canonicalClaimId": "U7",
-      "score": 28,
+      "score": 27,
       "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 17,
+      "runnerUpScore": 16,
       "scoreMargin": 11,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
@@ -16440,17 +16441,17 @@
       ],
       "matchedKeywords": [
         "adapter",
-        "agent",
+        "behavior",
         "bounded",
         "cautilu",
         "consumer",
         "doctor",
         "first",
         "host",
+        "init",
         "initialize",
         "install",
-        "keep",
-        "over"
+        "keep"
       ]
     },
     {
@@ -16510,14 +16511,14 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:85da31c828c4dbbb3a0dfa610157368d7b0b6c743405bf8512d48f5e28394853",
       "canonicalClaimId": "U7",
-      "score": 25,
-      "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 15,
-      "scoreMargin": 10,
+      "score": 23,
+      "runnerUpCanonicalClaimId": "U5",
+      "runnerUpScore": 14,
+      "scoreMargin": 9,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
@@ -16526,16 +16527,16 @@
       "matchedKeywords": [
         "agent",
         "another",
-        "cli",
         "command",
         "core",
+        "durable",
         "durable-packet",
         "emit",
         "evidence",
         "keep",
         "packet",
-        "proof",
-        "prove"
+        "prove",
+        "reopen"
       ]
     },
     {
@@ -16553,7 +16554,7 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "stale",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:4bf05eb3e53c6a353bfe38c7164dc1470ffcf48c26a7e9e214a868eb8d863781",
       "canonicalClaimId": "M11",
@@ -16565,16 +16566,16 @@
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "check",
         "deterministic",
         "evidence",
         "explicit",
+        "keep",
         "packet",
         "proposal",
-        "ref",
         "reporting",
         "review",
-        "stale",
-        "treating"
+        "telemetry"
       ]
     },
     {
@@ -16592,8 +16593,8 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:9029347424b4b452e77a0767d06ba6e7c5944a424437b5f88d5c240880b4cf73",
       "canonicalClaimId": "M7",
       "score": 8,
@@ -16605,13 +16606,13 @@
       "matchedAnchors": [],
       "matchedKeywords": [
         "bounded",
-        "check",
         "deterministic",
+        "improve",
         "improvement",
         "loop",
         "one",
-        "schema",
-        "still"
+        "still",
+        "test"
       ]
     },
     {

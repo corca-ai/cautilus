@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 183
+          "unknown": 180
         },
         "byReviewStatus": {
-          "heuristic": 183
+          "heuristic": 180
         },
-        "count": 183,
+        "count": 180,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -22,12 +22,12 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 13
+          "stale": 12
         },
         "byReviewStatus": {
-          "agent-reviewed": 13
+          "agent-reviewed": 12
         },
-        "count": 13,
+        "count": 12,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 119
+          "satisfied": 124
         },
         "byReviewStatus": {
-          "agent-reviewed": 119
+          "agent-reviewed": 124
         },
-        "count": 119,
+        "count": 124,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,22 +62,22 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 6,
-          "unknown": 12
+          "stale": 5,
+          "unknown": 8
         },
         "byReviewStatus": {
-          "agent-reviewed": 8,
-          "heuristic": 10
+          "agent-reviewed": 6,
+          "heuristic": 7
         },
-        "count": 18,
+        "count": 13,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-specs-user-evidence-gaps-spec-md-8",
-          "claim-docs-specs-user-ownership-spec-md-27",
-          "claim-docs-specs-user-ownership-spec-md-45",
-          "claim-docs-contracts-improvement-md-27",
-          "claim-docs-contracts-improvement-md-34"
+          "claim-docs-contracts-improvement-md-136",
+          "claim-docs-contracts-improvement-md-151",
+          "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+          "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+          "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 119,
-      "stale": 13,
-      "unknown": 229
+      "satisfied": 124,
+      "stale": 12,
+      "unknown": 225
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 98
     },
     "byReviewStatus": {
-      "agent-reviewed": 177,
-      "heuristic": 183,
+      "agent-reviewed": 180,
+      "heuristic": 180,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 119,
+    "satisfiedClaimCount": 124,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -2812,6 +2812,121 @@
         "summary": "`discover claims status` owns next-action summaries over that saved packet."
       },
       {
+        "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-8",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-evidence-gaps-spec-md-8",
+              "claim-docs-specs-user-ownership-spec-md-27",
+              "claim-docs-specs-user-ownership-spec-md-45",
+              "claim-docs-contracts-improvement-md-27",
+              "claim-docs-contracts-improvement-md-34"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The claim status summary keeps the candidate-not-proof boundary visible to users."
+      },
+      {
+        "claimId": "claim-docs-specs-user-ownership-spec-md-27",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-evidence-gaps-spec-md-8",
+              "claim-docs-specs-user-ownership-spec-md-27",
+              "claim-docs-specs-user-ownership-spec-md-45",
+              "claim-docs-contracts-improvement-md-27",
+              "claim-docs-contracts-improvement-md-34"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy."
+      },
+      {
+        "claimId": "claim-docs-specs-user-ownership-spec-md-45",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-evidence-gaps-spec-md-8",
+              "claim-docs-specs-user-ownership-spec-md-27",
+              "claim-docs-specs-user-ownership-spec-md-45",
+              "claim-docs-contracts-improvement-md-27",
+              "claim-docs-contracts-improvement-md-34"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen."
+      },
+      {
+        "claimId": "claim-docs-contracts-improvement-md-27",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-evidence-gaps-spec-md-8",
+              "claim-docs-specs-user-ownership-spec-md-27",
+              "claim-docs-specs-user-ownership-spec-md-45",
+              "claim-docs-contracts-improvement-md-27",
+              "claim-docs-contracts-improvement-md-34"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "evidence provenance so later review can trace each proposal back to an explicit packet and locator"
+      },
+      {
+        "claimId": "claim-docs-contracts-improvement-md-34",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-evidence-gaps-spec-md-8",
+              "claim-docs-specs-user-ownership-spec-md-27",
+              "claim-docs-specs-user-ownership-spec-md-45",
+              "claim-docs-contracts-improvement-md-27",
+              "claim-docs-contracts-improvement-md-34"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The improver still emits one bounded next-revision brief, not a compile loop."
+      },
+      {
         "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2872,7 +2987,7 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 81,
+    "changedFileCount": 83,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -2904,6 +3019,7 @@
       ".cautilus/claims/evidence-spec-reviewable-eval-surfaces-2026-05-17.json",
       ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
@@ -2934,6 +3050,7 @@
       ".cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json",
       ".cautilus/claims/review-result-spec-binary-skill-boundary-2026-05-17.json",
       ".cautilus/claims/review-result-spec-reviewable-eval-surfaces-2026-05-17.json",
+      ".cautilus/claims/review-result-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
@@ -2964,7 +3081,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "c2cb1e79d86e4f9f07dc6239890d57bba471eb4d",
+    "currentGitCommit": "6e87c829ec55634f685cfc194abb7996be282724",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -2991,7 +3108,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 158,
+    "heuristicClaimsReadyForReview": 155,
     "needsAlignment": 39,
     "needsScenario": 8
   },
