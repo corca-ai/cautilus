@@ -1805,17 +1805,27 @@ func TestCLIWorkspacePrepareCompareCreatesBaselineAndCandidateWorktrees(t *testi
 	payload := parseJSONObject(t, stdout)
 	baseline := payload["baseline"].(map[string]any)
 	candidate := payload["candidate"].(map[string]any)
+	baselinePath := anyToString(baseline["path"])
+	candidatePath := anyToString(candidate["path"])
 	baselineText, err := os.ReadFile(filepath.Join(anyToString(baseline["path"]), "sample.txt"))
 	if err != nil {
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
-	candidateText, err := os.ReadFile(filepath.Join(anyToString(candidate["path"]), "sample.txt"))
+	candidateText, err := os.ReadFile(filepath.Join(candidatePath, "sample.txt"))
 	if err != nil {
 		t.Fatalf("ReadFile returned error: %v", err)
 	}
 	if string(baselineText) != "baseline\n" || string(candidateText) != "candidate\n" {
 		t.Fatalf("unexpected worktree contents: baseline=%q candidate=%q", baselineText, candidateText)
 	}
+	if baselinePath == "" || candidatePath == "" {
+		t.Fatalf("expected machine-readable baseline and candidate paths, got baseline=%#v candidate=%#v", baseline, candidate)
+	}
+	usage := payload["usage"].(map[string]any)
+	evaluateFixture := stringArrayFromAny(t, usage["evaluateFixture"])
+	reviewVariants := stringArrayFromAny(t, usage["reviewVariants"])
+	assertStringSlicesEqual(t, evaluateFixture, []string{"cautilus", "evaluate", "fixture", "--repo-root", root, "--workspace", candidatePath})
+	assertStringSlicesEqual(t, reviewVariants, []string{"cautilus", "evaluate", "review", "variants", "--repo-root", root, "--workspace", candidatePath})
 }
 
 func TestCLIWorkspacePruneArtifactsPrunesOlderRecognizedDirectories(t *testing.T) {
@@ -6377,6 +6387,35 @@ func anyToString(value any) string {
 		return text
 	}
 	return ""
+}
+
+func stringArrayFromAny(t *testing.T, value any) []string {
+	t.Helper()
+	values, ok := value.([]any)
+	if !ok {
+		t.Fatalf("expected string array, got %#v", value)
+	}
+	result := make([]string, 0, len(values))
+	for _, entry := range values {
+		text, ok := entry.(string)
+		if !ok {
+			t.Fatalf("expected string entry, got %#v", entry)
+		}
+		result = append(result, text)
+	}
+	return result
+}
+
+func assertStringSlicesEqual(t *testing.T, got []string, want []string) {
+	t.Helper()
+	if len(got) != len(want) {
+		t.Fatalf("expected %#v, got %#v", want, got)
+	}
+	for index := range want {
+		if got[index] != want[index] {
+			t.Fatalf("expected %#v, got %#v", want, got)
+		}
+	}
 }
 
 func containsAnyString(values []any, want string) bool {

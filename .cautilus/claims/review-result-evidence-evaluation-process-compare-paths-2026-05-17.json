@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:12:00Z",
+    "evidencePolicy": "Only mark the comparison-prepare path handoff claim satisfied; do not infer candidate immutability, adapter quality, or downstream operator behavior."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-evaluation-process-compare-paths-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-52",
+          "claimFingerprint": "sha256:de07fe283b1fb474b240177e63959b9955efb8f6095ae64337946a7fc76bb9ec",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names public CLI JSON output shape and downstream command-path reuse, which are deterministic command-contract behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by a focused Go CLI smoke test: `evaluate comparison prepare` emits JSON with `baseline.path` and `candidate.path`, those paths point at materialized worktrees, and the emitted usage arrays pass `candidate.path` into `evaluate fixture` and `evaluate review variants`.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:27afb51bc39fffb64a0f784bb68420685473422c0a5569e5850361cf56375a1d",
+              "supportsClaimIds": [
+                "claim-docs-guides-evaluation-process-md-52"
+              ]
+            }
+          ],
+          "nextAction": "Keep this smoke test aligned with comparison-prepare output whenever active-run, worktree, or downstream command usage fields change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

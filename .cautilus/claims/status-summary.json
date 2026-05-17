@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 229
+          "unknown": 228
         },
         "byReviewStatus": {
-          "heuristic": 229
+          "heuristic": 228
         },
-        "count": 229,
+        "count": 228,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 65
+          "satisfied": 66
         },
         "byReviewStatus": {
-          "agent-reviewed": 65
+          "agent-reviewed": 66
         },
-        "count": 65,
+        "count": 66,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 10,
-          "unknown": 64
+          "unknown": 63
         },
         "byReviewStatus": {
           "agent-reviewed": 18,
-          "heuristic": 56
+          "heuristic": 55
         },
-        "count": 74,
+        "count": 73,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-guides-cli-md-564",
-          "claim-docs-guides-evaluation-process-md-52",
           "claim-docs-guides-evaluation-process-md-293",
           "claim-docs-guides-improve-md-15",
-          "claim-docs-master-plan-md-30"
+          "claim-docs-master-plan-md-30",
+          "claim-docs-master-plan-md-57"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 65,
+      "satisfied": 66,
       "stale": 17,
-      "unknown": 279
+      "unknown": 278
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 131,
-      "heuristic": 229,
+      "agent-reviewed": 132,
+      "heuristic": 228,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 65,
+    "satisfiedClaimCount": 66,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1156,6 +1156,25 @@
         "summary": "The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene."
       },
       {
+        "claimId": "claim-docs-guides-evaluation-process-md-52",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:27afb51bc39fffb64a0f784bb68420685473422c0a5569e5850361cf56375a1d",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-evaluation-process-md-52"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The helper emits machine-readable baseline and candidate paths you can pass back into `evaluate fixture` or `evaluate review variants`."
+      },
+      {
         "claimId": "claim-docs-guides-evaluation-process-md-253",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1732,17 +1751,19 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 28,
+    "changedFileCount": 30,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+      ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
@@ -1771,7 +1792,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "a5bda16393512fe1d5c51c43180fc1f4e221e0b4",
+    "currentGitCommit": "72d008687702655f12f60c617cfa07fe9984f4ea",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -1798,7 +1819,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 204,
+    "heuristicClaimsReadyForReview": 203,
     "needsAlignment": 37,
     "needsScenario": 8
   },

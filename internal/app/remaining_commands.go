@@ -97,7 +97,8 @@ func handleWorkspacePrepareCompare(repoRoot string, cwd string, args []string, s
 		"candidate": candidate,
 		"warnings":  warnings,
 		"usage": map[string]any{
-			"reviewVariants": []string{"cautilus", "review", "variants", "--repo-root", gitRoot, "--workspace", anyString(candidate["path"])},
+			"evaluateFixture": []string{"cautilus", "evaluate", "fixture", "--repo-root", gitRoot, "--workspace", anyString(candidate["path"])},
+			"reviewVariants":  []string{"cautilus", "evaluate", "review", "variants", "--repo-root", gitRoot, "--workspace", anyString(candidate["path"])},
 		},
 	}
 	if err := writeJSON(stdout, payload); err != nil {

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-evaluation-process-compare-paths-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-guides-evaluation-process-md-52"
+  ],
+  "repoCommit": "72d008687702655f12f60c617cfa07fe9984f4ea",
+  "summary": "Deterministic proof that `cautilus evaluate comparison prepare` emits machine-readable baseline and candidate paths plus downstream command arrays that thread the candidate path into `evaluate fixture` and `evaluate review variants`.",
+  "evidenceScope": {
+    "targetSurface": "evaluation comparison prepare path handoff",
+    "claimBoundary": "Only the docs/guides/evaluation-process.md claim about machine-readable baseline/candidate paths and downstream command reuse is marked satisfied.",
+    "notClaimed": [
+      "Every operator will actually pass the emitted paths into follow-up commands.",
+      "Every candidate workspace is semantically safe to evaluate.",
+      "Review variants are unable to mutate a candidate when a consumer-owned command does so.",
+      "The helper validates external adapter quality."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run TestCLIWorkspacePrepareCompareCreatesBaselineAndCandidateWorktrees -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "`evaluate comparison prepare` writes JSON with `baseline.path` and `candidate.path` fields.",
+          "The emitted baseline and candidate paths point at worktrees containing the expected checked-out files.",
+          "The emitted `usage.evaluateFixture` command array includes `cautilus evaluate fixture --repo-root <repo> --workspace <candidate.path>`.",
+          "The emitted `usage.reviewVariants` command array includes `cautilus evaluate review variants --repo-root <repo> --workspace <candidate.path>`."
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/evaluation-process.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:ca9a653365fcf97ce502259b28550b2a84b7d571ab9646b43242f794d06bd30c"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "comparison-prepare-cli-output",
+      "contentHash": "sha256:f7fac2107f87032df7b46fefb55fc1f1ae498c09f26d07aca997832b075e392c"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "comparison-prepare-cli-smoke-test",
+      "contentHash": "sha256:89dead77e9e07881f5d0eddeedc955ca345939ae1014f640e5fda2cd3e7605aa"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused Go smoke test executes the public CLI command, parses stdout as JSON, verifies baseline.path and candidate.path are machine-readable strings pointing at materialized worktrees, and verifies the candidate path is threaded into both downstream command arrays named by the guide."
+  }
+}

@@ -2621,8 +2621,19 @@
       "claimFingerprint": "sha256:de07fe283b1fb474b240177e63959b9955efb8f6095ae64337946a7fc76bb9ec",
       "claimId": "claim-docs-guides-evaluation-process-md-52",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:27afb51bc39fffb64a0f784bb68420685473422c0a5569e5850361cf56375a1d",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-evaluation-process-md-52"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a focused Go CLI smoke test: `evaluate comparison prepare` emits JSON with `baseline.path` and `candidate.path`, those paths point at materialized worktrees, and the emitted usage arrays pass `candidate.path` into `evaluate fixture` and `evaluate review variants`.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -2630,9 +2641,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep this smoke test aligned with comparison-prepare output whenever active-run, worktree, or downstream command usage fields change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The helper emits machine-readable baseline and candidate paths you can pass back into `evaluate fixture` or `evaluate review variants`.",
@@ -2641,8 +2652,9 @@
         }
       ],
       "summary": "The helper emits machine-readable baseline and candidate paths you can pass back into `evaluate fixture` or `evaluate review variants`.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names public CLI JSON output shape and downstream command-path reuse, which are deterministic command-contract behavior."
     },
     {
       "claimAudience": "user",
@@ -11974,9 +11986,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 65,
+      "satisfied": 66,
       "stale": 17,
-      "unknown": 279
+      "unknown": 278
     },
     "byLifecycle": {
       "new": 361
@@ -11987,8 +11999,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 131,
-      "heuristic": 229,
+      "agent-reviewed": 132,
+      "heuristic": 228,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12182,7 +12194,7 @@
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
-    "appliedUpdateCount": 2,
+    "appliedUpdateCount": 1,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -12196,28 +12208,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-consumer-adoption-md-48",
-        "clusterId": "cluster-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "whyThisLayer",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-guides-consumer-adoption-md-106",
-        "clusterId": "cluster-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17"
+        "claimId": "claim-docs-guides-evaluation-process-md-52",
+        "clusterId": "cluster-evaluation-process-compare-paths-2026-05-17"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12277,7 +12274,8 @@
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
-      ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json"
+      ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12333,9 +12331,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 56,
+    "appliedResultCount": 57,
     "skippedResultCount": 52,
-    "keptUpdateCount": 139,
+    "keptUpdateCount": 140,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

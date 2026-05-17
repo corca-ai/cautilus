@@ -1,4 +1,4 @@
-# Debug Review
+# Claim Status Report Check Order Debug
 Date: 2026-05-17
 
 ## Problem
@@ -91,3 +91,7 @@ I parallelized generated-artifact checks even though one check refreshes `status
 
 For claim closeout, run `claims:evidence-state:check`, then `claims:status-report`, then `claims:status-report:check` serially.
 Do not parallelize commands where one uses `--refresh-status` and another reads the refreshed status file.
+
+## Related Prior Incidents
+
+- `debug-2026-05-16-parallel-observation-output-race.md`: writer and reader commands launched together created a false missing-output signal.
