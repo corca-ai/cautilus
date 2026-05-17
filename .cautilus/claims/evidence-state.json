@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:f58945f7907d90055898936d30374154f9a2b8d835c9e62b2a2cdb9805771eab",
+    "claimsHash": "sha256:3a86a83386c47ac4f81f17baeccb094e3aaca06c17aa9ec2b0f07f35dc02ed01",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:065b5b827880b5f80dfa0ea33f649b5b04998780b0df66f638d74de26dcd31ad",
+    "statusHash": "sha256:d46d3e9f6a93659e9acebafe6d936ede5cc6a59b496ee4c93ce8993a48d679d5",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,7 +12,7 @@
     }
   },
   "gitState": {
-    "changedFileCount": 37,
+    "changedFileCount": 39,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -22,6 +22,7 @@
       ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+      ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
@@ -31,6 +32,7 @@
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-option-paths.md",
@@ -60,7 +62,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "52c13b07078fda531be674f65f758a36d4b78b4d",
+    "currentGitCommit": "ccc967793ff8189d49c3428f0c3e6cb4ff8d30c9",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -71,8 +73,8 @@
     "candidateCount": 361,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 68,
-      "stale": 17,
+      "satisfied": 69,
+      "stale": 16,
       "unknown": 276
     },
     "byRecommendedProof": {
@@ -263,26 +265,26 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 68,
+      "count": 69,
       "actor": "none",
       "evidence": {
-        "satisfied": 68
+        "satisfied": 69
       },
       "review": {
-        "agent-reviewed": 68
+        "agent-reviewed": 69
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 71,
+      "count": 70,
       "actor": "agent",
       "evidence": {
-        "stale": 10,
+        "stale": 9,
         "unknown": 61
       },
       "review": {
-        "agent-reviewed": 17,
+        "agent-reviewed": 16,
         "heuristic": 54
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
@@ -372,7 +374,7 @@
     },
     {
       "id": "stale-evidence",
-      "count": 17,
+      "count": 16,
       "actor": "agent",
       "summary": "Refresh or recheck stale evidence before consuming it as proof.",
       "sampleClaimIds": [
@@ -380,7 +382,7 @@
         "claim-docs-guides-cli-md-263",
         "claim-docs-guides-cli-md-265",
         "claim-docs-guides-cli-md-478",
-        "claim-docs-guides-improve-md-15"
+        "claim-docs-contracts-reporting-md-123"
       ]
     }
   ]

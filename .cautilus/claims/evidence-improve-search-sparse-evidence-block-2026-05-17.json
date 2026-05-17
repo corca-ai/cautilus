@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-improve-search-sparse-evidence-block-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-guides-improve-md-15"
+  ],
+  "repoCommit": "ccc967793ff8189d49c3428f0c3e6cb4ff8d30c9",
+  "summary": "Current deterministic proof that sparse improve-search evidence blocks before candidate generation and returns a machine-readable JSON payload suitable for agent or operator discussion.",
+  "evidenceScope": {
+    "targetSurface": "improve search sparse-evidence blocking",
+    "claimBoundary": "Only the docs/guides/improve.md sparse-evidence blocked JSON behavior is marked satisfied.",
+    "notClaimed": [
+      "Search always finds a better candidate when evidence is sufficient.",
+      "Every missing-evidence reason is ideal or complete.",
+      "The mutation backend is invoked when evidence is sparse.",
+      "The sparse-evidence path validates every downstream improve proposal behavior."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run TestCLIImproveSearchPrepareInputJSONAndBlockedRunReturnMachineReadablePayload -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "`cautilus improve search prepare-input --input-json` accepts direct JSON and writes a canonical search input packet.",
+          "`cautilus improve search run --json` exits with a blocked result when required evidence is sparse.",
+          "The blocked result is emitted as machine-readable JSON on stdout.",
+          "The blocked result includes multiple reason codes for operator or agent discussion.",
+          "The blocked result has empty `candidateRegistry` and `generationSummaries`, proving candidate generation did not proceed.",
+          "`searchTelemetry` records `candidateCount=0`, `mutationInvocationCount=0`, and `stopReason=blocked`."
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/improve.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:65735b4d9636aa30a679dff9d33fa9fa69315cf710859bae90ca38c16b5919f7"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "improve-search-blocked-json-cli-test",
+      "contentHash": "sha256:a91f81b8a6353655371fd5c6b8a21b66db0145685e1841317c7b911fb7296778"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "improve-search-cli-handlers",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "internal/runtime/improve_search.go",
+      "kind": "improve-search-runtime",
+      "contentHash": "sha256:42f9a6cbe28035649f8f9fb75ebc08512ddae4ca07e0e213187c7ae992c49a36"
+    },
+    {
+      "path": "docs/contracts/improvement-search.md",
+      "kind": "improve-search-contract",
+      "contentHash": "sha256:7e9e4ab703ef6987a64478c6163be04d94dd71bc3796efcb9e4136e2d7b09fca"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused CLI smoke test proves sparse evidence produces a blocked machine-readable JSON payload with reason codes, zero generated candidates, and telemetry showing no mutation invocation before search can proceed."
+  }
+}

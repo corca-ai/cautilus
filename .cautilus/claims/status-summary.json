@@ -22,12 +22,12 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 17
+          "stale": 16
         },
         "byReviewStatus": {
-          "agent-reviewed": 17
+          "agent-reviewed": 16
         },
-        "count": 17,
+        "count": 16,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -35,7 +35,7 @@
           "claim-docs-guides-cli-md-263",
           "claim-docs-guides-cli-md-265",
           "claim-docs-guides-cli-md-478",
-          "claim-docs-guides-improve-md-15"
+          "claim-docs-contracts-reporting-md-123"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 68
+          "satisfied": 69
         },
         "byReviewStatus": {
-          "agent-reviewed": 68
+          "agent-reviewed": 69
         },
-        "count": 68,
+        "count": 69,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,22 +62,22 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 10,
+          "stale": 9,
           "unknown": 61
         },
         "byReviewStatus": {
-          "agent-reviewed": 17,
+          "agent-reviewed": 16,
           "heuristic": 54
         },
-        "count": 71,
+        "count": 70,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-guides-improve-md-15",
           "claim-docs-master-plan-md-30",
           "claim-docs-master-plan-md-57",
           "claim-docs-master-plan-md-78",
-          "claim-docs-master-plan-md-84"
+          "claim-docs-master-plan-md-84",
+          "claim-docs-specs-index-spec-md-9"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,8 +219,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 68,
-      "stale": 17,
+      "satisfied": 69,
+      "stale": 16,
       "unknown": 276
     },
     "byLifecycle": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 68,
+    "satisfiedClaimCount": 69,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1251,6 +1251,25 @@
         "summary": "Review variants should inspect the candidate, not mutate the repo."
       },
       {
+        "claimId": "claim-docs-guides-improve-md-15",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c64db3fd9357b3c12e5c4cc973489066339c5f7f1f9de69be6ebe9fcf42dbc82",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-improve-search-sparse-evidence-block-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-improve-md-15"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates."
+      },
+      {
         "claimId": "claim-docs-contracts-active-run-md-3",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1789,7 +1808,7 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 37,
+    "changedFileCount": 39,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -1799,6 +1818,7 @@
       ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+      ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
@@ -1808,6 +1828,7 @@
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-option-paths.md",
@@ -1837,7 +1858,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "52c13b07078fda531be674f65f758a36d4b78b4d",
+    "currentGitCommit": "ccc967793ff8189d49c3428f0c3e6cb4ff8d30c9",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",

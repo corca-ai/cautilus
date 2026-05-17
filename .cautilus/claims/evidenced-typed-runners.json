@@ -3022,17 +3022,17 @@
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:024df0535649cf55a0cf0e8802ea6ea8fbea2e9f8924a29fedb55866baa282f9",
+          "contentHash": "sha256:c64db3fd9357b3c12e5c4cc973489066339c5f7f1f9de69be6ebe9fcf42dbc82",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-gepa-sparse-evidence-block-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-improve-search-sparse-evidence-block-2026-05-17.json",
           "supportsClaimIds": [
             "claim-docs-guides-improve-md-15"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-gepa-sparse-evidence-block-2026-05-03.json does not list current claimId claim-docs-guides-improve-md-15 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a current improve-search CLI smoke test: sparse evidence makes `cautilus improve search run --json` return a blocked JSON payload with reason codes, zero candidates, zero generation summaries, and telemetry proving no mutation invocation occurred.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -3040,7 +3040,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep sparse-evidence blocked-output tests current when changing improve-search readiness checks, blocked result shape, or telemetry fields.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -3051,8 +3051,9 @@
         }
       ],
       "summary": "Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names improve-search readiness blocking and machine-readable output shape, which are deterministic CLI packet behavior."
     },
     {
       "claimAudience": "user",
@@ -12008,8 +12009,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 68,
-      "stale": 17,
+      "satisfied": 69,
+      "stale": 16,
       "unknown": 276
     },
     "byLifecycle": {
@@ -12230,13 +12231,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-evaluation-process-md-293",
-        "clusterId": "cluster-review-variants-read-mostly-2026-05-17"
+        "claimId": "claim-docs-guides-improve-md-15",
+        "clusterId": "cluster-improve-search-sparse-evidence-block-2026-05-17"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12299,7 +12300,8 @@
       ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
-      ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json"
+      ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12355,9 +12357,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 59,
+    "appliedResultCount": 60,
     "skippedResultCount": 52,
-    "keptUpdateCount": 142,
+    "keptUpdateCount": 143,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

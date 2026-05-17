@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T10:05:00Z",
+    "evidencePolicy": "Only refresh the stale sparse-evidence improve-search claim; do not infer successful candidate generation or mutation backend behavior."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-improve-search-sparse-evidence-block-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-improve-md-15",
+          "claimFingerprint": "sha256:707379c574740cd365d23854282c59e67b7ae584bfdea36fd8c035e3e318be90",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names improve-search readiness blocking and machine-readable output shape, which are deterministic CLI packet behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by a current improve-search CLI smoke test: sparse evidence makes `cautilus improve search run --json` return a blocked JSON payload with reason codes, zero candidates, zero generation summaries, and telemetry proving no mutation invocation occurred.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-improve-search-sparse-evidence-block-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c64db3fd9357b3c12e5c4cc973489066339c5f7f1f9de69be6ebe9fcf42dbc82",
+              "supportsClaimIds": [
+                "claim-docs-guides-improve-md-15"
+              ]
+            }
+          ],
+          "nextAction": "Keep sparse-evidence blocked-output tests current when changing improve-search readiness checks, blocked result shape, or telemetry fields.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
