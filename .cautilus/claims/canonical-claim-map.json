@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:37f90f74cb137c5d856aa4eadb10418b5856e7de5bd406c9887eba29ce45984f"
+      "contentHash": "sha256:ba70843c1bc5002eb8792e07908cbcb2ef43f415c94fa1d6c7656d8c6aa56102"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -3109,12 +3109,12 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 5,
-        "unknown": 15
+        "satisfied": 7,
+        "unknown": 13
       },
       "byReviewStatus": {
-        "agent-reviewed": 6,
-        "heuristic": 14
+        "agent-reviewed": 8,
+        "heuristic": 12
       },
       "byRecommendedProof": {
         "cautilus-eval": 12,
@@ -3177,12 +3177,12 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 2,
-        "unknown": 4
+        "satisfied": 3,
+        "unknown": 3
       },
       "byReviewStatus": {
-        "agent-reviewed": 2,
-        "heuristic": 4
+        "agent-reviewed": 3,
+        "heuristic": 3
       },
       "byRecommendedProof": {
         "deterministic": 3,
@@ -3805,13 +3805,13 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 14,
+        "satisfied": 15,
         "stale": 4,
-        "unknown": 17
+        "unknown": 16
       },
       "byReviewStatus": {
-        "agent-reviewed": 19,
-        "heuristic": 16
+        "agent-reviewed": 20,
+        "heuristic": 15
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
@@ -3909,12 +3909,12 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 2,
-        "unknown": 9
+        "satisfied": 3,
+        "unknown": 8
       },
       "byReviewStatus": {
-        "agent-reviewed": 5,
-        "heuristic": 6
+        "agent-reviewed": 6,
+        "heuristic": 5
       },
       "byRecommendedProof": {
         "cautilus-eval": 2,
@@ -14493,8 +14493,8 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:e9f96e1fb87cb0fdb7c23393d21875c5433f65a570d4494549e0b9e0f46f1895",
       "canonicalClaimId": "M5",
       "score": 19,
@@ -14507,17 +14507,17 @@
         "docs/specs/contracts/evaluation-surfaces-runners.spec.md"
       ],
       "matchedKeywords": [
+        "charness-artifacts/spec/evaluation-surfaces-runners-proof.md",
         "deterministic",
         "fixture-backed",
         "input",
-        "keep",
-        "lint",
         "observed",
         "output",
         "packet",
         "preset",
         "reopen",
         "reviewer",
+        "self-dogfood",
         "shipped"
       ]
     },
@@ -14536,13 +14536,13 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:d5a1105bb3e4622cd2e4d43216dad8c9f75a173633cfee7040fbdf3ef2c178d4",
       "canonicalClaimId": "M5",
-      "score": 22,
+      "score": 23,
       "runnerUpCanonicalClaimId": "M28",
-      "runnerUpScore": 22,
+      "runnerUpScore": 23,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -14556,12 +14556,12 @@
         "helper",
         "keep",
         "lint",
+        "normalization",
         "normalize",
         "npm",
         "prove",
         "run",
-        "runtime",
-        "scenario"
+        "runtime"
       ]
     },
     {
@@ -14579,13 +14579,13 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:2026d397c4196f1701233741e72b784aa5829699c8127f561d466a07275a0016",
       "canonicalClaimId": "M6",
-      "score": 27,
+      "score": 31,
       "runnerUpCanonicalClaimId": "M13",
-      "runnerUpScore": 27,
+      "runnerUpScore": 31,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -14599,12 +14599,12 @@
         "discover",
         "discovery",
         "doctor",
+        "generated",
+        "html/statu",
         "keep",
         "label",
-        "masked",
-        "packet",
-        "rather",
-        "readines"
+        "markdown",
+        "masked"
       ]
     },
     {
@@ -14750,13 +14750,13 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:a49f4d036eaad3ffb34299ce52cef6bd565b91d58c3c897fd2461f7b92ef5e11",
       "canonicalClaimId": "M11",
-      "score": 30,
+      "score": 35,
       "runnerUpCanonicalClaimId": "M14",
-      "runnerUpScore": 30,
+      "runnerUpScore": 35,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -14764,7 +14764,8 @@
         "docs/specs/contracts/reporting-review-variants.spec.md"
       ],
       "matchedKeywords": [
-        "add",
+        "active-run",
+        "aggregation",
         "artifact",
         "cautilu",
         "data",
@@ -14772,10 +14773,9 @@
         "discovery",
         "durable",
         "first",
+        "generated",
         "human",
-        "keep",
-        "machine",
-        "machine-readable"
+        "keep"
       ]
     },
     {
@@ -14836,13 +14836,13 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:06d1b465aa6353aa05d1ed45d75e93b14d6d2f6e6cdd0823ef1cd4ed89fe7663",
       "canonicalClaimId": "M12",
-      "score": 31,
+      "score": 36,
       "runnerUpCanonicalClaimId": "M30",
-      "runnerUpScore": 31,
+      "runnerUpScore": 36,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -14850,18 +14850,18 @@
         "docs/specs/contracts/scenario-history-normalization.spec.md"
       ],
       "matchedKeywords": [
+        "artifact",
         "candidate",
         "cautilu",
+        "cycle",
         "deterministic",
         "durable",
+        "end-to-end",
         "eval",
+        "evidence",
+        "gap",
         "held-out",
-        "hidden",
-        "improvement",
-        "inspectable",
-        "keep",
-        "loop",
-        "normalizer"
+        "hidden"
       ]
     },
     {

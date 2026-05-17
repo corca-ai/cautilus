@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-spec-reviewable-eval-surfaces-2026-05-17",
+  "createdAt": "2026-05-17T09:43:43Z",
+  "repoCommit": "05d26ea410df11351ba31eed5cf9818e7c1b68c9",
+  "createdForClaimIds": [
+    "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+    "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+    "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+    "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+    "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
+  ],
+  "summary": "Deterministic spec evidence covers fixture-backed eval surfaces, scenario normalizer completeness, stale evidence visibility, machine-readable review/report artifacts, and durable scenario proposal/history packets.",
+  "evidenceScope": {
+    "covered": [
+      "A checked-in evaluation surfaces proof artifact records selected reopenable summary packet evidence for dev/repo, dev/skill, app/chat, and app/prompt presets.",
+      "Scenario normalizer completeness and schema tests cover surviving discover scenarios normalize helpers and proposal packet schemas.",
+      "Claim status and validation tests keep stale state visible in packets and rendered status reports.",
+      "Review/report HTML, review-feedback, and review-variant tests prove readable views render over machine-readable packets and route reviewers to durable artifacts.",
+      "Scenario history and proposal normalization tests preserve durable candidates, held-out selection, observable cadence, and inspectable proposal packets."
+    ],
+    "notClaimed": [
+      "This bundle does not close the documented held-out end-to-end scenario-history evidence gap.",
+      "This bundle does not claim active-run review-learning aggregation is wired; it covers selected-packet summary behavior and durable packet rendering."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:scenario-normalizers && node scripts/agent-runtime/scenario-proposal-schemas.test.mjs && node scripts/starter-kit-parity.test.mjs && node scripts/agent-runtime/render-claim-status-report.test.mjs && node scripts/agent-runtime/run-review-variant.test.mjs && node scripts/agent-runtime/run-executor-variants.test.mjs",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:43:43Z",
+      "outputSummary": [
+        "scenario normalization runtime completeness: 3 families pass 7-surface check",
+        "scenario proposal schemas pass",
+        "starter kit fixtures match canonical proposal fixtures byte-for-byte",
+        "claim status report renderer tests pass",
+        "review variant and executor variant wrapper tests pass"
+      ]
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence|TestApplyClaimReviewResultAllowsStaleToRevokeSatisfiedEvidence|TestBuildClaimValidationReportValidatesEvidenceRefs|TestRenderReportHTMLIncludesHeadlineAndTOC|TestRenderReportHTMLRendersScenarioBuckets|TestRenderReportHTMLRendersReasonCodesAndWarnings|TestRenderReportHTMLFromFileRejectsLegacySchema|TestRenderReviewHTML|TestSelectProfileScenarioIDsReturnsAllTrainScenariosWithoutHistory|TestUpdateScenarioHistoryGraduatesPerfectTrainScenarios|TestScenarioBaselineCacheKeyStableAcrossIDOrder|TestNormalizeChatbotProposalCandidatesRespectsWordBoundary|TestNormalizeWorkflowProposalCandidatesUsesCLIWorkflowLabel|TestNormalizeSkillProposalCandidatesCoversValidationTriggerAndExecutionBranches|TestMergeCandidatesByProposalKeyPreservesInsertionOrder'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:43:43Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/runtime"
+      ]
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIReviewFeedbackBuildEmitsSourceBoundLearningPacket|TestCLIReviewFeedbackBuildRejectsTestStatusDisposition|TestCLIReviewFeedbackBuildRejectsMissingReviewedProposal|TestCLIReviewFeedbackBuildAllowsMissingCriticalWithoutProposal|TestCLIReviewFeedbackSummarizeCountsDispositionsByMethodFamily|TestCLIReviewFeedbackSummarizeRejectsNonFeedbackPacket|TestCLIReviewVariantsRunsInsideFreshRepoWithoutHostSpecificPaths|TestCLIReviewVariantsSupportsOutputUnderTest|TestCLIScenarioProposeGeneratesStandaloneProposalPacket|TestCLIScenarioProposePreservesFullRankedOutputAndDerivesAttentionView|TestCLIScenarioReviewConversationsBuildsScenarioCentricThreadPacket|TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose|TestRunScenariosJSONReturnsThreeNormalizationFamilies|TestRunScenarioNormalizeSkillRejectsWorkflowSchema'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:43:43Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/app"
+      ]
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestRenderReviewPacketHTMLIncludesIntentAndQuestions|TestRenderReviewPacketHTMLRewritesArtifactLinks|TestRenderReviewSummaryHTMLRendersVariantsAndFindings|TestWriteReviewPacketHTMLFromFileWritesNextToInput|TestWriteReviewSummaryHTMLFromFileWritesNextToInput|TestRenderReportHTMLIncludesHeadlineAndTOC|TestRenderReportHTMLRendersScenarioBuckets|TestRenderReportHTMLRendersReasonCodesAndWarnings|TestRenderReportHTMLFromFileRejectsLegacySchema|TestWriteReportHTMLFromFileWritesNextToInput'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:43:43Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/runtime"
+      ]
+    },
+    {
+      "command": "test -f charness-artifacts/spec/evaluation-surfaces-runners-proof.md && sha256sum charness-artifacts/spec/evaluation-surfaces-runners-proof.md",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:43:43Z",
+      "outputSummary": [
+        "0ef85142a3972bc0eb3772b4ca3710fc99d723b46f4f632e5f0e94ea2d8934b4 charness-artifacts/spec/evaluation-surfaces-runners-proof.md"
+      ]
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "charness-artifacts/spec/evaluation-surfaces-runners-proof.md",
+      "contentHash": "sha256:0ef85142a3972bc0eb3772b4ca3710fc99d723b46f4f632e5f0e94ea2d8934b4",
+      "proves": "Selected summary packet evidence exists for every shipped evaluation preset without linking ignored self-dogfood outputs as direct spec evidence."
+    },
+    {
+      "path": "scripts/check-scenario-normalization-completeness.mjs",
+      "proves": "The surviving scenario normalization runtime surface is complete across the declared normalization families and surface checks."
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "proves": "Generated claim status reports surface validation, review, eval-plan, and refresh/stale state instead of masking it."
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "tests": [
+        "TestApplyClaimReviewResultRejectsSatisfiedWithoutVerifiedEvidence",
+        "TestApplyClaimReviewResultAllowsStaleToRevokeSatisfiedEvidence",
+        "TestBuildClaimValidationReportValidatesEvidenceRefs"
+      ],
+      "proves": "Evidence state transitions require verified evidence and propagate stale evidence through validation/status surfaces."
+    },
+    {
+      "path": "internal/runtime/report_html_test.go",
+      "tests": [
+        "TestRenderReportHTMLIncludesHeadlineAndTOC",
+        "TestRenderReportHTMLRendersScenarioBuckets",
+        "TestRenderReportHTMLRendersReasonCodesAndWarnings"
+      ],
+      "proves": "Readable report HTML is rendered from report packets, including scenario buckets, reason codes, warnings, and runtime context."
+    },
+    {
+      "path": "internal/runtime/review_html_test.go",
+      "tests": [
+        "TestRenderReviewPacketHTMLIncludesIntentAndQuestions",
+        "TestRenderReviewPacketHTMLRewritesArtifactLinks",
+        "TestRenderReviewSummaryHTMLRendersVariantsAndFindings"
+      ],
+      "proves": "Readable review packet and review summary HTML render over machine-readable review artifacts and durable variant outputs."
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "tests": [
+        "TestCLIReviewFeedbackBuildEmitsSourceBoundLearningPacket",
+        "TestCLIReviewFeedbackSummarizeCountsDispositionsByMethodFamily",
+        "TestCLIReviewVariantsRunsInsideFreshRepoWithoutHostSpecificPaths",
+        "TestCLIScenarioProposeGeneratesStandaloneProposalPacket",
+        "TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose"
+      ],
+      "proves": "Review feedback packets, review variant routing, and scenario proposal command flows produce durable machine-readable packets."
+    },
+    {
+      "path": "internal/runtime/scenario_history_test.go",
+      "tests": [
+        "TestSelectProfileScenarioIDsReturnsAllTrainScenariosWithoutHistory",
+        "TestUpdateScenarioHistoryGraduatesPerfectTrainScenarios",
+        "TestScenarioBaselineCacheKeyStableAcrossIDOrder"
+      ],
+      "proves": "Scenario history preserves deterministic selection, held-out graduation, and stable baseline-cache keys."
+    },
+    {
+      "path": "internal/runtime/proposals_test.go",
+      "tests": [
+        "TestNormalizeChatbotProposalCandidatesRespectsWordBoundary",
+        "TestNormalizeWorkflowProposalCandidatesUsesCLIWorkflowLabel",
+        "TestNormalizeSkillProposalCandidatesCoversValidationTriggerAndExecutionBranches",
+        "TestMergeCandidatesByProposalKeyPreservesInsertionOrder"
+      ],
+      "proves": "Scenario proposal normalizers produce reproducible inspectable proposal candidates across chatbot, workflow, and skill shapes."
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "reason": "The checked-in artifact, targeted tests, and lint scripts cover the deterministic portions of the five spec claims while explicitly excluding their documented open end-to-end evidence gaps."
+  }
+}

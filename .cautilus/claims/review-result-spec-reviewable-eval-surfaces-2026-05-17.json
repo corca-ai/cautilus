@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:43:43Z",
+    "evidencePolicy": "Satisfy only the deterministic portions of these spec claims; preserve documented held-out and active-run evidence gaps as out of scope for this bundle."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-spec-reviewable-eval-surfaces-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+          "claimFingerprint": "sha256:e9f96e1fb87cb0fdb7c23393d21875c5433f65a570d4494549e0b9e0f46f1895",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names checked-in fixture-backed evidence for shipped evaluation presets.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "The checked-in evaluation-surfaces proof artifact records selected reopenable summary packet evidence for dev/repo, dev/skill, app/chat, and app/prompt presets, and the artifact hash was verified.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-spec-reviewable-eval-surfaces-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:50546f598f2b98fb17b32e4f16cce6810638582fc90617feacf92f8e56b67cb1",
+              "supportsClaimIds": [
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+                "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+                "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+                "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Refresh charness-artifacts/spec/evaluation-surfaces-runners-proof.md when self-dogfood summary packets are regenerated.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+          "claimFingerprint": "sha256:d5a1105bb3e4622cd2e4d43216dad8c9f75a173633cfee7040fbdf3ef2c178d4",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the scenario normalizer runtime completeness lint gate.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "npm run lint:scenario-normalizers reported 3 normalization families passing the 7-surface runtime completeness check, and proposal schema/starter-kit tests passed.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-spec-reviewable-eval-surfaces-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:50546f598f2b98fb17b32e4f16cce6810638582fc90617feacf92f8e56b67cb1",
+              "supportsClaimIds": [
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+                "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+                "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+                "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Keep lint:scenario-normalizers in verify when adding or removing scenario normalization helpers.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+          "claimFingerprint": "sha256:2026d397c4196f1701233741e72b784aa5829699c8127f561d466a07275a0016",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names stale packet visibility across status and rendered report surfaces.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Claim review, validation, and status-report tests verify stale evidence propagation and rendered status report visibility rather than masking stale packet state.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-spec-reviewable-eval-surfaces-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:50546f598f2b98fb17b32e4f16cce6810638582fc90617feacf92f8e56b67cb1",
+              "supportsClaimIds": [
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+                "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+                "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+                "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Keep stale status visible in generated packet, Markdown, and HTML/status renderers when changing evidence-state transitions.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+          "claimFingerprint": "sha256:a49f4d036eaad3ffb34299ce52cef6bd565b91d58c3c897fd2461f7b92ef5e11",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names review/report packet rendering and variant routing, covered by deterministic HTML, review-feedback, and variant wrapper tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Report/review HTML tests render from machine-readable packets, review-feedback tests preserve source-bound learning packets, and review variant wrapper tests route human and machine reviewer flows through durable artifacts.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-spec-reviewable-eval-surfaces-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:50546f598f2b98fb17b32e4f16cce6810638582fc90617feacf92f8e56b67cb1",
+              "supportsClaimIds": [
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+                "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+                "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+                "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Keep rendered report/review views generated from machine-readable packet inputs when adding review-learning or active-run aggregation.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13",
+          "claimFingerprint": "sha256:06d1b465aa6353aa05d1ed45d75e93b14d6d2f6e6cdd0823ef1cd4ed89fe7663",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names durable scenario history and inspectable scenario proposal normalization packets.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Scenario history tests cover deterministic selection and graduation cadence, while proposal normalizer and CLI tests verify inspectable scenario proposal packets across chatbot, workflow, and skill shapes.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-spec-reviewable-eval-surfaces-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:50546f598f2b98fb17b32e4f16cce6810638582fc90617feacf92f8e56b67cb1",
+              "supportsClaimIds": [
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+                "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+                "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+                "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+                "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
+              ]
+            }
+          ],
+          "nextAction": "Keep the documented held-out scenario-history evidence gap visible until an end-to-end held-out cycle artifact is captured.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
