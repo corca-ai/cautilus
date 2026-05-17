@@ -37,6 +37,10 @@
         "runtimes": { "type": "array", "items": { "type": "string" } },
         "providers": { "type": "array", "items": { "type": "string" } },
         "models": { "type": "array", "items": { "type": "string" } },
+        "requestKinds": { "type": "array", "items": { "type": "string" } },
+        "sourceFlows": { "type": "array", "items": { "type": "string" } },
+        "cachePolicies": { "type": "array", "items": { "type": "string" } },
+        "staticContextIds": { "type": "array", "items": { "type": "string" } },
         "statusCounts": { "type": "object" },
         "p50_duration_ms": { "type": "number", "minimum": 0 },
         "p90_duration_ms": { "type": "number", "minimum": 0 },
@@ -59,7 +63,11 @@
         "p50_total_tokens": { "type": "number", "minimum": 0 },
         "p90_total_tokens": { "type": "number", "minimum": 0 },
         "p50_cost_usd": { "type": "number", "minimum": 0 },
-        "p90_cost_usd": { "type": "number", "minimum": 0 }
+        "p90_cost_usd": { "type": "number", "minimum": 0 },
+        "p50_retry_count": { "type": "number", "minimum": 0 },
+        "p90_retry_count": { "type": "number", "minimum": 0 },
+        "p50_tool_call_count": { "type": "number", "minimum": 0 },
+        "p90_tool_call_count": { "type": "number", "minimum": 0 }
       }
     },
     "rows": {
@@ -118,6 +126,18 @@
           "model": {
             "type": "string"
           },
+          "request_kind": {
+            "type": "string"
+          },
+          "source_flow": {
+            "type": "string"
+          },
+          "cache_policy": {
+            "type": "string"
+          },
+          "static_context_id": {
+            "type": "string"
+          },
           "duration_ms": {
             "type": "number",
             "minimum": 0
@@ -161,6 +181,14 @@
           "cost_usd": {
             "type": "number",
             "minimum": 0
+          },
+          "retry_count": {
+            "type": "number",
+            "minimum": 0
+          },
+          "tool_call_count": {
+            "type": "number",
+            "minimum": 0
           }
         },
         "additionalProperties": false
@@ -187,6 +215,10 @@
           "runtime": { "type": "string" },
           "provider": { "type": "string" },
           "model": { "type": "string" },
+          "requestKinds": { "type": "array", "items": { "type": "string" } },
+          "sourceFlows": { "type": "array", "items": { "type": "string" } },
+          "cachePolicies": { "type": "array", "items": { "type": "string" } },
+          "staticContextIds": { "type": "array", "items": { "type": "string" } },
           "rowCount": { "type": "integer", "minimum": 0 },
           "scenarioCount": { "type": "integer", "minimum": 0 },
           "totalSamples": { "type": "integer", "minimum": 0 },
@@ -215,7 +247,11 @@
           "p50_total_tokens": { "type": "number", "minimum": 0 },
           "p90_total_tokens": { "type": "number", "minimum": 0 },
           "p50_cost_usd": { "type": "number", "minimum": 0 },
-          "p90_cost_usd": { "type": "number", "minimum": 0 }
+          "p90_cost_usd": { "type": "number", "minimum": 0 },
+          "p50_retry_count": { "type": "number", "minimum": 0 },
+          "p90_retry_count": { "type": "number", "minimum": 0 },
+          "p50_tool_call_count": { "type": "number", "minimum": 0 },
+          "p90_tool_call_count": { "type": "number", "minimum": 0 }
         },
         "additionalProperties": false
       }

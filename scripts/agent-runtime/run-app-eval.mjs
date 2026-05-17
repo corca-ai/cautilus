@@ -3,6 +3,11 @@ import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import process from "node:process";
 
+import {
+	extractClaudeTelemetry,
+	extractCodexTelemetry,
+} from "./skill-test-telemetry.mjs";
+
 const CHAT_CASES_SCHEMA = "cautilus.app_chat_test_cases.v1";
 const CHAT_OBSERVED_SCHEMA = "cautilus.app_chat_evaluation_inputs.v1";
 const PROMPT_CASES_SCHEMA = "cautilus.app_prompt_test_cases.v1";
@@ -165,6 +170,8 @@ function baseEvaluation(testCase, cases, runtime) {
 		harness: runtime.harness,
 		mode: "messaging",
 		durationMs: runtime.durationMs,
+		...(runtime.telemetry ? { telemetry: runtime.telemetry } : {}),
+		...(runtime.telemetry?.cost_usd !== undefined ? { costUsd: runtime.telemetry.cost_usd } : {}),
 		expected: testCase.expected,
 	};
 }
@@ -361,9 +368,13 @@ function runCodexCase(options, cases, testCase, index) {
 		throw new Error(`codex exec failed for ${caseID} with exit ${completed.status}: ${completed.stderr || completed.stdout}`);
 	}
 	const result = readJson(resultFile);
+	const telemetry = extractCodexTelemetry(completed.stdout, options);
 	return {
 		finalText: assertString(result.finalText, `codex result for ${caseID}.finalText`),
-		runtime: codexRuntime(options, durationMs),
+		runtime: {
+			...codexRuntime(options, durationMs),
+			...(telemetry ? { telemetry } : {}),
+		},
 	};
 }
 
@@ -400,9 +411,13 @@ function runClaudeCase(options, cases, testCase, index) {
 	}
 	const result = parseClaudeOutput(completed.stdout ?? "");
 	writeFileSync(resultFile, `${JSON.stringify(result, null, 2)}\n`, "utf-8");
+	const telemetry = extractClaudeTelemetry(completed.stdout ?? "", options);
 	return {
 		finalText: assertString(result.finalText, `claude result for ${caseID}.finalText`),
-		runtime: claudeRuntime(options, durationMs),
+		runtime: {
+			...claudeRuntime(options, durationMs),
+			...(telemetry ? { telemetry } : {}),
+		},
 	};
 }
 

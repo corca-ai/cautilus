@@ -67,6 +67,18 @@
           "model": {
             "type": "string"
           },
+          "request_kind": {
+            "type": "string"
+          },
+          "source_flow": {
+            "type": "string"
+          },
+          "cache_policy": {
+            "type": "string"
+          },
+          "static_context_id": {
+            "type": "string"
+          },
           "duration_ms": {
             "type": "number",
             "minimum": 0
@@ -108,6 +120,14 @@
             "minimum": 0
           },
           "cost_usd": {
+            "type": "number",
+            "minimum": 0
+          },
+          "retry_count": {
+            "type": "number",
+            "minimum": 0
+          },
+          "tool_call_count": {
             "type": "number",
             "minimum": 0
           }

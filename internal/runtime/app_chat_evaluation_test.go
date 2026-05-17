@@ -136,6 +136,41 @@ func TestBuildAppChatEvaluationSummaryCarriesCostUsdWhenPresent(t *testing.T) {
 	}
 }
 
+func TestBuildAppChatEvaluationSummaryCarriesTelemetryWhenPresent(t *testing.T) {
+	now := time.Date(2026, time.April, 25, 10, 0, 0, 0, time.UTC)
+	suite := validAppChatObservedSuite()
+	suite["evaluations"].([]any)[0].(map[string]any)["telemetry"] = map[string]any{
+		"provider":                    "anthropic",
+		"model":                       "claude-sonnet-4-6",
+		"request_kind":                "app_chat",
+		"source_flow":                 "release_smoke",
+		"cache_policy":                "cacheable_system_prompt",
+		"static_context_id":           "cautilus-agent-v1",
+		"uncached_input_tokens":       float64(10),
+		"cache_creation_input_tokens": float64(20),
+		"cache_read_input_tokens":     float64(30),
+		"total_tokens":                float64(100),
+		"cost_usd":                    0.05,
+		"retry_count":                 float64(1),
+		"tool_call_count":             float64(2),
+	}
+	summary, err := BuildAppChatEvaluationSummary(suite, now)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	first := summary["evaluations"].([]any)[0].(map[string]any)
+	telemetry := first["telemetry"].(map[string]any)
+	if telemetry["request_kind"] != "app_chat" || telemetry["source_flow"] != "release_smoke" {
+		t.Fatalf("expected attribution telemetry to be carried, got %#v", telemetry)
+	}
+	if telemetry["cache_creation_input_tokens"] != float64(20) || telemetry["cache_read_input_tokens"] != float64(30) {
+		t.Fatalf("expected cache-token telemetry to be carried, got %#v", telemetry)
+	}
+	if telemetry["retry_count"] != float64(1) || telemetry["tool_call_count"] != float64(2) {
+		t.Fatalf("expected budget-attribution counts to be carried, got %#v", telemetry)
+	}
+}
+
 func TestBuildAppChatEvaluationSummaryRejectsWrongSchemaVersion(t *testing.T) {
 	now := time.Date(2026, time.April, 25, 10, 0, 0, 0, time.UTC)
 	suite := validAppChatObservedSuite()

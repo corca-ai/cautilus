@@ -26,17 +26,17 @@ The strongest current coverage is `dev/skill` runtime telemetry.
 Claude skill tests read `usage.input_tokens`, `usage.cache_creation_input_tokens`, `usage.cache_read_input_tokens`, `usage.output_tokens`, and `total_cost_usd` from the Claude JSON envelope.
 Codex skill tests read machine-readable token events and derive OpenAI Codex cost for supported models through a checked-in pricing catalog.
 
-The main cost-blind spot is cache attribution.
-Claude cache creation and cache read tokens are collapsed into `prompt_tokens`.
-That is useful for total-token visibility, but it hides whether a cache feature is saving money, only shifting cost into cache creation, or becoming counterproductive because invalidation prevents reuse.
+The original main cost-blind spot was cache attribution.
+Claude cache creation and cache read tokens used to be collapsed into `prompt_tokens`.
+The follow-up implementation now preserves cache creation, cache read, cached input, and uncached input fields when runtimes emit them explicitly.
 
-The second blind spot is live app evaluation telemetry.
+The original second blind spot was live app evaluation telemetry.
 `scripts/agent-runtime/run-app-eval.mjs` records provider, model, harness, and duration for live Codex and Claude app/prompt or app/chat cases, but it does not preserve token or cost telemetry from those runs.
-That means app behavior evaluations can be included in behavior proof while remaining unavailable for the deployment-evidence cost table unless a caller supplies scenario telemetry separately.
+The follow-up implementation now reuses the same explicit Claude and Codex telemetry extraction helpers used by skill tests, then writes telemetry into app observed packets.
 
-The third blind spot is attribution depth.
+The original third blind spot was attribution depth.
 Current normalized telemetry can explain provider, model, prompt tokens, completion tokens, total tokens, cost, duration, runtime identity, and pricing provenance.
-It cannot attribute spikes to request type, retry count, tool loop count, cache creation versus cache read, or static-context segment reuse.
+The follow-up implementation now adds optional explicit fields for request kind, source flow, cache policy, static context id, retry count, and tool-call count.
 
 ## Unsafe Optimization Risk
 
@@ -53,14 +53,14 @@ For Anthropic-style cache behavior, aggregate totals are insufficient because ca
 
 2. Add token and cost telemetry extraction to live app evaluation backends.
    `run-app-eval.mjs` should reuse the same explicit Claude and Codex telemetry helpers used by skill tests, then write telemetry into app observed packets or scenario-result conversion paths.
-   Follow-up: https://github.com/corca-ai/cautilus/issues/42
+   Follow-up: https://github.com/corca-ai/cautilus/issues/43
 
 3. Add attribution fields for budget diagnosis.
    A small contract extension should let host wrappers report request kind, retry count, tool-call count, cache policy, and static-context or segment IDs when they are available.
    Cautilus should aggregate those fields only when explicit, and should not infer them from human-oriented logs.
-   Follow-up: https://github.com/corca-ai/cautilus/issues/43
+   Follow-up: https://github.com/corca-ai/cautilus/issues/42
 
 ## Closeout State
 
-The issue can now move to maintainer triage.
-Follow-up implementation issues were filed for the confirmed improvements.
+The reviewed follow-up implementation issues are now resolved in this repo.
+The remaining cost work is provider-policy design, not packet preservation: retry/fallback strategy, timeout/idempotency policy, and cache break-even guidance still need separate product decisions before implementation.

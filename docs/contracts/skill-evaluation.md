@@ -50,6 +50,10 @@ The first slice consumes one normalized packet with:
     - optional `session_mode`
       - `ephemeral`
       - `persistent`
+    - optional `request_kind`
+    - optional `source_flow`
+    - optional `cache_policy`
+    - optional `static_context_id`
     - optional `uncached_input_tokens`
     - optional `cache_creation_input_tokens`
     - optional `cache_read_input_tokens`
@@ -60,6 +64,8 @@ The first slice consumes one normalized packet with:
     - optional `completion_tokens`
     - optional `total_tokens`
     - optional `cost_usd`
+    - optional `retry_count`
+    - optional `tool_call_count`
     - optional `cost_truth`
     - optional `pricing_source`
     - optional `pricing_version`
@@ -122,6 +128,7 @@ The first summary packet should include:
 - preserved per-evaluation runtime telemetry when the host runner exposes it explicitly
 - preserved cache-token breakdown when a runtime exposes cache creation, cache read, cached input, or uncached input token counts explicitly
 - `cache_creation_input_tokens` and `cache_read_input_tokens` preserve split cache-write and cache-read telemetry, while `cached_input_tokens` preserves provider-specific aggregate cached-input telemetry
+- preserved budget-attribution fields such as request kind, source flow, cache policy, static context id, retry count, and tool-call count when a host wrapper emits them explicitly
 - preserved cost-truth provenance when cost is derived from a versioned
   pricing catalog instead of emitted directly by the runtime
 - derived product-owned `intentProfile`

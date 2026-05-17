@@ -1,8 +1,8 @@
 {
-  "candidateCount": 359,
+  "candidateCount": 362,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 0,
+    "evidenceSupportIdRewriteCount": 5,
     "matchedClaimCount": 359,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
@@ -590,8 +590,38 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:fee6e2c9ba896bb38525850e1fe855de7d93cf287bc9948a54652f685ee3dce2",
+      "claimId": "claim-readme-md-103",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/skill",
+        "readme"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create or use a dev/skill fixture that proves the skill or agent follows the named workflow step.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
+          "line": 103,
+          "path": "README.md"
+        }
+      ],
+      "summary": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
-      "claimId": "claim-readme-md-109",
+      "claimId": "claim-readme-md-117",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -609,7 +639,7 @@
       "sourceRefs": [
         {
           "excerpt": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.",
-          "line": 109,
+          "line": 117,
           "path": "README.md"
         }
       ],
@@ -621,7 +651,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
-      "claimId": "claim-readme-md-122",
+      "claimId": "claim-readme-md-130",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -640,7 +670,7 @@
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
-          "line": 122,
+          "line": 130,
           "path": "README.md"
         }
       ],
@@ -652,7 +682,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:26fb3d242b29d1859c5171dda55376329d47dc400c8136fb67df8562a6160c5a",
-      "claimId": "claim-readme-md-143",
+      "claimId": "claim-readme-md-151",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -669,7 +699,7 @@
       "sourceRefs": [
         {
           "excerpt": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
-          "line": 143,
+          "line": 151,
           "path": "README.md"
         }
       ],
@@ -681,7 +711,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9b65cef61eb4ef1f46e9e2d36eee961958d83aea45370a49787a9c5e27c1c18c",
-      "claimId": "claim-readme-md-149",
+      "claimId": "claim-readme-md-157",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -697,7 +727,7 @@
       "sourceRefs": [
         {
           "excerpt": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.",
-          "line": 149,
+          "line": 157,
           "path": "README.md"
         }
       ],
@@ -709,7 +739,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
-      "claimId": "claim-readme-md-152",
+      "claimId": "claim-readme-md-160",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -725,7 +755,7 @@
       "sourceRefs": [
         {
           "excerpt": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
-          "line": 152,
+          "line": 160,
           "path": "README.md"
         }
       ],
@@ -2808,6 +2838,37 @@
       "summary": "Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:93044e363d889e9667dd0e2143423bec00ecf458b932674767c0b53414300fdb",
+      "claimId": "claim-docs-guides-improve-md-19",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "app/prompt",
+        "audience:user",
+        "cautilus-eval",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "They can focus reflection when they are carried as explicit report evidence, review findings, or provenance, but they do not make improve search own fuzzing, behavior-mutant execution, or automatic prompt patching.",
+          "line": 19,
+          "path": "docs/guides/improve.md"
+        }
+      ],
+      "summary": "They can focus reflection when they are carried as explicit report evidence, review findings, or provenance, but they do not make improve search own fuzzing, behavior-mutant execution, or automatic prompt patching.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -6357,7 +6418,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:84e20fceee7b13f03574081e031d1ebd73a26ab909f01a9ef7f75d864fe70b82",
-      "claimId": "claim-docs-contracts-reporting-md-114",
+      "claimId": "claim-docs-contracts-reporting-md-120",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -6366,7 +6427,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-reporting-md-114"
+            "claim-docs-contracts-reporting-md-120"
           ]
         }
       ],
@@ -6385,7 +6446,7 @@
       "sourceRefs": [
         {
           "excerpt": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload.",
-          "line": 114,
+          "line": 120,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6397,7 +6458,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:61f5bb9761b01d3606155273d9a26ede87cf888cf4badbcd861acb9b1f8d864e",
-      "claimId": "claim-docs-contracts-reporting-md-116",
+      "claimId": "claim-docs-contracts-reporting-md-122",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -6414,7 +6475,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cache-token breakdown follows the same rule: preserve it when a runtime or wrapper emits explicit machine-readable fields, and do not infer cache behavior from prose.",
-          "line": 116,
+          "line": 122,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6425,8 +6486,37 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:341763202501de491198b634cdfe674ab85eb3054eab580c2b026471c85cb87d",
+      "claimId": "claim-docs-contracts-reporting-md-126",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/guides/evaluation-process.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`request_kind`, `source_flow`, `cache_policy`, `static_context_id`, `retry_count`, and `tool_call_count` are optional wrapper-owned fields for explaining why a run was expensive; they must not be inferred from human-oriented logs.",
+          "line": 126,
+          "path": "docs/contracts/reporting.md"
+        }
+      ],
+      "summary": "`request_kind`, `source_flow`, `cache_policy`, `static_context_id`, `retry_count`, and `tool_call_count` are optional wrapper-owned fields for explaining why a run was expensive; they must not be inferred from human-oriented logs.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6a5975f5be8ff5f08f378525aa1963dc684e6d1d50395f4326e2788cdb47521f",
-      "claimId": "claim-docs-contracts-reporting-md-120",
+      "claimId": "claim-docs-contracts-reporting-md-128",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
@@ -6436,7 +6526,7 @@
           "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-196",
-            "claim-docs-contracts-reporting-md-120",
+            "claim-docs-contracts-reporting-md-128",
             "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
           ]
         }
@@ -6458,7 +6548,7 @@
       "sourceRefs": [
         {
           "excerpt": "Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.",
-          "line": 120,
+          "line": 128,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6470,7 +6560,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c40280e0f0251c4fe6717805add31109eb82cf41e62faba97ebfb5d41cec0fde",
-      "claimId": "claim-docs-contracts-reporting-md-121",
+      "claimId": "claim-docs-contracts-reporting-md-129",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -6489,7 +6579,7 @@
       "sourceRefs": [
         {
           "excerpt": "Runtime drift codes should be recorded as runtime context rather than primary behavior-outcome reason codes unless a pinned-runtime policy blocks the run.",
-          "line": 121,
+          "line": 129,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6501,7 +6591,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3d9b56890a284b8382d97381cd68e2da53890933235ecf3a0508c44af42cd3a8",
-      "claimId": "claim-docs-contracts-reporting-md-129",
+      "claimId": "claim-docs-contracts-reporting-md-137",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -6510,7 +6600,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-final-deterministic-proof-debt-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-reporting-md-129"
+            "claim-docs-contracts-reporting-md-137"
           ]
         }
       ],
@@ -6529,7 +6619,7 @@
       "sourceRefs": [
         {
           "excerpt": "`blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure",
-          "line": 129,
+          "line": 137,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6541,7 +6631,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
-      "claimId": "claim-docs-contracts-reporting-md-133",
+      "claimId": "claim-docs-contracts-reporting-md-141",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -6550,7 +6640,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-review-summary-telemetry-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-reporting-md-133"
+            "claim-docs-contracts-reporting-md-141"
           ]
         }
       ],
@@ -6569,7 +6659,7 @@
       "sourceRefs": [
         {
           "excerpt": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately.",
-          "line": 133,
+          "line": 141,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6581,7 +6671,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f837e4e0934106ad104956fd9d7e47ae5f9fa801b51a2ef9d30f008ea7e2158f",
-      "claimId": "claim-docs-contracts-reporting-md-138",
+      "claimId": "claim-docs-contracts-reporting-md-146",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -6590,7 +6680,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-reporting-md-138"
+            "claim-docs-contracts-reporting-md-146"
           ]
         }
       ],
@@ -6609,7 +6699,7 @@
       "sourceRefs": [
         {
           "excerpt": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet.",
-          "line": 138,
+          "line": 146,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -6621,7 +6711,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4c026c323498f2e3bdb8f8e9ae07bd3be82d64e0f8167b9899e5e0fc717f5db3",
-      "claimId": "claim-docs-contracts-reporting-md-159",
+      "claimId": "claim-docs-contracts-reporting-md-167",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -6638,7 +6728,7 @@
       "sourceRefs": [
         {
           "excerpt": "Human-review failures must be reported even when the benchmark score improves.",
-          "line": 159,
+          "line": 167,
           "path": "docs/contracts/reporting.md"
         }
       ],
@@ -7948,7 +8038,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:011098fa8f0fb74f38fea92d734fd20899794fa138b4bd51484b07c3dd9a2f5b",
-      "claimId": "claim-docs-contracts-scenario-history-md-181",
+      "claimId": "claim-docs-contracts-scenario-history-md-188",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7967,7 +8057,7 @@
       "sourceRefs": [
         {
           "excerpt": "Compare runs often need a frozen baseline side so only the candidate reruns.",
-          "line": 181,
+          "line": 188,
           "path": "docs/contracts/scenario-history.md"
         }
       ],
@@ -7979,7 +8069,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:343a5d623c6429fb07ad8c6010324ec777d2c214046990a27723be95b35285e3",
-      "claimId": "claim-docs-contracts-scenario-history-md-295",
+      "claimId": "claim-docs-contracts-scenario-history-md-302",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7998,7 +8088,7 @@
       "sourceRefs": [
         {
           "excerpt": "Scenario-history is archetype-neutral and stays that way unless a skill-specific graduation policy is introduced.",
-          "line": 295,
+          "line": 302,
           "path": "docs/contracts/scenario-history.md"
         }
       ],
@@ -11677,17 +11767,17 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 259,
-      "user": 100
+      "developer": 260,
+      "user": 102
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 58,
-      "Agent and skill workflow": 78,
+      "Agent and skill workflow": 79,
       "Claim discovery and review": 42,
-      "Documentation and contracts": 84,
+      "Documentation and contracts": 85,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 29,
+      "Improvement and improvement": 30,
       "Packets and reporting": 46,
       "Quality gates": 18,
       "Release and packaging": 2
@@ -11695,26 +11785,26 @@
     "byEvidenceStatus": {
       "satisfied": 42,
       "stale": 27,
-      "unknown": 290
+      "unknown": 293
     },
     "byLifecycle": {
-      "new": 359
+      "new": 362
     },
     "byRecommendedProof": {
-      "cautilus-eval": 138,
+      "cautilus-eval": 140,
       "deterministic": 119,
-      "human-auditable": 102
+      "human-auditable": 103
     },
     "byReviewStatus": {
       "agent-reviewed": 115,
-      "heuristic": 243,
+      "heuristic": 246,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 17,
       "needs-alignment": 45,
       "needs-scenario": 13,
-      "ready-for-proof": 284
+      "ready-for-proof": 287
     }
   },
   "discoveryEngine": {
@@ -11897,7 +11987,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "8a5803360814878dcff14f2ac8a5b1570c66d0b3",
+  "gitCommit": "31d4879c7ccb43b1442415f67806f277ca3652d9",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -13314,7 +13404,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:38850e7df41159af041d367c0932ef7a17ed8893adaac052b3676b732cab9acb",
+      "contentHash": "sha256:a3b3326a742ef014a99221da31e83962b621c35e3b60d3589519476066379cc8",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -13373,7 +13463,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:4b91e798c78c00369507ce7361690e6a632ca11cc3fa4c80b20e4f22aecda3ef",
+      "contentHash": "sha256:65735b4d9636aa30a679dff9d33fa9fa69315cf710859bae90ca38c16b5919f7",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -13493,7 +13583,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:7df94cef99c2458cdc40d82b4faa98d2bda827d3b0e1564eb6cdb13954be77ad",
+      "contentHash": "sha256:408c1cdaa8fc720007f72c2b88bbf8bee91fb6fb452ae041521c16d40a2a5a16",
       "depth": 2,
       "discoveredFrom": "docs/guides/evaluation-process.md",
       "kind": "contract",
@@ -13523,7 +13613,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:23bd18a51381944360167ff19323d56c65b797071fdfb19bd54221a6a0e3e28c",
+      "contentHash": "sha256:82802024e1ac79f1527323f4f4f3e300810219607b884ffd749c7d963fc66be3",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

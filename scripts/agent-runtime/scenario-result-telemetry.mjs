@@ -49,6 +49,13 @@ function uniqueValues(entries, field) {
 	);
 }
 
+function attachUniqueTelemetryValues(summary, entries, field, outputField) {
+	const values = uniqueValues(entries, field);
+	if (values.length > 0) {
+		summary[outputField] = values;
+	}
+}
+
 function buildTelemetryBreakdown(entries, scenarioId = null) {
 	const summary = {
 		runCount: entries.length,
@@ -68,14 +75,12 @@ function buildTelemetryBreakdown(entries, scenarioId = null) {
 			summary[field] = total;
 		}
 	}
-	const providers = uniqueValues(entries, "provider");
-	if (providers.length > 0) {
-		summary.providers = providers;
-	}
-	const models = uniqueValues(entries, "model");
-	if (models.length > 0) {
-		summary.models = models;
-	}
+	attachUniqueTelemetryValues(summary, entries, "provider", "providers");
+	attachUniqueTelemetryValues(summary, entries, "model", "models");
+	attachUniqueTelemetryValues(summary, entries, "request_kind", "requestKinds");
+	attachUniqueTelemetryValues(summary, entries, "source_flow", "sourceFlows");
+	attachUniqueTelemetryValues(summary, entries, "cache_policy", "cachePolicies");
+	attachUniqueTelemetryValues(summary, entries, "static_context_id", "staticContextIds");
 	return summary;
 }
 

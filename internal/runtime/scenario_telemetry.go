@@ -95,6 +95,18 @@ func buildTelemetryBreakdown(entries []map[string]any, scenarioID *string) map[s
 	if models := uniqueTelemetryValues(entries, "model"); len(models) > 0 {
 		summary["models"] = models
 	}
+	if requestKinds := uniqueTelemetryValues(entries, "request_kind"); len(requestKinds) > 0 {
+		summary["requestKinds"] = requestKinds
+	}
+	if sourceFlows := uniqueTelemetryValues(entries, "source_flow"); len(sourceFlows) > 0 {
+		summary["sourceFlows"] = sourceFlows
+	}
+	if cachePolicies := uniqueTelemetryValues(entries, "cache_policy"); len(cachePolicies) > 0 {
+		summary["cachePolicies"] = cachePolicies
+	}
+	if staticContextIDs := uniqueTelemetryValues(entries, "static_context_id"); len(staticContextIDs) > 0 {
+		summary["staticContextIds"] = staticContextIDs
+	}
 	return summary
 }
 

@@ -313,6 +313,16 @@ normalized packet instead of dropping it on the floor.
   supported Codex models now carry `cost_usd`, `cost_truth`,
   `pricing_source`, and `pricing_version` from the checked-in derived-pricing
   seam
+- Live app eval:
+  `run-app-eval.mjs` now reuses the same explicit Claude and Codex telemetry
+  extraction helpers and writes token, cache, cost, and runtime identity
+  telemetry into app/chat and app/prompt observed packets when the runtime emits
+  machine-readable usage data
+- Budget attribution:
+  normalized telemetry may also carry explicit `request_kind`, `source_flow`,
+  `cache_policy`, `static_context_id`, `retry_count`, and `tool_call_count`
+  fields so downstream evidence can explain why a run was expensive without
+  scraping human-oriented logs
 
 That means the product-owned self-dogfood summary can now answer:
 
@@ -320,6 +330,8 @@ That means the product-owned self-dogfood summary can now answer:
 - which runtime model was used
 - Claude time / token / cost per evaluation
 - Codex time / token / derived cost per evaluation
+- which request kind, source flow, cache policy, retry count, or tool-call count
+  a wrapper explicitly reported
 
 It still cannot honestly answer Codex cost questions for models that are not
 covered by the checked-in pricing catalog.

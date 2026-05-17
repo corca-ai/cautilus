@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:8a0ea5ac6fed0abe9845198484afa6bc9b67f8431d1b051d39af4c33743d515f",
+    "claimsHash": "sha256:7023840b2da293665db87b941e6fdf8aa53f7a004fd606526c8d2888585ddaef",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:5f4f1b29173191e9c6da09c3ac2072c831cc988e006be414ca9f91a78e893a56",
+    "statusHash": "sha256:f7865f3ac905544be8adf90329c10229c2e3434afc08aefc79b7897e30b6395a",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,67 +22,58 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "2c05d31dfab80d38178a23975bd366609dcbeace",
+    "currentGitCommit": "31d4879c7ccb43b1442415f67806f277ca3652d9",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "2c05d31dfab80d38178a23975bd366609dcbeace",
+    "packetGitCommit": "31d4879c7ccb43b1442415f67806f277ca3652d9",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
-    "candidateCount": 360,
+    "candidateCount": 362,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 59,
+      "satisfied": 57,
       "stale": 20,
-      "unknown": 281
+      "unknown": 285
     },
     "byRecommendedProof": {
-      "cautilus-eval": 139,
-      "deterministic": 119,
-      "human-auditable": 102
+      "cautilus-eval": 124,
+      "deterministic": 140,
+      "human-auditable": 98
     },
     "byVerificationReadiness": {
-      "blocked": 17,
-      "needs-alignment": 45,
-      "needs-scenario": 13,
-      "ready-for-proof": 285
+      "blocked": 27,
+      "needs-alignment": 37,
+      "needs-scenario": 8,
+      "ready-for-proof": 290
     },
     "byReviewStatus": {
-      "agent-reviewed": 129,
-      "heuristic": 230,
+      "agent-reviewed": 127,
+      "heuristic": 234,
       "human-reviewed": 1
     }
   },
   "openCautilusEval": {
-    "total": 132,
-    "readyForProof": 119,
-    "needsScenario": 13,
+    "total": 124,
+    "readyForProof": 116,
+    "needsScenario": 8,
     "bySurface": {
-      "(none)": 10,
-      "app/chat": 5,
+      "(none)": 6,
+      "app/chat": 4,
       "app/prompt": 11,
-      "dev/repo": 79,
-      "dev/skill": 27
+      "dev/repo": 74,
+      "dev/skill": 29
     },
     "byReadiness": {
-      "needs scenario": 13,
-      "ready for proof": 119
+      "needs scenario": 8,
+      "ready for proof": 116
     },
     "rawByReadiness": {
-      "needs-scenario": 13,
-      "ready-for-proof": 119
+      "needs-scenario": 8,
+      "ready-for-proof": 116
     },
     "proofReadySamples": [
-      {
-        "claimId": "claim-agents-md-29",
-        "source": "AGENTS.md:29",
-        "surface": "dev/repo",
-        "readiness": "ready for proof",
-        "rawReadiness": "ready-for-proof",
-        "review": "agent-reviewed",
-        "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts."
-      },
       {
         "claimId": "claim-agents-md-101",
         "source": "AGENTS.md:101",
@@ -102,8 +93,17 @@
         "summary": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen."
       },
       {
-        "claimId": "claim-readme-md-109",
-        "source": "README.md:109",
+        "claimId": "claim-readme-md-103",
+        "source": "README.md:103",
+        "surface": "dev/skill",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-for-proof",
+        "review": "heuristic",
+        "summary": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen."
+      },
+      {
+        "claimId": "claim-readme-md-117",
+        "source": "README.md:117",
         "surface": "dev/skill",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -149,22 +149,13 @@
     ],
     "scenarioSamples": [
       {
-        "claimId": "claim-readme-md-122",
-        "source": "README.md:122",
+        "claimId": "claim-readme-md-130",
+        "source": "README.md:130",
         "surface": "app/chat",
         "readiness": "needs scenario",
         "rawReadiness": "needs-scenario",
         "review": "heuristic",
         "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest."
-      },
-      {
-        "claimId": "claim-docs-master-plan-md-90",
-        "source": "docs/master-plan.md:90",
-        "surface": "surface undecided",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "agent-reviewed",
-        "summary": "Their public command namespace is `eval live`; the `workbench` name is reserved for a possible future GUI where operators can browse and edit claims, scenarios, and evidence."
       },
       {
         "claimId": "claim-docs-specs-user-evaluation-spec-md-4",
@@ -185,17 +176,8 @@
         "summary": "A user can evaluate behavior without Cautilus taking over host-owned execution."
       },
       {
-        "claimId": "claim-docs-contracts-scenario-history-md-3",
-        "source": "docs/contracts/scenario-history.md:3",
-        "surface": "surface undecided",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "agent-reviewed",
-        "summary": "`Cautilus` needs a repo-agnostic way to decide which scenarios run during iterate, held-out, and full-gate evaluation, and how repeated train runs change scenario cadence over time."
-      },
-      {
-        "claimId": "claim-docs-contracts-scenario-history-md-181",
-        "source": "docs/contracts/scenario-history.md:181",
+        "claimId": "claim-docs-contracts-scenario-history-md-188",
+        "source": "docs/contracts/scenario-history.md:188",
         "surface": "surface undecided",
         "readiness": "needs scenario",
         "rawReadiness": "needs-scenario",
@@ -203,116 +185,134 @@
         "summary": "Compare runs often need a frozen baseline side so only the candidate reruns."
       },
       {
-        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-87",
-        "source": "docs/contracts/workbench-instance-discovery.md:87",
+        "claimId": "claim-docs-specs-user-improvement-spec-md-23",
+        "source": "docs/specs/user/improvement.spec.md:23",
         "surface": "surface undecided",
         "readiness": "needs scenario",
         "rawReadiness": "needs-scenario",
-        "review": "agent-reviewed",
-        "summary": "future GUI workbench behavior for browsing and editing claims, scenarios, evidence, and related review state That future workbench should be specified as an interactive product surface, not as the current live app runner seam."
+        "review": "heuristic",
+        "summary": "A user can improve behavior while preserving protected checks, held-out evidence, and explicit budget."
       },
       {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-6",
-        "source": "docs/specs/user/claim-discovery.spec.md:6",
+        "claimId": "claim-docs-specs-user-improvement-spec-md-41",
+        "source": "docs/specs/user/improvement.spec.md:41",
         "surface": "app/chat",
         "readiness": "needs scenario",
         "rawReadiness": "needs-scenario",
-        "review": "agent-reviewed",
-        "summary": "Using the `cautilus discover claims` CLI command and the `cautilus-agent` skill, a user can turn scattered repo promises into a source-referenced worklist: what Cautilus found, what looks noisy, what may be missing, and what evidence each candidate needs next."
+        "review": "heuristic",
+        "summary": "Improvement produces a proposal and revision artifact that preserve source files, stop conditions, prioritized evidence, and follow-up checks."
+      },
+      {
+        "claimId": "claim-docs-specs-ledger-improvement-spec-md-5",
+        "source": "docs/specs/ledger/improvement.spec.md:5",
+        "surface": "surface undecided",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
+        "review": "heuristic",
+        "summary": "Bounded Improvement improves a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts."
+      },
+      {
+        "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-16",
+        "source": "docs/specs/ledger/promise-ledger.spec.md:16",
+        "surface": "surface undecided",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
+        "review": "heuristic",
+        "summary": "[Bounded Improvement](improvement.spec.md): Cautilus improves a selected behavior target under explicit budget, protected checks, and held-out evidence."
       }
     ]
   },
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 59,
+      "count": 57,
       "actor": "none",
       "evidence": {
-        "satisfied": 59
+        "satisfied": 57
       },
       "review": {
-        "agent-reviewed": 59
+        "agent-reviewed": 57
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 76,
+      "count": 82,
       "actor": "agent",
       "evidence": {
         "stale": 13,
-        "unknown": 63
+        "unknown": 69
       },
       "review": {
-        "agent-reviewed": 18,
-        "heuristic": 58
+        "agent-reviewed": 22,
+        "heuristic": 60
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 119,
+      "count": 116,
       "actor": "agent",
       "evidence": {
         "stale": 5,
-        "unknown": 114
+        "unknown": 111
       },
       "review": {
-        "agent-reviewed": 12,
-        "heuristic": 106,
+        "agent-reviewed": 8,
+        "heuristic": 107,
         "human-reviewed": 1
       },
       "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
     },
     {
       "id": "agent-design-scenario",
-      "count": 13,
+      "count": 8,
       "actor": "agent",
       "evidence": {
-        "unknown": 13
+        "unknown": 8
       },
       "review": {
-        "agent-reviewed": 6,
+        "agent-reviewed": 1,
         "heuristic": 7
       },
       "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
     },
     {
       "id": "human-align-surfaces",
-      "count": 40,
+      "count": 37,
       "actor": "human",
       "evidence": {
-        "unknown": 40
+        "unknown": 37
       },
       "review": {
-        "agent-reviewed": 22,
+        "agent-reviewed": 19,
         "heuristic": 18
       },
       "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
     },
     {
       "id": "human-confirm-or-decompose",
-      "count": 36,
+      "count": 35,
       "actor": "human",
       "evidence": {
         "stale": 2,
-        "unknown": 34
+        "unknown": 33
       },
       "review": {
-        "agent-reviewed": 4,
-        "heuristic": 32
+        "agent-reviewed": 2,
+        "heuristic": 33
       },
       "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
     },
     {
       "id": "split-or-defer",
-      "count": 17,
+      "count": 27,
       "actor": "human",
       "evidence": {
-        "unknown": 17
+        "unknown": 27
       },
       "review": {
-        "agent-reviewed": 8,
+        "agent-reviewed": 18,
         "heuristic": 9
       },
       "summary": "Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification."
@@ -321,15 +321,15 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 230,
+      "count": 234,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [
         "claim-readme-md-67",
         "claim-readme-md-92",
-        "claim-readme-md-109",
-        "claim-readme-md-122",
-        "claim-readme-md-143"
+        "claim-readme-md-103",
+        "claim-readme-md-117",
+        "claim-readme-md-130"
       ]
     },
     {

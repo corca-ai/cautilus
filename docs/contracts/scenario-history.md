@@ -163,6 +163,10 @@ Optional scenario-result telemetry fields:
 - `completedAt`
 - `telemetry.provider`
 - `telemetry.model`
+- `telemetry.request_kind`
+- `telemetry.source_flow`
+- `telemetry.cache_policy`
+- `telemetry.static_context_id`
 - `telemetry.uncached_input_tokens`
 - `telemetry.cache_creation_input_tokens`
 - `telemetry.cache_read_input_tokens`
@@ -173,8 +177,11 @@ Optional scenario-result telemetry fields:
 - `telemetry.completion_tokens`
 - `telemetry.total_tokens`
 - `telemetry.cost_usd`
+- `telemetry.retry_count`
+- `telemetry.tool_call_count`
 
 This data should come from explicit scenario-result payloads, not from retroactive log scraping.
+The attribution fields are optional budget-diagnosis hints, not a product analytics backend.
 
 ## Baseline Cache Shape
 

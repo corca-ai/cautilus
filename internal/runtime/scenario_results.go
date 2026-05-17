@@ -26,6 +26,8 @@ var (
 		"completion_tokens",
 		"total_tokens",
 		"cost_usd",
+		"retry_count",
+		"tool_call_count",
 	}
 )
 
@@ -206,7 +208,7 @@ func normalizeScenarioTelemetry(value any, field string) (map[string]any, error)
 		return nil, fmt.Errorf("%s must be an object", field)
 	}
 	telemetry := map[string]any{}
-	for _, key := range []string{"runtime", "provider", "model", "resolved_model", "model_revision", "session_mode", "cost_truth", "pricing_source", "pricing_version", "source"} {
+	for _, key := range []string{"runtime", "provider", "model", "resolved_model", "model_revision", "session_mode", "request_kind", "source_flow", "cache_policy", "static_context_id", "cost_truth", "pricing_source", "pricing_version", "source"} {
 		value, err := normalizeOptionalString(record[key], field+"."+key)
 		if err != nil {
 			return nil, err

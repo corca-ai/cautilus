@@ -96,6 +96,14 @@ Next step: a human decides whether that evidence is enough for the host repo's c
 The same small loop anchors the public spec report in `docs/specs/user/index.spec.md`.
 It is the shortest currently stable external-adoption example of the product claim: `Cautilus` turns behavior evidence into a reviewable decision surface.
 
+## Dogfood Example
+
+`Cautilus` is useful when a repo instruction such as `AGENTS.md` is supposed to steer an agent's first move.
+In `charness`, an instruction-surface fixture proved that the agent first selected the startup bootstrap helper `find-skills`, then selected the durable work skill for the actual task.
+That turned "did the agent read and follow the repo instructions?" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.
+The same dogfood run also exposed a useful limit: routing proof is not backend subagent capability proof.
+Keeping that distinction in the packet prevented the result from over-claiming what had been verified.
+
 ## Scenarios
 
 Cautilus has three connected product layers:

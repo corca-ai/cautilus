@@ -16,11 +16,17 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 			telemetry: {
 				provider: "openai",
 				model: "gpt-5.4",
+				request_kind: "skill_execution",
+				source_flow: "release_smoke",
+				cache_policy: "cacheable_system_prompt",
+				static_context_id: "shared-context",
 				cache_creation_input_tokens: 10,
 				cache_read_input_tokens: 30,
 				cached_input_tokens: 40,
 				total_tokens: 100,
 				cost_usd: 0.01,
+				retry_count: 1,
+				tool_call_count: 2,
 			},
 		},
 		{
@@ -30,11 +36,17 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 			telemetry: {
 				provider: "openai",
 				model: "gpt-5.4",
+				request_kind: "skill_execution",
+				source_flow: "release_smoke",
+				cache_policy: "cacheable_system_prompt",
+				static_context_id: "shared-context",
 				cache_creation_input_tokens: 20,
 				cache_read_input_tokens: 40,
 				cached_input_tokens: 60,
 				total_tokens: 120,
 				cost_usd: 0.012,
+				retry_count: 0,
+				tool_call_count: 3,
 			},
 		},
 		{
@@ -57,6 +69,12 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 	assert.equal(summary.overall.cache_read_input_tokens, 70);
 	assert.equal(summary.overall.cached_input_tokens, 100);
 	assert.equal(summary.overall.cost_usd, 0.042);
+	assert.equal(summary.overall.retry_count, 1);
+	assert.equal(summary.overall.tool_call_count, 5);
+	assert.deepEqual(summary.overall.requestKinds, ["skill_execution"]);
+	assert.deepEqual(summary.overall.sourceFlows, ["release_smoke"]);
+	assert.deepEqual(summary.overall.cachePolicies, ["cacheable_system_prompt"]);
+	assert.deepEqual(summary.overall.staticContextIds, ["shared-context"]);
 	assert.equal(summary.scenarios[0].scenarioId, "alpha");
 	assert.equal(summary.scenarios[0].cost_usd, 0.022);
 	assert.equal(summary.scenarios[0].runCount, 2);

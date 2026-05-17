@@ -350,6 +350,11 @@ func evaluateAppPromptRecord(record map[string]any, index int) (map[string]any, 
 	if value, ok := costUsdFromAny(record["costUsd"]); ok {
 		result["costUsd"] = value
 	}
+	if telemetry, err := normalizeScenarioTelemetry(record["telemetry"], fmt.Sprintf("evaluations[%d].telemetry", index)); err != nil {
+		return nil, err
+	} else if telemetry != nil {
+		result["telemetry"] = telemetry
+	}
 	return result, nil
 }
 

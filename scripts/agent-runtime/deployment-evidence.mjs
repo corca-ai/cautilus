@@ -4,10 +4,27 @@ import {
 	SCENARIO_RESULTS_SCHEMA,
 	SKILL_EVALUATION_SUMMARY_SCHEMA,
 } from "./contract-versions.mjs";
-import { TELEMETRY_NUMERIC_FIELDS } from "./telemetry-fields.mjs";
+import {
+	TELEMETRY_NUMERIC_FIELDS,
+	TELEMETRY_STRING_FIELDS,
+} from "./telemetry-fields.mjs";
 
 const DEPLOYMENT_SURFACES = new Set(["chatbot", "skill", "workflow"]);
 const SOURCE_KINDS = new Set(["skill_evaluation_summary", "scenario_results"]);
+const ROW_STRING_FIELDS = [
+	"provider",
+	"model",
+	"request_kind",
+	"source_flow",
+	"cache_policy",
+	"static_context_id",
+];
+const SUMMARY_STRING_FIELDS = [
+	["request_kind", "requestKinds"],
+	["source_flow", "sourceFlows"],
+	["cache_policy", "cachePolicies"],
+	["static_context_id", "staticContextIds"],
+];
 
 function normalizeNonEmptyString(value, field) {
 	if (typeof value !== "string" || !value.trim()) {
@@ -89,7 +106,7 @@ function normalizeTelemetry(record, field) {
 		throw new Error(`${field} must be an object`);
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model"]) {
+	for (const key of TELEMETRY_STRING_FIELDS) {
 		const value = normalizeOptionalString(record[key], `${field}.${key}`);
 		if (value !== null) {
 			telemetry[key] = value;
@@ -142,15 +159,41 @@ function normalizeSourceKind(value, field) {
 	return sourceKind;
 }
 
-function normalizeEvidenceRow(row, index) {
+function assertEvidenceRow(row, index) {
 	if (!row || typeof row !== "object" || Array.isArray(row)) {
 		throw new Error(`rows[${index}] must be an object`);
 	}
-	const sampleCount = normalizePositiveInteger(row.sampleCount, `rows[${index}].sampleCount`, 1);
+}
+
+function normalizeSuccessCount(row, index, sampleCount) {
 	const successCount = normalizeNonNegativeInteger(row.successCount, `rows[${index}].successCount`, 0);
 	if (successCount > sampleCount) {
 		throw new Error(`rows[${index}].successCount must be less than or equal to sampleCount`);
 	}
+	return successCount;
+}
+
+function attachOptionalStrings(target, row, index, keys) {
+	for (const key of keys) {
+		const value = normalizeOptionalString(row[key], `rows[${index}].${key}`);
+		if (value !== null) {
+			target[key] = value;
+		}
+	}
+}
+
+function attachOptionalNumbers(target, fields) {
+	for (const [key, value] of Object.entries(fields)) {
+		if (value !== null) {
+			target[key] = key === "cost_usd" ? Number(value.toFixed(12)) : Math.round(value);
+		}
+	}
+}
+
+function normalizeEvidenceRow(row, index) {
+	assertEvidenceRow(row, index);
+	const sampleCount = normalizePositiveInteger(row.sampleCount, `rows[${index}].sampleCount`, 1);
+	const successCount = normalizeSuccessCount(row, index, sampleCount);
 	const normalized = {
 		surface: normalizeSurface(row.surface, `rows[${index}].surface`),
 		scenarioId: normalizeNonEmptyString(row.scenarioId, `rows[${index}].scenarioId`),
@@ -160,27 +203,14 @@ function normalizeEvidenceRow(row, index) {
 		sampleCount,
 		successCount,
 	};
-	for (const [key, value] of Object.entries({
-		scenarioLabel: normalizeOptionalString(row.scenarioLabel, `rows[${index}].scenarioLabel`),
-		sourcePath: normalizeOptionalString(row.sourcePath, `rows[${index}].sourcePath`),
-		provider: normalizeOptionalString(row.provider, `rows[${index}].provider`),
-		model: normalizeOptionalString(row.model, `rows[${index}].model`),
-	})) {
-		if (value !== null) {
-			normalized[key] = value;
-		}
-	}
+	attachOptionalStrings(normalized, row, index, ["scenarioLabel", "sourcePath", ...ROW_STRING_FIELDS]);
 	const numericFields = {
 		duration_ms: normalizeNonNegativeNumber(row.duration_ms, `rows[${index}].duration_ms`),
 	};
 	for (const key of TELEMETRY_NUMERIC_FIELDS) {
 		numericFields[key] = normalizeNonNegativeNumber(row[key], `rows[${index}].${key}`);
 	}
-	for (const [key, value] of Object.entries(numericFields)) {
-		if (value !== null) {
-			normalized[key] = key === "cost_usd" ? Number(value.toFixed(12)) : Math.round(value);
-		}
-	}
+	attachOptionalNumbers(normalized, numericFields);
 	normalized.successRate = ratio(successCount, sampleCount);
 	return normalized;
 }
@@ -235,6 +265,10 @@ function buildSkillSummaryRow(evaluation, index, context) {
 		sourcePath: context.sourcePath ?? null,
 		provider: telemetry.provider ?? null,
 		model: telemetry.model ?? null,
+		request_kind: telemetry.request_kind ?? null,
+		source_flow: telemetry.source_flow ?? null,
+		cache_policy: telemetry.cache_policy ?? null,
+		static_context_id: telemetry.static_context_id ?? null,
 		duration_ms: metrics.duration_ms ?? null,
 	}, telemetry, metrics);
 }
@@ -274,6 +308,10 @@ function buildScenarioResultRow(result, index, context, passStatuses) {
 		sourcePath: context.sourcePath ?? null,
 		provider: telemetry.provider ?? null,
 		model: telemetry.model ?? null,
+		request_kind: telemetry.request_kind ?? null,
+		source_flow: telemetry.source_flow ?? null,
+		cache_policy: telemetry.cache_policy ?? null,
+		static_context_id: telemetry.static_context_id ?? null,
 		duration_ms: metrics.duration_ms ?? null,
 	}, telemetry, metrics);
 }
@@ -311,6 +349,25 @@ function metricSummary(rows, key, quantileLabel, quantileValue) {
 	};
 }
 
+function uniqueRowStrings(rows, key) {
+	return Array.from(
+		new Set(
+			rows
+				.map((row) => row[key])
+				.filter((value) => typeof value === "string" && value.trim()),
+		),
+	).sort();
+}
+
+function stringDimensionSummary(rows) {
+	return Object.fromEntries(
+		SUMMARY_STRING_FIELDS.flatMap(([field, outputField]) => {
+			const values = uniqueRowStrings(rows, field);
+			return values.length > 0 ? [[outputField, values]] : [];
+		}),
+	);
+}
+
 function summarizeRows(rows, seed = {}) {
 	const scenarioCount = new Set(rows.map((row) => row.scenarioId)).size;
 	const totalSamples = rows.reduce((sum, row) => sum + row.sampleCount, 0);
@@ -329,6 +386,7 @@ function summarizeRows(rows, seed = {}) {
 		successRate: ratio(successfulSamples, totalSamples),
 		statusCounts,
 		sourceKinds,
+		...stringDimensionSummary(rows),
 		...metricSummary(rows, "duration_ms", "p50", 0.5),
 		...metricSummary(rows, "duration_ms", "p90", 0.9),
 		...Object.fromEntries(TELEMETRY_NUMERIC_FIELDS.flatMap((field) =>

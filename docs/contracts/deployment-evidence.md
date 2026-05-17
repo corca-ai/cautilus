@@ -50,6 +50,10 @@ Each row should describe one already-observed evaluation unit:
 - `successCount`
 - optional `provider`
 - optional `model`
+- optional `request_kind`
+- optional `source_flow`
+- optional `cache_policy`
+- optional `static_context_id`
 - optional `duration_ms`
 - optional `uncached_input_tokens`
 - optional `cache_creation_input_tokens`
@@ -61,6 +65,8 @@ Each row should describe one already-observed evaluation unit:
 - optional `completion_tokens`
 - optional `total_tokens`
 - optional `cost_usd`
+- optional `retry_count`
+- optional `tool_call_count`
 - optional `sourcePath`
 
 `sampleCount` and `successCount` are explicit so the row can represent either:
@@ -109,8 +115,10 @@ The output should include:
     - successful samples
     - success rate
     - status counts
+    - request kind, source flow, cache policy, and static context id buckets when present
     - p50 / p90 duration
     - p50 / p90 cache and token breakdown when present
+    - p50 / p90 retry and tool-call counts when present
     - p50 / p90 tokens
     - p50 / p90 cost
 
@@ -121,6 +129,9 @@ The output should include:
 - Codex `skill test` summaries now preserve provider, model, duration, and
   product-owned token totals from the machine-readable `codex exec --json`
   stream.
+- Live app evaluation summaries now preserve explicit Claude and Codex token
+  and cost telemetry from machine-readable runtime output when that telemetry is
+  present.
 - For supported OpenAI Codex models, `skill test` may also populate
   `cost_usd` from a checked-in derived-pricing catalog.
   When it does, the underlying telemetry keeps `cost_truth=derived_pricing`
@@ -137,6 +148,8 @@ The output should include:
 - Deployment evidence is a derived packet, not a new execution workflow.
 - The product may aggregate only explicit machine-readable telemetry.
 - Cache-token breakdown is a first-class explicit telemetry surface, not an inference from aggregate token totals.
+- Budget attribution is optional and explicit-only.
+  Request kind, source flow, cache policy, static context id, retry count, and tool-call count may be preserved when supplied by a wrapper, but `Cautilus` does not infer them from logs.
 - Success-rate math should be driven by `sampleCount` and `successCount`, not
   by parsing prose summaries.
 - `chatbot`, `skill`, and `workflow` remain first-class top-level surfaces in

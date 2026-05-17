@@ -1,6 +1,10 @@
 export const TELEMETRY_STRING_FIELDS = [
 	"provider",
 	"model",
+	"request_kind",
+	"source_flow",
+	"cache_policy",
+	"static_context_id",
 	"cost_truth",
 	"pricing_source",
 	"pricing_version",
@@ -17,4 +21,6 @@ export const TELEMETRY_NUMERIC_FIELDS = [
 	"completion_tokens",
 	"total_tokens",
 	"cost_usd",
+	"retry_count",
+	"tool_call_count",
 ];

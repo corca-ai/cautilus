@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-16T01:06:57Z",
+  "generated_at": "2026-05-17T01:52:28Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -31,6 +31,8 @@
           "charness:announcement"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
+          "skills/announcement/references/large-window-fanout.md",
           "skills/announcement/references/draft-shape.md",
           "skills/announcement/references/delivery-seams.md",
           "shared/references/closeout-discipline.md",
@@ -86,6 +88,7 @@
           "charness:create-skill"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "shared/references/external-capability-proof-ladder.md",
           "skills/create-skill/SKILL.md",
           "skills/create-skill/references/portable-authoring.md",
@@ -126,6 +129,7 @@
           "skills/critique/references/release-critique.md",
           "skills/critique/references/rename-critique.md",
           "skills/critique/references/spec-critique.md",
+          "shared/references/bootstrap-resolution.md",
           "skills/critique/references/prepare-packet.md",
           "skills/critique/references/angle-selection.md",
           "skills/critique/references/counterweight-triage.md",
@@ -151,7 +155,7 @@
         ],
         "referenced_paths": [
           "skills/issue/references/causal-review.md",
-          "skills/debug/SKILL.md",
+          "shared/references/bootstrap-resolution.md",
           "skills/debug/references/named-target-verification.md",
           "skills/debug/references/five-whys-causal-chain.md",
           "skills/debug/references/detection-gap.md",
@@ -180,6 +184,7 @@
           "charness:find-skills"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "skills/find-skills/adapter.example.yaml",
           "skills/find-skills/references/adapter-contract.md",
           "skills/find-skills/references/discovery-order.md",
@@ -206,7 +211,7 @@
           "charness:gather"
         ],
         "referenced_paths": [
-          "skills/gather/SKILL.md",
+          "shared/references/bootstrap-resolution.md",
           "skills/gather/references/browser-mediated-private-sources.md",
           "skills/gather/references/asset-refresh.md",
           "skills/gather/scripts/write_record.py",
@@ -237,7 +242,7 @@
         ],
         "referenced_paths": [
           "skills/handoff/references/continuation-sequence.md",
-          "skills/handoff/SKILL.md",
+          "shared/references/bootstrap-resolution.md",
           "skills/handoff/references/spill-targets.md",
           "shared/references/closeout-discipline.md",
           "shared/references/fresh-eye-subagent-review.md",
@@ -264,6 +269,7 @@
           "charness:hitl"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "skills/hitl/references/chunk-contract.md",
           "shared/references/agent-assessment-invariant.md",
           "skills/hitl/references/adapter-contract.md",
@@ -297,6 +303,7 @@
           "skills/ideation/references/sequence-discipline.md",
           "skills/ideation/references/effectuation.md",
           "skills/ideation/references/decision-question-response.md",
+          "shared/references/bootstrap-resolution.md",
           "skills/ideation/references/concept-architecture.md",
           "skills/ideation/references/truth-and-edge.md",
           "skills/ideation/references/world-modeling.md",
@@ -327,6 +334,7 @@
           "skills/impl/references/verification-ladder.md",
           "skills/impl/references/design-lenses.md",
           "skills/impl/references/review-gate.md",
+          "shared/references/bootstrap-resolution.md",
           "skills/impl/references/adapter-contract.md",
           "shared/references/source-bound-records.md",
           "skills/impl/SKILL.md",
@@ -356,7 +364,7 @@
         "referenced_paths": [
           "skills/issue/references/issue-backend.md",
           "shared/references/external-capability-proof-ladder.md",
-          "skills/issue/SKILL.md",
+          "shared/references/bootstrap-resolution.md",
           "skills/issue/references/closeout-discipline.md",
           "skills/issue/references/causal-review.md",
           "skills/issue/references/resolution-brief.md",
@@ -387,6 +395,7 @@
           "charness:narrative"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "skills/narrative/references/landing-rewrite-loop.md",
           "skills/narrative/references/cross-repo-issue-shaping.md",
           "skills/narrative/references/scenario-blocks.md",
@@ -415,13 +424,16 @@
           "charness:quality"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "skills/quality/references/bootstrap-escalations.md",
           "skills/quality/references/inventory-dispatch.md",
           "skills/quality/references/skill-ergonomics.md",
           "skills/quality/references/skill-quality.md",
           "shared/references/fresh-eye-subagent-review.md",
           "skills/quality/references/cautilus-on-demand.md",
+          "skills/quality/references/behavior-testing.md",
           "skills/quality/references/inventory-consumer-fields.json",
+          "skills/quality/references/agent-production-runtime.md",
           "shared/references/external-capability-proof-ladder.md",
           "skills/quality/references/maintainer-local-enforcement.md",
           "skills/quality/references/adapter-contract.md",
@@ -440,6 +452,7 @@
           "skills/quality/references/gate-classification.md",
           "skills/quality/references/installable-cli-probes.md",
           "skills/quality/references/lint-ignore-discipline.md",
+          "skills/quality/references/mutation-testing.md",
           "skills/quality/references/operability-signals.md",
           "skills/quality/references/prompt-asset-policy.md",
           "skills/quality/references/proposal-flow.md",
@@ -473,6 +486,7 @@
           "charness:release"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "shared/references/closeout-discipline.md",
           "skills/release/references/adapter-contract.md",
           "skills/release/references/version-policy.md",
@@ -496,6 +510,7 @@
           "charness:retro"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "skills/retro/references/adapter-contract.md",
           "skills/retro/references/mode-guide.md",
           "skills/retro/references/section-guide.md",
@@ -521,7 +536,7 @@
           "charness:setup"
         ],
         "referenced_paths": [
-          "skills/setup/SKILL.md",
+          "shared/references/bootstrap-resolution.md",
           "skills/setup/references/greenfield-flow.md",
           "skills/setup/references/normalization-flow.md",
           "skills/setup/references/agent-docs-policy.md",
@@ -550,6 +565,7 @@
           "charness:spec"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "skills/spec/references/public-executable-contracts.md",
           "skills/spec/references/sequence-discipline.md",
           "skills/spec/references/design-lenses.md",
@@ -689,6 +705,7 @@
           "markdown-preview helper"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "support/markdown-preview/references/runtime-contract.md"
         ],
         "source": "local-support",
@@ -735,9 +752,11 @@
           "web-fetch helper"
         ],
         "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
           "support/web-fetch/references/runtime-contract.md",
           "support/web-fetch/references/routing-table.md",
-          "support/web-fetch/references/provenance.md"
+          "support/web-fetch/references/provenance.md",
+          "support/web-fetch/scripts/acquire_public_url.py"
         ],
         "source": "local-support",
         "layer": "support skill"
@@ -950,7 +969,7 @@
           {
             "layer_id": "web-fetch-authenticated-binaries",
             "layer_type": "authenticated-binary",
-            "summary": "Use authenticated or installed binaries such as `gh` or `yt-dlp` only when the selected route explicitly calls for them."
+            "summary": "Use authenticated or installed binaries such as `gh`, `yt-dlp`, `defuddle`, or `agent-browser` only when the selected route or fallback stage explicitly calls for them."
           },
           {
             "layer_id": "web-fetch-operator-step",
@@ -1005,6 +1024,7 @@
           "headed verification",
           "browser-mediated gather"
         ],
+        "strong_intent_triggers": [],
         "config_layers": [
           {
             "layer_id": "agent-browser-saved-auth-state",
@@ -1056,6 +1076,7 @@
           "프롬프트 회귀",
           "동작 평가"
         ],
+        "strong_intent_triggers": [],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1065,6 +1086,38 @@
         ],
         "recommendation_role": "validation",
         "path": "integrations/tools/cautilus.json",
+        "source": "local-integration",
+        "layer": "external integration"
+      },
+      {
+        "id": "defuddle",
+        "kind": "external_binary",
+        "access_modes": [
+          "binary",
+          "degraded"
+        ],
+        "support_state": "integration-only",
+        "support_skill_path": null,
+        "discovery_stub_path": null,
+        "capability_requirements": {},
+        "intent_triggers": [
+          "defuddle",
+          "reader extraction",
+          "clean web content",
+          "clean URL content",
+          "readable markdown from URL",
+          "strip clutter",
+          "remove boilerplate",
+          "article extraction"
+        ],
+        "strong_intent_triggers": [],
+        "config_layers": [],
+        "readiness_checks": [],
+        "supports_public_skills": [
+          "gather"
+        ],
+        "recommendation_role": "runtime",
+        "path": "integrations/tools/defuddle.json",
         "source": "local-integration",
         "layer": "external integration"
       },
@@ -1089,6 +1142,7 @@
           "gh cli",
           "github private"
         ],
+        "strong_intent_triggers": [],
         "config_layers": [
           {
             "layer_id": "authenticated-gh",
@@ -1129,6 +1183,7 @@
           "gitleaks",
           "git secret scan"
         ],
+        "strong_intent_triggers": [],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1158,6 +1213,7 @@
           "rendered review",
           "narrative render"
         ],
+        "strong_intent_triggers": [],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1200,6 +1256,7 @@
           "gws gather",
           "workspace gather"
         ],
+        "strong_intent_triggers": [],
         "config_layers": [
           {
             "layer_id": "authenticated-gws-cli",
@@ -1244,6 +1301,7 @@
           "python complexity check",
           "python complexity"
         ],
+        "strong_intent_triggers": [],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1283,6 +1341,19 @@
           "specdown -filter",
           "reduce full specdown run cost"
         ],
+        "strong_intent_triggers": [
+          "*.spec.md",
+          ".spec.md",
+          "docs/specs",
+          "run:shell",
+          "check:jq",
+          "specdown",
+          "specdown report",
+          "specdown HTML report",
+          "specdown -filter",
+          "executable spec",
+          "spec syntax"
+        ],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [],
@@ -1311,6 +1382,7 @@
           "sloc inventory",
           "language inventory"
         ],
+        "strong_intent_triggers": [],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [
@@ -1340,6 +1412,7 @@
           "unreachable python",
           "stale module"
         ],
+        "strong_intent_triggers": [],
         "config_layers": [],
         "readiness_checks": [],
         "supports_public_skills": [

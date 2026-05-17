@@ -123,3 +123,34 @@ func TestBuildAppPromptEvaluationSummaryRequiresMessagingMode(t *testing.T) {
 		t.Fatalf("expected messaging mode error, got %v", err)
 	}
 }
+
+func TestBuildAppPromptEvaluationSummaryCarriesTelemetryWhenPresent(t *testing.T) {
+	now := time.Date(2026, time.April, 26, 10, 0, 0, 0, time.UTC)
+	suite := validAppPromptObservedSuite()
+	suite["evaluations"].([]any)[0].(map[string]any)["telemetry"] = map[string]any{
+		"provider":                "openai",
+		"model":                   "gpt-5.4-mini",
+		"request_kind":            "app_prompt",
+		"source_flow":             "prompt_eval",
+		"cache_policy":            "no_cache",
+		"static_context_id":       "tagline-context",
+		"cached_input_tokens":     float64(20),
+		"reasoning_output_tokens": float64(5),
+		"total_tokens":            float64(155),
+		"cost_usd":                0.01,
+		"retry_count":             float64(0),
+		"tool_call_count":         float64(1),
+	}
+	summary, err := BuildAppPromptEvaluationSummary(suite, now)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+	first := summary["evaluations"].([]any)[0].(map[string]any)
+	telemetry := first["telemetry"].(map[string]any)
+	if telemetry["request_kind"] != "app_prompt" || telemetry["source_flow"] != "prompt_eval" {
+		t.Fatalf("expected attribution telemetry to be carried, got %#v", telemetry)
+	}
+	if telemetry["cached_input_tokens"] != float64(20) || telemetry["reasoning_output_tokens"] != float64(5) {
+		t.Fatalf("expected token telemetry to be carried, got %#v", telemetry)
+	}
+}
