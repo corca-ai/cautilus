@@ -7,11 +7,11 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:ba70843c1bc5002eb8792e07908cbcb2ef43f415c94fa1d6c7656d8c6aa56102
+- Claims hash: sha256:bb7202b1f129d1d81d9689286cd29ac9a1e33f64ce7de4c1ad2ee5aaf2269ea9
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:d465f7fd2ffbb497fb07643f411489700cee441779cdb45222cee9c26618a0f9
+- Status hash: sha256:048c929cc69c8163ce538118ef910cf331a42d1ffd2cbf2fde6fee16a2372041
 - Git state: fresh-with-head-drift; stale=no
-- Snapshot inspected commit: 05d26ea410df11351ba31eed5cf9818e7c1b68c9
+- Snapshot inspected commit: c2cb1e79d86e4f9f07dc6239890d57bba471eb4d
 - Packet commit: c944eef5e6e2336b33aa7652eb8d486a560f3773
 - Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
@@ -21,10 +21,10 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 115, stale: 13, unknown: 233 |
-| Recommended proof | cautilus-eval: 124, deterministic: 140, human-auditable: 97 |
-| Proof readiness | blocked: 27, needs alignment: 38, needs scenario: 8, ready for proof: 288 |
-| Review | agent-reviewed: 173, heuristic: 187, human-reviewed: 1 |
+| Evidence | satisfied: 119, stale: 13, unknown: 229 |
+| Recommended proof | cautilus-eval: 124, deterministic: 139, human-auditable: 98 |
+| Proof readiness | blocked: 27, needs alignment: 39, needs scenario: 8, ready for proof: 287 |
+| Review | agent-reviewed: 177, heuristic: 183, human-reviewed: 1 |
 
 ## Cautilus Eval Backlog
 
@@ -77,11 +77,11 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 
 | Bucket | Actor | Count | Evidence | Review | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 115 | satisfied: 115 | agent-reviewed: 115 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 23 | stale: 6, unknown: 17 | agent-reviewed: 9, heuristic: 14 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 119 | satisfied: 119 | agent-reviewed: 119 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 18 | stale: 6, unknown: 12 | agent-reviewed: 8, heuristic: 10 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 116 | stale: 5, unknown: 111 | agent-reviewed: 8, heuristic: 107, human-reviewed: 1 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
 | agent-design-scenario | agent | 8 | unknown: 8 | agent-reviewed: 1, heuristic: 7 | Decompose the behavior into a concrete scenario before protected eval planning. |
-| human-align-surfaces | human | 38 | unknown: 38 | agent-reviewed: 20, heuristic: 18 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
+| human-align-surfaces | human | 39 | unknown: 39 | agent-reviewed: 21, heuristic: 18 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 34 | stale: 2, unknown: 32 | agent-reviewed: 2, heuristic: 32 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 27 | unknown: 27 | agent-reviewed: 18, heuristic: 9 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
@@ -89,7 +89,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 
 | Signal | Actor | Count | Meaning |
 | --- | --- | --- | --- |
-| heuristic-review-needed | agent | 187 | Review heuristic labels before spending proof or eval budget. |
+| heuristic-review-needed | agent | 183 | Review heuristic labels before spending proof or eval budget. |
 | stale-evidence | agent | 13 | Refresh or recheck stale evidence before consuming it as proof. |
 
 ## How This Avoids A Split SOT

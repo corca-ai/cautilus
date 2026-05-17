@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:49:33Z",
+    "evidencePolicy": "Mark evidenceStatus=satisfied only for the claim-discovery and reviewable-artifact claims covered by focused deterministic tests and checked-in packet/view sources. Do not mark vocabulary consistency satisfied while the spec records an open dedicated evidence-bundle gap."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-claim-discovery-reviewable-artifacts-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+          "claimFingerprint": "sha256:738ed0857588be975c5da6bea9e039846cf646d1477a5c687c194555cf3fae43",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The rule-level claim names a packet-first, readable-view workflow contract that is protected by deterministic renderer, projection-matrix, and link checks.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the user claim-discovery/reviewable-artifact evidence bundle: Cautilus-owned readable reports are generated projections over packet/source truth, and the rule-level spec links to the user-facing reviewable-artifacts page and evidence index.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
+              "supportsClaimIds": [
+                "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+                "claim-docs-specs-user-claim-discovery-spec-md-6",
+                "claim-docs-specs-user-claim-discovery-spec-md-160",
+                "claim-docs-specs-user-claim-discovery-spec-md-199"
+              ]
+            }
+          ],
+          "nextAction": "Keep the reviewable artifact projection matrix, renderer tests, and rule-level spec links aligned when adding a new packet-backed readable view.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-6",
+          "claimFingerprint": "sha256:2a8977ffbf9e63bf6e7035970e11a2be32155b92b317783492b41dbae10de45e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the combined CLI and Cautilus Agent claim-discovery worklist path, which is covered by deterministic CLI tests plus agent-flow audit hooks.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused app/runtime claim-discovery tests and Cautilus Agent audit tests: the CLI produces source-referenced candidates and proof routes, while the agent-facing fixtures require false-positive curation, possible false-negative scanning, next-action grouping, and stop-before-review/eval boundaries.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
+              "supportsClaimIds": [
+                "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+                "claim-docs-specs-user-claim-discovery-spec-md-6",
+                "claim-docs-specs-user-claim-discovery-spec-md-160",
+                "claim-docs-specs-user-claim-discovery-spec-md-199"
+              ]
+            }
+          ],
+          "nextAction": "Keep claim-discovery CLI tests and Cautilus Agent flow audits synchronized when changing candidate extraction, source refs, curation prompts, or next-work routing.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-160",
+          "claimFingerprint": "sha256:0c4ab653f7b1e02eaccfa00173062f5ec2afe2a77eca509019e274475abe05c0",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic status-summary behavior over a saved discovery packet.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by app/runtime status-summary tests and the claim status Markdown renderer tests: `discover claims status` reads saved packets and summarizes candidates by next action without rerunning discovery or launching review/eval work.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
+              "supportsClaimIds": [
+                "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+                "claim-docs-specs-user-claim-discovery-spec-md-6",
+                "claim-docs-specs-user-claim-discovery-spec-md-160",
+                "claim-docs-specs-user-claim-discovery-spec-md-199"
+              ]
+            }
+          ],
+          "nextAction": "Keep status-summary packet tests and renderer tests current when changing action buckets or saved-packet status fields.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-199",
+          "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim repeats the saved-packet next-action summary contract in the prepared skill-evaluation section, so the same deterministic status-summary and audit-hook evidence applies.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by claim status summary tests, renderer tests, and agent review-prepare flow audits showing that saved packets provide next-action summaries and that the prepared skill flow stops before review/eval execution.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
+              "supportsClaimIds": [
+                "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+                "claim-docs-specs-user-claim-discovery-spec-md-6",
+                "claim-docs-specs-user-claim-discovery-spec-md-160",
+                "claim-docs-specs-user-claim-discovery-spec-md-199"
+              ]
+            }
+          ],
+          "nextAction": "Keep prepared skill-evaluation wording aligned with the deterministic status-summary command and review-prepare stop boundary.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-rules-vocabulary-consistency-spec-md-3",
+          "claimFingerprint": "sha256:67fd68d9d781f19a59337b4fd9122b69e9a59a7d4737485ba4b2ee0afe6ba906",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "needs-alignment",
+          "whyThisLayer": "The rule-level claim names cross-surface product vocabulary consistency, and the current rule spec explicitly records the missing dedicated evidence bundle as `gap.vocabulary-evidence-bundle`.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Not marked satisfied: docs/specs/rules/vocabulary-consistency.spec.md points to `gap.vocabulary-evidence-bundle`, so the honest next step is to create or approve a dedicated vocabulary evidence bundle before attaching proof.",
+          "evidenceRefs": [],
+          "nextAction": "Resolve `gap.vocabulary-evidence-bundle` by defining the vocabulary probe scope across user prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests, then create `.cautilus/claims/evidence-vocabulary-consistency-current.json` or record an explicit waiver.",
+          "unresolvedQuestions": [
+            "Which vocabulary surface set should be authoritative for the first dedicated consistency bundle?"
+          ]
+        }
+      ]
+    }
+  ]
+}

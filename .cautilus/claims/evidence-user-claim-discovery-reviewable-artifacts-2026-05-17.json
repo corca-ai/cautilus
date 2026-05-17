@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-user-claim-discovery-reviewable-artifacts-2026-05-17",
+  "createdAt": "2026-05-17T09:49:33Z",
+  "repoCommit": "c2cb1e79d86e4f9f07dc6239890d57bba471eb4d",
+  "createdForClaimIds": [
+    "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+    "claim-docs-specs-user-claim-discovery-spec-md-6",
+    "claim-docs-specs-user-claim-discovery-spec-md-160",
+    "claim-docs-specs-user-claim-discovery-spec-md-199"
+  ],
+  "summary": "Deterministic proof that claim discovery leaves source-referenced proof-plan and status-summary packets, that the Cautilus Agent curation fixtures and audits cover the intended next-work review path, and that Cautilus-owned readable views remain projections over machine-readable packets.",
+  "evidenceScope": {
+    "targetSurface": "user-facing claim discovery and reviewable artifact contracts",
+    "claimBoundary": "Only the four listed user/rule claims are marked satisfied.",
+    "notClaimed": [
+      "The dedicated vocabulary-consistency evidence bundle exists.",
+      "Every possible future workflow emits a readable report.",
+      "The prepared Cautilus Agent curation fixture has been executed as a live model-backed evaluation.",
+      "Human-only alignment decisions have been converted into deterministic proof."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestRunClaimDiscoverWritesProofPlanFromTinyRepo|TestRunClaimShowSummarizesExistingProofPlan|TestRunClaimShowReportsStaleGitState|TestRunClaimShowTreatsNonSourceHeadDriftAsFresh|TestRunClaimReviewPrepareInputWritesClusters|TestRunClaimReviewPrepareInputRejectsStaleClaimPacket|TestRunClaimDiscoverExampleOutputMatchesFixture' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "claim discovery writes source-referenced proof-plan packets",
+          "claim status summarizes saved packets without rerunning discovery",
+          "review-prepare packets remain deterministic and reject stale claim packets",
+          "example claim-discovery output stays fixture-backed"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimStatusSummarySummarizesExistingPacket|TestBuildClaimStatusSummaryCanIncludeBoundedSampleClaims|TestBuildClaimStatusSummaryIncludesSatisfiedEvidence|TestBuildClaimReviewInputClustersAndSkipsDeterministically|TestBuildClaimReviewInputCanFocusActionBucket|TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries|TestDiscoverClaimProofPlanFollowsMarkdownLinksToDepthThree|TestDiscoverClaimProofPlanDedupesSymlinkedEntrySources|TestDiscoverClaimProofPlanMergesIdenticalClaimsAcrossDistinctSources|TestDiscoverClaimProofPlanClassifiesFixtureClaims|TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting|TestRenderReportHTMLIncludesHeadlineAndTOC|TestRenderReviewPacketHTMLIncludesIntentAndQuestions|TestRenderReviewSummaryHTMLRendersVariantsAndFindings|TestWriteReportHTMLFromFileWritesNextToInput|TestWriteReviewPacketHTMLFromFileWritesNextToInput|TestWriteReviewSummaryHTMLFromFileWritesNextToInput' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "claim discovery follows the configured source boundary and preserves refs",
+          "claim status groups saved candidates by next action and includes satisfied evidence",
+          "claim review input clusters and bounded samples are deterministic",
+          "HTML review/report renderers write readable projections next to JSON packets"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/audit-cautilus-first-scan-flow-log.test.mjs scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs scripts/agent-runtime/render-claim-status-report.test.mjs scripts/agent-runtime/reviewable-artifact-projections.test.mjs scripts/agent-runtime/render-claim-discovery-review.test.mjs scripts/agent-runtime/review-prompt-flow.test.mjs scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 37,
+        "pass": 37,
+        "protectedBehaviors": [
+          "Cautilus Agent first-scan, curation, and review-prepare audit hooks require the expected routing and stop boundaries",
+          "claim status Markdown reports next-action groups from packet state",
+          "reviewable artifact projection matrix names packet/source truth and executable proof markers",
+          "claim discovery review, review prompt, and browser review surfaces preserve JSON packets as audit sources"
+        ]
+      }
+    },
+    {
+      "command": "test -f docs/specs/user/reviewable-artifacts.spec.md && test -f docs/specs/evidence/index.spec.md",
+      "exitCode": 0,
+      "observed": {
+        "protectedBehaviors": [
+          "the rule-level reviewable-artifacts spec links to the user-facing page",
+          "the rule-level reviewable-artifacts spec links to the current evidence index"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/specs/rules/reviewable-artifacts.spec.md",
+      "kind": "reviewable-artifacts-rule-source",
+      "contentHash": "sha256:29b1a08d5ba30786890e183c2d9c8647a1c1b36966f4d7b47c058f13ae09c129"
+    },
+    {
+      "path": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "reviewable-artifacts-user-spec",
+      "contentHash": "sha256:dde62241d12cffb9fcfc34a5abfab8ac3f32b4ca1182142ffe8a05c1ab9db56c"
+    },
+    {
+      "path": "docs/specs/evidence/index.spec.md",
+      "kind": "evidence-index-spec",
+      "contentHash": "sha256:b093157e69a85a1b85ee9c49f7cbe02e1a7c2c295c7ca8f93a8b0fcf62aeef04"
+    },
+    {
+      "path": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "claim-discovery-user-spec",
+      "contentHash": "sha256:5f9b5c62d88bf33d2e81b8e4908b6081dcaa77453ef5ffdbf7363dbffb829c87"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "claim-discovery-cli-tests",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-runtime-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "docs/contracts/reviewable-artifact-projections.json",
+      "kind": "reviewable-artifact-projection-matrix",
+      "contentHash": "sha256:01867f50d474bbf0a931f4d8de7bf4e67db24a8866355738ee2353744b89a36d"
+    },
+    {
+      "path": "scripts/agent-runtime/reviewable-artifact-projections.test.mjs",
+      "kind": "reviewable-artifact-projection-matrix-tests",
+      "contentHash": "sha256:551eacf3331fc5c4dcc581a67ede7669a42d51803be5b77238406f012cf0fe3d"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-discovery-review.test.mjs",
+      "kind": "claim-discovery-review-markdown-tests",
+      "contentHash": "sha256:e46555c01212a596a4d820e839a952ce7acaa92d5ed934af84a1bb2a9fe1d07a"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "kind": "claim-status-markdown-renderer-tests",
+      "contentHash": "sha256:7751d28d79b6696c75a649c944eeb51a3a686b6f26203049214a8c474cdb3366"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-first-scan-flow-log.test.mjs",
+      "kind": "cautilus-agent-first-scan-audit-tests",
+      "contentHash": "sha256:a348d5d5e021d3dfd701f3663d45085b04399ee9b29ec14531aff87cca2beacf"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs",
+      "kind": "cautilus-agent-claim-discovery-curation-audit-tests",
+      "contentHash": "sha256:9adb7b7fc47ac191d535d8f7125dfe26a80327d3aca738b77fb674eebd5bcbf3"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs",
+      "kind": "cautilus-agent-review-prepare-audit-tests",
+      "contentHash": "sha256:475232d3008101a47a8958749e6699b54cb4f36795c9f2be7606567f4ed60340"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused Go and Node tests prove that claim discovery creates source-referenced packets, status reads those saved packets into next-action summaries, agent-facing audit hooks cover first-scan, curation, and review-prepare boundaries, and readable artifact surfaces remain generated projections over packet/source truth."
+  }
+}
