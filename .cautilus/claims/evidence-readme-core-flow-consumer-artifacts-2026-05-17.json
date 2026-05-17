@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-readme-core-flow-consumer-artifacts-2026-05-17",
+  "createdForClaimIds": [
+    "claim-readme-md-157",
+    "claim-readme-md-160"
+  ],
+  "repoCommit": "4a75338f544bf30f2a4545ed91a4894c23d62f7d",
+  "summary": "Current deterministic proof for the README Core Flow claims that Cautilus init installs the repo-local Cautilus Agent and that the first bounded run leaves reopenable machine-readable packets plus readable packet-backed views.",
+  "evidenceScope": {
+    "targetSurface": "README Core Flow consumer onboarding and reviewable artifacts",
+    "claimBoundary": "Only the two listed README Core Flow claims are marked satisfied.",
+    "notClaimed": [
+      "Every possible Cautilus command emits a readable view.",
+      "Every adapter runtime or fixture preset is proven by this one consumer smoke.",
+      "The evaluated model output is benchmark-quality behavior.",
+      "Temporary smoke-run paths remain available after cleanup.",
+      "Claude and Codex runtime behavior are live-tested in this deterministic smoke."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run consumer:onboard:smoke -- --json",
+      "exitCode": 0,
+      "observed": {
+        "ok": true,
+        "ready": true,
+        "installedSkillPath": ".agents/skills/cautilus-agent/SKILL.md",
+        "claudeSkillLink": ".claude/skills",
+        "adapterCreated": true,
+        "firstBoundedRunPresent": true,
+        "evalArtifacts": [
+          "eval-cases.json",
+          "eval-observed.json",
+          "eval-summary.json"
+        ],
+        "evalSummarySchemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+        "recommendation": "accept-now"
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/reviewable-artifact-projections.test.mjs scripts/agent-runtime/render-claim-discovery-review.test.mjs scripts/agent-runtime/review-prompt-flow.test.mjs scripts/agent-runtime/render-claim-status-report.test.mjs scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 21,
+        "pass": 21,
+        "protectedBehaviors": [
+          "projection matrix lists shipped Cautilus-owned readable artifact families covered by this claim",
+          "matrix rows name source artifacts, source schemas, renderer path, command, tests, and proof markers",
+          "claim discovery review Markdown is generated from claim/status packets and states that JSON remains the audit source",
+          "review prompt Markdown is generated from review prompt input packets",
+          "claim status Markdown and browser review preserve JSON packet audit-source and separate comment-packet boundaries"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestRender(CompareArtifact|ScenarioProposals|ScenarioConversationReview|EvidenceBundle|Report|ReviewPacket|ReviewSummary|RunIndex|SelfDogfood)HTML|TestWrite(CompareArtifact|ScenarioProposals|ScenarioConversationReview|Report|ReviewPacket|ReviewSummary|RunIndex|SelfDogfood)HTML|TestDiscoverRunIndexEntries|TestRenderReportHTMLFromFileRejectsLegacySchema|TestRenderReviewPacketHTMLFromFileRejectsWrongSchema|TestRenderReviewSummaryHTMLFromFileRejectsWrongSchema|TestWriteSelfDogfoodExperimentsHTMLWritesIndexNextToLatestBundle' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "HTML renderers read JSON packets and reject wrong schema versions where applicable",
+          "HTML write helpers render next to the JSON input instead of replacing the packet",
+          "run-index discovery recognizes known packet files and flags whether an HTML projection exists"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "README.md",
+      "kind": "readme-claim-source",
+      "contentHash": "sha256:a3b3326a742ef014a99221da31e83962b621c35e3b60d3589519476066379cc8"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.mjs",
+      "kind": "consumer-onboarding-smoke",
+      "contentHash": "sha256:9a2f3c3e96a280038f191efede4cdec046330db003a865fc0dacfed66cb75c65"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.test.mjs",
+      "kind": "consumer-onboarding-smoke-test",
+      "contentHash": "sha256:06a7ab45c1a485aa6a2c5f2b96ba96ce309bcb84fce2cff2f6440e3096bd9253"
+    },
+    {
+      "path": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "reviewable-artifacts-user-spec",
+      "contentHash": "sha256:dde62241d12cffb9fcfc34a5abfab8ac3f32b4ca1182142ffe8a05c1ab9db56c"
+    },
+    {
+      "path": "docs/contracts/reviewable-artifact-projections.json",
+      "kind": "reviewable-artifact-projection-matrix",
+      "contentHash": "sha256:01867f50d474bbf0a931f4d8de7bf4e67db24a8866355738ee2353744b89a36d"
+    },
+    {
+      "path": "scripts/agent-runtime/reviewable-artifact-projections.test.mjs",
+      "kind": "reviewable-artifact-projection-matrix-tests",
+      "contentHash": "sha256:551eacf3331fc5c4dcc581a67ede7669a42d51803be5b77238406f012cf0fe3d"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-discovery-review.test.mjs",
+      "kind": "claim-discovery-review-markdown-tests",
+      "contentHash": "sha256:e46555c01212a596a4d820e839a952ce7acaa92d5ed934af84a1bb2a9fe1d07a"
+    },
+    {
+      "path": "scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "kind": "review-prompt-flow-tests",
+      "contentHash": "sha256:d5753d8a0c900f73458e182aa6559240aad6030202718fe4bbd2398c5bbb13ea"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-status-report.test.mjs",
+      "kind": "claim-status-markdown-renderer-tests",
+      "contentHash": "sha256:7751d28d79b6696c75a649c944eeb51a3a686b6f26203049214a8c474cdb3366"
+    },
+    {
+      "path": "scripts/agent-runtime/serve-claim-status-review.test.mjs",
+      "kind": "claim-status-browser-review-tests",
+      "contentHash": "sha256:1dfbe0af4d28e8a126899181df3b43b63009c14faea8ecdd1f537c83ae5861da"
+    },
+    {
+      "path": "internal/runtime/artifact_html.go",
+      "kind": "artifact-html-renderers",
+      "contentHash": "sha256:7f3daf4b631578221cfbfa8db7aad593383dc6ee2bad5ce19f8581f03e8b4830"
+    },
+    {
+      "path": "internal/runtime/artifact_html_test.go",
+      "kind": "artifact-html-renderer-tests",
+      "contentHash": "sha256:3da79c03113cb24f64090345df1a60bb238b1c1277bae5f1771f34f841a63dc0"
+    },
+    {
+      "path": "internal/runtime/report_html.go",
+      "kind": "report-html-renderer",
+      "contentHash": "sha256:fad3914c7b135a9fbe1201cbefea3aca32dff1a0979b7f864ee57578f542bd1c"
+    },
+    {
+      "path": "internal/runtime/report_html_test.go",
+      "kind": "report-html-renderer-tests",
+      "contentHash": "sha256:73e4ddbff88e917882a7b65bc87827599fa86bb99b474b13bee563a8441d35de"
+    },
+    {
+      "path": "internal/runtime/review_html.go",
+      "kind": "review-html-renderers",
+      "contentHash": "sha256:e487564719985f969a2ddb9e77d194f693fdc516b2021126f7d6ebbf910442e3"
+    },
+    {
+      "path": "internal/runtime/review_html_test.go",
+      "kind": "review-html-renderer-tests",
+      "contentHash": "sha256:24caec3a099d73178c89281afc50173f1ab1f034b151b050016f928a5c9fb13b"
+    },
+    {
+      "path": "internal/runtime/run_index_html.go",
+      "kind": "run-index-html-renderer",
+      "contentHash": "sha256:be69f2d42579c87303d9674474caaacc45a3c00fe43eeca6dc26efb2a6f62047"
+    },
+    {
+      "path": "internal/runtime/run_index_html_test.go",
+      "kind": "run-index-html-renderer-tests",
+      "contentHash": "sha256:941562e39242c9dd507a9283f1dc896f9a2f2da4c066130cf0f9a6f7e6b122d7"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "install-and-evaluate-fixture-cli-implementation",
+      "contentHash": "sha256:159cbd2e349f79ec5d0998474c3c3f6f015389bb7f89a69aad20dc6656ecd9e0"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "evaluate-fixture-and-observation-tests",
+      "contentHash": "sha256:3117b2cecae89e8da55bf99b6eed35d8466877bd27580d07f5714594e9843b39"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The external consumer smoke proves `cautilus init` installs `.agents/skills/cautilus-agent/`, creates the Claude compatibility link, reaches doctor ready, and completes one bounded fixture run with eval-cases, eval-observed, and eval-summary packets; renderer tests prove readable views are generated from packet/source artifacts while preserving JSON packets as the audit source."
+  }
+}

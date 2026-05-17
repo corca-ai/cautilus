@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T08:45:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the two README Core Flow claims covered by the external consumer onboarding smoke and packet-backed readable renderer tests."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-readme-core-flow-consumer-artifacts-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-readme-md-157",
+          "claimFingerprint": "sha256:9b65cef61eb4ef1f46e9e2d36eee961958d83aea45370a49787a9c5e27c1c18c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names install and repo-materialization behavior that can be proven by deterministic external consumer onboarding smoke.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the external consumer onboarding smoke: `cautilus init` installs `.agents/skills/cautilus-agent/SKILL.md`, creates the `.claude/skills` compatibility symlink, initializes an adapter, reaches doctor ready, and completes one bounded fixture run.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a767c53008c4a724185ad4f6fa777d37e35b5b5a714da94397b2e15f7da45880",
+              "supportsClaimIds": [
+                "claim-readme-md-157",
+                "claim-readme-md-160"
+              ]
+            }
+          ],
+          "nextAction": "Keep init install proof aligned with the repo-local Cautilus Agent path and Claude compatibility shim.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-readme-md-160",
+          "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names packet shape, durable outputs, and readable views that can be proven by deterministic CLI command execution and renderer tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by the external consumer onboarding smoke producing eval-cases.json, eval-observed.json, and eval-summary.json, plus readable renderer tests proving packet/source-backed Markdown, browser, and HTML views preserve JSON packets as the audit source.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a767c53008c4a724185ad4f6fa777d37e35b5b5a714da94397b2e15f7da45880",
+              "supportsClaimIds": [
+                "claim-readme-md-157",
+                "claim-readme-md-160"
+              ]
+            }
+          ],
+          "nextAction": "Keep README Core Flow reviewable-artifact wording aligned with eval packet outputs and the reviewable artifact projection matrix.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

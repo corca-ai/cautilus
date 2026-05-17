@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 232
+          "unknown": 230
         },
         "byReviewStatus": {
-          "heuristic": 232
+          "heuristic": 230
         },
-        "count": 232,
+        "count": 230,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 61
+          "satisfied": 63
         },
         "byReviewStatus": {
-          "agent-reviewed": 61
+          "agent-reviewed": 63
         },
-        "count": 61,
+        "count": 63,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 10,
-          "unknown": 68
+          "unknown": 66
         },
         "byReviewStatus": {
           "agent-reviewed": 19,
-          "heuristic": 59
+          "heuristic": 57
         },
-        "count": 78,
+        "count": 76,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-readme-md-157",
-          "claim-readme-md-160",
           "claim-docs-guides-cli-md-564",
           "claim-docs-guides-consumer-adoption-md-48",
-          "claim-docs-guides-consumer-adoption-md-106"
+          "claim-docs-guides-consumer-adoption-md-106",
+          "claim-docs-guides-evaluation-process-md-52",
+          "claim-docs-guides-evaluation-process-md-293"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 61,
+      "satisfied": 63,
       "stale": 17,
-      "unknown": 283
+      "unknown": 281
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 128,
-      "heuristic": 232,
+      "agent-reviewed": 130,
+      "heuristic": 230,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 61,
+    "satisfiedClaimCount": 63,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -575,6 +575,46 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets."
+      },
+      {
+        "claimId": "claim-readme-md-157",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:a767c53008c4a724185ad4f6fa777d37e35b5b5a714da94397b2e15f7da45880",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-readme-md-157",
+              "claim-readme-md-160"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`."
+      },
+      {
+        "claimId": "claim-readme-md-160",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:a767c53008c4a724185ad4f6fa777d37e35b5b5a714da94397b2e15f7da45880",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-readme-md-157",
+              "claim-readme-md-160"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen."
       },
       {
         "claimId": "claim-docs-contracts-adapter-contract-md-3",
@@ -1652,19 +1692,22 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 23,
+    "changedFileCount": 26,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+      ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-option-paths.md",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-stale-status.md",
+      "charness-artifacts/debug/debug-2026-05-17-cli-command-registry-probe-path.md",
       "charness-artifacts/debug/latest.md",
       "charness-artifacts/find-skills/latest.json",
       "charness-artifacts/find-skills/latest.md",
@@ -1686,7 +1729,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "d94e4ee1770494144cd78f72fccd066b6bfa8447",
+    "currentGitCommit": "4a75338f544bf30f2a4545ed91a4894c23d62f7d",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -1713,7 +1756,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 207,
+    "heuristicClaimsReadyForReview": 205,
     "needsAlignment": 37,
     "needsScenario": 8
   },

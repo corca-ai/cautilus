@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:f3f77ba286fdaccc2f73df55819f042dabec4c5c66afdc2c245ee92e03de5a59",
+    "claimsHash": "sha256:14426d6578b1f5f491184656315045cf67f9707ef696c047a1bd8e00e8803ea8",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:ed11228059513fd1b25f85a1a562c8ef68ba6dcf8b2dd4d90e0a6a6cced1cdc7",
+    "statusHash": "sha256:11e384e98ea8088d1e1f929b783c0365ebeccc9575a432a3f0dfb29c3ad29f70",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,19 +12,22 @@
     }
   },
   "gitState": {
-    "changedFileCount": 23,
+    "changedFileCount": 26,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+      ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-option-paths.md",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-stale-status.md",
+      "charness-artifacts/debug/debug-2026-05-17-cli-command-registry-probe-path.md",
       "charness-artifacts/debug/latest.md",
       "charness-artifacts/find-skills/latest.json",
       "charness-artifacts/find-skills/latest.md",
@@ -46,7 +49,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "d94e4ee1770494144cd78f72fccd066b6bfa8447",
+    "currentGitCommit": "4a75338f544bf30f2a4545ed91a4894c23d62f7d",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -57,9 +60,9 @@
     "candidateCount": 361,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 61,
+      "satisfied": 63,
       "stale": 17,
-      "unknown": 283
+      "unknown": 281
     },
     "byRecommendedProof": {
       "cautilus-eval": 124,
@@ -73,8 +76,8 @@
       "ready-for-proof": 289
     },
     "byReviewStatus": {
-      "agent-reviewed": 128,
-      "heuristic": 232,
+      "agent-reviewed": 130,
+      "heuristic": 230,
       "human-reviewed": 1
     }
   },
@@ -249,27 +252,27 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 61,
+      "count": 63,
       "actor": "none",
       "evidence": {
-        "satisfied": 61
+        "satisfied": 63
       },
       "review": {
-        "agent-reviewed": 61
+        "agent-reviewed": 63
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 78,
+      "count": 76,
       "actor": "agent",
       "evidence": {
         "stale": 10,
-        "unknown": 68
+        "unknown": 66
       },
       "review": {
         "agent-reviewed": 19,
-        "heuristic": 59
+        "heuristic": 57
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
@@ -345,7 +348,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 232,
+      "count": 230,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [

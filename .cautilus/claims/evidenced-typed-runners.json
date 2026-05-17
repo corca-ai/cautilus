@@ -743,17 +743,29 @@
       "claimFingerprint": "sha256:9b65cef61eb4ef1f46e9e2d36eee961958d83aea45370a49787a9c5e27c1c18c",
       "claimId": "claim-readme-md-157",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a767c53008c4a724185ad4f6fa777d37e35b5b5a714da94397b2e15f7da45880",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-readme-md-157",
+            "claim-readme-md-160"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the external consumer onboarding smoke: `cautilus init` installs `.agents/skills/cautilus-agent/SKILL.md`, creates the `.claude/skills` compatibility symlink, initializes an adapter, reaches doctor ready, and completes one bounded fixture run.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep init install proof aligned with the repo-local Cautilus Agent path and Claude compatibility shim.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.",
@@ -762,8 +774,9 @@
         }
       ],
       "summary": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names install and repo-materialization behavior that can be proven by deterministic external consumer onboarding smoke."
     },
     {
       "claimAudience": "user",
@@ -771,17 +784,29 @@
       "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
       "claimId": "claim-readme-md-160",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a767c53008c4a724185ad4f6fa777d37e35b5b5a714da94397b2e15f7da45880",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-readme-md-157",
+            "claim-readme-md-160"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the external consumer onboarding smoke producing eval-cases.json, eval-observed.json, and eval-summary.json, plus readable renderer tests proving packet/source-backed Markdown, browser, and HTML views preserve JSON packets as the audit source.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep README Core Flow reviewable-artifact wording aligned with eval packet outputs and the reviewable artifact projection matrix.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
@@ -790,8 +815,9 @@
         }
       ],
       "summary": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names packet shape, durable outputs, and readable views that can be proven by deterministic CLI command execution and renderer tests."
     },
     {
       "claimAudience": "developer",
@@ -11924,9 +11950,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 61,
+      "satisfied": 63,
       "stale": 17,
-      "unknown": 283
+      "unknown": 281
     },
     "byLifecycle": {
       "new": 361
@@ -11937,8 +11963,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 128,
-      "heuristic": 232,
+      "agent-reviewed": 130,
+      "heuristic": 230,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12132,7 +12158,7 @@
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
-    "appliedUpdateCount": 3,
+    "appliedUpdateCount": 2,
     "appliedUpdates": [
       {
         "appliedFields": [
@@ -12146,8 +12172,8 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-cli-md-474",
-        "clusterId": "cluster-guides-cli-decision-packet-projections-2026-05-17"
+        "claimId": "claim-readme-md-157",
+        "clusterId": "cluster-readme-core-flow-consumer-artifacts-2026-05-17"
       },
       {
         "appliedFields": [
@@ -12161,28 +12187,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-cli-md-510",
-        "clusterId": "cluster-guides-cli-decision-packet-projections-2026-05-17"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "whyThisLayer",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-guides-cli-md-546",
-        "clusterId": "cluster-guides-cli-decision-packet-projections-2026-05-17"
+        "claimId": "claim-readme-md-160",
+        "clusterId": "cluster-readme-core-flow-consumer-artifacts-2026-05-17"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12240,7 +12251,8 @@
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
-      ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json"
+      ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12296,9 +12308,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 54,
+    "appliedResultCount": 55,
     "skippedResultCount": 52,
-    "keptUpdateCount": 135,
+    "keptUpdateCount": 137,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },
