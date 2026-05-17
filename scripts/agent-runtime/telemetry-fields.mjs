@@ -10,6 +10,18 @@ export const TELEMETRY_STRING_FIELDS = [
 	"pricing_version",
 ];
 
+export const TELEMETRY_STRING_DIMENSIONS = [
+	["provider", "providers"],
+	["model", "models"],
+	["request_kind", "requestKinds"],
+	["source_flow", "sourceFlows"],
+	["cache_policy", "cachePolicies"],
+	["static_context_id", "staticContextIds"],
+	["cost_truth", "costTruths"],
+	["pricing_source", "pricingSources"],
+	["pricing_version", "pricingVersions"],
+];
+
 export const TELEMETRY_NUMERIC_FIELDS = [
 	"uncached_input_tokens",
 	"cache_creation_input_tokens",

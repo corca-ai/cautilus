@@ -10,10 +10,7 @@ const SCRIPT = join(process.cwd(), "scripts", "release", "check-claim-freshness.
 
 test("repairCommands points release operators at saved packet refresh and projections", () => {
 	assert.deepEqual(repairCommands({ claims: ".cautilus/claims/evidenced-typed-runners.json" }), [
-		"./bin/cautilus discover claims --repo-root . --previous .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/evidenced-typed-runners.json",
-		"npm run claims:canonical-map",
-		"npm run claims:evidence-state",
-		"npm run claims:status-report",
+		"npm run claims:refresh:all",
 	]);
 });
 
@@ -98,11 +95,7 @@ test("checkClaimFreshness reports the exact repair sequence when generated claim
 			(error) => {
 				assert.match(error.message, /Release claim freshness preflight failed/);
 				assert.match(error.message, /claim projection drift/);
-				assert.match(
-					error.message,
-					/\.\/bin\/cautilus discover claims --repo-root \. --previous \.cautilus\/claims\/custom\.json --output \.cautilus\/claims\/custom\.json/,
-				);
-				assert.match(error.message, /npm run claims:evidence-state/);
+				assert.match(error.message, /npm run claims:refresh:all/);
 				return true;
 			},
 		);

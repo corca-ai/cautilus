@@ -20,6 +20,9 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 				source_flow: "release_smoke",
 				cache_policy: "cacheable_system_prompt",
 				static_context_id: "shared-context",
+				cost_truth: "runtime_exact",
+				pricing_source: "codex_jsonl",
+				pricing_version: "2026-04-01",
 				cache_creation_input_tokens: 10,
 				cache_read_input_tokens: 30,
 				cached_input_tokens: 40,
@@ -40,6 +43,9 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 				source_flow: "release_smoke",
 				cache_policy: "cacheable_system_prompt",
 				static_context_id: "shared-context",
+				cost_truth: "runtime_exact",
+				pricing_source: "codex_jsonl",
+				pricing_version: "2026-04-01",
 				cache_creation_input_tokens: 20,
 				cache_read_input_tokens: 40,
 				cached_input_tokens: 60,
@@ -75,6 +81,9 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 	assert.deepEqual(summary.overall.sourceFlows, ["release_smoke"]);
 	assert.deepEqual(summary.overall.cachePolicies, ["cacheable_system_prompt"]);
 	assert.deepEqual(summary.overall.staticContextIds, ["shared-context"]);
+	assert.deepEqual(summary.overall.costTruths, ["runtime_exact"]);
+	assert.deepEqual(summary.overall.pricingSources, ["codex_jsonl"]);
+	assert.deepEqual(summary.overall.pricingVersions, ["2026-04-01"]);
 	assert.equal(summary.scenarios[0].scenarioId, "alpha");
 	assert.equal(summary.scenarios[0].cost_usd, 0.022);
 	assert.equal(summary.scenarios[0].runCount, 2);
@@ -82,6 +91,9 @@ test("summarizeScenarioTelemetryEntries aggregates telemetry per scenario", () =
 	assert.equal(summary.scenarios[0].cache_creation_input_tokens, 30);
 	assert.equal(summary.scenarios[0].cache_read_input_tokens, 70);
 	assert.equal(summary.scenarios[0].cached_input_tokens, 100);
+	assert.deepEqual(summary.scenarios[0].costTruths, ["runtime_exact"]);
+	assert.deepEqual(summary.scenarios[0].pricingSources, ["codex_jsonl"]);
+	assert.deepEqual(summary.scenarios[0].pricingVersions, ["2026-04-01"]);
 	assert.equal(summary.scenarios[0].averageDurationMs, 110);
 });
 

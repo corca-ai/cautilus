@@ -71,6 +71,13 @@ function createReportInputFixture() {
 							telemetry: {
 								provider: "openai",
 								model: "gpt-5.4",
+								request_kind: "app_eval",
+								source_flow: "release_smoke",
+								cache_policy: "cacheable_system_prompt",
+								static_context_id: "shared-context",
+								cost_truth: "runtime_exact",
+								pricing_source: "codex_jsonl",
+								pricing_version: "2026-04-01",
 								cached_input_tokens: 50,
 								total_tokens: 200,
 								cost_usd: 0.02,
@@ -94,6 +101,13 @@ function createReportInputFixture() {
 				telemetry: {
 					provider: "anthropic",
 					model: "claude-3.7",
+					request_kind: "review_gate",
+					source_flow: "full_gate",
+					cache_policy: "ephemeral_prompt_cache",
+					static_context_id: "gate-context",
+					cost_truth: "derived",
+					pricing_source: "pricing_table",
+					pricing_version: "2026-03-15",
 					cache_creation_input_tokens: 100,
 					cache_read_input_tokens: 200,
 					total_tokens: 500,
@@ -138,6 +152,16 @@ test("buildReportPacket aggregates mode telemetry and scenario summaries", () =>
 	assert.equal(report.modesRun.length, 2);
 	assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.total_tokens, 200);
 	assert.equal(report.modeSummaries[0].scenarioTelemetrySummary.overall.cached_input_tokens, 50);
+	assert.deepEqual(report.modeSummaries[0].scenarioTelemetrySummary.overall.costTruths, ["runtime_exact"]);
+	assert.deepEqual(report.modeSummaries[0].scenarioTelemetrySummary.overall.pricingSources, ["codex_jsonl"]);
+	assert.deepEqual(report.modeSummaries[0].scenarioTelemetrySummary.overall.pricingVersions, ["2026-04-01"]);
+	assert.deepEqual(report.modeSummaries[0].telemetry.requestKinds, ["app_eval"]);
+	assert.deepEqual(report.modeSummaries[0].telemetry.sourceFlows, ["release_smoke"]);
+	assert.deepEqual(report.modeSummaries[0].telemetry.cachePolicies, ["cacheable_system_prompt"]);
+	assert.deepEqual(report.modeSummaries[0].telemetry.staticContextIds, ["shared-context"]);
+	assert.deepEqual(report.modeSummaries[0].telemetry.costTruths, ["runtime_exact"]);
+	assert.deepEqual(report.modeSummaries[0].telemetry.pricingSources, ["codex_jsonl"]);
+	assert.deepEqual(report.modeSummaries[0].telemetry.pricingVersions, ["2026-04-01"]);
 	assert.equal(report.modeSummaries[0].compareArtifact.verdict, "improved");
 	assert.equal(report.modeSummaries[1].telemetry.total_tokens, 500);
 	assert.equal(report.telemetry.cached_input_tokens, 50);
@@ -147,6 +171,13 @@ test("buildReportPacket aggregates mode telemetry and scenario summaries", () =>
 	assert.equal(report.telemetry.cost_usd, 0.06);
 	assert.equal(report.telemetry.durationMs, 35000);
 	assert.deepEqual(report.telemetry.providers.sort(), ["anthropic", "openai"]);
+	assert.deepEqual(report.telemetry.requestKinds.sort(), ["app_eval", "review_gate"]);
+	assert.deepEqual(report.telemetry.sourceFlows.sort(), ["full_gate", "release_smoke"]);
+	assert.deepEqual(report.telemetry.cachePolicies.sort(), ["cacheable_system_prompt", "ephemeral_prompt_cache"]);
+	assert.deepEqual(report.telemetry.staticContextIds.sort(), ["gate-context", "shared-context"]);
+	assert.deepEqual(report.telemetry.costTruths.sort(), ["derived", "runtime_exact"]);
+	assert.deepEqual(report.telemetry.pricingSources.sort(), ["codex_jsonl", "pricing_table"]);
+	assert.deepEqual(report.telemetry.pricingVersions.sort(), ["2026-03-15", "2026-04-01"]);
 	assert.equal(report.adapterContext.adapterName, "operator-review");
 	assert.equal(report.recommendation, "defer");
 });

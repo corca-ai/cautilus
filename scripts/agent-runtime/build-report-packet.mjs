@@ -13,7 +13,11 @@ import {
 	summarizeReportReasons,
 } from "./report-reason-classification.mjs";
 import { writeTextOutput } from "./output-files.mjs";
-import { TELEMETRY_NUMERIC_FIELDS } from "./telemetry-fields.mjs";
+import {
+	TELEMETRY_NUMERIC_FIELDS,
+	TELEMETRY_STRING_DIMENSIONS,
+	TELEMETRY_STRING_FIELDS,
+} from "./telemetry-fields.mjs";
 
 export { REPORT_INPUTS_SCHEMA, REPORT_PACKET_SCHEMA } from "./contract-versions.mjs";
 
@@ -136,7 +140,7 @@ function normalizeTelemetry(value, field) {
 		throw new Error(`${field} must be an object`);
 	}
 	const telemetry = {};
-	for (const key of ["provider", "model"]) {
+	for (const key of TELEMETRY_STRING_FIELDS) {
 		if (value[key] !== undefined) {
 			telemetry[key] = normalizeNonEmptyString(value[key], `${field}.${key}`);
 		}
@@ -357,13 +361,11 @@ function collectAggregateStrings(modeRun, scenarioOverall, field, aggregateField
 function createModeTelemetry(modeRun, scenarioTelemetrySummary) {
 	const scenarioOverall = scenarioTelemetrySummary?.overall ?? null;
 	const telemetry = copyModeTiming(modeRun, collectNumericTelemetry(modeRun, scenarioOverall));
-	const providers = collectAggregateStrings(modeRun, scenarioOverall, "provider", "providers");
-	if (providers.length > 0) {
-		telemetry.providers = providers;
-	}
-	const models = collectAggregateStrings(modeRun, scenarioOverall, "model", "models");
-	if (models.length > 0) {
-		telemetry.models = models;
+	for (const [field, aggregateField] of TELEMETRY_STRING_DIMENSIONS) {
+		const values = collectAggregateStrings(modeRun, scenarioOverall, field, aggregateField);
+		if (values.length > 0) {
+			telemetry[aggregateField] = values;
+		}
 	}
 	return Object.keys(telemetry).length > 0 ? telemetry : null;
 }
@@ -418,13 +420,11 @@ function summarizeReportTelemetry(modeSummaries) {
 			telemetry[field] = total;
 		}
 	}
-	const providers = uniqueStrings(modeSummaries.flatMap((entry) => entry.telemetry?.providers || []));
-	if (providers.length > 0) {
-		telemetry.providers = providers;
-	}
-	const models = uniqueStrings(modeSummaries.flatMap((entry) => entry.telemetry?.models || []));
-	if (models.length > 0) {
-		telemetry.models = models;
+	for (const [, aggregateField] of TELEMETRY_STRING_DIMENSIONS) {
+		const values = uniqueStrings(modeSummaries.flatMap((entry) => entry.telemetry?.[aggregateField] || []));
+		if (values.length > 0) {
+			telemetry[aggregateField] = values;
+		}
 	}
 	return telemetry;
 }

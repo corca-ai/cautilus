@@ -1,6 +1,6 @@
 import { SCENARIO_TELEMETRY_SUMMARY_SCHEMA } from "./contract-versions.mjs";
 import { normalizeScenarioResult } from "./scenario-results.mjs";
-import { TELEMETRY_NUMERIC_FIELDS } from "./telemetry-fields.mjs";
+import { TELEMETRY_NUMERIC_FIELDS, TELEMETRY_STRING_DIMENSIONS } from "./telemetry-fields.mjs";
 
 export { SCENARIO_TELEMETRY_SUMMARY_SCHEMA } from "./contract-versions.mjs";
 
@@ -75,12 +75,9 @@ function buildTelemetryBreakdown(entries, scenarioId = null) {
 			summary[field] = total;
 		}
 	}
-	attachUniqueTelemetryValues(summary, entries, "provider", "providers");
-	attachUniqueTelemetryValues(summary, entries, "model", "models");
-	attachUniqueTelemetryValues(summary, entries, "request_kind", "requestKinds");
-	attachUniqueTelemetryValues(summary, entries, "source_flow", "sourceFlows");
-	attachUniqueTelemetryValues(summary, entries, "cache_policy", "cachePolicies");
-	attachUniqueTelemetryValues(summary, entries, "static_context_id", "staticContextIds");
+	for (const [field, outputField] of TELEMETRY_STRING_DIMENSIONS) {
+		attachUniqueTelemetryValues(summary, entries, field, outputField);
+	}
 	return summary;
 }
 

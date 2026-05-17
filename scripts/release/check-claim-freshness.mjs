@@ -58,13 +58,8 @@ function applyValueArg(options, argv, index) {
 	return index + 1;
 }
 
-export function repairCommands({ claims = DEFAULT_CLAIMS } = {}) {
-	return [
-		`./bin/cautilus discover claims --repo-root . --previous ${claims} --output ${claims}`,
-		"npm run claims:canonical-map",
-		"npm run claims:evidence-state",
-		"npm run claims:status-report",
-	];
+export function repairCommands() {
+	return ["npm run claims:refresh:all"];
 }
 
 function renderRepairMessage(options, output) {
