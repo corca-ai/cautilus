@@ -6089,8 +6089,19 @@
       "claimFingerprint": "sha256:6736a3c8278377f47e25e7d56532d0943767b982cdcd051e142853c4c77fcc3c",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-594",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:f1e70736c9b90c5b3a266dd5fcd6f546854567340569241e77847d59fb93cd0d",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-agent-review-ownership-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-594"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by Cautilus Agent skill parity plus review prepare/launch flow audits that require explicit budget, explicit reviewer launch, versioned packets, and stop-before-apply/eval behavior.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6098,9 +6109,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep review prepare and reviewer launch audits aligned with Cautilus Agent review-branch policy when reviewer orchestration changes.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "In the claim discovery workflow, the Cautilus Agent owns LLM-backed claim review, review-budget explanation, and subagent orchestration.",
@@ -6109,8 +6120,9 @@
         }
       ],
       "summary": "In the claim discovery workflow, the Cautilus Agent owns LLM-backed claim review, review-budget explanation, and subagent orchestration.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names the Cautilus Agent review branch and binary/agent ownership boundary, protected by skill disclosure and flow-audit tests."
     },
     {
       "claimAudience": "developer",
@@ -12347,9 +12359,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 94,
+      "satisfied": 95,
       "stale": 16,
-      "unknown": 251
+      "unknown": 250
     },
     "byLifecycle": {
       "new": 361
@@ -12360,8 +12372,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 158,
-      "heuristic": 202,
+      "agent-reviewed": 159,
+      "heuristic": 201,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12646,6 +12658,7 @@
       ".cautilus/claims/review-result-contract-review-clustering-curation-2026-05-17.json",
       ".cautilus/claims/review-result-contract-discover-refresh-carry-forward-2026-05-17.json",
       ".cautilus/claims/review-result-contract-compact-status-summary-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-agent-review-ownership-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
@@ -12709,9 +12722,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 74,
+    "appliedResultCount": 75,
     "skippedResultCount": 52,
-    "keptUpdateCount": 168,
+    "keptUpdateCount": 169,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

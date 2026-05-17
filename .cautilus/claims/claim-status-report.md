@@ -19,13 +19,13 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 94, stale: 16, unknown: 251 |
-| Review | agent-reviewed: 158, heuristic: 202, human-reviewed: 1 |
+| Evidence | satisfied: 95, stale: 16, unknown: 250 |
+| Review | agent-reviewed: 159, heuristic: 201, human-reviewed: 1 |
 | Recommended proof | cautilus-eval: 124, deterministic: 140, human-auditable: 97 |
 | Verification readiness | blocked: 27, needs-alignment: 37, needs-scenario: 8, ready-for-proof: 289 |
 | Audience | developer: 259, user: 102 |
 
-Review readiness: heuristicClaimsReadyForReview: 177, needsAlignment: 37, needsScenario: 8.
+Review readiness: heuristicClaimsReadyForReview: 176, needsAlignment: 37, needsScenario: 8.
 
 ## Canonical Claim Map
 
@@ -53,7 +53,7 @@ Review readiness: heuristicClaimsReadyForReview: 177, needsAlignment: 37, needsS
 | --- | --- | --- | --- | --- | --- |
 | M1 | Contract Cross-Cutting Rule Policy | 6 | cautilus-eval: 3, human-auditable: 3 | unknown: 6 | agent-reviewed: 1, heuristic: 5 |
 | M2 | Claim Discovery Workflow | 17 | deterministic: 10, human-auditable: 7 | satisfied: 10, unknown: 7 | agent-reviewed: 12, heuristic: 5 |
-| M3 | Binary And Skill Boundary | 57 | cautilus-eval: 24, deterministic: 19, human-auditable: 14 | satisfied: 8, stale: 2, unknown: 47 | agent-reviewed: 16, heuristic: 40, human-reviewed: 1 |
+| M3 | Binary And Skill Boundary | 57 | cautilus-eval: 24, deterministic: 19, human-auditable: 14 | satisfied: 9, stale: 2, unknown: 46 | agent-reviewed: 17, heuristic: 39, human-reviewed: 1 |
 | M4 | Adapter And Host Ownership | 71 | cautilus-eval: 33, deterministic: 19, human-auditable: 19 | satisfied: 13, stale: 3, unknown: 55 | agent-reviewed: 26, heuristic: 45 |
 | M5 | Evaluation Surfaces And Runners | 20 | cautilus-eval: 12, deterministic: 7, human-auditable: 1 | satisfied: 5, unknown: 15 | agent-reviewed: 6, heuristic: 14 |
 | M6 | Evidence State And Review Artifacts | 5 | deterministic: 2, human-auditable: 3 | unknown: 5 | agent-reviewed: 1, heuristic: 4 |
@@ -108,7 +108,7 @@ Semantic sampling recommended for 299 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=37, human-confirm-or-decompose=34, split-or-defer=27.
-- Agent next proof work: connect deterministic gates for 45 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 44 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 116 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -116,15 +116,15 @@ Semantic sampling recommended for 299 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 94 | agent-reviewed: 94 | satisfied: 94 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 45 | agent-reviewed: 16, heuristic: 29 | stale: 9, unknown: 36 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 95 | agent-reviewed: 95 | satisfied: 95 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 44 | agent-reviewed: 16, heuristic: 28 | stale: 9, unknown: 35 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 116 | agent-reviewed: 8, heuristic: 107, human-reviewed: 1 | stale: 5, unknown: 111 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | agent-reviewed: 1, heuristic: 7 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 37 | agent-reviewed: 19, heuristic: 18 | unknown: 37 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 34 | agent-reviewed: 2, heuristic: 32 | stale: 2, unknown: 32 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 27 | agent-reviewed: 18, heuristic: 9 | unknown: 27 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
-Cross-cutting signal: heuristic-review-needed (202) - Review heuristic labels before spending proof or eval budget.
+Cross-cutting signal: heuristic-review-needed (201) - Review heuristic labels before spending proof or eval budget.
 
 Cross-cutting signal: stale-evidence (16) - Refresh or recheck stale evidence before consuming it as proof.
 
@@ -134,11 +134,11 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
-| claim-docs-contracts-claim-discovery-workflow-md-594 | docs/contracts/claim-discovery-workflow.md:594 | deterministic | ready-for-proof | heuristic | unknown | In the claim discovery workflow, the Cautilus Agent owns LLM-backed claim review, review-budget explanation, and subagent orchestration. |
 | claim-docs-contracts-claim-discovery-workflow-md-694 | docs/contracts/claim-discovery-workflow.md:694 | deterministic | ready-for-proof | agent-reviewed | unknown | Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning. |
 | claim-docs-contracts-claim-discovery-workflow-md-695 | docs/contracts/claim-discovery-workflow.md:695 | deterministic | ready-for-proof | heuristic | unknown | `discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results. |
 | claim-docs-contracts-claim-discovery-workflow-md-704 | docs/contracts/claim-discovery-workflow.md:704 | deterministic | ready-for-proof | agent-reviewed | unknown | It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy. |
 | claim-docs-contracts-reporting-md-50 | docs/contracts/reporting.md:50 | deterministic | ready-for-proof | agent-reviewed | unknown | When `Cautilus` itself executes adapter-defined mode commands, it should write those command observations into the report input so the final packet preserves how the evidence was gathered. |
+| claim-docs-contracts-reporting-md-123 | docs/contracts/reporting.md:123 | deterministic | ready-for-proof | agent-reviewed | stale | The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload. |
 
 ### agent-plan-cautilus-eval
 
@@ -272,6 +272,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-agent-plan-cautilus-eval-2026-05-04.json | parallel-agent-review | - | 1 | 1 | 5 | deterministic: 1 | needs-alignment: 1 |
 | .cautilus/claims/review-result-agent-status-safe-branch-catalog-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-contract-agent-review-ownership-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
 | .cautilus/claims/review-result-contract-canonical-spec-curation-before-hitl-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |

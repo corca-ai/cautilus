@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:24:23Z",
+    "evidencePolicy": "Only mark Cautilus Agent review-branch ownership satisfied; do not claim a live subagent was spawned in this session."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-agent-review-ownership-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-594",
+          "claimFingerprint": "sha256:6736a3c8278377f47e25e7d56532d0943767b982cdcd051e142853c4c77fcc3c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the Cautilus Agent review branch and binary/agent ownership boundary, protected by skill disclosure and flow-audit tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by Cautilus Agent skill parity plus review prepare/launch flow audits that require explicit budget, explicit reviewer launch, versioned packets, and stop-before-apply/eval behavior.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-agent-review-ownership-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:f1e70736c9b90c5b3a266dd5fcd6f546854567340569241e77847d59fb93cd0d",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-594"
+              ]
+            }
+          ],
+          "nextAction": "Keep review prepare and reviewer launch audits aligned with Cautilus Agent review-branch policy when reviewer orchestration changes.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-agent-review-ownership-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-594"
+  ],
+  "repoCommit": "74bce23729d1e85e3553eca2c9f0cff2db8b56c4",
+  "summary": "Deterministic proof that Cautilus Agent, not the binary, owns LLM-backed claim review, budget explanation, and bounded reviewer orchestration.",
+  "evidenceScope": {
+    "targetSurface": "Cautilus Agent claim review branch ownership",
+    "claimBoundary": "Only the docs/contracts/claim-discovery-workflow.md fixed decision that Cautilus Agent owns LLM-backed claim review, review-budget explanation, and reviewer orchestration is marked satisfied.",
+    "notClaimed": [
+      "A live subagent was spawned in this session.",
+      "Every host runtime supports delegated reviewer launch.",
+      "Reviewer launch implies review-result application or eval planning.",
+      "The binary owns provider selection, credentials, or model prompts.",
+      "The fixture reviewer backend proves semantic review quality."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:skill-disclosure",
+      "exitCode": 0,
+      "observed": {
+        "status": "ok",
+        "sourceSkill": "skills/cautilus-agent/SKILL.md",
+        "packagedSkill": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+        "requiredFragments": 15,
+        "forbiddenFragments": 9,
+        "globalForbiddenFragments": 7
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.test.mjs scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs scripts/agent-runtime/run-claim-reviewer-smoke.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 16,
+        "pass": 16,
+        "protectedBehaviors": [
+          "review prepare flow stops at deterministic review-input packet creation",
+          "review prepare flow fails when it overruns into apply-result or eval planning",
+          "reviewer launch flow requires selected review budget and user confirmation",
+          "reviewer launch flow accepts one bounded reviewer lane and stops before apply",
+          "reviewer launch flow rejects apply-result, eval planning, eval execution, and edits in the same branch",
+          "fixture reviewer backend writes a bounded `cautilus.claim_review_result.v1` packet"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-workflow-contract",
+      "contentHash": "sha256:f703e3ccf3be041a522bdf6e87640bca5680761ea0138ef439ed73471e91a9e4"
+    },
+    {
+      "path": "skills/cautilus-agent/SKILL.md",
+      "kind": "source-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+      "kind": "packaged-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "skills/cautilus-agent/references/skill-testing.md",
+      "kind": "cautilus-agent-skill-testing-reference",
+      "contentHash": "sha256:3a47342e166bd650eb2900c7c2e1a83f86dae252d50e197286dea0c606885cf2"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.mjs",
+      "kind": "reviewer-launch-flow-audit",
+      "contentHash": "sha256:b81923df27cf43c96cffdb5fa8f0b8c2fdb52b091676f3886970aced77e59ed0"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.test.mjs",
+      "kind": "reviewer-launch-flow-audit-tests",
+      "contentHash": "sha256:d187a172b9792bc131795ba77ec41997b1ce5155726fd778486e346d80763965"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.mjs",
+      "kind": "review-prepare-flow-audit",
+      "contentHash": "sha256:ae7b177110b8104db57f7a3eea2d3bd4bc63e686838cfd2591edf914e4eeea41"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs",
+      "kind": "review-prepare-flow-audit-tests",
+      "contentHash": "sha256:475232d3008101a47a8958749e6699b54cb4f36795c9f2be7606567f4ed60340"
+    },
+    {
+      "path": "scripts/agent-runtime/run-claim-reviewer-smoke.mjs",
+      "kind": "fixture-reviewer-smoke-runner",
+      "contentHash": "sha256:48e7b1f02df1bbc860d699c4a34c0f5c891dbf04487d14408947bc7d91c0a1f7"
+    },
+    {
+      "path": "scripts/agent-runtime/run-claim-reviewer-smoke.test.mjs",
+      "kind": "fixture-reviewer-smoke-tests",
+      "contentHash": "sha256:60925e1ab16181e309db208a30af6e772401071d99a98f2646492791a7a5257b"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The Cautilus Agent skill owns the review budget and reviewer branch, disclosure lint keeps packaged skill parity, and review prepare/launch audits enforce packet boundaries, explicit budget, explicit reviewer launch, and stop-before-apply/eval behavior."
+  }
+}
