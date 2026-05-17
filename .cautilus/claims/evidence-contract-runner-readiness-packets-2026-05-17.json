@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-runner-readiness-packets-2026-05-17",
+  "createdAt": "2026-05-17T09:36:30Z",
+  "repoCommit": "e305a5e32efd350ae0e8110ccdd8772836e57424",
+  "createdForClaimIds": [
+    "claim-docs-contracts-runner-readiness-md-29",
+    "claim-docs-contracts-runner-readiness-md-198",
+    "claim-docs-contracts-runner-readiness-md-218",
+    "claim-docs-contracts-runner-readiness-md-279",
+    "claim-docs-contracts-runner-verification-md-12"
+  ],
+  "summary": "Deterministic doctor, doctor status, runner readiness, schema, and skill-disclosure tests cover the read-only readiness implementation, assessment packet surface, freshness rules, progressive Cautilus Agent surface, and durable runner assessment boundary.",
+  "evidenceScope": {
+    "covered": [
+      "doctor and doctor status expose runner readiness as read-only setup state without treating missing assessments as adapter failure.",
+      "The runner assessment schema and examples provide a packet-shaped scaffold instead of requiring operators to author the packet from prose alone.",
+      "Assessment repoCommit drift is exposed as provenance-only head drift when adapter and runner file hashes still match, while adapter or runner file hash changes stale the assessment.",
+      "Product-proof runner assessments require verification capability evidence before doctor or doctor status can present the runner as ready.",
+      "The Cautilus Agent skill remains one progressive surface, with command discovery delegated to the binary and runner readiness handled as setup/readiness sequencing."
+    ],
+    "notClaimed": [
+      "This bundle does not prove a host app runner is semantically honest for a specific consumer repository.",
+      "This bundle does not run live product behavior; it verifies the generic readiness and packet contracts."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDoctorRunnerReadinessKeepsAdapterReadyWithMissingAssessment|TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates|TestRunnerReadinessBlocksProductProofWithoutVerificationCapabilities|TestRunnerReadinessRejectsInvalidVerificationCapabilityShape|TestDoctorNextActionFallsBackAfterRunnerAssessmentReady|TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches|TestDoctorAndAgentStatusShareRunnerReadinessFacts|TestRunnerReadinessBranchesExposeStableActionShape|TestRunnerReadinessSupportsTypedMultiRunnerAdapters'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:36:30Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/runtime"
+      ]
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestEvaluationSummaryPreservesRunnerProof|TestEvaluationProofIgnoresSelfCertifiedProductProofReady|TestEvaluationProofDowngradesFixtureRuntimeProofClass|TestEvaluationProofPreservesAssessedProductRuntimeProofClass|TestEvaluationProofBlocksAssessmentSurfaceMismatch|TestEvaluationProofPreservesBlockersThroughSummary|TestReportPacketSummarizesBlockedProductRunnerProof|TestImproveInputRejectsBlockedProductRunnerProof'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:36:30Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/runtime"
+      ]
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunAgentStatusJSONReturnsNoInputOrientation|TestCLIDoctorReportsReadyWithExecutionSurface|TestCLIDoctorScopeAgentSurfaceTracksInstalledSkillSurface|TestRunnerAssessmentSchemaAllowsReadinessBlockedProductProofPacket'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:36:30Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/app"
+      ]
+    },
+    {
+      "command": "node scripts/check-cautilus-skill-disclosure.mjs",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:36:30Z",
+      "outputSummary": [
+        "status ok",
+        "source and packaged Cautilus Agent skills under the 180 nonempty line cap",
+        "required fragments present and forbidden split-surface fragments absent"
+      ]
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/runner_readiness_test.go",
+      "tests": [
+        "TestDoctorRunnerReadinessKeepsAdapterReadyWithMissingAssessment",
+        "TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates",
+        "TestRunnerReadinessBlocksProductProofWithoutVerificationCapabilities",
+        "TestRunnerReadinessRejectsInvalidVerificationCapabilityShape",
+        "TestAgentStatusIncludesRunnerReadinessBranchBeforeClaimBranches",
+        "TestDoctorAndAgentStatusShareRunnerReadinessFacts",
+        "TestRunnerReadinessBranchesExposeStableActionShape",
+        "TestRunnerReadinessSupportsTypedMultiRunnerAdapters"
+      ],
+      "proves": "Read-only runner readiness visibility, assessment freshness, provenance-only commit drift, stable next-branch shape, typed runners, and verification capability blocking."
+    },
+    {
+      "path": "internal/runtime/evaluation_proof_test.go",
+      "tests": [
+        "TestEvaluationProofIgnoresSelfCertifiedProductProofReady",
+        "TestEvaluationProofPreservesAssessedProductRuntimeProofClass",
+        "TestEvaluationProofBlocksAssessmentSurfaceMismatch",
+        "TestImproveInputRejectsBlockedProductRunnerProof"
+      ],
+      "proves": "Eval and improve consume runner readiness as durable assessment-backed proof instead of accepting self-certified runtime labels."
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "tests": [
+        "TestCLIDoctorReportsReadyWithExecutionSurface",
+        "TestCLIDoctorScopeAgentSurfaceTracksInstalledSkillSurface"
+      ],
+      "proves": "CLI doctor output orients operators toward runner assessment and preserves Cautilus Agent readiness as one surface."
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "tests": [
+        "TestRunAgentStatusJSONReturnsNoInputOrientation"
+      ],
+      "proves": "doctor status emits a read-only orientation packet with runner readiness, adapter, skill surface, claim state, and safe branch choices without launching eval, review, improve, or commits."
+    },
+    {
+      "path": "fixtures/runner-readiness/example-assessment.json",
+      "proves": "A concrete operator-copyable runner assessment scaffold exists for cautilus.runner_assessment.v1."
+    },
+    {
+      "path": "scripts/check-cautilus-skill-disclosure.mjs",
+      "proves": "The source and packaged Cautilus Agent skills keep one progressive agent surface and avoid split discover/eval/improve/runner skill framing."
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "reason": "The checked-in tests and disclosure scanner exercise the runner readiness packet implementation, doctor/status orientation, schema/example scaffold, assessment freshness and verification capability gates, and Cautilus Agent progressive-surface boundary."
+  }
+}

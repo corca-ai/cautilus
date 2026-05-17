@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:36:30Z",
+    "evidencePolicy": "Mark runner readiness and verification claims satisfied only where checked-in runtime, CLI, schema, and skill-disclosure tests exercise the generic packet contract."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-runner-readiness-packets-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-29",
+          "claimFingerprint": "sha256:b8a41d1f353f0834c38aff9901722c118215c57cf718c8627c7f55ce6683d986",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the first read-only doctor/status and schema slice for runner readiness, covered by runtime, CLI, and schema tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Doctor, doctor status, runner readiness, and schema tests verify read-only readiness visibility plus a minimal cautilus.runner_assessment.v1 schema and example.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-29",
+                "claim-docs-contracts-runner-readiness-md-198",
+                "claim-docs-contracts-runner-readiness-md-218",
+                "claim-docs-contracts-runner-readiness-md-279",
+                "claim-docs-contracts-runner-verification-md-12"
+              ]
+            }
+          ],
+          "nextAction": "Keep doctor and doctor status read-only when extending runner readiness setup branches.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-198",
+          "claimFingerprint": "sha256:d4042790d12276882b1da1b878bcf16ca3bd2493bcc6473a75a1a9e5b828ae79",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim is a deterministic runner assessment freshness rule.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates verifies repoCommit drift is reported as fresh-with-head-drift provenance while matching adapter and runner file hashes avoid stale state.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-29",
+                "claim-docs-contracts-runner-readiness-md-198",
+                "claim-docs-contracts-runner-readiness-md-218",
+                "claim-docs-contracts-runner-readiness-md-279",
+                "claim-docs-contracts-runner-verification-md-12"
+              ]
+            }
+          ],
+          "nextAction": "Keep repoCommit as provenance and adapter/runner hashes as freshness keys when modifying assessment stale logic.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-218",
+          "claimFingerprint": "sha256:64e61ad04fce5cb126e54073206dc20f6707cdea1ab220de5f14d8cfc3e57b73",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the operator scaffold boundary for runner assessments, covered by doctor next branches and checked-in assessment fixtures.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Runner readiness branches expose required assessment artifacts and scaffoldSource=fixtures/runner-readiness/example-assessment.json, while schema tests validate the assessment packet shape.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-29",
+                "claim-docs-contracts-runner-readiness-md-198",
+                "claim-docs-contracts-runner-readiness-md-218",
+                "claim-docs-contracts-runner-readiness-md-279",
+                "claim-docs-contracts-runner-verification-md-12"
+              ]
+            }
+          ],
+          "nextAction": "Keep one concrete assessment scaffold source in runner readiness branches when changing doctor next-action output.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-readiness-md-279",
+          "claimFingerprint": "sha256:b19f00bcb4a04d501b7a48e4b598b1f02e03f5629ce6b279e5b351ee6156b06c",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the Cautilus Agent product surface, protected by the skill disclosure scanner and doctor status orientation tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "The skill disclosure scanner verifies source and packaged Cautilus Agent copies keep one progressive surface, required command-discovery fragments, and no split discover/eval/improve/runner framing.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-29",
+                "claim-docs-contracts-runner-readiness-md-198",
+                "claim-docs-contracts-runner-readiness-md-218",
+                "claim-docs-contracts-runner-readiness-md-279",
+                "claim-docs-contracts-runner-verification-md-12"
+              ]
+            }
+          ],
+          "nextAction": "Run the skill disclosure scanner when changing Cautilus Agent routing, command discovery, or runner readiness guidance.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runner-verification-md-12",
+          "claimFingerprint": "sha256:3d44c70da40f123a39600a7499e29b864ae1c0178fcdb9b3ab1c3cc9e74985e0",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the durable runner assessment packet boundary, covered by runner verification and evaluation proof tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Runner verification tests require product-proof capability evidence in cautilus.runner_assessment.v1 before readiness is presented as clean, and evaluation/improve proof tests consume assessment-backed truth rather than agent prose.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+              "supportsClaimIds": [
+                "claim-docs-contracts-runner-readiness-md-29",
+                "claim-docs-contracts-runner-readiness-md-198",
+                "claim-docs-contracts-runner-readiness-md-218",
+                "claim-docs-contracts-runner-readiness-md-279",
+                "claim-docs-contracts-runner-verification-md-12"
+              ]
+            }
+          ],
+          "nextAction": "Keep runner verification truth packet-shaped in cautilus.runner_assessment.v1 when adding Cautilus Agent assessment authoring help.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

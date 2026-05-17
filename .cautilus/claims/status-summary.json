@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 199
+          "unknown": 195
         },
         "byReviewStatus": {
-          "heuristic": 199
+          "heuristic": 195
         },
-        "count": 199,
+        "count": 195,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 102
+          "satisfied": 107
         },
         "byReviewStatus": {
-          "agent-reviewed": 102
+          "agent-reviewed": 107
         },
-        "count": 102,
+        "count": 107,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 6,
-          "unknown": 30
+          "unknown": 25
         },
         "byReviewStatus": {
-          "agent-reviewed": 10,
-          "heuristic": 26
+          "agent-reviewed": 9,
+          "heuristic": 22
         },
-        "count": 36,
+        "count": 31,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-runner-readiness-md-29",
-          "claim-docs-contracts-runner-readiness-md-198",
-          "claim-docs-contracts-runner-readiness-md-218",
-          "claim-docs-contracts-runner-readiness-md-279",
-          "claim-docs-contracts-runner-verification-md-12"
+          "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+          "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+          "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
+          "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+          "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 102,
+      "satisfied": 107,
       "stale": 13,
-      "unknown": 246
+      "unknown": 241
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 161,
-      "heuristic": 199,
+      "agent-reviewed": 165,
+      "heuristic": 195,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 102,
+    "satisfiedClaimCount": 107,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -2187,6 +2187,29 @@
         "summary": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet."
       },
       {
+        "claimId": "claim-docs-contracts-runner-readiness-md-29",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runner-readiness-md-29",
+              "claim-docs-contracts-runner-readiness-md-198",
+              "claim-docs-contracts-runner-readiness-md-218",
+              "claim-docs-contracts-runner-readiness-md-279",
+              "claim-docs-contracts-runner-verification-md-12"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The first implementation slice should be read-only readiness visibility through `doctor` and `doctor status`, plus a minimal runner assessment schema and example."
+      },
+      {
         "claimId": "claim-docs-contracts-runner-readiness-md-44",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2296,6 +2319,52 @@
         "summary": "The observed packet should distinguish fixture-backed smoke, coding-agent messaging, in-process product runner, and live/server product runner."
       },
       {
+        "claimId": "claim-docs-contracts-runner-readiness-md-198",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runner-readiness-md-29",
+              "claim-docs-contracts-runner-readiness-md-198",
+              "claim-docs-contracts-runner-readiness-md-218",
+              "claim-docs-contracts-runner-readiness-md-279",
+              "claim-docs-contracts-runner-verification-md-12"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "If the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `doctor status` should expose the drift as assessment provenance without marking the assessment stale."
+      },
+      {
+        "claimId": "claim-docs-contracts-runner-readiness-md-218",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runner-readiness-md-29",
+              "claim-docs-contracts-runner-readiness-md-198",
+              "claim-docs-contracts-runner-readiness-md-218",
+              "claim-docs-contracts-runner-readiness-md-279",
+              "claim-docs-contracts-runner-verification-md-12"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The Cautilus Agent may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone."
+      },
+      {
         "claimId": "claim-docs-contracts-runner-readiness-md-274",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2313,6 +2382,29 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "The shipped schema uses `id`, `surfaces`, `proof_class`, `command_template`, optional `smoke_command_template`, optional `assessment_path`, and optional `default_runtime`."
+      },
+      {
+        "claimId": "claim-docs-contracts-runner-readiness-md-279",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runner-readiness-md-29",
+              "claim-docs-contracts-runner-readiness-md-198",
+              "claim-docs-contracts-runner-readiness-md-218",
+              "claim-docs-contracts-runner-readiness-md-279",
+              "claim-docs-contracts-runner-verification-md-12"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The Cautilus Agent should keep one progressive surface."
       },
       {
         "claimId": "claim-docs-contracts-runner-readiness-md-283",
@@ -2351,6 +2443,29 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "Proof class must remain visible in downstream summaries and reports."
+      },
+      {
+        "claimId": "claim-docs-contracts-runner-verification-md-12",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-runner-readiness-md-29",
+              "claim-docs-contracts-runner-readiness-md-198",
+              "claim-docs-contracts-runner-readiness-md-218",
+              "claim-docs-contracts-runner-readiness-md-279",
+              "claim-docs-contracts-runner-verification-md-12"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The Cautilus Agent may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet."
       },
       {
         "claimId": "claim-docs-contracts-runner-verification-md-68",
@@ -2491,7 +2606,7 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 73,
+    "changedFileCount": 75,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -2506,6 +2621,7 @@
       ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
       ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
       ".cautilus/claims/evidence-contract-refresh-selection-state-transition-2026-05-17.json",
+      ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
       ".cautilus/claims/evidence-contract-review-clustering-curation-2026-05-17.json",
       ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
@@ -2530,6 +2646,7 @@
       ".cautilus/claims/review-result-contract-compact-status-summary-2026-05-17.json",
       ".cautilus/claims/review-result-contract-discover-refresh-carry-forward-2026-05-17.json",
       ".cautilus/claims/review-result-contract-refresh-selection-state-transition-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-reporting-telemetry-packets-2026-05-17.json",
       ".cautilus/claims/review-result-contract-review-clustering-curation-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
@@ -2575,7 +2692,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "67e946cd52c849ee9d696b94b9995bcdc7ee943f",
+    "currentGitCommit": "e305a5e32efd350ae0e8110ccdd8772836e57424",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -2602,7 +2719,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 174,
+    "heuristicClaimsReadyForReview": 170,
     "needsAlignment": 38,
     "needsScenario": 8
   },

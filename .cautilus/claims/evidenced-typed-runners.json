@@ -7399,8 +7399,23 @@
       "claimFingerprint": "sha256:b8a41d1f353f0834c38aff9901722c118215c57cf718c8627c7f55ce6683d986",
       "claimId": "claim-docs-contracts-runner-readiness-md-29",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-29",
+            "claim-docs-contracts-runner-readiness-md-198",
+            "claim-docs-contracts-runner-readiness-md-218",
+            "claim-docs-contracts-runner-readiness-md-279",
+            "claim-docs-contracts-runner-verification-md-12"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Doctor, doctor status, runner readiness, and schema tests verify read-only readiness visibility plus a minimal cautilus.runner_assessment.v1 schema and example.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7408,9 +7423,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep doctor and doctor status read-only when extending runner readiness setup branches.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The first implementation slice should be read-only readiness visibility through `doctor` and `doctor status`, plus a minimal runner assessment schema and example.",
@@ -7419,8 +7434,9 @@
         }
       ],
       "summary": "The first implementation slice should be read-only readiness visibility through `doctor` and `doctor status`, plus a minimal runner assessment schema and example.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names the first read-only doctor/status and schema slice for runner readiness, covered by runtime, CLI, and schema tests."
     },
     {
       "claimAudience": "developer",
@@ -7986,9 +8002,23 @@
       "claimFingerprint": "sha256:d4042790d12276882b1da1b878bcf16ca3bd2493bcc6473a75a1a9e5b828ae79",
       "claimId": "claim-docs-contracts-runner-readiness-md-198",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Runner assessment head-drift provenance is a concrete doctor and agent-status packet behavior.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-29",
+            "claim-docs-contracts-runner-readiness-md-198",
+            "claim-docs-contracts-runner-readiness-md-218",
+            "claim-docs-contracts-runner-readiness-md-279",
+            "claim-docs-contracts-runner-verification-md-12"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "TestRunnerReadinessReportsAssessedSmokeOnlyAndStaleStates verifies repoCommit drift is reported as fresh-with-head-drift provenance while matching adapter and runner file hashes avoid stale state.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -7997,7 +8027,7 @@
         "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach or refresh deterministic doctor and agent-status proof for runner assessment head-drift provenance.",
+      "nextAction": "Keep repoCommit as provenance and adapter/runner hashes as freshness keys when modifying assessment stale logic.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -8010,7 +8040,7 @@
       "summary": "If the current git commit differs from `repoCommit` but the adapter and listed runner file hashes still match, `doctor` and `doctor status` should expose the drift as assessment provenance without marking the assessment stale.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
+      "whyThisLayer": "The claim is a deterministic runner assessment freshness rule."
     },
     {
       "claimAudience": "developer",
@@ -8049,8 +8079,23 @@
       "claimFingerprint": "sha256:64e61ad04fce5cb126e54073206dc20f6707cdea1ab220de5f14d8cfc3e57b73",
       "claimId": "claim-docs-contracts-runner-readiness-md-218",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-29",
+            "claim-docs-contracts-runner-readiness-md-198",
+            "claim-docs-contracts-runner-readiness-md-218",
+            "claim-docs-contracts-runner-readiness-md-279",
+            "claim-docs-contracts-runner-verification-md-12"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Runner readiness branches expose required assessment artifacts and scaffoldSource=fixtures/runner-readiness/example-assessment.json, while schema tests validate the assessment packet shape.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -8058,9 +8103,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep one concrete assessment scaffold source in runner readiness branches when changing doctor next-action output.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The Cautilus Agent may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone.",
@@ -8069,8 +8114,9 @@
         }
       ],
       "summary": "The Cautilus Agent may help fill judgment fields, but operators should not have to author `cautilus.runner_assessment.v1` from prose alone.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names the operator scaffold boundary for runner assessments, covered by doctor next branches and checked-in assessment fixtures."
     },
     {
       "claimAudience": "developer",
@@ -8119,8 +8165,23 @@
       "claimFingerprint": "sha256:b19f00bcb4a04d501b7a48e4b598b1f02e03f5629ce6b279e5b351ee6156b06c",
       "claimId": "claim-docs-contracts-runner-readiness-md-279",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-29",
+            "claim-docs-contracts-runner-readiness-md-198",
+            "claim-docs-contracts-runner-readiness-md-218",
+            "claim-docs-contracts-runner-readiness-md-279",
+            "claim-docs-contracts-runner-verification-md-12"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "The skill disclosure scanner verifies source and packaged Cautilus Agent copies keep one progressive surface, required command-discovery fragments, and no split discover/eval/improve/runner framing.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -8128,9 +8189,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Run the skill disclosure scanner when changing Cautilus Agent routing, command discovery, or runner readiness guidance.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The Cautilus Agent should keep one progressive surface.",
@@ -8139,8 +8200,9 @@
         }
       ],
       "summary": "The Cautilus Agent should keep one progressive surface.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names the Cautilus Agent product surface, protected by the skill disclosure scanner and doctor status orientation tests."
     },
     {
       "claimAudience": "developer",
@@ -8507,8 +8569,23 @@
       "claimFingerprint": "sha256:3d44c70da40f123a39600a7499e29b864ae1c0178fcdb9b3ab1c3cc9e74985e0",
       "claimId": "claim-docs-contracts-runner-verification-md-12",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c695bbdc44b375c23c63555415f69c0d22d4112d0301e69ddbf2e850baee277a",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-runner-readiness-md-29",
+            "claim-docs-contracts-runner-readiness-md-198",
+            "claim-docs-contracts-runner-readiness-md-218",
+            "claim-docs-contracts-runner-readiness-md-279",
+            "claim-docs-contracts-runner-verification-md-12"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Runner verification tests require product-proof capability evidence in cautilus.runner_assessment.v1 before readiness is presented as clean, and evaluation/improve proof tests consume assessment-backed truth rather than agent prose.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -8516,9 +8593,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep runner verification truth packet-shaped in cautilus.runner_assessment.v1 when adding Cautilus Agent assessment authoring help.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The Cautilus Agent may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet.",
@@ -8527,8 +8604,9 @@
         }
       ],
       "summary": "The Cautilus Agent may help create or review the assessment, but durable truth must land in a `cautilus.runner_assessment.v1` packet.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names the durable runner assessment packet boundary, covered by runner verification and evaluation proof tests."
     },
     {
       "claimAudience": "developer",
@@ -12426,9 +12504,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 102,
+      "satisfied": 107,
       "stale": 13,
-      "unknown": 246
+      "unknown": 241
     },
     "byLifecycle": {
       "new": 361
@@ -12439,8 +12517,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 161,
-      "heuristic": 199,
+      "agent-reviewed": 165,
+      "heuristic": 195,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12729,6 +12807,7 @@
       ".cautilus/claims/review-result-contract-claim-workflow-helper-packets-2026-05-17.json",
       ".cautilus/claims/review-result-contract-reporting-telemetry-packets-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-runner-readiness-packets-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
@@ -12791,9 +12870,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 77,
+    "appliedResultCount": 78,
     "skippedResultCount": 52,
-    "keptUpdateCount": 177,
+    "keptUpdateCount": 182,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },
