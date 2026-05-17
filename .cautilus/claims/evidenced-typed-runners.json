@@ -4355,8 +4355,19 @@
       "claimFingerprint": "sha256:7b4489c473b6a58035eb271b8f1be8fcd7305b33c8af3466fa64c11a03043158",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:a8489b82d4b4502d250ee6a0009ce7ef37b112a87a469fd4030e4e481d3a110c",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-85"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by canonical-map builder tests, canonical curation audit tests, a regenerated canonical map packet, and spec lint over the user-facing and maintainer-facing spec indexes.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -4364,9 +4375,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep canonical-map builder and curation-flow audit tests aligned when changing raw claim compression, canonical indexes, or HITL entry rules.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "When raw candidates are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL:",
@@ -4375,8 +4386,9 @@
         }
       ],
       "summary": "When raw candidates are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL:",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names packet-backed canonical curation and a HITL boundary, which are protected by canonical-map builder tests and curation-flow audit tests."
     },
     {
       "claimAudience": "developer",
@@ -12165,9 +12177,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 81,
+      "satisfied": 82,
       "stale": 16,
-      "unknown": 264
+      "unknown": 263
     },
     "byLifecycle": {
       "new": 361
@@ -12178,8 +12190,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 145,
-      "heuristic": 215,
+      "agent-reviewed": 146,
+      "heuristic": 214,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12458,6 +12470,7 @@
       ".cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json",
       ".cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json",
       ".cautilus/claims/review-result-contract-refresh-selection-state-transition-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
@@ -12522,9 +12535,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 69,
+    "appliedResultCount": 70,
     "skippedResultCount": 52,
-    "keptUpdateCount": 155,
+    "keptUpdateCount": 156,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

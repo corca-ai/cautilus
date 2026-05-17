@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:07:43Z",
+    "evidencePolicy": "Only mark the canonical curation-before-HITL boundary satisfied; do not infer semantic approval of every canonical mapping."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-canonical-spec-curation-before-hitl-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
+          "claimFingerprint": "sha256:7b4489c473b6a58035eb271b8f1be8fcd7305b33c8af3466fa64c11a03043158",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names packet-backed canonical curation and a HITL boundary, which are protected by canonical-map builder tests and curation-flow audit tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by canonical-map builder tests, canonical curation audit tests, a regenerated canonical map packet, and spec lint over the user-facing and maintainer-facing spec indexes.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:a8489b82d4b4502d250ee6a0009ce7ef37b112a87a469fd4030e4e481d3a110c",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-85"
+              ]
+            }
+          ],
+          "nextAction": "Keep canonical-map builder and curation-flow audit tests aligned when changing raw claim compression, canonical indexes, or HITL entry rules.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

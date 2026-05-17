@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-canonical-spec-curation-before-hitl-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-85"
+  ],
+  "repoCommit": "a4d8b6bea9cbfbcdfadd04a69a4a6ad722dc3c76",
+  "summary": "Deterministic proof that raw claim candidates are curated through user-facing and maintainer-facing canonical indexes before HITL continuation.",
+  "evidenceScope": {
+    "targetSurface": "canonical spec curation before HITL",
+    "claimBoundary": "Only the docs/contracts/claim-discovery-workflow.md claim that overly granular raw candidates should route through two canonical claim indexes before HITL is marked satisfied.",
+    "notClaimed": [
+      "Every canonical mapping is semantically final without sampling.",
+      "HITL review has already approved all mapped claims.",
+      "The canonical indexes replace source claim packets.",
+      "Consumer repos inherit Cautilus-specific claim ordering without their own adapter and source docs.",
+      "Claim review or eval execution is part of this curation proof."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/build-canonical-claim-map.test.mjs scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 9,
+        "pass": 9,
+        "protectedBehaviors": [
+          "canonical map builder maps raw user and maintainer claims to canonical catalogs",
+          "canonical map preserves absorbed raw claim ids and fingerprints",
+          "low-confidence claims remain flagged for semantic review",
+          "user catalog parsing reads same-directory user spec pages",
+          "maintainer catalog parsing reads same-directory contract spec pages",
+          "curation-flow audit passes only when packet and both canonical spec indexes are inspected before HITL",
+          "curation-flow audit fails when the maintainer-facing index is skipped or review launches before the boundary"
+        ]
+      }
+    },
+    {
+      "command": "npm run claims:canonical-map",
+      "exitCode": 0,
+      "observed": {
+        "schemaVersion": "cautilus.canonical_claim_map.v1",
+        "userCatalog": "docs/specs/user/index.spec.md",
+        "maintainerCatalog": "docs/specs/contracts/index.spec.md",
+        "totalRawClaimCount": 361,
+        "userRawClaimCount": 102,
+        "userMappedToCanonicalCount": 102,
+        "developerRawClaimCount": 259,
+        "developerMappedToMaintainerCanonicalCount": 259,
+        "semanticReviewRecommendedCount": 300
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-workflow-contract",
+      "contentHash": "sha256:f703e3ccf3be041a522bdf6e87640bca5680761ea0138ef439ed73471e91a9e4"
+    },
+    {
+      "path": "docs/specs/user/index.spec.md",
+      "kind": "user-facing-canonical-spec-index",
+      "contentHash": "sha256:00fdcaee58c9bd1520b615f82091044919f78fe5c620430a6828c2cff16b386c"
+    },
+    {
+      "path": "docs/specs/contracts/index.spec.md",
+      "kind": "maintainer-facing-canonical-spec-index",
+      "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
+    },
+    {
+      "path": "scripts/agent-runtime/build-canonical-claim-map.mjs",
+      "kind": "canonical-map-builder",
+      "contentHash": "sha256:5fc4cb643cb893fb29c3d1836d558c24b9afdb6f08882f327dc734fa99689005"
+    },
+    {
+      "path": "scripts/agent-runtime/build-canonical-claim-map.test.mjs",
+      "kind": "canonical-map-builder-tests",
+      "contentHash": "sha256:bbbb1fd450fda1f3259806686a3f36b4ab9a6bd54098d80783b3ac19cdaefc01"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.mjs",
+      "kind": "canonical-spec-curation-flow-audit",
+      "contentHash": "sha256:530d797511c64c67593466d0ad718dd07a09023bee4b61f6c66225f90f7e65d3"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-canonical-spec-curation-flow-log.test.mjs",
+      "kind": "canonical-spec-curation-flow-audit-tests",
+      "contentHash": "sha256:31951563194fc617b9cb68d1548b6138957cce38a4eb6e69bb9dd30f0f7602d6"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The canonical map builder consumes raw claim packets and the two canonical spec indexes, preserves absorbed raw ids and fingerprints, and the curation-flow audit enforces that both indexes are inspected before HITL or review continuation."
+  }
+}
