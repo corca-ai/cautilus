@@ -7,11 +7,11 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:6958731c3ff99f4ca337152056cfe6f9a033bb1894f1ee55f0d25c3fd0a4a874
+- Claims hash: sha256:fe832ef9f4e41ed5e1faa9f96b765a9a869128fdf0ae01a1ef619aa67dc504d8
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:505ec1547e4ddc3ec49f09b5bed03b2192d61c48554778e7334774113cb28822
+- Status hash: sha256:ea0a9917e5e908a582fcdbb94e4ff8e8d6c854b121bbf8ad8ab163bedfd0284e
 - Git state: fresh-with-head-drift; stale=no
-- Snapshot inspected commit: c942011a9d5170bb5e7e84473f1fee1baa057b30
+- Snapshot inspected commit: 67e946cd52c849ee9d696b94b9995bcdc7ee943f
 - Packet commit: c944eef5e6e2336b33aa7652eb8d486a560f3773
 - Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
@@ -21,10 +21,10 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 98, stale: 16, unknown: 247 |
+| Evidence | satisfied: 102, stale: 13, unknown: 246 |
 | Recommended proof | cautilus-eval: 124, deterministic: 140, human-auditable: 97 |
-| Proof readiness | blocked: 27, needs alignment: 37, needs scenario: 8, ready for proof: 289 |
-| Review | agent-reviewed: 160, heuristic: 200, human-reviewed: 1 |
+| Proof readiness | blocked: 27, needs alignment: 38, needs scenario: 8, ready for proof: 288 |
+| Review | agent-reviewed: 161, heuristic: 199, human-reviewed: 1 |
 
 ## Cautilus Eval Backlog
 
@@ -77,11 +77,11 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 
 | Bucket | Actor | Count | Evidence | Review | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 98 | satisfied: 98 | agent-reviewed: 98 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 41 | stale: 9, unknown: 32 | agent-reviewed: 14, heuristic: 27 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 102 | satisfied: 102 | agent-reviewed: 102 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 36 | stale: 6, unknown: 30 | agent-reviewed: 10, heuristic: 26 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 116 | stale: 5, unknown: 111 | agent-reviewed: 8, heuristic: 107, human-reviewed: 1 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
 | agent-design-scenario | agent | 8 | unknown: 8 | agent-reviewed: 1, heuristic: 7 | Decompose the behavior into a concrete scenario before protected eval planning. |
-| human-align-surfaces | human | 37 | unknown: 37 | agent-reviewed: 19, heuristic: 18 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
+| human-align-surfaces | human | 38 | unknown: 38 | agent-reviewed: 20, heuristic: 18 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 34 | stale: 2, unknown: 32 | agent-reviewed: 2, heuristic: 32 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 27 | unknown: 27 | agent-reviewed: 18, heuristic: 9 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
@@ -89,8 +89,8 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 
 | Signal | Actor | Count | Meaning |
 | --- | --- | --- | --- |
-| heuristic-review-needed | agent | 200 | Review heuristic labels before spending proof or eval budget. |
-| stale-evidence | agent | 16 | Refresh or recheck stale evidence before consuming it as proof. |
+| heuristic-review-needed | agent | 199 | Review heuristic labels before spending proof or eval budget. |
+| stale-evidence | agent | 13 | Refresh or recheck stale evidence before consuming it as proof. |
 
 ## How This Avoids A Split SOT
 

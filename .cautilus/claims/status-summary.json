@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 200
+          "unknown": 199
         },
         "byReviewStatus": {
-          "heuristic": 200
+          "heuristic": 199
         },
-        "count": 200,
+        "count": 199,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -22,12 +22,12 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 16
+          "stale": 13
         },
         "byReviewStatus": {
-          "agent-reviewed": 16
+          "agent-reviewed": 13
         },
-        "count": 16,
+        "count": 13,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -35,7 +35,7 @@
           "claim-docs-guides-cli-md-263",
           "claim-docs-guides-cli-md-265",
           "claim-docs-guides-cli-md-478",
-          "claim-docs-contracts-reporting-md-123"
+          "claim-docs-contracts-reporting-md-131"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 98
+          "satisfied": 102
         },
         "byReviewStatus": {
-          "agent-reviewed": 98
+          "agent-reviewed": 102
         },
-        "count": 98,
+        "count": 102,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -62,22 +62,22 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 9,
-          "unknown": 32
+          "stale": 6,
+          "unknown": 30
         },
         "byReviewStatus": {
-          "agent-reviewed": 14,
-          "heuristic": 27
+          "agent-reviewed": 10,
+          "heuristic": 26
         },
-        "count": 41,
+        "count": 36,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-reporting-md-50",
-          "claim-docs-contracts-reporting-md-123",
-          "claim-docs-contracts-reporting-md-125",
-          "claim-docs-contracts-reporting-md-140",
-          "claim-docs-contracts-reporting-md-149"
+          "claim-docs-contracts-runner-readiness-md-29",
+          "claim-docs-contracts-runner-readiness-md-198",
+          "claim-docs-contracts-runner-readiness-md-218",
+          "claim-docs-contracts-runner-readiness-md-279",
+          "claim-docs-contracts-runner-verification-md-12"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -125,13 +125,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 37
+          "unknown": 38
         },
         "byReviewStatus": {
-          "agent-reviewed": 19,
+          "agent-reviewed": 20,
           "heuristic": 18
         },
-        "count": 37,
+        "count": 38,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 98,
-      "stale": 16,
-      "unknown": 247
+      "satisfied": 102,
+      "stale": 13,
+      "unknown": 246
     },
     "byLifecycle": {
       "new": 361
@@ -232,15 +232,15 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 160,
-      "heuristic": 200,
+      "agent-reviewed": 161,
+      "heuristic": 199,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 27,
-      "needs-alignment": 37,
+      "needs-alignment": 38,
       "needs-scenario": 8,
-      "ready-for-proof": 289
+      "ready-for-proof": 288
     }
   },
   "discoveryBoundary": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 98,
+    "satisfiedClaimCount": 102,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -2099,6 +2099,94 @@
         "summary": "This keeps report assembly deterministic."
       },
       {
+        "claimId": "claim-docs-contracts-reporting-md-123",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:b920aa4af3a9de3002606a6390f5576a4c8df96781e76d7fc364bf1bd180b954",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-reporting-md-123",
+              "claim-docs-contracts-reporting-md-125",
+              "claim-docs-contracts-reporting-md-140",
+              "claim-docs-contracts-reporting-md-149"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload."
+      },
+      {
+        "claimId": "claim-docs-contracts-reporting-md-125",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:b920aa4af3a9de3002606a6390f5576a4c8df96781e76d7fc364bf1bd180b954",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-reporting-md-123",
+              "claim-docs-contracts-reporting-md-125",
+              "claim-docs-contracts-reporting-md-140",
+              "claim-docs-contracts-reporting-md-149"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Cache-token breakdown follows the same rule: preserve it when a runtime or wrapper emits explicit machine-readable fields, and do not infer cache behavior from prose."
+      },
+      {
+        "claimId": "claim-docs-contracts-reporting-md-140",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:b920aa4af3a9de3002606a6390f5576a4c8df96781e76d7fc364bf1bd180b954",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-reporting-md-123",
+              "claim-docs-contracts-reporting-md-125",
+              "claim-docs-contracts-reporting-md-140",
+              "claim-docs-contracts-reporting-md-149"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure"
+      },
+      {
+        "claimId": "claim-docs-contracts-reporting-md-149",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:b920aa4af3a9de3002606a6390f5576a4c8df96781e76d7fc364bf1bd180b954",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-reporting-md-123",
+              "claim-docs-contracts-reporting-md-125",
+              "claim-docs-contracts-reporting-md-140",
+              "claim-docs-contracts-reporting-md-149"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet."
+      },
+      {
         "claimId": "claim-docs-contracts-runner-readiness-md-44",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2403,7 +2491,7 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 71,
+    "changedFileCount": 73,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -2414,6 +2502,7 @@
       ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
       ".cautilus/claims/evidence-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
       ".cautilus/claims/evidence-contract-claim-discovery-proof-plan-2026-05-17.json",
+      ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
       ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
       ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
       ".cautilus/claims/evidence-contract-refresh-selection-state-transition-2026-05-17.json",
@@ -2437,6 +2526,7 @@
       ".cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json",
       ".cautilus/claims/review-result-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
       ".cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-claim-workflow-helper-packets-2026-05-17.json",
       ".cautilus/claims/review-result-contract-compact-status-summary-2026-05-17.json",
       ".cautilus/claims/review-result-contract-discover-refresh-carry-forward-2026-05-17.json",
       ".cautilus/claims/review-result-contract-refresh-selection-state-transition-2026-05-17.json",
@@ -2485,7 +2575,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "c942011a9d5170bb5e7e84473f1fee1baa057b30",
+    "currentGitCommit": "67e946cd52c849ee9d696b94b9995bcdc7ee943f",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -2512,8 +2602,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 175,
-    "needsAlignment": 37,
+    "heuristicClaimsReadyForReview": 174,
+    "needsAlignment": 38,
     "needsScenario": 8
   },
   "sampleClaims": [

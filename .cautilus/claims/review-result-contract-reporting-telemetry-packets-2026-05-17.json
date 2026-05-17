@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:32:49Z",
+    "evidencePolicy": "Satisfy only reporting claims covered by checked-in packet and CLI tests; reclassify the command-observation writer claim instead of overclaiming unsupported execution behavior."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-reporting-telemetry-packets-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-reporting-md-50",
+          "claimFingerprint": "sha256:73fb8c10d3361b316a7113e31f0b8d4652101dc2cf2fc639a9ad58d1237205d9",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "needs-alignment",
+          "whyThisLayer": "The reporting contract describes a conditional product-owned report-input writer, while the active-run contract currently says report-input.json is operator/agent assembled and evaluate fixture writes only eval artifacts.",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "No current implementation evidence was found that Cautilus itself writes report-input commandObservations while executing adapter-defined report mode commands.",
+          "evidenceRefs": [],
+          "nextAction": "Either implement the product-owned report-input command observation writer or realign reporting.md with the current active-run boundary before attaching deterministic proof.",
+          "unresolvedQuestions": [
+            "Should evaluate fixture ever assemble report-input.json, or should reporting.md keep this as a future conditional only?"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-123",
+          "claimFingerprint": "sha256:84e20fceee7b13f03574081e031d1ebd73a26ab909f01a9ef7f75d864fe70b82",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a deterministic explicit-only telemetry rule, covered by report packet tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Report packet tests verify cost is not inferred from command observations and is preserved only from explicit mode telemetry.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b920aa4af3a9de3002606a6390f5576a4c8df96781e76d7fc364bf1bd180b954",
+              "supportsClaimIds": [
+                "claim-docs-contracts-reporting-md-123",
+                "claim-docs-contracts-reporting-md-125",
+                "claim-docs-contracts-reporting-md-140",
+                "claim-docs-contracts-reporting-md-149"
+              ]
+            }
+          ],
+          "nextAction": "Keep cost fields explicit-only when changing report telemetry aggregation or command observation handling.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-125",
+          "claimFingerprint": "sha256:61f5bb9761b01d3606155273d9a26ede87cf888cf4badbcd861acb9b1f8d864e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names explicit cache-token telemetry preservation, covered by mode and scenario telemetry tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Report and scenario telemetry tests verify cache_creation_input_tokens, cache_read_input_tokens, cached_input_tokens, and budget-attribution fields are preserved only from structured telemetry.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b920aa4af3a9de3002606a6390f5576a4c8df96781e76d7fc364bf1bd180b954",
+              "supportsClaimIds": [
+                "claim-docs-contracts-reporting-md-123",
+                "claim-docs-contracts-reporting-md-125",
+                "claim-docs-contracts-reporting-md-140",
+                "claim-docs-contracts-reporting-md-149"
+              ]
+            }
+          ],
+          "nextAction": "Keep cache-token breakdown fields as structured telemetry fields, not prose-derived report decoration.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-140",
+          "claimFingerprint": "sha256:3d9b56890a284b8382d97381cd68e2da53890933235ecf3a0508c44af42cd3a8",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names review-variant blocked packet shape, covered by CLI smoke and reason classification tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "CLI review variant tests verify blocked variant outputs carry product-owned blocked status, reasonCodes, concrete reason text, synthesized blocker findings, and partial-success handling.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b920aa4af3a9de3002606a6390f5576a4c8df96781e76d7fc364bf1bd180b954",
+              "supportsClaimIds": [
+                "claim-docs-contracts-reporting-md-123",
+                "claim-docs-contracts-reporting-md-125",
+                "claim-docs-contracts-reporting-md-140",
+                "claim-docs-contracts-reporting-md-149"
+              ]
+            }
+          ],
+          "nextAction": "Keep blocked review variants machine-readable when adding executor variants or failure classifiers.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-149",
+          "claimFingerprint": "sha256:f837e4e0934106ad104956fd9d7e47ae5f9fa801b51a2ef9d30f008ea7e2158f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names report packet scenario-telemetry lifting for mode runs, covered by report builder tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Report builder tests verify held-out and full-gate mode runs preserve scenarioTelemetrySummary, mode telemetry, and overall report telemetry from explicit scenario result packets.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b920aa4af3a9de3002606a6390f5576a4c8df96781e76d7fc364bf1bd180b954",
+              "supportsClaimIds": [
+                "claim-docs-contracts-reporting-md-123",
+                "claim-docs-contracts-reporting-md-125",
+                "claim-docs-contracts-reporting-md-140",
+                "claim-docs-contracts-reporting-md-149"
+              ]
+            }
+          ],
+          "nextAction": "Keep scenario-level telemetry in mode summaries and report telemetry when changing report build inputs or schemas.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-reporting-telemetry-packets-2026-05-17",
+  "createdAt": "2026-05-17T09:32:49Z",
+  "repoCommit": "67e946cd52c849ee9d696b94b9995bcdc7ee943f",
+  "createdForClaimIds": [
+    "claim-docs-contracts-reporting-md-123",
+    "claim-docs-contracts-reporting-md-125",
+    "claim-docs-contracts-reporting-md-140",
+    "claim-docs-contracts-reporting-md-149"
+  ],
+  "summary": "Deterministic report packet tests cover explicit-only cost and cache telemetry, blocked review variant reason payloads, and held-out/full-gate scenario telemetry lifting.",
+  "evidenceScope": {
+    "covered": [
+      "Report packets do not infer cost or runtime identity from command text or stdout/stderr observations; they preserve explicit mode and scenario telemetry only.",
+      "Cache-token and budget-attribution fields are preserved and aggregated when explicit mode or scenario telemetry emits machine-readable fields.",
+      "Blocked review variants preserve machine-readable reason codes and a concrete reason inside product-owned blocked packets.",
+      "Held-out and full-gate mode runs lift explicit scenario telemetry into mode summaries and overall report telemetry."
+    ],
+    "notClaimed": [
+      "This bundle does not prove provider pricing correctness; it proves only explicit field preservation and non-inference.",
+      "This bundle does not claim that Cautilus currently writes report-input command observations while executing adapter-defined report mode commands."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildReportPacketOnlyCarriesExplicitCostTelemetry|TestBuildReportPacketAggregatesBudgetAttributionTelemetry|TestBuildReportPacketOnlyCarriesExplicitRuntimeIdentity|TestSummarizeScenarioTelemetryEntriesCarriesBudgetAttribution|TestClassifyModeSummarySurfacesProviderRateLimitFromHTTP429Context|TestClassifyModeSummaryIgnoresResultIDDigitsThatContain429|TestClassifyModeSummaryStillDetectsStructured429AlongsideResultID|TestClassifyModeSummaryDoesNotTreat1429AsRateLimit'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:32:49Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/runtime"
+      ]
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIReviewVariantsReturnsBlockedSummaryWhenVariantEmitsBlockedPayload|TestCLIReviewVariantsClassifiesUnavailableExecutorAsBlockedPartialSuccess|TestCLIReviewVariantsAggregatesExplicitTelemetry|TestCLIReviewVariantsReturnsFailedSummaryWhenVariantEmitsFailedPayload|TestCLIExampleInputEmitsPacketsThatRoundTripThroughTheSameCommand'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:32:49Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/app"
+      ]
+    },
+    {
+      "command": "node scripts/agent-runtime/build-report-packet.test.mjs",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:32:49Z",
+      "outputSummary": [
+        "buildReportPacket aggregates mode telemetry and scenario summaries",
+        "buildReportPacket surfaces provider rate-limit contamination in report reasons",
+        "build-report-packet defaults to report-input.json and report.json inside the active run"
+      ]
+    },
+    {
+      "command": "node scripts/agent-runtime/reporting-contract-schemas.test.mjs && node scripts/agent-runtime/report-reason-classification.test.mjs",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:32:49Z",
+      "outputSummary": [
+        "report input and generated report match the checked-in schemas",
+        "report reason classification surfaces provider rate-limit contamination",
+        "report reason classification does not treat resultId digits as a provider rate-limit signal"
+      ]
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/runtime_fingerprint_test.go",
+      "tests": [
+        "TestBuildReportPacketOnlyCarriesExplicitCostTelemetry",
+        "TestBuildReportPacketAggregatesBudgetAttributionTelemetry",
+        "TestBuildReportPacketOnlyCarriesExplicitRuntimeIdentity"
+      ],
+      "proves": "Cost, provider, model, cache, and budget-attribution telemetry are explicit-only and aggregated from structured telemetry fields."
+    },
+    {
+      "path": "internal/runtime/scenario_telemetry_test.go",
+      "tests": [
+        "TestSummarizeScenarioTelemetryEntriesCarriesBudgetAttribution"
+      ],
+      "proves": "Scenario-level telemetry preserves cache-token breakdown, cost, token, retry, and tool-call attribution fields."
+    },
+    {
+      "path": "internal/runtime/report_reasons_test.go",
+      "tests": [
+        "TestClassifyModeSummarySurfacesProviderRateLimitFromHTTP429Context",
+        "TestClassifyModeSummaryStillDetectsStructured429AlongsideResultID"
+      ],
+      "proves": "Report mode summaries carry machine-readable reason codes and warnings when persisted artifacts show provider contamination."
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "tests": [
+        "TestCLIReviewVariantsReturnsBlockedSummaryWhenVariantEmitsBlockedPayload",
+        "TestCLIReviewVariantsClassifiesUnavailableExecutorAsBlockedPartialSuccess",
+        "TestCLIReviewVariantsAggregatesExplicitTelemetry"
+      ],
+      "proves": "Review variant execution packets preserve blocked status, reason codes, concrete reason payloads, partial success, and explicit numeric telemetry."
+    },
+    {
+      "path": "scripts/agent-runtime/build-report-packet.test.mjs",
+      "tests": [
+        "buildReportPacket aggregates mode telemetry and scenario summaries",
+        "buildReportPacket surfaces provider rate-limit contamination in report reasons"
+      ],
+      "proves": "The JavaScript report builder mirrors report telemetry aggregation, scenario telemetry lifting, and contamination reason behavior."
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "reason": "The checked-in Go and JavaScript tests exercise the explicit telemetry contract, cache-token preservation, blocked reason payload contract, and mode/scenario telemetry lifting asserted by these reporting claims."
+  }
+}
