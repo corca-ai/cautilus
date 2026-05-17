@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-17T01:52:28Z",
+  "generated_at": "2026-05-17T08:02:35Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -830,13 +830,24 @@
             "files:read"
           ]
         },
-        "intent_triggers": [],
+        "intent_triggers": [
+          "Slack thread",
+          "Slack URL",
+          "Slack gather",
+          "slack.com/archives",
+          "gather Slack"
+        ],
         "trigger_phrases": [
           "gather-slack",
           "Slack thread gather runtime",
           "gather-slack support",
           "gather-slack support skill",
-          "support/gather-slack"
+          "support/gather-slack",
+          "Slack thread",
+          "Slack URL",
+          "Slack gather",
+          "slack.com/archives",
+          "gather Slack"
         ],
         "config_layers": [
           {
