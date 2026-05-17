@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:560e7ce57324d7fc49369b8161dfcee59b660d0b71ac0208dfe8081df9cb5f23",
+    "claimsHash": "sha256:109677b36855b0fb8d1189cf1714827cd1e7f495f3023c63f4474f2f8b04b424",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:7f821c4441662c744ec99fa574430ccb7f5533163b67eee9300fbec4432beea5",
+    "statusHash": "sha256:340704f369969356dc2ad59c32775c723f110d7d22815749fc1a3be06c3bc2f5",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,7 +12,7 @@
     }
   },
   "gitState": {
-    "changedFileCount": 53,
+    "changedFileCount": 55,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -28,6 +28,7 @@
       ".cautilus/claims/evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
       ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
+      ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
       ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
@@ -46,6 +47,7 @@
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
+      ".cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json",
       ".cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
@@ -76,7 +78,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "caafbb6854a112b11580b6e1467421d72dd4c9dc",
+    "currentGitCommit": "6439780f071ddb2067a1e2847787a8b6e1337cd5",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -87,9 +89,9 @@
     "candidateCount": 361,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 79,
+      "satisfied": 80,
       "stale": 16,
-      "unknown": 266
+      "unknown": 265
     },
     "byRecommendedProof": {
       "cautilus-eval": 124,
@@ -103,8 +105,8 @@
       "ready-for-proof": 289
     },
     "byReviewStatus": {
-      "agent-reviewed": 143,
-      "heuristic": 217,
+      "agent-reviewed": 144,
+      "heuristic": 216,
       "human-reviewed": 1
     }
   },
@@ -279,27 +281,27 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 79,
+      "count": 80,
       "actor": "none",
       "evidence": {
-        "satisfied": 79
+        "satisfied": 80
       },
       "review": {
-        "agent-reviewed": 79
+        "agent-reviewed": 80
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 60,
+      "count": 59,
       "actor": "agent",
       "evidence": {
         "stale": 9,
-        "unknown": 51
+        "unknown": 50
       },
       "review": {
         "agent-reviewed": 16,
-        "heuristic": 44
+        "heuristic": 43
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
@@ -375,7 +377,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 217,
+      "count": 216,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [

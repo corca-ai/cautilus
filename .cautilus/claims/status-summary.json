@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 217
+          "unknown": 216
         },
         "byReviewStatus": {
-          "heuristic": 217
+          "heuristic": 216
         },
-        "count": 217,
+        "count": 216,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 79
+          "satisfied": 80
         },
         "byReviewStatus": {
-          "agent-reviewed": 79
+          "agent-reviewed": 80
         },
-        "count": 79,
+        "count": 80,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 9,
-          "unknown": 51
+          "unknown": 50
         },
         "byReviewStatus": {
           "agent-reviewed": 16,
-          "heuristic": 44
+          "heuristic": 43
         },
-        "count": 60,
+        "count": 59,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-claim-discovery-workflow-md-5",
           "claim-docs-contracts-claim-discovery-workflow-md-21",
           "claim-docs-contracts-claim-discovery-workflow-md-85",
           "claim-docs-contracts-claim-discovery-workflow-md-175",
-          "claim-docs-contracts-claim-discovery-workflow-md-361"
+          "claim-docs-contracts-claim-discovery-workflow-md-361",
+          "claim-docs-contracts-claim-discovery-workflow-md-374"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 79,
+      "satisfied": 80,
       "stale": 16,
-      "unknown": 266
+      "unknown": 265
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 143,
-      "heuristic": 217,
+      "agent-reviewed": 144,
+      "heuristic": 216,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 79,
+    "satisfiedClaimCount": 80,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1491,6 +1491,25 @@
         "summary": "`Cautilus` pins one product-owned per-run workspace root per workflow and keeps the reference sticky across consumer command invocations with a shell environment variable."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:84a7266e77583ccc0cea197a325d03093bfcc58f16184d0bbeeed49478e9bec4",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-claim-discovery-proof-plan-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-5"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`cautilus discover claims` currently emits a deterministic, source-ref-backed proof-plan skeleton."
+      },
+      {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-95",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2010,7 +2029,7 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 53,
+    "changedFileCount": 55,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -2026,6 +2045,7 @@
       ".cautilus/claims/evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
       ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
+      ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
       ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
@@ -2044,6 +2064,7 @@
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
+      ".cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json",
       ".cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
@@ -2074,7 +2095,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "caafbb6854a112b11580b6e1467421d72dd4c9dc",
+    "currentGitCommit": "6439780f071ddb2067a1e2847787a8b6e1337cd5",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -2101,7 +2122,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 192,
+    "heuristicClaimsReadyForReview": 191,
     "needsAlignment": 37,
     "needsScenario": 8
   },

@@ -4142,8 +4142,19 @@
       "claimFingerprint": "sha256:a03560d63b09185cf158d22401a9cf583efd5820886eb8862e22a388c775dc3f",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:84a7266e77583ccc0cea197a325d03093bfcc58f16184d0bbeeed49478e9bec4",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-claim-discovery-proof-plan-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-5"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by focused runtime and CLI tests: `discover claims` writes `cautilus.claim_proof_plan.v1`, preserves source refs, keeps proof routes distinct, and carries a non-verdict notice.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -4151,9 +4162,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep deterministic discovery tests current when changing candidate extraction, source refs, proof routing, or non-verdict packet semantics.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`cautilus discover claims` currently emits a deterministic, source-ref-backed proof-plan skeleton.",
@@ -4162,8 +4173,9 @@
         }
       ],
       "summary": "`cautilus discover claims` currently emits a deterministic, source-ref-backed proof-plan skeleton.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names shipped deterministic claim-discovery packet behavior rather than model-backed review or eval verdicts."
     },
     {
       "claimAudience": "developer",
@@ -12141,9 +12153,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 79,
+      "satisfied": 80,
       "stale": 16,
-      "unknown": 266
+      "unknown": 265
     },
     "byLifecycle": {
       "new": 361
@@ -12154,8 +12166,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 143,
-      "heuristic": 217,
+      "agent-reviewed": 144,
+      "heuristic": 216,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12432,6 +12444,7 @@
       ".cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
@@ -12496,9 +12509,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 67,
+    "appliedResultCount": 68,
     "skippedResultCount": 52,
-    "keptUpdateCount": 153,
+    "keptUpdateCount": 154,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

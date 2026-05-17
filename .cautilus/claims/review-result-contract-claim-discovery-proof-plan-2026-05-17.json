@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T08:58:31Z",
+    "evidencePolicy": "Only mark the deterministic `discover claims` proof-plan skeleton claim satisfied; do not infer discovered claims are verified or that the full Cautilus Agent review workflow has run."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-claim-discovery-proof-plan-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+          "claimFingerprint": "sha256:a03560d63b09185cf158d22401a9cf583efd5820886eb8862e22a388c775dc3f",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names shipped deterministic claim-discovery packet behavior rather than model-backed review or eval verdicts.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by focused runtime and CLI tests: `discover claims` writes `cautilus.claim_proof_plan.v1`, preserves source refs, keeps proof routes distinct, and carries a non-verdict notice.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-claim-discovery-proof-plan-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:84a7266e77583ccc0cea197a325d03093bfcc58f16184d0bbeeed49478e9bec4",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-5"
+              ]
+            }
+          ],
+          "nextAction": "Keep deterministic discovery tests current when changing candidate extraction, source refs, proof routing, or non-verdict packet semantics.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

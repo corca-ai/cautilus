@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-claim-discovery-proof-plan-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-5"
+  ],
+  "repoCommit": "6439780f071ddb2067a1e2847787a8b6e1337cd5",
+  "summary": "Current deterministic proof that the public `cautilus discover claims` contract emits a source-ref-backed proof-plan skeleton rather than a verification verdict.",
+  "evidenceScope": {
+    "targetSurface": "claim discovery workflow proof-plan contract",
+    "claimBoundary": "Only the docs/contracts/claim-discovery-workflow.md claim that `cautilus discover claims` emits a deterministic, source-ref-backed proof-plan skeleton is marked satisfied.",
+    "notClaimed": [
+      "Discovered claims are verified or true.",
+      "LLM-backed claim review runs during `discover claims`.",
+      "Eval scenario planning or fixture authoring runs during `discover claims`.",
+      "The full Cautilus Agent curation workflow is proven by this binary packet slice.",
+      "Every refresh workflow decision in the contract is covered by this proof-plan skeleton claim."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting|TestClassifyClaimProofLayerRoutesDurablePacketClaimsToDeterministic' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "claim discovery excludes prompt examples, label definitions, and open probe questions",
+          "claim discovery preserves source refs from declared documentation",
+          "claim discovery keeps deterministic, human-auditable, and Cautilus-eval proof routes distinct",
+          "durable packet and machine-readable claims route to deterministic proof instead of eval verdicts"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunClaimDiscoverWritesProofPlan|TestRunClaimDiscoverRefreshPlanRefusesSavedClaimStateOutput' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok",
+        "protectedBehaviors": [
+          "`discover claims` writes `cautilus.claim_proof_plan.v1`",
+          "the proof-plan packet includes source-ref-backed claim candidates and multiple recommended proof routes",
+          "the packet carries a non-verdict notice instead of marking discovered claims verified",
+          "refresh-plan output cannot overwrite saved claim-state proof-plan paths"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    }
+  ],
+  "relatedEvidence": [
+    {
+      "path": ".cautilus/claims/evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
+      "kind": "master-plan-proof-plan-evidence-bundle",
+      "contentHash": "sha256:40ebe56a57e4d6e1fbab7426c9545a6b23d54682ad07870c72569fd46aa12337",
+      "reason": "Records the same shipped proof-plan packet boundary for the master-plan source claim."
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-workflow-contract",
+      "contentHash": "sha256:f703e3ccf3be041a522bdf6e87640bca5680761ea0138ef439ed73471e91a9e4"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-runtime-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "discover-claims-cli-handler",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "discover-claims-cli-tests",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "fixtures/claim-discovery/example-proof-plan.json",
+      "kind": "proof-plan-example-packet",
+      "contentHash": "sha256:e01303422721987310cfeed4adace24a9934337b3833c08866d77fb133fea9a3"
+    },
+    {
+      "path": "fixtures/claim-discovery/proof-plan.schema.json",
+      "kind": "proof-plan-schema-fixture",
+      "contentHash": "sha256:687248997d8857f83216de54f084e915717f72ea1cf6d23fcffc3920041a8783"
+    },
+    {
+      "path": "scripts/lint-specs.mjs",
+      "kind": "spec-lint-gate",
+      "contentHash": "sha256:4d9b157358317ac869b1552fa9b9ad96f61fe642f28cde41bc65fce46a570726"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused runtime and CLI tests prove `discover claims` writes a `cautilus.claim_proof_plan.v1` packet with source-ref-backed candidates, proof routing, and a non-verdict notice, matching the contract's proof-plan skeleton claim."
+  }
+}
