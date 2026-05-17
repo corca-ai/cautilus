@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 234
+          "unknown": 233
         },
         "byReviewStatus": {
-          "heuristic": 234
+          "heuristic": 233
         },
-        "count": 234,
+        "count": 233,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -146,13 +146,13 @@
       {
         "byEvidenceStatus": {
           "stale": 2,
-          "unknown": 33
+          "unknown": 32
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 33
+          "heuristic": 32
         },
-        "count": 35,
+        "count": 34,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -186,7 +186,7 @@
       }
     ]
   },
-  "candidateCount": 362,
+  "candidateCount": 361,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -203,14 +203,14 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 260,
+      "developer": 259,
       "user": 102
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 58,
       "Agent and skill workflow": 79,
       "Claim discovery and review": 42,
-      "Documentation and contracts": 85,
+      "Documentation and contracts": 84,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 30,
@@ -221,26 +221,26 @@
     "byEvidenceStatus": {
       "satisfied": 57,
       "stale": 20,
-      "unknown": 285
+      "unknown": 284
     },
     "byLifecycle": {
-      "new": 362
+      "new": 361
     },
     "byRecommendedProof": {
       "cautilus-eval": 124,
       "deterministic": 140,
-      "human-auditable": 98
+      "human-auditable": 97
     },
     "byReviewStatus": {
       "agent-reviewed": 127,
-      "heuristic": 234,
+      "heuristic": 233,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 27,
       "needs-alignment": 37,
       "needs-scenario": 8,
-      "ready-for-proof": 290
+      "ready-for-proof": 289
     }
   },
   "discoveryBoundary": {
@@ -1568,7 +1568,7 @@
       }
     ]
   },
-  "gitCommit": "b46cc55d091a64df2dd946e32db881ce789871a9",
+  "gitCommit": "0430f73a47adc9920a50b68dce5f681a848249c5",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -1580,10 +1580,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "b46cc55d091a64df2dd946e32db881ce789871a9",
+    "currentGitCommit": "0430f73a47adc9920a50b68dce5f681a848249c5",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "b46cc55d091a64df2dd946e32db881ce789871a9",
+    "packetGitCommit": "0430f73a47adc9920a50b68dce5f681a848249c5",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -1607,7 +1607,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 209,
+    "heuristicClaimsReadyForReview": 208,
     "needsAlignment": 37,
     "needsScenario": 8
   },

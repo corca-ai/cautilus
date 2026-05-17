@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:59f7d91337d8c803d663a86760731945df1e3306be14593009ce9a721401ed8b",
+    "claimsHash": "sha256:3fba76687a3d88c08b1ea00ae262157ba19b84d7db07da55fc8697573a7f02dc",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:d8ac972ae42a62c0d6b03469508f1eb363677376013eeee95ee4a3568aead91c",
+    "statusHash": "sha256:c8f8a4c64b7c895f6cb91d3d0c4401bb5e212df5c7925ddd1766d5efeed299d3",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,35 +22,35 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "b46cc55d091a64df2dd946e32db881ce789871a9",
+    "currentGitCommit": "0430f73a47adc9920a50b68dce5f681a848249c5",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "b46cc55d091a64df2dd946e32db881ce789871a9",
+    "packetGitCommit": "0430f73a47adc9920a50b68dce5f681a848249c5",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
-    "candidateCount": 362,
+    "candidateCount": 361,
     "sourceCount": 65,
     "byEvidenceStatus": {
       "satisfied": 57,
       "stale": 20,
-      "unknown": 285
+      "unknown": 284
     },
     "byRecommendedProof": {
       "cautilus-eval": 124,
       "deterministic": 140,
-      "human-auditable": 98
+      "human-auditable": 97
     },
     "byVerificationReadiness": {
       "blocked": 27,
       "needs-alignment": 37,
       "needs-scenario": 8,
-      "ready-for-proof": 290
+      "ready-for-proof": 289
     },
     "byReviewStatus": {
       "agent-reviewed": 127,
-      "heuristic": 234,
+      "heuristic": 233,
       "human-reviewed": 1
     }
   },
@@ -292,15 +292,15 @@
     },
     {
       "id": "human-confirm-or-decompose",
-      "count": 35,
+      "count": 34,
       "actor": "human",
       "evidence": {
         "stale": 2,
-        "unknown": 33
+        "unknown": 32
       },
       "review": {
         "agent-reviewed": 2,
-        "heuristic": 33
+        "heuristic": 32
       },
       "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
     },
@@ -321,7 +321,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 234,
+      "count": 233,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [

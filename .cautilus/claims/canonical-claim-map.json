@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:59f7d91337d8c803d663a86760731945df1e3306be14593009ce9a721401ed8b"
+      "contentHash": "sha256:3fba76687a3d88c08b1ea00ae262157ba19b84d7db07da55fc8697573a7f02dc"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "b46cc55d091a64df2dd946e32db881ce789871a9",
+  "claimsPacketGitCommit": "0430f73a47adc9920a50b68dce5f681a848249c5",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 362,
+  "claimsPacketCandidateCount": 361,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -572,24 +572,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 362,
+    "totalRawClaimCount": 361,
     "userRawClaimCount": 102,
     "userMappedToCanonicalCount": 102,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 302,
+    "semanticReviewRecommendedCount": 301,
     "userSemanticReviewRecommendedCount": 46,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 260,
+      "mapped-to-maintainer-canonical": 259,
       "mapped-to-user-canonical": 102
     },
     "byAudience": {
-      "developer": 260,
+      "developer": 259,
       "user": 102
     },
     "byMappingConfidence": {
       "high": 60,
       "low": 20,
-      "medium": 282
+      "medium": 281
     },
     "byUserCanonicalClaimId": {
       "U1": 27,
@@ -603,7 +603,7 @@
     "byMaintainerCanonicalClaimId": {
       "M1": 6,
       "M10": 9,
-      "M11": 36,
+      "M11": 35,
       "M12": 10,
       "M2": 10,
       "M3": 62,
@@ -783,15 +783,14 @@
       "claim-docs-contracts-reporting-md-39",
       "claim-docs-contracts-reporting-md-48",
       "claim-docs-contracts-reporting-md-50",
-      "claim-docs-contracts-reporting-md-120",
-      "claim-docs-contracts-reporting-md-122",
-      "claim-docs-contracts-reporting-md-126",
-      "claim-docs-contracts-reporting-md-128",
-      "claim-docs-contracts-reporting-md-129",
-      "claim-docs-contracts-reporting-md-137",
-      "claim-docs-contracts-reporting-md-141",
-      "claim-docs-contracts-reporting-md-146",
-      "claim-docs-contracts-reporting-md-167",
+      "claim-docs-contracts-reporting-md-123",
+      "claim-docs-contracts-reporting-md-125",
+      "claim-docs-contracts-reporting-md-131",
+      "claim-docs-contracts-reporting-md-132",
+      "claim-docs-contracts-reporting-md-140",
+      "claim-docs-contracts-reporting-md-144",
+      "claim-docs-contracts-reporting-md-149",
+      "claim-docs-contracts-reporting-md-170",
       "claim-docs-contracts-runner-readiness-md-13",
       "claim-docs-contracts-runner-readiness-md-29",
       "claim-docs-contracts-runner-readiness-md-37",
@@ -2463,9 +2462,9 @@
         "claim-docs-contracts-claim-discovery-workflow-md-704",
         "claim-docs-contracts-live-run-invocation-md-24",
         "claim-docs-contracts-live-run-invocation-md-59",
-        "claim-docs-contracts-reporting-md-122",
-        "claim-docs-contracts-reporting-md-128",
-        "claim-docs-contracts-reporting-md-129",
+        "claim-docs-contracts-reporting-md-125",
+        "claim-docs-contracts-reporting-md-131",
+        "claim-docs-contracts-reporting-md-132",
         "claim-docs-contracts-runner-readiness-md-13",
         "claim-docs-contracts-runner-readiness-md-37",
         "claim-docs-contracts-runner-readiness-md-43",
@@ -2688,19 +2687,19 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-reporting-md-122",
+          "claimId": "claim-docs-contracts-reporting-md-125",
           "claimFingerprint": "sha256:61f5bb9761b01d3606155273d9a26ede87cf888cf4badbcd861acb9b1f8d864e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-reporting-md-128",
+          "claimId": "claim-docs-contracts-reporting-md-131",
           "claimFingerprint": "sha256:6a5975f5be8ff5f08f378525aa1963dc684e6d1d50395f4326e2788cdb47521f",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-reporting-md-129",
+          "claimId": "claim-docs-contracts-reporting-md-132",
           "claimFingerprint": "sha256:c40280e0f0251c4fe6717805add31109eb82cf41e62faba97ebfb5d41cec0fde",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3189,7 +3188,7 @@
       "absorbedRawClaimCount": 9,
       "absorbedRawClaimIds": [
         "claim-agents-md-32",
-        "claim-docs-contracts-reporting-md-167",
+        "claim-docs-contracts-reporting-md-170",
         "claim-docs-specs-rules-evidence-gaps-spec-md-3",
         "claim-docs-contracts-improvement-md-34",
         "claim-docs-contracts-improvement-md-136",
@@ -3206,7 +3205,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-reporting-md-167",
+          "claimId": "claim-docs-contracts-reporting-md-170",
           "claimFingerprint": "sha256:4c026c323498f2e3bdb8f8e9ae07bd3be82d64e0f8167b9899e5e0fc717f5db3",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
@@ -3559,7 +3558,7 @@
     {
       "canonicalClaimId": "M11",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 36,
+      "absorbedRawClaimCount": 35,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-219",
         "claim-docs-contracts-adapter-contract-md-426",
@@ -3578,11 +3577,10 @@
         "claim-docs-contracts-claim-discovery-workflow-md-513",
         "claim-docs-contracts-claim-discovery-workflow-md-528",
         "claim-docs-contracts-reporting-md-50",
-        "claim-docs-contracts-reporting-md-120",
-        "claim-docs-contracts-reporting-md-126",
-        "claim-docs-contracts-reporting-md-137",
-        "claim-docs-contracts-reporting-md-141",
-        "claim-docs-contracts-reporting-md-146",
+        "claim-docs-contracts-reporting-md-123",
+        "claim-docs-contracts-reporting-md-140",
+        "claim-docs-contracts-reporting-md-144",
+        "claim-docs-contracts-reporting-md-149",
         "claim-docs-contracts-runner-readiness-md-134",
         "claim-docs-contracts-runner-verification-md-5",
         "claim-docs-contracts-workbench-instance-discovery-md-99",
@@ -3702,31 +3700,25 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-reporting-md-120",
+          "claimId": "claim-docs-contracts-reporting-md-123",
           "claimFingerprint": "sha256:84e20fceee7b13f03574081e031d1ebd73a26ab909f01a9ef7f75d864fe70b82",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-reporting-md-126",
-          "claimFingerprint": "sha256:341763202501de491198b634cdfe674ab85eb3054eab580c2b026471c85cb87d",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-reporting-md-137",
+          "claimId": "claim-docs-contracts-reporting-md-140",
           "claimFingerprint": "sha256:3d9b56890a284b8382d97381cd68e2da53890933235ecf3a0508c44af42cd3a8",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-reporting-md-141",
+          "claimId": "claim-docs-contracts-reporting-md-144",
           "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-reporting-md-146",
+          "claimId": "claim-docs-contracts-reporting-md-149",
           "claimFingerprint": "sha256:f837e4e0934106ad104956fd9d7e47ae5f9fa801b51a2ef9d30f008ea7e2158f",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3819,20 +3811,20 @@
       "byEvidenceStatus": {
         "satisfied": 6,
         "stale": 7,
-        "unknown": 23
+        "unknown": 22
       },
       "byReviewStatus": {
         "agent-reviewed": 15,
-        "heuristic": 21
+        "heuristic": 20
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
         "deterministic": 20,
-        "human-auditable": 12
+        "human-auditable": 11
       },
       "byMappingConfidence": {
         "low": 2,
-        "medium": 34
+        "medium": 33
       }
     },
     {
@@ -11873,12 +11865,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-reporting-md-120",
+      "claimId": "claim-docs-contracts-reporting-md-123",
       "summary": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload.",
       "sourceRefs": [
         {
           "path": "docs/contracts/reporting.md",
-          "line": 120,
+          "line": 123,
           "excerpt": "The key rule is that cost telemetry must come from an explicit checked-in wrapper or output payload."
         }
       ],
@@ -11911,12 +11903,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-reporting-md-122",
+      "claimId": "claim-docs-contracts-reporting-md-125",
       "summary": "Cache-token breakdown follows the same rule: preserve it when a runtime or wrapper emits explicit machine-readable fields, and do not infer cache behavior from prose.",
       "sourceRefs": [
         {
           "path": "docs/contracts/reporting.md",
-          "line": 122,
+          "line": 125,
           "excerpt": "Cache-token breakdown follows the same rule: preserve it when a runtime or wrapper emits explicit machine-readable fields, and do not infer cache behavior from prose."
         }
       ],
@@ -11951,49 +11943,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-reporting-md-126",
-      "summary": "`request_kind`, `source_flow`, `cache_policy`, `static_context_id`, `retry_count`, and `tool_call_count` are optional wrapper-owned fields for explaining why a run was expensive; they must not be inferred from human-oriented logs.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/reporting.md",
-          "line": 126,
-          "excerpt": "`request_kind`, `source_flow`, `cache_policy`, `static_context_id`, `retry_count`, and `tool_call_count` are optional wrapper-owned fields for explaining why a run was expensive; they must not be inferred from human-oriented logs."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:341763202501de491198b634cdfe674ab85eb3054eab580c2b026471c85cb87d",
-      "canonicalClaimId": "M11",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "M14",
-      "runnerUpScore": 8,
-      "scoreMargin": 0,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "contract",
-        "count",
-        "evidence",
-        "field",
-        "flow",
-        "human",
-        "judgment",
-        "source"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-reporting-md-128",
+      "claimId": "claim-docs-contracts-reporting-md-131",
       "summary": "Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.",
       "sourceRefs": [
         {
           "path": "docs/contracts/reporting.md",
-          "line": 128,
+          "line": 131,
           "excerpt": "Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping."
         }
       ],
@@ -12023,12 +11978,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-reporting-md-129",
+      "claimId": "claim-docs-contracts-reporting-md-132",
       "summary": "Runtime drift codes should be recorded as runtime context rather than primary behavior-outcome reason codes unless a pinned-runtime policy blocks the run.",
       "sourceRefs": [
         {
           "path": "docs/contracts/reporting.md",
-          "line": 129,
+          "line": 132,
           "excerpt": "Runtime drift codes should be recorded as runtime context rather than primary behavior-outcome reason codes unless a pinned-runtime policy blocks the run."
         }
       ],
@@ -12061,12 +12016,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-reporting-md-137",
+      "claimId": "claim-docs-contracts-reporting-md-140",
       "summary": "`blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure",
       "sourceRefs": [
         {
           "path": "docs/contracts/reporting.md",
-          "line": 137,
+          "line": 140,
           "excerpt": "`blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure"
         }
       ],
@@ -12098,12 +12053,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-reporting-md-141",
+      "claimId": "claim-docs-contracts-reporting-md-144",
       "summary": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately.",
       "sourceRefs": [
         {
           "path": "docs/contracts/reporting.md",
-          "line": 141,
+          "line": 144,
           "excerpt": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately."
         }
       ],
@@ -12139,12 +12094,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-reporting-md-146",
+      "claimId": "claim-docs-contracts-reporting-md-149",
       "summary": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet.",
       "sourceRefs": [
         {
           "path": "docs/contracts/reporting.md",
-          "line": 146,
+          "line": 149,
           "excerpt": "For held-out and full-gate reporting, mode runs should preserve that same scenario-level telemetry and lift it into a machine-readable report packet."
         }
       ],
@@ -12180,12 +12135,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-reporting-md-167",
+      "claimId": "claim-docs-contracts-reporting-md-170",
       "summary": "Human-review failures must be reported even when the benchmark score improves.",
       "sourceRefs": [
         {
           "path": "docs/contracts/reporting.md",
-          "line": 167,
+          "line": 170,
           "excerpt": "Human-review failures must be reported even when the benchmark score improves."
         }
       ],
