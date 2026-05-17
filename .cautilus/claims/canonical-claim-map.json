@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:0a7d90d56fb47ae63eb5172f9ff92be64420bc204a322f9abc23c4e154b6e3c0"
+      "contentHash": "sha256:f3f77ba286fdaccc2f73df55819f042dabec4c5c66afdc2c245ee92e03de5a59"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -576,8 +576,8 @@
     "userRawClaimCount": 102,
     "userMappedToCanonicalCount": 102,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 301,
-    "userSemanticReviewRecommendedCount": 46,
+    "semanticReviewRecommendedCount": 302,
+    "userSemanticReviewRecommendedCount": 47,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 259,
       "mapped-to-user-canonical": 102
@@ -587,9 +587,9 @@
       "user": 102
     },
     "byMappingConfidence": {
-      "high": 60,
+      "high": 59,
       "low": 20,
-      "medium": 281
+      "medium": 282
     },
     "byUserCanonicalClaimId": {
       "U1": 27,
@@ -660,6 +660,7 @@
       "claim-docs-guides-cli-md-193",
       "claim-docs-guides-cli-md-263",
       "claim-docs-guides-cli-md-273",
+      "claim-docs-guides-cli-md-474",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-29",
       "claim-docs-guides-consumer-adoption-md-48",
@@ -1334,8 +1335,8 @@
         {
           "claimId": "claim-docs-guides-cli-md-474",
           "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-guides-cli-md-478",
@@ -1543,8 +1544,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 10,
-        "stale": 8,
+        "satisfied": 13,
+        "stale": 5,
         "unknown": 39
       },
       "byReviewStatus": {
@@ -1557,8 +1558,8 @@
         "human-auditable": 19
       },
       "byMappingConfidence": {
-        "high": 29,
-        "medium": 28
+        "high": 28,
+        "medium": 29
       }
     },
     {
@@ -6368,30 +6369,30 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "stale",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
       "canonicalClaimId": "U2",
       "score": 12,
       "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 9,
-      "scoreMargin": 3,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
+      "runnerUpScore": 11,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "blocked",
         "code",
         "deterministic",
         "documentation",
-        "evidence",
+        "execution",
         "instead",
+        "keep",
         "passed",
-        "ref",
+        "proof",
+        "review",
         "run",
-        "satisfied",
-        "text",
-        "thi"
+        "text"
       ]
     },
     {
@@ -6450,14 +6451,14 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "stale",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:003038663b54c623858fe0d30f37af8e7554c1f8f79b8750306cdff272f893a5",
       "canonicalClaimId": "U2",
-      "score": 14,
+      "score": 19,
       "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 9,
-      "scoreMargin": 5,
+      "runnerUpScore": 15,
+      "scoreMargin": 4,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -6468,12 +6469,12 @@
         "decision",
         "deterministic",
         "evidence",
+        "input",
+        "keep",
         "next",
-        "packet",
-        "ref",
-        "satisfied",
-        "scenario",
-        "step"
+        "outside",
+        "ownership",
+        "packet"
       ]
     },
     {
@@ -6491,7 +6492,7 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "stale",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
       "canonicalClaimId": "U2",
@@ -6507,14 +6508,14 @@
         "decision",
         "deterministic",
         "discovery",
-        "evidence",
         "first",
         "human",
         "inspect",
         "json",
-        "ref",
-        "review",
-        "reviewer"
+        "keep",
+        "over",
+        "packet",
+        "review"
       ]
     },
     {

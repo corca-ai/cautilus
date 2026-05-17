@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-guides-cli-decision-packet-projections-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-guides-cli-md-474",
+    "claim-docs-guides-cli-md-510",
+    "claim-docs-guides-cli-md-546"
+  ],
+  "repoCommit": "d94e4ee1770494144cd78f72fccd066b6bfa8447",
+  "summary": "Current deterministic proof for CLI guide claims covering review variant result envelopes, explicit evidence bundle aggregation, and reviewer-first self-dogfood HTML projections.",
+  "evidenceScope": {
+    "targetSurface": "CLI guide decision packets and reviewable projections",
+    "claimBoundary": "Only the three listed docs/guides/cli.md claims are marked satisfied.",
+    "notClaimed": [
+      "A real external judge or model provider was called.",
+      "Every possible blocked or failed reason code is enumerated.",
+      "A reviewer verdict is semantically correct just because the execution envelope is valid.",
+      "Raw host logs, scenario history, or audit records are automatically discovered without explicit inputs.",
+      "Rendered HTML replaces JSON packets as the source of truth.",
+      "All browser or responsive visual qualities are exhaustively validated."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIReviewVariantsReturnsBlockedSummaryWhenVariantEmitsBlockedPayload|TestCLIReviewVariantsReturnsFailedSummaryWhenVariantEmitsFailedPayload|TestCLIReviewVariantsPreservesConcernVerdictAndFindings|TestCLIReviewVariantsClassifiesUnavailableExecutorAsBlockedPartialSuccess|TestCLISelfDogfoodRenderHTMLWritesDecisionFirstIndex|TestCLISelfDogfoodRenderExperimentsHTMLWritesIndexFromLatestBundle' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok",
+        "protectedBehaviors": [
+          "review variants can finish as blocked and failed with structured variant result packets",
+          "blocked unavailable executor cases carry unavailable_executor reason codes",
+          "partialSuccess and successfulVariantOutputs are preserved when one variant succeeds and another does not",
+          "self-dogfood renderer CLI entrypoints write decision-first HTML indexes"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/evidence-bundle-flow.test.mjs scripts/agent-runtime/evidence-contract-schemas.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 7,
+        "pass": 7,
+        "protectedBehaviors": [
+          "evidence prepare-input assembles explicit report, scenario_results, run_audit, and scenario_history sources",
+          "evidence bundle summarizes prioritized evidence signals",
+          "active-run defaults write evidence input and bundle packets inside the active run",
+          "checked-in evidence input and bundle examples match schemas"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestRenderSelfDogfoodHTMLIncludesHeadlineFields|TestWriteSelfDogfoodHTMLWritesIndexNextToLatestBundle|TestRenderSelfDogfoodHTMLRewritesMarkdownAndJSONLinks|TestRenderSelfDogfoodExperimentsHTMLIncludesComparisonRows|TestWriteSelfDogfoodExperimentsHTMLWritesIndexNextToLatestBundle' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "self-dogfood HTML includes headline decision fields",
+          "self-dogfood HTML index is written next to the latest bundle",
+          "artifact links are rewritten for reviewer navigation",
+          "experiments HTML includes comparison rows"
+        ]
+      }
+    },
+    {
+      "command": "./bin/cautilus doctor commands --json | jq -c '[.commands[] | select(.path==[\"evaluate\",\"evidence\",\"prepare-input\"] or .path==[\"evaluate\",\"evidence\",\"bundle\"] or .path==[\"evaluate\",\"review\",\"variants\"] or .path==[\"doctor\",\"artifacts\",\"render-self-dogfood-html\"] or .path==[\"doctor\",\"artifacts\",\"render-self-dogfood-experiments-html\"]) | .path | join(\" \")]'",
+      "exitCode": 0,
+      "observed": {
+        "selectedCommands": [
+          "evaluate evidence prepare-input",
+          "evaluate evidence bundle",
+          "evaluate review variants",
+          "doctor artifacts render-self-dogfood-html",
+          "doctor artifacts render-self-dogfood-experiments-html"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/cli.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:cbfe0cbb82c9fc4ede9f9606cdb5488b5995b0139d516b5948b8672495c36a98"
+    },
+    {
+      "path": "docs/contracts/reporting.md",
+      "kind": "review-variants-contract",
+      "contentHash": "sha256:276a87fb6916bfd7abd9d9e5b301fee6b6d0677a6c27b4ce3231ec006f337b7e"
+    },
+    {
+      "path": "docs/contracts/evidence-bundle.md",
+      "kind": "evidence-bundle-contract",
+      "contentHash": "sha256:2eb8fc34100a093811fe140df0a90fa1c5c489af38673af815a7af5821175b63"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "review-variants-and-evidence-cli-implementation",
+      "contentHash": "sha256:159cbd2e349f79ec5d0998474c3c3f6f015389bb7f89a69aad20dc6656ecd9e0"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "cli-smoke-tests",
+      "contentHash": "sha256:3117b2cecae89e8da55bf99b6eed35d8466877bd27580d07f5714594e9843b39"
+    },
+    {
+      "path": "internal/runtime/evidence.go",
+      "kind": "evidence-bundle-runtime",
+      "contentHash": "sha256:b7dc8fc075f8609e570a5c8e3066d1bc0ace160f271f9ec95a2ada9b5902124d"
+    },
+    {
+      "path": "internal/runtime/self_dogfood_html.go",
+      "kind": "self-dogfood-html-runtime",
+      "contentHash": "sha256:86fa3157b3f7b5972a989194d88412616216641ed4967169c891e128c3b2d492"
+    },
+    {
+      "path": "internal/runtime/self_dogfood_html_test.go",
+      "kind": "self-dogfood-html-tests",
+      "contentHash": "sha256:9628016624d5581a45a4bf11b578c3fd2778af530e3edfbaf9b10b02d97f7102"
+    },
+    {
+      "path": "scripts/agent-runtime/evidence-bundle-flow.test.mjs",
+      "kind": "evidence-bundle-flow-tests",
+      "contentHash": "sha256:e49fb85b774e1b906857ee79bd81ef3fc942ce82ad90b091c56b576ac82ac9a0"
+    },
+    {
+      "path": "scripts/agent-runtime/evidence-contract-schemas.test.mjs",
+      "kind": "evidence-schema-tests",
+      "contentHash": "sha256:dc51fbbe6d37ae3f350a3f733b96c8032cccd9f4f0956541068f8fd9fc400f15"
+    },
+    {
+      "path": "scripts/agent-runtime/build-evidence-input.mjs",
+      "kind": "portable-evidence-input-builder",
+      "contentHash": "sha256:30c2eaebae045f93dcaf3133dd6866876f972b3b2bba2966e85e345191749a0b"
+    },
+    {
+      "path": "scripts/agent-runtime/build-evidence-bundle.mjs",
+      "kind": "portable-evidence-bundle-builder",
+      "contentHash": "sha256:c0e55b755852d86cac38a5950632f58eb20a373eae885093035588bfe8a59ab0"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "command-registry",
+      "contentHash": "sha256:66df6f5b8e3911690daa3d5757bb55078db1d0d2df99615c60625c2e55e993e7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused tests and current command registry output prove the current docs/guides/cli.md review-variant, evidence-bundle, and self-dogfood-renderer claims without claiming external provider success or semantic reviewer correctness."
+  }
+}

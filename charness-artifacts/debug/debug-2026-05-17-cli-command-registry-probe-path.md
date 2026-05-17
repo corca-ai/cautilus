@@ -64,7 +64,7 @@ The actual command discovery surface is `doctor commands --json`, and the comman
 - Seam: local evidence refresh command invocation
 - Disproving Observation: `./bin/cautilus commands --json` exits 1 while `./bin/cautilus doctor commands --json` exits 0.
 - What Local Reasoning Cannot Prove: none; this is a local command surface lookup.
-- Generalization Pressure: monitor
+- Generalization Pressure: low
 
 ## Interrupt Decision
 
