@@ -107,6 +107,15 @@ func buildTelemetryBreakdown(entries []map[string]any, scenarioID *string) map[s
 	if staticContextIDs := uniqueTelemetryValues(entries, "static_context_id"); len(staticContextIDs) > 0 {
 		summary["staticContextIds"] = staticContextIDs
 	}
+	if costTruths := uniqueTelemetryValues(entries, "cost_truth"); len(costTruths) > 0 {
+		summary["costTruths"] = costTruths
+	}
+	if pricingSources := uniqueTelemetryValues(entries, "pricing_source"); len(pricingSources) > 0 {
+		summary["pricingSources"] = pricingSources
+	}
+	if pricingVersions := uniqueTelemetryValues(entries, "pricing_version"); len(pricingVersions) > 0 {
+		summary["pricingVersions"] = pricingVersions
+	}
 	return summary
 }
 

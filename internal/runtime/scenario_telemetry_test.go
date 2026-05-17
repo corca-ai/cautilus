@@ -21,6 +21,9 @@ func TestSummarizeScenarioTelemetryEntriesCarriesBudgetAttribution(t *testing.T)
 				"source_flow":                 "release_smoke",
 				"cache_policy":                "cacheable_system_prompt",
 				"static_context_id":           "shared-context",
+				"cost_truth":                  "derived_pricing",
+				"pricing_source":              "openai_pricing",
+				"pricing_version":             "2026-05-17",
 				"cache_creation_input_tokens": float64(10),
 				"cache_read_input_tokens":     float64(30),
 				"retry_count":                 float64(1),
@@ -40,6 +43,9 @@ func TestSummarizeScenarioTelemetryEntriesCarriesBudgetAttribution(t *testing.T)
 				"source_flow":                 "release_smoke",
 				"cache_policy":                "cacheable_system_prompt",
 				"static_context_id":           "shared-context",
+				"cost_truth":                  "derived_pricing",
+				"pricing_source":              "openai_pricing",
+				"pricing_version":             "2026-05-17",
 				"cache_creation_input_tokens": float64(20),
 				"cache_read_input_tokens":     float64(40),
 				"retry_count":                 float64(0),
@@ -66,6 +72,9 @@ func TestSummarizeScenarioTelemetryEntriesCarriesBudgetAttribution(t *testing.T)
 	assertStringSlice(t, overall["sourceFlows"], []string{"release_smoke"})
 	assertStringSlice(t, overall["cachePolicies"], []string{"cacheable_system_prompt"})
 	assertStringSlice(t, overall["staticContextIds"], []string{"shared-context"})
+	assertStringSlice(t, overall["costTruths"], []string{"derived_pricing"})
+	assertStringSlice(t, overall["pricingSources"], []string{"openai_pricing"})
+	assertStringSlice(t, overall["pricingVersions"], []string{"2026-05-17"})
 }
 
 func assertStringSlice(t *testing.T, value any, expected []string) {

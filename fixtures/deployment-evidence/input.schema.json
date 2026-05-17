@@ -79,6 +79,15 @@
           "static_context_id": {
             "type": "string"
           },
+          "cost_truth": {
+            "type": "string"
+          },
+          "pricing_source": {
+            "type": "string"
+          },
+          "pricing_version": {
+            "type": "string"
+          },
           "duration_ms": {
             "type": "number",
             "minimum": 0

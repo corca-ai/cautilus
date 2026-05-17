@@ -38,7 +38,8 @@ If the full claim refresh chain runs again after the final pushed commit, then t
 ## Verification
 
 After running `npm run claims:refresh:all`, `npm run claims:evidence-state:check` passed and the regenerated status snapshot records `b46cc55d091a64df2dd946e32db881ce789871a9` as both `currentGitCommit` and `packetGitCommit`.
-Final verification is the replacement push workflow from the refresh commit.
+The replacement push workflow from the refresh commit passed.
+Follow-up critique added a release preflight check that rejects status snapshots whose `packetGitCommit` is not reachable from `HEAD`.
 
 ## Root Cause
 

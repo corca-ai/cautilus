@@ -149,7 +149,7 @@ The output should include:
 - The product may aggregate only explicit machine-readable telemetry.
 - Cache-token breakdown is a first-class explicit telemetry surface, not an inference from aggregate token totals.
 - Budget attribution is optional and explicit-only.
-  Request kind, source flow, cache policy, static context id, retry count, and tool-call count may be preserved when supplied by a wrapper, but `Cautilus` does not infer them from logs.
+  Request kind, source flow, cache policy, static context id, retry count, tool-call count, cost truth, and pricing provenance may be preserved when supplied by a wrapper, but `Cautilus` does not infer them from logs.
 - Success-rate math should be driven by `sampleCount` and `successCount`, not
   by parsing prose summaries.
 - `chatbot`, `skill`, and `workflow` remain first-class top-level surfaces in

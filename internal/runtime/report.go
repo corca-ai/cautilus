@@ -20,6 +20,21 @@ var commandObservationNumericFields = []string{
 	"completion_tokens",
 	"total_tokens",
 	"cost_usd",
+	"retry_count",
+	"tool_call_count",
+}
+
+var reportTelemetryStringDimensions = []struct {
+	rawField     string
+	summaryField string
+}{
+	{rawField: "request_kind", summaryField: "requestKinds"},
+	{rawField: "source_flow", summaryField: "sourceFlows"},
+	{rawField: "cache_policy", summaryField: "cachePolicies"},
+	{rawField: "static_context_id", summaryField: "staticContextIds"},
+	{rawField: "cost_truth", summaryField: "costTruths"},
+	{rawField: "pricing_source", summaryField: "pricingSources"},
+	{rawField: "pricing_version", summaryField: "pricingVersions"},
 }
 
 func ValidateReportPacket(packet map[string]any, label string) error {
@@ -444,6 +459,15 @@ func createModeTelemetry(modeRun map[string]any, scenarioTelemetrySummary map[st
 	if len(models) > 0 {
 		telemetry["models"] = models
 	}
+	for _, dimension := range reportTelemetryStringDimensions {
+		values := uniqueStrings(append(
+			stringValue(asMap(modeRun["telemetry"])[dimension.rawField]),
+			stringSliceValue(scenarioOverall[dimension.summaryField])...,
+		))
+		if len(values) > 0 {
+			telemetry[dimension.summaryField] = values
+		}
+	}
 	if fingerprint := runtimeFingerprintFromEvidence(map[string]any{"telemetry": asMap(modeRun["telemetry"])}); len(fingerprint) > 0 {
 		telemetry["runtimeFingerprint"] = fingerprint
 	}
@@ -479,6 +503,11 @@ func summarizeReportTelemetry(modeSummaries []any) map[string]any {
 	}
 	if models := collectModeSummaryStrings(modeSummaries, "models"); len(models) > 0 {
 		summary["models"] = models
+	}
+	for _, dimension := range reportTelemetryStringDimensions {
+		if values := collectModeSummaryStrings(modeSummaries, dimension.summaryField); len(values) > 0 {
+			summary[dimension.summaryField] = values
+		}
 	}
 	if fingerprints := collectModeSummaryRuntimeFingerprints(modeSummaries); len(fingerprints) > 0 {
 		summary["runtimeFingerprints"] = fingerprints

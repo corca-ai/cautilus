@@ -104,6 +104,9 @@ Optional adapter- or provider-owned telemetry fields:
 - `source_flow`
 - `cache_policy`
 - `static_context_id`
+- `cost_truth`
+- `pricing_source`
+- `pricing_version`
 - `uncached_input_tokens`
 - `cache_creation_input_tokens`
 - `cache_read_input_tokens`
@@ -123,7 +126,7 @@ Cache-token breakdown follows the same rule: preserve it when a runtime or wrapp
 `cache_creation_input_tokens` and `cache_read_input_tokens` preserve runtimes that split cache writes from reads.
 `cached_input_tokens` preserves runtimes that emit an aggregate cached-input count without that split.
 Budget-attribution fields follow the same explicit-only rule.
-`request_kind`, `source_flow`, `cache_policy`, `static_context_id`, `retry_count`, and `tool_call_count` are optional wrapper-owned fields for explaining why a run was expensive; they must not be inferred from human-oriented logs.
+`request_kind`, `source_flow`, `cache_policy`, `static_context_id`, `retry_count`, `tool_call_count`, `cost_truth`, `pricing_source`, and `pricing_version` are optional wrapper-owned fields for explaining why a run was expensive; they must not be inferred from human-oriented logs.
 The same rule applies to runtime identity.
 Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping.
 Runtime drift codes should be recorded as runtime context rather than primary behavior-outcome reason codes unless a pinned-runtime policy blocks the run.

@@ -95,6 +95,74 @@ func TestBuildReportPacketOnlyCarriesExplicitCostTelemetry(t *testing.T) {
 	}
 }
 
+func TestBuildReportPacketAggregatesBudgetAttributionTelemetry(t *testing.T) {
+	input := minimalReportInput(map[string]any{
+		"telemetry": map[string]any{
+			"provider":          "openai",
+			"model":             "gpt-5.4-mini",
+			"request_kind":      "app_prompt",
+			"source_flow":       "release_smoke",
+			"cache_policy":      "cacheable_system_prompt",
+			"static_context_id": "shared-context",
+			"cost_truth":        "derived_pricing",
+			"pricing_source":    "openai_pricing",
+			"pricing_version":   "2026-05-17",
+		},
+	}, nil)
+	input["modeRuns"] = []any{
+		map[string]any{
+			"mode":   "held_out",
+			"status": "completed",
+			"telemetry": map[string]any{
+				"provider":          "openai",
+				"model":             "gpt-5.4-mini",
+				"request_kind":      "app_prompt",
+				"source_flow":       "release_smoke",
+				"cache_policy":      "cacheable_system_prompt",
+				"static_context_id": "shared-context",
+				"cost_truth":        "derived_pricing",
+				"pricing_source":    "openai_pricing",
+				"pricing_version":   "2026-05-17",
+			},
+			"scenarioResults": map[string]any{
+				"schemaVersion": contracts.ScenarioResultsSchema,
+				"results": []any{
+					map[string]any{
+						"scenarioId": "prompt-smoke",
+						"status":     "passed",
+						"telemetry": map[string]any{
+							"request_kind":      "app_prompt",
+							"source_flow":       "release_smoke",
+							"cache_policy":      "cacheable_system_prompt",
+							"static_context_id": "shared-context",
+							"cost_truth":        "derived_pricing",
+							"pricing_source":    "openai_pricing",
+							"pricing_version":   "2026-05-17",
+							"retry_count":       float64(2),
+							"tool_call_count":   float64(3),
+						},
+					},
+				},
+			},
+		},
+	}
+	report, err := BuildReportPacket(input, time.Date(2026, 5, 17, 0, 0, 0, 0, time.UTC))
+	if err != nil {
+		t.Fatalf("BuildReportPacket returned error: %v", err)
+	}
+	telemetry := asMap(report["telemetry"])
+	if telemetry["retry_count"] != float64(2) || telemetry["tool_call_count"] != float64(3) {
+		t.Fatalf("expected scenario attribution counts to be aggregated, got %#v", telemetry)
+	}
+	assertStringSlice(t, telemetry["requestKinds"], []string{"app_prompt"})
+	assertStringSlice(t, telemetry["sourceFlows"], []string{"release_smoke"})
+	assertStringSlice(t, telemetry["cachePolicies"], []string{"cacheable_system_prompt"})
+	assertStringSlice(t, telemetry["staticContextIds"], []string{"shared-context"})
+	assertStringSlice(t, telemetry["costTruths"], []string{"derived_pricing"})
+	assertStringSlice(t, telemetry["pricingSources"], []string{"openai_pricing"})
+	assertStringSlice(t, telemetry["pricingVersions"], []string{"2026-05-17"})
+}
+
 func TestBuildReportPacketOnlyCarriesExplicitRuntimeIdentity(t *testing.T) {
 	input := minimalReportInput(map[string]any{}, nil)
 	input["commandObservations"] = []any{

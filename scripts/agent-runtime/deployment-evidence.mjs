@@ -11,19 +11,15 @@ import {
 
 const DEPLOYMENT_SURFACES = new Set(["chatbot", "skill", "workflow"]);
 const SOURCE_KINDS = new Set(["skill_evaluation_summary", "scenario_results"]);
-const ROW_STRING_FIELDS = [
-	"provider",
-	"model",
-	"request_kind",
-	"source_flow",
-	"cache_policy",
-	"static_context_id",
-];
+const ROW_STRING_FIELDS = TELEMETRY_STRING_FIELDS;
 const SUMMARY_STRING_FIELDS = [
 	["request_kind", "requestKinds"],
 	["source_flow", "sourceFlows"],
 	["cache_policy", "cachePolicies"],
 	["static_context_id", "staticContextIds"],
+	["cost_truth", "costTruths"],
+	["pricing_source", "pricingSources"],
+	["pricing_version", "pricingVersions"],
 ];
 
 function normalizeNonEmptyString(value, field) {
@@ -249,6 +245,10 @@ function attachTelemetryNumericFields(row, telemetry, metrics) {
 	return row;
 }
 
+function telemetryStringProjection(telemetry) {
+	return Object.fromEntries(TELEMETRY_STRING_FIELDS.map((field) => [field, telemetry[field] ?? null]));
+}
+
 function buildSkillSummaryRow(evaluation, index, context) {
 	const sampling = skillSampling(evaluation, index);
 	const metrics = normalizeMetrics(evaluation.metrics, `evaluations[${index}].metrics`);
@@ -263,12 +263,7 @@ function buildSkillSummaryRow(evaluation, index, context) {
 		sampleCount: sampling.sampleCount,
 		successCount: sampling.successCount,
 		sourcePath: context.sourcePath ?? null,
-		provider: telemetry.provider ?? null,
-		model: telemetry.model ?? null,
-		request_kind: telemetry.request_kind ?? null,
-		source_flow: telemetry.source_flow ?? null,
-		cache_policy: telemetry.cache_policy ?? null,
-		static_context_id: telemetry.static_context_id ?? null,
+		...telemetryStringProjection(telemetry),
 		duration_ms: metrics.duration_ms ?? null,
 	}, telemetry, metrics);
 }
@@ -306,12 +301,7 @@ function buildScenarioResultRow(result, index, context, passStatuses) {
 		sampleCount: 1,
 		successCount: passStatuses.has(status) ? 1 : 0,
 		sourcePath: context.sourcePath ?? null,
-		provider: telemetry.provider ?? null,
-		model: telemetry.model ?? null,
-		request_kind: telemetry.request_kind ?? null,
-		source_flow: telemetry.source_flow ?? null,
-		cache_policy: telemetry.cache_policy ?? null,
-		static_context_id: telemetry.static_context_id ?? null,
+		...telemetryStringProjection(telemetry),
 		duration_ms: metrics.duration_ms ?? null,
 	}, telemetry, metrics);
 }

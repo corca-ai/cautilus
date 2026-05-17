@@ -41,6 +41,9 @@
         "sourceFlows": { "type": "array", "items": { "type": "string" } },
         "cachePolicies": { "type": "array", "items": { "type": "string" } },
         "staticContextIds": { "type": "array", "items": { "type": "string" } },
+        "costTruths": { "type": "array", "items": { "type": "string" } },
+        "pricingSources": { "type": "array", "items": { "type": "string" } },
+        "pricingVersions": { "type": "array", "items": { "type": "string" } },
         "statusCounts": { "type": "object" },
         "p50_duration_ms": { "type": "number", "minimum": 0 },
         "p90_duration_ms": { "type": "number", "minimum": 0 },
@@ -138,6 +141,15 @@
           "static_context_id": {
             "type": "string"
           },
+          "cost_truth": {
+            "type": "string"
+          },
+          "pricing_source": {
+            "type": "string"
+          },
+          "pricing_version": {
+            "type": "string"
+          },
           "duration_ms": {
             "type": "number",
             "minimum": 0
@@ -219,6 +231,9 @@
           "sourceFlows": { "type": "array", "items": { "type": "string" } },
           "cachePolicies": { "type": "array", "items": { "type": "string" } },
           "staticContextIds": { "type": "array", "items": { "type": "string" } },
+          "costTruths": { "type": "array", "items": { "type": "string" } },
+          "pricingSources": { "type": "array", "items": { "type": "string" } },
+          "pricingVersions": { "type": "array", "items": { "type": "string" } },
           "rowCount": { "type": "integer", "minimum": 0 },
           "scenarioCount": { "type": "integer", "minimum": 0 },
           "totalSamples": { "type": "integer", "minimum": 0 },

@@ -42,6 +42,51 @@ test("checkClaimFreshness returns release metadata when generated claim state is
 			status: "fresh",
 			repoRoot: root,
 			claims: ".cautilus/claims/custom.json",
+			reachablePacketGitCommit: null,
+		});
+	});
+});
+
+test("checkClaimFreshness rejects claim packets based on local-only commits", () => {
+	withPackage("node -e \"process.exit(0)\"", (root) => {
+		writeFileSync(join(root, "status-summary.json"), JSON.stringify({
+			gitState: {
+				packetGitCommit: "31d4879c7ccb43b1442415f67806f277ca3652d9",
+			},
+		}));
+		assert.throws(
+			() => checkClaimFreshness({
+				repoRoot: root,
+				claims: ".cautilus/claims/custom.json",
+				status: "status-summary.json",
+				gitRunner: () => ({ status: 1, stdout: "", stderr: "not an ancestor" }),
+			}),
+			(error) => {
+				assert.match(error.message, /claim packet commit 31d4879c7ccb43b1442415f67806f277ca3652d9 is not reachable from HEAD/);
+				assert.match(error.message, /Regenerate claim state from a commit reachable in the release HEAD history/);
+				return true;
+			},
+		);
+	});
+});
+
+test("checkClaimFreshness reports reachable packet commit metadata", () => {
+	withPackage("node -e \"process.exit(0)\"", (root) => {
+		writeFileSync(join(root, "status-summary.json"), JSON.stringify({
+			gitState: {
+				packetGitCommit: "419715712066c7a575cd44ba9bfaa961bed4da66",
+			},
+		}));
+		assert.deepEqual(checkClaimFreshness({
+			repoRoot: root,
+			claims: ".cautilus/claims/custom.json",
+			status: "status-summary.json",
+			gitRunner: () => ({ status: 0, stdout: "", stderr: "" }),
+		}), {
+			status: "fresh",
+			repoRoot: root,
+			claims: ".cautilus/claims/custom.json",
+			reachablePacketGitCommit: "419715712066c7a575cd44ba9bfaa961bed4da66",
 		});
 	});
 });
@@ -76,6 +121,7 @@ test("check-claim-freshness CLI prints fresh release metadata", () => {
 			status: "fresh",
 			repoRoot: root,
 			claims: ".cautilus/claims/custom.json",
+			reachablePacketGitCommit: null,
 		});
 	});
 });
@@ -91,4 +137,5 @@ test("check-claim-freshness CLI renders usage", () => {
 	assert.equal(result.status, 0);
 	assert.match(result.stdout, /Usage:/);
 	assert.match(result.stdout, /--repo-root <dir>/);
+	assert.match(result.stdout, /--status <status-summary\.json>/);
 });

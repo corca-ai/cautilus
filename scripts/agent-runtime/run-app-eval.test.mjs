@@ -143,6 +143,7 @@ test("main writes codex-backed observed packet with explicit token telemetry", (
 		"#!/usr/bin/env node",
 		"const fs = require('node:fs');",
 		"const args = process.argv.slice(2);",
+		"if (!args.includes('--json')) { process.stderr.write('missing --json'); process.exit(3); }",
 		"const outputIndex = args.indexOf('-o');",
 		"if (outputIndex < 0) process.exit(2);",
 		"fs.writeFileSync(args[outputIndex + 1], JSON.stringify({ finalText: 'Cautilus from Codex' }));",

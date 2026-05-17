@@ -239,6 +239,7 @@ function codexArgs(options, schemaFile, resultFile) {
 		options.workspace,
 		"--sandbox",
 		"read-only",
+		"--json",
 	];
 	if (options.codexSessionMode === "ephemeral") {
 		args.push("--ephemeral");
