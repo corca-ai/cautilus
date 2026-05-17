@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-master-plan-spec-normalizer-gates-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-master-plan-md-84"
+  ],
+  "repoCommit": "ffaf70991bb4b8cd805e4f4a512a2d0065a58510",
+  "summary": "Deterministic proof that `lint:specs` and `lint:scenario-normalizers` remain checked-in gates and that scenario normalizer runtime completeness is still tied to the surviving `discover scenarios normalize` families and surface/preset contract.",
+  "evidenceScope": {
+    "targetSurface": "spec and scenario-normalizer quality gates",
+    "claimBoundary": "Only the docs/master-plan.md claim about lint gate coverage for specs and surviving scenario normalizers is marked satisfied.",
+    "notClaimed": [
+      "Every user-facing copy change is automatically semantically reviewed.",
+      "The retired archetype boundary still exists.",
+      "Scenario normalizers prove every evaluation surface behavior.",
+      "Full `npm run verify` was run in this evidence slice."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    },
+    {
+      "command": "npm run lint:scenario-normalizers",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "normalizationFamilyCount": 3,
+        "surfacesPerFamily": 7,
+        "families": [
+          "chatbot",
+          "skill",
+          "workflow"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/run-verify.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 17,
+        "pass": 17,
+        "protectedBehaviors": [
+          "`PHASES` includes `lint:specs`.",
+          "`PHASES` includes `lint:scenario-normalizers`.",
+          "The verify runner reports and short-circuits failed phases."
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/master-plan.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:545a2befb5caccb7dff4462931b7db63e805dd0734e468e9f4c3a32ca7b9b29f"
+    },
+    {
+      "path": "package.json",
+      "kind": "lint-script-definitions",
+      "contentHash": "sha256:0e1691dca56fac4e178692606de57be2b045ff3d77da66ea135314a8331375d6"
+    },
+    {
+      "path": "scripts/lint-specs.mjs",
+      "kind": "spec-lint-gate",
+      "contentHash": "sha256:4d9b157358317ac869b1552fa9b9ad96f61fe642f28cde41bc65fce46a570726"
+    },
+    {
+      "path": "scripts/check-scenario-normalization-completeness.mjs",
+      "kind": "scenario-normalizer-runtime-completeness-gate",
+      "contentHash": "sha256:d0659c3107585cd0c4be622edc6977c02733d9ddb40c8270d63d5c6d72f62008"
+    },
+    {
+      "path": "scripts/run-verify.mjs",
+      "kind": "verify-phase-runner",
+      "contentHash": "sha256:1136e6001f54fbfddec9efc80572ae00ff7be7849f40ba8415adb99b72ef2f21"
+    },
+    {
+      "path": "scripts/run-verify.test.mjs",
+      "kind": "verify-phase-test",
+      "contentHash": "sha256:3aa5022fa0253588d562126329dce0ef12bdb3561441f5f6adf97a9091ec94ab"
+    },
+    {
+      "path": "docs/specs/contracts/evaluation-surfaces-runners.spec.md",
+      "kind": "surface-preset-contract-spec",
+      "contentHash": "sha256:53396c4407d945924b0d83eefe27f614daed169285d656435069259d73794c18"
+    },
+    {
+      "path": "internal/runtime/scenarios.go",
+      "kind": "scenario-normalization-catalog",
+      "contentHash": "sha256:fc13b2e1c0c3e09fc3814d64d3986e5b8ab410e086dd2f956c506467cd9f354d"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "scenario-normalizer-cli-handlers",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "scenario-normalizer-command-registry",
+      "contentHash": "sha256:66df6f5b8e3911690daa3d5757bb55078db1d0d2df99615c60625c2e55e993e7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "`lint:specs` passes over the current spec set, `lint:scenario-normalizers` passes the three surviving normalizer families through its seven-surface completeness check, and the verify runner test proves both gates remain part of the checked-in verify phase list."
+  }
+}

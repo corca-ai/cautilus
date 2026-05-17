@@ -3313,8 +3313,19 @@
       "claimFingerprint": "sha256:4fcb36134cb7204ba0dc875a4fd2b554573bb1c70092e5302e7555fd035564af",
       "claimId": "claim-docs-master-plan-md-84",
       "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:c34403f4e086c3dc3d5d82a9452af4a93c5b937423f1ad91cf0f2c1f2acc8934",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-master-plan-md-84"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by `npm run lint:specs`, `npm run lint:scenario-normalizers`, and the verify runner test proving both gates remain in the checked-in verify phase list.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -3322,9 +3333,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep lint and verify phase tests aligned when spec routing, surface/preset vocabulary, or scenario normalizer command families change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.",
@@ -3333,8 +3344,9 @@
         }
       ],
       "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names checked-in lint gates and scenario-normalizer runtime completeness, which are deterministic script and test behavior."
     },
     {
       "claimAudience": "developer",
@@ -12045,9 +12057,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 72,
+      "satisfied": 73,
       "stale": 16,
-      "unknown": 273
+      "unknown": 272
     },
     "byLifecycle": {
       "new": 361
@@ -12058,8 +12070,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 136,
-      "heuristic": 224,
+      "agent-reviewed": 137,
+      "heuristic": 223,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12267,13 +12279,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-master-plan-md-78",
-        "clusterId": "cluster-master-plan-claim-discover-proof-plan-2026-05-17"
+        "claimId": "claim-docs-master-plan-md-84",
+        "clusterId": "cluster-master-plan-spec-normalizer-gates-2026-05-17"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12340,7 +12352,8 @@
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
-      ".cautilus/claims/review-result-evidence-master-plan-claim-discover-proof-plan-2026-05-17.json"
+      ".cautilus/claims/review-result-evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-master-plan-spec-normalizer-gates-2026-05-17.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12396,9 +12409,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 63,
+    "appliedResultCount": 64,
     "skippedResultCount": 52,
-    "keptUpdateCount": 146,
+    "keptUpdateCount": 147,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

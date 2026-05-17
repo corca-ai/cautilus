@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T11:15:00Z",
+    "evidencePolicy": "Only mark the spec and scenario-normalizer gate claim satisfied; do not claim full verify was run in this evidence slice."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-master-plan-spec-normalizer-gates-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-master-plan-md-84",
+          "claimFingerprint": "sha256:4fcb36134cb7204ba0dc875a4fd2b554573bb1c70092e5302e7555fd035564af",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names checked-in lint gates and scenario-normalizer runtime completeness, which are deterministic script and test behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by `npm run lint:specs`, `npm run lint:scenario-normalizers`, and the verify runner test proving both gates remain in the checked-in verify phase list.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c34403f4e086c3dc3d5d82a9452af4a93c5b937423f1ad91cf0f2c1f2acc8934",
+              "supportsClaimIds": [
+                "claim-docs-master-plan-md-84"
+              ]
+            }
+          ],
+          "nextAction": "Keep lint and verify phase tests aligned when spec routing, surface/preset vocabulary, or scenario normalizer command families change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
