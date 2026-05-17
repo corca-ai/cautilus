@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-discover-refresh-carry-forward-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-461",
+    "claim-docs-contracts-claim-discovery-workflow-md-579",
+    "claim-docs-contracts-claim-discovery-workflow-md-599"
+  ],
+  "repoCommit": "1615cf478604256d9c0f751df59438d51a69cc86",
+  "summary": "Deterministic proof that `discover claims` helper flags cover prior-state refresh, carry-forward, from-scratch opt-out, and refresh-plan packet ownership without introducing a separate refresh command.",
+  "evidenceScope": {
+    "targetSurface": "discover claims refresh helper flags and carry-forward state",
+    "claimBoundary": "Only the contract claims about `discover claims --previous`, helper flags, carried-forward reviewed state, and deterministic refresh-plan ownership are marked satisfied.",
+    "notClaimed": [
+      "A refresh-plan packet is itself the saved claim map update.",
+      "LLM-backed review or subagent orchestration is performed by the binary.",
+      "Every carried evidence ref remains trusted without stale-evidence rechecks.",
+      "A separate public `claim refresh` command exists.",
+      "Host agents can skip the Cautilus Agent refresh instructions."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:skill-disclosure",
+      "exitCode": 0,
+      "observed": {
+        "status": "ok",
+        "sourceSkill": "skills/cautilus-agent/SKILL.md",
+        "packagedSkill": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+        "requiredFragments": 15,
+        "forbiddenFragments": 9,
+        "globalForbiddenFragments": 7
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestDiscoverClaimProofPlanCarriesPreviousEvidenceByFingerprint|TestDiscoverClaimProofPlanMarksChangedCarriedEvidenceStale|TestDiscoverClaimProofPlanMarksEvidenceBundleClaimMismatchStale|TestBuildClaimRefreshPlanMarksChangedSources|TestBuildClaimRefreshPlanRecordsStaleEvidenceReasons' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state",
+          "carried evidence refs rewrite supportsClaimIds when display claim ids drift",
+          "changed carried evidence becomes stale instead of remaining blindly satisfied",
+          "refresh-plan packets record changed sources, changed claims, carried-forward counts, and stale evidence reasons"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run 'TestRunCommandsJSONReturnsRegistry|TestRunClaimDiscoverAutoUsesExistingOutputAsPrevious|TestRunClaimDiscoverFromScratchSkipsAutoPrevious|TestRunClaimDiscoverRefreshPlanRefusesSavedClaimStateOutput|TestRunClaimDiscoverRejectsPreviousWithFromScratch' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok",
+        "protectedBehaviors": [
+          "command registry exposes discover claims helper flags",
+          "existing output claim packets are auto-used as previous state unless from-scratch is requested",
+          "--from-scratch opts into first-discovery semantics",
+          "--previous and --from-scratch are mutually exclusive",
+          "refresh-plan output refuses to overwrite saved claim-state proof-plan paths"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-workflow-contract",
+      "contentHash": "sha256:f703e3ccf3be041a522bdf6e87640bca5680761ea0138ef439ed73471e91a9e4"
+    },
+    {
+      "path": "skills/cautilus-agent/SKILL.md",
+      "kind": "source-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "plugins/cautilus/skills/cautilus-agent/SKILL.md",
+      "kind": "packaged-cautilus-agent-skill",
+      "contentHash": "sha256:41fefcb965bd123742646f26926b135bdc8032661620b229cd22b8ee4e6f07f2"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-refresh-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-refresh-runtime-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "discover-claims-cli-handler",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "kind": "discover-claims-cli-tests",
+      "contentHash": "sha256:451fb058598ca8cf6e0f3b721b11fd3b01aa9eef20836f4857f8215b7498d1fb"
+    },
+    {
+      "path": "internal/cli/command-registry.json",
+      "kind": "discover-claims-command-registry",
+      "contentHash": "sha256:66df6f5b8e3911690daa3d5757bb55078db1d0d2df99615c60625c2e55e993e7"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Skill parity keeps the Cautilus Agent refresh branch documented, runtime tests prove carry-forward and stale-evidence transitions, and app tests plus command registry prove `discover claims` helper flags cover refresh planning without a separate refresh command."
+  }
+}

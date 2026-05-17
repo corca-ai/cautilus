@@ -5591,8 +5591,21 @@
       "claimFingerprint": "sha256:f0756f4eadea360bee1378c6b6a5a8fb96ddd8f8f15bc3aa6b0a360acad415ca",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-461",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:bc7f160ba29fa9a79d313472729133a26cd7a7f91122083f739575d5144e42c0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-579",
+            "claim-docs-contracts-claim-discovery-workflow-md-599"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by runtime tests showing unchanged fingerprints carry reviewed labels, evidence refs, unresolved questions, and next action while stale evidence is rechecked.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5600,9 +5613,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep carry-forward tests strict when changing claim identity, evidence refs, or stale-evidence handling.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "When Cautilus Agent runs `discover claims --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
@@ -5611,8 +5624,9 @@
         }
       ],
       "summary": "When Cautilus Agent runs `discover claims --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names deterministic previous-packet carry-forward behavior."
     },
     {
       "claimAudience": "developer",
@@ -5926,8 +5940,21 @@
       "claimFingerprint": "sha256:3d2c3d2301840242b752659f220762723dfa468d11688547d106a537736fe762",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-579",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:bc7f160ba29fa9a79d313472729133a26cd7a7f91122083f739575d5144e42c0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-579",
+            "claim-docs-contracts-claim-discovery-workflow-md-599"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by command registry, app tests, and Cautilus Agent skill parity showing `discover claims` exposes `--previous`, `--refresh-plan`, and `--from-scratch` helper paths without a separate refresh command.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5935,9 +5962,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep command registry and Cautilus Agent instructions aligned if refresh helper flags change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Helper flags under `discover claims` are enough if Cautilus Agent keeps the user-facing action as discover.",
@@ -5946,8 +5973,9 @@
         }
       ],
       "summary": "Helper flags under `discover claims` are enough if Cautilus Agent keeps the user-facing action as discover.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names the public command-surface boundary for refresh helper flags."
     },
     {
       "claimAudience": "developer",
@@ -6106,8 +6134,21 @@
       "claimFingerprint": "sha256:733ee15e34015fb189dc278a2a3dd0177b43a5fe53b9540cfba3baa84bde7177",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-599",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:bc7f160ba29fa9a79d313472729133a26cd7a7f91122083f739575d5144e42c0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-461",
+            "claim-docs-contracts-claim-discovery-workflow-md-579",
+            "claim-docs-contracts-claim-discovery-workflow-md-599"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by skill parity plus runtime/app tests for prior-state refresh planning, refreshSummary/state-transition packet fields, and saved-state overwrite protection.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -6115,9 +6156,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep prior-state refresh branch instructions and deterministic refresh-plan packet tests synchronized.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Existing state refresh is selected by Cautilus Agent when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
@@ -6126,8 +6167,9 @@
         }
       ],
       "summary": "Existing state refresh is selected by Cautilus Agent when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names Cautilus Agent branch selection plus binary-owned refresh-plan state transition."
     },
     {
       "claimAudience": "developer",
@@ -12245,9 +12287,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 87,
+      "satisfied": 90,
       "stale": 16,
-      "unknown": 258
+      "unknown": 255
     },
     "byLifecycle": {
       "new": 361
@@ -12258,8 +12300,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 151,
-      "heuristic": 209,
+      "agent-reviewed": 154,
+      "heuristic": 206,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12542,6 +12584,7 @@
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json",
       ".cautilus/claims/review-result-contract-review-clustering-curation-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-discover-refresh-carry-forward-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
@@ -12605,9 +12648,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 72,
+    "appliedResultCount": 73,
     "skippedResultCount": 52,
-    "keptUpdateCount": 161,
+    "keptUpdateCount": 164,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

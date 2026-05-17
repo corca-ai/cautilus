@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:17:43Z",
+    "evidencePolicy": "Only mark discover-claims refresh helper flags and carry-forward semantics satisfied; do not infer refresh plans mutate saved claim maps."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-discover-refresh-carry-forward-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-461",
+          "claimFingerprint": "sha256:f0756f4eadea360bee1378c6b6a5a8fb96ddd8f8f15bc3aa6b0a360acad415ca",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic previous-packet carry-forward behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runtime tests showing unchanged fingerprints carry reviewed labels, evidence refs, unresolved questions, and next action while stale evidence is rechecked.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:bc7f160ba29fa9a79d313472729133a26cd7a7f91122083f739575d5144e42c0",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-579",
+                "claim-docs-contracts-claim-discovery-workflow-md-599"
+              ]
+            }
+          ],
+          "nextAction": "Keep carry-forward tests strict when changing claim identity, evidence refs, or stale-evidence handling.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-579",
+          "claimFingerprint": "sha256:3d2c3d2301840242b752659f220762723dfa468d11688547d106a537736fe762",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the public command-surface boundary for refresh helper flags.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by command registry, app tests, and Cautilus Agent skill parity showing `discover claims` exposes `--previous`, `--refresh-plan`, and `--from-scratch` helper paths without a separate refresh command.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:bc7f160ba29fa9a79d313472729133a26cd7a7f91122083f739575d5144e42c0",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-579",
+                "claim-docs-contracts-claim-discovery-workflow-md-599"
+              ]
+            }
+          ],
+          "nextAction": "Keep command registry and Cautilus Agent instructions aligned if refresh helper flags change.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-599",
+          "claimFingerprint": "sha256:733ee15e34015fb189dc278a2a3dd0177b43a5fe53b9540cfba3baa84bde7177",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names Cautilus Agent branch selection plus binary-owned refresh-plan state transition.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by skill parity plus runtime/app tests for prior-state refresh planning, refreshSummary/state-transition packet fields, and saved-state overwrite protection.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:bc7f160ba29fa9a79d313472729133a26cd7a7f91122083f739575d5144e42c0",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-461",
+                "claim-docs-contracts-claim-discovery-workflow-md-579",
+                "claim-docs-contracts-claim-discovery-workflow-md-599"
+              ]
+            }
+          ],
+          "nextAction": "Keep prior-state refresh branch instructions and deterministic refresh-plan packet tests synchronized.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
