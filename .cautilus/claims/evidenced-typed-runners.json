@@ -2819,9 +2819,19 @@
       "claimFingerprint": "sha256:bbd0cc15974f28949118cb1f8125d27772e524aa4827d8ff92875cd374b45fd3",
       "claimId": "claim-docs-guides-evaluation-process-md-293",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Review-variant non-mutation is observable command behavior and should be protected by deterministic workspace-diff proof.",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:09ffa10e31bed1bd1e1c42d72517c7d55d5bd5d6c08a4f0598ac75383b7e8401",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-guides-evaluation-process-md-293"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by a CLI smoke test proving a review-only variant inspects `{candidate_repo}`, writes artifacts outside that candidate workspace, and leaves the candidate git status clean, plus adjacent tests covering candidate placeholder and structured output behavior.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -2829,7 +2839,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Attach or refresh deterministic review-variants proof that variants inspect the candidate without mutating the repo.",
+      "nextAction": "Keep the read-mostly smoke test current when review variants change workspace placeholder handling, artifact placement, or default review-only guidance.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -2842,7 +2852,7 @@
       "summary": "Review variants should inspect the candidate, not mutate the repo.",
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+      "whyThisLayer": "The claim names review-variant candidate workspace behavior that can be checked with focused CLI smoke tests and artifact placement assertions."
     },
     {
       "claimAudience": "user",
@@ -11998,9 +12008,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 67,
+      "satisfied": 68,
       "stale": 17,
-      "unknown": 277
+      "unknown": 276
     },
     "byLifecycle": {
       "new": 361
@@ -12220,13 +12230,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-guides-cli-md-564",
-        "clusterId": "cluster-cli-live-runtime-go-owned-2026-05-17"
+        "claimId": "claim-docs-guides-evaluation-process-md-293",
+        "clusterId": "cluster-review-variants-read-mostly-2026-05-17"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12288,7 +12298,8 @@
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
-      ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json"
+      ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12344,9 +12355,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 58,
+    "appliedResultCount": 59,
     "skippedResultCount": 52,
-    "keptUpdateCount": 141,
+    "keptUpdateCount": 142,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

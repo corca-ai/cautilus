@@ -615,6 +615,79 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 	}
 }
 
+func TestCLIReviewVariantsLeavesCandidateWorkspaceUnchangedForReviewOnlyVariant(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	candidate := filepath.Join(root, "candidate")
+	if err := os.MkdirAll(candidate, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	initGitRepo(t, candidate)
+	if err := os.WriteFile(filepath.Join(candidate, "subject.txt"), []byte("candidate\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	writeExecutableFile(t, candidate, "variant.sh", `#!/bin/sh
+candidate_repo="$1"
+output_file="$2"
+if [ "$(cat "$candidate_repo/subject.txt")" != "candidate" ]; then
+  exit 2
+fi
+printf '{"verdict":"pass","summary":"candidate inspected","findings":[{"severity":"pass","message":"candidate inspected","path":"subject.txt"}]}\n' > "$output_file"
+`)
+	runGit(t, candidate, "add", ".")
+	runGit(t, candidate, "commit", "-m", "candidate")
+
+	if err := os.MkdirAll(filepath.Join(root, "fixtures"), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.prompt.md"), []byte("inspect candidate without mutation\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "fixtures", "review.schema.json"), []byte("{\"type\":\"object\"}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if _, stderr, exitCode := runCLI(t, root, "init", "adapter", "--repo-root", root); exitCode != 0 {
+		t.Fatalf("adapter init failed: %s", stderr)
+	}
+	adapterPath := filepath.Join(root, ".agents", "cautilus-adapter.yaml")
+	adapterText, err := os.ReadFile(adapterPath)
+	if err != nil {
+		t.Fatalf("ReadFile returned error: %v", err)
+	}
+	adapterText = append(adapterText, []byte(strings.Join([]string{
+		"default_prompt_file: fixtures/review.prompt.md",
+		"default_schema_file: fixtures/review.schema.json",
+		"executor_variants:",
+		"  - id: inspect-only",
+		"    tool: command",
+		"    purpose: inspect candidate without mutation",
+		"    command_template: sh {candidate_repo}/variant.sh {candidate_repo} {output_file}",
+		"",
+	}, "\n"))...)
+	if err := os.WriteFile(adapterPath, adapterText, 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	outputDir := filepath.Join(root, "outputs")
+	stdout, stderr, exitCode := runCLI(t, root, "evaluate", "review", "variants", "--repo-root", root, "--workspace", candidate, "--output-dir", outputDir)
+	if exitCode != 0 {
+		t.Fatalf("evaluate review variants failed: %s", stderr)
+	}
+	summary := readJSONObjectFile(t, strings.TrimSpace(stdout))
+	if summary["status"] != "passed" {
+		t.Fatalf("expected passed review summary, got %#v", summary["status"])
+	}
+	if summary["workspace"] != candidate {
+		t.Fatalf("expected workspace=%s, got %#v", candidate, summary["workspace"])
+	}
+	if status := runGit(t, candidate, "status", "--short"); status != "" {
+		t.Fatalf("review-only variant mutated candidate workspace:\n%s", status)
+	}
+	if _, err := os.Stat(filepath.Join(outputDir, "inspect-only.json")); err != nil {
+		t.Fatalf("expected review artifact outside candidate workspace: %v", err)
+	}
+}
+
 func TestCLIReviewFeedbackBuildEmitsSourceBoundLearningPacket(t *testing.T) {
 	root := t.TempDir()
 	outputPath := filepath.Join(root, "review-feedback.json")

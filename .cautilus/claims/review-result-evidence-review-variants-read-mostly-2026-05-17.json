@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:50:00Z",
+    "evidencePolicy": "Mark the review-variants read-mostly claim satisfied only for the product-owned CLI boundary and review-only variant behavior; do not claim arbitrary consumer command mutation prevention."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-review-variants-read-mostly-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-293",
+          "claimFingerprint": "sha256:bbd0cc15974f28949118cb1f8125d27772e524aa4827d8ff92875cd374b45fd3",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names review-variant candidate workspace behavior that can be checked with focused CLI smoke tests and artifact placement assertions.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by a CLI smoke test proving a review-only variant inspects `{candidate_repo}`, writes artifacts outside that candidate workspace, and leaves the candidate git status clean, plus adjacent tests covering candidate placeholder and structured output behavior.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:09ffa10e31bed1bd1e1c42d72517c7d55d5bd5d6c08a4f0598ac75383b7e8401",
+              "supportsClaimIds": [
+                "claim-docs-guides-evaluation-process-md-293"
+              ]
+            }
+          ],
+          "nextAction": "Keep the read-mostly smoke test current when review variants change workspace placeholder handling, artifact placement, or default review-only guidance.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

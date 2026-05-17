@@ -19,7 +19,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 67, stale: 17, unknown: 277 |
+| Evidence | satisfied: 68, stale: 17, unknown: 276 |
 | Review | agent-reviewed: 133, heuristic: 227, human-reviewed: 1 |
 | Recommended proof | cautilus-eval: 124, deterministic: 140, human-auditable: 97 |
 | Verification readiness | blocked: 27, needs-alignment: 37, needs-scenario: 8, ready-for-proof: 289 |
@@ -108,7 +108,7 @@ Semantic sampling recommended for 302 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=37, human-confirm-or-decompose=34, split-or-defer=27.
-- Agent next proof work: connect deterministic gates for 72 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 71 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 116 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -116,8 +116,8 @@ Semantic sampling recommended for 302 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 67 | agent-reviewed: 67 | satisfied: 67 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 72 | agent-reviewed: 18, heuristic: 54 | stale: 10, unknown: 62 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 68 | agent-reviewed: 68 | satisfied: 68 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 71 | agent-reviewed: 17, heuristic: 54 | stale: 10, unknown: 61 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 116 | agent-reviewed: 8, heuristic: 107, human-reviewed: 1 | stale: 5, unknown: 111 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | agent-reviewed: 1, heuristic: 7 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 37 | agent-reviewed: 19, heuristic: 18 | unknown: 37 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
@@ -134,11 +134,11 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
-| claim-docs-guides-evaluation-process-md-293 | docs/guides/evaluation-process.md:293 | deterministic | ready-for-proof | agent-reviewed | unknown | Review variants should inspect the candidate, not mutate the repo. |
 | claim-docs-guides-improve-md-15 | docs/guides/improve.md:15 | deterministic | ready-for-proof | agent-reviewed | stale | Sparse evidence blocks search early with machine-readable JSON so an agent or operator can discuss what is missing before generating candidates. |
 | claim-docs-master-plan-md-30 | docs/master-plan.md:30 | deterministic | ready-for-proof | heuristic | unknown | Cautilus exposes machine-readable packets, provenance, status summaries, and bounded next-work routes that other tools can consume. |
 | claim-docs-master-plan-md-57 | docs/master-plan.md:57 | deterministic | ready-for-proof | heuristic | unknown | checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture` |
 | claim-docs-master-plan-md-78 | docs/master-plan.md:78 | deterministic | ready-for-proof | heuristic | unknown | The first `claim` slice ships as deterministic `cautilus discover claims`, which emits a source-ref-backed proof plan rather than a verdict. |
+| claim-docs-master-plan-md-84 | docs/master-plan.md:84 | deterministic | ready-for-proof | heuristic | unknown | `npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing. |
 
 ### agent-plan-cautilus-eval
 
@@ -315,6 +315,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json | - | - | 0 | 0 | 2 | - | - |
 | .cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-runner-readiness-branch-shape-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-runner-readiness-schema-fields-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-final-deterministic-proof-debt-2026-05-03.json | - | - | 1 | 1 | 1 | deterministic: 1 | ready-for-proof: 1 |
@@ -332,7 +333,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-loop2-lane-b.json | clusters 3-5 only | codex-lane-b | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json | - | - | 1 | 1 | 0 | human-auditable: 1 | blocked: 1 |
 | .cautilus/claims/review-result-positioning-boundary.json | - | - | 1 | 1 | 0 | human-auditable: 1 | blocked: 1 |
-| .cautilus/claims/review-result-readiness-triage-2026-05-10.json | action-bucket-readiness-triage | codex-current-agent | 3 | 14 | 4 | cautilus-eval: 1, deterministic: 8, human-auditable: 5 | blocked: 4, needs-alignment: 1, ready-for-proof: 9 |
+| .cautilus/claims/review-result-readiness-triage-2026-05-10.json | action-bucket-readiness-triage | codex-current-agent | 3 | 13 | 5 | cautilus-eval: 1, deterministic: 7, human-auditable: 5 | blocked: 4, needs-alignment: 1, ready-for-proof: 8 |
 | .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json | - | - | 2 | 5 | 3 | deterministic: 4, human-auditable: 1 | needs-alignment: 1, ready-for-proof: 4 |
 | .cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |

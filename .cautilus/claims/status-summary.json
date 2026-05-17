@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 67
+          "satisfied": 68
         },
         "byReviewStatus": {
-          "agent-reviewed": 67
+          "agent-reviewed": 68
         },
-        "count": 67,
+        "count": 68,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 10,
-          "unknown": 62
+          "unknown": 61
         },
         "byReviewStatus": {
-          "agent-reviewed": 18,
+          "agent-reviewed": 17,
           "heuristic": 54
         },
-        "count": 72,
+        "count": 71,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-guides-evaluation-process-md-293",
           "claim-docs-guides-improve-md-15",
           "claim-docs-master-plan-md-30",
           "claim-docs-master-plan-md-57",
-          "claim-docs-master-plan-md-78"
+          "claim-docs-master-plan-md-78",
+          "claim-docs-master-plan-md-84"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 67,
+      "satisfied": 68,
       "stale": 17,
-      "unknown": 277
+      "unknown": 276
     },
     "byLifecycle": {
       "new": 361
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 67,
+    "satisfiedClaimCount": 68,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1232,6 +1232,25 @@
         "summary": "Use a checked-in JSON schema file and a fixed output file path so the loop can detect `blocker`, `concern`, and `pass` without guessing."
       },
       {
+        "claimId": "claim-docs-guides-evaluation-process-md-293",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:09ffa10e31bed1bd1e1c42d72517c7d55d5bd5d6c08a4f0598ac75383b7e8401",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-evaluation-process-md-293"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Review variants should inspect the candidate, not mutate the repo."
+      },
+      {
         "claimId": "claim-docs-contracts-active-run-md-3",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1770,11 +1789,12 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 35,
+    "changedFileCount": 37,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+      ".cautilus/claims/evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
@@ -1783,6 +1803,7 @@
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
@@ -1816,7 +1837,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "5b632b501a4b0a1977f2b31a2f176b95e9dffc7e",
+    "currentGitCommit": "52c13b07078fda531be674f65f758a36d4b78b4d",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",

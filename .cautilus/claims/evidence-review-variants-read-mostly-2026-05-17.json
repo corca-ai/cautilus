@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-review-variants-read-mostly-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-guides-evaluation-process-md-293"
+  ],
+  "repoCommit": "52c13b07078fda531be674f65f758a36d4b78b4d",
+  "summary": "Deterministic proof for the review-variants read-mostly boundary: the public CLI passes the candidate workspace as an inspectable placeholder, writes variant artifacts to the run output directory, and a review-only variant leaves the candidate git workspace unchanged.",
+  "evidenceScope": {
+    "targetSurface": "evaluate review variants read-mostly candidate boundary",
+    "claimBoundary": "Only the product-owned review-variants artifact placement and review-only candidate-inspection behavior are marked satisfied.",
+    "notClaimed": [
+      "Cautilus can prevent an arbitrary consumer-owned shell command from mutating `{candidate_repo}`.",
+      "Every external reviewer CLI is sandboxed read-only by default.",
+      "Every consumer adapter uses the recommended Codex `--sandbox read-only` guardrail.",
+      "Review variants are appropriate for intentional mutation or improvement loops."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIReviewVariants(RunsInsideFreshRepoWithoutHostSpecificPaths|LeavesCandidateWorkspaceUnchangedForReviewOnlyVariant|RejectsMissingOutputFile|SupportsOutputUnderTest|UsesDefaultSchemaFromReviewPromptInput)' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "`evaluate review variants` passes `{candidate_repo}` as the explicit workspace under review instead of relying on host-local paths.",
+          "A review-only variant can inspect the candidate workspace and produce structured verdict JSON without changing `git status --short` in that candidate workspace.",
+          "Variant artifacts are written under the review output directory, not inside the candidate workspace.",
+          "Missing output files, output-under-test references, and prompt-input schema defaults remain covered by focused CLI smoke tests."
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/evaluation-process.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:ca9a653365fcf97ce502259b28550b2a84b7d571ab9646b43242f794d06bd30c"
+    },
+    {
+      "path": "internal/app/remaining_commands.go",
+      "kind": "review-variants-cli-implementation",
+      "contentHash": "sha256:f7fac2107f87032df7b46fefb55fc1f1ae498c09f26d07aca997832b075e392c"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "review-variants-read-mostly-smoke-test",
+      "contentHash": "sha256:a91f81b8a6353655371fd5c6b8a21b66db0145685e1841317c7b911fb7296778"
+    },
+    {
+      "path": "docs/contracts/adapter-contract.md",
+      "kind": "review-variant-adapter-guardrail",
+      "contentHash": "sha256:121aeef8723db6f4a0e5222874263c43b8071d49c653e2dd106a5587e66518c3"
+    },
+    {
+      "path": "docs/contracts/active-run.md",
+      "kind": "review-variant-artifact-placement-contract",
+      "contentHash": "sha256:3543de3e8678f4aa9a92fd905d6dff282eab683ed7a3dd97cee1a6cde6a9d38d"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The focused CLI smoke tests prove the product-owned review-variants path treats `{candidate_repo}` as an explicit workspace under review, writes variant outputs to the review output directory, and leaves a clean candidate git workspace unchanged for a review-only variant. The bundle explicitly excludes arbitrary consumer-owned command mutation prevention."
+  }
+}
