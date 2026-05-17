@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:34e0d2e9bb9120ed88fedfdb3b6670ff2a7d358365fc013a690c085ce87210c8"
+      "contentHash": "sha256:37f90f74cb137c5d856aa4eadb10418b5856e7de5bd406c9887eba29ce45984f"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -2424,13 +2424,13 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 12,
+        "satisfied": 15,
         "stale": 2,
-        "unknown": 43
+        "unknown": 40
       },
       "byReviewStatus": {
-        "agent-reviewed": 20,
-        "heuristic": 36,
+        "agent-reviewed": 23,
+        "heuristic": 33,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
@@ -14235,13 +14235,13 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:5ec34014cc5c216ed5e5e8dfba0940fb12ce4cc39a605552ad1ba57d23db8ec5",
       "canonicalClaimId": "M3",
-      "score": 22,
+      "score": 20,
       "runnerUpCanonicalClaimId": "M21",
-      "runnerUpScore": 22,
+      "runnerUpScore": 20,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -14256,11 +14256,11 @@
         "curation",
         "decision",
         "deterministic",
-        "doctor",
         "explanation",
-        "install",
         "keep",
-        "review-budget"
+        "review",
+        "review-budget",
+        "sequencing"
       ]
     },
     {
@@ -14278,13 +14278,13 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:712104f6267484242316cec1e4f9f001ab10f7e64aeb51c866dacb43731c209b",
       "canonicalClaimId": "M3",
-      "score": 27,
+      "score": 26,
       "runnerUpCanonicalClaimId": "M21",
-      "runnerUpScore": 27,
+      "runnerUpScore": 26,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -14296,14 +14296,14 @@
         "binary",
         "call",
         "cautilu",
+        "code",
         "deterministic",
         "directly",
         "discovery",
-        "doctor",
         "doe",
-        "install",
-        "keep",
-        "llm"
+        "llm",
+        "provider",
+        "review"
       ]
     },
     {
@@ -14321,8 +14321,8 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:fa6f7d16785a8a4a2e2353a8b34dea11318a186591d14b09cc67ed15ec069a35",
       "canonicalClaimId": "M3",
       "score": 25,
@@ -14339,14 +14339,14 @@
         "between",
         "binary",
         "cautilu",
-        "check",
         "checkable",
+        "command",
         "contract",
         "deterministic",
         "deterministically",
         "disclosure",
         "keep",
-        "lint"
+        "packaged"
       ]
     },
     {

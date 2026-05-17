@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 195
+          "unknown": 192
         },
         "byReviewStatus": {
-          "heuristic": 195
+          "heuristic": 192
         },
-        "count": 195,
+        "count": 192,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 107
+          "satisfied": 110
         },
         "byReviewStatus": {
-          "agent-reviewed": 107
+          "agent-reviewed": 110
         },
-        "count": 107,
+        "count": 110,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 6,
-          "unknown": 25
+          "unknown": 22
         },
         "byReviewStatus": {
           "agent-reviewed": 9,
-          "heuristic": 22
+          "heuristic": 19
         },
-        "count": 31,
+        "count": 28,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
-          "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
-          "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
           "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
-          "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27"
+          "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+          "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+          "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+          "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 107,
+      "satisfied": 110,
       "stale": 13,
-      "unknown": 241
+      "unknown": 238
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 165,
-      "heuristic": 195,
+      "agent-reviewed": 168,
+      "heuristic": 192,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 107,
+    "satisfiedClaimCount": 110,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -2546,6 +2546,69 @@
         "summary": "The product can read scenario-adjacent paths from typed packet fields instead of hardcoded route templates."
       },
       {
+        "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:bdb2af426a962bcfc11e9ae74184721577a4a834a40299f36630e5371be94ec2",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The Cautilus Agent owns sequencing, decision boundaries, review-budget explanation, and agent-driven claim curation."
+      },
+      {
+        "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:bdb2af426a962bcfc11e9ae74184721577a4a834a40299f36630e5371be94ec2",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The binary does not call an LLM provider directly for claim discovery or claim review; LLM work routes through Cautilus Agent or subagent surfaces."
+      },
+      {
+        "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:bdb2af426a962bcfc11e9ae74184721577a4a834a40299f36630e5371be94ec2",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Progressive disclosure between the binary and the Cautilus Agent stays within a deterministically checkable contract."
+      },
+      {
         "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2606,7 +2669,7 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 75,
+    "changedFileCount": 77,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -2623,6 +2686,7 @@
       ".cautilus/claims/evidence-contract-refresh-selection-state-transition-2026-05-17.json",
       ".cautilus/claims/evidence-contract-reporting-telemetry-packets-2026-05-17.json",
       ".cautilus/claims/evidence-contract-review-clustering-curation-2026-05-17.json",
+      ".cautilus/claims/evidence-contract-runner-readiness-packets-2026-05-17.json",
       ".cautilus/claims/evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/evidence-improve-search-sparse-evidence-block-2026-05-17.json",
@@ -2648,6 +2712,7 @@
       ".cautilus/claims/review-result-contract-refresh-selection-state-transition-2026-05-17.json",
       ".cautilus/claims/review-result-contract-reporting-telemetry-packets-2026-05-17.json",
       ".cautilus/claims/review-result-contract-review-clustering-curation-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-runner-readiness-packets-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
@@ -2692,7 +2757,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "e305a5e32efd350ae0e8110ccdd8772836e57424",
+    "currentGitCommit": "23c5537e2eff60c8282b2b541bfa8f84e5784803",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -2719,7 +2784,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 170,
+    "heuristicClaimsReadyForReview": 167,
     "needsAlignment": 38,
     "needsScenario": 8
   },

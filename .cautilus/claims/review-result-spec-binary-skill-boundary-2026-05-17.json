@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:40:11Z",
+    "evidencePolicy": "Satisfy binary/skill boundary spec claims through deterministic scanners and audit tests; do not claim live reviewer quality or a live subagent spawn."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-spec-binary-skill-boundary-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+          "claimFingerprint": "sha256:5ec34014cc5c216ed5e5e8dfba0940fb12ce4cc39a605552ad1ba57d23db8ec5",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names Cautilus Agent sequencing and curation ownership, covered by flow-audit tests and doctor status orientation tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "First-scan, review-prepare, reviewer-launch, and claim-discovery curation audits verify scan-scope confirmation, separate review budget, deterministic packet boundaries, reviewer result packet completion, and curation without review/eval overrun.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:bdb2af426a962bcfc11e9ae74184721577a4a834a40299f36630e5371be94ec2",
+              "supportsClaimIds": [
+                "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+                "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+                "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+              ]
+            }
+          ],
+          "nextAction": "Keep the Cautilus Agent flow audits aligned when changing first-scan, review preparation, reviewer launch, or claim curation guidance.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+          "claimFingerprint": "sha256:712104f6267484242316cec1e4f9f001ab10f7e64aeb51c866dacb43731c209b",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a static binary product boundary, covered by product-import isolation and command-boundary tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Product-import isolation scans cmd/ and internal/ non-test Go files, allows only gopkg.in/yaml.v3 as third-party import, rejects LLM provider SDK imports, and rejects provider API host strings.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:bdb2af426a962bcfc11e9ae74184721577a4a834a40299f36630e5371be94ec2",
+              "supportsClaimIds": [
+                "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+                "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+                "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+              ]
+            }
+          ],
+          "nextAction": "Run product-import isolation when adding binary code that touches network clients, provider metadata, or claim/review routing.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
+          "claimFingerprint": "sha256:fa6f7d16785a8a4a2e2353a8b34dea11318a186591d14b09cc67ed15ec069a35",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names a deterministic progressive-disclosure contract between the binary and the Cautilus Agent.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "The skill disclosure scanner verifies source and packaged skill parity, required binary command-discovery fragments, line cap, and absence of forbidden duplicated or stale operational guidance.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:bdb2af426a962bcfc11e9ae74184721577a4a834a40299f36630e5371be94ec2",
+              "supportsClaimIds": [
+                "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+                "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+                "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+              ]
+            }
+          ],
+          "nextAction": "Keep source and packaged Cautilus Agent copies byte-identical and leave command catalog detail in binary-owned surfaces.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

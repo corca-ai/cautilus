@@ -9225,8 +9225,21 @@
       "claimFingerprint": "sha256:5ec34014cc5c216ed5e5e8dfba0940fb12ce4cc39a605552ad1ba57d23db8ec5",
       "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:bdb2af426a962bcfc11e9ae74184721577a4a834a40299f36630e5371be94ec2",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+            "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+            "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "First-scan, review-prepare, reviewer-launch, and claim-discovery curation audits verify scan-scope confirmation, separate review budget, deterministic packet boundaries, reviewer result packet completion, and curation without review/eval overrun.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -9234,9 +9247,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep the Cautilus Agent flow audits aligned when changing first-scan, review preparation, reviewer launch, or claim curation guidance.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The Cautilus Agent owns sequencing, decision boundaries, review-budget explanation, and agent-driven claim curation.",
@@ -9245,8 +9258,9 @@
         }
       ],
       "summary": "The Cautilus Agent owns sequencing, decision boundaries, review-budget explanation, and agent-driven claim curation.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names Cautilus Agent sequencing and curation ownership, covered by flow-audit tests and doctor status orientation tests."
     },
     {
       "claimAudience": "developer",
@@ -9254,8 +9268,21 @@
       "claimFingerprint": "sha256:712104f6267484242316cec1e4f9f001ab10f7e64aeb51c866dacb43731c209b",
       "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:bdb2af426a962bcfc11e9ae74184721577a4a834a40299f36630e5371be94ec2",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+            "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+            "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Product-import isolation scans cmd/ and internal/ non-test Go files, allows only gopkg.in/yaml.v3 as third-party import, rejects LLM provider SDK imports, and rejects provider API host strings.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -9263,9 +9290,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Run product-import isolation when adding binary code that touches network clients, provider metadata, or claim/review routing.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The binary does not call an LLM provider directly for claim discovery or claim review; LLM work routes through Cautilus Agent or subagent surfaces.",
@@ -9274,8 +9301,9 @@
         }
       ],
       "summary": "The binary does not call an LLM provider directly for claim discovery or claim review; LLM work routes through Cautilus Agent or subagent surfaces.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names a static binary product boundary, covered by product-import isolation and command-boundary tests."
     },
     {
       "claimAudience": "developer",
@@ -9283,8 +9311,21 @@
       "claimFingerprint": "sha256:fa6f7d16785a8a4a2e2353a8b34dea11318a186591d14b09cc67ed15ec069a35",
       "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:bdb2af426a962bcfc11e9ae74184721577a4a834a40299f36630e5371be94ec2",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+            "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+            "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "The skill disclosure scanner verifies source and packaged skill parity, required binary command-discovery fragments, line cap, and absence of forbidden duplicated or stale operational guidance.",
       "groupHints": [
         "audience:developer",
         "deterministic",
@@ -9292,9 +9333,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep source and packaged Cautilus Agent copies byte-identical and leave command catalog detail in binary-owned surfaces.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Progressive disclosure between the binary and the Cautilus Agent stays within a deterministically checkable contract.",
@@ -9303,8 +9344,9 @@
         }
       ],
       "summary": "Progressive disclosure between the binary and the Cautilus Agent stays within a deterministically checkable contract.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names a deterministic progressive-disclosure contract between the binary and the Cautilus Agent."
     },
     {
       "claimAudience": "developer",
@@ -12504,9 +12546,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 107,
+      "satisfied": 110,
       "stale": 13,
-      "unknown": 241
+      "unknown": 238
     },
     "byLifecycle": {
       "new": 361
@@ -12517,8 +12559,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 165,
-      "heuristic": 195,
+      "agent-reviewed": 168,
+      "heuristic": 192,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12808,6 +12850,7 @@
       ".cautilus/claims/review-result-contract-reporting-telemetry-packets-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-contract-runner-readiness-packets-2026-05-17.json",
+      ".cautilus/claims/review-result-spec-binary-skill-boundary-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
@@ -12870,9 +12913,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 78,
+    "appliedResultCount": 79,
     "skippedResultCount": 52,
-    "keptUpdateCount": 182,
+    "keptUpdateCount": 185,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

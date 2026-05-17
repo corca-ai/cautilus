@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-spec-binary-skill-boundary-2026-05-17",
+  "createdAt": "2026-05-17T09:40:11Z",
+  "repoCommit": "23c5537e2eff60c8282b2b541bfa8f84e5784803",
+  "createdForClaimIds": [
+    "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+    "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+    "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+  ],
+  "summary": "Deterministic command registry, doctor status, skill disclosure, product-import isolation, and Cautilus Agent flow audit tests prove the binary/Cautilus Agent ownership boundary.",
+  "evidenceScope": {
+    "covered": [
+      "The Cautilus Agent owns sequencing, decision boundaries, review-budget explanation, and claim curation flow behavior.",
+      "The binary owns deterministic command discovery and packet surfaces without importing LLM provider SDKs or embedding provider API hosts in product code.",
+      "Progressive disclosure between source and packaged Cautilus Agent copies is checked deterministically, including required command-discovery fragments and forbidden stale or split-surface guidance."
+    ],
+    "notClaimed": [
+      "This bundle does not prove live LLM reviewer quality.",
+      "This bundle does not claim subagents were spawned in this session; it proves the checked-in boundary and audit contracts."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:skill-disclosure && npm run lint:product-import-isolation",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:40:11Z",
+      "outputSummary": [
+        "skill disclosure status ok",
+        "source and packaged Cautilus Agent skills byte-identical under the line cap",
+        "product import isolation status ok with only gopkg.in/yaml.v3 as allowed third-party import",
+        "forbidden provider hosts checked: api.anthropic.com, api.openai.com, generativelanguage.googleapis.com, api.x.ai"
+      ]
+    },
+    {
+      "command": "node scripts/check-product-import-isolation.test.mjs && node scripts/agent-runtime/audit-cautilus-first-scan-flow-log.test.mjs && node scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs && node scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.test.mjs && node scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:40:11Z",
+      "outputSummary": [
+        "product-import isolation self-tests reject LLM provider SDK imports and provider host strings",
+        "first-scan audit requires doctor status, scan-scope confirmation, and separate LLM review budget wording",
+        "review-prepare audit stops at deterministic packet creation",
+        "reviewer-launch audit requires selected review budget and a cautilus.claim_review_result.v1 packet before completion",
+        "claim-discovery curation audit requires extraction, duplicate, false-positive, false-negative, and bucket curation without overrunning into eval or review work"
+      ]
+    },
+    {
+      "command": "go test ./internal/cli ./internal/app -run 'TestRenderUsageIncludesLifecycleCommands|TestRenderTopicUsageIncludesLeafCommandUsageAndExamples|TestLoadRegistryAssignsKnownGroupToEveryCommand|TestRunCommandsJSONReturnsRegistry|TestRunAgentStatusJSONReturnsNoInputOrientation'",
+      "status": "passed",
+      "observedAt": "2026-05-17T09:40:11Z",
+      "outputSummary": [
+        "ok github.com/corca-ai/cautilus/internal/cli",
+        "ok github.com/corca-ai/cautilus/internal/app"
+      ]
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "scripts/check-cautilus-skill-disclosure.mjs",
+      "proves": "Progressive disclosure is deterministic across the source and packaged Cautilus Agent copies, including required command-discovery fragments and forbidden duplicated operational guidance."
+    },
+    {
+      "path": "scripts/check-product-import-isolation.mjs",
+      "tests": [
+        "scripts/check-product-import-isolation.test.mjs"
+      ],
+      "proves": "The binary product code is statically checked against direct LLM provider SDK imports and provider API host strings."
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-first-scan-flow-log.test.mjs",
+      "proves": "First-scan skill behavior starts from doctor status, asks for scan-scope confirmation, keeps LLM review budget separate, and stops before review or eval overrun."
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.test.mjs",
+      "proves": "Review preparation remains deterministic packet creation and does not launch or apply reviewer results."
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.test.mjs",
+      "proves": "Reviewer launch is a budgeted branch whose completion boundary is a cautilus.claim_review_result.v1 packet, not an unbounded chat claim."
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs",
+      "proves": "Cautilus Agent owns claim curation behavior after discovery, including false-positive and false-negative review boundaries."
+    },
+    {
+      "path": "internal/cli/registry_test.go",
+      "tests": [
+        "TestRenderUsageIncludesLifecycleCommands",
+        "TestRenderTopicUsageIncludesLeafCommandUsageAndExamples",
+        "TestLoadRegistryAssignsKnownGroupToEveryCommand"
+      ],
+      "proves": "The binary owns deterministic command discovery, help text, examples, and command grouping."
+    },
+    {
+      "path": "internal/app/app_test.go",
+      "tests": [
+        "TestRunCommandsJSONReturnsRegistry",
+        "TestRunAgentStatusJSONReturnsNoInputOrientation"
+      ],
+      "proves": "The binary exposes command registry JSON and a read-only doctor status orientation packet for the Cautilus Agent."
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "reason": "The checked-in scanners and tests exercise the binary's deterministic command/import boundary and the Cautilus Agent's sequencing, review-budget, claim-curation, and progressive-disclosure responsibilities."
+  }
+}
