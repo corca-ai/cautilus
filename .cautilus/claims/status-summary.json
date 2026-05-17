@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 173
+          "unknown": 166
         },
         "byReviewStatus": {
-          "heuristic": 173
+          "heuristic": 166
         },
-        "count": 173,
+        "count": 166,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -16,7 +16,7 @@
           "claim-readme-md-92",
           "claim-readme-md-103",
           "claim-readme-md-117",
-          "claim-readme-md-130"
+          "claim-readme-md-151"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
       },
@@ -63,14 +63,14 @@
       {
         "byEvidenceStatus": {
           "stale": 5,
-          "unknown": 111
+          "unknown": 119
         },
         "byReviewStatus": {
-          "agent-reviewed": 8,
+          "agent-reviewed": 16,
           "heuristic": 107,
           "human-reviewed": 1
         },
-        "count": 116,
+        "count": 124,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -78,29 +78,9 @@
           "claim-readme-md-92",
           "claim-readme-md-103",
           "claim-readme-md-117",
-          "claim-docs-contracts-adapter-contract-md-209"
+          "claim-readme-md-130"
         ],
         "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
-      },
-      {
-        "byEvidenceStatus": {
-          "unknown": 8
-        },
-        "byReviewStatus": {
-          "agent-reviewed": 1,
-          "heuristic": 7
-        },
-        "count": 8,
-        "id": "agent-design-scenario",
-        "recommendedActor": "agent",
-        "sampleClaimIds": [
-          "claim-readme-md-130",
-          "claim-docs-specs-user-evaluation-spec-md-4",
-          "claim-docs-specs-user-evaluation-spec-md-25",
-          "claim-docs-contracts-scenario-history-md-188",
-          "claim-docs-specs-user-improvement-spec-md-23"
-        ],
-        "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
       },
       {
         "byEvidenceStatus": {
@@ -211,15 +191,14 @@
       "human-auditable": 98
     },
     "byReviewStatus": {
-      "agent-reviewed": 187,
-      "heuristic": 173,
+      "agent-reviewed": 194,
+      "heuristic": 166,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 27,
       "needs-alignment": 39,
-      "needs-scenario": 8,
-      "ready-for-proof": 287
+      "ready-for-proof": 295
     }
   },
   "discoveryBoundary": {
@@ -3289,8 +3268,17 @@
   },
   "gitCommit": "bb7c6524243653a0aeed9f181d788a3dd34c293f",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 8,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-17.json",
+      ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/status-summary.json",
+      "docs/specs/evidence/claim-evidence-state.md"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -3298,12 +3286,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "bb7c6524243653a0aeed9f181d788a3dd34c293f",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "8c3dfe6fe4df44a9147d6ca5a16d460214179219",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb7c6524243653a0aeed9f181d788a3dd34c293f",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
@@ -3328,7 +3316,7 @@
   "reviewReadinessSummary": {
     "heuristicClaimsReadyForReview": 148,
     "needsAlignment": 39,
-    "needsScenario": 8
+    "needsScenario": 0
   },
   "sampleClaims": [
     {

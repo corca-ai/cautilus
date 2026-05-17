@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:52dd85ddffb78fe6306ac23de3b8d25bff68e198c237c233052b9ddb682a5fd4",
+    "claimsHash": "sha256:2b7a2446f319659397d4f3e05733deb2f314f52d0564c4e8b43891241318bdc4",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:1b196afe2f1f0e496d70780c08b785a948e779373490ef0f7f08006db0b57146",
+    "statusHash": "sha256:df7745318cdeae4d447c95bc0888d17deb30a4607ee9b63c5a7fa81c46a5ddba",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,8 +12,17 @@
     }
   },
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 8,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-17.json",
+      ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/status-summary.json",
+      "docs/specs/evidence/claim-evidence-state.md"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -21,12 +30,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "bb7c6524243653a0aeed9f181d788a3dd34c293f",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "8c3dfe6fe4df44a9147d6ca5a16d460214179219",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "bb7c6524243653a0aeed9f181d788a3dd34c293f",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
@@ -45,19 +54,18 @@
     "byVerificationReadiness": {
       "blocked": 27,
       "needs-alignment": 39,
-      "needs-scenario": 8,
-      "ready-for-proof": 287
+      "ready-for-proof": 295
     },
     "byReviewStatus": {
-      "agent-reviewed": 187,
-      "heuristic": 173,
+      "agent-reviewed": 194,
+      "heuristic": 166,
       "human-reviewed": 1
     }
   },
   "openCautilusEval": {
     "total": 124,
-    "readyForProof": 116,
-    "needsScenario": 8,
+    "readyForProof": 124,
+    "needsScenario": 0,
     "bySurface": {
       "(none)": 6,
       "app/chat": 4,
@@ -66,12 +74,10 @@
       "dev/skill": 29
     },
     "byReadiness": {
-      "needs scenario": 8,
-      "ready for proof": 116
+      "ready for proof": 124
     },
     "rawByReadiness": {
-      "needs-scenario": 8,
-      "ready-for-proof": 116
+      "ready-for-proof": 124
     },
     "proofReadySamples": [
       {
@@ -111,6 +117,15 @@
         "summary": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses."
       },
       {
+        "claimId": "claim-readme-md-130",
+        "source": "README.md:130",
+        "surface": "app/chat",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-for-proof",
+        "review": "agent-reviewed",
+        "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest."
+      },
+      {
         "claimId": "claim-docs-contracts-adapter-contract-md-209",
         "source": "docs/contracts/adapter-contract.md:209",
         "surface": "dev/repo",
@@ -136,91 +151,9 @@
         "rawReadiness": "ready-for-proof",
         "review": "heuristic",
         "summary": "Use `--codex-home-mode isolated` when the eval should not load the operator's `CODEX_HOME` config, plugins, or sessions."
-      },
-      {
-        "claimId": "claim-docs-guides-cli-md-55",
-        "source": "docs/guides/cli.md:55",
-        "surface": "dev/repo",
-        "readiness": "ready for proof",
-        "rawReadiness": "ready-for-proof",
-        "review": "heuristic",
-        "summary": "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home."
       }
     ],
-    "scenarioSamples": [
-      {
-        "claimId": "claim-readme-md-130",
-        "source": "README.md:130",
-        "surface": "app/chat",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "heuristic",
-        "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest."
-      },
-      {
-        "claimId": "claim-docs-specs-user-evaluation-spec-md-4",
-        "source": "docs/specs/user/evaluation.spec.md:4",
-        "surface": "surface undecided",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "heuristic",
-        "summary": "Using the `cautilus evaluate` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state."
-      },
-      {
-        "claimId": "claim-docs-specs-user-evaluation-spec-md-25",
-        "source": "docs/specs/user/evaluation.spec.md:25",
-        "surface": "surface undecided",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "heuristic",
-        "summary": "A user can evaluate behavior without Cautilus taking over host-owned execution."
-      },
-      {
-        "claimId": "claim-docs-contracts-scenario-history-md-188",
-        "source": "docs/contracts/scenario-history.md:188",
-        "surface": "surface undecided",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "agent-reviewed",
-        "summary": "Compare runs often need a frozen baseline side so only the candidate reruns."
-      },
-      {
-        "claimId": "claim-docs-specs-user-improvement-spec-md-23",
-        "source": "docs/specs/user/improvement.spec.md:23",
-        "surface": "surface undecided",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "heuristic",
-        "summary": "A user can improve behavior while preserving protected checks, held-out evidence, and explicit budget."
-      },
-      {
-        "claimId": "claim-docs-specs-user-improvement-spec-md-41",
-        "source": "docs/specs/user/improvement.spec.md:41",
-        "surface": "app/chat",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "heuristic",
-        "summary": "Improvement produces a proposal and revision artifact that preserve source files, stop conditions, prioritized evidence, and follow-up checks."
-      },
-      {
-        "claimId": "claim-docs-specs-ledger-improvement-spec-md-5",
-        "source": "docs/specs/ledger/improvement.spec.md:5",
-        "surface": "surface undecided",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "heuristic",
-        "summary": "Bounded Improvement improves a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts."
-      },
-      {
-        "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-16",
-        "source": "docs/specs/ledger/promise-ledger.spec.md:16",
-        "surface": "surface undecided",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "heuristic",
-        "summary": "[Bounded Improvement](improvement.spec.md): Cautilus improves a selected behavior target under explicit budget, protected checks, and held-out evidence."
-      }
-    ]
+    "scenarioSamples": []
   },
   "actionBuckets": [
     {
@@ -237,31 +170,18 @@
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 116,
+      "count": 124,
       "actor": "agent",
       "evidence": {
         "stale": 5,
-        "unknown": 111
+        "unknown": 119
       },
       "review": {
-        "agent-reviewed": 8,
+        "agent-reviewed": 16,
         "heuristic": 107,
         "human-reviewed": 1
       },
       "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
-    },
-    {
-      "id": "agent-design-scenario",
-      "count": 8,
-      "actor": "agent",
-      "evidence": {
-        "unknown": 8
-      },
-      "review": {
-        "agent-reviewed": 1,
-        "heuristic": 7
-      },
-      "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
     },
     {
       "id": "human-align-surfaces",
@@ -307,7 +227,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 173,
+      "count": 166,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [
@@ -315,7 +235,7 @@
         "claim-readme-md-92",
         "claim-readme-md-103",
         "claim-readme-md-117",
-        "claim-readme-md-130"
+        "claim-readme-md-151"
       ]
     },
     {

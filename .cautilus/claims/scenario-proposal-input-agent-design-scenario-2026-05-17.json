@@ -1,0 +1,251 @@
+{
+  "schemaVersion": "cautilus.scenario_proposal_inputs.v1",
+  "windowDays": 14,
+  "families": [
+    "claim_design"
+  ],
+  "proposalCandidates": [
+    {
+      "proposalKey": "context-recovery-protected-from-tuning",
+      "title": "Protect context recovery from tuning",
+      "family": "claim_design",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-context-recovery-protected-from-tuning",
+        "summary": "Cautilus should keep a context-recovery scenario outside tuning so improvement cannot overfit it.",
+        "behaviorSurface": "app/chat",
+        "successDimensions": [
+          {
+            "id": "context_recovery",
+            "summary": "The product preserves and uses earlier conversation context after an interruption or pivot."
+          },
+          {
+            "id": "protected_signal",
+            "summary": "The scenario is tagged as protected or held out from tuning."
+          }
+        ],
+        "guardrailDimensions": [
+          {
+            "id": "no_tuning_leakage",
+            "summary": "The protected scenario is not included in train or optimization inputs."
+          }
+        ]
+      },
+      "name": "Protected Context Recovery",
+      "description": "The user resumes a prior task after a context-disrupting pivot, and the run must prove the case stays outside tuning inputs.",
+      "brief": "Decomposes README.md:130 into an app/chat protected context-recovery scenario.",
+      "tags": [
+        "claim-readme-md-130",
+        "app-chat",
+        "protected"
+      ],
+      "maxTurns": 3,
+      "simulatorTurns": [
+        "다음 세션에서 claim evidence 작업을 이어가야 합니다.",
+        "잠깐 다른 질문입니다. 상태 리포트에서 2는 무슨 뜻인가요?",
+        "이제 방금 말한 다음 세션 작업으로 돌아가 주세요."
+      ],
+      "evidence": [
+        {
+          "sourceKind": "agent_run",
+          "title": "Claim claim-readme-md-130 scenario decomposition",
+          "observedAt": "2026-05-17T08:10:00.000Z",
+          "claimId": "claim-readme-md-130",
+          "sourceRef": "README.md:130"
+        }
+      ]
+    },
+    {
+      "proposalKey": "evaluate-surfaces-without-owned-host-state",
+      "title": "Evaluate all surfaces without taking host ownership",
+      "family": "claim_design",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-evaluate-surfaces-without-host-ownership",
+        "summary": "Cautilus should route dev and app evaluations while leaving runners, prompts, and policy in host-owned adapter state.",
+        "behaviorSurface": "dev/repo",
+        "successDimensions": [
+          {
+            "id": "surface_routing",
+            "summary": "The run selects dev/repo, dev/skill, app/chat, and app/prompt from fixture or plan metadata."
+          },
+          {
+            "id": "host_ownership_boundary",
+            "summary": "The output names adapter-owned runners, prompts, credentials, and acceptance policy as host state."
+          }
+        ],
+        "guardrailDimensions": [
+          {
+            "id": "no_embedded_host_policy",
+            "summary": "Cautilus does not write or mutate host-owned runner, prompt, or policy files."
+          }
+        ]
+      },
+      "name": "Surface Routing Without Host Ownership",
+      "description": "A maintainer evaluates representative dev and app surface fixtures and verifies the packet records the host-owned execution boundary.",
+      "brief": "Decomposes docs/specs/user/evaluation.spec.md:4 and :25 into a dev/repo scenario covering all top-level eval surfaces and ownership boundaries.",
+      "tags": [
+        "claim-docs-specs-user-evaluation-spec-md-4",
+        "claim-docs-specs-user-evaluation-spec-md-25",
+        "dev-repo",
+        "ownership"
+      ],
+      "maxTurns": 2,
+      "simulatorTurns": [
+        "Evaluate dev/repo, dev/skill, app/chat, and app/prompt examples from this repo.",
+        "Show which parts remain adapter-owned instead of Cautilus-owned."
+      ],
+      "evidence": [
+        {
+          "sourceKind": "agent_run",
+          "title": "Claim evaluation surface ownership scenario decomposition",
+          "observedAt": "2026-05-17T08:10:00.000Z",
+          "claimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-4",
+            "claim-docs-specs-user-evaluation-spec-md-25"
+          ],
+          "sourceRefs": [
+            "docs/specs/user/evaluation.spec.md:4",
+            "docs/specs/user/evaluation.spec.md:25"
+          ]
+        }
+      ]
+    },
+    {
+      "proposalKey": "compare-run-frozen-baseline",
+      "title": "Freeze baseline side during compare run",
+      "family": "claim_design",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-compare-run-frozen-baseline",
+        "summary": "A compare workflow should reuse or freeze the baseline side so only the candidate side reruns.",
+        "behaviorSurface": "dev/repo",
+        "successDimensions": [
+          {
+            "id": "baseline_reuse",
+            "summary": "The compare artifact records that baseline observations came from a frozen cache or prior run."
+          },
+          {
+            "id": "candidate_rerun",
+            "summary": "The candidate side runs against the current workspace and records fresh observations."
+          }
+        ],
+        "guardrailDimensions": [
+          {
+            "id": "no_baseline_drift",
+            "summary": "The baseline side is not silently rerun with candidate workspace state."
+          }
+        ]
+      },
+      "name": "Frozen Baseline Compare",
+      "description": "The compare workflow prepares a baseline cache and then reruns only the candidate side while preserving provenance for both sides.",
+      "brief": "Decomposes docs/contracts/scenario-history.md:188 into a concrete compare-run scenario.",
+      "tags": [
+        "claim-docs-contracts-scenario-history-md-188",
+        "dev-repo",
+        "compare"
+      ],
+      "maxTurns": 2,
+      "simulatorTurns": [
+        "Prepare a comparison with a saved baseline artifact.",
+        "Run the candidate side and report whether the baseline was reused rather than rerun."
+      ],
+      "evidence": [
+        {
+          "sourceKind": "workflow_run",
+          "title": "Claim compare baseline-freezing scenario decomposition",
+          "observedAt": "2026-05-17T08:10:00.000Z",
+          "claimId": "claim-docs-contracts-scenario-history-md-188",
+          "sourceRef": "docs/contracts/scenario-history.md:188"
+        }
+      ]
+    },
+    {
+      "proposalKey": "improve-preserves-protected-checks-budget-and-evidence",
+      "title": "Improve while preserving protected checks, budget, and evidence",
+      "family": "claim_design",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "intentId": "intent-improve-preserves-protected-checks-budget-and-evidence",
+        "summary": "Improvement should change a selected behavior target only within explicit budget while preserving protected checks and held-out evidence.",
+        "behaviorSurface": "app/prompt",
+        "successDimensions": [
+          {
+            "id": "explicit_budget",
+            "summary": "The improve packet records the selected target and budget."
+          },
+          {
+            "id": "protected_checks_preserved",
+            "summary": "Protected or held-out scenarios remain separated from tuning inputs."
+          },
+          {
+            "id": "reviewable_artifacts",
+            "summary": "The result includes proposal and revision artifacts with source files and follow-up checks."
+          }
+        ],
+        "guardrailDimensions": [
+          {
+            "id": "no_unbounded_optimization",
+            "summary": "The workflow stops at the configured budget and records stop conditions."
+          }
+        ]
+      },
+      "name": "Bounded Improvement Preservation",
+      "description": "An app/prompt improvement run prepares input from a report and review summary, then proves budget, protected checks, held-out evidence, proposal, and revision artifacts remain explicit.",
+      "brief": "Decomposes the user and ledger improvement claims into one protected app/prompt improvement scenario.",
+      "tags": [
+        "claim-docs-specs-user-improvement-spec-md-23",
+        "claim-docs-specs-user-improvement-spec-md-41",
+        "claim-docs-specs-ledger-improvement-spec-md-5",
+        "claim-docs-specs-ledger-promise-ledger-spec-md-16",
+        "app-prompt",
+        "improvement"
+      ],
+      "maxTurns": 3,
+      "simulatorTurns": [
+        "Prepare an improvement run for a selected app/prompt behavior with budget=light.",
+        "Show the protected and held-out scenarios that are not tuning inputs.",
+        "Build the proposal and revision artifact and report stop conditions."
+      ],
+      "evidence": [
+        {
+          "sourceKind": "workflow_run",
+          "title": "Claim bounded improvement scenario decomposition",
+          "observedAt": "2026-05-17T08:10:00.000Z",
+          "claimIds": [
+            "claim-docs-specs-user-improvement-spec-md-23",
+            "claim-docs-specs-user-improvement-spec-md-41",
+            "claim-docs-specs-ledger-improvement-spec-md-5",
+            "claim-docs-specs-ledger-promise-ledger-spec-md-16"
+          ],
+          "sourceRefs": [
+            "docs/specs/user/improvement.spec.md:23",
+            "docs/specs/user/improvement.spec.md:41",
+            "docs/specs/ledger/improvement.spec.md:5",
+            "docs/specs/ledger/promise-ledger.spec.md:16"
+          ]
+        }
+      ]
+    }
+  ],
+  "existingScenarioRegistry": [],
+  "scenarioCoverage": [
+    {
+      "scenarioKey": "context-recovery-protected-from-tuning",
+      "recentResultCount": 0
+    },
+    {
+      "scenarioKey": "evaluate-surfaces-without-owned-host-state",
+      "recentResultCount": 0
+    },
+    {
+      "scenarioKey": "compare-run-frozen-baseline",
+      "recentResultCount": 0
+    },
+    {
+      "scenarioKey": "improve-preserves-protected-checks-budget-and-evidence",
+      "recentResultCount": 0
+    }
+  ],
+  "now": "2026-05-17T08:10:00.000Z"
+}

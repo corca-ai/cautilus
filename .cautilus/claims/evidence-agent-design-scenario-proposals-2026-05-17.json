@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-agent-design-scenario-proposals-2026-05-17",
+  "createdForClaimIds": [
+    "claim-readme-md-130",
+    "claim-docs-specs-user-evaluation-spec-md-4",
+    "claim-docs-specs-user-evaluation-spec-md-25",
+    "claim-docs-contracts-scenario-history-md-188",
+    "claim-docs-specs-user-improvement-spec-md-23",
+    "claim-docs-specs-user-improvement-spec-md-41",
+    "claim-docs-specs-ledger-improvement-spec-md-5",
+    "claim-docs-specs-ledger-promise-ledger-spec-md-16"
+  ],
+  "repoCommit": "8c3dfe6fe4df44a9147d6ca5a16d460214179219",
+  "summary": "Scenario-design proof that the current needs-scenario Cautilus eval claims have concrete proposal candidates before protected eval fixture planning.",
+  "evidenceScope": {
+    "targetSurface": "claim discovery scenario-design bucket",
+    "claimBoundary": "Only the scenario decomposition step is proven. The claims are moved to ready-for-proof, not marked satisfied.",
+    "notClaimed": [
+      "The generated scenarios have been accepted by a human operator.",
+      "The generated scenarios have been promoted into checked-in eval fixtures.",
+      "The generated scenarios have passed a Cautilus eval run.",
+      "The generated scenarios are training inputs for optimization."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "./bin/cautilus discover scenarios propose --input .cautilus/claims/scenario-proposal-input-agent-design-scenario-2026-05-17.json --output .cautilus/claims/scenario-proposals-agent-design-scenario-2026-05-17.json",
+      "exitCode": 0,
+      "reason": "The checked-in proposal input produced a durable cautilus.scenario_proposals.v1 packet with four concrete draft scenarios covering the eight needs-scenario claims."
+    },
+    {
+      "command": "./bin/cautilus doctor packet inspect --input .cautilus/claims/scenario-proposals-agent-design-scenario-2026-05-17.json",
+      "exitCode": 0,
+      "reason": "Packet inspection recognized the proposals packet schema and counted four proposals."
+    },
+    {
+      "command": "go test ./internal/app -run 'TestCLIScenarioPropose|TestCLIScenarioPrepareInput|TestCLIScenarioCatalog' -count=1",
+      "exitCode": 0,
+      "reason": "Focused CLI tests cover scenario proposal, prepare-input, and catalog command behavior."
+    },
+    {
+      "command": "npm run lint:scenario-normalizers",
+      "exitCode": 0,
+      "reason": "Scenario normalization runtime completeness stayed green while consuming the proposal surface."
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": ".cautilus/claims/scenario-proposal-input-agent-design-scenario-2026-05-17.json",
+      "kind": "scenario-proposal-input-packet",
+      "contentHash": "sha256:41efa9c0fa18261c3f8b79692ea72e1d1daefa21327d6932db1d76b58c559ebc",
+      "schemaVersion": "cautilus.scenario_proposal_inputs.v1",
+      "observed": {
+        "proposalCandidateCount": 4,
+        "families": [
+          "claim_design"
+        ],
+        "coveredClaimCount": 8
+      }
+    },
+    {
+      "path": ".cautilus/claims/scenario-proposals-agent-design-scenario-2026-05-17.json",
+      "kind": "scenario-proposals-packet",
+      "contentHash": "sha256:e97ccbaf012ca9a0cbf3e4f8fbd758571deddf3eb584c6b355314237fba1654a",
+      "schemaVersion": "cautilus.scenario_proposals.v1",
+      "observed": {
+        "proposalCount": 4,
+        "actions": [
+          "add_new_scenario"
+        ],
+        "scenarioIds": [
+          "context-recovery-protected-from-tuning",
+          "evaluate-surfaces-without-owned-host-state",
+          "compare-run-frozen-baseline",
+          "improve-preserves-protected-checks-budget-and-evidence"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "README.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:a3b3326a742ef014a99221da31e83962b621c35e3b60d3589519476066379cc8"
+    },
+    {
+      "path": "docs/specs/user/evaluation.spec.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:7052858b0d3b732792cb23fad3363b59cc8bb2d000a1ba8fdb0a5bbc8bbc71d6"
+    },
+    {
+      "path": "docs/contracts/scenario-history.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:82802024e1ac79f1527323f4f4f3e300810219607b884ffd749c7d963fc66be3"
+    },
+    {
+      "path": "docs/specs/user/improvement.spec.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:909860d6f824ec914a149db158e9527cd78e9dd2f0e087ba63cab43b0ac081f5"
+    },
+    {
+      "path": "docs/specs/ledger/improvement.spec.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:ad07776f81f60dfeddd029c2360d3dd2055a1c1d838e560c3ce8961765412183"
+    },
+    {
+      "path": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:b9d80d0df278ec8eaa93031c394c530a8dba8e4c4cca531fe21b50eaa3514818"
+    },
+    {
+      "path": "internal/runtime/proposals.go",
+      "kind": "scenario-proposal-runtime",
+      "contentHash": "sha256:5a3e3a89ccf4326a998a5132afc0c4e91514e3c934f48838c528d687281289c1"
+    },
+    {
+      "path": "internal/app/app.go",
+      "kind": "scenario-proposal-cli-handler",
+      "contentHash": "sha256:7a4607abd9da65c044438aada3c95e880c1efa62424327b84613253a137a8f93"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "unknown",
+    "verificationReadiness": "ready-for-proof",
+    "matchKind": "possible",
+    "reason": "The scenario proposal packet decomposes the broad behavior claims into concrete draft scenarios, which makes later protected eval planning honest without claiming the behavior has already passed."
+  }
+}

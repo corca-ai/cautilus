@@ -683,8 +683,19 @@
       "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
       "claimId": "claim-readme-md-130",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-readme-md-130"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "A concrete scenario proposal exists, but the scenario has not yet been promoted to a checked-in fixture or evaluated.",
       "groupHints": [
         "app/chat",
         "audience:user",
@@ -693,10 +704,10 @@
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+      "nextAction": "Plan a protected app/chat eval fixture from the `context-recovery-protected-from-tuning` proposal, keeping it out of tuning inputs.",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
@@ -705,8 +716,11 @@
         }
       ],
       "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
+      "unresolvedQuestions": [
+        "Which accepted fixture path should own the protected context-recovery scenario?"
+      ],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim describes app/chat behavior and protected-scenario separation; it needs a Cautilus eval, but the scenario proposal packet now gives it a concrete protected context-recovery scenario."
     },
     {
       "claimAudience": "user",
@@ -3548,8 +3562,20 @@
       "claimFingerprint": "sha256:386e6f9f7ad815db0d32be26c2ca779d10596749abb4a685ec01d92667fedad0",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-4",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-4",
+            "claim-docs-specs-user-evaluation-spec-md-25"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "A concrete scenario proposal exists, but the cross-surface behavior has not yet been evaluated.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -3558,9 +3584,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Decompose this broad behavior promise into one or more concrete scenario candidates before planning a protected eval.",
+      "nextAction": "Plan a dev/repo eval fixture from the `evaluate-surfaces-without-owned-host-state` proposal.",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Using the `cautilus evaluate` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state.",
@@ -3569,8 +3595,11 @@
         }
       ],
       "summary": "Using the `cautilus evaluate` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim names a broad behavior surface or reusable workflow; it needs a concrete scenario before an eval fixture can honestly prove it."
+      "unresolvedQuestions": [
+        "Should the four eval surfaces be one fixture matrix or separate fixture cases?"
+      ],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim spans evaluation behavior across dev and app surfaces; the scenario proposal decomposes it into a surface-routing and host-ownership eval target."
     },
     {
       "claimAudience": "user",
@@ -3609,8 +3638,20 @@
       "claimFingerprint": "sha256:14a67a2548b2b02abf555ed0e63e7e0f8d039455c3ea20abbb2421357d26abfc",
       "claimId": "claim-docs-specs-user-evaluation-spec-md-25",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evaluation-spec-md-4",
+            "claim-docs-specs-user-evaluation-spec-md-25"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "A concrete scenario proposal exists, but the ownership-boundary behavior has not yet been evaluated.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -3619,9 +3660,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Decompose this broad behavior promise into one or more concrete scenario candidates before planning a protected eval.",
+      "nextAction": "Plan a dev/repo eval fixture from the `evaluate-surfaces-without-owned-host-state` proposal.",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
@@ -3630,8 +3671,11 @@
         }
       ],
       "summary": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim names a broad behavior surface or reusable workflow; it needs a concrete scenario before an eval fixture can honestly prove it."
+      "unresolvedQuestions": [
+        "Which runner observation fields should prove that prompts, credentials, and policy remain host-owned?"
+      ],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim is an ownership-boundary behavior promise; the scenario proposal now gives it an eval target that checks Cautilus does not take over host-owned execution state."
     },
     {
       "claimAudience": "user",
@@ -8751,9 +8795,19 @@
       "claimFingerprint": "sha256:011098fa8f0fb74f38fea92d734fd20899794fa138b4bd51484b07c3dd9a2f5b",
       "claimId": "claim-docs-contracts-scenario-history-md-188",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-scenario-history-md-188"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "The line is rationale for compare-run behavior and needs a concrete command or packet contract before proof.",
+      "evidenceStatusReason": "A concrete compare-run scenario proposal exists, but no compare eval has run yet.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -8762,7 +8816,7 @@
         "needs-scenario"
       ],
       "lifecycle": "new",
-      "nextAction": "Split a concrete compare-run baseline-freezing contract before attaching proof.",
+      "nextAction": "Plan a dev/repo compare workflow eval from the `compare-run-frozen-baseline` proposal.",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -8773,8 +8827,11 @@
         }
       ],
       "summary": "Compare runs often need a frozen baseline side so only the candidate reruns.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
+      "unresolvedQuestions": [
+        "Which baseline-cache artifact should the fixture use as its frozen side?"
+      ],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim describes compare-run behavior that needs workflow evidence; the scenario proposal now isolates the frozen-baseline behavior to evaluate."
     },
     {
       "claimAudience": "developer",
@@ -10833,8 +10890,22 @@
       "claimFingerprint": "sha256:3ac32edb3c002ee19619d433a92dfc4055d35fdde165e9fb3effdebb13f47006",
       "claimId": "claim-docs-specs-user-improvement-spec-md-23",
       "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-improvement-spec-md-23",
+            "claim-docs-specs-user-improvement-spec-md-41",
+            "claim-docs-specs-ledger-improvement-spec-md-5",
+            "claim-docs-specs-ledger-promise-ledger-spec-md-16"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "A concrete improvement scenario proposal exists, but the improvement workflow has not yet been evaluated.",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -10843,9 +10914,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+      "nextAction": "Plan an app/prompt eval fixture from the `improve-preserves-protected-checks-budget-and-evidence` proposal.",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "A user can improve behavior while preserving protected checks, held-out evidence, and explicit budget.",
@@ -10854,8 +10925,11 @@
         }
       ],
       "summary": "A user can improve behavior while preserving protected checks, held-out evidence, and explicit budget.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
+      "unresolvedQuestions": [
+        "Which existing report and review-summary fixtures should seed the improvement input?"
+      ],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim describes improvement workflow behavior; the scenario proposal now narrows it to an app/prompt improvement run with protected checks, held-out evidence, and explicit budget."
     },
     {
       "claimAudience": "user",
@@ -10863,8 +10937,22 @@
       "claimFingerprint": "sha256:311c81292005b1a22ed14f5e9edaf547d6135b708feb80f89567ce4e10842d95",
       "claimId": "claim-docs-specs-user-improvement-spec-md-41",
       "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-improvement-spec-md-23",
+            "claim-docs-specs-user-improvement-spec-md-41",
+            "claim-docs-specs-ledger-improvement-spec-md-5",
+            "claim-docs-specs-ledger-promise-ledger-spec-md-16"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "A concrete improvement artifact scenario proposal exists, but proposal and revision artifact behavior has not yet been evaluated.",
       "groupHints": [
         "app/chat",
         "audience:user",
@@ -10874,10 +10962,10 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+      "nextAction": "Plan an app/prompt eval fixture from the `improve-preserves-protected-checks-budget-and-evidence` proposal.",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Improvement produces a proposal and revision artifact that preserve source files, stop conditions, prioritized evidence, and follow-up checks.",
@@ -10886,8 +10974,11 @@
         }
       ],
       "summary": "Improvement produces a proposal and revision artifact that preserve source files, stop conditions, prioritized evidence, and follow-up checks.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
+      "unresolvedQuestions": [
+        "Should revision-artifact checks live in the same fixture as budget and held-out checks?"
+      ],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names proposal and revision artifact behavior in the improvement workflow; the scenario proposal now gives those packet outputs a concrete eval target."
     },
     {
       "claimAudience": "user",
@@ -12369,8 +12460,22 @@
       "claimFingerprint": "sha256:3506e9f5cbc0175a547c31afdc6eb818bf20736601df0b8d0fca8d4fe8e1db26",
       "claimId": "claim-docs-specs-ledger-improvement-spec-md-5",
       "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-improvement-spec-md-23",
+            "claim-docs-specs-user-improvement-spec-md-41",
+            "claim-docs-specs-ledger-improvement-spec-md-5",
+            "claim-docs-specs-ledger-promise-ledger-spec-md-16"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "A concrete bounded-improvement scenario proposal exists, but the workflow has not yet been evaluated.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -12379,9 +12484,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+      "nextAction": "Plan an app/prompt eval fixture from the `improve-preserves-protected-checks-budget-and-evidence` proposal.",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Bounded Improvement improves a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.",
@@ -12390,8 +12495,11 @@
         }
       ],
       "summary": "Bounded Improvement improves a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
+      "unresolvedQuestions": [
+        "Which protected scenario set should be used as the held-out side for this eval?"
+      ],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The ledger claim summarizes bounded improvement behavior; the scenario proposal decomposes it into explicit budget, protected checks, held-out evidence, and artifact preservation."
     },
     {
       "claimAudience": "developer",
@@ -12490,8 +12598,22 @@
       "claimFingerprint": "sha256:a308d1eae66f89bd8fd43382d57e9951b1cd17f3bec7f1b9c152110bac7e8440",
       "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-16",
       "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-improvement-spec-md-23",
+            "claim-docs-specs-user-improvement-spec-md-41",
+            "claim-docs-specs-ledger-improvement-spec-md-5",
+            "claim-docs-specs-ledger-promise-ledger-spec-md-16"
+          ]
+        }
+      ],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "A concrete bounded-improvement scenario proposal exists, but the promise has not yet passed a Cautilus eval.",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -12500,9 +12622,9 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+      "nextAction": "Plan an app/prompt eval fixture from the `improve-preserves-protected-checks-budget-and-evidence` proposal.",
       "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "[Bounded Improvement](improvement.spec.md): Cautilus improves a selected behavior target under explicit budget, protected checks, and held-out evidence.",
@@ -12511,8 +12633,11 @@
         }
       ],
       "summary": "[Bounded Improvement](improvement.spec.md): Cautilus improves a selected behavior target under explicit budget, protected checks, and held-out evidence.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
+      "unresolvedQuestions": [
+        "Which protected scenario set should be used as the held-out side for this eval?"
+      ],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The promise-ledger claim points to the same bounded-improvement behavior; the scenario proposal now provides a concrete proof target for explicit budget, protected checks, and held-out evidence."
     },
     {
       "claimAudience": "developer",
@@ -12943,15 +13068,14 @@
       "human-auditable": 98
     },
     "byReviewStatus": {
-      "agent-reviewed": 187,
-      "heuristic": 173,
+      "agent-reviewed": 194,
+      "heuristic": 166,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 27,
       "needs-alignment": 39,
-      "needs-scenario": 8,
-      "ready-for-proof": 287
+      "ready-for-proof": 295
     }
   },
   "discoveryEngine": {
@@ -13215,6 +13339,7 @@
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json",
+      ".cautilus/claims/review-result-agent-design-scenario-proposals-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
@@ -13302,9 +13427,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 84,
+    "appliedResultCount": 85,
     "skippedResultCount": 52,
-    "keptUpdateCount": 213,
+    "keptUpdateCount": 221,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },
