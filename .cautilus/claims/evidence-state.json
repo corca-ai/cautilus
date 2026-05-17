@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:14426d6578b1f5f491184656315045cf67f9707ef696c047a1bd8e00e8803ea8",
+    "claimsHash": "sha256:2bfb1b92a78cda9aba994bc81a48debbf6a3c90bf98b77ca158e04b272260416",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:11e384e98ea8088d1e1f929b783c0365ebeccc9575a432a3f0dfb29c3ad29f70",
+    "statusHash": "sha256:9ec6f7f287e5a82b87e659507cdc375e7238320aa479a5328d59c66abe37034e",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,17 +12,19 @@
     }
   },
   "gitState": {
-    "changedFileCount": 26,
+    "changedFileCount": 28,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
+      ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-option-paths.md",
@@ -49,7 +51,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "4a75338f544bf30f2a4545ed91a4894c23d62f7d",
+    "currentGitCommit": "a5bda16393512fe1d5c51c43180fc1f4e221e0b4",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -60,9 +62,9 @@
     "candidateCount": 361,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 63,
+      "satisfied": 65,
       "stale": 17,
-      "unknown": 281
+      "unknown": 279
     },
     "byRecommendedProof": {
       "cautilus-eval": 124,
@@ -76,8 +78,8 @@
       "ready-for-proof": 289
     },
     "byReviewStatus": {
-      "agent-reviewed": 130,
-      "heuristic": 230,
+      "agent-reviewed": 131,
+      "heuristic": 229,
       "human-reviewed": 1
     }
   },
@@ -252,27 +254,27 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 63,
+      "count": 65,
       "actor": "none",
       "evidence": {
-        "satisfied": 63
+        "satisfied": 65
       },
       "review": {
-        "agent-reviewed": 63
+        "agent-reviewed": 65
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 76,
+      "count": 74,
       "actor": "agent",
       "evidence": {
         "stale": 10,
-        "unknown": 66
+        "unknown": 64
       },
       "review": {
-        "agent-reviewed": 19,
-        "heuristic": 57
+        "agent-reviewed": 18,
+        "heuristic": 56
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
@@ -348,7 +350,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 230,
+      "count": 229,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [

@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 230
+          "unknown": 229
         },
         "byReviewStatus": {
-          "heuristic": 230
+          "heuristic": 229
         },
-        "count": 230,
+        "count": 229,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 63
+          "satisfied": 65
         },
         "byReviewStatus": {
-          "agent-reviewed": 63
+          "agent-reviewed": 65
         },
-        "count": 63,
+        "count": 65,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 10,
-          "unknown": 66
+          "unknown": 64
         },
         "byReviewStatus": {
-          "agent-reviewed": 19,
-          "heuristic": 57
+          "agent-reviewed": 18,
+          "heuristic": 56
         },
-        "count": 76,
+        "count": 74,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-guides-cli-md-564",
-          "claim-docs-guides-consumer-adoption-md-48",
-          "claim-docs-guides-consumer-adoption-md-106",
           "claim-docs-guides-evaluation-process-md-52",
-          "claim-docs-guides-evaluation-process-md-293"
+          "claim-docs-guides-evaluation-process-md-293",
+          "claim-docs-guides-improve-md-15",
+          "claim-docs-master-plan-md-30"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 63,
+      "satisfied": 65,
       "stale": 17,
-      "unknown": 281
+      "unknown": 279
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 130,
-      "heuristic": 230,
+      "agent-reviewed": 131,
+      "heuristic": 229,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 63,
+    "satisfiedClaimCount": 65,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1058,6 +1058,26 @@
         "summary": "`cautilus --version` must work on `PATH` before any consumer adapter or skill wiring is treated as valid."
       },
       {
+        "claimId": "claim-docs-guides-consumer-adoption-md-48",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:af3fda6ad148c54c8f9c78aaa8e994ebc4426407e7e559cc5618fe35829c23fd",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-consumer-adoption-md-48",
+              "claim-docs-guides-consumer-adoption-md-106"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios --json` catalog nearby only for proposal-input examples."
+      },
+      {
         "claimId": "claim-docs-guides-consumer-adoption-md-49",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1095,6 +1115,26 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit."
+      },
+      {
+        "claimId": "claim-docs-guides-consumer-adoption-md-106",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:af3fda6ad148c54c8f9c78aaa8e994ebc4426407e7e559cc5618fe35829c23fd",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-consumer-adoption-md-48",
+              "claim-docs-guides-consumer-adoption-md-106"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`."
       },
       {
         "claimId": "claim-docs-guides-consumer-adoption-md-107",
@@ -1692,17 +1732,19 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 26,
+    "changedFileCount": 28,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
+      ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
       ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-option-paths.md",
@@ -1729,7 +1771,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "4a75338f544bf30f2a4545ed91a4894c23d62f7d",
+    "currentGitCommit": "a5bda16393512fe1d5c51c43180fc1f4e221e0b4",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -1756,7 +1798,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 205,
+    "heuristicClaimsReadyForReview": 204,
     "needsAlignment": 37,
     "needsScenario": 8
   },

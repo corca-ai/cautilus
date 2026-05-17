@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:14426d6578b1f5f491184656315045cf67f9707ef696c047a1bd8e00e8803ea8"
+      "contentHash": "sha256:2bfb1b92a78cda9aba994bc81a48debbf6a3c90bf98b77ca158e04b272260416"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -576,8 +576,8 @@
     "userRawClaimCount": 102,
     "userMappedToCanonicalCount": 102,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 303,
-    "userSemanticReviewRecommendedCount": 48,
+    "semanticReviewRecommendedCount": 302,
+    "userSemanticReviewRecommendedCount": 47,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 259,
       "mapped-to-user-canonical": 102
@@ -587,9 +587,9 @@
       "user": 102
     },
     "byMappingConfidence": {
-      "high": 58,
+      "high": 59,
       "low": 20,
-      "medium": 283
+      "medium": 282
     },
     "byUserCanonicalClaimId": {
       "U1": 27,
@@ -664,7 +664,6 @@
       "claim-docs-guides-cli-md-474",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-29",
-      "claim-docs-guides-consumer-adoption-md-48",
       "claim-docs-guides-consumer-adoption-md-49",
       "claim-docs-guides-consumer-adoption-md-106",
       "claim-docs-guides-consumer-adoption-md-107",
@@ -1019,8 +1018,8 @@
         {
           "claimId": "claim-docs-guides-consumer-adoption-md-48",
           "claimFingerprint": "sha256:04ac0c0a725feb0b2e4529f010110b07479596b12facdb2843a5c1016b3cb677",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-docs-guides-consumer-adoption-md-49",
@@ -1120,12 +1119,12 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 12,
-        "unknown": 15
+        "satisfied": 13,
+        "unknown": 14
       },
       "byReviewStatus": {
-        "agent-reviewed": 13,
-        "heuristic": 14
+        "agent-reviewed": 14,
+        "heuristic": 13
       },
       "byRecommendedProof": {
         "cautilus-eval": 10,
@@ -1133,8 +1132,8 @@
         "human-auditable": 4
       },
       "byMappingConfidence": {
-        "high": 13,
-        "medium": 14
+        "high": 14,
+        "medium": 13
       }
     },
     {
@@ -1545,9 +1544,9 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 14,
+        "satisfied": 15,
         "stale": 5,
-        "unknown": 38
+        "unknown": 37
       },
       "byReviewStatus": {
         "agent-reviewed": 33,
@@ -6693,30 +6692,30 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:04ac0c0a725feb0b2e4529f010110b07479596b12facdb2843a5c1016b3cb677",
       "canonicalClaimId": "U1",
-      "score": 23,
+      "score": 22,
       "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 22,
-      "scoreMargin": 1,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "runnerUpScore": 18,
+      "scoreMargin": 4,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "add",
         "bounded",
         "cautilu",
-        "cli",
         "deterministic",
         "discover",
+        "doctor",
         "evaluate",
         "example",
+        "field",
         "first",
         "fixture",
-        "include",
-        "json"
+        "include"
       ]
     },
     {
@@ -6855,24 +6854,27 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
+      "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:8edfa3ce4d6f43ef4031008bcdc6e4fa5fb4afb54762da4eb2a4ef061fd3d9fc",
       "canonicalClaimId": "U2",
-      "score": 7,
+      "score": 10,
       "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 4,
-      "scoreMargin": 3,
+      "runnerUpScore": 6,
+      "scoreMargin": 4,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "catalog",
+        "change",
         "deterministic",
         "documentation",
+        "keep",
+        "name",
         "product",
-        "proof",
-        "schema",
         "surface",
+        "test",
         "vocabulary"
       ]
     },

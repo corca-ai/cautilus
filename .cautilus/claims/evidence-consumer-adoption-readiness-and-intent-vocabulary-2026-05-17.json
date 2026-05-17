@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-guides-consumer-adoption-md-48",
+    "claim-docs-guides-consumer-adoption-md-106"
+  ],
+  "repoCommit": "a5bda16393512fe1d5c51c43180fc1f4e221e0b4",
+  "summary": "Deterministic proof that consumer doctor ready payloads include first_bounded_run guidance and that behavior intent surfaces are product-owned with deprecated alias normalization.",
+  "evidenceScope": {
+    "targetSurface": "consumer adoption readiness and behavior intent vocabulary",
+    "claimBoundary": "Only the two listed docs/guides/consumer-adoption.md claims are marked satisfied.",
+    "notClaimed": [
+      "Every real consumer repo has completed a product-runner proof assessment.",
+      "The first_bounded_run guide replaces repo-local fixtures or policy.",
+      "Every historical behavior-surface alias is accepted.",
+      "Behavior-intent vocabulary choices are validated by live model behavior."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run consumer:onboard:smoke -- --json",
+      "exitCode": 0,
+      "observed": {
+        "ok": true,
+        "ready": true,
+        "firstBoundedRun": {
+          "discoveryCommand": "cautilus discover scenarios --json",
+          "decisionLoopCommands": [
+            "cautilus evaluate fixture",
+            "cautilus evaluate observation"
+          ],
+          "normalizationFamilies": [
+            "chatbot",
+            "skill",
+            "workflow"
+          ]
+        },
+        "evalSummarySchemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+        "recommendation": "accept-now"
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/behavior-intent.test.mjs scripts/agent-runtime/scenario-proposals.test.mjs scripts/agent-runtime/build-report-packet.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 14,
+        "pass": 14,
+        "protectedBehaviors": [
+          "buildBehaviorIntentProfile accepts known product-owned behavior surfaces",
+          "buildBehaviorIntentProfile rejects behavior surfaces outside the product-owned catalog",
+          "buildBehaviorIntentProfile rejects dimensions outside the product-owned catalog",
+          "draft scenarios and report packets carry cautilus.behavior_intent.v1 profiles"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildBehaviorIntentProfile|TestBehaviorIntent' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "runtime behavior intent profiles use product-owned behavior surfaces",
+          "deprecated workflow_conversation input normalizes to conversation_continuity"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/guides/consumer-adoption.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:49a83291a1697e41989d6b804846c10709c3ce13d8989d47d7ba94a298c613f2"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.mjs",
+      "kind": "consumer-onboarding-smoke",
+      "contentHash": "sha256:9a2f3c3e96a280038f191efede4cdec046330db003a865fc0dacfed66cb75c65"
+    },
+    {
+      "path": "scripts/on-demand/smoke-external-consumer.test.mjs",
+      "kind": "consumer-onboarding-smoke-test",
+      "contentHash": "sha256:06a7ab45c1a485aa6a2c5f2b96ba96ce309bcb84fce2cff2f6440e3096bd9253"
+    },
+    {
+      "path": "scripts/agent-runtime/behavior-intent.mjs",
+      "kind": "behavior-intent-runtime-js",
+      "contentHash": "sha256:692c0719274626f828e366419939d9276d5fa6176da27f6bb374411763b17ab4"
+    },
+    {
+      "path": "scripts/agent-runtime/behavior-intent.test.mjs",
+      "kind": "behavior-intent-tests-js",
+      "contentHash": "sha256:de0c23646e2f74678c6a5f0618b5684585b3cff9459932dac0162404e929426a"
+    },
+    {
+      "path": "scripts/agent-runtime/scenario-proposals.test.mjs",
+      "kind": "scenario-proposal-intent-profile-tests",
+      "contentHash": "sha256:2afbc33d96ba7c4f5f81b4c697f8634168a8aad4d756ec8b74c3e814b5486317"
+    },
+    {
+      "path": "scripts/agent-runtime/build-report-packet.test.mjs",
+      "kind": "report-packet-intent-profile-tests",
+      "contentHash": "sha256:3cdb2e16a1e348ea98ddc58c954d02c7614df77b75cfa3777c3e00a6552c06fc"
+    },
+    {
+      "path": "internal/runtime/intent.go",
+      "kind": "behavior-intent-runtime-go",
+      "contentHash": "sha256:571634590cdcfb658ad382fdcf0268499965a00eedb3de94016f3eec9205e34c"
+    },
+    {
+      "path": "internal/runtime/proposals_test.go",
+      "kind": "behavior-intent-tests-go",
+      "contentHash": "sha256:b49b373dc1fb10b910fda036051bd376552514eb80ff943d3bd575a5faa3d66e"
+    },
+    {
+      "path": "docs/contracts/behavior-intent.md",
+      "kind": "behavior-intent-contract",
+      "contentHash": "sha256:9aefe319e784d8ddde790313a3260d21ae0dbcb4f3f87efdd8762435bb24bfc3"
+    },
+    {
+      "path": "internal/contracts/constants.go",
+      "kind": "behavior-intent-schema-constant",
+      "contentHash": "sha256:adb4b79266625e731241e0a2618dd31ba4428d46d51e0aeb50109525a9af4f98"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The external consumer smoke shows ready doctor payloads include first_bounded_run with fixture and observation packet-loop commands while keeping the scenario catalog nearby; JS and Go behavior-intent tests prove product-owned behaviorSurface values, rejection of unknown surfaces, and deprecated workflow_conversation alias normalization to conversation_continuity."
+  }
+}

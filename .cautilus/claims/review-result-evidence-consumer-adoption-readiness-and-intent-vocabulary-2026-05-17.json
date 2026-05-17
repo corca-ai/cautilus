@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T08:55:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the two consumer adoption guide claims covered by the external consumer smoke and behavior-intent vocabulary tests."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-48",
+          "claimFingerprint": "sha256:04ac0c0a725feb0b2e4529f010110b07479596b12facdb2843a5c1016b3cb677",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic doctor-ready payload shape and first bounded run command guidance.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by external consumer onboarding smoke showing doctor ready payload includes first_bounded_run with evaluate fixture and evaluate observation decision loop commands plus the scenario-normalization catalog.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:af3fda6ad148c54c8f9c78aaa8e994ebc4426407e7e559cc5618fe35829c23fd",
+              "supportsClaimIds": [
+                "claim-docs-guides-consumer-adoption-md-48",
+                "claim-docs-guides-consumer-adoption-md-106"
+              ]
+            }
+          ],
+          "nextAction": "Keep consumer adoption guidance aligned with doctor first_bounded_run payload fields and smoke coverage.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-106",
+          "claimFingerprint": "sha256:8edfa3ce4d6f43ef4031008bcdc6e4fa5fb4afb54762da4eb2a4ef061fd3d9fc",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the behavior-intent schema vocabulary contract, which is protected by deterministic JS and Go catalog tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by JS and Go behavior-intent tests covering product-owned behavior surfaces, rejection of unknown surfaces and dimensions, and deprecated workflow_conversation alias normalization to conversation_continuity.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:af3fda6ad148c54c8f9c78aaa8e994ebc4426407e7e559cc5618fe35829c23fd",
+              "supportsClaimIds": [
+                "claim-docs-guides-consumer-adoption-md-48",
+                "claim-docs-guides-consumer-adoption-md-106"
+              ]
+            }
+          ],
+          "nextAction": "Keep consumer adoption deprecated-surface guidance aligned with behavior-intent catalog tests when surface names change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
