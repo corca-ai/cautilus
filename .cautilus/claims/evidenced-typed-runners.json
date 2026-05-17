@@ -2,7 +2,7 @@
   "candidateCount": 361,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 5,
+    "evidenceSupportIdRewriteCount": 0,
     "matchedClaimCount": 361,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
@@ -12113,7 +12113,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "0430f73a47adc9920a50b68dce5f681a848249c5",
+  "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
