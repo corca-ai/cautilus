@@ -11292,8 +11292,23 @@
       "claimFingerprint": "sha256:50cfe9adec26f5edf247f16ce3360fd12e0503f96beeed13dd85332fc7faf186",
       "claimId": "claim-docs-contracts-improvement-md-136",
       "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-improvement-md-136",
+            "claim-docs-contracts-improvement-md-151",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by app and Node improve tests: `improve build-artifact` writes `cautilus.revision_artifact.v1` from proposal/input packets, preserves report context, intent profile, and target snapshot hash, and the builder materializes one reopenable artifact.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -11301,9 +11316,9 @@
         "linked-from:docs/contracts/active-run.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "nextAction": "Keep improve build-artifact tests current when changing revision artifact schema or active-run defaults.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`improve build-artifact` emits one durable packet that can be reopened without rediscovering improve inputs by hand.",
@@ -11312,8 +11327,9 @@
         }
       ],
       "summary": "`improve build-artifact` emits one durable packet that can be reopened without rediscovering improve inputs by hand.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names durable revision artifact packet creation, which is covered by CLI and builder tests."
     },
     {
       "claimAudience": "developer",
@@ -11321,8 +11337,23 @@
       "claimFingerprint": "sha256:3d2b1a5023d0719cec1e567bed6162972135e108fd4728bd0ac3b47a042be1a7",
       "claimId": "claim-docs-contracts-improvement-md-151",
       "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-improvement-md-136",
+            "claim-docs-contracts-improvement-md-151",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by checked-in improve builders, fixtures, schema tests, flow tests, and CLI smoke: prepare-input, propose, and build-artifact all emit the expected schema-versioned packets and preserve the one durable next-revision artifact boundary.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -11330,9 +11361,9 @@
         "linked-from:docs/contracts/active-run.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep improve schema fixtures and flow tests aligned when changing improve packet shape.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Update the improve input builder, improve proposal generator, revision artifact builder, schemas, fixtures, and flow tests so the improve seam keeps one durable packet for the next bounded revision.",
@@ -11341,8 +11372,9 @@
         }
       ],
       "summary": "Update the improve input builder, improve proposal generator, revision artifact builder, schemas, fixtures, and flow tests so the improve seam keeps one durable packet for the next bounded revision.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names the first implementation slice: improve input builder, proposal generator, revision artifact builder, schemas, fixtures, and flow tests."
     },
     {
       "claimAudience": "developer",
@@ -11383,17 +11415,21 @@
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+          "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-runtime-fingerprint-improvement-md-8"
+            "claim-docs-contracts-improvement-md-136",
+            "claim-docs-contracts-improvement-md-151",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-deterministic-ready-batch-2026-05-03.json does not list current claimId claim-docs-contracts-runtime-fingerprint-improvement-md-8 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by runtime fingerprint tests: model/runtime changes are surfaced as context warnings or passing skill-summary context under observe/default behavior rather than forced model pinning or behavior failure.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -11401,7 +11437,7 @@
         "linked-from:docs/contracts/reporting.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep default observe-mode runtime tests current when changing skill/eval summary runtime telemetry.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -11412,8 +11448,9 @@
         }
       ],
       "summary": "By default, those tests should not force a model choice just to make evaluation evidence easier to compare.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names the default no-pinned-model policy for skill and eval tests, protected by runtime fingerprint comparison tests."
     },
     {
       "claimAudience": "developer",
@@ -11423,17 +11460,21 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+          "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-runtime-fingerprint-improvement-md-34"
+            "claim-docs-contracts-improvement-md-136",
+            "claim-docs-contracts-improvement-md-151",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-deterministic-ready-batch-2026-05-03.json does not list current claimId claim-docs-contracts-runtime-fingerprint-improvement-md-34 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by runtime fingerprint tests: pinned runtime policy blocks mismatches with `model_runtime_pinned_mismatch`, while observe/default behavior remains non-blocking.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -11441,7 +11482,7 @@
         "linked-from:docs/contracts/reporting.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep pinned runtime policy tests aligned with adapter `runtime_policy` shape and blocked-result semantics.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -11452,8 +11493,9 @@
         }
       ],
       "summary": "Adapter command templates may still pin a model when the evaluated product explicitly requires one.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names adapter-owned pinned runtime policy, which is covered by pinned mismatch tests and adapter policy contract wiring."
     },
     {
       "claimAudience": "developer",
@@ -11525,17 +11567,21 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:7e8a19c8a99cfb394508778570a145d3787e01c0a8a2ab5221355f3e4b4bb2d3",
+          "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-ready-batch-2026-05-03.json",
+          "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
           "supportsClaimIds": [
+            "claim-docs-contracts-improvement-md-136",
+            "claim-docs-contracts-improvement-md-151",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+            "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
             "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-deterministic-ready-batch-2026-05-03.json does not list current claimId claim-docs-contracts-runtime-fingerprint-improvement-md-42 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by runtime fingerprint tests: Cautilus normalizes explicit telemetry into `telemetry.runtimeFingerprint`, reports missing prior/current runtime identity without pretending drift, and does not infer runtime identity from human-oriented logs.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -11543,7 +11589,7 @@
         "linked-from:docs/contracts/reporting.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+      "nextAction": "Keep runtime fingerprint normalization and no-log-inference tests current when adding runtime telemetry sources.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -11554,8 +11600,9 @@
         }
       ],
       "summary": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper.",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+      "whyThisLayer": "The claim names the explicit machine-readable runtime identity boundary."
     },
     {
       "claimAudience": "developer",
@@ -12755,9 +12802,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 124,
-      "stale": 12,
-      "unknown": 225
+      "satisfied": 129,
+      "stale": 9,
+      "unknown": 223
     },
     "byLifecycle": {
       "new": 361
@@ -12768,8 +12815,8 @@
       "human-auditable": 98
     },
     "byReviewStatus": {
-      "agent-reviewed": 180,
-      "heuristic": 180,
+      "agent-reviewed": 182,
+      "heuristic": 178,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -13064,6 +13111,7 @@
       ".cautilus/claims/review-result-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-ownership-evidence-gaps-improvement-2026-05-17.json",
+      ".cautilus/claims/review-result-improve-artifact-runtime-fingerprint-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
@@ -13125,9 +13173,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 82,
+    "appliedResultCount": 83,
     "skippedResultCount": 52,
-    "keptUpdateCount": 200,
+    "keptUpdateCount": 205,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

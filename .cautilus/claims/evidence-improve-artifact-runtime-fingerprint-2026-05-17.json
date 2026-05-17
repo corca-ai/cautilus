@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-improve-artifact-runtime-fingerprint-2026-05-17",
+  "createdAt": "2026-05-17T09:57:48Z",
+  "repoCommit": "9d1c60aef772e4a556705b5894bc0c29ec7530dc",
+  "createdForClaimIds": [
+    "claim-docs-contracts-improvement-md-136",
+    "claim-docs-contracts-improvement-md-151",
+    "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+    "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+    "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
+  ],
+  "summary": "Deterministic proof for durable improve revision artifacts, checked-in improve builders/schemas/fixtures, and runtime-fingerprint policy behavior that observes model/runtime identity without pinning by default.",
+  "evidenceScope": {
+    "targetSurface": "improve artifact durability and runtime fingerprint policy",
+    "claimBoundary": "Only the five listed improvement and runtime-fingerprint claims are marked satisfied.",
+    "notClaimed": [
+      "Every future improve command shape is covered.",
+      "Runtime identity is inferred from human-oriented logs.",
+      "Default model/provider drift is a behavior regression.",
+      "Pinned runtime policy belongs to Cautilus instead of host adapters.",
+      "A runtime change directly edits consumer-owned prompts, skills, or adapter files."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/app -run 'TestCLIImprovePrepareInputProposeAndBuildArtifact' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "protectedBehaviors": [
+          "improve prepare-input writes cautilus.improve_inputs.v1",
+          "improve propose writes cautilus.improve_proposal.v1 with one bounded revision brief",
+          "improve build-artifact writes cautilus.revision_artifact.v1",
+          "revision artifacts preserve report context, intent profile, and target snapshot hash"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildReportPacketNormalizesAndComparesRuntimeFingerprint|TestBuildReportPacketNotesPriorEvidenceWithoutRuntimeIdentity|TestBuildReportPacketOnlyCarriesExplicitRuntimeIdentity|TestBuildSkillEvaluationSummaryPreservesPassingRecommendationWithRuntimeChange|TestBuildEvaluationSummaryBlocksPinnedRuntimeMismatch|TestGenerateImproveProposalAddsPassingSimplificationForRuntimeChange' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "runtime fingerprints normalize explicit telemetry into telemetry.runtimeFingerprint",
+          "prior evidence without runtime identity produces model_runtime_unobserved instead of a failure",
+          "runtime identity is not inferred from human-oriented logs",
+          "skill summaries can preserve a passing recommendation while surfacing model_runtime_changed",
+          "pinned runtime policy blocks mismatches with model_runtime_pinned_mismatch",
+          "improve proposals consume runtime-change context as a passing simplification reason"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/improve-flow.test.mjs scripts/agent-runtime/improvement-contract-schemas.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 9,
+        "pass": 9,
+        "protectedBehaviors": [
+          "buildImproveInput assembles a bounded improvement packet from explicit evidence",
+          "generateImproveProposal turns explicit evidence into one bounded revision plan",
+          "buildRevisionArtifact materializes one durable revision packet from proposal and input",
+          "improve CLI helpers default inside active runs without losing packet boundaries",
+          "improve input, proposal, and revision artifact examples match checked-in schemas"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/build-report-packet.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 5,
+        "pass": 5,
+        "protectedBehaviors": [
+          "report packet builder aggregates telemetry and scenario summaries",
+          "report packet builder preserves active-run and stdout fallback boundaries",
+          "report packet builder keeps packet-shaped inputs explicit"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/improvement.md",
+      "kind": "improvement-contract-source",
+      "contentHash": "sha256:48e0f9024eb3824a1b15469ebbd601b46d6bfd0baeb8f4800b694c0526fd72f0"
+    },
+    {
+      "path": "docs/contracts/runtime-fingerprint-improvement.md",
+      "kind": "runtime-fingerprint-improvement-contract-source",
+      "contentHash": "sha256:b6cb66c5617b72582480649ff16338c0404f22251faeff9a406743fc2da2edb9"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "improve-cli-smoke-tests",
+      "contentHash": "sha256:a91f81b8a6353655371fd5c6b8a21b66db0145685e1841317c7b911fb7296778"
+    },
+    {
+      "path": "internal/runtime/improve.go",
+      "kind": "improve-runtime",
+      "contentHash": "sha256:24a47b2bc222604069bfee4e7afe45c11012ee143d9754137937b4163dc133d3"
+    },
+    {
+      "path": "internal/runtime/runtime_fingerprint.go",
+      "kind": "runtime-fingerprint-runtime",
+      "contentHash": "sha256:552a6473c71592bec9636f1cb6cd265efc8348bafe6ce9a22ee7a26b896710c0"
+    },
+    {
+      "path": "internal/runtime/runtime_fingerprint_test.go",
+      "kind": "runtime-fingerprint-tests",
+      "contentHash": "sha256:998441b3b512c09819c8df14f13dbffb6b67fe93de5a4b48436483b24a180b98"
+    },
+    {
+      "path": "internal/runtime/report.go",
+      "kind": "report-runtime-fingerprint-wiring",
+      "contentHash": "sha256:c629ef50fcaa3e815022a55923b87d76a4a98d3338fe1deac6b48750bf6a61c0"
+    },
+    {
+      "path": "scripts/agent-runtime/improve-flow.test.mjs",
+      "kind": "improve-flow-tests",
+      "contentHash": "sha256:8ea9b69d6e31e9b61b3944dbc7725cc75d6ef1b14d41975fbe62c4361a1b3644"
+    },
+    {
+      "path": "scripts/agent-runtime/improvement-contract-schemas.test.mjs",
+      "kind": "improve-schema-tests",
+      "contentHash": "sha256:261b3ab9540668ce27909a2a847ee4a9163facaeb275e8517a8b782829a71612"
+    },
+    {
+      "path": "scripts/agent-runtime/build-report-packet.test.mjs",
+      "kind": "report-packet-tests",
+      "contentHash": "sha256:3cdb2e16a1e348ea98ddc58c954d02c7614df77b75cfa3777c3e00a6552c06fc"
+    },
+    {
+      "path": "scripts/agent-runtime/build-revision-artifact.mjs",
+      "kind": "revision-artifact-builder",
+      "contentHash": "sha256:3eac4aee2abe53c439bd9d6c5880cf1e4c8037371f9a1039f5d6beb579a0f0a7"
+    },
+    {
+      "path": "fixtures/improve/example-input.json",
+      "kind": "improve-input-fixture",
+      "contentHash": "sha256:35d70c6dfad7c3d7fccfb8a03d3efb18e091759fd0d8a6132b46241fef8e84a5"
+    },
+    {
+      "path": "fixtures/improve/example-proposal.json",
+      "kind": "improve-proposal-fixture",
+      "contentHash": "sha256:245864a313e1baf39cf05bdc2a06924c09cc23aa82e0e638fbd9e26f8f32c0a4"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused app, runtime, and Node tests prove that improve build-artifact emits a reopenable revision artifact backed by checked-in builders, schemas, fixtures, and flow tests, while runtime fingerprint behavior records explicit machine-readable identity, preserves default observe-mode behavior, and blocks only declared pinned mismatches."
+  }
+}

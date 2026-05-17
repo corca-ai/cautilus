@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:57:48Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the five current improve artifact and runtime-fingerprint claims covered by focused app/runtime/Node tests and checked-in contract sources."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-improve-artifact-runtime-fingerprint-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-improvement-md-136",
+          "claimFingerprint": "sha256:50cfe9adec26f5edf247f16ce3360fd12e0503f96beeed13dd85332fc7faf186",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names durable revision artifact packet creation, which is covered by CLI and builder tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by app and Node improve tests: `improve build-artifact` writes `cautilus.revision_artifact.v1` from proposal/input packets, preserves report context, intent profile, and target snapshot hash, and the builder materializes one reopenable artifact.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
+              "supportsClaimIds": [
+                "claim-docs-contracts-improvement-md-136",
+                "claim-docs-contracts-improvement-md-151",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
+              ]
+            }
+          ],
+          "nextAction": "Keep improve build-artifact tests current when changing revision artifact schema or active-run defaults.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-md-151",
+          "claimFingerprint": "sha256:3d2b1a5023d0719cec1e567bed6162972135e108fd4728bd0ac3b47a042be1a7",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the first implementation slice: improve input builder, proposal generator, revision artifact builder, schemas, fixtures, and flow tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by checked-in improve builders, fixtures, schema tests, flow tests, and CLI smoke: prepare-input, propose, and build-artifact all emit the expected schema-versioned packets and preserve the one durable next-revision artifact boundary.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
+              "supportsClaimIds": [
+                "claim-docs-contracts-improvement-md-136",
+                "claim-docs-contracts-improvement-md-151",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
+              ]
+            }
+          ],
+          "nextAction": "Keep improve schema fixtures and flow tests aligned when changing improve packet shape.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+          "claimFingerprint": "sha256:08d93168049eadacc2c094b7a88b6d03a8526e9d1369ea055058ed10603f962d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the default no-pinned-model policy for skill and eval tests, protected by runtime fingerprint comparison tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runtime fingerprint tests: model/runtime changes are surfaced as context warnings or passing skill-summary context under observe/default behavior rather than forced model pinning or behavior failure.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
+              "supportsClaimIds": [
+                "claim-docs-contracts-improvement-md-136",
+                "claim-docs-contracts-improvement-md-151",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
+              ]
+            }
+          ],
+          "nextAction": "Keep default observe-mode runtime tests current when changing skill/eval summary runtime telemetry.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+          "claimFingerprint": "sha256:57cfb40c24ad1142b4c035e714fd8a92e9b4962c1f54cc3745fc4149a10aa4dd",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names adapter-owned pinned runtime policy, which is covered by pinned mismatch tests and adapter policy contract wiring.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runtime fingerprint tests: pinned runtime policy blocks mismatches with `model_runtime_pinned_mismatch`, while observe/default behavior remains non-blocking.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
+              "supportsClaimIds": [
+                "claim-docs-contracts-improvement-md-136",
+                "claim-docs-contracts-improvement-md-151",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
+              ]
+            }
+          ],
+          "nextAction": "Keep pinned runtime policy tests aligned with adapter `runtime_policy` shape and blocked-result semantics.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-42",
+          "claimFingerprint": "sha256:59d8c133631e0b643a8528326ed3986dcb879eb6b39d42ca435dd9de4df24895",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names the explicit machine-readable runtime identity boundary.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by runtime fingerprint tests: Cautilus normalizes explicit telemetry into `telemetry.runtimeFingerprint`, reports missing prior/current runtime identity without pretending drift, and does not infer runtime identity from human-oriented logs.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-improve-artifact-runtime-fingerprint-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:afb67fc061168a787e067580396f8a703bf1e5678fd0482f69a979e5936cfcfc",
+              "supportsClaimIds": [
+                "claim-docs-contracts-improvement-md-136",
+                "claim-docs-contracts-improvement-md-151",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-42"
+              ]
+            }
+          ],
+          "nextAction": "Keep runtime fingerprint normalization and no-log-inference tests current when adding runtime telemetry sources.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
