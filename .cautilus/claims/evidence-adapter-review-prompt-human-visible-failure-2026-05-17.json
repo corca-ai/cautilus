@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-adapter-review-prompt-human-visible-failure-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-contracts-adapter-contract-md-478"
+  ],
+  "repoCommit": "66aa59dea6ede83368d008f3f356b53aa8917b1f",
+  "summary": "Deterministic proof that adapter human review prompts use failure-oriented human review lenses and that Cautilus carries those lenses from adapter or review packet input into rendered prompts.",
+  "evidenceScope": {
+    "targetSurface": "adapter human review prompt shape contract",
+    "claimBoundary": "Only the adapter-contract claim that human review prompts should point at human-visible failure is marked satisfied.",
+    "notClaimed": [
+      "Cautilus semantically validates arbitrary consumer-written natural-language review prompts.",
+      "Every external consumer adapter has a failure-oriented human review prompt.",
+      "A live reviewer agreed with a specific rendered prompt."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 4,
+        "pass": 4,
+        "protectedBehaviors": [
+          "review prompt input preserves humanReviewPrompts[0].id as real-user",
+          "rendered review prompt includes the Human Review Lenses section",
+          "rendered review prompt includes the failure-oriented lens Where would a real user still judge the candidate worse despite benchmark wins",
+          "output-under-test review mode keeps realized behavior evidence visible next to the rendered review prompt"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/build-review-packet.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 9,
+        "pass": 9,
+        "protectedBehaviors": [
+          "build-review-packet collects adapter human_review_prompts into cautilus.review_packet.v1",
+          "the adapter fixture prompt asks where the workflow is still brittle"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run TestBuildReviewPacketCollectsDurableReviewBoundary -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "BuildReviewPacket collects human_review_prompts into the review packet",
+          "the runtime fixture prompt asks where the workflow is still misleading"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/app -run TestCLIReviewBuildPromptInputAndRenderPromptCloseMetaPromptSeam -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/app",
+        "status": "ok",
+        "protectedBehaviors": [
+          "CLI build-prompt-input carries humanReviewPrompts forward from the review packet",
+          "CLI render-prompt emits current evidence, output-under-test context, and review prompt material together for human judgment"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/adapter-contract.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:121aeef8723db6f4a0e5222874263c43b8071d49c653e2dd106a5587e66518c3"
+    },
+    {
+      "path": "docs/contracts/review-packet.md",
+      "kind": "review-packet-contract",
+      "contentHash": "sha256:7661381c4dd755a5452d404bd0ab28b6900c992514e298bb0edb024d841cc223"
+    },
+    {
+      "path": "docs/contracts/review-prompt-inputs.md",
+      "kind": "review-prompt-input-contract",
+      "contentHash": "sha256:819729bb8e77be7f724a2c6d7de41c2d1d1a082766de7f6537eb8750c459a0ce"
+    },
+    {
+      "path": "scripts/agent-runtime/review-prompt-flow.test.mjs",
+      "kind": "review-prompt-flow-tests",
+      "contentHash": "sha256:d5753d8a0c900f73458e182aa6559240aad6030202718fe4bbd2398c5bbb13ea"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-packet.test.mjs",
+      "kind": "review-packet-builder-tests",
+      "contentHash": "sha256:7324449e88570ce888668a71dffb903146f6f5c17a6003d9b699315e206b852a"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-packet.mjs",
+      "kind": "review-packet-builder",
+      "contentHash": "sha256:ec43241df9350eed0da8d2b459481e609b5f6d0b7b6a1d8126b84750815d696b"
+    },
+    {
+      "path": "scripts/agent-runtime/build-review-prompt-input.mjs",
+      "kind": "review-prompt-input-builder",
+      "contentHash": "sha256:918d748ed5eba4bc5063658e009bb17298942c82363358d81898f9391569bd32"
+    },
+    {
+      "path": "scripts/agent-runtime/render-review-prompt.mjs",
+      "kind": "review-prompt-renderer",
+      "contentHash": "sha256:2ffe844c890c51d3c87291b3367ee202676e204583a9a0e96c2cb0a5c3ded779"
+    },
+    {
+      "path": "internal/runtime/review.go",
+      "kind": "review-runtime",
+      "contentHash": "sha256:185d84941cf58d344295d509a34cffcde0fd7890d5486280aba0752a89675c06"
+    },
+    {
+      "path": "internal/runtime/review_test.go",
+      "kind": "review-runtime-tests",
+      "contentHash": "sha256:30bff99ff5349aeb51c98722323b38c2747b3a48513fbf14c1579833fbef4c79"
+    },
+    {
+      "path": "internal/app/cli_smoke_test.go",
+      "kind": "review-prompt-cli-tests",
+      "contentHash": "sha256:3117b2cecae89e8da55bf99b6eed35d8466877bd27580d07f5714594e9843b39"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The checked-in adapter contract names failure-oriented human review prompt shape; review packet, prompt-input, renderer, runtime, and CLI tests verify that those human review lenses are collected and rendered next to current evidence and output-under-test context instead of being dropped or hidden."
+  }
+}

@@ -1210,8 +1210,19 @@
       "claimFingerprint": "sha256:b286a640322877c0e8e2aa64af228aaf01155e349464dd1cc83d21a79b51083d",
       "claimId": "claim-docs-contracts-adapter-contract-md-478",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:277a4f1de39a3655edf65b76d3098ac922d5f5dcc3739050e313712daafa229b",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-adapter-contract-md-478"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by review packet construction collecting failure-oriented human review prompts, review prompt input preserving those lenses, and rendered review prompts exposing the Human Review Lenses section with current evidence and output-under-test context.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -1219,9 +1230,9 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic review-prompt render, path, or packet-output proof for this claim.",
+      "nextAction": "Keep human review prompts failure-oriented and rendered with current evidence whenever review prompt packet, prompt-input, or renderer surfaces change.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Each review prompt should point at human-visible failure:",
@@ -1230,8 +1241,9 @@
         }
       ],
       "summary": "Each review prompt should point at human-visible failure:",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names review-prompt routing, rendering, or shared-path contract behavior that should be protected by deterministic command or golden-output checks."
+      "whyThisLayer": "The claim names review-prompt shape and routing behavior that can be proven by deterministic packet, prompt-input, renderer, runtime, and CLI tests."
     },
     {
       "claimAudience": "developer",
@@ -11909,9 +11921,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 57,
+      "satisfied": 58,
       "stale": 20,
-      "unknown": 284
+      "unknown": 283
     },
     "byLifecycle": {
       "new": 361
@@ -11922,8 +11934,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 127,
-      "heuristic": 233,
+      "agent-reviewed": 128,
+      "heuristic": 232,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12131,13 +12143,13 @@
           "evidenceStatusReason",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-readme-md-69",
-        "clusterId": "cluster-readme-spec-report-renderer-independence-2026-05-16"
+        "claimId": "claim-docs-contracts-adapter-contract-md-478",
+        "clusterId": "cluster-adapter-review-prompt-human-visible-failure-2026-05-17"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json",
+    "reviewResultPath": ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -12193,7 +12205,8 @@
       ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
       ".cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
-      ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json"
+      ".cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json",
+      ".cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -12249,9 +12262,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 52,
+    "appliedResultCount": 53,
     "skippedResultCount": 52,
-    "keptUpdateCount": 131,
+    "keptUpdateCount": 132,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

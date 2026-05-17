@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T08:15:00Z",
+    "evidencePolicy": "Only mark evidenceStatus=satisfied for the adapter contract claim covered by review packet construction, review prompt input propagation, and rendered prompt visibility tests for failure-oriented human review lenses."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-adapter-review-prompt-human-visible-failure-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-478",
+          "claimFingerprint": "sha256:b286a640322877c0e8e2aa64af228aaf01155e349464dd1cc83d21a79b51083d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names review-prompt shape and routing behavior that can be proven by deterministic packet, prompt-input, renderer, runtime, and CLI tests.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by review packet construction collecting failure-oriented human review prompts, review prompt input preserving those lenses, and rendered review prompts exposing the Human Review Lenses section with current evidence and output-under-test context.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:277a4f1de39a3655edf65b76d3098ac922d5f5dcc3739050e313712daafa229b",
+              "supportsClaimIds": [
+                "claim-docs-contracts-adapter-contract-md-478"
+              ]
+            }
+          ],
+          "nextAction": "Keep human review prompts failure-oriented and rendered with current evidence whenever review prompt packet, prompt-input, or renderer surfaces change.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

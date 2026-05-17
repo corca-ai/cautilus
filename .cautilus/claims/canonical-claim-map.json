@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:07710d460dd9500675bd55ebeacb8b50fc1b9ec577e573c6497a0074972a2965"
+      "contentHash": "sha256:0a7d90d56fb47ae63eb5172f9ff92be64420bc204a322f9abc23c4e154b6e3c0"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -3809,13 +3809,13 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 6,
+        "satisfied": 7,
         "stale": 7,
-        "unknown": 22
+        "unknown": 21
       },
       "byReviewStatus": {
-        "agent-reviewed": 15,
-        "heuristic": 20
+        "agent-reviewed": 16,
+        "heuristic": 19
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
@@ -5534,27 +5534,29 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "evidenceStatus": "satisfied",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:b286a640322877c0e8e2aa64af228aaf01155e349464dd1cc83d21a79b51083d",
       "canonicalClaimId": "M11",
-      "score": 10,
+      "score": 13,
       "runnerUpCanonicalClaimId": "M14",
-      "runnerUpScore": 10,
+      "runnerUpScore": 13,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "add",
         "contract",
         "deterministic",
+        "evidence",
         "failure",
+        "human",
         "human-visible",
         "keep",
-        "path",
+        "packet",
         "point",
-        "render",
+        "rendered",
+        "renderer",
         "review"
       ]
     },

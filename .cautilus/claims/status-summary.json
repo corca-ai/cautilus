@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 233
+          "unknown": 232
         },
         "byReviewStatus": {
-          "heuristic": 233
+          "heuristic": 232
         },
-        "count": 233,
+        "count": 232,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 57
+          "satisfied": 58
         },
         "byReviewStatus": {
-          "agent-reviewed": 57
+          "agent-reviewed": 58
         },
-        "count": 57,
+        "count": 58,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 13,
-          "unknown": 69
+          "unknown": 68
         },
         "byReviewStatus": {
           "agent-reviewed": 22,
-          "heuristic": 60
+          "heuristic": 59
         },
-        "count": 82,
+        "count": 81,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-157",
           "claim-readme-md-160",
-          "claim-docs-contracts-adapter-contract-md-478",
           "claim-docs-guides-cli-md-474",
-          "claim-docs-guides-cli-md-510"
+          "claim-docs-guides-cli-md-510",
+          "claim-docs-guides-cli-md-546"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 57,
+      "satisfied": 58,
       "stale": 20,
-      "unknown": 284
+      "unknown": 283
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 127,
-      "heuristic": 233,
+      "agent-reviewed": 128,
+      "heuristic": 232,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 57,
+    "satisfiedClaimCount": 58,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -703,6 +703,25 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "point review prompts at the same path so human and machine review can refer to the same compare output"
+      },
+      {
+        "claimId": "claim-docs-contracts-adapter-contract-md-478",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:277a4f1de39a3655edf65b76d3098ac922d5f5dcc3739050e313712daafa229b",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-adapter-contract-md-478"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Each review prompt should point at human-visible failure:"
       },
       {
         "claimId": "claim-docs-contracts-review-packet-md-3",
@@ -1570,8 +1589,30 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 21,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/status-summary.json",
+      ".github/workflows/spec-report.yml",
+      "charness-artifacts/debug/debug-2026-05-17-claim-freshness-option-paths.md",
+      "charness-artifacts/debug/debug-2026-05-17-claim-freshness-stale-status.md",
+      "charness-artifacts/debug/latest.md",
+      "charness-artifacts/find-skills/latest.json",
+      "charness-artifacts/find-skills/latest.md",
+      "charness-artifacts/gather/2026-05-17-slack-habit-context-usage-thread.attachments/IMG_4387.jpg",
+      "charness-artifacts/gather/2026-05-17-slack-habit-context-usage-thread.attachments/IMG_4390.jpg",
+      "charness-artifacts/gather/2026-05-17-slack-habit-context-usage-thread.attachments/IMG_4401.jpg",
+      "charness-artifacts/gather/2026-05-17-slack-habit-context-usage-thread.md",
+      "docs/internal/research/habit-context-usage.md",
+      "docs/specs/evidence/claim-evidence-state.md",
+      "scripts/github-actions.test.mjs",
+      "scripts/release/check-claim-freshness.mjs",
+      "scripts/release/check-claim-freshness.test.mjs"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -1579,12 +1620,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "66aa59dea6ede83368d008f3f356b53aa8917b1f",
+    "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
@@ -1607,7 +1648,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 208,
+    "heuristicClaimsReadyForReview": 207,
     "needsAlignment": 37,
     "needsScenario": 8
   },
