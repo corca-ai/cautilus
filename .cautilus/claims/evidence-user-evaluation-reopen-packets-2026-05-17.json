@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-user-evaluation-reopen-packets-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-specs-user-evaluation-spec-md-36"
+  ],
+  "repoCommit": "d7c52beb34a8e1e3cdc999ec1e63ef61cb4e4f78",
+  "summary": "Deterministic proof that selected eval runs leave reopenable observed-behavior and summary packets with schema versions, recommendations, runtime proof, and target-surface metadata.",
+  "evidenceScope": {
+    "targetSurface": "user-facing eval packet reopenability",
+    "claimBoundary": "Only the docs/specs/user/evaluation.spec.md claim that a user can reopen observed behavior and summary packets after each recorded eval is marked satisfied.",
+    "notClaimed": [
+      "Every future consumer eval run is retained forever.",
+      "Every eval surface has live provider proof.",
+      "Summary packets alone prove behavior quality without observed packets.",
+      "Fixture proof is equivalent to live product behavior proof.",
+      "Host-owned runners, prompts, or policy become Cautilus-owned state."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    },
+    {
+      "command": "jq '[.packetEvidence[] | {path, schemaVersion, recommendation, runtime: .proof.runtime, targetSurface: .proof.targetSurface}]' .cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+      "exitCode": 0,
+      "observed": {
+        "listedPacketEvidenceCount": 6,
+        "includesSummaryPacket": true,
+        "includesObservedPacket": true,
+        "includesRuntimeAndTargetSurfaceMetadata": true
+      }
+    },
+    {
+      "command": "test -f artifacts/self-dogfood/eval-codex-current/latest/eval-summary.json && test -f artifacts/self-dogfood/eval-codex-current/latest/eval-observed.json && test -f artifacts/self-dogfood/app-chat-fixture-current/latest/eval-summary.json && test -f artifacts/self-dogfood/app-chat-fixture-current/latest/eval-observed.json && test -f artifacts/self-dogfood/app-chat-codex-current/latest/eval-summary.json && test -f artifacts/self-dogfood/app-chat-codex-current/latest/eval-observed.json && test -f artifacts/self-dogfood/app-prompt-fixture-current/latest/eval-summary.json && test -f artifacts/self-dogfood/app-prompt-fixture-current/latest/eval-observed.json && test -f artifacts/self-dogfood/app-prompt-codex-current/latest/eval-summary.json && test -f artifacts/self-dogfood/app-prompt-codex-current/latest/eval-observed.json",
+      "exitCode": 0,
+      "observed": {
+        "summaryPacketCount": 5,
+        "observedPacketCount": 5
+      }
+    }
+  ],
+  "packetEvidence": [
+    {
+      "path": "artifacts/self-dogfood/eval-codex-current/latest/eval-summary.json",
+      "kind": "dev-repo-eval-summary",
+      "contentHash": "sha256:1544f1e946fc196803353809ead7b1f7e5ecbca46c5fb2b034f29b5d562a87c8",
+      "schemaVersion": "cautilus.evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "dev/repo"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/eval-codex-current/latest/eval-observed.json",
+      "kind": "dev-repo-eval-observed",
+      "contentHash": "sha256:c57dd0a2735db6c7bcec1a06a763fb0dddf3e3bae4c3bac9ccb24528ff5bc851",
+      "schemaVersion": "cautilus.evaluation_observed.v1",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "dev/repo"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-chat-fixture-current/latest/eval-summary.json",
+      "kind": "app-chat-fixture-eval-summary",
+      "contentHash": "sha256:13dd6d83cf8c6e3d9fb1e2fb13607c407f1d8f0ff7f86b81412455f1a1b1c2bf",
+      "schemaVersion": "cautilus.app_chat_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "targetSurface": "app/chat"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-chat-fixture-current/latest/eval-observed.json",
+      "kind": "app-chat-fixture-eval-observed",
+      "contentHash": "sha256:e678bc1043e5eba884b919c32095e713f3b69f490b3731c440d912ce79478afc",
+      "schemaVersion": "cautilus.app_chat_evaluation_observed.v1",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "targetSurface": "app/chat"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-chat-codex-current/latest/eval-summary.json",
+      "kind": "app-chat-codex-eval-summary",
+      "contentHash": "sha256:731df23c4b1a3acb6c43d07f8b7e3edcaa4fd6d2c30a4f45021915841e0d9e72",
+      "schemaVersion": "cautilus.app_chat_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "app/chat"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-chat-codex-current/latest/eval-observed.json",
+      "kind": "app-chat-codex-eval-observed",
+      "contentHash": "sha256:a7c86f54bfeb27157ee2eafe990c6cf759e63211ad79bd42d0a29cfc87ea214a",
+      "schemaVersion": "cautilus.app_chat_evaluation_observed.v1",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "app/chat"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-prompt-fixture-current/latest/eval-summary.json",
+      "kind": "app-prompt-fixture-eval-summary",
+      "contentHash": "sha256:5e6399fb5a99be6da3686427357ad77fd2fb5f5ed293d0cbde37da4c742791de",
+      "schemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "targetSurface": "app/prompt"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-prompt-fixture-current/latest/eval-observed.json",
+      "kind": "app-prompt-fixture-eval-observed",
+      "contentHash": "sha256:83094a98a669a478c0a86d167abc4725333a287467e385863bbc39bf8d19fb1f",
+      "schemaVersion": "cautilus.app_prompt_evaluation_observed.v1",
+      "proof": {
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "targetSurface": "app/prompt"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-prompt-codex-current/latest/eval-summary.json",
+      "kind": "app-prompt-codex-eval-summary",
+      "contentHash": "sha256:58971e4d0624005c75875756ec067db934218a1aac7665e8fd56216c3362b19b",
+      "schemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+      "recommendation": "accept-now",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "app/prompt"
+      }
+    },
+    {
+      "path": "artifacts/self-dogfood/app-prompt-codex-current/latest/eval-observed.json",
+      "kind": "app-prompt-codex-eval-observed",
+      "contentHash": "sha256:8459e089a0af5963a6ca60772a20cbc84c5e3d306586459d715538a800922542",
+      "schemaVersion": "cautilus.app_prompt_evaluation_observed.v1",
+      "proof": {
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "targetSurface": "app/prompt"
+      }
+    }
+  ],
+  "relatedEvidence": [
+    {
+      "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+      "kind": "current-eval-surface-evidence-bundle",
+      "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22",
+      "reason": "Records the selected eval summary and observed packet metadata projected by the user-facing evaluation spec."
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/specs/user/evaluation.spec.md",
+      "kind": "user-facing-evaluation-spec",
+      "contentHash": "sha256:7052858b0d3b732792cb23fad3363b59cc8bb2d000a1ba8fdb0a5bbc8bbc71d6"
+    },
+    {
+      "path": ".cautilus/claims/evidence-current-eval-surfaces-2026-05-03.json",
+      "kind": "selected-eval-surface-evidence-source",
+      "contentHash": "sha256:65f0402fd5d3b383211bfca5a87fc644b211b917c834875a76e10a3061608e22"
+    },
+    {
+      "path": "scripts/lint-specs.mjs",
+      "kind": "spec-lint-gate",
+      "contentHash": "sha256:4d9b157358317ac869b1552fa9b9ad96f61fe642f28cde41bc65fce46a570726"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-claim-evidence-hashes.mjs",
+      "kind": "evidence-hash-audit",
+      "contentHash": "sha256:3d6e78ae2396ac9c9009527c17a8c88cb22882f2c6015269a3f52e6cfa751765"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "The evaluation spec projects selected summary and observed packet checks, the selected eval-surface evidence records schema/runtime/target metadata, and the referenced eval artifact files are present with stable content hashes."
+  }
+}

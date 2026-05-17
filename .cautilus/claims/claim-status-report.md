@@ -19,13 +19,13 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 74, stale: 16, unknown: 271 |
-| Review | agent-reviewed: 138, heuristic: 222, human-reviewed: 1 |
+| Evidence | satisfied: 75, stale: 16, unknown: 270 |
+| Review | agent-reviewed: 139, heuristic: 221, human-reviewed: 1 |
 | Recommended proof | cautilus-eval: 124, deterministic: 140, human-auditable: 97 |
 | Verification readiness | blocked: 27, needs-alignment: 37, needs-scenario: 8, ready-for-proof: 289 |
 | Audience | developer: 259, user: 102 |
 
-Review readiness: heuristicClaimsReadyForReview: 197, needsAlignment: 37, needsScenario: 8.
+Review readiness: heuristicClaimsReadyForReview: 196, needsAlignment: 37, needsScenario: 8.
 
 ## Canonical Claim Map
 
@@ -108,7 +108,7 @@ Semantic sampling recommended for 302 raw claim(s): claim-agents-md-12, claim-ag
 ## Next Work
 
 - Human review is still meaningful for human-align-surfaces=37, human-confirm-or-decompose=34, split-or-defer=27.
-- Agent next proof work: connect deterministic gates for 65 claim(s), starting with agent-reviewed items before heuristic items.
+- Agent next proof work: connect deterministic gates for 64 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 116 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 8 claim(s).
 
@@ -116,15 +116,15 @@ Semantic sampling recommended for 302 raw claim(s): claim-agents-md-12, claim-ag
 
 | Bucket | Actor | Count | Review | Evidence | Meaning |
 | --- | --- | --- | --- | --- | --- |
-| already-satisfied | none | 74 | agent-reviewed: 74 | satisfied: 74 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 65 | agent-reviewed: 16, heuristic: 49 | stale: 9, unknown: 56 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| already-satisfied | none | 75 | agent-reviewed: 75 | satisfied: 75 | Proof is already attached and valid under packet semantics. |
+| agent-add-deterministic-proof | agent | 64 | agent-reviewed: 16, heuristic: 48 | stale: 9, unknown: 55 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 116 | agent-reviewed: 8, heuristic: 107, human-reviewed: 1 | stale: 5, unknown: 111 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 8 | agent-reviewed: 1, heuristic: 7 | unknown: 8 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 37 | agent-reviewed: 19, heuristic: 18 | unknown: 37 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 34 | agent-reviewed: 2, heuristic: 32 | stale: 2, unknown: 32 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 27 | agent-reviewed: 18, heuristic: 9 | unknown: 27 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
-Cross-cutting signal: heuristic-review-needed (222) - Review heuristic labels before spending proof or eval budget.
+Cross-cutting signal: heuristic-review-needed (221) - Review heuristic labels before spending proof or eval budget.
 
 Cross-cutting signal: stale-evidence (16) - Refresh or recheck stale evidence before consuming it as proof.
 
@@ -134,11 +134,11 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
-| claim-docs-specs-user-evaluation-spec-md-36 | docs/specs/user/evaluation.spec.md:36 | deterministic | ready-for-proof | heuristic | unknown | A user can reopen observed behavior and summary packets after each eval. |
 | claim-docs-specs-user-index-spec-md-26 | docs/specs/user/index.spec.md:26 | deterministic | ready-for-proof | heuristic | unknown | Reviewable Artifacts (reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen. |
 | claim-docs-specs-user-reviewable-artifacts-spec-md-3 | docs/specs/user/reviewable-artifacts.spec.md:3 | deterministic | ready-for-proof | heuristic | unknown | After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory. |
 | claim-docs-specs-user-reviewable-artifacts-spec-md-4 | docs/specs/user/reviewable-artifacts.spec.md:4 | deterministic | ready-for-proof | heuristic | unknown | Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review. |
 | claim-docs-specs-user-reviewable-artifacts-spec-md-6 | docs/specs/user/reviewable-artifacts.spec.md:6 | deterministic | ready-for-proof | heuristic | unknown | A user or agent can reopen JSON packets as the audit source of truth. |
+| claim-docs-contracts-claim-discovery-workflow-md-5 | docs/contracts/claim-discovery-workflow.md:5 | deterministic | ready-for-proof | heuristic | unknown | `cautilus discover claims` currently emits a deterministic, source-ref-backed proof-plan skeleton. |
 
 ### agent-plan-cautilus-eval
 
@@ -343,6 +343,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json | - | - | 2 | 5 | 3 | deterministic: 4, human-auditable: 1 | needs-alignment: 1, ready-for-proof: 4 |
 | .cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json | - | - | 1 | 2 | 1 | deterministic: 2 | ready-for-proof: 2 |
 
 ### .cautilus/claims/review-result-human-align-action-bucket.json
@@ -366,11 +367,11 @@ Active updates still match the current claim packet; superseded updates are hist
 | claim-docs-contracts-workbench-instance-discovery-md-25 | deterministic | ready-for-proof | satisfied | Keep adapter validation and catalog schema tests current when changing instance discovery fields. |
 | claim-docs-contracts-workbench-instance-discovery-md-101 | deterministic | ready-for-proof | satisfied | Keep typed path normalization and catalog schema tests current when adding scenario-adjacent path keys. |
 
-### .cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json
+### .cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json
 
 | Claim | Proof | Readiness | Evidence | Next action |
 | --- | --- | --- | --- | --- |
-| claim-docs-contracts-scenario-proposal-sources-md-152 | deterministic | ready-for-proof | satisfied | Keep scenario proposal evidence sourceKind enum and host-storage non-requirement tests in place when changing proposal schemas. |
+| claim-docs-specs-user-evaluation-spec-md-36 | deterministic | ready-for-proof | satisfied | Keep summary and observed packet schema checks in the evaluation spec whenever new eval surfaces are promoted as user-facing evidence. |
 
 ## Validation
 

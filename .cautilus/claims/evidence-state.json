@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:d320c189900c4b14f267edbb03e2b780eff5c208b1042d80fc03f01fced9e03c",
+    "claimsHash": "sha256:40554fee73126799712a39284251ec8e67e48d3b4d813d53627936943a605993",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:cb274e9c85ac4c2cf9db252d7025b02f6b06a86f046c1f620a0d744f6caa22db",
+    "statusHash": "sha256:7bbe5befb284ca2696ae4f0ab32d7bd37468ee132ec8a790ceb5a1d1c6bdf9de",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,7 +12,7 @@
     }
   },
   "gitState": {
-    "changedFileCount": 49,
+    "changedFileCount": 51,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
@@ -28,6 +28,7 @@
       ".cautilus/claims/evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
       ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/evidence-review-variants-read-mostly-2026-05-17.json",
+      ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
       ".cautilus/claims/evidence-state.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
@@ -43,6 +44,7 @@
       ".cautilus/claims/review-result-evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
+      ".cautilus/claims/review-result-evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
       ".cautilus/claims/status-summary.json",
       ".github/workflows/spec-report.yml",
       "charness-artifacts/debug/debug-2026-05-17-claim-freshness-option-paths.md",
@@ -72,7 +74,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "beaebf4957f29a778c7d49c281cac1cf5e2e0ff3",
+    "currentGitCommit": "d7c52beb34a8e1e3cdc999ec1e63ef61cb4e4f78",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -83,9 +85,9 @@
     "candidateCount": 361,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 74,
+      "satisfied": 75,
       "stale": 16,
-      "unknown": 271
+      "unknown": 270
     },
     "byRecommendedProof": {
       "cautilus-eval": 124,
@@ -99,8 +101,8 @@
       "ready-for-proof": 289
     },
     "byReviewStatus": {
-      "agent-reviewed": 138,
-      "heuristic": 222,
+      "agent-reviewed": 139,
+      "heuristic": 221,
       "human-reviewed": 1
     }
   },
@@ -275,27 +277,27 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 74,
+      "count": 75,
       "actor": "none",
       "evidence": {
-        "satisfied": 74
+        "satisfied": 75
       },
       "review": {
-        "agent-reviewed": 74
+        "agent-reviewed": 75
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 65,
+      "count": 64,
       "actor": "agent",
       "evidence": {
         "stale": 9,
-        "unknown": 56
+        "unknown": 55
       },
       "review": {
         "agent-reviewed": 16,
-        "heuristic": 49
+        "heuristic": 48
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
@@ -371,7 +373,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 222,
+      "count": 221,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [

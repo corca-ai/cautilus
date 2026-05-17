@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T08:51:43Z",
+    "evidencePolicy": "Only mark the reopenable packet claim satisfied for the selected checked-in eval artifacts; do not infer retention or proof quality for every future consumer eval run."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-user-evaluation-reopen-packets-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-36",
+          "claimFingerprint": "sha256:975ddb4b73f5d58343ad945ea52b461229f4ee82871c007140da3d50dd284a9e",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names packet reopenability and metadata that can be protected by deterministic spec checks and packet/file evidence.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by spec lint, selected eval-surface evidence, and present eval-summary/eval-observed packets for the recorded self-dogfood runs.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:b3f309b4d114b1dd6ba372891fe7ce125dd7d034bd46e62594376bdbd7f2cce5",
+              "supportsClaimIds": [
+                "claim-docs-specs-user-evaluation-spec-md-36"
+              ]
+            }
+          ],
+          "nextAction": "Keep summary and observed packet schema checks in the evaluation spec whenever new eval surfaces are promoted as user-facing evidence.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}
