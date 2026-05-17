@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 211
+          "unknown": 209
         },
         "byReviewStatus": {
-          "heuristic": 211
+          "heuristic": 209
         },
-        "count": 211,
+        "count": 209,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 85
+          "satisfied": 87
         },
         "byReviewStatus": {
-          "agent-reviewed": 85
+          "agent-reviewed": 87
         },
-        "count": 85,
+        "count": 87,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -63,21 +63,21 @@
       {
         "byEvidenceStatus": {
           "stale": 9,
-          "unknown": 45
+          "unknown": 43
         },
         "byReviewStatus": {
           "agent-reviewed": 16,
-          "heuristic": 38
+          "heuristic": 36
         },
-        "count": 54,
+        "count": 52,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-claim-discovery-workflow-md-382",
-          "claim-docs-contracts-claim-discovery-workflow-md-391",
           "claim-docs-contracts-claim-discovery-workflow-md-461",
           "claim-docs-contracts-claim-discovery-workflow-md-483",
-          "claim-docs-contracts-claim-discovery-workflow-md-579"
+          "claim-docs-contracts-claim-discovery-workflow-md-579",
+          "claim-docs-contracts-claim-discovery-workflow-md-594",
+          "claim-docs-contracts-claim-discovery-workflow-md-599"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -219,9 +219,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 85,
+      "satisfied": 87,
       "stale": 16,
-      "unknown": 260
+      "unknown": 258
     },
     "byLifecycle": {
       "new": 361
@@ -232,8 +232,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 149,
-      "heuristic": 211,
+      "agent-reviewed": 151,
+      "heuristic": 209,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -437,7 +437,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 85,
+    "satisfiedClaimCount": 87,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1672,6 +1672,46 @@
         "summary": "Cautilus Agent review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-382",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:8aa4e81d534f9da21ab82463164ba8a2be4c69b197ab6fa744a59ce5ff9ac1b3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-review-clustering-curation-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-382",
+              "claim-docs-contracts-claim-discovery-workflow-md-391"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The deterministic pass should emit broad candidates and grouping hints that make curation efficient:"
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-391",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:8aa4e81d534f9da21ab82463164ba8a2be4c69b197ab6fa744a59ce5ff9ac1b3",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-contract-review-clustering-curation-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-382",
+              "claim-docs-contracts-claim-discovery-workflow-md-391"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Cautilus Agent should reduce false positives, scan for likely false negatives, and review clusters in priority order:"
+      },
+      {
         "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2130,13 +2170,14 @@
   },
   "gitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
   "gitState": {
-    "changedFileCount": 61,
+    "changedFileCount": 63,
     "changedFiles": [
       ".cautilus/claims/canonical-claim-map.json",
       ".cautilus/claims/claim-status-report.md",
       ".cautilus/claims/evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json",
       ".cautilus/claims/evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
+      ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
       ".cautilus/claims/evidence-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
       ".cautilus/claims/evidence-contract-claim-discovery-proof-plan-2026-05-17.json",
       ".cautilus/claims/evidence-contract-refresh-selection-state-transition-2026-05-17.json",
@@ -2155,6 +2196,7 @@
       ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
       ".cautilus/claims/evidenced-typed-runners.json",
       ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json",
       ".cautilus/claims/review-result-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
       ".cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json",
       ".cautilus/claims/review-result-contract-refresh-selection-state-transition-2026-05-17.json",
@@ -2202,7 +2244,7 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "fbadec5e66dcda888078be21ac7a609ff02e3597",
+    "currentGitCommit": "2c631a803abaf99f49385d829ce4ced79b812c34",
     "headDrift": true,
     "isStale": false,
     "packetGitCommit": "c944eef5e6e2336b33aa7652eb8d486a560f3773",
@@ -2229,7 +2271,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 186,
+    "heuristicClaimsReadyForReview": 184,
     "needsAlignment": 37,
     "needsScenario": 8
   },

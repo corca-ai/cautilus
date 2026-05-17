@@ -5384,8 +5384,20 @@
       "claimFingerprint": "sha256:9bb24a96bf4c38a66aa5034d9b7c4ad633ec56b1d6005680a6b2f2ee8a9e8c57",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-382",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:8aa4e81d534f9da21ab82463164ba8a2be4c69b197ab6fa744a59ce5ff9ac1b3",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-review-clustering-curation-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-382",
+            "claim-docs-contracts-claim-discovery-workflow-md-391"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by review-input runtime tests showing bounded clusters, skipped cluster records, current labels, audience/semantic grouping, and action-bucket focus.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5393,9 +5405,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep review-input clustering and action-bucket tests current when changing deterministic grouping hints.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The deterministic pass should emit broad candidates and grouping hints that make curation efficient:",
@@ -5404,8 +5416,9 @@
         }
       ],
       "summary": "The deterministic pass should emit broad candidates and grouping hints that make curation efficient:",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim names deterministic grouping hints and bounded review input packet behavior."
     },
     {
       "claimAudience": "developer",
@@ -5413,8 +5426,20 @@
       "claimFingerprint": "sha256:9d8113b5d8a21cafcd32567b9c031a24f70c539636b384bb2c2f21d5707ffb66",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-391",
       "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:8aa4e81d534f9da21ab82463164ba8a2be4c69b197ab6fa744a59ce5ff9ac1b3",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-contract-review-clustering-curation-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-contracts-claim-discovery-workflow-md-382",
+            "claim-docs-contracts-claim-discovery-workflow-md-391"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by curation-flow audit tests requiring extraction, dedupe, false-positive, false-negative, bucket curation, and stop-boundary signals, and failing when the flow skips curation or overruns into review/eval work.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -5422,9 +5447,9 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep curation-flow audits aligned with any changes to false-positive, false-negative, review-priority, or stop-boundary policy.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "Cautilus Agent should reduce false positives, scan for likely false negatives, and review clusters in priority order:",
@@ -5433,8 +5458,9 @@
         }
       ],
       "summary": "Cautilus Agent should reduce false positives, scan for likely false negatives, and review clusters in priority order:",
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names Cautilus Agent curation guardrails before review or eval continuation."
     },
     {
       "claimAudience": "developer",
@@ -12219,9 +12245,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 85,
+      "satisfied": 87,
       "stale": 16,
-      "unknown": 260
+      "unknown": 258
     },
     "byLifecycle": {
       "new": 361
@@ -12232,8 +12258,8 @@
       "human-auditable": 97
     },
     "byReviewStatus": {
-      "agent-reviewed": 149,
-      "heuristic": 211,
+      "agent-reviewed": 151,
+      "heuristic": 209,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -12515,6 +12541,7 @@
       ".cautilus/claims/review-result-contract-canonical-spec-curation-before-hitl-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json",
       ".cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json",
+      ".cautilus/claims/review-result-contract-review-clustering-curation-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json",
@@ -12578,9 +12605,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 71,
+    "appliedResultCount": 72,
     "skippedResultCount": 52,
-    "keptUpdateCount": 159,
+    "keptUpdateCount": 161,
     "droppedUpdateCount": 299,
     "provenanceMode": "aggregate-current-review-results"
   },

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-evidence-application",
+    "type": "agent",
+    "reviewedAt": "2026-05-17T09:14:49Z",
+    "evidencePolicy": "Only mark deterministic review clustering and curation-flow guardrails satisfied; do not infer that every false positive or false negative has been resolved."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-contract-review-clustering-curation-2026-05-17",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-382",
+          "claimFingerprint": "sha256:9bb24a96bf4c38a66aa5034d9b7c4ad633ec56b1d6005680a6b2f2ee8a9e8c57",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names deterministic grouping hints and bounded review input packet behavior.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by review-input runtime tests showing bounded clusters, skipped cluster records, current labels, audience/semantic grouping, and action-bucket focus.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-review-clustering-curation-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8aa4e81d534f9da21ab82463164ba8a2be4c69b197ab6fa744a59ce5ff9ac1b3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-382",
+                "claim-docs-contracts-claim-discovery-workflow-md-391"
+              ]
+            }
+          ],
+          "nextAction": "Keep review-input clustering and action-bucket tests current when changing deterministic grouping hints.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-391",
+          "claimFingerprint": "sha256:9d8113b5d8a21cafcd32567b9c031a24f70c539636b384bb2c2f21d5707ffb66",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names Cautilus Agent curation guardrails before review or eval continuation.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Verified by curation-flow audit tests requiring extraction, dedupe, false-positive, false-negative, bucket curation, and stop-boundary signals, and failing when the flow skips curation or overruns into review/eval work.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-contract-review-clustering-curation-2026-05-17.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:8aa4e81d534f9da21ab82463164ba8a2be4c69b197ab6fa744a59ce5ff9ac1b3",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-382",
+                "claim-docs-contracts-claim-discovery-workflow-md-391"
+              ]
+            }
+          ],
+          "nextAction": "Keep curation-flow audits aligned with any changes to false-positive, false-negative, review-priority, or stop-boundary policy.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

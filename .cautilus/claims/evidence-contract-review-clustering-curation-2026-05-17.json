@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-contract-review-clustering-curation-2026-05-17",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-382",
+    "claim-docs-contracts-claim-discovery-workflow-md-391"
+  ],
+  "repoCommit": "2c631a803abaf99f49385d829ce4ced79b812c34",
+  "summary": "Deterministic proof that claim discovery emits grouping signals and that Cautilus Agent curation flow audits require false-positive, false-negative, bucket, and stop-boundary review before continuing into review or eval work.",
+  "evidenceScope": {
+    "targetSurface": "claim discovery review clustering and curation queue",
+    "claimBoundary": "Only the contract claims about deterministic grouping hints and Cautilus Agent curation-priority behavior are marked satisfied.",
+    "notClaimed": [
+      "Every raw candidate is semantically correct.",
+      "LLM reviewers have already merged or removed all false positives.",
+      "Every false negative in the repo has been found.",
+      "The review queue should launch eval or HITL automatically.",
+      "Subagent review results are proven by this deterministic queue proof."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimReviewInputClustersAndSkipsDeterministically|TestBuildClaimReviewInputCanFocusActionBucket|TestBuildClaimReviewInputSeparatesAudienceAndSemanticGroup|TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting|TestDiscoverClaimProofPlanUsesCandidateHeuristicsTogether' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "status": "ok",
+        "protectedBehaviors": [
+          "review input groups candidates into bounded clusters and records skipped clusters",
+          "clusters preserve current labels such as review status and semantic group",
+          "action-bucket filtering focuses review on selected next-work groups",
+          "audience and semantic group separation is preserved for review clusters",
+          "deterministic discovery avoids example/probe false positives and uses candidate heuristics together"
+        ]
+      }
+    },
+    {
+      "command": "node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs scripts/agent-runtime/render-claim-review-input-summary.test.mjs scripts/agent-runtime/render-claim-discovery-review.test.mjs",
+      "exitCode": 0,
+      "observed": {
+        "tests": 7,
+        "pass": 7,
+        "protectedBehaviors": [
+          "curation-flow audit passes only when discovery is followed by extraction, dedupe, false-positive, false-negative, and bucket curation language",
+          "curation-flow audit fails when the flow only runs first scan without curation language",
+          "curation-flow audit fails when the agent overruns into eval or review work",
+          "review input summary renders a readable non-table review queue",
+          "review summary CLI refuses to guess latest packets by filesystem time",
+          "claim discovery review Markdown is a projection over claim packets"
+        ]
+      }
+    },
+    {
+      "command": "npm run lint:specs",
+      "exitCode": 0,
+      "observed": {
+        "status": "passed",
+        "specCount": 42
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-discovery-workflow-contract",
+      "contentHash": "sha256:f703e3ccf3be041a522bdf6e87640bca5680761ea0138ef439ed73471e91a9e4"
+    },
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-runtime-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.mjs",
+      "kind": "claim-discovery-curation-flow-audit",
+      "contentHash": "sha256:bd8f269a54d19b0b1813aac69772c0885a1ac2490d09373b46dd36cbd8774e71"
+    },
+    {
+      "path": "scripts/agent-runtime/audit-cautilus-claim-discovery-curation-flow-log.test.mjs",
+      "kind": "claim-discovery-curation-flow-audit-tests",
+      "contentHash": "sha256:9adb7b7fc47ac191d535d8f7125dfe26a80327d3aca738b77fb674eebd5bcbf3"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-review-input-summary.mjs",
+      "kind": "review-input-summary-renderer",
+      "contentHash": "sha256:a80ddd89122bb2390891af5c3b468840ad23dbd91f65d5ffb9d7061bc84d8a45"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-review-input-summary.test.mjs",
+      "kind": "review-input-summary-renderer-tests",
+      "contentHash": "sha256:de4a5106c3390a5fc769026cc4a1b2896fa1fb5a45988899c4c81b640922a69e"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-discovery-review.mjs",
+      "kind": "claim-discovery-review-renderer",
+      "contentHash": "sha256:9a0478930f2a680e730ff859bd1d09186029d4d14ff595419984c3132d6a35bb"
+    },
+    {
+      "path": "scripts/agent-runtime/render-claim-discovery-review.test.mjs",
+      "kind": "claim-discovery-review-renderer-tests",
+      "contentHash": "sha256:e46555c01212a596a4d820e839a952ce7acaa92d5ed934af84a1bb2a9fe1d07a"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "matchKind": "verified",
+    "reason": "Focused runtime tests prove review input clusters preserve source-backed labels, grouping, action buckets, and skipped work, while curation-flow audit tests require false-positive, false-negative, dedupe, bucket, and stop-boundary handling before the agent continues into review or eval work."
+  }
+}
