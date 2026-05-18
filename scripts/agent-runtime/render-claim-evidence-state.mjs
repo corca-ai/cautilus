@@ -292,6 +292,13 @@ function table(headers, rows) {
 	return lines;
 }
 
+function tableOrEmpty(headers, rows, emptyText) {
+	if (rows.length === 0) {
+		return [emptyText];
+	}
+	return table(headers, rows);
+}
+
 function formatCounts(counts) {
 	const entries = Object.entries(asObject(counts));
 	if (entries.length === 0) return "-";
@@ -351,16 +358,18 @@ export function renderMarkdown(projection) {
 		"",
 		"### Proof-Ready Samples",
 		"",
-		...table(
+		...tableOrEmpty(
 			["Claim", "Source", "Surface", "Readiness", "Review", "Summary"],
 			projection.openCautilusEval.proofReadySamples.map((row) => [row.claimId, row.source, row.surface, row.readiness, row.review, row.summary]),
+			"No proof-ready Cautilus eval sample claims are currently open.",
 		),
 		"",
 		"### Scenario Samples",
 		"",
-		...table(
+		...tableOrEmpty(
 			["Claim", "Source", "Surface", "Readiness", "Review", "Summary"],
 			projection.openCautilusEval.scenarioSamples.map((row) => [row.claimId, row.source, row.surface, row.readiness, row.review, row.summary]),
+			"No scenario-sample Cautilus eval claims currently require scenario decomposition.",
 		),
 		"",
 		"## Action Buckets",

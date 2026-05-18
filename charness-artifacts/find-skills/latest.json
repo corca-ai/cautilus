@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-17T08:02:35Z",
+  "generated_at": "2026-05-18T02:12:46Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -214,14 +214,14 @@
           "shared/references/bootstrap-resolution.md",
           "skills/gather/references/browser-mediated-private-sources.md",
           "skills/gather/references/asset-refresh.md",
-          "skills/gather/scripts/write_record.py",
           "shared/references/closeout-discipline.md",
           "skills/gather/references/adapter-contract.md",
           "skills/gather/references/gather-provider.md",
           "skills/gather/references/source-priority.md",
           "skills/gather/references/document-seams.md",
           "skills/gather/references/capability-contract.md",
-          "skills/gather/references/google-workspace-via-gws.md"
+          "skills/gather/references/google-workspace-via-gws.md",
+          "skills/gather/scripts/write_record.py"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -543,6 +543,7 @@
           "skills/setup/references/default-surfaces.md",
           "skills/setup/references/probe-surface.md",
           "skills/setup/references/retro-memory-seam.md",
+          "skills/setup/references/bootstrap-seams.md",
           "skills/setup/references/github-actions-defaults.md",
           "skills/setup/references/operator-acceptance-synthesis.md",
           "shared/references/agent-assessment-invariant.md"

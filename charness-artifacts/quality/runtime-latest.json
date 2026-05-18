@@ -1,13 +1,13 @@
 {
   "schemaVersion": "cautilus.quality_runtime_signal.v1",
-  "generatedAt": "2026-05-16T02:41:46.424Z",
+  "generatedAt": "2026-05-18T02:40:14.078Z",
   "command": "npm run verify",
   "status": "passed",
   "exitCode": 0,
-  "totalDurationMs": 42808,
-  "phaseCount": 17,
+  "totalDurationMs": 51341,
+  "phaseCount": 18,
   "failedPhase": null,
-  "startedAtEpochMs": 1778899263615,
+  "startedAtEpochMs": 1779071962736,
   "phases": [
     {
       "id": "lint:eslint",
@@ -21,7 +21,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 2761
+      "durationMs": 2690
     },
     {
       "id": "lint:specs",
@@ -35,7 +35,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 6839
+      "durationMs": 7182
     },
     {
       "id": "lint:scenario-normalizers",
@@ -49,7 +49,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 215
+      "durationMs": 204
     },
     {
       "id": "lint:contracts",
@@ -63,7 +63,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 254
+      "durationMs": 227
     },
     {
       "id": "claims:audit-evidence",
@@ -77,7 +77,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 3935
+      "durationMs": 7106
     },
     {
       "id": "claims:evidence-state:check",
@@ -91,7 +91,21 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 442
+      "durationMs": 492
+    },
+    {
+      "id": "release:claim-freshness",
+      "label": "lint · release claim freshness",
+      "script": "release:claim-freshness",
+      "command": [
+        "npm",
+        "run",
+        "--silent",
+        "release:claim-freshness"
+      ],
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 1021
     },
     {
       "id": "claims:status-report:check",
@@ -105,7 +119,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 232
+      "durationMs": 298
     },
     {
       "id": "lint:links",
@@ -119,7 +133,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 290
+      "durationMs": 247
     },
     {
       "id": "lint:skill-disclosure",
@@ -133,7 +147,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 219
+      "durationMs": 192
     },
     {
       "id": "lint:go",
@@ -147,7 +161,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 1047
+      "durationMs": 1023
     },
     {
       "id": "vet:go",
@@ -161,7 +175,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 455
+      "durationMs": 475
     },
     {
       "id": "security:govulncheck",
@@ -175,7 +189,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 1861
+      "durationMs": 6909
     },
     {
       "id": "security:secrets",
@@ -189,7 +203,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 4256
+      "durationMs": 3432
     },
     {
       "id": "test:go:race",
@@ -203,7 +217,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 611
+      "durationMs": 625
     },
     {
       "id": "test:node",
@@ -217,7 +231,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 8749
+      "durationMs": 8584
     },
     {
       "id": "test:coverage",
@@ -231,7 +245,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 10442
+      "durationMs": 10405
     },
     {
       "id": "coverage:floor:check",
@@ -245,7 +259,7 @@
       ],
       "status": "passed",
       "exitCode": 0,
-      "durationMs": 196
+      "durationMs": 227
     }
   ]
 }

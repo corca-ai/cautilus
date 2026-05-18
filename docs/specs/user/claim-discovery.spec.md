@@ -177,8 +177,8 @@ The command below the table shows which categories are present in this repo's cu
 $ jq -r '"bucketCount=" + (.actionSummary.primaryBuckets | length | tostring), (.actionSummary.primaryBuckets[] | .id + ":" + .recommendedActor)' .cautilus/claims/status-summary.json
 bucketCount=6
 already-satisfied:none
+agent-add-deterministic-proof:agent
 agent-plan-cautilus-eval:agent
-agent-design-scenario:agent
 human-align-surfaces:human
 human-confirm-or-decompose:human
 split-or-defer:human
@@ -188,9 +188,10 @@ split-or-defer:human
 | path | json_path | equals | includes |
 | --- | --- | --- | --- |
 | .cautilus/claims/status-summary.json | actionSummary.primaryBuckets[0].id | already-satisfied | |
-| .cautilus/claims/status-summary.json | actionSummary.primaryBuckets[1].id | agent-plan-cautilus-eval | |
-| .cautilus/claims/status-summary.json | actionSummary.primaryBuckets[2].id | agent-design-scenario | |
+| .cautilus/claims/status-summary.json | actionSummary.primaryBuckets[1].id | agent-add-deterministic-proof | |
+| .cautilus/claims/status-summary.json | actionSummary.primaryBuckets[2].id | agent-plan-cautilus-eval | |
 | .cautilus/claims/status-summary.json | actionSummary.primaryBuckets[3].id | human-align-surfaces | |
+| .cautilus/claims/status-summary.json | actionSummary.primaryBuckets[4].id | human-confirm-or-decompose | |
 | .cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json | commandEvidence[0].observed.notableAssertions[1] | | source-ref-backed claim candidates |
 
 ## The prepared skill evaluation is a later proof step.

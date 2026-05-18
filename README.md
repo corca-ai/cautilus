@@ -165,15 +165,6 @@ From this repo, `npm run consumer:onboard:smoke` is the shortest end-to-end adop
 
 ## Read More
 
-```text
-docs/
-├── guides/                        # operator and consumer guides
-├── contracts/                     # adapter, reports, review, scenarios
-├── specs/                         # active claim specs and archived proof specs
-├── maintainers/                   # maintainer-only operations and release docs
-└── master-plan.md                 # durable direction
-```
-
 Top picks:
 
 - <https://corca-ai.github.io/cautilus/> — standing executable spec report

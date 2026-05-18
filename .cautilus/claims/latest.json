@@ -9433,7 +9433,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-199",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-200",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9450,7 +9450,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet.",
-          "line": 199,
+          "line": 200,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9462,7 +9462,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-202",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-203",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9481,7 +9481,7 @@
       "sourceRefs": [
         {
           "excerpt": "This spec only verifies that the agent-run skill check is prepared.",
-          "line": 202,
+          "line": 203,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -11958,7 +11958,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "6f5358914f7bdb0eb1a5072a240ad83cc07e83d5",
+  "gitCommit": "eb46836f6c6119b3aa04b4034ec0efd31c97dfa6",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -13375,7 +13375,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:a3b3326a742ef014a99221da31e83962b621c35e3b60d3589519476066379cc8",
+      "contentHash": "sha256:67455dc293beef9e0a0dd97df8eb3335cd37a5a38bdc07014fdb4a340fc35713",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -13824,7 +13824,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:7a05bf49d8af7ccb3c9612782a851ed0253e7ed2441f5fd29f293d556b09416a",
+      "contentHash": "sha256:ab4f037432f02fa7be74c2a821a08ef089c0f8a91f76fabaa73b9ba5194bc813",
       "depth": 2,
       "discoveredFrom": "docs/specs/user/index.spec.md",
       "kind": "spec",

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:c0e6a4245c470e3f481b894f9f08d293c17ec92ba3659b7da4169df2508bd74e"
+      "contentHash": "sha256:34db0195babc4e48a037cca4b3659686e16c70619a3d5a29a3dcb0a98294537d"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "6f5358914f7bdb0eb1a5072a240ad83cc07e83d5",
+  "claimsPacketGitCommit": "eb46836f6c6119b3aa04b4034ec0efd31c97dfa6",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 361,
   "catalogs": {
@@ -1201,8 +1201,8 @@
         "claim-docs-specs-user-claim-discovery-spec-md-66",
         "claim-docs-specs-user-claim-discovery-spec-md-131",
         "claim-docs-specs-user-claim-discovery-spec-md-160",
-        "claim-docs-specs-user-claim-discovery-spec-md-199",
-        "claim-docs-specs-user-claim-discovery-spec-md-202",
+        "claim-docs-specs-user-claim-discovery-spec-md-200",
+        "claim-docs-specs-user-claim-discovery-spec-md-203",
         "claim-docs-specs-user-evidence-gaps-spec-md-36"
       ],
       "absorbedRawClaims": [
@@ -1507,13 +1507,13 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-199",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-200",
           "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-202",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-203",
           "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -1526,13 +1526,13 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 20,
+        "satisfied": 19,
         "stale": 4,
-        "unknown": 29
+        "unknown": 30
       },
       "byReviewStatus": {
-        "agent-reviewed": 36,
-        "heuristic": 17
+        "agent-reviewed": 35,
+        "heuristic": 18
       },
       "byRecommendedProof": {
         "cautilus-eval": 14,
@@ -15561,12 +15561,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-199",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-200",
       "summary": "`discover claims status` owns next-action summaries over that saved packet.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 199,
+          "line": 200,
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet."
         }
       ],
@@ -15575,22 +15575,22 @@
       "claimAudience": "user",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
-      "reviewStatus": "agent-reviewed",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
       "canonicalClaimId": "U2",
-      "score": 21,
+      "score": 22,
       "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 9,
-      "scoreMargin": 12,
+      "runnerUpScore": 12,
+      "scoreMargin": 10,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
         "docs/specs/user/claim-discovery.spec.md"
       ],
       "matchedKeywords": [
-        "boundary",
-        "command",
+        "add",
+        "cli",
         "deterministic",
         "discover",
         "discovery",
@@ -15598,18 +15598,18 @@
         "next-action",
         "over",
         "packet",
-        "prepared",
+        "proof",
         "review",
         "saved"
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-202",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-203",
       "summary": "This spec only verifies that the agent-run skill check is prepared.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 202,
+          "line": 203,
           "excerpt": "This spec only verifies that the agent-run skill check is prepared."
         }
       ],

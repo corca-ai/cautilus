@@ -160,6 +160,29 @@ test("render claim evidence state from claim packet and status snapshot", () => 
 	assert.doesNotMatch(markdown, /\[Prompt behavior\]\(prompt\.spec\.md\)/);
 });
 
+test("render claim evidence state avoids empty sample tables", () => {
+	const root = tempDir();
+	const paths = fixturePackets(root);
+	const claims = JSON.parse(fs.readFileSync(paths.claims, "utf8"));
+	const status = JSON.parse(fs.readFileSync(paths.status, "utf8"));
+	claims.claimCandidates = claims.claimCandidates.filter((candidate) => candidate.verificationReadiness !== "needs-scenario");
+	claims.candidateCount = claims.claimCandidates.length;
+	claims.claimSummary.byEvidenceStatus = { satisfied: 1, unknown: 2 };
+	claims.claimSummary.byRecommendedProof = { "cautilus-eval": 2, deterministic: 1 };
+	claims.claimSummary.byVerificationReadiness = { "ready-for-proof": 2, satisfied: 1 };
+	claims.claimSummary.byReviewStatus = { accepted: 1, unreviewed: 2 };
+	status.candidateCount = claims.candidateCount;
+	status.claimSummary = claims.claimSummary;
+	writeJSON(paths.claims, claims);
+	writeJSON(paths.status, status);
+
+	run({ ...paths, check: false, refreshStatus: false, cautilusBin: "./bin/cautilus" });
+	const markdown = fs.readFileSync(paths.outputMd, "utf8");
+
+	assert.match(markdown, /No scenario-sample Cautilus eval claims currently require scenario decomposition\./);
+	assert.doesNotMatch(markdown, /### Scenario Samples\n\n\| Claim \| Source \| Surface \| Readiness \| Review \| Summary \|\n\| --- \| --- \| --- \| --- \| --- \| --- \|\n\n## Action Buckets/);
+});
+
 test("render fails when status summary diverges from claim packet summary", () => {
 	const root = tempDir();
 	const paths = fixturePackets(root);
