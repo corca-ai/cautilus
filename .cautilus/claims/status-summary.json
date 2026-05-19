@@ -22,20 +22,17 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 6
+          "stale": 2
         },
         "byReviewStatus": {
-          "agent-reviewed": 6
+          "agent-reviewed": 2
         },
-        "count": 6,
+        "count": 2,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-guides-cli-md-135",
-          "claim-docs-guides-cli-md-263",
-          "claim-docs-guides-cli-md-265",
           "claim-docs-guides-cli-md-478",
-          "claim-docs-contracts-reporting-md-131"
+          "claim-docs-contracts-reporting-md-144"
         ],
         "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
@@ -43,13 +40,13 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 139
+          "satisfied": 143
         },
         "byReviewStatus": {
-          "agent-reviewed": 138,
+          "agent-reviewed": 142,
           "human-reviewed": 1
         },
-        "count": 139,
+        "count": 143,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -78,14 +75,14 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 4,
+          "stale": 1,
           "unknown": 117
         },
         "byReviewStatus": {
-          "agent-reviewed": 14,
+          "agent-reviewed": 11,
           "heuristic": 107
         },
-        "count": 121,
+        "count": 118,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -119,22 +116,22 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 2,
+          "stale": 1,
           "unknown": 32
         },
         "byReviewStatus": {
-          "agent-reviewed": 2,
+          "agent-reviewed": 1,
           "heuristic": 32
         },
-        "count": 34,
+        "count": 33,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-67",
           "claim-docs-contracts-adapter-contract-md-426",
-          "claim-docs-guides-cli-md-263",
           "claim-docs-specs-index-spec-md-10",
-          "claim-docs-specs-user-index-spec-md-27"
+          "claim-docs-specs-user-index-spec-md-27",
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-21"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
       },
@@ -193,8 +190,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 139,
-      "stale": 6,
+      "satisfied": 143,
+      "stale": 2,
       "unknown": 216
     },
     "byLifecycle": {
@@ -253,7 +250,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d",
+    "implementationHash": "sha256:cd1b7fa29041b0b84906341f592b88eb35f14a5549f06db839f22136acd87428",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v4"
@@ -410,7 +407,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 139,
+    "satisfiedClaimCount": 143,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -872,6 +869,26 @@
         "summary": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`."
       },
       {
+        "claimId": "claim-docs-guides-cli-md-135",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:8316cdb65e049a6e3f7cc626b673466aac852b024faf6c25e4ca13cb301dd7e8",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-claim-cli-packet-boundary-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-cli-md-135",
+              "claim-docs-master-plan-md-78"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/repo",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied."
+      },
+      {
         "claimId": "claim-docs-guides-cli-md-180",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -889,6 +906,46 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-263",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:ae7b6ecb82ad295c8473dd13229c39714ce4ea5bda05d0712e995f49944a95e2",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-scenario-attention-and-conversation-review-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-guides-cli-md-263",
+              "claim-docs-cli-reference-md-261"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "human-auditable",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-265",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:ae7b6ecb82ad295c8473dd13229c39714ce4ea5bda05d0712e995f49944a95e2",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-scenario-attention-and-conversation-review-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-259",
+              "claim-docs-guides-cli-md-265"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "app/chat",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn."
       },
       {
         "claimId": "claim-docs-guides-cli-md-273",
@@ -2158,6 +2215,27 @@
         "summary": "Cache-token breakdown follows the same rule: preserve it when a runtime or wrapper emits explicit machine-readable fields, and do not infer cache behavior from prose."
       },
       {
+        "claimId": "claim-docs-contracts-reporting-md-131",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:abaae4efe91ad14a7886d8ac69efd833d698a688ffecaf01e445401c21515d4f",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-196",
+              "claim-docs-contracts-reporting-md-131",
+              "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/repo",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Model and provider truth should come from explicit runner output, adapter metadata, or checked-in wrappers, not from retroactive log scraping."
+      },
+      {
         "claimId": "claim-docs-contracts-reporting-md-140",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -3322,7 +3400,7 @@
       }
     ]
   },
-  "gitCommit": "4d5dc6ceb3246a8f29295daf324b1a7c926ac045",
+  "gitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3334,10 +3412,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "4d5dc6ceb3246a8f29295daf324b1a7c926ac045",
+    "currentGitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "4d5dc6ceb3246a8f29295daf324b1a7c926ac045",
+    "packetGitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

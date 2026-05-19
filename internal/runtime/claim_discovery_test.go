@@ -306,8 +306,9 @@ func TestDiscoverClaimProofPlanCarriesPreviousEvidenceByFingerprint(t *testing.T
 		t.Fatalf("expected reviewed evidence to carry forward, got %#v", refreshedCandidate)
 	}
 	ref := asMap(arrayOrEmpty(refreshedCandidate["evidenceRefs"])[0])
-	if supports := stringArrayOrEmpty(ref["supportsClaimIds"]); !containsString(supports, currentClaimID) || containsString(supports, previousClaimID) {
-		t.Fatalf("expected evidence supportsClaimIds to be rewritten to current claim id, got %#v", ref)
+	supports := stringArrayOrEmpty(ref["supportsClaimIds"])
+	if !containsString(supports, currentClaimID) || !containsString(supports, previousClaimID) {
+		t.Fatalf("expected evidence supportsClaimIds to record both the previous and current claim ids so multi-hop renames stay bindable, got %#v", ref)
 	}
 	carryForward := asMap(refreshed["carryForward"])
 	if carryForward["matchedClaimCount"] != 1 || carryForward["evidenceSupportIdRewriteCount"] != 1 {
@@ -447,6 +448,154 @@ func TestDiscoverClaimProofPlanMarksEvidenceBundleClaimMismatchStale(t *testing.
 	carryForward := asMap(refreshed["carryForward"])
 	if carryForward["staleEvidenceClaimCount"] != 1 || carryForward["unsupportedEvidenceRefCount"] != 1 {
 		t.Fatalf("expected carry-forward summary to record unsupported evidence ref, got %#v", carryForward)
+	}
+}
+
+func TestDiscoverClaimProofPlanAcceptsBundleListingPreviousClaimIDAfterRename(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Product",
+		"",
+		"Cautilus should keep reviewed evidence attached when line-number claim ids drift.",
+		"",
+	}, "\n"))
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidate := asMap(arrayOrEmpty(plan["claimCandidates"])[0])
+	currentClaimID := stringFromAny(candidate["claimId"])
+	previousClaimID := "claim-readme-md-999"
+	evidencePath := filepath.Join(repoRoot, ".cautilus", "claims", "evidence.json")
+	mustWriteFile(t, evidencePath, `{"schemaVersion":"cautilus.claim_evidence_bundle.v1","createdForClaimIds":["`+previousClaimID+`"],"decision":{"evidenceStatus":"satisfied"}}`)
+	bundleHash, err := fileSHA256(evidencePath)
+	if err != nil {
+		t.Fatalf("fileSHA256 returned error: %v", err)
+	}
+	previous := map[string]any{
+		"schemaVersion":   contracts.ClaimProofPlanSchema,
+		"sourceRoot":      ".",
+		"sourceInventory": plan["sourceInventory"],
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               previousClaimID,
+				"claimFingerprint":      candidate["claimFingerprint"],
+				"summary":               candidate["summary"],
+				"recommendedProof":      candidate["recommendedProof"],
+				"verificationReadiness": candidate["verificationReadiness"],
+				"evidenceStatus":        "satisfied",
+				"reviewStatus":          "agent-reviewed",
+				"lifecycle":             "carried-forward",
+				"evidenceRefs": []any{
+					map[string]any{
+						"kind":             "cautilus-claim-evidence-bundle",
+						"path":             ".cautilus/claims/evidence.json",
+						"matchKind":        "verified",
+						"contentHash":      bundleHash,
+						"supportsClaimIds": []any{previousClaimID},
+					},
+				},
+				"sourceRefs": candidate["sourceRefs"],
+			},
+		},
+	}
+	previousPath := filepath.Join(repoRoot, "previous-claims.json")
+	writeClaimDiscoveryJSONFixture(t, previousPath, previous)
+
+	refreshed, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot, PreviousPath: previousPath})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan with previous returned error: %v", err)
+	}
+	refreshedCandidate := asMap(arrayOrEmpty(refreshed["claimCandidates"])[0])
+	if refreshedCandidate["evidenceStatus"] != "satisfied" {
+		t.Fatalf("expected fingerprint-matched rename to preserve satisfied evidence even when bundle still lists the previous claim id, got %#v", refreshedCandidate)
+	}
+	ref := asMap(arrayOrEmpty(refreshedCandidate["evidenceRefs"])[0])
+	supports := stringArrayOrEmpty(ref["supportsClaimIds"])
+	if !containsString(supports, currentClaimID) || !containsString(supports, previousClaimID) {
+		t.Fatalf("expected evidence supportsClaimIds to retain the previous bundle-listed id and append the renamed current id, got %#v", ref)
+	}
+	carryForward := asMap(refreshed["carryForward"])
+	if carryForward["matchedClaimCount"] != 1 || carryForward["evidenceSupportIdRewriteCount"] != 1 {
+		t.Fatalf("expected carry-forward summary to record fingerprint match and rewrite, got %#v", carryForward)
+	}
+	if carryForward["staleEvidenceClaimCount"] != 0 || carryForward["unsupportedEvidenceRefCount"] != 0 {
+		t.Fatalf("expected carry-forward summary to not mark the bundle as unsupported after fingerprint-matched rename, got %#v", carryForward)
+	}
+}
+
+func TestDiscoverClaimProofPlanRestoresSatisfiedAfterMultiHopRenameRebinds(t *testing.T) {
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), strings.Join([]string{
+		"# Product",
+		"",
+		"Cautilus should keep reviewed evidence attached when line-number claim ids drift.",
+		"",
+	}, "\n"))
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidate := asMap(arrayOrEmpty(plan["claimCandidates"])[0])
+	currentClaimID := stringFromAny(candidate["claimId"])
+	originalBundleClaimID := "claim-readme-md-original"
+	intermediateClaimID := "claim-readme-md-intermediate"
+	evidencePath := filepath.Join(repoRoot, ".cautilus", "claims", "evidence.json")
+	mustWriteFile(t, evidencePath, `{"schemaVersion":"cautilus.claim_evidence_bundle.v1","createdForClaimIds":["`+originalBundleClaimID+`"],"decision":{"evidenceStatus":"satisfied"}}`)
+	bundleHash, err := fileSHA256(evidencePath)
+	if err != nil {
+		t.Fatalf("fileSHA256 returned error: %v", err)
+	}
+	previous := map[string]any{
+		"schemaVersion":   contracts.ClaimProofPlanSchema,
+		"sourceRoot":      ".",
+		"sourceInventory": plan["sourceInventory"],
+		"claimCandidates": []any{
+			map[string]any{
+				"claimId":               intermediateClaimID,
+				"claimFingerprint":      candidate["claimFingerprint"],
+				"summary":               candidate["summary"],
+				"recommendedProof":      candidate["recommendedProof"],
+				"verificationReadiness": candidate["verificationReadiness"],
+				"evidenceStatus":        "stale",
+				"evidenceStatusReason":  "Carried evidence requires re-review: evidence bundle evidence.json does not list current claimId " + intermediateClaimID + " in createdForClaimIds.",
+				"nextAction":            "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
+				"reviewStatus":          "agent-reviewed",
+				"lifecycle":             "carried-forward",
+				"evidenceRefs": []any{
+					map[string]any{
+						"kind":             "cautilus-claim-evidence-bundle",
+						"path":             ".cautilus/claims/evidence.json",
+						"matchKind":        "verified",
+						"contentHash":      bundleHash,
+						"supportsClaimIds": []any{originalBundleClaimID, intermediateClaimID},
+					},
+				},
+				"sourceRefs": candidate["sourceRefs"],
+			},
+		},
+	}
+	previousPath := filepath.Join(repoRoot, "previous-claims.json")
+	writeClaimDiscoveryJSONFixture(t, previousPath, previous)
+
+	refreshed, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot, PreviousPath: previousPath})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan with previous returned error: %v", err)
+	}
+	refreshedCandidate := asMap(arrayOrEmpty(refreshed["claimCandidates"])[0])
+	if refreshedCandidate["evidenceStatus"] != "satisfied" {
+		t.Fatalf("expected multi-hop renamed claim with bundle-rebindable evidence to restore to satisfied, got %#v", refreshedCandidate)
+	}
+	if _, hasReason := refreshedCandidate["evidenceStatusReason"]; hasReason {
+		t.Fatalf("expected evidenceStatusReason to be cleared on restore, got %#v", refreshedCandidate)
+	}
+	if _, hasNextAction := refreshedCandidate["nextAction"]; hasNextAction {
+		t.Fatalf("expected nextAction to be cleared on restore, got %#v", refreshedCandidate)
+	}
+	ref := asMap(arrayOrEmpty(refreshedCandidate["evidenceRefs"])[0])
+	supports := stringArrayOrEmpty(ref["supportsClaimIds"])
+	if !containsString(supports, originalBundleClaimID) || !containsString(supports, intermediateClaimID) || !containsString(supports, currentClaimID) {
+		t.Fatalf("expected supportsClaimIds to accumulate the rename chain so future hops stay bindable, got %#v", ref)
 	}
 }
 

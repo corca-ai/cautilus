@@ -424,12 +424,14 @@ func reconcileCarriedEvidenceRefs(repoRoot string, candidate map[string]any) evi
 			result.reasons = append(result.reasons, fmt.Sprintf("evidence ref %s contentHash changed", path))
 			continue
 		}
-		if reason := evidenceBundleClaimMismatch(evidencePath, claimID); reason != "" {
+		acceptableBundleClaimIDs := bundleClaimIDsFromRef(ref, claimID)
+		if reason := evidenceBundleClaimMismatch(evidencePath, acceptableBundleClaimIDs); reason != "" {
 			result.unsupportedRefs++
 			result.reasons = append(result.reasons, reason)
 		}
 	}
 	if len(result.reasons) == 0 {
+		restoreCarryForwardStaleIfClean(candidate)
 		return result
 	}
 	result.staleClaim = true
@@ -439,6 +441,51 @@ func reconcileCarriedEvidenceRefs(repoRoot string, candidate map[string]any) evi
 		candidate["nextAction"] = "Refresh or re-review the stale evidence refs before treating this claim as satisfied."
 	}
 	return result
+}
+
+func bundleClaimIDsFromRef(ref map[string]any, currentClaimID string) []string {
+	acceptable := []string{currentClaimID}
+	seen := map[string]bool{currentClaimID: true}
+	for _, raw := range arrayOrEmpty(ref["supportsClaimIds"]) {
+		id := stringFromAny(raw)
+		if id == "" || seen[id] {
+			continue
+		}
+		seen[id] = true
+		acceptable = append(acceptable, id)
+	}
+	return acceptable
+}
+
+const carryForwardStalePrefix = "Carried evidence requires re-review:"
+
+func restoreCarryForwardStaleIfClean(candidate map[string]any) {
+	if stringFromAny(candidate["evidenceStatus"]) != "stale" {
+		return
+	}
+	reason := stringFromAny(candidate["evidenceStatusReason"])
+	if !strings.HasPrefix(reason, carryForwardStalePrefix) {
+		return
+	}
+	if !claimHasVerifiedEvidenceRef(arrayOrEmpty(candidate["evidenceRefs"])) {
+		return
+	}
+	candidate["evidenceStatus"] = "satisfied"
+	delete(candidate, "evidenceStatusReason")
+	if action := stringFromAny(candidate["nextAction"]); strings.HasPrefix(action, "Refresh or re-review the stale evidence refs") {
+		delete(candidate, "nextAction")
+	}
+}
+
+func claimHasVerifiedEvidenceRef(refs []any) bool {
+	for _, raw := range refs {
+		ref := asMap(raw)
+		matchKind := stringFromAny(ref["matchKind"])
+		if matchKind == "verified" || matchKind == "direct" {
+			return true
+		}
+	}
+	return false
 }
 
 func repoRelativeEvidencePath(repoRoot string, value string) (string, bool) {
@@ -456,8 +503,12 @@ func repoRelativeEvidencePath(repoRoot string, value string) (string, bool) {
 	return filepath.Join(repoRoot, cleaned), true
 }
 
-func evidenceBundleClaimMismatch(path string, claimID string) string {
-	if claimID == "" || !strings.HasSuffix(strings.ToLower(path), ".json") {
+func evidenceBundleClaimMismatch(path string, acceptableClaimIDs []string) string {
+	currentClaimID := ""
+	if len(acceptableClaimIDs) > 0 {
+		currentClaimID = acceptableClaimIDs[0]
+	}
+	if currentClaimID == "" || !strings.HasSuffix(strings.ToLower(path), ".json") {
 		return ""
 	}
 	content, err := os.ReadFile(path)
@@ -472,10 +523,15 @@ func evidenceBundleClaimMismatch(path string, claimID string) string {
 		return ""
 	}
 	createdFor := stringArrayOrEmpty(packet["createdForClaimIds"])
-	if len(createdFor) == 0 || containsString(createdFor, claimID) {
+	if len(createdFor) == 0 {
 		return ""
 	}
-	return fmt.Sprintf("evidence bundle %s does not list current claimId %s in createdForClaimIds", relativeClaimPath(filepath.Dir(path), path), claimID)
+	for _, claimID := range acceptableClaimIDs {
+		if claimID != "" && containsString(createdFor, claimID) {
+			return ""
+		}
+	}
+	return fmt.Sprintf("evidence bundle %s does not list current claimId %s in createdForClaimIds", relativeClaimPath(filepath.Dir(path), path), currentClaimID)
 }
 
 func rewriteEvidenceRefClaimIDs(candidate map[string]any, previousClaimID string, currentClaimID string) bool {
@@ -486,17 +542,21 @@ func rewriteEvidenceRefClaimIDs(candidate map[string]any, previousClaimID string
 		if len(supports) == 0 {
 			continue
 		}
-		nextSupports := make([]any, 0, len(supports))
+		hasPrevious := false
+		hasCurrent := false
 		for _, rawID := range supports {
-			claimID := stringFromAny(rawID)
-			if claimID == previousClaimID {
-				nextSupports = append(nextSupports, currentClaimID)
-				rewritten = true
-				continue
+			id := stringFromAny(rawID)
+			if id == previousClaimID {
+				hasPrevious = true
 			}
-			nextSupports = append(nextSupports, rawID)
+			if id == currentClaimID {
+				hasCurrent = true
+			}
 		}
-		ref["supportsClaimIds"] = nextSupports
+		if hasPrevious && !hasCurrent {
+			ref["supportsClaimIds"] = append(supports, currentClaimID)
+			rewritten = true
+		}
 	}
 	return rewritten
 }

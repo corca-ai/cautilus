@@ -6,9 +6,9 @@
     "matchedClaimCount": 361,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
-    "staleEvidenceClaimCount": 28,
+    "staleEvidenceClaimCount": 17,
     "strategy": "claimFingerprint",
-    "unsupportedEvidenceRefCount": 28
+    "unsupportedEvidenceRefCount": 17
   },
   "claimCandidates": [
     {
@@ -1714,8 +1714,7 @@
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-claim-cli-packet-boundary-2026-05-11.json does not list current claimId claim-docs-guides-cli-md-135 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
       "groupHints": [
         "audience:user",
         "cautilus-eval",
@@ -1724,7 +1723,6 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -1863,8 +1861,7 @@
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-scenario-attention-and-conversation-review-2026-05-11.json does not list current claimId claim-docs-guides-cli-md-263 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
       "groupHints": [
         "audience:user",
         "docs",
@@ -1872,7 +1869,6 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1904,8 +1900,7 @@
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-scenario-attention-and-conversation-review-2026-05-11.json does not list current claimId claim-docs-guides-cli-md-265 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
       "groupHints": [
         "app/chat",
         "audience:user",
@@ -1914,7 +1909,6 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -7217,8 +7211,7 @@
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-remaining-deterministic-proof-2026-05-04.json does not list current claimId claim-docs-contracts-reporting-md-120 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
@@ -7227,7 +7220,6 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -13065,8 +13057,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 139,
-      "stale": 6,
+      "satisfied": 143,
+      "stale": 2,
       "unknown": 216
     },
     "byLifecycle": {
@@ -13111,7 +13103,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d",
+    "implementationHash": "sha256:cd1b7fa29041b0b84906341f592b88eb35f14a5549f06db839f22136acd87428",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v4"
@@ -13268,7 +13260,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "4d5dc6ceb3246a8f29295daf324b1a7c926ac045",
+  "gitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
