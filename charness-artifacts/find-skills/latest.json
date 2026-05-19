@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-18T02:12:46Z",
+  "generated_at": "2026-05-19T08:19:46Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -438,6 +438,7 @@
           "skills/quality/references/maintainer-local-enforcement.md",
           "skills/quality/references/adapter-contract.md",
           "skills/quality/references/adapter-gate-review.md",
+          "skills/quality/references/attention-state-visibility.json",
           "skills/quality/references/automation-promotion.md",
           "skills/quality/references/bootstrap-posture.md",
           "skills/quality/references/brittle-source-guards.md",
