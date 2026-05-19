@@ -1723,6 +1723,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -1869,6 +1870,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1909,6 +1911,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Create a host-owned app/chat fixture and run it through cautilus evaluate fixture.",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -2092,12 +2095,13 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-review-output-text-key-2026-05-11.json",
           "supportsClaimIds": [
+            "claim-docs-cli-reference-md-458",
             "claim-docs-guides-cli-md-478"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-review-output-text-key-2026-05-11.json does not list current claimId claim-docs-cli-reference-md-466 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Replenished the historical claim-docs-cli-reference-md-458 id into the ref's supportsClaimIds so the rebound bundle's createdForClaimIds matches under the additive reconcile policy. The bundle's deterministic proof of --output-text-key span extraction still covers the renamed claim wording.",
       "groupHints": [
         "app/prompt",
         "audience:user",
@@ -7220,6 +7224,7 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -7322,12 +7327,13 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-review-summary-telemetry-2026-05-03.json",
           "supportsClaimIds": [
+            "claim-docs-contracts-reporting-md-124",
             "claim-docs-contracts-reporting-md-144"
           ]
         }
       ],
-      "evidenceStatus": "stale",
-      "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-review-summary-telemetry-2026-05-03.json does not list current claimId claim-docs-contracts-reporting-md-133 in createdForClaimIds.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Replenished the historical claim-docs-contracts-reporting-md-124 id into the ref's supportsClaimIds so the rebound bundle's createdForClaimIds matches under the additive reconcile policy. The bundle's deterministic proof of review-summary telemetry aggregation still covers the renamed claim wording.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -13057,8 +13063,7 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 143,
-      "stale": 2,
+      "satisfied": 145,
       "unknown": 216
     },
     "byLifecycle": {
@@ -13260,64 +13265,36 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
+  "gitCommit": "b5c8be138869f6389f7d4fc6b7dcf5c8f3212ac1",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
-    "appliedUpdateCount": 3,
+    "appliedUpdateCount": 2,
     "appliedUpdates": [
       {
         "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "whyThisLayer",
-          "recommendedEvalSurface",
           "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
+          "evidenceStatusReason"
         ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
-        "clusterId": "cluster-family-b-dev-skill-deterministic-proof-2026-05-20"
+        "claimId": "claim-docs-guides-cli-md-478",
+        "clusterId": "cluster-rename-chain-supports-replenish-2026-05-20"
       },
       {
         "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
           "evidenceStatus",
           "reviewStatus",
-          "whyThisLayer",
-          "recommendedEvalSurface",
           "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
+          "evidenceStatusReason"
         ],
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-561",
-        "clusterId": "cluster-family-b-dev-skill-deterministic-proof-2026-05-20"
-      },
-      {
-        "appliedFields": [
-          "recommendedProof",
-          "verificationReadiness",
-          "evidenceStatus",
-          "reviewStatus",
-          "whyThisLayer",
-          "recommendedEvalSurface",
-          "evidenceRefs",
-          "nextAction",
-          "evidenceStatusReason",
-          "unresolvedQuestions"
-        ],
-        "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
-        "clusterId": "cluster-family-b-dev-skill-deterministic-proof-2026-05-20"
+        "claimId": "claim-docs-contracts-reporting-md-144",
+        "clusterId": "cluster-rename-chain-supports-replenish-2026-05-20"
       }
     ],
     "claimsPath": ".cautilus/claims/latest.json",
     "mergeDecisions": [],
-    "reviewResultPath": ".cautilus/claims/review-result-family-b-dev-skill-deterministic-proof-2026-05-20.json",
+    "reviewResultPath": ".cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json",
     "schemaVersion": "cautilus.claim_review_result.v1",
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
@@ -13407,7 +13384,8 @@
       ".cautilus/claims/review-result-evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
-      ".cautilus/claims/review-result-family-b-dev-skill-deterministic-proof-2026-05-20.json"
+      ".cautilus/claims/review-result-family-b-dev-skill-deterministic-proof-2026-05-20.json",
+      ".cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json"
     ],
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-b.json",
@@ -13463,9 +13441,9 @@
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json"
     ],
-    "appliedResultCount": 86,
+    "appliedResultCount": 87,
     "skippedResultCount": 52,
-    "keptUpdateCount": 223,
+    "keptUpdateCount": 225,
     "droppedUpdateCount": 300,
     "provenanceMode": "aggregate-current-review-results"
   },

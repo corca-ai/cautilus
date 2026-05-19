@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-rename-chain-supports-replenish",
+    "type": "agent",
+    "reviewedAt": "2026-05-20T01:00:00Z",
+    "evidencePolicy": "One-time replenishment of evidence-ref supportsClaimIds for two claims whose rename chains were compressed by past non-additive carry-forward rewrites. Each ref already passes the contentHash check against its bundle; replenishing the historical claim id lets the bundle createdForClaimIds intersect with the ref's supports under the new additive reconcile policy, so the claim restores to satisfied without authoring a new evidence bundle. Going forward, the additive rewrite preserves this chain automatically."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-rename-chain-supports-replenish-2026-05-20",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-guides-cli-md-478",
+          "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Replenished the historical claim-docs-cli-reference-md-458 id into the ref's supportsClaimIds so the rebound bundle's createdForClaimIds matches under the additive reconcile policy. The bundle's deterministic proof of --output-text-key span extraction still covers the renamed claim wording.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-review-output-text-key-2026-05-11.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:c86bd49436399d8c052fdb0225e9a16b30e6a6f45e7fc2abec33a5a5bfbecd12",
+              "supportsClaimIds": [
+                "claim-docs-cli-reference-md-458",
+                "claim-docs-guides-cli-md-478"
+              ]
+            }
+          ],
+          "nextAction": ""
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-144",
+          "claimFingerprint": "sha256:3582edd02790772fc9db230205f4008b31765a33786dd8da19ab123e0b82398d",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "Replenished the historical claim-docs-contracts-reporting-md-124 id into the ref's supportsClaimIds so the rebound bundle's createdForClaimIds matches under the additive reconcile policy. The bundle's deterministic proof of review-summary telemetry aggregation still covers the renamed claim wording.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-review-summary-telemetry-2026-05-03.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:f1109ad387b1c9ae7089238f556d4c139e99cb1db7f898400ee2875ff125a2f6",
+              "supportsClaimIds": [
+                "claim-docs-contracts-reporting-md-124",
+                "claim-docs-contracts-reporting-md-144"
+              ]
+            }
+          ],
+          "nextAction": ""
+        }
+      ]
+    }
+  ]
+}

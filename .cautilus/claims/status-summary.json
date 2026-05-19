@@ -19,34 +19,18 @@
           "claim-readme-md-151"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
-      },
-      {
-        "byEvidenceStatus": {
-          "stale": 2
-        },
-        "byReviewStatus": {
-          "agent-reviewed": 2
-        },
-        "count": 2,
-        "id": "stale-evidence",
-        "recommendedActor": "agent",
-        "sampleClaimIds": [
-          "claim-docs-guides-cli-md-478",
-          "claim-docs-contracts-reporting-md-144"
-        ],
-        "summary": "Refresh or recheck stale evidence before consuming it as proof."
       }
     ],
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 143
+          "satisfied": 145
         },
         "byReviewStatus": {
-          "agent-reviewed": 142,
+          "agent-reviewed": 144,
           "human-reviewed": 1
         },
-        "count": 143,
+        "count": 145,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -75,14 +59,13 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 1,
           "unknown": 117
         },
         "byReviewStatus": {
-          "agent-reviewed": 11,
+          "agent-reviewed": 10,
           "heuristic": 107
         },
-        "count": 118,
+        "count": 117,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -116,14 +99,12 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 1,
           "unknown": 32
         },
         "byReviewStatus": {
-          "agent-reviewed": 1,
           "heuristic": 32
         },
-        "count": 33,
+        "count": 32,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -190,8 +171,7 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 143,
-      "stale": 2,
+      "satisfied": 145,
       "unknown": 216
     },
     "byLifecycle": {
@@ -407,7 +387,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 143,
+    "satisfiedClaimCount": 145,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1005,6 +985,26 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text."
+      },
+      {
+        "claimId": "claim-docs-guides-cli-md-478",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:c86bd49436399d8c052fdb0225e9a16b30e6a6f45e7fc2abec33a5a5bfbecd12",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-review-output-text-key-2026-05-11.json",
+            "supportsClaimIds": [
+              "claim-docs-cli-reference-md-458",
+              "claim-docs-guides-cli-md-478"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "app/prompt",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly."
       },
       {
         "claimId": "claim-docs-guides-cli-md-510",
@@ -2258,6 +2258,26 @@
         "summary": "`blocked` should carry machine-readable reason codes and a concrete reason instead of free-form prose-only failure"
       },
       {
+        "claimId": "claim-docs-contracts-reporting-md-144",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:f1109ad387b1c9ae7089238f556d4c139e99cb1db7f898400ee2875ff125a2f6",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-review-summary-telemetry-2026-05-03.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-reporting-md-124",
+              "claim-docs-contracts-reporting-md-144"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "human-auditable",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The summary packet should also aggregate any explicit numeric telemetry across variants so operators can inspect one top-level view without scraping each verdict file separately."
+      },
+      {
         "claimId": "claim-docs-contracts-reporting-md-149",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -3400,7 +3420,7 @@
       }
     ]
   },
-  "gitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
+  "gitCommit": "b5c8be138869f6389f7d4fc6b7dcf5c8f3212ac1",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3412,10 +3432,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
+    "currentGitCommit": "b5c8be138869f6389f7d4fc6b7dcf5c8f3212ac1",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
+    "packetGitCommit": "b5c8be138869f6389f7d4fc6b7dcf5c8f3212ac1",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

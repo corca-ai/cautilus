@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:d2bf250e250c258e334878eb0a8611d0b8fc32c605d14b7e45137bee832ca258",
+    "claimsHash": "sha256:d689a4aaaf0524feb8c3ac392ff47f4a7a028f896c3b17f342cb628e77e2c9cf",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:21239bb3d1231c0376d3960d0805fce2b1897de53cfeacc87ae24927c8173c12",
+    "statusHash": "sha256:4ed32b6abd85d2f06dbdb63ace791a2abeb5b10d405396659dcb19aa151ef97d",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,10 +22,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
+    "currentGitCommit": "b5c8be138869f6389f7d4fc6b7dcf5c8f3212ac1",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
+    "packetGitCommit": "b5c8be138869f6389f7d4fc6b7dcf5c8f3212ac1",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -33,8 +33,7 @@
     "candidateCount": 361,
     "sourceCount": 65,
     "byEvidenceStatus": {
-      "satisfied": 143,
-      "stale": 2,
+      "satisfied": 145,
       "unknown": 216
     },
     "byRecommendedProof": {
@@ -54,21 +53,21 @@
     }
   },
   "openCautilusEval": {
-    "total": 118,
-    "readyForProof": 118,
+    "total": 117,
+    "readyForProof": 117,
     "needsScenario": 0,
     "bySurface": {
       "(none)": 6,
       "app/chat": 3,
-      "app/prompt": 11,
+      "app/prompt": 10,
       "dev/repo": 72,
       "dev/skill": 26
     },
     "byReadiness": {
-      "ready for proof": 118
+      "ready for proof": 117
     },
     "rawByReadiness": {
-      "ready-for-proof": 118
+      "ready-for-proof": 117
     },
     "proofReadySamples": [
       {
@@ -149,13 +148,13 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 143,
+      "count": 145,
       "actor": "none",
       "evidence": {
-        "satisfied": 143
+        "satisfied": 145
       },
       "review": {
-        "agent-reviewed": 142,
+        "agent-reviewed": 144,
         "human-reviewed": 1
       },
       "summary": "Proof is already attached and valid under packet semantics."
@@ -174,14 +173,13 @@
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 118,
+      "count": 117,
       "actor": "agent",
       "evidence": {
-        "stale": 1,
         "unknown": 117
       },
       "review": {
-        "agent-reviewed": 11,
+        "agent-reviewed": 10,
         "heuristic": 107
       },
       "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
@@ -201,14 +199,12 @@
     },
     {
       "id": "human-confirm-or-decompose",
-      "count": 33,
+      "count": 32,
       "actor": "human",
       "evidence": {
-        "stale": 1,
         "unknown": 32
       },
       "review": {
-        "agent-reviewed": 1,
         "heuristic": 32
       },
       "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
@@ -239,16 +235,6 @@
         "claim-readme-md-103",
         "claim-readme-md-117",
         "claim-readme-md-151"
-      ]
-    },
-    {
-      "id": "stale-evidence",
-      "count": 2,
-      "actor": "agent",
-      "summary": "Refresh or recheck stale evidence before consuming it as proof.",
-      "sampleClaimIds": [
-        "claim-docs-guides-cli-md-478",
-        "claim-docs-contracts-reporting-md-144"
       ]
     }
   ]

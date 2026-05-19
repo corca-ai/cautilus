@@ -1479,6 +1479,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1548,6 +1549,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1588,6 +1590,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -1629,6 +1632,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1733,6 +1737,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1773,6 +1778,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Create a host-owned app/chat fixture and run it through cautilus evaluate fixture.",
       "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -1903,6 +1909,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -1985,6 +1992,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -2025,6 +2033,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet, catalog, schema, or renderer proof for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -6493,6 +6502,7 @@
         "linked-from:docs/guides/evaluation-process.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
       "recommendedEvalSurface": "dev/repo",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -10599,6 +10609,7 @@
         "linked-from:docs/contracts/reporting.md"
       ],
       "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
       "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
@@ -11936,7 +11947,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "1c43b1fa720f1d66d29757b28759d110a0dfa1af",
+  "gitCommit": "b5c8be138869f6389f7d4fc6b7dcf5c8f3212ac1",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
