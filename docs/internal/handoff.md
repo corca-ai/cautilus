@@ -23,8 +23,10 @@
 - Root cause로 자동 복구된 stale claim: 4개 (`claim-docs-contracts-reporting-md-131`, `claim-docs-guides-cli-md-135`, `-md-263`, `-md-265`).
 - 잔여 stale 2개 (`claim-docs-guides-cli-md-478`, `claim-docs-contracts-reporting-md-144`)도 일회성 데이터 복구 review-result `review-result-rename-chain-supports-replenish-2026-05-20.json`으로 historical claim id를 supportsClaimIds에 다시 attach해 satisfied로 복구했습니다.
   앞으로 발생할 rename은 additive rewrite가 chain을 자동 보존합니다.
-- 최신 커밋:
+- 최신 커밋 (모두 `origin/main`에 push 완료, HEAD = `860374b`):
+  - `860374b Refresh handoff after stale-claim replenishment`
   - `4e6276e Replenish historical claim ids on two surviving rename-chain refs`
+  - `b5c8be1 Refresh handoff after rename-chain root cause fix`
   - `d0f985c Preserve rename chain so renamed claims rebind to their original evidence bundle`
   - `1c43b1f Refresh handoff after Family B promotion`
   - `b663104 Satisfy Family B dev/skill claims with deterministic evidence`
@@ -74,5 +76,6 @@
 - [.cautilus/claims/eval-plan-after-scenario-design-2026-05-17.json](../../.cautilus/claims/eval-plan-after-scenario-design-2026-05-17.json)
 - [.cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json](../../.cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json)
 - [.cautilus/claims/review-result-family-b-dev-skill-deterministic-proof-2026-05-20.json](../../.cautilus/claims/review-result-family-b-dev-skill-deterministic-proof-2026-05-20.json)
+- [.cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json](../../.cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json)
 - [docs/specs/evidence/claim-evidence-state.md](../specs/evidence/claim-evidence-state.md)
 - [charness-artifacts/debug/debug-2026-05-17-scenario-design-matchkind-enum.md](../../charness-artifacts/debug/debug-2026-05-17-scenario-design-matchkind-enum.md)
