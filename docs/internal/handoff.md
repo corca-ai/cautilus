@@ -21,16 +21,18 @@
   - `TestDiscoverClaimProofPlanAcceptsBundleListingPreviousClaimIDAfterRename` (single-hop)
   - `TestDiscoverClaimProofPlanRestoresSatisfiedAfterMultiHopRenameRebinds` (multi-hop + 복원)
 - Root cause로 자동 복구된 stale claim: 4개 (`claim-docs-contracts-reporting-md-131`, `claim-docs-guides-cli-md-135`, `-md-263`, `-md-265`).
-- 남은 stale 2개 (`claim-docs-guides-cli-md-478`, `claim-docs-contracts-reporting-md-144`)는 과거 non-additive rewrite로 ref의 supportsClaimIds chain이 단일 ID로 압축되어 데이터 복구가 별도로 필요한 케이스입니다.
+- 잔여 stale 2개 (`claim-docs-guides-cli-md-478`, `claim-docs-contracts-reporting-md-144`)도 일회성 데이터 복구 review-result `review-result-rename-chain-supports-replenish-2026-05-20.json`으로 historical claim id를 supportsClaimIds에 다시 attach해 satisfied로 복구했습니다.
+  앞으로 발생할 rename은 additive rewrite가 chain을 자동 보존합니다.
 - 최신 커밋:
+  - `4e6276e Replenish historical claim ids on two surviving rename-chain refs`
   - `d0f985c Preserve rename chain so renamed claims rebind to their original evidence bundle`
   - `1c43b1f Refresh handoff after Family B promotion`
   - `b663104 Satisfy Family B dev/skill claims with deterministic evidence`
 - 검증은 모두 통과합니다.
   `npm run generated:drift:check`, `npm run claims:evidence-state:check`, `npm run claims:status-report:check`, `./bin/cautilus discover claims validate --claims .cautilus/claims/evidenced-typed-runners.json`, `npm run lint`, `npm run test`, `npm run hooks:check`.
 - 이번 세션 누적 변화:
-  - satisfied 136 → 143 (+7: Family B 3개 + root cause 자동 복구 4개)
-  - stale 7 → 2 (-5)
+  - satisfied 136 → 145 (+9: Family B 3개 + root cause 자동 복구 4개 + 데이터 복구 2개)
+  - stale 7 → 0 (-7)
   - unknown 218 → 216 (-2)
 - 핸드오프 직전과 동일한 untracked는 stale vim swap `docs/specs/.index.spec.md.swp` 한 개입니다.
   사용자 vim 세션 lock이므로 자율 삭제하지 않았습니다.
@@ -52,9 +54,8 @@
 7. `heuristic=107` eval claim을 더 진행하려면 Cautilus Agent claim review branch로 들어가야 합니다.
    review budget 확인이 필요하므로, maximum clusters, claims per cluster, parallel lanes, excerpt chars, retry policy, skipped-cluster policy를 사용자에게 확인받고 시작하세요.
 8. Human bucket (`human-align-surfaces=39`, `human-confirm-or-decompose=34`, `split-or-defer=27`)은 maintainer 판단 대상으로 남기고, agent가 단독으로 satisfied 처리하지 마세요.
-9. 남은 stale 2개(`claim-docs-guides-cli-md-478`, `claim-docs-contracts-reporting-md-144`)는 한 번의 데이터 복구 패스로 정리 가능합니다.
-   각 claim의 evidence ref supportsClaimIds에 historical claim IDs를 다시 추가해 주는 review-result 하나를 작성해 적용하면 됩니다.
-   향후 rename chain은 root cause fix가 보존하므로 같은 종류의 stale은 더 이상 발생하지 않습니다.
+9. stale=0 상태이며 rename chain은 root cause fix가 자동 보존합니다.
+   같은 종류의 stale은 더 이상 발생하지 않습니다.
 
 ## Discuss
 
