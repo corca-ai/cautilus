@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "cautilus.claim_evidence_bundle.v1",
+  "bundleId": "evidence-family-b-dev-skill-deterministic-proof-2026-05-20",
+  "createdForClaimIds": [
+    "claim-docs-contracts-claim-discovery-workflow-md-214",
+    "claim-docs-contracts-claim-discovery-workflow-md-561",
+    "claim-docs-contracts-runtime-fingerprint-improvement-md-50"
+  ],
+  "repoCommit": "4d5dc6ceb3246a8f29295daf324b1a7c926ac045",
+  "summary": "Focused deterministic Go tests prove the binary-emitted contracts behind three reviewed Family B dev/skill claims: claim-review-input packets record a separate review budget for delegated autonomous continuation, refresh-plan packets record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment, and the improve proposal generator does not edit consumer-owned target files.",
+  "evidenceScope": {
+    "targetSurface": "dev/skill binary-emitted contracts that the Cautilus Agent reads (claim-review-input packet, refresh-plan packet, and improve proposal generator)",
+    "claimBoundary": "This bundle proves the deterministic binary-emitted shape that the Cautilus Agent depends on for delegated continuation budgets, refresh-plan reproducibility, and consumer-owned target safety. It does not prove that an actual skill execution selects refresh, proceeds within a delegated budget, or refuses to overwrite a consumer-owned file when an LLM is in the loop.",
+    "notClaimed": [
+      "A live Cautilus Agent run was observed selecting refresh and recording the deterministic refresh-plan packet.",
+      "A live Cautilus Agent run was observed proceeding within a recorded review budget for delegated autonomous continuation.",
+      "A live improve runner was observed refusing to auto-edit consumer-owned prompts, skills, or instruction files when invoked end-to-end.",
+      "Every adapter-owned runner that wraps these binaries enforces the same boundaries; that remains the adapter's responsibility."
+    ]
+  },
+  "commandEvidence": [
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimReviewInputCanFocusActionBucket' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "claim-review-input packets emit a reviewBudget object recording the focused action bucket so a delegated autonomous-continuation budget is preserved in the packet, not hidden in operator memory"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestBuildClaimRefreshPlanMarksChangedSources|TestBuildClaimRefreshPlanRecordsStaleEvidenceReasons' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "refresh-plan packets record the baseline gitCommit pulled from the previous claim packet plus the resolved target commit",
+          "refresh-plan packets record targetPolicy=current-head and workingTreePolicy=excluded so the deterministic dirty-working-tree treatment is visible to the skill",
+          "refresh-plan packets record changedSources, claimPlan lifecycle for carried-forward vs changed claims, and per-source changedClaimSources counts",
+          "refresh-plan packets record staleEvidence reasons when a previously verified evidence ref contentHash no longer matches"
+        ]
+      }
+    },
+    {
+      "command": "go test ./internal/runtime -run 'TestGenerateImproveProposalAddsPassingSimplificationForRuntimeChange|TestGenerateImproveProposalKeepsBaselineFollowUpForHoldWithoutSuggestedChanges' -count=1",
+      "exitCode": 0,
+      "observed": {
+        "package": "github.com/corca-ai/cautilus/internal/runtime",
+        "protectedBehaviors": [
+          "improve proposal generation carries target-file metadata and suggested changes without modifying the target file contents",
+          "improve proposals keep a baseline follow-up reference when no suggested change is produced, so a consumer-owned file is not silently rewritten"
+        ]
+      }
+    }
+  ],
+  "checkedInEvidence": [
+    {
+      "path": "internal/runtime/claim_discovery.go",
+      "kind": "claim-discovery-runtime",
+      "contentHash": "sha256:8181d9d9b93b5cec60b1801d43872280da52364a50f0fd8b3ea0b12945f23f5d"
+    },
+    {
+      "path": "internal/runtime/claim_discovery_test.go",
+      "kind": "claim-discovery-tests",
+      "contentHash": "sha256:bddb39e4dca636a540784fe11bedd15f002f82873e5d4f89c6247b1115318fc3"
+    },
+    {
+      "path": "internal/runtime/runtime_fingerprint.go",
+      "kind": "improve-proposal-runtime",
+      "contentHash": "sha256:552a6473c71592bec9636f1cb6cd265efc8348bafe6ce9a22ee7a26b896710c0"
+    },
+    {
+      "path": "internal/runtime/runtime_fingerprint_test.go",
+      "kind": "improve-proposal-tests",
+      "contentHash": "sha256:998441b3b512c09819c8df14f13dbffb6b67fe93de5a4b48436483b24a180b98"
+    },
+    {
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:f703e3ccf3be041a522bdf6e87640bca5680761ea0138ef439ed73471e91a9e4"
+    },
+    {
+      "path": "docs/contracts/runtime-fingerprint-improvement.md",
+      "kind": "claim-source",
+      "contentHash": "sha256:b6cb66c5617b72582480649ff16338c0404f22251faeff9a406743fc2da2edb9"
+    }
+  ],
+  "decision": {
+    "evidenceStatus": "satisfied",
+    "verificationReadiness": "ready-for-proof",
+    "matchKind": "verified",
+    "reason": "The deterministic Go tests prove the binary-emitted shape behind each Family B claim's constraint. A live Cautilus Agent execution would extend confidence to skill-level behavior but is not required to satisfy the binary-emitted packet/proposal constraints these claims encode."
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewer": {
+    "id": "same-agent-family-b-deterministic-proof",
+    "type": "agent",
+    "reviewedAt": "2026-05-20T00:00:00Z",
+    "evidencePolicy": "Mark reviewed Family B dev/skill claims as satisfied only when a verified evidence bundle backs the binary-emitted contracts that the claim's constraint depends on. Skill-level execution proof is not required to satisfy the binary-emitted shape, and a live Cautilus Agent run remains the next deepening step."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "cluster-family-b-dev-skill-deterministic-proof-2026-05-20",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+          "claimFingerprint": "sha256:0199de8fd884565e9188f0b9bb149d1a891fe510ec5971fc8294d1152b5d1fb3",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim says the delegated autonomous-continuation budget must be written to the packet, which is a deterministic binary-emitted shape that the bundled tests verify directly.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "TestBuildClaimReviewInputCanFocusActionBucket proves the claim-review-input packet emits a reviewBudget object with the focused action bucket, so a delegated autonomous-continuation budget cannot be lost to operator memory.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:24e08bbf8ac2e50810f08ee45ec7007168c2d2bb49edd90a5e668e8bd580bb2d",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-214",
+                "claim-docs-contracts-claim-discovery-workflow-md-561",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-50"
+              ]
+            }
+          ],
+          "nextAction": "Optional dev/skill fixture-smoke run can extend confidence to live skill behavior, but the deterministic packet contract is already proven.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-561",
+          "claimFingerprint": "sha256:3ecb81a806bc3c24a1255bb07c84a0878e4972283ce120aa18f12ffddcc0008f",
+          "reviewStatus": "human-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim names every field the deterministic refresh-plan packet must record; the bundled tests verify all of them (baseCommit, targetPolicy, changedSources, claimPlan lifecycle, staleEvidence reasons, workingTreePolicy).",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "TestBuildClaimRefreshPlanMarksChangedSources and TestBuildClaimRefreshPlanRecordsStaleEvidenceReasons together prove the refresh-plan packet records baseline commit, target policy, changed sources, carried-forward vs changed claim lifecycle, stale evidence reasons, and dirty-working-tree treatment.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:24e08bbf8ac2e50810f08ee45ec7007168c2d2bb49edd90a5e668e8bd580bb2d",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-214",
+                "claim-docs-contracts-claim-discovery-workflow-md-561",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-50"
+              ]
+            }
+          ],
+          "nextAction": "Optional dev/skill fixture-smoke run can extend confidence to a live Cautilus Agent refresh selection, but the deterministic refresh-plan packet contract is already proven.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
+          "claimFingerprint": "sha256:5b4aa826a977bd6abed0596d72f0a3bba779e7c5d880765a0bd1e59d1439d44d",
+          "reviewStatus": "agent-reviewed",
+          "recommendedProof": "cautilus-eval",
+          "recommendedEvalSurface": "dev/skill",
+          "verificationReadiness": "ready-for-proof",
+          "whyThisLayer": "The claim says the improve proposal generator must not directly auto-edit consumer-owned files; the bundled tests verify the generator emits suggested changes without modifying target file contents.",
+          "evidenceStatus": "satisfied",
+          "evidenceStatusReason": "TestGenerateImproveProposalAddsPassingSimplificationForRuntimeChange and TestGenerateImproveProposalKeepsBaselineFollowUpForHoldWithoutSuggestedChanges prove improve proposals carry target-file metadata and suggested changes without mutating the target file, restoring the verified evidence that the earlier rename-only bundle left stale.",
+          "evidenceRefs": [
+            {
+              "path": ".cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json",
+              "kind": "cautilus-claim-evidence-bundle",
+              "matchKind": "verified",
+              "contentHash": "sha256:24e08bbf8ac2e50810f08ee45ec7007168c2d2bb49edd90a5e668e8bd580bb2d",
+              "supportsClaimIds": [
+                "claim-docs-contracts-claim-discovery-workflow-md-214",
+                "claim-docs-contracts-claim-discovery-workflow-md-561",
+                "claim-docs-contracts-runtime-fingerprint-improvement-md-50"
+              ]
+            }
+          ],
+          "nextAction": "Live improve runner observation is optional once the deterministic generator boundary is proven; the adapter still owns end-to-end host-runner enforcement.",
+          "unresolvedQuestions": []
+        }
+      ]
+    }
+  ]
+}

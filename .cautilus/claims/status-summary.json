@@ -22,12 +22,12 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 7
+          "stale": 6
         },
         "byReviewStatus": {
-          "agent-reviewed": 7
+          "agent-reviewed": 6
         },
-        "count": 7,
+        "count": 6,
         "id": "stale-evidence",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,12 +43,13 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 136
+          "satisfied": 139
         },
         "byReviewStatus": {
-          "agent-reviewed": 136
+          "agent-reviewed": 138,
+          "human-reviewed": 1
         },
-        "count": 136,
+        "count": 139,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -77,15 +78,14 @@
       },
       {
         "byEvidenceStatus": {
-          "stale": 5,
-          "unknown": 119
+          "stale": 4,
+          "unknown": 117
         },
         "byReviewStatus": {
-          "agent-reviewed": 16,
-          "heuristic": 107,
-          "human-reviewed": 1
+          "agent-reviewed": 14,
+          "heuristic": 107
         },
-        "count": 124,
+        "count": 121,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -193,9 +193,9 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 136,
-      "stale": 7,
-      "unknown": 218
+      "satisfied": 139,
+      "stale": 6,
+      "unknown": 216
     },
     "byLifecycle": {
       "new": 361
@@ -410,7 +410,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 136,
+    "satisfiedClaimCount": 139,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1584,6 +1584,27 @@
         "summary": "The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop."
       },
       {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-214",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:24e08bbf8ac2e50810f08ee45ec7007168c2d2bb49edd90a5e668e8bd580bb2d",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-214",
+              "claim-docs-contracts-claim-discovery-workflow-md-561",
+              "claim-docs-contracts-runtime-fingerprint-improvement-md-50"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "If the user already delegated autonomous continuation, Cautilus Agent may proceed within the recorded budget, but the budget still must be written to the packet."
+      },
+      {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-361",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -1726,6 +1747,27 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "After discovery or refresh, Cautilus Agent should report status in a compact decision-oriented shape:"
+      },
+      {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-561",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:24e08bbf8ac2e50810f08ee45ec7007168c2d2bb49edd90a5e668e8bd580bb2d",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-214",
+              "claim-docs-contracts-claim-discovery-workflow-md-561",
+              "claim-docs-contracts-runtime-fingerprint-improvement-md-50"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "human-reviewed",
+        "summary": "Cautilus Agent may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment."
       },
       {
         "claimId": "claim-docs-contracts-claim-discovery-workflow-md-579",
@@ -2993,6 +3035,27 @@
         "summary": "Runtime identity must come from explicit machine-readable runner output, adapter-provided metadata, or a checked-in wrapper."
       },
       {
+        "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:24e08bbf8ac2e50810f08ee45ec7007168c2d2bb49edd90a5e668e8bd580bb2d",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json",
+            "supportsClaimIds": [
+              "claim-docs-contracts-claim-discovery-workflow-md-214",
+              "claim-docs-contracts-claim-discovery-workflow-md-561",
+              "claim-docs-contracts-runtime-fingerprint-improvement-md-50"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": "dev/skill",
+        "recommendedProof": "cautilus-eval",
+        "reviewStatus": "agent-reviewed",
+        "summary": "It should not directly auto-edit consumer-owned prompts, skills, or instruction files."
+      },
+      {
         "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -3259,7 +3322,7 @@
       }
     ]
   },
-  "gitCommit": "ffc22d8c01ede04ab006786f16f271c8bfd7b155",
+  "gitCommit": "4d5dc6ceb3246a8f29295daf324b1a7c926ac045",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3271,10 +3334,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "ffc22d8c01ede04ab006786f16f271c8bfd7b155",
+    "currentGitCommit": "4d5dc6ceb3246a8f29295daf324b1a7c926ac045",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "ffc22d8c01ede04ab006786f16f271c8bfd7b155",
+    "packetGitCommit": "4d5dc6ceb3246a8f29295daf324b1a7c926ac045",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
