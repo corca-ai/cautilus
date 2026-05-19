@@ -1,0 +1,38 @@
+# charness worktree adapter — declares how `charness worktree prepare` makes a
+# freshly-created git worktree usable, and which extra `charness worktree doctor`
+# checks decide whether the worktree is ready.
+#
+# Cautilus uses npm and a checked-in `.githooks/pre-push` installed through
+# `npm run hooks:install`, not lefthook/husky/simple-git-hooks. Each new worktree
+# therefore needs (1) `npm install` so verify/test/lint commands resolve their
+# tooling, and (2) `npm run hooks:install` so `core.hooksPath=.githooks` is set
+# inside this worktree's local config.
+version: 1
+
+prepare:
+  commands:
+    - id: install-deps
+      description: "Install workspace dependencies for this worktree."
+      timeout_seconds: 600
+      argv:
+        - npm
+        - install
+    - id: install-hooks
+      description: "Install Cautilus's checked-in .githooks pre-push for this worktree."
+      timeout_seconds: 60
+      argv:
+        - npm
+        - run
+        - hooks:install
+  skip_if_doctor_passes: true
+
+doctor:
+  checks:
+    - id: hooks_check
+      description: "Confirm .githooks pre-push is installed and ready in this worktree."
+      next_action_hint: "Run `charness worktree prepare` (or `npm run hooks:install`)."
+      timeout_seconds: 30
+      argv:
+        - npm
+        - run
+        - hooks:check

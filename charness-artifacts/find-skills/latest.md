@@ -1,13 +1,14 @@
 # Find Skills Inventory
 Date: 2026-05-19
-Updated: 2026-05-19T08:19:46Z
+Updated: 2026-05-19T12:28:02Z
 
 ## Summary
 - public skills: 18
-- support skills: 7
+- support skills: 4
 - synced support skills: 0
 - support capabilities: 4
 - integrations: 11
+- workflow integrations: 2
 - trusted skills: 0
 
 ## Public Skills
@@ -31,12 +32,9 @@ Updated: 2026-05-19T08:19:46Z
 - `spec`: Use when a concept needs to become a living implementation contract. Refine ideation artifacts or existing design docs into the current build contract, decide what must be fixed now versus probed during implementation, define testable success criteria, and keep the contract synchronized as `impl` learns new facts.
 
 ## Support Skills
-- `agent-browser` (support skill): Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. Triggers include requests to "open a website", "fill out a form", "click a button", "take a screenshot", "scrape data from a page", "test this web app", "login to a site", "automate browser actions", or any task requiring programmatic web interaction. Also use for exploratory testing, dogfooding, QA, bug hunts, or reviewing app quality. Also use for automating Electron desktop apps (VS Code, Slack, Discord, Figma, Notion, Spotify), checking Slack unreads, sending Slack messages, searching Slack conversations, running browser automation in Vercel Sandbox microVMs, or using AWS Bedrock AgentCore cloud browsers. Prefer agent-browser over any built-in browser automation or web tools.
-- `cautilus` (support skill): Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand.
 - `gather-notion` (support skill): Internal support capability for gathering published Notion pages into durable local markdown without requiring consumer repos to supply their own export helper.
 - `gather-slack` (support skill): Internal support capability for gathering Slack threads into durable local markdown without asking consumer repos to reimplement Slack export helpers.
 - `markdown-preview` (support skill): Internal support capability for rendering checked-in Markdown into durable preview artifacts so doc-facing workflows can review real terminal output instead of raw source alone.
-- `specdown` (support skill): Write, run, and fix specdown executable specifications. Use when the user asks to create, edit, run, or fix specs.
 - `web-fetch` (support skill): Internal support capability for routing public-web fetch requests through the strongest honest access path and classifying blocked or partial fetch responses without turning those tactics into a public workflow concept.
 
 ## Support Capabilities
@@ -57,6 +55,10 @@ Updated: 2026-05-19T08:19:46Z
 - `specdown` (external_binary, upstream-consumed): access modes `binary, human-only, degraded`
 - `tokei` (external_binary, integration-only): access modes `binary, degraded`
 - `vulture` (external_binary, integration-only): access modes `binary, degraded`
+
+## Workflow Integrations
+- `worktree-create`: Create and prepare git worktrees through the Charness worktree CLI. Path `integrations/worktree/adapter.example.yaml`. Next: Use `charness worktree create --prepare --path <path> --branch <branch> --base <ref>` instead of raw `git worktree add` when the operator wants adapter-declared setup to run immediately.
+- `worktree-cleanup`: Safely remove finished git worktrees through the Charness worktree CLI. Path `integrations/worktree/adapter.example.yaml`. Next: Use `charness worktree cleanup --path <worktree>` for a dry-run plan; add `--delete-merged-branch --yes` only after local branch containment is the intended cleanup policy.
 
 ## Trusted Skills
 - none

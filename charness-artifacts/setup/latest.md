@@ -1,14 +1,16 @@
 # Setup Normalization
-Date: 2026-05-18
+Date: 2026-05-19
 
 ## Scope
 
-Re-run setup normalization against Charness 0.7.0 during the setup/quality refresh.
+Re-run setup inspection and complete the previously-implicit worktree adapter seam during a `/setup` + `/quality` refresh.
 
 ## Result
 
-No setup surface changes were needed.
-The inspector reports `repo_mode=NORMALIZE`, `missing_surfaces=[]`, and `recommended_action=leave_as_is`.
+No core operating-surface changes were needed.
+The inspector reports `repo_mode=NORMALIZE`, `missing_surfaces=[]`, `findings=[]`, `recommendations=[]`, and `recommended_action=leave_as_is`.
+
+This slice seeded one previously-missing optional seam: `.agents/worktree-adapter.yaml`.
 
 ## Current Surface Map
 
@@ -21,21 +23,36 @@ The inspector reports `repo_mode=NORMALIZE`, `missing_surfaces=[]`, and `recomme
 
 ## Routing
 
-The existing Skill Routing block is intentionally repo-specific.
-The 0.7.0 renderer still recommends reviewing the custom block because it does not match the compact generated block byte-for-byte, but `missing_expected_snippets=[]` and the setup adapter acknowledges `skill_routing_block_custom_or_drifted`.
+The existing Skill Routing block stays intentionally repo-specific.
+The 0.7.x renderer still suggests reviewing the custom block because it does not match the compact generated block byte-for-byte; the setup adapter acknowledges `skill_routing_block_custom_or_drifted`, so this is informational, not a finding.
+
+## Worktree Adapter
+
+Seeded `.agents/worktree-adapter.yaml` tailored to cautilus's stack (npm + checked-in `.githooks`).
+Default seed template assumed pnpm + lefthook; the file was rewritten to use:
+
+- `prepare.commands`: `npm install` and `npm run hooks:install`
+- `doctor.checks`: manifest-level `hooks_check` running `npm run hooks:check`
+
+`charness worktree doctor --repo-root . --json` reports `status: pass` with the manifest `hooks_check` green.
+
+This seam was visible in the prior `inspect_repo.py` output under `agent_docs.normalization.worktree_adapter` but never surfaced as a `recommendation` because the trigger gate (`hook_manager_detected`) requires lefthook/husky/simple-git-hooks. That gap is filed upstream as `corca-ai/charness#180`.
 
 ## Deliberately Not Doing
 
-- Do not create duplicate default docs such as `docs/roadmap.md`.
-- Do not create duplicate root-level `docs/operator-acceptance.md`.
+- Do not create duplicate default docs such as `docs/roadmap.md` or root-level `docs/operator-acceptance.md`.
 - Do not replace the repo-specific critique packet guidance in `AGENTS.md` with the shorter generated block.
+- Do not add the `find-skills --recommend-for-task` snippet to the Skill Routing block; the block already says "Keep this block short" and that decision is the repo's prior call.
 
 ## Verification
 
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.7.0/skills/setup/scripts/inspect_repo.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.7.0/skills/setup/scripts/render_skill_routing.py --repo-root . --json`
+- `python3 $SKILL_DIR/setup/scripts/resolve_adapter.py --repo-root .`
+- `python3 $SKILL_DIR/setup/scripts/inspect_repo.py --repo-root .`
+- `python3 $SKILL_DIR/setup/scripts/render_skill_routing.py --repo-root . --json`
+- `python3 $SKILL_DIR/setup/scripts/seed_worktree_adapter.py --repo-root .` (exited 1 with a print-only ValueError after writing the file — see `corca-ai/charness#181`)
+- `charness worktree doctor --repo-root . --json`
 
 ## Delegated Review
 
-executed: parent-delegated setup review confirmed the current operating-surface mapping is the right fit and warned against creating duplicate setup docs.
-Counterweight review agreed this is a healthy setup signal, not a prompt for further normalization.
+executed: parent-delegated bounded review scoped to (a) worktree adapter seed fit for cautilus's npm + `.githooks` stack and (b) the three charness improvement issues opened during this slice.
+Result recorded in `charness-artifacts/quality/latest.md` under `Delegated Review`.
