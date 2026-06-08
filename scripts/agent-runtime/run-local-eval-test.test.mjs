@@ -144,7 +144,10 @@ test("codexArgs omits --ephemeral when session mode is persistent", () => {
 	);
 });
 
-test("codexArgs ignores user config when CODEX_HOME is isolated", () => {
+test("codexArgs keeps user config so the isolated home's provisioned skill surface loads", () => {
+	// The isolated CODEX_HOME is provisioned with the installed plugin surface and a
+	// copied config.toml (see provisionInstalledSkillSurface), so codex must read that
+	// config rather than ignore it -- otherwise the agent under test loses its skills.
 	assert.deepEqual(
 		codexArgs({
 			workspace: "/repo",
@@ -159,7 +162,6 @@ test("codexArgs ignores user config when CODEX_HOME is isolated", () => {
 			"/repo",
 			"--sandbox",
 			"read-only",
-			"--ignore-user-config",
 			"--ephemeral",
 			"--output-schema",
 			"/tmp/schema.json",
@@ -170,14 +172,16 @@ test("codexArgs ignores user config when CODEX_HOME is isolated", () => {
 	);
 });
 
-test("prepareCodexRuntimeEnv copies only auth into an isolated Codex home", () => {
+test("prepareCodexRuntimeEnv provisions auth plus the installed skill surface into an isolated Codex home", () => {
 	const tempRoot = mkdtempSync(join(tmpdir(), "cautilus-codex-home-"));
 	const sourceHome = join(tempRoot, "source-home");
 	const outputDir = join(tempRoot, "output");
 	mkdirSync(sourceHome, { recursive: true });
 	mkdirSync(outputDir, { recursive: true });
+	mkdirSync(join(sourceHome, "plugins", "charness"), { recursive: true });
+	writeFileSync(join(sourceHome, "plugins", "charness", "marker.txt"), "installed\n");
 	writeFileSync(join(sourceHome, "auth.json"), "{\"token\":\"test\"}\n");
-	writeFileSync(join(sourceHome, "config.toml"), "model = \"local\"\n");
+	writeFileSync(join(sourceHome, "config.toml"), "[plugins.\"charness@local\"]\nenabled = true\n");
 
 	const prepared = prepareCodexRuntimeEnv(
 		{ codexHomeMode: "isolated", codexAuthMode: "inherit" },
@@ -187,7 +191,13 @@ test("prepareCodexRuntimeEnv copies only auth into an isolated Codex home", () =
 	assert.equal(prepared.preflightBlocker, null);
 	assert.equal(prepared.env.CODEX_HOME.startsWith(outputDir), false);
 	assert.equal(readFileSync(join(prepared.env.CODEX_HOME, "auth.json"), "utf-8"), "{\"token\":\"test\"}\n");
-	assert.equal(existsSync(join(prepared.env.CODEX_HOME, "config.toml")), false);
+	// The installed plugin/skill surface and its enablement config carry over so the
+	// agent under test keeps the skills the repo treats as installed (e.g. charness).
+	assert.equal(
+		readFileSync(join(prepared.env.CODEX_HOME, "config.toml"), "utf-8"),
+		"[plugins.\"charness@local\"]\nenabled = true\n",
+	);
+	assert.equal(readFileSync(join(prepared.env.CODEX_HOME, "plugins", "charness", "marker.txt"), "utf-8"), "installed\n");
 	prepared.cleanup();
 	assert.equal(existsSync(prepared.env.CODEX_HOME), false);
 });

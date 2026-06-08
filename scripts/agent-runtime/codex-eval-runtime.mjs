@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, rmSync, symlinkSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import process from "node:process";
@@ -20,9 +20,6 @@ export function codexArgs(options, schemaFile, outputFile) {
 		"--sandbox",
 		options.sandbox,
 	];
-	if ((options.codexHomeMode ?? "inherit") === "isolated") {
-		args.push("--ignore-user-config");
-	}
 	if ((options.codexSessionMode ?? "ephemeral") === "ephemeral") {
 		args.push("--ephemeral");
 	}
@@ -60,6 +57,27 @@ function isolatedCodexHome() {
 	return path;
 }
 
+// Reflect the real installed plugin/skill surface (e.g. charness) inside the
+// isolated CODEX_HOME so the agent under test has the skills the repo treats as
+// installed. General by design: it mirrors whatever is installed in the source
+// home and enabled in its config, not a per-skill (find-skills) special case.
+// State (history, memories, logs) stays isolated; only the skill surface and its
+// plugin enablement carry over.
+function provisionInstalledSkillSurface(sourceHome, codexHome) {
+	const sourcePlugins = join(sourceHome, "plugins");
+	if (existsSync(sourcePlugins)) {
+		try {
+			symlinkSync(sourcePlugins, join(codexHome, "plugins"));
+		} catch {
+			// best-effort: a missing or unlinkable plugin surface must not block the eval
+		}
+	}
+	const sourceConfig = join(sourceHome, "config.toml");
+	if (existsSync(sourceConfig)) {
+		copyFileSync(sourceConfig, join(codexHome, "config.toml"));
+	}
+}
+
 function withPreflightBlocker(env, cleanup, blockerKind, summary) {
 	return {
 		env,
@@ -81,6 +99,7 @@ export function prepareCodexRuntimeEnv(options, baseEnv = process.env) {
 	const codexHome = isolatedCodexHome();
 	const cleanup = () => rmSync(codexHome, { recursive: true, force: true });
 	const env = { ...baseEnv, CODEX_HOME: codexHome };
+	provisionInstalledSkillSurface(sourceHome, codexHome);
 	if (authMode === "inherit") {
 		const sourceAuthFile = join(sourceHome, "auth.json");
 		if (existsSync(sourceAuthFile)) {
