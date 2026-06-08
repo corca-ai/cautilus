@@ -1,105 +1,79 @@
 # Cautilus, Proven On Itself
 
-Status: SKELETON v1 (DRAFT — promise voice pending owner).
-This is a curated, human-legible view, not a generated dump.
+> Draft under owner review (2026-06-09). A curated, human-readable view — not a generated dump.
 
-Cautilus is a standalone CLI plus the Cautilus Agent for intentful behavior evaluation.
-It discovers what an agent product promises, proves selected promises against auditable evidence, and improves behavior under bounded gates.
+You build agents — coding assistants, chatbots, skills, workflows — and you need to know they do what you intend.
+Cautilus is a standalone CLI and agent that finds the promises your project makes, proves the ones that matter against real evidence, and improves the behavior behind them.
+This page is Cautilus's own promises, proven on Cautilus itself.
 
 ## How To Read This
 
-This page presents Cautilus at the level of seven product promises, not at the level of the hundreds of raw discovered claims under them.
-The raw claims remain the high-recall, source-ref-backed provenance; they are deliberately not the thing you review here.
-Each promise below shows the promise in one sentence, its current proof status, one or two hand-picked exemplar claims anchored to a real source line, and the CLI/Agent division of labor that delivers it.
-Proof status is intentionally qualitative, not a precise count, because the leaf-to-promise mapping is still being hardened (see the known limitation at the end).
+Each promise below gives you three things: what you get in one line, how far it's proven today, and a real example you can open at its source line.
+Cautilus marks every promise honestly — proven, thin, or promised — so what you read here is the true state of the work, not a sales sheet.
 
-Status legend:
+- proven — backed by checked-in evidence
+- thin — partly proven so far
+- promised — declared, with proof in progress
 
-- proven — at least one promise claim is satisfied against checked-in evidence
-- thin — promised, with only partial evidence so far
-- promised — declared, not yet proven; an active improvement target
+## What Cautilus Does For You
 
-## Part A — The Core Loop
+### Readiness — proven
 
-### U1 · Readiness — proven
+Before your first evaluation, you can see exactly what's ready and what to set up next — and you'll get the same clear answer every run.
 
-Promise: before any evaluation, `cautilus doctor` tells you deterministically what is ready and what is missing, and points at the next setup step.
+Open it: `docs/guides/consumer-adoption.md:25`; `docs/guides/cli.md:114`.
+The CLI runs the checks and prints the verdict; the agent suggests which workflow to run next.
 
-Evidence:
+### Claim Discovery — proven
 
-- `docs/guides/consumer-adoption.md:25` — "`cautilus --version` must work on `PATH` before any consumer adapter or skill wiring is treated as valid."
-- `docs/guides/cli.md:114` — "If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded run."
+Point Cautilus at your repo and you get back every promise your docs make, as a worklist — each one linked to the exact line that declares it, and marked proven only once real evidence backs it.
 
-CLI ↔ Agent: the CLI runs the deterministic checks and prints the verdict; the Agent proposes which workflow to run next.
+Open it: `docs/guides/cli.md:135`; `docs/guides/cli.md:263`.
+The CLI reads your docs and drafts a first pass; the agent sharpens it, groups it, and decides what to do next.
 
-### U2 · Claim Discovery — proven
+### Behavior Evaluation — thin
 
-Promise: Cautilus reads a repo's own truth surfaces and turns the promises it declares into a source-ref-backed proof backlog, without calling an LLM or marking anything satisfied on its own.
+You see whether the agents in your repo behave the way you intend — the coding agent you build with (does it follow your repo's rules and pick the right skill?) and the app you ship (does its chatbot give the right answers across a multi-turn conversation, and does a single prompt return what it should?).
 
-Evidence:
+Open it: `docs/specs/user/evaluation.spec.md:36`.
+The CLI runs your agent and records what it did; the agent turns that into scenarios and reads the result.
 
-- `docs/guides/cli.md:135` — "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied."
-- `docs/guides/cli.md:263` — "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
+### Bounded Improvement — promised
 
-CLI ↔ Agent: the CLI does high-recall extraction and a deterministic draft route; the Agent refines routes to high confidence, groups, and decides next actions.
+You hand Cautilus a prompt that's failing your eval and it rewrites the prompt until it passes — keeping the agent's intent intact, holding or lowering cost, and proving the win on held-out examples it was never tuned on.
+You approve every change before it ships.
 
-### U3 · Behavior Evaluation — thin
+Open it: `docs/specs/user/improvement.spec.md:23` (protected checks, held-out evidence, and an explicit budget); `docs/specs/user/improvement.spec.md:41`.
+The CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it.
 
-Promise: Cautilus checks whether your agent-equipped runner behaves the way a scenario expects — chatbot reply, tool choice, skill choice — like an end-to-end test, and leaves reopenable packets.
+## Why You Can Trust It
 
-Evidence:
+Cautilus marks each promise with how far it's actually proven, and keeps that mark in plain sight.
+So everything on this page is the real state of the work — which is what makes the proven marks worth anything.
 
-- `docs/specs/user/evaluation.spec.md:36` — "A user can reopen observed behavior and summary packets after each eval."
+### Reviewable Artifacts — proven
 
-Honest gap: only partial evidence is attached today; this is one of the two thinnest promises.
+You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against.
 
-CLI ↔ Agent: the CLI runs the runner and emits packets; the Agent extracts scenarios and interprets verdicts.
+Open it: `docs/specs/user/reviewable-artifacts.spec.md:3`; `docs/specs/user/reviewable-artifacts.spec.md:6`.
 
-### U4 · Bounded Improvement — promised
+### Host Ownership — proven
 
-Promise: Cautilus improves a prompt that was not passing until it passes, preserving the agent's intent while raising quality or lowering cost, gated by protected checks, held-out evidence, and an explicit budget, never auto-applied.
+Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow.
 
-Evidence:
+Open it: `docs/specs/user/ownership.spec.md:27`; `README.md:7`.
 
-- `docs/specs/user/improvement.spec.md:23` — "A user can improve behavior while preserving protected checks, held-out evidence, and explicit budget."
-- `docs/specs/user/improvement.spec.md:41` — "Improvement produces a proposal and revision artifact that preserve source files, stop conditions, priorities..."
+### A Testable Agent — thin
 
-Honest gap: declared and specced, not yet proven by satisfied evidence; an active improvement target.
+You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good.
 
-CLI ↔ Agent: the CLI runs gates and comparisons; the Agent proposes changes and judges whether to keep them.
+Open it: `docs/contracts/runner-readiness.md`; `docs/guides/cli.md:114`.
+The CLI needs a ready runner before it can run anything; the agent helps you build that runner and gauges your agent's testability.
 
-## Part B — Why You Can Trust It
+## Where The Evidence Comes From
 
-### U5 · Reviewable Artifacts — proven
+Every example above is a real claim Cautilus discovered in this repo; the full set lives in `.cautilus/claims/`.
+One honest caveat: Cautilus's automatic grouping of raw claims into these promises is still rough, so we picked the examples by hand and left exact per-promise counts out on purpose.
+Hardening that grouping is the next piece of work, tracked in [charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md](../charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md).
 
-Promise: every workflow leaves machine-readable packets and readable views that another person or agent can reopen as the audit source of truth.
-
-Evidence:
-
-- `docs/specs/user/reviewable-artifacts.spec.md:3` — "After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen."
-- `docs/specs/user/reviewable-artifacts.spec.md:6` — "A user or agent can reopen JSON packets as the audit source of truth."
-
-### U6 · Evidence Gaps — proven
-
-Promise: Cautilus does not hide what is unproven; it keeps the candidate-not-proof boundary visible.
-
-Evidence:
-
-- `docs/specs/user/evidence-gaps.spec.md:8` — "The claim status summary keeps the candidate-not-proof boundary visible to users."
-
-This is why U3 showing thin and U4 showing promised is a feature of this page, not an embarrassment.
-
-### U7 · Host Ownership — proven
-
-Promise: your repo owns adapters, fixtures, prompts, and policy; Cautilus owns only the generic workflow, so adopting it never means handing your repo over.
-
-Evidence:
-
-- `docs/specs/user/ownership.spec.md:27` — "A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over."
-- `README.md:7` — "Ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another skill tree by hand."
-
-## Provenance And Known Limitation
-
-The exemplar claims above are hand-picked from Cautilus's own claim discovery over this repo; full provenance lives in `.cautilus/claims/`.
-Known limitation: the automatic mapping from raw discovered claims to these seven promises is still low-confidence and over-inclusive, so per-promise counts are not yet trustworthy and are omitted here on purpose.
-That weakness is tracked as the first internal improvement target in [charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md](../charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md).
+The whole pitch is simple: real evidence for every promise, and an honest mark of how far each one is proven.
