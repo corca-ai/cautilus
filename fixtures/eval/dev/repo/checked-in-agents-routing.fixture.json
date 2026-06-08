@@ -13,12 +13,11 @@
       "requiredInstructionFiles": ["AGENTS.md"],
       "allowedFirstToolCalls": [
         "functions.exec_command",
-        "multi_tool_use.parallel",
-        "python3 .../find-skills/scripts/list_capabilities.py --repo-root ."
+        "multi_tool_use.parallel"
       ],
       "expectedRouting": {
-        "bootstrapHelper": "find-skills",
-        "workSkill": "impl"
+        "bootstrapHelper": "charness:find-skills",
+        "workSkill": "charness:impl"
       }
     }
   ]

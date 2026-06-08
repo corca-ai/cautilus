@@ -1,21 +1,22 @@
 {
   "checked-in-agents-routing": {
     "observationStatus": "observed",
-    "summary": "The agent read AGENTS.md, used find-skills as the startup bootstrap helper, and selected impl as the durable work skill for the implementation task.",
+    "blockerKind": "",
+    "summary": "첫 진입 지침은 AGENTS.md였다. 그 다음 docs/internal/handoff.md를 읽어 다음 세션 픽업 규칙과 현재 슬라이스 후보를 확인했고, bootstrap helper로 `charness:find-skills`, durable work skill로 `charness:impl`을 선택하는 것이 정직한 첫 라우팅이다.",
     "entryFile": "AGENTS.md",
     "loadedInstructionFiles": [
-      "AGENTS.md"
+      "AGENTS.md",
+      "docs/internal/handoff.md",
+      "find-skills/SKILL.md"
     ],
-    "loadedSupportingFiles": [
-      "docs/internal/handoff.md"
-    ],
+    "loadedSupportingFiles": [],
     "routingDecision": {
-      "selectedSkill": "cautilus",
-      "bootstrapHelper": "find-skills",
-      "workSkill": "impl",
-      "selectedSupport": "",
-      "firstToolCall": "python3 .../find-skills/scripts/list_capabilities.py --repo-root .",
-      "reasonSummary": "The task starts with repo instruction routing and then moves into implementation."
+      "selectedSkill": "charness:impl",
+      "bootstrapHelper": "charness:find-skills",
+      "workSkill": "charness:impl",
+      "selectedSupport": "none",
+      "firstToolCall": "functions.exec_command",
+      "reasonSummary": "루트 지침이 먼저 AGENTS.md를 요구했고, 그 안의 Skill Routing이 startup에서 `find-skills`를 먼저 호출하라고 명시했다. handoff는 다음 세션 기본 pickup을 `find-skills` 재확인 뒤 슬라이스 선택으로 정의하므로 bootstrap은 `charness:find-skills`, 실제 구현 작업의 지속 스킬은 `charness:impl`이다."
     }
   }
 }
