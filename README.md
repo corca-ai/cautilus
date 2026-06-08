@@ -58,12 +58,12 @@ Quick links:
 
 - What Cautilus promises: [docs/specs/user/index.spec.md](./docs/specs/user/index.spec.md)
 - Maintainer claim map: [docs/specs/contracts/index.spec.md](./docs/specs/contracts/index.spec.md)
-- Claim spec report entry: [docs/specs/index.spec.md](./docs/specs/index.spec.md)
+- Start here — Cautilus, proven on itself: [docs/specs/index.spec.md](./docs/specs/index.spec.md)
 - Full command catalog: [docs/guides/cli.md](./docs/guides/cli.md)
 - Fresh consumer bootstrap after the binary is on `PATH`: [docs/guides/consumer-adoption.md](./docs/guides/consumer-adoption.md)
 - Public executable spec report: <https://corca-ai.github.io/cautilus/>
 
-The user and maintainer spec indexes are the curated claim source of truth, and [docs/specs/index.spec.md](./docs/specs/index.spec.md) is the executable report entry that includes both views.
+[docs/specs/index.spec.md](./docs/specs/index.spec.md) is the top-level "proven on itself" apex and the specdown entry; the user and maintainer spec indexes it links to remain the curated claim source of truth.
 Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.
 The Cautilus Agent curates that packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.
 The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.

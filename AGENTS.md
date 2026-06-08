@@ -45,7 +45,7 @@ This repo is the standalone product boundary for `Cautilus`.
 - [docs/internal/handoff.md](./docs/internal/handoff.md): next-session pickup and volatile state
 - [docs/internal/working-patterns.md](./docs/internal/working-patterns.md): durable operating patterns and review-trigger policy
 - [docs/master-plan.md](./docs/master-plan.md): durable product direction and priority order
-- [docs/specs/index.spec.md](./docs/specs/index.spec.md): claim spec report entry covering user-facing and maintainer-facing indexes
+- [docs/specs/index.spec.md](./docs/specs/index.spec.md): top-level "Cautilus, Proven On Itself" apex — newcomer promise view with honest proof badges (proven/declared/promised), proof-linked to executable specs, and the specdown entry
 - [docs/specs/user/index.spec.md](./docs/specs/user/index.spec.md): user-facing claim spec index and current product promise SOT
 - [docs/specs/contracts/index.spec.md](./docs/specs/contracts/index.spec.md): maintainer-facing claim spec index mapping user promises to internal contracts and proof routes
 - [docs/maintainers/operator-acceptance.md](./docs/maintainers/operator-acceptance.md): tiered human acceptance checklist

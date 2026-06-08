@@ -54,4 +54,4 @@ It is the natural first real Cautilus-improve dogfood case once chosen.
 
 Do not chase this yet.
 It is sidestepped for the flagship document by hand-picking genuinely on-topic exemplar claims per promise rather than trusting the automatic per-promise grouping.
-Flagship document: [docs/proven-promises.md](../../docs/proven-promises.md).
+Flagship document: [docs/specs/index.spec.md](../../docs/specs/index.spec.md) (migrated from docs/proven-promises.md, 2026-06-09).

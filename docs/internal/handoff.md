@@ -44,7 +44,7 @@
 
 ## References
 
-- [docs/proven-promises.md](../proven-promises.md)
+- [docs/specs/index.spec.md](../specs/index.spec.md)
 - [charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md](../../charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md)
 - [charness-artifacts/debug/debug-2026-06-08-doctor-readiness-adapter-yaml-render.md](../../charness-artifacts/debug/debug-2026-06-08-doctor-readiness-adapter-yaml-render.md)
 - [.cautilus/claims/canonical-claim-map.json](../../.cautilus/claims/canonical-claim-map.json)
