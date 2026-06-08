@@ -2,50 +2,43 @@
 
 ## Workflow Trigger
 
-`docs/proven-promises.md`의 7-promise flagship 문서를 HITL로 "깎는" 중입니다.
-다음 세션은 `charness:hitl`로 promise 문장 voice-sharpening 루프를 이어서 진행하세요.
-**이전의 "index.spec.md부터 500+ claim을 직접 human review" 흐름은 폐기했습니다.**
-그 함정(361 raw claim을 한 줄씩 손검토)으로 돌아가지 마세요.
+다음 세션은 **proof-debt 골을 활성화해서 실행**합니다.
+먼저 골의 `## Discuss before activation`(서피스별 *컨펌된* 시나리오/픽스처)을 사용자와 해소한 뒤:
 
-## Current State (2026-06-08 재정렬)
+```
+/goal @charness-artifacts/goals/2026-06-09-clear-proof-debt-live-proven.md
+```
 
-2주 막힘의 진짜 원인을 찾고 방향을 재정렬한 세션입니다.
+골이 미해소 discuss 때문에 `pursue-ready: False`라 그냥 `/goal`하면 fail-fast로 `/achieve`로 되돌립니다 — 의도된 게이트입니다.
 
-- **핵심 재정렬:** dogfood를 361 raw claim 고도가 아니라 **7 user promise(U1–U7) 고도**에서 한다.
-  raw claim은 high-recall provenance일 뿐 리뷰 단위가 아님 (제품 스스로 `claim-readme-md-67`에서 그렇게 말함).
-- **막힘의 뿌리:** leaf→promise canonicalization이 low-confidence·over-inclusive (medium 277/361).
-  per-promise 카운트가 부풀고 misroute됨 (U2 "Claim Discovery" 53개 중 다수가 실제론 eval/improve/태그라인 문장).
-  → `charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md`에 박아둠.
-  **#1 Cautilus-improve dogfood 타깃**이지만 지금은 안 쫓음.
-- **산출물:**
-  - `docs/proven-promises.md` — 7 promise skeleton v1.
-    promise당 손-검증 exemplar leaf, 정직한 상태(U1·U2·U5·U6·U7 proven, U3 thin, U4 promised), 카운트 의도적 생략, CLI↔Agent split 인라인.
-  - 위 findings 노트.
-- **커밋 (HEAD = `e697e0c`; origin/main push 여부 확인 필요 — claim source는 안 건드렸으니 stale-claim 게이트는 안 걸릴 것):**
-  - `e697e0c` flagship skeleton + canonicalization finding
-  - `ce80dea` render bug lead park + capability inventory refresh
-- **선결과제 (사용자 확정):** 이 최상위 promise들을 증명하는 게 *유일한* 선결과제.
-  특히 U3(thin)·U4(promised)가 약함.
+## Current State (2026-06-09)
 
-## 진행 중 / 남은 것
+긴 세션에서 "왜 막혔나"를 끝까지 파고들어 방향을 재정렬하고 apex를 만든 뒤, 다음 작업을 골로 넘긴 상태.
 
-1. **HITL voice-sharpening:** `docs/proven-promises.md`의 promise 문장을 사용자 목소리로 깎기.
-   현재 문장은 agent 제안 voice. `charness:hitl`로 chunk별 진행, resumable.
-2. **stash@{0}:** 이전 spec review 코멘트 (`index.spec.md`, `doctor-readiness.spec.md`).
-   그중 doctor-readiness render 버그 lead는 `charness-artifacts/debug/debug-2026-06-08-doctor-readiness-adapter-yaml-render.md`에 별도 보관 — 고칠 땐 `charness:debug`.
-3. **top-promise 증명:** voice 확정 후 U3/U4부터 실제 evidence로 promote.
-4. **canonicalization 타깃:** 위 findings 노트의 improve 슬라이스(gold set으로 leaf→promise precision 측정) — 별도 세션.
+- **재정렬:** dogfood를 361 raw claim이 아니라 **사용자 promise 고도**에서. 그리고 핵심 발견 — 7개 promise 중 **5개의 "proven"이 live 실행이 아니라 5월의 자기선언(`declared-eval-runner`) 번들 투영**. 사용자가 "증명을 못 믿겠다"던 그 느낌이 메커니즘 사실이었음. 진짜 live-proven은 Readiness·Claim Discovery 둘뿐.
+- **apex 완성 (`9c60635`):** `docs/specs/index.spec.md`를 **"Cautilus, Proven On Itself"** 최상위로 승격. newcomer voice(HITL로 깎음, R1–R8), 각 promise가 라인넘버가 아니라 **자기 실행 스펙에 proof-link**, 정직한 배지(**proven** 2 / **declared** 4 / **promised** 1), **Proof Debt 표**, Evidence Gaps→honesty 논제, U-번호 헤더 제거. `docs/proven-promises.md`는 흡수·삭제. specdown dry-run 43 specs/169 cases exit 0, lint:specs/links green. README·AGENTS(=CLAUDE) memory realign 완료.
+- **render 버그 (`5e0d850`):** 제 "trace config" 가설은 **falsified**(trace=traceability 그래프, 무관). 진짜 방향: specdown은 `run:` 블록 첫 줄이 주석이면 collapsed 렌더(syntax.md Summary Lines) → cat 블록 출력이 접힘. spec-authoring 수정 가능성, repro 필요. lead: `charness-artifacts/debug/debug-2026-06-08-doctor-readiness-adapter-yaml-render.md`.
+- **charness#340 제기:** find-skills가 specdown을 support skill로 안 띄우고 integration tool로만 분류 → [corca-ai/charness#340](https://github.com/corca-ai/charness/issues/340) (OPEN, bug). 골 범위 밖.
+- **골 (`5fbc663`):** `charness-artifacts/goals/2026-06-09-clear-proof-debt-live-proven.md` (draft) — Proof Debt 청산(declared/promised → live-proven, 컨펌 시나리오 위에서).
+- HEAD = `5fbc663`, origin/main push 여부 확인 필요(여러 커밋 로컬).
+- stash@{0}: 옛 spec review 코멘트(이미 apex로 해소됨, 정리해도 됨).
+
+## Next Session
+
+1. `git status --short` 깨끗한지 확인, 필요시 push.
+2. 골의 Discuss-before-activation을 사용자와 해소: Behavior Evaluation(dev/repo·dev/skill·app/chat·app/prompt)·Bounded Improvement에 쓸 **컨펌된 시나리오/픽스처**를 사용자가 지정. 옛 5/3 번들로 회귀 금지.
+3. `/goal @...clear-proof-debt-live-proven.md`로 활성화. 슬라이스 1(render 버그 repro→fix, charness:debug)·2(Host Ownership: 기존 `consumer:onboard:smoke` 연결)가 cheap de-risk.
+4. 각 promise가 live-proven되면 apex 배지를 정직하게 갱신하고 Proof Debt 행 제거.
 
 ## Discuss
 
-- promise 문장을 어느 수준까지 외부(컨설팅 고객) 대상으로 다듬을지.
-- U3/U4 증명을 위해 어떤 runner/evidence가 필요한지.
-- canonicalization improve를 언제 첫 dogfood 슬라이스로 열지.
+- 각 eval/improve 서피스의 "컨펌된 시나리오"는 무엇인가 (골 활성화의 핵심 게이트).
+- live proof 비용 예산(바이너리 빌드+에이전트 실행)과 이번 라운드 in-scope 서피스.
+- (백로그) apex를 discover JSON에서 agent-generate하는 generator를 언제 열지.
 
 ## References
 
+- [charness-artifacts/goals/2026-06-09-clear-proof-debt-live-proven.md](../../charness-artifacts/goals/2026-06-09-clear-proof-debt-live-proven.md)
 - [docs/specs/index.spec.md](../specs/index.spec.md)
 - [charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md](../../charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md)
 - [charness-artifacts/debug/debug-2026-06-08-doctor-readiness-adapter-yaml-render.md](../../charness-artifacts/debug/debug-2026-06-08-doctor-readiness-adapter-yaml-render.md)
-- [.cautilus/claims/canonical-claim-map.json](../../.cautilus/claims/canonical-claim-map.json)
-- [docs/specs/user/index.spec.md](../specs/user/index.spec.md)
