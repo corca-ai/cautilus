@@ -1,6 +1,6 @@
 # Debug Lead: doctor-readiness executable spec renders var-binding instead of adapter YAML
 
-Status: parked lead (not yet investigated). Route to `charness:debug` when picked up.
+Status: RESOLVED 2026-06-09 (charness:debug). Root cause = specdown never renders `run:shell` stdout in HTML; fix = doctest. See `## Root Cause (FINAL ...)`.
 Parked: 2026-06-08, from an in-progress human review of `docs/specs/user/doctor-readiness.spec.md`.
 The review comments were `git stash`-ed to clear the desk; recover with `git stash list` / `git stash show -p`.
 
@@ -66,3 +66,47 @@ Corrected direction (from the installed specdown skill docs — `specdown instal
   and inspect the HTML report for that block (collapsed vs inline output).
 
 Reference docs (read these, do not reverse-engineer the stripped binary): specdown skill `syntax.md`, `config.md`, `report.md`.
+
+## Root Cause (FINAL, 2026-06-09, charness:debug, RESOLVED)
+
+Both prior hypotheses are now superseded. The summary-line collapse is real but is NOT why the YAML is missing.
+
+Definitive root cause, proven by minimal repro:
+specdown's HTML report does not render a `run:shell` block's stdout at all.
+A plain `run:shell` block renders only its (collapsed-if-comment-led) source, its captured variable bindings, and a pass/fail indicator — never the command output.
+The `cat "${sample_repo}/.agents/cautilus-adapter.yaml"` block is a plain `run:shell` block, so its stdout (the adapter YAML) is never shown; the only run-specific data specdown surfaces for that block is the variable-binding line `$sample_repo=..., $sample_cautilus=...`, which is exactly the reported symptom.
+Removing the leading comment (the prior "corrected direction") would un-collapse the source but would still show no YAML, because stdout is never rendered.
+
+The only specdown mechanisms that render command output to a reader are doctest blocks (`$ cmd` lines + expected output, wildcards allowed) and `> check:` assertion tables. Confirmed in `adapter-protocol.md`: an adapter's `output` value is consumed for variable capture or inline check comparison, not raw display.
+
+### Reproduction (minimal, both directions)
+
+1. A plain `run:shell` block running `cat sample.yaml` — the file content appears NOWHERE in the HTML (0 occurrences); no `exec-output` div exists. Comment-led vs plain made no difference to output visibility.
+2. A doctest block (`$ grep ... "${captured_dir}/file"` + expected lines) DID render the output inline (`doctest-expected` class) AND resolved the prior-block capture variable. This is the working fix mechanism.
+
+### Invariant Proof
+
+Producer→consumer invariant: "a spec block that exists to show a reader concrete output must use a rendering model that surfaces output (doctest or check table), not a plain `run:shell` whose stdout specdown discards." The `cat` block violated this; converting it to a doctest restores it.
+
+### Detection Gap
+
+No gate caught this because `specdown run` reports the block as PASS (the `cat` succeeds; exit 0). Pass/fail says nothing about whether a reader can see the output. `lint:specs`/`lint:links` check structure, not render semantics. The smallest gate that would have fired: a lint that flags a `run:shell` block whose leading comment promises display (`# Show/Print/Display ...`) but which has neither doctest `$ ` content nor an adjacent `> check:` table — i.e. a display-promise with no rendering carrier. Recorded as prevention, not built in this slice.
+
+### Sibling Search (four-axis)
+
+Wrong mental model: "the missing output is a variable-capture/scoping or comment-collapse defect." Correct model: "specdown renders source+bindings+pass/fail for `run:shell`, never stdout; display requires doctest or check tables."
+
+Structural siblings scanned: every `run:shell` block across `docs/specs/**` whose leading comment says `# Show ...` (24+ blocks in ownership, evidence-gaps, claim-discovery, reviewable-artifacts, evaluation, improvement, doctor-readiness).
+Classification: all but one are captions for an adjacent `> check:` assertion table that DOES render the proof — the "# Show" wording is a misnomer there, but the reader still sees the asserted values, so they are not display-defects.
+The `cat adapter YAML` block (doctor-readiness line 36-39) is the unique genuine defect: it is the only "# Show" block with no following `> check:` table, so it is pure display, and specdown shows nothing of substance.
+follow-up: the misleading "# Show ..." caption wording on the check-backed blocks is a readability nit, not a render defect — out of slice-1 scope, recorded for a later voice pass.
+
+### Seam Risk
+
+External-seam (specdown binary render model) disproved the local mental model: local reasoning about variable scope was wrong; the seam's actual rendering contract (read from the installed specdown skill docs, not the stripped binary) was needed. No further seam handoff required — the fix is spec-authoring within this repo.
+
+### Prevention
+
+- Fix: convert the `cat adapter YAML` block to a doctest so the deterministic adapter identity/wiring renders inline and is asserted.
+- Guard candidate (deferred, off-goal): a spec lint that flags a display-promise (`# Show/Print/Display`) `run:shell` block with no doctest `$ ` content and no adjacent `> check:` table.
+- Authoring rule for this repo's specs: to show a reader output, use a doctest or a check table; never rely on a plain `run:shell` block's stdout.
