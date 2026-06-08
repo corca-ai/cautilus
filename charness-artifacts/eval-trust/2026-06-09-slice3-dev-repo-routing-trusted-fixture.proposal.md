@@ -79,8 +79,18 @@ Also remove the dead `allowedFirstToolCalls` entry `python3 .../find-skills/.../
 - (B) Hard criterion for "trusted": a recorded observation MUST come from a real captured run, cleaned of machine/version noise — no hand-authoring. — recommended: yes; it is the operator's originating requirement.
 - (C) Namespace convention: record + expect as-observed (`charness:*`) vs normalize the scorer to treat `find-skills == charness:find-skills`. — recommended: as-observed now (smaller change, more honest); a scorer normalization is a separate improve target.
 
+## Re-run path (CONFIRMED) — and why this is the exact fix
+
+The `dev-repo-self-dogfood` adapter entry in `.agents/cautilus-adapter.yaml` wires the deterministic re-run via a `command_template`:
+
+```
+node ./scripts/run-self-dogfood-eval.mjs ... --backend {backend} --fixture-results-file fixtures/eval/dev/repo/internal-runner-fixture-results.json ...
+```
+
+In `--backend fixture` mode this **replays that hand-authored file verbatim** as the "observation". So today's deterministic dev/repo proof is a replay of a hand-authored stand-in — which is precisely the operator's distrust, mechanized. Swapping the file for the cleaned real capture makes the same deterministic replay rest on a real run. (My earlier `cautilus evaluate fixture --adapter-name dev-repo-self-dogfood` error was a wrong invocation, not a missing runner; the re-run is fully wired.)
+
 ## After agreement
 
 1. Apply the two file changes above (result stand-in + expectedRouting), commit.
-2. Wire/confirm the deterministic dev/repo re-run (the `dev-repo-self-dogfood` adapter reports "adapter does not define an eval runner" — the instruction-surface runner path must be confirmed so the proof is re-runnable, not just a static file).
+2. Re-run deterministically through the wired `run-self-dogfood-eval.mjs --backend fixture` path; confirm the fresh observed packet matches the real capture and the case still passes.
 3. Project that trusted proof into `docs/specs/user/evaluation.spec.md`, asserting on it, with a badge that claims only the packet's self-reported `proofClass`.
