@@ -9,8 +9,9 @@ runs the activation command.
 
 ## Active Operating Frame
 
-- Current slice: Slice 3 — co-create the first trusted eval fixture by mutual agreement (HITL). Slice 1 DONE (31d27c7); Discuss RESOLVED (prove-then-project onto trusted co-created fixture; live-agent out).
-- Next action: HITL trust-review of the dev/repo flagship fixture (`fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json`) with the operator — agree scenario, criteria, recorded outputs — then prove out-of-band and project into `evaluation.spec.md`.
+- Current slice: Slice 3 — co-create the first trusted eval fixture by mutual agreement (HITL). Slice 1 DONE (31d27c7); Discuss RESOLVED. BLOCKED ON operator agreement (decisions A/B/C) — this is the designed mutual-agreement gate, not an avoidable stop.
+- Proposal staged (not applied): `charness-artifacts/eval-trust/2026-06-09-slice3-dev-repo-routing-trusted-fixture.proposal.md` — found the checked-in dev/repo result is hand-authored and diverges from a real 2026-05-04 codex capture; proposes swapping in the cleaned real observation + namespaced expectedRouting. Real fixture unchanged pending agreement.
+- Next action: operator answers A (start from flagship?), B (trusted = real-capture-only?), C (namespace convention). On agreement: apply the two file edits, confirm the deterministic re-run path, then project into `evaluation.spec.md`.
 - Timebox: open-ended (no host timebox set); the operator may set one at activation.
 - Activation time: set at `/goal` activation.
 - Closeout reserve: reserve the final slice for honest badge updates in the apex plus one full `specdown run` + `npm run verify`.
