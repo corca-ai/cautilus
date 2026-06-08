@@ -1,0 +1,275 @@
+{
+  "cautilusBin": "/home/hwidong/codes/cautilus/bin/cautilus",
+  "workdir": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI",
+  "repoRoot": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo",
+  "commands": [
+    {
+      "command": "git",
+      "args": [
+        "init",
+        "-q",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "seed-bootstrap-gitignore",
+      "args": [
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.gitignore"
+      ],
+      "exitCode": 0,
+      "stdout": "wrote minimal .gitignore\n",
+      "stderr": ""
+    },
+    {
+      "command": "git",
+      "args": [
+        "-C",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo",
+        "config",
+        "user.name",
+        "Cautilus Smoke"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "git",
+      "args": [
+        "-C",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo",
+        "config",
+        "user.email",
+        "smoke@cautilus.local"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "/home/hwidong/codes/cautilus/bin/cautilus",
+      "args": [
+        "init",
+        "--repo-root",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo",
+        "--json"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"current\": {\n    \"version\": \"0.16.1\",\n    \"source\": \"package_json\",\n    \"installKind\": \"source_checkout\",\n    \"executablePath\": \"/dev/shm/cautilus-go/cautilus-go-build-cache/24/24618bad522c3f1025a2a752cd9cdeba1388f483c505bc2e97e4b11ba9fb92af-d/cautilus\",\n    \"toolRoot\": \"/home/hwidong/codes/cautilus\"\n  },\n  \"messages\": [],\n  \"nextSteps\": [\n    \"cautilus doctor --repo-root /home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo --next-action\",\n    \"cautilus doctor --repo-root /home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo\"\n  ],\n  \"repoRoot\": \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo\",\n  \"schemaVersion\": \"cautilus.install_summary.v1\",\n  \"skill\": {\n    \"destinationDir\": \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/skills/cautilus-agent\",\n    \"destinationSkill\": \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/skills/cautilus-agent/SKILL.md\",\n    \"claudeSkillsLink\": \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.claude/skills\",\n    \"overwrote\": false,\n    \"legacyMigrated\": false,\n    \"requiresBinaryOnPath\": true\n  },\n  \"status\": \"installed\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "/home/hwidong/codes/cautilus/bin/cautilus",
+      "args": [
+        "init",
+        "adapter",
+        "--repo-root",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo"
+      ],
+      "exitCode": 0,
+      "stdout": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-adapter.yaml\n",
+      "stderr": ""
+    },
+    {
+      "command": "seed-first-bounded-run-fixture",
+      "args": [
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/fixtures/eval/app/prompt/onboarding-smoke.fixture.json"
+      ],
+      "exitCode": 0,
+      "stdout": "wrote app/prompt evaluation fixture\n",
+      "stderr": ""
+    },
+    {
+      "command": "seed-first-bounded-run-runner",
+      "args": [
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-smoke-eval.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "wrote fixture-backend eval runner\n",
+      "stderr": ""
+    },
+    {
+      "command": "seed-ready-adapter",
+      "args": [
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-adapter.yaml"
+      ],
+      "exitCode": 0,
+      "stdout": "added minimal eval-test fixture and command template\n",
+      "stderr": ""
+    },
+    {
+      "command": "git",
+      "args": [
+        "-C",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo",
+        "add",
+        ".gitignore",
+        ".agents",
+        ".claude",
+        "fixtures"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "git",
+      "args": [
+        "-C",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo",
+        "commit",
+        "-q",
+        "-m",
+        "Bootstrap cautilus consumer smoke repo"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "/home/hwidong/codes/cautilus/bin/cautilus",
+      "args": [
+        "doctor",
+        "adapter",
+        "--repo-root",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"found\": true,\n  \"valid\": true,\n  \"path\": \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-adapter.yaml\",\n  \"data\": {\n    \"artifact_paths\": [],\n    \"baseline_options\": [\n      \"baseline git ref in the same repo via {baseline_ref}\"\n    ],\n    \"comparison_questions\": [\n      \"Which scenarios improved, regressed, or stayed noisy after repeated samples?\"\n    ],\n    \"eval_test_command_templates\": [\n      \"node ./.agents/cautilus-smoke-eval.mjs {eval_cases_file} {eval_observed_file}\"\n    ],\n    \"evaluation_input_default\": \"fixtures/eval/app/prompt/onboarding-smoke.fixture.json\",\n    \"evaluation_surfaces\": [\n      \"prompt behavior\",\n      \"workflow behavior\"\n    ],\n    \"executor_variants\": [],\n    \"human_review_prompts\": [\n      {\n        \"id\": \"real-user\",\n        \"prompt\": \"Where would a real user still judge the candidate worse despite benchmark wins?\"\n      }\n    ],\n    \"improve_search\": {\n      \"budgets\": {\n        \"heavy\": {\n          \"generation_limit\": 3,\n          \"merge_enabled\": false,\n          \"mutation_batch_size\": 5,\n          \"population_limit\": 8,\n          \"review_checkpoint_policy\": \"frontier_promotions\",\n          \"three_parent_policy\": \"coverage_expansion\"\n        },\n        \"light\": {\n          \"generation_limit\": 1,\n          \"merge_enabled\": false,\n          \"mutation_batch_size\": 3,\n          \"population_limit\": 3,\n          \"review_checkpoint_policy\": \"final_only\",\n          \"three_parent_policy\": \"coverage_expansion\"\n        },\n        \"medium\": {\n          \"generation_limit\": 2,\n          \"merge_enabled\": false,\n          \"mutation_batch_size\": 4,\n          \"population_limit\": 5,\n          \"review_checkpoint_policy\": \"frontier_promotions\",\n          \"three_parent_policy\": \"coverage_expansion\"\n        }\n      },\n      \"default_budget\": \"medium\",\n      \"selection_policy\": {\n        \"constraint_caps\": {},\n        \"primary_objective\": \"held_out_behavior\",\n        \"tie_breakers\": [\n          \"lower_cost\",\n          \"lower_latency\"\n        ]\n      }\n    },\n    \"preflight_commands\": [],\n    \"profile_default\": \"default\",\n    \"repo\": \"consumer-repo\",\n    \"report_paths\": [],\n    \"required_prerequisites\": [\n      \"choose a real baseline before comparing results\"\n    ],\n    \"version\": 1\n  },\n  \"errors\": [],\n  \"warnings\": [],\n  \"searched_paths\": [\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-adapter.yaml\",\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.codex/cautilus-adapter.yaml\",\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.claude/cautilus-adapter.yaml\",\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/docs/cautilus-adapter.yaml\",\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/cautilus-adapter.yaml\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "/home/hwidong/codes/cautilus/bin/cautilus",
+      "args": [
+        "doctor",
+        "--repo-root",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"adapter_path\": \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-adapter.yaml\",\n  \"checks\": [\n    {\n      \"detail\": \"Using adapter at /home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-adapter.yaml\",\n      \"id\": \"adapter_found\",\n      \"meaning\": \"Cautilus can find repo-owned configuration.\",\n      \"ok\": true\n    },\n    {\n      \"detail\": \"Adapter passed schema validation.\",\n      \"id\": \"adapter_valid\",\n      \"meaning\": \"Cautilus can parse and trust the adapter shape enough to continue.\",\n      \"ok\": true\n    },\n    {\n      \"detail\": \"Adapter declares repo.\",\n      \"id\": \"repo_name\",\n      \"meaning\": \"The adapter identifies the host repo whose behavior is being evaluated.\",\n      \"ok\": true\n    },\n    {\n      \"detail\": \"Adapter declares evaluation surfaces.\",\n      \"id\": \"evaluation_surfaces\",\n      \"meaning\": \"The repo names the behavior surfaces Cautilus may evaluate.\",\n      \"ok\": true\n    },\n    {\n      \"detail\": \"Adapter declares baseline options.\",\n      \"id\": \"baseline_options\",\n      \"meaning\": \"Eval and improve work have explicit comparison targets.\",\n      \"ok\": true\n    },\n    {\n      \"detail\": \"Adapter declares runnable eval runner commands.\",\n      \"id\": \"execution_surface\",\n      \"meaning\": \"Cautilus can point the user to an executable first run.\",\n      \"ok\": true\n    }\n  ],\n  \"errors\": [],\n  \"first_bounded_run\": {\n    \"summary\": \"Pick one checked-in fixture, then complete one bounded evaluate fixture run and packet recheck instead of stopping at doctor.\",\n    \"discoveryCommand\": \"cautilus discover scenarios --json\",\n    \"decisionLoopCommands\": [\n      \"cautilus evaluate fixture --repo-root '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo' --fixture \\u003cfixture.json\\u003e --output-dir '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.cautilus/runs/first-bounded-run'\",\n      \"cautilus evaluate observation --input '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.cautilus/runs/first-bounded-run/eval-observed.json' --output '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.cautilus/runs/first-bounded-run/eval-summary.recheck.json'\"\n    ],\n    \"normalizationFamilies\": [\n      {\n        \"family\": \"chatbot\",\n        \"summary\": \"Multi-turn conversational behavior inside a single session.\",\n        \"exampleInput\": \"fixtures/scenario-proposals/chatbot-input.json\",\n        \"exampleInputCli\": \"cautilus discover scenarios normalize chatbot --example-input\",\n        \"nextStepCli\": \"cautilus discover scenarios normalize chatbot --input \\u003clogs.json\\u003e\",\n        \"contractDoc\": \"docs/contracts/chatbot-normalization.md\",\n        \"inputSchema\": \"cautilus.chatbot_normalization_inputs.v1\",\n        \"behaviorFocus\": \"follow-up, context recovery, preference retention\"\n      },\n      {\n        \"family\": \"skill\",\n        \"summary\": \"Single skill or agent invocation: trigger, task execution, and validation surfaces.\",\n        \"exampleInput\": \"fixtures/scenario-proposals/skill-input.json\",\n        \"exampleInputCli\": \"cautilus discover scenarios normalize skill --example-input\",\n        \"nextStepCli\": \"cautilus discover scenarios normalize skill --input \\u003csummary.json\\u003e\",\n        \"contractDoc\": \"docs/contracts/skill-normalization.md\",\n        \"inputSchema\": \"cautilus.skill_normalization_inputs.v2\",\n        \"behaviorFocus\": \"validation, trigger selection, execution quality\"\n      },\n      {\n        \"family\": \"workflow\",\n        \"summary\": \"Stateful automation that persists across invocations and must recover from known blockers.\",\n        \"exampleInput\": \"fixtures/scenario-proposals/workflow-input.json\",\n        \"exampleInputCli\": \"cautilus discover scenarios normalize workflow --example-input\",\n        \"nextStepCli\": \"cautilus discover scenarios normalize workflow --input \\u003cworkflow-runs.json\\u003e\",\n        \"contractDoc\": \"docs/contracts/workflow-normalization.md\",\n        \"inputSchema\": \"cautilus.workflow_normalization_inputs.v1\",\n        \"behaviorFocus\": \"operator workflow recovery\"\n      }\n    ]\n  },\n  \"next_action\": {\n    \"artifactPath\": \".cautilus/runners/default-eval-runner.assessment.json\",\n    \"branchId\": \"create_runner_assessment\",\n    \"continue_command\": \"cautilus doctor --repo-root '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo' --next-action\",\n    \"kind\": \"runner_readiness\",\n    \"message\": \"Create the runner assessment. The adapter declares an eval runner, but no runner assessment exists yet.\",\n    \"runnerId\": \"default-eval-runner\",\n    \"scaffoldSource\": \"fixtures/runner-readiness/example-assessment.json\",\n    \"scopeNote\": \"Fill or refresh the assessment after a selected proof requirement is known; plain eval templates remain only declared-eval-runner evidence.\"\n  },\n  \"next_prompt\": \"Create the runner assessment. The adapter declares an eval runner, but no runner assessment exists yet. Then run `cautilus doctor --repo-root '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo' --next-action` again.\",\n  \"next_steps\": [\n    \"Inspect `first_bounded_run` or run `cautilus discover scenarios --json` when you need the scenario-normalization catalog.\"\n  ],\n  \"ready\": true,\n  \"repo_root\": \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo\",\n  \"runnerReadiness\": {\n    \"assessmentPath\": \".cautilus/runners/default-eval-runner.assessment.json\",\n    \"assessmentRequired\": true,\n    \"declaredRunnerKind\": \"declared-eval-runner\",\n    \"nextBranch\": {\n      \"artifactPath\": \".cautilus/runners/default-eval-runner.assessment.json\",\n      \"id\": \"create_runner_assessment\",\n      \"label\": \"Create the runner assessment\",\n      \"owningSurface\": \"setup/readiness\",\n      \"reason\": \"The adapter declares an eval runner, but no runner assessment exists yet.\",\n      \"requiredArtifact\": \".cautilus/runners/default-eval-runner.assessment.json\",\n      \"runnerId\": \"default-eval-runner\",\n      \"scaffoldSource\": \"fixtures/runner-readiness/example-assessment.json\",\n      \"scopeNote\": \"Fill or refresh the assessment after a selected proof requirement is known; plain eval templates remain only declared-eval-runner evidence.\",\n      \"writesFiles\": true\n    },\n    \"notice\": \"Plain eval_test_command_templates imply only declared-eval-runner, not a product proof class.\",\n    \"proofClass\": \"unknown\",\n    \"proofClassSource\": \"none\",\n    \"reason\": \"runner-assessment-missing\",\n    \"runnerCount\": 1,\n    \"runnerDeclared\": true,\n    \"runnerId\": \"default-eval-runner\",\n    \"runners\": [\n      {\n        \"assessmentPath\": \".cautilus/runners/default-eval-runner.assessment.json\",\n        \"assessmentRequired\": true,\n        \"declaredRunnerKind\": \"declared-eval-runner\",\n        \"nextBranch\": {\n          \"artifactPath\": \".cautilus/runners/default-eval-runner.assessment.json\",\n          \"id\": \"create_runner_assessment\",\n          \"label\": \"Create the runner assessment\",\n          \"owningSurface\": \"setup/readiness\",\n          \"reason\": \"The adapter declares an eval runner, but no runner assessment exists yet.\",\n          \"requiredArtifact\": \".cautilus/runners/default-eval-runner.assessment.json\",\n          \"runnerId\": \"default-eval-runner\",\n          \"scaffoldSource\": \"fixtures/runner-readiness/example-assessment.json\",\n          \"scopeNote\": \"Fill or refresh the assessment after a selected proof requirement is known; plain eval templates remain only declared-eval-runner evidence.\",\n          \"writesFiles\": true\n        },\n        \"notice\": \"Plain eval_test_command_templates imply only declared-eval-runner, not a product proof class.\",\n        \"proofClass\": \"unknown\",\n        \"proofClassSource\": \"none\",\n        \"reason\": \"runner-assessment-missing\",\n        \"runnerDeclared\": true,\n        \"runnerId\": \"default-eval-runner\",\n        \"scaffoldSource\": \"fixtures/runner-readiness/example-assessment.json\",\n        \"state\": \"missing-assessment\",\n        \"surfaces\": []\n      }\n    ],\n    \"scaffoldSource\": \"fixtures/runner-readiness/example-assessment.json\",\n    \"state\": \"missing-assessment\",\n    \"surfaces\": []\n  },\n  \"searched_paths\": [\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-adapter.yaml\",\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.codex/cautilus-adapter.yaml\",\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.claude/cautilus-adapter.yaml\",\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/docs/cautilus-adapter.yaml\",\n    \"/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/cautilus-adapter.yaml\"\n  ],\n  \"status\": \"ready\",\n  \"suggestions\": [],\n  \"summary\": \"Adapter is ready for standalone Cautilus use.\",\n  \"warnings\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": "/home/hwidong/codes/cautilus/bin/cautilus",
+      "args": [
+        "evaluate",
+        "fixture",
+        "--repo-root",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo",
+        "--output-dir",
+        "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval"
+      ],
+      "exitCode": 0,
+      "stdout": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval/eval-summary.json\n",
+      "stderr": "evaluate fixture (app/prompt) start: repo=/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo workspace=/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo suite=consumer-onboarding-smoke runner=default-eval-runner runtime=codex output=/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval\nevaluate fixture (app/prompt) 1/1 start: node ./.agents/cautilus-smoke-eval.mjs '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval/eval-cases.json' '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval/eval-observed.json'\nevaluate fixture (app/prompt) 1/1 passed in 57ms\nevaluate fixture (app/prompt) complete: recommendation=accept-now summary=/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval/eval-summary.json\n"
+    }
+  ],
+  "ready": true,
+  "firstBoundedRun": {
+    "summary": "Pick one checked-in fixture, then complete one bounded evaluate fixture run and packet recheck instead of stopping at doctor.",
+    "discoveryCommand": "cautilus discover scenarios --json",
+    "decisionLoopCommands": [
+      "cautilus evaluate fixture --repo-root '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo' --fixture <fixture.json> --output-dir '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.cautilus/runs/first-bounded-run'",
+      "cautilus evaluate observation --input '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.cautilus/runs/first-bounded-run/eval-observed.json' --output '/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.cautilus/runs/first-bounded-run/eval-summary.recheck.json'"
+    ],
+    "normalizationFamilies": [
+      {
+        "family": "chatbot",
+        "summary": "Multi-turn conversational behavior inside a single session.",
+        "exampleInput": "fixtures/scenario-proposals/chatbot-input.json",
+        "exampleInputCli": "cautilus discover scenarios normalize chatbot --example-input",
+        "nextStepCli": "cautilus discover scenarios normalize chatbot --input <logs.json>",
+        "contractDoc": "docs/contracts/chatbot-normalization.md",
+        "inputSchema": "cautilus.chatbot_normalization_inputs.v1",
+        "behaviorFocus": "follow-up, context recovery, preference retention"
+      },
+      {
+        "family": "skill",
+        "summary": "Single skill or agent invocation: trigger, task execution, and validation surfaces.",
+        "exampleInput": "fixtures/scenario-proposals/skill-input.json",
+        "exampleInputCli": "cautilus discover scenarios normalize skill --example-input",
+        "nextStepCli": "cautilus discover scenarios normalize skill --input <summary.json>",
+        "contractDoc": "docs/contracts/skill-normalization.md",
+        "inputSchema": "cautilus.skill_normalization_inputs.v2",
+        "behaviorFocus": "validation, trigger selection, execution quality"
+      },
+      {
+        "family": "workflow",
+        "summary": "Stateful automation that persists across invocations and must recover from known blockers.",
+        "exampleInput": "fixtures/scenario-proposals/workflow-input.json",
+        "exampleInputCli": "cautilus discover scenarios normalize workflow --example-input",
+        "nextStepCli": "cautilus discover scenarios normalize workflow --input <workflow-runs.json>",
+        "contractDoc": "docs/contracts/workflow-normalization.md",
+        "inputSchema": "cautilus.workflow_normalization_inputs.v1",
+        "behaviorFocus": "operator workflow recovery"
+      }
+    ]
+  },
+  "fixturePath": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/fixtures/eval/app/prompt/onboarding-smoke.fixture.json",
+  "runnerPath": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-smoke-eval.mjs",
+  "evalOutputDir": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval",
+  "evalSummaryPath": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval/eval-summary.json",
+  "evalObservedPath": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval/eval-observed.json",
+  "evalCasesPath": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/tmp/cautilus-eval/eval-cases.json",
+  "evalSummary": {
+    "evaluatedAt": "2026-06-08T22:04:43.552483336Z",
+    "evaluationCounts": {
+      "failed": 0,
+      "passed": 1,
+      "total": 1
+    },
+    "evaluations": [
+      {
+        "caseId": "fresh-consumer-first-bounded-run",
+        "displayName": "Fresh consumer first bounded run",
+        "durationMs": 1,
+        "expected": {
+          "finalText": "Cautilus"
+        },
+        "harness": "fixture-backend",
+        "match": true,
+        "mode": "messaging",
+        "model": "fixture-backend",
+        "observed": {
+          "finalText": "Cautilus onboarding smoke ok.",
+          "input": "Confirm this fresh repo can run Cautilus once.",
+          "messages": [
+            {
+              "content": "Confirm this fresh repo can run Cautilus once.",
+              "role": "user"
+            },
+            {
+              "content": "Cautilus onboarding smoke ok.",
+              "role": "assistant"
+            }
+          ]
+        },
+        "provider": "fixture",
+        "status": "passed",
+        "summary": "Fresh consumer first bounded run produced a final response under fixture/fixture-backend."
+      }
+    ],
+    "proof": {
+      "assessmentPath": ".cautilus/runners/default-eval-runner.assessment.json",
+      "productProofReady": false,
+      "proofClass": "declared-eval-runner",
+      "proofClassSource": "adapter-template",
+      "requiresProductRunnerProof": true,
+      "runnerAssessmentState": "missing-assessment",
+      "runnerId": "default-eval-runner",
+      "runtime": "codex",
+      "targetSurface": "app/prompt"
+    },
+    "recommendation": "accept-now",
+    "schemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+    "suiteDisplayName": "Consumer Onboarding Smoke",
+    "suiteId": "consumer-onboarding-smoke"
+  },
+  "adapterPath": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/cautilus-adapter.yaml",
+  "agentSkillRoot": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.agents/skills/cautilus-agent",
+  "claudeSkillLink": "/home/hwidong/.cache/tmp/cautilus-consumer-onboarding-FkbNOI/consumer-repo/.claude/skills",
+  "ok": true
+}

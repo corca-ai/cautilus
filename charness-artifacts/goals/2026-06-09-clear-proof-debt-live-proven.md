@@ -10,6 +10,7 @@ runs the activation command.
 ## Active Operating Frame
 
 - Current slice: Slice 3 — co-create the first trusted eval fixture by mutual agreement (HITL). Slice 1 DONE (31d27c7); Discuss RESOLVED. BLOCKED ON operator agreement (decisions A/B/C) — this is the designed mutual-agreement gate, not an avoidable stop.
+- Slice 2 (Host Ownership) advanced autonomously: ran the deterministic `consumer:onboard:smoke` fresh — green (`ok:true`, first bounded run reaches accept-now; eval self-reports `proofClass: declared-eval-runner`, `productProofReady:false`). Fresh proof saved at `charness-artifacts/eval-trust/2026-06-09-slice2-consumer-onboard-smoke.proof.json`. Remaining for slice 2: transform into a stable checked-in proof + rewrite `ownership.spec.md` to assert on it + flip badge — held for operator sign-off (user-facing apex spec; not flipping badges while operator is away).
 - Proposal staged (not applied): `charness-artifacts/eval-trust/2026-06-09-slice3-dev-repo-routing-trusted-fixture.proposal.md` — found the checked-in dev/repo result is hand-authored and diverges from a real 2026-05-04 codex capture; proposes swapping in the cleaned real observation + namespaced expectedRouting. Real fixture unchanged pending agreement.
 - Next action: operator answers A (start from flagship?), B (trusted = real-capture-only?), C (namespace convention). On agreement: apply the two file edits, confirm the deterministic re-run path, then project into `evaluation.spec.md`.
 - Timebox: open-ended (no host timebox set); the operator may set one at activation.
