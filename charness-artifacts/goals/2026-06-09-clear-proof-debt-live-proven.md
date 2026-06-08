@@ -9,8 +9,8 @@ runs the activation command.
 
 ## Active Operating Frame
 
-- Current slice: before activation.
-- Next action: activate with `/goal @charness-artifacts/goals/2026-06-09-clear-proof-debt-live-proven.md`.
+- Current slice: Slice 3 — co-create the first trusted eval fixture by mutual agreement (HITL). Slice 1 DONE (31d27c7); Discuss RESOLVED (prove-then-project onto trusted co-created fixture; live-agent out).
+- Next action: HITL trust-review of the dev/repo flagship fixture (`fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json`) with the operator — agree scenario, criteria, recorded outputs — then prove out-of-band and project into `evaluation.spec.md`.
 - Timebox: open-ended (no host timebox set); the operator may set one at activation.
 - Activation time: set at `/goal` activation.
 - Closeout reserve: reserve the final slice for honest badge updates in the apex plus one full `specdown run` + `npm run verify`.
@@ -25,13 +25,22 @@ runs the activation command.
 
 ## Discuss before activation
 
-- **Owner-confirmed scenarios (hard constraint).** Behavior Evaluation and Bounded Improvement can only reach `proven` on scenarios/fixtures the maintainer has explicitly confirmed. Before those slices run, the operator must name the confirmed scenario/fixture per surface (`dev/repo`, `dev/skill`, `app/chat`, `app/prompt`) and per improve target. Do not fabricate one or fall back to the retired 2026-05-03 self-declaring bundles.
-- **Live proof cost.** Live `cautilus evaluate` / `cautilus improve` runs build the binary and drive agents (codex/claude); confirm the proof-cost budget and which surfaces are in scope this run.
-- **Honesty regression.** If a live run shows a behavior does NOT actually pass, the badge stays `declared`/`promised` and the failure routes to `charness:debug`; never flip a badge to hide a real gap.
+Discuss before activation: RESOLVED 2026-06-09 — proof model is prove-then-project onto a co-created, operator-trusted fixture; live-agent runtime is out (cost); the real work is co-creating a proper fixture by mutual agreement.
+
+Two operator decisions (in transcript) reshape the proof model below:
+
+1. **Proof model = prove-then-project onto a TRUSTED fixture, not in-spec live execution.** The operator's distrust was never of projection itself — it was of projecting an *auto-generated, self-declaring* bundle (the retired 5/3 `declared-eval-runner` snapshot). A fixture/proof the operator genuinely trusts may be proven out-of-band and projected into the spec; the badge is honestly `proven` when it rests on that trusted fixture.
+2. **Live-agent runtime is OUT for this work (cost).** No `--runtime codex/claude` in-loop agent driving. Proof rests on deterministic fixture-backend runs over trusted fixtures.
+3. **The bottleneck and the real work is co-creating a "proper" fixture by mutual agreement** (operator + agent), surface by surface. "Owner-confirmed" now means *co-developed and explicitly trusted*, not merely "named from the existing pile."
+
+Original constraints, still in force:
+
+- **Owner-confirmed (now: co-created + trusted) scenarios (hard constraint).** A surface reaches `proven` only on a fixture the operator and agent co-developed and the operator explicitly trusts. Do not fall back to the retired 2026-05-03 self-declaring bundles.
+- **Honesty regression.** If a trusted-fixture proof shows a behavior does NOT actually pass, the badge stays `declared`/`promised` and the failure routes to `charness:debug`; never flip a badge to hide a real gap. The fixture-backend packet self-reports its `proofClass` (e.g. `fixture-smoke`, `productProofReady:false`); the badge must not over-claim past what the packet reports.
 
 ## Goal
 
-Move each promise in the apex `docs/specs/index.spec.md` from its current honest-but-weak badge to a live `proven` badge, where `proven` means a checked-in executable spec runs the behavior end-to-end and asserts on the produced packet/file — not a projection of a saved/declared bundle. This is the real dogfood: prove Cautilus's own eval/improve claims with Cautilus, on confirmed scenarios. Each promise that reaches live proof gets its badge updated honestly and its row removed from the apex Proof Debt table.
+Move each promise in the apex `docs/specs/index.spec.md` from its current honest-but-weak badge to an honest `proven` badge. Per the operator decisions above, `proven` means: the spec projects a fixture/proof the operator and agent **co-developed and explicitly trust**, the spec asserts on that artifact, and the badge claims no more than the artifact's own self-reported `proofClass`. The distinction from today is TRUST + MUTUAL AGREEMENT (a co-created fixture) replacing the retired auto-generated self-declaring 5/3 bundle — not in-spec live execution (out) and not live-agent driving (out, cost). This is the real dogfood: prove Cautilus's own eval/improve claims on a fixture the operator actually believes. Each promise that reaches trusted-fixture proof gets its badge updated honestly and its row removed from the apex Proof Debt table.
 
 ## Non-Goals
 
@@ -79,15 +88,16 @@ Open `docs/specs/index.spec.md`. Each promise that this goal closed shows `prove
 
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
-| 1 | Repro + fix the render bug (comment-led `run:` block renders collapsed) | Cheapest; makes the strongest proven promise (Readiness) render trustworthily; unblocks reading specdown output | Minimal specdown repro + fix (likely spec-authoring); render shows adapter YAML | pending |
-| 2 | Host Ownership -> proven | Lowest-cost proof win: a live `consumer:onboard:smoke` already exists, just unwired | `ownership.spec.md` runs the smoke live + asserts; badge -> proven | pending |
-| 3 | Behavior Evaluation -> proven | Core product claim; highest value; needs owner-confirmed scenario | `evaluation.spec.md` runs live `cautilus evaluate` on a confirmed scenario + asserts | pending (gated by Discuss) |
-| 4 | Bounded Improvement -> proven | Differentiated claim; needs held-out confirmed scenario | `improvement.spec.md` runs a live improve loop + asserts | pending (gated by Discuss) |
-| 5 | Reviewable Artifacts -> proven | Regenerate packets live instead of projecting | `reviewable-artifacts.spec.md` regenerates + asserts shape | pending |
-| 6 | A Testable Agent: author spec | Currently promised/no spec | runner-readiness/verification-backed spec + proof link | pending |
-| 7 | Closeout: honest badge + Proof Debt update; full `specdown run` + `verify` | Reserve | apex badges match reality; gates green | pending |
+| 1 | Repro + fix the render bug (real cause: specdown never renders `run:shell` stdout) | Cheapest; makes the strongest proven promise (Readiness) render trustworthily; unblocks reading specdown output | DONE (31d27c7): minimal repro proved stdout is never rendered; cat block -> asserted doctest; Readiness now shows the named adapter inline | done |
+| 2 | Host Ownership -> proven | Lowest-cost proof win: a deterministic `consumer:onboard:smoke` already exists (no agent), just unwired | `ownership.spec.md` projects a smoke-proof the operator trusts + asserts; badge -> proven | pending |
+| 3 | **Co-create the first trusted eval fixture by mutual agreement (HITL)** | The real bottleneck per operator: a fixture the operator genuinely trusts, not the auto 5/3 bundle. dev/repo flagship ("agent follows AGENTS.md routing") is the README headline dogfood and small | A co-developed `cautilus.evaluation_input.v1` fixture the operator explicitly trusts (scenario, criteria, recorded outputs all agreed); out-of-band fixture-backend proof | pending (current) |
+| 4 | Behavior Evaluation -> proven (project the trusted fixture) | Once a trusted fixture exists, project its out-of-band proof | `evaluation.spec.md` projects the trusted-fixture proof + asserts + badge claims only the packet's self-reported `proofClass` | pending (needs slice 3) |
+| 5 | Bounded Improvement -> proven | Differentiated claim; needs a co-created held-out trusted fixture (deterministic, no agent) | `improvement.spec.md` projects a trusted held-out improve proof + asserts | pending |
+| 6 | Reviewable Artifacts -> proven | Regenerate packets from the trusted-fixture proof instead of the 5/3 bundle | `reviewable-artifacts.spec.md` projects regenerated packets + asserts shape | pending |
+| 7 | A Testable Agent: author spec | Currently promised/no spec | runner-readiness/verification-backed spec + proof link | pending |
+| 8 | Closeout: honest badge + Proof Debt update; full `specdown run` + `verify` | Reserve | apex badges match reality (no over-claim past `proofClass`); gates green | pending |
 
-Generative order (Alexander): slices 1–2 are cheap and de-risk confidence; slice 3 is the highest-leverage and the one most likely to surface a real gap, so critique it; later slices follow.
+Generative order (Alexander): slice 1 done (cheap de-risk). Slice 3 (co-create a trusted fixture) is now the highest-leverage and the originating reason for the goal — it is collaborative (HITL, mutual agreement), so it cannot be unilaterally completed; slices 4–6 project its proof once it exists.
 
 ## Coordination Cues
 
@@ -117,6 +127,20 @@ during the run:
 
 ## Slice Log
 
+### Slice 1: Slice 1 — render bug repro + fix (Readiness adapter display)
+
+- Objective: Make the Readiness spec render the repo-owned adapter instead of a bare variable-binding line; confirm the true root cause via minimal specdown repro.
+- Why this approach: Cheapest de-risk; Readiness is the strongest proven promise so its render must be trustworthy. Routed via charness:debug per AGENTS.md + goal Slice 1.
+- Commits: 31d27c7
+- What changed: docs/specs/user/doctor-readiness.spec.md (cat block -> doctest showing repo/version + evaluation_surfaces, asserted); debug artifact RESOLVED with final RCA.
+- Alternatives rejected: Remove leading comment (prior 'corrected direction') — REJECTED: falsified by repro, stdout is never rendered for run:shell regardless of comment. Full-YAML doctest — rejected as too verbose for the newcomer-voiced page.
+- Targeted verification: Live single-spec: specdown run -filter 'repo-owned adapter' PASS (2/2); HTML now renders 'repo: sample-skill-repo' + evaluation surface inline. Cheap: lint:specs 42, lint:links 436, specdown dry-run 43 specs/169 cases.
+- Test duplication pressure:
+- Critique: n/a — slice-level critique reserved; diagnosis self-verified by minimal repro in both directions (plain block shows no stdout; doctest does).
+- Off-goal findings: The '# Show ...' caption wording on ~24 check-backed run:shell blocks is a misnomer (blocks don't show output; adjacent check tables carry the proof). Readability nit, not a render defect — recorded in debug Sibling Search as a deferred voice-pass follow-up, not filed as an issue.
+- Lessons carried forward: Routing: charness:debug. specdown authoring rule for this repo: to show a reader output, use a doctest or check table; never a plain run:shell stdout.
+- Metrics:
+
 ## Context Sources
 
 Durable references this goal was shaped from. A fresh session can reconstruct
@@ -131,7 +155,9 @@ the originating context by following them in order.
 
 ## Interview Decisions
 
-- Scope of "proven": chose live-executable-only (run the behavior + assert) over accepting projected bundles. Rejected accepting projection because the apex's own Evidence Quality law and the session's integrity finding require it; projection of a `declared-eval-runner` bundle does not prove behavior.
+- Scope of "proven" (SUPERSEDED 2026-06-09 by operator): initially chose live-executable-only (run the behavior in-spec + assert), rejecting projection. The operator overrode this: projection IS acceptable when the projected fixture is co-created and genuinely trusted; the original distrust was of the auto-generated self-declaring 5/3 bundle, not projection per se. New scope: prove-then-project onto a trusted, co-created fixture; badge claims only the packet's self-reported `proofClass`.
+- Live-agent runtime (2026-06-09, operator): OUT for this goal due to cost. Proof rests on deterministic fixture-backend runs over trusted fixtures, not `--runtime codex/claude` agent driving. Surfaced after the fixture-backend packet self-reported `proofClass: fixture-smoke`, `productProofReady: false`, `runnerAssessmentState: missing-assessment` — confirming the binary itself does not treat a fixture run as product-ready proof.
+- Co-creation as the real work (2026-06-09, operator): the bottleneck is a "proper" fixture built by mutual agreement, not running more evals. Slice 3 is therefore a collaborative HITL fixture build, starting from the dev/repo flagship, that the operator must explicitly trust before any badge flips.
 - Sequencing: chose cheapest-first / de-risk-first (render bug, Host Ownership) before the hard eval/improve proofs. Rejected hardest-first because cheap wins build confidence and the apex already reads honestly in the meantime.
 - Owner-confirmed scenarios: chose to gate eval/improve slices on explicit operator confirmation (Discuss-before-activation) rather than letting the agent pick scenarios. Rejected agent-picks because the maintainer's distrust of unconfirmed scenarios is the originating reason for this goal.
 
