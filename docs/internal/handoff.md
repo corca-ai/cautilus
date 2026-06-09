@@ -65,7 +65,6 @@ harmony facet 분해는 **완료**(이번 세션). 의미 클레임 conversation
 
 ## Discuss
 
-- **sc5 의미 control 추인:** conversation-goal에 추가한 sc5(정의 뒤바뀜, expected unsound)는 적대적 리뷰 발견에 따라 agent가 구성함(maintainer 미확인). 뒤바뀜이 객관적이라 라벨은 안전하나, co-own 원칙상 한 번 봐주면 좋음. fixture `agreedFacetSpec.semanticControl`에 기록.
 - 심판 모델 고정값(현재 sonnet) — 제품 러너(codex)와의 정합/비용.
 - (백로그) discover의 `recommendedProof` 분류(245/361 heuristic)를 gold-set로 검증·교정(D3) — "어디에 지능이 필요한가"를 신뢰가능하게.
 - (백로그) 배지 배선: harmony judge가 서면 apex 스펙 projection에 배선할지.
