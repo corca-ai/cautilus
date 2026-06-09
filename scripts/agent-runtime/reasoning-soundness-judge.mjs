@@ -12,7 +12,8 @@
 // The judge invocation itself (a bounded subagent or a one-time codex capture) lives
 // outside this module; its captured output is replayed deterministically here.
 
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
+import { basename, join } from "node:path";
 
 export const JUDGE_RUBRIC_SCHEMA = {
 	type: "object",
@@ -41,6 +42,24 @@ export const JUDGE_RUBRIC_SCHEMA = {
 
 // Fields that would leak the answer to a blind judge. Never shown in the prompt.
 const LEAKY_CASE_FIELDS = new Set(["expectedVerdict", "rationale", "kind", "boundary"]);
+
+// Multi-claim registry: every reasoning-soundness-calibration*.json in a directory is one
+// claim. Its captured judge verdicts live in the sibling file with "calibration" swapped for
+// "judge-verdicts". Adding a claim = adding those two files; the gate picks it up automatically.
+export function listCalibrationFixtures(dir) {
+	return readdirSync(dir)
+		.filter((f) => /^reasoning-soundness-calibration.*\.json$/.test(f))
+		.sort()
+		.map((f) => ({
+			file: f,
+			calibrationPath: join(dir, f),
+			verdictsPath: join(dir, f.replace("calibration", "judge-verdicts")),
+		}));
+}
+
+export function claimIdFromCalibrationFile(file) {
+	return basename(file).replace(/^reasoning-soundness-calibration\.?/, "").replace(/\.json$/, "") || "default";
+}
 
 export function loadCalibration(path) {
 	const parsed = JSON.parse(readFileSync(path, "utf-8"));

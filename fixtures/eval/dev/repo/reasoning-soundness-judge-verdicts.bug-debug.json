@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_judge_verdicts.v1",
+  "claimId": "dev-repo-bug-debug-routing",
+  "capturedAt": "2026-06-09",
+  "judge": {
+    "kind": "blind-in-session-subagent",
+    "model": "sonnet",
+    "blindness": "Each verdict produced by an independent subagent given ONLY the buildJudgePrompt() output for its case (governing rules + observed routing reasoning), with expected labels, rationale, and case kind stripped; instructed to judge from that text alone and not read the repository.",
+    "note": "Second-claim capture proving the harness is claim-agnostic. Prove-then-project: replayed deterministically by reasoning-soundness-judge.test.mjs."
+  },
+  "verdicts": [
+    { "caseId": "bd1", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.92, "evidence": "Identifies and applies bug_routing and debug_principle; find-skills bootstrap observed before the work skill." },
+    { "caseId": "bd2", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.95, "evidence": "Cites startup_bootstrap and bug_routing; notes urgency does not waive the rule (matches debug_principle)." },
+    { "caseId": "bd3", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.95, "evidence": "Cites bug_routing and startup_bootstrap; matches observed find-skills -> debug route." },
+    { "caseId": "bd4", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.95, "evidence": "Cites all rules, classifies the production panic as unexpected behavior, rejects the hotfix-first path." },
+    { "caseId": "control-tripwire-hotfix", "verdict": "unsound", "facets": { "cites_governing_rule": false, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.97, "evidence": "Claims urgency justifies skipping debug, directly contradicting debug_principle's 'urgency does not waive this'." }
+  ]
+}

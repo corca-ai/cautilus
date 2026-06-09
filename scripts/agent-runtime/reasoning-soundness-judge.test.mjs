@@ -7,11 +7,12 @@ import {
 	JUDGE_RUBRIC_SCHEMA,
 	buildJudgePrompt,
 	compareVerdicts,
+	listCalibrationFixtures,
 	loadCalibration,
 } from "./reasoning-soundness-judge.mjs";
 
-const CALIBRATION_PATH = join(process.cwd(), "fixtures/eval/dev/repo/reasoning-soundness-calibration.json");
-const VERDICTS_PATH = join(process.cwd(), "fixtures/eval/dev/repo/reasoning-soundness-judge-verdicts.json");
+const FIXTURE_DIR = join(process.cwd(), "fixtures/eval/dev/repo");
+const CALIBRATION_PATH = join(FIXTURE_DIR, "reasoning-soundness-calibration.json");
 
 function soundVerdict(caseId, confidence = 0.9) {
 	return {
@@ -92,20 +93,39 @@ test("the rubric schema pins the structured facets (not free prose)", () => {
 	assert.deepEqual(JUDGE_RUBRIC_SCHEMA.properties.verdict.enum, ["sound", "unsound"]);
 });
 
-// Deterministic replay of the one-time blind judge capture (the prove-then-project gate).
-// Skips cleanly until the capture exists, so the suite is green before the judge has been run.
-test("captured blind-judge verdicts replay green against the calibration gate", () => {
-	if (!existsSync(VERDICTS_PATH)) {
-		console.log("  (skipped: reasoning-soundness-judge-verdicts.json not captured yet)");
-		return;
+test("the harness generalizes: the registry holds more than one claim, each with a claimId", () => {
+	const fixtures = listCalibrationFixtures(FIXTURE_DIR);
+	assert.ok(fixtures.length >= 2, "expected the judge to be exercised on at least two claims");
+	const claimIds = new Set();
+	for (const f of fixtures) {
+		const calibration = loadCalibration(f.calibrationPath);
+		assert.ok(calibration.claimId, `${f.file} must carry a claimId`);
+		claimIds.add(calibration.claimId);
 	}
-	const calibration = loadCalibration(CALIBRATION_PATH);
-	const captured = JSON.parse(readFileSync(VERDICTS_PATH, "utf-8"));
-	const verdicts = Array.isArray(captured) ? captured : captured.verdicts;
-	const result = compareVerdicts(calibration, verdicts);
-	assert.equal(
-		result.passed,
-		true,
-		`captured judge did not pass calibration: ${JSON.stringify({ mismatches: result.mismatches, missing: result.missing, rubberStampSuspected: result.rubberStampSuspected })}`,
-	);
+	assert.equal(claimIds.size, fixtures.length, "each claim fixture must have a distinct claimId");
+});
+
+// Deterministic replay of the one-time blind judge capture (the prove-then-project gate),
+// across EVERY claim in the registry. Each claim's captured verdicts must pass its own gate.
+// A claim with no capture yet is reported and skipped, so the suite stays green before a run.
+test("captured blind-judge verdicts replay green for every claim in the registry", () => {
+	const fixtures = listCalibrationFixtures(FIXTURE_DIR);
+	let replayed = 0;
+	for (const f of fixtures) {
+		if (!existsSync(f.verdictsPath)) {
+			console.log(`  (skipped ${f.file}: verdicts not captured yet)`);
+			continue;
+		}
+		const calibration = loadCalibration(f.calibrationPath);
+		const captured = JSON.parse(readFileSync(f.verdictsPath, "utf-8"));
+		const verdicts = Array.isArray(captured) ? captured : captured.verdicts;
+		const result = compareVerdicts(calibration, verdicts);
+		assert.equal(
+			result.passed,
+			true,
+			`${calibration.claimId}: captured judge did not pass calibration: ${JSON.stringify({ mismatches: result.mismatches, missing: result.missing, rubberStampSuspected: result.rubberStampSuspected })}`,
+		);
+		replayed += 1;
+	}
+	assert.ok(replayed >= 1, "expected at least one claim to have a captured judge replay");
 });

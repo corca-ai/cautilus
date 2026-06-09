@@ -1,5 +1,7 @@
 {
   "schemaVersion": "cautilus.reasoning_soundness_calibration.v1",
+  "claimId": "dev-repo-startup-routing",
+  "claimStatement": "An agent starting in this repo reads AGENTS.md, bootstraps via find-skills, and routes to a justified durable work skill — for sound reasons.",
   "status": "real-grounded-2026-06-09",
   "surface": "dev",
   "preset": "repo",
