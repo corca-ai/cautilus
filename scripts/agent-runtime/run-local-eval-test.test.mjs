@@ -216,6 +216,35 @@ test("prepareCodexRuntimeEnv reports runner_auth_missing before isolated Codex r
 	assert.equal(existsSync(prepared.env.CODEX_HOME), false);
 });
 
+test("prepareCodexRuntimeEnv keeps the inherited Codex home untouched when auth is available", () => {
+	const baseEnv = { CODEX_HOME: "/home/user/.codex", OPENAI_API_KEY: "test-key", PATH: "/usr/bin" };
+	const prepared = prepareCodexRuntimeEnv({ codexHomeMode: "inherit", codexAuthMode: "env" }, baseEnv);
+
+	assert.equal(prepared.preflightBlocker, null);
+	assert.equal(prepared.cleanup, null);
+	assert.equal(prepared.env, baseEnv);
+});
+
+test("prepareCodexRuntimeEnv reports runner_auth_missing for env auth mode without OPENAI_API_KEY", () => {
+	const inherited = prepareCodexRuntimeEnv(
+		{ codexHomeMode: "inherit", codexAuthMode: "env" },
+		{ CODEX_HOME: "/home/user/.codex", PATH: "/usr/bin" },
+	);
+	assert.equal(inherited.preflightBlocker.blockerKind, "runner_auth_missing");
+	assert.match(inherited.preflightBlocker.summary, /OPENAI_API_KEY is not set/);
+	assert.equal(inherited.cleanup, null);
+
+	const tempRoot = mkdtempSync(join(tmpdir(), "cautilus-codex-env-auth-"));
+	const isolated = prepareCodexRuntimeEnv(
+		{ codexHomeMode: "isolated", codexAuthMode: "env" },
+		{ CODEX_HOME: join(tempRoot, "empty-home"), PATH: "/usr/bin" },
+	);
+	assert.equal(isolated.preflightBlocker.blockerKind, "runner_auth_missing");
+	assert.match(isolated.preflightBlocker.summary, /OPENAI_API_KEY is not set/);
+	isolated.cleanup();
+	assert.equal(existsSync(isolated.env.CODEX_HOME), false);
+});
+
 test("codexFailureBlockerKind classifies 401 auth stderr separately", () => {
 	assert.equal(
 		codexFailureBlockerKind("ERROR: unexpected status 401 Unauthorized: Missing bearer or basic authentication in header"),
