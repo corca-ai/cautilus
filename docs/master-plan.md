@@ -172,6 +172,12 @@ Still open:
 
 ## Immediate Next Moves
 
+Lead priority (2026-06-09 decision): close the eval determinism skew.
+The whole eval is currently all-deterministic; the `cautilus-eval` (evaluator/intelligence) tier collapsed into code, so behavior-vs-intent is never actually judged.
+The agreed direction is intelligence as an independent log-observer plus code as the deterministic comparator, with the judge disciplined by a calibration set; see [docs/contracts/eval-judge-collaboration.md](contracts/eval-judge-collaboration.md).
+First prototype: a reasoning-soundness judge on the dev/repo anchor.
+This shapes the discover-driven eval design and gates honest `proven` badges.
+
 1. Pick the next bounded improvement seam for the improvement layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 2. Expand typed multi-runner metadata from the shipped `runner_readiness.runners` base only when real consumer adapters need additional fields; source-code inference remains deferred.
 3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
