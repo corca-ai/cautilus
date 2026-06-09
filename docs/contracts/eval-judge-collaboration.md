@@ -89,3 +89,31 @@ What this proves and does not.
 It proves the mechanism end-to-end on real material — intelligence reads a real reasoning and emits a structured rubric, code checks it reproducibly — and it proves the dev/repo routing reasoning is genuinely sound across clear, trap, and complex prompts at two tiers.
 It does not by itself prove the judge reliably rejects unsound reasoning; the single control is a rubber-stamp tripwire, not a population of unsound cases, so reject-capability is carried to the generalization step.
 The apex `Behavior Evaluation` badge is therefore NOT auto-flipped: moving it past `declared` to reasoning-backed is a maintainer decision and a separate slice that wires this prototype into the spec projection.
+
+## Generalization and the code/intelligence boundary (2026-06-09)
+
+The harness was generalized to a multi-claim registry and run on two more claims, which sharpened the design materially.
+
+A second routing claim (bug -> debug-first) confirmed the harness is claim-agnostic: the blind judge scored 5/5 and rejected its control.
+But across two routing claims, nine real harvested runs, and two model tiers, zero natural unsound reasonings occurred — capable agents (down to haiku, even under a production-urgency trap) reliably follow clear AGENTS.md routing rules.
+Two consequences followed.
+First, routing is one claim type among many and a tiny one: `discover` surfaces 361 claims and routing is a sliver inside "Agent and skill workflow"; the proof-debt thread over-weighted it only because the trust anchor happened to be a routing claim.
+Second, on a clear routing rule a deterministic token check already captures most of the signal, so the intelligence judge's value there is a regression guard (it catches "right route, wrong reason", which the token check passes) rather than a frequently-firing reject.
+
+The judge's real frontier is contestable/semantic claims, so the harness was pointed at one: app-chat conversation goal achievement.
+There a natural unsound appeared immediately (a response that answered correctly but ran 240 characters against a stated 200-character limit), and the judge caught it, with code agreeing on the length.
+But the judge FAILED calibration 3/4: it judged one case's answer-paragraph-plus-요약-line structure as a "one paragraph" violation while accepting the identical structure in two others — inconsistent on an ambiguous mechanical criterion.
+The calibration discipline caught an unreliable judge before it was trusted; the gate records this as a known not-yet-passing claim (`calibrationExpectation`) so the suite stays honest.
+
+The lesson is the operating rule for the whole claim population, design decision D2 now grounded in a run rather than asserted:
+the code/intelligence line falls INSIDE a claim, facet by facet, not between claim types.
+Mechanical, checkable facets — length, list presence, required-line presence, structure under an agreed interpretation, language — belong to code, which is consistent; genuinely semantic facets — substantive, no fabrication, goal achieved — belong to the bounded judge, which code cannot replace.
+Handing a mechanical facet to the judge is what made it inconsistent.
+The maintainer disambiguated the ambiguous structure criterion (the 요약 line is a separate required element, exempt from the one-paragraph count) and held the badge at `declared`, since a semantic judge that has not yet passed calibration cannot make the eval surface "proven".
+Full detail: [charness-artifacts/findings/2026-06-09-code-intelligence-harmony-boundary.md](../../charness-artifacts/findings/2026-06-09-code-intelligence-harmony-boundary.md).
+
+## Next step (the harmony decomposition)
+
+Decompose the conversation-goal claim's facets per the agreed spec in its calibration fixture: code computes the deterministic format facets, the judge assesses only the semantic facets, and the verdict ANDs them.
+Predicted result is 4/4 consistent, which would promote that claim from `fail-pending-facet-decomposition` to a passing gate and demonstrate the code+intelligence harmony end-to-end.
+Then apply the same facet-decomposition discipline as the template for routing discovered claims to deterministic, intelligence, or human proof.

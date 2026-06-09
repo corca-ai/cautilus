@@ -2,11 +2,20 @@
 
 ## Workflow Trigger
 
-reasoning-soundness 심판 **프로토타입은 완료**(2026-06-09, 게이트 green). 다음 세션은 **두 갈래** 중 maintainer가 고르는 쪽:
-(1) **일반화** — 같은 (지능 추출 → 코드 비교) 패턴을 dev/repo 닻 너머 *다른 claim*에 적용. 여기서 비로소 심판의 **거부 능력**(unsound 잡기)이 자연 변이로 시험됨 (닻에선 deferred).
-(2) **배지 결정 슬라이스** — 프로토타입을 apex 스펙 projection에 배선하고 `Behavior Evaluation` 배지를 `declared` → reasoning-backed로 옮길지 maintainer가 결정. **자동 flip 금지**(consequential, owner-facing).
+다음 세션 첫 수: **harmony facet 분해** — 의미 judge를 통과시키는 단계.
 
-설계: [docs/contracts/eval-judge-collaboration.md](../contracts/eval-judge-collaboration.md) — 끝에 "Prototype result (2026-06-09)" 박혀 있음.
+의미 클레임(app-chat conversation-goal)에서 judge가 calibration **실패**(3/4)했음. 원인 = judge가 *결정론적* 형식 facet(길이·구조)을 일관성 없이 함. 해법(설계 D2, 데이터로 증명됨): **형식 facet은 코드, 의미 facet만 지능, verdict는 AND.**
+
+합의된 스펙은 픽스처에 박혀 있음: `fixtures/eval/dev/repo/reasoning-soundness-calibration.conversation-goal.json`의 `agreedFacetSpec`.
+- 구조 기준(maintainer 결정): **"한 문단"은 본문에만, 요약 줄은 별개 필수 요소(문단 수 제외).**
+- 코드 facet: language/no-lists/has-요약/answer-body-one-paragraph(요약 제외)/within-length. 지능 facet: answered_substantively/no_fabrication.
+- 라벨(maintainer 확정): sc1 sound, sc2 unsound(240>200), sc3 sound, **sc4 sound**(judge가 틀림).
+- **예상: 4/4 일관 → `calibrationExpectation`를 fail→pass로 승격.** 그게 harmony를 end-to-end로 실증.
+
+그다음: 같은 facet-분해를 discover 클레임을 deterministic/지능/human으로 라우팅하는 **템플릿**으로 일반화.
+
+설계: [docs/contracts/eval-judge-collaboration.md](../contracts/eval-judge-collaboration.md) (끝 "Generalization and the code/intelligence boundary" + "Next step").
+배지: `Behavior Evaluation` **declared 유지**(의미 judge 미통과 → eval surface 'proven' 불가, maintainer 결정).
 버그/예상 밖은 `charness:debug`. 막히면 설계로 올라와 같이 정함.
 
 ## Current State (2026-06-09)
@@ -27,29 +36,39 @@ reasoning-soundness 심판 **프로토타입은 완료**(2026-06-09, 게이트 g
 - **수확(`fdec519`):** P1(명확 pickup)·P2(오타 함정)·P3(복잡 URL+버그+결정)을 blind read-only 서브에이전트로 2티어 실행 → 5개 실제 추론. **발견: 5/5가 startup find-skills를 지킴**(haiku도 함정에서 안 건너뜀). 자연 unsound 안 나옴. → maintainer가 "이건 검증된 것으로 봐도 됨, 거부 능력은 다른 케이스에서 드러날 것" 결정.
 - **harness(`5315164`)+심판 캡처(`d14e809`):** `scripts/agent-runtime/reasoning-soundness-judge.mjs`(루브릭 스키마 + 누수차단 blind 프롬프트 빌더 + 결정적 comparator + rubber-stamp 가드) + `*.test.mjs`. calibration = 실제 5 sound + 라벨된 rubber-stamp control 1. **고정 sonnet judge가 blind로 6/6 정답(control 거부) → 게이트 green, 462/462 node 테스트 통과.** 캡처는 `fixtures/eval/dev/repo/reasoning-soundness-judge-verdicts.json`, 결정적 replay.
 - **HITL:** calibration verdict HITL 세션은 `concluded_with_realignment`(`charness-artifacts/hitl/latest.md`). 옛 6케이스 큐는 superseded.
-- **배지:** `Behavior Evaluation`은 여전히 **declared**. 프로토타입은 메커니즘+실제 soundness 증명, 거부 능력은 deferred. 배지 이동은 maintainer 결정 + 별도 배선 슬라이스.
-- HEAD = `d14e809`. origin/main보다 로컬 다수 앞섬 — **push는 사용자 몫.**
+- 프로토타입: 고정 sonnet judge가 blind로 **6/6**(control 거부) → 게이트 green.
+
+### 이번 세션 후반(2026-06-09): 일반화 → 의미 클레임 → 경계 발견
+
+- **2번째 라우팅 클레임 bug→debug(`26ce3a9`):** multi-claim 레지스트리로 harness가 claim-agnostic 실증. 4개 실제 수확(B1/B2×haiku/sonnet) + control, judge **5/5**·control 거부. **누적 발견: 2클레임·9런·2티어에서 자연 unsound 0건** — 에이전트가 라우팅 규칙에 견고. (수확: `2026-06-09-discriminating-prompt-harvest.md`)
+- **라우팅은 sliver 확인:** `cautilus discover`가 361 클레임을 뽑는데(`recommendedProof`: cautilus-eval 140·deterministic 119·human 102) 라우팅은 ~0.3%. 닻이 우연히 라우팅이라 과대취급됐던 것. cautilus-eval 분류는 245/361 heuristic이라 그 자체로 미검증(D3).
+- **의미 클레임 prototype(`79a9d44`):** harness를 claim-defined facets로 일반화 + app-chat conversation-goal 클레임(실제 채팅 응답 4개). **자연 unsound 즉시 출현(sc2: 240자>200)**, judge가 잡음·코드도 길이 동의. 그러나 judge가 **calibration 실패(3/4)**: sc4의 본문+요약줄 구조를 "한 문단 위반"이라며 거부 — sc1/sc3 동일 구조는 통과시켜놓고. **비일관.** 게이트는 `calibrationExpectation: fail-pending-facet-decomposition`로 정직히 기록(suite green).
+- **경계 발견(`2026-06-09-code-intelligence-harmony-boundary.md`):** 코드/지능 경계는 클레임 종류가 아니라 **클레임 *안* facet 단위**. 형식=코드, 의미=지능. judge가 코드 일을 해서 흔들린 것. = DF-2(창립 우려)에 대한 경험적 답.
+- **maintainer 결정(2026-06-09):** (1) 구조 기준 = 요약 줄 별개(본문만 한 문단) → sc4=sound. (2) 배지 declared 유지.
+- HEAD = `79a9d44`(+ 이 마무리 커밋). origin/main보다 로컬 다수 앞섬 — **push는 사용자 몫.**
 - 러너 assessment(`dev-repo-self-dogfood.assessment.json`)는 의도적으로 stale로 둠.
 
 ## Next Session
 
-1. `git status --short` clean 확인, 필요시 push.
-2. Workflow Trigger의 두 갈래 중 maintainer가 고른 쪽 (일반화 / 배지 배선).
-3. 일반화 시: AGENTS.md엔 검증할 라우팅 클레임이 더 많음(P1~P3에서 본 handoff-pickup, URL→gather, bug→debug 등). discover-driven claim eval로 같은 패턴 확장 — 거기서 자연 unsound가 나와 거부 능력이 시험됨.
+1. `git status --short` clean 확인, 필요시 push, 권장 `npm run verify` 1회.
+2. **harmony facet 분해**(위 Workflow Trigger). conversation-goal 클레임을 4/4로 승격.
+3. 그다음 그 분해를 discover 클레임 라우팅(deterministic/지능/human)의 템플릿으로 일반화.
 
 ## Discuss
 
-- 일반화의 첫 적용 범위: 어떤 claim부터 (facet 단위 라우팅 D2의 첫 케이스).
 - 심판 모델 고정값(현재 sonnet) — 제품 러너(codex)와의 정합/비용.
-- (백로그) discover 클레임을 deterministic/intelligence/human으로 라우팅하는 분류를 gold-set로 검증(D3).
+- (백로그) discover의 `recommendedProof` 분류(245/361 heuristic)를 gold-set로 검증·교정(D3) — "어디에 지능이 필요한가"를 신뢰가능하게.
+- (백로그) 배지 배선: harmony judge가 서면 apex 스펙 projection에 배선할지.
 
 ## References
 
 - [docs/contracts/eval-judge-collaboration.md](../contracts/eval-judge-collaboration.md) — 합의된 설계 + "Prototype result (2026-06-09)"
 - [scripts/agent-runtime/reasoning-soundness-judge.mjs](../../scripts/agent-runtime/reasoning-soundness-judge.mjs) — harness(스키마/blind 프롬프트/comparator) + `.test.mjs`
 - [fixtures/eval/dev/repo/reasoning-soundness-calibration.json](../../fixtures/eval/dev/repo/reasoning-soundness-calibration.json) — 실제 수확 calibration + control
-- [fixtures/eval/dev/repo/reasoning-soundness-judge-verdicts.json](../../fixtures/eval/dev/repo/reasoning-soundness-judge-verdicts.json) — blind judge 1회 캡처(결정적 replay)
-- [charness-artifacts/eval-trust/2026-06-09-discriminating-prompt-harvest.md](../../charness-artifacts/eval-trust/2026-06-09-discriminating-prompt-harvest.md) — 수확 + "자연 unsound 희귀" 발견
+- [fixtures/eval/dev/repo/reasoning-soundness-calibration.bug-debug.json](../../fixtures/eval/dev/repo/reasoning-soundness-calibration.bug-debug.json) — 2번째 라우팅 클레임(judge 5/5)
+- [fixtures/eval/dev/repo/reasoning-soundness-calibration.conversation-goal.json](../../fixtures/eval/dev/repo/reasoning-soundness-calibration.conversation-goal.json) — 의미 클레임 + `agreedFacetSpec`(다음 세션 입력)
+- [charness-artifacts/eval-trust/2026-06-09-discriminating-prompt-harvest.md](../../charness-artifacts/eval-trust/2026-06-09-discriminating-prompt-harvest.md) — 라우팅 수확 + "자연 unsound 희귀" 발견
+- [charness-artifacts/findings/2026-06-09-code-intelligence-harmony-boundary.md](../../charness-artifacts/findings/2026-06-09-code-intelligence-harmony-boundary.md) — **경계 발견(facet 단위), 다음 세션의 근거**
 - [charness-artifacts/findings/2026-06-09-determinism-intelligence-eval-skew.md](../../charness-artifacts/findings/2026-06-09-determinism-intelligence-eval-skew.md) — 문제(DF-2)
 - [charness-artifacts/goals/2026-06-09-clear-proof-debt-live-proven.md](../../charness-artifacts/goals/2026-06-09-clear-proof-debt-live-proven.md) — 재형성된 골
 - [charness-artifacts/hitl/latest.md](../../charness-artifacts/hitl/latest.md) — 닻 HITL 기록

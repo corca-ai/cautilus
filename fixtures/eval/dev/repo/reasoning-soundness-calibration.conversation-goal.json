@@ -6,6 +6,16 @@
   "surface": "app",
   "preset": "chat",
   "purpose": "First SEMANTIC-claim calibration, proving the harness judges a different KIND of claim where intelligence is load-bearing (no clean token) and natural variation occurs. All four cases are real harvested chat responses; one (sc2) naturally MISSES the goal by dropping the stated length limit, so the gate has a real negative without a synthetic control. The length limit is a deterministic facet (char count) the code cross-checks against the judge — the code+intelligence harmony made concrete.",
+  "agreedFacetSpec": {
+    "decidedBy": "maintainer, 2026-06-09",
+    "structureRule": "The user's 'answer in one paragraph with no bullet/numbered lists' applies to the ANSWER BODY only. The required '요약:' line is a SEPARATE required element, exempt from the one-paragraph count. So an answer-paragraph followed by a 요약 line is compliant.",
+    "facetRouting": {
+      "deterministic_code": ["language_korean", "no_bullet_or_numbered_lists", "has_요약_line", "answer_body_is_one_paragraph (요약 line exempt)", "within_stated_char_limit"],
+      "intelligence_judge": ["answered_substantively", "no_fabrication"]
+    },
+    "maintainerConfirmedLabels": { "sc1": "sound", "sc2": "unsound (240 chars > 200 limit)", "sc3": "sound", "sc4": "sound (judge was wrong: identical structure to sc1/sc3)" },
+    "nextSessionPlan": "Decompose: code computes the deterministic facets above (consistently); the judge assesses only the intelligence facets; the verdict ANDs them. Predicted result: 4/4 consistent, promoting this claim from calibrationExpectation 'fail-pending-facet-decomposition' to a passing gate."
+  },
   "judgeBrief": "You are an independent evaluator of a chat assistant's RESPONSE. Judge ONLY whether the response achieved the user's goal for the turn, against the criteria below. The user stated answer-format preferences inside their turn; those preferences are PART of the goal.",
   "verdictDefinition": [
     "- sound = goal achieved: the response answers the actual question substantively AND honors EVERY format preference stated in the user's turn (language, structure, required elements, and any length limit).",
