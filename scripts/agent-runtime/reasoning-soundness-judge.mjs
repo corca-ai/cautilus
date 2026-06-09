@@ -136,9 +136,117 @@ export function buildJudgePrompt(calibration, caseEntry) {
 	].join("\n");
 }
 
+// Deterministic format-facet checkers (the CODE half of the harmony).
+// These are the mechanical, reproducible facets a claim can hand to code instead of the judge.
+// Each is a pure (caseEntry) -> boolean; a calibration fixture opts in via its `codeFacets` list.
+// Routing facet "the agent emitted the find-skills token" would be another such checker; this
+// first batch covers the chat conversation-goal format constraints.
+const SUMMARY_LINE_RE = /\n\s*요약\s*[:：]/;
+export const FORMAT_FACET_CHECKERS = {
+	// The response is predominantly Korean (Hangul present and not outweighed by Latin letters,
+	// which only appear in parenthetical loan terms like "regression test").
+	language_korean(c) {
+		const r = c.assistantResponse || "";
+		const hangul = (r.match(/[가-힣]/g) || []).length;
+		const latin = (r.match(/[A-Za-z]/g) || []).length;
+		return hangul > 0 && hangul >= latin;
+	},
+	// No markdown bullet or numbered list markers begin any line.
+	no_bullet_or_numbered_lists(c) {
+		const r = c.assistantResponse || "";
+		return !r.split(/\n/).some((line) => /^\s*([-*+]\s|\d+[.)]\s)/.test(line));
+	},
+	// A required summary line starting with "요약:".
+	"has_요약_line"(c) {
+		return /^\s*요약\s*[:：]/m.test(c.assistantResponse || "");
+	},
+	// The ANSWER BODY (everything before the 요약 line) is a single paragraph block.
+	// Per the maintainer-agreed structure rule, the 요약 line is a separate required element and
+	// is exempt from the one-paragraph count — so an answer paragraph followed by a 요약 line is compliant.
+	answer_body_is_one_paragraph(c) {
+		const r = c.assistantResponse || "";
+		const idx = r.search(SUMMARY_LINE_RE);
+		const body = (idx >= 0 ? r.slice(0, idx) : r).trim();
+		const blocks = body
+			.split(/\n\s*\n/)
+			.map((s) => s.trim())
+			.filter(Boolean);
+		return blocks.length === 1;
+	},
+	// If the user stated a "<n>자 이내" total limit, the full response length must honor it.
+	// No stated limit means this is not a constraint for the turn (passes).
+	within_stated_char_limit(c) {
+		const stated = (c.userTurn || "").match(/(\d+)\s*자\s*이내/);
+		if (!stated) return true;
+		return (c.assistantResponse || "").length <= Number(stated[1]);
+	},
+};
+
+// Compute the deterministic format facets a calibration opts into. Pure and reproducible:
+// this is CODE's contribution to a composite verdict, never something the judge is asked.
+export function computeCodeFacets(calibration, caseEntry) {
+	const keys = (calibration && calibration.codeFacets) || [];
+	const out = {};
+	for (const key of keys) {
+		const checker = FORMAT_FACET_CHECKERS[key];
+		if (!checker) {
+			throw new Error(`unknown code facet '${key}' (no deterministic checker registered)`);
+		}
+		out[key] = checker(caseEntry, calibration);
+	}
+	return out;
+}
+
+// Resolve one case's composite verdict from the judge's output, routing each half to its tool.
+// Direct (routing) claims return the judge's verdict unchanged; decomposed claims AND the
+// code-computed format facets with the judge's semantic verdict.
+function resolveCaseVerdict(calibration, caseEntry, judged, decomposed) {
+	if (!decomposed) {
+		return { got: judged.verdict, codeFacets: null };
+	}
+	const codeFacets = computeCodeFacets(calibration, caseEntry);
+	const codeAllPass = Object.values(codeFacets).every(Boolean);
+	const judgeSound = judged.verdict === "sound";
+	return { got: codeAllPass && judgeSound ? "sound" : "unsound", codeFacets };
+}
+
+// Build the per-case result row plus the bookkeeping flags the comparator accumulates.
+// A missing judge verdict yields a null-verdict row flagged `missing`.
+function buildCaseRow(calibration, caseEntry, judged, decomposed) {
+	if (!judged) {
+		return {
+			missing: true,
+			entry: { caseId: caseEntry.id, expected: caseEntry.expectedVerdict, got: null, matched: false, confidence: null },
+		};
+	}
+	const { got, codeFacets } = resolveCaseVerdict(calibration, caseEntry, judged, decomposed);
+	const matched = got === caseEntry.expectedVerdict;
+	return {
+		missing: false,
+		got,
+		matched,
+		entry: {
+			caseId: caseEntry.id,
+			expected: caseEntry.expectedVerdict,
+			got,
+			matched,
+			boundary: Boolean(caseEntry.boundary),
+			confidence: typeof judged.confidence === "number" ? judged.confidence : null,
+			...(decomposed ? { codeFacets, judgeVerdict: judged.verdict } : {}),
+		},
+	};
+}
+
 // Deterministic comparator. Pure: given the calibration and the captured judge verdicts,
 // decide whether the judge passed its unit test.
+//
+// Two modes, selected by whether the calibration declares `codeFacets`:
+//   - direct (routing claims): the composite verdict IS the judge's verdict.
+//   - composite (decomposed claims): code computes the deterministic format facets and the judge
+//     supplies only the semantic verdict; the composite verdict ANDs them. This is the
+//     code+intelligence harmony — each facet on the tool that is reliable for it.
 export function compareVerdicts(calibration, judgeVerdicts) {
+	const decomposed = Array.isArray(calibration.codeFacets) && calibration.codeFacets.length > 0;
 	const byCaseId = new Map();
 	for (const v of judgeVerdicts) {
 		byCaseId.set(v.caseId, v);
@@ -146,36 +254,30 @@ export function compareVerdicts(calibration, judgeVerdicts) {
 	const byCase = [];
 	const mismatches = [];
 	const missing = [];
-	const verdictsSeen = new Set();
+	const gotVerdictsSeen = new Set();
 	let matched = 0;
 	for (const c of calibration.cases) {
-		const judged = byCaseId.get(c.id);
-		if (!judged) {
+		const row = buildCaseRow(calibration, c, byCaseId.get(c.id), decomposed);
+		byCase.push(row.entry);
+		if (row.missing) {
 			missing.push(c.id);
-			byCase.push({ caseId: c.id, expected: c.expectedVerdict, got: null, matched: false, confidence: null });
 			continue;
 		}
-		verdictsSeen.add(judged.verdict);
-		const isMatch = judged.verdict === c.expectedVerdict;
-		if (isMatch) {
+		gotVerdictsSeen.add(row.got);
+		if (row.matched) {
 			matched += 1;
 		} else {
-			mismatches.push({ caseId: c.id, expected: c.expectedVerdict, got: judged.verdict });
+			mismatches.push({ caseId: c.id, expected: c.expectedVerdict, got: row.got });
 		}
-		byCase.push({
-			caseId: c.id,
-			expected: c.expectedVerdict,
-			got: judged.verdict,
-			matched: isMatch,
-			boundary: Boolean(c.boundary),
-			confidence: typeof judged.confidence === "number" ? judged.confidence : null,
-		});
 	}
 
-	// Rubber-stamp guard: if the set contains at least one known-unsound case and the judge
-	// never once emitted "unsound", it is suspected of stamping "sound" on everything.
+	// Rubber-stamp guard: if the set contains at least one known-unsound case and the GATE never
+	// once produced an "unsound" composite verdict, it is suspected of stamping "sound" on everything.
+	// Watching the composite (not the bare judge verdict) keeps routing behavior identical — there
+	// the composite IS the judge verdict — while staying correct under decomposition, where a real
+	// negative can come from a code facet (e.g. an over-length response) rather than the judge.
 	const hasKnownUnsound = calibration.cases.some((c) => c.expectedVerdict === "unsound");
-	const rubberStampSuspected = hasKnownUnsound && !verdictsSeen.has("unsound");
+	const rubberStampSuspected = hasKnownUnsound && !gotVerdictsSeen.has("unsound");
 
 	const confidences = byCase.map((b) => b.confidence).filter((x) => typeof x === "number");
 	const confidenceSpread = confidences.length
