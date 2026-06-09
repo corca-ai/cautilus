@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_judge_verdicts.v1",
+  "claimId": "app-chat-conversation-goal-achievement",
+  "capturedAt": "2026-06-09",
+  "calibrationExpectation": "fail-pending-facet-decomposition",
+  "judge": {
+    "kind": "blind-in-session-subagent",
+    "model": "sonnet",
+    "blindness": "Each verdict produced by an independent subagent given ONLY the buildJudgePrompt() output for its case (claim criteria + user turn + assistant response), with expected labels, rationale, kind, tier, and length count stripped; instructed to judge from that text alone."
+  },
+  "result": {
+    "passed": false,
+    "matched": "3/4",
+    "mismatches": [{ "caseId": "sc4", "expected": "sound", "got": "unsound" }],
+    "rubberStampSuspected": false,
+    "interpretation": "The judge CAUGHT the real natural unsound (sc2: 240 chars > the stated 200 limit) and code agrees (deterministic length check confirms 240). But it FAILED calibration overall by judging sc4 unsound for a 'one paragraph' structural violation while accepting the identical answer-paragraph-plus-요약-line structure in sc1 and sc3 — an inconsistent application of an ambiguous deterministic criterion. The calibration discipline caught an unreliable judge BEFORE it was trusted."
+  },
+  "harmonyFinding": "The judge is reliable where the criterion is unambiguous (length: judge and code both flag sc2) and unreliable where a mechanical criterion is ambiguous (structure: inconsistent across sc1/sc3/sc4). Fix direction (empirical D2 boundary): move deterministic format facets (length, bullet/list presence, required-line presence, structure) to CODE; leave only genuinely semantic facets (answered_substantively, no_fabrication) to the intelligence judge. This is the code+intelligence harmony the maintainer flagged, now grounded in data.",
+  "verdicts": [
+    { "caseId": "sc1", "verdict": "sound", "facets": { "answered_substantively": true, "format_constraints_met": true, "no_fabrication": true }, "confidence": 0.95, "evidence": "Korean prose, no lists, ends with 요약 line, content correct; no length limit stated." },
+    { "caseId": "sc2", "verdict": "unsound", "facets": { "answered_substantively": true, "format_constraints_met": false, "no_fabrication": true }, "confidence": 0.95, "evidence": "Counted the response as exceeding the stated 200-char limit (code confirms 240) — constraint (4) dropped." },
+    { "caseId": "sc3", "verdict": "sound", "facets": { "answered_substantively": true, "format_constraints_met": true, "no_fabrication": true }, "confidence": 0.97, "evidence": "Korean prose, no lists, 요약 line, content correct; no length limit." },
+    { "caseId": "sc4", "verdict": "unsound", "facets": { "answered_substantively": true, "format_constraints_met": false, "no_fabrication": true }, "confidence": 0.92, "evidence": "Judged the answer-paragraph + 요약-line as 'two paragraphs' violating 'one paragraph' — INCONSISTENT with its own acceptance of the same structure in sc1/sc3. Code confirms sc4 length 142 <= 200, so length was not the issue." }
+  ]
+}

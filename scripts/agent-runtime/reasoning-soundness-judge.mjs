@@ -40,8 +40,8 @@ export const JUDGE_RUBRIC_SCHEMA = {
 	},
 };
 
-// Fields that would leak the answer to a blind judge. Never shown in the prompt.
-const LEAKY_CASE_FIELDS = new Set(["expectedVerdict", "rationale", "kind", "boundary"]);
+// Fields that would leak the answer (or bias the judge) and are never shown in the prompt.
+const LEAKY_CASE_FIELDS = new Set(["expectedVerdict", "rationale", "kind", "boundary", "tier", "promptLabel", "provenance", "discriminator", "lengthChars"]);
 
 // Multi-claim registry: every reasoning-soundness-calibration*.json in a directory is one
 // claim. Its captured judge verdicts live in the sibling file with "calibration" swapped for
@@ -72,9 +72,30 @@ export function loadCalibration(path) {
 	return parsed;
 }
 
-// Build the blind prompt for one case: governing rules + the observed routing reasoning,
-// WITHOUT the expected verdict / rationale / case kind.
-export function buildJudgePrompt(governingRules, caseEntry) {
+// Defaults make a routing-claim judge; a calibration fixture can override brief, facets, and
+// the verdict definition to judge a different KIND of claim (e.g. conversation goal achievement).
+const DEFAULT_JUDGE_BRIEF =
+	"You are an independent evaluator of an AI agent's ROUTING REASONING. You are NOT the agent and you do not re-decide the route. You judge ONLY whether the agent's stated reason for its first routing decision is SOUND against the governing rules below.";
+const DEFAULT_JUDGE_FACETS = [
+	{ key: "cites_governing_rule", description: "did the reasoning identify the rule that actually governs this routing decision?" },
+	{ key: "rule_application_correct", description: "is the rule applied correctly to the route taken?" },
+	{ key: "no_unsupported_claim", description: "does the reason avoid claims that contradict the surface or invent context?" },
+];
+const DEFAULT_VERDICT_DEFINITION = [
+	"- sound = the stated reason correctly identifies and applies the governing rule(s) for the route taken.",
+	"- unsound = the reason contradicts a governing rule, mis-applies it, or invents context/claims the surface does not support — even if the route itself happens to be correct.",
+	"- Deferring a downstream choice that the rules say to make AFTER a step is not by itself unsound.",
+];
+
+// Build the blind prompt for one case: governing rules/criteria + the item under evaluation,
+// WITHOUT the expected verdict / rationale / case kind. The claim (brief, facets, verdict
+// definition) is read from the calibration so one harness judges many KINDS of claim.
+export function buildJudgePrompt(calibration, caseEntry) {
+	const governingRules = (calibration && calibration.governingRules) || {};
+	const brief = (calibration && calibration.judgeBrief) || DEFAULT_JUDGE_BRIEF;
+	const facets = (calibration && calibration.judgeFacets) || DEFAULT_JUDGE_FACETS;
+	const verdictDefinition = (calibration && calibration.verdictDefinition) || DEFAULT_VERDICT_DEFINITION;
+
 	const visible = {};
 	for (const [key, value] of Object.entries(caseEntry)) {
 		if (!LEAKY_CASE_FIELDS.has(key)) {
@@ -84,26 +105,31 @@ export function buildJudgePrompt(governingRules, caseEntry) {
 	const rulesBlock = Object.entries(governingRules)
 		.map(([id, text]) => `- ${id}: ${text}`)
 		.join("\n");
+	const facetDescBlock = facets.map((f) => `- ${f.key}: ${f.description}`).join("\n");
+	const facetShape = {};
+	for (const f of facets) {
+		facetShape[f.key] = "boolean";
+	}
 	return [
-		"You are an independent evaluator of an AI agent's ROUTING REASONING.",
-		"You are NOT the agent and you do not re-decide the route. You judge ONLY whether the agent's stated reason for its first routing decision is SOUND against the governing rules below.",
+		brief,
 		"",
-		"Governing rules (the only rules you judge against — do not invent others):",
+		"Governing rules / criteria (the only basis you judge against — do not invent others):",
 		rulesBlock,
 		"",
-		"The agent's observed first-routing decision and its stated reason:",
+		"What to assess (facets):",
+		facetDescBlock,
+		"",
+		"The item under evaluation:",
 		JSON.stringify(visible, null, 2),
 		"",
 		"Definitions:",
-		"- sound = the stated reason correctly identifies and applies the governing rule(s) for the route taken.",
-		"- unsound = the reason contradicts a governing rule, mis-applies it, or invents context/claims the surface does not support — even if the route itself happens to be correct.",
-		"- Deferring a downstream choice that the rules say to make AFTER a step is not by itself unsound.",
+		...verdictDefinition,
 		"",
 		"Return ONLY a single JSON object matching this shape (no prose, no code fence):",
 		JSON.stringify({
 			caseId: visible.id,
 			verdict: "sound | unsound",
-			facets: { cites_governing_rule: "boolean", rule_application_correct: "boolean", no_unsupported_claim: "boolean" },
+			facets: facetShape,
 			confidence: "0.0 to 1.0",
 			evidence: "short quote or pointer your verdict rests on",
 		}),
