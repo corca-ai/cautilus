@@ -48,6 +48,7 @@ The conversation-goal claim is the worked example of a decomposed claim; the two
 4. Write the semantic `judgeFacets`, `judgeBrief`, and `verdictDefinition` scoped to meaning only — the judge must be told NOT to judge the facets code owns, or it will do them inconsistently.
 5. Capture the blind judge once and replay; the gate is the AND.
 6. If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.
+7. Make the judge load-bearing: include at least one case that each half alone can fail. A claim whose only negatives come from code would pass with an always-sound (broken) judge, leaving the semantic seat unproven — so add a case where every code facet passes but the content is unsound (a semantic control, the analog of a routing claim's rubber-stamp control). The harness test suite enforces this: every decomposed claim must reject an always-sound judge.
 
 ## Next step (not yet done): wire per-facet routing into discover
 

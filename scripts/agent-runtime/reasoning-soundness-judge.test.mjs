@@ -183,6 +183,26 @@ test("computeCodeFacets rejects an unregistered code facet rather than passing s
 	assert.throws(() => computeCodeFacets({ codeFacets: ["no_such_checker"] }, { assistantResponse: "x" }), /unknown code facet/);
 });
 
+// The judge must be LOAD-BEARING on a decomposed claim: a claim whose only negatives come from
+// code would pass with an always-sound (broken) judge, leaving the semantic seat unproven. Every
+// decomposed claim must therefore carry at least one case the judge alone can fail, so that a
+// rubber-stamp judge is caught by a real mismatch (the conversation-goal sc5 semantic control).
+test("an always-sound judge FAILS every decomposed claim (the judge is load-bearing)", () => {
+	const decomposed = listCalibrationFixtures(FIXTURE_DIR)
+		.map((f) => loadCalibration(f.calibrationPath))
+		.filter((cal) => Array.isArray(cal.codeFacets) && cal.codeFacets.length > 0);
+	assert.ok(decomposed.length >= 1, "expected at least one decomposed (composite) claim in the registry");
+	for (const cal of decomposed) {
+		const alwaysSound = cal.cases.map((c) => ({ caseId: c.id, verdict: "sound", confidence: 0.5 }));
+		const result = compareVerdicts(cal, alwaysSound);
+		assert.equal(
+			result.passed,
+			false,
+			`${cal.claimId}: an always-sound judge passed — the judge is not load-bearing. Add a case where every code facet passes but the content is unsound (a semantic control), so a rubber-stamp judge is caught.`,
+		);
+	}
+});
+
 // Deterministic replay of the one-time blind judge capture (the prove-then-project gate),
 // across EVERY claim in the registry. Each claim's captured verdicts must pass its own gate.
 // A claim with no capture yet is reported and skipped, so the suite stays green before a run.

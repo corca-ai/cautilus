@@ -12,21 +12,23 @@
       { "caseId": "sc1", "agentId": "a39319ad2cf01a85a", "tool_uses": 0 },
       { "caseId": "sc2", "agentId": "a257abc74b8ff238b", "tool_uses": 0 },
       { "caseId": "sc3", "agentId": "ac2194f66f9bc50d8", "tool_uses": 0 },
-      { "caseId": "sc4", "agentId": "afe10164a5461674f", "tool_uses": 0 }
+      { "caseId": "sc4", "agentId": "afe10164a5461674f", "tool_uses": 0 },
+      { "caseId": "sc5", "agentId": "a6912efcaa5de2839", "tool_uses": 0 }
     ]
   },
   "result": {
     "passed": true,
-    "matched": "4/4",
+    "matched": "5/5",
     "mismatches": [],
     "rubberStampSuspected": false,
-    "interpretation": "The decomposition resolved the earlier 3/4 failure. The semantic-only judge is now CONSISTENT: all four responses are content-correct, so it returns sound for all four (including sc4, whose answer-paragraph-plus-요약 structure it previously mis-rejected — it is no longer asked about structure). CODE supplies the only real negative: sc2 runs 240 chars against the stated 200-char limit, so its within_stated_char_limit facet fails and the composite verdict is unsound. The gate stays non-vacuous because the negative comes from a deterministic code facet, exactly the code+intelligence harmony the decomposition was built to demonstrate.",
-    "composite": "verdict = AND(code format facets) AND (judge semantic verdict). sc1 sound (code all-pass ∧ judge sound). sc2 unsound (code within_stated_char_limit=false). sc3 sound. sc4 sound (code all-pass incl. one-paragraph body with 요약 exempt ∧ judge sound)."
+    "interpretation": "The decomposition resolved the earlier 3/4 failure AND, after an adversarial review, made the judge load-bearing. The semantic-only judge is CONSISTENT on the four real responses (all content-correct -> sound, including sc4, whose answer-paragraph-plus-요약 structure it previously mis-rejected — it is no longer asked about structure). Both halves of the composite are now exercised by a real negative: CODE flags sc2 (240 chars > the stated 200-char limit), and the JUDGE flags sc5 (a format-perfect response whose regression/smoke definitions are inverted — every code facet passes, so only the judge can catch it; it did, with answered_substantively=false). This closes the vacuous-judge gap the review found: an always-sound judge now FAILS this gate because sc5 would mismatch.",
+    "composite": "verdict = AND(code format facets) AND (judge semantic verdict). sc1 sound. sc2 unsound (code within_stated_char_limit=false). sc3 sound. sc4 sound (code all-pass incl. one-paragraph body with 요약 exempt ∧ judge sound). sc5 unsound (code all-pass ∧ judge unsound — the judge is the only thing that can flag this case)."
   },
   "verdicts": [
     { "caseId": "sc1", "verdict": "sound", "facets": { "answered_substantively": true, "no_fabrication": true }, "confidence": 0.97, "evidence": "스모크 테스트는 '이 빌드가 최소한 동작하는가?', 회귀 테스트는 '우리가 무언가를 깼는가?' — accurately captures the core distinction with correct definitions and no invented claims." },
     { "caseId": "sc2", "verdict": "sound", "facets": { "answered_substantively": true, "no_fabrication": true }, "confidence": 0.95, "evidence": "Correctly distinguishes scope/depth/speed tradeoffs between the two test types with no fabricated claims. (Length is code's facet, not the judge's; code flags sc2 as over-limit.)" },
     { "caseId": "sc3", "verdict": "sound", "facets": { "answered_substantively": true, "no_fabrication": true }, "confidence": 0.97, "evidence": "두 개념을 정확하게 구분하여 설명함. 스모크 테스트 명칭의 유래(하드웨어 전원 투입 시 연기 여부)도 사실에 부합함." },
-    { "caseId": "sc4", "verdict": "sound", "facets": { "answered_substantively": true, "no_fabrication": true }, "confidence": 0.97, "evidence": "Accurately distinguishes regression testing from smoke testing. The structure the judge once mis-rejected is no longer in its scope; content is sound." }
+    { "caseId": "sc4", "verdict": "sound", "facets": { "answered_substantively": true, "no_fabrication": true }, "confidence": 0.97, "evidence": "Accurately distinguishes regression testing from smoke testing. The structure the judge once mis-rejected is no longer in its scope; content is sound." },
+    { "caseId": "sc5", "verdict": "unsound", "facets": { "answered_substantively": false, "no_fabrication": false }, "confidence": 0.95, "evidence": "The response inverts the definitions: it claims smoke test is the comprehensive full-regression suite and regression test is the quick surface-level check; the two concepts are backwards throughout. (Format is perfect, so code passes every facet — only the judge can catch this.)" }
   ]
 }

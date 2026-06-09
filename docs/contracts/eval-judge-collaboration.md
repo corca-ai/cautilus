@@ -112,20 +112,24 @@ Handing a mechanical facet to the judge is what made it inconsistent.
 The maintainer disambiguated the ambiguous structure criterion (the 요약 line is a separate required element, exempt from the one-paragraph count) and held the badge at `declared`, since a semantic judge that has not yet passed calibration cannot make the eval surface "proven".
 Full detail: [charness-artifacts/findings/2026-06-09-code-intelligence-harmony-boundary.md](../../charness-artifacts/findings/2026-06-09-code-intelligence-harmony-boundary.md).
 
-## Harmony decomposition result (2026-06-09) — 4/4, harmony proven end-to-end
+## Harmony decomposition result (2026-06-09) — 5/5, both halves of the composite exercised
 
-The decomposition was implemented and the prediction held exactly.
+The decomposition was implemented and the prediction held; an adversarial review then closed one real gap.
 
-The harness gained a deterministic format-facet registry (`FORMAT_FACET_CHECKERS`) that a calibration opts into through a `codeFacets` list, and `compareVerdicts` became composite-aware: when a claim declares `codeFacets`, the verdict ANDs the code-computed format facets with the judge's semantic verdict, and the rubber-stamp guard watches the composite so a code-supplied negative still keeps the gate non-vacuous.
+The harness gained a deterministic format-facet registry (`FORMAT_FACET_CHECKERS`) that a calibration opts into through a `codeFacets` list, and `compareVerdicts` became composite-aware: when a claim declares `codeFacets`, the verdict ANDs the code-computed format facets with the judge's semantic verdict, and the rubber-stamp guard watches the composite so a code-supplied negative still keeps the composite gate non-vacuous.
 The conversation-goal calibration was rewritten to route its format facets (language, no-lists, the required 요약 line, a one-paragraph body with the 요약 line exempt per the maintainer-agreed rule, and the stated char limit) to code, leaving the judge only the semantic facets.
-The judge was re-captured blind with a semantic-only prompt that explicitly tells it to ignore formatting and length; four independent sonnet subagents returned all four cases content-sound and consistent, with `tool_uses: 0`.
-
-The composite verdict is 4/4.
+The judge was re-captured blind with a semantic-only prompt that explicitly tells it to ignore formatting and length; the four real cases came back content-sound and consistent, with `tool_uses: 0`.
 sc4 now passes because code — not the judge — counts its one-paragraph body with the 요약 line exempt, so the structural inconsistency that failed calibration is gone.
-The only negative, sc2, now comes from a code facet (240 characters against the stated 200-character limit), which is exactly the harmony the decomposition set out to prove: the judge is consistent on meaning, code is consistent on the mechanical facets, and the composite is both.
+
+An adversarial fresh-eye review then found that the judge was not yet load-bearing: with the only negative (sc2's length) coming from code, an always-sound judge replayed the identical result and the rubber-stamp guard could not see it, because that guard intentionally watches the composite and the composite already had a code-supplied negative.
+The fix is a semantic control, the analog of the routing claim's rubber-stamp control: sc5 is format-perfect (every code facet passes) but its regression/smoke definitions are inverted, so reaching the expected unsound requires the judge.
+The blind judge caught it (`answered_substantively: false`), and an always-sound judge now FAILS the gate — a permanent invariant is pinned by a test asserting that every decomposed claim rejects an always-sound judge.
+
+The composite verdict is 5/5, with both halves exercised by a real negative: code flags sc2 (length), the judge flags sc5 (inverted content).
+This is the honest scope: the judge's reject-capability on this claim is demonstrated by one constructed semantic control, not a population of natural unsound cases — exactly the same standard the routing claims meet with their single control, and the badge stays at `declared` accordingly.
 `calibrationExpectation` was promoted from `fail-pending-facet-decomposition` to a passing gate.
 
-The reference implementation is now the template: a claim is a list of `codeFacets` (deterministic checkers) plus semantic `judgeFacets` (a blind judge), composed by AND.
+The reference implementation is now the template: a claim is a list of `codeFacets` (deterministic checkers) plus semantic `judgeFacets` (a blind judge), composed by AND, with at least one case each half alone can fail.
 
 ## Next step (generalize the decomposition to discovered claims)
 

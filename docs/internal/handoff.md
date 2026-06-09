@@ -50,8 +50,9 @@ harmony facet 분해는 **완료**(이번 세션). 의미 클레임 conversation
 ### 이번 세션(2026-06-09 컴팩트 후): harmony facet 분해 완료 → 템플릿화
 
 - **harness composite화(`a24b822`):** `FORMAT_FACET_CHECKERS` 레지스트리(결정론적 형식 facet) + `computeCodeFacets` + `compareVerdicts`를 composite-aware로. 클레임이 `codeFacets`를 선언하면 verdict = AND(코드 형식 facet, judge 의미 verdict); 아니면 기존 direct(라우팅) 경로. rubber-stamp 가드는 composite verdict 기준으로 일반화(코드가 negative를 내도 게이트 비-공허 유지). 합성 단위테스트로 핀. 라우팅 replay 불변.
-- **conversation-goal 승격(`e87e935`):** fixture에 `codeFacets` 선언 + judgeFacets/brief/verdictDefinition을 **의미 전용**으로 재작성(judge에게 형식·길이 판단 금지 명시). blind judge를 의미 전용 프롬프트로 **재캡처**(sonnet 4개, `tool_uses:0` 진짜 blind) → 4개 모두 content-sound, **일관**(sc4 포함 — 이번엔 구조를 안 물음). composite **4/4**. sc2의 유일한 negative는 이제 **코드 facet**(240>200)에서 옴. `calibrationExpectation` fail→pass.
-- **결과:** 레지스트리 3클레임 전부 green — startup-routing 6/6(direct), bug-debug 5/5(direct), **conversation-goal 4/4(composite)**. harmony를 end-to-end 실증.
+- **conversation-goal 승격(`e87e935`):** fixture에 `codeFacets` 선언 + judgeFacets/brief/verdictDefinition을 **의미 전용**으로 재작성(judge에게 형식·길이 판단 금지 명시). blind judge를 의미 전용 프롬프트로 **재캡처**(sonnet 4개, `tool_uses:0` 진짜 blind) → 4개 모두 content-sound, **일관**(sc4 포함 — 이번엔 구조를 안 물음). composite 4/4. sc2의 유일한 negative는 이제 **코드 facet**(240>200)에서 옴. `calibrationExpectation` fail→pass.
+- **적대적 리뷰 → judge load-bearing 봉합:** bounded fresh-eye 회의론자(subagent)가 진짜 갭 발견 — 4/4에서 유일 negative(sc2)가 code에서 와서 **always-sound judge도 동일 통과**(judge가 일 안 함). 해법 = 라우팅 rubber-stamp control의 의미 버전 **sc5**: 형식 완벽(code facet 전부 통과)·정의 뒤바뀜 → 오직 judge만 잡음. blind judge가 `answered_substantively:false`로 잡음. 이제 **always-sound judge는 게이트 실패**(테스트로 영구 고정: "모든 decomposed 클레임은 always-sound judge를 거부"). sc1/sc3 `lengthChars`(444/412)→471 교정(주석 일관성). composite **5/5**, code(sc2)+judge(sc5) 양쪽 negative로 실증.
+- **결과:** 레지스트리 3클레임 전부 green — startup-routing 6/6(direct), bug-debug 5/5(direct), **conversation-goal 5/5(composite, judge load-bearing)**. node 14/14. harmony를 end-to-end 실증.
 - **maintainer 우려(DF-2)에 대한 데이터 답 확정:** "지능과 코드가 조화롭게 협업" = 각 facet을 신뢰가능한 도구에. 코드가 형식에 일관, judge가 의미에 일관, composite가 둘 다. judge를 형식 일에서 빼니 비일관 사라짐.
 - **템플릿화(docs):** `docs/contracts/facet-decomposition.md` 신규 — claim = codeFacets(결정론) + judgeFacets(의미 blind), AND 합성. discover의 per-claim `recommendedProof`를 **per-facet**으로 읽어야 한다는 규칙. discover 스키마 배선은 명명만(다음 결정 사안). finding/eval-judge-collaboration.md를 resolved로 갱신.
 - HEAD 이동: `a24b822`(harness) → `e87e935`(승격) → docs/template 커밋들. **push는 사용자 몫.**
@@ -64,6 +65,7 @@ harmony facet 분해는 **완료**(이번 세션). 의미 클레임 conversation
 
 ## Discuss
 
+- **sc5 의미 control 추인:** conversation-goal에 추가한 sc5(정의 뒤바뀜, expected unsound)는 적대적 리뷰 발견에 따라 agent가 구성함(maintainer 미확인). 뒤바뀜이 객관적이라 라벨은 안전하나, co-own 원칙상 한 번 봐주면 좋음. fixture `agreedFacetSpec.semanticControl`에 기록.
 - 심판 모델 고정값(현재 sonnet) — 제품 러너(codex)와의 정합/비용.
 - (백로그) discover의 `recommendedProof` 분류(245/361 heuristic)를 gold-set로 검증·교정(D3) — "어디에 지능이 필요한가"를 신뢰가능하게.
 - (백로그) 배지 배선: harmony judge가 서면 apex 스펙 projection에 배선할지.
