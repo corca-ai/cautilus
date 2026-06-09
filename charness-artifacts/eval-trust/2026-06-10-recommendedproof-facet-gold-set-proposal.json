@@ -1,0 +1,780 @@
+{
+  "schemaVersion": "cautilus.recommendedproof_facet_gold_set_proposal.v1",
+  "status": "agent-proposed; every label pending maintainer ratification (single labeler)",
+  "purpose": "D3: measure heuristic per-claim recommendedProof accuracy at facet granularity, and harvest the facet vocabulary real claims need, as design input for per-facet discover schema wiring.",
+  "selectionRule": "From .cautilus/claims/latest.json claimCandidates with reviewStatus==heuristic, per recommendedProof tag: sort by claimId, pick indices round(i*(n-1)/11) for i in 0..11 (12 per tag).",
+  "packetGitCommit": "2a75d88c00b8f4a93a54e149e8ce87654348a886",
+  "verdictDefinitions": {
+    "exact": "every substantive facet routes to the tagged class",
+    "too-coarse": "the dominant facet matches the tag but at least one substantive facet routes elsewhere",
+    "wrong": "the dominant facet routes to a different class than the tag",
+    "not-a-claim": "the extracted text is not a provable behavior claim (rejected-alternative bullet, pure context); a discovery extraction issue, excluded from tag-accuracy tallies"
+  },
+  "proposedTallies": {
+    "deterministic": {
+      "exact": 8,
+      "too-coarse": 2,
+      "wrong": 2,
+      "wrongButDebatable": 2,
+      "not-a-claim": 0
+    },
+    "cautilus-eval": {
+      "exact": 0,
+      "too-coarse": 3,
+      "wrong": 8,
+      "wrongButDebatable": 2,
+      "not-a-claim": 1
+    },
+    "human-auditable": {
+      "exact": 1,
+      "too-coarse": 4,
+      "wrong": 7,
+      "wrongButDebatable": 0,
+      "not-a-claim": 0
+    }
+  },
+  "entries": [
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-219",
+      "heuristicTag": "deterministic",
+      "summary": "The binary uses these hints before portable path defaults to label review queues, while the Cautilus Agent or a human reviewer may still correct semantic edge cases.",
+      "sourceRef": "docs/contracts/adapter-contract.md:219",
+      "proposedFacets": [
+        {
+          "facet": "binary applies adapter hints before portable defaults when labeling review queues",
+          "route": "deterministic"
+        },
+        {
+          "facet": "review-result application path accepts agent/human corrections",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "exact",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-382",
+      "heuristicTag": "deterministic",
+      "summary": "The deterministic pass should emit broad candidates and grouping hints that make curation efficient:",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:382",
+      "proposedFacets": [
+        {
+          "facet": "deterministic pass emits broad candidates plus groupHints",
+          "route": "deterministic"
+        },
+        {
+          "facet": "the hints actually make curation efficient",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "too-coarse",
+      "note": "Efficiency-of-curation is a usability facet the tag hides.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-594",
+      "heuristicTag": "deterministic",
+      "summary": "In the claim discovery workflow, the Cautilus Agent owns LLM-backed claim review, review-budget explanation, and subagent orchestration.",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:594",
+      "proposedFacets": [
+        {
+          "facet": "ownership assignment stated in contract and skill docs",
+          "route": "deterministic"
+        },
+        {
+          "facet": "agent actually performs LLM-backed review, budget explanation, and subagent orchestration in live runs",
+          "route": "cautilus-eval"
+        }
+      ],
+      "proposedDominantRoute": "cautilus-eval",
+      "proposedTagVerdict": "wrong",
+      "note": "whyThisLayer cites install/packaging - a visible heuristic misfire; the claim is about agent behavior.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "debatable"
+    },
+    {
+      "claimId": "claim-docs-contracts-eval-judge-collaboration-md-84",
+      "heuristicTag": "deterministic",
+      "summary": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the structured rubric schema, a blind prompt builder that strips the expected label, rationale, and case kind, and a deterministic comparator with a rubber-stamp guard.",
+      "sourceRef": "docs/contracts/eval-judge-collaboration.md:84",
+      "proposedFacets": [
+        {
+          "facet": "module exports rubric schema, blind prompt builder, deterministic comparator, rubber-stamp guard (unit-tested)",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "exact",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-reporting-md-125",
+      "heuristicTag": "deterministic",
+      "summary": "Cache-token breakdown follows the same rule: preserve it when a runtime or wrapper emits explicit machine-readable fields, and do not infer cache behavior from prose.",
+      "sourceRef": "docs/contracts/reporting.md:125",
+      "proposedFacets": [
+        {
+          "facet": "normalizer preserves explicit machine-readable cache-token fields",
+          "route": "deterministic"
+        },
+        {
+          "facet": "normalizer never infers cache fields from prose (negative fixture)",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "exact",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
+      "heuristicTag": "deterministic",
+      "summary": "A skill or evaluate fixture can pass while still reporting that the observed runtime changed from the comparison evidence.",
+      "sourceRef": "docs/contracts/runtime-fingerprint-improvement.md:188",
+      "proposedFacets": [
+        {
+          "facet": "fixture result schema can express pass together with a runtime-changed report",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "exact",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-guides-evaluation-process-md-52",
+      "heuristicTag": "deterministic",
+      "summary": "The helper emits machine-readable baseline and candidate paths you can pass back into `evaluate fixture` or `evaluate review variants`.",
+      "sourceRef": "docs/guides/evaluation-process.md:52",
+      "proposedFacets": [
+        {
+          "facet": "helper emits machine-readable baseline and candidate paths",
+          "route": "deterministic"
+        },
+        {
+          "facet": "emitted paths are accepted back by evaluate fixture / review variants",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "exact",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
+      "heuristicTag": "deterministic",
+      "summary": "Progressive disclosure between the binary and the Cautilus Agent stays within a deterministically checkable contract.",
+      "sourceRef": "docs/specs/contracts/binary-skill-boundary.spec.md:20",
+      "proposedFacets": [
+        {
+          "facet": "disclosure scanner gate exists and runs green in verify",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "exact",
+      "note": "The claim asserts checkability itself; the gate is the proof.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
+      "heuristicTag": "deterministic",
+      "summary": "Expensive eval and improve loops should be represented by durable artifacts with enough provenance to reopen them.",
+      "sourceRef": "docs/specs/evidence/latest-selected-evidence.spec.md:9",
+      "proposedFacets": [
+        {
+          "facet": "eval/improve loops write durable artifacts carrying provenance fields",
+          "route": "deterministic"
+        },
+        {
+          "facet": "provenance suffices to reopen: replay path executes from the artifact alone",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "exact",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-160",
+      "heuristicTag": "deterministic",
+      "summary": "`discover claims status` owns the next-action summary over a saved discovery packet.",
+      "sourceRef": "docs/specs/user/claim-discovery.spec.md:160",
+      "proposedFacets": [
+        {
+          "facet": "discover claims status reads a saved packet and emits the next-action summary",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "exact",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+      "heuristicTag": "deterministic",
+      "summary": "After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory.",
+      "sourceRef": "docs/specs/user/reviewable-artifacts.spec.md:3",
+      "proposedFacets": [
+        {
+          "facet": "workflow runs write durable packets and readable views",
+          "route": "deterministic"
+        },
+        {
+          "facet": "another person or agent can actually reopen from the artifacts without chat context",
+          "route": "cautilus-eval"
+        },
+        {
+          "facet": "reopen path is acceptable to a human operator",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "too-coarse",
+      "note": "Reopenability-without-chat-memory is a behavior facet, not a schema facet.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-skills-cautilus-agent-skill-md-23",
+      "heuristicTag": "deterministic",
+      "summary": "Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.",
+      "sourceRef": "skills/cautilus-agent/SKILL.md:23",
+      "proposedFacets": [
+        {
+          "facet": "ownership boundary stated in SKILL.md within the disclosure gate",
+          "route": "deterministic"
+        },
+        {
+          "facet": "agent actually owns routing, sequencing, and decision boundaries in live runs",
+          "route": "cautilus-eval"
+        }
+      ],
+      "proposedDominantRoute": "cautilus-eval",
+      "proposedTagVerdict": "wrong",
+      "note": "Same misfire class as cdw-594: agent-behavior claim tagged as packaging.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "debatable"
+    },
+    {
+      "claimId": "claim-docs-contracts-active-run-md-186",
+      "heuristicTag": "cautilus-eval",
+      "summary": "Ambiguous across parallel workflows, silently grabs yesterday's workflow across session gaps, requires a magic freshness threshold.",
+      "sourceRef": "docs/contracts/active-run.md:186",
+      "proposedFacets": [
+        {
+          "facet": "rejected-alternative rationale bullet; no behavior promise to prove",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "human-auditable",
+      "proposedTagVerdict": "not-a-claim",
+      "note": "Discovery extracted a rejected-design bullet as a claim. This is a discovery extraction issue, not a tag misroute; excluded from tag-accuracy tallies and motivating a split/not-a-claim lane in the schema work.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-200",
+      "heuristicTag": "cautilus-eval",
+      "summary": "After the deterministic pass, Cautilus Agent should show a separate review plan:",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:200",
+      "proposedFacets": [
+        {
+          "facet": "review-plan payload computed and exposed deterministically",
+          "route": "deterministic"
+        },
+        {
+          "facet": "agent shows the review plan after the deterministic pass, at the right point in sequence",
+          "route": "cautilus-eval"
+        }
+      ],
+      "proposedDominantRoute": "cautilus-eval",
+      "proposedTagVerdict": "too-coarse",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-528",
+      "heuristicTag": "cautilus-eval",
+      "summary": "Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first.",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:528",
+      "proposedFacets": [
+        {
+          "facet": "action buckets include byReviewStatus and byEvidenceStatus counts",
+          "route": "deterministic"
+        },
+        {
+          "facet": "counts let a human triage queue readiness",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "Schema/packet behavior; no model in the loop.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-111",
+      "heuristicTag": "cautilus-eval",
+      "summary": "`doctor` should not infer that a runner shares production behavior by reading arbitrary app code.",
+      "sourceRef": "docs/contracts/runner-readiness.md:111",
+      "proposedFacets": [
+        {
+          "facet": "doctor does not read arbitrary app code to infer runner readiness (negative behavior of the Go binary)",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "Doctor is deterministic Go; a negative code-path test proves this.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-359",
+      "heuristicTag": "cautilus-eval",
+      "summary": "A simple app repo can adopt Cautilus with one headless product runner without adopting the full eval-live instance model.",
+      "sourceRef": "docs/contracts/runner-readiness.md:359",
+      "proposedFacets": [
+        {
+          "facet": "adapter schema accepts a single headless product runner without eval-live instances",
+          "route": "deterministic"
+        },
+        {
+          "facet": "onboarding smoke passes on that minimal consumer shape",
+          "route": "deterministic"
+        },
+        {
+          "facet": "adoption is workable for a real operator",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-261",
+      "heuristicTag": "cautilus-eval",
+      "summary": "This sequence keeps the evidence honest before asking improve search to mutate prompts more aggressively.",
+      "sourceRef": "docs/contracts/runtime-fingerprint-improvement.md:261",
+      "proposedFacets": [
+        {
+          "facet": "ordering rationale: the sequence keeps evidence honest",
+          "route": "human-auditable"
+        },
+        {
+          "facet": "sequence is enforced before improve-search prompt mutation",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "human-auditable",
+      "proposedTagVerdict": "wrong",
+      "note": "Pure rationale sentence; the heuristic has a human-auditable rationale class, so tagging it cautilus-eval is a misroute to an existing class. Dominance reading (rationale vs enforcement) flagged debatable.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "debatable"
+    },
+    {
+      "claimId": "claim-docs-specs-contracts-active-run-workspace-spec-md-13",
+      "heuristicTag": "cautilus-eval",
+      "summary": "Cautilus can allocate and remember a per-run workspace for a workflow, but command artifacts own workflow metadata; the active-run marker resumes the same bounded workflow without turning local workspace contents into product-owned behavior.",
+      "sourceRef": "docs/specs/contracts/active-run-workspace.spec.md:13",
+      "proposedFacets": [
+        {
+          "facet": "per-run workspace allocation and active-run marker resume work",
+          "route": "deterministic"
+        },
+        {
+          "facet": "workspace contents stay out of product-owned packets (boundary)",
+          "route": "deterministic"
+        },
+        {
+          "facet": "bounded-workflow resumption semantics match operator intent",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-index-spec-md-12",
+      "heuristicTag": "cautilus-eval",
+      "summary": "**proven** — a checked-in executable spec runs the behavior live and asserts on the result",
+      "sourceRef": "docs/specs/index.spec.md:12",
+      "proposedFacets": [
+        {
+          "facet": "the proven-badge definition is stated and stable vocabulary",
+          "route": "human-auditable"
+        },
+        {
+          "facet": "every badge shown as proven links to an executable spec that runs live (projection check)",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "human-auditable",
+      "proposedTagVerdict": "wrong",
+      "note": "A definition line; the enforceable part is a deterministic projection check.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "debatable"
+    },
+    {
+      "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-15",
+      "heuristicTag": "cautilus-eval",
+      "summary": "[Behavior Evaluation](evaluation.spec.md): Cautilus evaluates intentful behavior across supported `dev` and `app` surfaces.",
+      "sourceRef": "docs/specs/ledger/promise-ledger.spec.md:15",
+      "proposedFacets": [
+        {
+          "facet": "eval commands execute across dev and app surfaces",
+          "route": "deterministic"
+        },
+        {
+          "facet": "the evaluation actually judges intentful behavior (semantic verdicts are sound)",
+          "route": "cautilus-eval"
+        },
+        {
+          "facet": "supported-surface list matches reality",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "cautilus-eval",
+      "proposedTagVerdict": "too-coarse",
+      "note": "The flagship Behavior Evaluation promise; exactly the reasoning-soundness work.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-222",
+      "heuristicTag": "cautilus-eval",
+      "summary": "A user can get a safe next workflow branch before spending workflow budget.",
+      "sourceRef": "docs/specs/user/doctor-readiness.spec.md:222",
+      "proposedFacets": [
+        {
+          "facet": "doctor emits a next workflow branch from readiness state",
+          "route": "deterministic"
+        },
+        {
+          "facet": "branch catalog never recommends launching when the runner is unready (safety)",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "Safety is encoded in the deterministic branch catalog.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-user-index-spec-md-22",
+      "heuristicTag": "cautilus-eval",
+      "summary": "The shared-concern section keeps workflow-wide rules and risks visible.",
+      "sourceRef": "docs/specs/user/index.spec.md:22",
+      "proposedFacets": [
+        {
+          "facet": "shared-concern section exists and enumerates workflow-wide rules",
+          "route": "deterministic"
+        },
+        {
+          "facet": "the enumerated rules are genuinely the workflow-wide ones and readable",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-skills-cautilus-agent-skill-md-219",
+      "heuristicTag": "cautilus-eval",
+      "summary": "Agents should read the packet first, then cite HTML only when a browser view is the deliverable.",
+      "sourceRef": "skills/cautilus-agent/SKILL.md:219",
+      "proposedFacets": [
+        {
+          "facet": "packet-first instruction present in the skill text",
+          "route": "deterministic"
+        },
+        {
+          "facet": "agents actually read the packet first and cite HTML only for browser deliverables",
+          "route": "cautilus-eval"
+        }
+      ],
+      "proposedDominantRoute": "cautilus-eval",
+      "proposedTagVerdict": "too-coarse",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-adapter-contract-md-407",
+      "heuristicTag": "human-auditable",
+      "summary": "This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.",
+      "sourceRef": "docs/contracts/adapter-contract.md:407",
+      "proposedFacets": [
+        {
+          "facet": "rationale: separation prevents one overloaded adapter file",
+          "route": "human-auditable"
+        },
+        {
+          "facet": "adapter schema actually separates benchmarking and smoke concerns",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "human-auditable",
+      "proposedTagVerdict": "too-coarse",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-180",
+      "heuristicTag": "human-auditable",
+      "summary": "That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:180",
+      "proposedFacets": [
+        {
+          "facet": "status/inspect/refresh commands read the selected map",
+          "route": "deterministic"
+        },
+        {
+          "facet": "state_path remains the default first-discovery output",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "Fully deterministic CLI behavior.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-262",
+      "heuristicTag": "human-auditable",
+      "summary": "Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:262",
+      "proposedFacets": [
+        {
+          "facet": "heuristic labels observation/provider-caveat statements human-auditable and blocked",
+          "route": "deterministic"
+        },
+        {
+          "facet": "promotion policy rationale",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "The labeling behavior itself is testable pipeline code.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-558",
+      "heuristicTag": "human-auditable",
+      "summary": "Depth 3 must be paired with visible source, candidate, cluster, and review-budget bounds.",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:558",
+      "proposedFacets": [
+        {
+          "facet": "depth-3 discovery runs emit source, candidate, cluster, and review-budget bounds",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-689",
+      "heuristicTag": "human-auditable",
+      "summary": "LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:689",
+      "proposedFacets": [
+        {
+          "facet": "sequencing guidance for future review tuning (explicitly blocked until promoted)",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "human-auditable",
+      "proposedTagVerdict": "exact",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-runner-readiness-md-172",
+      "heuristicTag": "human-auditable",
+      "summary": "This document owns assessment existence, scope, freshness, proof class, and recommendation.",
+      "sourceRef": "docs/contracts/runner-readiness.md:172",
+      "proposedFacets": [
+        {
+          "facet": "doc-ownership statement: no competing doc owns these assessment fields",
+          "route": "human-auditable"
+        },
+        {
+          "facet": "the named fields exist in the assessment schema",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "human-auditable",
+      "proposedTagVerdict": "too-coarse",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-40",
+      "heuristicTag": "human-auditable",
+      "summary": "The proposal engine should read from four source ports.",
+      "sourceRef": "docs/contracts/scenario-proposal-sources.md:40",
+      "proposedFacets": [
+        {
+          "facet": "proposal engine reads from four source ports",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "A unit test on the engine proves this directly.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-contracts-claim-discovery-workflow-spec-md-17",
+      "heuristicTag": "human-auditable",
+      "summary": "Discovery emits source-ref-backed candidates from configured entry documents and linked Markdown within the declared depth bounds.",
+      "sourceRef": "docs/specs/contracts/claim-discovery-workflow.spec.md:17",
+      "proposedFacets": [
+        {
+          "facet": "discovery emits source-ref-backed candidates within declared depth bounds",
+          "route": "deterministic"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "Lives in a spec file that can assert it executably.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-rules-evidence-gaps-spec-md-3",
+      "heuristicTag": "human-auditable",
+      "summary": "Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.",
+      "sourceRef": "docs/specs/rules/evidence-gaps.spec.md:3",
+      "proposedFacets": [
+        {
+          "facet": "evidence-state keeps missing or weak evidence visible until resolved",
+          "route": "deterministic"
+        },
+        {
+          "facet": "the do-not-treat-as-satisfied policy stance",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "The renderer enforces the visibility rule deterministically.",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-12",
+      "heuristicTag": "human-auditable",
+      "summary": "Instead, it uses a repo-owned adapter so the user can declare how Cautilus should inspect and evaluate that repo.",
+      "sourceRef": "docs/specs/user/doctor-readiness.spec.md:12",
+      "proposedFacets": [
+        {
+          "facet": "doctor reads the repo-owned adapter instead of hardcoded inspection",
+          "route": "deterministic"
+        },
+        {
+          "facet": "a user can express inspection/eval intent through the adapter vocabulary",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "deterministic",
+      "proposedTagVerdict": "wrong",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-docs-specs-user-ownership-spec-md-4",
+      "heuristicTag": "human-auditable",
+      "summary": "Using the `cautilus init adapter`, `cautilus doctor adapter`, and `cautilus doctor` CLI commands with the `cautilus-agent` skill, a user can keep host-owned execution in place while Cautilus standardizes workflow packets and boundaries.",
+      "sourceRef": "docs/specs/user/ownership.spec.md:4",
+      "proposedFacets": [
+        {
+          "facet": "named CLI commands exist and operate the adapter",
+          "route": "deterministic"
+        },
+        {
+          "facet": "host-owned execution is preserved (boundary audit across docs, code, adapter)",
+          "route": "human-auditable"
+        },
+        {
+          "facet": "agent plus CLI workflow standardizes packets in practice",
+          "route": "cautilus-eval"
+        }
+      ],
+      "proposedDominantRoute": "human-auditable",
+      "proposedTagVerdict": "too-coarse",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    },
+    {
+      "claimId": "claim-skills-cautilus-agent-skill-md-129",
+      "heuristicTag": "human-auditable",
+      "summary": "Maintainer-facing claims may use internal terms, but they must stay aligned with the user-facing claim specs and preserve source refs, proof route, evidence status, and next action.",
+      "sourceRef": "skills/cautilus-agent/SKILL.md:129",
+      "proposedFacets": [
+        {
+          "facet": "claim projections preserve source refs, proof route, evidence status, next action",
+          "route": "deterministic"
+        },
+        {
+          "facet": "maintainer-facing vocabulary stays aligned with user-facing claim specs",
+          "route": "human-auditable"
+        }
+      ],
+      "proposedDominantRoute": "human-auditable",
+      "proposedTagVerdict": "too-coarse",
+      "note": "",
+      "maintainerVerdict": null,
+      "dominanceConfidence": "clear"
+    }
+  ],
+  "labelingRules": {
+    "dominance": "The dominant facet is the one whose failure would falsify the main predicate of the claim sentence. When the sentence honestly reads two ways (declarative ownership vs live behavior; definition vs its enforcement), the entry keeps the proposed dominant but is flagged dominanceConfidence=debatable for maintainer tie-break.",
+    "definitions": "Vocabulary definitions are context, not facets; the facet is their enforceable projection (e.g., a badge definition is human context, the badge-to-spec link check is the deterministic facet).",
+    "checkerExistence": "A deterministic route asserts the facet is mechanically checkable in principle. Whether the checker already exists in this repo is recorded during schema wiring, not here; routing does not claim present-day test coverage."
+  },
+  "critique": "Bounded fresh-eye subagent review 2026-06-10 returned needs-revision; blockers (non-claim tally inflation, dominance tie-break opacity, pattern-1 framing) applied in this version. Minor items folded into labelingRules."
+}
