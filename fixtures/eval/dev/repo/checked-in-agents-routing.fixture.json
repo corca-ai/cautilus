@@ -16,8 +16,7 @@
         "multi_tool_use.parallel"
       ],
       "expectedRouting": {
-        "bootstrapHelper": "charness:find-skills",
-        "workSkill": "charness:impl"
+        "bootstrapHelper": "charness:find-skills"
       }
     }
   ]
