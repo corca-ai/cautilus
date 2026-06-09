@@ -2,10 +2,10 @@
   "schemaVersion": "cautilus.reasoning_soundness_calibration.v1",
   "claimId": "app-chat-conversation-goal-achievement",
   "claimStatement": "In a chat turn, the assistant achieves the user's goal: it answers the actual question substantively AND honors every answer-format preference the user stated in that turn (a chatbot preference-retention behavior).",
-  "status": "real-grounded-2026-06-09",
+  "status": "decomposed-2026-06-09",
   "surface": "app",
   "preset": "chat",
-  "purpose": "First SEMANTIC-claim calibration, proving the harness judges a different KIND of claim where intelligence is load-bearing (no clean token) and natural variation occurs. All four cases are real harvested chat responses; one (sc2) naturally MISSES the goal by dropping the stated length limit, so the gate has a real negative without a synthetic control. The length limit is a deterministic facet (char count) the code cross-checks against the judge — the code+intelligence harmony made concrete.",
+  "purpose": "First SEMANTIC-claim calibration, proving the harness judges a different KIND of claim where intelligence is load-bearing (no clean token) and natural variation occurs. All four cases are real harvested chat responses; one (sc2) naturally MISSES the goal by dropping the stated length limit, so the gate has a real negative without a synthetic control. DECOMPOSED 2026-06-09: the deterministic format facets (language, lists, required 요약 line, one-paragraph body, length) are now computed by CODE via `codeFacets`, and the judge assesses ONLY the semantic facets; the composite verdict ANDs them. This resolved the earlier 3/4 calibration failure, where the judge applied the ambiguous one-paragraph structure check inconsistently — the code+intelligence harmony made concrete.",
   "agreedFacetSpec": {
     "decidedBy": "maintainer, 2026-06-09",
     "structureRule": "The user's 'answer in one paragraph with no bullet/numbered lists' applies to the ANSWER BODY only. The required '요약:' line is a SEPARATE required element, exempt from the one-paragraph count. So an answer-paragraph followed by a 요약 line is compliant.",
@@ -14,22 +14,22 @@
       "intelligence_judge": ["answered_substantively", "no_fabrication"]
     },
     "maintainerConfirmedLabels": { "sc1": "sound", "sc2": "unsound (240 chars > 200 limit)", "sc3": "sound", "sc4": "sound (judge was wrong: identical structure to sc1/sc3)" },
-    "nextSessionPlan": "Decompose: code computes the deterministic facets above (consistently); the judge assesses only the intelligence facets; the verdict ANDs them. Predicted result: 4/4 consistent, promoting this claim from calibrationExpectation 'fail-pending-facet-decomposition' to a passing gate."
+    "appliedDecomposition": "DONE 2026-06-09. Code computes the deterministic facets via the harness `codeFacets` registry (consistently); the judge was re-captured blind with a SEMANTIC-ONLY prompt (answered_substantively, no_fabrication) and never sees the format constraints; compareVerdicts ANDs the code facets with the judge's semantic verdict. Result: 4/4 consistent — sc4 now passes because code (not the judge) counts the one-paragraph body with the 요약 line exempt. Promoted from calibrationExpectation 'fail-pending-facet-decomposition' to a passing gate."
   },
-  "judgeBrief": "You are an independent evaluator of a chat assistant's RESPONSE. Judge ONLY whether the response achieved the user's goal for the turn, against the criteria below. The user stated answer-format preferences inside their turn; those preferences are PART of the goal.",
+  "codeFacets": ["language_korean", "no_bullet_or_numbered_lists", "has_요약_line", "answer_body_is_one_paragraph", "within_stated_char_limit"],
+  "judgeBrief": "You are an independent evaluator of a chat assistant's RESPONSE CONTENT. Judge ONLY the substance: did the response correctly and substantively answer the actual question, and did it avoid inventing false claims about the topic? Do NOT judge formatting, length, language, list usage, required lines, or paragraph structure — those constraints are checked separately by deterministic code and are explicitly OUT of your scope. If the user's turn states format or length preferences, ignore them entirely and assess content only.",
   "verdictDefinition": [
-    "- sound = goal achieved: the response answers the actual question substantively AND honors EVERY format preference stated in the user's turn (language, structure, required elements, and any length limit).",
-    "- unsound = goal NOT achieved: the response is wrong/thin OR drops any one stated preference, even if the rest is good.",
-    "- Count carefully: if the user gave a length limit, a response that exceeds it has dropped a stated preference."
+    "- sound = the response substantively and correctly answers the actual question and invents no false claims about the topic.",
+    "- unsound = the response is wrong, thin, evasive, or fabricates claims about the topic.",
+    "- Formatting, length, language, lists, and paragraph structure are NOT yours to judge: a content-correct response that happens to be over-length or wrongly formatted is still 'sound' for your semantic verdict. Code checks those facets separately."
   ],
   "judgeFacets": [
     { "key": "answered_substantively", "description": "Does the response correctly and substantively answer the actual question (regression vs smoke test), not vaguely or wrongly?" },
-    { "key": "format_constraints_met", "description": "Does the response honor EVERY format preference the user stated in their turn — language, prose-with-no-bullet/numbered-lists, a final line starting with '요약:', and any stated character limit?" },
     { "key": "no_fabrication", "description": "Does the response avoid inventing false claims about the topic?" }
   ],
   "governingRules": {
-    "goal_achievement": "The assistant achieves the user's goal for a turn only if it (a) substantively and correctly answers the actual question AND (b) honors every answer-format preference stated in that same turn.",
-    "preference_retention": "Stated format preferences (language, structure, required elements, length limits) are part of the goal; dropping any one means the goal was not fully achieved, even when the content is correct."
+    "substantive_answer": "The assistant must correctly and substantively answer the actual question asked, not respond vaguely, partially, or incorrectly.",
+    "no_fabrication": "The assistant must not invent false claims about the topic."
   },
   "cases": [
     {
