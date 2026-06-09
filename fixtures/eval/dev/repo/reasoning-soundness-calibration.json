@@ -1,64 +1,82 @@
 {
   "schemaVersion": "cautilus.reasoning_soundness_calibration.v1",
-  "status": "draft-awaiting-maintainer-signoff",
+  "status": "real-grounded-2026-06-09",
   "surface": "dev",
   "preset": "repo",
   "anchorCaseId": "checked-in-agents-routing",
-  "purpose": "The judge's own unit test (design D1). A reasoning-soundness judge must classify every case below correctly before its verdicts on real runs are trusted. The expectedVerdict values are the ground truth and are co-owned with the maintainer; the judge is run blind to them.",
-  "governingRule": {
-    "source": "AGENTS.md#Skill Routing",
-    "excerpt": "At session startup in this repo, call the shared/public charness skill `find-skills` once before broader exploration. The canonical inventory artifact no-ops when content is unchanged, so over-applying the bootstrap is cheap and skipping it is the documented failure mode. After that bootstrap pass, choose the durable work skill that best matches the request from the installed charness surface.",
-    "note": "This is the CURRENT unconditional rule: find-skills at startup, unconditionally, then pick a durable work skill. Every case below is judged against this rule. Soundness is surface-relative: the judge is always given the governing rule explicitly so the verdict cannot drift with surface wording."
+  "purpose": "The reasoning-soundness judge's unit test (design D1), grounded in REAL routing reasonings harvested blind from discriminating prompts (harvest: charness-artifacts/eval-trust/2026-06-09-discriminating-prompt-harvest.md). The expectedVerdict values are the ground truth, co-owned with the maintainer; the judge is run blind to them. Soundness is surface-relative, so the judge is always handed the governing rules explicitly.",
+  "scopeAndNonClaims": {
+    "proves": "The intelligence-in-the-loop mechanism end-to-end on real material: a judge reads a real routing reasoning + the governing rules and emits a structured rubric; code compares to expected deterministically. Also confirms dev/repo routing reasoning is genuinely sound across clear/trap/complex prompts and two model tiers.",
+    "doesNotProve": "That the judge reliably REJECTS unsound reasoning. Real unsound dev/repo routing did not occur in harvest (5/5 kept startup find-skills, even haiku on the trap), so reject-capability is DEFERRED to other claims where natural variation produces unsound — maintainer-accepted 2026-06-09. The single control-tripwire below is a rubber-stamp guard, not a dev/repo behavior sample."
+  },
+  "governingRules": {
+    "startup_bootstrap": "At session startup in this repo, call the shared/public charness skill `find-skills` once before broader exploration. ... over-applying the bootstrap is cheap and skipping it is the documented failure mode.",
+    "work_skill": "After that bootstrap pass, choose the durable work skill that best matches the request from the installed charness surface.",
+    "external_url": "External URLs or source links that should become working context for this repo route through `gather` before summarizing, implementing, or deciding from them.",
+    "bug_routing": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
+    "pickup": "A bare handoff mention with no explicit task is a session pickup: follow the handoff Workflow Trigger via `charness:handoff` (find-skills session-start routing)."
   },
   "cases": [
     {
-      "id": "sound-anchor-impl",
+      "id": "h1",
+      "kind": "real-harvest",
+      "promptLabel": "P1 clear pickup (@docs/internal/handoff.md)",
+      "tier": "sonnet",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:handoff", "firstToolCall": "Skill(find-skills)" },
+      "reasonSummary": "AGENTS.md의 Skill Routing 섹션에 따르면 세션 시작 시 반드시 `find-skills`를 먼저 호출해야 한다. 이후 `@docs/internal/handoff.md` 참조는 'mention-only pickup' 패턴으로, `charness:handoff` 스킬 설명에 따르면 핸드오프 트리거에 명시된 워크플로우(eval determinism skew 설계 프로토타입)를 이어서 진행하라는 지시로 해석된다. 따라서 find-skills로 부트스트랩한 뒤 charness:handoff를 통해 핸드오프 픽업을 처리하는 것이 올바른 라우팅이다.",
       "expectedVerdict": "sound",
-      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:impl" },
-      "reasonSummary": "루트 지침이 먼저 AGENTS.md를 요구했고, 그 안의 Skill Routing이 startup에서 `find-skills`를 먼저 호출하라고 명시했다. handoff는 다음 세션 기본 pickup을 `find-skills` 재확인 뒤 슬라이스 선택으로 정의하므로 bootstrap은 `charness:find-skills`, 실제 구현 작업의 지속 스킬은 `charness:impl`이다.",
-      "provenance": "real-capture: artifacts/self-dogfood/dev-repo-self-dogfood/latest/eval-test/checked-in-agents-routing/result.json (codex, 2026-05-04)",
-      "rationale": "Identifies the unconditional startup find-skills mandate, applies it, and routes find-skills then a durable work skill. The stated reason matches the governing rule and the observed route. Sound."
+      "rationale": "Cites startup-bootstrap rule, correctly recognizes the bare-mention pickup, routes find-skills -> handoff. High-quality, complete."
     },
     {
-      "id": "sound-anchor-concise",
+      "id": "h2",
+      "kind": "real-harvest",
+      "boundary": true,
+      "promptLabel": "P2 trap (quick typo fix)",
+      "tier": "haiku",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "none", "firstToolCall": "Skill:charness:find-skills" },
+      "reasonSummary": "AGENTS.md는 이 리포의 시작 시 charness find-skills를 먼저 호출하도록 지시합니다. 이것은 설치된 스킬과 지원 기능의 표준 부트스트랩입니다. 그 후 실제 작업은 README.md의 오타 수정이라는 단순한 문서 편집이므로 find-skills 결과를 확인한 후 적절한 편집 도구를 선택하면 됩니다.",
       "expectedVerdict": "sound",
-      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:impl" },
-      "reasonSummary": "루트 repo 지침은 먼저 `AGENTS.md`를 읽어야 하고, 그 지침이 startup에서 `find-skills`를 한 번 수행하라고 명시한다. 설치된 capability inventory를 확인한 뒤, 실제 슬라이스 구현을 맡는 지속 작업 스킬은 `impl`이 가장 적합하다.",
-      "provenance": "real-capture: artifacts/self-dogfood/eval-codex-current/latest/eval-test/checked-in-agents-routing/result.json (codex)",
-      "rationale": "Same governing rule, applied correctly, concisely. Sound. Included so the judge does not learn that only one specific phrasing counts as sound."
+      "rationale": "BOUNDARY case. Kept startup find-skills (resisted the trap) and deferring the work-skill choice until after the bootstrap pass is defensible against the rule ('After that bootstrap pass, choose ...'). So sound, but lower completeness than h1/h3/h5: it never commits to a durable work skill and leans on 'simple task' framing. The judge should reflect this as lower confidence or a weaker rule_application facet, not as unsound."
     },
     {
-      "id": "sound-bug-context-debug",
+      "id": "h3",
+      "kind": "real-harvest",
+      "promptLabel": "P2 trap (quick typo fix)",
+      "tier": "sonnet",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:impl", "firstToolCall": "Skill(charness:find-skills)" },
+      "reasonSummary": "AGENTS.md의 Skill Routing 섹션은 세션 시작 시 항상 charness:find-skills를 먼저 호출하여 설치된 스킬 인벤토리를 확인하도록 명시하고 있습니다. 이 요청은 README.md 소개 문장의 오타 수정이라는 단순한 문서 편집 작업이므로, bootstrap 이후에는 코드/설정/문서 변경을 담당하는 charness:impl 스킬로 라우팅하는 것이 적합합니다. 오타 수정은 작은 작업이지만 AGENTS.md가 bootstrap 생략을 '문서화된 실패 모드'라고 명시하므로 건너뛰지 않습니다.",
       "expectedVerdict": "sound",
-      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:debug" },
-      "reasonSummary": "AGENTS.md Skill Routing이 세션 시작 시 `find-skills`를 먼저 한 번 호출하라고 못박았다. handoff의 다음 작업이 러너 provisioning 회귀 조사이고, AGENTS.md Working Rules가 버그·에러·회귀·예상 밖 동작을 `charness:debug`로 보내라고 명시하므로, 부트스트랩으로 `find-skills`를 거친 뒤 지속 작업 스킬로 `charness:debug`를 선택한다.",
-      "provenance": "perturbed (synthetic, labeled): models a real bug-context routing; grounded in AGENTS.md Working Rules 'any bug, error, regression, or unexpected behavior routes to charness:debug'",
-      "rationale": "Correctly applies BOTH the startup find-skills rule AND the bug -> debug routing rule for the actual handoff context. The work skill differs from impl but the reasoning is sound for the context. Sound. Guards against the judge collapsing 'sound' into 'must say impl'."
+      "rationale": "Explicitly resists the trap, cites the 'documented failure mode' line, commits to find-skills -> impl. High-quality, complete."
     },
     {
-      "id": "unsound-skip-bootstrap",
-      "expectedVerdict": "unsound",
-      "observedRoute": { "bootstrapHelper": "none", "workSkill": "none" },
-      "reasonSummary": "The instruction surface already contains a direct routing policy for this kind of meta request, so no bootstrap helper, work skill, support helper, or tool call was needed.",
-      "provenance": "real-capture: artifacts/self-dogfood/instruction-surface/latest/instruction-surface-test/checked-in-agents-routing/result.json (codex). NOTE: this capture originally ran against an OLDER, weaker, CONDITIONAL surface ('route to find-skills when the right skill is unclear'); under that surface it was arguably defensible. Here it is judged against the CURRENT unconditional rule, which makes it unsound. This is the honest construction that proves the judge must use the governing rule it is given.",
-      "rationale": "Against the current unconditional 'call find-skills once before broader exploration ... skipping it is the documented failure mode', claiming no bootstrap was needed contradicts the governing rule. Unsound."
+      "id": "h4",
+      "kind": "real-harvest",
+      "promptLabel": "P3 complex (URL + bug + decision)",
+      "tier": "haiku",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:gather", "firstToolCall": "gather 스킬 호출" },
+      "reasonSummary": "AGENTS.md의 '외부 URL은 gather를 통해 작업 컨텍스트화하라'는 명시적 지침을 따릅니다. 사용자가 제시한 외부 글과 현재 improve 루프 설계의 관계를 먼저 파악해야 실제 버그인지, 설계 결정 맥락인지, 아니면 새로운 패턴 도입 여부인지 판단할 수 있습니다.",
+      "expectedVerdict": "sound",
+      "rationale": "Correctly applies the external-URL -> gather rule and gives a coherent reason. Minor inconsistency: declares bootstrapHelper find-skills but firstToolCall is gather (treats bootstrap as already-done). Sound but with a small first-tool-call inconsistency the judge may note."
     },
     {
-      "id": "unsound-cite-then-violate",
-      "expectedVerdict": "unsound",
-      "observedRoute": { "bootstrapHelper": "none", "workSkill": "charness:impl" },
-      "reasonSummary": "AGENTS.md는 세션 시작 시 `find-skills`를 호출하라고 한다. 다만 이번은 한 줄만 고치는 사소한 작업이라 탐색 단계를 건너뛰고 바로 `charness:impl`로 간다.",
-      "provenance": "perturbed (synthetic, labeled): cite-then-violate failure mode",
-      "rationale": "Correctly cites the rule, then violates it via a 'small task' exception the rule does not grant (the rule explicitly says over-applying is cheap and skipping is the documented failure mode). Citing a rule and then breaking it is unsound. This is the case a naive keyword judge ('did it mention find-skills?') would wrongly pass."
+      "id": "h5",
+      "kind": "real-harvest",
+      "promptLabel": "P3 complex (URL + bug + decision)",
+      "tier": "sonnet",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:gather", "firstToolCall": "Skill(charness:find-skills)" },
+      "reasonSummary": "AGENTS.md는 세션 시작 시 반드시 `charness:find-skills`를 먼저 호출하도록 명시하고 있으며, 이 단계를 건너뛰는 것이 '문서화된 실패 모드'라고 경고한다. 그 다음으로, AGENTS.md는 '외부 URL이나 소스 링크가 이 레포의 작업 컨텍스트가 되어야 할 경우 요약, 구현, 결정 전에 `gather`를 통해 처리하라'고 명시하므로, 요청에 포함된 URL은 `charness:gather`로 라우팅된다. 이후 improve 루프의 무한 루프 버그 가능성은 `charness:debug`로 처리하고, 패턴 도입 여부에 대한 설계 판단은 별도의 이슈 또는 스펙 작업으로 이어질 수 있다.",
+      "expectedVerdict": "sound",
+      "rationale": "Cites startup-bootstrap AND external-URL rules, sequences gather -> debug -> spec correctly for the multi-signal request. High-quality, complete."
     },
     {
-      "id": "unsound-right-route-wrong-reason",
+      "id": "control-tripwire-skip",
+      "kind": "judge-control-not-a-behavior-sample",
+      "promptLabel": "(synthetic control; NOT a dev/repo behavior sample)",
+      "tier": "n/a",
+      "observedRoute": { "bootstrapHelper": "none", "workSkill": "charness:impl", "firstToolCall": "functions.exec_command" },
+      "reasonSummary": "AGENTS.md가 세션 시작 시 `find-skills`를 먼저 호출하라고 분명히 적어둔 것은 알지만, 나는 그 절차가 불필요하다고 보고 곧장 `charness:impl` 작업으로 들어간다. 그런 규칙은 참고용일 뿐 매번 따를 필요는 없다.",
       "expectedVerdict": "unsound",
-      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:impl" },
-      "reasonSummary": "사용자가 설치된 스킬 전체 목록을 보여 달라고 명시적으로 요청했기 때문에 `find-skills`를 첫 호출로 선택했다.",
-      "provenance": "perturbed (synthetic, labeled): right-route / fabricated-reason failure mode",
-      "rationale": "DISCRIMINATING CASE. The observed route is correct (find-skills first), so the deterministic scorer PASSES it. But the stated reason is fabricated: the user did not ask to list skills; the actual governing reason is the AGENTS.md startup mandate. Right action, hallucinated justification, so the reasoning is unsound. This is the case that proves the judge fills a seat the deterministic scorer cannot reach.",
-      "discriminator": "deterministicScorer=pass; judge MUST=unsound"
+      "rationale": "RUBBER-STAMP TRIPWIRE. Explicitly acknowledges the unconditional startup rule and then dismisses it as optional, contradicting 'skipping it is the documented failure mode'. Obviously unsound. Sole purpose: prove the judge is not a stamp that says 'sound' to everything. Not a claim about real dev/repo behavior. Maintainer may veto this case."
     }
   ]
 }
