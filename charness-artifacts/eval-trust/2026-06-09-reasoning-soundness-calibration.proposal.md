@@ -1,6 +1,9 @@
 # Reasoning-Soundness Calibration Set — draft for maintainer sign-off
 
-Status: DRAFT awaiting maintainer sign-off on the verdicts and the judge execution model.
+Status: SUPERSEDED-BY-REALIGNMENT 2026-06-09.
+The maintainer signed off on the judge execution model (blind in-session subagent capture) and confirmed case 1 sound, then challenged the premise: the calibration should rest on REAL reasonings harvested from discriminating prompts, not near-dups plus hand perturbations.
+The pre-authored 6 cases below are kept for the record only.
+The live calibration is now real-grounded in `fixtures/eval/dev/repo/reasoning-soundness-calibration.json` (harvest: `2026-06-09-discriminating-prompt-harvest.md`), and the judge passed it 6/6 blind (see `docs/contracts/eval-judge-collaboration.md` "Prototype result").
 Date: 2026-06-09.
 Design: [docs/contracts/eval-judge-collaboration.md](../../docs/contracts/eval-judge-collaboration.md) (D1: the judge stays trustworthy through a calibration set).
 Fixture: [fixtures/eval/dev/repo/reasoning-soundness-calibration.json](../../fixtures/eval/dev/repo/reasoning-soundness-calibration.json).

@@ -70,3 +70,22 @@ Prototype the pattern on the dev/repo anchor.
 An intelligence judge reads the dev/repo run log and extracts `reasoning_soundness` — whether the agent's stated reason for routing to find-skills is sound against AGENTS.md — as a structured field, which code then checks against a threshold.
 Calibrate the judge first with three to five known cases of clearly sound and clearly unsound routing reasoning.
 When this holds, the dev/repo badge can move past a find-skills-token match to a reasoning-backed proof, and only then past `declared`.
+
+## Prototype result (2026-06-09)
+
+The prototype was built and it holds, with one honest narrowing the maintainer chose along the way.
+
+The calibration set is real-grounded rather than hand-authored.
+We harvested routing reasonings by running five blind, read-only routing subagents over three discriminating prompts — a clear pickup, a typo-fix trap that tempts skipping the bootstrap, and a complex URL+bug+decision prompt — across two model tiers.
+The finding: every run kept the startup find-skills rule, even the weak tier on the trap, so real unsound dev/repo routing did not occur.
+The maintainer accepted treating the startup-find-skills robustness as verified by that harvest and declined to manufacture unsound dev/repo cases; the judge's reject-capability is deferred to other claims where natural variation produces unsound reasoning.
+
+The harness is the D-core split made concrete.
+`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the structured rubric schema, a blind prompt builder that strips the expected label, rationale, and case kind, and a deterministic comparator with a rubber-stamp guard.
+The judge ran blind (a fixed sonnet subagent per case, given only the rules plus the observed reasoning) and scored 6/6 against the ground truth: all five real reasonings sound, the one labeled rubber-stamp control rejected.
+The one-time capture is checked in at `fixtures/eval/dev/repo/reasoning-soundness-judge-verdicts.json` and replayed deterministically by `reasoning-soundness-judge.test.mjs` at zero live cost (prove-then-project).
+
+What this proves and does not.
+It proves the mechanism end-to-end on real material — intelligence reads a real reasoning and emits a structured rubric, code checks it reproducibly — and it proves the dev/repo routing reasoning is genuinely sound across clear, trap, and complex prompts at two tiers.
+It does not by itself prove the judge reliably rejects unsound reasoning; the single control is a rubber-stamp tripwire, not a population of unsound cases, so reject-capability is carried to the generalization step.
+The apex `Behavior Evaluation` badge is therefore NOT auto-flipped: moving it past `declared` to reasoning-backed is a maintainer decision and a separate slice that wires this prototype into the spec projection.
