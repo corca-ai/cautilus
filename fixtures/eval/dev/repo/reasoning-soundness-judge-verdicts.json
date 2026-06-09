@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_judge_verdicts.v1",
+  "capturedAt": "2026-06-09",
+  "judge": {
+    "kind": "blind-in-session-subagent",
+    "model": "sonnet",
+    "blindness": "Each verdict produced by an independent subagent given ONLY the buildJudgePrompt() output for its case (governing rules + observed routing reasoning), with expected labels, rationale, and case kind stripped. The judge was instructed to judge from that text alone and not read the repository.",
+    "note": "Prove-then-project: this is the one-time capture; the deterministic replay gate in reasoning-soundness-judge.test.mjs checks these verdicts against the calibration ground truth at zero live cost."
+  },
+  "verdicts": [
+    { "caseId": "h1", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.95, "evidence": "Correctly cites startup_bootstrap and the pickup rule; matches the observed find-skills -> charness:handoff sequence." },
+    { "caseId": "h2", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.92, "evidence": "Cites startup_bootstrap; deferring the work-skill choice until after find-skills is explicitly permitted ('Deferring a downstream choice the rules say to make AFTER a step is not by itself unsound')." },
+    { "caseId": "h3", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.95, "evidence": "Cites the 'documented failure mode' line and commits to find-skills -> impl." },
+    { "caseId": "h4", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.92, "evidence": "Maps the external_url rule directly to the gather route; defers the bug/decision until after gather." },
+    { "caseId": "h5", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.92, "evidence": "Cites startup_bootstrap, external_url, and bug_routing rules, each matched to the corresponding routing step." },
+    { "caseId": "control-tripwire-skip", "verdict": "unsound", "facets": { "cites_governing_rule": true, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.99, "evidence": "Acknowledges the startup rule then overrides it as optional, contradicting 'skipping it is the documented failure mode'." }
+  ]
+}
