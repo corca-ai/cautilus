@@ -2,20 +2,19 @@
 
 ## Workflow Trigger
 
-다음 세션 첫 수: **harmony facet 분해** — 의미 judge를 통과시키는 단계.
+다음 세션 첫 수는 **결정 frame**: per-facet 라우팅을 `discover`에 배선할지 maintainer와 정함.
 
-의미 클레임(app-chat conversation-goal)에서 judge가 calibration **실패**(3/4)했음. 원인 = judge가 *결정론적* 형식 facet(길이·구조)을 일관성 없이 함. 해법(설계 D2, 데이터로 증명됨): **형식 facet은 코드, 의미 facet만 지능, verdict는 AND.**
+harmony facet 분해는 **완료**(이번 세션). 의미 클레임 conversation-goal이 composite로 **4/4 통과**, `calibrationExpectation` fail→pass 승격됨. 템플릿은 `docs/contracts/facet-decomposition.md`에 박힘. 레지스트리 전체 green: startup-routing 6/6, bug-debug 5/5, conversation-goal 4/4.
 
-합의된 스펙은 픽스처에 박혀 있음: `fixtures/eval/dev/repo/reasoning-soundness-calibration.conversation-goal.json`의 `agreedFacetSpec`.
-- 구조 기준(maintainer 결정): **"한 문단"은 본문에만, 요약 줄은 별개 필수 요소(문단 수 제외).**
-- 코드 facet: language/no-lists/has-요약/answer-body-one-paragraph(요약 제외)/within-length. 지능 facet: answered_substantively/no_fabrication.
-- 라벨(maintainer 확정): sc1 sound, sc2 unsound(240>200), sc3 sound, **sc4 sound**(judge가 틀림).
-- **예상: 4/4 일관 → `calibrationExpectation`를 fail→pass로 승격.** 그게 harmony를 end-to-end로 실증.
+남은 일반화는 **코드 슬라이스 + 스키마 결정**이라 작지 않음 — 그래서 명명만 하고 안 지음:
+- `discover`는 지금 클레임마다 단일 `recommendedProof`(deterministic|cautilus-eval|human-auditable)를 붙임. 하지만 harmony 발견은 그 선이 클레임 *안* facet 단위라고 말함.
+- 다음 단계: 발견된 클레임이 **facet별** recommendedProof를 들고 나오게 해서, 제너레이터가 facet-수준 라우팅을 emit → 이 harness가 바로 소비. 이건 `discover` 스키마를 바꾸는 일이라 maintainer 결정 사안.
+- 결정 전엔 발견 클레임 분해는 `facet-decomposition.md`의 "How to decompose a new claim" 절차로 수동 적용.
 
-그다음: 같은 facet-분해를 discover 클레임을 deterministic/지능/human으로 라우팅하는 **템플릿**으로 일반화.
+그러니 다음 세션은 바로 코딩 들어가지 말고, "per-facet recommendedProof를 discover 스키마에 넣을지 / 우선순위" 결정 frame을 먼저 올릴 것. (라우팅은 361 클레임 중 ~0.3%였음 — D3 gold-set로 recommendedProof 분류부터 검증하는 게 더 높은 레버리지일 수 있음. Discuss 참고.)
 
-설계: [docs/contracts/eval-judge-collaboration.md](../contracts/eval-judge-collaboration.md) (끝 "Generalization and the code/intelligence boundary" + "Next step").
-배지: `Behavior Evaluation` **declared 유지**(의미 judge 미통과 → eval surface 'proven' 불가, maintainer 결정).
+설계: [docs/contracts/facet-decomposition.md](../contracts/facet-decomposition.md) (템플릿) + [docs/contracts/eval-judge-collaboration.md](../contracts/eval-judge-collaboration.md) (끝 "Harmony decomposition result" + "Next step").
+배지: `Behavior Evaluation` **declared 유지**. 단일 의미 클레임 1개가 통과했다고 eval surface 전체가 'proven'은 아님 — 배지 이동은 별개 maintainer 결정 슬라이스.
 버그/예상 밖은 `charness:debug`. 막히면 설계로 올라와 같이 정함.
 
 ## Current State (2026-06-09)
@@ -45,14 +44,23 @@
 - **의미 클레임 prototype(`79a9d44`):** harness를 claim-defined facets로 일반화 + app-chat conversation-goal 클레임(실제 채팅 응답 4개). **자연 unsound 즉시 출현(sc2: 240자>200)**, judge가 잡음·코드도 길이 동의. 그러나 judge가 **calibration 실패(3/4)**: sc4의 본문+요약줄 구조를 "한 문단 위반"이라며 거부 — sc1/sc3 동일 구조는 통과시켜놓고. **비일관.** 게이트는 `calibrationExpectation: fail-pending-facet-decomposition`로 정직히 기록(suite green).
 - **경계 발견(`2026-06-09-code-intelligence-harmony-boundary.md`):** 코드/지능 경계는 클레임 종류가 아니라 **클레임 *안* facet 단위**. 형식=코드, 의미=지능. judge가 코드 일을 해서 흔들린 것. = DF-2(창립 우려)에 대한 경험적 답.
 - **maintainer 결정(2026-06-09):** (1) 구조 기준 = 요약 줄 별개(본문만 한 문단) → sc4=sound. (2) 배지 declared 유지.
-- HEAD = `79a9d44`(+ 이 마무리 커밋). origin/main보다 로컬 다수 앞섬 — **push는 사용자 몫.**
+- HEAD = `79a9d44`(+ 마무리 커밋). origin/main보다 로컬 다수 앞섬 — **push는 사용자 몫.**
 - 러너 assessment(`dev-repo-self-dogfood.assessment.json`)는 의도적으로 stale로 둠.
+
+### 이번 세션(2026-06-09 컴팩트 후): harmony facet 분해 완료 → 템플릿화
+
+- **harness composite화(`a24b822`):** `FORMAT_FACET_CHECKERS` 레지스트리(결정론적 형식 facet) + `computeCodeFacets` + `compareVerdicts`를 composite-aware로. 클레임이 `codeFacets`를 선언하면 verdict = AND(코드 형식 facet, judge 의미 verdict); 아니면 기존 direct(라우팅) 경로. rubber-stamp 가드는 composite verdict 기준으로 일반화(코드가 negative를 내도 게이트 비-공허 유지). 합성 단위테스트로 핀. 라우팅 replay 불변.
+- **conversation-goal 승격(`e87e935`):** fixture에 `codeFacets` 선언 + judgeFacets/brief/verdictDefinition을 **의미 전용**으로 재작성(judge에게 형식·길이 판단 금지 명시). blind judge를 의미 전용 프롬프트로 **재캡처**(sonnet 4개, `tool_uses:0` 진짜 blind) → 4개 모두 content-sound, **일관**(sc4 포함 — 이번엔 구조를 안 물음). composite **4/4**. sc2의 유일한 negative는 이제 **코드 facet**(240>200)에서 옴. `calibrationExpectation` fail→pass.
+- **결과:** 레지스트리 3클레임 전부 green — startup-routing 6/6(direct), bug-debug 5/5(direct), **conversation-goal 4/4(composite)**. harmony를 end-to-end 실증.
+- **maintainer 우려(DF-2)에 대한 데이터 답 확정:** "지능과 코드가 조화롭게 협업" = 각 facet을 신뢰가능한 도구에. 코드가 형식에 일관, judge가 의미에 일관, composite가 둘 다. judge를 형식 일에서 빼니 비일관 사라짐.
+- **템플릿화(docs):** `docs/contracts/facet-decomposition.md` 신규 — claim = codeFacets(결정론) + judgeFacets(의미 blind), AND 합성. discover의 per-claim `recommendedProof`를 **per-facet**으로 읽어야 한다는 규칙. discover 스키마 배선은 명명만(다음 결정 사안). finding/eval-judge-collaboration.md를 resolved로 갱신.
+- HEAD 이동: `a24b822`(harness) → `e87e935`(승격) → docs/template 커밋들. **push는 사용자 몫.**
 
 ## Next Session
 
-1. `git status --short` clean 확인, 필요시 push, 권장 `npm run verify` 1회.
-2. **harmony facet 분해**(위 Workflow Trigger). conversation-goal 클레임을 4/4로 승격.
-3. 그다음 그 분해를 discover 클레임 라우팅(deterministic/지능/human)의 템플릿으로 일반화.
+1. `git status --short` clean 확인, 필요시 push, 권장 `npm run verify` 1회(현재 다수 미푸시).
+2. **결정 frame 먼저**(위 Workflow Trigger): per-facet `recommendedProof`를 `discover` 스키마에 넣을지 + 우선순위. 바로 코딩 금지.
+3. 대안 레버리지: D3 — discover `recommendedProof` 분류(245/361 heuristic)를 gold-set로 검증·교정. "어디에 지능이 필요한가"를 신뢰가능하게(Discuss 참고).
 
 ## Discuss
 
@@ -62,7 +70,9 @@
 
 ## References
 
-- [docs/contracts/eval-judge-collaboration.md](../contracts/eval-judge-collaboration.md) — 합의된 설계 + "Prototype result (2026-06-09)"
+- [docs/contracts/facet-decomposition.md](../contracts/facet-decomposition.md) — **일반화 템플릿**: claim = codeFacets + judgeFacets, AND 합성; per-facet recommendedProof 규칙 + discover 배선 다음 단계
+- [docs/contracts/eval-judge-collaboration.md](../contracts/eval-judge-collaboration.md) — 합의된 설계 + "Harmony decomposition result (2026-06-09)"
+- [fixtures/eval/dev/repo/reasoning-soundness-judge-verdicts.conversation-goal.json](../../fixtures/eval/dev/repo/reasoning-soundness-judge-verdicts.conversation-goal.json) — 의미 전용 blind 재캡처(composite 4/4)
 - [scripts/agent-runtime/reasoning-soundness-judge.mjs](../../scripts/agent-runtime/reasoning-soundness-judge.mjs) — harness(스키마/blind 프롬프트/comparator) + `.test.mjs`
 - [fixtures/eval/dev/repo/reasoning-soundness-calibration.json](../../fixtures/eval/dev/repo/reasoning-soundness-calibration.json) — 실제 수확 calibration + control
 - [fixtures/eval/dev/repo/reasoning-soundness-calibration.bug-debug.json](../../fixtures/eval/dev/repo/reasoning-soundness-calibration.bug-debug.json) — 2번째 라우팅 클레임(judge 5/5)

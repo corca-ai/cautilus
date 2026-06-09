@@ -1,6 +1,6 @@
 # Finding: where the code/intelligence line actually falls (empirical D2 boundary)
 
-Status: open product-direction finding, grounded in a run.
+Status: resolved by the decomposition slice, 2026-06-09 — the fix below was applied and the claim now passes 4/4.
 Date: 2026-06-09.
 Origin: the maintainer's founding concern (DF-2) that the eval is skewed all-deterministic and that "지능을 쓰는 부분과 코드를 쓰는 부분이 조화롭게 협업해야 하는데 왠지 치우친 느낌."
 This finding answers that concern with data, by running the reasoning-soundness judge on a SEMANTIC claim instead of a routing claim.
@@ -28,15 +28,21 @@ The line between code and intelligence is not "routing vs semantic claims." It i
 
 The conversation-goal claim's `format_constraints_met` facet was mis-assigned: it bundled deterministic sub-checks (length, lists, required line) with structure, and gave the whole thing to the judge. That is why the judge was inconsistent.
 
-## Fix direction (next slice, not yet done)
+## Fix applied (2026-06-09) — 4/4, prediction held
 
-Decompose the claim's facets and route each to its right mechanism:
+The decomposition was implemented and the claim now passes.
 
-- code computes the deterministic facets (char count vs stated limit, list/bullet regex, 요약-line presence, paragraph structure) — consistently, every time;
-- the judge assesses only `answered_substantively` and `no_fabrication`;
-- the composite verdict ANDs the code facets and the judge facets.
+- Code computes the deterministic facets through the harness `FORMAT_FACET_CHECKERS` registry, which the calibration opts into via `codeFacets` (char count vs stated limit, list/bullet regex, 요약-line presence, one-paragraph body with the 요약 line exempt, language) — consistently, every time.
+- The judge was re-captured blind with a SEMANTIC-ONLY prompt (`answered_substantively`, `no_fabrication`) and is explicitly told to ignore format and length; four independent sonnet subagents returned all four content-sound, with `tool_uses: 0` (genuinely blind).
+- `compareVerdicts` is now composite-aware: the verdict ANDs the code facets with the judge's semantic verdict, and the rubber-stamp guard watches the composite so the gate stays non-vacuous when the real negative comes from code.
 
-Predicted outcome: 4/4 consistent, because the only inconsistency was the judge doing code's job. That decomposition is the code+intelligence harmony made concrete, and it is the empirical answer to the founding concern: not "more intelligence" and not "all code," but each facet on the tool that is reliable for it, with code keeping the judge honest on the checkable parts.
+Outcome: 4/4 consistent, exactly as predicted, because the only inconsistency was the judge doing code's job.
+sc4 now passes (code counts its one-paragraph body with the 요약 line exempt, and the judge — no longer asked about structure — judges content sound).
+The single negative, sc2, now comes from a CODE facet (240 chars > the stated 200 limit), not the judge.
+That decomposition is the code+intelligence harmony made concrete, and it is the empirical answer to the founding concern: not "more intelligence" and not "all code," but each facet on the tool that is reliable for it, with code keeping the judge honest on the checkable parts.
+
+The reference implementation is the conversation-goal claim:
+`fixtures/eval/dev/repo/reasoning-soundness-calibration.conversation-goal.json` (declares `codeFacets` + semantic-only judge facets) and its `...judge-verdicts.conversation-goal.json` (the semantic re-capture), gated by `scripts/agent-runtime/reasoning-soundness-judge.test.mjs`.
 
 ## Why this matters beyond one claim
 

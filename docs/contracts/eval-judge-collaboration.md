@@ -112,8 +112,24 @@ Handing a mechanical facet to the judge is what made it inconsistent.
 The maintainer disambiguated the ambiguous structure criterion (the 요약 line is a separate required element, exempt from the one-paragraph count) and held the badge at `declared`, since a semantic judge that has not yet passed calibration cannot make the eval surface "proven".
 Full detail: [charness-artifacts/findings/2026-06-09-code-intelligence-harmony-boundary.md](../../charness-artifacts/findings/2026-06-09-code-intelligence-harmony-boundary.md).
 
-## Next step (the harmony decomposition)
+## Harmony decomposition result (2026-06-09) — 4/4, harmony proven end-to-end
 
-Decompose the conversation-goal claim's facets per the agreed spec in its calibration fixture: code computes the deterministic format facets, the judge assesses only the semantic facets, and the verdict ANDs them.
-Predicted result is 4/4 consistent, which would promote that claim from `fail-pending-facet-decomposition` to a passing gate and demonstrate the code+intelligence harmony end-to-end.
-Then apply the same facet-decomposition discipline as the template for routing discovered claims to deterministic, intelligence, or human proof.
+The decomposition was implemented and the prediction held exactly.
+
+The harness gained a deterministic format-facet registry (`FORMAT_FACET_CHECKERS`) that a calibration opts into through a `codeFacets` list, and `compareVerdicts` became composite-aware: when a claim declares `codeFacets`, the verdict ANDs the code-computed format facets with the judge's semantic verdict, and the rubber-stamp guard watches the composite so a code-supplied negative still keeps the gate non-vacuous.
+The conversation-goal calibration was rewritten to route its format facets (language, no-lists, the required 요약 line, a one-paragraph body with the 요약 line exempt per the maintainer-agreed rule, and the stated char limit) to code, leaving the judge only the semantic facets.
+The judge was re-captured blind with a semantic-only prompt that explicitly tells it to ignore formatting and length; four independent sonnet subagents returned all four cases content-sound and consistent, with `tool_uses: 0`.
+
+The composite verdict is 4/4.
+sc4 now passes because code — not the judge — counts its one-paragraph body with the 요약 line exempt, so the structural inconsistency that failed calibration is gone.
+The only negative, sc2, now comes from a code facet (240 characters against the stated 200-character limit), which is exactly the harmony the decomposition set out to prove: the judge is consistent on meaning, code is consistent on the mechanical facets, and the composite is both.
+`calibrationExpectation` was promoted from `fail-pending-facet-decomposition` to a passing gate.
+
+The reference implementation is now the template: a claim is a list of `codeFacets` (deterministic checkers) plus semantic `judgeFacets` (a blind judge), composed by AND.
+
+## Next step (generalize the decomposition to discovered claims)
+
+Apply the same facet-decomposition discipline as the template for routing the `discover` claim population.
+Today `discover` tags each whole claim with a single `recommendedProof` (`deterministic | cautilus-eval | human-auditable`), but the harmony finding says that line falls INSIDE a claim, facet by facet.
+The generalization is to express `recommendedProof` per facet, not per claim: decompose each discovered claim into facets, route mechanical facets to code checkers, genuinely semantic facets to a bounded judge, and the rest to human review, then AND them.
+The decomposition contract for that template lives in [docs/contracts/facet-decomposition.md](./facet-decomposition.md).
