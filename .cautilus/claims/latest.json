@@ -1,9 +1,9 @@
 {
-  "candidateCount": 361,
+  "candidateCount": 375,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 361,
+    "matchedClaimCount": 359,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 17,
@@ -3109,7 +3109,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-181",
+      "claimId": "claim-docs-master-plan-md-187",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3127,7 +3127,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
-          "line": 181,
+          "line": 187,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3138,8 +3138,283 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:7cf1d643616fe39751fe3f016c059ae040d3c0a3b8e1f53a1b627aa95b7d222c",
+      "claimId": "claim-docs-specs-index-spec-md-4",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Cautilus is a standalone CLI and agent that finds the promises your project makes, proves the ones that matter against real evidence, and improves the behavior behind them.",
+          "line": 4,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "Cautilus is a standalone CLI and agent that finds the promises your project makes, proves the ones that matter against real evidence, and improves the behavior behind them.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:a33f4e753c8d9c66c2076111418b11a65dfceab58dc2e065b2b5ad2548b7ec1d",
+      "claimId": "claim-docs-specs-index-spec-md-12",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "**proven** — a checked-in executable spec runs the behavior live and asserts on the result",
+          "line": 12,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "**proven** — a checked-in executable spec runs the behavior live and asserts on the result",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:130edc9a356722abda52c44bbb55a3a0b17a131e82e637daeafcbb1ada5a2375",
+      "claimId": "claim-docs-specs-index-spec-md-26",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/skill",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "CLI ↔ Agent: the CLI runs the checks and prints the verdict; the agent suggests which workflow to run next.",
+          "line": 26,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "CLI ↔ Agent: the CLI runs the checks and prints the verdict; the agent suggests which workflow to run next.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:4e87c29b29acc1bf00b4b33ce73357ebd1f19f8f2ce61322a556138aec60e732",
+      "claimId": "claim-docs-specs-index-spec-md-40",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/skill",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "CLI ↔ Agent: the CLI runs your agent and records what it did; the agent turns that into scenarios and reads the result.",
+          "line": 40,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "CLI ↔ Agent: the CLI runs your agent and records what it did; the agent turns that into scenarios and reads the result.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:4ef3336bee96e8d78694634b02d769a7ad7f290928cefc70ccc35d92faf63be2",
+      "claimId": "claim-docs-specs-index-spec-md-48",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it.",
+          "line": 48,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:b98e7a9a853b1a711857835acea325943c907530631ec6982b6aac39c3fbc6e6",
+      "claimId": "claim-docs-specs-index-spec-md-57",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against.",
+          "line": 57,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:065809df07f59620399b32872ba30153d50934b36c2170bfdec9b76e0a7431db",
+      "claimId": "claim-docs-specs-index-spec-md-63",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "app/prompt",
+        "audience:developer",
+        "cautilus-eval",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow.",
+          "line": 63,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:5fd46ccf3657e8dac686297fee7d75014e7cd05fe333e6417d44d6500d9cf550",
+      "claimId": "claim-docs-specs-index-spec-md-87",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Each subclaim on a spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
+          "line": 87,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "Each subclaim on a spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:831ac10a11da47176620c521e3cd218bbb059bd41d98b960dc37b7ac4129523e",
+      "claimId": "claim-docs-specs-index-spec-md-94",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "For each subclaim, either (a) add an executable check that runs the actual scenario and asserts on the produced packet/file, or (b) link a concrete existing evidence bundle, audit fixture, or packet path that proves that specific subclaim.",
+          "line": 94,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "For each subclaim, either (a) add an executable check that runs the actual scenario and asserts on the produced packet/file, or (b) link a concrete existing evidence bundle, audit fixture, or packet path that proves that specific subclaim.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:d304fd59bc29554230c0f6e525925f28e60c8d1926dbc28052cbc0444a7476a3",
-      "claimId": "claim-docs-specs-index-spec-md-9",
+      "claimId": "claim-docs-specs-index-spec-md-101",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3156,7 +3431,7 @@
       "sourceRefs": [
         {
           "excerpt": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise.",
-          "line": 9,
+          "line": 101,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3168,7 +3443,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:1ab96b0fe9f3873a6a1566a7f716dd22305cc69e7daa1f97e6cd09673907c27c",
-      "claimId": "claim-docs-specs-index-spec-md-10",
+      "claimId": "claim-docs-specs-index-spec-md-102",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3185,7 +3460,7 @@
       "sourceRefs": [
         {
           "excerpt": "A `gap` means missing or weak evidence that stays visible.",
-          "line": 10,
+          "line": 102,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3196,8 +3471,8 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:f9b7f28f7ad4caf53756ee32394c83d9d7187e90f0441b40e08aeb3c9aa9b553",
-      "claimId": "claim-docs-specs-index-spec-md-17",
+      "claimFingerprint": "sha256:de989796dc3b153d17e7f7dc3b91cf8b7205f7add5eeb0b7205f2af3caf50a8e",
+      "claimId": "claim-docs-specs-index-spec-md-111",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3215,43 +3490,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Read [Promise Ledger](ledger/index.spec.md) to understand which behavior claims Cautilus currently makes, how they relate, and which workflow or contract owns each claim.",
-          "line": 17,
+          "excerpt": "[Promise Ledger](ledger/index.spec.md) — which behavior claims Cautilus makes, how they relate, and which workflow or contract owns each.",
+          "line": 111,
           "path": "docs/specs/index.spec.md"
         }
       ],
-      "summary": "Read [Promise Ledger](ledger/index.spec.md) to understand which behavior claims Cautilus currently makes, how they relate, and which workflow or contract owns each claim.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:7e385a206d896daa95126209e573e4948b97d5b79e0dfbb809953ea89d08306a",
-      "claimId": "claim-docs-specs-index-spec-md-23",
-      "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:README.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Each subclaim on a claim spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
-          "line": 23,
-          "path": "docs/specs/index.spec.md"
-        }
-      ],
-      "summary": "Each subclaim on a claim spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
+      "summary": "[Promise Ledger](ledger/index.spec.md) — which behavior claims Cautilus makes, how they relate, and which workflow or contract owns each.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -5955,6 +6199,64 @@
       "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:919de03a9604ff4bc0ef38b8a1a9de26686d57a987834deae444d6d55b434819",
+      "claimId": "claim-docs-contracts-eval-judge-collaboration-md-45",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The judge emits a structured rubric output rather than free-form prose, so its reasoning is inspectable, and verdicts are recorded so a human can spot-check a sample.",
+          "line": 45,
+          "path": "docs/contracts/eval-judge-collaboration.md"
+        }
+      ],
+      "summary": "The judge emits a structured rubric output rather than free-form prose, so its reasoning is inspectable, and verdicts are recorded so a human can spot-check a sample.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:d0f1ad17c661643391578be8d76eafaac2dc03974ee8c297b31c3edbcc898871",
+      "claimId": "claim-docs-contracts-eval-judge-collaboration-md-84",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the structured rubric schema, a blind prompt builder that strips the expected label, rationale, and case kind, and a deterministic comparator with a rubber-stamp guard.",
+          "line": 84,
+          "path": "docs/contracts/eval-judge-collaboration.md"
+        }
+      ],
+      "summary": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the structured rubric schema, a blind prompt builder that strips the expected label, rationale, and case kind, and a deterministic comparator with a rubber-stamp guard.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
       "claimAudience": "developer",
@@ -9220,7 +9522,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9251,7 +9553,7 @@
         "app/chat",
         "audience:user",
         "cautilus-eval",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "needs-scenario",
         "spec"
       ],
@@ -9282,7 +9584,7 @@
       "groupHints": [
         "audience:user",
         "human-auditable",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9311,7 +9613,7 @@
       "groupHints": [
         "audience:user",
         "human-auditable",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "needs-alignment",
         "spec"
       ],
@@ -9342,7 +9644,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9372,7 +9674,7 @@
       "groupHints": [
         "audience:user",
         "human-auditable",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9401,7 +9703,7 @@
       "groupHints": [
         "audience:user",
         "deterministic",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9430,7 +9732,7 @@
       "groupHints": [
         "audience:user",
         "deterministic",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9460,7 +9762,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/skill",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9491,7 +9793,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9522,7 +9824,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/skill",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9552,7 +9854,7 @@
       "groupHints": [
         "audience:user",
         "human-auditable",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9582,7 +9884,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9605,7 +9907,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:957d252be8bab15744fff28c1b4bad7bbae76e84d41bf96c61e31ce5d5afe4d7",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-41",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-47",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9613,7 +9915,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9624,7 +9926,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can see the exact setup checks before choosing the next Cautilus workflow.",
-          "line": 41,
+          "line": 47,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -9636,14 +9938,14 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:13b915b8e802a3e21c9a4cdd482ed3ac1e7e15fc52f3e671ec95458d3ff25925",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-45",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-51",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
         "human-auditable",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9653,7 +9955,7 @@
       "sourceRefs": [
         {
           "excerpt": "The tables verify the stable readiness contract through `id`, `ok`, and `meaning`; the folded raw packet keeps run-specific details such as resolved paths visible.",
-          "line": 45,
+          "line": 51,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -9665,7 +9967,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ee22b27f4e30d26accbca2e611086d6839a3a82bf8e32bb7bffb216291f71833",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-203",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-209",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9673,7 +9975,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9684,7 +9986,7 @@
       "sourceRefs": [
         {
           "excerpt": "For the generated sample adapter, `doctor` keeps the first bounded eval loop visible but first asks the user to create a runner assessment for the declared runner.",
-          "line": 203,
+          "line": 209,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -9696,7 +9998,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:41c3a5f18ab1db9e6b53d5fa93c350c80785675cef29be33ce9be43934685a06",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-216",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-222",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9704,7 +10006,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9715,7 +10017,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can get a safe next workflow branch before spending workflow budget.",
-          "line": 216,
+          "line": 222,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -9727,14 +10029,14 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ad8aab282e858212b0b60be1349737226fb31858cb7aa48b97d20ed2dc999cb0",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-219",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-225",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
         "human-auditable",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9744,7 +10046,7 @@
       "sourceRefs": [
         {
           "excerpt": "`doctor` gives the human-facing readiness result: whether setup is ready and what a user should fix or run next.",
-          "line": 219,
+          "line": 225,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -9756,7 +10058,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a8e492545ad5eb34d4c94495a551501b5983c3d9cc9bb7de5bb9064a977a1f89",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-220",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-226",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9764,7 +10066,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/skill",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9775,7 +10077,7 @@
       "sourceRefs": [
         {
           "excerpt": "`doctor status --json` gives Cautilus Agent an orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.",
-          "line": 220,
+          "line": 226,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -9855,7 +10157,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/skill",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -9885,7 +10187,7 @@
       "groupHints": [
         "audience:user",
         "cautilus-eval",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "needs-scenario",
         "spec"
       ],
@@ -9916,7 +10218,7 @@
         "app/chat",
         "audience:user",
         "cautilus-eval",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "needs-scenario",
         "spec"
       ],
@@ -9948,7 +10250,7 @@
       "groupHints": [
         "audience:user",
         "cautilus-eval",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "needs-scenario",
         "spec"
       ],
@@ -9978,7 +10280,7 @@
       "groupHints": [
         "audience:user",
         "human-auditable",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "needs-alignment",
         "spec"
       ],
@@ -10009,7 +10311,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -10039,7 +10341,7 @@
       "groupHints": [
         "audience:user",
         "deterministic",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -10069,7 +10371,7 @@
         "audience:user",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -10099,7 +10401,7 @@
       "groupHints": [
         "audience:user",
         "deterministic",
-        "linked-from:docs/specs/user/index.spec.md",
+        "linked-from:docs/specs/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -10116,6 +10418,124 @@
       "summary": "The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:17b9f0d2f66fafb7e1868f9a787207c5c7a5818fa0ef051b288e8a589c4cdc51",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-30",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see.",
+          "line": 30,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:8e2bea3c54a3c8b4711676604de638cf55d80dac8ccbbd7f0ca8ba0399cf66af",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-36",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`.",
+          "line": 36,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:cee2d8a7d92dac1bc2be120967e9c121eb000ae57a220b249a7f467f4cbf1c76",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-46",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither.",
+          "line": 46,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:8bd445348d1615b5dc6ec0b8cd6e7a282c5657dbce6ee0c15100cc8990b20ca4",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-50",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "app/chat",
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/chat fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "app/chat",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.",
+          "line": 50,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -11727,44 +12147,44 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 259,
+      "developer": 273,
       "user": 102
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 58,
-      "Agent and skill workflow": 79,
+      "Agent and skill workflow": 85,
       "Claim discovery and review": 42,
-      "Documentation and contracts": 84,
+      "Documentation and contracts": 90,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 30,
-      "Packets and reporting": 46,
+      "Improvement and improvement": 31,
+      "Packets and reporting": 47,
       "Quality gates": 18,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 53,
       "stale": 16,
-      "unknown": 292
+      "unknown": 306
     },
     "byLifecycle": {
-      "new": 361
+      "new": 375
     },
     "byRecommendedProof": {
-      "cautilus-eval": 140,
-      "deterministic": 119,
-      "human-auditable": 102
+      "cautilus-eval": 147,
+      "deterministic": 124,
+      "human-auditable": 104
     },
     "byReviewStatus": {
       "agent-reviewed": 115,
-      "heuristic": 245,
+      "heuristic": 259,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 17,
       "needs-alignment": 45,
       "needs-scenario": 13,
-      "ready-for-proof": 286
+      "ready-for-proof": 300
     }
   },
   "discoveryEngine": {
@@ -11947,7 +12367,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "b5c8be138869f6389f7d4fc6b7dcf5c8f3212ac1",
+  "gitCommit": "2a75d88c00b8f4a93a54e149e8ce87654348a886",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -12328,7 +12748,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 65,
+  "sourceCount": 67,
   "sourceGraph": [
     {
       "depth": 1,
@@ -12491,6 +12911,12 @@
       "from": "docs/master-plan.md",
       "kind": "markdown-link",
       "to": "docs/contracts/claim-discovery-workflow.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/master-plan.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/eval-judge-collaboration.md"
     },
     {
       "depth": 2,
@@ -12694,6 +13120,12 @@
       "depth": 2,
       "from": "docs/specs/index.spec.md",
       "kind": "markdown-link",
+      "to": "docs/contracts/runner-readiness.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/index.spec.md",
+      "kind": "markdown-link",
       "to": "docs/specs/contracts/index.spec.md"
     },
     {
@@ -12718,7 +13150,43 @@
       "depth": 2,
       "from": "docs/specs/index.spec.md",
       "kind": "markdown-link",
+      "to": "docs/specs/user/claim-discovery.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/doctor-readiness.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/evaluation.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/improvement.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/index.spec.md",
+      "kind": "markdown-link",
       "to": "docs/specs/user/index.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/ownership.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/reviewable-artifacts.spec.md"
     },
     {
       "depth": 2,
@@ -12815,6 +13283,12 @@
       "from": "docs/contracts/active-run.md",
       "kind": "markdown-link",
       "to": "docs/contracts/review-packet.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/eval-judge-collaboration.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/facet-decomposition.md"
     },
     {
       "depth": 3,
@@ -13355,7 +13829,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:7d40e5609a85e3576999a1c184b8aedc596806b7ade1a99aba3d296b412157cb",
+      "contentHash": "sha256:415a7f6796e27e34b820eb8ddb677ac93014d9555db18ba53fff25691768abeb",
       "depth": 0,
       "kind": "repo-instructions",
       "path": "AGENTS.md",
@@ -13364,7 +13838,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:67455dc293beef9e0a0dd97df8eb3335cd37a5a38bdc07014fdb4a340fc35713",
+      "contentHash": "sha256:c30b5e36dbb28b5f46b9fac6abd6fd59fe9d5f849dc06afc98fd2eeb9ac68884",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -13443,7 +13917,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:545a2befb5caccb7dff4462931b7db63e805dd0734e468e9f4c3a32ca7b9b29f",
+      "contentHash": "sha256:68d53eaf8a2897e5b80f08781152cda554d7e9f571a0364393f8e13ad3fe1984",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -13463,7 +13937,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:f43b0917c28cd6b7adff9c3664f68ecb857cddc4ad708fdbceabfb809d375bf7",
+      "contentHash": "sha256:97dcbf8df7697f558d8f7e7b64dfdab99fc0f42d602c7ecb4b03437069c3170c",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -13518,6 +13992,16 @@
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
       "path": "docs/contracts/claim-discovery-workflow.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:2eb6938877bc969f41c99a28087fa80b61cc9863003e2bd34a9cc47577bcd2a3",
+      "depth": 2,
+      "discoveredFrom": "docs/master-plan.md",
+      "kind": "contract",
+      "path": "docs/contracts/eval-judge-collaboration.md",
       "status": "read"
     },
     {
@@ -13815,7 +14299,7 @@
       "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:ab4f037432f02fa7be74c2a821a08ef089c0f8a91f76fabaa73b9ba5194bc813",
       "depth": 2,
-      "discoveredFrom": "docs/specs/user/index.spec.md",
+      "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
       "path": "docs/specs/user/claim-discovery.spec.md",
       "status": "read"
@@ -13823,9 +14307,9 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:d62b9a4ee1c41b100ed8efa0de1c1fddf82624df80d8cb5708926286b2125117",
+      "contentHash": "sha256:1825d1645b4181b3466ad663b808dd3381ace47d654777984b7dee0933e648fc",
       "depth": 2,
-      "discoveredFrom": "docs/specs/user/index.spec.md",
+      "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
       "path": "docs/specs/user/doctor-readiness.spec.md",
       "status": "read"
@@ -13845,7 +14329,7 @@
       "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:909860d6f824ec914a149db158e9527cd78e9dd2f0e087ba63cab43b0ac081f5",
       "depth": 2,
-      "discoveredFrom": "docs/specs/user/index.spec.md",
+      "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
       "path": "docs/specs/user/improvement.spec.md",
       "status": "read"
@@ -13855,9 +14339,19 @@
       "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:dfafec3d1ec7c4aa187bdf29720a21edc31e733a06120220b09e6bd056ad13d7",
       "depth": 2,
-      "discoveredFrom": "docs/specs/user/index.spec.md",
+      "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
       "path": "docs/specs/user/ownership.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:10cfbc781d9ea773ae4357e62dc802877f454b2278e253cedd89c59998bc8a17",
+      "depth": 3,
+      "discoveredFrom": "docs/contracts/eval-judge-collaboration.md",
+      "kind": "contract",
+      "path": "docs/contracts/facet-decomposition.md",
       "status": "read"
     },
     {
