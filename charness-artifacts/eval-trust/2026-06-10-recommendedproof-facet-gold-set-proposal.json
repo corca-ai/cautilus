@@ -772,9 +772,21 @@
     }
   ],
   "labelingRules": {
-    "dominance": "The dominant facet is the one whose failure would falsify the main predicate of the claim sentence. When the sentence honestly reads two ways (declarative ownership vs live behavior; definition vs its enforcement), the entry keeps the proposed dominant but is flagged dominanceConfidence=debatable for maintainer tie-break.",
+    "dominance": "Dominance is a SCORING DEVICE for grading the legacy per-claim tag only, not a product rule. The facet decomposition is the durable output: a claim carries all its facets, each with its own route. Schema-design default (maintainer-aligned 2026-06-10): per-facet routing replaces the per-claim tag entirely; no dominant field ships in the discover schema. The 4 dominance-debatable entries are scoring footnotes (counted both ways in sensitivity), not decisions that block schema design.",
     "definitions": "Vocabulary definitions are context, not facets; the facet is their enforceable projection (e.g., a badge definition is human context, the badge-to-spec link check is the deterministic facet).",
     "checkerExistence": "A deterministic route asserts the facet is mechanically checkable in principle. Whether the checker already exists in this repo is recorded during schema wiring, not here; routing does not claim present-day test coverage."
   },
-  "critique": "Bounded fresh-eye subagent review 2026-06-10 returned needs-revision; blockers (non-claim tally inflation, dominance tie-break opacity, pattern-1 framing) applied in this version. Minor items folded into labelingRules."
+  "critique": "Bounded fresh-eye subagent review 2026-06-10 returned needs-revision; blockers (non-claim tally inflation, dominance tie-break opacity, pattern-1 framing) applied in this version. Minor items folded into labelingRules.",
+  "externalValidity": "This gold set is measured on Cautilus's own documentation, which is meta-documentation about evaluation; its claim-shape distribution is unusual. Consumer repos (e.g., a chatbot app) carry mostly product-behavior claims where the cautilus-eval tag may be RIGHT far more often. Pattern 1 (cautilus-eval over-assignment) is therefore a repo-local result until a consumer-shaped sample (app/chat surface claims or a real host repo's docs) replicates the measurement. Backlog: run the same 12-per-tag protocol on a consumer-shaped corpus before or alongside schema wiring.",
+  "portability": {
+    "portable": [
+      "the per-facet schema and facet vocabulary (discover ships in the binary and runs on consumer docs)",
+      "heuristic fixes for recurring claim shapes: ownership sentences, rationale bullets, rejected alternatives, definitions",
+      "the not-a-claim / split lane"
+    ],
+    "notPortableYet": [
+      "the measured tag-accuracy rates themselves (meta-doc corpus; see externalValidity)",
+      "the dominance tie-breaks (scoring footnotes for this report only)"
+    ]
+  }
 }

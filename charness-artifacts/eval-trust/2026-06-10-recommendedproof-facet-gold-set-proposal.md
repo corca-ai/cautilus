@@ -1,6 +1,6 @@
 # recommendedProof facet gold-set proposal (D3)
 
-Status: agent-proposed, 2026-06-10, revised after bounded fresh-eye critique.
+Status: agent-proposed, 2026-06-10, revised after bounded fresh-eye critique and a maintainer portability challenge.
 Every label below is a proposal by a single agent labeler and is pending maintainer ratification, the same co-own rule that governed the sc5 semantic control.
 
 ## Why
@@ -9,6 +9,23 @@ Every label below is a proposal by a single agent labeler and is pending maintai
 The facet-decomposition template says the tag belongs on each facet of a claim, not on the claim as a whole.
 This gold set measures both at once: how accurate the heuristic per-claim tag is, and which facet routings real claims actually need.
 The ratified version becomes the design input and test fixture for wiring per-facet `recommendedProof` into the `discover` schema.
+
+## Portability (what this exercise gives consumer repos)
+
+Portable:
+
+- the per-facet schema and facet vocabulary (discover ships in the binary and runs on consumer docs)
+- heuristic fixes for recurring claim shapes: ownership sentences, rationale bullets, rejected alternatives, definitions
+- the not-a-claim / split lane
+
+Not portable yet:
+
+- the measured tag-accuracy rates themselves (meta-doc corpus; see externalValidity)
+- the dominance tie-breaks (scoring footnotes for this report only)
+
+## External validity caveat
+
+This gold set is measured on Cautilus's own documentation, which is meta-documentation about evaluation; its claim-shape distribution is unusual. Consumer repos (e.g., a chatbot app) carry mostly product-behavior claims where the cautilus-eval tag may be RIGHT far more often. Pattern 1 (cautilus-eval over-assignment) is therefore a repo-local result until a consumer-shaped sample (app/chat surface claims or a real host repo's docs) replicates the measurement. Backlog: run the same 12-per-tag protocol on a consumer-shaped corpus before or alongside schema wiring.
 
 ## Method
 
@@ -22,9 +39,9 @@ Verdict vocabulary per claim, comparing the proposed facet routing against the h
 - **wrong** — the dominant facet routes to a different class than the tag
 - **not-a-claim** — the extracted text is not a provable behavior claim (rejected-alternative bullet, pure context); a discovery extraction issue, excluded from tag-accuracy tallies
 
-Labeling rules (added after critique):
+Labeling rules:
 
-- **dominance** — The dominant facet is the one whose failure would falsify the main predicate of the claim sentence. When the sentence honestly reads two ways (declarative ownership vs live behavior; definition vs its enforcement), the entry keeps the proposed dominant but is flagged dominanceConfidence=debatable for maintainer tie-break.
+- **dominance** — Dominance is a SCORING DEVICE for grading the legacy per-claim tag only, not a product rule. The facet decomposition is the durable output: a claim carries all its facets, each with its own route. Schema-design default (maintainer-aligned 2026-06-10): per-facet routing replaces the per-claim tag entirely; no dominant field ships in the discover schema. The 4 dominance-debatable entries are scoring footnotes (counted both ways in sensitivity), not decisions that block schema design.
 - **definitions** — Vocabulary definitions are context, not facets; the facet is their enforceable projection (e.g., a badge definition is human context, the badge-to-spec link check is the deterministic facet).
 - **checkerExistence** — A deterministic route asserts the facet is mechanically checkable in principle. Whether the checker already exists in this repo is recorded during schema wiring, not here; routing does not claim present-day test coverage.
 
@@ -37,23 +54,23 @@ Labeling rules (added after critique):
 | human-auditable | 12 | 1 | 4 | 7 | 0 | 0 | 5/12 |
 | **all** | 36 | 9 | 9 | 13 | 4 | 1 | 18/35 |
 
-Dominant-correct excludes the not-a-claim entry from its denominator; wrong (debatable) rows count entries whose dominance reading needs a maintainer tie-break before they can be held against the heuristic.
+Dominant-correct excludes the not-a-claim entry from its denominator; wrong (debatable) rows count entries whose dominance reading goes both ways and is held as a scoring footnote, not a blocking decision.
 
 ## Patterns the proposal surfaces (to verify in review)
 
 1. `cautilus-eval` over-assignment, decomposed honestly: of 12 sampled, 6 are clear misroutes (packet schema or CLI behavior with no model in the loop), 2 are misroutes whose dominance reading is debatable, 1 is a non-claim extraction, and only 3 are dominantly judge-shaped.
-   If the clear misroutes generalize, the claims that genuinely need an intelligence judge are far fewer than the 147/375 the tag suggests.
+   Repo-local until replicated on a consumer-shaped corpus (see external validity caveat); if it generalizes, the claims that genuinely need an intelligence judge are far fewer than the 147/375 the tag suggests.
 2. `human-auditable` often hides a deterministic dominant facet (7 of 12 clear): prose-shaped contract lines default to human even when a direct code check exists.
-3. `deterministic` is the most reliable tag (10 of 12 dominant-correct); its two misses are agent-ownership claims whose dominance reading (declared ownership vs live behavior) is flagged debatable.
+3. `deterministic` is the most reliable tag (10 of 12 dominant-correct); its two misses are agent-ownership claims whose dominance reading (declared ownership vs live behavior) is a scoring footnote.
 4. Discovery extracts non-claims: a rejected-alternative bullet arrived as a provable claim, and a vocabulary definition needed the definition-vs-projection rule; the schema work should include a split/not-a-claim lane.
 5. Every claim whose dominant facet is judge also carries deterministic facets, consistent with the facet-decomposition template's core rule.
 
 ## How to review
 
-For each entry, confirm or correct two fields: `proposedDominantRoute` and `proposedTagVerdict` (facet wording edits welcome but optional).
-The 4 dominance-debatable entries and the non-claim entry need an explicit maintainer call; they are the tie-breaks this proposal cannot make alone.
+The durable thing under review is each entry's FACET DECOMPOSITION (the facets and their routes); dominance and tag verdicts are derived scoring.
+Confirm or correct the facet list and routes; flag any facet that is missing, mislabeled, or not honestly checkable on its proposed route.
+The non-claim entry needs an explicit maintainer call; the 4 dominance-debatable entries do not block anything and may be left both-ways.
 Record corrections in the JSON sibling (`maintainerVerdict` per entry); tallies are recomputed after ratification, not hand-edited.
-Reviewing the 6 judge-dominant and debatable entries first gives the highest information per minute; the deterministic-exact block is the low-risk tail.
 
 ## Entries
 
@@ -82,7 +99,7 @@ Note: Efficiency-of-curation is a usability facet the tag hides.
 
 ### claim-docs-contracts-claim-discovery-workflow-md-594
 
-`docs/contracts/claim-discovery-workflow.md:594` — heuristic tag: `deterministic` — **dominance debatable, needs tie-break**
+`docs/contracts/claim-discovery-workflow.md:594` — heuristic tag: `deterministic` — dominance reads both ways (scoring footnote)
 
 > In the claim discovery workflow, the Cautilus Agent owns LLM-backed claim review, review-budget explanation, and subagent orchestration.
 
@@ -181,7 +198,7 @@ Note: Reopenability-without-chat-memory is a behavior facet, not a schema facet.
 
 ### claim-skills-cautilus-agent-skill-md-23
 
-`skills/cautilus-agent/SKILL.md:23` — heuristic tag: `deterministic` — **dominance debatable, needs tie-break**
+`skills/cautilus-agent/SKILL.md:23` — heuristic tag: `deterministic` — dominance reads both ways (scoring footnote)
 
 > Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LLM-backed claim review work.
 
@@ -250,7 +267,7 @@ Proposed: dominant `deterministic`, verdict **wrong**.
 
 ### claim-docs-contracts-runtime-fingerprint-improvement-md-261
 
-`docs/contracts/runtime-fingerprint-improvement.md:261` — heuristic tag: `cautilus-eval` — **dominance debatable, needs tie-break**
+`docs/contracts/runtime-fingerprint-improvement.md:261` — heuristic tag: `cautilus-eval` — dominance reads both ways (scoring footnote)
 
 > This sequence keeps the evidence honest before asking improve search to mutate prompts more aggressively.
 
@@ -274,7 +291,7 @@ Proposed: dominant `deterministic`, verdict **wrong**.
 
 ### claim-docs-specs-index-spec-md-12
 
-`docs/specs/index.spec.md:12` — heuristic tag: `cautilus-eval` — **dominance debatable, needs tie-break**
+`docs/specs/index.spec.md:12` — heuristic tag: `cautilus-eval` — dominance reads both ways (scoring footnote)
 
 > **proven** — a checked-in executable spec runs the behavior live and asserts on the result
 
