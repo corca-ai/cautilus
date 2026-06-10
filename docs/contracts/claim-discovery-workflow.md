@@ -76,6 +76,7 @@ The Cautilus Agent should own orchestration that depends on an agent:
 - offer next actions such as generating eval scenario drafts, adding deterministic tests, resolving alignment work, or showing a full report
 
 This keeps the product agent-first without making the binary a host-specific agent runtime.
+Direction decision (2026-06-10): the Cautilus Agent additionally owns primary claim extraction itself, following the product-owned extraction template, while the binary anchors verbatim excerpts, validates packets, and bounds re-extraction to changed sources; the recorded rationale and the labeled heuristic baseline mode live in the classification-hints section of Scan Scope below.
 
 ### Canonical Claim Specs
 
@@ -198,8 +199,15 @@ A classification behavior is promoted from engine hardcoding to an adapter-owned
 Extraction mechanics (code-fence and frontmatter skipping, heading tracking, duplicate merge) stay product-owned and never become hints; unbounded knob growth is itself a failure mode the adapter contract rejects.
 The frozen-defaults golden test (`TestClaimClassificationPortableDefaultsAreFrozen`) pins the portable default lexicon and non-claim headings, so any new hardcoded default surfaces as a test diff that forces a matching contract update here.
 Of the maintainer-aligned 2026-06-10 candidates, two have shipped: the claim-verb lexicon is now the `claim_lexicon_terms` hint family (measured on the three-corpus baseline, `charness-artifacts/eval-trust/2026-06-10-discovery-classification-s1-baseline.md`), and the hardcoded `Deferred Decisions` branch was deleted in favor of the `non_claim_section_headings` portable default.
-Still hardcoded: the `recommendedProof` and eval-surface routing keywords in `classifyClaimLine` (the per-facet routing direction; gold-set evidence already exists).
-A future routing hint family must also decide hint precedence explicitly, because `classifyClaimLine` is an ordered switch with broad catch-all cases near the end; appending hints after those catch-alls would never fire.
+The remaining hardcoded candidate — the `recommendedProof` and eval-surface routing keywords in `classifyClaimLine` — will not become a hint family.
+Direction decision (2026-06-10, maintainer-ratified): claim extraction and proof routing move to agent-primary discovery instead of further heuristic refinement.
+The measured evidence behind the decision: the pending-ratification gold set shows the heuristic routing tag dominant-correct on only 18/35 sampled claims, and the Korean lexicon measurement showed that on formal-style prose the claim-shaped gate degenerates into a sentence-length detector, so stacking hint families on either heuristic refines precision on a weak foundation.
+Under the agent-primary direction, the Cautilus Agent extracts claims by following a product-owned extraction template: the claim definition, the repo's non-claim conventions sourced from the same `classification_hints`, mandatory verbatim source excerpts with source refs, and a bounded output schema.
+The binary anchors and audits rather than extracts: it keeps traversal and scan scope, verifies that every quoted excerpt actually exists at its claimed source ref, computes claim fingerprints from the verbatim excerpts, owns refresh planning and carry-forward, and rejects unanchored claims during validation.
+Recorded git commits plus per-source hashes bound re-extraction cost: unchanged sources carry forward deterministically and only git-diff-changed sources return to the agent, per the existing refresh design.
+The deterministic heuristic extractor stays available as an explicitly labeled baseline mode (`extractionMode` in the packet), so no-model environments, CI regeneration, and adapter-not-hardcoded control tests keep a reproducible floor.
+The gold set's role is promoted accordingly: from hint-family scoring device to the eval fixture that measures agent extraction quality against maintainer-ratified labels.
+The detailed extraction template and packet contract are the next design slice; this paragraph records the direction so the hint-family roadmap does not drift.
 `state_path` is the writable discovery baseline for `discover claims`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `doctor status` can summarize without making them the next discovery target.
 `doctor status` should use the most advanced non-stale related claim packet as the selected orientation map when it is more useful than the writable baseline.
 That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.

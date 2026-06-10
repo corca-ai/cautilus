@@ -15,8 +15,8 @@ Discuss before activation: resolved 2026-06-10 — the consumer corpora are main
 
 ## Active Operating Frame
 
-- Current slice: S2 closeout — engine/test/contract/spec shipped; the yt-digest four-term list awaits maintainer ratification. S4 shipped in the same engine slice. S0 (HITL) skipped this session by maintainer decision; S3 blocked on S0 verdicts.
-- Next action: maintainer ratifies or edits the proposed term list in `charness-artifacts/eval-trust/2026-06-10-discovery-classification-s2-lexicon-proposal.md`; next session resumes S0 (the ~14 S3-critical verdicts first) and then S3.
+- Current slice: redesign landed (see `## Redesign Decision`) — S3 dissolved into the agent-primary direction; S0 repurposed as the agent-extraction eval baseline; the yt-digest four-term list stays agent-proposed (ratification deliberately deferred: under agent-primary extraction the lexicon only gates the labeled heuristic baseline mode).
+- Next action: shape the agent-primary extraction slice (extraction template + packet contract design, then gold-set-scored agent-vs-heuristic comparison measurement including yt-digest); resume S0 HITL when maintainer time allows, now feeding the eval fixture rather than S3 hints.
 - Execution mode note: the maintainer opened an interactive session on 2026-06-10 asking to implement and discuss; slices run in this interactive session with this artifact as slice memory, per the shaped-only Interview Decision.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
@@ -85,10 +85,10 @@ The promotion bar and priority order are already contract: `docs/contracts/claim
 
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
-| S0 | Resume gold-set HITL (c02 onward) in maintainer-sized batches | Ratified labels feed S3 routing hints; queue is paused resumable state | Verdicts in gold-set JSON, HITL artifact synced | pending |
+| S0 | Resume gold-set HITL (c02 onward) in maintainer-sized batches | Ratified labels now baseline the agent-extraction eval (repurposed by the 2026-06-10 redesign); queue is paused resumable state | Verdicts in gold-set JSON, HITL artifact synced | pending (repurposed) |
 | S1 | Baseline measurement on the three corpora with today's engine | Establishes the language gap and English-corpus shape before any hint design | Per-corpus artifact: counts, samples, near-zero yt-digest extraction | done |
-| S2 | Claim-lexicon hint family (adapter-owned terms; agent proposes from corpus scan; maintainer ratifies) | Largest portability gap; promotion bar met once S1 evidence exists | Engine+test+contract+spec; yt-digest extracts claims via ratified hints | engine done; terms pending ratification |
-| S3 | Proof-routing hint family from the ratified gold set (per-claim recommendedProof vocabulary; facet schema out of scope) | Gold-set evidence already exists; corrects the most expensive misroutes | Engine+test+contract+spec; fresh run re-tags the clear misroutes; no-regression check on deterministic-tag claims; hint precedence contract-stated | pending (blocked on S0 verdicts) |
+| S2 | Claim-lexicon hint family (adapter-owned terms; agent proposes from corpus scan; maintainer ratifies) | Largest portability gap; promotion bar met once S1 evidence exists | Engine+test+contract+spec; yt-digest extracts claims via ratified hints | engine done; terms stay agent-proposed (baseline-mode-only after redesign) |
+| S3 | Proof-routing hint family from the ratified gold set | Gold-set evidence already exists; corrects the most expensive misroutes | — | dissolved by the 2026-06-10 redesign: routing becomes part of the agent extraction template; the gold set becomes its eval fixture |
 | S4 | Absorb hardcoded `Deferred Decisions` into `non_claim_section_headings` portable defaults | Removes the parallel mechanism; small bounded cleanup | Hardcoded branch deleted; behavior pinned by existing+new tests | done |
 | S5 | Closeout: consumer-adoption guide note, contract sync, final verify, retro | Truth surfaces must reflect the new onboarding flow | Final Verification filled; retro recorded | pending |
 
@@ -119,6 +119,9 @@ during the run:
   Proposal artifact with measured 0 → 19 yt-digest extraction: `charness-artifacts/eval-trust/2026-06-10-discovery-classification-s2-lexicon-proposal.md` (term list pending ratification).
   Claim-disappearance eyeball diff recorded there: this repo 376 → 378, charness 227 → 227, ceal 308 → 307.
   Routing: maintainer decisions captured via interactive ratification; implementation direct per `impl` conventions; debug detour (lexicon hints silently dropped) root-caused to the adapter classification_hints whitelist in `internal/runtime/adapter.go` before fixing, per the debug-first rule.
+- 2026-06-10 redesign landed: maintainer challenged the lexical heuristic after the S2 term proposal; agent-primary extraction direction ratified and recorded in `## Redesign Decision`, contract, and master plan.
+  S3 dissolved, S0 repurposed, S2 term ratification deferred (baseline-mode-only relevance).
+  Routing: this was a decision-frame conversation (assessment + recommendation), not an implementation slice; realignment edits landed directly per the CLAUDE.md directional-decision rule.
 
 ## Context Sources
 
@@ -149,6 +152,24 @@ Bounded fresh-eye plan critique run 2026-06-10 (delegated subagent, read-only, v
 Act-before-ship (folded into slice execution): S3 hint precedence vs the ordered switch's broad catch-alls must be contract-stated; S3 needs a no-regression check on deterministic-tag claims and a label-flip diff over non-sampled claims; S3 corrects per-claim tags only (facet schema stays out of scope); S4 needs explicit merge-vs-override semantics for portable defaults plus a claim-disappearance diff for maintainer eyeball; the with/without control test does not prove absence of new hardcoding — add a frozen default-config golden fixture; S0 can be batched down to the ~14 S3-critical verdicts with the remainder resumable-optional; Korean precision leaks (English-only open-question/definition filters) are a known S2 review item.
 
 Over-worry (dismissed): missing yt-digest adapter (defaults work, exit 0), gitignore distortion (scope recorded per packet), the "English also near zero" branch (empirically false in S1), Korean block-splitting mechanics (declaratives end in `다.`, the `.`-suffix rule works), shaped-only activation risk.
+
+## Redesign Decision (2026-06-10, maintainer-ratified)
+
+Trigger: after the S2 term proposal, the maintainer challenged the lexical heuristic itself ("substring 어미 매칭이면 거의 의미가 없는 거 아닌가") and proposed agent-primary extraction: scan targets are usually under 100 documents, a first scan already happens, so let the agent produce the structured result by following a basic product-owned convention/template.
+This is the Stop Conditions' "shaping assumption falsified → redesign decision frame" path, reached through maintainer insight plus this session's own evidence rather than an S1 surprise.
+
+Evidence supporting the redesign: the Korean lexicon measurement showed the claim-shaped gate degenerates to a sentence-length detector on formal prose (`니다` is the only NFC-expressible paradigm-covering term, and it matches nearly every declarative sentence); the gold set shows heuristic routing dominant-correct on only 18/35.
+
+Ratified direction:
+agent-primary extraction against a product-owned template (claim definition, non-claim conventions from `classification_hints`, mandatory verbatim excerpts with source refs, bounded output schema);
+the binary anchors and audits (traversal/scope, verbatim-excerpt anchoring validation, fingerprints from verbatim excerpts, refresh planning, carry-forward, unanchored-claim rejection);
+recorded git commits and per-source hashes bound re-extraction to changed sources (maintainer's operational-rhythm note);
+the deterministic heuristic extractor stays as an explicitly labeled `extractionMode` baseline for no-model environments, CI regeneration, and control tests;
+the gold set is promoted from hint-family scoring device to the agent-extraction eval fixture.
+
+Consequences inside this goal: S3 dissolved; S0 repurposed (verdicts baseline the agent-extraction eval); the S2 term list stays agent-proposed and gates only the baseline mode, so its ratification is deferred rather than pressed.
+Realignment landed in the same slice: `docs/contracts/claim-discovery-workflow.md` (direction decision in the Skill Responsibilities and classification-hints sections), `docs/master-plan.md` (claim-family paragraph), this artifact, and the handoff.
+The detailed extraction template and packet contract are deliberately NOT designed here; that is the successor design slice with its own shaping.
 
 ## Off-Goal Findings
 
