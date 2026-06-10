@@ -1,0 +1,1166 @@
+{
+  "candidateCount": 34,
+  "claimCandidates": [
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:bf72456c50e1505ba08fddf7e1c028aee5f233a950414edfdf5a3528d3749182",
+      "claimId": "claim-readme-md-3",
+      "claimSemanticGroup": "Positioning",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+          "line": 3,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Cautilus keeps agent and workflow behavior honest while prompts keep changing.",
+      "unresolvedQuestions": [
+        "Is the headline promise proven through a representative scenario set, or is it an umbrella over the per-surface claims below?"
+      ],
+      "verificationReadiness": "needs-scenario",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:b37b56e361f2d1d9f0e33f83a8a501f94375533b5873851239b0820f26940158",
+      "claimId": "claim-readme-md-4",
+      "claimSemanticGroup": "Positioning",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "It is a repo-local contract layer for agent and workflow behavior evaluation: define the behavior you are trying to protect once, then verify it survives prompt, skill, and wrapper changes.",
+          "line": 4,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Users define a protected behavior once and verify it survives prompt, skill, and wrapper changes.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "needs-scenario",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:d1c0e7242d9c2fcbbefd9417412bc882b84449ccb0b18a47db3d3b40bdbe4a69",
+      "claimId": "claim-readme-md-6",
+      "claimSemanticGroup": "Product structure",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "discover declared behavior claims worth proving from selected source docs, verify curated claims through bounded evaluation packets, and improve behavior with budgeted improvement once the proof surface is honest.",
+          "line": 6,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "The product's three connected jobs are claim discovery, bounded-packet verification, and budgeted improvement.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:27f49babf6ffb0eba4c309c3d165aa493e2fd6c790edfd631add4af96ef7ab9d",
+      "claimId": "claim-readme-md-7",
+      "claimSemanticGroup": "Install and onboarding",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.",
+          "line": 7,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Cautilus ships as a standalone binary plus Cautilus Agent that a host repo installs without copying a scaffold.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
+      "claimId": "claim-readme-md-9",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+          "line": 9,
+          "path": "README.md",
+          "primary": true
+        },
+        {
+          "excerpt": "Agents are first-class users of the product surface.",
+          "line": 8,
+          "path": "README.md",
+          "primary": false
+        }
+      ],
+      "summary": "Commands emit durable packets with enough state for the next agent to resume.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "needs-scenario",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
+      "claimId": "claim-readme-md-10",
+      "claimSemanticGroup": "Adapter and ownership",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
+          "line": 10,
+          "path": "README.md",
+          "primary": true
+        },
+        {
+          "excerpt": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
+          "line": 13,
+          "path": "README.md",
+          "primary": false
+        }
+      ],
+      "summary": "The binary is machine-level and shared across repos while the agent-facing surface stays repo-local and repo-owned.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:0ebd46f6f44f1425e2c0f62b6ace10e3aa778ab8c11b4fdba0fac00f5739b8ff",
+      "claimId": "claim-readme-md-18",
+      "claimSemanticGroup": "Release boundary",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Host repos can use `cautilus evaluate fixture`, `cautilus evaluate observation`, and post-run `cautilus evaluate skill-experiment` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.",
+          "line": 18,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Host repos can use evaluate fixture, evaluate observation, and post-run evaluate skill-experiment in the current external-adoption slice.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:8bf95f9315ce120371a13d106c151cde2c265da7e6ac7c920ab08905efc7b406",
+      "claimId": "claim-readme-md-19",
+      "claimSemanticGroup": "Release boundary",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "`skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.",
+          "line": 19,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "skill-experiment compare only compares host-preserved outputs and never clones, installs, or executes skills.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:4b1c24bc7619f11485bf882469c017dec6fde1ec1ce6fe7998adad67acffba7c",
+      "claimId": "claim-readme-md-20",
+      "claimSemanticGroup": "Release boundary",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Treat claim discovery automation, improve automation, live `eval` app-runner workflows, and review-learning packet capture or selected-packet summaries as opt-in product slices until the rewrite closes.",
+          "line": 20,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Claim discovery automation, improve automation, live app-runner workflows, and review-learning capture are opt-in slices until the rewrite closes.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:7f2153a2863ecefb8e467538bd6ce5568ebcc796ce1ad4ceca8956e961ed77de",
+      "claimId": "claim-readme-md-55",
+      "claimSemanticGroup": "Doctor and readiness",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/repo"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "If you want to hand setup to an agent, ask it to repeat `cautilus doctor --repo-root . --next-action`, do exactly what the packet says, and stop only after `cautilus doctor --repo-root .` reports readiness plus a `first_bounded_run`.",
+          "line": 55,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "An agent can drive setup by repeating doctor --next-action until doctor reports readiness plus a first_bounded_run.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "needs-scenario",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:b0e6459a0cb2fedb2cdae59831454b9162d9b71d96c095bea7d1dcdde08520f6",
+      "claimId": "claim-readme-md-66",
+      "claimSemanticGroup": "Docs and spec tree",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "[docs/specs/index.spec.md](./docs/specs/index.spec.md) is the top-level \"proven on itself\" apex and the specdown entry; the user and maintainer spec indexes it links to remain the curated claim source of truth.",
+          "line": 66,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "The spec apex is the specdown entry and the curated claim source of truth lives in the user and maintainer spec indexes.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:2351b132ae813dfb9df2fca5291372e65c4232b981aab4f685bfefa3b3f135aa",
+      "claimId": "claim-readme-md-67",
+      "claimSemanticGroup": "Claim discovery",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
+          "line": 67,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Raw discover claims packets are high-recall proof-planning input, not the primary user review document.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:d86efe24767d201f86fa6b4f59a19f4b87689cfd278c2ee648573e80b0e4616f",
+      "claimId": "claim-readme-md-68",
+      "claimSemanticGroup": "Claim discovery",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/skill"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The Cautilus Agent curates that packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.",
+          "line": 68,
+          "path": "README.md",
+          "primary": true
+        },
+        {
+          "excerpt": "The Cautilus Agent curates false positives, likely missing promises, scan boundaries, and review budgets before any eval plan is trusted.",
+          "line": 115,
+          "path": "README.md",
+          "primary": false
+        }
+      ],
+      "summary": "The Cautilus Agent curates the discovery packet: reduces false positives, raises likely missing promises, and separates discovery bugs from narrative gaps.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:25f326356227fb2317af75db3dca0b6ac32161558c644ef0f1b1073bce3c175f",
+      "claimId": "claim-readme-md-69",
+      "claimSemanticGroup": "Docs and spec tree",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+          "line": 69,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Host repos do not need the website renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:a8cf94a267754b28ed0ce1c378a0bbb88ee81dcad5e196efce19a5f7a40135b5",
+      "claimId": "claim-readme-md-70",
+      "claimSemanticGroup": "Docs and spec tree",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.",
+          "line": 70,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Each claim page pairs a bounded promise with executable evidence or an explicit evidence gap.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
+      "claimId": "claim-readme-md-77",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
+          "line": 77,
+          "path": "README.md",
+          "primary": true
+        },
+        {
+          "excerpt": "You need one checked-in `cautilus.evaluation_input.v1` fixture and a host-owned adapter runner.",
+          "line": 76,
+          "path": "README.md",
+          "primary": false
+        }
+      ],
+      "summary": "One checked-in fixture plus a host-owned adapter runner verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:e1d40b8af228eee85cfe4d1bf48eb7be58e13f6c5737038ab9c41ef1ac6eb0d2",
+      "claimId": "claim-readme-md-92",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
+          "line": 92,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Fixture runs become durable eval packets another agent or maintainer can reopen.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:e8b1a9fc3c20bbcde254639817f98114d86ca2f81ff8e4f5ad05f4c4957279ff",
+      "claimId": "claim-readme-md-93",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose.",
+          "line": 93,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "An eval summary is evidence for the chosen fixture and adapter path, not a global product verdict.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:a978ca2e5a711544ad630ceaff22bccd2dfac87c71ee2bbf476fa4042b66cea0",
+      "claimId": "claim-readme-md-113",
+      "claimSemanticGroup": "Claim discovery",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Claim discovery turns adapter-owned entry docs and linked Markdown into `cautilus.claim_proof_plan.v1` candidates.",
+          "line": 113,
+          "path": "README.md",
+          "primary": true
+        },
+        {
+          "excerpt": "It is proof planning, not a verdict that the repo is correct.",
+          "line": 114,
+          "path": "README.md",
+          "primary": false
+        }
+      ],
+      "summary": "Claim discovery turns adapter-owned entry docs and linked Markdown into proof-plan candidates and is planning, not a correctness verdict.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
+      "claimId": "claim-readme-md-117",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.",
+          "line": 117,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Evaluation exposes two top-level surfaces: dev for AI-assisted development work and app for AI-powered product behavior.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
+      "claimId": "claim-readme-md-130",
+      "claimSemanticGroup": "Held-out validation",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
+          "line": 130,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Protected scenarios are kept out of tuning so the validation signal stays honest.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:df798ce926b1c0937700bc2508f107bef8bdecf193f22745927c83d7205bffbf",
+      "claimId": "claim-readme-md-131",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "It stores the evidence in a durable file the next maintainer can reopen from disk.",
+          "line": 131,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Evidence is stored in a durable file the next maintainer can reopen from disk.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:6b58da3516f2509fd1bb999d85d87612efe6d7110be630677b344a94340a2df3",
+      "claimId": "claim-readme-md-136",
+      "claimSemanticGroup": "Positioning",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Unlike a dashboard-first review tool, `Cautilus` treats packets, CLI commands, and repo instructions as agent-facing interfaces first; HTML is a human-readable mirror, not the source of truth.",
+          "line": 136,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Packets, CLI commands, and repo instructions are agent-facing interfaces first; HTML is a mirror, not the source of truth.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:876d422ecc6981fb0023f848c23f90ac2be7fc0f9b0e2e615109b89044a5d21e",
+      "claimId": "claim-readme-md-137",
+      "claimSemanticGroup": "Positioning",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Unlike a prompt manager, `Cautilus` does not freeze one prompt string as the contract — it treats the behavior under evaluation as the contract (`intent-first`).",
+          "line": 137,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Cautilus treats the behavior under evaluation as the contract instead of freezing one prompt string.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:fca2fcfa646dc5c2d8a0113e913a099de9824ac235a6afcb08a50e2d84894960",
+      "claimId": "claim-readme-md-138",
+      "claimSemanticGroup": "Held-out validation",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Unlike a benchmark scrapbook, `Cautilus` separates iteration from protected validation and keeps evidence reopenable from files (`held-out honesty`, `packet-first`).",
+          "line": 138,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Iteration is separated from protected validation and evidence stays reopenable from files.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:494077b76c2dbdc170741f2dad5f9bc4ad692b060b4ef0bdf13694e1f52e5829",
+      "claimId": "claim-readme-md-139",
+      "claimSemanticGroup": "Structured review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Unlike ad hoc eval scripts, `Cautilus` makes adapters, reports, review files, and compare artifacts first-class product boundaries (`structured review`).",
+          "line": 139,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Adapters, reports, review files, and compare artifacts are first-class product boundaries.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:3f7d53374b3ad0a1f98d080a07490f3b717148e78267be931104835aebcc23ec",
+      "claimId": "claim-readme-md-140",
+      "claimSemanticGroup": "Improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Unlike open-ended improver loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`).",
+          "line": 140,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Search and revision stay explicitly bounded by budgets, checkpoints, and blocked-readiness conditions.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:454130a4465351bb868eb9d40a4cc267eac678e33e9918959a6cf360ddf7221d",
+      "claimId": "claim-readme-md-142",
+      "claimSemanticGroup": "Proof routing",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The proof layers are deliberately split because humans, code, and AI are good at different work.",
+          "line": 142,
+          "path": "README.md",
+          "primary": true
+        },
+        {
+          "excerpt": "Deterministic claims belong in ordinary tests and CI.",
+          "line": 144,
+          "path": "README.md",
+          "primary": false
+        },
+        {
+          "excerpt": "Evaluator-dependent behavior goes through `cautilus evaluate`.",
+          "line": 145,
+          "path": "README.md",
+          "primary": false
+        }
+      ],
+      "summary": "Proof layers are deliberately split: deterministic claims live in ordinary tests and CI while evaluator-dependent behavior goes through cautilus evaluate.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:c9942c56f6453d6c4c7a2d3a0f4b2c05d22ca5c2fd361cf207a4519ac65403e7",
+      "claimId": "claim-readme-md-148",
+      "claimSemanticGroup": "Improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.",
+          "line": 148,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "Cautilus ships a GEPA-style bounded prompt search seam above the one-shot improver.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:33b516a29471b1bfddfd5b9b204ba8a5051edeb3b409edd1106952f1df089a29",
+      "claimId": "claim-readme-md-155",
+      "claimSemanticGroup": "Adapter and ownership",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Two entry points share one host-owned `cautilus-adapter.yaml` and return the same durable decision surface.",
+          "line": 155,
+          "path": "README.md",
+          "primary": true
+        },
+        {
+          "excerpt": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.",
+          "line": 157,
+          "path": "README.md",
+          "primary": false
+        }
+      ],
+      "summary": "CLI and Cautilus Agent entry points share one host-owned adapter and return the same durable decision surface.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
+      "claimId": "claim-readme-md-160",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
+          "line": 160,
+          "path": "README.md",
+          "primary": true
+        },
+        {
+          "excerpt": "The minimum host-repo shape is an adapter, an installed Cautilus Agent, and run artifacts such as `eval-cases.json`, `eval-observed.json`, and `eval-summary.json`.",
+          "line": 159,
+          "path": "README.md",
+          "primary": false
+        }
+      ],
+      "summary": "Results are machine-readable packets plus readable views that another maintainer or agent can reopen, not just a pass/fail bit.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:59e68472ebbc1938ba23b1ca364151e297029a35ccdaf86fa7a972f552addfbb",
+      "claimId": "claim-readme-md-163",
+      "claimSemanticGroup": "Doctor and readiness",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Use `cautilus doctor --next-action` for the next onboarding step, `cautilus doctor --scope agent-surface` for agent-surface discoverability, and `cautilus doctor` for repo wiring readiness.",
+          "line": 163,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "doctor --next-action gives the next onboarding step, --scope agent-surface covers discoverability, and doctor reports repo wiring readiness.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:e246be8d511b808cdcb74efd7dd3a34f5da9df0034f0a05af4f1569e2a255e9f",
+      "claimId": "claim-readme-md-164",
+      "claimSemanticGroup": "Doctor and readiness",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "From this repo, `npm run consumer:onboard:smoke` is the shortest end-to-end adoption proof against a fresh consumer.",
+          "line": 164,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "npm run consumer:onboard:smoke is the shortest end-to-end adoption proof against a fresh consumer.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "extraction-result",
+      "claimFingerprint": "sha256:9067df52152a827b6f46ddd1150ee00b20e638e4847c4e86d7ba917ce9c1758f",
+      "claimId": "claim-readme-md-184",
+      "claimSemanticGroup": "Docs and spec tree",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Record the source reference and keep it human-auditable; add deterministic or eval proof only if behavior depends on execution.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "Dogfood and migration evidence lives in [consumer-readiness.md](./docs/maintainers/consumer-readiness.md), which is an evidence appendix rather than the canonical bootstrap guide.",
+          "line": 184,
+          "path": "README.md",
+          "primary": true
+        }
+      ],
+      "summary": "consumer-readiness.md is an evidence appendix rather than the canonical bootstrap guide.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    }
+  ],
+  "claimSummary": {
+    "byClaimAudience": {
+      "developer": 1,
+      "user": 33
+    },
+    "byClaimSemanticGroup": {
+      "Adapter and ownership": 2,
+      "Claim discovery": 3,
+      "Docs and spec tree": 4,
+      "Doctor and readiness": 3,
+      "Evaluation surfaces": 3,
+      "Held-out validation": 2,
+      "Improvement": 2,
+      "Install and onboarding": 1,
+      "Packets and reporting": 4,
+      "Positioning": 4,
+      "Product structure": 1,
+      "Proof routing": 1,
+      "Release boundary": 3,
+      "Structured review": 1
+    },
+    "byEvidenceStatus": {
+      "unknown": 34
+    },
+    "byLifecycle": {
+      "new": 34
+    },
+    "byRecommendedProof": {
+      "cautilus-eval": 5,
+      "deterministic": 19,
+      "human-auditable": 10
+    },
+    "byReviewStatus": {
+      "agent-reviewed": 34
+    },
+    "byVerificationReadiness": {
+      "needs-scenario": 4,
+      "ready-for-proof": 30
+    }
+  },
+  "discoveryMode": "agent-extraction",
+  "effectiveScanScope": {
+    "adapterFound": false,
+    "adapterPath": "",
+    "audienceHints": {
+      "developer": [],
+      "user": []
+    },
+    "claimLexiconTerms": [],
+    "entries": [
+      "README.md"
+    ],
+    "evidenceRoots": [],
+    "exclude": [
+      ".git/**",
+      "node_modules/**",
+      "dist/**",
+      "coverage/**",
+      "artifacts/**",
+      "charness-artifacts/**"
+    ],
+    "explicitSources": true,
+    "gitignorePolicy": "respect-repo-gitignore",
+    "include": [],
+    "linkedMarkdownDepth": 0,
+    "nonClaimSectionHeadings": [
+      "Deferred Decisions"
+    ],
+    "semanticGroups": [],
+    "traversal": "entry-markdown-links"
+  },
+  "extractionAudit": {
+    "anchoringPolicy": "whitespace-normalized-substring-of-raw-source",
+    "appliedClaimCount": 34,
+    "bounds": {
+      "maxClaimsPerSource": 80,
+      "maxExcerptChars": 600
+    },
+    "extractionTarget": "first-extraction",
+    "rejectedClaimCount": 0,
+    "rejectedClaims": [],
+    "runtime": {
+      "agent": "claude-code-harness-dry-run",
+      "model": "claude-fable-5"
+    },
+    "sourceCount": 1,
+    "submittedClaimCount": 34,
+    "templateHash": "sha256:fe453ab5e0fa84170ee359d3e249cbf088937c47d1c480df67fb7a70918960e4",
+    "templateVersion": "v1"
+  },
+  "extractionMode": "agent",
+  "gitCommit": "384e6d75888083cb486c63150a6dbdae766a5ac5",
+  "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
+  "nonVerdictNotice": "Extraction creates candidates. An extracted claim is not verified until matching evidence is attached.",
+  "schemaVersion": "cautilus.claim_proof_plan.v1",
+  "sourceCount": 1,
+  "sourceGraph": [],
+  "sourceInventory": [
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "entry-default",
+      "contentHash": "sha256:c30b5e36dbb28b5f46b9fac6abd6fd59fe9d5f849dc06afc98fd2eeb9ac68884",
+      "depth": 0,
+      "kind": "readme",
+      "path": "README.md",
+      "status": "read"
+    }
+  ],
+  "sourceRoot": "."
+}

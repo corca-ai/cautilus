@@ -1,0 +1,74 @@
+{
+  "bounds": {
+    "maxClaimsPerSource": 80,
+    "maxExcerptChars": 600
+  },
+  "confirmationNotice": "Scan-scope confirmation does not authorize agent extraction; running the extraction is an LLM activity behind a separate extraction-budget confirmation.",
+  "effectiveScanScope": {
+    "adapterFound": false,
+    "adapterPath": "",
+    "audienceHints": {
+      "developer": [],
+      "user": []
+    },
+    "claimLexiconTerms": [],
+    "entries": [
+      "README.md"
+    ],
+    "evidenceRoots": [],
+    "exclude": [
+      ".git/**",
+      "node_modules/**",
+      "dist/**",
+      "coverage/**",
+      "artifacts/**",
+      "charness-artifacts/**"
+    ],
+    "explicitSources": true,
+    "gitignorePolicy": "respect-repo-gitignore",
+    "include": [],
+    "linkedMarkdownDepth": 0,
+    "nonClaimSectionHeadings": [
+      "Deferred Decisions"
+    ],
+    "semanticGroups": [],
+    "traversal": "entry-markdown-links"
+  },
+  "extractionTarget": "first-extraction",
+  "gitCommit": "384e6d75888083cb486c63150a6dbdae766a5ac5",
+  "outputSchema": "cautilus.claim_extraction_result.v1",
+  "schemaVersion": "cautilus.claim_extraction_input.v1",
+  "sourceCount": 1,
+  "sourceGraph": [],
+  "sourceRoot": ".",
+  "sources": [
+    {
+      "audienceHint": "user",
+      "audienceHintSource": "entry-default",
+      "contentHash": "sha256:c30b5e36dbb28b5f46b9fac6abd6fd59fe9d5f849dc06afc98fd2eeb9ac68884",
+      "depth": 0,
+      "kind": "readme",
+      "path": "README.md",
+      "status": "extract"
+    }
+  ],
+  "template": {
+    "claimDefinition": "A behavior claim is a declared promise about how the product, repo, or workflow behaves, addressed to a user, operator, or agent, that could in principle be proven or falsified. Roadmap intent, design philosophy, open questions, glossary definitions, and document metadata are not claims.",
+    "excerptRules": "Every claim must carry at least one excerpt copied exactly from the source text, with its source path and a line locator. Mark exactly one excerpt per claim as primary: true; it is the claim's identity anchor across re-extractions. Keep paraphrase in the summary only. An excerpt that does not appear verbatim in the source after whitespace normalization causes the whole claim to be rejected, so copy text exactly instead of fixing typos or grammar. When the same promise is declared in multiple places, emit one claim with multiple excerpts instead of duplicate claims. Keep each excerpt within the maxExcerptChars bound (counted in characters, not bytes).",
+    "nonClaimConventions": {
+      "nonClaimSectionHeadings": [
+        "Deferred Decisions"
+      ],
+      "portableRules": [
+        "Frontmatter is metadata, not a claim.",
+        "Code-styled glossary labels and definition lists are not claims.",
+        "Prompt examples, sample inputs, and open questions are not claims.",
+        "Text under a non-claim section heading is not a claim."
+      ]
+    },
+    "routingGuidance": "Route every claim toward the evidence it needs next. recommendedProof: deterministic when a repo-owned unit, lint, build, schema, or CI check can prove it; human-auditable when reading current source, docs, or generated artifacts can prove it; cautilus-eval when proof depends on model, agent, prompt, skill, workflow, or behavior execution. recommendedEvalSurface (cautilus-eval only): dev/repo for repo-instruction behavior, dev/skill for skill behavior, app/chat for conversational app behavior, app/prompt for single-prompt app behavior. verificationReadiness: ready-for-proof when the claim is provable as stated; needs-scenario when a concrete scenario must be written first; needs-alignment when the promise itself needs a maintainer decision; blocked when extraction could not settle what the claim means. claimAudience: user, developer, or unclear. claimSemanticGroup: a short label grouping related claims.",
+    "templateHash": "sha256:fe453ab5e0fa84170ee359d3e249cbf088937c47d1c480df67fb7a70918960e4",
+    "templateVersion": "v1",
+    "uncertaintyRule": "When unsure whether text is a claim, emit the claim with verificationReadiness: blocked and add an entry to unresolvedQuestions instead of silently dropping it."
+  }
+}

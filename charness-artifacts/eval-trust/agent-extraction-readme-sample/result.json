@@ -1,0 +1,586 @@
+{
+  "schemaVersion": "cautilus.claim_extraction_result.v1",
+  "extractionInputRef": {
+    "path": "input.json",
+    "templateHash": "sha256:fe453ab5e0fa84170ee359d3e249cbf088937c47d1c480df67fb7a70918960e4"
+  },
+  "runtime": {
+    "model": "claude-fable-5",
+    "agent": "claude-code-harness-dry-run"
+  },
+  "claims": [
+    {
+      "summary": "Cautilus keeps agent and workflow behavior honest while prompts keep changing.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 3,
+          "verbatim": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "recommendedEvalSurface": "dev/repo",
+      "claimSemanticGroup": "Positioning",
+      "unresolvedQuestions": [
+        "Is the headline promise proven through a representative scenario set, or is it an umbrella over the per-surface claims below?"
+      ]
+    },
+    {
+      "summary": "Users define a protected behavior once and verify it survives prompt, skill, and wrapper changes.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 4,
+          "verbatim": "It is a repo-local contract layer for agent and workflow behavior evaluation: define the behavior you are trying to protect once, then verify it survives prompt, skill, and wrapper changes.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "recommendedEvalSurface": "dev/repo",
+      "claimSemanticGroup": "Positioning"
+    },
+    {
+      "summary": "The product's three connected jobs are claim discovery, bounded-packet verification, and budgeted improvement.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 6,
+          "verbatim": "discover declared behavior claims worth proving from selected source docs, verify curated claims through bounded evaluation packets, and improve behavior with budgeted improvement once the proof surface is honest.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Product structure"
+    },
+    {
+      "summary": "Cautilus ships as a standalone binary plus Cautilus Agent that a host repo installs without copying a scaffold.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 7,
+          "verbatim": "Ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Install and onboarding"
+    },
+    {
+      "summary": "Commands emit durable packets with enough state for the next agent to resume.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 9,
+          "verbatim": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 8,
+          "verbatim": "Agents are first-class users of the product surface.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "recommendedEvalSurface": "dev/repo",
+      "claimSemanticGroup": "Packets and reporting"
+    },
+    {
+      "summary": "The binary is machine-level and shared across repos while the agent-facing surface stays repo-local and repo-owned.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 10,
+          "verbatim": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 13,
+          "verbatim": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and ownership"
+    },
+    {
+      "summary": "Host repos can use evaluate fixture, evaluate observation, and post-run evaluate skill-experiment in the current external-adoption slice.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 18,
+          "verbatim": "Host repos can use `cautilus evaluate fixture`, `cautilus evaluate observation`, and post-run `cautilus evaluate skill-experiment` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release boundary"
+    },
+    {
+      "summary": "skill-experiment compare only compares host-preserved outputs and never clones, installs, or executes skills.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 19,
+          "verbatim": "`skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release boundary"
+    },
+    {
+      "summary": "Claim discovery automation, improve automation, live app-runner workflows, and review-learning capture are opt-in slices until the rewrite closes.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 20,
+          "verbatim": "Treat claim discovery automation, improve automation, live `eval` app-runner workflows, and review-learning packet capture or selected-packet summaries as opt-in product slices until the rewrite closes.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release boundary"
+    },
+    {
+      "summary": "An agent can drive setup by repeating doctor --next-action until doctor reports readiness plus a first_bounded_run.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 55,
+          "verbatim": "If you want to hand setup to an agent, ask it to repeat `cautilus doctor --repo-root . --next-action`, do exactly what the packet says, and stop only after `cautilus doctor --repo-root .` reports readiness plus a `first_bounded_run`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "recommendedEvalSurface": "dev/repo",
+      "claimSemanticGroup": "Doctor and readiness"
+    },
+    {
+      "summary": "The spec apex is the specdown entry and the curated claim source of truth lives in the user and maintainer spec indexes.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 66,
+          "verbatim": "[docs/specs/index.spec.md](./docs/specs/index.spec.md) is the top-level \"proven on itself\" apex and the specdown entry; the user and maintainer spec indexes it links to remain the curated claim source of truth.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Docs and spec tree"
+    },
+    {
+      "summary": "Raw discover claims packets are high-recall proof-planning input, not the primary user review document.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 67,
+          "verbatim": "Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery"
+    },
+    {
+      "summary": "The Cautilus Agent curates the discovery packet: reduces false positives, raises likely missing promises, and separates discovery bugs from narrative gaps.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 68,
+          "verbatim": "The Cautilus Agent curates that packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 115,
+          "verbatim": "The Cautilus Agent curates false positives, likely missing promises, scan boundaries, and review budgets before any eval plan is trusted.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "recommendedEvalSurface": "dev/skill",
+      "claimSemanticGroup": "Claim discovery"
+    },
+    {
+      "summary": "Host repos do not need the website renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 69,
+          "verbatim": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Docs and spec tree"
+    },
+    {
+      "summary": "Each claim page pairs a bounded promise with executable evidence or an explicit evidence gap.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 70,
+          "verbatim": "Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Docs and spec tree"
+    },
+    {
+      "summary": "One checked-in fixture plus a host-owned adapter runner verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 77,
+          "verbatim": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 76,
+          "verbatim": "You need one checked-in `cautilus.evaluation_input.v1` fixture and a host-owned adapter runner.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces"
+    },
+    {
+      "summary": "Fixture runs become durable eval packets another agent or maintainer can reopen.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 92,
+          "verbatim": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting"
+    },
+    {
+      "summary": "An eval summary is evidence for the chosen fixture and adapter path, not a global product verdict.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 93,
+          "verbatim": "The summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces"
+    },
+    {
+      "summary": "Claim discovery turns adapter-owned entry docs and linked Markdown into proof-plan candidates and is planning, not a correctness verdict.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 113,
+          "verbatim": "Claim discovery turns adapter-owned entry docs and linked Markdown into `cautilus.claim_proof_plan.v1` candidates.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 114,
+          "verbatim": "It is proof planning, not a verdict that the repo is correct.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery"
+    },
+    {
+      "summary": "Evaluation exposes two top-level surfaces: dev for AI-assisted development work and app for AI-powered product behavior.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 117,
+          "verbatim": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces"
+    },
+    {
+      "summary": "Protected scenarios are kept out of tuning so the validation signal stays honest.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 130,
+          "verbatim": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Held-out validation"
+    },
+    {
+      "summary": "Evidence is stored in a durable file the next maintainer can reopen from disk.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 131,
+          "verbatim": "It stores the evidence in a durable file the next maintainer can reopen from disk.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting"
+    },
+    {
+      "summary": "Packets, CLI commands, and repo instructions are agent-facing interfaces first; HTML is a mirror, not the source of truth.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 136,
+          "verbatim": "Unlike a dashboard-first review tool, `Cautilus` treats packets, CLI commands, and repo instructions as agent-facing interfaces first; HTML is a human-readable mirror, not the source of truth.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Positioning"
+    },
+    {
+      "summary": "Cautilus treats the behavior under evaluation as the contract instead of freezing one prompt string.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 137,
+          "verbatim": "Unlike a prompt manager, `Cautilus` does not freeze one prompt string as the contract — it treats the behavior under evaluation as the contract (`intent-first`).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Positioning"
+    },
+    {
+      "summary": "Iteration is separated from protected validation and evidence stays reopenable from files.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 138,
+          "verbatim": "Unlike a benchmark scrapbook, `Cautilus` separates iteration from protected validation and keeps evidence reopenable from files (`held-out honesty`, `packet-first`).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Held-out validation"
+    },
+    {
+      "summary": "Adapters, reports, review files, and compare artifacts are first-class product boundaries.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 139,
+          "verbatim": "Unlike ad hoc eval scripts, `Cautilus` makes adapters, reports, review files, and compare artifacts first-class product boundaries (`structured review`).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Structured review"
+    },
+    {
+      "summary": "Search and revision stay explicitly bounded by budgets, checkpoints, and blocked-readiness conditions.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 140,
+          "verbatim": "Unlike open-ended improver loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Improvement"
+    },
+    {
+      "summary": "Proof layers are deliberately split: deterministic claims live in ordinary tests and CI while evaluator-dependent behavior goes through cautilus evaluate.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 142,
+          "verbatim": "The proof layers are deliberately split because humans, code, and AI are good at different work.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 144,
+          "verbatim": "Deterministic claims belong in ordinary tests and CI.",
+          "primary": false
+        },
+        {
+          "path": "README.md",
+          "line": 145,
+          "verbatim": "Evaluator-dependent behavior goes through `cautilus evaluate`.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Proof routing"
+    },
+    {
+      "summary": "Cautilus ships a GEPA-style bounded prompt search seam above the one-shot improver.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 148,
+          "verbatim": "`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Improvement"
+    },
+    {
+      "summary": "CLI and Cautilus Agent entry points share one host-owned adapter and return the same durable decision surface.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 155,
+          "verbatim": "Two entry points share one host-owned `cautilus-adapter.yaml` and return the same durable decision surface.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 157,
+          "verbatim": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and ownership"
+    },
+    {
+      "summary": "Results are machine-readable packets plus readable views that another maintainer or agent can reopen, not just a pass/fail bit.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 160,
+          "verbatim": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 159,
+          "verbatim": "The minimum host-repo shape is an adapter, an installed Cautilus Agent, and run artifacts such as `eval-cases.json`, `eval-observed.json`, and `eval-summary.json`.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting"
+    },
+    {
+      "summary": "doctor --next-action gives the next onboarding step, --scope agent-surface covers discoverability, and doctor reports repo wiring readiness.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 163,
+          "verbatim": "Use `cautilus doctor --next-action` for the next onboarding step, `cautilus doctor --scope agent-surface` for agent-surface discoverability, and `cautilus doctor` for repo wiring readiness.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Doctor and readiness"
+    },
+    {
+      "summary": "npm run consumer:onboard:smoke is the shortest end-to-end adoption proof against a fresh consumer.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 164,
+          "verbatim": "From this repo, `npm run consumer:onboard:smoke` is the shortest end-to-end adoption proof against a fresh consumer.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Doctor and readiness"
+    },
+    {
+      "summary": "consumer-readiness.md is an evidence appendix rather than the canonical bootstrap guide.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 184,
+          "verbatim": "Dogfood and migration evidence lives in [consumer-readiness.md](./docs/maintainers/consumer-readiness.md), which is an evidence appendix rather than the canonical bootstrap guide.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Docs and spec tree"
+    }
+  ],
+  "skippedSources": []
+}
