@@ -14,3 +14,10 @@ paths = ['''^charness-artifacts/.*\.json$''']
 regexTarget = "line"
 regexes = ['''"gitCommit"\s*:\s*"[0-9a-f]{40}"''']
 condition = "AND"
+
+[[allowlists]]
+description = "Allow quoted claim packet commit metadata in debug records"
+paths = ['''^charness-artifacts/debug/.*\.md$''']
+regexTarget = "line"
+regexes = ['''"gitCommit"\s*:\s*"[0-9a-f]{40}''']
+condition = "AND"

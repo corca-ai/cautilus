@@ -57,6 +57,7 @@ Checked-in claim packets gained a second home (`charness-artifacts/eval-trust/` 
 - path axis: `git grep` for 40-hex `gitCommit` lines in tracked JSON outside `.cautilus/claims/` found only the three sample files | decision: fixed in slice | proof: executed grep at HEAD
 - future axis: slice 4 measurement will check in more packets under `charness-artifacts/eval-trust/` | decision: covered by the class-level path regex in the new allowlist entry | proof: config covers `^charness-artifacts/.*\.json$`
 - cross-file: the existing `.cautilus/claims` allowlist entry in `.gitleaks.toml` is the sibling configuration the fix mirrors line-for-line
+- evidence-prose axis (found one slice later, same session): this debug record itself quoted the flagged `"gitCommit": "<40-hex>"` line verbatim, and the quote entered git history before the next verify, so the same rule fired on `charness-artifacts/debug/latest.md` | decision: third allowlist entry scoped to `charness-artifacts/debug/*.md` with the same line regex (history blobs cannot be edited away) | proof: `npm run security:secrets` clean after the entry
 
 ## Seam Risk
 
