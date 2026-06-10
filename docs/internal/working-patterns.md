@@ -40,6 +40,10 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   다음 세션이 4각 premortem 재실행 없이 바로 판단할 수 있다.
 - **Follow-up 번호는 스펙에서 삭제될 때 재넘버링한다.**
   gap 을 남기지 말고 삭제 + 재넘버링 + cross-ref 갱신을 한 커밋에.
+- **워크플로우 행동 프로즈는 현재형으로 "뭘 한다" 만 말한다 (maintainer 비준 2026-06-11).**
+  "예전에는 X 였다", "더 이상 X 하지 않는다" 류의 변천사·부정형 서술은 첫 사용 유저에게 불필요하고 stale claim 의 원천이 된다.
+  기각/미수행 결정은 `Fixed Decisions` / `Deliberately Not Doing` 류의 heading 이 명시된 결정 섹션과 goal 아티팩트에만 둔다.
+  이 규칙이 claim 추출과 맞물리는 이유: heading 이 명시된 결정 섹션은 non-claim convention 으로 결정론적으로 제외 가능하지만, 흐르는 프로즈 속 변천사 서술은 stale claim 으로 추출된다 (S0 HITL c01/c04 가 실측한 실패 모드).
 
 ## Product Language 및 Cross-Cutting Concern 원칙
 

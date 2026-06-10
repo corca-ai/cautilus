@@ -131,13 +131,19 @@ during the run:
   Verification: full Go+node suites, lint chain, and specdown (43 specs) green; new executable seam section in `docs/specs/user/claim-discovery.spec.md` runs the round trip against a fixture repo.
   Routing: `charness:impl` against the contract; bounded fresh-eye critique delegated to a subagent, verdict ready with zero blockers (recorded in the contract's Critique section).
   Slice 4 (bounded-harness comparison) is now unblocked on the binary side; its remaining dependency is the S0 gold-set verdicts.
+- 2026-06-11 S0 HITL paused at c04 with a maintainer-ratified reorder: docs truth first, then a regenerated gold set.
+  Session yield before the pause: R5 (heuristic tag verdicts are derived bookkeeping, never a decision item), R6 (ownership/boundary-assignment claims route deterministic; discriminator: "what would an eval of this claim score that is not another claim's content?"), revised c02 verdict (deterministic dominance, live-behavior facet deleted as sibling-owned), c03 accepted under R6.
+  c04 exposed the structural problem: the Review Budget Confirmation section contradicts the agent-primary direction recorded in the same contract (31 stale-vocabulary hits in claim-discovery-workflow.md), so ratifying routing verdicts over about-to-be-rewritten text wastes maintainer budget.
+  New order ratified: confirmation-gate prose decisions → docs truth update (claim-discovery-workflow.md + README + cli guide; SKILL.md stays slice 2 under consumer-intent freeze) → agent extraction over fresh docs → HITL over that output becomes the new gold set → slice 4 scores against it. The 33 unratified S0 entries are superseded.
+  Gate-design prose decisions ratified interactively: (1) one principle stated once — scope confirmation never authorizes model spend — instantiated per stage (scan scope → extraction budget on the primary path → review budget only where the review seam fires); (2) the extraction-budget plan shows the contract list (source count, content size, excerpt bounds, batch plan with expected batch count, stop reasons), subagent lane sizing deferred to slice 2; (3) workflow prose states present behavior only — no historical-transition or not-doing narration outside heading-marked decision sections (recorded as a working-patterns rule; c01/c04 measured the failure mode).
+  Routing: HITL via `charness:hitl` (pause synced to `charness-artifacts/hitl/latest.md`); the pivot was a decision-frame conversation with a critical review; realignment edits landed per the CLAUDE.md directional-decision rule.
 
 ## Context Sources
 
 - `docs/contracts/claim-discovery-workflow.md` — classification-hints contract, matching semantics, promotion criteria and priority inventory (the roadmap this goal executes).
 - `docs/contracts/facet-decomposition.md` — redefined Next Step (adapter-owned hints absorb per-facet routing; no dominant field).
 - `charness-artifacts/eval-trust/2026-06-10-recommendedproof-facet-gold-set-proposal.md` + `.json` — proposed labels, portability boundary, external-validity caveat; the ratification harness for hint proposals.
-- `.charness/hitl/runtime/hitl-20260609-235609/` — paused HITL session (queue, state, scratchpad; c01 accepted, cursor at c02).
+- `.charness/hitl/runtime/hitl-20260609-235609/` — paused HITL session (queue, state, scratchpad; c01–c03 accepted, paused at c04 pending the docs-truth rewrite; rules R1–R6 carry forward).
 - Commits `a09505e` (first hint family, engine+adapter+SKILL.md), `12816e2`/`8e003e2` (gold set), `432b290` (promotion criteria/roadmap).
 - Maintainer decisions this session: corpus choice (`../yt-digest`, `../charness`, `../ceal`), shaped-only activation, tie-break demotion, sc5 ratification.
 
