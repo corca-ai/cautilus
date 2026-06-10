@@ -2,12 +2,15 @@
 
 ## Workflow Trigger
 
-다음 세션의 첫 수는 **S0 HITL 재개**: 세션 `.charness/hitl/runtime/hitl-20260609-235609`, 커서 c02, verdicts 0/36.
-골드셋 maintainer verdicts가 slice 4(비교 측정)의 마지막 남은 의존성이라, 바이너리 쪽이 끝난 지금 이게 크리티컬 패스.
-maintainer가 verdict 전 캘리브레이션으로 요청해서 만든 첫 에이전트 추출 실물 샘플(README 단일 파일, 34/34 앵커링, 휴리스틱 15 대비 34)이 [2026-06-10-agent-extraction-readme-sample.md](../../charness-artifacts/eval-trust/2026-06-10-agent-extraction-readme-sample.md)에 있다.
-verdict를 매길 때 이 샘플이 보여준 살아있는 경계 — needs-scenario vs ready-for-proof, 그리고 패킷 메커니즘과 에이전트 행동이 섞인 클레임의 deterministic vs cautilus-eval — 를 참조 잣대로 쓴다.
-권장 호출 프롬프트: `@docs/internal/handoff.md 핸드오프대로 진행합시다 — S0 골드셋 HITL을 재개해주세요. 캘리브레이션 샘플 노트를 먼저 요약해서 보여주고 시작하세요.`
-대안 첫 수(maintainer 선택 시): **slice 2 구현**(에이전트 추출 플로우 — `charness:impl`, [docs/contracts/claim-extraction-template.md](../contracts/claim-extraction-template.md) Implementation Slices 2; `skills/cautilus-agent/` 변경이라 consumer-intent freeze 규칙 발동, SKILL.md 180줄 공개 예산 준수), 또는 **slice 4 비교 측정 셰이핑**(verdicts 없이도 하네스 설계는 가능하나 채점 기준선이 없으면 드라이런만 됨).
+**방향 전환 (2026-06-11, maintainer 비준)**: S0 골드셋 HITL은 c04에서 **일시중지**.
+c04가 드러낸 구조 문제 — 디스커버 대상 문서 자체가 휴리스틱-시대 stale (claim-discovery-workflow.md의 Review Budget Confirmation 섹션이 같은 파일 30줄 위의 agent-primary 방향 결정과 모순, stale 어휘 31곳) — 때문에 stale 텍스트 위 verdict 비준은 maintainer 예산 낭비로 판정.
+새 순서:
+1. **확인 게이트 설계** (진행 중, maintainer와 함께): agent-primary에서 스코프 확인 ≠ 모델 비용 승인의 새 배치, 별도 리뷰 단계 존속 여부 — [claim-extraction-template.md](../contracts/claim-extraction-template.md)에 작은 결정 묶음으로 기록.
+2. **docs 진실 갱신**: claim-discovery-workflow.md stale 섹션 + README 1곳 + docs/guides/cli.md 1곳. `skills/cautilus-agent/SKILL.md`(stale 8곳)는 제외 — slice 2 본체, consumer-intent freeze 규칙 적용.
+3. **갱신 문서에 에이전트 추출 → 그 출력에 HITL** = 새 골드셋 (정답지 비준 + 추출 품질 검수 한 패스; 휴리스틱 점수는 R5대로 파생 계산).
+4. slice 4 비교 측정은 새 골드셋 기준.
+HITL 세션 `hitl-20260609-235609`은 paused, 사유 기록됨; **R1–R6 규칙과 c01–c03 verdict는 이월** (특히 R6: 소유권/경계-배정 클레임은 deterministic — 판별 테스트 "이 클레임을 평가하면 다른 클레임의 내용이 아닌 무엇이 채점되는가?"). 나머지 33 엔트리는 재생성 대기로 superseded.
+캘리브레이션 샘플([2026-06-10-agent-extraction-readme-sample.md](../../charness-artifacts/eval-trust/2026-06-10-agent-extraction-readme-sample.md))은 새 HITL에서도 verdict 잣대로 유효.
 
 ## Current State (2026-06-10)
 
@@ -19,7 +22,8 @@ verdict를 매길 때 이 샘플이 보여준 살아있는 경계 — needs-scen
 - `validate` 확장: 해시 일치 시 미앵커 발췌 = 하드 실패, 해시 드리프트 시 = stale-anchor finding(통과), agent 패킷은 `extractionAudit`로 audit-presence 충족(first-extraction), refresh 타깃은 carryForward도 요구.
 - 검증: Go+node 전체 스위트, lint 체인, specdown 43 스펙 green. `docs/specs/user/claim-discovery.spec.md`에 실행 가능한 시임 섹션 추가(fixture 레포 라운드트립 run:shell 2블록).
 - 위임 fresh-eye critique verdict **ready, 블로커 0** (계약 Critique 섹션에 기록).
-- 남은 슬라이스: 2 에이전트 표면 → 3 refresh 합성(`extraction-input --previous`, carry-forward) → 4 비교 측정(slice 1 + S0 verdicts만 전제, slice 2 불필요 — 비준됨).
+- 남은 슬라이스 (2026-06-11 재서열): 게이트 설계 + docs 진실 갱신 → 새 골드셋(에이전트 추출 출력 HITL) → 2 에이전트 표면 → 3 refresh 합성(`extraction-input --previous`, carry-forward) → 4 비교 측정(새 골드셋 기준).
+- S0 36-엔트리 골드셋 제안서는 superseded(33 미비준 엔트리 재생성 대기); HITL 규칙 R1–R6은 이월 자산.
 - **push는 사용자 몫(의도적 보류).**
 
 ## Discuss
