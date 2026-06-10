@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 171
+          "unknown": 174
         },
         "byReviewStatus": {
-          "heuristic": 171
+          "heuristic": 174
         },
-        "count": 171,
+        "count": 174,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -44,14 +44,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 13
+          "unknown": 15
         },
         "byReviewStatus": {
           "agent-reviewed": 1,
-          "heuristic": 11,
+          "heuristic": 13,
           "human-reviewed": 1
         },
-        "count": 13,
+        "count": 15,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -65,14 +65,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 114
+          "unknown": 115
         },
         "byReviewStatus": {
           "agent-reviewed": 8,
-          "heuristic": 105,
+          "heuristic": 106,
           "human-reviewed": 1
         },
-        "count": 114,
+        "count": 115,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -145,7 +145,7 @@
       }
     ]
   },
-  "candidateCount": 386,
+  "candidateCount": 389,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -163,12 +163,12 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 283,
-      "user": 103
+      "user": 106
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 60,
-      "Agent and skill workflow": 85,
-      "Claim discovery and review": 49,
+      "Agent and skill workflow": 87,
+      "Claim discovery and review": 50,
       "Documentation and contracts": 90,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
@@ -179,25 +179,25 @@
     },
     "byEvidenceStatus": {
       "satisfied": 155,
-      "unknown": 231
+      "unknown": 234
     },
     "byLifecycle": {
-      "new": 386
+      "new": 389
     },
     "byRecommendedProof": {
-      "cautilus-eval": 120,
-      "deterministic": 165,
+      "cautilus-eval": 121,
+      "deterministic": 167,
       "human-auditable": 101
     },
     "byReviewStatus": {
       "agent-reviewed": 212,
-      "heuristic": 171,
+      "heuristic": 174,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
       "blocked": 37,
       "needs-alignment": 36,
-      "ready-for-proof": 313
+      "ready-for-proof": 316
     }
   },
   "discoveryBoundary": {
@@ -242,7 +242,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:c3784ab08ac6417e1d451eedfc2754a41a110ba85534e78cff7f9044e2a8f61f",
+    "implementationHash": "sha256:3c32ab274f096284e0276f88b13ebcdb925687d5c3962d2d6cb1c09e16467798",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v5"
@@ -3062,7 +3062,7 @@
         "summary": "Using the `cautilus discover claims` CLI command and the `cautilus-agent` skill, a user can turn scattered repo promises into a source-referenced worklist: what Cautilus found, what looks noisy, what may be missing, and what evidence each candidate needs next."
       },
       {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-189",
+        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-218",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -3073,7 +3073,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-claim-discovery-spec-md-6",
-              "claim-docs-specs-user-claim-discovery-spec-md-189",
+              "claim-docs-specs-user-claim-discovery-spec-md-218",
               "claim-docs-specs-user-claim-discovery-spec-md-199"
             ]
           }
@@ -3084,7 +3084,7 @@
         "summary": "`discover claims status` owns the next-action summary over a saved discovery packet."
       },
       {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-229",
+        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-258",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -3096,7 +3096,7 @@
               "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-claim-discovery-spec-md-6",
               "claim-docs-specs-user-claim-discovery-spec-md-160",
-              "claim-docs-specs-user-claim-discovery-spec-md-229"
+              "claim-docs-specs-user-claim-discovery-spec-md-258"
             ]
           }
         ],
@@ -3661,7 +3661,7 @@
       }
     ]
   },
-  "gitCommit": "2d5a99a19273a2dca2486829d808acac78caaaac",
+  "gitCommit": "cb3994a109d9152e5b825a824bbf29327fef5444",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3673,10 +3673,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "2d5a99a19273a2dca2486829d808acac78caaaac",
+    "currentGitCommit": "cb3994a109d9152e5b825a824bbf29327fef5444",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "2d5a99a19273a2dca2486829d808acac78caaaac",
+    "packetGitCommit": "cb3994a109d9152e5b825a824bbf29327fef5444",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3700,7 +3700,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 153,
+    "heuristicClaimsReadyForReview": 156,
     "needsAlignment": 36,
     "needsScenario": 0
   },

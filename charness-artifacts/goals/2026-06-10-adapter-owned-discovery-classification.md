@@ -126,6 +126,11 @@ during the run:
   Maintainer ratified the four seam decisions interactively; bounded fresh-eye critique (delegated subagent, verdict ready-with-edits) surfaced two blockers — `agent-reviewed` collisions with validate/review-input/eval-plan consumers, and missing primary-excerpt persistence — both resolved in the contract before commit.
   Routing: `find-skills` bootstrap → `charness:spec` for the contract; critique delegated per the subagent-delegation rule.
   Follow-up ratifications in the same session: the comparison measurement runs through a bounded harness consuming the same `extraction-input` packet (skill-flow verification deferred to a later Cautilus eval fixture over the cautilus-agent skill itself), `extraction-input` gets the `--adapter <path>` override for read-only corpora, and slice 4 therefore depends on slice 1 plus gold-set verdicts, not on slice 2.
+- 2026-06-10 extraction slice 1 shipped (commit `cb3994a`): `discover claims extraction-input` (template v1 embedded with version+hash, sources with content hashes, merged hints, bounds, `--adapter` override) and `discover claims apply-extraction` (result schema + templateHash gates command-level; anchoring, exactly-one-primary, rune bounds, duplicate-fingerprint, and scope checks reject claim-level into `extractionAudit.rejectedClaims`; composes `extractionMode: agent` proof plans with `{path,line,excerpt,primary}` sourceRefs).
+  Fingerprint unified to sha256(normalized primary verbatim excerpt) with a golden test pinning heuristic equivalence; heuristic packets now write `extractionMode: heuristic`; `validate` gained anchoring re-audit (hash-match hard-fail, hash-drift stale-anchor findings) and the extractionAudit audit-presence rule.
+  Verification: full Go+node suites, lint chain, and specdown (43 specs) green; new executable seam section in `docs/specs/user/claim-discovery.spec.md` runs the round trip against a fixture repo.
+  Routing: `charness:impl` against the contract; bounded fresh-eye critique delegated to a subagent, verdict ready with zero blockers (recorded in the contract's Critique section).
+  Slice 4 (bounded-harness comparison) is now unblocked on the binary side; its remaining dependency is the S0 gold-set verdicts.
 
 ## Context Sources
 

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:18e1d503d1b70647584897d85d42296eb3409bdc1b065f3fbab1f8ba18b24e26"
+      "contentHash": "sha256:9e51025bc81468e36b627eed8bea5b8b863fd487316a9b2f4868a07563fb7a6e"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "2d5a99a19273a2dca2486829d808acac78caaaac",
+  "claimsPacketGitCommit": "cb3994a109d9152e5b825a824bbf29327fef5444",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 386,
+  "claimsPacketCandidateCount": 389,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -572,33 +572,33 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 386,
-    "userRawClaimCount": 103,
-    "userMappedToCanonicalCount": 103,
+    "totalRawClaimCount": 389,
+    "userRawClaimCount": 106,
+    "userMappedToCanonicalCount": 106,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 319,
-    "userSemanticReviewRecommendedCount": 41,
+    "semanticReviewRecommendedCount": 312,
+    "userSemanticReviewRecommendedCount": 34,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 283,
-      "mapped-to-user-canonical": 103
+      "mapped-to-user-canonical": 106
     },
     "byAudience": {
       "developer": 283,
-      "user": 103
+      "user": 106
     },
     "byMappingConfidence": {
-      "high": 67,
+      "high": 77,
       "low": 20,
-      "medium": 299
+      "medium": 292
     },
     "byUserCanonicalClaimId": {
-      "U1": 27,
-      "U2": 56,
+      "U1": 23,
+      "U2": 64,
       "U3": 4,
       "U4": 3,
       "U5": 5,
       "U6": 1,
-      "U7": 7
+      "U7": 6
     },
     "byMaintainerCanonicalClaimId": {
       "M1": 6,
@@ -626,7 +626,6 @@
       "claim-agents-md-142",
       "claim-readme-md-7",
       "claim-readme-md-9",
-      "claim-readme-md-10",
       "claim-readme-md-13",
       "claim-readme-md-77",
       "claim-readme-md-117",
@@ -649,16 +648,12 @@
       "claim-docs-contracts-adapter-contract-md-550",
       "claim-docs-contracts-review-packet-md-3",
       "claim-docs-guides-cli-md-32",
-      "claim-docs-guides-cli-md-55",
       "claim-docs-guides-cli-md-112",
       "claim-docs-guides-cli-md-121",
-      "claim-docs-guides-cli-md-135",
       "claim-docs-guides-cli-md-180",
       "claim-docs-guides-cli-md-187",
-      "claim-docs-guides-cli-md-193",
       "claim-docs-guides-cli-md-263",
       "claim-docs-guides-cli-md-273",
-      "claim-docs-guides-cli-md-474",
       "claim-docs-guides-cli-md-564",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-25",
@@ -669,10 +664,8 @@
       "claim-docs-guides-evaluation-process-md-52",
       "claim-docs-guides-evaluation-process-md-269",
       "claim-docs-guides-evaluation-process-md-270",
-      "claim-docs-guides-evaluation-process-md-304",
       "claim-docs-guides-evaluation-process-md-308",
       "claim-docs-guides-evaluation-process-md-317",
-      "claim-docs-guides-evaluation-process-md-322",
       "claim-docs-guides-improve-md-15",
       "claim-docs-guides-improve-md-19",
       "claim-docs-internal-working-patterns-md-59",
@@ -876,10 +869,10 @@
       "claim-docs-contracts-claim-extraction-template-md-18",
       "claim-docs-contracts-claim-extraction-template-md-39",
       "claim-docs-contracts-claim-extraction-template-md-68",
-      "claim-docs-contracts-claim-extraction-template-md-240",
-      "claim-docs-contracts-claim-extraction-template-md-282",
-      "claim-docs-contracts-claim-extraction-template-md-289",
-      "claim-docs-contracts-claim-extraction-template-md-336",
+      "claim-docs-contracts-claim-extraction-template-md-243",
+      "claim-docs-contracts-claim-extraction-template-md-285",
+      "claim-docs-contracts-claim-extraction-template-md-292",
+      "claim-docs-contracts-claim-extraction-template-md-343",
       "claim-docs-contracts-facet-decomposition-md-30",
       "claim-docs-contracts-facet-decomposition-md-36",
       "claim-docs-contracts-facet-decomposition-md-46",
@@ -941,22 +934,18 @@
     {
       "canonicalClaimId": "U1",
       "title": "Readiness",
-      "absorbedRawClaimCount": 27,
+      "absorbedRawClaimCount": 23,
       "absorbedRawClaimIds": [
         "claim-readme-md-69",
         "claim-readme-md-77",
         "claim-readme-md-157",
         "claim-docs-guides-cli-md-32",
-        "claim-docs-guides-cli-md-112",
         "claim-docs-guides-cli-md-114",
         "claim-docs-guides-cli-md-121",
-        "claim-docs-guides-consumer-adoption-md-20",
         "claim-docs-guides-consumer-adoption-md-25",
         "claim-docs-guides-consumer-adoption-md-48",
         "claim-docs-guides-consumer-adoption-md-49",
         "claim-docs-guides-consumer-adoption-md-67",
-        "claim-docs-guides-evaluation-process-md-52",
-        "claim-docs-guides-evaluation-process-md-270",
         "claim-docs-guides-improve-md-15",
         "claim-docs-guides-improve-md-19",
         "claim-docs-specs-user-index-spec-md-5",
@@ -997,12 +986,6 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-guides-cli-md-112",
-          "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
           "claimId": "claim-docs-guides-cli-md-114",
           "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
           "mappingConfidence": "high",
@@ -1011,12 +994,6 @@
         {
           "claimId": "claim-docs-guides-cli-md-121",
           "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-guides-consumer-adoption-md-20",
-          "claimFingerprint": "sha256:aae5fa6c0eeb4ee6edb98897c455b1e005bcbe79b4489e2545b5835fbe02cee5",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1043,18 +1020,6 @@
           "claimFingerprint": "sha256:8aac208866396b84c450be1369558a4a9accf00000d8711dc7e1a69c5467915d",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
-        },
-        {
-          "claimId": "claim-docs-guides-evaluation-process-md-52",
-          "claimFingerprint": "sha256:de07fe283b1fb474b240177e63959b9955efb8f6095ae64337946a7fc76bb9ec",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-guides-evaluation-process-md-270",
-          "claimFingerprint": "sha256:c4e3a1449eae3ee64e174c26d97bbf9deff1ae5b30fa9f26c18a8bdc11199ed3",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-guides-improve-md-15",
@@ -1136,29 +1101,30 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 14,
-        "unknown": 13
+        "satisfied": 11,
+        "unknown": 12
       },
       "byReviewStatus": {
-        "agent-reviewed": 15,
+        "agent-reviewed": 11,
         "heuristic": 12
       },
       "byRecommendedProof": {
         "cautilus-eval": 9,
-        "deterministic": 14,
-        "human-auditable": 4
+        "deterministic": 11,
+        "human-auditable": 3
       },
       "byMappingConfidence": {
         "high": 13,
-        "medium": 14
+        "medium": 10
       }
     },
     {
       "canonicalClaimId": "U2",
       "title": "Claim Discovery",
-      "absorbedRawClaimCount": 56,
+      "absorbedRawClaimCount": 64,
       "absorbedRawClaimIds": [
         "claim-readme-md-3",
+        "claim-readme-md-7",
         "claim-readme-md-9",
         "claim-readme-md-10",
         "claim-readme-md-13",
@@ -1170,6 +1136,7 @@
         "claim-readme-md-151",
         "claim-readme-md-160",
         "claim-docs-guides-cli-md-55",
+        "claim-docs-guides-cli-md-112",
         "claim-docs-guides-cli-md-122",
         "claim-docs-guides-cli-md-127",
         "claim-docs-guides-cli-md-135",
@@ -1186,13 +1153,16 @@
         "claim-docs-guides-cli-md-510",
         "claim-docs-guides-cli-md-546",
         "claim-docs-guides-cli-md-564",
+        "claim-docs-guides-consumer-adoption-md-20",
         "claim-docs-guides-consumer-adoption-md-29",
         "claim-docs-guides-consumer-adoption-md-83",
         "claim-docs-guides-consumer-adoption-md-106",
         "claim-docs-guides-consumer-adoption-md-107",
         "claim-docs-guides-evaluation-process-md-10",
+        "claim-docs-guides-evaluation-process-md-52",
         "claim-docs-guides-evaluation-process-md-253",
         "claim-docs-guides-evaluation-process-md-269",
+        "claim-docs-guides-evaluation-process-md-270",
         "claim-docs-guides-evaluation-process-md-289",
         "claim-docs-guides-evaluation-process-md-293",
         "claim-docs-guides-evaluation-process-md-304",
@@ -1209,10 +1179,13 @@
         "claim-docs-specs-user-claim-discovery-spec-md-37",
         "claim-docs-specs-user-claim-discovery-spec-md-66",
         "claim-docs-specs-user-claim-discovery-spec-md-122",
-        "claim-docs-specs-user-claim-discovery-spec-md-160",
+        "claim-docs-specs-user-claim-discovery-spec-md-156",
+        "claim-docs-specs-user-claim-discovery-spec-md-158",
+        "claim-docs-specs-user-claim-discovery-spec-md-159",
         "claim-docs-specs-user-claim-discovery-spec-md-189",
-        "claim-docs-specs-user-claim-discovery-spec-md-229",
-        "claim-docs-specs-user-claim-discovery-spec-md-232",
+        "claim-docs-specs-user-claim-discovery-spec-md-218",
+        "claim-docs-specs-user-claim-discovery-spec-md-258",
+        "claim-docs-specs-user-claim-discovery-spec-md-261",
         "claim-docs-specs-user-evidence-gaps-spec-md-36"
       ],
       "absorbedRawClaims": [
@@ -1223,6 +1196,12 @@
           "requiresSemanticReview": false
         },
         {
+          "claimId": "claim-readme-md-7",
+          "claimFingerprint": "sha256:27f49babf6ffb0eba4c309c3d165aa493e2fd6c790edfd631add4af96ef7ab9d",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-readme-md-9",
           "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
           "mappingConfidence": "medium",
@@ -1231,8 +1210,8 @@
         {
           "claimId": "claim-readme-md-10",
           "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-readme-md-13",
@@ -1285,6 +1264,12 @@
         {
           "claimId": "claim-docs-guides-cli-md-55",
           "claimFingerprint": "sha256:8e37867949379c2f967dec79b917153ace377f3a65ac7cf7f4213c6438358eb8",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-112",
+          "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1303,8 +1288,8 @@
         {
           "claimId": "claim-docs-guides-cli-md-135",
           "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-docs-guides-cli-md-180",
@@ -1321,8 +1306,8 @@
         {
           "claimId": "claim-docs-guides-cli-md-193",
           "claimFingerprint": "sha256:0fb7d2b87e1402f9d2997f30c4fe48f61e05ea9654c80981f5c80b85574f2e1d",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-docs-guides-cli-md-263",
@@ -1357,8 +1342,8 @@
         {
           "claimId": "claim-docs-guides-cli-md-474",
           "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-docs-guides-cli-md-478",
@@ -1381,6 +1366,12 @@
         {
           "claimId": "claim-docs-guides-cli-md-564",
           "claimFingerprint": "sha256:7c2d49633a39b3338744e1406b13dabbce1d42e37fbaf1c8984e8cfd06317f12",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-guides-consumer-adoption-md-20",
+          "claimFingerprint": "sha256:aae5fa6c0eeb4ee6edb98897c455b1e005bcbe79b4489e2545b5835fbe02cee5",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1415,6 +1406,12 @@
           "requiresSemanticReview": false
         },
         {
+          "claimId": "claim-docs-guides-evaluation-process-md-52",
+          "claimFingerprint": "sha256:de07fe283b1fb474b240177e63959b9955efb8f6095ae64337946a7fc76bb9ec",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-guides-evaluation-process-md-253",
           "claimFingerprint": "sha256:bd1727a2c94b086b9544d09769750e9a036855429b04810a8fa455b4a0238470",
           "mappingConfidence": "high",
@@ -1423,6 +1420,12 @@
         {
           "claimId": "claim-docs-guides-evaluation-process-md-269",
           "claimFingerprint": "sha256:550093067158f008a45721d7da43358aaec5808471004247c16f2cc027c661d3",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-guides-evaluation-process-md-270",
+          "claimFingerprint": "sha256:c4e3a1449eae3ee64e174c26d97bbf9deff1ae5b30fa9f26c18a8bdc11199ed3",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1441,8 +1444,8 @@
         {
           "claimId": "claim-docs-guides-evaluation-process-md-304",
           "claimFingerprint": "sha256:75425af6738960680c6834184aff7b0a51e0ec1a5f15d5e50c7294c9bc1a6f7a",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-docs-guides-evaluation-process-md-308",
@@ -1465,8 +1468,8 @@
         {
           "claimId": "claim-docs-guides-evaluation-process-md-322",
           "claimFingerprint": "sha256:01efa71af70f470930f55ded6c3516c1fa56135e9665dadfad33590e0cdb3d32",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
         },
         {
           "claimId": "claim-docs-specs-user-index-spec-md-22",
@@ -1523,25 +1526,43 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-160",
-          "claimFingerprint": "sha256:8df6d382126c2db553483936b1fb955ba4d47b831cf572fb543379dcb3b64599",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-156",
+          "claimFingerprint": "sha256:cf023507e02387ffc86da8bc2708a4ee5fbb66979d0519899218185fe4dbe879",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-158",
+          "claimFingerprint": "sha256:e348331e8a685a21b700437abf830fca16d056e95763b7e9da3ac88d3de47b0b",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-159",
+          "claimFingerprint": "sha256:f5c8eca03b62308d492f498480c133064802ed6bbdb974c7b530acd90f1d3983",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
           "claimId": "claim-docs-specs-user-claim-discovery-spec-md-189",
+          "claimFingerprint": "sha256:8df6d382126c2db553483936b1fb955ba4d47b831cf572fb543379dcb3b64599",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-218",
           "claimFingerprint": "sha256:0c4ab653f7b1e02eaccfa00173062f5ec2afe2a77eca509019e274475abe05c0",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-229",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-258",
           "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-232",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
           "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -1554,21 +1575,21 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 25,
-        "unknown": 31
+        "satisfied": 29,
+        "unknown": 35
       },
       "byReviewStatus": {
-        "agent-reviewed": 37,
-        "heuristic": 19
+        "agent-reviewed": 42,
+        "heuristic": 22
       },
       "byRecommendedProof": {
-        "cautilus-eval": 12,
-        "deterministic": 25,
-        "human-auditable": 19
+        "cautilus-eval": 13,
+        "deterministic": 31,
+        "human-auditable": 20
       },
       "byMappingConfidence": {
-        "high": 32,
-        "medium": 24
+        "high": 42,
+        "medium": 22
       }
     },
     {
@@ -1757,9 +1778,8 @@
     {
       "canonicalClaimId": "U7",
       "title": "Host Ownership",
-      "absorbedRawClaimCount": 7,
+      "absorbedRawClaimCount": 6,
       "absorbedRawClaimIds": [
-        "claim-readme-md-7",
         "claim-docs-specs-user-ownership-spec-md-3",
         "claim-docs-specs-user-ownership-spec-md-4",
         "claim-docs-specs-user-ownership-spec-md-6",
@@ -1768,12 +1788,6 @@
         "claim-docs-specs-user-ownership-spec-md-45"
       ],
       "absorbedRawClaims": [
-        {
-          "claimId": "claim-readme-md-7",
-          "claimFingerprint": "sha256:27f49babf6ffb0eba4c309c3d165aa493e2fd6c790edfd631add4af96ef7ab9d",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
         {
           "claimId": "claim-docs-specs-user-ownership-spec-md-3",
           "claimFingerprint": "sha256:449959464c1d8b3cd75614523e8b7a2fb8819020a2f4a246327632951d3e31b8",
@@ -1812,21 +1826,20 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 3,
+        "satisfied": 2,
         "unknown": 4
       },
       "byReviewStatus": {
-        "agent-reviewed": 4,
+        "agent-reviewed": 3,
         "heuristic": 3
       },
       "byRecommendedProof": {
         "cautilus-eval": 2,
-        "deterministic": 3,
+        "deterministic": 2,
         "human-auditable": 2
       },
       "byMappingConfidence": {
-        "high": 6,
-        "medium": 1
+        "high": 6
       }
     }
   ],
@@ -2118,9 +2131,9 @@
         "claim-docs-contracts-claim-extraction-template-md-18",
         "claim-docs-contracts-claim-extraction-template-md-39",
         "claim-docs-contracts-claim-extraction-template-md-68",
-        "claim-docs-contracts-claim-extraction-template-md-282",
-        "claim-docs-contracts-claim-extraction-template-md-289",
-        "claim-docs-contracts-claim-extraction-template-md-336",
+        "claim-docs-contracts-claim-extraction-template-md-285",
+        "claim-docs-contracts-claim-extraction-template-md-292",
+        "claim-docs-contracts-claim-extraction-template-md-343",
         "claim-docs-contracts-facet-decomposition-md-30",
         "claim-docs-contracts-facet-decomposition-md-36",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
@@ -2470,19 +2483,19 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-282",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-285",
           "claimFingerprint": "sha256:a670aab3290f9c6563f58afe02c7f997f12ae2aa05997f4c787772a224ddc31a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-289",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-292",
           "claimFingerprint": "sha256:1cf5a39fa262c5868a4e398631fa5b3c77bc060ebcd6b7b08bb726b24976d83c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-336",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-343",
           "claimFingerprint": "sha256:fa4488f8fbcecb2111ae4027b6c9225a1ff0f0d784b69a96ee9cd4d7ffd296dc",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3768,7 +3781,7 @@
         "claim-docs-contracts-workbench-instance-discovery-md-99",
         "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
         "claim-docs-specs-rules-agent-human-resumability-spec-md-3",
-        "claim-docs-contracts-claim-extraction-template-md-240",
+        "claim-docs-contracts-claim-extraction-template-md-243",
         "claim-docs-contracts-facet-decomposition-md-46",
         "claim-docs-contracts-facet-decomposition-md-58",
         "claim-docs-contracts-improvement-md-27",
@@ -3936,7 +3949,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-240",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-243",
           "claimFingerprint": "sha256:87799711d3d4c0ea9cfe36c3d3cdbe2932ba7b467fffb9ffaa532f5b126dcae1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -4688,10 +4701,10 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:bf72456c50e1505ba08fddf7e1c028aee5f233a950414edfdf5a3528d3749182",
       "canonicalClaimId": "U2",
-      "score": 15,
+      "score": 16,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 11,
-      "scoreMargin": 4,
+      "scoreMargin": 5,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -4728,11 +4741,11 @@
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:27f49babf6ffb0eba4c309c3d165aa493e2fd6c790edfd631add4af96ef7ab9d",
-      "canonicalClaimId": "U7",
+      "canonicalClaimId": "U2",
       "score": 15,
-      "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 14,
-      "scoreMargin": 1,
+      "runnerUpCanonicalClaimId": "U7",
+      "runnerUpScore": 15,
+      "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -4741,14 +4754,14 @@
         "agent",
         "another",
         "behavior",
+        "binary",
         "cautilu",
-        "consumer",
-        "covered",
+        "change",
+        "deterministic",
         "first",
-        "host",
-        "install",
         "keep",
-        "repo"
+        "plu",
+        "readme.md"
       ]
     },
     {
@@ -4811,16 +4824,17 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
       "canonicalClaimId": "U2",
-      "score": 12,
+      "score": 13,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 10,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "scoreMargin": 3,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
         "agent-facing",
+        "binary",
         "but",
         "cautilu",
         "deterministic",
@@ -4829,8 +4843,7 @@
         "proof",
         "readme.md",
         "skill",
-        "surface",
-        "workflow"
+        "surface"
       ]
     },
     {
@@ -4893,10 +4906,10 @@
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:2351b132ae813dfb9df2fca5291372e65c4232b981aab4f685bfefa3b3f135aa",
       "canonicalClaimId": "U2",
-      "score": 19,
+      "score": 21,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 9,
-      "scoreMargin": 10,
+      "scoreMargin": 12,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -5957,12 +5970,12 @@
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:8e37867949379c2f967dec79b917153ace377f3a65ac7cf7f4213c6438358eb8",
       "canonicalClaimId": "U2",
-      "score": 16,
+      "score": 17,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 14,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "scoreMargin": 3,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
@@ -5997,27 +6010,27 @@
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
-      "canonicalClaimId": "U1",
-      "score": 17,
-      "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 16,
+      "canonicalClaimId": "U2",
+      "score": 18,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 17,
       "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
+        "binary",
+        "boundary",
         "branch",
-        "cautilus.agent",
-        "covered",
         "deterministic",
         "discovery",
-        "doctor",
+        "emit",
         "keep",
         "mode",
-        "orientation",
+        "over",
         "packet",
-        "readines"
+        "review"
       ]
     },
     {
@@ -6162,10 +6175,10 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:a42ab6736d2ebe2beeb0ba10487b85347c0d81a5444e77f1d95d0f8fc7292e95",
       "canonicalClaimId": "U2",
-      "score": 12,
+      "score": 14,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 7,
-      "scoreMargin": 5,
+      "scoreMargin": 7,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -6179,9 +6192,9 @@
         "output",
         "packet",
         "path",
+        "plan.v1",
         "proof",
-        "remain",
-        "saved"
+        "remain"
       ]
     },
     {
@@ -6203,14 +6216,15 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
       "canonicalClaimId": "U2",
-      "score": 11,
+      "score": 12,
       "runnerUpCanonicalClaimId": "U7",
       "runnerUpScore": 6,
-      "scoreMargin": 5,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "scoreMargin": 6,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "call",
         "cautilus.claim",
         "deterministic",
         "documentation",
@@ -6324,12 +6338,12 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:0fb7d2b87e1402f9d2997f30c4fe48f61e05ea9654c80981f5c80b85574f2e1d",
       "canonicalClaimId": "U2",
-      "score": 11,
+      "score": 13,
       "runnerUpCanonicalClaimId": "U7",
       "runnerUpScore": 9,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "scoreMargin": 4,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
@@ -6337,6 +6351,7 @@
         "concrete",
         "human-auditable",
         "keep",
+        "product-owned",
         "prompt",
         "result",
         "split",
@@ -6404,10 +6419,10 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
       "canonicalClaimId": "U2",
-      "score": 16,
+      "score": 17,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 10,
-      "scoreMargin": 6,
+      "scoreMargin": 7,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -6419,11 +6434,11 @@
         "evidence",
         "hint",
         "input",
+        "normalized",
         "operator",
         "packet",
         "proof",
-        "review",
-        "scenario"
+        "review"
       ]
     },
     {
@@ -6568,12 +6583,12 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
       "canonicalClaimId": "U2",
-      "score": 13,
+      "score": 14,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 11,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "scoreMargin": 3,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "blocked",
@@ -6586,8 +6601,8 @@
         "keep",
         "passed",
         "proof",
-        "review",
-        "run"
+        "reason",
+        "review"
       ]
     },
     {
@@ -6650,10 +6665,10 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:003038663b54c623858fe0d30f37af8e7554c1f8f79b8750306cdff272f893a5",
       "canonicalClaimId": "U2",
-      "score": 19,
+      "score": 21,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 15,
-      "scoreMargin": 4,
+      "scoreMargin": 6,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -6667,9 +6682,9 @@
         "input",
         "keep",
         "next",
+        "normalized",
         "outside",
-        "ownership",
-        "packet"
+        "ownership"
       ]
     },
     {
@@ -6691,10 +6706,10 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
       "canonicalClaimId": "U2",
-      "score": 20,
+      "score": 21,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 11,
-      "scoreMargin": 9,
+      "scoreMargin": 10,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -6710,7 +6725,7 @@
         "keep",
         "over",
         "packet",
-        "review"
+        "raw"
       ]
     },
     {
@@ -6772,26 +6787,27 @@
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:aae5fa6c0eeb4ee6edb98897c455b1e005bcbe79b4489e2545b5835fbe02cee5",
-      "canonicalClaimId": "U1",
-      "score": 11,
-      "runnerUpCanonicalClaimId": "U2",
+      "canonicalClaimId": "U2",
+      "score": 12,
+      "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 11,
-      "scoreMargin": 0,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "branch",
         "cautilu",
-        "covered",
         "deterministic",
-        "doctor",
-        "incomplete",
+        "honest",
         "keep",
         "next",
+        "next-action",
         "output",
+        "remain",
+        "step",
         "thi",
-        "wiring"
+        "while"
       ]
     },
     {
@@ -6815,8 +6831,8 @@
       "canonicalClaimId": "U1",
       "score": 13,
       "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 11,
-      "scoreMargin": 2,
+      "runnerUpScore": 12,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -7134,10 +7150,10 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:2f6ccbccc28babcf442204007ee02b972b63bb2132977f823d48234f5e5369b6",
       "canonicalClaimId": "U2",
-      "score": 15,
+      "score": 16,
       "runnerUpCanonicalClaimId": "U3",
       "runnerUpScore": 9,
-      "scoreMargin": 6,
+      "scoreMargin": 7,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -7174,27 +7190,27 @@
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:de07fe283b1fb474b240177e63959b9955efb8f6095ae64337946a7fc76bb9ec",
-      "canonicalClaimId": "U1",
-      "score": 15,
-      "runnerUpCanonicalClaimId": "U2",
+      "canonicalClaimId": "U2",
+      "score": 16,
+      "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 15,
-      "scoreMargin": 0,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "baseline",
+        "candidate",
+        "change",
         "command",
-        "contract",
         "deterministic",
+        "documentation",
+        "emit",
         "evaluate",
-        "field",
         "fixture",
         "keep",
-        "machine-readable",
         "output",
-        "path",
-        "review"
+        "pas"
       ]
     },
     {
@@ -7297,11 +7313,11 @@
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:c4e3a1449eae3ee64e174c26d97bbf9deff1ae5b30fa9f26c18a8bdc11199ed3",
-      "canonicalClaimId": "U1",
-      "score": 14,
-      "runnerUpCanonicalClaimId": "U2",
+      "canonicalClaimId": "U2",
+      "score": 15,
+      "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 14,
-      "scoreMargin": 0,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -7309,14 +7325,14 @@
         "adapter",
         "agent",
         "cautilu",
-        "contract",
         "discover",
-        "host",
+        "human-auditable",
         "packet",
+        "plu",
         "raw",
+        "satisfied",
         "scenario",
         "skill",
-        "still",
         "test"
       ]
     },
@@ -7339,10 +7355,10 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:ac0749ddbadbea1b37adc45edffbb9643b37e248147a2fe5097cf8abbf9577ee",
       "canonicalClaimId": "U2",
-      "score": 12,
+      "score": 13,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 9,
-      "scoreMargin": 3,
+      "scoreMargin": 4,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -7357,8 +7373,8 @@
         "pas",
         "path",
         "schema",
-        "test",
-        "without"
+        "template",
+        "test"
       ]
     },
     {
@@ -7421,12 +7437,12 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:75425af6738960680c6834184aff7b0a51e0ec1a5f15d5e50c7294c9bc1a6f7a",
       "canonicalClaimId": "U2",
-      "score": 11,
+      "score": 12,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 7,
-      "scoreMargin": 4,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "scoreMargin": 5,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
@@ -7439,6 +7455,7 @@
         "only",
         "scenario",
         "skill",
+        "while",
         "workflow"
       ]
     },
@@ -7537,10 +7554,10 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:0d27645b25db70340d8acaf99b749b91ab7c833cb6b38b829595a6f41acd4597",
       "canonicalClaimId": "U2",
-      "score": 16,
+      "score": 17,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 12,
-      "scoreMargin": 4,
+      "scoreMargin": 5,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -7553,10 +7570,10 @@
         "human-auditable",
         "instead",
         "json",
+        "mode",
         "need",
         "output",
-        "product",
-        "runtime"
+        "product"
       ]
     },
     {
@@ -7578,12 +7595,12 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:01efa71af70f470930f55ded6c3516c1fa56135e9665dadfad33590e0cdb3d32",
       "canonicalClaimId": "U2",
-      "score": 12,
+      "score": 13,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 10,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
+      "scoreMargin": 3,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
@@ -7597,7 +7614,7 @@
         "scenario",
         "skill",
         "thi",
-        "workflow"
+        "while"
       ]
     },
     {
@@ -16058,10 +16075,10 @@
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:7548f955d0e47e28b847f010067339572b1ec686b48d528fb4cafdd35c2a2cb8",
       "canonicalClaimId": "U2",
-      "score": 36,
+      "score": 37,
       "runnerUpCanonicalClaimId": "U1",
       "runnerUpScore": 14,
-      "scoreMargin": 22,
+      "scoreMargin": 23,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
@@ -16169,12 +16186,141 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-160",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-156",
+      "summary": "Agent-primary extraction runs through a verifiable seam.",
+      "sourceRefs": [
+        {
+          "path": "docs/specs/user/claim-discovery.spec.md",
+          "line": 156,
+          "excerpt": "Agent-primary extraction runs through a verifiable seam."
+        }
+      ],
+      "disposition": "mapped-to-user-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "user",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:cf023507e02387ffc86da8bc2708a4ee5fbb66979d0519899218185fe4dbe879",
+      "canonicalClaimId": "U2",
+      "score": 19,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 8,
+      "scoreMargin": 11,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [
+        "docs/specs/user/claim-discovery.spec.md"
+      ],
+      "matchedKeywords": [
+        "agent",
+        "agent-primary",
+        "cautilu",
+        "cautilus-eval",
+        "create",
+        "evaluate",
+        "extraction",
+        "fixture",
+        "run",
+        "seam",
+        "skill",
+        "verifiable"
+      ]
+    },
+    {
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-158",
+      "summary": "The heuristic scan above is the labeled baseline mode; the agent-primary path moves extraction itself to the Cautilus Agent while the binary keeps verification.",
+      "sourceRefs": [
+        {
+          "path": "docs/specs/user/claim-discovery.spec.md",
+          "line": 158,
+          "excerpt": "The heuristic scan above is the labeled baseline mode; the agent-primary path moves extraction itself to the Cautilus Agent while the binary keeps verification."
+        }
+      ],
+      "disposition": "mapped-to-user-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "user",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:e348331e8a685a21b700437abf830fca16d056e95763b7e9da3ac88d3de47b0b",
+      "canonicalClaimId": "U2",
+      "score": 30,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 15,
+      "scoreMargin": 15,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [
+        "docs/specs/user/claim-discovery.spec.md"
+      ],
+      "matchedKeywords": [
+        "above",
+        "adapter",
+        "add",
+        "agent",
+        "agent-primary",
+        "baseline",
+        "binary",
+        "cautilu",
+        "deterministic",
+        "extraction",
+        "heuristic",
+        "itself"
+      ]
+    },
+    {
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-159",
+      "summary": "`discover claims extraction-input` emits a deterministic `cautilus.claim_extraction_input.v1` packet: sources with content hashes plus the embedded product-owned extraction template with version and hash.",
+      "sourceRefs": [
+        {
+          "path": "docs/specs/user/claim-discovery.spec.md",
+          "line": 159,
+          "excerpt": "`discover claims extraction-input` emits a deterministic `cautilus.claim_extraction_input.v1` packet: sources with content hashes plus the embedded product-owned extraction template with version and hash."
+        }
+      ],
+      "disposition": "mapped-to-user-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "user",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:f5c8eca03b62308d492f498480c133064802ed6bbdb974c7b530acd90f1d3983",
+      "canonicalClaimId": "U2",
+      "score": 33,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 12,
+      "scoreMargin": 21,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [
+        "docs/specs/user/claim-discovery.spec.md"
+      ],
+      "matchedKeywords": [
+        "add",
+        "build",
+        "cautilus.claim",
+        "check",
+        "content",
+        "deterministic",
+        "discover",
+        "discovery",
+        "embedded",
+        "emit",
+        "extraction",
+        "extraction-input"
+      ]
+    },
+    {
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-189",
       "summary": "That means it should inspect the saved candidates, compare them with the repo, reduce false positives, raise possible false negatives, and preserve source refs when it asks the user what to do next.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 160,
+          "line": 189,
           "excerpt": "That means it should inspect the saved candidates, compare them with the repo, reduce false positives, raise possible false negatives, and preserve source refs when it asks the user what to do next."
         }
       ],
@@ -16212,12 +16358,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-189",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-218",
       "summary": "`discover claims status` owns the next-action summary over a saved discovery packet.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 189,
+          "line": 218,
           "excerpt": "`discover claims status` owns the next-action summary over a saved discovery packet."
         }
       ],
@@ -16255,12 +16401,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-229",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-258",
       "summary": "`discover claims status` owns next-action summaries over that saved packet.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 229,
+          "line": 258,
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet."
         }
       ],
@@ -16298,12 +16444,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-232",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
       "summary": "This spec only verifies that the agent-run skill check is prepared.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 232,
+          "line": 261,
           "excerpt": "This spec only verifies that the agent-run skill check is prepared."
         }
       ],
@@ -16575,8 +16721,8 @@
       "canonicalClaimId": "U1",
       "score": 26,
       "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 18,
-      "scoreMargin": 8,
+      "runnerUpScore": 19,
+      "scoreMargin": 7,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
@@ -16872,8 +17018,8 @@
       "canonicalClaimId": "U4",
       "score": 26,
       "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 18,
-      "scoreMargin": 8,
+      "runnerUpScore": 19,
+      "scoreMargin": 7,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
@@ -17001,8 +17147,8 @@
       "canonicalClaimId": "U7",
       "score": 27,
       "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 17,
-      "scoreMargin": 10,
+      "runnerUpScore": 18,
+      "scoreMargin": 9,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
@@ -17044,8 +17190,8 @@
       "canonicalClaimId": "U7",
       "score": 29,
       "runnerUpCanonicalClaimId": "U2",
-      "runnerUpScore": 20,
-      "scoreMargin": 9,
+      "runnerUpScore": 21,
+      "scoreMargin": 8,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [
@@ -17349,12 +17495,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-240",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-243",
       "summary": "The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 240,
+          "line": 243,
           "excerpt": "The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests."
         }
       ],
@@ -17388,12 +17534,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-282",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-285",
       "summary": "`skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 282,
+          "line": 285,
           "excerpt": "`skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule."
         }
       ],
@@ -17429,12 +17575,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-289",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-292",
       "summary": "(`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.)",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 289,
+          "line": 292,
           "excerpt": "(`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.)"
         }
       ],
@@ -17465,12 +17611,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-336",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-343",
       "summary": "The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 336,
+          "line": 343,
           "excerpt": "The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships."
         }
       ],

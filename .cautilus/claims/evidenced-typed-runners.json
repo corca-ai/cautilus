@@ -1,9 +1,9 @@
 {
-  "candidateCount": 386,
+  "candidateCount": 389,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 385,
+    "matchedClaimCount": 386,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 17,
@@ -10850,8 +10850,97 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:cf023507e02387ffc86da8bc2708a4ee5fbb66979d0519899218185fe4dbe879",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-156",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/specs/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Agent-primary extraction runs through a verifiable seam.",
+          "line": 156,
+          "path": "docs/specs/user/claim-discovery.spec.md"
+        }
+      ],
+      "summary": "Agent-primary extraction runs through a verifiable seam.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:e348331e8a685a21b700437abf830fca16d056e95763b7e9da3ac88d3de47b0b",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-158",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "linked-from:docs/specs/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The heuristic scan above is the labeled baseline mode; the agent-primary path moves extraction itself to the Cautilus Agent while the binary keeps verification.",
+          "line": 158,
+          "path": "docs/specs/user/claim-discovery.spec.md"
+        }
+      ],
+      "summary": "The heuristic scan above is the labeled baseline mode; the agent-primary path moves extraction itself to the Cautilus Agent while the binary keeps verification.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:f5c8eca03b62308d492f498480c133064802ed6bbdb974c7b530acd90f1d3983",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-159",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "linked-from:docs/specs/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`discover claims extraction-input` emits a deterministic `cautilus.claim_extraction_input.v1` packet: sources with content hashes plus the embedded product-owned extraction template with version and hash.",
+          "line": 159,
+          "path": "docs/specs/user/claim-discovery.spec.md"
+        }
+      ],
+      "summary": "`discover claims extraction-input` emits a deterministic `cautilus.claim_extraction_input.v1` packet: sources with content hashes plus the embedded product-owned extraction template with version and hash.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8df6d382126c2db553483936b1fb955ba4d47b831cf572fb543379dcb3b64599",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-160",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-189",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10868,7 +10957,7 @@
       "sourceRefs": [
         {
           "excerpt": "That means it should inspect the saved candidates, compare them with the repo, reduce false positives, raise possible false negatives, and preserve source refs when it asks the user what to do next.",
-          "line": 160,
+          "line": 189,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -10880,7 +10969,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0c4ab653f7b1e02eaccfa00173062f5ec2afe2a77eca509019e274475abe05c0",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-189",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-218",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -10891,7 +10980,7 @@
           "supportsClaimIds": [
             "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
             "claim-docs-specs-user-claim-discovery-spec-md-6",
-            "claim-docs-specs-user-claim-discovery-spec-md-189",
+            "claim-docs-specs-user-claim-discovery-spec-md-218",
             "claim-docs-specs-user-claim-discovery-spec-md-199"
           ]
         }
@@ -10911,7 +11000,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns the next-action summary over a saved discovery packet.",
-          "line": 189,
+          "line": 218,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -10924,7 +11013,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-229",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-258",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -10936,7 +11025,7 @@
             "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
             "claim-docs-specs-user-claim-discovery-spec-md-6",
             "claim-docs-specs-user-claim-discovery-spec-md-160",
-            "claim-docs-specs-user-claim-discovery-spec-md-229"
+            "claim-docs-specs-user-claim-discovery-spec-md-258"
           ]
         }
       ],
@@ -10955,7 +11044,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet.",
-          "line": 229,
+          "line": 258,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -10968,7 +11057,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-232",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10987,7 +11076,7 @@
       "sourceRefs": [
         {
           "excerpt": "This spec only verifies that the agent-run skill check is prepared.",
-          "line": 232,
+          "line": 261,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -11809,7 +11898,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:87799711d3d4c0ea9cfe36c3d3cdbe2932ba7b467fffb9ffaa532f5b126dcae1",
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-240",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-243",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -11826,7 +11915,7 @@
       "sourceRefs": [
         {
           "excerpt": "The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.",
-          "line": 240,
+          "line": 243,
           "path": "docs/contracts/claim-extraction-template.md"
         }
       ],
@@ -11838,7 +11927,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a670aab3290f9c6563f58afe02c7f997f12ae2aa05997f4c787772a224ddc31a",
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-282",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-285",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -11856,7 +11945,7 @@
       "sourceRefs": [
         {
           "excerpt": "`skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule.",
-          "line": 282,
+          "line": 285,
           "path": "docs/contracts/claim-extraction-template.md"
         }
       ],
@@ -11868,7 +11957,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1cf5a39fa262c5868a4e398631fa5b3c77bc060ebcd6b7b08bb726b24976d83c",
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-289",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-292",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -11886,7 +11975,7 @@
       "sourceRefs": [
         {
           "excerpt": "(`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.)",
-          "line": 289,
+          "line": 292,
           "path": "docs/contracts/claim-extraction-template.md"
         }
       ],
@@ -11898,7 +11987,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fa4488f8fbcecb2111ae4027b6c9225a1ff0f0d784b69a96ee9cd4d7ffd296dc",
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-336",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-343",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -11917,7 +12006,7 @@
       "sourceRefs": [
         {
           "excerpt": "The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships.",
-          "line": 336,
+          "line": 343,
           "path": "docs/contracts/claim-extraction-template.md"
         }
       ],
@@ -13966,12 +14055,12 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 283,
-      "user": 103
+      "user": 106
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 60,
-      "Agent and skill workflow": 85,
-      "Claim discovery and review": 49,
+      "Agent and skill workflow": 87,
+      "Claim discovery and review": 50,
       "Documentation and contracts": 90,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
@@ -13982,25 +14071,25 @@
     },
     "byEvidenceStatus": {
       "satisfied": 155,
-      "unknown": 231
+      "unknown": 234
     },
     "byLifecycle": {
-      "new": 386
+      "new": 389
     },
     "byRecommendedProof": {
-      "cautilus-eval": 120,
-      "deterministic": 165,
+      "cautilus-eval": 121,
+      "deterministic": 167,
       "human-auditable": 101
     },
     "byReviewStatus": {
       "agent-reviewed": 212,
-      "heuristic": 171,
+      "heuristic": 174,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
       "blocked": 37,
       "needs-alignment": 36,
-      "ready-for-proof": 313
+      "ready-for-proof": 316
     }
   },
   "discoveryEngine": {
@@ -14031,7 +14120,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:c3784ab08ac6417e1d451eedfc2754a41a110ba85534e78cff7f9044e2a8f61f",
+    "implementationHash": "sha256:3c32ab274f096284e0276f88b13ebcdb925687d5c3962d2d6cb1c09e16467798",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v5"
@@ -14194,7 +14283,8 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "2d5a99a19273a2dca2486829d808acac78caaaac",
+  "extractionMode": "heuristic",
+  "gitCommit": "cb3994a109d9152e5b825a824bbf29327fef5444",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -16246,7 +16336,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:f35b90e24346466081ae782e3c965102096522e4efdf7430de6f454af7723d3f",
+      "contentHash": "sha256:4a50feefc582550fcf5871888d51885177e4b2874cda7da51ec58c3be2dd4883",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -16296,7 +16386,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:fa52f2b7a152e4ffafeebca8f665b8a6b3e967204a9f13088fe1af44c6c93693",
+      "contentHash": "sha256:4edaf7179f0183db41a368be9af5936d796a9a32c2a5b60dbee36821099bc209",
       "depth": 3,
       "discoveredFrom": "docs/contracts/claim-discovery-workflow.md",
       "kind": "contract",
