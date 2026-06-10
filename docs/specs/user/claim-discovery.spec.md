@@ -101,6 +101,17 @@ candidate=Users can run deterministic checks before review.
 sourceRefs=AGENTS.md:3,README.md:4
 ```
 
+### Signal: adapter-declared non-claim sections are skipped.
+
+A repo can declare section headings whose prose is never a claim candidate, such as rejected-alternatives lists, through `claim_discovery.classification_hints.non_claim_section_headings`.
+The engine executes the hint deterministically and records it in the packet's scan scope; without the hint the same line would be extracted.
+
+```run:shell
+$ sh -lc 'tmp="$(mktemp -d)"; mkdir -p "$tmp/.agents"; printf "%s\n" "version: 1" "repo: demo" "claim_discovery:" "  classification_hints:" "    non_claim_section_headings:" "      - Rejected Alternatives" > "$tmp/.agents/cautilus-adapter.yaml"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." "" "## Rejected Alternatives" "" "The rejected approach requires a magic freshness threshold." > "$tmp/README.md"; ./bin/cautilus discover claims --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'"candidateCount=" + (.candidateCount|tostring), "nonClaimSectionHeadings=" + (.effectiveScanScope.nonClaimSectionHeadings | join(","))'"'"' "$tmp/claims.json"'
+candidateCount=1
+nonClaimSectionHeadings=Rejected Alternatives
+```
+
 ### Implementation evidence.
 
 The saved discovery packet records the heuristic families used for these behaviors.
@@ -109,6 +120,7 @@ The checked-in evidence bundle records that the command-level behavior is satisf
 ```run:shell
 $ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." > "$tmp/README.md"; ./bin/cautilus discover claims --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'.discoveryEngine.heuristics[] | .id + ":" + .implementationFunction'"'"' "$tmp/claims.json"'
 markdown-text-blocks:claimTextBlocks
+adapter-non-claim-section-filter:headingIsNonClaimSection
 claim-shaped-line-filter:claimLineLooksUseful
 next-work-classifier:classifyClaimLine
 duplicate-summary-merge:mergeIdenticalClaimCandidates
