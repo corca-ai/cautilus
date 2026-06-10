@@ -1,9 +1,9 @@
 {
-  "candidateCount": 385,
+  "candidateCount": 386,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 379,
+    "matchedClaimCount": 385,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 17,
@@ -11778,7 +11778,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4b2dd72dd4baab0ba4020a0b5ae03163f8d3aaf99ad4490d3fbad5c22d9adc0e",
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-66",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -11797,7 +11797,7 @@
       "sourceRefs": [
         {
           "excerpt": "**Uncertainty rule.** When the agent is unsure whether text is a claim, it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it.",
-          "line": 66,
+          "line": 68,
           "path": "docs/contracts/claim-extraction-template.md"
         }
       ],
@@ -11809,7 +11809,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:87799711d3d4c0ea9cfe36c3d3cdbe2932ba7b467fffb9ffaa532f5b126dcae1",
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-238",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-240",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -11826,7 +11826,7 @@
       "sourceRefs": [
         {
           "excerpt": "The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.",
-          "line": 238,
+          "line": 240,
           "path": "docs/contracts/claim-extraction-template.md"
         }
       ],
@@ -11838,7 +11838,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a670aab3290f9c6563f58afe02c7f997f12ae2aa05997f4c787772a224ddc31a",
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-277",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-282",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -11856,7 +11856,7 @@
       "sourceRefs": [
         {
           "excerpt": "`skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule.",
-          "line": 277,
+          "line": 282,
           "path": "docs/contracts/claim-extraction-template.md"
         }
       ],
@@ -11868,7 +11868,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1cf5a39fa262c5868a4e398631fa5b3c77bc060ebcd6b7b08bb726b24976d83c",
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-284",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-289",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -11886,13 +11886,44 @@
       "sourceRefs": [
         {
           "excerpt": "(`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.)",
-          "line": 284,
+          "line": 289,
           "path": "docs/contracts/claim-extraction-template.md"
         }
       ],
       "summary": "(`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.)",
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:fa4488f8fbcecb2111ae4027b6c9225a1ff0f0d784b69a96ee9cd4d7ffd296dc",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-336",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/skill",
+        "linked-from:docs/contracts/claim-discovery-workflow.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships.",
+          "line": 336,
+          "path": "docs/contracts/claim-extraction-template.md"
+        }
+      ],
+      "summary": "The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -13934,13 +13965,13 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 282,
+      "developer": 283,
       "user": 103
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 60,
       "Agent and skill workflow": 85,
-      "Claim discovery and review": 48,
+      "Claim discovery and review": 49,
       "Documentation and contracts": 90,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
@@ -13951,25 +13982,25 @@
     },
     "byEvidenceStatus": {
       "satisfied": 155,
-      "unknown": 230
+      "unknown": 231
     },
     "byLifecycle": {
-      "new": 385
+      "new": 386
     },
     "byRecommendedProof": {
-      "cautilus-eval": 119,
+      "cautilus-eval": 120,
       "deterministic": 165,
       "human-auditable": 101
     },
     "byReviewStatus": {
       "agent-reviewed": 212,
-      "heuristic": 170,
+      "heuristic": 171,
       "human-reviewed": 3
     },
     "byVerificationReadiness": {
       "blocked": 37,
       "needs-alignment": 36,
-      "ready-for-proof": 312
+      "ready-for-proof": 313
     }
   },
   "discoveryEngine": {
@@ -14163,7 +14194,7 @@
     ],
     "traversal": "entry-markdown-links"
   },
-  "gitCommit": "666880ff2f4bb02641455dfa793f5aaa2036a51c",
+  "gitCommit": "2d5a99a19273a2dca2486829d808acac78caaaac",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -16265,7 +16296,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:0216e78463552d90a2341ea6378bfebde1648b4c81d77364079a6ad498d6cb14",
+      "contentHash": "sha256:fa52f2b7a152e4ffafeebca8f665b8a6b3e967204a9f13088fe1af44c6c93693",
       "depth": 3,
       "discoveredFrom": "docs/contracts/claim-discovery-workflow.md",
       "kind": "contract",

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:58d27e88f75ea688ae91a2a8257af198059e1156f13e05d30c1e85771dc38712"
+      "contentHash": "sha256:18e1d503d1b70647584897d85d42296eb3409bdc1b065f3fbab1f8ba18b24e26"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "666880ff2f4bb02641455dfa793f5aaa2036a51c",
+  "claimsPacketGitCommit": "2d5a99a19273a2dca2486829d808acac78caaaac",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 385,
+  "claimsPacketCandidateCount": 386,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -572,24 +572,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 385,
+    "totalRawClaimCount": 386,
     "userRawClaimCount": 103,
     "userMappedToCanonicalCount": 103,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 318,
+    "semanticReviewRecommendedCount": 319,
     "userSemanticReviewRecommendedCount": 41,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 282,
+      "mapped-to-maintainer-canonical": 283,
       "mapped-to-user-canonical": 103
     },
     "byAudience": {
-      "developer": 282,
+      "developer": 283,
       "user": 103
     },
     "byMappingConfidence": {
       "high": 67,
       "low": 20,
-      "medium": 298
+      "medium": 299
     },
     "byUserCanonicalClaimId": {
       "U1": 27,
@@ -606,7 +606,7 @@
       "M11": 35,
       "M12": 12,
       "M2": 19,
-      "M3": 68,
+      "M3": 69,
       "M4": 69,
       "M5": 25,
       "M6": 6,
@@ -875,10 +875,11 @@
       "claim-docs-specs-user-evidence-gaps-spec-md-36",
       "claim-docs-contracts-claim-extraction-template-md-18",
       "claim-docs-contracts-claim-extraction-template-md-39",
-      "claim-docs-contracts-claim-extraction-template-md-66",
-      "claim-docs-contracts-claim-extraction-template-md-238",
-      "claim-docs-contracts-claim-extraction-template-md-277",
-      "claim-docs-contracts-claim-extraction-template-md-284",
+      "claim-docs-contracts-claim-extraction-template-md-68",
+      "claim-docs-contracts-claim-extraction-template-md-240",
+      "claim-docs-contracts-claim-extraction-template-md-282",
+      "claim-docs-contracts-claim-extraction-template-md-289",
+      "claim-docs-contracts-claim-extraction-template-md-336",
       "claim-docs-contracts-facet-decomposition-md-30",
       "claim-docs-contracts-facet-decomposition-md-36",
       "claim-docs-contracts-facet-decomposition-md-46",
@@ -2059,7 +2060,7 @@
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 68,
+      "absorbedRawClaimCount": 69,
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
         "claim-agents-md-142",
@@ -2116,9 +2117,10 @@
         "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
         "claim-docs-contracts-claim-extraction-template-md-18",
         "claim-docs-contracts-claim-extraction-template-md-39",
-        "claim-docs-contracts-claim-extraction-template-md-66",
-        "claim-docs-contracts-claim-extraction-template-md-277",
-        "claim-docs-contracts-claim-extraction-template-md-284",
+        "claim-docs-contracts-claim-extraction-template-md-68",
+        "claim-docs-contracts-claim-extraction-template-md-282",
+        "claim-docs-contracts-claim-extraction-template-md-289",
+        "claim-docs-contracts-claim-extraction-template-md-336",
         "claim-docs-contracts-facet-decomposition-md-30",
         "claim-docs-contracts-facet-decomposition-md-36",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
@@ -2462,20 +2464,26 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-66",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
           "claimFingerprint": "sha256:4b2dd72dd4baab0ba4020a0b5ae03163f8d3aaf99ad4490d3fbad5c22d9adc0e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-277",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-282",
           "claimFingerprint": "sha256:a670aab3290f9c6563f58afe02c7f997f12ae2aa05997f4c787772a224ddc31a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-284",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-289",
           "claimFingerprint": "sha256:1cf5a39fa262c5868a4e398631fa5b3c77bc060ebcd6b7b08bb726b24976d83c",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-336",
+          "claimFingerprint": "sha256:fa4488f8fbcecb2111ae4027b6c9225a1ff0f0d784b69a96ee9cd4d7ffd296dc",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2542,21 +2550,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 22,
-        "unknown": 46
+        "unknown": 47
       },
       "byReviewStatus": {
         "agent-reviewed": 34,
-        "heuristic": 33,
+        "heuristic": 34,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
-        "cautilus-eval": 23,
+        "cautilus-eval": 24,
         "deterministic": 26,
         "human-auditable": 19
       },
       "byMappingConfidence": {
         "low": 4,
-        "medium": 64
+        "medium": 65
       }
     },
     {
@@ -3760,7 +3768,7 @@
         "claim-docs-contracts-workbench-instance-discovery-md-99",
         "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
         "claim-docs-specs-rules-agent-human-resumability-spec-md-3",
-        "claim-docs-contracts-claim-extraction-template-md-238",
+        "claim-docs-contracts-claim-extraction-template-md-240",
         "claim-docs-contracts-facet-decomposition-md-46",
         "claim-docs-contracts-facet-decomposition-md-58",
         "claim-docs-contracts-improvement-md-27",
@@ -3928,7 +3936,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-238",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-240",
           "claimFingerprint": "sha256:87799711d3d4c0ea9cfe36c3d3cdbe2932ba7b467fffb9ffaa532f5b126dcae1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -17305,12 +17313,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-66",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
       "summary": "**Uncertainty rule.** When the agent is unsure whether text is a claim, it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 66,
+          "line": 68,
           "excerpt": "**Uncertainty rule.** When the agent is unsure whether text is a claim, it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it."
         }
       ],
@@ -17341,12 +17349,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-238",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-240",
       "summary": "The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 238,
+          "line": 240,
           "excerpt": "The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests."
         }
       ],
@@ -17380,12 +17388,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-277",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-282",
       "summary": "`skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 277,
+          "line": 282,
           "excerpt": "`skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule."
         }
       ],
@@ -17421,12 +17429,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-284",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-289",
       "summary": "(`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.)",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 284,
+          "line": 289,
           "excerpt": "(`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.)"
         }
       ],
@@ -17454,6 +17462,46 @@
         "skill",
         "surface",
         "thi"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-336",
+      "summary": "The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 336,
+          "excerpt": "The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:fa4488f8fbcecb2111ae4027b6c9225a1ff0f0d784b69a96ee9cd4d7ffd296dc",
+      "canonicalClaimId": "M3",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M21",
+      "runnerUpScore": 11,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "cautilu",
+        "decision",
+        "dev/skill",
+        "discovery",
+        "fixture",
+        "maintainer",
+        "plu",
+        "review",
+        "run",
+        "skill",
+        "surface"
       ]
     },
     {

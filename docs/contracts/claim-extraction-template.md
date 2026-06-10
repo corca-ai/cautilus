@@ -43,6 +43,8 @@ Both new commands are deterministic and make no model calls, preserving the fixe
 Running agent extraction is an LLM activity, so it sits behind the same two-gate confirmation flow as LLM review: scan-scope confirmation authorizes `extraction-input`, but a separate extraction-budget confirmation is required before the Cautilus Agent actually extracts, mirroring the review-budget rule in the workflow contract.
 The extraction budget (source count, excerpt bounds, batching, stop reasons) is recorded in the applied packet.
 
+`extraction-input` honors the same explicit `--adapter <path>` override as `discover claims`, so measurement dry-runs on read-only corpora apply a proposed adapter without writing to the scanned repo; ratified configuration still belongs in the consumer repo's own adapter.
+
 ## Extraction Template
 
 The extraction template is product-owned and embedded in the binary, following the existing precedent of binary-rendered review prompt surfaces.
@@ -237,6 +239,9 @@ Derived from prior fixed decisions, restated here because this contract depends 
 - Routing fields are part of the extraction result (the dissolved proof-routing hint family lives in the template, not in engine keywords).
 - The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.
 - Scan-scope confirmation does not authorize agent extraction; extraction needs its own budget confirmation, mirroring the review-budget rule.
+- The comparison measurement (implementation slice 4) runs through a bounded harness that consumes the same `extraction-input` packet and is scored through `apply-extraction` (ratified 2026-06-10).
+  It measures the hypothesis under test — the template plus the seam — not the skill conversation flow; because both paths share the template hash and the same validation, harness results transfer to the product surface.
+  Verifying the Cautilus Agent flow itself is later Cautilus-eval-fixture work over the skill surface, following the existing self-dogfood fixture pattern, and is not a prerequisite for the comparison.
 
 ## Probe Questions
 
@@ -326,6 +331,8 @@ The direction decision and the surrounding discovery workflow remain canonical i
 1. **First extraction (binary)**: `extraction-input` (first-extraction target only), embedded template v1, `apply-extraction` with anchoring validation, unified fingerprint rule plus golden test, `extractionMode` field, `validate` anchoring and audit-presence extensions, registry/schema/spec coverage.
 2. **Agent surface**: the Cautilus Agent extraction flow — extraction-budget confirmation gate, template-following extraction, result-packet authoring — within the SKILL.md disclosure budget; this slice triggers the consumer-intent-freeze rule for `skills/cautilus-agent/` changes.
 3. **Refresh composition**: `extraction-input --previous`, carried-forward sources and claims, no-op refresh stability test.
-4. **Comparison measurement**: gold-set-scored agent-vs-heuristic run over the three corpora (separately shaped; S1/S2 artifacts are the before harness).
+4. **Comparison measurement**: gold-set-scored agent-vs-heuristic run over the three corpora, through the bounded measurement harness fixed above (separately shaped; S1/S2 artifacts are the before harness, and `--adapter` overrides keep the sibling corpora read-only).
+
+The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships.
 
 Until the deferred `claims:refresh:all` gate decision lands, agent packets in this repo's own dogfood should target a path other than the adapter's `state_path`, because the push gate regenerates `state_path` heuristically and would overwrite or staleness-trip an agent packet.

@@ -125,6 +125,7 @@ during the run:
 - 2026-06-10 extraction-seam design slice done: `docs/contracts/claim-extraction-template.md` fixes the `extraction-input`/`apply-extraction` command pair, `cautilus.claim_extraction_input.v1`/`cautilus.claim_extraction_result.v1`, excerpt-hash fingerprint unification (heuristic packets unchanged by construction since excerpt=summary), whitespace-normalized substring anchoring with line-as-locator, `extractionMode` agent|heuristic, and the validate audit-presence scoping.
   Maintainer ratified the four seam decisions interactively; bounded fresh-eye critique (delegated subagent, verdict ready-with-edits) surfaced two blockers — `agent-reviewed` collisions with validate/review-input/eval-plan consumers, and missing primary-excerpt persistence — both resolved in the contract before commit.
   Routing: `find-skills` bootstrap → `charness:spec` for the contract; critique delegated per the subagent-delegation rule.
+  Follow-up ratifications in the same session: the comparison measurement runs through a bounded harness consuming the same `extraction-input` packet (skill-flow verification deferred to a later Cautilus eval fixture over the cautilus-agent skill itself), `extraction-input` gets the `--adapter <path>` override for read-only corpora, and slice 4 therefore depends on slice 1 plus gold-set verdicts, not on slice 2.
 
 ## Context Sources
 
