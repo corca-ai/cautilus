@@ -15,8 +15,8 @@ Discuss before activation: resolved 2026-06-10 — the consumer corpora are main
 
 ## Active Operating Frame
 
-- Current slice: redesign landed (see `## Redesign Decision`) — S3 dissolved into the agent-primary direction; S0 repurposed as the agent-extraction eval baseline; the yt-digest four-term list stays agent-proposed (ratification deliberately deferred: under agent-primary extraction the lexicon only gates the labeled heuristic baseline mode).
-- Next action: shape the agent-primary extraction slice (extraction template + packet contract design, then gold-set-scored agent-vs-heuristic comparison measurement including yt-digest); resume S0 HITL when maintainer time allows, now feeding the eval fixture rather than S3 hints.
+- Current slice: extraction-seam design contract landed at `docs/contracts/claim-extraction-template.md` (2026-06-10, four seam decisions maintainer-ratified, bounded fresh-eye critique resolved in-slice).
+- Next action: implement the contract's slice 1 (binary first-extraction: `extraction-input`/`apply-extraction`, anchoring validation, unified fingerprint golden test) or shape the gold-set-scored agent-vs-heuristic comparison measurement; resume S0 HITL when maintainer time allows, feeding the eval fixture.
 - Execution mode note: the maintainer opened an interactive session on 2026-06-10 asking to implement and discuss; slices run in this interactive session with this artifact as slice memory, per the shaped-only Interview Decision.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
@@ -122,6 +122,9 @@ during the run:
 - 2026-06-10 redesign landed: maintainer challenged the lexical heuristic after the S2 term proposal; agent-primary extraction direction ratified and recorded in `## Redesign Decision`, contract, and master plan.
   S3 dissolved, S0 repurposed, S2 term ratification deferred (baseline-mode-only relevance).
   Routing: this was a decision-frame conversation (assessment + recommendation), not an implementation slice; realignment edits landed directly per the CLAUDE.md directional-decision rule.
+- 2026-06-10 extraction-seam design slice done: `docs/contracts/claim-extraction-template.md` fixes the `extraction-input`/`apply-extraction` command pair, `cautilus.claim_extraction_input.v1`/`cautilus.claim_extraction_result.v1`, excerpt-hash fingerprint unification (heuristic packets unchanged by construction since excerpt=summary), whitespace-normalized substring anchoring with line-as-locator, `extractionMode` agent|heuristic, and the validate audit-presence scoping.
+  Maintainer ratified the four seam decisions interactively; bounded fresh-eye critique (delegated subagent, verdict ready-with-edits) surfaced two blockers — `agent-reviewed` collisions with validate/review-input/eval-plan consumers, and missing primary-excerpt persistence — both resolved in the contract before commit.
+  Routing: `find-skills` bootstrap → `charness:spec` for the contract; critique delegated per the subagent-delegation rule.
 
 ## Context Sources
 

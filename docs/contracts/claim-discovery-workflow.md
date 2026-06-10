@@ -76,7 +76,7 @@ The Cautilus Agent should own orchestration that depends on an agent:
 - offer next actions such as generating eval scenario drafts, adding deterministic tests, resolving alignment work, or showing a full report
 
 This keeps the product agent-first without making the binary a host-specific agent runtime.
-Direction decision (2026-06-10): the Cautilus Agent additionally owns primary claim extraction itself, following the product-owned extraction template, while the binary anchors verbatim excerpts, validates packets, and bounds re-extraction to changed sources; the recorded rationale and the labeled heuristic baseline mode live in the classification-hints section of Scan Scope below.
+Direction decision (2026-06-10): the Cautilus Agent additionally owns primary claim extraction itself, following the product-owned extraction template, while the binary anchors verbatim excerpts, validates packets, and bounds re-extraction to changed sources; the recorded rationale and the labeled heuristic baseline mode live in the classification-hints section of Scan Scope below, and the extraction seam contract lives in [claim-extraction-template.md](./claim-extraction-template.md).
 
 ### Canonical Claim Specs
 
@@ -207,7 +207,7 @@ The binary anchors and audits rather than extracts: it keeps traversal and scan 
 Recorded git commits plus per-source hashes bound re-extraction cost: unchanged sources carry forward deterministically and only git-diff-changed sources return to the agent, per the existing refresh design.
 The deterministic heuristic extractor stays available as an explicitly labeled baseline mode (`extractionMode` in the packet), so no-model environments, CI regeneration, and adapter-not-hardcoded control tests keep a reproducible floor.
 The gold set's role is promoted accordingly: from hint-family scoring device to the eval fixture that measures agent extraction quality against maintainer-ratified labels.
-The detailed extraction template and packet contract are the next design slice; this paragraph records the direction so the hint-family roadmap does not drift.
+The detailed extraction template and packet contract are designed in [claim-extraction-template.md](./claim-extraction-template.md); this paragraph records the direction so the hint-family roadmap does not drift.
 `state_path` is the writable discovery baseline for `discover claims`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `doctor status` can summarize without making them the next discovery target.
 `doctor status` should use the most advanced non-stale related claim packet as the selected orientation map when it is more useful than the writable baseline.
 That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.
@@ -296,7 +296,7 @@ Historical observation and provider-caveat statements can inform future scenario
 
 `claimId` is a display handle and packet reference.
 Refresh matching should use `claimFingerprint`, not source line number alone.
-The fingerprint should combine normalized summary, primary source path, heading or section anchor when available, and source excerpt hash.
+The fingerprint is the sha256 of the normalized primary verbatim excerpt (ratified 2026-06-10); in heuristic mode the stored excerpt equals the normalized summary, so this matches the shipped implementation, and the full rule lives in [claim-extraction-template.md](./claim-extraction-template.md).
 Line number is a locator, not identity.
 
 `verificationReadiness` answers whether verification can start:

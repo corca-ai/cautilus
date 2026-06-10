@@ -2,32 +2,28 @@
 
 ## Workflow Trigger
 
-다음 세션의 첫 수는 **agent-primary 추출의 후속 설계 슬라이스 셰이핑**: `charness:spec`(또는 짧은 ideation)으로 추출 템플릿 + 패킷 계약을 설계.
-읽기 순서: [골 아티팩트의 `## Redesign Decision`](../../charness-artifacts/goals/2026-06-10-adapter-owned-discovery-classification.md) → [claim-discovery-workflow.md의 direction decision 단락](../contracts/claim-discovery-workflow.md) (Skill Responsibilities + classification-hints 섹션).
-maintainer가 HITL 배치를 명시적으로 요청할 때만 대안 첫 수: **S0 HITL 재개** — 세션 `.charness/hitl/runtime/hitl-20260609-235609`, 커서 c02. 골드셋 verdicts는 이제 S3 힌트가 아니라 **agent-추출 평가 기준선**으로 쓰임.
+다음 세션의 첫 수는 **추출 계약 slice 1 구현**: `charness:impl`로 [docs/contracts/claim-extraction-template.md](../contracts/claim-extraction-template.md)의 Implementation Slices 1(바이너리 first-extraction)을 구현.
+계약이 곧 빌드 컨트랙트 — Fixed Decisions와 "Interaction with shipped claim-state consumers" 섹션을 그대로 따르고, Acceptance Checks가 테스트 목록.
+대안 첫 수(maintainer 선택 시): **비교 측정 설계** — 골드셋 기준 agent-vs-heuristic 비교(yt-digest 포함, S1/S2 아티팩트가 before 하네스)를 `charness:spec`으로 셰이핑, 또는 **S0 HITL 재개**(세션 `.charness/hitl/runtime/hitl-20260609-235609`, 커서 c02).
 
 ## Current State (2026-06-10)
 
-- **방향 결정 (maintainer 비준):** 클레임 추출은 agent-primary로 — 에이전트가 제품 소유 템플릿(클레임 정의, adapter의 `classification_hints`에서 공급되는 비클레임 규약, 원문 발췌 강제, bounded 스키마)을 따라 추출하고, 바이너리는 앵커링 검증·핑거프린트·refresh/carry-forward·미앵커 거부를 소유. git 해시 + 소스 해시 diff 스캔으로 재추출은 변경 소스에만. 휴리스틱 추출기는 `extractionMode` 라벨(계약에 명명만 됨, 필드 구현은 후속 패킷 계약 슬라이스 소관) 베이스라인으로 유지. 근거·결과는 골 아티팩트 `## Redesign Decision`에.
-- **이번 세션 출하:** S1 3-코퍼스 베이스라인(yt-digest 0건 = 언어 갭 실증), S2 엔진(`claim_lexicon_terms` substring + 룬 바운드 + 폴백 레인 + `discover claims --adapter <path>` 오버라이드), S4(`Deferred Decisions` 하드코딩 삭제 → 포터블 기본값 합집합). yt-digest 0→19 측정 아티팩트 체크인.
-- **S3 해소 / S2 용어 비준 보류:** 라우팅 힌트 패밀리는 redesign으로 해소; yt-digest 4용어는 agent-proposed로 남김(베이스라인 모드에만 해당).
-- verify 전체 green. **push는 사용자 몫(의도적 보류) — origin 대비 50+ 커밋.**
-
-## Next Session
-
-1. 추출 템플릿 + 추출 패킷 계약(`cautilus.claim_extraction_*`는 가칭, 명명 미비준) 설계 슬라이스 셰이핑 (spec/ideation; 바이너리 앵커링 검증 = `discover claims validate` 확장 여부 포함).
-2. 골드셋 기준 agent-vs-heuristic 비교 측정 설계 (yt-digest 포함 — 한국어가 템플릿만으로 풀리는지 검증; S1/S2 아티팩트가 before 하네스).
-3. S0 HITL 재개 (maintainer 배치; ~14건 우선 순서는 더 이상 강제 아님 — 전체가 평가 기준선).
+- **이번 세션 출하:** 추출 시임 설계 계약 `docs/contracts/claim-extraction-template.md`.
+  4개 시임 결정 maintainer 비준: ① `extraction-input`/`apply-extraction` 명령쌍(review 심 미러, 템플릿 해시 provenance), ② 핑거프린트 = sha256(정규화 primary verbatim 발췌) 전 모드 통일 — 휴리스틱은 excerpt=summary라 기존 패킷 핑거프린트 불변(마이그레이션 0), ③ 앵커링 = 공백 정규화 substring, line은 locator, 미앵커 거부, ④ `cautilus.claim_extraction_input.v1`/`claim_extraction_result.v1` + `extractionMode: agent|heuristic`(부재 시 heuristic).
+- **비평 해소:** 위임된 fresh-eye critique가 블로커 2건 발견(기존 `agent-reviewed` 소비자 3곳 충돌 → "Interaction with shipped claim-state consumers" 섹션으로 해소, primary 발췌 패킷 영속화 누락 → sourceRefs `{path,line,excerpt,primary}` 규칙으로 해소) 후 ready-with-edits → 전부 반영.
+- 워크플로우 계약의 낡은 조합-핑거프린트 문장을 비준 규칙으로 정렬, direction 단락이 새 계약을 링크.
+- 구현 슬라이스 순서(계약에 고정): 1 바이너리 first-extraction → 2 에이전트 표면(SKILL.md, consumer-intent freeze 규칙 발동) → 3 refresh 합성 → 4 비교 측정.
+- 골 아티팩트 Slice Log 갱신. **push는 사용자 몫(의도적 보류).**
 
 ## Discuss
 
-- 추출 패킷의 재현성 계약: 원문-발췌 앵커링으로 충분한가, 세그먼테이션 드리프트 허용 범위는.
-- 이 레포 `claims:refresh:all` 운영: agent-추출 모드에서 푸시 게이트가 "재생성"이 아니라 "유효성 검증 + staleness 보고"로 바뀌는 시점.
+- 이 레포 `claims:refresh:all` 운영: agent-추출 모드에서 푸시 게이트가 "재생성"이 아니라 "유효성 검증 + staleness 보고"로 바뀌는 시점 (계약 Deferred Decisions에 기록됨; apply-extraction 출하 후 결정).
+- agent 패킷의 dogfood 출력 경로: 게이트 결정 전까지 `state_path` 회피 (계약에 명시).
 - 심판 모델 고정값(sonnet) vs 제품 러너 정합/비용 (이월), harmony judge 배지 배선 (이월).
 
 ## References
 
+- [docs/contracts/claim-extraction-template.md](../contracts/claim-extraction-template.md) — 추출 시임 빌드 컨트랙트 (canonical)
 - [골 아티팩트](../../charness-artifacts/goals/2026-06-10-adapter-owned-discovery-classification.md) — redesign 결정·슬라이스 로그·수용 기준
-- [docs/contracts/claim-discovery-workflow.md](../contracts/claim-discovery-workflow.md) — direction decision + classification_hints 계약
-- [S2 측정 아티팩트](../../charness-artifacts/eval-trust/2026-06-10-discovery-classification-s2-lexicon-proposal.md) — 0→19 측정, `니다` 퇴화 분석, 비교 하네스
-- [S1 베이스라인](../../charness-artifacts/eval-trust/2026-06-10-discovery-classification-s1-baseline.md) — 코퍼스 커밋 고정값
+- [docs/contracts/claim-discovery-workflow.md](../contracts/claim-discovery-workflow.md) — 워크플로우 경계 (충돌 시 추출 시임 디테일은 새 계약이 우선)
+- [S2 측정 아티팩트](../../charness-artifacts/eval-trust/2026-06-10-discovery-classification-s2-lexicon-proposal.md), [S1 베이스라인](../../charness-artifacts/eval-trust/2026-06-10-discovery-classification-s1-baseline.md) — 비교 하네스
