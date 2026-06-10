@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:606fbf04bdb7bbbaaecd04575a35942f3848c34dfeff00cb20d24eb9f740d588",
+    "claimsHash": "sha256:284acec293ad7c02920e65c7aebb0f1153e850f58c569ffc1e63ea14d4fcf140",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:3c1fc233e01ea7d4a1855278a2291ac2781055a17f9c151e7bd06925d90f676a",
+    "statusHash": "sha256:e2197f0888a5dfdd29f6058e40f96692bbce0ca1dde48b632ce8ba662311c1f5",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,52 +22,52 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "432b290ae7e21dfeb7bbe774754df8d3f6b2f9fe",
+    "currentGitCommit": "05f8add5eb95e0d06da8868c1ce5b788d204af6c",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "432b290ae7e21dfeb7bbe774754df8d3f6b2f9fe",
+    "packetGitCommit": "05f8add5eb95e0d06da8868c1ce5b788d204af6c",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
-    "candidateCount": 376,
+    "candidateCount": 378,
     "sourceCount": 67,
     "byEvidenceStatus": {
-      "satisfied": 123,
-      "unknown": 253
+      "satisfied": 122,
+      "unknown": 256
     },
     "byRecommendedProof": {
-      "cautilus-eval": 130,
-      "deterministic": 141,
+      "cautilus-eval": 129,
+      "deterministic": 144,
       "human-auditable": 105
     },
     "byVerificationReadiness": {
       "blocked": 26,
       "needs-alignment": 45,
-      "ready-for-proof": 305
+      "ready-for-proof": 307
     },
     "byReviewStatus": {
-      "agent-reviewed": 177,
-      "heuristic": 196,
-      "human-reviewed": 3
+      "agent-reviewed": 174,
+      "heuristic": 203,
+      "human-reviewed": 1
     }
   },
   "openCautilusEval": {
-    "total": 124,
-    "readyForProof": 124,
+    "total": 123,
+    "readyForProof": 123,
     "needsScenario": 0,
     "bySurface": {
       "(none)": 6,
       "app/chat": 4,
       "app/prompt": 11,
       "dev/repo": 73,
-      "dev/skill": 30
+      "dev/skill": 29
     },
     "byReadiness": {
-      "ready for proof": 124
+      "ready for proof": 123
     },
     "rawByReadiness": {
-      "ready-for-proof": 124
+      "ready-for-proof": 123
     },
     "proofReadySamples": [
       {
@@ -134,8 +134,8 @@
         "summary": "If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy."
       },
       {
-        "claimId": "claim-docs-contracts-adapter-contract-md-538",
-        "source": "docs/contracts/adapter-contract.md:538",
+        "claimId": "claim-docs-contracts-adapter-contract-md-541",
+        "source": "docs/contracts/adapter-contract.md:541",
         "surface": "dev/skill",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -148,41 +148,39 @@
   "actionBuckets": [
     {
       "id": "already-satisfied",
-      "count": 123,
+      "count": 122,
       "actor": "none",
       "evidence": {
-        "satisfied": 123
+        "satisfied": 122
       },
       "review": {
-        "agent-reviewed": 123
+        "agent-reviewed": 122
       },
       "summary": "Proof is already attached and valid under packet semantics."
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 24,
+      "count": 28,
       "actor": "agent",
       "evidence": {
-        "unknown": 24
+        "unknown": 28
       },
       "review": {
-        "agent-reviewed": 1,
-        "heuristic": 22,
-        "human-reviewed": 1
+        "heuristic": 28
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 124,
+      "count": 123,
       "actor": "agent",
       "evidence": {
-        "unknown": 124
+        "unknown": 123
       },
       "review": {
         "agent-reviewed": 10,
         "heuristic": 112,
-        "human-reviewed": 2
+        "human-reviewed": 1
       },
       "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
     },
@@ -194,8 +192,8 @@
         "unknown": 45
       },
       "review": {
-        "agent-reviewed": 26,
-        "heuristic": 19
+        "agent-reviewed": 25,
+        "heuristic": 20
       },
       "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
     },
@@ -228,7 +226,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 196,
+      "count": 203,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [

@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 196
+          "unknown": 203
         },
         "byReviewStatus": {
-          "heuristic": 196
+          "heuristic": 203
         },
-        "count": 196,
+        "count": 203,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 123
+          "satisfied": 122
         },
         "byReviewStatus": {
-          "agent-reviewed": 123
+          "agent-reviewed": 122
         },
-        "count": 123,
+        "count": 122,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,35 +43,33 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 24
+          "unknown": 28
         },
         "byReviewStatus": {
-          "agent-reviewed": 1,
-          "heuristic": 22,
-          "human-reviewed": 1
+          "heuristic": 28
         },
-        "count": 24,
+        "count": 28,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-docs-contracts-adapter-contract-md-223",
-          "claim-docs-contracts-adapter-contract-md-438",
-          "claim-docs-contracts-adapter-contract-md-484",
+          "claim-docs-contracts-adapter-contract-md-441",
+          "claim-docs-contracts-adapter-contract-md-487",
           "claim-docs-specs-index-spec-md-57",
-          "claim-docs-specs-index-spec-md-94"
+          "claim-docs-specs-index-spec-md-69"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 124
+          "unknown": 123
         },
         "byReviewStatus": {
           "agent-reviewed": 10,
           "heuristic": 112,
-          "human-reviewed": 2
+          "human-reviewed": 1
         },
-        "count": 124,
+        "count": 123,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -88,8 +86,8 @@
           "unknown": 45
         },
         "byReviewStatus": {
-          "agent-reviewed": 26,
-          "heuristic": 19
+          "agent-reviewed": 25,
+          "heuristic": 20
         },
         "count": 45,
         "id": "human-align-surfaces",
@@ -97,7 +95,7 @@
         "sampleClaimIds": [
           "claim-agents-md-68",
           "claim-agents-md-100",
-          "claim-docs-contracts-adapter-contract-md-413",
+          "claim-docs-contracts-adapter-contract-md-416",
           "claim-docs-guides-cli-md-187",
           "claim-docs-guides-cli-md-193"
         ],
@@ -115,7 +113,7 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-67",
-          "claim-docs-contracts-adapter-contract-md-432",
+          "claim-docs-contracts-adapter-contract-md-435",
           "claim-docs-specs-index-spec-md-102",
           "claim-docs-specs-user-index-spec-md-27",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-21"
@@ -144,7 +142,7 @@
       }
     ]
   },
-  "candidateCount": 376,
+  "candidateCount": 378,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -161,8 +159,8 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 274,
-      "user": 102
+      "developer": 275,
+      "user": 103
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 59,
@@ -173,30 +171,30 @@
       "General product behavior": 1,
       "Improvement and improvement": 31,
       "Packets and reporting": 47,
-      "Quality gates": 18,
+      "Quality gates": 20,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 123,
-      "unknown": 253
+      "satisfied": 122,
+      "unknown": 256
     },
     "byLifecycle": {
-      "new": 376
+      "new": 378
     },
     "byRecommendedProof": {
-      "cautilus-eval": 130,
-      "deterministic": 141,
+      "cautilus-eval": 129,
+      "deterministic": 144,
       "human-auditable": 105
     },
     "byReviewStatus": {
-      "agent-reviewed": 177,
-      "heuristic": 196,
-      "human-reviewed": 3
+      "agent-reviewed": 174,
+      "heuristic": 203,
+      "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 26,
       "needs-alignment": 45,
-      "ready-for-proof": 305
+      "ready-for-proof": 307
     }
   },
   "discoveryBoundary": {
@@ -223,12 +221,12 @@
       {
         "id": "adapter-non-claim-section-filter",
         "implementationFunction": "headingIsNonClaimSection",
-        "summary": "Drop lines under adapter-declared non-claim section headings (classification_hints.non_claim_section_headings), such as rejected-alternatives lists."
+        "summary": "Drop lines under non-claim section headings: portable defaults (Deferred Decisions) merged with adapter-declared classification_hints.non_claim_section_headings, such as rejected-alternatives lists."
       },
       {
         "id": "claim-shaped-line-filter",
         "implementationFunction": "claimLineLooksUseful",
-        "summary": "Keep lines that look like behavior promises and drop prompt examples, open questions, definition labels, future placeholders, and very short or long text."
+        "summary": "Keep lines that look like behavior promises via the built-in English verb lexicon plus adapter-declared classification_hints.claim_lexicon_terms (substring match), and drop prompt examples, open questions, definition labels, future placeholders, and very short or long text (rune-counted bounds)."
       },
       {
         "id": "next-work-classifier",
@@ -241,10 +239,10 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:e4f4b021ccd1afbcaa4c56bca76e37b71b0a06eb22f488cfdfcc6348acaabc3c",
+    "implementationHash": "sha256:c3784ab08ac6417e1d451eedfc2754a41a110ba85534e78cff7f9044e2a8f61f",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
-    "ruleset": "claim-discovery-rules.v4"
+    "ruleset": "claim-discovery-rules.v5"
   },
   "effectiveScanScope": {
     "adapterFound": true,
@@ -270,6 +268,7 @@
         "docs/guides/**"
       ]
     },
+    "claimLexiconTerms": [],
     "entries": [
       "README.md",
       "AGENTS.md",
@@ -297,6 +296,7 @@
     "include": [],
     "linkedMarkdownDepth": 3,
     "nonClaimSectionHeadings": [
+      "Deferred Decisions",
       "Rejected Alternatives",
       "Alternatives rejected"
     ],
@@ -402,7 +402,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 123,
+    "satisfiedClaimCount": 122,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -635,7 +635,7 @@
         "summary": "When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata."
       },
       {
-        "claimId": "claim-docs-contracts-adapter-contract-md-284",
+        "claimId": "claim-docs-contracts-adapter-contract-md-287",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -645,7 +645,8 @@
             "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04b.json",
             "supportsClaimIds": [
               "claim-docs-contracts-adapter-contract-md-278",
-              "claim-docs-contracts-adapter-contract-md-284"
+              "claim-docs-contracts-adapter-contract-md-284",
+              "claim-docs-contracts-adapter-contract-md-287"
             ]
           }
         ],
@@ -655,7 +656,7 @@
         "summary": "`kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script."
       },
       {
-        "claimId": "claim-docs-contracts-adapter-contract-md-323",
+        "claimId": "claim-docs-contracts-adapter-contract-md-326",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -665,7 +666,8 @@
             "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04b.json",
             "supportsClaimIds": [
               "claim-docs-contracts-adapter-contract-md-317",
-              "claim-docs-contracts-adapter-contract-md-323"
+              "claim-docs-contracts-adapter-contract-md-323",
+              "claim-docs-contracts-adapter-contract-md-326"
             ]
           }
         ],
@@ -1562,28 +1564,7 @@
         "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-175",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:a856b28e6f1b8f87089fa34ebcaaeb27a751e4acd7b7ced88066ccbc0afa5865",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-175",
-              "claim-docs-contracts-claim-discovery-workflow-md-361",
-              "claim-docs-contracts-claim-discovery-workflow-md-374"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop."
-      },
-      {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-381",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-397",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1595,7 +1576,8 @@
               "claim-docs-contracts-claim-discovery-workflow-md-372",
               "claim-docs-contracts-claim-discovery-workflow-md-375",
               "claim-docs-contracts-claim-discovery-workflow-md-377",
-              "claim-docs-contracts-claim-discovery-workflow-md-381"
+              "claim-docs-contracts-claim-discovery-workflow-md-381",
+              "claim-docs-contracts-claim-discovery-workflow-md-397"
             ]
           }
         ],
@@ -2986,7 +2968,7 @@
       }
     ]
   },
-  "gitCommit": "432b290ae7e21dfeb7bbe774754df8d3f6b2f9fe",
+  "gitCommit": "05f8add5eb95e0d06da8868c1ce5b788d204af6c",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -2998,10 +2980,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "432b290ae7e21dfeb7bbe774754df8d3f6b2f9fe",
+    "currentGitCommit": "05f8add5eb95e0d06da8868c1ce5b788d204af6c",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "432b290ae7e21dfeb7bbe774754df8d3f6b2f9fe",
+    "packetGitCommit": "05f8add5eb95e0d06da8868c1ce5b788d204af6c",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3025,7 +3007,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 177,
+    "heuristicClaimsReadyForReview": 183,
     "needsAlignment": 45,
     "needsScenario": 0
   },
