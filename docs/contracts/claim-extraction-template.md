@@ -40,7 +40,7 @@ The binary owns `sourceInventory`, `sourceGraph`, `effectiveScanScope`, git comm
 The agent never assembles the proof-plan packet directly; `apply-extraction` composes the binary-owned skeleton with the validated agent result.
 Both new commands are deterministic and make no model calls, preserving the fixed decision that the binary does not call an LLM for claim discovery or review.
 
-Running agent extraction is an LLM activity, so it sits behind the same two-gate confirmation flow as LLM review: scan-scope confirmation authorizes `extraction-input`, but a separate extraction-budget confirmation is required before the Cautilus Agent actually extracts, mirroring the review-budget rule in the workflow contract.
+Running agent extraction is an LLM activity, so it sits behind the workflow contract's Model-Spend Confirmation rule: scan-scope confirmation authorizes `extraction-input`, but a separate extraction-budget confirmation is required before the Cautilus Agent actually extracts.
 The extraction budget (source count, excerpt bounds, batching, stop reasons) is recorded in the applied packet.
 
 `extraction-input` honors the same explicit `--adapter <path>` override as `discover claims`, so measurement dry-runs on read-only corpora apply a proposed adapter without writing to the scanned repo; ratified configuration still belongs in the consumer repo's own adapter.
@@ -241,7 +241,7 @@ Derived from prior fixed decisions, restated here because this contract depends 
 - Each claim carries exactly one `primary: true` excerpt; `apply-extraction` validates exactly-one-primary.
 - Routing fields are part of the extraction result (the dissolved proof-routing hint family lives in the template, not in engine keywords).
 - The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.
-- Scan-scope confirmation does not authorize agent extraction; extraction needs its own budget confirmation, mirroring the review-budget rule.
+- Scan-scope confirmation does not authorize agent extraction; extraction needs its own budget confirmation, per the workflow contract's Model-Spend Confirmation rule.
 - The comparison measurement (implementation slice 4) runs through a bounded harness that consumes the same `extraction-input` packet and is scored through `apply-extraction` (ratified 2026-06-10).
   It measures the hypothesis under test — the template plus the seam — not the skill conversation flow; because both paths share the template hash and the same validation, harness results transfer to the product surface.
   Verifying the Cautilus Agent flow itself is later Cautilus-eval-fixture work over the skill surface, following the existing self-dogfood fixture pattern, and is not a prerequisite for the comparison.

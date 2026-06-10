@@ -11,13 +11,11 @@ for claim discovery and claim review, the binary owns deterministic packet produ
 
 ## Current Slice
 
-Design the next claim-discovery workflow contract.
-This slice is a design contract, not an implementation change.
-It refines the current `discover claims` direction around four decisions:
+This contract defines the claim-discovery workflow boundary around four decisions:
 
 - `discover` remains the one high-level user action for initial claim discovery.
-- The binary performs the fast deterministic skeleton pass.
-- The Cautilus Agent performs LLM-backed claim review, grouping, final labeling, evidence reconciliation, and user-facing status.
+- The binary owns deterministic packet production: scan traversal, extraction-input packets, anchoring validation, and state transitions.
+- The Cautilus Agent owns claim extraction (following the product-owned extraction template), evidence reconciliation, and user-facing status.
 - Existing claim state refresh is selected by Cautilus Agent when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.
   It does not require a separate binary `claim refresh` command.
 
@@ -29,12 +27,15 @@ The primary user flow starts from an agent session, not from a human reading a C
 2. Cautilus Agent checks adapter availability, current claim-state artifacts, and recent git history.
 3. If no useful prior claim state exists, Cautilus Agent proposes a scan scope before starting.
 4. The user confirms or adjusts the deterministic scan scope.
-5. Cautilus Agent calls the binary deterministic pass.
-6. Cautilus Agent shows the raw source count, candidate count, review budget, and proposed review tier.
-7. The user confirms or adjusts the LLM review budget separately from the scan scope.
-8. Cautilus Agent fans out bounded LLM review over grouped claim clusters, not over every raw candidate one by one.
-9. Cautilus Agent reconciles likely existing evidence from tests, specs, eval summaries, and checked artifacts.
-10. Cautilus Agent summarizes status and asks which next action to take.
+5. Cautilus Agent calls `discover claims extraction-input` to emit the deterministic extraction-input packet: sources with content hashes, the embedded extraction template, and bounds.
+6. Cautilus Agent shows the extraction budget: source count, content size, excerpt bounds, the batch plan with expected batch count, and stop reasons.
+7. The user confirms or adjusts the extraction budget separately from the scan scope.
+8. Cautilus Agent extracts claims by following the embedded template over the packet sources, in bounded batches.
+9. Cautilus Agent calls `discover claims apply-extraction`, which anchors every verbatim excerpt, rejects unanchored claims into the extraction audit, and composes the proof-plan packet.
+10. Cautilus Agent reconciles likely existing evidence from tests, specs, eval summaries, and checked artifacts.
+11. Cautilus Agent summarizes status and asks which next action to take.
+
+Running `discover claims` directly, without the Cautilus Agent, emits the deterministic heuristic baseline (`extractionMode: heuristic`) with no model calls; this is the reproducible floor for no-model environments, CI regeneration, and control tests.
 
 If prior claim state exists, step 5 becomes a diff-aware refresh selected by Cautilus Agent:
 Cautilus Agent uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review.
@@ -66,24 +67,23 @@ The Cautilus Agent should own orchestration that depends on an agent:
 
 - decide whether to run first discovery, refresh prior state, or show current status
 - explain the scan scope to the user and ask for confirmation before broad discovery
-- call `cautilus discover claims` with the agreed scope
-- show the deterministic scan result and ask separately before launching LLM review
-- group and prioritize raw candidates for LLM review
-- run subagent review in bounded batches
-- apply final labels and merge obvious duplicates
+- call `cautilus discover claims extraction-input` with the agreed scope
+- show the extraction budget and ask separately before extracting
+- extract claims by following the product-owned extraction template, with verbatim source excerpts, classification routing, and a bounded output schema
+- submit the extraction result to `apply-extraction` so the binary anchors excerpts and composes the proof plan
 - reconcile existing deterministic and evaluator evidence
 - summarize status for the user
 - offer next actions such as generating eval scenario drafts, adding deterministic tests, resolving alignment work, or showing a full report
 
 This keeps the product agent-first without making the binary a host-specific agent runtime.
-Direction decision (2026-06-10): the Cautilus Agent additionally owns primary claim extraction itself, following the product-owned extraction template, while the binary anchors verbatim excerpts, validates packets, and bounds re-extraction to changed sources; the recorded rationale and the labeled heuristic baseline mode live in the classification-hints section of Scan Scope below, and the extraction seam contract lives in [claim-extraction-template.md](./claim-extraction-template.md).
+The extraction seam contract — template, packet schemas, anchoring, and fingerprint semantics — lives in [claim-extraction-template.md](./claim-extraction-template.md).
 
 ### Canonical Claim Specs
 
-Raw `discover claims` candidates are high-recall proof-planning inputs.
+Claim packets are high-recall proof-planning inputs.
 They are not the primary human review surface once the maintainer is judging product meaning, duplication, audience fit, or next-action grouping.
 
-When raw candidates are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL:
+When packet claims are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL:
 
 - a user-facing spec index in plain product language that explains what the repo promises to a reader
 - a maintainer-facing spec index that may use internal vocabulary but maps back to the user-facing claims
@@ -198,16 +198,12 @@ Seeding these hints is Cautilus Agent onboarding work: scan the entry documents 
 A classification behavior is promoted from engine hardcoding to an adapter-owned hint family only when all three hold: it encodes a repo documentation convention that genuinely varies across repos, a gold-set-style measurement shows the hardcoded form misclassifies, and the Cautilus Agent can propose it for maintainer ratification.
 Extraction mechanics (code-fence and frontmatter skipping, heading tracking, duplicate merge) stay product-owned and never become hints; unbounded knob growth is itself a failure mode the adapter contract rejects.
 The frozen-defaults golden test (`TestClaimClassificationPortableDefaultsAreFrozen`) pins the portable default lexicon and non-claim headings, so any new hardcoded default surfaces as a test diff that forces a matching contract update here.
-Of the maintainer-aligned 2026-06-10 candidates, two have shipped: the claim-verb lexicon is now the `claim_lexicon_terms` hint family (measured on the three-corpus baseline, `charness-artifacts/eval-trust/2026-06-10-discovery-classification-s1-baseline.md`), and the hardcoded `Deferred Decisions` branch was deleted in favor of the `non_claim_section_headings` portable default.
-The remaining hardcoded candidate — the `recommendedProof` and eval-surface routing keywords in `classifyClaimLine` — will not become a hint family.
-Direction decision (2026-06-10, maintainer-ratified): claim extraction and proof routing move to agent-primary discovery instead of further heuristic refinement.
-The measured evidence behind the decision: the pending-ratification gold set shows the heuristic routing tag dominant-correct on only 18/35 sampled claims, and the Korean lexicon measurement showed that on formal-style prose the claim-shaped gate degenerates into a sentence-length detector, so stacking hint families on either heuristic refines precision on a weak foundation.
-Under the agent-primary direction, the Cautilus Agent extracts claims by following a product-owned extraction template: the claim definition, the repo's non-claim conventions sourced from the same `classification_hints`, mandatory verbatim source excerpts with source refs, and a bounded output schema.
-The binary anchors and audits rather than extracts: it keeps traversal and scan scope, verifies that every quoted excerpt actually exists at its claimed source ref, computes claim fingerprints from the verbatim excerpts, owns refresh planning and carry-forward, and rejects unanchored claims during validation.
+Claim extraction and proof routing are agent-primary: the Cautilus Agent extracts claims by following a product-owned extraction template — the claim definition, the repo's non-claim conventions sourced from the same `classification_hints`, mandatory verbatim source excerpts with source refs, and a bounded output schema.
+The binary anchors and audits: it keeps traversal and scan scope, verifies that every quoted excerpt actually exists at its claimed source ref, computes claim fingerprints from the verbatim excerpts, owns refresh planning and carry-forward, and rejects unanchored claims during validation.
 Recorded git commits plus per-source hashes bound re-extraction cost: unchanged sources carry forward deterministically and only git-diff-changed sources return to the agent, per the existing refresh design.
-The deterministic heuristic extractor stays available as an explicitly labeled baseline mode (`extractionMode` in the packet), so no-model environments, CI regeneration, and adapter-not-hardcoded control tests keep a reproducible floor.
-The gold set's role is promoted accordingly: from hint-family scoring device to the eval fixture that measures agent extraction quality against maintainer-ratified labels.
-The detailed extraction template and packet contract are designed in [claim-extraction-template.md](./claim-extraction-template.md); this paragraph records the direction so the hint-family roadmap does not drift.
+The deterministic heuristic extractor is the explicitly labeled baseline mode (`extractionMode` in the packet), so no-model environments, CI regeneration, and adapter-not-hardcoded control tests keep a reproducible floor.
+The maintainer-ratified gold set is the eval fixture that measures agent extraction quality against those labels.
+The detailed extraction template and packet contract live in [claim-extraction-template.md](./claim-extraction-template.md).
 `state_path` is the writable discovery baseline for `discover claims`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `doctor status` can summarize without making them the next discovery target.
 `doctor status` should use the most advanced non-stale related claim packet as the selected orientation map when it is more useful than the writable baseline.
 That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.
@@ -219,38 +215,48 @@ Before running a first broad scan, Cautilus Agent should say which entries and d
 It should also show the deterministic bounds that will be applied:
 
 - maximum sources
-- maximum raw candidates
-- maximum review clusters
+- maximum claims per source
+- maximum excerpt characters
 - excluded paths or globs
 - whether dirty working-tree files are in scope
 
 Cautilus Agent should ask the user to confirm or adjust that scope.
 After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run.
 
-## Review Budget Confirmation
+## Model-Spend Confirmation
 
-Scan confirmation does not authorize LLM review.
-After the deterministic pass, Cautilus Agent should show a separate review plan:
+Scope confirmation never authorizes model spend.
+Each stage that spends model budget shows its own plan and gets its own confirmation; scan-scope confirmation covers reading the configured sources and emitting deterministic packets, nothing more.
+If the user already delegated autonomous continuation, Cautilus Agent may proceed within the recorded budget, but the budget still must be written to the packet.
 
-- raw candidate count
-- grouped-cluster estimate
-- proposed review tier
-- maximum clusters to review
+### Extraction budget confirmation
+
+On the primary path, after `extraction-input` emits the deterministic packet, Cautilus Agent shows the extraction budget before extracting:
+
+- source count
+- content size
+- excerpt bounds (`maxClaimsPerSource`, `maxExcerptChars`)
+- batch plan and expected batch count
+- stop reasons
+
+The user confirms or adjusts that budget before the Cautilus Agent extracts, and the applied packet records it.
+
+### Review budget confirmation
+
+When the review seam runs — stale-evidence re-entry, human-review upgrade queues, or LLM review over heuristic-mode packets — Cautilus Agent shows the review plan before launching subagents or other LLM-backed review:
+
+- claims selected for review and the selection policy
+- cluster count and skipped clusters with reasons
 - maximum subagents or parallel review lanes
 - maximum clusters per subagent
 - maximum excerpt characters or tokens per cluster
-- retry policy
-- stop reasons
-- skipped cluster count and why they will be skipped
+- retry policy and stop reasons
 
-The user should confirm or adjust that review budget before Cautilus Agent launches subagents or other LLM-backed review.
-If the user already delegated autonomous continuation, Cautilus Agent may proceed within the recorded budget, but the budget still must be written to the packet.
+The user confirms or adjusts that review budget before review starts, and the packet records it with its source.
 
 ## Claim Model
 
-The old `proofLayer` field was overloaded.
-It mixed proof mechanism, readiness, and alignment state.
-The current packet splits those concepts:
+The packet separates proof mechanism, verification readiness, evidence status, review status, and lifecycle into distinct fields:
 
 ```json
 {
@@ -340,8 +346,7 @@ When `discover claims apply-review` applies such an update, `claimAudienceSource
 `claimSemanticGroup` is a deterministic review-batching hint.
 It is not a final taxonomy; the Cautilus Agent or human reviewer may correct it during review.
 
-`proofLayer` is no longer emitted in new claim packets.
-Agents and validators must read the split fields directly instead of deriving a compatibility label.
+Agents and validators read these split fields directly; there is no derived compatibility label.
 
 ## Packet Semantics
 
@@ -409,10 +414,10 @@ Cautilus Agent review can upgrade them to `satisfied`, `partial`, `stale`, or `m
 `stale` should be used when an evidence ref or evidence commit/hash changed since the last reviewed claim-state packet.
 `unknown` should be used when the workflow did not inspect enough evidence to make an honest statement.
 
-## Grouping And Review Strategy
+## Review Seam
 
-The workflow should not send every raw candidate to an LLM independently.
-The deterministic pass should emit broad candidates and grouping hints that make curation efficient:
+Agent extraction labels claims as it extracts, so agent-extracted claims arrive `agent-reviewed` and the review seam serves the queues that still need review afterward: stale-evidence re-entry, human-review upgrades through HITL and `apply-review`, and LLM review over heuristic-mode packets.
+Review runs over bounded clusters, and claim packets carry grouping hints that make cluster selection efficient:
 
 - source path
 - source section
@@ -421,7 +426,7 @@ The deterministic pass should emit broad candidates and grouping hints that make
 - repeated noun phrases or command names
 - source graph neighborhood
 
-Cautilus Agent should reduce false positives, scan for likely false negatives, and review clusters in priority order:
+Cautilus Agent reviews clusters in priority order:
 
 1. entry-surface claims from README and AGENTS
 2. `cautilus-eval` candidates
@@ -430,16 +435,16 @@ Cautilus Agent should reduce false positives, scan for likely false negatives, a
 5. deterministic and human-auditable claims with weak or missing evidence refs
 6. lower-priority duplicate or long-tail doc claims
 
-Subagents should receive clusters with source excerpts, source refs, candidate labels, possible evidence refs, and a bounded output schema.
-They should return merged claims, corrected labels, false-positive removals, possible false-negative questions, evidence-status judgments, and unresolved questions.
-The parent Cautilus Agent should merge results and keep review provenance in the packet.
+Subagents receive clusters with source excerpts, source refs, candidate labels, possible evidence refs, and a bounded output schema.
+They return merged claims, corrected labels, false-positive removals, possible false-negative questions, evidence-status judgments, and unresolved questions.
+The parent Cautilus Agent merges results and keeps review provenance in the packet.
 
-The LLM review seam should use versioned packets instead of hidden prompt-only behavior:
+The review seam uses versioned packets:
 
 - `cautilus.claim_review_input.v1`
 - `cautilus.claim_review_result.v1`
 
-Those packets should record cluster IDs, candidate IDs, source refs, prompt/reference hashes, runtime/model identity when available, merge decisions, label changes, evidence-status reasons, unresolved questions, and skipped clusters.
+Those packets record cluster IDs, candidate IDs, source refs, prompt/reference hashes, runtime/model identity when available, merge decisions, label changes, evidence-status reasons, unresolved questions, and skipped clusters.
 
 ## Stored State
 
@@ -459,12 +464,11 @@ The packet should record:
 - source inventory
 - source graph
 - state path resolution
-- raw candidate count
-- grouped claim count
+- extraction mode and candidate count
 - claim records
+- extraction audit for agent-mode packets (applied, rejected, and stale-source records)
 - refresh plan when prior state was used
 - review budget and review budget source
-- skipped review clusters
 - review runs
 - evidence scan summary
 - next recommended actions
@@ -487,7 +491,7 @@ When a previous claim-state packet exists, Cautilus Agent should:
 6. mark claims with changed source or meaning as `changed`
 7. mark claims with changed evidence anchors as `evidenceStatus=stale`
 8. retire claims whose source refs disappeared
-9. run LLM review only on changed clusters and high-impact stale evidence after review-budget confirmation
+9. re-extract only the changed sources after extraction-budget confirmation, and route high-impact stale evidence through the review seam after review-budget confirmation
 
 The binary may provide helper flags such as `discover claims --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.
 No separate binary `claim refresh` command is planned for this stage.
@@ -522,8 +526,7 @@ Scanned:
 - 23 linked Markdown files, depth 3
 
 Found:
-- 561 raw candidates
-- 138 grouped claims after review
+- 138 anchored claims, 4 rejected by anchoring audit
 - 42 already satisfied by deterministic tests/specs
 - 31 human-auditable
 - 48 need Cautilus eval scenarios
@@ -565,6 +568,11 @@ Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts
 The workflow should avoid a `claim group` command.
 Grouping is part of useful discovery output.
 
+The extraction seam commands carry the primary agent path:
+
+- `discover claims extraction-input`: emit the deterministic extraction-input packet — sources with content hashes, the embedded extraction template with version and hash, merged classification hints, and bounds — without calling an LLM
+- `discover claims apply-extraction`: validate an agent extraction result against the input packet, anchor every verbatim excerpt, reject unanchored claims into the extraction audit, and compose the `extractionMode: agent` proof plan
+
 Follow-on commands are justified only when they operate on an existing claim-state packet:
 
 - `discover claims status`: summarize an existing packet for agents without rescanning, optionally with bounded `sampleClaims` and git freshness state
@@ -573,7 +581,7 @@ Follow-on commands are justified only when they operate on an existing claim-sta
 - `discover claims apply-review`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM, rejecting stale packets by default; aggregate replay helpers apply historical results from oldest to newest using explicit review timestamps first and filename dates as a fallback, so later synthesis packets can intentionally override older HITL or reviewer decisions
 - Replay matching honors claim identity: an update whose display `claimId` no longer exists falls back to `claimFingerprint`, and a fingerprint match rewrites the update's `claimId` and any matching `evidenceRefs[].supportsClaimIds` entries to the current display id before application (the same rewrite carried evidence refs get during refresh).
   Review-result `claimUpdates` should therefore carry `claimFingerprint`; fingerprint-less updates whose display id drifted are unrecoverable and are reported as dropped (per-packet warnings plus `rewrittenUpdateCount`/`droppedUpdateCount` in the output packet's `reviewApplication`) instead of vanishing silently.
-  The 2026-06-10 id-drift incident behind this rule is recorded at `charness-artifacts/debug/latest.md`.
+  The 2026-06-10 id-drift incident behind this rule is recorded at `charness-artifacts/debug/debug-2026-06-10-claim-review-id-drift-refresh-loss.md`.
 - `evaluate claims plan`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures, rejecting stale packets by default
 - `evaluate claims plan`: each plan carries `proofRequirement.requiredRunnerCapability`, `proofRequirement.requiredObservability`, and whether the target surface requires product-runner proof; these are requirements for later setup/eval work, not readiness verdicts
 - `evaluate claims plan`: each plan carries `fixtureAuthoringGuidance` with the `cautilus.evaluation_input.v1` surface/preset, minimum suite and case fields, runner output schema, required runner capability, required observability, and a non-writer boundary so agents can author host-owned fixtures without guessing packet shape
@@ -627,21 +635,26 @@ Valid but defer:
 
 - The binary does not directly call an LLM provider for claim discovery or claim review.
   `eval` and `improve` workflows may still orchestrate model-involving behavior through adapter-owned runners.
-- In the claim discovery workflow, the Cautilus Agent owns LLM-backed claim review, review-budget explanation, and subagent orchestration.
+- Claim extraction and proof routing are agent-primary (maintainer-ratified 2026-06-10), instead of further heuristic refinement.
+  The measured evidence behind the decision: the gold set showed the heuristic routing tag dominant-correct on only 18/35 sampled claims, and the Korean lexicon measurement showed that on formal-style prose the claim-shaped gate degenerates into a sentence-length detector.
+- The `recommendedProof` and eval-surface routing keywords in `classifyClaimLine` do not become a hint family; routing knowledge lives in the extraction template.
+- In the claim discovery workflow, the Cautilus Agent owns claim extraction, LLM-backed claim review, budget explanation, and subagent orchestration.
 - First discovery uses entry sources plus linked repo-local Markdown.
 - Default linked Markdown depth is `3`.
 - Cautilus Agent asks before the first broad scan and explains the effective entries and depth.
-- Claim review that uses an LLM needs separate review-budget confirmation after deterministic scan.
+- Scope confirmation never authorizes model spend: agent extraction needs its own extraction-budget confirmation, and LLM review needs its own review-budget confirmation (maintainer-ratified 2026-06-11, generalizing the earlier review-budget rule).
+- Agent extraction is the label-review pass for the claims it extracts; `review-input` excludes `agent-reviewed` claims by default so the review seam does not re-spend budget on freshly extracted claims.
 - Existing state refresh is selected by Cautilus Agent when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.
 - No separate binary `claim refresh` command is planned for the next slice.
 - The old `proofLayer` label is replaced by proof mechanism, verification readiness, evidence status, review status, and lifecycle fields.
 - Grouping belongs in the discovery result, not in a required `claim group` subcommand.
 - Binary evidence preflight may emit possible evidence refs, but cannot mark a claim satisfied by itself.
+- Workflow prose in this contract states present behavior; transition history and rejected paths live in heading-marked decision sections and goal artifacts (maintainer-ratified 2026-06-11).
 
 ## Probe Questions
 
 - How much deterministic evidence preflight should the binary do before it risks false satisfaction?
-- What subagent batch size and cluster shape keeps review cost bounded on repos with hundreds of raw candidates?
+- What extraction batch size keeps agent extraction cost bounded on repos whose source set exceeds one agent context, and what subagent batch shape keeps review-seam cost bounded?
 - How much fixture-template detail should `evaluate claims plan` include before it starts to look like host-owned policy?
 - How much of the refresh-plan helper should ship in the first binary slice versus the first skill slice?
 
@@ -667,7 +680,7 @@ Valid but defer:
 2. The first broad scan is bounded by entry sources plus linked Markdown depth 3, and the user sees that scope before it runs.
 3. Existing claim state causes a diff-aware refresh path instead of a full rediscovery by default.
 4. The packet separates proof mechanism, verification readiness, evidence status, review status, and lifecycle.
-5. Agent review reduces raw candidates into grouped claims while preserving source refs and review provenance.
+5. Agent extraction produces anchored claims with verbatim source refs and audit provenance, and the review seam preserves review provenance for the queues it serves.
 6. The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.
 7. The binary/skill boundary stays clean enough that consumer repos can use the binary plus Cautilus Agent without Cautilus importing host-specific prompts or adapters.
 8. Weak evidence matches cannot produce `evidenceStatus=satisfied`.
@@ -684,7 +697,7 @@ The implementation slice that follows this design should include:
 - refresh-plan tests showing a prior packet plus a changed source marks affected claims changed while carrying forward unchanged claims
 - evidence stale tests showing changed evidence anchors produce `evidenceStatus=stale`
 - evidence-preflight tests that attach possible evidence refs without falsely marking claims satisfied
-- review-budget tests proving scan confirmation does not authorize LLM review
+- budget-gate tests proving scope confirmation authorizes neither agent extraction nor LLM review
 - at least one Cautilus self-dogfood run over this repo that summarizes grouped claims and next actions from a real claim packet
 
 ## Deliberately Not Doing
@@ -722,7 +735,6 @@ The second implementation slice updated the Cautilus Agent control flow:
 5. Cautilus Agent summarizes status and asks which next branch to run
 
 This slice is covered by the Cautilus Agent text, adapter contract docs, and the `execution-cautilus-no-input-claim-discovery-status` self-dogfood fixture.
-LLM-backed cluster review should come after the deterministic packet and skill control flow are stable enough to dogfood.
 The next deterministic helper slice added `discover claims status` and `discover claims review-input`.
 `discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.
 It also includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible in the status packet without reading the full proof plan first.
@@ -747,3 +759,5 @@ The fixture-authoring guidance slice added surface/preset-specific `fixtureAutho
 That guidance names the minimum host-owned fixture fields, expected shape, runner output schema, required runner capability, and required observability without writing host repo fixtures or policy.
 The validation slice added `discover claims validate`.
 It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.
+The extraction seam slice added `discover claims extraction-input` and `discover claims apply-extraction` per [claim-extraction-template.md](./claim-extraction-template.md): the input packet embeds the versioned extraction template with content-hashed sources and bounds, and apply anchors verbatim excerpts, rejects unanchored claims into `extractionAudit.rejectedClaims`, unifies fingerprints on the normalized primary excerpt, and composes `extractionMode: agent` proof plans.
+`validate` re-audits anchoring on applied packets: hash-matched sources with unanchored excerpts fail hard, drifted sources produce `stale-anchor` findings, and agent packets satisfy audit presence through `extractionAudit`.

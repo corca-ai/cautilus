@@ -112,7 +112,7 @@ External host repos should start with the eval-only slice above unless they are 
 
 Claim discovery turns adapter-owned entry docs and linked Markdown into `cautilus.claim_proof_plan.v1` candidates.
 It is proof planning, not a verdict that the repo is correct.
-The Cautilus Agent curates false positives, likely missing promises, scan boundaries, and review budgets before any eval plan is trusted.
+The Cautilus Agent curates false positives, likely missing promises, scan boundaries, and extraction and review budgets before any eval plan is trusted.
 
 Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.
 For the live reader-facing contract, read [docs/specs/user/evaluation.spec.md](./docs/specs/user/evaluation.spec.md).

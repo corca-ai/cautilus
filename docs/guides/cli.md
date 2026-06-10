@@ -131,6 +131,9 @@ The summary includes `gitState`; when it reports `isStale=true`, run `cautilus d
 The summary also includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible without reading the full claim packet first.
 `gitState.isStale` tracks recorded claim-source changes, not every HEAD change.
 If a commit only adds or updates generated claim artifacts, `gitState` reports `headDrift=true` with `comparisonStatus=fresh-with-head-drift` and review or eval planning may continue.
+Use `cautilus discover claims extraction-input --repo-root . --output <extraction-input.json>` to emit the deterministic agent-extraction input packet: sources with content hashes, the embedded extraction template with version and hash, merged classification hints, and bounds.
+Use `cautilus discover claims apply-extraction --repo-root . --input <extraction-input.json> --result <extraction-result.json> --output <claims-agent.json>` to validate an agent extraction result, anchor every verbatim excerpt, and compose the `extractionMode: agent` proof plan.
+Neither command calls an LLM; unanchored, unbounded, or out-of-scope claims are rejected into `extractionAudit.rejectedClaims` instead of being silently dropped.
 Use `cautilus discover claims review-input --claims <claims.json>` to prepare bounded deterministic review clusters for an agent or subagent.
 It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.
 When adapter `evidence_roots` contain claim evidence bundles for known claim ids, review input may include `possibleEvidenceRefs`; these are reviewer hints only.
