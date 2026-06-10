@@ -79,6 +79,7 @@ function emptyApplicationLog() {
 		appliedResultCount: 0,
 		skippedResultCount: 0,
 		keptUpdateCount: 0,
+		rewrittenUpdateCount: 0,
 		droppedUpdateCount: 0,
 	};
 }
@@ -129,6 +130,7 @@ export function projectAggregateProvenance(packet, {
 			appliedResultCount: log.appliedResultCount,
 			skippedResultCount: log.skippedResultCount,
 			keptUpdateCount: log.keptUpdateCount,
+			rewrittenUpdateCount: log.rewrittenUpdateCount || 0,
 			droppedUpdateCount: log.droppedUpdateCount,
 			provenanceMode: "aggregate-current-review-results",
 		},
@@ -167,6 +169,7 @@ export function writeAggregateReviewApplication(packet, {
 	appliedResultCount = 0,
 	skippedResultCount = 0,
 	keptUpdateCount = 0,
+	rewrittenUpdateCount = 0,
 	droppedUpdateCount = 0,
 	cwd = process.cwd(),
 } = {}) {
@@ -184,6 +187,7 @@ export function writeAggregateReviewApplication(packet, {
 			appliedResultCount,
 			skippedResultCount,
 			keptUpdateCount,
+			rewrittenUpdateCount,
 			droppedUpdateCount,
 			provenanceMode: "aggregate-current-review-results",
 		},
@@ -281,6 +285,16 @@ export function claimIndexForPacket(claimPacket) {
 	return new Map((Array.isArray(claimPacket?.claimCandidates) ? claimPacket.claimCandidates : []).map((claim) => [claim.claimId, claim]));
 }
 
+export function claimFingerprintIndexForPacket(claimPacket) {
+	const index = new Map();
+	for (const claim of Array.isArray(claimPacket?.claimCandidates) ? claimPacket.claimCandidates : []) {
+		if (claim.claimFingerprint && !index.has(claim.claimFingerprint)) {
+			index.set(claim.claimFingerprint, claim);
+		}
+	}
+	return index;
+}
+
 function updateMatchesClaim(update, claim) {
 	if (!claim) {
 		return false;
@@ -291,28 +305,74 @@ function updateMatchesClaim(update, claim) {
 	return true;
 }
 
-export function filterReviewResultForCurrentClaims(reviewResult, claimIndex) {
-	const clusterResults = [];
-	let keptUpdateCount = 0;
-	let droppedUpdateCount = 0;
-	for (const cluster of Array.isArray(reviewResult?.clusterResults) ? reviewResult.clusterResults : []) {
-		const claimUpdates = [];
-		for (const update of Array.isArray(cluster.claimUpdates) ? cluster.claimUpdates : []) {
-			if (updateMatchesClaim(update, claimIndex.get(update.claimId))) {
-				claimUpdates.push(update);
-				keptUpdateCount += 1;
-			} else {
-				droppedUpdateCount += 1;
+// Rewriting an update to the current display id must also rewrite the old id
+// inside evidenceRefs[].supportsClaimIds, or the binary's satisfied-evidence
+// validation rejects the carried ref (same rewrite the Go carry-forward
+// applies to carried evidence refs).
+function rewriteUpdateClaimId(update, currentClaimId) {
+	const previousClaimId = update.claimId;
+	const rewritten = { ...update, claimId: currentClaimId };
+	if (Array.isArray(update.evidenceRefs)) {
+		rewritten.evidenceRefs = update.evidenceRefs.map((ref) => {
+			if (!Array.isArray(ref?.supportsClaimIds) || !ref.supportsClaimIds.includes(previousClaimId)) {
+				return ref;
 			}
+			return {
+				...ref,
+				supportsClaimIds: ref.supportsClaimIds.map((id) => (id === previousClaimId ? currentClaimId : id)),
+			};
+		});
+	}
+	return rewritten;
+}
+
+// claimId is a display handle; claimFingerprint is claim identity. When a doc
+// edit shifts source lines, the line-derived id drifts while the fingerprint
+// stays stable, so fingerprinted updates fall back to the fingerprint index
+// and are rewritten to the current display id before the binary applies them.
+function resolveUpdateAgainstCurrentClaims(update, claimIndex, fingerprintIndex) {
+	if (updateMatchesClaim(update, claimIndex.get(update.claimId))) {
+		return { kind: "kept", update };
+	}
+	const driftTarget = update.claimFingerprint ? fingerprintIndex.get(update.claimFingerprint) : undefined;
+	if (driftTarget) {
+		return { kind: "rewritten", update: rewriteUpdateClaimId(update, driftTarget.claimId) };
+	}
+	return { kind: "dropped", update };
+}
+
+function filterClusterUpdates(cluster, claimIndex, fingerprintIndex, tally) {
+	const claimUpdates = [];
+	for (const update of Array.isArray(cluster.claimUpdates) ? cluster.claimUpdates : []) {
+		const resolved = resolveUpdateAgainstCurrentClaims(update, claimIndex, fingerprintIndex);
+		if (resolved.kind === "dropped") {
+			tally.droppedUpdates.push({ claimId: update.claimId || "", claimFingerprint: update.claimFingerprint || "" });
+			continue;
 		}
+		claimUpdates.push(resolved.update);
+		tally.keptUpdateCount += 1;
+		if (resolved.kind === "rewritten") {
+			tally.rewrittenUpdateCount += 1;
+		}
+	}
+	return claimUpdates;
+}
+
+export function filterReviewResultForCurrentClaims(reviewResult, claimIndex, fingerprintIndex = new Map()) {
+	const clusterResults = [];
+	const tally = { keptUpdateCount: 0, rewrittenUpdateCount: 0, droppedUpdates: [] };
+	for (const cluster of Array.isArray(reviewResult?.clusterResults) ? reviewResult.clusterResults : []) {
+		const claimUpdates = filterClusterUpdates(cluster, claimIndex, fingerprintIndex, tally);
 		if (claimUpdates.length > 0) {
 			clusterResults.push({ ...cluster, claimUpdates });
 		}
 	}
 	return {
 		reviewResult: { ...reviewResult, clusterResults },
-		keptUpdateCount,
-		droppedUpdateCount,
+		keptUpdateCount: tally.keptUpdateCount,
+		rewrittenUpdateCount: tally.rewrittenUpdateCount,
+		droppedUpdateCount: tally.droppedUpdates.length,
+		droppedUpdates: tally.droppedUpdates,
 	};
 }
 
@@ -346,14 +406,21 @@ export function selectOrderedReviewResults(options) {
 
 export function applyOrderedResults({ basePacket, orderedPaths, cautilusBin, tmpdir }) {
 	const currentIndex = claimIndexForPacket(basePacket);
+	const currentFingerprintIndex = claimFingerprintIndexForPacket(basePacket);
 	const currentPath = path.join(tmpdir, "current.json");
 	writeJSON(currentPath, basePacket);
 	const log = emptyApplicationLog();
 	let appliedPacketPath = currentPath;
 	for (const reviewResultPath of orderedPaths) {
 		const reviewResult = readJSON(reviewResultPath);
-		const filtered = filterReviewResultForCurrentClaims(reviewResult, currentIndex);
+		const filtered = filterReviewResultForCurrentClaims(reviewResult, currentIndex, currentFingerprintIndex);
 		log.droppedUpdateCount += filtered.droppedUpdateCount;
+		log.rewrittenUpdateCount += filtered.rewrittenUpdateCount;
+		for (const dropped of filtered.droppedUpdates) {
+			console.warn(
+				`apply-current-review-results: dropped update for ${dropped.claimId || "<no claimId>"} from ${reviewResultPath} (no current claimId match${dropped.claimFingerprint ? " and no live fingerprint" : "; update carries no claimFingerprint"})`,
+			);
+		}
 		if (filtered.keptUpdateCount === 0) {
 			log.skippedResultCount += 1;
 			log.skippedReviewResultPaths.push(reviewResultPath);
@@ -403,6 +470,7 @@ export function applyCurrentReviewResults(options) {
 			appliedResultCount: applicationLog.appliedResultCount,
 			skippedResultCount: applicationLog.skippedResultCount,
 			keptUpdateCount: applicationLog.keptUpdateCount,
+			rewrittenUpdateCount: applicationLog.rewrittenUpdateCount,
 			droppedUpdateCount: applicationLog.droppedUpdateCount,
 			output: options.output,
 		};

@@ -8,6 +8,7 @@ import {
 	claimIndexForPacket,
 	claimIdsForPacket,
 	compareReviewResultPaths,
+	claimFingerprintIndexForPacket,
 	filterReviewResultForCurrentClaims,
 	filterReviewResultForClaimIds,
 	normalizeAggregateReviewApplication,
@@ -190,6 +191,7 @@ test("projectAggregateProvenance records aggregate fields in one pass without du
 				appliedResultCount: 2,
 				skippedResultCount: 1,
 				keptUpdateCount: 3,
+				rewrittenUpdateCount: 0,
 				droppedUpdateCount: 4,
 			},
 			cwd: "/repo",
@@ -210,6 +212,7 @@ test("projectAggregateProvenance records aggregate fields in one pass without du
 		appliedResultCount: 2,
 		skippedResultCount: 1,
 		keptUpdateCount: 3,
+		rewrittenUpdateCount: 0,
 		droppedUpdateCount: 4,
 		provenanceMode: "aggregate-current-review-results",
 	});
@@ -291,6 +294,7 @@ test("writeAggregateReviewApplication records all applied review-result paths", 
 			appliedResultCount: 2,
 			skippedResultCount: 1,
 			keptUpdateCount: 3,
+			rewrittenUpdateCount: 0,
 			droppedUpdateCount: 4,
 			cwd: "/repo",
 		},
@@ -312,7 +316,68 @@ test("writeAggregateReviewApplication records all applied review-result paths", 
 		appliedResultCount: 2,
 		skippedResultCount: 1,
 		keptUpdateCount: 3,
+		rewrittenUpdateCount: 0,
 		droppedUpdateCount: 4,
 		provenanceMode: "aggregate-current-review-results",
 	});
+});
+
+test("filterReviewResultForCurrentClaims recovers fingerprinted updates across display-id drift", () => {
+	const packet = {
+		claimCandidates: [
+			{
+				claimId: "claim-docs-master-plan-md-91",
+				claimFingerprint: "sha256:stable",
+			},
+		],
+	};
+	const result = filterReviewResultForCurrentClaims(
+		{
+			schemaVersion: "cautilus.claim_review_result.v1",
+			clusterResults: [
+				{
+					clusterId: "drifted-id",
+					claimUpdates: [
+						{
+							claimId: "claim-docs-master-plan-md-90",
+							claimFingerprint: "sha256:stable",
+							verificationReadiness: "blocked",
+							evidenceRefs: [
+								{
+									refId: "evidence-1",
+									supportsClaimIds: ["claim-docs-master-plan-md-90", "claim-other"],
+								},
+							],
+						},
+						{
+							claimId: "claim-docs-master-plan-md-12",
+							verificationReadiness: "blocked",
+						},
+					],
+				},
+			],
+		},
+		claimIndexForPacket(packet),
+		claimFingerprintIndexForPacket(packet),
+	);
+
+	assert.equal(result.keptUpdateCount, 1);
+	assert.equal(result.rewrittenUpdateCount, 1);
+	assert.equal(result.droppedUpdateCount, 1);
+	assert.deepEqual(result.droppedUpdates, [
+		{ claimId: "claim-docs-master-plan-md-12", claimFingerprint: "" },
+	]);
+	assert.deepEqual(result.reviewResult.clusterResults[0].claimUpdates, [
+		{
+			claimId: "claim-docs-master-plan-md-91",
+			claimFingerprint: "sha256:stable",
+			verificationReadiness: "blocked",
+			evidenceRefs: [
+				{
+					refId: "evidence-1",
+					supportsClaimIds: ["claim-docs-master-plan-md-91", "claim-other"],
+				},
+			],
+		},
+	]);
 });

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "cautilus.claim_review_result.v1",
+  "reviewRun": {
+    "createdAt": "2026-06-10T13:30:00+09:00",
+    "reviewer": "claude-current-agent",
+    "backend": "same-agent-review",
+    "mode": "id-drift-replay-repair",
+    "reviewInputPaths": [],
+    "reviewPolicy": "Append-only repair: re-assert three 2026-05-10 readiness-triage corrections whose line-derived claimIds drifted (master-plan md-90 to md-91, reporting md-112 to md-132, claim-discovery-workflow md-323 to md-356) and whose fingerprint-less historical updates were dropped by the replay filter. Verified per-update against era fingerprint mapping; remaining drops from that packet are superseded by later packets, retired, or never carried an era fingerprint. Root cause and evidence: charness-artifacts/debug/latest.md (2026-06-10). This packet carries claimFingerprint per update so future id drift is recoverable."
+  },
+  "clusterResults": [
+    {
+      "clusterId": "id-drift-replay-repair-2026-06-10",
+      "claimUpdates": [
+        {
+          "claimId": "claim-docs-master-plan-md-91",
+          "claimFingerprint": "sha256:815dd0a63f977133f71cba4abf88a635f27ae1e6db6eee7884fc85f9acab52d4",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "The current command namespace can be checked, but the candidate also reserves a future GUI workbench surface. Treating the combined line as ready would overclaim.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "nextAction": "Split the current `eval live` namespace claim from the future GUI workbench reservation before attaching proof.",
+          "unresolvedQuestions": []
+        },
+        {
+          "claimId": "claim-docs-contracts-reporting-md-132",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "Runtime drift code placement is a packet/reporting classification contract that can be proven by deterministic report tests.",
+          "recommendedProof": "deterministic",
+          "verificationReadiness": "ready-for-proof",
+          "nextAction": "Attach or refresh deterministic reporting proof for runtime drift context classification.",
+          "unresolvedQuestions": [],
+          "claimFingerprint": "sha256:c40280e0f0251c4fe6717805add31109eb82cf41e62faba97ebfb5d41cec0fde"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-356",
+          "reviewStatus": "agent-reviewed",
+          "evidenceStatus": "unknown",
+          "evidenceStatusReason": "This is a readiness-label definition, not an independently provable behavior claim.",
+          "recommendedProof": "human-auditable",
+          "verificationReadiness": "blocked",
+          "nextAction": "Keep this as glossary context or teach discovery to exclude readiness-label definitions.",
+          "unresolvedQuestions": [],
+          "claimFingerprint": "sha256:3ae052d2e69bce5fd477651716c93abdc26b8279663de5c98b4c7f3922bbea72"
+        }
+      ]
+    }
+  ]
+}
