@@ -1,0 +1,14 @@
+# Agent-proposed claim-lexicon hints for the read-only corpus ../yt-digest.
+# Pending maintainer ratification; apply via:
+#   ./bin/cautilus discover claims --repo-root ../yt-digest --adapter charness-artifacts/eval-trust/adapters/yt-digest-claim-lexicon.proposal.yaml --output /tmp/yt.json
+# Ratified hints belong in the consumer repo's own .agents/cautilus-adapter.yaml;
+# this file exists so measurement stays reproducible without writing to the corpus.
+version: 1
+repo: yt-digest
+claim_discovery:
+  classification_hints:
+    claim_lexicon_terms:
+      - 니다
+      - 한다
+      - 해야
+      - 수 있
