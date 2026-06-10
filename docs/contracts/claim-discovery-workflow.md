@@ -162,6 +162,12 @@ claim_discovery:
     developer:
       - AGENTS.md
       - docs/internal/**
+  classification_hints:
+    non_claim_section_headings:
+      - Rejected Alternatives
+    claim_lexicon_terms:
+      - 니다
+      - 한다
   semantic_groups:
     - label: Product promises
       terms:
@@ -176,14 +182,24 @@ The binary only understands the portable labels `user`, `developer`, and `unclea
 `semantic_groups` is also adapter-owned because product areas differ across repos.
 When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.
 `classification_hints.non_claim_section_headings` is adapter-owned for the same reason: which headings mark non-claim prose (rejected alternatives, non-goals, out-of-scope lists) is a repo documentation convention, not a product constant.
-The binary applies the configured headings deterministically during extraction and reports them in `effectiveScanScope.nonClaimSectionHeadings`; lines under a matching heading are dropped before claim-shaped filtering.
+The binary ships a portable default list (currently `Deferred Decisions`, generalized from this repo's measured misextraction) and merges adapter headings into it; defaults are unioned, never replaced, and the merged list is what `effectiveScanScope.nonClaimSectionHeadings` reports.
+The binary applies the merged headings deterministically during extraction; lines under a matching heading are dropped before claim-shaped filtering.
 Matching is case-insensitive against the heading text as written, so a hint must mirror any markdown emphasis or punctuation the heading carries.
 The filter covers lines directly under the configured heading only; a nested subsection introduces its own heading and is not filtered, so keep non-claim sections flat or list each subsection heading explicitly.
-Seeding these hints is Cautilus Agent onboarding work: scan the entry documents for rejected-alternative and non-goal section conventions, propose the heading list, and let the maintainer ratify it into the adapter before the first broad discovery, so repo-specific classification knowledge lives in the adapter instead of accumulating as hardcoded engine rules.
+`classification_hints.claim_lexicon_terms` is the second adapter-owned hint family: repo-owned claim vocabulary that extends (never replaces) the built-in English claim-verb lexicon during claim-shaped filtering.
+Adapter terms match as case-insensitive substrings rather than space-padded tokens, because agglutinative predicates (for example Korean sentence-final endings such as `니다`, `한다`, `해야`) carry no space boundaries; the built-in English defaults keep token matching to avoid short-word false positives.
+Claim-shaped length bounds count runes, not bytes, so multibyte scripts get the same 20–260 sentence budget as ASCII.
+A line that matched only an adapter lexicon term and that no portable routing case in the classifier recognizes is not dropped: it routes through a portable fallback (`recommendedProof=human-auditable`, `verificationReadiness=blocked`, `reviewStatus=heuristic`) so non-English claims stay visible for agent or human review instead of silently vanishing inside the English routing switch.
+The configured terms are reported in `effectiveScanScope.claimLexiconTerms`.
+For measurement and hint dry-runs on a repo the operator cannot or should not write to, `discover claims --adapter <adapter.yaml>` applies an explicit adapter file without touching the scanned repo; ratified hints still belong in the consumer repo's own adapter.
+Seeding these hints is Cautilus Agent onboarding work: scan the entry documents for rejected-alternative and non-goal section conventions and for the repo's claim vocabulary, propose the hint lists with before/after extraction counts, and let the maintainer ratify them into the adapter before the first broad discovery, so repo-specific classification knowledge lives in the adapter instead of accumulating as hardcoded engine rules.
 
 A classification behavior is promoted from engine hardcoding to an adapter-owned hint family only when all three hold: it encodes a repo documentation convention that genuinely varies across repos, a gold-set-style measurement shows the hardcoded form misclassifies, and the Cautilus Agent can propose it for maintainer ratification.
 Extraction mechanics (code-fence and frontmatter skipping, heading tracking, duplicate merge) stay product-owned and never become hints; unbounded knob growth is itself a failure mode the adapter contract rejects.
-Known hardcoded candidates, in priority order (maintainer-aligned 2026-06-10): the English claim-verb lexicon in `claimLineLooksUseful` (a non-English-documented repo currently extracts almost nothing — the largest portability gap, best measured together with the consumer-shaped external-validity sample), the `recommendedProof` and eval-surface routing keywords in `classifyClaimLine` (the per-facet routing direction; gold-set evidence already exists), and the residual hardcoded `Deferred Decisions` heading, which should fold into `non_claim_section_headings` as a portable default instead of living as a parallel mechanism.
+The frozen-defaults golden test (`TestClaimClassificationPortableDefaultsAreFrozen`) pins the portable default lexicon and non-claim headings, so any new hardcoded default surfaces as a test diff that forces a matching contract update here.
+Of the maintainer-aligned 2026-06-10 candidates, two have shipped: the claim-verb lexicon is now the `claim_lexicon_terms` hint family (measured on the three-corpus baseline, `charness-artifacts/eval-trust/2026-06-10-discovery-classification-s1-baseline.md`), and the hardcoded `Deferred Decisions` branch was deleted in favor of the `non_claim_section_headings` portable default.
+Still hardcoded: the `recommendedProof` and eval-surface routing keywords in `classifyClaimLine` (the per-facet routing direction; gold-set evidence already exists).
+A future routing hint family must also decide hint precedence explicitly, because `classifyClaimLine` is an ordered switch with broad catch-all cases near the end; appending hints after those catch-alls would never fire.
 `state_path` is the writable discovery baseline for `discover claims`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `doctor status` can summarize without making them the next discovery target.
 `doctor status` should use the most advanced non-stale related claim packet as the selected orientation map when it is more useful than the writable baseline.
 That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.

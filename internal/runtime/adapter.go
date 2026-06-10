@@ -649,6 +649,14 @@ func normalizeClaimDiscoveryClassificationHints(value any) (map[string]any, []st
 			normalized["non_claim_section_headings"] = stringSliceNoValidate(items)
 		}
 	}
+	if raw, exists := record["claim_lexicon_terms"]; exists && raw != nil {
+		items, err := assertArray(raw, "claim_discovery.classification_hints.claim_lexicon_terms")
+		if err != nil {
+			errors = append(errors, "claim_discovery.classification_hints.claim_lexicon_terms must be a list of strings")
+		} else {
+			normalized["claim_lexicon_terms"] = stringSliceNoValidate(items)
+		}
+	}
 	return normalized, errors
 }
 

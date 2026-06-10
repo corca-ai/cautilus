@@ -54,7 +54,7 @@ func BuildAgentStatus(repoRoot string, options AgentStatusOptions) (map[string]a
 }
 
 func BuildClaimOrientation(repoRoot string) (map[string]any, error) {
-	config, err := resolveClaimDiscoveryConfig(repoRoot, nil)
+	config, err := resolveClaimDiscoveryConfig(repoRoot, nil, "")
 	if err != nil {
 		return nil, err
 	}

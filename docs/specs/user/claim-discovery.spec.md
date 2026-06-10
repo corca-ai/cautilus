@@ -104,12 +104,29 @@ sourceRefs=AGENTS.md:3,README.md:4
 ### Signal: adapter-declared non-claim sections are skipped.
 
 A repo can declare section headings whose prose is never a claim candidate, such as rejected-alternatives lists, through `claim_discovery.classification_hints.non_claim_section_headings`.
-The engine executes the hint deterministically and records it in the packet's scan scope; without the hint the same line would be extracted.
+Adapter headings merge with the portable default list (`Deferred Decisions`), so a deferred-decision section is filtered on every repo without adapter work.
+The engine executes the hint deterministically and records the merged list in the packet's scan scope; without the adapter hint the rejected-alternative line would be extracted.
 
 ```run:shell
-$ sh -lc 'tmp="$(mktemp -d)"; mkdir -p "$tmp/.agents"; printf "%s\n" "version: 1" "repo: demo" "claim_discovery:" "  classification_hints:" "    non_claim_section_headings:" "      - Rejected Alternatives" > "$tmp/.agents/cautilus-adapter.yaml"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." "" "## Rejected Alternatives" "" "The rejected approach requires a magic freshness threshold." > "$tmp/README.md"; ./bin/cautilus discover claims --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'"candidateCount=" + (.candidateCount|tostring), "nonClaimSectionHeadings=" + (.effectiveScanScope.nonClaimSectionHeadings | join(","))'"'"' "$tmp/claims.json"'
+$ sh -lc 'tmp="$(mktemp -d)"; mkdir -p "$tmp/.agents"; printf "%s\n" "version: 1" "repo: demo" "claim_discovery:" "  classification_hints:" "    non_claim_section_headings:" "      - Rejected Alternatives" > "$tmp/.agents/cautilus-adapter.yaml"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." "" "## Rejected Alternatives" "" "The rejected approach requires a magic freshness threshold." "" "## Deferred Decisions" "" "The state path stays adapter-owned until a maintainer decides the default." > "$tmp/README.md"; ./bin/cautilus discover claims --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'"candidateCount=" + (.candidateCount|tostring), "nonClaimSectionHeadings=" + (.effectiveScanScope.nonClaimSectionHeadings | join(","))'"'"' "$tmp/claims.json"'
 candidateCount=1
-nonClaimSectionHeadings=Rejected Alternatives
+nonClaimSectionHeadings=Deferred Decisions,Rejected Alternatives
+```
+
+### Signal: adapter lexicon terms extract non-English claims.
+
+The built-in claim-shaped-line filter carries an English verb lexicon, so a repo documented in another language extracts almost nothing by default.
+A repo can declare its own claim vocabulary through `claim_discovery.classification_hints.claim_lexicon_terms`.
+Adapter terms extend the built-in defaults and match as case-insensitive substrings, because agglutinative predicates such as Korean sentence endings carry no space boundaries.
+Hint-matched lines that no portable routing case recognizes stay visible through a `human-auditable` fallback route instead of vanishing.
+Without the hint the same document yields zero candidates, which keeps the lexicon adapter-owned rather than hardcoded.
+
+```run:shell
+$ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# 데모" "" "이 도구는 모든 실행에서 기계가 읽을 수 있는 결과 패킷을 기록합니다." > "$tmp/README.md"; ./bin/cautilus discover claims --repo-root "$tmp" --output "$tmp/claims.json" >/dev/null; jq -r '"'"'"baselineCandidateCount=" + (.candidateCount|tostring)'"'"' "$tmp/claims.json"; mkdir -p "$tmp/.agents"; printf "%s\n" "version: 1" "repo: demo" "claim_discovery:" "  classification_hints:" "    claim_lexicon_terms:" "      - 니다" > "$tmp/.agents/cautilus-adapter.yaml"; ./bin/cautilus discover claims --repo-root "$tmp" --from-scratch --output "$tmp/claims.json" >/dev/null; jq -r '"'"'"hintedCandidateCount=" + (.candidateCount|tostring), "route=" + .claimCandidates[0].recommendedProof + ":" + .claimCandidates[0].verificationReadiness, "claimLexiconTerms=" + (.effectiveScanScope.claimLexiconTerms | join(","))'"'"' "$tmp/claims.json"'
+baselineCandidateCount=0
+hintedCandidateCount=1
+route=human-auditable:blocked
+claimLexiconTerms=니다
 ```
 
 ### Implementation evidence.

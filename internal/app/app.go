@@ -349,6 +349,7 @@ type claimDiscoverArgs struct {
 	fromScratch     bool
 	refreshPlanOnly bool
 	output          *string
+	adapter         string
 }
 
 type claimShowArgs struct {
@@ -827,6 +828,7 @@ func handleClaimDiscover(repoRoot string, cwd string, args []string, stdout io.W
 		SourcePaths:     options.sources,
 		PreviousPath:    previousPath,
 		RefreshPlanOnly: options.refreshPlanOnly,
+		AdapterPath:     options.adapter,
 	})
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -2195,6 +2197,13 @@ func parseClaimDiscoverArgs(args []string, cwd string) (*claimDiscoverArgs, erro
 			}
 			index = next
 			options.sources = append(options.sources, value)
+		case "--adapter":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.adapter = resolvePath(cwd, value)
 		case "--previous":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {

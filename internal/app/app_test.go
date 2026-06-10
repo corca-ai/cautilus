@@ -1407,3 +1407,39 @@ func TestEveryRegisteredCommandHasAGoHandler(t *testing.T) {
 		}
 	}
 }
+
+func TestRunClaimDiscoverAdapterOverrideAppliesProposedHints(t *testing.T) {
+	corpusRoot := t.TempDir()
+	if err := os.WriteFile(filepath.Join(corpusRoot, "README.md"), []byte("# 데모\n\n이 도구는 모든 실행에서 기계가 읽을 수 있는 결과 패킷을 기록합니다.\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile README returned error: %v", err)
+	}
+	proposalDir := t.TempDir()
+	adapterPath := filepath.Join(proposalDir, "proposed-adapter.yaml")
+	if err := os.WriteFile(adapterPath, []byte("version: 1\nrepo: demo\nclaim_discovery:\n  classification_hints:\n    claim_lexicon_terms:\n      - 니다\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile adapter returned error: %v", err)
+	}
+	outputPath := filepath.Join(proposalDir, "claims.json")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"discover", "claims", "--repo-root", corpusRoot, "--adapter", adapterPath, "--output", outputPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	payload := readJSONObjectFile(t, outputPath)
+	candidates := payload["claimCandidates"].([]any)
+	if len(candidates) != 1 {
+		t.Fatalf("expected the --adapter override to drive Korean extraction, got %d candidates", len(candidates))
+	}
+	scope := payload["effectiveScanScope"].(map[string]any)
+	if scope["adapterFound"] != true {
+		t.Fatalf("expected adapter override recorded as found, got %#v", scope["adapterFound"])
+	}
+	entries, err := os.ReadDir(corpusRoot)
+	if err != nil {
+		t.Fatalf("ReadDir returned error: %v", err)
+	}
+	if len(entries) != 1 {
+		t.Fatalf("the scanned repo must stay untouched by an --adapter run, got %#v", entries)
+	}
+}

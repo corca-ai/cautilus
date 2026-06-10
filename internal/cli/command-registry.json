@@ -20,13 +20,14 @@
         "claims"
       ],
       "group": "workflow",
-      "usage": "cautilus discover claims --repo-root <path> [--source <path>] [--previous <claims.json> | --from-scratch] [--refresh-plan] [--output <claims-or-refresh-plan.json>]",
+      "usage": "cautilus discover claims --repo-root <path> [--adapter <adapter.yaml>] [--source <path>] [--previous <claims.json> | --from-scratch] [--refresh-plan] [--output <claims-or-refresh-plan.json>]",
       "example": "cautilus discover claims --repo-root . --output /tmp/cautilus-claims.json",
       "notes": [
         "`--example-output` prints a minimal proof-plan packet.",
         "The command emits `cautilus.claim_proof_plan.v1`: a source-ref-backed plan, not a verdict that the repo is correct.",
         "Default discovery starts from adapter-owned entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.",
         "Use `--source` repeatedly when the host repo wants an explicit truth-surface inventory instead of the conservative defaults.",
+        "Use `--adapter <adapter.yaml>` to apply an explicit adapter file (for example a proposed-hints adapter) without writing into the scanned repo; useful for read-only corpus measurement and hint dry-runs before maintainer ratification.",
         "If `--output` points to an existing claim packet and neither `--previous` nor `--from-scratch` is given, the existing packet is auto-used as `--previous` so reviewed labels and evidence refs carry forward.",
         "Pass `--from-scratch` to force first-discovery semantics when the existing output should be discarded; this is mutually exclusive with `--previous`.",
         "Use `--previous <claims.json> --refresh-plan` when an agent workflow needs deterministic refresh planning without a separate refresh command.",

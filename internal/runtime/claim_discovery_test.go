@@ -6,8 +6,10 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/corca-ai/cautilus/internal/contracts"
 )
@@ -3764,8 +3766,8 @@ func TestDiscoverClaimProofPlanFiltersAdapterNonClaimSections(t *testing.T) {
 	}
 	scope := asMap(plan["effectiveScanScope"])
 	headings, ok := scope["nonClaimSectionHeadings"].([]string)
-	if !ok || len(headings) != 1 || headings[0] != "rejected alternatives" {
-		t.Fatalf("expected configured non-claim headings in effectiveScanScope, got %#v", scope["nonClaimSectionHeadings"])
+	if !ok || len(headings) != 2 || headings[0] != "Deferred Decisions" || headings[1] != "rejected alternatives" {
+		t.Fatalf("expected portable defaults merged with configured non-claim headings in effectiveScanScope, got %#v", scope["nonClaimSectionHeadings"])
 	}
 
 	withoutHint := t.TempDir()
@@ -3782,5 +3784,198 @@ func TestDiscoverClaimProofPlanFiltersAdapterNonClaimSections(t *testing.T) {
 	}
 	if !foundRejectedLine {
 		t.Fatalf("control without the hint should still extract the rejected-alternative line; the filter must come from the adapter, not new hardcoding")
+	}
+}
+
+func TestDiscoverClaimProofPlanAdapterClaimLexiconExtractsKoreanClaims(t *testing.T) {
+	doc := strings.Join([]string{
+		"# 데모",
+		"",
+		"이 도구는 모든 실행에서 기계가 읽을 수 있는 결과 패킷을 기록합니다.",
+		"",
+		"`data/index.json`이 항상 최신 산출물 경로를 가리키도록 유지한다.",
+		"",
+	}, "\n")
+	adapterWithHint := strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  classification_hints:",
+		"    claim_lexicon_terms:",
+		"      - 니다",
+		"      - 한다",
+		"",
+	}, "\n")
+
+	withoutHint := t.TempDir()
+	mustWriteFile(t, filepath.Join(withoutHint, "README.md"), doc)
+	control, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: withoutHint})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	if count := len(arrayOrEmpty(control["claimCandidates"])); count != 0 {
+		t.Fatalf("control without the lexicon hint should extract no Korean claims; the lexicon must come from the adapter, not new hardcoding, got %d", count)
+	}
+
+	withHint := t.TempDir()
+	mustWriteFile(t, filepath.Join(withHint, "README.md"), doc)
+	mustWriteFile(t, filepath.Join(withHint, ".agents", "cautilus-adapter.yaml"), adapterWithHint)
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: withHint})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	if len(candidates) != 2 {
+		t.Fatalf("expected both Korean claim lines via the adapter lexicon, got %d candidates", len(candidates))
+	}
+	for _, raw := range candidates {
+		candidate := asMap(raw)
+		if candidate["recommendedProof"] != "human-auditable" || candidate["verificationReadiness"] != "blocked" {
+			t.Fatalf("adapter-lexicon claims without a portable routing match should use the fallback lane, got %#v", candidate)
+		}
+		if candidate["reviewStatus"] != "heuristic" {
+			t.Fatalf("fallback-lane claims should stay heuristic, got %#v", candidate["reviewStatus"])
+		}
+	}
+	scope := asMap(plan["effectiveScanScope"])
+	terms, ok := scope["claimLexiconTerms"].([]string)
+	if !ok || len(terms) != 2 || terms[0] != "니다" || terms[1] != "한다" {
+		t.Fatalf("expected adapter lexicon terms recorded in effectiveScanScope, got %#v", scope["claimLexiconTerms"])
+	}
+}
+
+func TestDiscoverClaimProofPlanAdapterLexiconKeepsEnglishDefaults(t *testing.T) {
+	doc := strings.Join([]string{
+		"# Demo",
+		"",
+		"The tool emits a machine-readable result packet for every run.",
+		"",
+	}, "\n")
+	adapterWithHint := strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  classification_hints:",
+		"    claim_lexicon_terms:",
+		"      - 니다",
+		"",
+	}, "\n")
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), doc)
+	mustWriteFile(t, filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), adapterWithHint)
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("adapter lexicon terms must extend the English defaults, not replace them, got %d candidates", len(candidates))
+	}
+	if proof := asMap(candidates[0])["recommendedProof"]; proof != "deterministic" {
+		t.Fatalf("English claims keep portable routing when adapter terms are configured, got %#v", proof)
+	}
+}
+
+func TestDiscoverClaimProofPlanAdapterPathOverrideForReadOnlyCorpus(t *testing.T) {
+	doc := strings.Join([]string{
+		"# 데모",
+		"",
+		"이 도구는 모든 실행에서 기계가 읽을 수 있는 결과 패킷을 기록합니다.",
+		"",
+	}, "\n")
+	corpusRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(corpusRoot, "README.md"), doc)
+	proposalDir := t.TempDir()
+	adapterPath := filepath.Join(proposalDir, "proposed-adapter.yaml")
+	mustWriteFile(t, adapterPath, strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  classification_hints:",
+		"    claim_lexicon_terms:",
+		"      - 니다",
+		"",
+	}, "\n"))
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: corpusRoot, AdapterPath: adapterPath})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	if count := len(arrayOrEmpty(plan["claimCandidates"])); count != 1 {
+		t.Fatalf("expected the proposed adapter outside the corpus to drive extraction, got %d candidates", count)
+	}
+	scope := asMap(plan["effectiveScanScope"])
+	if scope["adapterFound"] != true {
+		t.Fatalf("expected the adapter override to be recorded as found, got %#v", scope["adapterFound"])
+	}
+	entries, err := os.ReadDir(corpusRoot)
+	if err != nil {
+		t.Fatalf("ReadDir returned error: %v", err)
+	}
+	if len(entries) != 1 || entries[0].Name() != "README.md" {
+		t.Fatalf("the corpus repo must stay untouched by an adapter-override run, got %#v", entries)
+	}
+}
+
+func TestClaimLineLengthBoundsCountRunesNotBytes(t *testing.T) {
+	// 120 Korean runes is ~360 bytes: inside the rune budget, far over the old byte budget.
+	long := "이 도구는 " + strings.Repeat("아주 ", 36) + "긴 문장을 기록합니다."
+	if utf8.RuneCountInString(long) > 260 {
+		t.Fatalf("test sentence must stay within the rune budget, got %d runes", utf8.RuneCountInString(long))
+	}
+	if len(long) <= 260 {
+		t.Fatalf("test sentence must exceed the old byte budget to prove rune counting, got %d bytes", len(long))
+	}
+	useful, adapterMatched := claimLineLooksUseful(long, []string{"니다"})
+	if !useful || !adapterMatched {
+		t.Fatalf("expected rune-counted bounds to accept a long multibyte sentence, got useful=%v adapterMatched=%v", useful, adapterMatched)
+	}
+}
+
+func TestDiscoverClaimProofPlanFiltersDeferredDecisionsByDefault(t *testing.T) {
+	doc := strings.Join([]string{
+		"# Demo",
+		"",
+		"The tool emits a machine-readable result packet for every run.",
+		"",
+		"## Deferred Decisions",
+		"",
+		"- Whether the tool should commit state by default.",
+		"- The state path stays adapter-owned until a maintainer decides the default.",
+		"",
+	}, "\n")
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), doc)
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("every line under a Deferred Decisions heading should be filtered by the portable default, got %d candidates", len(candidates))
+	}
+	if summary := stringFromAny(asMap(candidates[0])["summary"]); strings.Contains(summary, "adapter-owned until a maintainer decides") {
+		t.Fatalf("non-whether deferred line should be filtered too, got %q", summary)
+	}
+	scope := asMap(plan["effectiveScanScope"])
+	headings, ok := scope["nonClaimSectionHeadings"].([]string)
+	if !ok || len(headings) != 1 || headings[0] != "Deferred Decisions" {
+		t.Fatalf("expected the portable default heading in effectiveScanScope, got %#v", scope["nonClaimSectionHeadings"])
+	}
+}
+
+func TestClaimClassificationPortableDefaultsAreFrozen(t *testing.T) {
+	// Golden guard for the adapter-not-hardcoded boundary: any new portable
+	// default must surface here as a diff and force a contract update naming it.
+	expectedHeadings := []string{"Deferred Decisions"}
+	if !reflect.DeepEqual(defaultNonClaimSectionHeadings, expectedHeadings) {
+		t.Fatalf("portable non-claim heading defaults changed; update docs/contracts/claim-discovery-workflow.md and this golden together, got %#v", defaultNonClaimSectionHeadings)
+	}
+	expectedLexicon := []string{
+		" must ", " should ", " can ", " will ", " owns ", " keeps ", " uses ", " emits ", " writes ", " runs ",
+		" routes ", " discovers ", " evaluates ", " improves ", " verifies ", " validates ", " proves ", " supports ",
+		" requires ", " guarantees ", " provides ", " belongs ", " remains ", " stays ", " installs ", " produces ",
+	}
+	if !reflect.DeepEqual(defaultClaimLexiconTerms, expectedLexicon) {
+		t.Fatalf("built-in claim lexicon changed; update docs/contracts/claim-discovery-workflow.md and this golden together, got %#v", defaultClaimLexiconTerms)
 	}
 }

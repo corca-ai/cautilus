@@ -23,6 +23,7 @@ type ClaimDiscoveryOptions struct {
 	SourcePaths     []string
 	PreviousPath    string
 	RefreshPlanOnly bool
+	AdapterPath     string
 }
 
 type ClaimReviewInputOptions struct {
@@ -121,6 +122,7 @@ type claimDiscoveryConfig struct {
 	evidenceRoots           []string
 	audienceHints           map[string][]string
 	nonClaimSectionHeadings []string
+	claimLexiconTerms       []string
 	semanticGroups          []claimSemanticGroupRule
 	relatedStatePaths       []claimRelatedStatePath
 	linkedMarkdownDepth     int
@@ -154,7 +156,7 @@ type claimReviewCluster struct {
 	candidates             []map[string]any
 }
 
-const claimDiscoveryRulesetVersion = "claim-discovery-rules.v4"
+const claimDiscoveryRulesetVersion = "claim-discovery-rules.v5"
 
 func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, error) {
 	repoRoot := strings.TrimSpace(options.RepoRoot)
@@ -173,7 +175,7 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 		return nil, fmt.Errorf("repo root must be a directory: %s", repoRoot)
 	}
 
-	config, err := resolveClaimDiscoveryConfig(resolvedRoot, options.SourcePaths)
+	config, err := resolveClaimDiscoveryConfig(resolvedRoot, options.SourcePaths, options.AdapterPath)
 	if err != nil {
 		return nil, err
 	}
@@ -290,12 +292,12 @@ func claimDiscoveryHeuristics() []any {
 		map[string]any{
 			"id":                     "adapter-non-claim-section-filter",
 			"implementationFunction": "headingIsNonClaimSection",
-			"summary":                "Drop lines under adapter-declared non-claim section headings (classification_hints.non_claim_section_headings), such as rejected-alternatives lists.",
+			"summary":                "Drop lines under non-claim section headings: portable defaults (Deferred Decisions) merged with adapter-declared classification_hints.non_claim_section_headings, such as rejected-alternatives lists.",
 		},
 		map[string]any{
 			"id":                     "claim-shaped-line-filter",
 			"implementationFunction": "claimLineLooksUseful",
-			"summary":                "Keep lines that look like behavior promises and drop prompt examples, open questions, definition labels, future placeholders, and very short or long text.",
+			"summary":                "Keep lines that look like behavior promises via the built-in English verb lexicon plus adapter-declared classification_hints.claim_lexicon_terms (substring match), and drop prompt examples, open questions, definition labels, future placeholders, and very short or long text (rune-counted bounds).",
 		},
 		map[string]any{
 			"id":                     "next-work-classifier",
@@ -567,21 +569,26 @@ func rewriteEvidenceRefClaimIDs(candidate map[string]any, previousClaimID string
 	return rewritten
 }
 
-func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDiscoveryConfig, error) {
+func resolveClaimDiscoveryConfig(repoRoot string, explicit []string, adapterPath string) (claimDiscoveryConfig, error) {
 	config := claimDiscoveryConfig{
-		entries:             []string{"README.md", "AGENTS.md", "CLAUDE.md"},
-		exclude:             []string{".git/**", "node_modules/**", "dist/**", "coverage/**", "artifacts/**", "charness-artifacts/**"},
-		linkedMarkdownDepth: 3,
-		statePath:           ".cautilus/claims/latest.json",
-		statePathSource:     "default",
-		explicitSources:     len(explicit) > 0,
+		entries:                 []string{"README.md", "AGENTS.md", "CLAUDE.md"},
+		exclude:                 []string{".git/**", "node_modules/**", "dist/**", "coverage/**", "artifacts/**", "charness-artifacts/**"},
+		nonClaimSectionHeadings: append([]string{}, defaultNonClaimSectionHeadings...),
+		linkedMarkdownDepth:     3,
+		statePath:               ".cautilus/claims/latest.json",
+		statePathSource:         "default",
+		explicitSources:         len(explicit) > 0,
 	}
 	if len(explicit) > 0 {
 		config.entries = normalizeClaimPathList(explicit)
 		config.linkedMarkdownDepth = 0
 		return config, nil
 	}
-	adapter, err := LoadAdapter(repoRoot, nil, nil)
+	var adapterPathOverride *string
+	if trimmed := strings.TrimSpace(adapterPath); trimmed != "" {
+		adapterPathOverride = &trimmed
+	}
+	adapter, err := LoadAdapter(repoRoot, adapterPathOverride, nil)
 	if err != nil {
 		return config, err
 	}
@@ -607,8 +614,11 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDisco
 			config.audienceHints = audienceHints
 		}
 		if hints := asMap(claimConfig["classification_hints"]); len(hints) > 0 {
-			if headings := stringArrayOrEmpty(hints["non_claim_section_headings"]); len(headings) > 0 {
-				config.nonClaimSectionHeadings = normalizeNonClaimSectionHeadings(headings)
+			if headings := normalizeNonClaimSectionHeadings(stringArrayOrEmpty(hints["non_claim_section_headings"])); len(headings) > 0 {
+				config.nonClaimSectionHeadings = mergeNonClaimSectionHeadings(config.nonClaimSectionHeadings, headings)
+			}
+			if terms := normalizeClaimLexiconTerms(stringArrayOrEmpty(hints["claim_lexicon_terms"])); len(terms) > 0 {
+				config.claimLexiconTerms = terms
 			}
 		}
 		if semanticGroups := resolveClaimSemanticGroups(claimConfig["semantic_groups"]); len(semanticGroups) > 0 {
@@ -655,12 +665,56 @@ func resolveClaimRelatedStatePaths(value any) ([]claimRelatedStatePath, error) {
 	return result, nil
 }
 
+// defaultNonClaimSectionHeadings are portable defaults: section conventions
+// generalized from measured misclassification, not repo-specific knowledge.
+// Repo-specific headings stay adapter-owned via
+// claim_discovery.classification_hints.non_claim_section_headings.
+var defaultNonClaimSectionHeadings = []string{"Deferred Decisions"}
+
+// defaultClaimLexiconTerms is the built-in English claim-verb lexicon, matched
+// as space-padded tokens. Non-English or repo-specific claim vocabulary is
+// adapter-owned via claim_discovery.classification_hints.claim_lexicon_terms
+// and extends (never replaces) this list with substring matching.
+var defaultClaimLexiconTerms = []string{
+	" must ", " should ", " can ", " will ", " owns ", " keeps ", " uses ", " emits ", " writes ", " runs ",
+	" routes ", " discovers ", " evaluates ", " improves ", " verifies ", " validates ", " proves ", " supports ",
+	" requires ", " guarantees ", " provides ", " belongs ", " remains ", " stays ", " installs ", " produces ",
+}
+
 func normalizeNonClaimSectionHeadings(values []string) []string {
 	result := []string{}
 	for _, value := range values {
 		if trimmed := strings.TrimSpace(value); trimmed != "" {
 			result = append(result, trimmed)
 		}
+	}
+	return result
+}
+
+func mergeNonClaimSectionHeadings(defaults []string, configured []string) []string {
+	result := append([]string{}, defaults...)
+	for _, candidate := range configured {
+		if !headingIsNonClaimSection(candidate, result) {
+			result = append(result, candidate)
+		}
+	}
+	return result
+}
+
+func normalizeClaimLexiconTerms(values []string) []string {
+	result := []string{}
+	seen := map[string]bool{}
+	for _, value := range values {
+		trimmed := strings.TrimSpace(value)
+		if trimmed == "" {
+			continue
+		}
+		lower := strings.ToLower(trimmed)
+		if seen[lower] {
+			continue
+		}
+		seen[lower] = true
+		result = append(result, trimmed)
 	}
 	return result
 }
@@ -1089,12 +1143,16 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int, config c
 		if headingIsNonClaimSection(block.heading, config.nonClaimSectionHeadings) {
 			continue
 		}
-		if !claimLineLooksUseful(block.text, block.heading) {
+		useful, adapterLexiconMatched := claimLineLooksUseful(block.text, config.claimLexiconTerms)
+		if !useful {
 			continue
 		}
 		classification, ok := classifyClaimLine(block.text)
 		if !ok {
-			continue
+			if !adapterLexiconMatched {
+				continue
+			}
+			classification = adapterLexiconFallbackClassification()
 		}
 		summary := normalizeClaimSummary(block.text)
 		if summary == "" {
@@ -1208,35 +1266,42 @@ func previousLineEndsClaimBlock(buffer []string) bool {
 	return strings.HasSuffix(previous, ".") || strings.HasSuffix(previous, "?") || strings.HasSuffix(previous, "!")
 }
 
-func claimLineLooksUseful(line string, heading string) bool {
+// claimLineLooksUseful reports whether a text block is claim-shaped, and
+// separately whether the match came from an adapter-owned lexicon term rather
+// than the built-in English defaults. Length bounds count runes, not bytes, so
+// multibyte scripts get the same sentence-length budget as ASCII. Adapter
+// terms use case-insensitive substring matching because agglutinative
+// predicates (e.g. Korean sentence-final endings) carry no space boundaries.
+func claimLineLooksUseful(line string, adapterLexiconTerms []string) (bool, bool) {
 	if line == "" || strings.HasPrefix(line, "|") || strings.HasPrefix(line, "---") {
-		return false
+		return false, false
 	}
 	normalized := normalizeClaimSummary(line)
 	if claimLineLooksLikePromptExample(normalized) {
-		return false
+		return false, false
 	}
 	if claimLineLooksLikeOpenQuestion(normalized) {
-		return false
-	}
-	if claimLineLooksLikeDeferredDecision(normalized, heading) {
-		return false
+		return false, false
 	}
 	if claimLineLooksLikeDefinitionLabel(normalized) {
-		return false
+		return false, false
 	}
 	if claimLineLooksLikeFutureProofPlaceholder(normalized) {
-		return false
+		return false, false
 	}
-	if len(normalized) < 20 || len(normalized) > 260 {
-		return false
+	runeCount := utf8.RuneCountInString(normalized)
+	if runeCount < 20 || runeCount > 260 {
+		return false, false
 	}
 	lower := strings.ToLower(normalized)
-	return containsAny(lower, []string{
-		" must ", " should ", " can ", " will ", " owns ", " keeps ", " uses ", " emits ", " writes ", " runs ",
-		" routes ", " discovers ", " evaluates ", " improves ", " verifies ", " validates ", " proves ", " supports ",
-		" requires ", " guarantees ", " provides ", " belongs ", " remains ", " stays ", " installs ", " produces ",
-	})
+	adapterMatched := false
+	for _, term := range adapterLexiconTerms {
+		if strings.Contains(lower, strings.ToLower(term)) {
+			adapterMatched = true
+			break
+		}
+	}
+	return adapterMatched || containsAny(lower, defaultClaimLexiconTerms), adapterMatched
 }
 
 func claimLineLooksLikePromptExample(summary string) bool {
@@ -1295,21 +1360,17 @@ func claimLineLooksLikeOpenQuestion(summary string) bool {
 	})
 }
 
-func claimLineLooksLikeDeferredDecision(summary string, heading string) bool {
-	if !strings.EqualFold(strings.TrimSpace(heading), "Deferred Decisions") {
-		return false
+// adapterLexiconFallbackClassification routes lines that matched an
+// adapter-owned lexicon term but no portable routing case. Without this lane,
+// non-English claims would silently vanish inside the English-keyword routing
+// switch even after the adapter lexicon matched them.
+func adapterLexiconFallbackClassification() claimClassification {
+	return claimClassification{
+		recommendedProof:      "human-auditable",
+		verificationReadiness: "blocked",
+		why:                   "The line matched an adapter-owned claim lexicon term, but no portable routing case recognized its shape, so proof routing needs review before planning.",
+		next:                  "Route this claim during agent or human review; propose adapter routing hints once a repo-wide pattern emerges.",
 	}
-	trimmed := strings.TrimSpace(summary)
-	trimmed = strings.TrimPrefix(trimmed, ">")
-	trimmed = strings.TrimSpace(trimmed)
-	trimmed = strings.TrimPrefix(trimmed, "- ")
-	trimmed = strings.TrimPrefix(trimmed, "* ")
-	trimmed = strings.TrimSpace(trimmed)
-	trimmed = regexp.MustCompile(`^\d+\.\s+`).ReplaceAllString(trimmed, "")
-	trimmed = strings.TrimPrefix(trimmed, "[ ] ")
-	trimmed = strings.TrimPrefix(trimmed, "[x] ")
-	trimmed = strings.TrimSpace(trimmed)
-	return strings.HasPrefix(strings.ToLower(trimmed), "whether ")
 }
 
 func classifyClaimLine(line string) (claimClassification, bool) {
@@ -2167,6 +2228,7 @@ func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
 		"evidenceRoots":           nonNilStringSlice(config.evidenceRoots),
 		"audienceHints":           renderClaimAudienceHints(config.audienceHints),
 		"nonClaimSectionHeadings": nonNilStringSlice(config.nonClaimSectionHeadings),
+		"claimLexiconTerms":       nonNilStringSlice(config.claimLexiconTerms),
 		"semanticGroups":          renderClaimSemanticGroups(config.semanticGroups),
 		"linkedMarkdownDepth":     config.linkedMarkdownDepth,
 		"explicitSources":         config.explicitSources,
