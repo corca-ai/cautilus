@@ -133,10 +133,17 @@ during the run:
 
 ## Plan Critique Findings
 
-Pending — run a bounded fresh-eye plan critique at activation or before S1 starts, and fold findings here.
-Known self-flagged risks at shaping time:
-S2 may discover that a verb-lexicon hint alone cannot make Korean extraction useful (sentence shapes differ, not just verbs); the stop condition below covers this with a redesign pause instead of forcing the slice.
-S1 may show the English corpora also extract poorly, which would reprioritize S2 from "Korean lexicon" to "lexicon family in general"; that is a finding, not a failure.
+Bounded fresh-eye plan critique run 2026-06-10 (delegated subagent, read-only, verified against live corpus runs). Blockers, all resolvable as plan/contract edits:
+
+1. `classifyClaimLine` is a second English gate: even with a perfect lexicon hint, hint-matched lines hit the English-keyword switch whose default drops them, so yt-digest stays at zero after S2 as originally scoped.
+   Resolution adopted: S2 includes a portable fallback classification for hint-matched lines that no routing case claims (`human-auditable`, readiness `blocked`-equivalent inspect lane, `reviewStatus=heuristic`); minimal S3 vocabulary is NOT pulled forward.
+2. S2 acceptance ("hints applied to read-only yt-digest") had no mechanism. Resolution: maintainer decision recorded below (adapter override vs temp-copy harness).
+3. Hint-family matching semantics must be contract-decided before wiring: match mode (substring vs space-padded token) and rune-vs-byte length bounds (current 20–260 is bytes, ≈7–86 Korean chars, silently rejecting moderate Korean sentences). Also: yt-digest README feature bullets are noun-final (스크래핑/분류/생성), so a predicate lexicon alone may under-match list-style claims — known S2 review item.
+4. S1 raw counts are gameable (recall gain vs noise injection indistinguishable). Resolution: S2/S3 measurement uses a small labeled sample per corpus for precision, before/after pairs run in the same session against recorded corpus commits (S1 artifact already records commits), and S3 on charness/ceal uses a bounded sampling protocol rather than full-list ratification.
+
+Act-before-ship (folded into slice execution): S3 hint precedence vs the ordered switch's broad catch-alls must be contract-stated; S3 needs a no-regression check on deterministic-tag claims and a label-flip diff over non-sampled claims; S3 corrects per-claim tags only (facet schema stays out of scope); S4 needs explicit merge-vs-override semantics for portable defaults plus a claim-disappearance diff for maintainer eyeball; the with/without control test does not prove absence of new hardcoding — add a frozen default-config golden fixture; S0 can be batched down to the ~14 S3-critical verdicts with the remainder resumable-optional; Korean precision leaks (English-only open-question/definition filters) are a known S2 review item.
+
+Over-worry (dismissed): missing yt-digest adapter (defaults work, exit 0), gitignore distortion (scope recorded per packet), the "English also near zero" branch (empirically false in S1), Korean block-splitting mechanics (declaratives end in `다.`, the `.`-suffix rule works), shaped-only activation risk.
 
 ## Off-Goal Findings
 
