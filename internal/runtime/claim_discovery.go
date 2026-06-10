@@ -54,6 +54,7 @@ type ClaimEvalPlanOptions struct {
 
 type ClaimValidationOptions struct {
 	InputPath string
+	RepoRoot  string
 }
 
 type ClaimStatusSummaryOptions struct {
@@ -241,6 +242,7 @@ func DiscoverClaimProofPlan(options ClaimDiscoveryOptions) (map[string]any, erro
 
 	packet := map[string]any{
 		"schemaVersion":      contracts.ClaimProofPlanSchema,
+		"extractionMode":     "heuristic",
 		"discoveryMode":      "deterministic-source-inventory",
 		"discoveryEngine":    renderClaimDiscoveryEngine(resolvedRoot),
 		"sourceRoot":         ".",
@@ -3568,14 +3570,19 @@ func BuildClaimValidationReport(packet map[string]any, options ClaimValidationOp
 			}
 		}
 	}
+	anchorIssues, anchorFindings := claimExtractionAnchorReport(packet, options.RepoRoot)
+	issues = append(issues, anchorIssues...)
 	return map[string]any{
 		"schemaVersion":            contracts.ClaimValidationReportSchema,
 		"inputPath":                filepath.ToSlash(filepath.Clean(options.InputPath)),
 		"inputSchemaVersion":       packet["schemaVersion"],
+		"extractionMode":           ClaimPacketExtractionMode(packet),
 		"candidateCount":           len(arrayOrEmpty(packet["claimCandidates"])),
 		"issueCount":               len(issues),
 		"valid":                    len(issues) == 0,
 		"issues":                   issues,
+		"findingCount":             len(anchorFindings),
+		"findings":                 anchorFindings,
 		"evidenceValidationPolicy": "satisfied claims require agent/human review plus a direct or verified evidence ref with path, supported kind, commit or contentHash, and supportsClaimIds containing the claim.",
 		"nonMutationNotice":        "This command validates the packet and evidence refs but does not change claims or search for evidence.",
 	}
@@ -3597,6 +3604,21 @@ type claimValidationIssueDetail struct {
 func reportCarryForwardPresence(packet map[string]any) *claimValidationIssueDetail {
 	if _, hasCarryForward := packet["carryForward"]; hasCarryForward {
 		return nil
+	}
+	if ClaimPacketExtractionMode(packet) == "agent" {
+		audit := asMap(packet["extractionAudit"])
+		if len(audit) == 0 {
+			return &claimValidationIssueDetail{
+				path:    "$",
+				message: "extractionMode is agent but the extractionAudit block is missing; regenerate the packet with discover claims apply-extraction",
+			}
+		}
+		if stringFromAny(audit["extractionTarget"]) != "refresh" {
+			// First-extraction agent packets satisfy the audit-presence rule with
+			// extractionAudit alone; refreshed agent packets must also carry the
+			// carryForward audit, so they fall through to the checks below.
+			return nil
+		}
 	}
 	for index, raw := range arrayOrEmpty(packet["claimCandidates"]) {
 		entry, ok := raw.(map[string]any)

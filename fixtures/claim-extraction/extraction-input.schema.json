@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "cautilus.claim_extraction_input.v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "sourceRoot",
+    "gitCommit",
+    "extractionTarget",
+    "effectiveScanScope",
+    "sources",
+    "template",
+    "bounds",
+    "outputSchema"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.claim_extraction_input.v1"
+    },
+    "sourceRoot": {
+      "type": "string"
+    },
+    "gitCommit": {
+      "type": "string"
+    },
+    "extractionTarget": {
+      "type": "string",
+      "enum": ["first-extraction", "refresh"]
+    },
+    "effectiveScanScope": {
+      "type": "object"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["path", "status"],
+        "properties": {
+          "path": {"type": "string"},
+          "kind": {"type": "string"},
+          "depth": {"type": "integer", "minimum": 0},
+          "audienceHint": {"type": "string", "enum": ["user", "developer", "unclear"]},
+          "audienceHintSource": {"type": "string"},
+          "contentHash": {"type": "string"},
+          "status": {"type": "string", "enum": ["extract", "carried-forward", "missing"]},
+          "discoveredFrom": {"type": "string"}
+        }
+      }
+    },
+    "sourceCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "sourceGraph": {
+      "type": "array"
+    },
+    "template": {
+      "type": "object",
+      "required": [
+        "templateVersion",
+        "templateHash",
+        "claimDefinition",
+        "nonClaimConventions",
+        "excerptRules",
+        "routingGuidance",
+        "uncertaintyRule"
+      ],
+      "properties": {
+        "templateVersion": {"type": "string"},
+        "templateHash": {"type": "string"},
+        "claimDefinition": {"type": "string"},
+        "nonClaimConventions": {
+          "type": "object",
+          "required": ["nonClaimSectionHeadings"],
+          "properties": {
+            "nonClaimSectionHeadings": {"type": "array", "items": {"type": "string"}},
+            "portableRules": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "excerptRules": {"type": "string"},
+        "routingGuidance": {"type": "string"},
+        "uncertaintyRule": {"type": "string"}
+      }
+    },
+    "bounds": {
+      "type": "object",
+      "required": ["maxClaimsPerSource", "maxExcerptChars"],
+      "properties": {
+        "maxClaimsPerSource": {"type": "integer", "minimum": 1},
+        "maxExcerptChars": {"type": "integer", "minimum": 1}
+      }
+    },
+    "outputSchema": {
+      "type": "string",
+      "const": "cautilus.claim_extraction_result.v1"
+    },
+    "confirmationNotice": {
+      "type": "string"
+    }
+  }
+}

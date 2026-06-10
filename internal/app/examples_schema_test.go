@@ -34,6 +34,16 @@ func TestExampleInputConstantsValidateAgainstPublishedSchemas(t *testing.T) {
 			example:  reportBuildExampleInput,
 			schemaAt: filepath.Join("..", "..", "fixtures", "reports", "report-input.schema.json"),
 		},
+		{
+			name:     "claim_extraction_input",
+			example:  claimExtractionInputExampleOutput,
+			schemaAt: filepath.Join("..", "..", "fixtures", "claim-extraction", "extraction-input.schema.json"),
+		},
+		{
+			name:     "claim_extraction_result",
+			example:  claimExtractionResultExampleInput,
+			schemaAt: filepath.Join("..", "..", "fixtures", "claim-extraction", "extraction-result.schema.json"),
+		},
 	}
 
 	for _, tc := range cases {

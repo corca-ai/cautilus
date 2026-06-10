@@ -1100,6 +1100,135 @@ func TestRunClaimValidateWritesReportAndFailsInvalidEvidence(t *testing.T) {
 	}
 }
 
+func TestRunClaimExtractionInputAndApplyExtractionRoundTrip(t *testing.T) {
+	repoRoot := t.TempDir()
+	promise := "Users can run deterministic checks before review."
+	if err := os.WriteFile(filepath.Join(repoRoot, "README.md"), []byte(strings.Join([]string{
+		"# Tiny Product",
+		"",
+		promise,
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	adapterPath := filepath.Join(repoRoot, "proposed-adapter.yaml")
+	if err := os.WriteFile(adapterPath, []byte(strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  classification_hints:",
+		"    non_claim_section_headings:",
+		"      - Rejected Alternatives",
+		"",
+	}, "\n")), 0o644); err != nil {
+		t.Fatalf("WriteFile adapter returned error: %v", err)
+	}
+	inputPath := filepath.Join(repoRoot, "extraction-input.json")
+	resultPath := filepath.Join(repoRoot, "extraction-result.json")
+	claimsPath := filepath.Join(repoRoot, "claims-agent.json")
+
+	t.Setenv("CAUTILUS_CALLER_CWD", repoRoot)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"discover", "claims", "extraction-input", "--repo-root", ".", "--adapter", adapterPath, "--output", inputPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("extraction-input failed: exit %d, stderr=%s", exitCode, stderr.String())
+	}
+	input := readJSONObjectFile(t, inputPath)
+	schemaBytes, err := os.ReadFile(filepath.Join("..", "..", "fixtures", "claim-extraction", "extraction-input.schema.json"))
+	if err != nil {
+		t.Fatalf("read schema: %v", err)
+	}
+	var schema map[string]any
+	if err := json.Unmarshal(schemaBytes, &schema); err != nil {
+		t.Fatalf("parse schema: %v", err)
+	}
+	if err := validateAgainstJSONSchema(schema, any(input), "root"); err != nil {
+		t.Fatalf("emitted extraction-input failed published schema: %v", err)
+	}
+	headings := input["template"].(map[string]any)["nonClaimConventions"].(map[string]any)["nonClaimSectionHeadings"].([]any)
+	foundAdapterHeading := false
+	for _, raw := range headings {
+		if raw == "Rejected Alternatives" {
+			foundAdapterHeading = true
+		}
+	}
+	if !foundAdapterHeading {
+		t.Fatalf("--adapter override must merge proposed headings into the template, got %#v", headings)
+	}
+	templateHash := input["template"].(map[string]any)["templateHash"]
+
+	result := map[string]any{
+		"schemaVersion": "cautilus.claim_extraction_result.v1",
+		"extractionInputRef": map[string]any{
+			"path":         "extraction-input.json",
+			"templateHash": templateHash,
+		},
+		"claims": []any{
+			map[string]any{
+				"summary": "Deterministic checks run before review.",
+				"excerpts": []any{
+					map[string]any{"path": "README.md", "line": 3, "verbatim": promise, "primary": true},
+				},
+				"recommendedProof":      "deterministic",
+				"verificationReadiness": "ready-for-proof",
+				"claimAudience":         "user",
+			},
+		},
+	}
+	payload, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("marshal result: %v", err)
+	}
+	if err := os.WriteFile(resultPath, payload, 0o644); err != nil {
+		t.Fatalf("WriteFile result returned error: %v", err)
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	exitCode = Run([]string{"discover", "claims", "apply-extraction", "--repo-root", ".", "--input", inputPath, "--result", resultPath, "--output", claimsPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("apply-extraction failed: exit %d, stderr=%s", exitCode, stderr.String())
+	}
+	packet := readJSONObjectFile(t, claimsPath)
+	if packet["extractionMode"] != "agent" {
+		t.Fatalf("expected extractionMode agent, got %#v", packet["extractionMode"])
+	}
+	if packet["schemaVersion"] != "cautilus.claim_proof_plan.v1" {
+		t.Fatalf("unexpected schemaVersion: %#v", packet["schemaVersion"])
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	exitCode = Run([]string{"discover", "claims", "validate", "--claims", claimsPath}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("first-extraction agent packet must pass validate, stderr=%s stdout=%s", stderr.String(), stdout.String())
+	}
+}
+
+func TestRunClaimExtractionExampleFlagsPrintPackets(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	if exitCode := Run([]string{"discover", "claims", "extraction-input", "--example-output"}, &stdout, &stderr); exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	if !strings.Contains(stdout.String(), "cautilus.claim_extraction_input.v1") {
+		t.Fatalf("example output missing schema name: %s", stdout.String())
+	}
+	stdout.Reset()
+	if exitCode := Run([]string{"discover", "claims", "apply-extraction", "--example-input"}, &stdout, &stderr); exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	if !strings.Contains(stdout.String(), "cautilus.claim_extraction_result.v1") {
+		t.Fatalf("example input missing schema name: %s", stdout.String())
+	}
+}
+
 func TestRunClaimDiscoverExampleOutputMatchesFixture(t *testing.T) {
 	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
 	t.Setenv("CAUTILUS_TOOL_ROOT", "")

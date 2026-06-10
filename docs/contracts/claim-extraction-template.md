@@ -69,6 +69,7 @@ The template has five required sections:
    When the agent is unsure whether text is a claim, it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it.
 
 The exact template prose is implementation-slice work and will be iterated against the gold-set comparison measurement; this contract fixes the required sections and the provenance mechanism, not the wording.
+`templateHash` is the sha256 of the canonical JSON of the rendered template block excluding the hash field itself, so it covers both the template prose and the merged adapter conventions; two repos with different adapter headings produce different hashes by design.
 
 ## Packet Contracts
 
@@ -197,6 +198,8 @@ A claim with any non-anchoring excerpt is rejected by `apply-extraction` and rec
 `apply-extraction` recomputes source content hashes before validating.
 If a source changed since `extraction-input` was generated, the command fails by default and reports the drifted paths; `--allow-stale-sources` opts into applying anyway, with the drift recorded in `extractionAudit`.
 This mirrors the existing stale-packet rejection pattern.
+The applied packet's `sourceInventory` always records the extraction-time content hashes (the content the agent actually read), so a later `validate` against drifted files lands on the stale-anchor finding branch instead of hard-failing against content the agent never saw.
+`missing-primary` covers both zero and multiple `primary: true` marks; the rejection detail names which case occurred.
 
 **Fingerprint rule (ratified 2026-06-10):** `claimFingerprint = sha256(normalized primary verbatim excerpt)`, unified across both extraction modes.
 Fingerprint normalization is today's summary normalization (`normalizeClaimSummary`: strip markdown markers and list prefixes, collapse whitespace), which is stronger than anchoring normalization; the two serve different jobs and stay separate.
@@ -321,6 +324,9 @@ Act-before-ship findings folded in: the workflow contract's stale combined-finge
 
 Over-worry (dismissed): normalization idempotency corners (pinned by the golden test), agent-supplied wrong line numbers (locator-only by ratified decision), position-free duplicate excerpt matches (accepted in the ratified rule), missing `previousPacket` in the input example (refresh is a later slice), `skippedSources` reason vocabulary (slice-level schema detail).
 
+Slice 1 implementation critique (2026-06-10): a second parent-delegated read-only fresh-eye review ran against the landed slice-1 change set and this contract; verdict ready, no blockers.
+It re-verified the fixed decisions, all six success criteria, the slice-1 acceptance checks, and the three shipped-consumer interactions against the live Go code, and dismissed markdown-marker fingerprint collisions, line-locator identity, rune counting, and `RequireFreshClaimPacket` compatibility as over-worry.
+
 ## Canonical Artifact
 
 This document is the canonical contract for the extraction seam during implementation.
@@ -328,7 +334,8 @@ The direction decision and the surrounding discovery workflow remain canonical i
 
 ## Implementation Slices
 
-1. **First extraction (binary)**: `extraction-input` (first-extraction target only), embedded template v1, `apply-extraction` with anchoring validation, unified fingerprint rule plus golden test, `extractionMode` field, `validate` anchoring and audit-presence extensions, registry/schema/spec coverage.
+1. **First extraction (binary)** — shipped 2026-06-10: `extraction-input` (first-extraction target only), embedded template v1, `apply-extraction` with anchoring validation, unified fingerprint rule plus golden test, `extractionMode` field, `validate` anchoring and audit-presence extensions, registry/schema/spec coverage.
+   Proof: the `TestBuildClaimExtraction*`/`TestApplyClaimExtraction*`/`TestClaimFingerprintGolden*` family in [internal/runtime/claim_extraction_test.go](../../internal/runtime/claim_extraction_test.go), the CLI round trip in [internal/app/app_test.go](../../internal/app/app_test.go), packet schemas under [fixtures/claim-extraction/](../../fixtures/claim-extraction), and the executable seam section in [docs/specs/user/claim-discovery.spec.md](../specs/user/claim-discovery.spec.md).
 2. **Agent surface**: the Cautilus Agent extraction flow — extraction-budget confirmation gate, template-following extraction, result-packet authoring — within the SKILL.md disclosure budget; this slice triggers the consumer-intent-freeze rule for `skills/cautilus-agent/` changes.
 3. **Refresh composition**: `extraction-input --previous`, carried-forward sources and claims, no-op refresh stability test.
 4. **Comparison measurement**: gold-set-scored agent-vs-heuristic run over the three corpora, through the bounded measurement harness fixed above (separately shaped; S1/S2 artifacts are the before harness, and `--adapter` overrides keep the sibling corpora read-only).

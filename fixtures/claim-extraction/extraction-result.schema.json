@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "cautilus.claim_extraction_result.v1",
+  "type": "object",
+  "required": ["schemaVersion", "extractionInputRef", "claims"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "cautilus.claim_extraction_result.v1"
+    },
+    "extractionInputRef": {
+      "type": "object",
+      "required": ["templateHash"],
+      "properties": {
+        "path": {"type": "string"},
+        "templateHash": {"type": "string"}
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "model": {"type": "string"},
+        "agent": {"type": "string"}
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["summary", "excerpts", "recommendedProof", "verificationReadiness"],
+        "properties": {
+          "summary": {"type": "string"},
+          "excerpts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["path", "line", "verbatim"],
+              "properties": {
+                "path": {"type": "string"},
+                "line": {"type": "integer", "minimum": 1},
+                "verbatim": {"type": "string"},
+                "primary": {"type": "boolean"}
+              }
+            }
+          },
+          "recommendedProof": {
+            "type": "string",
+            "enum": ["deterministic", "human-auditable", "cautilus-eval"]
+          },
+          "verificationReadiness": {
+            "type": "string",
+            "enum": ["ready-for-proof", "needs-scenario", "needs-alignment", "blocked"]
+          },
+          "recommendedEvalSurface": {
+            "type": "string",
+            "enum": ["dev/repo", "dev/skill", "app/chat", "app/prompt"]
+          },
+          "claimAudience": {
+            "type": "string",
+            "enum": ["user", "developer", "unclear"]
+          },
+          "claimSemanticGroup": {"type": "string"},
+          "unresolvedQuestions": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "skippedSources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": {"type": "string"},
+          "reason": {"type": "string"}
+        }
+      }
+    }
+  }
+}

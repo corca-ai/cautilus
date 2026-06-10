@@ -169,6 +169,10 @@ func nativeHandler(path []string) handlerFunc {
 		return handleClaimReviewPrepareInput
 	case "discover claims apply-review":
 		return handleClaimReviewApplyResult
+	case "discover claims extraction-input":
+		return handleClaimExtractionPrepareInput
+	case "discover claims apply-extraction":
+		return handleClaimExtractionApplyResult
 	case "evaluate claims plan":
 		return handleClaimPlanEvals
 	case "discover claims validate":
@@ -389,6 +393,23 @@ type claimValidateArgs struct {
 	claims        string
 	displayClaims string
 	output        *string
+}
+
+type claimExtractionInputArgs struct {
+	repoRoot           string
+	sources            []string
+	adapter            string
+	maxClaimsPerSource int
+	maxExcerptChars    int
+	output             *string
+}
+
+type claimExtractionApplyArgs struct {
+	repoRoot          string
+	input             string
+	result            string
+	allowStaleSources bool
+	output            *string
 }
 
 type packetInspectArgs struct {
@@ -984,6 +1005,75 @@ func handleClaimReviewApplyResult(repoRoot string, cwd string, args []string, st
 }
 
 //nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handleClaimExtractionPrepareInput(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	if hasExampleOutputFlag(args) {
+		fmt.Fprint(stdout, claimExtractionInputExampleOutput)
+		return 0
+	}
+	options, err := parseClaimExtractionInputArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	packet, err := runtime.BuildClaimExtractionInput(runtime.ClaimExtractionInputOptions{
+		RepoRoot:           options.repoRoot,
+		SourcePaths:        options.sources,
+		AdapterPath:        options.adapter,
+		MaxClaimsPerSource: options.maxClaimsPerSource,
+		MaxExcerptChars:    options.maxExcerptChars,
+	})
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, packet); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handleClaimExtractionApplyResult(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	if hasExampleInputFlag(args) {
+		fmt.Fprint(stdout, claimExtractionResultExampleInput)
+		return 0
+	}
+	options, err := parseClaimExtractionApplyArgs(args, cwd)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	inputPacket, err := readJSONObject(options.input)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	resultPacket, err := readJSONObject(options.result)
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	packet, err := runtime.ApplyClaimExtractionResult(inputPacket, resultPacket, runtime.ClaimExtractionApplyOptions{
+		RepoRoot:          options.repoRoot,
+		InputPath:         options.input,
+		ResultPath:        options.result,
+		AllowStaleSources: options.allowStaleSources,
+	})
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if err := writeOutput(stdout, cwd, options.output, packet); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
 func handleClaimPlanEvals(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
 	_ = repoRoot
 	options, err := parseClaimPlanEvalsArgs(args, cwd)
@@ -1050,6 +1140,7 @@ func handleClaimValidate(repoRoot string, cwd string, args []string, stdout io.W
 	}
 	report := runtime.BuildClaimValidationReport(claimPacket, runtime.ClaimValidationOptions{
 		InputPath: options.displayClaims,
+		RepoRoot:  cwd,
 	})
 	if err := writeOutput(stdout, cwd, options.output, report); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
@@ -2434,6 +2525,124 @@ func parseClaimPlanEvalsArgs(args []string, cwd string) (*claimPlanEvalsArgs, er
 	}
 	if strings.TrimSpace(options.claims) == "" {
 		return nil, fmt.Errorf("--claims is required")
+	}
+	return options, nil
+}
+
+func parseClaimExtractionInputArgs(args []string, cwd string) (*claimExtractionInputArgs, error) {
+	options := &claimExtractionInputArgs{
+		repoRoot: cwd,
+		sources:  []string{},
+	}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.repoRoot = resolvePath(cwd, value)
+		case "--source":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.sources = append(options.sources, value)
+		case "--adapter":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.adapter = resolvePath(cwd, value)
+		case "--max-claims-per-source":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			parsed, parseErr := parsePositiveCLIInt(value, arg)
+			if parseErr != nil {
+				return nil, parseErr
+			}
+			options.maxClaimsPerSource = parsed
+		case "--max-excerpt-chars":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			parsed, parseErr := parsePositiveCLIInt(value, arg)
+			if parseErr != nil {
+				return nil, parseErr
+			}
+			options.maxExcerptChars = parsed
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.output = &value
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.repoRoot) == "" {
+		return nil, fmt.Errorf("--repo-root must not be empty")
+	}
+	return options, nil
+}
+
+func parseClaimExtractionApplyArgs(args []string, cwd string) (*claimExtractionApplyArgs, error) {
+	options := &claimExtractionApplyArgs{
+		repoRoot: cwd,
+	}
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.repoRoot = resolvePath(cwd, value)
+		case "--input":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.input = resolvePath(cwd, value)
+		case "--result":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.result = resolvePath(cwd, value)
+		case "--allow-stale-sources":
+			options.allowStaleSources = true
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.output = &value
+		default:
+			return nil, fmt.Errorf("unknown argument: %s", arg)
+		}
+	}
+	if strings.TrimSpace(options.input) == "" {
+		return nil, fmt.Errorf("--input is required")
+	}
+	if strings.TrimSpace(options.result) == "" {
+		return nil, fmt.Errorf("--result is required")
 	}
 	return options, nil
 }

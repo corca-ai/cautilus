@@ -197,6 +197,7 @@ const claimDiscoverExampleOutput = `{
     }
   },
   "discoveryMode": "deterministic-source-inventory",
+  "extractionMode": "heuristic",
   "effectiveScanScope": {
     "adapterFound": false,
     "adapterPath": "",
@@ -238,6 +239,81 @@ const claimDiscoverExampleOutput = `{
     }
   ],
   "sourceRoot": "."
+}
+`
+
+const claimExtractionInputExampleOutput = `{
+  "schemaVersion": "cautilus.claim_extraction_input.v1",
+  "sourceRoot": ".",
+  "gitCommit": "0000000000000000000000000000000000000000",
+  "extractionTarget": "first-extraction",
+  "effectiveScanScope": {
+    "entries": ["README.md", "AGENTS.md", "CLAUDE.md"],
+    "traversal": "entry-markdown-links"
+  },
+  "sources": [
+    {
+      "path": "README.md",
+      "kind": "readme",
+      "depth": 0,
+      "audienceHint": "user",
+      "audienceHintSource": "default",
+      "contentHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "status": "extract"
+    }
+  ],
+  "sourceCount": 1,
+  "sourceGraph": [],
+  "template": {
+    "templateVersion": "v1",
+    "templateHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "claimDefinition": "A behavior claim is a declared promise about how the product, repo, or workflow behaves, addressed to a user, operator, or agent, that could in principle be proven or falsified.",
+    "nonClaimConventions": {
+      "nonClaimSectionHeadings": ["Deferred Decisions", "Rejected Alternatives"],
+      "portableRules": ["Frontmatter is metadata, not a claim."]
+    },
+    "excerptRules": "Every claim must carry at least one verbatim excerpt with exactly one excerpt marked primary: true.",
+    "routingGuidance": "Route every claim toward the evidence it needs next via recommendedProof, recommendedEvalSurface, verificationReadiness, claimAudience, and claimSemanticGroup.",
+    "uncertaintyRule": "When unsure whether text is a claim, emit it with verificationReadiness: blocked and an unresolvedQuestions entry instead of silently dropping it."
+  },
+  "bounds": {
+    "maxClaimsPerSource": 80,
+    "maxExcerptChars": 600
+  },
+  "outputSchema": "cautilus.claim_extraction_result.v1",
+  "confirmationNotice": "Scan-scope confirmation does not authorize agent extraction; running the extraction is an LLM activity behind a separate extraction-budget confirmation."
+}
+`
+
+const claimExtractionResultExampleInput = `{
+  "schemaVersion": "cautilus.claim_extraction_result.v1",
+  "extractionInputRef": {
+    "path": "extraction-input.json",
+    "templateHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "runtime": {
+    "model": "model-id-when-available",
+    "agent": "cautilus-agent"
+  },
+  "claims": [
+    {
+      "summary": "Commands emit durable packets with enough state for the next agent to resume.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 12,
+          "verbatim": "every command writes a durable packet that the next agent can resume from",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "unresolvedQuestions": []
+    }
+  ],
+  "skippedSources": []
 }
 `
 

@@ -114,6 +114,42 @@
     },
     {
       "path": [
+        "discover",
+        "claims",
+        "extraction-input"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover claims extraction-input --repo-root <path> [--adapter <adapter.yaml>] [--source <path>] [--max-claims-per-source <n>] [--max-excerpt-chars <n>] [--output <extraction-input.json>]",
+      "example": "cautilus discover claims extraction-input --repo-root . --output /tmp/cautilus-extraction-input.json",
+      "notes": [
+        "`--example-output` prints a minimal extraction-input packet.",
+        "Emits `cautilus.claim_extraction_input.v1`: sources with content hashes, the embedded product-owned extraction template with version and hash, merged classification hints, and extraction bounds.",
+        "The command is deterministic and makes no model calls; the Cautilus Agent consumes the packet to extract claims and answers with `cautilus.claim_extraction_result.v1`.",
+        "Scan-scope confirmation does not authorize agent extraction; running the extraction is an LLM activity behind a separate extraction-budget confirmation owned by the agent flow.",
+        "Use `--adapter <adapter.yaml>` to apply an explicit adapter file without writing into the scanned repo; useful for read-only corpus measurement before maintainer ratification.",
+        "This slice emits `extractionTarget: first-extraction` only; refresh composition over a previous packet is a later slice."
+      ]
+    },
+    {
+      "path": [
+        "discover",
+        "claims",
+        "apply-extraction"
+      ],
+      "group": "workflow",
+      "usage": "cautilus discover claims apply-extraction --repo-root <path> --input <extraction-input.json> --result <extraction-result.json> [--allow-stale-sources] [--output <claims-agent.json>]",
+      "example": "cautilus discover claims apply-extraction --repo-root . --input /tmp/cautilus-extraction-input.json --result /tmp/cautilus-extraction-result.json --output /tmp/cautilus-claims-agent.json",
+      "notes": [
+        "`--example-input` prints a minimal `cautilus.claim_extraction_result.v1` packet an agent would author.",
+        "Validates the agent extraction result, anchors every excerpt as a whitespace-normalized substring of the raw source content, and composes a binary-owned `cautilus.claim_proof_plan.v1` packet with `extractionMode: agent`.",
+        "Claims with fabricated, missing-primary, empty, over-long, duplicate-fingerprint, or out-of-scope excerpts are rejected into `extractionAudit.rejectedClaims`, never silently dropped; rejections do not fail the command.",
+        "A templateHash mismatch, a result that fails schema validation, or drifted sources without `--allow-stale-sources` fail the whole command and write no packet.",
+        "`claimFingerprint` is the sha256 of the normalized primary verbatim excerpt, unified with heuristic-mode fingerprints.",
+        "Agent packets should target a path other than the adapter's claim `state_path` until the repo decides its refresh-gate policy for agent mode."
+      ]
+    },
+    {
+      "path": [
         "evaluate",
         "claims",
         "plan"

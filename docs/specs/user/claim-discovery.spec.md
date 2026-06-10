@@ -153,6 +153,35 @@ duplicate-summary-merge:mergeIdenticalClaimCandidates
 | .cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json | commandEvidence[1].observed.byRecommendedProof.deterministic | 1 | |
 | .cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json | commandEvidence[1].observed.byRecommendedProof.cautilus-eval | 1 | |
 
+## Agent-primary extraction runs through a verifiable seam.
+
+The heuristic scan above is the labeled baseline mode; the agent-primary path moves extraction itself to the Cautilus Agent while the binary keeps verification.
+`discover claims extraction-input` emits a deterministic `cautilus.claim_extraction_input.v1` packet: sources with content hashes plus the embedded product-owned extraction template with version and hash.
+The agent extracts claims by following the template and answers with `cautilus.claim_extraction_result.v1`; neither binary command makes a model call.
+
+```run:shell
+$ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." > "$tmp/README.md"; ./bin/cautilus discover claims extraction-input --repo-root "$tmp" --output "$tmp/input.json" >/dev/null; jq -r '"'"'"schema=" + .schemaVersion, "target=" + .extractionTarget, "templateVersion=" + .template.templateVersion, "templateSections=" + ([.template.claimDefinition, .template.excerptRules, .template.routingGuidance, .template.uncertaintyRule] | map(length > 0) | all | tostring), "sources=" + (.sources | map(.path) | join(","))'"'"' "$tmp/input.json"'
+schema=cautilus.claim_extraction_input.v1
+target=first-extraction
+templateVersion=v1
+templateSections=true
+sources=README.md
+```
+
+### Signal: fabricated excerpts are rejected, anchored excerpts apply.
+
+`discover claims apply-extraction` anchors every excerpt as a whitespace-normalized substring of the raw source content before composing the `cautilus.claim_proof_plan.v1` packet with `extractionMode: agent`.
+A claim whose excerpt the source never declared is rejected into `extractionAudit.rejectedClaims` with a recorded reason, never silently dropped, and the claim fingerprint is the sha256 of the normalized primary verbatim excerpt in both extraction modes.
+
+```run:shell
+$ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." > "$tmp/README.md"; ./bin/cautilus discover claims extraction-input --repo-root "$tmp" --output "$tmp/input.json" >/dev/null; jq '"'"'{schemaVersion: "cautilus.claim_extraction_result.v1", extractionInputRef: {path: "input.json", templateHash: .template.templateHash}, claims: [{summary: "Deterministic checks run before review.", excerpts: [{path: "README.md", line: 3, verbatim: "Users can run deterministic checks before review.", primary: true}], recommendedProof: "deterministic", verificationReadiness: "ready-for-proof", claimAudience: "user"}, {summary: "Fabricated promise.", excerpts: [{path: "README.md", line: 9, verbatim: "Users can run fabricated checks.", primary: true}], recommendedProof: "deterministic", verificationReadiness: "ready-for-proof"}]}'"'"' "$tmp/input.json" > "$tmp/result.json"; ./bin/cautilus discover claims apply-extraction --repo-root "$tmp" --input "$tmp/input.json" --result "$tmp/result.json" --output "$tmp/claims-agent.json" >/dev/null; jq -r '"'"'"extractionMode=" + .extractionMode, "applied=" + (.candidateCount|tostring), "rejectedReason=" + .extractionAudit.rejectedClaims[0].reason, "reviewStatus=" + .claimCandidates[0].reviewStatus, "primaryExcerpt=" + (.claimCandidates[0].sourceRefs[0].primary|tostring)'"'"' "$tmp/claims-agent.json"'
+extractionMode=agent
+applied=1
+rejectedReason=unanchored
+reviewStatus=agent-reviewed
+primaryExcerpt=true
+```
+
 ## Cautilus Agent curates candidates before proof work.
 
 `discover claims` intentionally leaves a broad candidate list.
