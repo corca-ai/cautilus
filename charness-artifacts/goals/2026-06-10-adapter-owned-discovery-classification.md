@@ -15,8 +15,9 @@ Discuss before activation: resolved 2026-06-10 — the consumer corpora are main
 
 ## Active Operating Frame
 
-- Current slice: before activation.
-- Next action: activate with `/goal @charness-artifacts/goals/2026-06-10-adapter-owned-discovery-classification.md`.
+- Current slice: S2 (claim-lexicon hint family) — proposal pending maintainer ratification; S1 complete.
+- Next action: ratify the S2 hint-family matching semantics and initial Korean lexicon proposal, then wire engine+test+contract+spec.
+- Execution mode note: the maintainer opened an interactive session on 2026-06-10 asking to implement and discuss; slices run in this interactive session with this artifact as slice memory, per the shaped-only Interview Decision.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -85,7 +86,7 @@ The promotion bar and priority order are already contract: `docs/contracts/claim
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
 | S0 | Resume gold-set HITL (c02 onward) in maintainer-sized batches | Ratified labels feed S3 routing hints; queue is paused resumable state | Verdicts in gold-set JSON, HITL artifact synced | pending |
-| S1 | Baseline measurement on the three corpora with today's engine | Establishes the language gap and English-corpus shape before any hint design | Per-corpus artifact: counts, samples, near-zero yt-digest extraction | pending |
+| S1 | Baseline measurement on the three corpora with today's engine | Establishes the language gap and English-corpus shape before any hint design | Per-corpus artifact: counts, samples, near-zero yt-digest extraction | done |
 | S2 | Claim-lexicon hint family (adapter-owned terms; agent proposes from corpus scan; maintainer ratifies) | Largest portability gap; promotion bar met once S1 evidence exists | Engine+test+contract+spec; yt-digest extracts claims via ratified hints | pending |
 | S3 | Proof-routing hint family from the ratified gold set (per-facet recommendedProof vocabulary) | Gold-set evidence already exists; corrects the most expensive misroutes | Engine+test+contract+spec; fresh run re-tags the clear misroutes | pending |
 | S4 | Absorb hardcoded `Deferred Decisions` into `non_claim_section_headings` portable defaults | Removes the parallel mechanism; small bounded cleanup | Hardcoded branch deleted; behavior pinned by existing+new tests | pending |
@@ -108,6 +109,11 @@ during the run:
 - **Issue closeout step** — Issue closeout: n/a — no tracked GitHub issues are resolved by this goal as shaped.
 
 ## Slice Log
+
+- 2026-06-10 S1 done: three-corpus baseline measured and recorded at `charness-artifacts/eval-trust/2026-06-10-discovery-classification-s1-baseline.md`.
+  yt-digest extracts 0 candidates from 3 sources (verb-lexicon gap confirmed, traversal healthy); charness 227/56 sources, ceal 308/85 sources, so the English-extraction stop condition did not trigger and S2 stays scoped to the non-English lexicon family.
+  Two S2 design inputs surfaced: Korean predicates need substring/suffix matching (space-padded containment can never match), and applying hints to a read-only corpus needs an explicit `--adapter <path>` override on `discover claims` (or a temp-copy harness).
+  Routing: fresh-eye plan critique delegated to a bounded subagent (running); S1 measurement itself was direct CLI evidence work, no skill route needed beyond session bootstrap.
 
 ## Context Sources
 
