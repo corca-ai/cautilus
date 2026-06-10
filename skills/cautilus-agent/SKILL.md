@@ -68,6 +68,7 @@ In external consumer repos during the contract rewrite, use this path only after
 For these direct questions, do not run `discover claims` until scan entries/depth are stated and the user confirms or adjusts the scope; keep LLM review as a separate budgeted branch.
 Do not hard-code the search to README; by default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.
+Before the first broad scan, check the entry docs for non-claim section conventions (rejected alternatives, non-goals, out-of-scope) and propose `claim_discovery.classification_hints.non_claim_section_headings` for the maintainer to ratify into the adapter; the binary executes ratified hints deterministically.
 
 Initial scan:
 

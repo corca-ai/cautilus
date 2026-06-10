@@ -50,12 +50,14 @@ The conversation-goal claim is the worked example of a decomposed claim; the two
 6. If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.
 7. Make the judge load-bearing: include at least one case that each half alone can fail. A claim whose only negatives come from code would pass with an always-sound (broken) judge, leaving the semantic seat unproven — so add a case where every code facet passes but the content is unsound (a semantic control, the analog of a routing claim's rubber-stamp control). The harness test suite enforces this: every decomposed claim must reject an always-sound judge.
 
-## Next step (not yet done): wire per-facet routing into discover
+## Next step: adapter-owned classification hints, then per-facet routing
 
-The template is proven on hand-authored claims; it is not yet wired into the `discover` output.
-The next concrete step is to let a discovered claim carry per-facet `recommendedProof` instead of one per-claim tag, so the generator emits facet-level routing that this harness can consume directly.
-That is a larger slice and a maintainer-scoped decision (it changes the `discover` schema); it is named here, not built here, to keep this slice bounded.
-Until then, decomposing a discovered claim is a manual application of the steps above.
+Maintainer decision 2026-06-10 (after the D3 facet gold set and a portability challenge) redefined the wiring direction.
+Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.
+The first hint family is live: `non_claim_section_headings` filters rejected-alternatives and non-goal sections deterministically, proven on this repo by the gold set's ratified non-claim (`claim-docs-contracts-active-run-md-186`) disappearing from a live discovery run.
+Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).
+The gold-set protocol in `charness-artifacts/eval-trust/2026-06-10-recommendedproof-facet-gold-set-proposal.md` is the ratification harness for future hint proposals.
+Until routing hints land, decomposing a discovered claim is a manual application of the steps above.
 
 ## Alternatives rejected
 

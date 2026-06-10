@@ -3721,3 +3721,66 @@ func TestClaimGitStateMarksSymlinkTargetChangeStale(t *testing.T) {
 		t.Fatalf("expected changed symlink target as changed source, got %#v", changedSources)
 	}
 }
+
+func TestDiscoverClaimProofPlanFiltersAdapterNonClaimSections(t *testing.T) {
+	doc := strings.Join([]string{
+		"# Demo",
+		"",
+		"The tool emits a machine-readable result packet for every run.",
+		"",
+		"## Rejected Alternatives",
+		"",
+		"1. **mtime-latest resolution**.",
+		"   The approach requires a magic freshness threshold and silently grabs the previous workflow run.",
+		"   Rejected.",
+		"",
+		"## Entry Surface",
+		"",
+		"The tool keeps stdout machine-readable and reserves stderr for operator hints.",
+		"",
+	}, "\n")
+	adapterWithHint := strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  classification_hints:",
+		"    non_claim_section_headings:",
+		"      - rejected alternatives",
+		"",
+	}, "\n")
+
+	withHint := t.TempDir()
+	mustWriteFile(t, filepath.Join(withHint, "AGENTS.md"), doc)
+	mustWriteFile(t, filepath.Join(withHint, ".agents", "cautilus-adapter.yaml"), adapterWithHint)
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: withHint})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	for _, raw := range arrayOrEmpty(plan["claimCandidates"]) {
+		summary := stringFromAny(asMap(raw)["summary"])
+		if strings.Contains(summary, "magic freshness threshold") {
+			t.Fatalf("rejected-alternative line should be filtered by the adapter hint, got %q", summary)
+		}
+	}
+	scope := asMap(plan["effectiveScanScope"])
+	headings, ok := scope["nonClaimSectionHeadings"].([]string)
+	if !ok || len(headings) != 1 || headings[0] != "rejected alternatives" {
+		t.Fatalf("expected configured non-claim headings in effectiveScanScope, got %#v", scope["nonClaimSectionHeadings"])
+	}
+
+	withoutHint := t.TempDir()
+	mustWriteFile(t, filepath.Join(withoutHint, "AGENTS.md"), doc)
+	control, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: withoutHint})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	foundRejectedLine := false
+	for _, raw := range arrayOrEmpty(control["claimCandidates"]) {
+		if strings.Contains(stringFromAny(asMap(raw)["summary"]), "magic freshness threshold") {
+			foundRejectedLine = true
+		}
+	}
+	if !foundRejectedLine {
+		t.Fatalf("control without the hint should still extract the rejected-alternative line; the filter must come from the adapter, not new hardcoding")
+	}
+}

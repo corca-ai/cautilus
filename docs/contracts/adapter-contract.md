@@ -82,6 +82,10 @@ claim_discovery:
     developer:
       - AGENTS.md
       - docs/internal/**
+  classification_hints:
+    non_claim_section_headings:
+      - Rejected Alternatives
+      - Non-goals
   semantic_groups:
     - label: Product promises
       terms:
@@ -220,6 +224,8 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   Portable defaults classify README and user guide/spec paths as `user`, common docs/spec/skill/plugin/agent paths as `developer`, and unfamiliar paths as `unclear`.
   `semantic_groups` optionally declares repo-owned review batching labels and text terms.
   If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.
+  `classification_hints.non_claim_section_headings` optionally lists section headings (matched case-insensitively) whose lines are never claim candidates, such as rejected-alternatives or non-goals sections.
+  Classification hints are adapter-owned because non-claim conventions differ per repo; the binary executes the hints deterministically and records them in the packet's `effectiveScanScope`, while the Cautilus Agent proposes them from an initial scan for maintainer ratification instead of the product hardcoding repo-specific rules.
 - `instance_discovery`: optional local-first instance routing contract for live app eval flows.
   Use `kind: explicit` when the adapter can check in a small stable instance list directly.
   Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.workbench_instance_catalog.v1` to stdout.

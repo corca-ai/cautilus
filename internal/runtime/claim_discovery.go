@@ -115,19 +115,20 @@ type claimClassification struct {
 }
 
 type claimDiscoveryConfig struct {
-	entries             []string
-	include             []string
-	exclude             []string
-	evidenceRoots       []string
-	audienceHints       map[string][]string
-	semanticGroups      []claimSemanticGroupRule
-	relatedStatePaths   []claimRelatedStatePath
-	linkedMarkdownDepth int
-	statePath           string
-	statePathSource     string
-	adapterPath         string
-	adapterFound        bool
-	explicitSources     bool
+	entries                 []string
+	include                 []string
+	exclude                 []string
+	evidenceRoots           []string
+	audienceHints           map[string][]string
+	nonClaimSectionHeadings []string
+	semanticGroups          []claimSemanticGroupRule
+	relatedStatePaths       []claimRelatedStatePath
+	linkedMarkdownDepth     int
+	statePath               string
+	statePathSource         string
+	adapterPath             string
+	adapterFound            bool
+	explicitSources         bool
 }
 
 type claimRelatedStatePath struct {
@@ -285,6 +286,11 @@ func claimDiscoveryHeuristics() []any {
 			"id":                     "markdown-text-blocks",
 			"implementationFunction": "claimTextBlocks",
 			"summary":                "Read Markdown headings, bullets, numbered items, and sentence paragraphs outside code fences and frontmatter.",
+		},
+		map[string]any{
+			"id":                     "adapter-non-claim-section-filter",
+			"implementationFunction": "headingIsNonClaimSection",
+			"summary":                "Drop lines under adapter-declared non-claim section headings (classification_hints.non_claim_section_headings), such as rejected-alternatives lists.",
 		},
 		map[string]any{
 			"id":                     "claim-shaped-line-filter",
@@ -600,6 +606,11 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string) (claimDisco
 		if audienceHints := resolveClaimAudienceHints(claimConfig["audience_hints"]); len(audienceHints) > 0 {
 			config.audienceHints = audienceHints
 		}
+		if hints := asMap(claimConfig["classification_hints"]); len(hints) > 0 {
+			if headings := stringArrayOrEmpty(hints["non_claim_section_headings"]); len(headings) > 0 {
+				config.nonClaimSectionHeadings = normalizeNonClaimSectionHeadings(headings)
+			}
+		}
 		if semanticGroups := resolveClaimSemanticGroups(claimConfig["semantic_groups"]); len(semanticGroups) > 0 {
 			config.semanticGroups = semanticGroups
 		}
@@ -642,6 +653,29 @@ func resolveClaimRelatedStatePaths(value any) ([]claimRelatedStatePath, error) {
 		})
 	}
 	return result, nil
+}
+
+func normalizeNonClaimSectionHeadings(values []string) []string {
+	result := []string{}
+	for _, value := range values {
+		if trimmed := strings.TrimSpace(value); trimmed != "" {
+			result = append(result, trimmed)
+		}
+	}
+	return result
+}
+
+// headingIsNonClaimSection applies the adapter-owned classification hint: lines
+// under a configured heading (e.g. "Rejected Alternatives") describe behavior
+// the repo decided NOT to build, so they are not provable behavior claims.
+func headingIsNonClaimSection(heading string, configured []string) bool {
+	trimmed := strings.TrimSpace(heading)
+	for _, candidate := range configured {
+		if strings.EqualFold(trimmed, candidate) {
+			return true
+		}
+	}
+	return false
 }
 
 func resolveClaimAudienceHints(value any) map[string][]string {
@@ -1052,6 +1086,9 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int, config c
 	}
 	candidates := make([]claimCandidate, 0)
 	for _, block := range claimTextBlocks(string(content)) {
+		if headingIsNonClaimSection(block.heading, config.nonClaimSectionHeadings) {
+			continue
+		}
 		if !claimLineLooksUseful(block.text, block.heading) {
 			continue
 		}
@@ -2124,18 +2161,19 @@ func claimSemanticGroupOrGeneral(value string) string {
 
 func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
 	return map[string]any{
-		"entries":             config.entries,
-		"include":             nonNilStringSlice(config.include),
-		"exclude":             nonNilStringSlice(config.exclude),
-		"evidenceRoots":       nonNilStringSlice(config.evidenceRoots),
-		"audienceHints":       renderClaimAudienceHints(config.audienceHints),
-		"semanticGroups":      renderClaimSemanticGroups(config.semanticGroups),
-		"linkedMarkdownDepth": config.linkedMarkdownDepth,
-		"explicitSources":     config.explicitSources,
-		"adapterFound":        config.adapterFound,
-		"adapterPath":         config.adapterPath,
-		"traversal":           "entry-markdown-links",
-		"gitignorePolicy":     "respect-repo-gitignore",
+		"entries":                 config.entries,
+		"include":                 nonNilStringSlice(config.include),
+		"exclude":                 nonNilStringSlice(config.exclude),
+		"evidenceRoots":           nonNilStringSlice(config.evidenceRoots),
+		"audienceHints":           renderClaimAudienceHints(config.audienceHints),
+		"nonClaimSectionHeadings": nonNilStringSlice(config.nonClaimSectionHeadings),
+		"semanticGroups":          renderClaimSemanticGroups(config.semanticGroups),
+		"linkedMarkdownDepth":     config.linkedMarkdownDepth,
+		"explicitSources":         config.explicitSources,
+		"adapterFound":            config.adapterFound,
+		"adapterPath":             config.adapterPath,
+		"traversal":               "entry-markdown-links",
+		"gitignorePolicy":         "respect-repo-gitignore",
 	}
 }
 

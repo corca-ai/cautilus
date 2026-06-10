@@ -599,6 +599,13 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 			normalized["semantic_groups"] = groups
 		}
 	}
+	if raw, exists := record["classification_hints"]; exists && raw != nil {
+		hints, hintErrors := normalizeClaimDiscoveryClassificationHints(raw)
+		errors = append(errors, hintErrors...)
+		if hints != nil {
+			normalized["classification_hints"] = hints
+		}
+	}
 	if raw, exists := record["related_state_paths"]; exists && raw != nil {
 		paths, pathErrors := normalizeClaimDiscoveryRelatedStatePaths(raw)
 		errors = append(errors, pathErrors...)
@@ -622,6 +629,24 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 			errors = append(errors, "claim_discovery.state_path must be a non-empty string")
 		} else {
 			normalized["state_path"] = text
+		}
+	}
+	return normalized, errors
+}
+
+func normalizeClaimDiscoveryClassificationHints(value any) (map[string]any, []string) {
+	record, ok := value.(map[string]any)
+	if !ok {
+		return nil, []string{"claim_discovery.classification_hints must be a mapping"}
+	}
+	errors := []string{}
+	normalized := map[string]any{}
+	if raw, exists := record["non_claim_section_headings"]; exists && raw != nil {
+		items, err := assertArray(raw, "claim_discovery.classification_hints.non_claim_section_headings")
+		if err != nil {
+			errors = append(errors, "claim_discovery.classification_hints.non_claim_section_headings must be a list of strings")
+		} else {
+			normalized["non_claim_section_headings"] = stringSliceNoValidate(items)
 		}
 	}
 	return normalized, errors

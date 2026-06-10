@@ -45,6 +45,10 @@ claim_discovery:
     - docs/maintainers/**
     - docs/internal/handoff.md
     - docs/internal/research/**
+  classification_hints:
+    non_claim_section_headings:
+      - Rejected Alternatives
+      - Alternatives rejected
   audience_hints:
     user:
       - README.md

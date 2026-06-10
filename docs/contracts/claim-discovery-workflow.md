@@ -175,6 +175,9 @@ When hints are absent, the binary applies portable path defaults: `README.md` an
 The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop.
 `semantic_groups` is also adapter-owned because product areas differ across repos.
 When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.
+`classification_hints.non_claim_section_headings` is adapter-owned for the same reason: which headings mark non-claim prose (rejected alternatives, non-goals, out-of-scope lists) is a repo documentation convention, not a product constant.
+The binary applies the configured headings deterministically during extraction and reports them in `effectiveScanScope.nonClaimSectionHeadings`; lines under a matching heading are dropped before claim-shaped filtering.
+Seeding these hints is Cautilus Agent onboarding work: scan the entry documents for rejected-alternative and non-goal section conventions, propose the heading list, and let the maintainer ratify it into the adapter before the first broad discovery, so repo-specific classification knowledge lives in the adapter instead of accumulating as hardcoded engine rules.
 `state_path` is the writable discovery baseline for `discover claims`; `related_state_paths` are read-only orientation hints for reviewed, evidenced, or promoted claim packets that `doctor status` can summarize without making them the next discovery target.
 `doctor status` should use the most advanced non-stale related claim packet as the selected orientation map when it is more useful than the writable baseline.
 That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.
