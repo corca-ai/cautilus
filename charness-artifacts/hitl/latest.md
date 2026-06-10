@@ -1,37 +1,42 @@
 # HITL Runtime Checkpoint
 
 <!-- hitl-runtime-sync
-session_id: hitl-20260609-235609
-runtime_session_dir: .charness/hitl/runtime/hitl-20260609-235609
-runtime_updated_at: 2026-06-10T22:18:12+00:00
-target: charness-artifacts/eval-trust/2026-06-10-recommendedproof-facet-gold-set-proposal.json
-last_presented_chunk_id: c04
-queue_epoch: 
-queue_status: 
-accepted_rules_digest: 4f53cda18c2baa0c
-queue_items_digest: 244de34ecbb96712
+session_id: hitl-20260611-082742
+runtime_session_dir: .charness/hitl/runtime/hitl-20260611-082742
+runtime_updated_at: 2026-06-10T23:29:32+00:00
+target: charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.json
+last_presented_chunk_id: g01
+queue_epoch: 1
+queue_status: ready
+accepted_rules_digest: 3a70f5edb790f895
+queue_items_digest: 2dd9b7948fa8ca22
 queue_state_digest: c9b6876066a76e59
-approval_state_digest: 3a82341cec978855
+approval_state_digest: f8535218bb8a0eb1
 -->
 
-- Synced At: 2026-06-10T22:18:17+00:00
-- Synced From Session: `hitl-20260609-235609`
-- Runtime Session Dir: `.charness/hitl/runtime/hitl-20260609-235609`
-- Runtime Updated At: 2026-06-10T22:18:12+00:00
+- Synced At: 2026-06-10T23:29:32+00:00
+- Synced From Session: `hitl-20260611-082742`
+- Runtime Session Dir: `.charness/hitl/runtime/hitl-20260611-082742`
+- Runtime Updated At: 2026-06-10T23:29:32+00:00
 
 ## Active Target
 
-- Target: `charness-artifacts/eval-trust/2026-06-10-recommendedproof-facet-gold-set-proposal.json`
-- Status: `paused`
-- Last Presented Chunk ID: `c04`
-- Queue Epoch: `unknown`
-- Queue Status: `unknown`
+- Target: `charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.json`
+- Status: `in_progress`
+- Last Presented Chunk ID: `g01`
+- Queue Epoch: `1`
+- Queue Status: `ready`
 - Explicit Apply Required: `True`
 - Apply Mode: `explicit-after-all-chunks`
 
 ## Accepted Rules
 
-- none
+- R1: pending
+- R2: pending
+- R3: pending
+- R4: pending
+- R5: pending
+- R6: pending
 
 ## Queue State
 
@@ -63,20 +68,6 @@ approval_state_digest: 3a82341cec978855
 - item: pending
 - item: pending
 - item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
 
 ## Next Chunk To Present
 
@@ -84,16 +75,16 @@ approval_state_digest: 3a82341cec978855
 
 ## Approval Boundaries
 
-- Applied Rewrite Review Status: `unknown`
-- Full Target Review Status: `unknown`
-- Target/Cursor Checked: `unknown`
-- Target/Cursor Check Result: ``
+- Applied Rewrite Review Status: `inactive`
+- Full Target Review Status: `pending_after_chunks`
+- Target/Cursor Checked: `True`
+- Target/Cursor Check Result: `g01 = queue items[0], README.md entries 0-13 of gold-set-proposal.json; target untouched (all verdicts pending)`
 
 ## Runtime Links
 
-- State: `.charness/hitl/runtime/hitl-20260609-235609/state.yaml`
-- Queue: `.charness/hitl/runtime/hitl-20260609-235609/queue.json`
-- Rules: `.charness/hitl/runtime/hitl-20260609-235609/rules.yaml`
-- Scratchpad: `.charness/hitl/runtime/hitl-20260609-235609/hitl-scratchpad.md`
-- Events: `.charness/hitl/runtime/hitl-20260609-235609/events.log`
+- State: `.charness/hitl/runtime/hitl-20260611-082742/state.yaml`
+- Queue: `.charness/hitl/runtime/hitl-20260611-082742/queue.json`
+- Rules: `.charness/hitl/runtime/hitl-20260611-082742/rules.yaml`
+- Scratchpad: `.charness/hitl/runtime/hitl-20260611-082742/hitl-scratchpad.md`
+- Events: `.charness/hitl/runtime/hitl-20260611-082742/events.log`
 - Durable Artifact: `charness-artifacts/hitl/latest.md`
