@@ -7,3 +7,10 @@ paths = ['''^\.cautilus/claims/.*\.json$''']
 regexTarget = "line"
 regexes = ['''"gitCommit"\s*:\s*"[0-9a-f]{40}"''']
 condition = "AND"
+
+[[allowlists]]
+description = "Allow git commit metadata in checked-in claim packet evidence artifacts"
+paths = ['''^charness-artifacts/.*\.json$''']
+regexTarget = "line"
+regexes = ['''"gitCommit"\s*:\s*"[0-9a-f]{40}"''']
+condition = "AND"
