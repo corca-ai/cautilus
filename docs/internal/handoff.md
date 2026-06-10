@@ -4,11 +4,12 @@
 
 **방향 전환 (2026-06-11, maintainer 비준)**: S0 골드셋 HITL은 c04에서 **일시중지**.
 c04가 드러낸 구조 문제 — 디스커버 대상 문서 자체가 휴리스틱-시대 stale (claim-discovery-workflow.md의 Review Budget Confirmation 섹션이 같은 파일 30줄 위의 agent-primary 방향 결정과 모순, stale 어휘 31곳) — 때문에 stale 텍스트 위 verdict 비준은 maintainer 예산 낭비로 판정.
-새 순서:
-1. **확인 게이트 설계** (진행 중, maintainer와 함께): agent-primary에서 스코프 확인 ≠ 모델 비용 승인의 새 배치, 별도 리뷰 단계 존속 여부 — [claim-extraction-template.md](../contracts/claim-extraction-template.md)에 작은 결정 묶음으로 기록.
-2. **docs 진실 갱신**: claim-discovery-workflow.md stale 섹션 + README 1곳 + docs/guides/cli.md 1곳. `skills/cautilus-agent/SKILL.md`(stale 8곳)는 제외 — slice 2 본체, consumer-intent freeze 규칙 적용.
-3. **갱신 문서에 에이전트 추출 → 그 출력에 HITL** = 새 골드셋 (정답지 비준 + 추출 품질 검수 한 패스; 휴리스틱 점수는 R5대로 파생 계산).
+새 순서 (1·2 완료, 2026-06-11):
+1. ~~확인 게이트 설계~~ — 비준 완료: 원칙 1회("스코프 확인은 모델 비용을 승인하지 않는다") + 단계별 인스턴스, 추출 예산 플랜 = 계약 리스트 + 예상 배치 수, 워크플로우 프로즈는 현재형 "뭘 한다"만 (working-patterns에 규칙 기록).
+2. ~~docs 진실 갱신~~ — 출하 (commit `df8a7fb` + critique 수정): claim-discovery-workflow.md가 agent-primary 현재 행동으로 재작성됨 (Model-Spend Confirmation 섹션, Review Seam 섹션, 변천사는 Fixed Decisions로), cli 가이드에 추출 명령쌍 추가, README 터치. 위임 critique verdict READY-WITH-EDITS → NIT 수정 완료. `skills/cautilus-agent/SKILL.md`는 의도적으로 제외 — slice 2 본체, consumer-intent freeze 적용.
+3. **다음 첫 수: 갱신 문서에 에이전트 추출 → 그 출력에 HITL** = 새 골드셋 (정답지 비준 + 추출 품질 검수 한 패스; 휴리스틱 점수는 R5대로 파생 계산). 추출은 slice-1 시임 경유(`extraction-input` → 에이전트 → `apply-extraction`), 출력 패킷은 `state_path` 회피 유지. HITL은 R1–R6 이월 규칙으로 새 세션 부트스트랩.
 4. slice 4 비교 측정은 새 골드셋 기준.
+권장 호출 프롬프트: `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 갱신된 문서에 에이전트 추출을 돌리고, 그 출력으로 새 골드셋 HITL을 시작해주세요.`
 HITL 세션 `hitl-20260609-235609`은 paused, 사유 기록됨; **R1–R6 규칙과 c01–c03 verdict는 이월** (특히 R6: 소유권/경계-배정 클레임은 deterministic — 판별 테스트 "이 클레임을 평가하면 다른 클레임의 내용이 아닌 무엇이 채점되는가?"). 나머지 33 엔트리는 재생성 대기로 superseded.
 캘리브레이션 샘플([2026-06-10-agent-extraction-readme-sample.md](../../charness-artifacts/eval-trust/2026-06-10-agent-extraction-readme-sample.md))은 새 HITL에서도 verdict 잣대로 유효.
 

@@ -104,8 +104,6 @@ This avoids asking humans to approve hundreds of sentence-level candidates when 
 ## Scan Scope
 
 Default discovery starts from entry surfaces and follows only repo-local Markdown links.
-This is the next workflow default and intentionally narrows the older broad source-inventory language in the current command-surface spec.
-Until this contract is fully absorbed into the new claim spec tree, the archived [command-surfaces.spec.md](../specs/old/command-surfaces.spec.md) records the earlier shipped `discover claims` contract.
 The default entry set is:
 
 - `README.md`
