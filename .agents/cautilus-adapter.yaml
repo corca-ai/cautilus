@@ -139,6 +139,51 @@ claim_discovery:
         - app/prompt
         - eval
         - scenario
+  epic_catalog:
+    - epicId: APEX
+      branch: APEX
+      title: "Cautilus keeps agent/workflow behavior honest across prompt/skill/wrapper change"
+      userStory: "As a team whose prompts/skills/models keep changing, I want to pin the behavior that matters and prove it survives every change, so that I can ship changes without silently regressing what I promised."
+    - epicId: A1-orchestration
+      branch: Agent
+      title: "The Cautilus Agent owns workflow routing, sequencing, and guardrails"
+      userStory: "As a maintainer, I want the Cautilus Agent to own routing, sequencing, and guardrails, so that I do not hand-orchestrate the eval workflow step by step."
+    - epicId: A2-curation-review
+      branch: Agent
+      title: "The Cautilus Agent curates discovery packets and drives structured review"
+      userStory: "As a maintainer, I want the agent to curate raw discovery packets and drive structured review, so that I review a trustworthy claim set instead of high-recall noise."
+    - epicId: S1-install
+      branch: Setup
+      title: "Cautilus installs as a shared machine-level binary plus repo-local agent surface (no scaffold copy)"
+      userStory: "As an adopter, I want Cautilus to install as a shared machine-level binary plus a repo-local agent surface, so that I add evaluation without copying another scaffold into my repo."
+    - epicId: S2-readiness
+      branch: Setup
+      title: "doctor/version report setup, onboarding, agent-surface, and wiring readiness"
+      userStory: "As an adopter, I want doctor/version to report setup, onboarding, and wiring readiness, so that I know exactly what to fix before a first bounded run."
+    - epicId: D1-discovery
+      branch: Discover
+      title: "Claim discovery turns adapter-owned docs + linked Markdown into bounded proof-plan candidates (not a verdict)"
+      userStory: "As a maintainer, I want discovery to turn my adapter-owned docs into bounded proof-plan candidates (not a verdict), so that I start from source-ref-backed claims rather than a blank page."
+    - epicId: D2-review-refresh
+      branch: Discover
+      title: "Deterministic claim review/refresh: cluster, apply-review, refresh, status, stale-gating, model-spend gating"
+      userStory: "As a maintainer, I want deterministic claim review/refresh (cluster, apply-review, refresh, status, stale/model-spend gating), so that my claim set stays current and auditable without surprise model spend."
+    - epicId: E1-evaluate
+      branch: Eval
+      title: "evaluate fixture/observation runs checked-in inputs through adapter-owned runners and evaluates the packet"
+      userStory: "As a maintainer, I want evaluate fixture/observation to run checked-in inputs through adapter-owned runners and evaluate the packet, so that I get a durable, comparable verdict surface."
+    - epicId: E2-scenarios-experiments
+      branch: Eval
+      title: "Scenario proposal/attention and skill-experiment compare over preserved baseline/variant outputs"
+      userStory: "As a maintainer, I want scenario proposal/attention and skill-experiment compare over preserved baseline/variant outputs, so that I can judge whether a candidate actually got better."
+    - epicId: I1-bounded-improvement
+      branch: Improve
+      title: "Improvement search/revision is bounded by budgets, checkpoints, and blocked-readiness (bounded autonomy)"
+      userStory: "As a maintainer, I want improvement search/revision bounded by budgets, checkpoints, and blocked-readiness, so that autonomy stays explicit and never runs away."
+    - epicId: M1-proven-on-itself
+      branch: Meta/Cross
+      title: "Cautilus is proven on itself: specs, dogfood evidence, held-out validation, structured review"
+      userStory: "As an evaluator of the product itself, I want Cautilus proven on itself via specs, dogfood evidence, held-out validation, and structured review, so that I can trust the promises before adopting it."
 executor_variants:
   - id: codex-root-review
     tool: codex_exec
