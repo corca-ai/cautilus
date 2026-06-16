@@ -2,16 +2,26 @@
 
 ## Workflow Trigger
 
-**방향 전환 (2026-06-11, maintainer 비준)**: S0 골드셋 HITL은 c04에서 **일시중지**.
-c04가 드러낸 구조 문제 — 디스커버 대상 문서 자체가 휴리스틱-시대 stale (claim-discovery-workflow.md의 Review Budget Confirmation 섹션이 같은 파일 30줄 위의 agent-primary 방향 결정과 모순, stale 어휘 31곳) — 때문에 stale 텍스트 위 verdict 비준은 maintainer 예산 낭비로 판정.
-새 순서 (1·2 완료, 2026-06-11):
-1. ~~확인 게이트 설계~~ — 비준 완료: 원칙 1회("스코프 확인은 모델 비용을 승인하지 않는다") + 단계별 인스턴스, 추출 예산 플랜 = 계약 리스트 + 예상 배치 수, 워크플로우 프로즈는 현재형 "뭘 한다"만 (working-patterns에 규칙 기록).
-2. ~~docs 진실 갱신~~ — 출하 (commit `df8a7fb` + critique 수정): claim-discovery-workflow.md가 agent-primary 현재 행동으로 재작성됨 (Model-Spend Confirmation 섹션, Review Seam 섹션, 변천사는 Fixed Decisions로), cli 가이드에 추출 명령쌍 추가, README 터치. 위임 critique verdict READY-WITH-EDITS → NIT 수정 완료. `skills/cautilus-agent/SKILL.md`는 의도적으로 제외 — slice 2 본체, consumer-intent freeze 적용.
-3. **다음 첫 수: 갱신 문서에 에이전트 추출 → 그 출력에 HITL** = 새 골드셋 (정답지 비준 + 추출 품질 검수 한 패스; 휴리스틱 점수는 R5대로 파생 계산). 추출은 slice-1 시임 경유(`extraction-input` → 에이전트 → `apply-extraction`), 출력 패킷은 `state_path` 회피 유지. HITL은 R1–R6 이월 규칙으로 새 세션 부트스트랩.
-4. slice 4 비교 측정은 새 골드셋 기준.
-권장 호출 프롬프트: `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 갱신된 문서에 에이전트 추출을 돌리고, 그 출력으로 새 골드셋 HITL을 시작해주세요.`
-HITL 세션 `hitl-20260609-235609`은 paused, 사유 기록됨; **R1–R6 규칙과 c01–c03 verdict는 이월** (특히 R6: 소유권/경계-배정 클레임은 deterministic — 판별 테스트 "이 클레임을 평가하면 다른 클레임의 내용이 아닌 무엇이 채점되는가?"). 나머지 33 엔트리는 재생성 대기로 superseded.
-캘리브레이션 샘플([2026-06-10-agent-extraction-readme-sample.md](../../charness-artifacts/eval-trust/2026-06-10-agent-extraction-readme-sample.md))은 새 HITL에서도 verdict 잣대로 유효.
+**방향 전환 (2026-06-16, maintainer 비준)**: 에이전트 추출이 골드셋용으로 292 클레임을 뱉었고, maintainer가 "292가 정당하게 뽑혔나"를 의심.
+`charness:debug`(charness-artifacts/debug/latest.md) 결과: 추출 실패가 아니라 **큐레이션 단계 부재**의 증상.
+제품엔 리뷰가 둘인데(라벨 리뷰=추출이 인라인으로 함 / 큐레이션 리뷰=중복·층위·worth-proving — 아무 시임도 안 함, README #10/#11 약속만 있고 review-input은 agent-reviewed 제외) 설계가 둘을 뭉갬.
+세 결함: ① audience 혼합(working-patterns의 정당한 48 developer 클레임이 user 제품 약속과 한 리스트에), ② raw 패킷을 리뷰 표면으로 씀(README #10/#11 위반), ③ 템플릿 과다-방출(동일 입력서 휴리스틱 2.6배, cli 3.7배).
+**spec 비준** (charness-artifacts/spec/2026-06-16-agent-extraction-curation-layering.md): D1 추출 고-recall 유지 / D2 audience 트랙 분리(user-product 먼저) / D3·큐레이션은 **deferred** / 측정은 raw 추출 직접 채점.
+
+**메타 결정 (ground-truth-first, fresh-eye critique 반영)**: 큐레이션을 먼저 빌드하지 **않는다**. 싼 순서로 ground truth부터:
+1. **다음 첫 수: 기존 292 패킷을 `claimAudience`로 세그먼트** (새 시임 없이 gold-set-proposal.json 분할) → user-product 트랙(~95) + developer 트랙(~197). union=292 가역성 체크. HITL 큐를 user-product 트랙으로 재범위.
+2. **paused HITL을 user-product 트랙(~95)부터 재개** (R1–R9, verdict #0 accept/R8·#1 not-a-claim/R9 이월). verdict의 `not-a-claim`/`badly-bounded` 비율 = 과다추출 신호이자 큐레이터 정의.
+3. **그 verdict로 큐레이터 빌드 여부·방식 결정** — 빌드 시 새 시임보다 **review 시임 재사용**(agent-reviewed 제외 완화) 우선 검토. not-a-claim 적으면 큐레이터 불필요.
+4. slice 4 비교 측정은 ratified 골드셋 대상(raw 추출의 recall+라벨 정확도; 큐레이터 빌드됐으면 재현도 별도).
+권장 호출 프롬프트: `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 292 패킷을 audience로 세그먼트하고 user-product 트랙으로 골드셋 HITL을 재개해주세요.`
+
+**대상 패킷**: charness-artifacts/eval-trust/goldset-v2-agent-extraction/claims-agent.json (292, extractionMode agent, 292/292 앵커, validate clean). 골드셋 제안서: 같은 디렉터리 gold-set-proposal.json.
+**HITL 세션 `hitl-20260611-082742`** paused (사유 state.yaml 기록). **이월 자산**: 규칙 R1–R9 (rules.yaml), verdict #0 README:4 accept/R8(우산=대표 e2e 시나리오 1개로 증명), #1 README:6 not-a-claim/R9(전제/프레이밍). R7=클레임 하나씩 자세히 제시(그룹 테이블 금지), R8=우산, R9=전제.
+**중요**: 큐레이션을 ground truth 전에 빌드 금지(critique: 틀린 큐레이터). raw를 큐레이션 후 채점 금지(critique: 측정 오염 — 골드셋은 raw 추출 직접 채점). docs/internal/* 제외 금지(maintainer: AGENTS/CLAUDE 링크 = 정당한 developer 클레임).
+**다이나믹 워크플로우**: 큐레이터를 빌드하면(slice 3) 그 실행에 사용(팬아웃+적대적 드롭 검증), 또는 비교 측정 팬아웃. 지금 중심 아님.
+
+**이전 세션 (2026-06-11, 완료)**: 게이트 설계 + docs 진실 갱신 출하 (commit `df8a7fb` 외), 갱신 문서에 에이전트 추출 (commit `75e12a6`). 이전 HITL `hitl-20260609-235609`은 superseded (그 골드셋 제안서도).
+캘리브레이션 샘플([2026-06-10-agent-extraction-readme-sample.md](../../charness-artifacts/eval-trust/2026-06-10-agent-extraction-readme-sample.md))은 verdict 잣대로 유효.
 
 ## Current State (2026-06-10)
 
