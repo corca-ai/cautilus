@@ -193,7 +193,7 @@ The detailed extraction template and packet contract are deliberately NOT design
 ## Off-Goal Findings
 
 - 2026-06-10: landing the redesign realignment exposed a real refresh-chain bug — review-result replay matched updates by display claimId only, so a one-line master-plan edit silently lost a ratified readiness label (then two more from the same 2026-05-10 packet were found lost by the repair-risk critique).
-  Routed through `charness:debug`; root cause, fingerprint-fallback fix, append-only repair packet, and the historical-fingerprint-backfill follow-up live in `charness-artifacts/debug/latest.md` (commit `d68fff3`).
+  Routed through `charness:debug`; root cause, fingerprint-fallback fix, append-only repair packet, and the historical-fingerprint-backfill follow-up live in `charness-artifacts/debug/debug-2026-06-10-claim-review-id-drift-refresh-loss.md` (commit `d68fff3`).
   Goal-relevant side effect: replay identity now matches the contract's fingerprint rule, which the agent-primary extraction direction depends on even more heavily (verbatim-excerpt fingerprints become the only stable claim identity).
 
 ## Final Verification

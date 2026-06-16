@@ -3,27 +3,27 @@
 <!-- hitl-runtime-sync
 session_id: hitl-20260611-082742
 runtime_session_dir: .charness/hitl/runtime/hitl-20260611-082742
-runtime_updated_at: 2026-06-10T23:29:32+00:00
+runtime_updated_at: 2026-06-16T01:28:34+00:00
 target: charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.json
-last_presented_chunk_id: g01
+last_presented_chunk_id: g01:e02
 queue_epoch: 1
 queue_status: ready
-accepted_rules_digest: 3a70f5edb790f895
+accepted_rules_digest: 5495c5abeb5c02aa
 queue_items_digest: 2dd9b7948fa8ca22
 queue_state_digest: c9b6876066a76e59
 approval_state_digest: f8535218bb8a0eb1
 -->
 
-- Synced At: 2026-06-10T23:29:32+00:00
+- Synced At: 2026-06-16T01:28:40+00:00
 - Synced From Session: `hitl-20260611-082742`
 - Runtime Session Dir: `.charness/hitl/runtime/hitl-20260611-082742`
-- Runtime Updated At: 2026-06-10T23:29:32+00:00
+- Runtime Updated At: 2026-06-16T01:28:34+00:00
 
 ## Active Target
 
 - Target: `charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.json`
-- Status: `in_progress`
-- Last Presented Chunk ID: `g01`
+- Status: `paused`
+- Last Presented Chunk ID: `g01:e02`
 - Queue Epoch: `1`
 - Queue Status: `ready`
 - Explicit Apply Required: `True`
@@ -37,6 +37,9 @@ approval_state_digest: f8535218bb8a0eb1
 - R4: pending
 - R5: pending
 - R6: pending
+- R7: pending
+- R8: pending
+- R9: pending
 
 ## Queue State
 
