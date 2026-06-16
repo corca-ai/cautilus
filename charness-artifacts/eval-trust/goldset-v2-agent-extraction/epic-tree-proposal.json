@@ -1,0 +1,837 @@
+{
+  "schemaVersion": "cautilus.epic_tree_proposal.v1-draft",
+  "status": "DRAFT — grounded on the 121-claim user-product track HITL (rules R13/R14); pending maintainer ratification of ambiguous mappings + cross-actor cases; slice-3 design input",
+  "derivedFrom": "charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.user-product.json",
+  "model": "R14 claim tree: APEX root promise + 6 branches (Agent, Setup, Discover, Eval, Improve, Meta/Cross), <=2 epics/branch, no orphans, shallow (epic->claim)",
+  "branches": [
+    "Agent",
+    "Setup",
+    "Discover",
+    "Eval",
+    "Improve",
+    "Meta/Cross"
+  ],
+  "totalClaims": 121,
+  "orphanCount": 0,
+  "epics": [
+    {
+      "epicId": "A1-orchestration",
+      "branch": "Agent",
+      "title": "The Cautilus Agent owns workflow routing, sequencing, and guardrails",
+      "claimCount": 3,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-136",
+          "sourceRef": "README.md:136",
+          "group": "agent-first",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:18",
+          "group": "agent-orchestration",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-27",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:27",
+          "group": "agent-orchestration",
+          "ambiguousGroupMapping": false
+        }
+      ]
+    },
+    {
+      "epicId": "A2-curation-review",
+      "branch": "Agent",
+      "title": "The Cautilus Agent curates discovery packets and drives structured review",
+      "claimCount": 1,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-139",
+          "sourceRef": "README.md:139",
+          "group": "structured-review",
+          "ambiguousGroupMapping": true
+        }
+      ]
+    },
+    {
+      "epicId": "APEX",
+      "branch": "APEX",
+      "title": "Cautilus keeps agent/workflow behavior honest across prompt/skill/wrapper change",
+      "claimCount": 5,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-4",
+          "sourceRef": "README.md:4",
+          "group": "product-promise",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-6",
+          "sourceRef": "README.md:6",
+          "group": "product-promise",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-137",
+          "sourceRef": "README.md:137",
+          "group": "product-promise",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-155",
+          "sourceRef": "README.md:155",
+          "group": "core-flow",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-readme-md-159",
+          "sourceRef": "README.md:159",
+          "group": "core-flow",
+          "ambiguousGroupMapping": true
+        }
+      ]
+    },
+    {
+      "epicId": "D1-discovery",
+      "branch": "Discover",
+      "title": "Claim discovery turns adapter-owned docs + linked Markdown into bounded proof-plan candidates (not a verdict)",
+      "claimCount": 21,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-67",
+          "sourceRef": "README.md:67",
+          "group": "claim-discovery",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-68",
+          "sourceRef": "README.md:68",
+          "group": "claim-discovery",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-113",
+          "sourceRef": "README.md:113",
+          "group": "claim-discovery",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-123",
+          "sourceRef": "docs/guides/cli.md:123",
+          "group": "claims-discovery",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-128",
+          "sourceRef": "docs/guides/cli.md:128",
+          "group": "claims-discovery",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-129",
+          "sourceRef": "docs/guides/cli.md:129",
+          "group": "claims-discovery",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-134",
+          "sourceRef": "docs/guides/cli.md:134",
+          "group": "claims-extraction",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-136",
+          "sourceRef": "docs/guides/cli.md:136",
+          "group": "claims-extraction",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:5",
+          "group": "discover-command",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-15",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:15",
+          "group": "command-surface",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-212",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:212",
+          "group": "scan-scope-confirmation",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-38",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:38",
+          "group": "extraction-seam",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-479",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:479",
+          "group": "command-surface",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-106",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:106",
+          "group": "scan-scope",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-115",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:115",
+          "group": "scan-scope",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-125",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:125",
+          "group": "discovery-boundary",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-199",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:199",
+          "group": "extraction-seam",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-566",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:566",
+          "group": "command-surface",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-41",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:41",
+          "group": "no-model-calls",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-190",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:190",
+          "group": "rejection handling",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-243",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:243",
+          "group": "heuristic baseline",
+          "ambiguousGroupMapping": false
+        }
+      ]
+    },
+    {
+      "epicId": "D2-review-refresh",
+      "branch": "Discover",
+      "title": "Deterministic claim review/refresh: cluster, apply-review, refresh, status, stale-gating, model-spend gating",
+      "claimCount": 31,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-124",
+          "sourceRef": "docs/guides/cli.md:124",
+          "group": "claims-refresh",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-125",
+          "sourceRef": "docs/guides/cli.md:125",
+          "group": "claims-refresh",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-127",
+          "sourceRef": "docs/guides/cli.md:127",
+          "group": "claims-refresh",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-132",
+          "sourceRef": "docs/guides/cli.md:132",
+          "group": "claims-refresh",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-138",
+          "sourceRef": "docs/guides/cli.md:138",
+          "group": "claims-review",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-140",
+          "sourceRef": "docs/guides/cli.md:140",
+          "group": "claims-review",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-142",
+          "sourceRef": "docs/guides/cli.md:142",
+          "group": "claims-review",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-143",
+          "sourceRef": "docs/guides/cli.md:143",
+          "group": "claims-review",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-145",
+          "sourceRef": "docs/guides/cli.md:145",
+          "group": "claims-eval-plan",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-146",
+          "sourceRef": "docs/guides/cli.md:146",
+          "group": "claims-eval-plan",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-148",
+          "sourceRef": "docs/guides/cli.md:148",
+          "group": "claims-review",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-476",
+          "sourceRef": "docs/guides/cli.md:476",
+          "group": "review-variants",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-477",
+          "sourceRef": "docs/guides/cli.md:477",
+          "group": "review-variants",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-479",
+          "sourceRef": "docs/guides/cli.md:479",
+          "group": "review-variants",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-480",
+          "sourceRef": "docs/guides/cli.md:480",
+          "group": "review-variants",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-485",
+          "sourceRef": "docs/guides/cli.md:485",
+          "group": "review-feedback",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-487",
+          "sourceRef": "docs/guides/cli.md:487",
+          "group": "review-feedback",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-489",
+          "sourceRef": "docs/guides/cli.md:489",
+          "group": "review-feedback",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-492",
+          "sourceRef": "docs/guides/cli.md:492",
+          "group": "review-feedback",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-19",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:19",
+          "group": "refresh",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-232",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:232",
+          "group": "model-spend-confirmation",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-35",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:35",
+          "group": "evidence-reconciliation",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-518",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:518",
+          "group": "status-summary",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-41",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:41",
+          "group": "refresh",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-542",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:542",
+          "group": "status-summary",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-86",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:86",
+          "group": "canonical-claim-specs",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-91",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:91",
+          "group": "canonical-claim-specs",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-226",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:226",
+          "group": "model-spend-confirmation",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-244",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:244",
+          "group": "model-spend-confirmation",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-544",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:544",
+          "group": "model-spend-confirmation",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-43",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:43",
+          "group": "model-spend gating",
+          "ambiguousGroupMapping": false
+        }
+      ]
+    },
+    {
+      "epicId": "E1-evaluate",
+      "branch": "Eval",
+      "title": "evaluate fixture/observation runs checked-in inputs through adapter-owned runners and evaluates the packet",
+      "claimCount": 15,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-77",
+          "sourceRef": "README.md:77",
+          "group": "eval-packets",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-93",
+          "sourceRef": "README.md:93",
+          "group": "eval-packets",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-117",
+          "sourceRef": "README.md:117",
+          "group": "evaluation-surface",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-145",
+          "sourceRef": "README.md:145",
+          "group": "proof-routing",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-218",
+          "sourceRef": "docs/guides/cli.md:218",
+          "group": "workspace",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-219",
+          "sourceRef": "docs/guides/cli.md:219",
+          "group": "workspace",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-220",
+          "sourceRef": "docs/guides/cli.md:220",
+          "group": "workspace",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-272",
+          "sourceRef": "docs/guides/cli.md:272",
+          "group": "evaluation-surfaces",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-273",
+          "sourceRef": "docs/guides/cli.md:273",
+          "group": "evaluation-surfaces",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-274",
+          "sourceRef": "docs/guides/cli.md:274",
+          "group": "evaluation-surfaces",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-276",
+          "sourceRef": "docs/guides/cli.md:276",
+          "group": "evaluation-surfaces",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-277",
+          "sourceRef": "docs/guides/cli.md:277",
+          "group": "evaluation-surfaces",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-280",
+          "sourceRef": "docs/guides/cli.md:280",
+          "group": "evaluation-surfaces",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-473",
+          "sourceRef": "docs/guides/cli.md:473",
+          "group": "reports",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-547",
+          "sourceRef": "docs/guides/cli.md:547",
+          "group": "rendering",
+          "ambiguousGroupMapping": false
+        }
+      ]
+    },
+    {
+      "epicId": "E2-scenarios-experiments",
+      "branch": "Eval",
+      "title": "Scenario proposal/attention and skill-experiment compare over preserved baseline/variant outputs",
+      "claimCount": 12,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-186",
+          "sourceRef": "docs/guides/cli.md:186",
+          "group": "live-eval",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-187",
+          "sourceRef": "docs/guides/cli.md:187",
+          "group": "live-eval",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-188",
+          "sourceRef": "docs/guides/cli.md:188",
+          "group": "live-eval",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-189",
+          "sourceRef": "docs/guides/cli.md:189",
+          "group": "live-eval",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-263",
+          "sourceRef": "docs/guides/cli.md:263",
+          "group": "scenarios",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-264",
+          "sourceRef": "docs/guides/cli.md:264",
+          "group": "scenarios",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-265",
+          "sourceRef": "docs/guides/cli.md:265",
+          "group": "scenarios",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-266",
+          "sourceRef": "docs/guides/cli.md:266",
+          "group": "scenarios",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-268",
+          "sourceRef": "docs/guides/cli.md:268",
+          "group": "scenarios",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-319",
+          "sourceRef": "docs/guides/cli.md:319",
+          "group": "skill-experiment",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-320",
+          "sourceRef": "docs/guides/cli.md:320",
+          "group": "skill-experiment",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-391",
+          "sourceRef": "docs/guides/cli.md:391",
+          "group": "skill-testing",
+          "ambiguousGroupMapping": false
+        }
+      ]
+    },
+    {
+      "epicId": "I1-bounded-improvement",
+      "branch": "Improve",
+      "title": "Improvement search/revision is bounded by budgets, checkpoints, and blocked-readiness (bounded autonomy)",
+      "claimCount": 4,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-140",
+          "sourceRef": "README.md:140",
+          "group": "bounded-improvement",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-146",
+          "sourceRef": "README.md:146",
+          "group": "bounded-improvement",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-148",
+          "sourceRef": "README.md:148",
+          "group": "bounded-improvement",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-521",
+          "sourceRef": "docs/guides/cli.md:521",
+          "group": "improve",
+          "ambiguousGroupMapping": false
+        }
+      ]
+    },
+    {
+      "epicId": "M1-proven-on-itself",
+      "branch": "Meta/Cross",
+      "title": "Cautilus is proven on itself: specs, dogfood evidence, held-out validation, structured review",
+      "claimCount": 7,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-66",
+          "sourceRef": "README.md:66",
+          "group": "spec-surface",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-69",
+          "sourceRef": "README.md:69",
+          "group": "spec-surface",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-70",
+          "sourceRef": "README.md:70",
+          "group": "spec-surface",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-96",
+          "sourceRef": "README.md:96",
+          "group": "spec-surface",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-102",
+          "sourceRef": "README.md:102",
+          "group": "dogfood-evidence",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-120",
+          "sourceRef": "README.md:120",
+          "group": "docs-structure",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-130",
+          "sourceRef": "README.md:130",
+          "group": "held-out",
+          "ambiguousGroupMapping": false
+        }
+      ]
+    },
+    {
+      "epicId": "S1-install",
+      "branch": "Setup",
+      "title": "Cautilus installs as a shared machine-level binary plus repo-local agent surface (no scaffold copy)",
+      "claimCount": 11,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-7",
+          "sourceRef": "README.md:7",
+          "group": "install",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-13",
+          "sourceRef": "README.md:13",
+          "group": "install",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-18",
+          "sourceRef": "README.md:18",
+          "group": "release-boundary",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-19",
+          "sourceRef": "README.md:19",
+          "group": "release-boundary",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-36",
+          "sourceRef": "README.md:36",
+          "group": "install",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-157",
+          "sourceRef": "README.md:157",
+          "group": "install",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-27",
+          "sourceRef": "docs/guides/cli.md:27",
+          "group": "install-lifecycle",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-32",
+          "sourceRef": "docs/guides/cli.md:32",
+          "group": "install-lifecycle",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-45",
+          "sourceRef": "docs/guides/cli.md:45",
+          "group": "adapter-bootstrap",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-48",
+          "sourceRef": "docs/guides/cli.md:48",
+          "group": "adapter-bootstrap",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-46",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:46",
+          "group": "adapter override",
+          "ambiguousGroupMapping": true
+        }
+      ]
+    },
+    {
+      "epicId": "S2-readiness",
+      "branch": "Setup",
+      "title": "doctor/version report setup, onboarding, agent-surface, and wiring readiness",
+      "claimCount": 11,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-55",
+          "sourceRef": "README.md:55",
+          "group": "onboarding",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-readme-md-163",
+          "sourceRef": "README.md:163",
+          "group": "onboarding",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-74",
+          "sourceRef": "docs/guides/cli.md:74",
+          "group": "runner-readiness",
+          "ambiguousGroupMapping": true
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-110",
+          "sourceRef": "docs/guides/cli.md:110",
+          "group": "cli-discovery",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-112",
+          "sourceRef": "docs/guides/cli.md:112",
+          "group": "doctor",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-113",
+          "sourceRef": "docs/guides/cli.md:113",
+          "group": "doctor",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-115",
+          "sourceRef": "docs/guides/cli.md:115",
+          "group": "doctor",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-117",
+          "sourceRef": "docs/guides/cli.md:117",
+          "group": "doctor",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-120",
+          "sourceRef": "docs/guides/cli.md:120",
+          "group": "doctor",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-121",
+          "sourceRef": "docs/guides/cli.md:121",
+          "group": "doctor",
+          "ambiguousGroupMapping": false
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-280",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:280",
+          "group": "CLI surface",
+          "ambiguousGroupMapping": false
+        }
+      ]
+    }
+  ],
+  "openQuestions": [
+    "9 ambiguous group->epic mappings flagged (ambiguousGroupMapping:true): core-flow, structured-review, adapter override, runner-readiness, command-surface, review-variants, review-feedback, claims-eval-plan, proof-routing.",
+    "Cross-actor case: README:68 \"agent curates\" has claimSemanticGroup=claim-discovery -> auto-placed in D1-discovery, but by ACTOR it belongs to Agent A2-curation. semanticGroup is by topic; epic-branch is partly by actor.",
+    "Slice-3 conclusion: the extraction template should emit an EXPLICIT per-claim epic label (agent-assigned), because deriving epic from claimSemanticGroup is lossy (9 ambiguities + cross-actor). This is the intent-first template change R13/R14 point to."
+  ]
+}
