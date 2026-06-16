@@ -2,26 +2,28 @@
 
 ## Workflow Trigger
 
-**방향 전환 (2026-06-16, maintainer 비준)**: 에이전트 추출이 골드셋용으로 292 클레임을 뱉었고, maintainer가 "292가 정당하게 뽑혔나"를 의심.
-`charness:debug`(charness-artifacts/debug/latest.md) 결과: 추출 실패가 아니라 **큐레이션 단계 부재**의 증상.
-제품엔 리뷰가 둘인데(라벨 리뷰=추출이 인라인으로 함 / 큐레이션 리뷰=중복·층위·worth-proving — 아무 시임도 안 함, README #10/#11 약속만 있고 review-input은 agent-reviewed 제외) 설계가 둘을 뭉갬.
-세 결함: ① audience 혼합(working-patterns의 정당한 48 developer 클레임이 user 제품 약속과 한 리스트에), ② raw 패킷을 리뷰 표면으로 씀(README #10/#11 위반), ③ 템플릿 과다-방출(동일 입력서 휴리스틱 2.6배, cli 3.7배).
-**spec 비준** (charness-artifacts/spec/2026-06-16-agent-extraction-curation-layering.md): D1 추출 고-recall 유지 / D2 audience 트랙 분리(user-product 먼저) / D3·큐레이션은 **deferred** / 측정은 raw 추출 직접 채점.
+**진행 상태 (2026-06-16, user-product HITL 완료분)**: 292 골드셋을 `claimAudience`로 세그먼트(commit `1ecdf32`, user-product 121 + developer 171, 가역성 검증, 위임 critique SAFE) → user-product 트랙에 골드셋 HITL 재개 → 대표 표본 15/24 리뷰. precision 깨끗(not-a-claim 0). 설계 수확을 spec에 fold(commit `adb488a`, fresh-eye critique NEEDS CHANGES 3블로커 반영).
 
-**메타 결정 (ground-truth-first, fresh-eye critique 반영)**: 큐레이션을 먼저 빌드하지 **않는다**. 싼 순서로 ground truth부터:
-1. **다음 첫 수: 기존 292 패킷을 `claimAudience`로 세그먼트** (새 시임 없이 gold-set-proposal.json 분할) → user-product 트랙(~95) + developer 트랙(~197). union=292 가역성 체크. HITL 큐를 user-product 트랙으로 재범위.
-2. **paused HITL을 user-product 트랙(~95)부터 재개** (R1–R9, verdict #0 accept/R8·#1 not-a-claim/R9 이월). verdict의 `not-a-claim`/`badly-bounded` 비율 = 과다추출 신호이자 큐레이터 정의.
-3. **그 verdict로 큐레이터 빌드 여부·방식 결정** — 빌드 시 새 시임보다 **review 시임 재사용**(agent-reviewed 제외 완화) 우선 검토. not-a-claim 적으면 큐레이터 불필요.
-4. slice 4 비교 측정은 ratified 골드셋 대상(raw 추출의 recall+라벨 정확도; 큐레이터 빌드됐으면 재현도 별도).
-권장 호출 프롬프트: `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 292 패킷을 audience로 세그먼트하고 user-product 트랙으로 골드셋 HITL을 재개해주세요.`
+**핵심 수확 (292의 정체)**: 과다추출이 **아님**. = audience 혼합(분리완료) + 카운트 착시 + **flatness**(121 클레임에 `claimSemanticGroup` 55종, 근중복 다수) + **proof-route 라벨 ~20% 오류**(에이전트가 `human-auditable` 과배정 / `deterministic` 과신). → 에이전트는 클레임을 잘 찾되 **proof 라우팅이 약함.**
 
-**대상 패킷**: charness-artifacts/eval-trust/goldset-v2-agent-extraction/claims-agent.json (292, extractionMode agent, 292/292 앵커, validate clean). 골드셋 제안서: 같은 디렉터리 gold-set-proposal.json.
-**HITL 세션 `hitl-20260611-082742`** paused (사유 state.yaml 기록). **이월 자산**: 규칙 R1–R9 (rules.yaml), verdict #0 README:4 accept/R8(우산=대표 e2e 시나리오 1개로 증명), #1 README:6 not-a-claim/R9(전제/프레이밍). R7=클레임 하나씩 자세히 제시(그룹 테이블 금지), R8=우산, R9=전제.
-**중요**: 큐레이션을 ground truth 전에 빌드 금지(critique: 틀린 큐레이터). raw를 큐레이션 후 채점 금지(critique: 측정 오염 — 골드셋은 raw 추출 직접 채점). docs/internal/* 제외 금지(maintainer: AGENTS/CLAUDE 링크 = 정당한 developer 클레임).
-**다이나믹 워크플로우**: 큐레이터를 빌드하면(slice 3) 그 실행에 사용(팬아웃+적대적 드롭 검증), 또는 비교 측정 팬아웃. 지금 중심 아님.
+**비준된 모델 (rules R10–R15; 런타임 `.charness/hitl/runtime/hitl-20260611-082742` gitignored; durable = `charness-artifacts/hitl/latest.md`)**:
+- **APEX (락)** = 유저-가치 포지셔닝 1줄: *"Cautilus is the framework for discovering, evaluating, and improving agent behavior. It lets you pin down the behavior that matters, prove it survives every change to your prompts, skills, and models, and improve it within explicit budgets—whether you're protecting an AGENTS.md, a single skill, a prompt, or a full agent loop."* (도구 중심 아님; `docs/specs/index.spec.md` apex가 리드할 문장; 풀 비전 + proof badge proven/declared/promised로 eval-only 릴리스 경계 정직 표시.)
+- **에픽** = 6 브랜치(Agent / setup / discover / eval / improve / Meta-Cross), ~2/브랜치 ~11개, 유저스토리 지향(도그마 아님).
+- **클레임 = DAG (R15)**: 한 클레임이 여러 에픽을 `supportingEpics[]` facet으로 지지(many-to-many, acyclic) — tree 단일부모 폭정 제거, orphan 금지(엣지 ≥1). **단 아직 미실현**: grounding artifact `charness-artifacts/eval-trust/goldset-v2-agent-extraction/epic-tree-proposal.json`는 121→11 에픽·orphan 0이지만 **TREE form**.
+- **측정 정정**: HITL은 precision/label/proof-route/tier를 잼, **recall은 못 잼**(추출 리스트를 읽어 놓친 걸 못 찾음 → 별도 probe 필요).
 
-**이전 세션 (2026-06-11, 완료)**: 게이트 설계 + docs 진실 갱신 출하 (commit `df8a7fb` 외), 갱신 문서에 에이전트 추출 (commit `75e12a6`). 이전 HITL `hitl-20260609-235609`은 superseded (그 골드셋 제안서도).
-캘리브레이션 샘플([2026-06-10-agent-extraction-readme-sample.md](../../charness-artifacts/eval-trust/2026-06-10-agent-extraction-readme-sample.md))은 verdict 잣대로 유효.
+**컴팩트 후 고정 계획 (사용자 지시: 1–4 순차)**:
+1. **DAG 실현** — `epic-tree-proposal.json`에 `supportingEpics[]` facet 도입, multi-epic 엣지 배속(모호 9건 + cross-actor README:68 "agent curates"=Agent+Discover). 모델을 말→데이터로.
+2. **recall probe** — bounded 소스 구역 1개 골라 "있어야 할 클레임" 백지 독립 열거 → 에이전트 추출과 diff → false-negative 측정. 보조: 휴리스틱 미매치 diff(노이즈 주의).
+3. **README/docs 유저-가치 재작성** — 현재 메커니즘 리드를 위 apex로 교체, `docs/specs/index.spec.md` apex + proof badge 배선("improve Cautilus as a product"와 직결).
+4. **slice 3 impl** — 추출 템플릿이 per-claim facets `{audience, recommendedProof, tier/epic, supportingEpics[]}` 직접 방출 + proof-route 가이드 강화(R12: enabler가 static 계약→deterministic / agent 행동→cautilus-eval) + 55 그룹 → ~11 에픽 collapse. **drop/dedup 큐레이터는 deferred**(표본상 불필요 근거; 필요시 새 시임보다 review 시임 재사용).
+
+권장 호출 프롬프트: `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 고정한 1–4(DAG 실현 → recall probe → README 유저-가치 재작성 → slice3 facets 템플릿)를 진행해주세요.`
+
+**대상/이월 자산**: HITL 세션 `hitl-20260611-082742` (표본 15/24 완료; 나머지 9개 선택: cli 86,91 / cdw 92,98,103,108,114 / cet 115,120; developer 트랙 171개 나중). 규칙 **R1–R15** (rules.yaml): R7 클레임 하나씩 / R8 우산 / R9 전제 / **R10 결정카드(검산포인트+추천+의심점, 5개 묶음 tally) / R11 리뷰 대상=클레임 진술(summary)이지 verbatim 아님 / R12 capability claim proof 라우팅(enabler 기준) / R13 significance(worth-proving) / R14 epic 트리 / R15 DAG-facet**. 골드셋 트랙: `gold-set-proposal.{user-product,developer}.json`. 세그먼트 도구: `scripts/segment-goldset-by-audience.mjs`(+test).
+**제약**: push는 사용자 몫(의도적 보류). handoff/claim-source 편집 후 `npm run claims:refresh:all`. ground truth 전 큐레이션 빌드 금지. raw를 큐레이션 후 채점 금지(recall은 별도 probe). docs/internal/* 제외 금지. critique/fresh-eye 리뷰는 서브에이전트 위임.
+
+**이전(2026-06-16 이전 pivot, 완료)**: `charness:debug`(charness-artifacts/debug/latest.md)가 292를 큐레이션-단계-부재 증상으로 진단 → ground-truth-first spec 비준(D1/D2/D3, 기록은 spec에 보존) → 위 HITL이 그 ground truth를 산출하며 "큐레이터 빌드?" 질문을 **"claim-graph 모델 fold"**로 대체. 이전 HITL `hitl-20260609-235609` superseded. 캘리브레이션 샘플([2026-06-10-agent-extraction-readme-sample.md](../../charness-artifacts/eval-trust/2026-06-10-agent-extraction-readme-sample.md))은 verdict 잣대로 유효.
 
 ## Current State (2026-06-10)
 
