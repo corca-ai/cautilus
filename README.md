@@ -1,10 +1,9 @@
 # Cautilus
 
-`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.
-It is a repo-local contract layer for agent and workflow behavior evaluation: define the behavior you are trying to protect once, then verify it survives prompt, skill, and wrapper changes.
-The product has three connected jobs:
-discover declared behavior claims worth proving from selected source docs, verify curated claims through bounded evaluation packets, and improve behavior with budgeted improvement once the proof surface is honest.
-Ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.
+`Cautilus` is the framework for discovering, evaluating, and improving agent behavior.
+It lets you pin down the behavior that matters, prove it survives every change to your prompts, skills, and models, and improve it within explicit budgets—whether you're protecting an `AGENTS.md`, a single skill, a prompt, or a full agent loop.
+The three jobs connect: discover the declared behavior claims worth proving from selected source docs, verify the curated claims through bounded evaluation packets, and improve behavior once the proof surface is honest.
+`Cautilus` ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.
 Agents are first-class users of the product surface.
 Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.
 `Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.
@@ -21,7 +20,7 @@ Treat claim discovery automation, improve automation, live `eval` app-runner wor
 
 ## Who It Is For
 
-- teams maintaining agent runtimes or chatbot loops whose prompts and wrappers change frequently
+- teams maintaining agent runtimes or chatbot loops whose prompts, skills, and models change frequently
 - maintainers shipping repo-owned skills who want protected validation, not trigger-only smoke checks
 - operators who want review-ready outputs and explicit comparison evidence before accepting workflow changes
 

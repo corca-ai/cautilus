@@ -1,6 +1,7 @@
 # Recall Probe — agent claim extraction, README.md:1-70
 
 Status: COMPLETE (2026-06-17), bounded single-region probe.
+Anchor note: the README:1-70 line references here reflect README at commit `d20e043`, before the item-3 user-value lead rewrite. The findings (merge behavior, principle/boundary blind spot) are content-general and stay valid; only the specific line numbers shift after the rewrite. Re-anchoring is folded into slice 3 (faceted re-extraction), not chased here.
 Spec: [2026-06-16-agent-extraction-curation-layering.md](../../spec/2026-06-16-agent-extraction-curation-layering.md) (Measurement section — recall was the open gap).
 Pinned plan item 2 (handoff): close the recall measurement gap the HITL could not reach.
 

@@ -1,7 +1,7 @@
 # Cautilus, Proven On Itself
 
 You build agents — coding assistants, chatbots, skills, workflows — and you need to know they do what you intend.
-Cautilus is a standalone CLI and agent that finds the promises your project makes, proves the ones that matter against real evidence, and improves the behavior behind them.
+Cautilus is the framework for discovering, evaluating, and improving agent behavior: it lets you pin down the behavior that matters, prove it survives every change to your prompts, skills, and models, and improve it within explicit budgets—whether you're protecting an AGENTS.md, a single skill, a prompt, or a full agent loop.
 This page is Cautilus's own promises, proven on Cautilus itself.
 
 ## How To Read This

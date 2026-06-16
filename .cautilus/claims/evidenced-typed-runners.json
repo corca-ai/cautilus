@@ -1,9 +1,9 @@
 {
-  "candidateCount": 384,
+  "candidateCount": 382,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 384,
+    "evidenceSupportIdRewriteCount": 3,
+    "matchedClaimCount": 381,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 17,
@@ -283,73 +283,28 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:bf72456c50e1505ba08fddf7e1c028aee5f233a950414edfdf5a3528d3749182",
-      "claimId": "claim-readme-md-3",
-      "claimSemanticGroup": "Agent and skill workflow",
+      "claimFingerprint": "sha256:32437872b5e4ba1773bff79aab81ce278f3baca552daa84b30ffe00bdfadfb74",
+      "claimId": "claim-readme-md-6",
+      "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as a broad positioning claim summarizing multiple proof surfaces; this should not be satisfied or planned as one dev/skill eval until decomposed into concrete claims.",
-      "groupHints": [
-        "audience:user",
-        "blocked",
-        "human-auditable",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep the claim visible as positioning, or decompose it into concrete deterministic, dev/skill, and packet-surface claims before proof planning.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
-          "line": 3,
-          "path": "README.md"
-        }
-      ],
-      "summary": "`Cautilus` keeps agent and workflow behavior honest while prompts keep changing.",
-      "unresolvedQuestions": [
-        "Which concrete subclaims should be treated as sufficient public coverage for this umbrella promise?"
-      ],
-      "verificationReadiness": "blocked",
-      "whyThisLayer": "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:27f49babf6ffb0eba4c309c3d165aa493e2fd6c790edfd631add4af96ef7ab9d",
-      "claimId": "claim-readme-md-7",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [
-        {
-          "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
-          "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
-          "supportsClaimIds": [
-            "claim-readme-md-7"
-          ]
-        }
-      ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by install and consumer-onboarding smoke: the binary installs, the repo-local skill is materialized in a fresh repo, adapter init/resolve and doctor pass, and the bounded eval path runs without copying a separate scaffold.",
       "groupHints": [
         "audience:user",
         "deterministic",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep covered by consumer:onboard:smoke and install smoke when install, starter, or adapter bootstrap behavior changes.",
+      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
+      "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.",
-          "line": 7,
+          "excerpt": "`Cautilus` ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.",
+          "line": 6,
           "path": "README.md"
         }
       ],
-      "summary": "Ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.",
-      "unresolvedQuestions": [],
+      "summary": "`Cautilus` ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
@@ -357,7 +312,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
-      "claimId": "claim-readme-md-9",
+      "claimId": "claim-readme-md-8",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -366,7 +321,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-readme-md-9"
+            "claim-readme-md-8"
           ]
         }
       ],
@@ -384,7 +339,7 @@
       "sourceRefs": [
         {
           "excerpt": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
-          "line": 9,
+          "line": 8,
           "path": "README.md"
         }
       ],
@@ -397,7 +352,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
-      "claimId": "claim-readme-md-10",
+      "claimId": "claim-readme-md-9",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -407,7 +362,7 @@
           "path": ".cautilus/claims/evidence-install-packaging-2026-05-03.json",
           "supportsClaimIds": [
             "claim-readme-md-7",
-            "claim-readme-md-10",
+            "claim-readme-md-9",
             "claim-readme-md-13"
           ]
         }
@@ -426,7 +381,7 @@
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
-          "line": 10,
+          "line": 9,
           "path": "README.md"
         }
       ],
@@ -439,7 +394,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
-      "claimId": "claim-readme-md-13",
+      "claimId": "claim-readme-md-12",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
@@ -450,7 +405,7 @@
           "supportsClaimIds": [
             "claim-readme-md-7",
             "claim-readme-md-10",
-            "claim-readme-md-13"
+            "claim-readme-md-12"
           ]
         }
       ],
@@ -468,7 +423,7 @@
       "sourceRefs": [
         {
           "excerpt": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
-          "line": 13,
+          "line": 12,
           "path": "README.md"
         }
       ],
@@ -481,7 +436,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2351b132ae813dfb9df2fca5291372e65c4232b981aab4f685bfefa3b3f135aa",
-      "claimId": "claim-readme-md-67",
+      "claimId": "claim-readme-md-66",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -497,7 +452,7 @@
       "sourceRefs": [
         {
           "excerpt": "Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
-          "line": 67,
+          "line": 66,
           "path": "README.md"
         }
       ],
@@ -509,7 +464,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:25f326356227fb2317af75db3dca0b6ac32161558c644ef0f1b1073bce3c175f",
-      "claimId": "claim-readme-md-69",
+      "claimId": "claim-readme-md-68",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -518,7 +473,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-readme-spec-report-renderer-independence-2026-05-16.json",
           "supportsClaimIds": [
-            "claim-readme-md-69"
+            "claim-readme-md-68"
           ]
         }
       ],
@@ -536,7 +491,7 @@
       "sourceRefs": [
         {
           "excerpt": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
-          "line": 69,
+          "line": 68,
           "path": "README.md"
         }
       ],
@@ -549,7 +504,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
-      "claimId": "claim-readme-md-77",
+      "claimId": "claim-readme-md-76",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -558,7 +513,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-readme-bounded-eval-loop-2026-05-16.json",
           "supportsClaimIds": [
-            "claim-readme-md-77"
+            "claim-readme-md-76"
           ]
         }
       ],
@@ -576,7 +531,7 @@
       "sourceRefs": [
         {
           "excerpt": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
-          "line": 77,
+          "line": 76,
           "path": "README.md"
         }
       ],
@@ -589,37 +544,36 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e1d40b8af228eee85cfe4d1bf48eb7be58e13f6c5737038ab9c41ef1ac6eb0d2",
-      "claimId": "claim-readme-md-92",
+      "claimId": "claim-readme-md-91",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Reviewed as a quoted agent prompt example rather than an independent product claim.",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/skill",
+        "human-auditable",
         "readme"
       ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
+      "lifecycle": "retired",
+      "nextAction": "Exclude quoted `Input (For Agent)` examples from claim candidates or attach them only as context to the surrounding scenario-proposal claim.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
-          "line": 92,
+          "line": 91,
           "path": "README.md"
         }
       ],
       "summary": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
-      "verificationReadiness": "ready-for-proof",
+      "verificationReadiness": "blocked",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fee6e2c9ba896bb38525850e1fe855de7d93cf287bc9948a54652f685ee3dce2",
-      "claimId": "claim-readme-md-103",
+      "claimId": "claim-readme-md-102",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -637,7 +591,7 @@
       "sourceRefs": [
         {
           "excerpt": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
-          "line": 103,
+          "line": 102,
           "path": "README.md"
         }
       ],
@@ -649,7 +603,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
-      "claimId": "claim-readme-md-117",
+      "claimId": "claim-readme-md-116",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -667,7 +621,7 @@
       "sourceRefs": [
         {
           "excerpt": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.",
-          "line": 117,
+          "line": 116,
           "path": "README.md"
         }
       ],
@@ -679,7 +633,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
-      "claimId": "claim-readme-md-130",
+      "claimId": "claim-readme-md-129",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -688,7 +642,7 @@
           "matchKind": "possible",
           "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-readme-md-130"
+            "claim-readme-md-129"
           ]
         }
       ],
@@ -709,7 +663,7 @@
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
-          "line": 130,
+          "line": 129,
           "path": "README.md"
         }
       ],
@@ -724,7 +678,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:26fb3d242b29d1859c5171dda55376329d47dc400c8136fb67df8562a6160c5a",
-      "claimId": "claim-readme-md-151",
+      "claimId": "claim-readme-md-150",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -741,7 +695,7 @@
       "sourceRefs": [
         {
           "excerpt": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
-          "line": 151,
+          "line": 150,
           "path": "README.md"
         }
       ],
@@ -753,7 +707,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9b65cef61eb4ef1f46e9e2d36eee961958d83aea45370a49787a9c5e27c1c18c",
-      "claimId": "claim-readme-md-157",
+      "claimId": "claim-readme-md-156",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -762,7 +716,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-readme-md-157",
+            "claim-readme-md-156",
             "claim-readme-md-160"
           ]
         }
@@ -781,7 +735,7 @@
       "sourceRefs": [
         {
           "excerpt": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.",
-          "line": 157,
+          "line": 156,
           "path": "README.md"
         }
       ],
@@ -794,7 +748,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
-      "claimId": "claim-readme-md-160",
+      "claimId": "claim-readme-md-159",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -804,7 +758,7 @@
           "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
           "supportsClaimIds": [
             "claim-readme-md-157",
-            "claim-readme-md-160"
+            "claim-readme-md-159"
           ]
         }
       ],
@@ -822,7 +776,7 @@
       "sourceRefs": [
         {
           "excerpt": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
-          "line": 160,
+          "line": 159,
           "path": "README.md"
         }
       ],
@@ -3439,37 +3393,6 @@
       "summary": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:7cf1d643616fe39751fe3f016c059ae040d3c0a3b8e1f53a1b627aa95b7d222c",
-      "claimId": "claim-docs-specs-index-spec-md-4",
-      "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:README.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Cautilus is a standalone CLI and agent that finds the promises your project makes, proves the ones that matter against real evidence, and improves the behavior behind them.",
-          "line": 4,
-          "path": "docs/specs/index.spec.md"
-        }
-      ],
-      "summary": "Cautilus is a standalone CLI and agent that finds the promises your project makes, proves the ones that matter against real evidence, and improves the behavior behind them.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -13816,42 +13739,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 278,
-      "user": 106
+      "developer": 277,
+      "user": 105
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 59,
-      "Agent and skill workflow": 85,
+      "Agent and skill workflow": 84,
       "Claim discovery and review": 51,
       "Documentation and contracts": 88,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 31,
+      "Improvement and improvement": 30,
       "Packets and reporting": 46,
       "Quality gates": 20,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 149,
-      "unknown": 235
+      "satisfied": 148,
+      "unknown": 234
     },
     "byLifecycle": {
-      "new": 384
+      "new": 381,
+      "retired": 1
     },
     "byRecommendedProof": {
-      "cautilus-eval": 115,
+      "cautilus-eval": 113,
       "deterministic": 166,
       "human-auditable": 103
     },
     "byReviewStatus": {
-      "agent-reviewed": 204,
-      "heuristic": 178,
+      "agent-reviewed": 203,
+      "heuristic": 177,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 36,
       "needs-alignment": 37,
-      "ready-for-proof": 311
+      "ready-for-proof": 309
     }
   },
   "discoveryEngine": {
@@ -14046,7 +13970,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "2e5df6cec09bb7bea10ef95cb8757920df3126b0",
+  "gitCommit": "d20e043adf092dd53afab918223c30d00cd55a2a",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14102,12 +14026,11 @@
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
     "aggregateReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-a.json",
+      ".cautilus/claims/review-result-loop1-lane-b.json",
       ".cautilus/claims/review-result-loop2-lane-a.json",
-      ".cautilus/claims/review-result-loop2-lane-b.json",
       ".cautilus/claims/review-result-deterministic-gates-2026-05-01.json",
       ".cautilus/claims/review-result-llm-batch1.json",
       ".cautilus/claims/review-result-llm-batch3.json",
-      ".cautilus/claims/review-result-positioning-boundary.json",
       ".cautilus/claims/review-result-llm-batch4.json",
       ".cautilus/claims/review-result-llm-batch5.json",
       ".cautilus/claims/review-result-llm-batch6.json",
@@ -14212,10 +14135,11 @@
       ".cautilus/claims/review-result-readiness-triage-replay-2026-06-10.json"
     ],
     "skippedReviewResultPaths": [
-      ".cautilus/claims/review-result-loop1-lane-b.json",
+      ".cautilus/claims/review-result-loop2-lane-b.json",
       ".cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
       ".cautilus/claims/review-result-evidence-dev-skill-dogfood.json",
       ".cautilus/claims/review-result-evidence-dev-skill-routing-install.json",
+      ".cautilus/claims/review-result-positioning-boundary.json",
       ".cautilus/claims/review-result-evidence-review-to-eval-flow.json",
       ".cautilus/claims/review-result-action-boundary-skill-guidance.json",
       ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
@@ -14244,11 +14168,11 @@
       ".cautilus/claims/review-result-contract-review-clustering-curation-2026-05-17.json",
       ".cautilus/claims/review-result-contract-agent-review-ownership-2026-05-17.json"
     ],
-    "appliedResultCount": 109,
-    "skippedResultCount": 31,
-    "keptUpdateCount": 293,
-    "rewrittenUpdateCount": 115,
-    "droppedUpdateCount": 235,
+    "appliedResultCount": 108,
+    "skippedResultCount": 32,
+    "keptUpdateCount": 285,
+    "rewrittenUpdateCount": 123,
+    "droppedUpdateCount": 243,
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
@@ -14502,6 +14426,39 @@
         "path": ".cautilus/claims/review-input-agent-plan-cautilus-eval-2026-05-04.json",
         "reviewedCandidateCount": 12
       }
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {
+        "assignedClusterIndexes": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "createdAt": "2026-04-30T19:42:00+09:00",
+        "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown.",
+        "inputPath": ".cautilus/claims/review-input-loop1.json",
+        "lane": "lane-a",
+        "reviewer": "codex"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
+    },
+    {
+      "clusterCount": 1,
+      "reviewRun": {
+        "assignedClusterIndexes": [
+          0,
+          1,
+          2
+        ],
+        "createdAt": "2026-04-30T20:20:11+09:00",
+        "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown.",
+        "inputPath": ".cautilus/claims/review-input-loop2.json",
+        "lane": "lane-a",
+        "reviewer": "codex"
+      },
+      "schemaVersion": "cautilus.claim_review_result.v1"
     },
     {
       "clusterCount": 1,
@@ -15639,7 +15596,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:73333ff9ba4a9f6ac1f018593ce22efaa68107582d5d7ca8608f1ad24b167ea7",
+      "contentHash": "sha256:25a463bb2b4603b3f501829fa39349fbf6d1b3eee4ad6a8638b8e075b8f3f172",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -15738,7 +15695,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:97dcbf8df7697f558d8f7e7b64dfdab99fc0f42d602c7ecb4b03437069c3170c",
+      "contentHash": "sha256:c40d1513013728a328c84da52c9da4c1722af1bd99d0c3ce039eec309f842cd3",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
