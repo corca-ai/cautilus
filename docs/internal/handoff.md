@@ -2,23 +2,23 @@
 
 ## Workflow Trigger
 
-**진행 상태 (2026-06-16, user-product HITL 완료분)**: 292 골드셋을 `claimAudience`로 세그먼트(commit `1ecdf32`, user-product 121 + developer 171, 가역성 검증, 위임 critique SAFE) → user-product 트랙에 골드셋 HITL 재개 → 대표 표본 15/24 리뷰. precision 깨끗(not-a-claim 0). 설계 수확을 spec에 fold(commit `adb488a`, fresh-eye critique NEEDS CHANGES 3블로커 반영).
+**진행 상태 (2026-06-17, 고정 계획 1–2 완료분)**: 292 골드셋을 `claimAudience`로 세그먼트(commit `1ecdf32`, user-product 121 + developer 171) → user-product HITL 표본 15/24 → 설계 수확을 spec에 fold(commit `adb488a`) → **DAG 실현(item 1, commit `6ecda96`)** + **recall probe(item 2, commit `2e5df6c`)** 완료, 둘 다 위임 fresh-eye critique(NEEDS CHANGES → 2블로커 반영: review-feedback→I1 과연결 제거, recall L8 두 번째 TRUE-FN 승격) 후 커밋. **다음: item 3(README/docs 유저-가치 재작성) → item 4(slice3 facets 템플릿).**
 
 **핵심 수확 (292의 정체)**: 과다추출이 **아님**. = audience 혼합(분리완료) + 카운트 착시 + **flatness**(121 클레임에 `claimSemanticGroup` 55종, 근중복 다수) + **proof-route 라벨 ~20% 오류**(에이전트가 `human-auditable` 과배정 / `deterministic` 과신). → 에이전트는 클레임을 잘 찾되 **proof 라우팅이 약함.**
 
 **비준된 모델 (rules R10–R15; 런타임 `.charness/hitl/runtime/hitl-20260611-082742` gitignored; durable = `charness-artifacts/hitl/latest.md`)**:
 - **APEX (락)** = 유저-가치 포지셔닝 1줄: *"Cautilus is the framework for discovering, evaluating, and improving agent behavior. It lets you pin down the behavior that matters, prove it survives every change to your prompts, skills, and models, and improve it within explicit budgets—whether you're protecting an AGENTS.md, a single skill, a prompt, or a full agent loop."* (도구 중심 아님; `docs/specs/index.spec.md` apex가 리드할 문장; 풀 비전 + proof badge proven/declared/promised로 eval-only 릴리스 경계 정직 표시.)
 - **에픽** = 6 브랜치(Agent / setup / discover / eval / improve / Meta-Cross), ~2/브랜치 ~11개, 유저스토리 지향(도그마 아님).
-- **클레임 = DAG (R15)**: 한 클레임이 여러 에픽을 `supportingEpics[]` facet으로 지지(many-to-many, acyclic) — tree 단일부모 폭정 제거, orphan 금지(엣지 ≥1). **단 아직 미실현**: grounding artifact `charness-artifacts/eval-trust/goldset-v2-agent-extraction/epic-tree-proposal.json`는 121→11 에픽·orphan 0이지만 **TREE form**.
-- **측정 정정**: HITL은 precision/label/proof-route/tier를 잼, **recall은 못 잼**(추출 리스트를 읽어 놓친 걸 못 찾음 → 별도 probe 필요).
+- **클레임 = DAG (R15) — 실현됨(item 1)**: `scripts/build-epic-dag.mjs`(+test, 결정론·재생성 idempotent)가 tree를 claim-centric DAG로 변환 → `epic-dag-proposal.json`(121 claims, orphan 0, multi-epic 엣지 **16개**, primaryEpic=tree home 보존, epicCoverage=supportingEpics 역함수). 16엣지 = 모호 그룹(review-feedback 제외) + cross-actor README:68; review-feedback 4개는 edge-audit로 싱글톤 D2 강등(진술-비근거 I1 추론 제거). **thin epic 신호**: A2-curation(2)·I1-improve(4) = 소스가 에이전트-큐레이션 actor와 improve 슬라이스를 과소문서화한다는 정직한 coverage gap(작도 artifact 아님).
+- **측정 정정 → recall 1구역 측정됨(item 2)**: HITL은 precision/label/proof-route/tier만 잼(놓친 건 행이 없어 구조적으로 못 봄). `recall-probe-readme-1-70.{md,blind.json}` = 골드셋 무접근 fresh 서브에이전트가 README:1–70 백지 열거 → 전체 292와 diff. **결과**: 에이전트 최강 표면에서 assertion-recall 높음 — 21 claim-line 중 6개는 MERGE(2–4 assertion을 1 composite로 접음), genuine FN은 **2개(README:8 "agents are first-class users" 원칙 + README:30 "not for" 부정 경계)**, 둘 다 **원칙/경계 형태**(에이전트 blind spot = capability 아닌 principle/exclusion). 주의: n=1, 최강 표면이라 directional. cli.md(과분할 표면) 추가 probe 권장.
 
-**컴팩트 후 고정 계획 (사용자 지시: 1–4 순차)**:
-1. **DAG 실현** — `epic-tree-proposal.json`에 `supportingEpics[]` facet 도입, multi-epic 엣지 배속(모호 9건 + cross-actor README:68 "agent curates"=Agent+Discover). 모델을 말→데이터로.
-2. **recall probe** — bounded 소스 구역 1개 골라 "있어야 할 클레임" 백지 독립 열거 → 에이전트 추출과 diff → false-negative 측정. 보조: 휴리스틱 미매치 diff(노이즈 주의).
-3. **README/docs 유저-가치 재작성** — 현재 메커니즘 리드를 위 apex로 교체, `docs/specs/index.spec.md` apex + proof badge 배선("improve Cautilus as a product"와 직결).
-4. **slice 3 impl** — 추출 템플릿이 per-claim facets `{audience, recommendedProof, tier/epic, supportingEpics[]}` 직접 방출 + proof-route 가이드 강화(R12: enabler가 static 계약→deterministic / agent 행동→cautilus-eval) + 55 그룹 → ~11 에픽 collapse. **drop/dedup 큐레이터는 deferred**(표본상 불필요 근거; 필요시 새 시임보다 review 시임 재사용).
+**고정 계획 (1–4 순차) — 진행 상태**:
+1. ✅ **DAG 실현 (완료, commit `6ecda96`)** — `scripts/build-epic-dag.mjs`(+test) → `epic-dag-proposal.json`. 16 multi-epic 엣지, primaryEpic 보존, orphan 0. 위 "클레임=DAG" 항목 참조.
+2. ✅ **recall probe (완료, commit `2e5df6c`)** — `recall-probe-readme-1-70.{md,blind.json}`. genuine FN 2개(원칙/경계 형태). 위 "측정 정정" 항목 참조.
+3. ⏳ **README/docs 유저-가치 재작성 (다음)** — 현재 메커니즘 리드를 락된 apex로 교체, `docs/specs/index.spec.md` apex + proof badge(proven/declared/promised) 배선("improve Cautilus as a product"와 직결). README는 claim source이므로 편집 후 `npm run claims:refresh:all`.
+4. ⏳ **slice 3 impl** — 추출 템플릿이 per-claim facets `{audience, recommendedProof, tier/epic, supportingEpics[]}` 직접 방출 + proof-route 가이드 강화(R12: enabler가 static 계약→deterministic / agent 행동→cautilus-eval) + 55 그룹 → ~11 에픽 collapse. **템플릿 추가 프롬프트(recall 수확)**: 설계-원칙 클레임("X is a first-class ...")과 부정/스코프-경계/배제 클레임("not for", "does not", "opt-in until")을 명시적으로 요구 — 측정된 blind spot 2종. **drop/dedup 큐레이터는 deferred**(표본상 불필요 근거; 필요시 새 시임보다 review 시임 재사용). md-148 비대칭(evaluate claims plan 명시하나 싱글톤)도 여기서 facets로 해소.
 
-권장 호출 프롬프트: `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 고정한 1–4(DAG 실현 → recall probe → README 유저-가치 재작성 → slice3 facets 템플릿)를 진행해주세요.`
+권장 호출 프롬프트: `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 고정한 3–4(README 유저-가치 재작성 → slice3 facets 템플릿)를 진행해주세요.`
 
 **대상/이월 자산**: HITL 세션 `hitl-20260611-082742` (표본 15/24 완료; 나머지 9개 선택: cli 86,91 / cdw 92,98,103,108,114 / cet 115,120; developer 트랙 171개 나중). 규칙 **R1–R15** (rules.yaml): R7 클레임 하나씩 / R8 우산 / R9 전제 / **R10 결정카드(검산포인트+추천+의심점, 5개 묶음 tally) / R11 리뷰 대상=클레임 진술(summary)이지 verbatim 아님 / R12 capability claim proof 라우팅(enabler 기준) / R13 significance(worth-proving) / R14 epic 트리 / R15 DAG-facet**. 골드셋 트랙: `gold-set-proposal.{user-product,developer}.json`. 세그먼트 도구: `scripts/segment-goldset-by-audience.mjs`(+test).
 **제약**: push는 사용자 몫(의도적 보류). handoff/claim-source 편집 후 `npm run claims:refresh:all`. ground truth 전 큐레이션 빌드 금지. raw를 큐레이션 후 채점 금지(recall은 별도 probe). docs/internal/* 제외 금지. critique/fresh-eye 리뷰는 서브에이전트 위임.
