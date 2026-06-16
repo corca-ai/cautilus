@@ -1,0 +1,1477 @@
+{
+  "schemaVersion": "cautilus.epic_dag_proposal.v1-draft",
+  "supersedes": "cautilus.epic_tree_proposal.v1-draft (tree form; this realizes the R15 DAG)",
+  "status": "DRAFT — R15 DAG realized over the 121-claim user-product track. primaryEpic preserves the R14 tree home; supportingEpics[] adds the proposed multi-epic edges for the 9 ambiguous groups + the cross-actor README:68 case. PENDING maintainer ratification of the proposed cross-epic edges and the authored epic user stories. Slice-3 design input.",
+  "derivedFrom": "charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.user-product.json",
+  "generatedFrom": "charness-artifacts/eval-trust/goldset-v2-agent-extraction/epic-tree-proposal.json",
+  "generator": "scripts/build-epic-dag.mjs",
+  "model": "R15 claim DAG: each claim carries supportingEpics[] (>=1 epic, many-to-many, acyclic). primaryEpic = R14 tree home, preserved for audit. No orphans. Epic coverage = inverse of supportingEpics; thin support = a recall/coverage gap. Epics lean user-story.",
+  "branches": [
+    "Agent",
+    "Setup",
+    "Discover",
+    "Eval",
+    "Improve",
+    "Meta/Cross"
+  ],
+  "epics": [
+    {
+      "epicId": "A1-orchestration",
+      "branch": "Agent",
+      "title": "The Cautilus Agent owns workflow routing, sequencing, and guardrails",
+      "userStory": "As a maintainer, I want the Cautilus Agent to own routing, sequencing, and guardrails, so that I do not hand-orchestrate the eval workflow step by step.",
+      "primaryClaimCount": 3,
+      "supportClaimCount": 4,
+      "totalSupport": 7
+    },
+    {
+      "epicId": "A2-curation-review",
+      "branch": "Agent",
+      "title": "The Cautilus Agent curates discovery packets and drives structured review",
+      "userStory": "As a maintainer, I want the agent to curate raw discovery packets and drive structured review, so that I review a trustworthy claim set instead of high-recall noise.",
+      "primaryClaimCount": 1,
+      "supportClaimCount": 1,
+      "totalSupport": 2
+    },
+    {
+      "epicId": "APEX",
+      "branch": "APEX",
+      "title": "Cautilus keeps agent/workflow behavior honest across prompt/skill/wrapper change",
+      "userStory": "As a team whose prompts/skills/models keep changing, I want to pin the behavior that matters and prove it survives every change, so that I can ship changes without silently regressing what I promised.",
+      "primaryClaimCount": 5,
+      "supportClaimCount": 0,
+      "totalSupport": 5
+    },
+    {
+      "epicId": "D1-discovery",
+      "branch": "Discover",
+      "title": "Claim discovery turns adapter-owned docs + linked Markdown into bounded proof-plan candidates (not a verdict)",
+      "userStory": "As a maintainer, I want discovery to turn my adapter-owned docs into bounded proof-plan candidates (not a verdict), so that I start from source-ref-backed claims rather than a blank page.",
+      "primaryClaimCount": 21,
+      "supportClaimCount": 2,
+      "totalSupport": 23
+    },
+    {
+      "epicId": "D2-review-refresh",
+      "branch": "Discover",
+      "title": "Deterministic claim review/refresh: cluster, apply-review, refresh, status, stale-gating, model-spend gating",
+      "userStory": "As a maintainer, I want deterministic claim review/refresh (cluster, apply-review, refresh, status, stale/model-spend gating), so that my claim set stays current and auditable without surprise model spend.",
+      "primaryClaimCount": 31,
+      "supportClaimCount": 1,
+      "totalSupport": 32
+    },
+    {
+      "epicId": "E1-evaluate",
+      "branch": "Eval",
+      "title": "evaluate fixture/observation runs checked-in inputs through adapter-owned runners and evaluates the packet",
+      "userStory": "As a maintainer, I want evaluate fixture/observation to run checked-in inputs through adapter-owned runners and evaluate the packet, so that I get a durable, comparable verdict surface.",
+      "primaryClaimCount": 15,
+      "supportClaimCount": 9,
+      "totalSupport": 24
+    },
+    {
+      "epicId": "E2-scenarios-experiments",
+      "branch": "Eval",
+      "title": "Scenario proposal/attention and skill-experiment compare over preserved baseline/variant outputs",
+      "userStory": "As a maintainer, I want scenario proposal/attention and skill-experiment compare over preserved baseline/variant outputs, so that I can judge whether a candidate actually got better.",
+      "primaryClaimCount": 12,
+      "supportClaimCount": 0,
+      "totalSupport": 12
+    },
+    {
+      "epicId": "I1-bounded-improvement",
+      "branch": "Improve",
+      "title": "Improvement search/revision is bounded by budgets, checkpoints, and blocked-readiness (bounded autonomy)",
+      "userStory": "As a maintainer, I want improvement search/revision bounded by budgets, checkpoints, and blocked-readiness, so that autonomy stays explicit and never runs away.",
+      "primaryClaimCount": 4,
+      "supportClaimCount": 0,
+      "totalSupport": 4
+    },
+    {
+      "epicId": "M1-proven-on-itself",
+      "branch": "Meta/Cross",
+      "title": "Cautilus is proven on itself: specs, dogfood evidence, held-out validation, structured review",
+      "userStory": "As an evaluator of the product itself, I want Cautilus proven on itself via specs, dogfood evidence, held-out validation, and structured review, so that I can trust the promises before adopting it.",
+      "primaryClaimCount": 7,
+      "supportClaimCount": 2,
+      "totalSupport": 9
+    },
+    {
+      "epicId": "S1-install",
+      "branch": "Setup",
+      "title": "Cautilus installs as a shared machine-level binary plus repo-local agent surface (no scaffold copy)",
+      "userStory": "As an adopter, I want Cautilus to install as a shared machine-level binary plus a repo-local agent surface, so that I add evaluation without copying another scaffold into my repo.",
+      "primaryClaimCount": 11,
+      "supportClaimCount": 2,
+      "totalSupport": 13
+    },
+    {
+      "epicId": "S2-readiness",
+      "branch": "Setup",
+      "title": "doctor/version report setup, onboarding, agent-surface, and wiring readiness",
+      "userStory": "As an adopter, I want doctor/version to report setup, onboarding, and wiring readiness, so that I know exactly what to fix before a first bounded run.",
+      "primaryClaimCount": 11,
+      "supportClaimCount": 1,
+      "totalSupport": 12
+    }
+  ],
+  "claims": [
+    {
+      "claimId": "claim-readme-md-136",
+      "sourceRef": "README.md:136",
+      "group": "agent-first",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:18",
+      "group": "agent-orchestration",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-27",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:27",
+      "group": "agent-orchestration",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-139",
+      "sourceRef": "README.md:139",
+      "group": "structured-review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review",
+        "E1-evaluate",
+        "M1-proven-on-itself"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "Adapters/reports/review/compare artifacts as first-class boundaries: review files (A2), reports + compare artifacts (E1), and auditable-by-design product boundaries (M1)."
+    },
+    {
+      "claimId": "claim-readme-md-4",
+      "sourceRef": "README.md:4",
+      "group": "product-promise",
+      "primaryEpic": "APEX",
+      "supportingEpics": [
+        "APEX"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-6",
+      "sourceRef": "README.md:6",
+      "group": "product-promise",
+      "primaryEpic": "APEX",
+      "supportingEpics": [
+        "APEX"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-137",
+      "sourceRef": "README.md:137",
+      "group": "product-promise",
+      "primaryEpic": "APEX",
+      "supportingEpics": [
+        "APEX"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-155",
+      "sourceRef": "README.md:155",
+      "group": "core-flow",
+      "primaryEpic": "APEX",
+      "supportingEpics": [
+        "APEX",
+        "S1-install",
+        "A1-orchestration"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "CLI + Agent share one adapter and return the same decision surface: APEX core flow, but the shared adapter is setup (S1) and the dual entry point is agent orchestration (A1)."
+    },
+    {
+      "claimId": "claim-readme-md-159",
+      "sourceRef": "README.md:159",
+      "group": "core-flow",
+      "primaryEpic": "APEX",
+      "supportingEpics": [
+        "APEX",
+        "S1-install",
+        "E1-evaluate"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "Minimum host-repo shape = adapter + installed agent (S1 setup) + run artifacts eval-cases/observed/summary.json (E1 evaluate); the whole-shape promise is APEX."
+    },
+    {
+      "claimId": "claim-readme-md-67",
+      "sourceRef": "README.md:67",
+      "group": "claim-discovery",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-68",
+      "sourceRef": "README.md:68",
+      "group": "claim-discovery",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "A2-curation-review"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "The agent curating the raw discovery packet is topically discovery (D1) but by ACTOR is agent curation (A2); the canonical cross-actor case R15 cites."
+    },
+    {
+      "claimId": "claim-readme-md-113",
+      "sourceRef": "README.md:113",
+      "group": "claim-discovery",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-123",
+      "sourceRef": "docs/guides/cli.md:123",
+      "group": "claims-discovery",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-128",
+      "sourceRef": "docs/guides/cli.md:128",
+      "group": "claims-discovery",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-129",
+      "sourceRef": "docs/guides/cli.md:129",
+      "group": "claims-discovery",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-134",
+      "sourceRef": "docs/guides/cli.md:134",
+      "group": "claims-extraction",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-136",
+      "sourceRef": "docs/guides/cli.md:136",
+      "group": "claims-extraction",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:5",
+      "group": "discover-command",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-15",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:15",
+      "group": "command-surface",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "A1-orchestration"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "`discover` as the single high-level user action is a discovery claim (D1) and an agent-routing/command-surface simplicity claim (A1)."
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-212",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:212",
+      "group": "scan-scope-confirmation",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-38",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:38",
+      "group": "extraction-seam",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-479",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:479",
+      "group": "command-surface",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "D2-review-refresh",
+        "A1-orchestration"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "Refresh stays a skill behavior over discover with no separate binary: refresh lifecycle (D2) as agent skill behavior (A1) layered on the discover entry point (D1)."
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-106",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:106",
+      "group": "scan-scope",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-115",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:115",
+      "group": "scan-scope",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-125",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:125",
+      "group": "discovery-boundary",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-199",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:199",
+      "group": "extraction-seam",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-566",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:566",
+      "group": "command-surface",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "A1-orchestration"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "Grouping is part of discovery output and follow-ons stay optional: discovery output shape (D1) and command-surface/routing minimalism (A1)."
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-41",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:41",
+      "group": "no-model-calls",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-190",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:190",
+      "group": "rejection handling",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-243",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:243",
+      "group": "heuristic baseline",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-124",
+      "sourceRef": "docs/guides/cli.md:124",
+      "group": "claims-refresh",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-125",
+      "sourceRef": "docs/guides/cli.md:125",
+      "group": "claims-refresh",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-127",
+      "sourceRef": "docs/guides/cli.md:127",
+      "group": "claims-refresh",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-132",
+      "sourceRef": "docs/guides/cli.md:132",
+      "group": "claims-refresh",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-138",
+      "sourceRef": "docs/guides/cli.md:138",
+      "group": "claims-review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-140",
+      "sourceRef": "docs/guides/cli.md:140",
+      "group": "claims-review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-142",
+      "sourceRef": "docs/guides/cli.md:142",
+      "group": "claims-review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-143",
+      "sourceRef": "docs/guides/cli.md:143",
+      "group": "claims-review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-145",
+      "sourceRef": "docs/guides/cli.md:145",
+      "group": "claims-eval-plan",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "E1-evaluate"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "`evaluate claims plan` turning ready claims into a claim_eval_plan packet bridges the claim lifecycle (D2) into evaluation (E1)."
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-146",
+      "sourceRef": "docs/guides/cli.md:146",
+      "group": "claims-eval-plan",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "E1-evaluate"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "Skipping claims already evidenceStatus=satisfied is claim-lifecycle gating (D2) on the evaluate planning path (E1)."
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-148",
+      "sourceRef": "docs/guides/cli.md:148",
+      "group": "claims-review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-476",
+      "sourceRef": "docs/guides/cli.md:476",
+      "group": "review-variants",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "E1-evaluate"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "`evaluate review variants` writing review-summary + per-variant results is review tooling (D2) delivered as an evaluate subcommand (E1)."
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-477",
+      "sourceRef": "docs/guides/cli.md:477",
+      "group": "review-variants",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "E1-evaluate",
+        "S2-readiness"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "Variant passed/blocked/failed verdicts (D2 review, E1 evaluate) where missing-auth executor readiness is classified as blocked unavailable_executor (S2 readiness), not a negative verdict."
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-479",
+      "sourceRef": "docs/guides/cli.md:479",
+      "group": "review-variants",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "E1-evaluate"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "partialSuccess + lifting passing outputs is review-summary semantics (D2) of an evaluate subcommand (E1)."
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-480",
+      "sourceRef": "docs/guides/cli.md:480",
+      "group": "review-variants",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "E1-evaluate"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "--output-under-test / --output-text-key shaping the review prompt is review tooling (D2) inside the evaluate review path (E1)."
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-485",
+      "sourceRef": "docs/guides/cli.md:485",
+      "group": "review-feedback",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-487",
+      "sourceRef": "docs/guides/cli.md:487",
+      "group": "review-feedback",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-489",
+      "sourceRef": "docs/guides/cli.md:489",
+      "group": "review-feedback",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-492",
+      "sourceRef": "docs/guides/cli.md:492",
+      "group": "review-feedback",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-19",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:19",
+      "group": "refresh",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-232",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:232",
+      "group": "model-spend-confirmation",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-35",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:35",
+      "group": "evidence-reconciliation",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-518",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:518",
+      "group": "status-summary",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-41",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:41",
+      "group": "refresh",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-542",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:542",
+      "group": "status-summary",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-86",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:86",
+      "group": "canonical-claim-specs",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-91",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:91",
+      "group": "canonical-claim-specs",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-226",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:226",
+      "group": "model-spend-confirmation",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-244",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:244",
+      "group": "model-spend-confirmation",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-544",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:544",
+      "group": "model-spend-confirmation",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-43",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:43",
+      "group": "model-spend gating",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-77",
+      "sourceRef": "README.md:77",
+      "group": "eval-packets",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-93",
+      "sourceRef": "README.md:93",
+      "group": "eval-packets",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-117",
+      "sourceRef": "README.md:117",
+      "group": "evaluation-surface",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-145",
+      "sourceRef": "README.md:145",
+      "group": "proof-routing",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate",
+        "D1-discovery",
+        "M1-proven-on-itself"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "Proof routing split by kind (evaluator behavior -> cautilus evaluate, deterministic -> tests/CI) governs evaluation (E1), is what discovery routes per claim (D1), and is the honest proof split that proves-on-itself (M1)."
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-218",
+      "sourceRef": "docs/guides/cli.md:218",
+      "group": "workspace",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-219",
+      "sourceRef": "docs/guides/cli.md:219",
+      "group": "workspace",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-220",
+      "sourceRef": "docs/guides/cli.md:220",
+      "group": "workspace",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-272",
+      "sourceRef": "docs/guides/cli.md:272",
+      "group": "evaluation-surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-273",
+      "sourceRef": "docs/guides/cli.md:273",
+      "group": "evaluation-surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-274",
+      "sourceRef": "docs/guides/cli.md:274",
+      "group": "evaluation-surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-276",
+      "sourceRef": "docs/guides/cli.md:276",
+      "group": "evaluation-surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-277",
+      "sourceRef": "docs/guides/cli.md:277",
+      "group": "evaluation-surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-280",
+      "sourceRef": "docs/guides/cli.md:280",
+      "group": "evaluation-surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-473",
+      "sourceRef": "docs/guides/cli.md:473",
+      "group": "reports",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-547",
+      "sourceRef": "docs/guides/cli.md:547",
+      "group": "rendering",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-186",
+      "sourceRef": "docs/guides/cli.md:186",
+      "group": "live-eval",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-187",
+      "sourceRef": "docs/guides/cli.md:187",
+      "group": "live-eval",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-188",
+      "sourceRef": "docs/guides/cli.md:188",
+      "group": "live-eval",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-189",
+      "sourceRef": "docs/guides/cli.md:189",
+      "group": "live-eval",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-263",
+      "sourceRef": "docs/guides/cli.md:263",
+      "group": "scenarios",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-264",
+      "sourceRef": "docs/guides/cli.md:264",
+      "group": "scenarios",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-265",
+      "sourceRef": "docs/guides/cli.md:265",
+      "group": "scenarios",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-266",
+      "sourceRef": "docs/guides/cli.md:266",
+      "group": "scenarios",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-268",
+      "sourceRef": "docs/guides/cli.md:268",
+      "group": "scenarios",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-319",
+      "sourceRef": "docs/guides/cli.md:319",
+      "group": "skill-experiment",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-320",
+      "sourceRef": "docs/guides/cli.md:320",
+      "group": "skill-experiment",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-391",
+      "sourceRef": "docs/guides/cli.md:391",
+      "group": "skill-testing",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-140",
+      "sourceRef": "README.md:140",
+      "group": "bounded-improvement",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": [
+        "I1-bounded-improvement"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-146",
+      "sourceRef": "README.md:146",
+      "group": "bounded-improvement",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": [
+        "I1-bounded-improvement"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-148",
+      "sourceRef": "README.md:148",
+      "group": "bounded-improvement",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": [
+        "I1-bounded-improvement"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-521",
+      "sourceRef": "docs/guides/cli.md:521",
+      "group": "improve",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": [
+        "I1-bounded-improvement"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-66",
+      "sourceRef": "README.md:66",
+      "group": "spec-surface",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-69",
+      "sourceRef": "README.md:69",
+      "group": "spec-surface",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-70",
+      "sourceRef": "README.md:70",
+      "group": "spec-surface",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-96",
+      "sourceRef": "README.md:96",
+      "group": "spec-surface",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-102",
+      "sourceRef": "README.md:102",
+      "group": "dogfood-evidence",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-120",
+      "sourceRef": "README.md:120",
+      "group": "docs-structure",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-130",
+      "sourceRef": "README.md:130",
+      "group": "held-out",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-7",
+      "sourceRef": "README.md:7",
+      "group": "install",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-13",
+      "sourceRef": "README.md:13",
+      "group": "install",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-18",
+      "sourceRef": "README.md:18",
+      "group": "release-boundary",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-19",
+      "sourceRef": "README.md:19",
+      "group": "release-boundary",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-36",
+      "sourceRef": "README.md:36",
+      "group": "install",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-157",
+      "sourceRef": "README.md:157",
+      "group": "install",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-27",
+      "sourceRef": "docs/guides/cli.md:27",
+      "group": "install-lifecycle",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-32",
+      "sourceRef": "docs/guides/cli.md:32",
+      "group": "install-lifecycle",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-45",
+      "sourceRef": "docs/guides/cli.md:45",
+      "group": "adapter-bootstrap",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-48",
+      "sourceRef": "docs/guides/cli.md:48",
+      "group": "adapter-bootstrap",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-46",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:46",
+      "group": "adapter override",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install",
+        "D1-discovery"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "extraction-input honoring --adapter is an adapter capability (S1) exercised by the discovery extraction seam (D1)."
+    },
+    {
+      "claimId": "claim-readme-md-55",
+      "sourceRef": "README.md:55",
+      "group": "onboarding",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-readme-md-163",
+      "sourceRef": "README.md:163",
+      "group": "onboarding",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-74",
+      "sourceRef": "docs/guides/cli.md:74",
+      "group": "runner-readiness",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness",
+        "E1-evaluate"
+      ],
+      "multiEpic": true,
+      "edgeRationale": "Fixture-runtime runs reported with fixture-smoke proof class is runner readiness (S2) about evaluate runs and their proof reporting (E1)."
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-110",
+      "sourceRef": "docs/guides/cli.md:110",
+      "group": "cli-discovery",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-112",
+      "sourceRef": "docs/guides/cli.md:112",
+      "group": "doctor",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-113",
+      "sourceRef": "docs/guides/cli.md:113",
+      "group": "doctor",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-115",
+      "sourceRef": "docs/guides/cli.md:115",
+      "group": "doctor",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-117",
+      "sourceRef": "docs/guides/cli.md:117",
+      "group": "doctor",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-120",
+      "sourceRef": "docs/guides/cli.md:120",
+      "group": "doctor",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-121",
+      "sourceRef": "docs/guides/cli.md:121",
+      "group": "doctor",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-280",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:280",
+      "group": "CLI surface",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness"
+      ],
+      "multiEpic": false
+    }
+  ],
+  "multiEpicClaims": [
+    "claim-readme-md-139",
+    "claim-readme-md-155",
+    "claim-readme-md-159",
+    "claim-readme-md-68",
+    "claim-docs-contracts-claim-discovery-workflow-md-15",
+    "claim-docs-contracts-claim-discovery-workflow-md-479",
+    "claim-docs-contracts-claim-discovery-workflow-md-566",
+    "claim-docs-guides-cli-md-145",
+    "claim-docs-guides-cli-md-146",
+    "claim-docs-guides-cli-md-476",
+    "claim-docs-guides-cli-md-477",
+    "claim-docs-guides-cli-md-479",
+    "claim-docs-guides-cli-md-480",
+    "claim-readme-md-145",
+    "claim-docs-contracts-claim-extraction-template-md-46",
+    "claim-docs-guides-cli-md-74"
+  ],
+  "epicCoverage": {
+    "A1-orchestration": {
+      "branch": "Agent",
+      "primary": 3,
+      "supporting": 4,
+      "total": 7
+    },
+    "A2-curation-review": {
+      "branch": "Agent",
+      "primary": 1,
+      "supporting": 1,
+      "total": 2
+    },
+    "APEX": {
+      "branch": "APEX",
+      "primary": 5,
+      "supporting": 0,
+      "total": 5
+    },
+    "D1-discovery": {
+      "branch": "Discover",
+      "primary": 21,
+      "supporting": 2,
+      "total": 23
+    },
+    "D2-review-refresh": {
+      "branch": "Discover",
+      "primary": 31,
+      "supporting": 1,
+      "total": 32
+    },
+    "E1-evaluate": {
+      "branch": "Eval",
+      "primary": 15,
+      "supporting": 9,
+      "total": 24
+    },
+    "E2-scenarios-experiments": {
+      "branch": "Eval",
+      "primary": 12,
+      "supporting": 0,
+      "total": 12
+    },
+    "I1-bounded-improvement": {
+      "branch": "Improve",
+      "primary": 4,
+      "supporting": 0,
+      "total": 4
+    },
+    "M1-proven-on-itself": {
+      "branch": "Meta/Cross",
+      "primary": 7,
+      "supporting": 2,
+      "total": 9
+    },
+    "S1-install": {
+      "branch": "Setup",
+      "primary": 11,
+      "supporting": 2,
+      "total": 13
+    },
+    "S2-readiness": {
+      "branch": "Setup",
+      "primary": 11,
+      "supporting": 1,
+      "total": 12
+    }
+  },
+  "thinEpics": [
+    {
+      "epicId": "A2-curation-review",
+      "total": 2
+    }
+  ],
+  "dagInvariants": {
+    "totalClaims": 121,
+    "orphanCount": 0,
+    "multiEpicClaimCount": 16,
+    "everyClaimEdgesToAtLeastOneEpic": true,
+    "acyclicByConstruction": true,
+    "pass": true
+  },
+  "errors": [],
+  "openQuestions": [
+    "Proposed cross-epic edges (16 claims: the flagged ambiguous groups minus review-feedback, + cross-actor README:68) await maintainer ratification; each carries an assertion-grounded edgeRationale.",
+    "Edge audit (fresh-eye): review-feedback (cli.md:485/487/489/492) was flagged ambiguous but resolved to SINGLETON D2 — its assertions are review-feedback packet structure/semantics (489/492 explicitly distinguish feedback from eval pass/fail), and the feedback->improve link is an epic-level dependency, not per-claim I1 membership. This is why I1 stays thin (total 4); thin I1 is an honest coverage signal (the improve slice is opt-in/being rewritten per README:20), not a drawing gap.",
+    "Asymmetry to resolve at slice-3: cli.md:148 ('review-input, apply-review, evaluate claims plan reject stale claim packets') names `evaluate claims plan` like cli.md:145/146 (which edge D2->E1) but stays a SINGLETON because its group (claims-review) was not flagged ambiguous in the tree. Group-derived flagging is lossy; per-claim facets emitted by the template are the real fix.",
+    "Thin epic A2-curation-review (total 2) is a real coverage signal, not a drawing artifact: the source docs state the agent-curation ACTOR only at README:68/:139; most curation/review content is topic-labeled D2 and stays home there. The honest reading is that the product under-documents the agent-curation actor.",
+    "Authored epic user stories (R15 user-story lean) await maintainer ratification; titles are carried from the ratified tree.",
+    "Slice-3 conclusion stands: the extraction template should emit per-claim facets {audience, recommendedProof, tier/epic, supportingEpics[]} directly, because deriving epics + edges from claimSemanticGroup is lossy (the 16 multi-epic edges here were hand-routed from assertions, and the 4 review-feedback de-edges + the cli.md:148 asymmetry show group-flagging misses real edges)."
+  ]
+}
