@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:be7bda3f907353aa84b9a5d80b3cedcac73abb5a4a02662d8c31f729d5c28637"
+      "contentHash": "sha256:db16c3dc6b602e7ea04b5fd4f6d8b3a25a5675a84b0582afc95cede1307fc544"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "d20e043adf092dd53afab918223c30d00cd55a2a",
+  "claimsPacketGitCommit": "7cdfe8f37a3fb59442d8acf49e8c26f076bd33ff",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 382,
+  "claimsPacketCandidateCount": 383,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -572,24 +572,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 382,
+    "totalRawClaimCount": 383,
     "userRawClaimCount": 105,
     "userMappedToCanonicalCount": 105,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 307,
+    "semanticReviewRecommendedCount": 308,
     "userSemanticReviewRecommendedCount": 34,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 277,
+      "mapped-to-maintainer-canonical": 278,
       "mapped-to-user-canonical": 105
     },
     "byAudience": {
-      "developer": 277,
+      "developer": 278,
       "user": 105
     },
     "byMappingConfidence": {
       "high": 75,
       "low": 20,
-      "medium": 287
+      "medium": 288
     },
     "byUserCanonicalClaimId": {
       "U1": 23,
@@ -603,7 +603,7 @@
     "byMaintainerCanonicalClaimId": {
       "M1": 6,
       "M10": 11,
-      "M11": 36,
+      "M11": 37,
       "M12": 12,
       "M2": 15,
       "M3": 68,
@@ -632,20 +632,20 @@
       "claim-readme-md-156",
       "claim-readme-md-159",
       "claim-docs-contracts-adapter-contract-md-3",
-      "claim-docs-contracts-adapter-contract-md-212",
-      "claim-docs-contracts-adapter-contract-md-213",
-      "claim-docs-contracts-adapter-contract-md-223",
-      "claim-docs-contracts-adapter-contract-md-226",
-      "claim-docs-contracts-adapter-contract-md-287",
-      "claim-docs-contracts-adapter-contract-md-326",
-      "claim-docs-contracts-adapter-contract-md-416",
-      "claim-docs-contracts-adapter-contract-md-435",
-      "claim-docs-contracts-adapter-contract-md-441",
-      "claim-docs-contracts-adapter-contract-md-483",
-      "claim-docs-contracts-adapter-contract-md-487",
-      "claim-docs-contracts-adapter-contract-md-541",
-      "claim-docs-contracts-adapter-contract-md-548",
-      "claim-docs-contracts-adapter-contract-md-550",
+      "claim-docs-contracts-adapter-contract-md-220",
+      "claim-docs-contracts-adapter-contract-md-221",
+      "claim-docs-contracts-adapter-contract-md-231",
+      "claim-docs-contracts-adapter-contract-md-234",
+      "claim-docs-contracts-adapter-contract-md-298",
+      "claim-docs-contracts-adapter-contract-md-337",
+      "claim-docs-contracts-adapter-contract-md-427",
+      "claim-docs-contracts-adapter-contract-md-446",
+      "claim-docs-contracts-adapter-contract-md-452",
+      "claim-docs-contracts-adapter-contract-md-494",
+      "claim-docs-contracts-adapter-contract-md-498",
+      "claim-docs-contracts-adapter-contract-md-552",
+      "claim-docs-contracts-adapter-contract-md-559",
+      "claim-docs-contracts-adapter-contract-md-561",
       "claim-docs-contracts-review-packet-md-3",
       "claim-docs-guides-cli-md-32",
       "claim-docs-guides-cli-md-112",
@@ -863,11 +863,12 @@
       "claim-docs-specs-user-evidence-gaps-spec-md-36",
       "claim-docs-contracts-claim-extraction-template-md-18",
       "claim-docs-contracts-claim-extraction-template-md-39",
-      "claim-docs-contracts-claim-extraction-template-md-68",
-      "claim-docs-contracts-claim-extraction-template-md-243",
-      "claim-docs-contracts-claim-extraction-template-md-285",
-      "claim-docs-contracts-claim-extraction-template-md-292",
-      "claim-docs-contracts-claim-extraction-template-md-343",
+      "claim-docs-contracts-claim-extraction-template-md-76",
+      "claim-docs-contracts-claim-extraction-template-md-177",
+      "claim-docs-contracts-claim-extraction-template-md-256",
+      "claim-docs-contracts-claim-extraction-template-md-298",
+      "claim-docs-contracts-claim-extraction-template-md-305",
+      "claim-docs-contracts-claim-extraction-template-md-356",
       "claim-docs-contracts-facet-decomposition-md-30",
       "claim-docs-contracts-facet-decomposition-md-36",
       "claim-docs-contracts-facet-decomposition-md-46",
@@ -1176,10 +1177,10 @@
         "claim-docs-specs-user-claim-discovery-spec-md-156",
         "claim-docs-specs-user-claim-discovery-spec-md-158",
         "claim-docs-specs-user-claim-discovery-spec-md-159",
-        "claim-docs-specs-user-claim-discovery-spec-md-189",
-        "claim-docs-specs-user-claim-discovery-spec-md-218",
-        "claim-docs-specs-user-claim-discovery-spec-md-258",
-        "claim-docs-specs-user-claim-discovery-spec-md-261",
+        "claim-docs-specs-user-claim-discovery-spec-md-190",
+        "claim-docs-specs-user-claim-discovery-spec-md-219",
+        "claim-docs-specs-user-claim-discovery-spec-md-259",
+        "claim-docs-specs-user-claim-discovery-spec-md-262",
         "claim-docs-specs-user-evidence-gaps-spec-md-36"
       ],
       "absorbedRawClaims": [
@@ -1532,25 +1533,25 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-189",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-190",
           "claimFingerprint": "sha256:8df6d382126c2db553483936b1fb955ba4d47b831cf572fb543379dcb3b64599",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-218",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-219",
           "claimFingerprint": "sha256:0c4ab653f7b1e02eaccfa00173062f5ec2afe2a77eca509019e274475abe05c0",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-258",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-259",
           "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-262",
           "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -2037,10 +2038,10 @@
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
         "claim-agents-md-142",
-        "claim-docs-contracts-adapter-contract-md-483",
-        "claim-docs-contracts-adapter-contract-md-541",
-        "claim-docs-contracts-adapter-contract-md-548",
-        "claim-docs-contracts-adapter-contract-md-550",
+        "claim-docs-contracts-adapter-contract-md-494",
+        "claim-docs-contracts-adapter-contract-md-552",
+        "claim-docs-contracts-adapter-contract-md-559",
+        "claim-docs-contracts-adapter-contract-md-561",
         "claim-docs-internal-working-patterns-md-63",
         "claim-docs-master-plan-md-32",
         "claim-docs-specs-index-spec-md-26",
@@ -2089,10 +2090,10 @@
         "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
         "claim-docs-contracts-claim-extraction-template-md-18",
         "claim-docs-contracts-claim-extraction-template-md-39",
-        "claim-docs-contracts-claim-extraction-template-md-68",
-        "claim-docs-contracts-claim-extraction-template-md-285",
-        "claim-docs-contracts-claim-extraction-template-md-292",
-        "claim-docs-contracts-claim-extraction-template-md-343",
+        "claim-docs-contracts-claim-extraction-template-md-76",
+        "claim-docs-contracts-claim-extraction-template-md-298",
+        "claim-docs-contracts-claim-extraction-template-md-305",
+        "claim-docs-contracts-claim-extraction-template-md-356",
         "claim-docs-contracts-facet-decomposition-md-30",
         "claim-docs-contracts-facet-decomposition-md-36",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
@@ -2118,25 +2119,25 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-483",
+          "claimId": "claim-docs-contracts-adapter-contract-md-494",
           "claimFingerprint": "sha256:30809430ddd6084516693e4e61aa78edcd386bf19c693df0ca749489c2df3106",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-541",
+          "claimId": "claim-docs-contracts-adapter-contract-md-552",
           "claimFingerprint": "sha256:78e260ea8e673effe8d522f11502864040d3fc7e31e6450a37b22c5a0e994538",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-548",
+          "claimId": "claim-docs-contracts-adapter-contract-md-559",
           "claimFingerprint": "sha256:ec839463e3299779977eb2918b2a34ca128e4ce9bfd2443fcc88c2e9be3193bb",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-550",
+          "claimId": "claim-docs-contracts-adapter-contract-md-561",
           "claimFingerprint": "sha256:a2a0d02f2d28d7dc59c680f97ca9862c67e7738e064b25d1e3f7116d946b2a42",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
@@ -2430,25 +2431,25 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-76",
           "claimFingerprint": "sha256:4b2dd72dd4baab0ba4020a0b5ae03163f8d3aaf99ad4490d3fbad5c22d9adc0e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-285",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-298",
           "claimFingerprint": "sha256:a670aab3290f9c6563f58afe02c7f997f12ae2aa05997f4c787772a224ddc31a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-292",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-305",
           "claimFingerprint": "sha256:1cf5a39fa262c5868a4e398631fa5b3c77bc060ebcd6b7b08bb726b24976d83c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-343",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-356",
           "claimFingerprint": "sha256:fa4488f8fbcecb2111ae4027b6c9225a1ff0f0d784b69a96ee9cd4d7ffd296dc",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2541,11 +2542,11 @@
         "claim-agents-md-29",
         "claim-agents-md-95",
         "claim-docs-contracts-adapter-contract-md-3",
-        "claim-docs-contracts-adapter-contract-md-213",
-        "claim-docs-contracts-adapter-contract-md-226",
-        "claim-docs-contracts-adapter-contract-md-287",
-        "claim-docs-contracts-adapter-contract-md-326",
-        "claim-docs-contracts-adapter-contract-md-416",
+        "claim-docs-contracts-adapter-contract-md-221",
+        "claim-docs-contracts-adapter-contract-md-234",
+        "claim-docs-contracts-adapter-contract-md-298",
+        "claim-docs-contracts-adapter-contract-md-337",
+        "claim-docs-contracts-adapter-contract-md-427",
         "claim-docs-master-plan-md-29",
         "claim-docs-master-plan-md-57",
         "claim-docs-specs-index-spec-md-63",
@@ -2632,31 +2633,31 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-213",
+          "claimId": "claim-docs-contracts-adapter-contract-md-221",
           "claimFingerprint": "sha256:b04dc196e7d5dc81521ce2720d0e3c2a142a089d3f710efc371ec5bd648f8a67",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-226",
+          "claimId": "claim-docs-contracts-adapter-contract-md-234",
           "claimFingerprint": "sha256:e072f1310848f030f869ee7e1ccd5ee2da5b858d9bf1278729f22c0e47cc1b0b",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-287",
+          "claimId": "claim-docs-contracts-adapter-contract-md-298",
           "claimFingerprint": "sha256:a4cb7622c26b143238198eb59a666e408efaec3b04eaa0f7681f3a2fac020c30",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-326",
+          "claimId": "claim-docs-contracts-adapter-contract-md-337",
           "claimFingerprint": "sha256:1470cdcbbe6feea4e845e3ac199d21c8e236a3363741f8ab2aa22919279ee094",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-416",
+          "claimId": "claim-docs-contracts-adapter-contract-md-427",
           "claimFingerprint": "sha256:06f26f14f677359b619ed7597b5c5a9f47190a0bd56e7dca43992c9c0f2c33b1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3039,7 +3040,7 @@
       "title": "Evaluation Surfaces And Runners",
       "absorbedRawClaimCount": 24,
       "absorbedRawClaimIds": [
-        "claim-docs-contracts-adapter-contract-md-212",
+        "claim-docs-contracts-adapter-contract-md-220",
         "claim-docs-master-plan-md-85",
         "claim-docs-specs-index-spec-md-40",
         "claim-docs-contracts-claim-discovery-workflow-md-503",
@@ -3066,7 +3067,7 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-212",
+          "claimId": "claim-docs-contracts-adapter-contract-md-220",
           "claimFingerprint": "sha256:99c684dbda2accf4db9b5a114cb2259804c721b6a3d4e59f3720af41a6964b31",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3691,12 +3692,12 @@
     {
       "canonicalClaimId": "M11",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 36,
+      "absorbedRawClaimCount": 37,
       "absorbedRawClaimIds": [
-        "claim-docs-contracts-adapter-contract-md-223",
-        "claim-docs-contracts-adapter-contract-md-435",
-        "claim-docs-contracts-adapter-contract-md-441",
-        "claim-docs-contracts-adapter-contract-md-487",
+        "claim-docs-contracts-adapter-contract-md-231",
+        "claim-docs-contracts-adapter-contract-md-446",
+        "claim-docs-contracts-adapter-contract-md-452",
+        "claim-docs-contracts-adapter-contract-md-498",
         "claim-docs-contracts-review-packet-md-3",
         "claim-docs-master-plan-md-30",
         "claim-docs-master-plan-md-188",
@@ -3720,7 +3721,8 @@
         "claim-docs-contracts-workbench-instance-discovery-md-99",
         "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
         "claim-docs-specs-rules-agent-human-resumability-spec-md-3",
-        "claim-docs-contracts-claim-extraction-template-md-243",
+        "claim-docs-contracts-claim-extraction-template-md-177",
+        "claim-docs-contracts-claim-extraction-template-md-256",
         "claim-docs-contracts-facet-decomposition-md-46",
         "claim-docs-contracts-facet-decomposition-md-58",
         "claim-docs-contracts-improvement-md-27",
@@ -3732,25 +3734,25 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-223",
+          "claimId": "claim-docs-contracts-adapter-contract-md-231",
           "claimFingerprint": "sha256:5fea6f3ba8b3a4762dbf58e441f6a38ecb9c3c907910117743bd31d19123eaba",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-435",
+          "claimId": "claim-docs-contracts-adapter-contract-md-446",
           "claimFingerprint": "sha256:a062995eb812d2cbdb2124001081cdbc1d3f13b11d0341b66c21a5eee78cb673",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-441",
+          "claimId": "claim-docs-contracts-adapter-contract-md-452",
           "claimFingerprint": "sha256:f8a7b8b6077d204569c0fb22707b27e01368f625cf2f02abaa05ba5aa0b44a0d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-adapter-contract-md-487",
+          "claimId": "claim-docs-contracts-adapter-contract-md-498",
           "claimFingerprint": "sha256:b286a640322877c0e8e2aa64af228aaf01155e349464dd1cc83d21a79b51083d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3894,7 +3896,13 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-extraction-template-md-243",
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-177",
+          "claimFingerprint": "sha256:88ae4b08fdb7538933f7cc3af97548a87918a4983c11d7603e50bac6a704ce88",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-256",
           "claimFingerprint": "sha256:87799711d3d4c0ea9cfe36c3d3cdbe2932ba7b467fffb9ffaa532f5b126dcae1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3950,20 +3958,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 19
+        "unknown": 20
       },
       "byReviewStatus": {
         "agent-reviewed": 19,
-        "heuristic": 17
+        "heuristic": 18
       },
       "byRecommendedProof": {
-        "cautilus-eval": 3,
+        "cautilus-eval": 4,
         "deterministic": 21,
         "human-auditable": 12
       },
       "byMappingConfidence": {
         "low": 2,
-        "medium": 34
+        "medium": 35
       }
     },
     {
@@ -5241,12 +5249,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-212",
+      "claimId": "claim-docs-contracts-adapter-contract-md-220",
       "summary": "When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 212,
+          "line": 220,
           "excerpt": "When an eval run uses `runtime=fixture`, observed proof is downgraded to `fixture-smoke` and the adapter-declared class is preserved only as declared metadata."
         }
       ],
@@ -5280,12 +5288,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-213",
+      "claimId": "claim-docs-contracts-adapter-contract-md-221",
       "summary": "When an eval run uses `runtime=product`, the adapter-owned command is expected to exercise a headless product path; the runtime label does not make product proof ready without a current runner assessment.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 213,
+          "line": 221,
           "excerpt": "When an eval run uses `runtime=product`, the adapter-owned command is expected to exercise a headless product path; the runtime label does not make product proof ready without a current runner assessment."
         }
       ],
@@ -5321,12 +5329,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-223",
+      "claimId": "claim-docs-contracts-adapter-contract-md-231",
       "summary": "The binary uses these hints before portable path defaults to label review queues, while the Cautilus Agent or a human reviewer may still correct semantic edge cases.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 223,
+          "line": 231,
           "excerpt": "The binary uses these hints before portable path defaults to label review queues, while the Cautilus Agent or a human reviewer may still correct semantic edge cases."
         }
       ],
@@ -5361,12 +5369,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-226",
+      "claimId": "claim-docs-contracts-adapter-contract-md-234",
       "summary": "If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 226,
+          "line": 234,
           "excerpt": "If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy."
         }
       ],
@@ -5398,12 +5406,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-287",
+      "claimId": "claim-docs-contracts-adapter-contract-md-298",
       "summary": "`kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 287,
+          "line": 298,
           "excerpt": "`kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script."
         }
       ],
@@ -5438,12 +5446,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-326",
+      "claimId": "claim-docs-contracts-adapter-contract-md-337",
       "summary": "The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 326,
+          "line": 337,
           "excerpt": "The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`."
         }
       ],
@@ -5476,12 +5484,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-416",
+      "claimId": "claim-docs-contracts-adapter-contract-md-427",
       "summary": "This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 416,
+          "line": 427,
           "excerpt": "This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file."
         }
       ],
@@ -5514,12 +5522,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-435",
+      "claimId": "claim-docs-contracts-adapter-contract-md-446",
       "summary": "A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 435,
+          "line": 446,
           "excerpt": "A named adapter whose eval-test commands produce rich scenario-by-scenario signals should also persist them as files so executor variants and human reviewers can ground their verdicts on the same numbers."
         }
       ],
@@ -5555,12 +5563,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-441",
+      "claimId": "claim-docs-contracts-adapter-contract-md-452",
       "summary": "point review prompts at the same path so human and machine review can refer to the same compare output",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 441,
+          "line": 452,
           "excerpt": "point review prompts at the same path so human and machine review can refer to the same compare output"
         }
       ],
@@ -5596,12 +5604,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-483",
+      "claimId": "claim-docs-contracts-adapter-contract-md-494",
       "summary": "If a checked-in wrapper can observe provider cost or token usage, let it emit an optional `telemetry` object in the structured verdict payload instead of hiding that data in stderr text.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 483,
+          "line": 494,
           "excerpt": "If a checked-in wrapper can observe provider cost or token usage, let it emit an optional `telemetry` object in the structured verdict payload instead of hiding that data in stderr text."
         }
       ],
@@ -5630,12 +5638,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-487",
+      "claimId": "claim-docs-contracts-adapter-contract-md-498",
       "summary": "Each review prompt should point at human-visible failure:",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 487,
+          "line": 498,
           "excerpt": "Each review prompt should point at human-visible failure:"
         }
       ],
@@ -5671,12 +5679,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-541",
+      "claimId": "claim-docs-contracts-adapter-contract-md-552",
       "summary": "Use `--codex-home-mode isolated` when the eval should not load the operator's `CODEX_HOME` config, plugins, or sessions.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 541,
+          "line": 552,
           "excerpt": "Use `--codex-home-mode isolated` when the eval should not load the operator's `CODEX_HOME` config, plugins, or sessions."
         }
       ],
@@ -5708,12 +5716,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-548",
+      "claimId": "claim-docs-contracts-adapter-contract-md-559",
       "summary": "Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 548,
+          "line": 559,
           "excerpt": "Past runs showed some CLIs can reject schemas that declare object properties without also listing them in `required`, even when plain JSON Schema would allow them as optional."
         }
       ],
@@ -5744,12 +5752,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-adapter-contract-md-550",
+      "claimId": "claim-docs-contracts-adapter-contract-md-561",
       "summary": "Past sessions showed `codex exec` can emit skill-load errors on stderr while still returning a successful exit code.",
       "sourceRefs": [
         {
           "path": "docs/contracts/adapter-contract.md",
-          "line": 550,
+          "line": 561,
           "excerpt": "Past sessions showed `codex exec` can emit skill-load errors on stderr while still returning a successful exit code."
         }
       ],
@@ -15996,12 +16004,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-189",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-190",
       "summary": "That means it should inspect the saved candidates, compare them with the repo, reduce false positives, raise possible false negatives, and preserve source refs when it asks the user what to do next.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 189,
+          "line": 190,
           "excerpt": "That means it should inspect the saved candidates, compare them with the repo, reduce false positives, raise possible false negatives, and preserve source refs when it asks the user what to do next."
         }
       ],
@@ -16039,12 +16047,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-218",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-219",
       "summary": "`discover claims status` owns the next-action summary over a saved discovery packet.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 218,
+          "line": 219,
           "excerpt": "`discover claims status` owns the next-action summary over a saved discovery packet."
         }
       ],
@@ -16082,12 +16090,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-258",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-259",
       "summary": "`discover claims status` owns next-action summaries over that saved packet.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 258,
+          "line": 259,
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet."
         }
       ],
@@ -16125,12 +16133,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-262",
       "summary": "This spec only verifies that the agent-run skill check is prepared.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 261,
+          "line": 262,
           "excerpt": "This spec only verifies that the agent-run skill check is prepared."
         }
       ],
@@ -17140,12 +17148,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-76",
       "summary": "**Uncertainty rule.** When the agent is unsure whether text is a claim, it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 68,
+          "line": 76,
           "excerpt": "**Uncertainty rule.** When the agent is unsure whether text is a claim, it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it."
         }
       ],
@@ -17176,12 +17184,48 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-243",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-177",
+      "summary": "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics` (de-duplicated and led by `primaryEpic`), a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 177,
+          "excerpt": "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics` (de-duplicated and led by `primaryEpic`), a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:88ae4b08fdb7538933f7cc3af97548a87918a4983c11d7603e50bac6a704ce88",
+      "canonicalClaimId": "M11",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M14",
+      "runnerUpScore": 7,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "cautilu",
+        "discovery",
+        "evaluate",
+        "fixture",
+        "normalized",
+        "review",
+        "them"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-256",
       "summary": "The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 243,
+          "line": 256,
           "excerpt": "The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests."
         }
       ],
@@ -17215,12 +17259,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-285",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-298",
       "summary": "`skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 285,
+          "line": 298,
           "excerpt": "`skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule."
         }
       ],
@@ -17256,12 +17300,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-292",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-305",
       "summary": "(`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.)",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 292,
+          "line": 305,
           "excerpt": "(`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.)"
         }
       ],
@@ -17292,12 +17336,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-extraction-template-md-343",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-356",
       "summary": "The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-extraction-template.md",
-          "line": 343,
+          "line": 356,
           "excerpt": "The harness decision relaxes the ordering: slice 4 depends on slice 1 plus the gold-set maintainer verdicts (the repurposed S0 HITL queue), not on slice 2, so the comparison can run before the skill surface ships."
         }
       ],
