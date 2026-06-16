@@ -1,0 +1,2184 @@
+{
+  "schemaVersion": "cautilus.gold_set_proposal.v2",
+  "purpose": "Regenerated gold set: maintainer-ratified answer key over agent extraction output (template v1) for grading extraction quality and proof routing; supersedes the 2026-06-10 heuristic-sampled proposal.",
+  "sourcePacket": "charness-artifacts/eval-trust/goldset-v2-agent-extraction/claims-agent.json",
+  "packetGitCommit": "0205b0d67d1aee7a30a86104241d37ee70f1195c",
+  "extractionMode": "agent",
+  "verdictDefinitions": {
+    "accept": "claim correctly extracted and all agent labels correct",
+    "relabel": "claim correctly extracted but one or more labels corrected (correction in note)",
+    "not-a-claim": "text should not have been extracted as a behavior claim",
+    "badly-bounded": "real claim but wrong excerpt boundary, wrong merge, or duplicate (detail in note)",
+    "pending": "not yet reviewed"
+  },
+  "carriedForwardRules": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6"
+  ],
+  "track": "user-product",
+  "segmentedBy": "claimAudience",
+  "segmentedFrom": "charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.json",
+  "entries": [
+    {
+      "claimId": "claim-readme-md-4",
+      "claimFingerprint": "sha256:b37b56e361f2d1d9f0e33f83a8a501f94375533b5873851239b0820f26940158",
+      "sourceRef": "README.md:4",
+      "summary": "Cautilus keeps agent and workflow behavior honest across prompt, skill, and wrapper changes by acting as a repo-local contract layer where protected behavior is defined once and then verified to survive change.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "product-promise"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-6",
+      "claimFingerprint": "sha256:d1c0e7242d9c2fcbbefd9417412bc882b84449ccb0b18a47db3d3b40bdbe4a69",
+      "sourceRef": "README.md:6",
+      "summary": "The product performs three connected jobs: claim discovery from selected source docs, verification of curated claims through bounded evaluation packets, and budgeted behavior improvement once the proof surface is honest.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "product-promise"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-7",
+      "claimFingerprint": "sha256:27f49babf6ffb0eba4c309c3d165aa493e2fd6c790edfd631add4af96ef7ab9d",
+      "sourceRef": "README.md:7",
+      "summary": "Cautilus ships as a standalone binary plus the Cautilus Agent, installable into a host repo without copying another scaffold first.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "install"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-readme-md-7",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-13",
+      "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
+      "sourceRef": "README.md:13",
+      "summary": "The binary is shared at machine level while the Cautilus Agent surface, adapter wiring, prompts, and instruction routing stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and repo-owned.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "install"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-readme-md-13",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-18",
+      "claimFingerprint": "sha256:0ebd46f6f44f1425e2c0f62b6ace10e3aa778ab8c11b4fdba0fac00f5739b8ff",
+      "sourceRef": "README.md:18",
+      "summary": "The current external-adoption slice is eval-only: host repos can use evaluate fixture, evaluate observation, and post-run evaluate skill-experiment with checked-in fixtures and host-owned adapters, while discovery, improve, live app-runner, and review-learning slices stay opt-in until the rewrite closes.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "release-boundary"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-19",
+      "claimFingerprint": "sha256:8bf95f9315ce120371a13d106c151cde2c265da7e6ac7c920ab08905efc7b406",
+      "sourceRef": "README.md:19",
+      "summary": "skill-experiment compare only compares host-preserved baseline and variant outputs and never clones, installs, or executes skills.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "release-boundary"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-36",
+      "claimFingerprint": "sha256:c4d76a0109b31ae8120dbd25811c7cd13c16c7e6f208e53432a62ae16bb6b591",
+      "sourceRef": "README.md:36",
+      "summary": "Cautilus supports installation and operation on native macOS and native Linux.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "blocked",
+        "claimAudience": "user",
+        "claimSemanticGroup": "install"
+      },
+      "unresolvedQuestions": [
+        "Is the prerequisites list a platform-support promise (provable via install/CI matrix) or only a statement of user-side requirements with no support commitment?"
+      ],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-55",
+      "claimFingerprint": "sha256:7f2153a2863ecefb8e467538bd6ce5568ebcc796ce1ad4ceca8956e961ed77de",
+      "sourceRef": "README.md:55",
+      "summary": "An agent can complete host-repo setup by repeating cautilus doctor --next-action and following each packet until cautilus doctor reports readiness plus a first_bounded_run.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "onboarding"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-66",
+      "claimFingerprint": "sha256:b0e6459a0cb2fedb2cdae59831454b9162d9b71d96c095bea7d1dcdde08520f6",
+      "sourceRef": "README.md:66",
+      "summary": "docs/specs/index.spec.md is the top-level proven-on-itself apex and specdown entry, and the user and maintainer spec indexes it links to remain the curated claim source of truth.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "spec-surface"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-67",
+      "claimFingerprint": "sha256:2351b132ae813dfb9df2fca5291372e65c4232b981aab4f685bfefa3b3f135aa",
+      "sourceRef": "README.md:67",
+      "summary": "Raw discover claims packets are a high-recall, source-ref-backed proof-planning input rather than the primary document a user should review.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "app/prompt",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claim-discovery"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-readme-md-67",
+        "recommendedProof": "human-auditable"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-68",
+      "claimFingerprint": "sha256:d86efe24767d201f86fa6b4f59a19f4b87689cfd278c2ee648573e80b0e4616f",
+      "sourceRef": "README.md:68",
+      "summary": "The Cautilus Agent curates raw discovery packets against the repo by reducing false positives, raising likely missing public promises, separating in-scope discovery bugs from narrative gaps, and bounding scan and review budgets before any eval plan is trusted.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claim-discovery"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-69",
+      "claimFingerprint": "sha256:25f326356227fb2317af75db3dca0b6ac32161558c644ef0f1b1073bce3c175f",
+      "sourceRef": "README.md:69",
+      "summary": "Host repos do not need the public website renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "spec-surface"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-readme-md-69",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-70",
+      "claimFingerprint": "sha256:a8cf94a267754b28ed0ce1c378a0bbb88ee81dcad5e196efce19a5f7a40135b5",
+      "sourceRef": "README.md:70",
+      "summary": "Every claim page pairs a bounded product promise with either executable evidence or an explicit evidence gap.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "spec-surface"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-77",
+      "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
+      "sourceRef": "README.md:77",
+      "summary": "The bounded eval loop turns a checked-in fixture run into durable, reopenable observed and summary packets plus readable views that another agent or maintainer can reopen from disk.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "eval-packets"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-readme-md-77",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-93",
+      "claimFingerprint": "sha256:e8b1a9fc3c20bbcde254639817f98114d86ca2f81ff8e4f5ad05f4c4957279ff",
+      "sourceRef": "README.md:93",
+      "summary": "An eval summary packet is evidence scoped to the chosen behavior fixture and adapter path, not a global product verdict.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "eval-packets"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-96",
+      "claimFingerprint": "sha256:b4dc8f5b790174f03916e256e651ae45374a16a0251b0336bfdc6b4fb554a7e0",
+      "sourceRef": "README.md:96",
+      "summary": "The bounded eval loop anchors the public spec report and is the shortest currently stable external-adoption example of the product claim that Cautilus turns behavior evidence into a reviewable decision surface.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "spec-surface"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-102",
+      "claimFingerprint": "sha256:be8872c4b4a1a66f8d06dd88e991c43fe663f2c4a0512de390965d3503e1b809",
+      "sourceRef": "README.md:102",
+      "summary": "A charness dogfood run proved via an instruction-surface fixture that the agent first selected the startup bootstrap helper and then the durable work skill, turning instruction-following judgment into a reproducible reopenable packet.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "dogfood-evidence"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-113",
+      "claimFingerprint": "sha256:a978ca2e5a711544ad630ceaff22bccd2dfac87c71ee2bbf476fa4042b66cea0",
+      "sourceRef": "README.md:113",
+      "summary": "Claim discovery converts adapter-owned entry docs and linked Markdown into cautilus.claim_proof_plan.v1 candidates as proof planning, not as a verdict that the repo is correct.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claim-discovery"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-117",
+      "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
+      "sourceRef": "README.md:117",
+      "summary": "Evaluation exposes two top-level surfaces: dev for AI-assisted development work and app for AI-powered product behavior.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "evaluation-surface"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-readme-md-117",
+        "recommendedProof": "cautilus-eval"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-120",
+      "claimFingerprint": "sha256:63ec8ce6e874c0208f6049a072cb86103bcb9d71f5b8df8781a08d84ea3aabb8",
+      "sourceRef": "README.md:120",
+      "summary": "Sample normalization inputs are checked in under examples/starters/ and the fixture directories under fixtures/.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "docs-structure"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-130",
+      "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
+      "sourceRef": "README.md:130",
+      "summary": "Cautilus separates iteration from protected (held-out) validation, keeping protected scenarios out of tuning so the evaluation signal stays honest.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "held-out"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-readme-md-130",
+        "recommendedProof": "cautilus-eval"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-136",
+      "claimFingerprint": "sha256:6b58da3516f2509fd1bb999d85d87612efe6d7110be630677b344a94340a2df3",
+      "sourceRef": "README.md:136",
+      "summary": "Packets, CLI commands, and repo instructions are agent-facing interfaces first, while HTML output is a human-readable mirror rather than the source of truth.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "agent-first"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-137",
+      "claimFingerprint": "sha256:876d422ecc6981fb0023f848c23f90ac2be7fc0f9b0e2e615109b89044a5d21e",
+      "sourceRef": "README.md:137",
+      "summary": "Cautilus does not freeze a single prompt string as the contract; the behavior under evaluation is the contract.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "product-promise"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-139",
+      "claimFingerprint": "sha256:494077b76c2dbdc170741f2dad5f9bc4ad692b060b4ef0bdf13694e1f52e5829",
+      "sourceRef": "README.md:139",
+      "summary": "Adapters, reports, review files, and compare artifacts are first-class product boundaries rather than ad hoc eval script outputs.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "structured-review"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-140",
+      "claimFingerprint": "sha256:3f7d53374b3ad0a1f98d080a07490f3b717148e78267be931104835aebcc23ec",
+      "sourceRef": "README.md:140",
+      "summary": "Search and revision in improvement loops are explicitly bounded by budgets, checkpoints, and blocked-readiness conditions.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "bounded-improvement"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-145",
+      "claimFingerprint": "sha256:c13c9f96c65ec9ec6c8651a5ed206d56304f7451c8dd69a628d5470997c76d1b",
+      "sourceRef": "README.md:145",
+      "summary": "Proof routing is split by kind: evaluator-dependent behavior goes through cautilus evaluate while deterministic claims belong in ordinary tests and CI.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "proof-routing"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-146",
+      "claimFingerprint": "sha256:d1164005fc9a22b844cf9e2bef8e7f85ae6a6eb0d1bdf88b8ad06d908273a6e5",
+      "sourceRef": "README.md:146",
+      "summary": "Improvement work is gated until the proof surface is explicit.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "bounded-improvement"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-148",
+      "claimFingerprint": "sha256:c9942c56f6453d6c4c7a2d3a0f4b2c05d22ca5c2fd361cf207a4519ac65403e7",
+      "sourceRef": "README.md:148",
+      "summary": "Cautilus ships a GEPA-style bounded prompt search seam above the one-shot improver, including reflective mutation, protected reevaluation, review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "bounded-improvement"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-155",
+      "claimFingerprint": "sha256:33b516a29471b1bfddfd5b9b204ba8a5051edeb3b409edd1106952f1df089a29",
+      "sourceRef": "README.md:155",
+      "summary": "The CLI and the Cautilus Agent entry points share one host-owned cautilus-adapter.yaml and return the same durable decision surface.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "core-flow"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-157",
+      "claimFingerprint": "sha256:9b65cef61eb4ef1f46e9e2d36eee961958d83aea45370a49787a9c5e27c1c18c",
+      "sourceRef": "README.md:157",
+      "summary": "cautilus init installs the repo-local Cautilus Agent under .agents/skills/cautilus-agent/ for Claude and Codex to use.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "install"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-readme-md-157",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-159",
+      "claimFingerprint": "sha256:547880c2ac98a99fec4231dc4911c6e6dc263d79f397e119d112e8bca62fcccd",
+      "sourceRef": "README.md:159",
+      "summary": "The minimum host-repo shape consists of an adapter, an installed Cautilus Agent, and run artifacts such as eval-cases.json, eval-observed.json, and eval-summary.json.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "core-flow"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-163",
+      "claimFingerprint": "sha256:59e68472ebbc1938ba23b1ca364151e297029a35ccdaf86fa7a972f552addfbb",
+      "sourceRef": "README.md:163",
+      "summary": "cautilus doctor provides three scopes: --next-action for the next onboarding step, --scope agent-surface for agent-surface discoverability, and plain doctor for repo wiring readiness.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "onboarding"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-27",
+      "claimFingerprint": "sha256:0d75d69c5062f80a79b19453c9e93359fcfb5c1c3f8f5f6102eeb353d43d8520",
+      "sourceRef": "docs/guides/cli.md:27",
+      "summary": "Running `cautilus version --verbose` provides the quickest binary-only summary of the current product surface, including audience, starting normalization family or eval surface, and the report fields that matter on rejection.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "install-lifecycle"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-32",
+      "claimFingerprint": "sha256:671bbb74f00daae3b1fc95c03a26ee69ad1317df7b6b0210ed589f6cfe159d66",
+      "sourceRef": "docs/guides/cli.md:32",
+      "summary": "Legacy Homebrew installs are no longer a supported update channel and must be removed and reinstalled through install.sh.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "install-lifecycle"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-32",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-45",
+      "claimFingerprint": "sha256:a85ea1cafcf29bcb341eb664704e51fe4ac4d98e1531aa9f48384cfba6106a46",
+      "sourceRef": "docs/guides/cli.md:45",
+      "summary": "Every starter kit under examples/starters/ ships a pre-filled cautilus-adapter.yaml, a canonical input fixture, and a README explaining what to replace next.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "adapter-bootstrap"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-48",
+      "claimFingerprint": "sha256:7716b9d4cadc99f6ef2827c6735b119034eea3b47e18d476c6192cf5fe5ec864",
+      "sourceRef": "docs/guides/cli.md:48",
+      "summary": "A minimal adapter must wire at least one real runnable path before doctor reports ready.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "adapter-bootstrap"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-74",
+      "claimFingerprint": "sha256:228e085c502102dcbeb2d2003758279af1cd036bf03887b83512495698c28585",
+      "sourceRef": "docs/guides/cli.md:74",
+      "summary": "Runs with the fixture runtime are always reported with the fixture-smoke proof class, with adapter-declared stronger proof classes preserved only as declared metadata.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "runner-readiness"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-110",
+      "claimFingerprint": "sha256:42d4b1e7962fef48b0f13d82d7cbda78a5ca064411adb499360862bc976ccbee",
+      "sourceRef": "docs/guides/cli.md:110",
+      "summary": "Every registered native subcommand's --help, including grouped topics, exits with status 0.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "cli-discovery"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-112",
+      "claimFingerprint": "sha256:027d54c6a13e15d151b75ec2d5c4acd54f3cb49571cd36e66deece32a54cff2c",
+      "sourceRef": "docs/guides/cli.md:112",
+      "summary": "doctor status --json emits the cautilus.agent_status.v1 read-only orientation packet covering binary health, agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "doctor"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-112",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-113",
+      "claimFingerprint": "sha256:a595ee248d89935a91d06b58cced3258ffdf2d21ac14f4b5a585da87dba4bacd",
+      "sourceRef": "docs/guides/cli.md:113",
+      "summary": "doctor --next-action returns one current onboarding step plus the exact follow-up loop, and can point at runner assessment setup when repo setup is ready but runner proof is not.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "doctor"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-115",
+      "claimFingerprint": "sha256:3d4de9eb07b6436415f6ee8c500c161b370f6122a518011c0e958f91b873ed2a",
+      "sourceRef": "docs/guides/cli.md:115",
+      "summary": "doctor --scope agent-surface verifies only the Cautilus Agent and local agent-surface install, while default doctor (--scope repo) verifies the repo has a real runnable evaluation path.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "doctor"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-117",
+      "claimFingerprint": "sha256:812358b74c3e59dea69bf7616fb19269094f187d32c85f322220bd5980cf9868",
+      "sourceRef": "docs/guides/cli.md:117",
+      "summary": "Every doctor check separates stable contract from run-specific observation through the id, ok, meaning, and detail fields.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "doctor"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-120",
+      "claimFingerprint": "sha256:5a6f9e74039bc4c3bcd87950aaf6ea4af6272cf9032fbdc2b674eca35aa6d239",
+      "sourceRef": "docs/guides/cli.md:120",
+      "summary": "When repo-scope doctor returns ready, the JSON payload includes a first_bounded_run starter packet loop plus the scenario-normalization catalog.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "doctor"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-121",
+      "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
+      "sourceRef": "docs/guides/cli.md:121",
+      "summary": "Repos that keep only named adapters under .agents/cautilus-adapters/ must pass --adapter-name to doctor for repo-scope validation because plain doctor does not guess which named adapter is meant.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "doctor"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-121",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-123",
+      "claimFingerprint": "sha256:a96b4fd64dfdc1ee6cd1ae7a2e868d4b9f09b9ed77985afd56880e7d9317d8bb",
+      "sourceRef": "docs/guides/cli.md:123",
+      "summary": "Default claim discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-discovery"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-124",
+      "claimFingerprint": "sha256:76e0ae640521f2c21e4265a649b0d8137d6f7b8cd763b62506971f1af3d6bf68",
+      "sourceRef": "docs/guides/cli.md:124",
+      "summary": "Passing --previous with --refresh-plan to discover claims produces deterministic refresh planning inside the same discover workflow.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-refresh"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-125",
+      "claimFingerprint": "sha256:1b15bb33cd529b181183265e5c75efdcf9f2df4d91ec61e78ea31cfebddf48a4",
+      "sourceRef": "docs/guides/cli.md:125",
+      "summary": "The refresh-plan packet includes a refreshSummary with agent-readable counts, changed claim source hotspots, and coordinator-facing next actions.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-refresh"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-127",
+      "claimFingerprint": "sha256:a42ab6736d2ebe2beeb0ba10487b85347c0d81a5444e77f1d95d0f8fc7292e95",
+      "sourceRef": "docs/guides/cli.md:127",
+      "summary": "The CLI rejects writing refresh-plan output over saved claim-state paths because refresh-plan packets use a different envelope than saved claim maps.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-refresh"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-127",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-128",
+      "claimFingerprint": "sha256:75c8d995b952261cde07115e9917d2b75f57d219976728a1064cf1dcda91b080",
+      "sourceRef": "docs/guides/cli.md:128",
+      "summary": "Normal claim discovery output uses the cautilus.claim_proof_plan.v1 envelope and is a proof plan, not a verdict.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-discovery"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-129",
+      "claimFingerprint": "sha256:e91843dfa18cc4b9938fd301da37c333468dcd357cf96ca480ff19973921f7ff",
+      "sourceRef": "docs/guides/cli.md:129",
+      "summary": "discover claims status summarizes an existing claim packet without rescanning, includes bounded claim examples, and its summary contains gitState and evidenceSatisfaction sections.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-discovery"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-132",
+      "claimFingerprint": "sha256:098e2e09a210c7f6c52740746f0c19a717945212a9b744b88e062cf5ab9321e8",
+      "sourceRef": "docs/guides/cli.md:132",
+      "summary": "gitState.isStale tracks recorded claim-source changes rather than every HEAD change, and generated-artifact-only commits report headDrift=true with comparisonStatus=fresh-with-head-drift while letting review or eval planning continue.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-refresh"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-134",
+      "claimFingerprint": "sha256:3ac898f24d50483a0a900c05f1493dc92686b55b503dbc0ad8a3463c08418353",
+      "sourceRef": "docs/guides/cli.md:134",
+      "summary": "discover claims extraction-input emits a deterministic agent-extraction input packet, and apply-extraction validates an agent extraction result, anchors every verbatim excerpt, and composes the extractionMode: agent proof plan.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-extraction"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-136",
+      "claimFingerprint": "sha256:3c016a8e59ca45c156f458a7fe73364dd4febdda57bbc7b1796a081cf87c8843",
+      "sourceRef": "docs/guides/cli.md:136",
+      "summary": "Neither extraction-input nor apply-extraction calls an LLM, and unanchored, unbounded, or out-of-scope claims are rejected into extractionAudit.rejectedClaims instead of being silently dropped.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-extraction"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-138",
+      "claimFingerprint": "sha256:ddd6e85737a56116b1eb1766cd75a85b6d2d11e7f7775ff3ce6d9f62d9748829",
+      "sourceRef": "docs/guides/cli.md:138",
+      "summary": "discover claims review-input emits the cautilus.claim_review_input.v1 packet of bounded deterministic review clusters without calling an LLM or marking claims satisfied, and may include possibleEvidenceRefs as reviewer hints when adapter evidence_roots contain matching bundles.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-review"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-138",
+        "recommendedProof": "cautilus-eval"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-140",
+      "claimFingerprint": "sha256:46a42cd8faf93dca15772a49079b5dca2377f8177a189d5453a93adce58cde2c",
+      "sourceRef": "docs/guides/cli.md:140",
+      "summary": "Review input skips already-satisfied or already-reviewed claims by default and records them under skippedClaims.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-review"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-142",
+      "claimFingerprint": "sha256:d8747ba3168aa1bb124a5aa38f6cfc8f4ba37572e87b87a5193838ff4b1383d4",
+      "sourceRef": "docs/guides/cli.md:142",
+      "summary": "discover claims apply-review merges reviewed labels and evidence refs into a claim packet and rejects evidenceStatus=satisfied unless a direct or verified evidence ref supports the claim.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-review"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-143",
+      "claimFingerprint": "sha256:964712e395747d2024346bf5194ad0814ccb2dccf66e1ab5d6196c8fc889f792",
+      "sourceRef": "docs/guides/cli.md:143",
+      "summary": "discover claims validate emits cautilus.claim_validation_report.v1, fails fast on invalid packet shape or evidence refs, and neither mutates the packet nor searches for evidence.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-review"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-145",
+      "claimFingerprint": "sha256:7a4a0b3810f49afad64731425f139eb3e59c51505ae6f7838da0d2a8fb2b8241",
+      "sourceRef": "docs/guides/cli.md:145",
+      "summary": "evaluate claims plan turns ready cautilus-eval claims into a cautilus.claim_eval_plan.v1 packet that preserves claim ids, target surfaces, source refs, draft intents, and unresolved questions while deliberately not writing host-owned fixtures or runners.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-eval-plan"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-146",
+      "claimFingerprint": "sha256:cf8379ea05d0e70491a2ce371ff3f8e00fb5dd5c969111fdd512b05a565c385d",
+      "sourceRef": "docs/guides/cli.md:146",
+      "summary": "evaluate claims plan skips claims already marked evidenceStatus=satisfied by default.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-eval-plan"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-148",
+      "claimFingerprint": "sha256:195d8200bf5d433974381204ae0992afc373bb8b38a7456c6d3284127f6a26b4",
+      "sourceRef": "docs/guides/cli.md:148",
+      "summary": "review-input, apply-review, and evaluate claims plan reject stale claim packets by default, with --allow-stale-claims as an explicit operator override.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "claims-review"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-186",
+      "claimFingerprint": "sha256:7a774bda4fcda5ae7570d237cd8f1e41870bf8a4e150152469d9db82924b7ed3",
+      "sourceRef": "docs/guides/cli.md:186",
+      "summary": "discover live-targets resolves either explicit adapter instances or a consumer-owned probe command into the cautilus.workbench_instance_catalog.v1 packet.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "live-eval"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-187",
+      "claimFingerprint": "sha256:eee90f50d902911737cbc765eb8b0eb7f88f79c50ef971e97bcc8cbfc746c1ad",
+      "sourceRef": "docs/guides/cli.md:187",
+      "summary": "evaluate live takes one selected instance id plus one request packet and returns one bounded result packet.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "live-eval"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-188",
+      "claimFingerprint": "sha256:d227052764327613f3c05568615d96c437a27aa49698b83f204cdd6daab742c5",
+      "sourceRef": "docs/guides/cli.md:188",
+      "summary": "evaluate live prepare-request-batch turns draft scenarios or a normalized catalog-candidate packet into a canonical cautilus.live_run_invocation_request_batch.v1 artifact.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "live-eval"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-189",
+      "claimFingerprint": "sha256:253f6e543d1d15d03d69487ac38e9fdec384d1bee5a7c5b4530fc4ecc2cd3951",
+      "sourceRef": "docs/guides/cli.md:189",
+      "summary": "evaluate live scenarios accepts an explicit request batch for one instance, schedules requests in-process, retries only on requested explicit transient classes, and writes one aggregated batch result packet.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "live-eval"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-218",
+      "claimFingerprint": "sha256:98b12d35a753f4d4f8cb0d2e366a9eb02a48e099e6c0e0353533c5a509516117",
+      "sourceRef": "docs/guides/cli.md:218",
+      "summary": "The run-workspace command defaults --root to ./.cautilus/runs/ (auto-created on first use) and prints an export line pinning CAUTILUS_RUN_DIR to the absolute runDir.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "needs-alignment",
+        "claimAudience": "user",
+        "claimSemanticGroup": "workspace"
+      },
+      "unresolvedQuestions": [
+        "The code fence invokes `cautilus init run` while the prose names the command `workspace start`; which command name is the current contract?"
+      ],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-219",
+      "claimFingerprint": "sha256:e7e62a265b651b143bac80c09179c09ec5cc4f37eaf1374041797be7f8ec00e6",
+      "sourceRef": "docs/guides/cli.md:219",
+      "summary": "Passing --json to the run-start command emits the machine-readable payload for scripts instead of the eval-able export line.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "workspace"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-220",
+      "claimFingerprint": "sha256:bf903cc5eedd4a391f224dd7b1a0928df5096e9a38e0b226f78eb9e99146011d",
+      "sourceRef": "docs/guides/cli.md:220",
+      "summary": "Downstream commands reuse a pinned CAUTILUS_RUN_DIR, and when nothing is pinned they auto-materialize a fresh runDir and print the active run path to stderr.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "workspace"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-263",
+      "claimFingerprint": "sha256:14374dac52410bf46a9e4e5bccf23f0e0f724bd00e694b355f600cbb07ee7e4d",
+      "sourceRef": "docs/guides/cli.md:263",
+      "summary": "Every normalize command plus evaluate observation and evaluate report build accepts --example-input, printing a minimal valid packet to stdout that can be piped back into the same command.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "scenarios"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-264",
+      "claimFingerprint": "sha256:5775d5c45c284767cfc086a42da4609f20db47a6c795418e9817f2cc1701ab04",
+      "sourceRef": "docs/guides/cli.md:264",
+      "summary": "discover scenarios --json exposes the example-input inspect commands under normalizationFamilies[*].exampleInputCli.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "scenarios"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-265",
+      "claimFingerprint": "sha256:9131b9a9f9ca48401273b0ee92848fd18a9f7de8ecaf45e17bd264de7e3b7797",
+      "sourceRef": "docs/guides/cli.md:265",
+      "summary": "discover scenarios propose preserves the full ranked proposals list in its canonical JSON output.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "scenarios"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-266",
+      "claimFingerprint": "sha256:313275317465567a22c5d4992ec031f8aa811338e2281d6c84520f52f8f7b556",
+      "sourceRef": "docs/guides/cli.md:266",
+      "summary": "The proposal packet also emits an attentionView, a bounded human-facing shortlist derived from the full ranked set.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "scenarios"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-266",
+        "recommendedProof": "human-auditable"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-268",
+      "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
+      "sourceRef": "docs/guides/cli.md:268",
+      "summary": "discover scenarios review-conversations links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live turn.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "scenarios"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-268",
+        "recommendedProof": "cautilus-eval"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-272",
+      "claimFingerprint": "sha256:e1983519b45f7793f59c03e7cfd117c8375011f3f8fd0998140324224d0ffde6",
+      "sourceRef": "docs/guides/cli.md:272",
+      "summary": "The shipped evaluation surface is cautilus evaluate.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "evaluation-surfaces"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-273",
+      "claimFingerprint": "sha256:b32765250162f702551b1c639eccaf3f7836005966a5d817789451dbd365114d",
+      "sourceRef": "docs/guides/cli.md:273",
+      "summary": "The dev / repo preset replaces the prior cautilus instruction-surface commands.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "evaluation-surfaces"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-274",
+      "claimFingerprint": "sha256:7f8f041335dc3d538e1e9aef3fbeb97524e6ca18889f184706994a716f044342",
+      "sourceRef": "docs/guides/cli.md:274",
+      "summary": "Cautilus exposes two top-level evaluation surfaces and four presets: dev/repo, dev/skill, app/chat, and app/prompt.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "evaluation-surfaces"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-276",
+      "claimFingerprint": "sha256:10543cfa7fe683eed032d52bbb2f2fabd74cd3e14f1e0c5ae0d56077713f9569",
+      "sourceRef": "docs/guides/cli.md:276",
+      "summary": "evaluate fixture runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "evaluation-surfaces"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-276",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-277",
+      "claimFingerprint": "sha256:89efdc168517c1ea169480b74a13ba536100ed9afa0baba731029f1798568af6",
+      "sourceRef": "docs/guides/cli.md:277",
+      "summary": "evaluate fixture records a top-level proof object in eval-observed.json and eval-summary.json when runner readiness can identify the proof class or assessment state.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "evaluation-surfaces"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-280",
+      "claimFingerprint": "sha256:403dc2c5a7bb481b04a09127224a7bfc782fba56048029af5e7ddb02f2b2088f",
+      "sourceRef": "docs/guides/cli.md:280",
+      "summary": "evaluate observation evaluates an already-observed packet without launching the runner again.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "evaluation-surfaces"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-280",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-319",
+      "claimFingerprint": "sha256:b28f7d01f52d258ce498f0d4c910a6dd3d7d8d2a7d7efa4b5501e7acda656369",
+      "sourceRef": "docs/guides/cli.md:319",
+      "summary": "evaluate skill-experiment emits cautilus.skill_clone_experiment_report.v1 with variant_ran, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "skill-experiment"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-319",
+        "recommendedProof": "cautilus-eval"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-320",
+      "claimFingerprint": "sha256:5029a6b399d6e9b02c47d8212fbad10c4b15576efc3ca307a2356b90cb9bac66",
+      "sourceRef": "docs/guides/cli.md:320",
+      "summary": "evaluate skill-experiment does not install, mutate, or execute skills; host-owned runners provide the preserved baseline and variant outputs.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "skill-experiment"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-391",
+      "claimFingerprint": "sha256:28114221f2c5f23309f13b25d258c443e68b9e7ea91a798e81ee84a1057ce55a",
+      "sourceRef": "docs/guides/cli.md:391",
+      "summary": "runtime fixture provides cheap command-routing proof over fixture-backed runner results, evidencing the command surface, adapter, fixture translation, and packet evaluation path rather than model-backed skill execution quality.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "skill-testing"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-473",
+      "claimFingerprint": "sha256:9ef970a6314652922a61e423480afa5eddc6e503206bc9b49eb64e154853c2e4",
+      "sourceRef": "docs/guides/cli.md:473",
+      "summary": "evaluate report build --example-input emits a minimal valid report packet that includes the minimum humanReviewFindings shape.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "reports"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-476",
+      "claimFingerprint": "sha256:ad85bc0dec9bb21b315a41c6d68ef1a302f9bf0edbb170a9d63c40141b99bbe0",
+      "sourceRef": "docs/guides/cli.md:476",
+      "summary": "evaluate review variants writes a product-owned review-summary.json (cautilus.review_summary.v1) plus one per-variant cautilus.review_variant_result.v1 file.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "review-variants"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-477",
+      "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
+      "sourceRef": "docs/guides/cli.md:477",
+      "summary": "A review variant finishes as passed, blocked, or failed; blocked runs carry machine-readable reason codes, and local executor readiness failures such as missing auth are classified as blocked unavailable_executor results rather than negative verdicts.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "review-variants"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-guides-cli-md-477",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-479",
+      "claimFingerprint": "sha256:166c2fed9533bb2502ef825392605430307f93ccc74d7e3b658253a668abe495",
+      "sourceRef": "docs/guides/cli.md:479",
+      "summary": "When at least one variant passes and another does not, the review summary sets partialSuccess: true and lifts the passing outputs into successfulVariantOutputs.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "review-variants"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-480",
+      "claimFingerprint": "sha256:ffcb8c59cde037de898b76abc30911b85e436a0de337bd5f36f234364b851502",
+      "sourceRef": "docs/guides/cli.md:480",
+      "summary": "With --output-under-test the generated review prompt switches into output_under_test mode treating the artifact as primary evidence, and with --output-text-key Cautilus extracts that JSON narrative span into the rendered prompt.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "review-variants"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-485",
+      "claimFingerprint": "sha256:e7119a8991ea82d2b6ebf6274ef0ca5d012ed9ac67cd97d6b03cb69df5676b7a",
+      "sourceRef": "docs/guides/cli.md:485",
+      "summary": "review feedback build writes cautilus.review_feedback.v1, preserving a source review reference plus normalized method, proposal, disposition, and note fields.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "review-feedback"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-487",
+      "claimFingerprint": "sha256:82f7f4552a6ac96f2762d4a4260484738ea240ad67a613ddbc58b7df00f40b9b",
+      "sourceRef": "docs/guides/cli.md:487",
+      "summary": "Dispositions accepted, narrowed, reframed, or rejected require proposal identification flags, while missing_critical may omit proposal evidence.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "review-feedback"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-489",
+      "claimFingerprint": "sha256:cd00799275bd356fefb9e9a0d74b53de8f7b0904b4a58915ac4b0c79b74bce3a",
+      "sourceRef": "docs/guides/cli.md:489",
+      "summary": "The review-feedback disposition vocabulary describes review usefulness rather than pass/fail status.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "review-feedback"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-492",
+      "claimFingerprint": "sha256:6a4c8d65197c802e925c169e4188b7d2c835062a1a8b1c3f3ccc4030816cd28b",
+      "sourceRef": "docs/guides/cli.md:492",
+      "summary": "review feedback summarize writes cautilus.review_feedback_summary.v1 from explicitly selected feedback packets, counting dispositions overall and by method family while keeping source-review refs, without discovering active-run defaults or treating dispositions as pass/fail.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "review-feedback"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-521",
+      "claimFingerprint": "sha256:ef42ba56b7c4a03a0696544b534bf8a8178b011d35877aa07dd3519da5048738",
+      "sourceRef": "docs/guides/cli.md:521",
+      "summary": "For app behavior claims, reports with blocked proofSummary.productRunnerProofReadiness cannot become improve inputs until runner-backed product proof is ready.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "improve"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-547",
+      "claimFingerprint": "sha256:cb83178ac263bf72897089e3be842a469f11d3d7edc9cd5947f76af21172e242",
+      "sourceRef": "docs/guides/cli.md:547",
+      "summary": "The self-dogfood rendered HTML is read-only over summary.json, report.json, and review-summary.json, which remain the source of truth.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "rendering"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+      "claimFingerprint": "sha256:a03560d63b09185cf158d22401a9cf583efd5820886eb8862e22a388c775dc3f",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:5",
+      "summary": "Running cautilus discover claims emits a deterministic, source-ref-backed proof-plan skeleton.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "discover-command"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-15",
+      "claimFingerprint": "sha256:9fa39fe5c691281e5674bec33ececd8b8867263f918838230b1971a44c1d5038",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:15",
+      "summary": "discover remains the single high-level user action for initial claim discovery.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "command-surface"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
+      "claimFingerprint": "sha256:026bc2e699e302cffccd21ad6f24d5ca77e3204bb5ffe629bb3210d6b87ba6bf",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:18",
+      "summary": "The Cautilus Agent owns claim extraction per the product-owned template, evidence reconciliation, and user-facing status.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "agent-orchestration"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
+        "recommendedProof": "human-auditable"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-19",
+      "claimFingerprint": "sha256:fb36b6b34a6edbcea2f2a4a586280322069e9211f305ff1f8b79d553a8e83176",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:19",
+      "summary": "Existing claim state refresh is selected by the Cautilus Agent when prior JSON exists, but the refresh plan and state transition are recorded in deterministic packets or helper output.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "refresh"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-19",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-27",
+      "claimFingerprint": "sha256:fe5b3a8e7b2544d1fba64876edd269d10e532aa64c8059be54c27d35b01f7ea5",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:27",
+      "summary": "On no-input invocation the Cautilus Agent checks adapter availability, current claim-state artifacts, and recent git history, then decides between first discovery, refresh, or status.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "agent-orchestration"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-212",
+      "claimFingerprint": "sha256:5896c411a093c7da3175ebfaead305488e5570af07931d2b9b3167b4121a82cf",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:212",
+      "summary": "Before a first broad scan the Cautilus Agent explains the effective entries, depth, and deterministic bounds and asks the user to confirm or adjust the scope.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "scan-scope-confirmation"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-212",
+        "recommendedProof": "cautilus-eval"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-232",
+      "claimFingerprint": "sha256:8c90cbaea9e84c7eb514e873fc8c051f75775f4e0009cb0b11c3ec69fe29f97e",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:232",
+      "summary": "The Cautilus Agent shows the extraction budget after extraction-input and the user confirms or adjusts it separately from scan scope, with the applied packet recording it.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "model-spend-confirmation"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-232",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-35",
+      "claimFingerprint": "sha256:1247349b58409ba977db06ac80035bd719e2384c1cafac9fa89285f789198aee",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:35",
+      "summary": "The Cautilus Agent reconciles likely existing evidence from tests, specs, eval summaries, and checked artifacts so the workflow can say which claims already have proof.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "evidence-reconciliation"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-518",
+      "claimFingerprint": "sha256:f90e997f4729dc3eb1be36b181ba3eadb44b03a8f73e4b61a32eba841bd2a66c",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:518",
+      "summary": "After discovery or refresh the Cautilus Agent reports a compact decision-oriented status summary and asks the user which next branch to take.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "status-summary"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-518",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-38",
+      "claimFingerprint": "sha256:fcf0a1096c540b37d76da4ef466857d1ffb3eea5d38b1c1691ee5c384b1209a9",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:38",
+      "summary": "Running discover claims directly without the Cautilus Agent emits the labeled deterministic heuristic baseline with no model calls as the reproducible floor.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "extraction-seam"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-38",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-41",
+      "claimFingerprint": "sha256:fb6b1e0e6be76ee0f5abda11f3852a9eeeaf9782233f982d58e0a192a9f6150d",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:41",
+      "summary": "When prior claim state exists the Cautilus Agent runs a diff-aware refresh from the previous packet and recorded commit, re-extracting only changed sources after budget confirmations.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "refresh"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-479",
+      "claimFingerprint": "sha256:f5dc01bd8759f78efc1264fe794b598877a12ca631362aec09a6f0cf957508eb",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:479",
+      "summary": "Refresh stays a skill behavior over the discover entry point with optional helper flags, and no separate public claim refresh binary command is needed.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "command-surface"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-542",
+      "claimFingerprint": "sha256:e5ff70c72000afdbb242f0951bac0a9382ca89f76ed8fd6abb0de5a4b3c67eb4",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:542",
+      "summary": "The Cautilus Agent offers structured next actions distinguishing plan-only, top-N, selected-groups, and full-batch tiers, with full-batch work showing estimates before starting.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "status-summary"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-86",
+      "claimFingerprint": "sha256:23b2609ec0606719398151d4fd10883c068643714ddf534b75747a8a02ba3ace",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:86",
+      "summary": "When packet claims are too granular for direct review the Cautilus Agent curates a user-facing and a maintainer-facing canonical claim index before continuing HITL.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "canonical-claim-specs"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-86",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-91",
+      "claimFingerprint": "sha256:74518a9a34a9bf98a5c45e23baabd1bd3883b6f9254ee0a0df84b55d049bbbe4",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:91",
+      "summary": "The user-facing spec index orders claims by the user's feature mental model, stays short with one spec page per major claim, and each page keeps subclaims, proof route, evidence status, and next action.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "canonical-claim-specs"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-91",
+        "recommendedProof": "cautilus-eval"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-106",
+      "claimFingerprint": "sha256:476da3744839bd5ce4632958ac1d656f577ac610261a085717179d2416420773",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:106",
+      "summary": "Default discovery is bounded to entry surfaces plus repo-local Markdown links, never the whole repository, and a symlink alias to the same canonical file is not a separate source.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "scan-scope"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-115",
+      "claimFingerprint": "sha256:6db0233b717014f1c02769f2a68c827040e7230b5ff9b12991766eb6688ead72",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:115",
+      "summary": "Default Markdown link depth is 3 and depth counts only Markdown-to-Markdown repo-local links, never arbitrary source files, generated artifacts, dependencies, or external URLs.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "scan-scope"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-125",
+      "claimFingerprint": "sha256:524354c48a7c72798d13b18f1574aea1f4d044854457e38844e481f952a278ac",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:125",
+      "summary": "A declared claim missed inside the configured entry graph is a discover claims false-negative bug, while features undeclared in that graph may be missed without discovery being wrong.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "discovery-boundary"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-199",
+      "claimFingerprint": "sha256:98606f7cc3cf0bc9e50a2c1696ddee132b60cf1731eebdb0b219b7915e2d4605",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:199",
+      "summary": "Claim extraction and proof routing are agent-primary: the Cautilus Agent extracts claims by following the product-owned extraction template with verbatim excerpts, classification routing, and a bounded output schema, in bounded batches.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "extraction-seam"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-226",
+      "claimFingerprint": "sha256:1ab4db008bb65aa9738f5b03b205a835aa212685e5283e32693786b5047a665e",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:226",
+      "summary": "Scope confirmation never authorizes model spend: each model-spending stage gets its own plan and confirmation, and delegated continuation stays within a recorded budget written to the packet.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "model-spend-confirmation"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-244",
+      "claimFingerprint": "sha256:69eaca7025cabd6f096d720f0079544ac4a26a2f11f6d89fc7faa258979dcc0c",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:244",
+      "summary": "Before LLM-backed review the Cautilus Agent shows the review plan and the user confirms or adjusts the review budget, which the packet records with its source.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "model-spend-confirmation"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-244",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-544",
+      "claimFingerprint": "sha256:b0f0c2d4778b860c11266fdbe9ac0321e58d5a2f3ba4f2612c493abc51f53794",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:544",
+      "summary": "The Cautilus Agent does not automatically launch expensive evaluator runs or broad code edits after status unless the user already delegated that continuation and the recorded budget covers it.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "model-spend-confirmation"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-544",
+        "recommendedProof": "cautilus-eval"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-566",
+      "claimFingerprint": "sha256:cf9b996efe054da8c1c4215651aad9eb3dadee70df68452d653c2761fd1b720b",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:566",
+      "summary": "The workflow avoids a claim group command because grouping is part of discovery output, and follow-on commands stay optional rather than required for first discovery.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "command-surface"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-566",
+        "recommendedProof": "cautilus-eval"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-41",
+      "claimFingerprint": "sha256:f0010a01f0f040b11edf857d842b41f1b0bf36377a2cb12543272f175888bfa0",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:41",
+      "summary": "Both extraction-input and apply-extraction are deterministic and never make a model call.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "no-model-calls"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-43",
+      "claimFingerprint": "sha256:3ef1395dea84bb24985c4a9d77c00cadc84ccfef9f7b33f61ad4ff98205b3db6",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:43",
+      "summary": "Agent extraction sits behind the Model-Spend Confirmation rule: scan-scope confirmation authorizes extraction-input, but a separate extraction-budget confirmation is required before the agent extracts.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "model-spend gating"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-46",
+      "claimFingerprint": "sha256:9b2df09af76d339b63f79aad3b9556d893ed4417d7407f1185c1a8968e6445ee",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:46",
+      "summary": "extraction-input honors the explicit --adapter override so measurement dry-runs on read-only corpora apply a proposed adapter without writing to the scanned repo.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "adapter override"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-190",
+      "claimFingerprint": "sha256:04b56aaf8ee5689a905bb823dc2f25f26f6500a35356665975b4b2d0517df0e4",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:190",
+      "summary": "A claim with any non-anchoring excerpt is rejected by apply-extraction with a recorded reason, so an applied agent packet never contains a claim that failed anchoring at apply time.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "rejection handling"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-243",
+      "claimFingerprint": "sha256:87799711d3d4c0ea9cfe36c3d3cdbe2932ba7b467fffb9ffaa532f5b126dcae1",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:243",
+      "summary": "The heuristic extractor remains the default discover claims behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "heuristic baseline"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": {
+        "claimId": "claim-docs-contracts-claim-extraction-template-md-243",
+        "recommendedProof": "deterministic"
+      },
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-280",
+      "claimFingerprint": "sha256:5a12b2c87c49d58bea7870b4b91d1ed9e8b38d136b9f3e78802d124eb2142f6a",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:280",
+      "summary": "Extraction stays under the discover claims command rather than a separate extract claims top-level command.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "recommendedEvalSurface": null,
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "CLI surface"
+      },
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    }
+  ]
+}

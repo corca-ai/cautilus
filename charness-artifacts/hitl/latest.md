@@ -3,43 +3,43 @@
 <!-- hitl-runtime-sync
 session_id: hitl-20260611-082742
 runtime_session_dir: .charness/hitl/runtime/hitl-20260611-082742
-runtime_updated_at: 2026-06-16T01:28:34+00:00
-target: charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.json
-last_presented_chunk_id: g01:e02
-queue_epoch: 1
+runtime_updated_at: 2026-06-16T02:16:06+00:00
+target: charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.user-product.json
+last_presented_chunk_id: u01:e02
+queue_epoch: 2
 queue_status: ready
-accepted_rules_digest: 5495c5abeb5c02aa
-queue_items_digest: 2dd9b7948fa8ca22
+accepted_rules_digest: dd4ca96f9a4610b6
+queue_items_digest: 1439e0738e90b8e0
 queue_state_digest: c9b6876066a76e59
-approval_state_digest: f8535218bb8a0eb1
+approval_state_digest: 0e21051a00858777
 -->
 
-- Synced At: 2026-06-16T01:28:40+00:00
+- Synced At: 2026-06-16T02:16:11+00:00
 - Synced From Session: `hitl-20260611-082742`
 - Runtime Session Dir: `.charness/hitl/runtime/hitl-20260611-082742`
-- Runtime Updated At: 2026-06-16T01:28:34+00:00
+- Runtime Updated At: 2026-06-16T02:16:06+00:00
 
 ## Active Target
 
-- Target: `charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.json`
-- Status: `paused`
-- Last Presented Chunk ID: `g01:e02`
-- Queue Epoch: `1`
+- Target: `charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.user-product.json`
+- Status: `in-progress`
+- Last Presented Chunk ID: `u01:e02`
+- Queue Epoch: `2`
 - Queue Status: `ready`
 - Explicit Apply Required: `True`
 - Apply Mode: `explicit-after-all-chunks`
 
 ## Accepted Rules
 
-- R1: pending
-- R2: pending
-- R3: pending
-- R4: pending
-- R5: pending
-- R6: pending
-- R7: pending
-- R8: pending
-- R9: pending
+- R1
+- R2
+- R3
+- R4
+- R5
+- R6
+- R7
+- R8
+- R9
 
 ## Queue State
 
@@ -49,18 +49,6 @@ approval_state_digest: f8535218bb8a0eb1
 
 ### Items
 
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
 - item: pending
 - item: pending
 - item: pending
@@ -81,7 +69,7 @@ approval_state_digest: f8535218bb8a0eb1
 - Applied Rewrite Review Status: `inactive`
 - Full Target Review Status: `pending_after_chunks`
 - Target/Cursor Checked: `True`
-- Target/Cursor Check Result: `g01 = queue items[0], README.md entries 0-13 of gold-set-proposal.json; target untouched (all verdicts pending)`
+- Target/Cursor Check Result: `epoch 2: chunk u01 = queue items[0] over charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.user-product.json; entry-index bounds idx 0-10 covering source lines README.md:4 through README.md:68; idx0 (README.md:4) verdict #0 accept and idx1 (README.md:6) verdict #1 not-a-claim already decided as working state; resume at u01:e02 = idx2 README.md:7; target file untouched, all maintainerVerdict pending and applied only in apply phase`
 
 ## Runtime Links
 
