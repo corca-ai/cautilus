@@ -3,21 +3,21 @@
 <!-- hitl-runtime-sync
 session_id: hitl-20260611-082742
 runtime_session_dir: .charness/hitl/runtime/hitl-20260611-082742
-runtime_updated_at: 2026-06-16T10:25:07+00:00
+runtime_updated_at: 2026-06-16T10:53:15+00:00
 target: charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.user-product.json
 last_presented_chunk_id: sample:b3
 queue_epoch: 2
 queue_status: ready
-accepted_rules_digest: b99d39698d084591
+accepted_rules_digest: 7eefbba3fa5ea296
 queue_items_digest: 1439e0738e90b8e0
 queue_state_digest: c9b6876066a76e59
-approval_state_digest: 20ca2f460f6dc371
+approval_state_digest: 6bf6913cde3c178b
 -->
 
-- Synced At: 2026-06-16T10:25:12+00:00
+- Synced At: 2026-06-16T12:03:46+00:00
 - Synced From Session: `hitl-20260611-082742`
 - Runtime Session Dir: `.charness/hitl/runtime/hitl-20260611-082742`
-- Runtime Updated At: 2026-06-16T10:25:07+00:00
+- Runtime Updated At: 2026-06-16T10:53:15+00:00
 
 ## Active Target
 
@@ -45,6 +45,7 @@ approval_state_digest: 20ca2f460f6dc371
 - R12
 - R13
 - R14
+- R15
 
 ## Queue State
 

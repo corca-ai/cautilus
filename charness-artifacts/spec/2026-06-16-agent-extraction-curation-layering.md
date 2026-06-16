@@ -1,6 +1,6 @@
 # Spec: Agent Extraction, Curation, and Gold-Set Layering
 
-Status: ratified design (maintainer 2026-06-16, revised after fresh-eye critique). Ready for impl after compaction.
+Status: ratified design, REVISED 2026-06-16 by the user-product HITL (rules R1-R15). The "build-or-not a curator" framing is superseded by a claim-graph model (user-value apex + DAG of epics) — see "HITL Findings + Revised Design" below. Next real slice = slice 3 (revised). Earlier ground-truth-first plan and ratified decisions D1/D2/D3 are kept below as the record that led here.
 Handoff from `charness-artifacts/debug/latest.md` (forced repeated-symptom interrupt `extraction-granularity-seam-2026-06-16`).
 
 ## Problem
@@ -33,7 +33,36 @@ Revised meta decision: **do not build curation yet. Generate ground truth first,
 - **D1 = A (extraction stays high-recall).** Extraction remains exhaustive; recall is the agent's demonstrated strength and matches README #10/#11. Curation as a built step is DEFERRED until the HITL proves it is needed and defines it.
 - **D2 = B (segment by `claimAudience` into separate tracks, user-product first).** Done now by post-hoc segmentation of the 292 packet, NOT by a new seam. Internal docs are NOT excluded (maintainer: `working-patterns.md` is CLAUDE.md-linked, so its rules are legitimate developer-facing behavior claims). `audience: unclear` claims go to a holding bucket reviewed with the developer track unless the maintainer reassigns. Rejected D2 one-surface-segment-field: one rubric cannot fairly grade both product promises and repo-behavior rules.
 - **D3 = C in spirit, but DEFERRED.** If curation is built, triage splits (template lightly tightened so one rule is not split into sub-bullet claims; curation owns cross-set dedup + worth-proving + granularity, all drops audited). Not built until step 4 above.
-- **Measurement = A, corrected.** The gold set is built over the segmented RAW extraction, so it measures extraction directly (recall + per-claim label/routing accuracy). Curation, if later built, is measured separately as "does it reproduce the maintainer's drop/merge/relabel verdicts." Rejected the earlier "raw recall on informal samples + curated precision on gold set" framing — it never grades raw extraction against a real gold set.
+- **Measurement = A, corrected — then re-corrected 2026-06-16 (recall).** The gold set is built over the segmented RAW extraction. **Correction (HITL finding):** reviewing extracted claims measures PRECISION + per-claim label/routing accuracy + tier, but it does NOT measure recall — you cannot find claims the agent MISSED by reading the list of what it extracted. The earlier "measures extraction directly (recall + ...)" wording over-claimed. Recall requires a separate bounded probe (pick a source region, independently enumerate the claims that should be there, diff against the agent's extraction) or the DAG epic-coverage signal (a thinly-supported or empty epic = candidate false-negative). Curation, if later built, is measured separately as "does it reproduce the maintainer's drop/merge/relabel verdicts."
+
+## HITL Findings + Revised Design (2026-06-16, user-product track)
+
+The user-product gold-set HITL (session `hitl-20260611-082742`, rules R1-R15) ran a deterministic stratified sample over the 121-claim user-product track and surfaced a design that supersedes the bare "build-or-not a curator" framing.
+
+### What the sample actually showed (15/24 reviewed, precision clean)
+
+- **No over-extraction signal in the sample (15/121, ~12%; deterministic stratified).** 0 `not-a-claim` and 1 `badly-bounded` in 15 sampled claims — the over-extraction-as-garbage hypothesis is unsupported on the sampled user-product surface (not a full disconfirmation; the remaining 9 sampled cards + the 97 unsampled claims are not yet reviewed). On what was sampled, the agent finds claims well.
+- **The agent's real weakness is PROOF ROUTING (~20%, 3/15 relabels):** it over-uses `human-auditable` for structurally-provable capability claims (README:13, cli.md:391 — both relabel to `deterministic`), and over-trusts `deterministic` for an agent-behavior claim (README:113 -> `cautilus-eval`, because a deterministic schema check passes even on the 292 over-extraction). See R12.
+- **The "292 too many" feeling was untiered FLATNESS, not over-extraction:** trivial spec-detail sits at the same layer as load-bearing promises. Full-set evidence: the 121 claims carry **55 distinct `claimSemanticGroup`s** (avg 2.2/group, many near-duplicates like `claim-discovery`/`claims-discovery`).
+- So the "292" decomposes, on the evidence so far, into: audience-mix (already segmented) + count optics + flatness + ~20% proof-route noise — **not a garbage-over-extraction signal in the sample.**
+
+### Revised model: a user-value APEX + a DAG of epics (supersedes the flat tier idea)
+
+The maintainer defined the missing axis as a **claim graph**, not an importance score:
+
+- **APEX = an authored user-value positioning statement** (DSPy-README style), NOT a tool-centric/mechanism line and NOT extracted verbatim from the docs (current docs lead with mechanism). Locked text:
+  > Cautilus is the framework for discovering, evaluating, and improving agent behavior. It lets you pin down the behavior that matters, prove it survives every change to your prompts, skills, and models, and improve it within explicit budgets — whether you're protecting an AGENTS.md, a single skill, a prompt, or a full agent loop.
+  Full-vision (discover/evaluate/improve) with honest proof badges (`proven`/`declared`/`promised`) carrying the current eval-only release boundary; this is exactly what `docs/specs/index.spec.md` ("Cautilus, Proven On Itself") apex should lead with.
+- **EPICS** = the layer under the apex, organized by the product's top-level shape: the Cautilus Agent (skill) branch + the binary command groups (setup / discover / eval / improve) + a Meta/Cross-concern branch (Cautilus proven on itself: specs, dogfood, held-out, review). ~2 epics/branch, ~11 total. Epics LEAN toward user-story framing to surface value, but not dogmatically (user stories are one spec method among several).
+- **CLAIMS attach to epics as a DAG, not a tree (R15) — PROPOSED, not yet realized.** A claim may support MULTIPLE epics via a `supportingEpics: [...]` facet (many-to-many, acyclic). Rationale: a tree forces a dominant hierarchy and hides cross-cutting aspects; claims like "no LLM / deterministic" or "the agent curates" legitimately support several epics. The DAG is DESIGNED to dissolve the tree model's forced single-parent ambiguities (9 flagged) and the cross-actor case (README:68 "agent curates" = Agent actor + Discover target) — but it is not yet demonstrated: the grounding artifact `epic-tree-proposal.json` is still TREE-form (single-parent, no `supportingEpics[]`, 0 multi-epic claims). Realizing the DAG (assigning the multi-epic edges for at least the 9 ambiguous + cross-actor cases) is a slice-3 task. "No orphans" still holds (every claim edges to >=1 epic); coverage = each epic's support set.
+- Grounding artifact: `charness-artifacts/eval-trust/goldset-v2-agent-extraction/epic-tree-proposal.json` maps all 121 user-product claims to 11 epics with 0 orphans (tree form; to be reworked to the DAG/faceted form at slice 3). It also records the 9 ambiguous edges and the cross-actor case.
+
+### Deliverables this implies (for slice 3 and product work)
+
+- **Extraction template (intent-first):** emit per-claim facets `{audience, recommendedProof, tier-or-epic, supportingEpics[]}` directly, and collapse the 55 sprawling `claimSemanticGroup`s to the ~11 epics. Deriving epic from `claimSemanticGroup` is lossy — do not do it.
+- **Tighten proof-routing guidance** so the agent stops over-assigning `human-auditable` to structurally-provable capability claims (R12 is the rubric: route by what the ENABLER is — static contract -> deterministic; agent behavior -> cautilus-eval).
+- **Docs/README rewrite (product deliverable):** lead with the user-value apex instead of the current mechanism-first framing, so the reason-to-adopt lands immediately. Wire the apex into `docs/specs/index.spec.md` with honest proof badges.
+- **Recall probe** (separate from this HITL) before claiming recall anywhere.
 
 ## Deferred Decision: curation seam vs review-seam reuse
 
@@ -64,7 +93,7 @@ Korean to the user; English docs with semantic line breaks; the binary stays det
 ## Success Criteria
 
 - The user-product track contains only user-audience product claims and is small enough to ratify in batches.
-- The gold set measures raw extraction directly (recall + label accuracy), not a curated derivative.
+- The gold set measures raw extraction directly — precision + per-claim label/proof-routing + tier/epic accuracy — not a curated derivative. Recall is NOT measured by reviewing the extracted list; it needs a separate bounded probe or the DAG epic-coverage signal (see the corrected Measurement decision).
 - The decision to build (or not build) a curator is made from real HITL verdicts, not from imagination.
 - The paused HITL resumes over the user-product track with R1-R9 and verdicts #0/#1 intact.
 
@@ -86,18 +115,20 @@ Forced debug interrupt consumed:
 
 Delegated fresh-eye critique of the prior (build-curation-first) draft: returned NOT SAFE AS WRITTEN with four required changes (justify seam vs review-seam reuse; settle ground truth before building; fix the measurement boundary; shrink scope). All four are folded into this revision: curation deferred behind HITL ground truth, measurement is over raw extraction, seam-vs-reuse is an explicit deferred decision, scope shrunk to segmentation + HITL.
 
+Delegated fresh-eye critique of THIS revision (the HITL-findings + claim-graph fold, 2026-06-16): returned NEEDS CHANGES with 3 blockers, all fixed here: (1) a leftover "recall" over-claim in Success Criteria contradicting the corrected Measurement decision — fixed; (2) the DAG benefit was written as achieved when the grounding artifact is still tree-form — relabeled PROPOSED/not-yet-realized; (3) "292 over-extraction DISCONFIRMED" overstated for a ~12% sample — hedged to "no over-extraction signal in the sample." The critique verified the quantitative claims (121/171 split, 11 epics, 55 groups, 0 orphans, 15/24 reviewed, ~20% proof-route relabels) against the artifacts. It confirmed apex honesty (full-vision + proof badges) and curation-deferral coherence. NOTE carried forward: the claim-graph model is design-to-validate (promoted on a 12% sample), not a settled contract; the DAG must be realized in the artifact at slice 3.
+
 ## Canonical Artifact
 
 This file (`charness-artifacts/spec/2026-06-16-agent-extraction-curation-layering.md`) during implementation.
 
 ## Implementation Slices (post-compaction order)
 
-1. Segment the existing 292 packet by `claimAudience` into a user-product track and a developer track (deterministic split of `gold-set-proposal.json`; reversible-union acceptance check). Re-scope the paused HITL queue to the user-product track.
-2. Resume the gold-set HITL over the user-product track (R1-R9, verdicts #0/#1 carry). Record verdicts; watch the `not-a-claim`/`badly-bounded` rate as the over-extraction signal.
-3. Decide from verdicts whether a curator is worth building. If yes, spec the curation step preferring review-seam reuse over a new seam; if no, record that extraction needs no curator and proceed.
-4. Comparison measurement (slice 4) against the ratified gold set: recall + label accuracy on raw extraction; curation reproduction separately if a curator was built.
-5. Living-doc realignment as decisions land (workflow contract, extraction template, README #10/#11 confirmation, SKILL.md within disclosure budget and the consumer-intent freeze).
+1. **DONE (commit 1ecdf32).** Segment the 292 packet by `claimAudience` into user-product (121) + developer (171) tracks (deterministic, reversible — `scripts/segment-goldset-by-audience.mjs` + test; delegated critique SAFE). Re-scope the paused HITL queue to the user-product track.
+2. **DONE / in progress.** Resume the gold-set HITL over the user-product track. Stratified sample reviewed 15/24; precision clean (0 not-a-claim); the design findings above (proof-route ~20%, flatness, DAG epic model) are the real yield. Remaining 9 sample cards optional.
+3. **REVISED — not "build a curator?" but "fold the claim model into extraction."** The HITL found no over-extraction signal in the sample (so a drop/dedup curator is low-value on current evidence), so the priority is NOT a drop/dedup curator but the **claim-graph model** (a design to validate, not yet a settled contract — promoted on a ~12% sample): (a) extraction template emits per-claim facets `{audience, recommendedProof, tier/epic, supportingEpics[]}` and collapses 55 groups -> ~11 epics; (b) tighten proof-routing (R12); (c) author the epics (user-story lean) + wire the user-value apex into `docs/specs/index.spec.md` with proof badges. Curation-as-drop stays deferred (low evidence it is needed on the user-product surface); review-seam reuse remains the lean if dedup is ever needed.
+4. Measurement against the ratified gold set: precision + label/proof-routing accuracy + epic/tier correctness on raw extraction. **Recall is separate** (bounded recall probe or DAG epic-coverage), per the corrected Measurement decision.
+5. Living-doc realignment as decisions land: README/docs rewrite to lead with the user-value apex; `docs/specs/index.spec.md` apex + badges; extraction-template/workflow contract for the facets; developer track HITL later; SKILL.md within disclosure budget and the consumer-intent freeze.
 
 ## First Implementation Slice (post-compact)
 
-Slice 1: deterministic audience segmentation of the 292 packet + HITL queue re-scope to the user-product track. Then slice 2 resumes the HITL. No new product seam until slice 3 says so.
+Slices 1-2 are landed (segmentation + HITL sample). The next real implementation slice is **slice 3 as revised**: design the faceted/DAG claim model into the extraction template (facets + epic collapse + proof-routing tightening), grounded in `epic-tree-proposal.json` and rules R10-R15 — NOT a drop/dedup curator.
