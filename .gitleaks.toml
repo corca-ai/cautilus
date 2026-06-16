@@ -1,23 +1,34 @@
 [extend]
 useDefault = true
 
+# Cautilus packets record their source commit as a 40-hex git SHA under a field
+# whose name ends in gitCommit / GitCommit (gitCommit, packetGitCommit,
+# currentGitCommit, claimsPacketGitCommit, ...). The default
+# `sourcegraph-access-token` rule matches any bare 40-hex token, so these
+# metadata lines are false positives. The line regex below intentionally
+# generalizes over the field-name prefix so a newly introduced *GitCommit field
+# in a future packet schema does not reopen this class (see
+# charness-artifacts/debug/debug-2026-06-17-gitleaks-packet-commit-field-name.md
+# and the 2026-06-11 predecessor). Scope stays tight: a 40-hex git SHA on a
+# *gitCommit field under a packet path, nothing broader.
+
 [[allowlists]]
-description = "Allow Cautilus claim packet git commit metadata"
+description = "Allow Cautilus claim packet commit metadata (any *[Gg]it[Cc]ommit field; 40-hex git SHA)"
 paths = ['''^\.cautilus/claims/.*\.json$''']
 regexTarget = "line"
-regexes = ['''"gitCommit"\s*:\s*"[0-9a-f]{40}"''']
+regexes = ['''"[A-Za-z]*[Gg]it[Cc]ommit"\s*:\s*"[0-9a-f]{40}"''']
 condition = "AND"
 
 [[allowlists]]
-description = "Allow git commit metadata in checked-in claim packet evidence artifacts"
+description = "Allow git commit metadata in checked-in claim packet evidence artifacts (any *[Gg]it[Cc]ommit field; 40-hex git SHA)"
 paths = ['''^charness-artifacts/.*\.json$''']
 regexTarget = "line"
-regexes = ['''"gitCommit"\s*:\s*"[0-9a-f]{40}"''']
+regexes = ['''"[A-Za-z]*[Gg]it[Cc]ommit"\s*:\s*"[0-9a-f]{40}"''']
 condition = "AND"
 
 [[allowlists]]
-description = "Allow quoted claim packet commit metadata in debug records"
+description = "Allow quoted claim packet commit metadata in debug records (any *[Gg]it[Cc]ommit field; 40-hex git SHA)"
 paths = ['''^charness-artifacts/debug/.*\.md$''']
 regexTarget = "line"
-regexes = ['''"gitCommit"\s*:\s*"[0-9a-f]{40}''']
+regexes = ['''"[A-Za-z]*[Gg]it[Cc]ommit"\s*:\s*"[0-9a-f]{40}''']
 condition = "AND"
