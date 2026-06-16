@@ -111,7 +111,7 @@ export function trackFileName(sourceName, track) {
 	return `${stem}.${track}${ext}`;
 }
 
-function parseArgs(argv) {
+export function parseArgs(argv) {
 	const args = { input: null, outDir: null, check: false, json: false };
 	for (let i = 0; i < argv.length; i += 1) {
 		const a = argv[i];
@@ -125,7 +125,7 @@ function parseArgs(argv) {
 
 // Write each non-empty track to <outDir>/<source>.<track>.json. An empty holding
 // bucket is skipped (no confusing empty artifact) but still counts in the union.
-function writeTracks(tracks, outDir, sourceName) {
+export function writeTracks(tracks, outDir, sourceName) {
 	const written = [];
 	for (const [track, t] of Object.entries(tracks)) {
 		if (track === TRACK_HOLDING && t.entries.length === 0) continue;
@@ -136,7 +136,7 @@ function writeTracks(tracks, outDir, sourceName) {
 	return written;
 }
 
-function printReport(report, written, sourceName) {
+export function printReport(report, written, sourceName) {
 	process.stdout.write(`Segmented ${sourceName} by claimAudience\n`);
 	for (const [track, count] of Object.entries(report.counts)) {
 		process.stdout.write(`  ${track}: ${count}\n`);
@@ -149,7 +149,7 @@ function printReport(report, written, sourceName) {
 	for (const p of written) process.stdout.write(`  wrote ${p}\n`);
 }
 
-function main() {
+export function main() {
 	const args = parseArgs(process.argv.slice(2));
 	const input =
 		args.input ||
