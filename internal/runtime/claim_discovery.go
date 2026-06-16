@@ -125,6 +125,7 @@ type claimDiscoveryConfig struct {
 	nonClaimSectionHeadings []string
 	claimLexiconTerms       []string
 	semanticGroups          []claimSemanticGroupRule
+	epicCatalog             []claimEpic
 	relatedStatePaths       []claimRelatedStatePath
 	linkedMarkdownDepth     int
 	statePath               string
@@ -142,6 +143,16 @@ type claimRelatedStatePath struct {
 type claimSemanticGroupRule struct {
 	label string
 	terms []string
+}
+
+// claimEpic is one entry of the adapter-owned epic catalog: the closed claim-graph
+// vocabulary the agent collapses extracted claims onto (primaryEpic / supportingEpics).
+// Epics are repo-specific, so they arrive through the adapter, never hardcoded.
+type claimEpic struct {
+	epicID    string
+	branch    string
+	title     string
+	userStory string
 }
 
 type claimReviewCluster struct {
@@ -626,6 +637,9 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string, adapterPath
 		if semanticGroups := resolveClaimSemanticGroups(claimConfig["semantic_groups"]); len(semanticGroups) > 0 {
 			config.semanticGroups = semanticGroups
 		}
+		if epicCatalog := resolveClaimEpicCatalog(claimConfig["epic_catalog"]); len(epicCatalog) > 0 {
+			config.epicCatalog = epicCatalog
+		}
 		if depth, ok := claimConfig["linked_markdown_depth"].(int); ok {
 			config.linkedMarkdownDepth = depth
 		}
@@ -755,6 +769,31 @@ func resolveClaimSemanticGroups(value any) []claimSemanticGroupRule {
 			continue
 		}
 		result = append(result, claimSemanticGroupRule{label: label, terms: terms})
+	}
+	return result
+}
+
+// resolveClaimEpicCatalog reads the adapter-normalized epic catalog into the
+// scan config. Entries missing epicId/branch/title are skipped here because the
+// adapter normalizer already recorded them as validation errors.
+func resolveClaimEpicCatalog(value any) []claimEpic {
+	result := []claimEpic{}
+	seen := map[string]bool{}
+	for _, raw := range arrayOrEmpty(value) {
+		record := asMap(raw)
+		epicID := strings.TrimSpace(stringFromAny(record["epicId"]))
+		branch := strings.TrimSpace(stringFromAny(record["branch"]))
+		title := strings.TrimSpace(stringFromAny(record["title"]))
+		if epicID == "" || branch == "" || title == "" || seen[epicID] {
+			continue
+		}
+		seen[epicID] = true
+		result = append(result, claimEpic{
+			epicID:    epicID,
+			branch:    branch,
+			title:     title,
+			userStory: strings.TrimSpace(stringFromAny(record["userStory"])),
+		})
 	}
 	return result
 }

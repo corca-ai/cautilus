@@ -61,6 +61,9 @@
             "enum": ["user", "developer", "unclear"]
           },
           "claimSemanticGroup": {"type": "string"},
+          "primaryEpic": {"type": "string"},
+          "supportingEpics": {"type": "array", "items": {"type": "string"}},
+          "edgeRationale": {"type": "string"},
           "unresolvedQuestions": {"type": "array", "items": {"type": "string"}}
         }
       }

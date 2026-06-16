@@ -186,6 +186,219 @@ func TestApplyClaimExtractionResultAppliesAnchoredClaims(t *testing.T) {
 	}
 }
 
+func TestBuildClaimExtractionInputTemplateV2EmitsEpicFacetsAndRecallPrompts(t *testing.T) {
+	repoRoot := writeExtractionTestRepo(t)
+	input := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{})
+	template := asMap(input["template"])
+	if template["templateVersion"] != "v2" {
+		t.Fatalf("expected template v2, got %#v", template["templateVersion"])
+	}
+	if stringFromAny(template["epicGuidance"]) == "" {
+		t.Fatalf("template must carry epicGuidance: %#v", template)
+	}
+	if _, ok := template["epicCatalog"]; !ok {
+		t.Fatalf("template must carry an epicCatalog field even when empty")
+	}
+	if len(arrayOrEmpty(template["epicCatalog"])) != 0 {
+		t.Fatalf("epicCatalog must be empty when no adapter catalog is declared, got %#v", template["epicCatalog"])
+	}
+	// Recall blind-spot prompts: design-principle + negative/scope-boundary shapes.
+	def := stringFromAny(template["claimDefinition"])
+	for _, want := range []string{"first-class", "not for", "deliberately will not do"} {
+		if !strings.Contains(def, want) {
+			t.Fatalf("claimDefinition must prompt for the %q claim shape, got %q", want, def)
+		}
+	}
+	// Enabler-based routing (R12) names both measured failure modes.
+	routing := stringFromAny(template["routingGuidance"])
+	if !strings.Contains(routing, "enabler") || !strings.Contains(routing, "schema check does not prove") {
+		t.Fatalf("routingGuidance must carry the enabler rubric and the schema-check caveat, got %q", routing)
+	}
+}
+
+func TestBuildClaimExtractionInputRendersAdapterEpicCatalog(t *testing.T) {
+	repoRoot := writeExtractionTestRepo(t)
+	adapterPath := filepath.Join(repoRoot, "proposed-adapter.yaml")
+	mustWriteFile(t, adapterPath, strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  epic_catalog:",
+		"    - epicId: D1-discovery",
+		"      branch: Discover",
+		"      title: Claim discovery turns docs into proof-plan candidates",
+		"      userStory: As a maintainer, I want discovery to produce source-ref-backed candidates.",
+		"    - epicId: E1-evaluate",
+		"      branch: Eval",
+		"      title: evaluate runs checked-in inputs through adapter-owned runners",
+		"",
+	}, "\n"))
+	input := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{AdapterPath: adapterPath})
+	catalog := arrayOrEmpty(asMap(input["template"])["epicCatalog"])
+	if len(catalog) != 2 {
+		t.Fatalf("expected two catalog epics rendered into the template, got %#v", catalog)
+	}
+	first := asMap(catalog[0])
+	if first["epicId"] != "D1-discovery" || first["branch"] != "Discover" || stringFromAny(first["title"]) == "" {
+		t.Fatalf("unexpected first epic rendering: %#v", first)
+	}
+	if stringFromAny(first["userStory"]) == "" {
+		t.Fatalf("epic userStory must render when declared: %#v", first)
+	}
+	if _, ok := asMap(catalog[1])["userStory"]; ok {
+		t.Fatalf("epic without userStory must omit the field: %#v", catalog[1])
+	}
+	// A declared epic catalog changes the template hash, like merged conventions.
+	withoutAdapter := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{})
+	if asMap(withoutAdapter["template"])["templateHash"] == asMap(input["template"])["templateHash"] {
+		t.Fatalf("templateHash must change when the epic catalog changes")
+	}
+}
+
+func TestApplyClaimExtractionResultRecordsUnknownEpicsWithoutRejecting(t *testing.T) {
+	repoRoot := writeExtractionTestRepo(t)
+	adapterPath := filepath.Join(repoRoot, "proposed-adapter.yaml")
+	mustWriteFile(t, adapterPath, strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  epic_catalog:",
+		"    - epicId: D1-discovery",
+		"      branch: Discover",
+		"      title: Claim discovery turns docs into proof-plan candidates",
+		"",
+	}, "\n"))
+	input := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{AdapterPath: adapterPath})
+	claim := extractionClaim("unknown epic", map[string]any{"path": "README.md", "line": 3, "verbatim": extractionTestPromise, "primary": true})
+	claim["primaryEpic"] = "Z9-bogus"
+	claim["supportingEpics"] = []any{"Z9-bogus", "D1-discovery"}
+	claim["edgeRationale"] = "Spans a real and a bogus epic."
+	packet, err := ApplyClaimExtractionResult(input, extractionResultFor(input, []any{claim}), ClaimExtractionApplyOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("unknown epic must not fail the command: %v", err)
+	}
+	// Claim is kept, with its facets intact.
+	candidates := arrayOrEmpty(packet["claimCandidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("unknown epic must not drop the claim, got %#v", candidates)
+	}
+	// The mismatch is recorded for review, naming only the unmapped id.
+	audit := asMap(packet["extractionAudit"])
+	findings := arrayOrEmpty(audit["epicCatalogFindings"])
+	if len(findings) != 1 {
+		t.Fatalf("expected one epic-catalog finding, got %#v", audit["epicCatalogFindings"])
+	}
+	unknown := []string{}
+	for _, raw := range arrayOrEmpty(asMap(findings[0])["unknownEpics"]) {
+		unknown = append(unknown, stringFromAny(raw))
+	}
+	if len(unknown) != 1 || unknown[0] != "Z9-bogus" {
+		t.Fatalf("finding must name only the unmapped epic id, got %#v", unknown)
+	}
+}
+
+func TestApplyClaimExtractionResultRecordsNoFindingWhenEpicsInCatalog(t *testing.T) {
+	repoRoot := writeExtractionTestRepo(t)
+	adapterPath := filepath.Join(repoRoot, "proposed-adapter.yaml")
+	mustWriteFile(t, adapterPath, strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  epic_catalog:",
+		"    - epicId: D1-discovery",
+		"      branch: Discover",
+		"      title: Claim discovery turns docs into proof-plan candidates",
+		"",
+	}, "\n"))
+	input := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{AdapterPath: adapterPath})
+	claim := extractionClaim("known epic", map[string]any{"path": "README.md", "line": 3, "verbatim": extractionTestPromise, "primary": true})
+	claim["primaryEpic"] = "D1-discovery"
+	claim["supportingEpics"] = []any{"D1-discovery"}
+	packet, err := ApplyClaimExtractionResult(input, extractionResultFor(input, []any{claim}), ClaimExtractionApplyOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("ApplyClaimExtractionResult returned error: %v", err)
+	}
+	if _, ok := asMap(packet["extractionAudit"])["epicCatalogFindings"]; ok {
+		t.Fatalf("in-catalog epics must record no finding")
+	}
+}
+
+func TestApplyClaimExtractionResultCarriesEpicFacets(t *testing.T) {
+	repoRoot := writeExtractionTestRepo(t)
+	input := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{})
+	claim := extractionClaim("epic facets", map[string]any{"path": "README.md", "line": 3, "verbatim": extractionTestPromise, "primary": true})
+	claim["primaryEpic"] = "D1-discovery"
+	// primary missing from the front of supportingEpics, plus a duplicate.
+	claim["supportingEpics"] = []any{"E1-evaluate", "D1-discovery", "E1-evaluate"}
+	claim["edgeRationale"] = "Discovery output feeds the eval surface."
+	result := extractionResultFor(input, []any{claim})
+	packet, err := ApplyClaimExtractionResult(input, result, ClaimExtractionApplyOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("ApplyClaimExtractionResult returned error: %v", err)
+	}
+	applied := asMap(arrayOrEmpty(packet["claimCandidates"])[0])
+	if applied["primaryEpic"] != "D1-discovery" {
+		t.Fatalf("primaryEpic must persist, got %#v", applied["primaryEpic"])
+	}
+	supporting := []string{}
+	for _, raw := range arrayOrEmpty(applied["supportingEpics"]) {
+		supporting = append(supporting, stringFromAny(raw))
+	}
+	if len(supporting) != 2 || supporting[0] != "D1-discovery" || supporting[1] != "E1-evaluate" {
+		t.Fatalf("supportingEpics must dedupe and lead with primaryEpic, got %#v", supporting)
+	}
+	if applied["multiEpic"] != true {
+		t.Fatalf("multiEpic must be true for >1 supporting epic, got %#v", applied["multiEpic"])
+	}
+	if applied["edgeRationale"] != "Discovery output feeds the eval surface." {
+		t.Fatalf("edgeRationale must persist for multi-epic claims, got %#v", applied["edgeRationale"])
+	}
+}
+
+func TestApplyClaimExtractionResultOmitsEpicFacetsWhenAbsent(t *testing.T) {
+	repoRoot := writeExtractionTestRepo(t)
+	input := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{})
+	result := extractionResultFor(input, []any{
+		extractionClaim("no epics", map[string]any{"path": "README.md", "line": 3, "verbatim": extractionTestPromise, "primary": true}),
+	})
+	packet, err := ApplyClaimExtractionResult(input, result, ClaimExtractionApplyOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("ApplyClaimExtractionResult returned error: %v", err)
+	}
+	applied := asMap(arrayOrEmpty(packet["claimCandidates"])[0])
+	if _, ok := applied["primaryEpic"]; ok {
+		t.Fatalf("primaryEpic must be omitted when the agent emits none, got %#v", applied["primaryEpic"])
+	}
+	if _, ok := applied["supportingEpics"]; ok {
+		t.Fatalf("supportingEpics must be omitted when the agent emits none")
+	}
+	if _, ok := applied["multiEpic"]; ok {
+		t.Fatalf("multiEpic must be omitted when the agent emits no epics")
+	}
+	// claimSemanticGroup stays the catalog-less fallback grouping.
+	if stringFromAny(applied["claimSemanticGroup"]) == "" {
+		t.Fatalf("claimSemanticGroup fallback must remain, got %#v", applied)
+	}
+}
+
+func TestValidateClaimExtractionResultRejectsMalformedEpicFacets(t *testing.T) {
+	repoRoot := writeExtractionTestRepo(t)
+	input := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{})
+	base := func() map[string]any {
+		return extractionClaim("epics", map[string]any{"path": "README.md", "line": 3, "verbatim": extractionTestPromise, "primary": true})
+	}
+	emptyPrimary := base()
+	emptyPrimary["primaryEpic"] = "   "
+	if _, err := ApplyClaimExtractionResult(input, extractionResultFor(input, []any{emptyPrimary}), ClaimExtractionApplyOptions{RepoRoot: repoRoot}); err == nil || !strings.Contains(err.Error(), "primaryEpic") {
+		t.Fatalf("expected primaryEpic emptiness failure, got %v", err)
+	}
+	emptyEntry := base()
+	emptyEntry["supportingEpics"] = []any{"D1-discovery", ""}
+	if _, err := ApplyClaimExtractionResult(input, extractionResultFor(input, []any{emptyEntry}), ClaimExtractionApplyOptions{RepoRoot: repoRoot}); err == nil || !strings.Contains(err.Error(), "supportingEpics") {
+		t.Fatalf("expected supportingEpics empty-entry failure, got %v", err)
+	}
+}
+
 func TestApplyClaimExtractionResultRejectsByReason(t *testing.T) {
 	repoRoot := writeExtractionTestRepo(t)
 	input := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{MaxExcerptChars: 60})

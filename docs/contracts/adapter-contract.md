@@ -97,6 +97,14 @@ claim_discovery:
         - test
         - lint
         - verify
+  epic_catalog:
+    - epicId: D1-discovery
+      branch: Discover
+      title: Claim discovery turns adapter-owned docs into bounded proof-plan candidates
+      userStory: As a maintainer, I want discovery to produce source-ref-backed candidates, so that I start from evidence not a blank page.
+    - epicId: E1-evaluate
+      branch: Eval
+      title: evaluate runs checked-in inputs through adapter-owned runners
 instance_discovery:
   kind: explicit
   instances:
@@ -224,6 +232,9 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   Portable defaults classify README and user guide/spec paths as `user`, common docs/spec/skill/plugin/agent paths as `developer`, and unfamiliar paths as `unclear`.
   `semantic_groups` optionally declares repo-owned review batching labels and text terms.
   If omitted, discovery uses the portable fallback group `General product behavior` instead of assuming a product-specific taxonomy.
+  `epic_catalog` optionally declares the repo's closed claim-graph epic vocabulary as a list of `{epicId, branch, title, userStory}`; agent extraction (template `v2`) renders it into the extraction-input template so claims collapse onto stable `primaryEpic`/`supportingEpics` ids instead of free-text groups.
+  Epics are repo-specific, so this is the only channel that carries them — they are never hardcoded in the binary — and the catalog is hashed into the template hash like other merged conventions.
+  If omitted, the catalog renders empty and extraction falls back to free-text epic labels with `semantic_groups` for grouping.
   `classification_hints.non_claim_section_headings` optionally lists section headings (matched case-insensitively) whose lines are never claim candidates, such as rejected-alternatives or non-goals sections.
   Adapter headings merge with the portable default list (currently `Deferred Decisions`); defaults are unioned, not replaced.
   `classification_hints.claim_lexicon_terms` optionally lists repo-owned claim vocabulary, matched as case-insensitive substrings, that extends (never replaces) the built-in English claim-verb lexicon.

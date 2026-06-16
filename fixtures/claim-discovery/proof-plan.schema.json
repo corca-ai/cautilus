@@ -130,6 +130,13 @@
             "type": "array",
             "items": { "type": "string" }
           },
+          "primaryEpic": { "type": "string" },
+          "supportingEpics": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "multiEpic": { "type": "boolean" },
+          "edgeRationale": { "type": "string" },
           "evidenceRefs": {
             "type": "array"
           },

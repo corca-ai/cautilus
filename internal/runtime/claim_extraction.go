@@ -30,11 +30,11 @@ type ClaimExtractionApplyOptions struct {
 }
 
 const (
-	claimExtractionTemplateVersion = "v1"
-	claimExtractionAnchoringPolicy = "whitespace-normalized-substring-of-raw-source"
+	claimExtractionTemplateVersion         = "v2"
+	claimExtractionAnchoringPolicy         = "whitespace-normalized-substring-of-raw-source"
 	claimExtractionMaxRejectedClaimEntries = 50
-	defaultMaxClaimsPerSource = 80
-	defaultMaxExcerptChars    = 600
+	defaultMaxClaimsPerSource              = 80
+	defaultMaxExcerptChars                 = 600
 )
 
 // BuildClaimExtractionInput emits the deterministic agent-extraction input packet:
@@ -85,7 +85,7 @@ func BuildClaimExtractionInput(options ClaimExtractionInputOptions) (map[string]
 		}
 		renderedSources = append(renderedSources, entry)
 	}
-	template := claimExtractionTemplateV1(config)
+	template := claimExtractionTemplate(config)
 	bounds := claimExtractionBounds(options)
 	return map[string]any{
 		"schemaVersion":      contracts.ClaimExtractionInputSchema,
@@ -118,13 +118,17 @@ func claimExtractionBounds(options ClaimExtractionInputOptions) map[string]any {
 	}
 }
 
-// claimExtractionTemplateV1 renders the product-owned extraction template.
-// The adapter-supplied classification hints arrive pre-merged through the scan
-// config; the template carries the merged result, never new repo-specific rules.
-func claimExtractionTemplateV1(config claimDiscoveryConfig) map[string]any {
+// claimExtractionTemplate renders the product-owned extraction template (v2).
+// The adapter-supplied classification hints and epic catalog arrive pre-merged
+// through the scan config; the template carries the merged result, never new
+// repo-specific rules. v2 adds the claim-graph facets (primaryEpic /
+// supportingEpics), enabler-based proof routing, and explicit prompts for the
+// principle and negative/scope-boundary claim shapes that recall probes showed
+// the agent tends to miss.
+func claimExtractionTemplate(config claimDiscoveryConfig) map[string]any {
 	template := map[string]any{
 		"templateVersion": claimExtractionTemplateVersion,
-		"claimDefinition": "A behavior claim is a declared promise about how the product, repo, or workflow behaves, addressed to a user, operator, or agent, that could in principle be proven or falsified. Roadmap intent, design philosophy, open questions, glossary definitions, and document metadata are not claims.",
+		"claimDefinition": "A behavior claim is a declared promise about how the product, repo, or workflow behaves, addressed to a user, operator, or agent, that could in principle be proven or falsified. Roadmap intent, design philosophy, open questions, glossary definitions, and document metadata are not claims. Actively include two easy-to-miss claim shapes that assert a stance or a boundary rather than a feature: design-principle claims (for example \"X is a first-class ...\", \"agents are first-class users\", \"the binary stays deterministic\") and negative, scope-boundary, or exclusion claims (for example \"not for ...\", \"does not ...\", \"never ...\", \"opt-in until ...\"). A statement of what the product deliberately will not do, or a principle it holds, is a claim whenever it is falsifiable.",
 		"nonClaimConventions": map[string]any{
 			"nonClaimSectionHeadings": stringArrayToAny(nonNilStringSlice(config.nonClaimSectionHeadings)),
 			"portableRules": []any{
@@ -135,11 +139,33 @@ func claimExtractionTemplateV1(config claimDiscoveryConfig) map[string]any {
 			},
 		},
 		"excerptRules":    "Every claim must carry at least one excerpt copied exactly from the source text, with its source path and a line locator. Mark exactly one excerpt per claim as primary: true; it is the claim's identity anchor across re-extractions. Keep paraphrase in the summary only. An excerpt that does not appear verbatim in the source after whitespace normalization causes the whole claim to be rejected, so copy text exactly instead of fixing typos or grammar. When the same promise is declared in multiple places, emit one claim with multiple excerpts instead of duplicate claims. Keep each excerpt within the maxExcerptChars bound (counted in characters, not bytes).",
-		"routingGuidance": "Route every claim toward the evidence it needs next. recommendedProof: deterministic when a repo-owned unit, lint, build, schema, or CI check can prove it; human-auditable when reading current source, docs, or generated artifacts can prove it; cautilus-eval when proof depends on model, agent, prompt, skill, workflow, or behavior execution. recommendedEvalSurface (cautilus-eval only): dev/repo for repo-instruction behavior, dev/skill for skill behavior, app/chat for conversational app behavior, app/prompt for single-prompt app behavior. verificationReadiness: ready-for-proof when the claim is provable as stated; needs-scenario when a concrete scenario must be written first; needs-alignment when the promise itself needs a maintainer decision; blocked when extraction could not settle what the claim means. claimAudience: user, developer, or unclear. claimSemanticGroup: a short label grouping related claims.",
+		"routingGuidance": "Route every claim toward the evidence it needs next, by what the claim's enabler actually is. recommendedProof: deterministic when a repo-owned unit, lint, build, schema, type, or CI check is what makes the claim true (prefer deterministic for any capability claim a static check could prove, even if a human could also read it; do not default a structurally-provable capability claim to human-auditable); human-auditable only when no deterministic check could prove it and reading current source, docs, or a generated artifact is the proof; cautilus-eval when the claim is true only because of model, agent, prompt, skill, workflow, or behavior execution (route an agent-behavior claim here even when a deterministic schema check happens to pass, because a passing schema check does not prove the behavior). recommendedEvalSurface (cautilus-eval only): dev/repo for repo-instruction behavior, dev/skill for skill behavior, app/chat for conversational app behavior, app/prompt for single-prompt app behavior. verificationReadiness: ready-for-proof when provable as stated; needs-scenario when a concrete scenario must be written first; needs-alignment when the promise itself needs a maintainer decision; blocked when extraction could not settle what the claim means. claimAudience: user, developer, or unclear.",
+		"epicGuidance":    "Place every claim in the product's claim graph instead of inventing a free-text group. primaryEpic is the single epic that is the claim's home. supportingEpics is every epic the claim supports, including primaryEpic, as a list of at least one id (many-to-many, acyclic): a claim that genuinely strengthens several epics carries them all, and a cross-cutting principle (for example \"deterministic\" or \"the agent curates\") usually supports more than one. When supportingEpics has more than one entry, add a one-sentence edgeRationale naming why each non-primary epic is supported. Choose epic ids only from the epicCatalog in this packet when it is non-empty; do not invent ids and do not derive the epic from claimSemanticGroup (that mapping is lossy). When the catalog is empty, use a short stable epic label and keep claimSemanticGroup for grouping.",
+		"epicCatalog":     renderEpicCatalog(config.epicCatalog),
 		"uncertaintyRule": "When unsure whether text is a claim, emit the claim with verificationReadiness: blocked and add an entry to unresolvedQuestions instead of silently dropping it.",
 	}
 	template["templateHash"] = claimExtractionTemplateHash(template)
 	return template
+}
+
+// renderEpicCatalog projects the adapter-resolved epic catalog into the embedded
+// template. It is the closed vocabulary the agent collapses claims onto; an empty
+// catalog (no adapter epics declared) renders an empty list and the agent falls
+// back to free-text epic labels per epicGuidance.
+func renderEpicCatalog(catalog []claimEpic) []any {
+	rendered := make([]any, 0, len(catalog))
+	for _, epic := range catalog {
+		entry := map[string]any{
+			"epicId": epic.epicID,
+			"branch": epic.branch,
+			"title":  epic.title,
+		}
+		if epic.userStory != "" {
+			entry["userStory"] = epic.userStory
+		}
+		rendered = append(rendered, entry)
+	}
+	return rendered
 }
 
 // claimExtractionTemplateHash hashes the canonical JSON of the template block
@@ -362,6 +388,9 @@ func ApplyClaimExtractionResult(inputPacket map[string]any, resultPacket map[str
 		"rejectedClaimCount":  len(rejections),
 		"rejectedClaims":      renderClaimExtractionRejections(rejections),
 	}
+	if findings := epicCatalogFindings(template, candidates); len(findings) > 0 {
+		audit["epicCatalogFindings"] = findings
+	}
 	if len(staleSources) > 0 {
 		audit["staleSources"] = stringArrayToAny(staleSources)
 		audit["staleAnchors"] = staleAnchors
@@ -473,9 +502,94 @@ func renderExtractedClaimCandidate(claim map[string]any, excerpts []any, primary
 		entry["recommendedEvalSurface"] = surface
 		groupHints = append(groupHints, surface)
 	}
+	// Claim-graph facets (v2): carry the agent's epic placement through verbatim.
+	// Absent epics fall back to claimSemanticGroup, so catalog-less repos still work.
+	primaryEpic, supportingEpics := normalizeClaimEpicFacets(stringFromAny(claim["primaryEpic"]), arrayOrEmpty(claim["supportingEpics"]))
+	if len(supportingEpics) > 0 {
+		entry["supportingEpics"] = stringArrayToAny(supportingEpics)
+		entry["multiEpic"] = len(supportingEpics) > 1
+		if primaryEpic != "" {
+			entry["primaryEpic"] = primaryEpic
+			groupHints = append(groupHints, "epic:"+primaryEpic)
+		}
+		if len(supportingEpics) > 1 {
+			if rationale := strings.TrimSpace(stringFromAny(claim["edgeRationale"])); rationale != "" {
+				entry["edgeRationale"] = rationale
+			}
+		}
+	}
 	sort.Strings(groupHints)
 	entry["groupHints"] = stringArrayToAny(groupHints)
 	return entry
+}
+
+// epicCatalogFindings records, without rejecting, any applied claim whose epic
+// facets reference ids outside the adapter epic catalog. Membership is recorded
+// for review, never enforced: an unmapped epic is a label-drift signal for the
+// gold-set HITL to reconcile, not a reason to drop a real claim. A catalog-less
+// packet (empty epicCatalog) returns nil — there is nothing to check against.
+func epicCatalogFindings(template map[string]any, candidates []any) []any {
+	catalogIDs := map[string]bool{}
+	for _, raw := range arrayOrEmpty(template["epicCatalog"]) {
+		if id := strings.TrimSpace(stringFromAny(asMap(raw)["epicId"])); id != "" {
+			catalogIDs[id] = true
+		}
+	}
+	if len(catalogIDs) == 0 {
+		return nil
+	}
+	findings := []any{}
+	for _, raw := range candidates {
+		candidate := asMap(raw)
+		unknown := []string{}
+		seen := map[string]bool{}
+		check := func(id string) {
+			id = strings.TrimSpace(id)
+			if id == "" || seen[id] || catalogIDs[id] {
+				return
+			}
+			seen[id] = true
+			unknown = append(unknown, id)
+		}
+		check(stringFromAny(candidate["primaryEpic"]))
+		for _, rawEpic := range arrayOrEmpty(candidate["supportingEpics"]) {
+			check(stringFromAny(rawEpic))
+		}
+		if len(unknown) > 0 {
+			findings = append(findings, map[string]any{
+				"claimId":      stringFromAny(candidate["claimId"]),
+				"unknownEpics": stringArrayToAny(unknown),
+				"detail":       "claim references epic ids not in the adapter epic catalog; recorded for review, claim kept",
+			})
+		}
+	}
+	if len(findings) == 0 {
+		return nil
+	}
+	return findings
+}
+
+// normalizeClaimEpicFacets canonicalizes the agent's epic placement: primaryEpic
+// first (when present), then supportingEpics in source order, trimmed and
+// de-duplicated, so the persisted supportingEpics always contains primaryEpic and
+// never repeats an id. Ordering is deterministic for the same input.
+func normalizeClaimEpicFacets(primaryRaw string, supportingRaw []any) (string, []string) {
+	primary := strings.TrimSpace(primaryRaw)
+	seen := map[string]bool{}
+	supporting := []string{}
+	add := func(id string) {
+		id = strings.TrimSpace(id)
+		if id == "" || seen[id] {
+			return
+		}
+		seen[id] = true
+		supporting = append(supporting, id)
+	}
+	add(primary)
+	for _, raw := range supportingRaw {
+		add(stringFromAny(raw))
+	}
+	return primary, supporting
 }
 
 func extractedClaimWhyThisLayer(recommendedProof string) string {
@@ -567,6 +681,22 @@ func validateClaimExtractionResult(result map[string]any) error {
 		}
 		if audience := strings.TrimSpace(stringFromAny(claim["claimAudience"])); audience != "" && !validClaimAudience(audience) {
 			return fmt.Errorf("%s.claimAudience %q is unsupported", field, audience)
+		}
+		if _, ok := claim["primaryEpic"]; ok {
+			if strings.TrimSpace(stringFromAny(claim["primaryEpic"])) == "" {
+				return fmt.Errorf("%s.primaryEpic must be a non-empty string when present", field)
+			}
+		}
+		if _, ok := claim["supportingEpics"]; ok {
+			items, err := assertArray(claim["supportingEpics"], field+".supportingEpics")
+			if err != nil {
+				return err
+			}
+			for epicIndex, raw := range items {
+				if strings.TrimSpace(stringFromAny(raw)) == "" {
+					return fmt.Errorf("%s.supportingEpics[%d] must be a non-empty string", field, epicIndex)
+				}
+			}
 		}
 		if _, ok := claim["unresolvedQuestions"]; ok {
 			if _, err := assertArray(claim["unresolvedQuestions"], field+".unresolvedQuestions"); err != nil {

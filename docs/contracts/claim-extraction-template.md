@@ -50,11 +50,12 @@ The extraction budget (source count, excerpt bounds, batching, stop reasons) is 
 The extraction template is product-owned and embedded in the binary, following the existing precedent of binary-rendered review prompt surfaces.
 `extraction-input` renders the template into the packet together with `templateVersion` and `templateHash`, so every extraction run records exactly which template produced it.
 
-The template has five required sections:
+The template has seven required sections (template `v2`):
 
 1. **Claim definition.**
    What counts as a behavior claim: a declared promise about how the product, repo, or workflow behaves, addressed to a user, operator, or agent, that could in principle be proven or falsified.
    Roadmap intent, philosophy, open questions, glossary definitions, and metadata are not claims.
+   `v2` adds explicit prompts for the two claim shapes a recall probe showed the agent tends to miss because they assert a stance or a boundary rather than a feature: design-principle claims (for example "X is a first-class …", "agents are first-class users") and negative, scope-boundary, or exclusion claims (for example "not for …", "does not …", "opt-in until …").
 2. **Non-claim conventions.**
    The merged `classification_hints.non_claim_section_headings` (portable defaults unioned with adapter headings) plus the portable non-claim rules already in the claim model: frontmatter is metadata, code-styled glossary labels are not claims, prompt examples and open questions are not claims.
    The adapter remains the only repo-specific knowledge channel; the template carries the merged result, not new hardcoding.
@@ -63,13 +64,20 @@ The template has five required sections:
    Exactly one excerpt per claim is marked `primary`; it is the claim's identity anchor.
    Paraphrase belongs in `summary` only; an excerpt that does not survive anchoring validation causes the claim to be rejected.
 4. **Routing guidance.**
-   The `recommendedProof`, `recommendedEvalSurface`, `verificationReadiness`, `claimAudience`, and `claimSemanticGroup` definitions from the claim model, so routing happens inside extraction instead of a separate heuristic pass.
+   The `recommendedProof`, `recommendedEvalSurface`, `verificationReadiness`, and `claimAudience` definitions from the claim model, so routing happens inside extraction instead of a separate heuristic pass.
+   `v2` tightens `recommendedProof` to route by what the claim's *enabler* is (rule R12), because the gold-set HITL found proof routing — not recall — to be the agent's measured weakness: route to `deterministic` whenever a static repo-owned check could prove a capability claim (do not default it to `human-auditable`), and route an agent-behavior claim to `cautilus-eval` even when a deterministic schema check happens to pass (a passing schema check does not prove the behavior).
    This absorbs the dissolved proof-routing hint family: routing knowledge lives in the template plus the gold-set eval, not in engine keyword switches.
-5. **Uncertainty rule.**
+5. **Epic guidance.**
+   The claim-graph placement rule (rules R14/R15): each claim carries a `primaryEpic` (its single home epic) and a `supportingEpics` list (every epic it supports, including the primary; many-to-many and acyclic), with a one-sentence `edgeRationale` when more than one epic is supported.
+   This replaces the free-text `claimSemanticGroup` as the canonical grouping; deriving an epic from `claimSemanticGroup` is lossy and is not done.
+6. **Epic catalog.**
+   The closed epic vocabulary the agent collapses claims onto, supplied by the adapter (`claim_discovery.epic_catalog`) and rendered into the template as a list of `{epicId, branch, title, userStory}`.
+   Epics are repo-specific, so they arrive through the adapter exactly like `classification_hints`, never hardcoded in the binary; an empty catalog renders an empty list and the agent falls back to short free-text epic labels with `claimSemanticGroup` for grouping.
+7. **Uncertainty rule.**
    When the agent is unsure whether text is a claim, it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it.
 
 The exact template prose is implementation-slice work and will be iterated against the gold-set comparison measurement; this contract fixes the required sections and the provenance mechanism, not the wording.
-`templateHash` is the sha256 of the canonical JSON of the rendered template block excluding the hash field itself, so it covers both the template prose and the merged adapter conventions; two repos with different adapter headings produce different hashes by design.
+`templateHash` is the sha256 of the canonical JSON of the rendered template block excluding the hash field itself, so it covers the template prose, the merged adapter conventions, and the merged epic catalog; two repos with different adapter headings or epic catalogs produce different hashes by design.
 
 ## Packet Contracts
 
@@ -141,6 +149,8 @@ On refresh, `sources[].status` is `extract` for git-diff-changed sources and `ca
       "verificationReadiness": "ready-for-proof",
       "claimAudience": "user",
       "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery"],
       "unresolvedQuestions": []
     }
   ],
@@ -164,6 +174,9 @@ The result carries no `claimId`, no `claimFingerprint`, and no evidence fields: 
   Anywhere the contract says "primary excerpt" of a packet claim, it means the `primary: true` ref when present, else the shared excerpt text.
 - Agent-extracted claims carry `reviewStatus: "agent-reviewed"`, `evidenceStatus: "unknown"`, `evidenceRefs: []`, and `lifecycle: "new"` (or `carried-forward` on the refresh path).
   Evidence preflight and evidence reconciliation remain separate steps with unchanged semantics.
+- Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics` (de-duplicated and led by `primaryEpic`), a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims.
+  Normalization never drops a real claim: a claim with no epic facet keeps `claimSemanticGroup` as the fallback grouping, and the epic fields are simply omitted.
+  Catalog membership (each facet epic is an `epicCatalog` id) is recorded, not enforced, so an unmapped epic surfaces for review instead of rejecting the claim.
 
 ### Interaction with shipped claim-state consumers
 

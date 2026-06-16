@@ -160,11 +160,12 @@ The heuristic scan above is the labeled baseline mode; the agent-primary path mo
 The agent extracts claims by following the template and answers with `cautilus.claim_extraction_result.v1`; neither binary command makes a model call.
 
 ```run:shell
-$ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." > "$tmp/README.md"; ./bin/cautilus discover claims extraction-input --repo-root "$tmp" --output "$tmp/input.json" >/dev/null; jq -r '"'"'"schema=" + .schemaVersion, "target=" + .extractionTarget, "templateVersion=" + .template.templateVersion, "templateSections=" + ([.template.claimDefinition, .template.excerptRules, .template.routingGuidance, .template.uncertaintyRule] | map(length > 0) | all | tostring), "sources=" + (.sources | map(.path) | join(","))'"'"' "$tmp/input.json"'
+$ sh -lc 'tmp="$(mktemp -d)"; printf "%s\n" "# Demo" "" "Users can run deterministic checks before review." > "$tmp/README.md"; ./bin/cautilus discover claims extraction-input --repo-root "$tmp" --output "$tmp/input.json" >/dev/null; jq -r '"'"'"schema=" + .schemaVersion, "target=" + .extractionTarget, "templateVersion=" + .template.templateVersion, "templateSections=" + ([.template.claimDefinition, .template.excerptRules, .template.routingGuidance, .template.epicGuidance, .template.uncertaintyRule] | map(length > 0) | all | tostring), "epicCatalog=" + (.template.epicCatalog | type), "sources=" + (.sources | map(.path) | join(","))'"'"' "$tmp/input.json"'
 schema=cautilus.claim_extraction_input.v1
 target=first-extraction
-templateVersion=v1
+templateVersion=v2
 templateSections=true
+epicCatalog=array
 sources=README.md
 ```
 

@@ -65,6 +65,8 @@
         "nonClaimConventions",
         "excerptRules",
         "routingGuidance",
+        "epicGuidance",
+        "epicCatalog",
         "uncertaintyRule"
       ],
       "properties": {
@@ -81,6 +83,20 @@
         },
         "excerptRules": {"type": "string"},
         "routingGuidance": {"type": "string"},
+        "epicGuidance": {"type": "string"},
+        "epicCatalog": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["epicId", "branch", "title"],
+            "properties": {
+              "epicId": {"type": "string"},
+              "branch": {"type": "string"},
+              "title": {"type": "string"},
+              "userStory": {"type": "string"}
+            }
+          }
+        },
         "uncertaintyRule": {"type": "string"}
       }
     },

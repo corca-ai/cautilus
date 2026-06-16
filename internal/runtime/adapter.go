@@ -599,6 +599,13 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 			normalized["semantic_groups"] = groups
 		}
 	}
+	if raw, exists := record["epic_catalog"]; exists && raw != nil {
+		catalog, catalogErrors := normalizeClaimDiscoveryEpicCatalog(raw)
+		errors = append(errors, catalogErrors...)
+		if catalog != nil {
+			normalized["epic_catalog"] = catalog
+		}
+	}
 	if raw, exists := record["classification_hints"]; exists && raw != nil {
 		hints, hintErrors := normalizeClaimDiscoveryClassificationHints(raw)
 		errors = append(errors, hintErrors...)
@@ -730,6 +737,58 @@ func normalizeClaimDiscoverySemanticGroups(value any) ([]any, []string) {
 			"label": label,
 			"terms": terms,
 		})
+	}
+	return normalized, errors
+}
+
+// normalizeClaimDiscoveryEpicCatalog validates the adapter-owned epic catalog:
+// the closed claim-graph vocabulary the agent collapses extracted claims onto.
+// Each entry needs epicId/branch/title; userStory is optional. Epics are
+// repo-specific, so this is the adapter channel that keeps them out of the binary.
+func normalizeClaimDiscoveryEpicCatalog(value any) ([]any, []string) {
+	items, err := assertArray(value, "claim_discovery.epic_catalog")
+	if err != nil {
+		return nil, []string{"claim_discovery.epic_catalog must be a list of mappings"}
+	}
+	errors := []string{}
+	normalized := []any{}
+	seen := map[string]bool{}
+	for index, raw := range items {
+		field := fmt.Sprintf("claim_discovery.epic_catalog[%d]", index)
+		record, ok := raw.(map[string]any)
+		if !ok {
+			errors = append(errors, field+" must be a mapping")
+			continue
+		}
+		epicID, err := normalizeNonEmptyString(record["epicId"], field+".epicId")
+		if err != nil {
+			errors = append(errors, field+".epicId must be a non-empty string")
+			continue
+		}
+		if seen[epicID] {
+			errors = append(errors, field+".epicId duplicates an earlier epicId: "+epicID)
+			continue
+		}
+		branch, err := normalizeNonEmptyString(record["branch"], field+".branch")
+		if err != nil {
+			errors = append(errors, field+".branch must be a non-empty string")
+			continue
+		}
+		title, err := normalizeNonEmptyString(record["title"], field+".title")
+		if err != nil {
+			errors = append(errors, field+".title must be a non-empty string")
+			continue
+		}
+		entry := map[string]any{
+			"epicId": epicID,
+			"branch": branch,
+			"title":  title,
+		}
+		if userStory, err := normalizeNonEmptyString(record["userStory"], field+".userStory"); err == nil {
+			entry["userStory"] = userStory
+		}
+		seen[epicID] = true
+		normalized = append(normalized, entry)
 	}
 	return normalized, errors
 }

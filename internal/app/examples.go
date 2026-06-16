@@ -265,15 +265,24 @@ const claimExtractionInputExampleOutput = `{
   "sourceCount": 1,
   "sourceGraph": [],
   "template": {
-    "templateVersion": "v1",
+    "templateVersion": "v2",
     "templateHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
-    "claimDefinition": "A behavior claim is a declared promise about how the product, repo, or workflow behaves, addressed to a user, operator, or agent, that could in principle be proven or falsified.",
+    "claimDefinition": "A behavior claim is a declared promise about how the product, repo, or workflow behaves that could in principle be proven or falsified. Actively include design-principle claims (\"X is a first-class ...\") and negative or scope-boundary claims (\"not for ...\", \"does not ...\").",
     "nonClaimConventions": {
       "nonClaimSectionHeadings": ["Deferred Decisions", "Rejected Alternatives"],
       "portableRules": ["Frontmatter is metadata, not a claim."]
     },
     "excerptRules": "Every claim must carry at least one verbatim excerpt with exactly one excerpt marked primary: true.",
-    "routingGuidance": "Route every claim toward the evidence it needs next via recommendedProof, recommendedEvalSurface, verificationReadiness, claimAudience, and claimSemanticGroup.",
+    "routingGuidance": "Route by the claim's enabler: deterministic when a static repo-owned check makes it true, human-auditable only when no such check could, cautilus-eval when it is true only because of model/agent/prompt/skill/workflow/behavior execution.",
+    "epicGuidance": "Place every claim in the claim graph: primaryEpic is its home epic, supportingEpics lists every epic it supports (including primaryEpic). Choose ids from epicCatalog when non-empty; do not derive the epic from claimSemanticGroup.",
+    "epicCatalog": [
+      {
+        "epicId": "D1-discovery",
+        "branch": "Discover",
+        "title": "Claim discovery turns adapter-owned docs into bounded proof-plan candidates",
+        "userStory": "As a maintainer, I want discovery to turn my docs into source-ref-backed claim candidates, so that I start from evidence rather than a blank page."
+      }
+    ],
     "uncertaintyRule": "When unsure whether text is a claim, emit it with verificationReadiness: blocked and an unresolvedQuestions entry instead of silently dropping it."
   },
   "bounds": {
@@ -310,6 +319,8 @@ const claimExtractionResultExampleInput = `{
       "verificationReadiness": "ready-for-proof",
       "claimAudience": "user",
       "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery"],
       "unresolvedQuestions": []
     }
   ],
