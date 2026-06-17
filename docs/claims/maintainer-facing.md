@@ -19,7 +19,7 @@ The exact raw-claim evidence state remains in `.cautilus/claims/evidenced-typed-
 Aligned user claims: U1 Claim, U9 Proof Debt.
 
 `discover claims` emits source-ref-backed candidates, rough labels, and proof-planning fields.
-It should favor recall from configured entry documents and linked Markdown, then rely on Cautilus Agent or a reviewer to merge duplicates, split fragments, and project canonical user-facing and maintainer-facing claims.
+It should favor recall from configured entry documents and linked docs, then rely on Cautilus Agent or a reviewer to merge duplicates, split fragments, and project canonical user-facing and maintainer-facing claims.
 
 Proof route: deterministic.
 Current evidence status: proof-planning; not satisfied by this catalog entry alone.

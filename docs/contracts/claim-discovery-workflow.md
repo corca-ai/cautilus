@@ -115,14 +115,14 @@ The default entry set is:
 The default Markdown link depth is `3`.
 Depth counts only links from discovered Markdown sources to other repo-local Markdown sources.
 It does not traverse arbitrary source files, generated artifacts, binary files, dependency directories, or external URLs.
-Discovery also honors the repo's `.gitignore` for every path selection route, including default entries, adapter entries, explicit `--source` paths, linked Markdown, and include globs.
+Discovery also honors the repo's `.gitignore` for every path selection route, including default entries, adapter entries, explicit `--source` paths, linked docs, and include globs.
 This keeps generated spec reports and latest artifact bundles out of the source claim graph without inventing a Cautilus-specific generated-block marker.
 When different real files declare the same normalized claim text, discovery should emit one claim candidate and preserve every declaration location in `sourceRefs`.
 Semantic duplicates with different wording are grouping/review work, not deterministic source dedupe.
 
 This entry-surface boundary is also the product's false-negative boundary.
-`discover claims` is expected to find declared claims in README-like entry documents and linked Markdown, not every latent user-facing behavior hidden in code, transcripts, issue threads, or private operator memory.
-If a declared claim is inside the configured entry documents or their linked Markdown graph and deterministic discovery misses it, that is a `discover claims` false-negative bug.
+`discover claims` is expected to find declared claims in README-like entry documents and linked docs, not every latent user-facing behavior hidden in code, transcripts, issue threads, or private operator memory.
+If a declared claim is inside the configured entry documents or their linked docs graph and deterministic discovery misses it, that is a `discover claims` false-negative bug.
 If a core user-facing feature is not stated in that graph, deterministic discovery may miss it without being wrong.
 That out-of-scope miss is a product signal that the repo's public narrative or adoption surface is underspecified.
 The Cautilus Agent, `charness:quality`, `charness:narrative`, or a human reviewer may still explore the codebase and discover such missing public claims.
@@ -521,7 +521,7 @@ After discovery or refresh, Cautilus Agent should report status in a compact dec
 Scanned:
 - README.md
 - AGENTS.md
-- 23 linked Markdown files, depth 3
+- 23 linked docs files, depth 3
 
 Found:
 - 138 anchored claims, 4 rejected by anchoring audit
@@ -544,7 +544,7 @@ Full-batch work should show estimated claim count, affected files, and review or
 Cautilus Agent should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.
 
 `discover claims status` should expose the same decision boundary in `cautilus.claim_status_summary.v1`.
-The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked Markdown.
+The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked docs.
 That block should separate in-scope false negatives from out-of-scope narrative gaps: a declared promise inside the boundary that discovery missed is a binary bug, while undeclared user-facing behavior outside the boundary is an entry-surface or catalog gap rather than a discoverable claim.
 The status packet should also include `actionSummary.primaryBuckets`, so a caller can separate work without rereading every claim:
 
@@ -638,7 +638,7 @@ Valid but defer:
 - The `recommendedProof` and eval-surface routing keywords in `classifyClaimLine` do not become a hint family; routing knowledge lives in the extraction template.
 - In the claim discovery workflow, the Cautilus Agent owns claim extraction, LLM-backed claim review, budget explanation, and subagent orchestration.
 - First discovery uses entry sources plus linked repo-local Markdown.
-- Default linked Markdown depth is `3`.
+- Default linked docs depth is `3`.
 - Cautilus Agent asks before the first broad scan and explains the effective entries and depth.
 - Scope confirmation never authorizes model spend: agent extraction needs its own extraction-budget confirmation, and LLM review needs its own review-budget confirmation (maintainer-ratified 2026-06-11, generalizing the earlier review-budget rule).
 - Agent extraction is the label-review pass for the claims it extracts; `review-input` excludes `agent-reviewed` claims by default so the review seam does not re-spend budget on freshly extracted claims.
@@ -675,7 +675,7 @@ Valid but defer:
 ## Success Criteria
 
 1. A user can invoke the Cautilus Agent without detailed input and get a clear status summary rather than a raw 500-claim dump.
-2. The first broad scan is bounded by entry sources plus linked Markdown depth 3, and the user sees that scope before it runs.
+2. The first broad scan is bounded by entry sources plus linked docs depth 3, and the user sees that scope before it runs.
 3. Existing claim state causes a diff-aware refresh path instead of a full rediscovery by default.
 4. The packet separates proof mechanism, verification readiness, evidence status, review status, and lifecycle.
 5. Agent extraction produces anchored claims with verbatim source refs and audit provenance, and the review seam preserves review provenance for the queues it serves.

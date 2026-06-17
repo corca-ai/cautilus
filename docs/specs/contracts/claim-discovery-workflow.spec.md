@@ -6,15 +6,15 @@ Map keys: `promise.claim-discovery`, `rule.reviewable-artifacts`, `rule.evidence
 Evidence path: deterministic plus skill review.
 Evidence status: open gap.
 Next action: keep source-scope tests, canonical-map generation, and review-result replay connected to the active spec tree.
-Terms covered here: source inventory, entry Markdown, linked Markdown, `.gitignore`, raw candidates, duplicate handling, canonical compression, review-result replay, false-positive review, false-negative boundary.
+Terms covered here: source inventory, entry Markdown, linked docs, `.gitignore`, raw candidates, duplicate handling, canonical compression, review-result replay, false-positive review, false-negative boundary.
 
 ## Maintainer Promise
 
-`discover claims` emits source-ref-backed candidates from configured entry documents and the linked Markdown they reach, preferring recall and preserving the scan boundary so curation can distinguish binary false negatives from out-of-scope narrative gaps.
+`discover claims` emits source-ref-backed candidates from configured entry documents and the linked docs they reach, preferring recall and preserving the scan boundary so curation can distinguish binary false negatives from out-of-scope narrative gaps.
 
 ## Subclaims
 
-- Discovery emits source-ref-backed candidates from configured entry documents and linked Markdown within the declared depth bounds.
+- Discovery emits source-ref-backed candidates from configured entry documents and linked docs within the declared depth bounds.
 - Discovery favors recall; a missed declaration inside the scan boundary is a binary bug, while missing behavior outside the boundary is catalog, narrative, or alignment work.
 - Duplicate handling and false-positive curation remain packet-aware review responsibilities rather than deterministic verdicts.
 - The active scan boundary excludes archived spec trees and superseded claim pages so they do not dilute current proof planning.

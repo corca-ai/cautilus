@@ -13,10 +13,8 @@ They stay checked into each host repo so evaluation behavior remains reproducibl
 
 ## Current Release Boundary
 
-The current external-adoption slice is eval-only while the broader claim, improve, live app-runner, and review-learning contracts are still being rewritten.
 Host repos can use `cautilus evaluate fixture`, `cautilus evaluate observation`, and post-run `cautilus evaluate skill-experiment` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.
 `skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.
-Treat claim discovery automation, improve automation, live `eval` app-runner workflows, and review-learning packet capture or selected-packet summaries as opt-in product slices until the rewrite closes.
 
 ## Who It Is For
 
@@ -44,14 +42,7 @@ cd /path/to/host-repo
 cautilus init
 ```
 
-If this machine still has a legacy Homebrew install, remove that copy first and then reinstall through `install.sh`:
-
-```bash
-brew uninstall cautilus
-curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
-```
-
-If you want to hand setup to an agent, ask it to repeat `cautilus doctor --repo-root . --next-action`, do exactly what the packet says, and stop only after `cautilus doctor --repo-root .` reports readiness plus a `first_bounded_run`.
+You can also hand setup to an agent instead of running these steps yourself.
 
 Quick links:
 
@@ -107,9 +98,8 @@ Keeping that distinction in the packet prevented the result from over-claiming w
 
 Cautilus has three connected product layers:
 claim discovery, bounded evaluation, and bounded improvement.
-External host repos should start with the eval-only slice above unless they are intentionally adopting claim discovery or improvement during the current contract rewrite.
 
-Claim discovery turns adapter-owned entry docs and linked Markdown into `cautilus.claim_proof_plan.v1` candidates.
+Claim discovery turns adapter-owned entry docs and linked docs into `cautilus.claim_proof_plan.v1` candidates.
 It is proof planning, not a verdict that the repo is correct.
 The Cautilus Agent curates false positives, likely missing promises, scan boundaries, and extraction and review budgets before any eval plan is trusted.
 
