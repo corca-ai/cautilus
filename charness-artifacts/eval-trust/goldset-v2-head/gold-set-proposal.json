@@ -258,8 +258,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "retire-source",
+      "note": "Transitional release-boundary opener (eval-only while others rewritten). Maintainer: immediate delete, treated like the stale Homebrew clutter. Durable eval capability stays in L17."
     },
     {
       "claimId": "claim-readme-md-17",
@@ -282,8 +282,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "host repos can use evaluate fixture/observation/skill-experiment with checked-in fixtures/adapters/packets; durable eval capability; deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-18",
@@ -306,8 +307,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "skill-experiment compare compares host-preserved baseline/variant outputs; does not clone/install/execute (behavioral boundary -> claim, R16); deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-19",
@@ -687,8 +689,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "bounded eval loop needs one checked-in evaluation_input.v1 fixture + host-owned adapter runner; deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-76",
@@ -709,8 +712,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "the loop verifies a bounded behavior fixture and produces reopenable observed+summary packets; deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-91",
@@ -733,8 +737,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Cautilus turns the fixture run into durable reopenable eval packets; packet-first eval output; deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-92",
@@ -755,8 +760,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "summary is NOT a global product verdict, only evidence for the chosen fixture+adapter path (honest-scoping boundary -> claim, R16); human-auditable.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-93",
@@ -777,8 +783,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "after the bounded loop a human decides whether the evidence is enough (human-in-the-loop design stance); human-auditable.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-95",
@@ -802,8 +809,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "R17: pointer + restatement — (a) anchors the spec report in index.spec.md = cross-reference/navigation; (b) Cautilus turns behavior evidence into a reviewable decision surface = restatement of the eval value-prop already held by README:4/76/92. No new gradeable claim. Prose stays."
     },
     {
       "claimId": "claim-readme-md-101",
@@ -924,8 +931,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "retire-source",
+      "note": "Transitional adoption guidance (start with eval-only unless adopting discovery/improve during the rewrite); same class as L16/L19. Immediate delete (unified)."
     },
     {
       "claimId": "claim-readme-md-112",
@@ -994,8 +1001,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "evaluation uses two top-level surfaces dev (repo contracts/tools/skills) and app (chat/prompt/service); core eval surface model; deterministic. Cross-doc dup with cli:274 (b5-1) -> curator flag.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-119",
@@ -1018,8 +1026,8 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "R17: location pointer (sample normalization inputs live in examples/starters/ + fixtures/) = navigation/metadata, not a gradeable claim. Reconsidered from T3-accept. Prose stays."
     },
     {
       "claimId": "claim-readme-md-129",
@@ -1044,8 +1052,8 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "badly-bounded",
+      "note": "MERGE into L137 (claim-readme-md-137): same held-out honesty promise. L129 is the concrete context-recovery example/instance (app/chat surface); fold its excerpt into the L137 held-out claim rather than keeping a separate claim. Curator: add L129 sourceRef as an excerpt of L137."
     },
     {
       "claimId": "claim-readme-md-135",
@@ -1120,8 +1128,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "held-out honesty principle (separate iteration from protected validation, evidence reopenable, packet-first); named differentiator in the four contrasts. ABSORBS L129 as the concrete context-recovery example. Tier borderline T1/T2 (maintainer noted T2 plausible as an APEX mechanism); recorded T1 per approved rec (named adopter-facing differentiator). cautilus-eval.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-138",
@@ -1241,8 +1250,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "two entry points (CLI for operators + repo-local Agent for Claude/Codex) share one host-owned adapter and return the SAME durable decision surface (unification guarantee, distinct from Agent-b2-1 which says who-uses-what); deterministic. Referent defined in L155-156.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-155",
@@ -1315,8 +1325,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "result is not just pass/fail: machine-readable packets + reopenable readable views (packet-first result boundary, R16); deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-162",
@@ -5828,8 +5839,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "init run / workspace start run-directory management (per-run subdir, CAUTILUS_RUN_DIR); run-setup command detail; deterministic.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-220",
@@ -5874,8 +5886,8 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "badly-bounded",
+      "note": "OVER-MERGE of two unrelated commands: cautilus evaluate comparison prepare (E2 compare worktree prep) + cautilus doctor artifacts prune (artifact cleanup). Split into 2 separate claims. Curator: split; both T3 command-detail."
     },
     {
       "claimId": "claim-docs-guides-cli-md-226",
@@ -5896,8 +5908,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "discover scenarios normalize accepts chatbot/skill/workflow inputs -> scenario-normalization packets (E2 capability); deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-263",
@@ -5920,8 +5933,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "--example-input prints a minimal valid packet pipeable back (+ normalizationFamilies[*].exampleInputCli); CLI minutiae; deterministic.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-265",
@@ -5990,8 +6004,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "two top-level surfaces + four presets (dev/repo replacing instruction-surface, dev/skill, app/chat, app/prompt); eval surface/preset model; deterministic. Cross-doc dup with README:116.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-276",
@@ -6012,8 +6027,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "evaluate fixture runs a checked-in fixture through an adapter-owned runner then evaluates the observed packet + records a top-level proof object; core eval command; deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-280",
@@ -6034,8 +6050,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "evaluate observation evaluates an already-observed packet without relaunching the runner; main eval command (README L17); deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-314",
@@ -6170,8 +6187,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "evaluate report build builds a machine-readable evaluation report packet from explicit-mode runs (candidate vs baseline decision packet); deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-472",
@@ -6192,8 +6210,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "report build --example-input prints a minimal valid report packet incl humanReviewFindings shape; CLI minutiae; deterministic.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-476",
