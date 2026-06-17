@@ -84,7 +84,8 @@
       "unresolvedQuestions": [],
       "heuristicMatch": null,
       "maintainerVerdict": "accept",
-      "note": "Load-bearing APEX value proposition; R8 umbrella, proof = one representative end-to-end composition scenario (cautilus-eval/dev-repo, needs-scenario). Labels correct."
+      "note": "Load-bearing APEX value proposition; R8 umbrella, proof = one representative end-to-end composition scenario (cautilus-eval/dev-repo, needs-scenario). Labels correct.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-5",
@@ -111,7 +112,8 @@
       "unresolvedQuestions": [],
       "heuristicMatch": null,
       "maintainerVerdict": "accept",
-      "note": "Workflow-sequencing claim (improve only once the proof surface is honest); distinct from L4. cautilus-eval/needs-scenario correct."
+      "note": "Workflow-sequencing claim (improve only once the proof surface is honest); distinct from L4. cautilus-eval/needs-scenario correct.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-6",
@@ -158,8 +160,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "R9/R16 framing, consistent with L3 (card-APEX-b1-1): the agent-first principle is the umbrella decomposed into L8 (packets resume) and L135 (agent-facing interfaces); the A1 epic node (catalog userStory) carries the agent-first role, so L7 is not a graded headline claim. README prose stays. Was a v2 recall-probe target (FN1 principle-shape) -> recall win preserved (agent saw it); maintainer grades it framing."
     },
     {
       "claimId": "claim-readme-md-8",
@@ -183,8 +185,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "proof relabel deterministic -> cautilus-eval (dev/skill): R6 precedent ruled this exact claim cautilus-eval — \"enough state for the next agent to resume\" is behavioral content, not a schema check; R12 enabler=behavior. agentLabels left as-extracted (deterministic) for grading; correction recorded here.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-9",
@@ -587,8 +590,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "canonical A2-curation claim (R14 epic-level the-agent-curates); cautilus-eval/dev-skill correct; merge L67+L114 OK.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-68",
@@ -1056,8 +1060,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "agent-facing-interfaces-first principle (HTML as mirror, not source of truth); human-auditable correct (read architecture).",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-136",
@@ -1081,7 +1086,8 @@
       "unresolvedQuestions": [],
       "heuristicMatch": null,
       "maintainerVerdict": "accept",
-      "note": "intent-first design-principle claim; human-auditable correct (read the evaluate contract is behavior/scenario-keyed, not prompt-string-keyed). Falsifiable by reading -> genuine claim, not framing. v2 recall principle-shape target."
+      "note": "intent-first design-principle claim; human-auditable correct (read the evaluate contract is behavior/scenario-keyed, not prompt-string-keyed). Falsifiable by reading -> genuine claim, not framing. v2 recall principle-shape target.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-137",
@@ -1131,8 +1137,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "structured-review principle (adapters/reports/review/compare as first-class boundaries); deterministic correct; primaryEpic A2 (minor E1 alternative, left as-is).",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-139",
@@ -1179,7 +1186,8 @@
       "unresolvedQuestions": [],
       "heuristicMatch": null,
       "maintainerVerdict": "accept",
-      "note": "proof-layer-split principle; accept-as-composite. L141 umbrella (\"deliberately split because humans, code, and AI are good at different work\") groups L142-145 as one block (human->read, deterministic->tests, eval->cautilus evaluate, improve->waits). Faithful to source structure. FLAG: L145 (improvement waits until proof surface explicit) overlaps the bounded-autonomy claim L139 -> record for the deferred cross-claim dedup curator, not split here."
+      "note": "proof-layer-split principle; accept-as-composite. L141 umbrella (\"deliberately split because humans, code, and AI are good at different work\") groups L142-145 as one block (human->read, deterministic->tests, eval->cautilus evaluate, improve->waits). Faithful to source structure. FLAG: L145 (improvement waits until proof surface explicit) overlaps the bounded-autonomy claim L139 -> record for the deferred cross-claim dedup curator, not split here.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-147",
@@ -1249,8 +1257,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "two-entry-point core flow (operators=CLI, Claude/Codex=repo-local Agent at .agents/skills/cautilus-agent/ via cautilus init); deterministic, install path checkable; merge L155+L156 OK.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-158",
@@ -1346,8 +1355,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "no-input status-summary behavior (success criterion); cautilus-eval/dev-skill correct; claimAudience=user correct (user-facing claim in a developer source).",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-678",
