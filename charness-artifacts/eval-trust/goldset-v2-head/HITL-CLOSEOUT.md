@@ -83,6 +83,12 @@ maintainer removes the source sentence) and **rewrite-source** (extraction corre
 
 ### A. Source edits — apply as a doc-tightening commit, THEN re-anchor (they shift README/cli anchors)
 
+> **Applied 2026-06-18** (doc-tightening commit `3080482`, claim refresh `36a3588`). Terminology scope:
+> the maintainer chose **all prose surfaces** for `linked Markdown` → `linked docs`, not the README-only
+> lean below (the `linkedMarkdownDepth` schema field + its report label + flow-log test fixtures stay as a
+> deferred breaking-rename follow-up). Re-anchor: ANCHOR.md updated; mechanical line re-number deferred to
+> the developer-track HITL (verdicts carry by `claimFingerprint`). See `ANCHOR.md` → "Re-anchor status".
+
 - REMOVE (immediate): README:16, README:19, README:110 (transitional release-boundary disclaimers),
   README:47 + docs/guides/cli.md:32 (stale Homebrew mention). Durable eval capability (README:17/18) stays.
   Coherence pass: the "Current Release Boundary" heading + README:95 "currently stable" phrasing.
