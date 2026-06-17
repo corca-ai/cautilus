@@ -592,11 +592,6 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string, adapterPath
 		statePathSource:         "default",
 		explicitSources:         len(explicit) > 0,
 	}
-	if len(explicit) > 0 {
-		config.entries = normalizeClaimPathList(explicit)
-		config.linkedMarkdownDepth = 0
-		return config, nil
-	}
 	var adapterPathOverride *string
 	if trimmed := strings.TrimSpace(adapterPath); trimmed != "" {
 		adapterPathOverride = &trimmed
@@ -656,6 +651,14 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string, adapterPath
 			return config, err
 		}
 		config.relatedStatePaths = relatedStatePaths
+	}
+	// Explicit --source paths scope the scan to exactly those files and disable
+	// linked-Markdown traversal, but adapter-owned classification config (epic
+	// catalog, audience hints, semantic groups, classification hints, excludes)
+	// still applies: file selection is orthogonal to how claims are classified.
+	if len(explicit) > 0 {
+		config.entries = normalizeClaimPathList(explicit)
+		config.linkedMarkdownDepth = 0
 	}
 	return config, nil
 }

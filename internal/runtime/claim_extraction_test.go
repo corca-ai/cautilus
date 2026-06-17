@@ -255,6 +255,41 @@ func TestBuildClaimExtractionInputRendersAdapterEpicCatalog(t *testing.T) {
 	}
 }
 
+func TestBuildClaimExtractionInputRendersAdapterEpicCatalogWithExplicitSources(t *testing.T) {
+	repoRoot := writeExtractionTestRepo(t)
+	adapterPath := filepath.Join(repoRoot, "proposed-adapter.yaml")
+	mustWriteFile(t, adapterPath, strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  epic_catalog:",
+		"    - epicId: D1-discovery",
+		"      branch: Discover",
+		"      title: Claim discovery turns docs into proof-plan candidates",
+		"",
+	}, "\n"))
+	// Explicit --source scoping must not discard adapter-owned classification
+	// config: the epic catalog still reaches the packet and the adapter is
+	// reported found, while the scanned source list is exactly the explicit
+	// file. This is the read-only corpus-measurement path the command advertises.
+	input := buildExtractionInput(t, repoRoot, ClaimExtractionInputOptions{
+		AdapterPath: adapterPath,
+		SourcePaths: []string{"README.md"},
+	})
+	catalog := arrayOrEmpty(asMap(input["template"])["epicCatalog"])
+	if len(catalog) != 1 || asMap(catalog[0])["epicId"] != "D1-discovery" {
+		t.Fatalf("explicit --source must still render the adapter epic catalog, got %#v", catalog)
+	}
+	scope := asMap(input["effectiveScanScope"])
+	if scope["adapterFound"] != true {
+		t.Fatalf("adapter must be reported found on the explicit-source path, got %#v", scope["adapterFound"])
+	}
+	sources := arrayOrEmpty(input["sources"])
+	if len(sources) != 1 || asMap(sources[0])["path"] != "README.md" {
+		t.Fatalf("explicit --source must scope the scanned sources to the explicit file, got %#v", sources)
+	}
+}
+
 func TestApplyClaimExtractionResultRecordsUnknownEpicsWithoutRejecting(t *testing.T) {
 	repoRoot := writeExtractionTestRepo(t)
 	adapterPath := filepath.Join(repoRoot, "proposed-adapter.yaml")
