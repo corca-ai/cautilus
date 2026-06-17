@@ -1,87 +1,153 @@
 # HITL Runtime Checkpoint
 
 <!-- hitl-runtime-sync
-session_id: hitl-20260611-082742
-runtime_session_dir: .charness/hitl/runtime/hitl-20260611-082742
-runtime_updated_at: 2026-06-16T10:53:15+00:00
-target: charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.user-product.json
-last_presented_chunk_id: sample:b3
-queue_epoch: 2
+session_id: hitl-userprod-v2head-20260617
+runtime_session_dir: .charness/hitl/runtime/hitl-userprod-v2head-20260617
+runtime_updated_at: 2026-06-17T05:08:19+00:00
+target: charness-artifacts/eval-trust/goldset-v2-head/gold-set-proposal.user-product.json
+last_presented_chunk_id: card-APEX-b2-5
+queue_epoch: 1
 queue_status: ready
-accepted_rules_digest: 7eefbba3fa5ea296
-queue_items_digest: 1439e0738e90b8e0
-queue_state_digest: c9b6876066a76e59
-approval_state_digest: 6bf6913cde3c178b
+accepted_rules_digest: a07944d79563bdf4
+queue_items_digest: 2ffd53c1933236e3
+queue_state_digest: 80894ff9a565bf8a
+approval_state_digest: 17cec45ffc3ebaac
 -->
 
-- Synced At: 2026-06-16T12:03:46+00:00
-- Synced From Session: `hitl-20260611-082742`
-- Runtime Session Dir: `.charness/hitl/runtime/hitl-20260611-082742`
-- Runtime Updated At: 2026-06-16T10:53:15+00:00
+- Synced At: 2026-06-17T05:11:33+00:00
+- Synced From Session: `hitl-userprod-v2head-20260617`
+- Runtime Session Dir: `.charness/hitl/runtime/hitl-userprod-v2head-20260617`
+- Runtime Updated At: 2026-06-17T05:08:19+00:00
 
 ## Active Target
 
-- Target: `charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.user-product.json`
-- Status: `in-progress`
-- Last Presented Chunk ID: `sample:b3`
-- Queue Epoch: `2`
+- Target: `charness-artifacts/eval-trust/goldset-v2-head/gold-set-proposal.user-product.json`
+- Status: `in_progress`
+- Last Presented Chunk ID: `card-APEX-b2-5`
+- Queue Epoch: `1`
 - Queue Status: `ready`
 - Explicit Apply Required: `True`
 - Apply Mode: `explicit-after-all-chunks`
 
 ## Accepted Rules
 
-- R1
-- R2
-- R3
-- R4
-- R5
-- R6
-- R7
-- R8
-- R9
-- R10
-- R11
-- R12
-- R13
-- R14
-- R15
+- R1: pending
+- R2: pending
+- R3: pending
+- R4: pending
+- R5: pending
+- R6: pending
+- R7: pending
+- R8: pending
+- R9: pending
+- R10: pending
+- R11: pending
+- R12: pending
+- R13: pending
+- R14: pending
+- R15: pending
+- R16: pending
 
 ## Queue State
 
-- Current Queue Order: `[]`
-- Reviewed Item IDs: `[]`
+- Current Queue Order: `['card-APEX-b1-1', 'card-APEX-b1-2', 'card-APEX-b1-3', 'card-APEX-b1-4', 'card-APEX-b1-5', 'card-APEX-b2-1', 'card-APEX-b2-2', 'card-APEX-b2-3', 'card-APEX-b2-4', 'card-APEX-b2-5', 'card-Agent-b1-1', 'card-Agent-b1-2', 'card-Agent-b1-3', 'card-Agent-b1-4', 'card-Agent-b1-5', 'card-Agent-b2-1', 'card-Agent-b2-2', 'card-Setup-b1-1', 'card-Setup-b1-2', 'card-Setup-b1-3', 'card-Setup-b1-4', 'card-Setup-b1-5', 'card-Setup-b2-1', 'card-Setup-b2-2', 'card-Setup-b2-3', 'card-Setup-b2-4', 'card-Setup-b2-5', 'card-Setup-b3-1', 'card-Setup-b3-2', 'card-Setup-b3-3', 'card-Setup-b3-4', 'card-Setup-b3-5', 'card-Setup-b4-1', 'card-Discover-b1-1', 'card-Discover-b1-2', 'card-Discover-b1-3', 'card-Discover-b1-4', 'card-Discover-b1-5', 'card-Eval-b1-1', 'card-Eval-b1-2', 'card-Eval-b1-3', 'card-Eval-b1-4', 'card-Eval-b1-5', 'card-Eval-b2-1', 'card-Eval-b2-2', 'card-Eval-b2-3', 'card-Eval-b2-4', 'card-Eval-b2-5', 'card-Eval-b3-1', 'card-Eval-b3-2', 'card-Eval-b3-3', 'card-Eval-b3-4', 'card-Eval-b3-5', 'card-Eval-b4-1', 'card-Eval-b4-2', 'card-Eval-b4-3', 'card-Eval-b4-4', 'card-Eval-b4-5', 'card-Eval-b5-1', 'card-Eval-b5-2', 'card-Eval-b5-3', 'card-Eval-b5-4', 'card-Eval-b5-5', 'card-Improve-b1-1', 'card-Improve-b1-2', 'card-Improve-b1-3', 'card-Improve-b1-4', 'card-MetaCross-b1-1', 'card-MetaCross-b1-2', 'card-MetaCross-b1-3', 'card-MetaCross-b1-4', 'card-MetaCross-b1-5', 'card-MetaCross-b2-1', 'card-MetaCross-b2-2', 'full_target_review']`
+- Reviewed Item IDs: `['card-APEX-b1-1', 'card-APEX-b1-2', 'card-APEX-b1-3', 'card-APEX-b1-4', 'card-APEX-b1-5', 'card-APEX-b2-1', 'card-APEX-b2-2', 'card-APEX-b2-3', 'card-APEX-b2-4', 'card-APEX-b2-5']`
 - Superseded Unreviewed Item IDs: `[]`
 
 ### Items
 
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
-- item: pending
+- card-APEX-b1-1: unreviewed decision_card
+- card-APEX-b1-2: unreviewed decision_card
+- card-APEX-b1-3: unreviewed decision_card
+- card-APEX-b1-4: unreviewed decision_card
+- card-APEX-b1-5: unreviewed decision_card
+- card-APEX-b2-1: unreviewed decision_card
+- card-APEX-b2-2: unreviewed decision_card
+- card-APEX-b2-3: unreviewed decision_card
+- card-APEX-b2-4: unreviewed decision_card
+- card-APEX-b2-5: unreviewed decision_card
+- card-Agent-b1-1: unreviewed decision_card
+- card-Agent-b1-2: unreviewed decision_card
+- card-Agent-b1-3: unreviewed decision_card
+- card-Agent-b1-4: unreviewed decision_card
+- card-Agent-b1-5: unreviewed decision_card
+- card-Agent-b2-1: unreviewed decision_card
+- card-Agent-b2-2: unreviewed decision_card
+- card-Setup-b1-1: unreviewed decision_card
+- card-Setup-b1-2: unreviewed decision_card
+- card-Setup-b1-3: unreviewed decision_card
+- card-Setup-b1-4: unreviewed decision_card
+- card-Setup-b1-5: unreviewed decision_card
+- card-Setup-b2-1: unreviewed decision_card
+- card-Setup-b2-2: unreviewed decision_card
+- card-Setup-b2-3: unreviewed decision_card
+- card-Setup-b2-4: unreviewed decision_card
+- card-Setup-b2-5: unreviewed decision_card
+- card-Setup-b3-1: unreviewed decision_card
+- card-Setup-b3-2: unreviewed decision_card
+- card-Setup-b3-3: unreviewed decision_card
+- card-Setup-b3-4: unreviewed decision_card
+- card-Setup-b3-5: unreviewed decision_card
+- card-Setup-b4-1: unreviewed decision_card
+- card-Discover-b1-1: unreviewed decision_card
+- card-Discover-b1-2: unreviewed decision_card
+- card-Discover-b1-3: unreviewed decision_card
+- card-Discover-b1-4: unreviewed decision_card
+- card-Discover-b1-5: unreviewed decision_card
+- card-Eval-b1-1: unreviewed decision_card
+- card-Eval-b1-2: unreviewed decision_card
+- card-Eval-b1-3: unreviewed decision_card
+- card-Eval-b1-4: unreviewed decision_card
+- card-Eval-b1-5: unreviewed decision_card
+- card-Eval-b2-1: unreviewed decision_card
+- card-Eval-b2-2: unreviewed decision_card
+- card-Eval-b2-3: unreviewed decision_card
+- card-Eval-b2-4: unreviewed decision_card
+- card-Eval-b2-5: unreviewed decision_card
+- card-Eval-b3-1: unreviewed decision_card
+- card-Eval-b3-2: unreviewed decision_card
+- card-Eval-b3-3: unreviewed decision_card
+- card-Eval-b3-4: unreviewed decision_card
+- card-Eval-b3-5: unreviewed decision_card
+- card-Eval-b4-1: unreviewed decision_card
+- card-Eval-b4-2: unreviewed decision_card
+- card-Eval-b4-3: unreviewed decision_card
+- card-Eval-b4-4: unreviewed decision_card
+- card-Eval-b4-5: unreviewed decision_card
+- card-Eval-b5-1: unreviewed decision_card
+- card-Eval-b5-2: unreviewed decision_card
+- card-Eval-b5-3: unreviewed decision_card
+- card-Eval-b5-4: unreviewed decision_card
+- card-Eval-b5-5: unreviewed decision_card
+- card-Improve-b1-1: unreviewed decision_card
+- card-Improve-b1-2: unreviewed decision_card
+- card-Improve-b1-3: unreviewed decision_card
+- card-Improve-b1-4: unreviewed decision_card
+- card-MetaCross-b1-1: unreviewed decision_card
+- card-MetaCross-b1-2: unreviewed decision_card
+- card-MetaCross-b1-3: unreviewed decision_card
+- card-MetaCross-b1-4: unreviewed decision_card
+- card-MetaCross-b1-5: unreviewed decision_card
+- card-MetaCross-b2-1: unreviewed decision_card
+- card-MetaCross-b2-2: unreviewed decision_card
+- full_target_review: pending_after_chunks full_target_review
 
 ## Next Chunk To Present
 
-- `None`
+- `card-APEX-b1-1`
 
 ## Approval Boundaries
 
 - Applied Rewrite Review Status: `inactive`
 - Full Target Review Status: `pending_after_chunks`
-- Target/Cursor Checked: `True`
-- Target/Cursor Check Result: `epoch 2 sample mode: batch sample:b1 (README idx 3,10,17,24,31) CONFIRMED [ⓐ relabel->deterministic, ⓑ accept, ⓒ relabel->cautilus-eval, ⓓ accept, ⓔ accept] as working state; batch sample:b2 (cli.md idx 32,37,43,48,53) confirmed working-state [ⓕⓖⓗⓘ accept, ⓙ badly-bounded] with tier tags (R13); now presenting sample:b3 = cli.md sample idx 59,64,70,75,80 covering source lines cli.md:148,218,266,276,391 of charness-artifacts/eval-trust/goldset-v2-agent-extraction/gold-set-proposal.user-product.json; target file untouched, all verdicts working-state until apply phase`
+- Target/Cursor Checked: `False`
+- Target/Cursor Check Result: ``
 
 ## Runtime Links
 
-- State: `.charness/hitl/runtime/hitl-20260611-082742/state.yaml`
-- Queue: `.charness/hitl/runtime/hitl-20260611-082742/queue.json`
-- Rules: `.charness/hitl/runtime/hitl-20260611-082742/rules.yaml`
-- Scratchpad: `.charness/hitl/runtime/hitl-20260611-082742/hitl-scratchpad.md`
-- Events: `.charness/hitl/runtime/hitl-20260611-082742/events.log`
+- State: `.charness/hitl/runtime/hitl-userprod-v2head-20260617/state.yaml`
+- Queue: `.charness/hitl/runtime/hitl-userprod-v2head-20260617/queue.json`
+- Rules: `.charness/hitl/runtime/hitl-userprod-v2head-20260617/rules.yaml`
+- Scratchpad: `.charness/hitl/runtime/hitl-userprod-v2head-20260617/hitl-scratchpad.md`
+- Events: `.charness/hitl/runtime/hitl-userprod-v2head-20260617/events.log`
 - Durable Artifact: `charness-artifacts/hitl/latest.md`

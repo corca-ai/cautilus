@@ -57,8 +57,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "R9/R16 framing: identity/category sentence whose 3-job content is fully decomposed into L4 (value), L5 (connection) and the D1/E1/I1 epics; no independent provable composition. APEX-the-epic (catalog userStory) is the DAG root and L4 is the headline claim realizing it, so L3 is not load-bearing. README lead prose stays; not separately graded."
     },
     {
       "claimId": "claim-readme-md-4",
@@ -83,8 +83,8 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Load-bearing APEX value proposition; R8 umbrella, proof = one representative end-to-end composition scenario (cautilus-eval/dev-repo, needs-scenario). Labels correct."
     },
     {
       "claimId": "claim-readme-md-5",
@@ -110,8 +110,8 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Workflow-sequencing claim (improve only once the proof surface is honest); distinct from L4. cautilus-eval/needs-scenario correct."
     },
     {
       "claimId": "claim-readme-md-6",
@@ -349,8 +349,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "R16: Who-It-Is-For audience-fit bullet = positioning premise, not a product-behavior claim. README prose stays."
     },
     {
       "claimId": "claim-readme-md-24",
@@ -373,8 +373,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "R16: audience-fit bullet (positioning premise); consistent with card 4. Embedded protected-validation-vs-smoke contrast is positioning, not a graded command-behavior claim. README prose stays."
     },
     {
       "claimId": "claim-readme-md-25",
@@ -397,8 +397,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "R16: third Who-It-Is-For audience bullet (operator), positioning premise. Prose stays."
     },
     {
       "claimId": "claim-readme-md-29",
@@ -419,8 +419,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "R16: Not-for fit boundary (repo property: no evaluator-dependent behavior surface), not a command behavior boundary. Carve-out considered and declined by maintainer-agreed default. Recall win (agent saw it) preserved."
     },
     {
       "claimId": "claim-readme-md-35",
@@ -890,8 +890,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "Framing enumeration parallel to L3 (card-APEX-b1-1). DOC-QUALITY: the three-pillar enumeration appears 3x in README (L3, L5, L108) — verdict consolidates the claim side onto L5 (richest, adds the dependency ordering); L3/L108 stay as framing prose. README tightening is a separate follow-up."
     },
     {
       "claimId": "claim-readme-md-110",
@@ -1080,8 +1080,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "intent-first design-principle claim; human-auditable correct (read the evaluate contract is behavior/scenario-keyed, not prompt-string-keyed). Falsifiable by reading -> genuine claim, not framing. v2 recall principle-shape target."
     },
     {
       "claimId": "claim-readme-md-137",
@@ -1178,8 +1178,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "proof-layer-split principle; accept-as-composite. L141 umbrella (\"deliberately split because humans, code, and AI are good at different work\") groups L142-145 as one block (human->read, deterministic->tests, eval->cautilus evaluate, improve->waits). Faithful to source structure. FLAG: L145 (improvement waits until proof surface explicit) overlaps the bounded-autonomy claim L139 -> record for the deferred cross-claim dedup curator, not split here."
     },
     {
       "claimId": "claim-readme-md-147",
