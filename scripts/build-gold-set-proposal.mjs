@@ -79,47 +79,50 @@ export function proposalEntry(candidate) {
 	};
 }
 
+export const DEFAULT_PURPOSE =
+	"Fresh gold set: maintainer-ratified answer key over blind agent extraction (template v2, faceted) at current HEAD; supersedes the 0205b0d v1 proposal.";
+
+export const DEFAULT_CARRIED_FORWARD_RULES = [
+	"R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8",
+	"R9", "R10", "R11", "R12", "R13", "R14", "R15",
+];
+
+// First defined value across the arguments, else null. Keeps the field-resolution
+// branching out of buildProposal so its complexity stays low.
+function firstDefined(...values) {
+	for (const v of values) {
+		if (v !== undefined && v !== null) return v;
+	}
+	return null;
+}
+
+// Resolve the proposal's top-level header (everything except entries).
+export function proposalHeader(proofPlan, meta = {}) {
+	const audit = proofPlan.extractionAudit || {};
+	return {
+		schemaVersion: PROPOSAL_SCHEMA,
+		purpose: firstDefined(meta.purpose, DEFAULT_PURPOSE),
+		sourcePacket: firstDefined(meta.sourcePacket),
+		packetGitCommit: firstDefined(proofPlan.gitCommit, meta.packetGitCommit),
+		extractionMode: firstDefined(proofPlan.extractionMode, "agent"),
+		templateVersion: firstDefined(audit.templateVersion, meta.templateVersion),
+		templateHash: firstDefined(audit.templateHash, meta.templateHash),
+		verdictDefinitions: VERDICT_DEFINITIONS,
+		carriedForwardRules: firstDefined(
+			meta.carriedForwardRules,
+			DEFAULT_CARRIED_FORWARD_RULES,
+		),
+	};
+}
+
 // Full proof-plan packet -> full gold-set proposal. Candidate order preserved.
 export function buildProposal(proofPlan, meta = {}) {
 	const candidates = Array.isArray(proofPlan.claimCandidates)
 		? proofPlan.claimCandidates
 		: [];
-	const entries = candidates.map(proposalEntry);
 	return {
-		schemaVersion: PROPOSAL_SCHEMA,
-		purpose:
-			meta.purpose ||
-			"Fresh gold set: maintainer-ratified answer key over blind agent extraction (template v2, faceted) at current HEAD; supersedes the 0205b0d v1 proposal.",
-		sourcePacket: meta.sourcePacket || null,
-		packetGitCommit: proofPlan.gitCommit || meta.packetGitCommit || null,
-		extractionMode: proofPlan.extractionMode || "agent",
-		templateVersion:
-			(proofPlan.extractionAudit && proofPlan.extractionAudit.templateVersion) ||
-			meta.templateVersion ||
-			null,
-		templateHash:
-			(proofPlan.extractionAudit && proofPlan.extractionAudit.templateHash) ||
-			meta.templateHash ||
-			null,
-		verdictDefinitions: VERDICT_DEFINITIONS,
-		carriedForwardRules: meta.carriedForwardRules || [
-			"R1",
-			"R2",
-			"R3",
-			"R4",
-			"R5",
-			"R6",
-			"R7",
-			"R8",
-			"R9",
-			"R10",
-			"R11",
-			"R12",
-			"R13",
-			"R14",
-			"R15",
-		],
-		entries,
+		...proposalHeader(proofPlan, meta),
+		entries: candidates.map(proposalEntry),
 	};
 }
 
