@@ -3,7 +3,7 @@
 <!-- hitl-runtime-sync
 session_id: hitl-userprod-v2head-20260617
 runtime_session_dir: .charness/hitl/runtime/hitl-userprod-v2head-20260617
-runtime_updated_at: 2026-06-17T22:44:04+00:00
+runtime_updated_at: 2026-06-17T22:46:26+00:00
 target: charness-artifacts/eval-trust/goldset-v2-head/gold-set-proposal.user-product.json
 last_presented_chunk_id: card-MetaCross-b2-2
 queue_epoch: 1
@@ -11,18 +11,18 @@ queue_status: ready
 accepted_rules_digest: b4cfa54cb52a26f7
 queue_items_digest: 2ffd53c1933236e3
 queue_state_digest: e3b23970119be7f7
-approval_state_digest: cf5f790c0ff724d9
+approval_state_digest: aeb39dded6fa9b4f
 -->
 
-- Synced At: 2026-06-17T22:44:04+00:00
+- Synced At: 2026-06-17T22:46:26+00:00
 - Synced From Session: `hitl-userprod-v2head-20260617`
 - Runtime Session Dir: `.charness/hitl/runtime/hitl-userprod-v2head-20260617`
-- Runtime Updated At: 2026-06-17T22:44:04+00:00
+- Runtime Updated At: 2026-06-17T22:46:26+00:00
 
 ## Active Target
 
 - Target: `charness-artifacts/eval-trust/goldset-v2-head/gold-set-proposal.user-product.json`
-- Status: `in_progress`
+- Status: `complete`
 - Last Presented Chunk ID: `card-MetaCross-b2-2`
 - Queue Epoch: `1`
 - Queue Status: `ready`
@@ -141,8 +141,8 @@ approval_state_digest: cf5f790c0ff724d9
 ## Approval Boundaries
 
 - Applied Rewrite Review Status: `inactive`
-- Full Target Review Status: `in_progress`
-- Target/Cursor Checked: `False`
+- Full Target Review Status: `complete`
+- Target/Cursor Checked: `True`
 - Target/Cursor Check Result: ``
 
 ## Runtime Links
