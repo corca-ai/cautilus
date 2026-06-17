@@ -335,8 +335,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "retire-source",
+      "note": "Transitional release-boundary disclaimer tied to the open contract rewrite (spans D1/I1/eval/review-learning). Maintainer: not worth a durable gold-set claim — it will be rewritten/removed when the rewrite closes. Retire from the gold set. README sentence stays accurate WHILE the rewrite is open (honest eval-only disclosure; do NOT delete now); remove/rewrite when the rewrite closes. NOT in the immediate sourceEdits pass."
     },
     {
       "claimId": "claim-readme-md-23",
@@ -572,8 +572,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "raw packets = high-recall proof-planning INPUT, not the primary user document; design rationale for the epic-rollup reading model + curation; deterministic kept (proof could arguably be human-auditable, maintainer kept as-is).",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-67",
@@ -948,8 +949,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "discovery turns adapter-owned entry docs + linked docs into claim_proof_plan.v1 candidates; R13 canonical T2 (discovery emits proof_plan.v1); deterministic. Terminology edit queued: linked Markdown -> linked docs (README:112).",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-113",
@@ -970,8 +972,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "proof-planning, not a verdict that the repo is correct (behavioral boundary -> claim per R16); human-auditable.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-116",
@@ -1391,8 +1394,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "first broad scan bounded by entry sources + linked Markdown depth 3, scope shown before it runs (Success Criteria); cautilus-eval (scope-preview behavior).",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-11",
