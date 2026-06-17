@@ -1,0 +1,583 @@
+     1	# CLI Reference
+     2	
+     3	Full command catalog for `cautilus`.
+     4	For the narrative overview, see the [README](../../README.md).
+     5	For the shortest bootstrap loop on a fresh machine, see the Quick Start section in [README.md](../../README.md).
+     6	
+     7	## Install & lifecycle
+     8	
+     9	```bash
+    10	# tagged-release install
+    11	curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
+    12	
+    13	# migrate a legacy Homebrew install onto the supported channel
+    14	brew uninstall cautilus
+    15	curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh
+    16	
+    17	# install CLI + Cautilus Agent into a host repo
+    18	cautilus init --repo-root /path/to/host-repo
+    19	
+    20	# refresh the CLI and the checked-in Cautilus Agent in a repo
+    21	cautilus update --repo-root /path/to/host-repo
+    22	
+    23	# inspect local version provenance
+    24	cautilus version --verbose
+    25	```
+    26	
+    27	`cautilus version --verbose` is also the quickest binary-only summary of what
+    28	`Cautilus` currently considers its product surface:
+    29	who it is for, which normalization family or eval surface to start from, and which report fields now matter
+    30	when a run rejects.
+    31	
+    32	Legacy Homebrew installs are not a supported update channel anymore; remove them and reinstall through `install.sh` instead of mixing channels.
+    33	
+    34	## Adapter bootstrap
+    35	
+    36	```bash
+    37	# generate a minimal repo-local adapter scaffold
+    38	cautilus init adapter --repo-root .
+    39	
+    40	# resolve and validate the adapter
+    41	cautilus doctor adapter --repo-root .
+    42	```
+    43	
+    44	If you already know which evaluation surface your repo needs, start from the closest starter kit under [examples/starters/](../../examples/starters/) instead of `cautilus init adapter`.
+    45	Each starter ships a pre-filled `cautilus-adapter.yaml`, a canonical input fixture, and a README that explains what to replace next.
+    46	Treat starter placeholders as bootstrap help, not as proof that a real consumer workflow is already wired.
+    47	
+    48	A minimal adapter must wire at least one real runnable path to reach `doctor ready`:
+    49	
+    50	```yaml
+    51	eval_test_command_templates:
+    52	  - node scripts/agent-runtime/run-local-eval-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/eval-test --backend {backend} --sandbox read-only --codex-home-mode isolated --codex-auth-mode inherit
+    53	```
+    54	
+    55	For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home.
+    56	Use `--codex-auth-mode env` when the wrapper intentionally relies on `OPENAI_API_KEY`.
+    57	When neither source is available, the runner reports `runner_auth_missing` before spending the whole live run on cases that cannot authenticate.
+    58	
+    59	Repos with multiple surfaces can use typed runner metadata instead:
+    60	
+    61	```yaml
+    62	runner_readiness:
+    63	  runners:
+    64	    - id: app-chat-live
+    65	      surfaces:
+    66	        - app/chat
+    67	      proof_class: live-product-runner
+    68	      command_template: node scripts/eval/run-live-chat.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file}
+    69	      assessment_path: .cautilus/runners/app-chat-live.assessment.json
+    70	```
+    71	
+    72	When typed runners are present, `evaluate fixture` chooses the runner whose `surfaces` contains the fixture surface key.
+    73	The `{runner_id}` placeholder is available to command templates.
+    74	If the selected runtime is `fixture`, the observed proof class is `fixture-smoke` even when the adapter declares a stronger possible runner class.
+    75	For `dev/repo` and `dev/skill`, a non-fixture coding-agent runtime may report the adapter-declared `coding-agent-messaging` class while preserving the smoke assessment as assessment metadata, but only when the observed packet reports the matching runtime telemetry.
+    76	
+    77	## Probes & discovery
+    78	
+    79	```bash
+    80	# binary health, no repo required
+    81	cautilus doctor binary --json
+    82	
+    83	# command discovery, safe for wrapper tooling and agent runtimes
+    84	cautilus doctor commands --json
+    85	
+    86	# no-input agent orientation over binary, adapter, agent-surface, and claim state
+    87	cautilus doctor status --repo-root /path/to/repo --json
+    88	
+    89	# repo readiness for evaluation
+    90	cautilus doctor --repo-root /path/to/repo
+    91	
+    92	# one current onboarding step plus the exact continuation loop
+    93	cautilus doctor --repo-root /path/to/repo --next-action
+    94	
+    95	# local agent-skill discoverability in a consumer repo
+    96	cautilus doctor --repo-root /path/to/repo --scope agent-surface
+    97	
+    98	# declared-claim discovery and proof planning
+    99	cautilus discover claims --repo-root /path/to/repo --output /tmp/cautilus-claims.json
+   100	cautilus discover claims status --input /tmp/cautilus-claims.json --sample-claims 10
+   101	cautilus discover claims review-input --claims /tmp/cautilus-claims.json --output /tmp/cautilus-claim-review-input.json
+   102	cautilus discover claims apply-review --claims /tmp/cautilus-claims.json --review-result /tmp/cautilus-claim-review-result.json --output /tmp/cautilus-reviewed-claims.json
+   103	cautilus discover claims validate --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-claim-validation.json
+   104	cautilus evaluate claims plan --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json
+   105	
+   106	# scenario-normalization catalog, for agents that need proposal-input examples
+   107	cautilus discover scenarios --json
+   108	```
+   109	
+   110	`cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus improve search --help`.
+   111	Use `doctor status --json` when a Cautilus Agent or agent is invoked without a detailed task.
+   112	It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.
+   113	Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.
+   114	If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.
+   115	Use `doctor --scope agent-surface` to verify only the Cautilus Agent and local agent-surface install.
+   116	Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.
+   117	Each `doctor` check separates stable contract from run-specific observation:
+   118	`id` names the machine-readable readiness condition, `ok` reports the boolean result, `meaning` explains why the condition matters, and `detail` records the observed fact for this run.
+   119	External executable prerequisites should put the resolved binary path in `detail` when present and the searched `PATH` in `detail` when missing.
+   120	When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: a starter `evaluate fixture -> evaluate observation` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.
+   121	When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
+   122	Use `cautilus discover claims` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.
+   123	Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
+   124	Use `--previous <claims.json> --refresh-plan` for deterministic refresh planning inside the same discover workflow.
+   125	The refresh-plan packet includes `refreshSummary`, which gives agent-readable counts, changed claim source hotspots, and coordinator-facing next actions so agents do not need to infer the plan from raw packet fields.
+   126	Refresh-plan output is not a saved claim map update; write it to a `refresh-plan*.json` artifact, not to the configured latest/reviewed/evidenced claim-state paths.
+   127	The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`.
+   128	Normal discovery output is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.
+   129	Use `cautilus discover claims status --input <claims.json> --sample-claims <n>` to summarize an existing claim packet without rescanning and include bounded claim examples when an agent needs concrete candidates before choosing the next branch.
+   130	The summary includes `gitState`; when it reports `isStale=true`, run `cautilus discover claims --previous <claims.json> --refresh-plan` before review, review application, or eval planning.
+   131	The summary also includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible without reading the full claim packet first.
+   132	`gitState.isStale` tracks recorded claim-source changes, not every HEAD change.
+   133	If a commit only adds or updates generated claim artifacts, `gitState` reports `headDrift=true` with `comparisonStatus=fresh-with-head-drift` and review or eval planning may continue.
+   134	Use `cautilus discover claims extraction-input --repo-root . --output <extraction-input.json>` to emit the deterministic agent-extraction input packet: sources with content hashes, the embedded extraction template with version and hash, merged classification hints, and bounds.
+   135	Use `cautilus discover claims apply-extraction --repo-root . --input <extraction-input.json> --result <extraction-result.json> --output <claims-agent.json>` to validate an agent extraction result, anchor every verbatim excerpt, and compose the `extractionMode: agent` proof plan.
+   136	Neither command calls an LLM; unanchored, unbounded, or out-of-scope claims are rejected into `extractionAudit.rejectedClaims` instead of being silently dropped.
+   137	Use `cautilus discover claims review-input --claims <claims.json>` to prepare bounded deterministic review clusters for an agent or subagent.
+   138	It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.
+   139	When adapter `evidence_roots` contain claim evidence bundles for known claim ids, review input may include `possibleEvidenceRefs`; these are reviewer hints only.
+   140	Claims already marked `evidenceStatus=satisfied` or already reviewed are skipped by default and recorded under `skippedClaims` so reviewer budget stays focused on unresolved heuristic claims.
+   141	Use `cautilus discover claims apply-review --claims <claims.json> --review-result <review-result.json>` to merge reviewed labels and evidence refs back into a claim packet.
+   142	It emits an updated claim packet and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.
+   143	Use `cautilus discover claims validate --claims <claims.json>` to emit `cautilus.claim_validation_report.v1` and fail fast on invalid packet shape or evidence refs.
+   144	It does not mutate the packet or search for evidence.
+   145	Use `cautilus evaluate claims plan --claims <reviewed-claims.json>` after review to turn ready `cautilus-eval` claims into `cautilus.claim_eval_plan.v1`.
+   146	Claims already marked `evidenceStatus=satisfied` are skipped by default because they do not need a new eval fixture plan.
+   147	That packet preserves claim ids, target eval surfaces, source refs, draft intents, and unresolved questions, but it deliberately does not write host-owned fixtures or runners.
+   148	`discover claims review-input`, `discover claims apply-review`, and `evaluate claims plan` reject stale claim packets by default; `--allow-stale-claims` is an explicit operator override, not the normal agent path.
+   149	
+   150	For the shortest end-to-end adoption proof in a fresh consumer repo:
+   151	
+   152	```bash
+   153	npm run consumer:onboard:smoke
+   154	```
+   155	
+   156	## Live App Eval
+   157	
+   158	```bash
+   159	# list live consumer targets that this host repo exposes to Cautilus
+   160	cautilus discover live-targets --repo-root /path/to/repo
+   161	
+   162	# run one bounded live scenario request against one selected instance
+   163	cautilus evaluate live \
+   164	  --repo-root /path/to/repo \
+   165	  --instance-id ceal \
+   166	  --request-file /tmp/request.json \
+   167	  --output-file /tmp/result.json
+   168	
+   169	# turn draft scenarios into a canonical live-run request batch
+   170	cautilus evaluate live prepare-request-batch \
+   171	  --input /tmp/prepare-input.json \
+   172	  --output /tmp/request-batch.json
+   173	
+   174	# run many explicit live scenario requests against one selected instance
+   175	cautilus evaluate live scenarios \
+   176	  --repo-root /path/to/repo \
+   177	  --instance-id ceal \
+   178	  --requests-file /tmp/request-batch.json \
+   179	  --output-file /tmp/batch-result.json \
+   180	  --concurrency 4
+   181	```
+   182	
+   183	An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.
+   184	For a Ceal-like consumer, that may mean `ceal`, `ceal-dev`, or another named runtime.
+   185	For a simple adopter, the catalog may contain only one default instance.
+   186	`cautilus discover live-targets` resolves either explicit adapter instances or a consumer-owned probe command into the same `cautilus.workbench_instance_catalog.v1` packet.
+   187	`cautilus evaluate live` takes one selected instance id plus one request packet and returns one bounded result packet.
+   188	`cautilus evaluate live prepare-request-batch` is the agent-facing prep surface above that seam: it turns either `cautilus.scenario.v1` draft scenarios or a normalized catalog-candidate packet into a canonical `cautilus.live_run_invocation_request_batch.v1` artifact.
+   189	`cautilus evaluate live scenarios` is the product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet.
+   190	The product owns the packet boundary and status semantics.
+   191	The consumer still owns actual launch, auth, and runtime wiring through its adapter command.
+   192	When the adapter declares `consumer_single_turn_command_template`, the same command can also own a product-managed multi-turn chatbot loop above a consumer-owned single-turn seam.
+   193	That loop now allocates one stable per-request workspace directory at `<output_file>.d/workspace/` and exposes it through the `{workspace_dir}` placeholder across live-run command templates.
+   194	When the adapter also declares `workspace_prepare_command_template`, `Cautilus` runs that consumer-owned prepare command once before the first turn.
+   195	When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus evaluate live persona` with repo-specific backend flags.
+   196	That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.
+   197	When the adapter declares `consumer_evaluator_command_template`, `Cautilus` also materializes one `cautilus.live_run_evaluator_input.v1` packet and expects one `cautilus.live_run_evaluator_result.v1` verdict back under `scenarioResult.evaluation`.
+   198	The batch flow keeps prep and execution separate on purpose: prep owns deterministic request synthesis plus explicit filter semantics, and `run-scenarios` owns concurrency, retry, transient-count aggregation, and per-attempt artifact layout for an explicit batch file.
+   199	
+   200	## Workspace management
+   201	
+   202	```bash
+   203	# start a fresh per-run subdirectory under one stable artifact root and pin it
+   204	eval "$(cautilus init run --label mode-held-out)"
+   205	
+   206	# prepare clean baseline and candidate git worktrees for a compare run
+   207	cautilus evaluate comparison prepare \
+   208	  --repo-root /path/to/repo \
+   209	  --baseline-ref origin/main \
+   210	  --output-dir /tmp/cautilus-compare
+   211	
+   212	# prune older Cautilus artifact bundles
+   213	cautilus doctor artifacts prune \
+   214	  --root /tmp/cautilus-runs \
+   215	  --keep-last 20
+   216	```
+   217	
+   218	`workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on first use) and prints `export CAUTILUS_RUN_DIR=<absolute runDir>`.
+   219	Pass `--json` instead of `eval` when a script needs the machine-readable payload.
+   220	When `CAUTILUS_RUN_DIR` is already pinned, downstream commands (`evaluate comparison prepare`, `evaluate fixture`) reuse that active `runDir`; if nothing is pinned they auto-materialize a fresh `runDir` and print `Active run: <path>` to stderr.
+   221	
+   222	## Scenarios
+   223	
+   224	```bash
+   225	# normalize chatbot-style conversation summaries
+   226	cautilus discover scenarios normalize chatbot \
+   227	  --input ./fixtures/scenario-proposals/chatbot-input.json
+   228	
+   229	# normalize skill-evaluation summaries
+   230	cautilus discover scenarios normalize skill \
+   231	  --input /tmp/cautilus-skill-summary.json
+   232	
+   233	# normalize durable-workflow run summaries
+   234	cautilus discover scenarios normalize workflow \
+   235	  --input ./fixtures/scenario-proposals/workflow-input.json
+   236	
+   237	# assemble a proposal-input packet from split normalized source files
+   238	cautilus discover scenarios prepare-input \
+   239	  --candidates ./fixtures/scenario-proposals/candidates.json \
+   240	  --registry ./fixtures/scenario-proposals/registry.json \
+   241	  --coverage ./fixtures/scenario-proposals/coverage.json \
+   242	  --family fast_regression \
+   243	  --window-days 14 \
+   244	  --now 2026-04-11T00:00:00.000Z
+   245	
+   246	# generate a scenario proposal packet from normalized input
+   247	cautilus discover scenarios propose \
+   248	  --input ./fixtures/scenario-proposals/standalone-input.json
+   249	
+   250	# build a scenario-centric conversation review packet from normalized chatbot threads
+   251	cautilus discover scenarios review-conversations \
+   252	  --input ./fixtures/scenario-conversation-review/input.json
+   253	
+   254	# render the conversation review packet into HTML
+   255	cautilus discover scenarios render-conversation-review-html \
+   256	  --input /tmp/cautilus-scenario-review/conversation-review.json
+   257	
+   258	# summarize scenario-level cost, token, and duration telemetry
+   259	cautilus discover scenarios summarize-telemetry \
+   260	  --results ./fixtures/scenario-results/example-results.json
+   261	```
+   262	
+   263	Every normalize command plus `cautilus evaluate observation` and `cautilus evaluate report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
+   264	`cautilus discover scenarios --json` now exposes those same inspect commands under `normalizationFamilies[*].exampleInputCli`.
+   265	`cautilus discover scenarios propose` now preserves the full ranked `proposals` list in the canonical JSON output.
+   266	The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.
+   267	`cautilus discover scenarios review-conversations` stays intentionally narrower than a generic audit UI.
+   268	It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.
+   269	
+   270	## Evaluation surfaces
+   271	
+   272	The shipped surface is `cautilus evaluate` (see [docs/specs/user/evaluation.spec.md](../specs/user/evaluation.spec.md)).
+   273	The first preset, `dev / repo`, replaces the prior `cautilus instruction-surface` commands.
+   274	Cautilus exposes two top-level surfaces and four presets:
+   275	`dev / repo` for repo work contracts, `dev / skill` for checked-in or portable development skills, `app / chat` for multi-turn product conversation behavior, and `app / prompt` for single product input/output behavior.
+   276	`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.
+   277	The command records a top-level `proof` object in `eval-observed.json` and `eval-summary.json` when runner readiness can identify the proof class or assessment state.
+   278	When the adapter declares `runner_readiness.runners`, the command selects the runner by the fixture surface key before rendering the command template.
+   279	Fixture-runtime runs are reported as `fixture-smoke`; adapter-declared proof class is preserved only as declared metadata.
+   280	`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.
+   281	
+   282	```bash
+   283	# official on-demand self-dogfood wrapper for the repo's own AGENTS.md
+   284	npm run dogfood:self
+   285	
+   286	# run a checked-in evaluation_input.v1 fixture through an adapter-owned runner
+   287	cautilus evaluate fixture \
+   288	  --repo-root . \
+   289	  --adapter-name self-dogfood-eval
+   290	
+   291	# evaluate one observed eval packet
+   292	cautilus evaluate observation \
+   293	  --input ./eval-observed.json \
+   294	  --output /tmp/cautilus-eval-summary.json
+   295	
+   296	# compare one sandboxed skill-clone experiment after host-owned execution
+   297	cautilus evaluate skill-experiment \
+   298	  --input ./fixtures/skill-clone-experiment/example-input.json \
+   299	  --output /tmp/cautilus-skill-clone-report.json
+   300	```
+   301	
+   302	The npm wrapper is the canonical maintainer-facing self-dogfood path for this repo.
+   303	For cheap fixture-backed product-surface smoke tests, use:
+   304	
+   305	```bash
+   306	npm run dogfood:app-chat:fixture
+   307	npm run dogfood:app-chat:codex
+   308	npm run dogfood:app-chat:claude
+   309	npm run dogfood:app-prompt:fixture
+   310	npm run dogfood:app-prompt:codex
+   311	npm run dogfood:app-prompt:claude
+   312	```
+   313	
+   314	The fixture variants prove the `app / chat` and `app / prompt` fixture translation, adapter runner, and evaluator packet paths.
+   315	The Codex variants run the same checked-in fixtures through the Codex backend.
+   316	The Claude variants run the same fixtures through the Claude backend, proving that the app surface runner can use more than one provider backend.
+   317	These backend variants are not `eval live` product-runner proof, and their current summaries report `productProofReady=false` until an app-owned runner assessment exists for the selected surface.
+   318	
+   319	`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.
+   320	The command does not install, mutate, or execute skills; host-owned runners provide the preserved baseline and variant outputs.
+   321	
+   322	## Skill testing & evaluation
+   323	
+   324	```bash
+   325	# run one checked-in local skill probe through an adapter-owned runner
+   326	# (cautilus.evaluation_input.v1 fixture with surface=dev, preset=skill)
+   327	cautilus evaluate fixture \
+   328	  --repo-root . \
+   329	  --adapter-name self-dogfood-eval-skill
+   330	
+   331	# run the multi-turn Cautilus refresh-flow episode through the same eval seam
+   332	cautilus evaluate fixture \
+   333	  --repo-root . \
+   334	  --adapter-name self-dogfood-refresh-flow
+   335	
+   336	# run the multi-turn Cautilus first-scan episode through the same eval seam
+   337	cautilus evaluate fixture \
+   338	  --repo-root . \
+   339	  --adapter-name self-dogfood-first-scan-flow
+   340	
+   341	# run first scan, inspect the saved claim map, then curate extraction and next-work signals
+   342	cautilus evaluate fixture \
+   343	  --repo-root . \
+   344	  --adapter-name self-dogfood-claim-discovery-curation-flow
+   345	
+   346	# run first scan, then prepare deterministic claim review input without reviewer launch
+   347	cautilus evaluate fixture \
+   348	  --repo-root . \
+   349	  --adapter-name self-dogfood-review-prepare-flow
+   350	
+   351	# run first scan, prepare review input, launch one default reviewer lane, then stop at the result packet
+   352	cautilus evaluate fixture \
+   353	  --repo-root . \
+   354	  --adapter-name self-dogfood-reviewer-launch-flow
+   355	
+   356	# prove the dev / skill runner can audit completed subagent execution
+   357	cautilus evaluate fixture \
+   358	  --repo-root . \
+   359	  --adapter-name self-dogfood-subagent-execution-proof \
+   360	  --runtime codex
+   361	
+   362	# maintainer proof for both supported coding-agent CLI runtimes
+   363	npm run dogfood:cautilus-first-scan-flow:eval:codex
+   364	npm run dogfood:cautilus-first-scan-flow:eval:claude
+   365	npm run dogfood:cautilus-claim-discovery-curation-flow:eval:codex
+   366	npm run dogfood:cautilus-claim-discovery-curation-flow:eval:claude
+   367	npm run dogfood:cautilus-review-prepare-flow:eval:codex
+   368	npm run dogfood:cautilus-review-prepare-flow:eval:claude
+   369	npm run dogfood:cautilus-reviewer-launch-flow:eval:codex
+   370	npm run dogfood:cautilus-reviewer-launch-flow:eval:claude
+   371	npm run dogfood:cautilus-refresh-flow:eval:codex
+   372	npm run dogfood:cautilus-refresh-flow:eval:claude
+   373	npm run dogfood:subagent-execution-proof:codex
+   374	npm run dogfood:subagent-execution-proof:claude
+   375	
+   376	# smoke the local skill routing path without recursively launching a model eval
+   377	cautilus evaluate fixture \
+   378	  --repo-root . \
+   379	  --adapter-name self-dogfood-eval-skill \
+   380	  --runtime fixture \
+   381	  --skip-preflight
+   382	
+   383	# evaluate one normalized skill packet for trigger accuracy and execution quality
+   384	# (cautilus.skill_evaluation_inputs.v1 input)
+   385	cautilus evaluate observation \
+   386	  --input ./eval-observed.json \
+   387	  --output /tmp/cautilus-skill-summary.json
+   388	```
+   389	
+   390	Use `--runtime fixture` when the goal is cheap command-routing proof over fixture-backed runner results.
+   391	It is not evidence that a model-backed skill execution is good; it is evidence that the Cautilus command surface, adapter, fixture translation, and packet evaluation path still line up.
+   392	
+   393	## Reports
+   394	
+   395	```bash
+   396	# build a machine-readable evaluation report packet from explicit mode runs
+   397	cautilus evaluate report build --input ./fixtures/reports/report-input.json
+   398	```
+   399	
+   400	This command answers:
+   401	"what is the first product-owned decision packet for this candidate versus the
+   402	baseline?"
+   403	
+   404	## Review
+   405	
+   406	```bash
+   407	# assemble a durable review packet around a report
+   408	cautilus evaluate evaluate review prepare-input \
+   409	  --repo-root . \
+   410	  --report-file /tmp/cautilus-mode/report.json
+   411	
+   412	# build the product-owned meta-prompt packet
+   413	cautilus evaluate evaluate review build-prompt-input \
+   414	  --review-packet /tmp/cautilus-mode/review.json
+   415	
+   416	# with output-under-test evidence
+   417	cautilus evaluate evaluate review build-prompt-input \
+   418	  --review-packet /tmp/cautilus-mode/review.json \
+   419	  --output-under-test /tmp/cautilus-mode/analysis-output.json \
+   420	  --output-text-key analysis_text
+   421	
+   422	# build from scenario replay
+   423	cautilus evaluate evaluate review build-prompt-input \
+   424	  --repo-root . \
+   425	  --adapter-name analysis-prompts \
+   426	  --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
+   427	  --scenario replay-negative-path \
+   428	  --output-under-test runs/latest/replay-review.json \
+   429	  --output-text-key analysis_text
+   430	
+   431	# render the review prompt
+   432	cautilus evaluate evaluate review render-prompt \
+   433	  --input /tmp/cautilus-mode/review-prompt-input.json
+   434	
+   435	# run every executor variant defined by an adapter
+   436	cautilus evaluate evaluate review variants \
+   437	  --repo-root /path/to/repo \
+   438	  --adapter-name code-quality \
+   439	  --workspace /path/to/repo \
+   440	  --scenario-file /path/to/scenario.json \
+   441	  --scenario replay-negative-path \
+   442	  --output-under-test /tmp/cautilus-mode/analysis-output.json \
+   443	  --output-text-key analysis_text \
+   444	  --output-dir /tmp/cautilus-review
+   445	
+   446	# run an ad-hoc bounded review without first building a review packet
+   447	cautilus evaluate evaluate review variants \
+   448	  --repo-root /path/to/repo \
+   449	  --workspace /path/to/repo \
+   450	  --prompt-file /tmp/review.md \
+   451	  --schema-file /tmp/review.schema.json \
+   452	  --output-dir /tmp/cautilus-review
+   453	
+   454	# normalize a source-bound review outcome into review-learning evidence
+   455	cautilus evaluate review feedback build \
+   456	  --source-kind hitl \
+   457	  --source-ref docs/internal/handoff.md \
+   458	  --method-family claim_discovery \
+   459	  --method-id linked_markdown_scan \
+   460	  --source-scope docs/specs/index.spec.md \
+   461	  --proposal-source-ref docs/specs/index.spec.md:14 \
+   462	  --disposition reframed \
+   463	  --review-note "Useful signal, but the claim name needed narrowing." \
+   464	  --output /tmp/cautilus-review/review-feedback.json
+   465	
+   466	# summarize selected review-learning packets by method family and disposition
+   467	cautilus evaluate review feedback summarize \
+   468	  --input /tmp/cautilus-review/review-feedback.json \
+   469	  --output /tmp/cautilus-review/review-feedback-summary.json
+   470	```
+   471	
+   472	If you need a minimal valid report packet before review, run `cautilus evaluate report build --example-input`.
+   473	That example includes the minimum `humanReviewFindings` shape:
+   474	`{ "severity": "concern", "message": "...", "path": "optional" }`.
+   475	
+   476	`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.
+   477	A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.
+   478	Local executor readiness failures such as missing auth are classified as blocked `unavailable_executor` results rather than negative review verdicts.
+   479	When at least one variant passes and another does not, the summary sets `partialSuccess: true` and lifts the passing outputs into `successfulVariantOutputs`.
+   480	When `--output-under-test` is present, the generated review prompt switches into `output_under_test` mode and treats the referenced artifact as primary evidence.
+   481	When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.
+   482	This command answers:
+   483	"do multiple bounded reviewers agree with the current report, and what concrete
+   484	reason codes or warnings survive that second pass?"
+   485	`review feedback build` writes `cautilus.review_feedback.v1`.
+   486	It preserves a source review reference plus normalized method, proposal, disposition, and note fields, while recording that normalization is based on the source review.
+   487	For `accepted`, `narrowed`, `reframed`, or `rejected`, include `--proposal-id` or `--proposal-source-ref` so the packet names the proposal that was reviewed.
+   488	`missing_critical` may omit proposal evidence because it records that the method missed a proposal reviewers needed.
+   489	Its disposition vocabulary is about review usefulness rather than pass/fail status.
+   490	This command answers:
+   491	"which discovery or evaluation method produced this source-reviewed proposal outcome?"
+   492	`review feedback summarize` writes `cautilus.review_feedback_summary.v1`.
+   493	It reads explicitly selected `cautilus.review_feedback.v1` packets, counts review-useful dispositions overall and by method family, and keeps source-review refs in per-input records.
+   494	It does not discover active-run defaults or treat dispositions as evaluator pass/fail status.
+   495	This command answers:
+   496	"across the selected review-learning packets, which method families produced which review-useful outcomes?"
+   497	
+   498	## Evidence
+   499	
+   500	```bash
+   501	# prepare normalized evidence input
+   502	cautilus evaluate evidence prepare-input \
+   503	  --report-file /tmp/cautilus-mode/report.json \
+   504	  --scenario-results-file /tmp/cautilus-mode/scenario-results.json \
+   505	  --run-audit-file /tmp/cautilus-run-audit/summary.json \
+   506	  --history-file /tmp/cautilus-history/history.json
+   507	
+   508	# build the evidence bundle
+   509	cautilus evaluate evidence bundle \
+   510	  --input /tmp/cautilus-evidence/input.json
+   511	```
+   512	
+   513	This command answers:
+   514	"what single packet should I hand to the next decision step when report,
+   515	scenario, audit, and history evidence all matter together?"
+   516	
+   517	## Improvement
+   518	
+   519	`cautilus improve` is the improvement front door.
+   520	Use it only after the claim and eval proof surface are explicit enough that an improvement loop has something honest to improve against.
+   521	For app behavior claims, reports whose `proofSummary.productRunnerProofReadiness` is blocked cannot become improve inputs until runner-backed product proof is ready.
+   522	The bounded one-shot improver:
+   523	
+   524	```bash
+   525	cautilus improve prepare-input \
+   526	  --report-file /tmp/cautilus-mode/report.json \
+   527	  --review-summary /tmp/cautilus-review/summary.json \
+   528	  --history-file /tmp/cautilus-history/history.json \
+   529	  --target prompt
+   530	
+   531	cautilus improve propose \
+   532	  --input /tmp/cautilus-improve/input.json
+   533	```
+   534	
+   535	For the GEPA-style bounded prompt search seam layered above that improver — multi-generation reflective mutation, held-out reevaluation, frontier selection — see [improve.md](./improve.md).
+   536	
+   537	## Self-dogfood rendering
+   538	
+   539	```bash
+   540	# refresh the static HTML view of the current checked-in self-dogfood bundle
+   541	cautilus doctor artifacts render-self-dogfood-html
+   542	
+   543	# refresh the static HTML comparison view of the current latest experiments bundle
+   544	cautilus doctor artifacts render-self-dogfood-experiments-html
+   545	```
+   546	
+   547	The rendered HTML is read-only over `summary.json`, `report.json`, and `review-summary.json`; those JSON files remain the source of truth.
+   548	For the npm wrappers and the full dogfood workflow, see [development.md](../maintainers/development.md).
+   549	These renderers answer:
+   550	"what should a human reviewer open first if they should inspect the same
+   551	decision surface without parsing raw JSON?"
+   552	
+   553	## Plugin manifest validation
+   554	
+   555	```bash
+   556	# validate the checked-in Claude marketplace and plugin manifest
+   557	claude plugins validate ./.claude-plugin/marketplace.json
+   558	claude plugins validate ./plugins/cautilus/.claude-plugin/plugin.json
+   559	
+   560	# verify Codex can discover the repo-local marketplace entry
+   561	node ./scripts/release/check-codex-marketplace.mjs --repo-root .
+   562	```
+   563	
+   564	## Direct script usage
+   565	
+   566	Most underlying Node scripts are still runnable directly when a wrapper tool needs them without the `cautilus` binary.
+   567	Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.
+   568	Only the remaining wrapper and packet-builder utilities below should be invoked directly.
+   569	
+   570	```bash
+   571	node scripts/resolve_adapter.mjs --repo-root .
+   572	node scripts/init_adapter.mjs --repo-root .
+   573	node scripts/agent-runtime/run-executor-variants.mjs --repo-root . --workspace . --output-dir /tmp/cautilus-review
+   574	node scripts/agent-runtime/build-scenario-proposal-input.mjs --candidates ./fixtures/scenario-proposals/candidates.json --registry ./fixtures/scenario-proposals/registry.json --coverage ./fixtures/scenario-proposals/coverage.json --family fast_regression
+   575	node scripts/agent-runtime/generate-scenario-proposals.mjs --input ./fixtures/scenario-proposals/standalone-input.json
+   576	node scripts/agent-runtime/build-evidence-input.mjs --report-file /tmp/cautilus-mode/report.json --scenario-results-file ./fixtures/scenario-results/example-results.json
+   577	node scripts/agent-runtime/build-evidence-bundle.mjs --input /tmp/cautilus-evidence/input.json
+   578	node scripts/agent-runtime/build-improve-input.mjs --report-file /tmp/cautilus-mode/report.json --target prompt
+   579	node scripts/agent-runtime/generate-improve-proposal.mjs --input /tmp/cautilus-improve/input.json
+   580	node scripts/agent-runtime/summarize-scenario-telemetry.mjs --results ./fixtures/scenario-proposals/results.json
+   581	node scripts/agent-runtime/build-report-packet.mjs --input ./fixtures/reports/report-input.json
+   582	./bin/cautilus evaluate fixture --repo-root . --fixture fixtures/eval/app/prompt/cautilus-tagline.fixture.json --output-dir /tmp/cautilus-eval
+   583	```

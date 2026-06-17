@@ -1,0 +1,395 @@
+{
+  "anchor": {
+    "packetGitCommit": "0205b0d67d1aee7a30a86104241d37ee70f1195c",
+    "note": "v2 re-extraction held source content constant at the v1 packet commit (== README@d20e043, pre item-3 rewrite); facets are the only varied input.",
+    "templateVersion": "v2",
+    "templateHash": "sha256:41323548a2d04b1c4f383a240d84e6ec5a94ef1ca73ff371e9a62b3695902e60"
+  },
+  "scope": {
+    "sources": [
+      "README.md",
+      "docs/guides/cli.md"
+    ],
+    "note": "README+cli carry 100% of the 15-claim per-claim answer key, both recall FNs, and 92/121 of the user-product gold entries."
+  },
+  "proofRoute": {
+    "confirmed": {
+      "v2Correct": 10,
+      "v1Correct": 8,
+      "total": 10
+    },
+    "full": {
+      "v2Correct": 15,
+      "v1Correct": 12,
+      "total": 15
+    },
+    "note": "confirmed = HITL b1+b2 (maintainer-confirmed in chat); full = confirmed + proposed b3 (awaiting confirm, includes cli.md:391)."
+  },
+  "epic": {
+    "primaryExact": 12,
+    "primarySameBranch": 14,
+    "total": 15
+  },
+  "recall": [
+    {
+      "ref": "README.md:8",
+      "caught": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "A1-orchestration"
+    },
+    {
+      "ref": "README.md:30",
+      "caught": true,
+      "v2Proof": "human-auditable",
+      "v2PrimaryEpic": "APEX"
+    }
+  ],
+  "grounding": {
+    "matched": 203,
+    "total": 203
+  },
+  "counts": {
+    "v2": {
+      "readme": 48,
+      "cli": 155,
+      "total": 203
+    },
+    "v1Full": {
+      "readme": 35,
+      "cli": 78
+    },
+    "v2UserAudience": {
+      "readme": 28,
+      "cli": 53
+    },
+    "v1UserProduct": {
+      "readme": 32,
+      "cli": 60
+    }
+  },
+  "proofDistribution": {
+    "v2User": {
+      "cautilus-eval": 10,
+      "deterministic": 65,
+      "human-auditable": 6
+    },
+    "v1GoldUserAllSources": {
+      "cautilus-eval": 19,
+      "human-auditable": 20,
+      "deterministic": 82
+    },
+    "v1GoldUserInScope": {
+      "cautilus-eval": 4,
+      "human-auditable": 16,
+      "deterministic": 72
+    },
+    "note": "Like-for-like human-auditable comparison uses v2User vs v1GoldUserInScope (both README+cli, user-audience)."
+  },
+  "reviewed": [
+    {
+      "ref": "README.md:13",
+      "v1Proof": "human-auditable",
+      "correctProof": "deterministic",
+      "hitlVerdict": "relabel",
+      "goldPrimaryEpic": "S1-install",
+      "goldSupportingEpics": [
+        "S1-install"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "S1-install",
+      "v2SupportingEpics": [
+        "S1-install",
+        "M1-proven-on-itself"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": true
+    },
+    {
+      "ref": "README.md:68",
+      "v1Proof": "cautilus-eval",
+      "correctProof": "cautilus-eval",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "D1-discovery",
+      "goldSupportingEpics": [
+        "D1-discovery",
+        "A2-curation-review"
+      ],
+      "present": true,
+      "v2Proof": "cautilus-eval",
+      "v2PrimaryEpic": "A2-curation-review",
+      "v2SupportingEpics": [
+        "A2-curation-review",
+        "D1-discovery"
+      ],
+      "proofCorrect": true,
+      "epicExact": false,
+      "epicSameBranch": false,
+      "confirmed": true
+    },
+    {
+      "ref": "README.md:113",
+      "v1Proof": "deterministic",
+      "correctProof": "cautilus-eval",
+      "hitlVerdict": "relabel",
+      "goldPrimaryEpic": "D1-discovery",
+      "goldSupportingEpics": [
+        "D1-discovery"
+      ],
+      "present": true,
+      "v2Proof": "cautilus-eval",
+      "v2PrimaryEpic": "D1-discovery",
+      "v2SupportingEpics": [
+        "D1-discovery"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": true
+    },
+    {
+      "ref": "README.md:140",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "I1-bounded-improvement",
+      "goldSupportingEpics": [
+        "I1-bounded-improvement"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "I1-bounded-improvement",
+      "v2SupportingEpics": [
+        "I1-bounded-improvement"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": true
+    },
+    {
+      "ref": "README.md:163",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "S2-readiness",
+      "goldSupportingEpics": [
+        "S2-readiness"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "S2-readiness",
+      "v2SupportingEpics": [
+        "S2-readiness"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": true
+    },
+    {
+      "ref": "docs/guides/cli.md:27",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "S1-install",
+      "goldSupportingEpics": [
+        "S1-install"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "S2-readiness",
+      "v2SupportingEpics": [
+        "S2-readiness",
+        "S1-install"
+      ],
+      "proofCorrect": true,
+      "epicExact": false,
+      "epicSameBranch": true,
+      "confirmed": true
+    },
+    {
+      "ref": "docs/guides/cli.md:110",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "S2-readiness",
+      "goldSupportingEpics": [
+        "S2-readiness"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "S2-readiness",
+      "v2SupportingEpics": [
+        "S2-readiness"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": true
+    },
+    {
+      "ref": "docs/guides/cli.md:121",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "S2-readiness",
+      "goldSupportingEpics": [
+        "S2-readiness"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "S2-readiness",
+      "v2SupportingEpics": [
+        "S2-readiness"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": true
+    },
+    {
+      "ref": "docs/guides/cli.md:128",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "D1-discovery",
+      "goldSupportingEpics": [
+        "D1-discovery"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "D1-discovery",
+      "v2SupportingEpics": [
+        "D1-discovery"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": true
+    },
+    {
+      "ref": "docs/guides/cli.md:138",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "badly-bounded",
+      "goldPrimaryEpic": "D2-review-refresh",
+      "goldSupportingEpics": [
+        "D2-review-refresh"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "D2-review-refresh",
+      "v2SupportingEpics": [
+        "D2-review-refresh"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": true
+    },
+    {
+      "ref": "docs/guides/cli.md:148",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "D2-review-refresh",
+      "goldSupportingEpics": [
+        "D2-review-refresh"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "D2-review-refresh",
+      "v2SupportingEpics": [
+        "D2-review-refresh",
+        "E1-evaluate"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": false
+    },
+    {
+      "ref": "docs/guides/cli.md:218",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "E1-evaluate",
+      "goldSupportingEpics": [
+        "E1-evaluate"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "E1-evaluate",
+      "v2SupportingEpics": [
+        "E1-evaluate"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": false
+    },
+    {
+      "ref": "docs/guides/cli.md:266",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "E2-scenarios-experiments",
+      "goldSupportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "E2-scenarios-experiments",
+      "v2SupportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": false
+    },
+    {
+      "ref": "docs/guides/cli.md:276",
+      "v1Proof": "deterministic",
+      "correctProof": "deterministic",
+      "hitlVerdict": "accept",
+      "goldPrimaryEpic": "E1-evaluate",
+      "goldSupportingEpics": [
+        "E1-evaluate"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "E1-evaluate",
+      "v2SupportingEpics": [
+        "E1-evaluate"
+      ],
+      "proofCorrect": true,
+      "epicExact": true,
+      "epicSameBranch": true,
+      "confirmed": false
+    },
+    {
+      "ref": "docs/guides/cli.md:391",
+      "v1Proof": "human-auditable",
+      "correctProof": "deterministic",
+      "hitlVerdict": "relabel",
+      "goldPrimaryEpic": "E2-scenarios-experiments",
+      "goldSupportingEpics": [
+        "E2-scenarios-experiments"
+      ],
+      "present": true,
+      "v2Proof": "deterministic",
+      "v2PrimaryEpic": "E1-evaluate",
+      "v2SupportingEpics": [
+        "E1-evaluate"
+      ],
+      "proofCorrect": true,
+      "epicExact": false,
+      "epicSameBranch": true,
+      "confirmed": false
+    }
+  ]
+}
