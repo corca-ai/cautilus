@@ -1,0 +1,310 @@
+{
+  "bounds": {
+    "maxClaimsPerSource": 80,
+    "maxExcerptChars": 600
+  },
+  "confirmationNotice": "Scan-scope confirmation does not authorize agent extraction; running the extraction is an LLM activity behind a separate extraction-budget confirmation.",
+  "effectiveScanScope": {
+    "adapterFound": true,
+    "adapterPath": ".agents/cautilus-adapter.yaml",
+    "audienceHints": {
+      "developer": [
+        "AGENTS.md",
+        "docs/specs/contracts/**",
+        "skills/cautilus-agent/**",
+        "plugins/cautilus/skills/cautilus-agent/**",
+        "docs/contracts/**",
+        "docs/specs/old/**",
+        "docs/internal/**",
+        "docs/maintainers/**",
+        "docs/master-plan.md",
+        ".agents/**",
+        "scripts/**",
+        "internal/**"
+      ],
+      "user": [
+        "README.md",
+        "docs/specs/user/**",
+        "docs/guides/**"
+      ]
+    },
+    "claimLexiconTerms": [],
+    "entries": [
+      "README.md",
+      "docs/guides/cli.md",
+      "docs/contracts/claim-discovery-workflow.md",
+      "docs/contracts/claim-extraction-template.md",
+      "docs/internal/working-patterns.md"
+    ],
+    "evidenceRoots": [
+      ".cautilus/claims"
+    ],
+    "exclude": [
+      ".git/**",
+      "node_modules/**",
+      "dist/**",
+      "coverage/**",
+      "artifacts/**",
+      "charness-artifacts/**",
+      "docs/specs/old/**",
+      "docs/specs/evidence/claim-evidence-state.md",
+      "docs/claims/**",
+      "docs/maintainers/**",
+      "docs/internal/handoff.md",
+      "docs/internal/research/**"
+    ],
+    "explicitSources": true,
+    "gitignorePolicy": "respect-repo-gitignore",
+    "include": [],
+    "linkedMarkdownDepth": 0,
+    "nonClaimSectionHeadings": [
+      "Deferred Decisions",
+      "Rejected Alternatives",
+      "Alternatives rejected"
+    ],
+    "semanticGroups": [
+      {
+        "label": "Claim discovery and review",
+        "terms": [
+          "discover claims",
+          "claim-discovery",
+          "discover claims review-input",
+          "review input",
+          "reviewer",
+          "action bucket",
+          "readiness",
+          "evidence state",
+          "status report"
+        ]
+      },
+      {
+        "label": "Improvement and improvement",
+        "terms": [
+          "improve",
+          "gepa",
+          "search",
+          "frontier"
+        ]
+      },
+      {
+        "label": "Adapter and portability",
+        "terms": [
+          "adapter",
+          "portable",
+          "consumer",
+          "host repo",
+          "repo-specific"
+        ]
+      },
+      {
+        "label": "Quality gates",
+        "terms": [
+          "test",
+          "verify",
+          "lint",
+          "quality",
+          "doctor",
+          "hook"
+        ]
+      },
+      {
+        "label": "Agent and skill workflow",
+        "terms": [
+          "skill",
+          "agent",
+          "no-input",
+          "$cautilus-agent",
+          "codex",
+          "claude"
+        ]
+      },
+      {
+        "label": "Packets and reporting",
+        "terms": [
+          "packet",
+          "report",
+          "html",
+          "artifact",
+          "summary",
+          "status"
+        ]
+      },
+      {
+        "label": "Release and packaging",
+        "terms": [
+          "release",
+          "plugin",
+          "install",
+          "publish",
+          "version"
+        ]
+      },
+      {
+        "label": "Documentation and contracts",
+        "terms": [
+          "readme",
+          "contract",
+          "spec",
+          "document",
+          "guide"
+        ]
+      },
+      {
+        "label": "Evaluation surfaces",
+        "terms": [
+          "dev/repo",
+          "dev/skill",
+          "app/chat",
+          "app/prompt",
+          "eval",
+          "scenario"
+        ]
+      }
+    ],
+    "traversal": "entry-markdown-links"
+  },
+  "extractionTarget": "first-extraction",
+  "gitCommit": "558cda76d9bd044a65cf94bce751c8752c69c9dc",
+  "outputSchema": "cautilus.claim_extraction_result.v1",
+  "schemaVersion": "cautilus.claim_extraction_input.v1",
+  "sourceCount": 5,
+  "sourceGraph": [],
+  "sourceRoot": ".",
+  "sources": [
+    {
+      "audienceHint": "user",
+      "audienceHintSource": "adapter-hint",
+      "contentHash": "sha256:25a463bb2b4603b3f501829fa39349fbf6d1b3eee4ad6a8638b8e075b8f3f172",
+      "depth": 0,
+      "kind": "readme",
+      "path": "README.md",
+      "status": "extract"
+    },
+    {
+      "audienceHint": "developer",
+      "audienceHintSource": "adapter-hint",
+      "contentHash": "sha256:3223d8423b7739bf71a9e11ccf9a91410e2d848c97a29f09ef9e39bbe2639c2f",
+      "depth": 0,
+      "kind": "contract",
+      "path": "docs/contracts/claim-discovery-workflow.md",
+      "status": "extract"
+    },
+    {
+      "audienceHint": "developer",
+      "audienceHintSource": "adapter-hint",
+      "contentHash": "sha256:8a73b0e35ebb4fdea0ee15061c7712d7255abde57dec59de7bf297465ff73822",
+      "depth": 0,
+      "kind": "contract",
+      "path": "docs/contracts/claim-extraction-template.md",
+      "status": "extract"
+    },
+    {
+      "audienceHint": "user",
+      "audienceHintSource": "adapter-hint",
+      "contentHash": "sha256:5700ccc2e9ff3da86f4539092b3109845e1dfb7fe75e5718dfa4c284f012cff4",
+      "depth": 0,
+      "kind": "docs",
+      "path": "docs/guides/cli.md",
+      "status": "extract"
+    },
+    {
+      "audienceHint": "developer",
+      "audienceHintSource": "adapter-hint",
+      "contentHash": "sha256:d3d50e157a6a609fa58c7d77e2e2627d5e9adb1e8f74f8c77ba05368e10a245b",
+      "depth": 0,
+      "kind": "docs",
+      "path": "docs/internal/working-patterns.md",
+      "status": "extract"
+    }
+  ],
+  "template": {
+    "claimDefinition": "A behavior claim is a declared promise about how the product, repo, or workflow behaves, addressed to a user, operator, or agent, that could in principle be proven or falsified. Roadmap intent, design philosophy, open questions, glossary definitions, and document metadata are not claims. Actively include two easy-to-miss claim shapes that assert a stance or a boundary rather than a feature: design-principle claims (for example \"X is a first-class ...\", \"agents are first-class users\", \"the binary stays deterministic\") and negative, scope-boundary, or exclusion claims (for example \"not for ...\", \"does not ...\", \"never ...\", \"opt-in until ...\"). A statement of what the product deliberately will not do, or a principle it holds, is a claim whenever it is falsifiable.",
+    "epicCatalog": [
+      {
+        "branch": "APEX",
+        "epicId": "APEX",
+        "title": "Cautilus keeps agent/workflow behavior honest across prompt/skill/wrapper change",
+        "userStory": "As a team whose prompts/skills/models keep changing, I want to pin the behavior that matters and prove it survives every change, so that I can ship changes without silently regressing what I promised."
+      },
+      {
+        "branch": "Agent",
+        "epicId": "A1-orchestration",
+        "title": "The Cautilus Agent owns workflow routing, sequencing, and guardrails",
+        "userStory": "As a maintainer, I want the Cautilus Agent to own routing, sequencing, and guardrails, so that I do not hand-orchestrate the eval workflow step by step."
+      },
+      {
+        "branch": "Agent",
+        "epicId": "A2-curation-review",
+        "title": "The Cautilus Agent curates discovery packets and drives structured review",
+        "userStory": "As a maintainer, I want the agent to curate raw discovery packets and drive structured review, so that I review a trustworthy claim set instead of high-recall noise."
+      },
+      {
+        "branch": "Setup",
+        "epicId": "S1-install",
+        "title": "Cautilus installs as a shared machine-level binary plus repo-local agent surface (no scaffold copy)",
+        "userStory": "As an adopter, I want Cautilus to install as a shared machine-level binary plus a repo-local agent surface, so that I add evaluation without copying another scaffold into my repo."
+      },
+      {
+        "branch": "Setup",
+        "epicId": "S2-readiness",
+        "title": "doctor/version report setup, onboarding, agent-surface, and wiring readiness",
+        "userStory": "As an adopter, I want doctor/version to report setup, onboarding, and wiring readiness, so that I know exactly what to fix before a first bounded run."
+      },
+      {
+        "branch": "Discover",
+        "epicId": "D1-discovery",
+        "title": "Claim discovery turns adapter-owned docs + linked Markdown into bounded proof-plan candidates (not a verdict)",
+        "userStory": "As a maintainer, I want discovery to turn my adapter-owned docs into bounded proof-plan candidates (not a verdict), so that I start from source-ref-backed claims rather than a blank page."
+      },
+      {
+        "branch": "Discover",
+        "epicId": "D2-review-refresh",
+        "title": "Deterministic claim review/refresh: cluster, apply-review, refresh, status, stale-gating, model-spend gating",
+        "userStory": "As a maintainer, I want deterministic claim review/refresh (cluster, apply-review, refresh, status, stale/model-spend gating), so that my claim set stays current and auditable without surprise model spend."
+      },
+      {
+        "branch": "Eval",
+        "epicId": "E1-evaluate",
+        "title": "evaluate fixture/observation runs checked-in inputs through adapter-owned runners and evaluates the packet",
+        "userStory": "As a maintainer, I want evaluate fixture/observation to run checked-in inputs through adapter-owned runners and evaluate the packet, so that I get a durable, comparable verdict surface."
+      },
+      {
+        "branch": "Eval",
+        "epicId": "E2-scenarios-experiments",
+        "title": "Scenario proposal/attention and skill-experiment compare over preserved baseline/variant outputs",
+        "userStory": "As a maintainer, I want scenario proposal/attention and skill-experiment compare over preserved baseline/variant outputs, so that I can judge whether a candidate actually got better."
+      },
+      {
+        "branch": "Improve",
+        "epicId": "I1-bounded-improvement",
+        "title": "Improvement search/revision is bounded by budgets, checkpoints, and blocked-readiness (bounded autonomy)",
+        "userStory": "As a maintainer, I want improvement search/revision bounded by budgets, checkpoints, and blocked-readiness, so that autonomy stays explicit and never runs away."
+      },
+      {
+        "branch": "Meta/Cross",
+        "epicId": "M1-proven-on-itself",
+        "title": "Cautilus is proven on itself: specs, dogfood evidence, held-out validation, structured review",
+        "userStory": "As an evaluator of the product itself, I want Cautilus proven on itself via specs, dogfood evidence, held-out validation, and structured review, so that I can trust the promises before adopting it."
+      }
+    ],
+    "epicGuidance": "Place every claim in the product's claim graph instead of inventing a free-text group. primaryEpic is the single epic that is the claim's home. supportingEpics is every epic the claim supports, including primaryEpic, as a list of at least one id (many-to-many, acyclic): a claim that genuinely strengthens several epics carries them all, and a cross-cutting principle (for example \"deterministic\" or \"the agent curates\") usually supports more than one. When supportingEpics has more than one entry, add a one-sentence edgeRationale naming why each non-primary epic is supported. Choose epic ids only from the epicCatalog in this packet when it is non-empty; do not invent ids and do not derive the epic from claimSemanticGroup (that mapping is lossy). When the catalog is empty, use a short stable epic label and keep claimSemanticGroup for grouping.",
+    "excerptRules": "Every claim must carry at least one excerpt copied exactly from the source text, with its source path and a line locator. Mark exactly one excerpt per claim as primary: true; it is the claim's identity anchor across re-extractions. Keep paraphrase in the summary only. An excerpt that does not appear verbatim in the source after whitespace normalization causes the whole claim to be rejected, so copy text exactly instead of fixing typos or grammar. When the same promise is declared in multiple places, emit one claim with multiple excerpts instead of duplicate claims. Keep each excerpt within the maxExcerptChars bound (counted in characters, not bytes).",
+    "nonClaimConventions": {
+      "nonClaimSectionHeadings": [
+        "Deferred Decisions",
+        "Rejected Alternatives",
+        "Alternatives rejected"
+      ],
+      "portableRules": [
+        "Frontmatter is metadata, not a claim.",
+        "Code-styled glossary labels and definition lists are not claims.",
+        "Prompt examples, sample inputs, and open questions are not claims.",
+        "Text under a non-claim section heading is not a claim."
+      ]
+    },
+    "routingGuidance": "Route every claim toward the evidence it needs next, by what the claim's enabler actually is. recommendedProof: deterministic when a repo-owned unit, lint, build, schema, type, or CI check is what makes the claim true (prefer deterministic for any capability claim a static check could prove, even if a human could also read it; do not default a structurally-provable capability claim to human-auditable); human-auditable only when no deterministic check could prove it and reading current source, docs, or a generated artifact is the proof; cautilus-eval when the claim is true only because of model, agent, prompt, skill, workflow, or behavior execution (route an agent-behavior claim here even when a deterministic schema check happens to pass, because a passing schema check does not prove the behavior). recommendedEvalSurface (cautilus-eval only): dev/repo for repo-instruction behavior, dev/skill for skill behavior, app/chat for conversational app behavior, app/prompt for single-prompt app behavior. verificationReadiness: ready-for-proof when provable as stated; needs-scenario when a concrete scenario must be written first; needs-alignment when the promise itself needs a maintainer decision; blocked when extraction could not settle what the claim means. claimAudience: user, developer, or unclear.",
+    "templateHash": "sha256:41323548a2d04b1c4f383a240d84e6ec5a94ef1ca73ff371e9a62b3695902e60",
+    "templateVersion": "v2",
+    "uncertaintyRule": "When unsure whether text is a claim, emit the claim with verificationReadiness: blocked and add an entry to unresolvedQuestions instead of silently dropping it."
+  }
+}
