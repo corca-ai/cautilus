@@ -550,8 +550,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "curated spec indexes (docs/specs/index.spec.md apex + user/maintainer indexes) are the claim source of truth, not raw packets; M1 curation/SoT model; human-auditable (pointer wrapper present but the SoT assertion is the real claim).",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-66",
@@ -626,8 +627,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "public website report is generated from the claim spec tree, but host repos do not need the renderer to inspect readiness/claims/evals/improvement (no-renderer-dependency); deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-69",
@@ -648,8 +650,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap (proof-badge model); human-auditable.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-70",
@@ -670,8 +673,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": null
     },
     {
       "claimId": "claim-readme-md-75",
@@ -837,8 +840,8 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": null
     },
     {
       "claimId": "claim-readme-md-102",
@@ -862,8 +865,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "general Cautilus capability: turns the instruction-following question from transcript judgment into a reproducible packet with reopenable artifacts (dogfood as illustration; assertion is general per R11); cautilus-eval.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-103",
@@ -884,8 +888,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "honest-limit principle: routing proof is not backend subagent capability proof, and keeping that distinction prevents over-claiming; human-auditable.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-108",
@@ -1180,8 +1185,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "bounded autonomy principle (search/revision bounded by budgets/checkpoints/blocked-readiness); named differentiator (four contrasts), I1 headline; deterministic (structural bounds).",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-142",
@@ -1228,8 +1234,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "GEPA-style bounded prompt search seam above the one-shot improver (6 named aspects as one seam capability); deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-154",
@@ -1804,8 +1811,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "cautilus improve is the front door, used only after the claim+eval proof surface is explicit (improve-gating); human-auditable. The real I1 home of the L145 improvement-waits idea -> curator note.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-525",
@@ -1826,8 +1834,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "bounded one-shot improver runs via improve prepare-input + propose; command mechanics; deterministic.",
+      "significanceTier": "T3"
     }
   ]
 }
