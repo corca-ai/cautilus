@@ -11,7 +11,9 @@
     "relabel": "claim correctly extracted but one or more labels corrected (proof route, audience, epic, etc.; correction in note)",
     "not-a-claim": "text should not have been extracted as a behavior claim",
     "badly-bounded": "real claim but wrong excerpt boundary, wrong merge, or duplicate (detail in note)",
-    "pending": "not yet reviewed"
+    "pending": "not yet reviewed",
+    "retire-source": "extraction correct, but the maintainer removes the source sentence (claim leaves the gold set; source-edit recorded for a later doc pass + re-anchor)",
+    "rewrite-source": "extraction correct, but the maintainer simplifies/rewrites the source sentence (claim essence kept but trimmed; source-edit recorded)"
   },
   "carriedForwardRules": [
     "R1",
@@ -133,8 +135,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "no-scaffold-copy install model = S1 epic differentiator; deterministic (structural install model).",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-7",
@@ -205,8 +208,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "machine-level binary shared across repos + agent surface repo-local; install-model mechanism; deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-11",
@@ -229,8 +233,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "repo-local ownership rationale (reproducible/reviewable/owned); backs S1+M1; deterministic; minor overlap with b1-2 (split vs why), distinct.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-16",
@@ -443,8 +448,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "prerequisites (native macOS/Linux, editable host repo, git on PATH); real requirement but spec-detail -> T3 (hide in user view).",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-readme-md-44",
@@ -465,8 +471,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "install flow (install.sh | sh, then cautilus init); deterministic; thin primary anchor cautilus-init but R11-OK (summary self-contained). CROSS-DOC dup with cli:11 -> curator flag.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-47",
@@ -487,8 +494,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "retire-source",
+      "note": "Homebrew migration stale and few users (maintainer); remove the README:47 sentence entirely. ALSO retire cli:32 (same Homebrew claim) for consistency. Real T3 claim, but maintainer prunes the source."
     },
     {
       "claimId": "claim-readme-md-54",
@@ -513,8 +520,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "rewrite-source",
+      "note": "Too detailed for README front matter (maintainer). Simplify to just convey \"you can hand setup to an agent\"; drop the doctor --next-action loop detail (move detail to a setup guide if needed). Claim essence (delegate setup to the agent) survives in trimmed form.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-readme-md-65",
@@ -1279,8 +1287,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "minimum host-repo shape (adapter + installed Agent + run artifacts); deterministic, checkable.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-159",
@@ -1327,8 +1336,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "doctor readiness surface (--next-action / --scope agent-surface / doctor); S2 readiness mechanism; deterministic. Flag enumeration but readiness concept is the core.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-163",
@@ -4952,8 +4962,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "cli install flow (install.sh script + cautilus init installs CLI+Agent); deterministic. CROSS-DOC dup with README:44 -> curator flag (recorded).",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-21",
@@ -4974,8 +4985,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "cautilus update refreshes the CLI + checked-in Agent; install-lifecycle command; deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-27",
@@ -4998,8 +5010,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "version --verbose reports local version provenance + quickest binary-only product summary; R13 explicit T3 example (version --verbose fields); deterministic.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-32",
@@ -5020,8 +5033,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "retire-source",
+      "note": "Same Homebrew-unsupported claim as README:47; retire both for consistency (sourceEdits records remove README:47 + cli:32)."
     },
     {
       "claimId": "claim-docs-guides-cli-md-38",
@@ -5044,8 +5057,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "init adapter scaffold + doctor adapter resolve/validate; adapter is the core host-owned config; deterministic.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-45",
@@ -5066,8 +5080,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "starter kits (pre-filled adapter + fixture + README) and the placeholder-not-proof boundary (behavioral boundary -> claim per R16); human-auditable.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-48",
@@ -5610,8 +5625,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "--help exits 0 for the registered native command surface incl grouped topics; R13 explicit T3 example; deterministic CLI minutiae.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-186",
