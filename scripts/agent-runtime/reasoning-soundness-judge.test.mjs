@@ -294,6 +294,70 @@ test("the bug->debug-regression eval catches a worse variant: code flags the dro
 	assert.equal(control.judgeVerdict, "unsound", "only the judge catches the fabricated reason");
 });
 
+test("routed_through_gather_before_use process facet reads the observed route", () => {
+	const routed = { observedRoute: { bootstrapHelper: "charness:find-skills", workSkill: "charness:gather", firstToolCall: "Skill(find-skills)" } };
+	const skipped = { observedRoute: { bootstrapHelper: "charness:find-skills", workSkill: "none", firstToolCall: "WebFetch(https://example.com)" } };
+	const missing = { reasonSummary: "no observed route at all" };
+	assert.equal(FORMAT_FACET_CHECKERS.routed_through_gather_before_use(routed), true);
+	assert.equal(FORMAT_FACET_CHECKERS.routed_through_gather_before_use(skipped), false, "a regressed surface that summarizes the URL inline fails the process facet");
+	assert.equal(FORMAT_FACET_CHECKERS.routed_through_gather_before_use(missing), false, "no route present fails closed");
+});
+
+test("the gather-regression eval catches a worse variant: code flags the dropped gather routing, the judge flags the fabricated reason", () => {
+	const calPath = join(FIXTURE_DIR, "reasoning-soundness-calibration.dev-repo-gather-routing-regression.json");
+	const vPath = join(FIXTURE_DIR, "reasoning-soundness-judge-verdicts.dev-repo-gather-routing-regression.json");
+	assert.ok(existsSync(calPath) && existsSync(vPath), "gather regression calibration + captured verdicts must exist");
+	const cal = loadCalibration(calPath);
+	const captured = JSON.parse(readFileSync(vPath, "utf-8"));
+	const result = compareVerdicts(cal, captured.verdicts);
+	assert.equal(result.passed, true, "the gather regression gate must pass on the captured verdicts");
+	assert.equal(result.rubberStampSuspected, false);
+
+	const byId = new Map(result.byCase.map((b) => [b.caseId, b]));
+	assert.equal(byId.get("baseline").got, "sound");
+	for (const id of ["regressed-skip-haiku", "regressed-skip-sonnet"]) {
+		const row = byId.get(id);
+		assert.equal(row.got, "unsound", `${id} must be flagged worse`);
+		assert.equal(row.codeFacets.routed_through_gather_before_use, false, `${id}'s regression is the dropped gather routing`);
+	}
+	const control = byId.get("regressed-reason-control");
+	assert.equal(control.got, "unsound");
+	assert.equal(control.codeFacets.routed_through_gather_before_use, true, "the control's route is correct; code alone would pass it");
+	assert.equal(control.judgeVerdict, "unsound", "only the judge catches the fabricated reason");
+});
+
+// Breadth invariant: the process+judge regression composite now spans three DISTINCT pinned steps
+// (startup bootstrap, bug->debug routing, gather routing). Each carries its own code process facet
+// and a judge-load-bearing right-route-wrong-reason control, so regression detection is shown to be
+// general across pinned behaviors rather than tied to one route. This pins that breadth so a later
+// refactor cannot quietly collapse the regression suite back to a single pinned step.
+test("regression detection spans multiple distinct pinned behaviors, each with its own process facet", () => {
+	const expected = {
+		"dev-repo-routing-regression": "emitted_find_skills_bootstrap",
+		"dev-repo-bug-debug-routing-regression": "routed_to_debug_before_fix",
+		"dev-repo-gather-routing-regression": "routed_through_gather_before_use",
+	};
+	const byClaim = new Map(
+		listCalibrationFixtures(FIXTURE_DIR)
+			.map((f) => loadCalibration(f.calibrationPath))
+			.map((cal) => [cal.claimId, cal]),
+	);
+	const facetsSeen = new Set();
+	for (const [claimId, facet] of Object.entries(expected)) {
+		const cal = byClaim.get(claimId);
+		assert.ok(cal, `expected regression claim ${claimId} in the registry`);
+		assert.deepEqual(cal.codeFacets, [facet], `${claimId} must own the distinct process facet ${facet}`);
+		assert.ok(FORMAT_FACET_CHECKERS[facet], `${facet} must be a registered deterministic checker`);
+		// Each regression claim must carry the judge-load-bearing right-route-wrong-reason control.
+		assert.ok(
+			cal.cases.some((c) => c.id === "regressed-reason-control" && c.expectedVerdict === "unsound"),
+			`${claimId} must carry a regressed-reason-control so the judge is load-bearing`,
+		);
+		facetsSeen.add(facet);
+	}
+	assert.equal(facetsSeen.size, 3, "the three regression claims must pin three DISTINCT process facets");
+});
+
 test("the routing-regression eval catches a worse variant: code flags the dropped bootstrap, the judge flags the fabricated reason", () => {
 	const calPath = join(FIXTURE_DIR, "reasoning-soundness-calibration.dev-repo-routing-regression.json");
 	const vPath = join(FIXTURE_DIR, "reasoning-soundness-judge-verdicts.dev-repo-routing-regression.json");

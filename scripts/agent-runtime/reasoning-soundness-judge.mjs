@@ -201,6 +201,18 @@ export const FORMAT_FACET_CHECKERS = {
 		const route = (c && c.observedRoute) || {};
 		return route.workSkill === "charness:debug";
 	},
+	// Routing PROCESS facet (the decomposed gather-routing-regression claim): did the observed route
+	// send an external URL/source through the pinned `charness:gather` skill before summarizing or
+	// deciding from it? Deterministic; reads the runner-shaped observedRoute, never the judge's semantic
+	// call. A regressed surface that deprecates gather and fetches/summarizes the source inline fails
+	// this facet regardless of how the stated reasoning reads — the process half of "did the route keep
+	// the pinned source-through-gather behavior", with the judge owning the semantic half. A THIRD
+	// pinned step (after the startup bootstrap and bug->debug), confirming the process-facet pattern is
+	// general across pinned behaviors, not tied to any one route.
+	routed_through_gather_before_use(c) {
+		const route = (c && c.observedRoute) || {};
+		return route.workSkill === "charness:gather";
+	},
 };
 
 // Compute the deterministic format facets a calibration opts into. Pure and reproducible:

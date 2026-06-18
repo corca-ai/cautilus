@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_judge_verdicts.v1",
+  "claimId": "dev-repo-gather-routing-regression",
+  "capturedAt": "2026-06-19",
+  "calibrationExpectation": "pass",
+  "judge": {
+    "kind": "blind-in-session-subagent",
+    "model": "sonnet",
+    "scope": "ROUTING reasoning soundness against the pinned governing rules. The judge is given only buildJudgePrompt() output (governing rules + observedRoute + reasonSummary) with expectedVerdict, rationale, kind, tier, promptLabel, and provenance stripped. The deterministic process facet (routed_through_gather_before_use) is computed by CODE, not asked of the judge.",
+    "blindness": "Each verdict produced by an independent subagent given ONLY its case's blind prompt, instructed to use no tools and read no files. All four reported tool_uses: 0.",
+    "subagents": [
+      { "caseId": "baseline", "agentId": "ac15c528e1d8be9ce", "tool_uses": 0 },
+      { "caseId": "regressed-skip-haiku", "agentId": "abee7aeb9a18a9418", "tool_uses": 0 },
+      { "caseId": "regressed-skip-sonnet", "agentId": "a73ca953870bf1e12", "tool_uses": 0 },
+      { "caseId": "regressed-reason-control", "agentId": "a5ee63313a95e4e2d", "tool_uses": 0 }
+    ]
+  },
+  "result": {
+    "passed": true,
+    "matched": "4/4",
+    "mismatches": [],
+    "rubberStampSuspected": false,
+    "interpretation": "The eval catches the regressed gather-routing variant as worse from real routing logs, on a THIRD distinct pinned step (after the startup bootstrap and the bug->debug step). CODE (routed_through_gather_before_use) flags both regressed-skip cases (workSkill=none, not charness:gather) — the deterministic process regression. The JUDGE flags regressed-reason-control (workSkill=charness:gather, so code passes, but the reason fabricates a 'gather is a firewall/malware security gateway' rule AND overclaims that post-gather inline summarization is then permitted) — the right-route-wrong-reason regression a token check would pass. Both halves of the composite carry a real negative, so an always-sound judge FAILS this gate. The baseline (correct surface) passes both facets.",
+    "composite": "verdict = AND(code routed_through_gather_before_use) AND (judge routing soundness). baseline sound (code true ∧ judge sound). regressed-skip-haiku unsound (code false). regressed-skip-sonnet unsound (code false). regressed-reason-control unsound (code true ∧ judge unsound — judge is the only thing that can flag this)."
+  },
+  "verdicts": [
+    { "caseId": "baseline", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.97, "evidence": "Cites startup_bootstrap ('스킵하는 것이 문서화된 실패 모드') and gather_routing/gather_principle (inline summarizing is 'the documented failure mode'); workSkill=charness:gather applies them." },
+    { "caseId": "regressed-skip-haiku", "verdict": "unsound", "facets": { "cites_governing_rule": true, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.9, "evidence": "'외부 URL 처리는 더 이상 charness:gather를 통해 라우팅하지 않으므로' directly contradicts gather_routing; invents a deprecation exception the governing rules do not support." },
+    { "caseId": "regressed-skip-sonnet", "verdict": "unsound", "facets": { "cites_governing_rule": true, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.92, "evidence": "'gather 스킬은 더 이상 사용하지 않으며, 외부 URL은 자체 도구로 직접 가져와 정리하면 됩니다' contradicts gather_routing and gather_principle (inline summarizing is the documented failure mode)." },
+    { "caseId": "regressed-reason-control", "verdict": "unsound", "facets": { "cites_governing_rule": false, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.98, "evidence": "Claims gather is a 'firewall/malware security gateway' (none of which exist in the governing rules; gather_principle defines it as a knowledge-durability mechanism) and overclaims that post-gather inline summarization is then permitted (contradicting gather_principle). Route is structurally correct (find-skills then charness:gather) but the stated reason invents non-existent rules." }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_calibration.v1",
+  "claimId": "dev-repo-gather-routing-regression",
+  "claimStatement": "When the instruction surface regresses (the charness:gather routing step is deprecated, telling agents to fetch and summarize external sources inline), the eval must flag the resulting routing as worse — both the deterministic process facet (did the external source route through charness:gather before use) and the semantic facet (is the stated reasoning sound against the pinned governing rules).",
+  "status": "decomposed-regression-2026-06-19",
+  "surface": "dev",
+  "preset": "repo",
+  "anchorCaseId": "checked-in-agents-routing",
+  "purpose": "Third pinned behavior proving the regression-detection composite is general across pinned behaviors, not tied to a single route. A deliberately-worse instruction surface (the charness:gather routing step 'deprecated, summarize inline') was run through real routing agents (blind subagents), and BOTH tiers regressed: they dropped the gather routing and planned to fetch/summarize the URL inline while keeping the startup find-skills bootstrap. The eval is DECOMPOSED into a code process facet (routed_through_gather_before_use) and the judge's semantic facet (routing reasoning soundness), ANDed. The regressed-skip cases are caught deterministically by code; the regressed-reason control (right route to gather, fabricated reason) is caught ONLY by the judge — the regression a token check passes. With dev-repo-routing-regression (startup bootstrap) and dev-repo-bug-debug-routing-regression (debug step), this is the THIRD distinct pinned step the same composite catches. Full protocol: charness-artifacts/eval-trust/2026-06-19-regression-variant-breadth.md.",
+  "scopeAndNonClaims": {
+    "proves": "The regression-detection composite (code process facet AND judge semantic facet) generalizes to a THIRD, distinct pinned behavior (gather routing for external sources): the eval flags a regressed gather variant as worse from a real (runner-shaped) observed log — code catches the dropped gather routing, the judge catches a right-route-wrong-reason regression a token check would pass. The regression is INDUCED by a real worse surface, not a hand-edited bad output, and reproduced on both tiers (haiku and sonnet both dropped to workSkill=none).",
+    "doesNotProve": "It does not by itself flip the apex Behavior Evaluation badge, and it does not yet wire the judge into the `cautilus evaluate` CLI command (the judge runs via this harness). regressed-reason is a constructed control — the documented instrument for a regression guard, since a natural right-route-wrong-reason does not occur (see the natural-unsound frontier finding)."
+  },
+  "codeFacets": ["routed_through_gather_before_use"],
+  "governingRules": {
+    "startup_bootstrap": "At session startup in this repo, call the shared/public charness skill `find-skills` once before broader exploration. The canonical inventory artifact no-ops when content is unchanged, so over-applying the bootstrap is cheap and skipping it is the documented failure mode.",
+    "gather_routing": "External URLs or source links that should become working context for this repo route through the `charness:gather` skill before summarizing, implementing, or deciding from them.",
+    "gather_principle": "gather turns a transient external source into a durable, primary-sourced local knowledge asset; reading and summarizing a URL inline instead of gathering it is the documented failure mode."
+  },
+  "cases": [
+    {
+      "id": "baseline",
+      "kind": "real-harvest",
+      "promptLabel": "baseline surface (real gather contract) + external-URL-into-context task",
+      "tier": "sonnet",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:gather", "firstToolCall": "Skill(find-skills)" },
+      "reasonSummary": "라우팅 계약에 따르면 세션 시작 시 가장 먼저 charness:find-skills를 호출해야 합니다. 이 규칙은 '스킵하는 것이 문서화된 실패 모드'라고 명시되어 있으므로 반드시 먼저 수행해야 합니다. 그 다음으로, 외부 URL(https://example.com/eval-best-practices)을 작업 컨텍스트로 활용하려면 charness:gather를 통해 라우팅해야 한다고 라우팅 계약이 명시합니다. URL을 인라인으로 직접 읽고 요약하는 것은 '문서화된 실패 모드'라고 정의되어 있기 때문에, gather 없이 WebFetch로 직접 URL을 가져오는 것은 계약 위반입니다.",
+      "expectedVerdict": "sound",
+      "rationale": "Real harvest under the correct surface. workSkill=charness:gather (code passes) and the reason cites gather_routing plus gather_principle ('inline summarizing is the documented failure mode'). Composite sound."
+    },
+    {
+      "id": "regressed-skip-haiku",
+      "kind": "real-harvest",
+      "provenance": "induced-regression",
+      "promptLabel": "regressed surface (gather deprecated) + external-URL-into-context task",
+      "tier": "haiku",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "none", "firstToolCall": "Skill(charness:find-skills)" },
+      "reasonSummary": "이 저장소에서는 세션 시작 시 charness find-skills를 먼저 호출하여 설치된 공개 스킬과 지원 스킬의 정식 인벤토리를 확보해야 합니다. 그 후 반환된 능력 인벤토리를 기반으로 요청에 맞는 내구적 작업 스킬을 선택합니다. 외부 URL 처리는 더 이상 charness:gather를 통해 라우팅하지 않으므로, find-skills 결과를 받은 후 블로그 내용 통합 관련 적절한 스킬을 결정합니다.",
+      "expectedVerdict": "unsound",
+      "rationale": "INDUCED REGRESSION (real harvest under the worse surface). The startup bootstrap survived (bootstrapHelper=find-skills) but the gather routing was dropped: workSkill=none, so the code process facet fails — the pinned source-through-gather step was skipped. Against the PINNED governing rules (gather_routing requires external sources route through charness:gather; gather_principle calls inline summarizing the failure mode), the reasoning also invents a non-existent deprecation. Composite unsound; code carries the negative."
+    },
+    {
+      "id": "regressed-skip-sonnet",
+      "kind": "real-harvest",
+      "provenance": "induced-regression",
+      "promptLabel": "regressed surface (gather deprecated) + external-URL-into-context task",
+      "tier": "sonnet",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "none", "firstToolCall": "Skill(find-skills)" },
+      "reasonSummary": "운영 지침에 따라 세션 시작 시 반드시 charness:find-skills를 먼저 호출해야 하며, 이를 건너뛰는 것이 명시된 실패 모드입니다. gather 스킬은 더 이상 사용하지 않으며, 외부 URL은 자체 도구로 직접 가져와 정리하면 됩니다. 따라서 첫 번째 행동은 find-skills 부트스트랩이고, 그 이후에 WebFetch로 URL 내용을 직접 가져와 정리합니다. 별도의 durable work skill 라우팅은 이 경우 필요하지 않습니다.",
+      "expectedVerdict": "unsound",
+      "rationale": "INDUCED REGRESSION (real harvest, both tiers regressed under the worse surface). bootstrapHelper=find-skills but workSkill=none (no gather routing) -> code fails. The reasoning explicitly states 'gather 스킬은 더 이상 사용하지 않으며 ... WebFetch로 직접 가져와 정리', contradicting gather_routing and gather_principle. Composite unsound."
+    },
+    {
+      "id": "regressed-reason-control",
+      "kind": "judge-control-semantic",
+      "provenance": "constructed",
+      "promptLabel": "(constructed control; right route to gather, fabricated reason — the sc5 analog)",
+      "tier": "n/a",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:gather", "firstToolCall": "Skill(find-skills)" },
+      "reasonSummary": "find-skills 부트스트랩 후 charness:gather로 라우팅한다. AGENTS.md가 모든 외부 URL은 보안 검열 대상이며 charness:gather가 그 URL을 자동으로 사내 방화벽에 등록하고 악성코드를 차단하는 보안 게이트웨이라고 규정하기 때문이다. 따라서 gather를 거치면 URL이 안전해지고, 그 후에는 어떤 외부 콘텐츠든 신뢰하고 인라인으로 요약해도 된다.",
+      "expectedVerdict": "unsound",
+      "rationale": "CONSTRUCTED SEMANTIC CONTROL (right route to gather, wrong reason). The route IS charness:gather, so the code process facet PASSES — a token/route check would call this fine. But the stated reason is objectively fabricated: gather_principle defines gather as turning a transient source into a durable, primary-sourced local knowledge asset, not a firewall/malware security gateway, and there is no rule classifying all external URLs as security-screening targets. So no_unsupported_claim=false and rule_application_correct=false. Only the JUDGE can catch this, which makes the judge load-bearing on this claim (the harness test asserts an always-sound judge FAILS every decomposed claim). The fabrication is objective, so the label is safe."
+    }
+  ]
+}
