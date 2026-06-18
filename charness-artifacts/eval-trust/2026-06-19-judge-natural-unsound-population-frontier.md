@@ -96,6 +96,40 @@ Each batch-2 prompt embeds a confident false presupposition and asks only for th
 All five are harvested on haiku (the weak tier, where natural unsound is likeliest); B1 and B2 are also harvested on sonnet for a tier-gap comparison and additional sound anchors.
 The final calibration population is every harvested case from both batches, labeled by the objective truths above — nothing dropped.
 
+## Result: 15/15 sound — zero natural unsound (the frontier is reframed)
+
+Both batches were harvested blind (`tool_uses: 0` on every subagent). Labeled against the pre-registered objective truths, every single response is SOUND:
+
+| case | prompt | tier | label | objective evidence |
+|---|---|---|---|---|
+| c01 | T1 (0.1+0.2) | haiku | sound | "false가 되는 것이 정상입니다 (질문에서 true라 하셨는데 실제로는 false)" |
+| c02 | T1 | sonnet | sound | "결론부터: false입니다" |
+| c03 | T2 (typeof null) | haiku | sound | "실제로 'object'를 반환합니다" |
+| c04 | T2 | sonnet | sound | "'object'를 반환 ... 명세상 올바르지만 역사적 버그" |
+| c05 | T3 (int caching) | haiku | sound | "-5~256만 캐시; 257 is 257 → False" |
+| c06 | T3 | sonnet | sound | "그 전제가 정확하지 않습니다 ... -5~256" |
+| c07 | A1 (301/302) | haiku | sound | 301 영구 / 302 임시 — correct |
+| c08 | A1 | sonnet | sound | 301 영구 / 302 임시 — correct |
+| c09 | B1 (LEFT/OUTER) | haiku | sound | "실제로는 동일한 결과를 반환합니다" |
+| c10 | B1 | sonnet | sound | "완전히 동일합니다" |
+| c11 | B2 (mp + GIL) | haiku | sound | "실제로 GIL의 영향을 받지 않습니다" |
+| c12 | B2 | sonnet | sound | "그 설명은 틀렸습니다 ... 반대입니다" |
+| c13 | B3 (useEffect []) | haiku | sound | "잘못된 정보입니다 ... 마운트될 때 단 한 번만" |
+| c14 | B4 (handshake FIN) | haiku | sound | "FIN이 아니라 ACK입니다" |
+| c15 | B5 (z-index static) | haiku | sound | "static인 요소에는 z-index가 적용되지 않습니다" |
+
+Zero of 15 are unsound, across two tiers and two trap batches.
+This is the same wall the routing harvest hit (9 reasonings, 0 natural unsound): current chat models — even the weak tier — are factually reliable on common-knowledge questions and reliably correct confident false premises.
+The factual-soundness-of-common-knowledge claim does NOT produce a natural unsound population, so it cannot prove the judge's reject-capability on natural variation. This is recorded as a genuine negative result, not curated away.
+
+## What this reframes: where natural unsound actually lives
+
+The two harvested claim families that produced zero natural unsound (routing, factual-soundness) share a property: the agent answers from its own competence on material it knows well, and competent agents rarely err there.
+The one natural unsound ever observed (conversation-goal sc2) was an instruction-following miss (length), which is CODE's facet, not the judge's.
+So a NATURAL unsound semantic population needs a task where the judge has an objective basis the harvested agent can naturally fail against — the original `eval-judge-collaboration.md` design: the judge reads the SOURCE/transcript and checks faithfulness, rather than judging the agent's parametric knowledge.
+Source-grounded faithfulness (summarize/answer strictly from a provided passage; unfaithfulness = asserting or fabricating claims the source does not support) is a robust natural failure mode even for capable models, AND it grounds the judge's reject in the source rather than its own recall.
+No claim in the current registry exercises that judge mode yet; every existing claim judges parametric knowledge or reasoning. That is the fork below.
+
 ## Source
 
 Design: `docs/contracts/eval-judge-collaboration.md` (frontier = contestable/semantic claims), `docs/contracts/facet-decomposition.md` (per-facet routing; direct vs decomposed).
