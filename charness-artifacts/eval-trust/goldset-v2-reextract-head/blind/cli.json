@@ -1,0 +1,1381 @@
+{
+  "schemaVersion": "cautilus.claim_extraction_result.v1",
+  "extractionInputRef": {
+    "path": "extraction-input.json",
+    "templateHash": "sha256:b922fd5d92510fd0161eb53f8f8829bb964de3113bed9a03498b4c75972b34ef"
+  },
+  "runtime": {
+    "model": "claude-opus-4-8",
+    "agent": "cautilus-agent-blind-extractor"
+  },
+  "claims": [
+    {
+      "summary": "cautilus init installs the CLI and Cautilus Agent into a host repo.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 13, "verbatim": "install CLI + Cautilus Agent into a host repo", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus update refreshes the CLI and the checked-in Cautilus Agent in a repo.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 16, "verbatim": "refresh the CLI and the checked-in Cautilus Agent in a repo", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus version --verbose inspects local version provenance and is the quickest binary-only summary of the current product surface: who it is for, which normalization family or eval surface to start from, and which report fields matter when a run rejects.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 23, "verbatim": "`cautilus version --verbose` is also the quickest binary-only summary of what\n`Cautilus` currently considers its product surface:\nwho it is for, which normalization family or eval surface to start from, and which report fields now matter\nwhen a run rejects.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 19, "verbatim": "inspect local version provenance", "primary": false }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus init adapter generates a minimal repo-local adapter scaffold.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 31, "verbatim": "generate a minimal repo-local adapter scaffold", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus doctor adapter resolves and validates the adapter.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 34, "verbatim": "resolve and validate the adapter", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Each starter kit ships a pre-filled cautilus-adapter.yaml, a canonical input fixture, and a README that explains what to replace next.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 39, "verbatim": "Each starter ships a pre-filled `cautilus-adapter.yaml`, a canonical input fixture, and a README that explains what to replace next.", "primary": true }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Starter placeholders are bootstrap help, not proof that a real consumer workflow is already wired.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 40, "verbatim": "Treat starter placeholders as bootstrap help, not as proof that a real consumer workflow is already wired.", "primary": true }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "S2-readiness"],
+      "edgeRationale": "S2-readiness is supported because the claim bounds what counts as a genuine readiness signal versus a bootstrap placeholder.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "A minimal adapter must wire at least one real runnable path to reach doctor ready.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 42, "verbatim": "A minimal adapter must wire at least one real runnable path to reach `doctor ready`:", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "S1-install"],
+      "edgeRationale": "S1-install is supported because wiring a runnable path is part of completing adapter install/bootstrap.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "For codex_exec, --codex-home-mode isolated keeps user config and session state out of the eval while --codex-auth-mode inherit copies only Codex auth into the isolated home.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 49, "verbatim": "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When neither auth source is available, the runner reports runner_auth_missing before spending the whole live run on cases that cannot authenticate.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 51, "verbatim": "When neither source is available, the runner reports `runner_auth_missing` before spending the whole live run on cases that cannot authenticate.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When typed runners are present, evaluate fixture chooses the runner whose surfaces contains the fixture surface key.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 66, "verbatim": "When typed runners are present, `evaluate fixture` chooses the runner whose `surfaces` contains the fixture surface key.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The {runner_id} placeholder is available to command templates.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 67, "verbatim": "The `{runner_id}` placeholder is available to command templates.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "If the selected runtime is fixture, the observed proof class is fixture-smoke even when the adapter declares a stronger possible runner class.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 68, "verbatim": "If the selected runtime is `fixture`, the observed proof class is `fixture-smoke` even when the adapter declares a stronger possible runner class.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "For dev/repo and dev/skill, a non-fixture coding-agent runtime may report the adapter-declared coding-agent-messaging class while preserving the smoke assessment as assessment metadata, but only when the observed packet reports the matching runtime telemetry.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 69, "verbatim": "For `dev/repo` and `dev/skill`, a non-fixture coding-agent runtime may report the adapter-declared `coding-agent-messaging` class while preserving the smoke assessment as assessment metadata, but only when the observed packet reports the matching runtime telemetry.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus doctor binary reports binary health with no repo required.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 74, "verbatim": "binary health, no repo required", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus doctor commands provides command discovery that is safe for wrapper tooling and agent runtimes.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 77, "verbatim": "command discovery, safe for wrapper tooling and agent runtimes", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery", "S2-readiness"],
+      "edgeRationale": "S2-readiness is supported because command discovery is part of the binary's readiness/orientation surface for agent runtimes.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus doctor status provides no-input agent orientation over binary, adapter, agent-surface, and claim state.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 80, "verbatim": "no-input agent orientation over binary, adapter, agent-surface, and claim state", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "A1-orchestration"],
+      "edgeRationale": "A1-orchestration is supported because no-input agent orientation feeds the Cautilus Agent's routing decisions.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus doctor --next-action gives one current onboarding step plus the exact continuation loop.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 86, "verbatim": "one current onboarding step plus the exact continuation loop", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 107, "verbatim": "Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus doctor --scope agent-surface checks local agent-skill discoverability in a consumer repo, verifying only the Cautilus Agent and local agent-surface install.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 89, "verbatim": "local agent-skill discoverability in a consumer repo", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 109, "verbatim": "Use `doctor --scope agent-surface` to verify only the Cautilus Agent and local agent-surface install.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "S1-install"],
+      "edgeRationale": "S1-install is supported because agent-surface verification confirms the repo-local agent install landed.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus <subcommand> --help exits 0 for the registered native command surface, including grouped topics such as cautilus improve search --help.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 104, "verbatim": "`cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus improve search --help`.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "doctor status --json emits cautilus.agent_status.v1: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices; use it when a Cautilus Agent is invoked without a detailed task.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 106, "verbatim": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 105, "verbatim": "Use `doctor status --json` when a Cautilus Agent or agent is invoked without a detailed task.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "A1-orchestration"],
+      "edgeRationale": "A1-orchestration is supported because the orientation packet drives the agent's branch choices and routing.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "If repo setup is ready but runner proof is not, the next-action can point at runner assessment setup before the first bounded eval loop.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 108, "verbatim": "If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Default doctor (--scope repo) verifies the repo has a real runnable evaluation path.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 110, "verbatim": "Use default `doctor` (`--scope repo`) to verify the repo has a real runnable evaluation path.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Each doctor check separates stable contract from run-specific observation: id names the machine-readable readiness condition, ok reports the boolean result, meaning explains why the condition matters, and detail records the observed fact for this run.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 111, "verbatim": "Each `doctor` check separates stable contract from run-specific observation:\n`id` names the machine-readable readiness condition, `ok` reports the boolean result, `meaning` explains why the condition matters, and `detail` records the observed fact for this run.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "External executable prerequisites put the resolved binary path in detail when present and the searched PATH in detail when missing.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 113, "verbatim": "External executable prerequisites should put the resolved binary path in `detail` when present and the searched `PATH` in `detail` when missing.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When repo-scope doctor returns ready, the JSON payload includes first_bounded_run: a starter evaluate fixture -> evaluate observation packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 114, "verbatim": "When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: a starter `evaluate fixture -> evaluate observation` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "E1-evaluate"],
+      "edgeRationale": "E1-evaluate is supported because first_bounded_run seeds the starter evaluate fixture/observation loop.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When a repo keeps only named adapters under .agents/cautilus-adapters/, run cautilus doctor --adapter-name <name> for repo-scope validation instead of expecting plain doctor to guess which named adapter you mean.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 115, "verbatim": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Default claim discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 117, "verbatim": "Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Use --previous <claims.json> --refresh-plan for deterministic refresh planning inside the same discover workflow.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 118, "verbatim": "Use `--previous <claims.json> --refresh-plan` for deterministic refresh planning inside the same discover workflow.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The refresh-plan packet includes refreshSummary, which gives agent-readable counts, changed claim source hotspots, and coordinator-facing next actions so agents do not need to infer the plan from raw packet fields.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 119, "verbatim": "The refresh-plan packet includes `refreshSummary`, which gives agent-readable counts, changed claim source hotspots, and coordinator-facing next actions so agents do not need to infer the plan from raw packet fields.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Refresh-plan output is not a saved claim map update; it must be written to a refresh-plan*.json artifact, not the configured latest/reviewed/evidenced claim-state paths, and the CLI rejects that overwrite because refresh-plan packets use cautilus.claim_refresh_plan.v1 while saved claim maps must remain cautilus.claim_proof_plan.v1.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 120, "verbatim": "Refresh-plan output is not a saved claim map update; write it to a `refresh-plan*.json` artifact, not to the configured latest/reviewed/evidenced claim-state paths.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 121, "verbatim": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Normal discovery output is cautilus.claim_proof_plan.v1, and it is a proof plan rather than a verdict.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 122, "verbatim": "Normal discovery output is `cautilus.claim_proof_plan.v1`, and it is a proof plan rather than a verdict.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover claims status summarizes an existing claim packet without rescanning and includes bounded claim examples when an agent needs concrete candidates before choosing the next branch.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 123, "verbatim": "Use `cautilus discover claims status --input <claims.json> --sample-claims <n>` to summarize an existing claim packet without rescanning and include bounded claim examples when an agent needs concrete candidates before choosing the next branch.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery", "D2-review-refresh"],
+      "edgeRationale": "D2-review-refresh is supported because the status summary feeds the review/refresh branch decision.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The discover claims status summary includes gitState; when it reports isStale=true, run cautilus discover claims --previous <claims.json> --refresh-plan before review, review application, or eval planning.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 124, "verbatim": "The summary includes `gitState`; when it reports `isStale=true`, run `cautilus discover claims --previous <claims.json> --refresh-plan` before review, review application, or eval planning.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The discover claims status summary includes evidenceSatisfaction so satisfied claims and their evidence refs are visible without reading the full claim packet first.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 125, "verbatim": "The summary also includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible without reading the full claim packet first.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "gitState.isStale tracks recorded claim-source changes, not every HEAD change.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 126, "verbatim": "`gitState.isStale` tracks recorded claim-source changes, not every HEAD change.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "If a commit only adds or updates generated claim artifacts, gitState reports headDrift=true with comparisonStatus=fresh-with-head-drift and review or eval planning may continue.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 127, "verbatim": "If a commit only adds or updates generated claim artifacts, `gitState` reports `headDrift=true` with `comparisonStatus=fresh-with-head-drift` and review or eval planning may continue.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover claims extraction-input emits the deterministic agent-extraction input packet: sources with content hashes, the embedded extraction template with version and hash, merged classification hints, and bounds.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 128, "verbatim": "Use `cautilus discover claims extraction-input --repo-root . --output <extraction-input.json>` to emit the deterministic agent-extraction input packet: sources with content hashes, the embedded extraction template with version and hash, merged classification hints, and bounds.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery", "A2-curation-review"],
+      "edgeRationale": "A2-curation-review is supported because the extraction-input packet is the agent's input for curating extracted claims.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover claims apply-extraction validates an agent extraction result, anchors every verbatim excerpt, and composes the extractionMode: agent proof plan.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 129, "verbatim": "Use `cautilus discover claims apply-extraction --repo-root . --input <extraction-input.json> --result <extraction-result.json> --output <claims-agent.json>` to validate an agent extraction result, anchor every verbatim excerpt, and compose the `extractionMode: agent` proof plan.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review", "D1-discovery"],
+      "edgeRationale": "D1-discovery is supported because apply-extraction composes the discovery proof plan from extracted claims.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Neither extraction-input nor apply-extraction calls an LLM; unanchored, unbounded, or out-of-scope claims are rejected into extractionAudit.rejectedClaims instead of being silently dropped.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 130, "verbatim": "Neither command calls an LLM; unanchored, unbounded, or out-of-scope claims are rejected into `extractionAudit.rejectedClaims` instead of being silently dropped.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review", "D2-review-refresh"],
+      "edgeRationale": "D2-review-refresh is supported because deterministic non-LLM rejection keeps the claim set auditable without surprise model spend.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover claims review-input prepares bounded deterministic review clusters for an agent or subagent.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 131, "verbatim": "Use `cautilus discover claims review-input --claims <claims.json>` to prepare bounded deterministic review clusters for an agent or subagent.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review", "D2-review-refresh"],
+      "edgeRationale": "D2-review-refresh is supported because review-input clusters feed the deterministic claim review/refresh flow.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "review-input emits cautilus.claim_review_input.v1 and does not call an LLM or mark claims satisfied.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 132, "verbatim": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh", "A2-curation-review"],
+      "edgeRationale": "A2-curation-review is supported because review-input is the agent's curated review surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When adapter evidence_roots contain claim evidence bundles for known claim ids, review input may include possibleEvidenceRefs; these are reviewer hints only.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 133, "verbatim": "When adapter `evidence_roots` contain claim evidence bundles for known claim ids, review input may include `possibleEvidenceRefs`; these are reviewer hints only.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claims already marked evidenceStatus=satisfied or already reviewed are skipped by default by review-input and recorded under skippedClaims so reviewer budget stays focused on unresolved heuristic claims.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 134, "verbatim": "Claims already marked `evidenceStatus=satisfied` or already reviewed are skipped by default and recorded under `skippedClaims` so reviewer budget stays focused on unresolved heuristic claims.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover claims apply-review merges reviewed labels and evidence refs back into a claim packet, emits an updated claim packet, and rejects evidenceStatus=satisfied unless a direct or verified evidence ref supports the claim.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 135, "verbatim": "Use `cautilus discover claims apply-review --claims <claims.json> --review-result <review-result.json>` to merge reviewed labels and evidence refs back into a claim packet.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 136, "verbatim": "It emits an updated claim packet and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover claims validate emits cautilus.claim_validation_report.v1 and fails fast on invalid packet shape or evidence refs, without mutating the packet or searching for evidence.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 137, "verbatim": "Use `cautilus discover claims validate --claims <claims.json>` to emit `cautilus.claim_validation_report.v1` and fail fast on invalid packet shape or evidence refs.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 138, "verbatim": "It does not mutate the packet or search for evidence.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus evaluate claims plan turns ready cautilus-eval claims into cautilus.claim_eval_plan.v1 after review.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 139, "verbatim": "Use `cautilus evaluate claims plan --claims <reviewed-claims.json>` after review to turn ready `cautilus-eval` claims into `cautilus.claim_eval_plan.v1`.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "D2-review-refresh"],
+      "edgeRationale": "D2-review-refresh is supported because eval planning consumes reviewed claim packets from the review/refresh flow.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claims already marked evidenceStatus=satisfied are skipped by default by evaluate claims plan because they do not need a new eval fixture plan.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 140, "verbatim": "Claims already marked `evidenceStatus=satisfied` are skipped by default because they do not need a new eval fixture plan.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The eval plan packet preserves claim ids, target eval surfaces, source refs, draft intents, and unresolved questions, but it deliberately does not write host-owned fixtures or runners.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 141, "verbatim": "That packet preserves claim ids, target eval surfaces, source refs, draft intents, and unresolved questions, but it deliberately does not write host-owned fixtures or runners.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims review-input, discover claims apply-review, and evaluate claims plan reject stale claim packets by default; --allow-stale-claims is an explicit operator override, not the normal agent path.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 142, "verbatim": "`discover claims review-input`, `discover claims apply-review`, and `evaluate claims plan` reject stale claim packets by default; `--allow-stale-claims` is an explicit operator override, not the normal agent path.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover live-targets resolves either explicit adapter instances or a consumer-owned probe command into the same cautilus.workbench_instance_catalog.v1 packet.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 180, "verbatim": "`cautilus discover live-targets` resolves either explicit adapter instances or a consumer-owned probe command into the same `cautilus.workbench_instance_catalog.v1` packet.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "D1-discovery"],
+      "edgeRationale": "D1-discovery is supported because live-targets discovers the catalog of live consumer instances.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus evaluate live takes one selected instance id plus one request packet and returns one bounded result packet.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 181, "verbatim": "`cautilus evaluate live` takes one selected instance id plus one request packet and returns one bounded result packet.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus evaluate live prepare-request-batch turns either cautilus.scenario.v1 draft scenarios or a normalized catalog-candidate packet into a canonical cautilus.live_run_invocation_request_batch.v1 artifact.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 182, "verbatim": "`cautilus evaluate live prepare-request-batch` is the agent-facing prep surface above that seam: it turns either `cautilus.scenario.v1` draft scenarios or a normalized catalog-candidate packet into a canonical `cautilus.live_run_invocation_request_batch.v1` artifact.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments", "E1-evaluate"],
+      "edgeRationale": "E1-evaluate is supported because the prepared request batch feeds the live evaluation primitive.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus evaluate live scenarios accepts an explicit cautilus.live_run_invocation_request_batch.v1 file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated cautilus.live_run_invocation_batch_result.v1 packet.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 183, "verbatim": "`cautilus evaluate live scenarios` is the product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments", "E1-evaluate"],
+      "edgeRationale": "E1-evaluate is supported because the batch primitive executes the live evaluation runs.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The product owns the packet boundary and status semantics, while the consumer still owns actual launch, auth, and runtime wiring through its adapter command.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 184, "verbatim": "The product owns the packet boundary and status semantics.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 185, "verbatim": "The consumer still owns actual launch, auth, and runtime wiring through its adapter command.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "S1-install"],
+      "edgeRationale": "S1-install is supported because the consumer-owned launch/auth/runtime wiring is the adapter ownership boundary established at install.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When the adapter declares consumer_single_turn_command_template, the same command can own a product-managed multi-turn chatbot loop above a consumer-owned single-turn seam.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 186, "verbatim": "When the adapter declares `consumer_single_turn_command_template`, the same command can also own a product-managed multi-turn chatbot loop above a consumer-owned single-turn seam.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The multi-turn loop allocates one stable per-request workspace directory at <output_file>.d/workspace/ and exposes it through the {workspace_dir} placeholder across live-run command templates.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 187, "verbatim": "That loop now allocates one stable per-request workspace directory at `<output_file>.d/workspace/` and exposes it through the `{workspace_dir}` placeholder across live-run command templates.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When the adapter declares workspace_prepare_command_template, Cautilus runs that consumer-owned prepare command once before the first turn.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 188, "verbatim": "When the adapter also declares `workspace_prepare_command_template`, `Cautilus` runs that consumer-owned prepare command once before the first turn.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When the public scenario uses simulator.kind: persona_prompt, the adapter provides simulator_persona_command_template, which normally calls cautilus evaluate live persona with repo-specific backend flags, keeping persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 189, "verbatim": "When the public scenario uses `simulator.kind: persona_prompt`, the adapter additionally provides `simulator_persona_command_template`, which normally calls `cautilus evaluate live persona` with repo-specific backend flags.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 190, "verbatim": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments", "E1-evaluate"],
+      "edgeRationale": "E1-evaluate is supported because persona prompt shaping happens inside the live evaluation loop.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When the adapter declares consumer_evaluator_command_template, Cautilus materializes one cautilus.live_run_evaluator_input.v1 packet and expects one cautilus.live_run_evaluator_result.v1 verdict back under scenarioResult.evaluation.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 191, "verbatim": "When the adapter declares `consumer_evaluator_command_template`, `Cautilus` also materializes one `cautilus.live_run_evaluator_input.v1` packet and expects one `cautilus.live_run_evaluator_result.v1` verdict back under `scenarioResult.evaluation`.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The batch flow keeps prep and execution separate on purpose: prep owns deterministic request synthesis plus explicit filter semantics, and run-scenarios owns concurrency, retry, transient-count aggregation, and per-attempt artifact layout for an explicit batch file.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 192, "verbatim": "The batch flow keeps prep and execution separate on purpose: prep owns deterministic request synthesis plus explicit filter semantics, and `run-scenarios` owns concurrency, retry, transient-count aggregation, and per-attempt artifact layout for an explicit batch file.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments", "E1-evaluate"],
+      "edgeRationale": "E1-evaluate is supported because execution (run-scenarios) is the live evaluation run primitive.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "workspace start defaults --root to ./.cautilus/runs/ (auto-created on first use) and prints export CAUTILUS_RUN_DIR=<absolute runDir>.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 212, "verbatim": "`workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on first use) and prints `export CAUTILUS_RUN_DIR=<absolute runDir>`.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Pass --json instead of eval to workspace start when a script needs the machine-readable payload.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 213, "verbatim": "Pass `--json` instead of `eval` when a script needs the machine-readable payload.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When CAUTILUS_RUN_DIR is already pinned, downstream commands reuse that active runDir; if nothing is pinned they auto-materialize a fresh runDir and print Active run: <path> to stderr.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 214, "verbatim": "When `CAUTILUS_RUN_DIR` is already pinned, downstream commands (`evaluate comparison prepare`, `evaluate fixture`) reuse that active `runDir`; if nothing is pinned they auto-materialize a fresh `runDir` and print `Active run: <path>` to stderr.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus evaluate comparison prepare prepares clean baseline and candidate git worktrees for a compare run.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 199, "verbatim": "prepare clean baseline and candidate git worktrees for a compare run", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments", "E1-evaluate"],
+      "edgeRationale": "E1-evaluate is supported because the prepared worktrees back a baseline-versus-candidate evaluation run.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus doctor artifacts prune prunes older Cautilus artifact bundles.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 206, "verbatim": "prune older Cautilus artifact bundles", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Every normalize command plus cautilus evaluate observation and cautilus evaluate report build accepts --example-input: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 257, "verbatim": "Every normalize command plus `cautilus evaluate observation` and `cautilus evaluate report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments", "D1-discovery"],
+      "edgeRationale": "D1-discovery is supported because --example-input makes expected packet shapes discoverable to operators.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover scenarios --json exposes the same inspect commands under normalizationFamilies[*].exampleInputCli.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 258, "verbatim": "`cautilus discover scenarios --json` now exposes those same inspect commands under `normalizationFamilies[*].exampleInputCli`.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery", "E2-scenarios-experiments"],
+      "edgeRationale": "E2-scenarios-experiments is supported because the exposed inspect commands target scenario normalization families.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover scenarios propose preserves the full ranked proposals list in the canonical JSON output and also emits an attentionView, a bounded human-facing shortlist derived from the full ranked set.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 259, "verbatim": "`cautilus discover scenarios propose` now preserves the full ranked `proposals` list in the canonical JSON output.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 260, "verbatim": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus discover scenarios review-conversations stays intentionally narrower than a generic audit UI: it links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 261, "verbatim": "`cautilus discover scenarios review-conversations` stays intentionally narrower than a generic audit UI.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 262, "verbatim": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments", "A2-curation-review"],
+      "edgeRationale": "A2-curation-review is supported because review-conversations curates evidence for structured operator review.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The shipped surface is cautilus evaluate, and Cautilus exposes two top-level surfaces and four presets: dev/repo for repo work contracts, dev/skill for checked-in or portable development skills, app/chat for multi-turn product conversation behavior, and app/prompt for single product input/output behavior.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 268, "verbatim": "Cautilus exposes two top-level surfaces and four presets:", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 269, "verbatim": "`dev / repo` for repo work contracts, `dev / skill` for checked-in or portable development skills, `app / chat` for multi-turn product conversation behavior, and `app / prompt` for single product input/output behavior.", "primary": false },
+        { "path": "docs/guides/cli.md", "line": 266, "verbatim": "The shipped surface is `cautilus evaluate` (see [docs/specs/user/evaluation.spec.md](../specs/user/evaluation.spec.md)).", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "E2-scenarios-experiments"],
+      "edgeRationale": "E2-scenarios-experiments is supported because the dev/skill and app surfaces are the targets for scenario and skill-experiment work.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The first preset, dev/repo, replaces the prior cautilus instruction-surface commands.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 267, "verbatim": "The first preset, `dev / repo`, replaces the prior `cautilus instruction-surface` commands.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus evaluate fixture runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 270, "verbatim": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "evaluate fixture records a top-level proof object in eval-observed.json and eval-summary.json when runner readiness can identify the proof class or assessment state.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 271, "verbatim": "The command records a top-level `proof` object in `eval-observed.json` and `eval-summary.json` when runner readiness can identify the proof class or assessment state.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When the adapter declares runner_readiness.runners, evaluate fixture selects the runner by the fixture surface key before rendering the command template.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 272, "verbatim": "When the adapter declares `runner_readiness.runners`, the command selects the runner by the fixture surface key before rendering the command template.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Fixture-runtime runs are reported as fixture-smoke; adapter-declared proof class is preserved only as declared metadata.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 273, "verbatim": "Fixture-runtime runs are reported as `fixture-smoke`; adapter-declared proof class is preserved only as declared metadata.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus evaluate observation evaluates an already-observed packet without launching the runner again.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 274, "verbatim": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The npm wrapper (dogfood:self) is the canonical maintainer-facing self-dogfood path for this repo.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 296, "verbatim": "The npm wrapper is the canonical maintainer-facing self-dogfood path for this repo.", "primary": true }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The app/chat and app/prompt fixture variants prove the fixture translation, adapter runner, and evaluator packet paths.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 308, "verbatim": "The fixture variants prove the `app / chat` and `app / prompt` fixture translation, adapter runner, and evaluator packet paths.", "primary": true }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "app/chat",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "M1-proven-on-itself"],
+      "edgeRationale": "M1-proven-on-itself is supported because these are the repo's own dogfood smoke variants proving the product on itself.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The Codex variants run the same checked-in fixtures through the Codex backend, and the Claude variants run the same fixtures through the Claude backend, proving that the app surface runner can use more than one provider backend.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 310, "verbatim": "The Claude variants run the same fixtures through the Claude backend, proving that the app surface runner can use more than one provider backend.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 309, "verbatim": "The Codex variants run the same checked-in fixtures through the Codex backend.", "primary": false }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "app/chat",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The backend variants are not eval live product-runner proof, and their current summaries report productProofReady=false until an app-owned runner assessment exists for the selected surface.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 311, "verbatim": "These backend variants are not `eval live` product-runner proof, and their current summaries report `productProofReady=false` until an app-owned runner assessment exists for the selected surface.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "M1-proven-on-itself"],
+      "edgeRationale": "M1-proven-on-itself is supported because the boundary clarifies what level of self-proof the dogfood variants do and do not provide.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus evaluate skill-experiment emits cautilus.skill_clone_experiment_report.v1 with variant_ran, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 313, "verbatim": "`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The skill-experiment command does not install, mutate, or execute skills; host-owned runners provide the preserved baseline and variant outputs.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 314, "verbatim": "The command does not install, mutate, or execute skills; host-owned runners provide the preserved baseline and variant outputs.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Use --runtime fixture for cheap command-routing proof over fixture-backed runner results; it is not evidence that a model-backed skill execution is good, but evidence that the Cautilus command surface, adapter, fixture translation, and packet evaluation path still line up.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 385, "verbatim": "It is not evidence that a model-backed skill execution is good; it is evidence that the Cautilus command surface, adapter, fixture translation, and packet evaluation path still line up.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 384, "verbatim": "Use `--runtime fixture` when the goal is cheap command-routing proof over fixture-backed runner results.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus evaluate report build builds a machine-readable evaluation report packet from explicit mode runs, answering what is the first product-owned decision packet for this candidate versus the baseline.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 390, "verbatim": "build a machine-readable evaluation report packet from explicit mode runs", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 395, "verbatim": "\"what is the first product-owned decision packet for this candidate versus the\nbaseline?\"", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Running cautilus evaluate report build --example-input gives a minimal valid report packet that includes the minimum humanReviewFindings shape.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 466, "verbatim": "If you need a minimal valid report packet before review, run `cautilus evaluate report build --example-input`.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 467, "verbatim": "That example includes the minimum `humanReviewFindings` shape:", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "evaluate review variants writes a product-owned review-summary.json (cautilus.review_summary.v1) plus one per-variant cautilus.review_variant_result.v1 file.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 470, "verbatim": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review", "E1-evaluate"],
+      "edgeRationale": "E1-evaluate is supported because review variants produce a per-variant verdict surface over an evaluation report.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "A review variant can finish as passed, blocked, or failed; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 471, "verbatim": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Local executor readiness failures such as missing auth are classified as blocked unavailable_executor results rather than negative review verdicts.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 472, "verbatim": "Local executor readiness failures such as missing auth are classified as blocked `unavailable_executor` results rather than negative review verdicts.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When at least one variant passes and another does not, the summary sets partialSuccess: true and lifts the passing outputs into successfulVariantOutputs.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 473, "verbatim": "When at least one variant passes and another does not, the summary sets `partialSuccess: true` and lifts the passing outputs into `successfulVariantOutputs`.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When --output-under-test is present, the generated review prompt switches into output_under_test mode and treats the referenced artifact as primary evidence.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 474, "verbatim": "When `--output-under-test` is present, the generated review prompt switches into `output_under_test` mode and treats the referenced artifact as primary evidence.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When --output-text-key is present, Cautilus extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 475, "verbatim": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "review feedback build writes cautilus.review_feedback.v1, preserving a source review reference plus normalized method, proposal, disposition, and note fields, while recording that normalization is based on the source review.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 479, "verbatim": "`review feedback build` writes `cautilus.review_feedback.v1`.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 480, "verbatim": "It preserves a source review reference plus normalized method, proposal, disposition, and note fields, while recording that normalization is based on the source review.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review", "D2-review-refresh"],
+      "edgeRationale": "D2-review-refresh is supported because review-feedback normalization captures review-learning evidence that informs refresh.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "For accepted, narrowed, reframed, or rejected dispositions, include --proposal-id or --proposal-source-ref so the packet names the proposal that was reviewed; missing_critical may omit proposal evidence because it records that the method missed a proposal reviewers needed.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 481, "verbatim": "For `accepted`, `narrowed`, `reframed`, or `rejected`, include `--proposal-id` or `--proposal-source-ref` so the packet names the proposal that was reviewed.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 482, "verbatim": "`missing_critical` may omit proposal evidence because it records that the method missed a proposal reviewers needed.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The review feedback disposition vocabulary is about review usefulness rather than pass/fail status.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 483, "verbatim": "Its disposition vocabulary is about review usefulness rather than pass/fail status.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "review feedback summarize writes cautilus.review_feedback_summary.v1, reading explicitly selected cautilus.review_feedback.v1 packets, counting review-useful dispositions overall and by method family, and keeping source-review refs in per-input records, without discovering active-run defaults or treating dispositions as evaluator pass/fail status.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 486, "verbatim": "`review feedback summarize` writes `cautilus.review_feedback_summary.v1`.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 487, "verbatim": "It reads explicitly selected `cautilus.review_feedback.v1` packets, counts review-useful dispositions overall and by method family, and keeps source-review refs in per-input records.", "primary": false },
+        { "path": "docs/guides/cli.md", "line": 488, "verbatim": "It does not discover active-run defaults or treat dispositions as evaluator pass/fail status.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus improve is the improvement front door, to be used only after the claim and eval proof surface are explicit enough that an improvement loop has something honest to improve against.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 513, "verbatim": "`cautilus improve` is the improvement front door.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 514, "verbatim": "Use it only after the claim and eval proof surface are explicit enough that an improvement loop has something honest to improve against.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Improvement and improvement",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": ["I1-bounded-improvement"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "For app behavior claims, reports whose proofSummary.productRunnerProofReadiness is blocked cannot become improve inputs until runner-backed product proof is ready.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 515, "verbatim": "For app behavior claims, reports whose `proofSummary.productRunnerProofReadiness` is blocked cannot become improve inputs until runner-backed product proof is ready.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Improvement and improvement",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": ["I1-bounded-improvement"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The rendered self-dogfood HTML is read-only over summary.json, report.json, and review-summary.json; those JSON files remain the source of truth.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 541, "verbatim": "The rendered HTML is read-only over `summary.json`, `report.json`, and `review-summary.json`; those JSON files remain the source of truth.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Most underlying Node scripts are still runnable directly when a wrapper tool needs them without the cautilus binary.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 560, "verbatim": "Most underlying Node scripts are still runnable directly when a wrapper tool needs them without the `cautilus` binary.", "primary": true }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Shipped runtime entrypoints such as cautilus discover live-targets and cautilus evaluate live are Go-owned now and should be called through the CLI instead of direct node scripts/agent-runtime/... paths; only the remaining wrapper and packet-builder utilities should be invoked directly.",
+      "excerpts": [
+        { "path": "docs/guides/cli.md", "line": 561, "verbatim": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.", "primary": true },
+        { "path": "docs/guides/cli.md", "line": 562, "verbatim": "Only the remaining wrapper and packet-builder utilities below should be invoked directly.", "primary": false }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    }
+  ],
+  "skippedSources": []
+}

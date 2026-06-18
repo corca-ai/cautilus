@@ -1,0 +1,1826 @@
+{
+  "schemaVersion": "cautilus.claim_extraction_result.v1",
+  "extractionInputRef": {
+    "path": "extraction-input.json",
+    "templateHash": "sha256:b922fd5d92510fd0161eb53f8f8829bb964de3113bed9a03498b4c75972b34ef"
+  },
+  "runtime": {
+    "model": "claude-opus-4-8",
+    "agent": "cautilus-agent-blind-extractor"
+  },
+  "claims": [
+    {
+      "summary": "The extraction seam mirrors the review seam: the binary emits a deterministic input packet, the agent does the model-backed work, and the binary validates and applies the result.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 18,
+          "verbatim": "the binary emits a deterministic input packet, the agent does the model-backed work, and the binary validates and applies the result",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 246,
+          "verbatim": "The seam is the `extraction-input` / `apply-extraction` command pair with versioned input and result packets",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "A2-curation-review"
+      ],
+      "edgeRationale": "A2-curation-review is supported because the agent doing the model-backed extraction work is the curation pass that drives structured review.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims extraction-input emits a cautilus.claim_extraction_input.v1 packet containing sources, content hashes, merged classification hints, embedded template plus hash, bounds, and output schema.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 21,
+          "verbatim": "discover claims extraction-input --repo-root . --output extraction-input.json",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 23,
+          "verbatim": "(sources + content hashes, merged classification hints,\n     embedded extraction template + template hash, bounds, output schema)",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims apply-extraction emits a cautilus.claim_proof_plan.v1 packet with extractionMode agent, performing anchoring validation, unanchored-claim rejection, fingerprint computation, and binary-owned packet blocks.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 34,
+          "verbatim": "cautilus.claim_proof_plan.v1 with extractionMode: agent",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 35,
+          "verbatim": "(anchoring validation, unanchored-claim rejection,\n     fingerprint computation, binary-owned packet blocks)",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "D2-review-refresh"
+      ],
+      "edgeRationale": "D2-review-refresh is supported because apply-extraction's fingerprint computation and binary-owned packet assembly underpin the deterministic review/refresh chain.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The binary owns sourceInventory, sourceGraph, effectiveScanScope, git commit, and per-source content hashes in every mode.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 39,
+          "verbatim": "The binary owns `sourceInventory`, `sourceGraph`, `effectiveScanScope`, git commit, and per-source content hashes in every mode.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The agent never assembles the proof-plan packet directly; apply-extraction composes the binary-owned skeleton with the validated agent result.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 40,
+          "verbatim": "The agent never assembles the proof-plan packet directly; `apply-extraction` composes the binary-owned skeleton with the validated agent result.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because the binary-owned skeleton composition is part of the discovery proof-plan packet assembly.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Both new commands are deterministic and make no model calls, preserving the fixed decision that the binary does not call an LLM for claim discovery or review.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 41,
+          "verbatim": "Both new commands are deterministic and make no model calls, preserving the fixed decision that the binary does not call an LLM for claim discovery or review.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 253,
+          "verbatim": "The binary makes no model calls; both new commands are deterministic.",
+          "primary": false
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 311,
+          "verbatim": "Neither new command makes a model call.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "D2-review-refresh"
+      ],
+      "edgeRationale": "D2-review-refresh is supported because the no-model-call determinism also covers the review/refresh commands' deterministic guarantee.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Running agent extraction sits behind the workflow contract's Model-Spend Confirmation rule: scan-scope confirmation authorizes extraction-input, but a separate extraction-budget confirmation is required before the agent extracts.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 43,
+          "verbatim": "scan-scope confirmation authorizes `extraction-input`, but a separate extraction-budget confirmation is required before the Cautilus Agent actually extracts",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 258,
+          "verbatim": "Scan-scope confirmation does not authorize agent extraction; extraction needs its own budget confirmation, per the workflow contract's Model-Spend Confirmation rule.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": [
+        "I1-bounded-improvement",
+        "A1-orchestration"
+      ],
+      "edgeRationale": "A1-orchestration is supported because the budget-confirmation gate is part of the agent workflow guardrails the Cautilus Agent owns.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The extraction budget (source count, excerpt bounds, batching, stop reasons) is recorded in the applied packet.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 44,
+          "verbatim": "The extraction budget (source count, excerpt bounds, batching, stop reasons) is recorded in the applied packet.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": [
+        "I1-bounded-improvement"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "extraction-input honors the same explicit --adapter override as discover claims, so measurement dry-runs on read-only corpora apply a proposed adapter without writing to the scanned repo.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 46,
+          "verbatim": "`extraction-input` honors the same explicit `--adapter <path>` override as `discover claims`, so measurement dry-runs on read-only corpora apply a proposed adapter without writing to the scanned repo",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Ratified adapter configuration still belongs in the consumer repo's own adapter.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 46,
+          "verbatim": "ratified configuration still belongs in the consumer repo's own adapter",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because the adapter ownership boundary governs how discovery scopes a consumer repo's sources.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The extraction template is product-owned and embedded in the binary, following the precedent of binary-rendered review prompt surfaces.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 50,
+          "verbatim": "The extraction template is product-owned and embedded in the binary, following the existing precedent of binary-rendered review prompt surfaces.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 254,
+          "verbatim": "The extraction template is product-owned, embedded in the binary, and rendered into the input packet with version and hash.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "extraction-input renders the template into the packet together with templateVersion and templateHash, so every extraction run records exactly which template produced it.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 51,
+          "verbatim": "`extraction-input` renders the template into the packet together with `templateVersion` and `templateHash`, so every extraction run records exactly which template produced it.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The extraction template has seven required sections in template v2.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 53,
+          "verbatim": "The template has seven required sections (template `v2`):",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "v2 adds explicit prompts for two easy-to-miss claim shapes: design-principle claims and negative/scope-boundary/exclusion claims.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 58,
+          "verbatim": "`v2` adds explicit prompts for the two claim shapes a recall probe showed the agent tends to miss because they assert a stance or a boundary rather than a feature: design-principle claims (for example \"X is a first-class …\", \"agents are first-class users\") and negative, scope-boundary, or exclusion claims (for example \"not for …\", \"does not …\", \"opt-in until …\")",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because the added claim-shape prompts directly raise discovery recall.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The adapter remains the only repo-specific knowledge channel; the template carries the merged result, not new hardcoding.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 61,
+          "verbatim": "The adapter remains the only repo-specific knowledge channel; the template carries the merged result, not new hardcoding.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "S1-install"
+      ],
+      "edgeRationale": "S1-install is supported because keeping repo-specific knowledge solely in the adapter is what keeps the binary portable across installs.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Every claim must carry at least one excerpt copied exactly from the source text, with its source path and a line locator.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 63,
+          "verbatim": "Every claim must carry at least one excerpt copied exactly from the source text, with its source path and a line locator.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Exactly one excerpt per claim is marked primary; it is the claim's identity anchor.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 64,
+          "verbatim": "Exactly one excerpt per claim is marked `primary`; it is the claim's identity anchor.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 255,
+          "verbatim": "Each claim carries exactly one `primary: true` excerpt; `apply-extraction` validates exactly-one-primary.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Paraphrase belongs in summary only; an excerpt that does not survive anchoring validation causes the claim to be rejected.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 65,
+          "verbatim": "Paraphrase belongs in `summary` only; an excerpt that does not survive anchoring validation causes the claim to be rejected.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Routing guidance puts recommendedProof, recommendedEvalSurface, verificationReadiness, and claimAudience inside extraction so routing happens inside extraction instead of a separate heuristic pass.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 67,
+          "verbatim": "so routing happens inside extraction instead of a separate heuristic pass",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "A2-curation-review"
+      ],
+      "edgeRationale": "A2-curation-review is supported because folding routing into extraction is part of producing a review-ready, curated claim set.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "v2 routes recommendedProof to deterministic whenever a static repo-owned check could prove a capability claim, instead of defaulting it to human-auditable.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 68,
+          "verbatim": "route to `deterministic` whenever a static repo-owned check could prove a capability claim (do not default it to `human-auditable`)",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review",
+        "E1-evaluate"
+      ],
+      "edgeRationale": "E1-evaluate is supported because correct proof routing determines which claims become evaluable, comparable verdict-surface candidates.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "v2 routes an agent-behavior claim to cautilus-eval even when a deterministic schema check happens to pass, because a passing schema check does not prove the behavior.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 68,
+          "verbatim": "route an agent-behavior claim to `cautilus-eval` even when a deterministic schema check happens to pass (a passing schema check does not prove the behavior)",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review",
+        "E1-evaluate"
+      ],
+      "edgeRationale": "E1-evaluate is supported because routing agent-behavior claims to cautilus-eval determines what actually gets evaluated for a verdict.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "An ownership/boundary/isolation assignment is a structural fact a static check settles, so it routes deterministic even though it reads like design philosophy.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 69,
+          "verbatim": "an *ownership / boundary / isolation* assignment (\"the binary owns X\", \"the consumer owns Y\", \"the run is isolated from user state\") is a structural fact a static check settles, so it routes `deterministic` even though it reads like design philosophy",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The words reviewable/reproducible/auditable name a property the structure confers and are never on their own a reason to drop to human-auditable, which is reserved for proof that genuinely needs a human to inspect an outcome.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 69,
+          "verbatim": "the words `reviewable` / `reproducible` / `auditable` name a property the structure confers, never on their own a reason to drop to `human-auditable`, which is reserved for proof that genuinely needs a human to inspect an outcome",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Routing knowledge lives in the template plus the gold-set eval, not in engine keyword switches; this absorbs the dissolved proof-routing hint family.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 70,
+          "verbatim": "This absorbs the dissolved proof-routing hint family: routing knowledge lives in the template plus the gold-set eval, not in engine keyword switches.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 256,
+          "verbatim": "Routing fields are part of the extraction result (the dissolved proof-routing hint family lives in the template, not in engine keywords).",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Each claim carries a primaryEpic (its single home epic) and a supportingEpics list (every epic it supports, including the primary; many-to-many and acyclic), with a one-sentence edgeRationale when more than one epic is supported.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 72,
+          "verbatim": "each claim carries a `primaryEpic` (its single home epic) and a `supportingEpics` list (every epic it supports, including the primary; many-to-many and acyclic), with a one-sentence `edgeRationale` when more than one epic is supported",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The epic-graph placement replaces the free-text claimSemanticGroup as the canonical grouping; deriving an epic from claimSemanticGroup is lossy and is not done.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 73,
+          "verbatim": "This replaces the free-text `claimSemanticGroup` as the canonical grouping; deriving an epic from `claimSemanticGroup` is lossy and is not done.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The epic catalog is repo-specific and supplied by the adapter (claim_discovery.epic_catalog), rendered into the template as a list of {epicId, branch, title, userStory}, never hardcoded in the binary.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 76,
+          "verbatim": "Epics are repo-specific, so they arrive through the adapter exactly like `classification_hints`, never hardcoded in the binary",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 75,
+          "verbatim": "supplied by the adapter (`claim_discovery.epic_catalog`) and rendered into the template as a list of `{epicId, branch, title, userStory}`",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "S1-install"
+      ],
+      "edgeRationale": "S1-install is supported because keeping the epic catalog adapter-supplied rather than hardcoded preserves the portable shared-binary install boundary.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "An empty epic catalog renders an empty list and the agent falls back to short free-text epic labels with claimSemanticGroup for grouping.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 76,
+          "verbatim": "an empty catalog renders an empty list and the agent falls back to short free-text epic labels with `claimSemanticGroup` for grouping",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When the agent is unsure whether text is a claim, it emits the claim with verificationReadiness blocked and an entry in unresolvedQuestions instead of silently dropping it.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 78,
+          "verbatim": "it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because the no-silent-drop uncertainty rule preserves discovery recall.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "templateHash is the sha256 of the canonical JSON of the rendered template block excluding the hash field itself, so it covers the template prose, merged adapter conventions, and merged epic catalog.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 81,
+          "verbatim": "`templateHash` is the sha256 of the canonical JSON of the rendered template block excluding the hash field itself, so it covers the template prose, the merged adapter conventions, and the merged epic catalog",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Two repos with different adapter headings or epic catalogs produce different template hashes by design.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 81,
+          "verbatim": "two repos with different adapter headings or epic catalogs produce different hashes by design",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "S1-install"
+      ],
+      "edgeRationale": "S1-install is supported because per-repo adapter divergence yielding distinct hashes is part of the portable per-repo configuration boundary.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "On refresh, sources[].status is extract for git-diff-changed sources and carried-forward for unchanged sources, and a previousPacket block records the prior packet path and its reviewed commit.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 122,
+          "verbatim": "On refresh, `sources[].status` is `extract` for git-diff-changed sources and `carried-forward` for unchanged sources, and a `previousPacket` block records the prior packet path and its reviewed commit.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The extraction result carries no claimId, no claimFingerprint, and no evidence fields: display ids and fingerprints are binary-owned and computed during apply-extraction, and extraction is not evidence reconciliation.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 162,
+          "verbatim": "The result carries no `claimId`, no `claimFingerprint`, and no evidence fields: display ids and fingerprints are binary-owned and computed during `apply-extraction`, and extraction is not evidence reconciliation.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "D2-review-refresh"
+      ],
+      "edgeRationale": "D2-review-refresh is supported because binary-owned fingerprint computation is the identity mechanism the refresh chain relies on.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "apply-extraction sets extractionMode agent at the top level; discover claims heuristic output writes extractionMode heuristic going forward, and a packet without the field reads as heuristic for backward compatibility.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 169,
+          "verbatim": "`extractionMode: \"agent\"` at the top level.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 170,
+          "verbatim": "`discover claims` heuristic output writes `extractionMode: \"heuristic\"` going forward; a packet without the field reads as `heuristic` for backward compatibility.",
+          "primary": false
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 308,
+          "verbatim": "`extractionMode` is visible in every new packet, and packets without it read as heuristic everywhere the field is consumed.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "apply-extraction emits an extractionAudit block with templateVersion, templateHash, anchoringPolicy, rejectedClaimCount, and bounded rejectedClaims[] entries with a reason; rejection is recorded, never silent.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 171,
+          "verbatim": "`extractionAudit` block: `templateVersion`, `templateHash`, `anchoringPolicy`, `rejectedClaimCount`, and bounded `rejectedClaims[]` entries with `reason` (`unanchored`, `missing-primary`, `empty-excerpt`, `excerpt-too-long`, `duplicate-fingerprint`, `source-not-in-scope`).",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 172,
+          "verbatim": "Rejection is recorded, never silent.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "A2-curation-review"
+      ],
+      "edgeRationale": "A2-curation-review is supported because the recorded rejection audit makes the curated claim set trustworthy and auditable for review.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Result excerpts[] persist into the applied claim's sourceRefs as {path, line, excerpt, primary}, where excerpt is the verbatim text and exactly one ref per claim carries primary true.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 173,
+          "verbatim": "Result `excerpts[]` persist into the applied claim's `sourceRefs` as `{path, line, excerpt, primary}`, where `excerpt` is the verbatim text and exactly one ref per claim carries `primary: true`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Heuristic packets keep their current sourceRefs shape with no primary field; their primary excerpt is implicit because every merged ref carries the identical normalized claim text.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 174,
+          "verbatim": "Heuristic packets keep their current `sourceRefs` shape with no `primary` field; their primary excerpt is implicit because every merged ref carries the identical normalized claim text.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because the heuristic sourceRefs shape governs the default discovery output's packet structure.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Agent-extracted claims carry reviewStatus agent-reviewed, evidenceStatus unknown, evidenceRefs [], and lifecycle new (or carried-forward on the refresh path).",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 176,
+          "verbatim": "Agent-extracted claims carry `reviewStatus: \"agent-reviewed\"`, `evidenceStatus: \"unknown\"`, `evidenceRefs: []`, and `lifecycle: \"new\"` (or `carried-forward` on the refresh path).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "D2-review-refresh"
+      ],
+      "edgeRationale": "D2-review-refresh is supported because these review/evidence/lifecycle labels drive how claims carry forward and refresh.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Evidence preflight and evidence reconciliation remain separate steps with unchanged semantics.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 177,
+          "verbatim": "Evidence preflight and evidence reconciliation remain separate steps with unchanged semantics.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claim-graph facets persist into the applied candidate when the agent emits them: primaryEpic, a normalized supportingEpics (de-duplicated and led by primaryEpic), a derived multiEpic boolean, and edgeRationale for multi-epic claims.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 178,
+          "verbatim": "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics` (de-duplicated and led by `primaryEpic`), a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Normalization never drops a real claim: a claim with no epic facet keeps claimSemanticGroup as the fallback grouping, and the epic fields are simply omitted.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 179,
+          "verbatim": "Normalization never drops a real claim: a claim with no epic facet keeps `claimSemanticGroup` as the fallback grouping, and the epic fields are simply omitted.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Catalog membership is recorded, not enforced, so an unmapped epic surfaces for review instead of rejecting the claim.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 180,
+          "verbatim": "Catalog membership (each facet epic is an `epicCatalog` id) is recorded, not enforced, so an unmapped epic surfaces for review instead of rejecting the claim.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "A2-curation-review"
+      ],
+      "edgeRationale": "A2-curation-review is supported because surfacing unmapped epics for review rather than rejecting is a curation/review behavior.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "For extractionMode agent packets, the extractionAudit block satisfies the validate audit-presence requirement, so a first-extraction agent packet validates and a refreshed agent packet must carry both extractionAudit and carryForward.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 187,
+          "verbatim": "for `extractionMode: agent` packets, the `extractionAudit` block satisfies the audit-presence requirement, so a first-extraction agent packet (extractionAudit present, carryForward absent) validates; a refreshed agent packet must carry both",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 324,
+          "verbatim": "a validate test proving a first-extraction agent packet (extractionAudit present, no carryForward) passes the audit-presence rule",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims review-input default-excludes agent-reviewed claims unless their evidence is stale, with excluded claims remaining auditable in skippedClaims and stale evidence re-entering by the existing rule.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 188,
+          "verbatim": "`discover claims review-input` default-excludes `agent-reviewed` claims unless their evidence is stale.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 190,
+          "verbatim": "Excluded claims remain auditable in `skippedClaims`, stale evidence re-enters by the existing rule, and human-review upgrades flow through HITL and `apply-review` as today.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "A2-curation-review"
+      ],
+      "edgeRationale": "A2-curation-review is supported because the exclusion-with-auditability rule shapes which claims the structured review pass spends budget on.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "evaluate claims plan accepts agent-reviewed claims, so extraction alone makes ready cautilus-eval claims eval-plannable; planning is deterministic and plan-only, and the existing budget gates still guard any actual evaluator run.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 191,
+          "verbatim": "`evaluate claims plan` accepts `agent-reviewed` claims, so extraction alone makes ready `cautilus-eval` claims eval-plannable.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 192,
+          "verbatim": "planning is deterministic and plan-only, and the existing budget gates still guard any actual evaluator run",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate",
+        "I1-bounded-improvement"
+      ],
+      "edgeRationale": "I1-bounded-improvement is supported because the budget gates guarding any actual evaluator run keep autonomy bounded.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "An excerpt is anchored when its whitespace-normalized text is a substring of the whitespace-normalized content of the source file at the claimed path.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 197,
+          "verbatim": "an excerpt is anchored when its whitespace-normalized text is a substring of the whitespace-normalized content of the source file at the claimed path",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 248,
+          "verbatim": "Anchoring is whitespace-normalized substring containment; line numbers are locators; non-anchoring excerpts reject the claim.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Anchoring normalization is whitespace-only (collapse runs of whitespace, trim) and is deliberately distinct from fingerprint normalization; the implementation must not unify them.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 198,
+          "verbatim": "Anchoring normalization is whitespace-only (collapse runs of whitespace, trim); it is deliberately distinct from fingerprint normalization below, and the implementation must not unify them.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The anchoring corpus is the raw file content, including code fences and frontmatter, not the heuristic extractor's filtered block view.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 199,
+          "verbatim": "The anchoring corpus is the raw file content, including code fences and frontmatter, not the heuristic extractor's filtered block view; the agent quoted from the raw file, so the binary checks against the raw file.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Segmentation drift is tolerated by construction: an excerpt that cuts sentence boundaries differently still anchors as long as the text exists verbatim in the source.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 201,
+          "verbatim": "Segmentation drift is tolerated by construction: an excerpt that cuts sentence boundaries differently still anchors as long as the text exists verbatim in the source.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "An excerpt that is empty or whitespace-only after normalization never anchors; it rejects the claim with reason empty-excerpt.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 202,
+          "verbatim": "An excerpt that is empty or whitespace-only after normalization never anchors; it rejects the claim with reason `empty-excerpt`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "maxExcerptChars counts runes, not bytes, matching the rune-counting precedent in the workflow contract.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 203,
+          "verbatim": "`maxExcerptChars` counts runes, not bytes, matching the rune-counting precedent in the workflow contract.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "A claim with any non-anchoring excerpt is rejected by apply-extraction and recorded in extractionAudit.rejectedClaims.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 204,
+          "verbatim": "A claim with any non-anchoring excerpt is rejected by `apply-extraction` and recorded in `extractionAudit.rejectedClaims`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Command-level failures exit non-zero and write no output packet: a templateHash mismatch, a result that fails schema validation, and stale sources without --allow-stale-sources.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 208,
+          "verbatim": "Command-level failures exit non-zero and write no output packet: a `templateHash` mismatch between result and input, a result that fails `cautilus.claim_extraction_result.v1` schema validation, and stale sources without `--allow-stale-sources`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claim-level rejections never fail the command: they are recorded in extractionAudit.rejectedClaims and the packet is still written.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 209,
+          "verbatim": "Claim-level rejections never fail the command: they are recorded in `extractionAudit.rejectedClaims` and the packet is still written.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "apply-extraction recomputes source content hashes before validating, and if a source changed since extraction-input was generated the command fails by default and reports the drifted paths; --allow-stale-sources opts into applying anyway with the drift recorded in extractionAudit.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 212,
+          "verbatim": "`apply-extraction` recomputes source content hashes before validating.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 213,
+          "verbatim": "If a source changed since `extraction-input` was generated, the command fails by default and reports the drifted paths; `--allow-stale-sources` opts into applying anyway, with the drift recorded in `extractionAudit`.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because the source-hash drift check guards the integrity of the discovered claim packet at apply time.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The applied packet's sourceInventory always records the extraction-time content hashes (the content the agent actually read), so a later validate against drifted files lands on the stale-anchor finding branch instead of hard-failing.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 215,
+          "verbatim": "The applied packet's `sourceInventory` always records the extraction-time content hashes (the content the agent actually read), so a later `validate` against drifted files lands on the stale-anchor finding branch instead of hard-failing against content the agent never saw.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because recording extraction-time hashes preserves the discovered packet's auditability against later drift.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "claimFingerprint is sha256 of the normalized primary verbatim excerpt, unified across both extraction modes.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 218,
+          "verbatim": "`claimFingerprint = sha256(normalized primary verbatim excerpt)`, unified across both extraction modes.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 247,
+          "verbatim": "`claimFingerprint` is unified across modes as the sha256 of the normalized primary verbatim excerpt; existing heuristic fingerprints are unchanged by construction.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Fingerprint normalization is today's summary normalization (normalizeClaimSummary: strip markdown markers and list prefixes, collapse whitespace), which is stronger than anchoring normalization; the two serve different jobs and stay separate.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 219,
+          "verbatim": "Fingerprint normalization is today's summary normalization (`normalizeClaimSummary`: strip markdown markers and list prefixes, collapse whitespace), which is stronger than anchoring normalization; the two serve different jobs and stay separate.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When two result claims share the same primary-excerpt fingerprint, the first is kept and the rest are rejected with reason duplicate-fingerprint; silent payload-dropping merges are deliberately not performed on agent results.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 220,
+          "verbatim": "When two result claims share the same primary-excerpt fingerprint, the first is kept and the rest are rejected with reason `duplicate-fingerprint`; the template instructs the agent to merge multiple declaration sites into one claim with multiple excerpts instead, and silent payload-dropping merges are deliberately not performed on agent results because agent summaries and routing may differ.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "In heuristic mode the stored excerpt equals the normalized summary by construction, so existing heuristic packet fingerprints are unchanged and no migration is needed; a golden test pins this equivalence.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 221,
+          "verbatim": "In heuristic mode the stored excerpt equals the normalized summary by construction, so existing heuristic packet fingerprints are unchanged and no migration is needed; a golden test pins this equivalence.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 307,
+          "verbatim": "Existing heuristic packets keep byte-identical fingerprints under the unified excerpt-hash rule.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "In agent mode the verbatim primary excerpt is stable as long as the source text is stable; when the source text itself changes, the fingerprint changes, which is the correct lifecycle changed behavior bounded by refresh planning.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 222,
+          "verbatim": "In agent mode the summary is a paraphrase that may drift across re-extractions, while the verbatim primary excerpt is stable as long as the source text is stable; when the source text itself changes, the fingerprint changes, which is the correct `lifecycle: changed` behavior and is already bounded by refresh planning.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cross-file dedupe semantics are preserved: identical primary excerpt text in different files is one claim with multiple source refs, matching the existing identical-claim-text merge rule.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 223,
+          "verbatim": "Cross-file dedupe semantics are preserved: identical primary excerpt text in different files is one claim with multiple source refs, matching the existing identical-claim-text merge rule.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "For validate on extractionMode agent packets where the source hash matches the recorded hash, every excerpt must anchor; a failure is a hard validation error because a correctly applied packet can never contain one.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 229,
+          "verbatim": "When a referenced source file is readable and its content hash matches the hash recorded in the packet, every excerpt must anchor; a failure is a hard validation error, because a correctly applied packet can never contain one.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When the source content hash differs from the recorded hash, anchoring mismatches are reported as stale-anchor findings without failing validation; resolving them is refresh work, not a packet-shape defect.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 230,
+          "verbatim": "When the source content hash differs from the recorded hash, anchoring mismatches are reported as stale-anchor findings without failing validation; resolving them is refresh work, not a packet-shape defect.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Refresh binds re-extraction to changed sources via the recorded git commit plus per-source content hashes.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 236,
+          "verbatim": "recorded git commit plus per-source content hashes bound re-extraction to changed sources",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "extraction-input --previous marks unchanged sources carried-forward and only changed sources extract, so the agent re-reads only the diff.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 238,
+          "verbatim": "`extraction-input --previous <packet>` marks unchanged sources `carried-forward` and only changed sources `extract`, so the agent re-reads only the diff.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "apply-extraction carries forward claims whose primary excerpt still anchors in unchanged sources, preserving reviewed labels, evidence refs, and unresolved questions by stable fingerprint.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 239,
+          "verbatim": "`apply-extraction` carries forward claims whose primary excerpt still anchors in unchanged sources, preserving reviewed labels, evidence refs, and unresolved questions by stable fingerprint, exactly as the existing `--previous` carry-forward does.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 310,
+          "verbatim": "A no-op refresh over unchanged sources carries every agent-extracted claim forward with stable fingerprints.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The schema names cautilus.claim_extraction_input.v1 and cautilus.claim_extraction_result.v1 and the extractionMode values agent and heuristic are ratified; an absent extractionMode reads as heuristic.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 249,
+          "verbatim": "Schema names `cautilus.claim_extraction_input.v1` and `cautilus.claim_extraction_result.v1` and the `extractionMode` values `agent` and `heuristic` are ratified; an absent `extractionMode` reads as `heuristic`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The heuristic extractor remains the default discover claims behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 257,
+          "verbatim": "The heuristic extractor remains the default `discover claims` behavior and the labeled baseline mode for no-model environments, CI regeneration, and control tests.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "M1-proven-on-itself"
+      ],
+      "edgeRationale": "M1-proven-on-itself is supported because the heuristic baseline mode is the labeled control against which agent extraction is measured.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The comparison measurement runs through a bounded harness that consumes the same extraction-input packet and is scored through apply-extraction, so harness results transfer to the product surface because both paths share the template hash and the same validation.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 259,
+          "verbatim": "The comparison measurement (implementation slice 4) runs through a bounded harness that consumes the same `extraction-input` packet and is scored through `apply-extraction` (ratified 2026-06-10).",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 260,
+          "verbatim": "because both paths share the template hash and the same validation, harness results transfer to the product surface",
+          "primary": false
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 260,
+          "verbatim": "It measures the hypothesis under test — the template plus the seam — not the skill conversation flow",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself",
+        "E2-scenarios-experiments"
+      ],
+      "edgeRationale": "E2-scenarios-experiments is supported because the bounded comparison harness is the compare-over-baseline-variant mechanism for judging the agent candidate.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Verifying the Cautilus Agent flow itself is later Cautilus-eval-fixture work over the skill surface and is not a prerequisite for the comparison.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 261,
+          "verbatim": "Verifying the Cautilus Agent flow itself is later Cautilus-eval-fixture work over the skill surface, following the existing self-dogfood fixture pattern, and is not a prerequisite for the comparison.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself",
+        "A1-orchestration"
+      ],
+      "edgeRationale": "A1-orchestration is supported because verifying the agent flow over the skill surface targets the agent's own orchestration behavior.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "An applied agent packet never contains a claim that failed anchoring at apply time: fabricated or paraphrased excerpts are rejected with a recorded reason, not silently dropped.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 305,
+          "verbatim": "An applied agent packet never contains a claim that failed anchoring at apply time: fabricated or paraphrased excerpts are rejected with a recorded reason, not silently dropped.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "A2-curation-review"
+      ],
+      "edgeRationale": "A2-curation-review is supported because guaranteeing no fabricated excerpt survives is what makes the curated claim set trustworthy.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "--allow-stale-sources can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in extractionAudit and surfaces as stale-anchor findings in validate.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 306,
+          "verbatim": "`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Template provenance survives the round trip: the template hash in the input packet, the result packet, and the applied packet's extractionAudit all match.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 309,
+          "verbatim": "Template provenance survives the round trip: the template hash in the input packet, the result packet, and the applied packet's `extractionAudit` all match.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "New runtime surfaces ship with executable tests in the same slice (repo working rule).",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 298,
+          "verbatim": "New runtime surfaces ship with executable tests in the same slice (repo working rule).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "skills/cautilus-agent/SKILL.md stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail belongs to the binary's help and docs per the progressive-disclosure rule.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 299,
+          "verbatim": "`skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration",
+        "S2-readiness"
+      ],
+      "edgeRationale": "S2-readiness is supported because the progressive-disclosure split keeps broad command discovery and help on the binary side.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The adapter-not-hardcoded control test and the frozen-defaults golden fixture keep applying: the template carries merged hints, never new repo-specific hardcoding.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 300,
+          "verbatim": "The adapter-not-hardcoded control test and the frozen-defaults golden fixture keep applying: the template carries merged hints, never new repo-specific hardcoding.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "S1-install"
+      ],
+      "edgeRationale": "S1-install is supported because the no-new-hardcoding control keeps the binary portable across consumer installs.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claim-state refresh chain runs after claim-source-touching slices.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 301,
+          "verbatim": "Claim-state refresh chain runs after claim-source-touching slices.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "This document is the canonical contract for the extraction seam during implementation; on conflict this document wins for extraction-seam detail and the workflow contract wins for workflow-level boundaries.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 346,
+          "verbatim": "This document is the canonical contract for the extraction seam during implementation.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 347,
+          "verbatim": "on conflict, this document wins for extraction-seam detail and the workflow contract wins for workflow-level boundaries",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Until the deferred claims:refresh:all gate decision lands, agent packets in this repo's own dogfood should target a path other than the adapter's state_path, because the push gate regenerates state_path heuristically and would overwrite or staleness-trip an agent packet.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 359,
+          "verbatim": "agent packets in this repo's own dogfood should target a path other than the adapter's `state_path`, because the push gate regenerates `state_path` heuristically and would overwrite or staleness-trip an agent packet",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself",
+        "D2-review-refresh"
+      ],
+      "edgeRationale": "D2-review-refresh is supported because the state_path caveat concerns the claims:refresh:all push-gate refresh behavior.",
+      "unresolvedQuestions": []
+    }
+  ],
+  "skippedSources": []
+}

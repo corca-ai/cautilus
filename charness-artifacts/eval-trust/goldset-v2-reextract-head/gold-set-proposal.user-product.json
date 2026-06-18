@@ -1,0 +1,1781 @@
+{
+  "schemaVersion": "cautilus.gold_set_proposal.v2",
+  "purpose": "Re-extraction at HEAD 628ccc7 with the now-operative edited v2 template (templateHash b922fd5d); proof-route before/after measurement vs goldset-v2-head",
+  "sourcePacket": "charness-artifacts/eval-trust/goldset-v2-reextract-head/claims-agent.json",
+  "packetGitCommit": "628ccc757455b84a4fdcd44b8a9f5470fe91e48f",
+  "extractionMode": "agent",
+  "templateVersion": "v2",
+  "templateHash": "sha256:b922fd5d92510fd0161eb53f8f8829bb964de3113bed9a03498b4c75972b34ef",
+  "verdictDefinitions": {
+    "accept": "claim correctly extracted and all agent labels correct",
+    "relabel": "claim correctly extracted but one or more labels corrected (proof route, audience, epic, etc.; correction in note)",
+    "not-a-claim": "text should not have been extracted as a behavior claim",
+    "badly-bounded": "real claim but wrong excerpt boundary, wrong merge, or duplicate (detail in note)",
+    "pending": "not yet reviewed"
+  },
+  "carriedForwardRules": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8",
+    "R9",
+    "R10",
+    "R11",
+    "R12",
+    "R13",
+    "R14",
+    "R15"
+  ],
+  "track": "user-product",
+  "segmentedBy": "claimAudience",
+  "segmentedFrom": "charness-artifacts/eval-trust/goldset-v2-reextract-head/gold-set-proposal.json",
+  "entries": [
+    {
+      "claimId": "claim-readme-md-3",
+      "claimFingerprint": "sha256:ab375ff85f6dbc7088a93e20ef99ab395160c3e8e4dc0835183ac80ddb8a5634",
+      "sourceRef": "README.md:3",
+      "summary": "Cautilus is a framework for discovering, evaluating, and improving agent behavior.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Documentation and contracts",
+        "primaryEpic": "APEX",
+        "supportingEpics": [
+          "APEX",
+          "D1-discovery",
+          "E1-evaluate",
+          "I1-bounded-improvement"
+        ],
+        "edgeRationale": "The three jobs name discovery (D1-discovery), evaluation (E1-evaluate), and improvement (I1-bounded-improvement) under the apex behavior-honesty promise (APEX).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-4",
+      "claimFingerprint": "sha256:9018c538fe5ded20087c5b9c3dea13abd9b803fb454e5fd768c05164a726b596",
+      "sourceRef": "README.md:4",
+      "summary": "Cautilus lets you pin down the behavior that matters and prove it survives every change to prompts, skills, and models.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "APEX",
+        "supportingEpics": [
+          "APEX",
+          "I1-bounded-improvement"
+        ],
+        "edgeRationale": "Pinning behavior that survives change is the apex promise (APEX); improving within explicit budgets supports bounded improvement (I1-bounded-improvement).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-5",
+      "claimFingerprint": "sha256:b2db3970d5430186c25796dcfce79426d64725377fd3d1a18a81687f66126add",
+      "sourceRef": "README.md:5",
+      "summary": "The three jobs connect: discover declared behavior claims worth proving from selected source docs, verify curated claims through bounded evaluation packets, and improve behavior once the proof surface is honest.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "APEX",
+        "supportingEpics": [
+          "APEX",
+          "D1-discovery",
+          "E1-evaluate",
+          "I1-bounded-improvement"
+        ],
+        "edgeRationale": "Discover maps to D1-discovery, verify through bounded evaluation packets to E1-evaluate, and improve to I1-bounded-improvement, all under the apex connection (APEX).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-6",
+      "claimFingerprint": "sha256:32437872b5e4ba1773bff79aab81ce278f3baca552daa84b30ffe00bdfadfb74",
+      "sourceRef": "README.md:6",
+      "summary": "Cautilus ships as a standalone binary plus Cautilus Agent that a host repo can install without copying another scaffold first.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Release and packaging",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-9",
+      "claimFingerprint": "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0",
+      "sourceRef": "README.md:9",
+      "summary": "Cautilus installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Release and packaging",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-10",
+      "claimFingerprint": "sha256:3b5300f43598df7eb566942701e639c49625b136cdd54733d08235eadf53e88c",
+      "sourceRef": "README.md:10",
+      "summary": "The binary is shared across repos.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Release and packaging",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-11",
+      "claimFingerprint": "sha256:5ac1fc63d49f447facac64b699cea25da2ce7911bedbb18335cac08e5dc827f5",
+      "sourceRef": "README.md:11",
+      "summary": "The Cautilus Agent surface, adapter wiring, prompts, and instruction-routing surface are not shared across repos; they stay checked into each host repo.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install",
+          "M1-proven-on-itself"
+        ],
+        "edgeRationale": "Repo-local checked-in agent surface is an install/ownership boundary (S1-install) that also makes evaluation behavior reproducible and owned by the declaring repo (M1-proven-on-itself).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-12",
+      "claimFingerprint": "sha256:84176dd7bded68a60234d7d79401c854d97c89ed2a87e54ace984ac70db490a4",
+      "sourceRef": "README.md:12",
+      "summary": "Checked-in repo-local evaluation surface keeps evaluation behavior reproducible, reviewable, and owned by the repo that declares it.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "M1-proven-on-itself",
+        "supportingEpics": [
+          "M1-proven-on-itself",
+          "S1-install"
+        ],
+        "edgeRationale": "Reproducible/reviewable/owned evaluation behavior is a proven-on-itself property (M1-proven-on-itself) conferred by the repo-local install boundary (S1-install).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-16",
+      "claimFingerprint": "sha256:0b3ab63af5d3394e5a3b3713324492268b9847daf0bd2db799334c4ab17b33cb",
+      "sourceRef": "README.md:16",
+      "summary": "Cautilus proves its own promises with honest badges: readiness and claim discovery run live in executable specs (proven), behavior evaluation, bounded improvement, reviewable artifacts, and host ownership project saved evidence bundles (declared), and a testable-agent runner is promised.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Documentation and contracts",
+        "primaryEpic": "M1-proven-on-itself",
+        "supportingEpics": [
+          "M1-proven-on-itself",
+          "APEX",
+          "S2-readiness",
+          "D1-discovery"
+        ],
+        "edgeRationale": "Honest badge proof is the proven-on-itself promise (M1-proven-on-itself) covering the apex (APEX), with readiness (S2-readiness) and claim discovery (D1-discovery) called out as the live/proven slices.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-17",
+      "claimFingerprint": "sha256:b336bef7e80020e946bc8e8491c15a3c56f9bb82f0373ccd924b443ca34747f9",
+      "sourceRef": "README.md:17",
+      "summary": "For cross-repo adoption, the bounded evaluation loop is the most ready slice: host repos can use cautilus evaluate fixture, cautilus evaluate observation, and post-run cautilus evaluate skill-experiment with checked-in fixtures, host-owned adapters, preserved task packets, and current evaluation and skill-experiment report packets.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate",
+          "E2-scenarios-experiments"
+        ],
+        "edgeRationale": "Evaluate fixture/observation is the core evaluate loop (E1-evaluate), and skill-experiment is the scenario/experiment compare surface (E2-scenarios-experiments).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-18",
+      "claimFingerprint": "sha256:8bf95f9315ce120371a13d106c151cde2c265da7e6ac7c920ab08905efc7b406",
+      "sourceRef": "README.md:18",
+      "summary": "skill-experiment compare compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E2-scenarios-experiments",
+        "supportingEpics": [
+          "E2-scenarios-experiments"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-19",
+      "claimFingerprint": "sha256:ce7fb0c9847a8689cb9916dd25b2f499206c7423c53a44b9d9521470a143cc3b",
+      "sourceRef": "README.md:19",
+      "summary": "Claim discovery and bounded improvement ship today and are opt-in for host repos that adopt them.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "D1-discovery",
+        "supportingEpics": [
+          "D1-discovery",
+          "I1-bounded-improvement"
+        ],
+        "edgeRationale": "Claim discovery ships under D1-discovery and bounded improvement ships under I1-bounded-improvement, both opt-in.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-29",
+      "claimFingerprint": "sha256:3130791b3158ecfb89388df03f8d9cb8c1eb6f897673a1e22448cdde22522ad3",
+      "sourceRef": "README.md:29",
+      "summary": "Cautilus is not for repos that only need deterministic lint, unit, or type checks and do not have an evaluator-dependent behavior surface.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Documentation and contracts",
+        "primaryEpic": "APEX",
+        "supportingEpics": [
+          "APEX"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-35",
+      "claimFingerprint": "sha256:c4d76a0109b31ae8120dbd25811c7cd13c16c7e6f208e53432a62ae16bb6b591",
+      "sourceRef": "README.md:35",
+      "summary": "Cautilus runs on native macOS or native Linux, requires a target host repo editable locally, and requires git available on PATH.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Release and packaging",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install",
+          "S2-readiness"
+        ],
+        "edgeRationale": "Platform and git prerequisites gate install (S1-install) and are part of first-run readiness (S2-readiness).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-44",
+      "claimFingerprint": "sha256:130fe3aa8aeec4109bfcf3ca6a4eb8ed85578aad3bd76ce424f96de956d930dc",
+      "sourceRef": "README.md:44",
+      "summary": "Cautilus installs via the install.sh curl script and cautilus init in a host repo.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Release and packaging",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-47",
+      "claimFingerprint": "sha256:440dfe9ad14280d2cea20de7228484be57c3137e61f24d507988bd8d5a5220d9",
+      "sourceRef": "README.md:47",
+      "summary": "Setup can be handed to an agent instead of running the install steps yourself.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Agent and skill workflow",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install",
+          "A1-orchestration"
+        ],
+        "edgeRationale": "Agent-driven setup is part of install (S1-install) carried out by the orchestrating agent (A1-orchestration).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-59",
+      "claimFingerprint": "sha256:2351b132ae813dfb9df2fca5291372e65c4232b981aab4f685bfefa3b3f135aa",
+      "sourceRef": "README.md:59",
+      "summary": "Raw discover claims packets are the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "D1-discovery",
+        "supportingEpics": [
+          "D1-discovery",
+          "A2-curation-review"
+        ],
+        "edgeRationale": "Raw discovery packets are the discovery output (D1-discovery) that the agent curates before review (A2-curation-review).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-61",
+      "claimFingerprint": "sha256:25f326356227fb2317af75db3dca0b6ac32161558c644ef0f1b1073bce3c175f",
+      "sourceRef": "README.md:61",
+      "summary": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "M1-proven-on-itself",
+        "supportingEpics": [
+          "M1-proven-on-itself",
+          "S2-readiness"
+        ],
+        "edgeRationale": "The generated website report serves proven-on-itself reporting (M1-proven-on-itself), while the boundary that the renderer is not required for inspection supports readiness/onboarding (S2-readiness).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-62",
+      "claimFingerprint": "sha256:a8cf94a267754b28ed0ce1c378a0bbb88ee81dcad5e196efce19a5f7a40135b5",
+      "sourceRef": "README.md:62",
+      "summary": "Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Documentation and contracts",
+        "primaryEpic": "M1-proven-on-itself",
+        "supportingEpics": [
+          "M1-proven-on-itself"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-68",
+      "claimFingerprint": "sha256:94b71beb9c16b57527a646ff37d53747c9b6194995b263bd02c205cb00e3ecb8",
+      "sourceRef": "README.md:68",
+      "summary": "The bounded eval loop needs one checked-in cautilus.evaluation_input.v1 fixture and a host-owned adapter runner.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-69",
+      "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
+      "sourceRef": "README.md:69",
+      "summary": "The bounded eval loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-84",
+      "claimFingerprint": "sha256:e1d40b8af228eee85cfe4d1bf48eb7be58e13f6c5737038ab9c41ef1ac6eb0d2",
+      "sourceRef": "README.md:84",
+      "summary": "Cautilus turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-85",
+      "claimFingerprint": "sha256:e8b1a9fc3c20bbcde254639817f98114d86ca2f81ff8e4f5ad05f4c4957279ff",
+      "sourceRef": "README.md:85",
+      "summary": "The eval summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-86",
+      "claimFingerprint": "sha256:fc191dde1fc86448ffbfe1a676d41f44248725f3acf14e288a4602abc6e8d337",
+      "sourceRef": "README.md:86",
+      "summary": "After a fixture run, a human decides whether the evidence is enough for the host repo's current proof need.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-89",
+      "claimFingerprint": "sha256:e8c519d09d282b6b091dd6b4b7ff618e1fad539429c5c5e4a67b7eed866edf62",
+      "sourceRef": "README.md:89",
+      "summary": "Cautilus turns behavior evidence into a reviewable decision surface.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "APEX",
+        "supportingEpics": [
+          "APEX",
+          "E1-evaluate"
+        ],
+        "edgeRationale": "Turning behavior evidence into a reviewable decision surface is the apex product claim (APEX) realized by the evaluate loop (E1-evaluate).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-94",
+      "claimFingerprint": "sha256:be8872c4b4a1a66f8d06dd88e991c43fe663f2c4a0512de390965d3503e1b809",
+      "sourceRef": "README.md:94",
+      "summary": "In charness, an instruction-surface fixture proved that the agent first selected the startup bootstrap helper find-skills, then selected the durable work skill for the actual task.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "M1-proven-on-itself",
+        "supportingEpics": [
+          "M1-proven-on-itself",
+          "E1-evaluate"
+        ],
+        "edgeRationale": "The charness dogfood fixture is self-proof evidence (M1-proven-on-itself) produced through the evaluate fixture loop (E1-evaluate).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-95",
+      "claimFingerprint": "sha256:fee6e2c9ba896bb38525850e1fe855de7d93cf287bc9948a54652f685ee3dce2",
+      "sourceRef": "README.md:95",
+      "summary": "The dogfood run turned the question of whether the agent read and followed the repo instructions from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate",
+          "M1-proven-on-itself"
+        ],
+        "edgeRationale": "Turning transcript judgment into a reproducible reopenable packet is the evaluate-loop value (E1-evaluate) demonstrated as self-proof (M1-proven-on-itself).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-101",
+      "claimFingerprint": "sha256:4e1414d9323dfe750ae98aa85a27038334b50f11f8fa0a09fb3f41237d738ede",
+      "sourceRef": "README.md:101",
+      "summary": "Cautilus has three connected product layers: claim discovery, bounded evaluation, and bounded improvement.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Documentation and contracts",
+        "primaryEpic": "APEX",
+        "supportingEpics": [
+          "APEX",
+          "D1-discovery",
+          "E1-evaluate",
+          "I1-bounded-improvement"
+        ],
+        "edgeRationale": "The three layers are claim discovery (D1-discovery), bounded evaluation (E1-evaluate), and bounded improvement (I1-bounded-improvement) under the apex product shape (APEX).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-104",
+      "claimFingerprint": "sha256:230334943851eba816c44d90212b545ad258fa3d1a0e32eb9525d5e9eacc9d0c",
+      "sourceRef": "README.md:104",
+      "summary": "Claim discovery turns adapter-owned entry docs and linked docs into cautilus.claim_proof_plan.v1 candidates.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "D1-discovery",
+        "supportingEpics": [
+          "D1-discovery"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-105",
+      "claimFingerprint": "sha256:2276e0abccd4b6dfa2a61954f87d3391fc7f0b1d1417970a439c9e690cdf8e08",
+      "sourceRef": "README.md:105",
+      "summary": "Claim discovery is proof planning, not a verdict that the repo is correct.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "D1-discovery",
+        "supportingEpics": [
+          "D1-discovery"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-108",
+      "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
+      "sourceRef": "README.md:108",
+      "summary": "Evaluation uses two top-level surfaces: dev for AI-assisted development work such as repo contracts, tools, and skills, and app for AI-powered product behavior such as chat, prompt, and service responses.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate",
+          "E2-scenarios-experiments"
+        ],
+        "edgeRationale": "The dev/app surface split structures the core evaluate surface (E1-evaluate) across which scenarios and experiments are run (E2-scenarios-experiments).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-111",
+      "claimFingerprint": "sha256:63ec8ce6e874c0208f6049a072cb86103bcb9d71f5b8df8781a08d84ea3aabb8",
+      "sourceRef": "README.md:111",
+      "summary": "Sample normalization inputs live in examples/starters/ and the checked-in fixture directories under fixtures/.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E2-scenarios-experiments",
+        "supportingEpics": [
+          "E2-scenarios-experiments"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-121",
+      "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
+      "sourceRef": "README.md:121",
+      "summary": "Cautilus treats a context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "app/chat",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Improvement and improvement",
+        "primaryEpic": "I1-bounded-improvement",
+        "supportingEpics": [
+          "I1-bounded-improvement",
+          "E2-scenarios-experiments"
+        ],
+        "edgeRationale": "Holding a scenario out of tuning is the bounded-improvement held-out discipline (I1-bounded-improvement) over a protected scenario (E2-scenarios-experiments).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-122",
+      "claimFingerprint": "sha256:df798ce926b1c0937700bc2508f107bef8bdecf193f22745927c83d7205bffbf",
+      "sourceRef": "README.md:122",
+      "summary": "Cautilus stores the evidence in a durable file the next maintainer can reopen from disk.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate",
+          "APEX"
+        ],
+        "edgeRationale": "Durable reopenable evidence files are an evaluate-loop output (E1-evaluate) embodying the apex packet-first stance (APEX).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-128",
+      "claimFingerprint": "sha256:876d422ecc6981fb0023f848c23f90ac2be7fc0f9b0e2e615109b89044a5d21e",
+      "sourceRef": "README.md:128",
+      "summary": "Cautilus does not freeze one prompt string as the contract; it treats the behavior under evaluation as the contract (intent-first).",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "APEX",
+        "supportingEpics": [
+          "APEX"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-129",
+      "claimFingerprint": "sha256:fca2fcfa646dc5c2d8a0113e913a099de9824ac235a6afcb08a50e2d84894960",
+      "sourceRef": "README.md:129",
+      "summary": "Cautilus separates iteration from protected validation and keeps evidence reopenable from files (held-out honesty, packet-first).",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "I1-bounded-improvement",
+        "supportingEpics": [
+          "I1-bounded-improvement",
+          "E1-evaluate"
+        ],
+        "edgeRationale": "Separating iteration from protected validation is the held-out improvement discipline (I1-bounded-improvement); keeping evidence reopenable from files is the packet-first evaluate property (E1-evaluate).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-131",
+      "claimFingerprint": "sha256:3f7d53374b3ad0a1f98d080a07490f3b717148e78267be931104835aebcc23ec",
+      "sourceRef": "README.md:131",
+      "summary": "Cautilus keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (bounded autonomy).",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Improvement and improvement",
+        "primaryEpic": "I1-bounded-improvement",
+        "supportingEpics": [
+          "I1-bounded-improvement"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-139",
+      "claimFingerprint": "sha256:c9942c56f6453d6c4c7a2d3a0f4b2c05d22ca5c2fd361cf207a4519ac65403e7",
+      "sourceRef": "README.md:139",
+      "summary": "Cautilus ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/repo",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Improvement and improvement",
+        "primaryEpic": "I1-bounded-improvement",
+        "supportingEpics": [
+          "I1-bounded-improvement"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-146",
+      "claimFingerprint": "sha256:33b516a29471b1bfddfd5b9b204ba8a5051edeb3b409edd1106952f1df089a29",
+      "sourceRef": "README.md:146",
+      "summary": "Two entry points share one host-owned cautilus-adapter.yaml and return the same durable decision surface.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "A1-orchestration",
+        "supportingEpics": [
+          "A1-orchestration",
+          "S1-install"
+        ],
+        "edgeRationale": "Two entry points sharing one host-owned adapter is an orchestration boundary (A1-orchestration) grounded in the host-owned install surface (S1-install).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-147",
+      "claimFingerprint": "sha256:f4689e81e0aa80a165d8e584a21f63736e1f449a7d28ca64fe02a15272c5f8cc",
+      "sourceRef": "README.md:147",
+      "summary": "Operators use the standalone CLI; Claude and Codex use the repo-local Cautilus Agent that cautilus init installs under .agents/skills/cautilus-agent/.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Agent and skill workflow",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install",
+          "A1-orchestration"
+        ],
+        "edgeRationale": "Init installing the repo-local agent under a fixed path is an install fact (S1-install) that provisions the agent orchestration surface (A1-orchestration).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-150",
+      "claimFingerprint": "sha256:547880c2ac98a99fec4231dc4911c6e6dc263d79f397e119d112e8bca62fcccd",
+      "sourceRef": "README.md:150",
+      "summary": "The minimum host-repo shape is an adapter, an installed Cautilus Agent, and run artifacts such as eval-cases.json, eval-observed.json, and eval-summary.json.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install",
+          "S2-readiness"
+        ],
+        "edgeRationale": "The minimum host-repo shape defines the install footprint (S1-install) and what doctor checks for readiness (S2-readiness).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-151",
+      "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
+      "sourceRef": "README.md:151",
+      "summary": "The result is not just a pass/fail bit; it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate",
+          "A2-curation-review"
+        ],
+        "edgeRationale": "Machine-readable packets plus reopenable readable views are the evaluate decision surface (E1-evaluate) consumed during structured review (A2-curation-review).",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-readme-md-154",
+      "claimFingerprint": "sha256:59e68472ebbc1938ba23b1ca364151e297029a35ccdaf86fa7a972f552addfbb",
+      "sourceRef": "README.md:154",
+      "summary": "cautilus doctor --next-action reports the next onboarding step, cautilus doctor --scope agent-surface reports agent-surface discoverability, and cautilus doctor reports repo wiring readiness.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Quality gates",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-13",
+      "claimFingerprint": "sha256:193a25fe047fddefcc6bce2ea26e6bf123cbc64bb34a2e7ce8a346a1879cbe55",
+      "sourceRef": "docs/guides/cli.md:13",
+      "summary": "cautilus init installs the CLI and Cautilus Agent into a host repo.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Release and packaging",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-16",
+      "claimFingerprint": "sha256:1c21a183a4e9d3091effac74b8b1b1065f1a3b70920c646889200ac447750d03",
+      "sourceRef": "docs/guides/cli.md:16",
+      "summary": "cautilus update refreshes the CLI and the checked-in Cautilus Agent in a repo.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Release and packaging",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-23",
+      "claimFingerprint": "sha256:0d75d69c5062f80a79b19453c9e93359fcfb5c1c3f8f5f6102eeb353d43d8520",
+      "sourceRef": "docs/guides/cli.md:23",
+      "summary": "cautilus version --verbose inspects local version provenance and is the quickest binary-only summary of the current product surface: who it is for, which normalization family or eval surface to start from, and which report fields matter when a run rejects.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Documentation and contracts",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-31",
+      "claimFingerprint": "sha256:3a880b4da24f0cbe1a0f0df4ba056d1b4a8ac39ae52e4eb9a808d401f4e0f711",
+      "sourceRef": "docs/guides/cli.md:31",
+      "summary": "cautilus init adapter generates a minimal repo-local adapter scaffold.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-34",
+      "claimFingerprint": "sha256:83991f2d1301baab710a81d00cb149159b9e2b1256b4de45b2a86b0ffbdfe2ca",
+      "sourceRef": "docs/guides/cli.md:34",
+      "summary": "cautilus doctor adapter resolves and validates the adapter.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-39",
+      "claimFingerprint": "sha256:a85ea1cafcf29bcb341eb664704e51fe4ac4d98e1531aa9f48384cfba6106a46",
+      "sourceRef": "docs/guides/cli.md:39",
+      "summary": "Each starter kit ships a pre-filled cautilus-adapter.yaml, a canonical input fixture, and a README that explains what to replace next.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-40",
+      "claimFingerprint": "sha256:e369c0d8b820618ae543b549a71970e88bf03a27fc8a5c23691d4b597bd4a19e",
+      "sourceRef": "docs/guides/cli.md:40",
+      "summary": "Starter placeholders are bootstrap help, not proof that a real consumer workflow is already wired.",
+      "agentLabels": {
+        "recommendedProof": "human-auditable",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "S1-install",
+        "supportingEpics": [
+          "S1-install",
+          "S2-readiness"
+        ],
+        "edgeRationale": "S2-readiness is supported because the claim bounds what counts as a genuine readiness signal versus a bootstrap placeholder.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-42",
+      "claimFingerprint": "sha256:1fa05c2487a9417b6df42bc78f6e3e4f64f1360a03d7e2fd7ec24808e7e84b9f",
+      "sourceRef": "docs/guides/cli.md:42",
+      "summary": "A minimal adapter must wire at least one real runnable path to reach doctor ready.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness",
+          "S1-install"
+        ],
+        "edgeRationale": "S1-install is supported because wiring a runnable path is part of completing adapter install/bootstrap.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-74",
+      "claimFingerprint": "sha256:5fcd7cea520e16ec615b960af0e9d51d499c6bb4f610b66372feea330f124a14",
+      "sourceRef": "docs/guides/cli.md:74",
+      "summary": "cautilus doctor binary reports binary health with no repo required.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Quality gates",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-77",
+      "claimFingerprint": "sha256:7337a9ff199d1fcb5f64bc358bd61a0929bdc7cbe9049520ed4562689caef27f",
+      "sourceRef": "docs/guides/cli.md:77",
+      "summary": "cautilus doctor commands provides command discovery that is safe for wrapper tooling and agent runtimes.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Agent and skill workflow",
+        "primaryEpic": "D1-discovery",
+        "supportingEpics": [
+          "D1-discovery",
+          "S2-readiness"
+        ],
+        "edgeRationale": "S2-readiness is supported because command discovery is part of the binary's readiness/orientation surface for agent runtimes.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-80",
+      "claimFingerprint": "sha256:045e1952606b8b4275b53dee25bbbf78bfa8386336f6187e7da260a782f2f09d",
+      "sourceRef": "docs/guides/cli.md:80",
+      "summary": "cautilus doctor status provides no-input agent orientation over binary, adapter, agent-surface, and claim state.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Agent and skill workflow",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness",
+          "A1-orchestration"
+        ],
+        "edgeRationale": "A1-orchestration is supported because no-input agent orientation feeds the Cautilus Agent's routing decisions.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-86",
+      "claimFingerprint": "sha256:a032c5e0c67b13415d660455213bd993218eee31993575b1d7aa76228d5dcb69",
+      "sourceRef": "docs/guides/cli.md:86",
+      "summary": "cautilus doctor --next-action gives one current onboarding step plus the exact continuation loop.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-89",
+      "claimFingerprint": "sha256:d75dbcf49315bc3b71b3a5be2d88ab0f32c0c35091bb17611e5b447e7af9adb4",
+      "sourceRef": "docs/guides/cli.md:89",
+      "summary": "cautilus doctor --scope agent-surface checks local agent-skill discoverability in a consumer repo, verifying only the Cautilus Agent and local agent-surface install.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Agent and skill workflow",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness",
+          "S1-install"
+        ],
+        "edgeRationale": "S1-install is supported because agent-surface verification confirms the repo-local agent install landed.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-104",
+      "claimFingerprint": "sha256:42d4b1e7962fef48b0f13d82d7cbda78a5ca064411adb499360862bc976ccbee",
+      "sourceRef": "docs/guides/cli.md:104",
+      "summary": "cautilus <subcommand> --help exits 0 for the registered native command surface, including grouped topics such as cautilus improve search --help.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Documentation and contracts",
+        "primaryEpic": "D1-discovery",
+        "supportingEpics": [
+          "D1-discovery"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-108",
+      "claimFingerprint": "sha256:005c3b9342e1ac04e79a401f42a143ac17f820945d363db8f38004ec518975e1",
+      "sourceRef": "docs/guides/cli.md:108",
+      "summary": "If repo setup is ready but runner proof is not, the next-action can point at runner assessment setup before the first bounded eval loop.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-110",
+      "claimFingerprint": "sha256:ae9c3380e70f1c123f89974bf3f5f316305e0b31c17e79f59cc8761b8a95ce86",
+      "sourceRef": "docs/guides/cli.md:110",
+      "summary": "Default doctor (--scope repo) verifies the repo has a real runnable evaluation path.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Quality gates",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-114",
+      "claimFingerprint": "sha256:5a6f9e74039bc4c3bcd87950aaf6ea4af6272cf9032fbdc2b674eca35aa6d239",
+      "sourceRef": "docs/guides/cli.md:114",
+      "summary": "When repo-scope doctor returns ready, the JSON payload includes first_bounded_run: a starter evaluate fixture -> evaluate observation packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness",
+          "E1-evaluate"
+        ],
+        "edgeRationale": "E1-evaluate is supported because first_bounded_run seeds the starter evaluate fixture/observation loop.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-115",
+      "claimFingerprint": "sha256:05cfeb55eaea8684b0ead0e9d6949afc8e31e32d5d2fa6bf2c36d978b6c248e9",
+      "sourceRef": "docs/guides/cli.md:115",
+      "summary": "When a repo keeps only named adapters under .agents/cautilus-adapters/, run cautilus doctor --adapter-name <name> for repo-scope validation instead of expecting plain doctor to guess which named adapter you mean.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Adapter and portability",
+        "primaryEpic": "S2-readiness",
+        "supportingEpics": [
+          "S2-readiness"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-117",
+      "claimFingerprint": "sha256:a96b4fd64dfdc1ee6cd1ae7a2e868d4b9f09b9ed77985afd56880e7d9317d8bb",
+      "sourceRef": "docs/guides/cli.md:117",
+      "summary": "Default claim discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "D1-discovery",
+        "supportingEpics": [
+          "D1-discovery"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-118",
+      "claimFingerprint": "sha256:76e0ae640521f2c21e4265a649b0d8137d6f7b8cd763b62506971f1af3d6bf68",
+      "sourceRef": "docs/guides/cli.md:118",
+      "summary": "Use --previous <claims.json> --refresh-plan for deterministic refresh planning inside the same discover workflow.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "D2-review-refresh",
+        "supportingEpics": [
+          "D2-review-refresh"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-123",
+      "claimFingerprint": "sha256:e91843dfa18cc4b9938fd301da37c333468dcd357cf96ca480ff19973921f7ff",
+      "sourceRef": "docs/guides/cli.md:123",
+      "summary": "cautilus discover claims status summarizes an existing claim packet without rescanning and includes bounded claim examples when an agent needs concrete candidates before choosing the next branch.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "D1-discovery",
+        "supportingEpics": [
+          "D1-discovery",
+          "D2-review-refresh"
+        ],
+        "edgeRationale": "D2-review-refresh is supported because the status summary feeds the review/refresh branch decision.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-131",
+      "claimFingerprint": "sha256:144697d5c920ddf50a60663b99d75b097b9e12e2f2448e83076516d6242126be",
+      "sourceRef": "docs/guides/cli.md:131",
+      "summary": "cautilus discover claims review-input prepares bounded deterministic review clusters for an agent or subagent.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Claim discovery and review",
+        "primaryEpic": "A2-curation-review",
+        "supportingEpics": [
+          "A2-curation-review",
+          "D2-review-refresh"
+        ],
+        "edgeRationale": "D2-review-refresh is supported because review-input clusters feed the deterministic claim review/refresh flow.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-199",
+      "claimFingerprint": "sha256:c23a667aa62b8324736083771759e2cff6b7b39e51b8358cb122d89f4537e667",
+      "sourceRef": "docs/guides/cli.md:199",
+      "summary": "cautilus evaluate comparison prepare prepares clean baseline and candidate git worktrees for a compare run.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E2-scenarios-experiments",
+        "supportingEpics": [
+          "E2-scenarios-experiments",
+          "E1-evaluate"
+        ],
+        "edgeRationale": "E1-evaluate is supported because the prepared worktrees back a baseline-versus-candidate evaluation run.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-206",
+      "claimFingerprint": "sha256:03ba2b3621f841c7f768fb8bdd76656d3837c5c0b5cf28240f3bdd78b189e402",
+      "sourceRef": "docs/guides/cli.md:206",
+      "summary": "cautilus doctor artifacts prune prunes older Cautilus artifact bundles.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-257",
+      "claimFingerprint": "sha256:14374dac52410bf46a9e4e5bccf23f0e0f724bd00e694b355f600cbb07ee7e4d",
+      "sourceRef": "docs/guides/cli.md:257",
+      "summary": "Every normalize command plus cautilus evaluate observation and cautilus evaluate report build accepts --example-input: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "E2-scenarios-experiments",
+        "supportingEpics": [
+          "E2-scenarios-experiments",
+          "D1-discovery"
+        ],
+        "edgeRationale": "D1-discovery is supported because --example-input makes expected packet shapes discoverable to operators.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-268",
+      "claimFingerprint": "sha256:75edcc08a8c1e27506b57eb59c442b43d42b3b67a75abba80846ffeb9a537242",
+      "sourceRef": "docs/guides/cli.md:268",
+      "summary": "The shipped surface is cautilus evaluate, and Cautilus exposes two top-level surfaces and four presets: dev/repo for repo work contracts, dev/skill for checked-in or portable development skills, app/chat for multi-turn product conversation behavior, and app/prompt for single product input/output behavior.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate",
+          "E2-scenarios-experiments"
+        ],
+        "edgeRationale": "E2-scenarios-experiments is supported because the dev/skill and app surfaces are the targets for scenario and skill-experiment work.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-270",
+      "claimFingerprint": "sha256:10543cfa7fe683eed032d52bbb2f2fabd74cd3e14f1e0c5ae0d56077713f9569",
+      "sourceRef": "docs/guides/cli.md:270",
+      "summary": "cautilus evaluate fixture runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-274",
+      "claimFingerprint": "sha256:403dc2c5a7bb481b04a09127224a7bfc782fba56048029af5e7ddb02f2b2088f",
+      "sourceRef": "docs/guides/cli.md:274",
+      "summary": "cautilus evaluate observation evaluates an already-observed packet without launching the runner again.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-390",
+      "claimFingerprint": "sha256:eea7c618087f84e1c80ae02d0eb02bcc61a1078f8bfc03d18f4a38ba332f67d3",
+      "sourceRef": "docs/guides/cli.md:390",
+      "summary": "cautilus evaluate report build builds a machine-readable evaluation report packet from explicit mode runs, answering what is the first product-owned decision packet for this candidate versus the baseline.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Packets and reporting",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-513",
+      "claimFingerprint": "sha256:183be9c5cb3996a986b60797d2b1d14d47fc4ca231ed9c47e90e379f18f9f94f",
+      "sourceRef": "docs/guides/cli.md:513",
+      "summary": "cautilus improve is the improvement front door, to be used only after the claim and eval proof surface are explicit enough that an improvement loop has something honest to improve against.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Improvement and improvement",
+        "primaryEpic": "I1-bounded-improvement",
+        "supportingEpics": [
+          "I1-bounded-improvement"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-23",
+      "claimFingerprint": "sha256:0ef78f8b4bcc4a98a0c02fa5b199c5c04a43b716472f16e436e64d6e724cae9d",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:23",
+      "summary": "The primary user flow starts from an agent session, not from a human reading a CLI manual.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Agent and skill workflow",
+        "primaryEpic": "A1-orchestration",
+        "supportingEpics": [
+          "A1-orchestration"
+        ],
+        "multiEpic": false
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-517",
+      "claimFingerprint": "sha256:f90e997f4729dc3eb1be36b181ba3eadb44b03a8f73e4b61a32eba841bd2a66c",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:517",
+      "summary": "After discovery or refresh, Cautilus Agent should report status in a compact decision-oriented shape rather than a raw claim dump.",
+      "agentLabels": {
+        "recommendedProof": "cautilus-eval",
+        "recommendedEvalSurface": "dev/skill",
+        "verificationReadiness": "needs-scenario",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Agent and skill workflow",
+        "primaryEpic": "A2-curation-review",
+        "supportingEpics": [
+          "A2-curation-review",
+          "A1-orchestration"
+        ],
+        "edgeRationale": "A1-orchestration is supported because reporting status and asking the next branch is part of the agent's orchestration loop.",
+        "multiEpic": true
+      },
+      "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "pending",
+      "note": ""
+    }
+  ]
+}

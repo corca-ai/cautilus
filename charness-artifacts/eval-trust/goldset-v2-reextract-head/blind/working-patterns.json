@@ -1,0 +1,1477 @@
+{
+  "schemaVersion": "cautilus.claim_extraction_result.v1",
+  "extractionInputRef": {
+    "path": "extraction-input.json",
+    "templateHash": "sha256:b922fd5d92510fd0161eb53f8f8829bb964de3113bed9a03498b4c75972b34ef"
+  },
+  "runtime": {
+    "model": "claude-opus-4-8",
+    "agent": "cautilus-agent-blind-extractor"
+  },
+  "claims": [
+    {
+      "summary": "Pattern activation follows an explicit scope model: premortem, counterweight, and iterative premortem run only when a user request, repo artifact, handoff, AGENTS rule, or the current slice's risk condition puts them in scope.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 8,
+          "verbatim": "패턴 발동은 **명시적 범위 모델**이다.",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 9,
+          "verbatim": "premortem / 카운터웨이트 / iterative premortem 등은 사용자 요청, repo artifact, handoff, AGENTS 규칙, 또는 현재 slice 의 위험 조건이 범위에 넣을 때 발동한다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The agent does not voluntarily run review gates on vague unease alone, but a review gate that has entered scope is treated as already delegated.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 10,
+          "verbatim": "에이전트가 막연한 불안감만으로 자발적으로 돌리지는 않지만, 범위에 들어온 review gate 는 이미 위임된 것으로 취급한다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "If the host blocks subagent spawning, the agent must report the limitation explicitly instead of substituting a same-agent pass.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 11,
+          "verbatim": "host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고 제한을 명시적으로 보고한다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Premortem runs at two moments: right before the decision and right before execution; a handoff note that premortem is done only covers the decision, so cascade/delete/rename code requires re-running premortem from the execution angle.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 16,
+          "verbatim": "**두 시점에 각각 돌린다: 결정 직전 + 실행 직전.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 17,
+          "verbatim": "핸드오프에 \"premortem 완료\" 라고 적혀 있어도 그건 **결정에 대한 커버리지** 이고, 실제로 카스케이드·삭제·리네임 코드를 칠 때는 **실행 각도로 다시** 돌려야 한다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Premortem angle count scales to slice size: single slice = 1 angle, 2-3 slices = 2 angles, spec rename / schema bump / multi-file cascade = 3-4 angles.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 19,
+          "verbatim": "**Angle 수는 슬라이스 규모에 맞춘다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 20,
+          "verbatim": "단일 슬라이스 = 1각, 2–3 슬라이스 = 2각, 스펙 리네임·스키마 bump·다수 파일 카스케이드 = 3–4각."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "One counterweight pass runs right after premortem: a single counterweight agent is asked to flag over-worry/YAGNI/premature improvement, and it classifies each finding into one of four buckets (must-fix before release, cheap to fold in, over-worry to ignore, valid but defer).",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 21,
+          "verbatim": "**premortem 직후 카운터웨이트 1회.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 22,
+          "verbatim": "여러 에이전트 결과가 쌓이면 **하나의 카운터웨이트 에이전트** 에게 \"과한 걱정 / YAGNI / premature improvement 을 솔직히 지적해줘\" 를 돌린다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 23,
+          "verbatim": "카운터웨이트는 각 finding 을 (a) 출시 전 반드시 고침, (b) 같은 변경에 끼워넣기 cheap, (c) 과한 걱정 → 무시, (d) 유효하지만 defer 로 분류한다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "If the single-angle premortem result is small, the counterweight pass is skipped.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 24,
+          "verbatim": "**1각 결과가 작으면 카운터웨이트 skip**.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "A separate counterweight agent may be omitted when one premortem agent properly plays devil's advocate, but that agent's core claims must then be verified directly in the repo (grep + read to confirm); accepting them unverified is risky.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 25,
+          "verbatim": "**Premortem 의 한 agent 가 devil's-advocate 역할을 제대로 하면 별도 카운터웨이트 agent 를 생략 가능.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 26,
+          "verbatim": "단 그 agent 의 핵심 주장은 repo 에서 직접 검증해야 한다 (grep + read 로 confirm; 검증 없이 그대로 받는 건 위험)."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Priority voting also gets a counterweight pass: a follow-up promote decision driven only by a 3-angle 2/3 vote can carry a tidiness-reflex item, and one counterweight pass catches that consensus-by-accident.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 27,
+          "verbatim": "**우선순위 투표도 카운터웨이트를 건다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 28,
+          "verbatim": "Follow-up promote 결정에서 3-angle 투표만 보고 2/3 득표로 promote 하면 \"tidiness reflex\" 아이템이 실려 올 수 있다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 29,
+          "verbatim": "카운터웨이트 한 번은 그런 consensus-by-accident 를 잡아낸다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Iterative premortem: after partially applying round-1 results, a round 2 runs again on the new decisions that arose from those changes.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 30,
+          "verbatim": "**Iterative premortem.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 31,
+          "verbatim": "라운드 1 결과 일부 반영 → 거기서 생긴 **새 결정** 에 대해 라운드 2 다시."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Specs embed a `Deliberately not doing` section: when recording a decision, the considered-and-rejected alternatives plus rejection rationale are written alongside what was adopted.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 35,
+          "verbatim": "**스펙에 `Deliberately not doing` 섹션을 박는다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 36,
+          "verbatim": "결정을 기록할 때 채택한 것만이 아니라 **고려하고 기각한 대안 + 기각 사유** 도 같이 적는다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "A large slice deferred after premortem is recorded in its contract doc as a 'Deferred Expansion' section capturing scope + why + trigger + must-fix classification, so the next session can decide without re-running a 4-angle premortem.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 38,
+          "verbatim": "**Deferred slice 도 같은 원리로 박는다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 39,
+          "verbatim": "premortem 후 defer 로 결정된 큰 slice 는 해당 contract 문서에 \"Deferred Expansion\" 섹션으로 **scope + why + trigger + must-fix 분류** 를 남긴다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When a follow-up number is deleted from a spec, the items are renumbered, leaving no gap; deletion + renumbering + cross-ref update all land in one commit.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 41,
+          "verbatim": "**Follow-up 번호는 스펙에서 삭제될 때 재넘버링한다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 42,
+          "verbatim": "gap 을 남기지 말고 삭제 + 재넘버링 + cross-ref 갱신을 한 커밋에."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Workflow behavior prose speaks only in present tense about what the workflow does (maintainer-ratified 2026-06-11); history/negation narratives like 'previously X' or 'no longer does X' are unnecessary for a first-time user and are a source of stale claims.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 43,
+          "verbatim": "**워크플로우 행동 프로즈는 현재형으로 \"뭘 한다\" 만 말한다 (maintainer 비준 2026-06-11).**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 44,
+          "verbatim": "\"예전에는 X 였다\", \"더 이상 X 하지 않는다\" 류의 변천사·부정형 서술은 첫 사용 유저에게 불필요하고 stale claim 의 원천이 된다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "D1-discovery"],
+      "edgeRationale": "M1 owns the present-tense-prose authoring discipline as a proven-on-itself rule; D1-discovery is supported because the rule exists specifically to keep stale narrative prose from being extracted as claims during discovery.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Rejected or not-done decisions live only in explicit decision sections with `Fixed Decisions` / `Deliberately Not Doing` style headings and in goal artifacts.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 45,
+          "verbatim": "기각/미수행 결정은 `Fixed Decisions` / `Deliberately Not Doing` 류의 heading 이 명시된 결정 섹션과 goal 아티팩트에만 둔다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "D1-discovery"],
+      "edgeRationale": "M1 owns the decision-recording discipline; D1-discovery is supported because heading-named decision sections are the non-claim convention that lets discovery deterministically exclude these decisions.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Heading-named decision sections are deterministically excluded by the non-claim convention, but transitional-history narrative in flowing prose is extracted as a stale claim (measured by S0 HITL c01/c04).",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 46,
+          "verbatim": "이 규칙이 claim 추출과 맞물리는 이유: heading 이 명시된 결정 섹션은 non-claim convention 으로 결정론적으로 제외 가능하지만, 흐르는 프로즈 속 변천사 서술은 stale claim 으로 추출된다 (S0 HITL c01/c04 가 실측한 실패 모드).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery", "D2-review-refresh"],
+      "edgeRationale": "D1-discovery owns the non-claim-convention exclusion during extraction; D2-review-refresh is supported because stale-claim extraction is what the review/refresh loop must catch.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The same concept uses the same name across user-facing spec, maintainer spec, CLI JSON, the Cautilus Agent, test names, and helper names, matching user/product/doc/code-JSON languages as much as possible.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 50,
+          "verbatim": "**유저 언어, 제품 도메인 언어, 문서 언어, 코드/JSON 언어를 가능한 한 맞춘다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 51,
+          "verbatim": "같은 개념은 user-facing spec, maintainer spec, CLI JSON, Cautilus Agent, test name, helper name 에서 같은 이름을 써야 한다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "A different name is treated as a different concept; even an apparent rename splits product meaning if user docs and binary output diverge, so a rename updates public prose, JSON field/meaning, tests, and maintainer mapping in one slice or is explicitly deferred.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 53,
+          "verbatim": "**이름이 다르면 다른 개념으로 간주한다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 55,
+          "verbatim": "rename 은 public prose, JSON field/meaning, tests, maintainer mapping 을 한 slice 에서 같이 갱신하거나 명시적으로 defer 한다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Readiness, Claim Discovery, Behavior Evaluation, and Bounded Improvement are the workflow-centric dominant decomposition (the main concern / user-facing stories).",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 56,
+          "verbatim": "**User-facing stories 는 main concern 이고, cross-cutting concerns 는 숨기지 않는다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 57,
+          "verbatim": "Readiness, Claim Discovery, Behavior Evaluation, Bounded Improvement 은 workflow 중심 dominant decomposition 이다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX", "S2-readiness", "D1-discovery", "E1-evaluate", "I1-bounded-improvement"],
+      "edgeRationale": "APEX is the home for the overall decomposition; S2-readiness, D1-discovery, E1-evaluate, and I1-bounded-improvement are each named as one of the four dominant workflow stories the decomposition asserts.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cross-cutting concerns (host-owned execution, reviewable artifacts, evidence gaps, vocabulary/packet consistency) are not hidden: they remain visible in the index and are re-projected as proof inside each story.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 58,
+          "verbatim": "Host-owned execution, Reviewable Artifacts, Evidence Gaps, vocabulary/packet consistency 같은 concern 은 별도 workflow 가 아니어도 index 에서 보이고 각 story 안의 proof 로 다시 투영되어야 한다.",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 59,
+          "verbatim": "이 concern 들은 \"또 하나의 audience view\" 가 아니라 canonical promise model 위에 얹는 concern-first lens 다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "APEX"],
+      "edgeRationale": "M1 owns the proven-on-itself spec discipline that keeps cross-cutting concerns visible; APEX is supported because the cross-cutting concerns sit on the canonical promise model that APEX anchors.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cross-cutting concerns are not exposed in AOP terms in public docs: internal design uses AOP/dominant-decomposition warnings, but public docs speak in concrete contracts and evidence routes (e.g. 'every workflow leaves reviewable artifacts', 'missing evidence remains visible' rather than 'aspect').",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 61,
+          "verbatim": "**Cross-cutting concern 을 AOP 용어로 노출하지 않는다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 62,
+          "verbatim": "내부 설계 렌즈로는 AOP / dominant decomposition 경고를 사용하되, public docs 는 concrete contract 와 evidence route 로 말한다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "A self-check verifies that no one decomposition axis erases other concerns: if evidence visibility, host ownership, cost-budget, or agent-human readability get buried in a particular story, the design has regressed.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 64,
+          "verbatim": "**한 분해 축이 다른 관심사를 지우는지 self-check 한다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 65,
+          "verbatim": "user story 순서가 workflow 를 잘 설명해도, evidence visibility / host ownership / cost-budget / agent-human readability 가 특정 story 에 묻혀 사라지면 설계가 퇴행한 것이다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The index keeps cross-cutting items, and the maintainer side keeps a mapping of which invariant constrains which story.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 66,
+          "verbatim": "index 에 cross-cutting 항목을 남기고, maintainer side 에는 어떤 invariant 가 어느 story 를 제한하는지 mapping 을 둔다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus's independent product responsibility is written artifact-first: a good binary plus machine-readable packets, provenance, status, and next-work route; document substrate or authoring runtime is not placed at the center of the product promise.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 68,
+          "verbatim": "**Cautilus 제품 책임은 artifact-first 로 쓴다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 69,
+          "verbatim": "Cautilus 의 독립 책임은 좋은 바이너리와 머신이 이해하기 쉬운 패킷, provenance, status, next-work route 를 내는 것이다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 71,
+          "verbatim": "문서 substrate 나 authoring runtime 은 제품 약속의 중심에 세우지 않는다."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX", "D1-discovery"],
+      "edgeRationale": "APEX is the home for Cautilus's product responsibility boundary; D1-discovery is supported because the machine-readable packet/provenance/next-work-route artifacts are the discovery output surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The Cautilus Agent interprets the packet and helps with the workflow branch.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 70,
+          "verbatim": "Cautilus Agent 는 그 패킷을 해석하고 workflow branch 를 돕는다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration", "A2-curation-review"],
+      "edgeRationale": "A1-orchestration owns the agent's workflow-branch routing role; A2-curation-review is supported because interpreting the packet is part of how the agent curates and routes the discovery/review output.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Good top-level spec language is promoted toward Charness: the philosophy of writing user-facing, maintainer-facing, and cross-concern specs with unified vocabulary and concerns is general Charness-managed authoring discipline, refined in this repo first and then moved to a Charness skill/support surface.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 72,
+          "verbatim": "**좋은 top-level spec 언어는 Charness 쪽으로 승격한다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 74,
+          "verbatim": "이 repo 에서 충분히 깎은 뒤 Charness skill/support surface 로 옮긴다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "specdown-flavored language (docs/specs/**/*.spec.md, run:shell, doctest, check:jq, specdown HTML report, report.json) must first be discovered through the Charness support/specdown skill: check support/specdown in the find-skills inventory and read its syntax/best-practices/cli/report reference before treating it as plain Markdown/HITL work.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 77,
+          "verbatim": "**specdown 은 Charness support skill 로 먼저 발견되어야 한다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 78,
+          "verbatim": "`docs/specs/**/*.spec.md`, `run:shell`, doctest, `check:jq`, specdown HTML report, `report.json` 같은 언어가 나오면 일반 Markdown/HITL 작업으로만 보지 않는다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 79,
+          "verbatim": "먼저 `find-skills` inventory 에서 `support/specdown` 을 확인하고 syntax / best-practices / cli / report reference 를 읽는다."
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration", "D1-discovery"],
+      "edgeRationale": "A1-orchestration owns the skill-routing behavior of discovering support/specdown before doing the work; D1-discovery is supported because find-skills inventory routing is part of the discovery surface this rule governs.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "On a breaking change (schema/subcommand rename), the old path must point to the new path via an actionable error.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 84,
+          "verbatim": "**Breaking change 의 actionable error 계약.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 85,
+          "verbatim": "스키마·서브커맨드 리네임 시 옛 경로는 `actionable error` 로 새 경로를 가리켜야 한다."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "D2-review-refresh"],
+      "edgeRationale": "S2-readiness owns the actionable-error doctor/CLI contract that guides an operator to the new path; D2-review-refresh is supported because schema/subcommand migration is part of keeping the review/refresh surface current.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When a v1 surface name leaks archetype vocabulary, the default is catalog-level deprecation (alias + silent normalization) rather than a schema bump; a schema bump is only for when there is a real reason to force consumer migration.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 86,
+          "verbatim": "**Catalog-level deprecation vs schema bump.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 87,
+          "verbatim": "v1 surface 이름이 archetype vocabulary 를 leak 하면 schema bump 가 아니라 catalog-level deprecation (별칭 + silent 정규화) 이 default."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 88,
+          "verbatim": "스키마 bump 는 consumer migration 을 강제해야 할 실제 이유가 있을 때만."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": ["D2-review-refresh", "S1-install"],
+      "edgeRationale": "D2-review-refresh owns the catalog deprecation/normalization default; S1-install is supported because forced consumer migration vs silent normalization directly affects the adopter's install/upgrade experience.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The pre-deletion parity gate is read as semantic byte-identity: after `jq --sort-keys 'sort_by(.proposalKey)'`, byte-equality passes the gate; if a slice intentionally introduces a source-to-dest transform while the parity test demands true byte-identity, the parity test is redefined to compare after the transform.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 89,
+          "verbatim": "**Pre-deletion parity gate 는 시맨틱 byte-identity 로 읽는다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 90,
+          "verbatim": "`jq --sort-keys 'sort_by(.proposalKey)'` 후 byte 동일이면 gate 통과."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 91,
+          "verbatim": "**Parity test 가 true byte-identity 를 요구하는데 슬라이스가 의도적으로 source→dest 변환을 도입하면, parity test 를 \"변환 후 비교\" 로 재정의**."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "D2-review-refresh"],
+      "edgeRationale": "M1-proven-on-itself owns the parity-gate quality discipline; D2-review-refresh is supported because the proposalKey parity gate guards the deterministic claim/proposal review surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Standing gate before slice: when planning a slice that entails a multi-file cascade, the linter goes first.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 95,
+          "verbatim": "**Standing gate 먼저, 슬라이스 나중.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 96,
+          "verbatim": "다수 파일 카스케이드를 수반하는 슬라이스를 계획 중이면 린터부터."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Document HITL views the rendered preview: when chunk-reviewing public docs or docs/specs/ prose, run `npm run docs:preview:changed` and read the matching width snapshot in `.artifacts/markdown-preview/` instead of raw markdown only; preview exit 0 alone is not enough, and a verified non-empty rendered text must actually be produced, with an empty snapshot treated as a renderer seam bug.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 97,
+          "verbatim": "**문서 HITL 은 rendered preview 까지 본다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 98,
+          "verbatim": "public docs 나 `docs/specs/` prose 를 chunk review 할 때는 raw markdown 만 보지 말고 `npm run docs:preview:changed` 를 돌린 뒤 `.artifacts/markdown-preview/` 의 해당 width snapshot 을 읽는다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 100,
+          "verbatim": "non-empty rendered text 가 실제로 생성됐는지 보고, 빈 snapshot 이면 renderer seam bug 로 취급한다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "A2-curation-review"],
+      "edgeRationale": "M1-proven-on-itself owns the doc-quality gate discipline; A2-curation-review is supported because rendered-preview reading is part of the structured document HITL review loop.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When a standing gate has landed, escape hatches are re-evaluated: temporary enforcement escapes (e.g. `Must*` helpers) are checked for whether they can be deleted once the gate is in.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 101,
+          "verbatim": "**Standing gate 가 landed 되면 escape hatch 를 재평가.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 102,
+          "verbatim": "임시로 남겨둔 enforcement escape (`Must*` 헬퍼 등) 는 gate 가 들어온 뒤 삭제 가능한지 확인."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Commands that write and read the same generated artifact are not parallelized (e.g. `discover claims status --output X` and `jq X` sharing a file makes the reader read the prior file and create a false bug signal); parallelization is used only for independent reads or commands using different output paths.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 103,
+          "verbatim": "**같은 generated artifact 를 쓰고 읽는 명령은 병렬화하지 않는다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 104,
+          "verbatim": "`discover claims status --output X` 와 `jq X` 처럼 writer/reader 가 같은 파일을 공유하면 reader 가 이전 파일을 먼저 읽어 false bug signal 을 만든다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 105,
+          "verbatim": "병렬화는 독립 read 나 서로 다른 output path 를 쓰는 명령에만 쓴다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration", "D2-review-refresh"],
+      "edgeRationale": "A1-orchestration owns the agent's command-sequencing/parallelization guardrail; D2-review-refresh is supported because the named hazard concerns the discover claims status artifact in the review/refresh flow.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Fixture naming convention is canonical / minimal / specialized: canonical=`<archetype>-input.json` (realistic, full), minimal=`--example-input` stdout (schema minimum), specialized=under `samples/` (consumer narrative).",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 109,
+          "verbatim": "**Fixture 이름 컨벤션: canonical / minimal / specialized.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 110,
+          "verbatim": "canonical=`<archetype>-input.json` (realistic, full), minimal=`--example-input` stdout (schema 최소), specialized=`samples/` 하위 (consumer narrative)."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The starter kit `input.json` is a drift-tested copy of canonical and is not a new role.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 111,
+          "verbatim": "Starter kit `input.json` 은 canonical 의 drift-tested copy 이며 새 역할 아님.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "E2-scenarios-experiments"],
+      "edgeRationale": "S1-install is the home for starter-kit packaging; E2-scenarios-experiments is supported because the copied input.json is the canonical scenario fixture it mirrors.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Intended file duplication (starter/<X>/input.json mirroring the canonical fixture) follows the existing standing copy + drift-test pattern (sync-packaged-skill + distribution-surface test) that enforces byte-identity, without reinventing an abstraction.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 112,
+          "verbatim": "**Copy + drift test 패턴.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 113,
+          "verbatim": "의도된 파일 중복 (starter/<X>/input.json ↔ canonical fixture) 은 drift test 로 byte-identity 를 강제하는 기존 standing pattern (sync-packaged-skill + distribution-surface test) 을 따른다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 114,
+          "verbatim": "추상화 재발명 금지."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "M1-proven-on-itself"],
+      "edgeRationale": "S1-install owns the packaged starter-kit copy; M1-proven-on-itself is supported because byte-identity drift tests are the self-proving gate that enforces the duplication.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Before adding an external dependency, existing practice is checked first: e.g. porting the Node-side minimal validator pattern to Go instead of adding Ajv, or reusing the existing `run-install-smoke.mjs` channel instead of making a new smoke script.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 118,
+          "verbatim": "**External dependency 추가 전에 기존 관행 먼저 확인.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 119,
+          "verbatim": "Ajv 추가 대신 Node 측 minimal validator 패턴을 Go 로 포팅하거나, 새 smoke 스크립트 만들지 않고 기존 `run-install-smoke.mjs` 의 채널 재사용."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "S1-install"],
+      "edgeRationale": "M1-proven-on-itself owns the dependency-discipline rule; S1-install is supported because reusing run-install-smoke.mjs concerns the install smoke surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When a doc is moved, the gate that asserts it moves too: before moving, grep finds every place that asserts the old path (spec guard rows, Go smoke test string asserts, packaged-tree sync) and they are repointed in the same slice so verify passes.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 120,
+          "verbatim": "**문서를 옮기면 그걸 assert 하는 gate 도 같이 옮긴다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 121,
+          "verbatim": "예: SKILL.md core → `references/*.md` 이동 때 spec guard rows, Go smoke test 의 문자열 assert, packaged 트리 sync 세 군데가 이동을 따라가야 verify 통과."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 122,
+          "verbatim": "이동 전에 grep 으로 해당 경로를 assert 하는 곳을 전부 찾아 같은 슬라이스 안에서 재지정."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Base principle of the Go/JS boundary: Go is the shipped product surface, JS is the bounded helper/runtime seam.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 126,
+          "verbatim": "**기본 원칙: `Go` 는 shipped product surface, `JS` 는 bounded helper/runtime seam.**",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "A1-orchestration"],
+      "edgeRationale": "S1-install owns the shipped-binary product surface that Go represents; A1-orchestration is supported because the JS helper/runtime seam carries the bounded agent-runtime orchestration.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "This repo promises a 'standalone binary plus Cautilus Agent' as its product surface.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 127,
+          "verbatim": "이 repo 는 `standalone binary plus Cautilus Agent` 를 제품 표면으로 약속한다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "A1-orchestration"],
+      "edgeRationale": "S1-install owns the standalone-binary install surface; A1-orchestration is supported because the Cautilus Agent half of the promised product surface owns workflow routing.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Stable commands an operator directly expects via `cautilus ...`, surfaces a release artifact calls officially supported, and surfaces whose error contract will be strongly pinned long-term default to being pulled up into the Go CLI.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 128,
+          "verbatim": "따라서 operator 가 `cautilus ...` 로 직접 기대하게 되는 안정 명령, release artifact 가 \"공식 지원\" 한다고 말할 표면, 장기적으로 에러 계약을 강하게 고정할 표면은 `Go CLI` 로 끌어올리는 쪽이 기본이다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "S2-readiness"],
+      "edgeRationale": "S1-install owns the shipped Go CLI surface; S2-readiness is supported because operator-expected stable cautilus commands surface through doctor/CLI discovery.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Conversely, thin orchestration between the host repo adapter and consumer-owned commands, packet assembly/validation helpers, and bounded runtime seams that direct script usage suffices for are placed first in `scripts/` or `scripts/agent-runtime/`.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 129,
+          "verbatim": "반대로 host repo adapter 와 consumer-owned command 사이를 잇는 thin orchestration, packet assembly/validation helper, direct script usage 로도 충분한 bounded runtime seam 은 우선 `scripts/` 또는 `scripts/agent-runtime/` 에 둔다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration", "S1-install"],
+      "edgeRationale": "A1-orchestration owns the thin orchestration/helper runtime seam in scripts/agent-runtime; S1-install is supported because the boundary defines what stays out of the shipped binary surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The first criterion for not going to Go now is surface stability: if contract shape, placeholder set, or adapter indirection is still likely to change, Go promotion is not rushed, because promoting to Go at that stage also pins binary UX, docs, smoke, CLI help, and registry surface and raises iteration cost.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 130,
+          "verbatim": "**\"지금 당장 Go 로 안 가는\" 첫 기준은 surface stability 이다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 131,
+          "verbatim": "contract shape, placeholder set, adapter indirection 이 아직 바뀔 가능성이 크면 `Go` 승격을 서두르지 않는다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 132,
+          "verbatim": "이 단계에서 `Go` 로 올리면 binary UX, docs, smoke, CLI help, registry surface 까지 같이 고정하게 되어 iteration cost 가 커진다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The second criterion is the ownership cut: a surface promoted to Go must have clear product-owned behavior; a helper that sits thinly on top of consumer-owned actual probe/launch/auth/runtime wiring stays in JS first and is promoted only after the product's exact responsibility hardens.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 133,
+          "verbatim": "**둘째 기준은 ownership cut 이다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 134,
+          "verbatim": "`Go` 로 올릴 표면은 product-owned behavior 가 명확해야 한다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 135,
+          "verbatim": "consumer-owned actual probe/launch/auth/runtime wiring 위에 얇게 얹는 helper 는 먼저 `JS` 에 두고, product 가 정확히 무엇을 책임질지 굳은 뒤 승격한다."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "E1-evaluate"],
+      "edgeRationale": "S1-install owns the Go promotion/ownership-cut rule; E1-evaluate is supported because consumer-owned probe/launch/auth/runtime wiring is the host-execution boundary of the evaluate surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The third criterion is operator expectation: when it becomes natural for an operator to find and use the feature in `cautilus doctor commands` or the CLI reference, pressure builds to promote to Go; conversely a seam that wrapper tools, self-dogfood scripts, or adapter-owned flows can call directly via `node scripts/...` can stay in JS.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 136,
+          "verbatim": "**셋째 기준은 operator expectation 이다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 137,
+          "verbatim": "operator 가 이 기능을 `cautilus doctor commands` 나 CLI reference 에서 찾아 쓰는 것이 자연스러운 상태가 되면 `Go` 로 승격할 압력이 생긴다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 138,
+          "verbatim": "반대로 wrapper tool, self-dogfood script, adapter-owned flow 가 직접 `node scripts/...` 로 호출해도 괜찮은 seam 이면 아직 `JS` 에 머물 수 있다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "S1-install"],
+      "edgeRationale": "S2-readiness owns the cautilus doctor commands / CLI reference discovery surface that the criterion references; S1-install is supported because the criterion governs which seams become shipped Go binary surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The fourth criterion is binary promise cost: the moment a seam is promoted to Go it takes on standalone binary release, install surface, and long-term backward-compatibility expectations, so if the benefit does not yet justify that cost it is correct to leave it as a JS helper.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 139,
+          "verbatim": "**넷째 기준은 binary promise cost 이다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 140,
+          "verbatim": "`Go` 로 승격하는 순간 그 seam 은 standalone binary release, install surface, 장기 backward compatibility 기대를 같이 짊어진다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 141,
+          "verbatim": "그 비용을 치를 만큼 benefit 이 아직 없으면 `JS` helper 로 남기는 편이 맞다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Live app discovery/invocation is proven first in JS and promoted to Go once an operator-facing entrypoint is agreed: early on, scripts/agent-runtime/ helpers close explicit normalization, packet validation, and synthetic consumer proof first, then the surface is pulled into the Go CLI once `instance` can be described in user language and `cautilus discover live-targets` / `cautilus evaluate live` are described as sub-execution surfaces of `eval`.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 145,
+          "verbatim": "**live app discovery/invocation 은 `JS` 에서 먼저 proof 하고, operator-facing entrypoint 가 합의되면 `Go` 로 승격한다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 146,
+          "verbatim": "초기에는 `scripts/agent-runtime/` helper 로 explicit normalization, packet validation, synthetic consumer proof 를 먼저 닫았다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 147,
+          "verbatim": "그다음 `instance` 를 \"이 호스트에서 `Cautilus` 가 선택하는 live consumer target 하나\" 라는 사용자 언어로 설명할 수 있고, 현재처럼 `cautilus discover live-targets` / `cautilus evaluate live` 이 `eval` 의 하위 실행 표면으로 설명될 때 Go CLI 로 끌어올린다."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "D1-discovery", "S1-install"],
+      "edgeRationale": "E1-evaluate owns cautilus evaluate live as a sub-execution surface; D1-discovery is supported because cautilus discover live-targets is a discovery surface; S1-install is supported because Go promotion adds the seam to the shipped binary.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "After promotion the consumer-owned seam remains: `kind: command` discovery still has the consumer probe command output the catalog, and live invocation still has the adapter's `consumer_command_template` handle actual launch/runtime wiring; the Go command's role is to pin the product-owned packet contract, validation, and dispatch rules as the official surface.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 148,
+          "verbatim": "**승격 후에도 consumer-owned seam 은 그대로 남는다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 149,
+          "verbatim": "`kind: command` discovery 는 여전히 consumer probe command 가 catalog 를 출력한다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 150,
+          "verbatim": "live invocation 도 여전히 adapter 의 `consumer_command_template` 가 actual launch/runtime wiring 을 담당한다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 151,
+          "verbatim": "Go command 는 product-owned packet contract, validation, dispatch 규칙을 공식 표면으로 고정하는 역할이다."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "D1-discovery"],
+      "edgeRationale": "E1-evaluate owns the live-invocation ownership boundary via consumer_command_template; D1-discovery is supported because kind:command discovery and the consumer probe catalog are the discovery side of the same boundary.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The promotion decision is made by 'is the product's entry and result format clear enough to promise' rather than 'has the consumer seam disappeared'; even a thin wrapper that an operator would actually look for is correct as a Go CLI.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 152,
+          "verbatim": "**즉 승격 판단은 \"consumer seam 이 사라졌는가\" 가 아니라 \"product 가 약속할 입구와 결과 형식이 충분히 분명한가\" 로 한다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 153,
+          "verbatim": "thin wrapper 여도 operator 가 실제로 찾을 만한 표면이면 Go CLI 가 맞다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "S2-readiness"],
+      "edgeRationale": "S1-install owns the Go CLI shipped surface decision; S2-readiness is supported because 'a surface an operator would actually look for' is the operator-discovery readiness signal.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Go promotion trigger: the adapter indirection (e.g. `consumer_command_template`) stays stable across two or three sessions.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 157,
+          "verbatim": "adapter indirection (`consumer_command_template` 등) 이 두세 세션 이상 안정적으로 유지된다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Go promotion trigger: an operator-facing CLI entrypoint becomes actually necessary.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 158,
+          "verbatim": "operator-facing CLI entrypoint 가 실제로 필요해진다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "S1-install"],
+      "edgeRationale": "S2-readiness owns the operator-facing CLI entrypoint readiness; S1-install is supported because the trigger results in promoting the seam to the shipped binary.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Go promotion trigger: documenting it as `cautilus <subcommand>` is more natural than direct script usage.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 159,
+          "verbatim": "direct script usage 가 아니라 `cautilus <subcommand>` 로 문서화하는 편이 더 자연스럽다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "S1-install"],
+      "edgeRationale": "S2-readiness owns CLI subcommand discovery/documentation; S1-install is supported because the documented subcommand becomes shipped binary surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Go promotion trigger: it becomes worth including in binary-level smoke / help text / command discovery.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 160,
+          "verbatim": "binary-level smoke / help text / command discovery 에 포함시킬 가치가 생긴다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness", "S1-install"],
+      "edgeRationale": "S2-readiness owns binary-level command discovery / help text; S1-install is supported because binary-level smoke is part of the shipped install surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Go promotion trigger: the helper is treated as a shipped product capability rather than a consumer experiment seam.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 161,
+          "verbatim": "helper 가 더 이상 consumer experiment seam 이 아니라 shipped product capability 로 취급된다.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Handoff bookkeeping happens only once, at the end of the session: updating the unpushed count every commit accumulates off-by-one correction micro-commits, so it is better to tidy once just before pushing after finishing all slices, or to finish through push within the session.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 165,
+          "verbatim": "**핸드오프 bookkeeping 은 세션 말미에 한 번만.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 166,
+          "verbatim": "매 커밋마다 unpushed count 를 업데이트하면 off-by-one 정정 마이크로 커밋이 쌓인다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 167,
+          "verbatim": "슬라이스 전부 끝내고 푸시 직전 한 번 정리하거나, 아예 push 까지 세션 안에서 끝내는 것이 낫다."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Premortem hazard: do not add a fourth normalization family even when tempted (e.g. `tool_use`, `pipeline`); a new family is added only when it brings schema + helper + CLI + contract + fixture + README + SKILL.md + scenarios.go + starter kit together in one slice, and `npm run lint:scenario-normalizers` verifies the survivor `discover scenarios normalize` runtime completeness.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 173,
+          "verbatim": "**normalization family 확장 욕심**.",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 175,
+          "verbatim": "새 family 는 schema + helper + CLI + contract + fixture + README + SKILL.md + scenarios.go + starter kit 까지 한 슬라이스에 같이 가져올 때만."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 176,
+          "verbatim": "`npm run lint:scenario-normalizers` 가 survivor `discover scenarios normalize` 런타임 완결성을 검증한다."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Prototypes are isolated into `internal/runtime/prototypes/` as an escape hatch, with `cautilus.<name>_prototype.v0` naming.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 177,
+          "verbatim": "**프로토타입 격리**.",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 178,
+          "verbatim": "프로토타입은 `internal/runtime/prototypes/` 로 간다 (escape hatch)."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 179,
+          "verbatim": "`cautilus.<name>_prototype.v0` 네이밍."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "`sync-packaged-skill.mjs` rewrites upward links so packaged-tree `.md` files are not byte-identical to source; new consumer-facing docs under `skills/cautilus-agent/references/` must not use upward links because the rewriter auto-rewrites the packaged copy two levels deeper, and link text must not contain paths (which would cause a packaged text/target mismatch) but use a filename-label or human-label.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 180,
+          "verbatim": "**`sync-packaged-skill.mjs` 가 upward 링크를 rewriting 한다.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 181,
+          "verbatim": "packaged 트리의 `.md` 파일 내용이 source 와 byte-identical 이 아니다."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 183,
+          "verbatim": "**Link text 에 경로를 쓰지 말 것** — 그러면 packaged 에서 text/target mismatch."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "A1-orchestration"],
+      "edgeRationale": "S1-install owns the packaged-skill-tree sync behavior; A1-orchestration is supported because the rewritten references live under the Cautilus Agent skill surface.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Starter kit fixture drift hazard: `examples/starters/<archetype>/input.json` is a byte-identical copy of `fixtures/scenario-proposals/<archetype>-input.json`, so editing only one side fails `scripts/starter-kit-parity.test.mjs`; both must be updated together or re-copied with `cp`.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 185,
+          "verbatim": "**Starter kit fixture drift.**",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 186,
+          "verbatim": "`examples/starters/<archetype>/input.json` 은 `fixtures/scenario-proposals/<archetype>-input.json` 의 byte-identical copy."
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 187,
+          "verbatim": "한 쪽만 편집하면 `scripts/starter-kit-parity.test.mjs` 실패."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "E2-scenarios-experiments"],
+      "edgeRationale": "S1-install owns the starter-kit parity test; E2-scenarios-experiments is supported because the mirrored fixture is the scenario-proposals input.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When writing narrative/spec: right after rewriting a landing surface or writing a seed spec and before commit, one self-review pass runs; if the three check questions are not passed, it is fixed before commit.",
+      "excerpts": [
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 193,
+          "verbatim": "랜딩 surface 재작성·seed spec 작성 직후 commit 전에 자체 검토 1회.",
+          "primary": true
+        },
+        {
+          "path": "docs/internal/working-patterns.md",
+          "line": 200,
+          "verbatim": "세 질문을 통과 못 하면 commit 전에 수정."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "A2-curation-review"],
+      "edgeRationale": "M1-proven-on-itself owns the self-review-before-commit spec discipline; A2-curation-review is supported because the three-question self-premortem is a structured review pass.",
+      "unresolvedQuestions": []
+    }
+  ],
+  "skippedSources": []
+}

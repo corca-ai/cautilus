@@ -1,0 +1,1050 @@
+{
+  "schemaVersion": "cautilus.claim_extraction_result.v1",
+  "extractionInputRef": {
+    "path": "extraction-input.json",
+    "templateHash": "sha256:b922fd5d92510fd0161eb53f8f8829bb964de3113bed9a03498b4c75972b34ef"
+  },
+  "runtime": {
+    "model": "claude-opus-4-8",
+    "agent": "cautilus-agent-blind-extractor"
+  },
+  "claims": [
+    {
+      "summary": "Cautilus is a framework for discovering, evaluating, and improving agent behavior.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 3,
+          "verbatim": "`Cautilus` is the framework for discovering, evaluating, and improving agent behavior.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX", "D1-discovery", "E1-evaluate", "I1-bounded-improvement"],
+      "edgeRationale": "The three jobs name discovery (D1-discovery), evaluation (E1-evaluate), and improvement (I1-bounded-improvement) under the apex behavior-honesty promise (APEX).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus lets you pin down the behavior that matters and prove it survives every change to prompts, skills, and models.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 4,
+          "verbatim": "It lets you pin down the behavior that matters, prove it survives every change to your prompts, skills, and models, and improve it within explicit budgets—whether you're protecting an `AGENTS.md`, a single skill, a prompt, or a full agent loop.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX", "I1-bounded-improvement"],
+      "edgeRationale": "Pinning behavior that survives change is the apex promise (APEX); improving within explicit budgets supports bounded improvement (I1-bounded-improvement).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The three jobs connect: discover declared behavior claims worth proving from selected source docs, verify curated claims through bounded evaluation packets, and improve behavior once the proof surface is honest.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 5,
+          "verbatim": "The three jobs connect: discover the declared behavior claims worth proving from selected source docs, verify the curated claims through bounded evaluation packets, and improve behavior once the proof surface is honest.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX", "D1-discovery", "E1-evaluate", "I1-bounded-improvement"],
+      "edgeRationale": "Discover maps to D1-discovery, verify through bounded evaluation packets to E1-evaluate, and improve to I1-bounded-improvement, all under the apex connection (APEX).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus ships as a standalone binary plus Cautilus Agent that a host repo can install without copying another scaffold first.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 6,
+          "verbatim": "`Cautilus` ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Agents are first-class users of the product surface.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 7,
+          "verbatim": "Agents are first-class users of the product surface.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration", "APEX"],
+      "edgeRationale": "Agent-first design grounds the agent orchestration epic (A1-orchestration) and the apex product stance that agents drive the workflow (APEX).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Commands emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 8,
+          "verbatim": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration", "APEX"],
+      "edgeRationale": "Resumable durable packets serve agent orchestration handoff (A1-orchestration) and the apex packet-first reopenable-evidence stance (APEX).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 9,
+          "verbatim": "`Cautilus` installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The binary is shared across repos.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 10,
+          "verbatim": "The binary is shared across repos.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The Cautilus Agent surface, adapter wiring, prompts, and instruction-routing surface are not shared across repos; they stay checked into each host repo.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 11,
+          "verbatim": "The Cautilus Agent surface, adapter wiring, prompts, and instruction-routing surface are not.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 12,
+          "verbatim": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "M1-proven-on-itself"],
+      "edgeRationale": "Repo-local checked-in agent surface is an install/ownership boundary (S1-install) that also makes evaluation behavior reproducible and owned by the declaring repo (M1-proven-on-itself).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Checked-in repo-local evaluation surface keeps evaluation behavior reproducible, reviewable, and owned by the repo that declares it.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 12,
+          "verbatim": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "S1-install"],
+      "edgeRationale": "Reproducible/reviewable/owned evaluation behavior is a proven-on-itself property (M1-proven-on-itself) conferred by the repo-local install boundary (S1-install).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus proves its own promises with honest badges: readiness and claim discovery run live in executable specs (proven), behavior evaluation, bounded improvement, reviewable artifacts, and host ownership project saved evidence bundles (declared), and a testable-agent runner is promised.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 16,
+          "verbatim": "Cautilus proves its own promises with honest badges ([the apex spec](./docs/specs/index.spec.md)): readiness and claim discovery run live in executable specs (**proven**), while behavior evaluation, bounded improvement, reviewable artifacts, and host ownership project saved evidence bundles (**declared**) and a testable-agent runner is **promised**.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "APEX", "S2-readiness", "D1-discovery"],
+      "edgeRationale": "Honest badge proof is the proven-on-itself promise (M1-proven-on-itself) covering the apex (APEX), with readiness (S2-readiness) and claim discovery (D1-discovery) called out as the live/proven slices.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "For cross-repo adoption, the bounded evaluation loop is the most ready slice: host repos can use cautilus evaluate fixture, cautilus evaluate observation, and post-run cautilus evaluate skill-experiment with checked-in fixtures, host-owned adapters, preserved task packets, and current evaluation and skill-experiment report packets.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 17,
+          "verbatim": "For cross-repo adoption, the bounded evaluation loop is the most ready slice: host repos can use `cautilus evaluate fixture`, `cautilus evaluate observation`, and post-run `cautilus evaluate skill-experiment` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "E2-scenarios-experiments"],
+      "edgeRationale": "Evaluate fixture/observation is the core evaluate loop (E1-evaluate), and skill-experiment is the scenario/experiment compare surface (E2-scenarios-experiments).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "skill-experiment compare compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 18,
+          "verbatim": "`skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claim discovery and bounded improvement ship today and are opt-in for host repos that adopt them.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 19,
+          "verbatim": "Claim discovery and bounded improvement ship today and are opt-in for host repos that adopt them.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery", "I1-bounded-improvement"],
+      "edgeRationale": "Claim discovery ships under D1-discovery and bounded improvement ships under I1-bounded-improvement, both opt-in.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus is not for repos that only need deterministic lint, unit, or type checks and do not have an evaluator-dependent behavior surface.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 29,
+          "verbatim": "Not for: repos that only need deterministic lint, unit, or type checks and do not have an evaluator-dependent behavior surface.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus runs on native macOS or native Linux, requires a target host repo editable locally, and requires git available on PATH.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 35,
+          "verbatim": "- native macOS or native Linux",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 37,
+          "verbatim": "- `git` available on `PATH`",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "S2-readiness"],
+      "edgeRationale": "Platform and git prerequisites gate install (S1-install) and are part of first-run readiness (S2-readiness).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus installs via the install.sh curl script and cautilus init in a host repo.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 44,
+          "verbatim": "cautilus init",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 41,
+          "verbatim": "https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Release and packaging",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Setup can be handed to an agent instead of running the install steps yourself.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 47,
+          "verbatim": "You can also hand setup to an agent instead of running these steps yourself.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "A1-orchestration"],
+      "edgeRationale": "Agent-driven setup is part of install (S1-install) carried out by the orchestrating agent (A1-orchestration).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Raw discover claims packets are the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 59,
+          "verbatim": "Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery", "A2-curation-review"],
+      "edgeRationale": "Raw discovery packets are the discovery output (D1-discovery) that the agent curates before review (A2-curation-review).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The Cautilus Agent curates the discovery packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 60,
+          "verbatim": "The Cautilus Agent curates that packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review", "D1-discovery"],
+      "edgeRationale": "Agent curation is the curation/review epic (A2-curation-review) operating on discovery output (D1-discovery).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 61,
+          "verbatim": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "S2-readiness"],
+      "edgeRationale": "The generated website report serves proven-on-itself reporting (M1-proven-on-itself), while the boundary that the renderer is not required for inspection supports readiness/onboarding (S2-readiness).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 62,
+          "verbatim": "Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The bounded eval loop needs one checked-in cautilus.evaluation_input.v1 fixture and a host-owned adapter runner.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 68,
+          "verbatim": "You need one checked-in `cautilus.evaluation_input.v1` fixture and a host-owned adapter runner.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The bounded eval loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 69,
+          "verbatim": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 84,
+          "verbatim": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The eval summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 85,
+          "verbatim": "The summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "After a fixture run, a human decides whether the evidence is enough for the host repo's current proof need.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 86,
+          "verbatim": "Next step: a human decides whether that evidence is enough for the host repo's current proof need.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus turns behavior evidence into a reviewable decision surface.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 89,
+          "verbatim": "It is the shortest currently stable external-adoption example of the product claim: `Cautilus` turns behavior evidence into a reviewable decision surface.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX", "E1-evaluate"],
+      "edgeRationale": "Turning behavior evidence into a reviewable decision surface is the apex product claim (APEX) realized by the evaluate loop (E1-evaluate).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "In charness, an instruction-surface fixture proved that the agent first selected the startup bootstrap helper find-skills, then selected the durable work skill for the actual task.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 94,
+          "verbatim": "In `charness`, an instruction-surface fixture proved that the agent first selected the startup bootstrap helper `find-skills`, then selected the durable work skill for the actual task.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "E1-evaluate"],
+      "edgeRationale": "The charness dogfood fixture is self-proof evidence (M1-proven-on-itself) produced through the evaluate fixture loop (E1-evaluate).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The dogfood run turned the question of whether the agent read and followed the repo instructions from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 95,
+          "verbatim": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "M1-proven-on-itself"],
+      "edgeRationale": "Turning transcript judgment into a reproducible reopenable packet is the evaluate-loop value (E1-evaluate) demonstrated as self-proof (M1-proven-on-itself).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The dogfood run exposed that routing proof is not backend subagent capability proof, and keeping that distinction in the packet prevented over-claiming what had been verified.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 96,
+          "verbatim": "The same dogfood run also exposed a useful limit: routing proof is not backend subagent capability proof.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 97,
+          "verbatim": "Keeping that distinction in the packet prevented the result from over-claiming what had been verified.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "E1-evaluate"],
+      "edgeRationale": "Preserving the scope-of-proof distinction is an honest self-proof discipline (M1-proven-on-itself) recorded in the eval packet (E1-evaluate).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus has three connected product layers: claim discovery, bounded evaluation, and bounded improvement.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 101,
+          "verbatim": "Cautilus has three connected product layers:",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 102,
+          "verbatim": "claim discovery, bounded evaluation, and bounded improvement.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX", "D1-discovery", "E1-evaluate", "I1-bounded-improvement"],
+      "edgeRationale": "The three layers are claim discovery (D1-discovery), bounded evaluation (E1-evaluate), and bounded improvement (I1-bounded-improvement) under the apex product shape (APEX).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claim discovery turns adapter-owned entry docs and linked docs into cautilus.claim_proof_plan.v1 candidates.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 104,
+          "verbatim": "Claim discovery turns adapter-owned entry docs and linked docs into `cautilus.claim_proof_plan.v1` candidates.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claim discovery is proof planning, not a verdict that the repo is correct.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 105,
+          "verbatim": "It is proof planning, not a verdict that the repo is correct.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": ["D1-discovery"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The Cautilus Agent curates false positives, likely missing promises, scan boundaries, and extraction and review budgets before any eval plan is trusted.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 106,
+          "verbatim": "The Cautilus Agent curates false positives, likely missing promises, scan boundaries, and extraction and review budgets before any eval plan is trusted.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review", "D1-discovery"],
+      "edgeRationale": "Agent curation before trust is the curation/review epic (A2-curation-review) gating the discovery output (D1-discovery).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Evaluation uses two top-level surfaces: dev for AI-assisted development work such as repo contracts, tools, and skills, and app for AI-powered product behavior such as chat, prompt, and service responses.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 108,
+          "verbatim": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "E2-scenarios-experiments"],
+      "edgeRationale": "The dev/app surface split structures the core evaluate surface (E1-evaluate) across which scenarios and experiments are run (E2-scenarios-experiments).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Sample normalization inputs live in examples/starters/ and the checked-in fixture directories under fixtures/.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 111,
+          "verbatim": "Sample normalization inputs live in [examples/starters/](./examples/starters/) and the checked-in fixture directories under [fixtures/](./fixtures/).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E2-scenarios-experiments",
+      "supportingEpics": ["E2-scenarios-experiments"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus treats a context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 121,
+          "verbatim": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "app/chat",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Improvement and improvement",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": ["I1-bounded-improvement", "E2-scenarios-experiments"],
+      "edgeRationale": "Holding a scenario out of tuning is the bounded-improvement held-out discipline (I1-bounded-improvement) over a protected scenario (E2-scenarios-experiments).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus stores the evidence in a durable file the next maintainer can reopen from disk.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 122,
+          "verbatim": "It stores the evidence in a durable file the next maintainer can reopen from disk.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "APEX"],
+      "edgeRationale": "Durable reopenable evidence files are an evaluate-loop output (E1-evaluate) embodying the apex packet-first stance (APEX).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus treats packets, CLI commands, and repo instructions as agent-facing interfaces first; HTML is a human-readable mirror, not the source of truth.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 127,
+          "verbatim": "Unlike a dashboard-first review tool, `Cautilus` treats packets, CLI commands, and repo instructions as agent-facing interfaces first; HTML is a human-readable mirror, not the source of truth.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration", "APEX"],
+      "edgeRationale": "Agent-facing-first interfaces with HTML as a mirror is an ownership/source-of-truth boundary supporting agent orchestration (A1-orchestration) and the apex packet-first stance (APEX).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus does not freeze one prompt string as the contract; it treats the behavior under evaluation as the contract (intent-first).",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 128,
+          "verbatim": "Unlike a prompt manager, `Cautilus` does not freeze one prompt string as the contract — it treats the behavior under evaluation as the contract (`intent-first`).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus separates iteration from protected validation and keeps evidence reopenable from files (held-out honesty, packet-first).",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 129,
+          "verbatim": "Unlike a benchmark scrapbook, `Cautilus` separates iteration from protected validation and keeps evidence reopenable from files (`held-out honesty`, `packet-first`).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": ["I1-bounded-improvement", "E1-evaluate"],
+      "edgeRationale": "Separating iteration from protected validation is the held-out improvement discipline (I1-bounded-improvement); keeping evidence reopenable from files is the packet-first evaluate property (E1-evaluate).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus makes adapters, reports, review files, and compare artifacts first-class product boundaries (structured review).",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 130,
+          "verbatim": "Unlike ad hoc eval scripts, `Cautilus` makes adapters, reports, review files, and compare artifacts first-class product boundaries (`structured review`).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": ["A2-curation-review", "E2-scenarios-experiments"],
+      "edgeRationale": "First-class adapters/reports/review/compare artifacts is the structured-review boundary (A2-curation-review) that compare artifacts under experiments rely on (E2-scenarios-experiments).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (bounded autonomy).",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 131,
+          "verbatim": "Unlike open-ended improver loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Improvement and improvement",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": ["I1-bounded-improvement"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Human-auditable claims stay readable, deterministic claims belong in ordinary tests and CI, evaluator-dependent behavior goes through cautilus evaluate, and improvement work waits until the proof surface is explicit.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 134,
+          "verbatim": "Human-auditable claims stay readable.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 135,
+          "verbatim": "Deterministic claims belong in ordinary tests and CI.",
+          "primary": false
+        },
+        {
+          "path": "README.md",
+          "line": 136,
+          "verbatim": "Evaluator-dependent behavior goes through `cautilus evaluate`.",
+          "primary": false
+        },
+        {
+          "path": "README.md",
+          "line": 137,
+          "verbatim": "Improvement work waits until the proof surface is explicit.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "APEX",
+      "supportingEpics": ["APEX", "E1-evaluate", "I1-bounded-improvement"],
+      "edgeRationale": "Splitting proof layers is an apex design principle (APEX) that routes evaluator-dependent behavior through evaluate (E1-evaluate) and gates improvement on an explicit proof surface (I1-bounded-improvement).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 139,
+          "verbatim": "`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/repo",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Improvement and improvement",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": ["I1-bounded-improvement"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Two entry points share one host-owned cautilus-adapter.yaml and return the same durable decision surface.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 146,
+          "verbatim": "Two entry points share one host-owned `cautilus-adapter.yaml` and return the same durable decision surface.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": ["A1-orchestration", "S1-install"],
+      "edgeRationale": "Two entry points sharing one host-owned adapter is an orchestration boundary (A1-orchestration) grounded in the host-owned install surface (S1-install).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Operators use the standalone CLI; Claude and Codex use the repo-local Cautilus Agent that cautilus init installs under .agents/skills/cautilus-agent/.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 147,
+          "verbatim": "Operators use the standalone CLI.",
+          "primary": true
+        },
+        {
+          "path": "README.md",
+          "line": 148,
+          "verbatim": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.",
+          "primary": false
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "A1-orchestration"],
+      "edgeRationale": "Init installing the repo-local agent under a fixed path is an install fact (S1-install) that provisions the agent orchestration surface (A1-orchestration).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The minimum host-repo shape is an adapter, an installed Cautilus Agent, and run artifacts such as eval-cases.json, eval-observed.json, and eval-summary.json.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 150,
+          "verbatim": "The minimum host-repo shape is an adapter, an installed Cautilus Agent, and run artifacts such as `eval-cases.json`, `eval-observed.json`, and `eval-summary.json`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": ["S1-install", "S2-readiness"],
+      "edgeRationale": "The minimum host-repo shape defines the install footprint (S1-install) and what doctor checks for readiness (S2-readiness).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The result is not just a pass/fail bit; it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 151,
+          "verbatim": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": ["E1-evaluate", "A2-curation-review"],
+      "edgeRationale": "Machine-readable packets plus reopenable readable views are the evaluate decision surface (E1-evaluate) consumed during structured review (A2-curation-review).",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "cautilus doctor --next-action reports the next onboarding step, cautilus doctor --scope agent-surface reports agent-surface discoverability, and cautilus doctor reports repo wiring readiness.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 154,
+          "verbatim": "Use `cautilus doctor --next-action` for the next onboarding step, `cautilus doctor --scope agent-surface` for agent-surface discoverability, and `cautilus doctor` for repo wiring readiness.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": ["S2-readiness"],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "From this repo, npm run consumer:onboard:smoke is an end-to-end adoption proof against a fresh consumer.",
+      "excerpts": [
+        {
+          "path": "README.md",
+          "line": 155,
+          "verbatim": "From this repo, `npm run consumer:onboard:smoke` is an end-to-end adoption proof against a fresh consumer.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": ["M1-proven-on-itself", "S1-install"],
+      "edgeRationale": "An end-to-end fresh-consumer onboard smoke is self-proof evidence (M1-proven-on-itself) of the install/adoption path (S1-install).",
+      "unresolvedQuestions": []
+    }
+  ],
+  "skippedSources": []
+}

@@ -1,0 +1,1786 @@
+{
+  "schemaVersion": "cautilus.claim_extraction_result.v1",
+  "extractionInputRef": {
+    "path": "extraction-input.json",
+    "templateHash": "sha256:b922fd5d92510fd0161eb53f8f8829bb964de3113bed9a03498b4c75972b34ef"
+  },
+  "runtime": {
+    "model": "claude-opus-4-8",
+    "agent": "cautilus-agent-blind-extractor"
+  },
+  "claims": [
+    {
+      "summary": "`cautilus discover claims` emits a deterministic, source-ref-backed proof-plan skeleton as a fast, high-recall inventory.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 5,
+          "verbatim": "`cautilus discover claims` emits a deterministic, source-ref-backed proof-plan skeleton — a fast, high-recall inventory.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The Cautilus Agent curates the discovery skeleton into the workflow a user expects when asking an agent to use Cautilus on a repo: which claims exist, which are covered, which need scenarios, which surfaces need alignment.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 6,
+          "verbatim": "The Cautilus Agent curates that skeleton into the workflow a user expects when they ask an agent to \"use Cautilus\" on a repo: which declared behavior claims exist, which are already covered by deterministic tests or existing Cautilus evidence, which still need evaluator-backed scenarios, and which surfaces must be aligned before verification is honest.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review",
+        "A1-orchestration"
+      ],
+      "edgeRationale": "A1-orchestration is supported because curating the skeleton into the expected workflow is part of the agent owning workflow routing and sequencing.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "For claim discovery and review, the binary owns deterministic packet production and state transitions.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 9,
+          "verbatim": "for claim discovery and claim review, the binary owns deterministic packet production and state transitions",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "D2-review-refresh"
+      ],
+      "edgeRationale": "D2-review-refresh is supported because the binary owning state transitions covers claim review and refresh state transitions.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The Cautilus Agent owns agent orchestration, LLM-backed claim review, subagent fanout, user confirmation, and next-action conversation for claim discovery and review.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 9,
+          "verbatim": "the Cautilus Agent owns agent orchestration, LLM-backed claim review, subagent fanout, user confirmation, and next-action conversation",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration",
+        "A2-curation-review"
+      ],
+      "edgeRationale": "A2-curation-review is supported because LLM-backed claim review is the agent's curation/review responsibility.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "`discover` remains the one high-level user action for initial claim discovery.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 15,
+          "verbatim": "`discover` remains the one high-level user action for initial claim discovery.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The binary owns deterministic packet production: scan traversal, extraction-input packets, anchoring validation, and state transitions.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 16,
+          "verbatim": "The binary owns deterministic packet production: scan traversal, extraction-input packets, anchoring validation, and state transitions.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The Cautilus Agent owns claim extraction (following the product-owned extraction template), evidence reconciliation, and user-facing status.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 17,
+          "verbatim": "The Cautilus Agent owns claim extraction (following the product-owned extraction template), evidence reconciliation, and user-facing status.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review",
+        "A1-orchestration"
+      ],
+      "edgeRationale": "A1-orchestration is supported because owning extraction and status is part of the agent orchestrating the eval workflow.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Existing claim state refresh is selected by Cautilus Agent when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 18,
+          "verbatim": "Existing claim state refresh is selected by Cautilus Agent when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "A1-orchestration"
+      ],
+      "edgeRationale": "A1-orchestration is supported because the agent selecting refresh is a routing decision the agent owns.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Existing claim state refresh does not require a separate binary `claim refresh` command.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 19,
+          "verbatim": "It does not require a separate binary `claim refresh` command.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The primary user flow starts from an agent session, not from a human reading a CLI manual.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 23,
+          "verbatim": "The primary user flow starts from an agent session, not from a human reading a CLI manual.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The user confirms or adjusts the extraction budget separately from the scan scope.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 31,
+          "verbatim": "The user confirms or adjusts the extraction budget separately from the scan scope.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration",
+        "I1-bounded-improvement"
+      ],
+      "edgeRationale": "I1-bounded-improvement is supported because separate budget confirmation keeps spend bounded.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Running `discover claims` directly without the Cautilus Agent emits the deterministic heuristic baseline (extractionMode: heuristic) with no model calls, the reproducible floor for no-model environments, CI regeneration, and control tests.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 37,
+          "verbatim": "Running `discover claims` directly, without the Cautilus Agent, emits the deterministic heuristic baseline (`extractionMode: heuristic`) with no model calls; this is the reproducible floor for no-model environments, CI regeneration, and control tests.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "M1-proven-on-itself"
+      ],
+      "edgeRationale": "M1-proven-on-itself is supported because the no-model reproducible floor enables CI regeneration and control tests for self-proof.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "If prior claim state exists, the extraction-input step becomes a diff-aware refresh selected by Cautilus Agent using the previous packet, its recorded commit, and a deterministic refresh plan to decide which sources need rescanning or re-review.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 39,
+          "verbatim": "If prior claim state exists, step 5 becomes a diff-aware refresh selected by Cautilus Agent:",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 40,
+          "verbatim": "Cautilus Agent uses the previous packet, the previous commit recorded in that packet, and a deterministic refresh plan to decide which sources need rescanning or re-review."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The public binary does not need a separate `claim refresh` command for diff-aware refresh.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 41,
+          "verbatim": "The public binary does not need a separate `claim refresh` command for this.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The binary should own deterministic behavior that can be rerun without model access (resolving repo root/adapter, enumerating sources, following links, emitting a claim skeleton, preserving inventory/graph/IDs/hashes, evidence preflight, resolving state paths, producing refresh plans, validating packets).",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 47,
+          "verbatim": "The binary should own deterministic behavior that can be rerun without model access:",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "D2-review-refresh"
+      ],
+      "edgeRationale": "D2-review-refresh is supported because refresh plans and claim-state validation are part of review/refresh.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation; those belong to Cautilus Agent and the host agent runtime.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 60,
+          "verbatim": "The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 61,
+          "verbatim": "Those belong to Cautilus Agent and the host agent runtime."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because this boundary defines what the discovery binary does not do.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The Cautilus Agent should own orchestration that depends on an agent (deciding discovery vs refresh vs status, explaining scope, calling extraction-input, showing the extraction budget, extracting, submitting to apply-extraction, reconciling evidence, summarizing status, offering next actions).",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 65,
+          "verbatim": "The Cautilus Agent should own orchestration that depends on an agent:",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration",
+        "A2-curation-review"
+      ],
+      "edgeRationale": "A2-curation-review is supported because extracting claims and reconciling evidence are curation/review responsibilities.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The product boundary keeps the product agent-first without making the binary a host-specific agent runtime.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 77,
+          "verbatim": "This keeps the product agent-first without making the binary a host-specific agent runtime.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration",
+        "S1-install"
+      ],
+      "edgeRationale": "S1-install is supported because keeping the binary out of host-specific runtime is part of the shared-binary plus repo-local agent split.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The extraction seam contract (template, packet schemas, anchoring, and fingerprint semantics) lives in claim-extraction-template.md.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 78,
+          "verbatim": "The extraction seam contract — template, packet schemas, anchoring, and fingerprint semantics — lives in [claim-extraction-template.md](./claim-extraction-template.md).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Documentation and contracts",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claim packets are high-recall proof-planning inputs, not the primary human review surface once the maintainer is judging product meaning, duplication, audience fit, or next-action grouping.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 82,
+          "verbatim": "Claim packets are high-recall proof-planning inputs.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 83,
+          "verbatim": "They are not the primary human review surface once the maintainer is judging product meaning, duplication, audience fit, or next-action grouping."
+        }
+      ],
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When packet claims are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL: a user-facing spec index and a maintainer-facing spec index that maps back to the user-facing claims.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 85,
+          "verbatim": "When packet claims are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL:",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 87,
+          "verbatim": "a user-facing spec index in plain product language that explains what the repo promises to a reader"
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 88,
+          "verbatim": "a maintainer-facing spec index that may use internal vocabulary but maps back to the user-facing claims"
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Default discovery starts from entry surfaces and follows only repo-local Markdown links.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 105,
+          "verbatim": "Default discovery starts from entry surfaces and follows only repo-local Markdown links.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The default entry set is README.md, AGENTS.md, CLAUDE.md when it exists as a distinct instruction surface, and adapter-configured claim_discovery.entries.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 106,
+          "verbatim": "The default entry set is:",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 110,
+          "verbatim": "`CLAUDE.md` when it exists as a distinct instruction surface."
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 112,
+          "verbatim": "adapter-configured `claim_discovery.entries`"
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The default Markdown link depth is 3.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 114,
+          "verbatim": "The default Markdown link depth is `3`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Discovery does not traverse arbitrary source files, generated artifacts, binary files, dependency directories, or external URLs.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 116,
+          "verbatim": "It does not traverse arbitrary source files, generated artifacts, binary files, dependency directories, or external URLs.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Discovery honors the repo's .gitignore for every path selection route, including default entries, adapter entries, explicit --source paths, linked docs, and include globs.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 117,
+          "verbatim": "Discovery also honors the repo's `.gitignore` for every path selection route, including default entries, adapter entries, explicit `--source` paths, linked docs, and include globs.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The adapter may override entries, depth, include globs, and exclude globs.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 130,
+          "verbatim": "The adapter may override entries, depth, include globs, and exclude globs:",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "audience_hints is adapter-owned because user-versus-developer meaning depends on the repo's documentation layout.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 177,
+          "verbatim": "`audience_hints` is adapter-owned because user-versus-developer meaning depends on the repo's documentation layout.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "semantic_groups is adapter-owned because product areas differ across repos.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 180,
+          "verbatim": "`semantic_groups` is also adapter-owned because product areas differ across repos.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Claim extraction and proof routing are agent-primary: the Cautilus Agent extracts claims by following a product-owned extraction template (claim definition, non-claim conventions from classification_hints, mandatory verbatim source excerpts with source refs, and a bounded output schema).",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 198,
+          "verbatim": "Claim extraction and proof routing are agent-primary: the Cautilus Agent extracts claims by following a product-owned extraction template — the claim definition, the repo's non-claim conventions sourced from the same `classification_hints`, mandatory verbatim source excerpts with source refs, and a bounded output schema.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because agent-primary extraction is the discovery extraction path.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The binary anchors and audits: it keeps traversal and scan scope, verifies every quoted excerpt exists at its claimed source ref, computes claim fingerprints from the verbatim excerpts, owns refresh planning and carry-forward, and rejects unanchored claims during validation.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 199,
+          "verbatim": "The binary anchors and audits: it keeps traversal and scan scope, verifies that every quoted excerpt actually exists at its claimed source ref, computes claim fingerprints from the verbatim excerpts, owns refresh planning and carry-forward, and rejects unanchored claims during validation.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "D2-review-refresh"
+      ],
+      "edgeRationale": "D2-review-refresh is supported because refresh planning and carry-forward are review/refresh responsibilities.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Recorded git commits plus per-source hashes bound re-extraction cost: unchanged sources carry forward deterministically and only git-diff-changed sources return to the agent.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 200,
+          "verbatim": "Recorded git commits plus per-source hashes bound re-extraction cost: unchanged sources carry forward deterministically and only git-diff-changed sources return to the agent, per the existing refresh design.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh",
+        "I1-bounded-improvement"
+      ],
+      "edgeRationale": "I1-bounded-improvement is supported because bounding re-extraction cost keeps spend bounded.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The deterministic heuristic extractor is the explicitly labeled baseline mode (extractionMode in the packet), so no-model environments, CI regeneration, and adapter-not-hardcoded control tests keep a reproducible floor.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 201,
+          "verbatim": "The deterministic heuristic extractor is the explicitly labeled baseline mode (`extractionMode` in the packet), so no-model environments, CI regeneration, and adapter-not-hardcoded control tests keep a reproducible floor.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery",
+        "M1-proven-on-itself"
+      ],
+      "edgeRationale": "M1-proven-on-itself is supported because the reproducible floor enables CI regeneration and control tests for self-proof.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The maintainer-ratified gold set is the eval fixture that measures agent extraction quality against the heuristic labels.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 202,
+          "verbatim": "The maintainer-ratified gold set is the eval fixture that measures agent extraction quality against those labels.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "M1-proven-on-itself",
+      "supportingEpics": [
+        "M1-proven-on-itself",
+        "E1-evaluate"
+      ],
+      "edgeRationale": "E1-evaluate is supported because the gold set is an eval fixture measuring extraction quality.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The packet separates proof mechanism, verification readiness, evidence status, review status, and lifecycle into distinct fields.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 256,
+          "verbatim": "The packet separates proof mechanism, verification readiness, evidence status, review status, and lifecycle into distinct fields:",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "human-auditable does not mean human-only or evidence-free; an agent should not mark the claim satisfied without human judgment, but the judgment still needs at least one concrete support item.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 284,
+          "verbatim": "`human-auditable` does not mean human-only or evidence-free.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 285,
+          "verbatim": "It means an agent should not mark the claim satisfied without human judgment, but the judgment still needs at least one concrete support item such as a source comparison, command output, test, spec, fixture result, eval summary, reviewed transcript, or explicit counterexample search."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Broad positioning or aggregate product promises should stay human-auditable and verificationReadiness=blocked until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 288,
+          "verbatim": "Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay human-auditable and needs-alignment until the matching docs, code, adapters, and tests are reconciled.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 293,
+          "verbatim": "Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The packet must not imply proof from weak evidence.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 350,
+          "verbatim": "The packet must not imply proof from weak evidence.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "evidenceStatus=satisfied requires at least one evidenceRefs entry with matchKind=verified or direct, a source commit or hash, an evidence commit or content hash, and reviewStatus=agent-reviewed or human-reviewed.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 353,
+          "verbatim": "`evidenceStatus=satisfied` requires at least one `evidenceRefs[]` entry with `matchKind=verified` or `matchKind=direct`, a source commit or source hash, and an evidence commit or content hash.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 354,
+          "verbatim": "`evidenceStatus=satisfied` also requires `reviewStatus=agent-reviewed` or `reviewStatus=human-reviewed`."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "matchKind=possible can produce only evidenceStatus=unknown or evidenceStatus=partial.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 355,
+          "verbatim": "`matchKind=possible` can produce only `evidenceStatus=unknown` or `evidenceStatus=partial`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Human review can accept a claim's framing or proof route, but it does not by itself satisfy the claim unless a direct or verified evidence ref also supports that claim.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 361,
+          "verbatim": "Human review can accept a claim's framing or proof route, but it does not by itself satisfy the claim unless a direct or verified evidence ref also supports that claim.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus Agent reviews clusters in priority order, starting with entry-surface claims from README and AGENTS, then cautilus-eval candidates, needs-alignment candidates, command/skill/adapter/release claims, weak-evidence deterministic and human-auditable claims, and lower-priority long-tail doc claims.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 426,
+          "verbatim": "Cautilus Agent reviews clusters in priority order:",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The parent Cautilus Agent merges subagent review results and keeps review provenance in the packet.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 437,
+          "verbatim": "The parent Cautilus Agent merges results and keeps review provenance in the packet.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The review seam uses versioned packets cautilus.claim_review_input.v1 and cautilus.claim_review_result.v1 that record cluster IDs, candidate IDs, source refs, prompt/reference hashes, runtime/model identity when available, merge decisions, label changes, evidence-status reasons, unresolved questions, and skipped clusters.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 439,
+          "verbatim": "The review seam uses versioned packets:",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 444,
+          "verbatim": "Those packets record cluster IDs, candidate IDs, source refs, prompt/reference hashes, runtime/model identity when available, merge decisions, label changes, evidence-status reasons, unresolved questions, and skipped clusters."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The preflight should never assert that a claim is satisfied solely because a filename looks related; it may attach candidate evidenceRefs with matchKind=possible.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 407,
+          "verbatim": "The preflight should never assert that a claim is satisfied solely because a filename looks related.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 408,
+          "verbatim": "It may attach candidate `evidenceRefs` with `matchKind=possible`."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Agent extraction is the label-review pass for the claims it extracts, so agent-extracted claims arrive agent-reviewed and review-input excludes agent-reviewed claims by default so the review seam does not re-spend budget on freshly extracted claims.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 416,
+          "verbatim": "Agent extraction labels claims as it extracts, so agent-extracted claims arrive `agent-reviewed` and the review seam serves the queues that still need review afterward: stale-evidence re-entry, human-review upgrades through HITL and `apply-review`, and LLM review over heuristic-mode packets.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 643,
+          "verbatim": "Agent extraction is the label-review pass for the claims it extracts; `review-input` excludes `agent-reviewed` claims by default so the review seam does not re-spend budget on freshly extracted claims."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The binary should resolve the repo-owned checked or ignored state path from adapter policy, with the default design target .cautilus/claims/latest.json.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 448,
+          "verbatim": "The binary should resolve the repo-owned checked or ignored state path from adapter policy.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Whether .cautilus/claims/latest.json is committed is a repo policy decision; Cautilus supports either checked-in durable state or local ignored working state as long as the packet is explicit.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 473,
+          "verbatim": "Whether `.cautilus/claims/latest.json` is committed is a repo policy decision.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 474,
+          "verbatim": "Cautilus should support either checked-in durable state or local ignored working state as long as the packet is explicit."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Refresh is a skill behavior over the same discover entry point; the user should not need to learn a separate claim refresh command.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 478,
+          "verbatim": "Refresh is a skill behavior over the same `discover` entry point.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 479,
+          "verbatim": "The user should not need to learn a separate `claim refresh` command."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When Cautilus Agent runs discover claims --previous for the refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 495,
+          "verbatim": "When Cautilus Agent runs `discover claims --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "When --output points at an existing claim packet and neither --previous nor --from-scratch is given, the binary auto-uses the existing output as the previous packet so reviewed state cannot be silently lost by omission; --from-scratch opts into first-discovery semantics.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 496,
+          "verbatim": "When `--output` points at an existing claim packet and neither `--previous` nor `--from-scratch` is given, the binary auto-uses the existing output as the previous packet so silent loss of reviewed state is not possible by omission; operators pass `--from-scratch` to opt into first-discovery semantics on top of an existing packet.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims validate surfaces missing carry-forward audit summaries on packets that already carry reviewed or evidenced state, so refreshes that lost the audit block fail validation instead of passing silently.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 497,
+          "verbatim": "`discover claims validate` also surfaces missing carry-forward audit summaries on packets that already carry reviewed or evidenced state, so refreshes that lost the audit block fail validation instead of passing silently.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The refreshed proof plan rechecks repo-local evidence files and marks the claim evidenceStatus=stale when a referenced file is missing, changed, outside the repo root, or when a claim_evidence_bundle does not list the current claim id in createdForClaimIds.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 500,
+          "verbatim": "The refreshed proof plan rechecks repo-local evidence files, marks the claim `evidenceStatus=stale` when a referenced file is missing, changed, outside the repo root, or when a `cautilus.claim_evidence_bundle.v1` does not list the current claim id in `createdForClaimIds`, and records stale evidence counts in `carryForward`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "After discovery or refresh, Cautilus Agent should report status in a compact decision-oriented shape rather than a raw claim dump.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 517,
+          "verbatim": "After discovery or refresh, Cautilus Agent should report status in a compact decision-oriented shape:",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "user",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A2-curation-review",
+      "supportingEpics": [
+        "A2-curation-review",
+        "A1-orchestration"
+      ],
+      "edgeRationale": "A1-orchestration is supported because reporting status and asking the next branch is part of the agent's orchestration loop.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus Agent should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 543,
+          "verbatim": "Cautilus Agent should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": [
+        "I1-bounded-improvement",
+        "A1-orchestration"
+      ],
+      "edgeRationale": "A1-orchestration is supported because not auto-launching expensive runs is an agent guardrail.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims status should expose the same decision boundary in cautilus.claim_status_summary.v1 and include a discoveryBoundary block stating the packet is based on entry documents and linked docs.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 545,
+          "verbatim": "`discover claims status` should expose the same decision boundary in `cautilus.claim_status_summary.v1`.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 546,
+          "verbatim": "The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked docs."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The workflow should avoid a claim group command because grouping is part of useful discovery output.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 565,
+          "verbatim": "The workflow should avoid a `claim group` command.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 566,
+          "verbatim": "Grouping is part of useful discovery output."
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 647,
+          "verbatim": "Grouping belongs in the discovery result, not in a required `claim group` subcommand."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims extraction-input emits the deterministic extraction-input packet (sources with content hashes, the embedded extraction template with version and hash, merged classification hints, and bounds) without calling an LLM.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 570,
+          "verbatim": "`discover claims extraction-input`: emit the deterministic extraction-input packet — sources with content hashes, the embedded extraction template with version and hash, merged classification hints, and bounds — without calling an LLM",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims apply-extraction validates an agent extraction result against the input packet, anchors every verbatim excerpt, rejects unanchored claims into the extraction audit, and composes the extractionMode: agent proof plan.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 571,
+          "verbatim": "`discover claims apply-extraction`: validate an agent extraction result against the input packet, anchor every verbatim excerpt, reject unanchored claims into the extraction audit, and compose the `extractionMode: agent` proof plan",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims review-input turns selected candidate clusters into a deterministic review-input packet without calling an LLM, rejecting stale packets by default.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 576,
+          "verbatim": "`discover claims review-input`: turn selected candidate clusters into a deterministic review-input packet without calling an LLM, rejecting stale packets by default",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims apply-review merges claim_review_result.v1 labels and evidence refs into an existing claim packet without calling an LLM, rejecting stale packets by default, and aggregate replay helpers apply historical results oldest-to-newest so later synthesis packets can intentionally override older decisions.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 578,
+          "verbatim": "`discover claims apply-review`: merge `cautilus.claim_review_result.v1` labels and evidence refs into an existing claim packet without calling an LLM, rejecting stale packets by default; aggregate replay helpers apply historical results from oldest to newest using explicit review timestamps first and filename dates as a fallback, so later synthesis packets can intentionally override older HITL or reviewer decisions",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Replay matching honors claim identity: an update whose display claimId no longer exists falls back to claimFingerprint, and a fingerprint match rewrites the update's claimId and matching evidenceRefs supportsClaimIds to the current display id before application.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 579,
+          "verbatim": "Replay matching honors claim identity: an update whose display `claimId` no longer exists falls back to `claimFingerprint`, and a fingerprint match rewrites the update's `claimId` and any matching `evidenceRefs[].supportsClaimIds` entries to the current display id before application (the same rewrite carried evidence refs get during refresh).",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Fingerprint-less review-result updates whose display id drifted are unrecoverable and are reported as dropped (per-packet warnings plus rewrittenUpdateCount/droppedUpdateCount in reviewApplication) instead of vanishing silently.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 580,
+          "verbatim": "Review-result `claimUpdates` should therefore carry `claimFingerprint`; fingerprint-less updates whose display id drifted are unrecoverable and are reported as dropped (per-packet warnings plus `rewrittenUpdateCount`/`droppedUpdateCount` in the output packet's `reviewApplication`) instead of vanishing silently.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "evaluate claims plan turns reviewed cautilus-eval claims into cautilus.claim_eval_plan.v1 intermediate packets without writing host-owned fixtures, rejecting stale packets by default.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 582,
+          "verbatim": "`evaluate claims plan`: turn reviewed `cautilus-eval` claims into `cautilus.claim_eval_plan.v1` intermediate packets without writing host-owned fixtures, rejecting stale packets by default",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Each evaluate claims plan carries fixtureAuthoringGuidance naming the minimum host-owned fixture fields, expected shape, runner output schema, required runner capability, and required observability, with a non-writer boundary so agents can author host-owned fixtures without guessing packet shape.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 584,
+          "verbatim": "`evaluate claims plan`: each plan carries `fixtureAuthoringGuidance` with the `cautilus.evaluation_input.v1` surface/preset, minimum suite and case fields, runner output schema, required runner capability, required observability, and a non-writer boundary so agents can author host-owned fixtures without guessing packet shape",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Evaluation surfaces",
+      "primaryEpic": "E1-evaluate",
+      "supportingEpics": [
+        "E1-evaluate"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "discover claims validate emits cautilus.claim_validation_report.v1 for packet shape and evidence-ref checks without mutating claims.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 585,
+          "verbatim": "`discover claims validate`: emit `cautilus.claim_validation_report.v1` for packet shape and evidence-ref checks without mutating claims",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The follow-on commands are optional later surfaces and should not be required for the normal first discovery experience.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 587,
+          "verbatim": "These commands are optional later surfaces.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 588,
+          "verbatim": "They should not be required for the normal first discovery experience."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The binary does not directly call an LLM provider for claim discovery or claim review; the binary stays deterministic and provider-neutral.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 633,
+          "verbatim": "The binary does not directly call an LLM provider for claim discovery or claim review.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 622,
+          "verbatim": "In this workflow, the binary stays deterministic and provider-neutral."
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 707,
+          "verbatim": "The binary should remain deterministic and provider-neutral."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration",
+        "D1-discovery"
+      ],
+      "edgeRationale": "D1-discovery is supported because the deterministic provider-neutral binary is the discovery engine boundary.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Do not scan the entire repository by default.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 668,
+          "verbatim": "Do not scan the entire repository by default.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Do not follow external URLs during default discovery.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 669,
+          "verbatim": "Do not follow external URLs during default discovery.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Do not treat possible evidence refs as proof.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 671,
+          "verbatim": "Do not treat possible evidence refs as proof.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Do not automatically run expensive evals after discovery without user confirmation or prior delegation.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 672,
+          "verbatim": "Do not automatically run expensive evals after discovery without user confirmation or prior delegation.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "I1-bounded-improvement",
+      "supportingEpics": [
+        "I1-bounded-improvement"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The binary/skill boundary stays clean enough that consumer repos can use the binary plus Cautilus Agent without Cautilus importing host-specific prompts or adapters.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 682,
+          "verbatim": "The binary/skill boundary stays clean enough that consumer repos can use the binary plus Cautilus Agent without Cautilus importing host-specific prompts or adapters.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Adapter and portability",
+      "primaryEpic": "S1-install",
+      "supportingEpics": [
+        "S1-install",
+        "A1-orchestration"
+      ],
+      "edgeRationale": "A1-orchestration is supported because the clean binary/skill boundary lets the agent orchestrate without host-specific imports.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Weak evidence matches cannot produce evidenceStatus=satisfied.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 683,
+          "verbatim": "Weak evidence matches cannot produce `evidenceStatus=satisfied`.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 606,
+          "verbatim": "Possible evidence refs cannot produce `evidenceStatus=satisfied`."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "gitState.isStale is claim-source freshness, not raw commit equality, so commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 738,
+          "verbatim": "`gitState.isStale` is claim-source freshness, not raw commit equality.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 739,
+          "verbatim": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Packets and reporting",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "validate re-audits anchoring on applied packets: hash-matched sources with unanchored excerpts fail hard, drifted sources produce stale-anchor findings, and agent packets satisfy audit presence through extractionAudit.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 760,
+          "verbatim": "`validate` re-audits anchoring on applied packets: hash-matched sources with unanchored excerpts fail hard, drifted sources produce `stale-anchor` findings, and agent packets satisfy audit presence through `extractionAudit`.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Quality gates",
+      "primaryEpic": "D2-review-refresh",
+      "supportingEpics": [
+        "D2-review-refresh"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "The entry-surface boundary is the product's false-negative boundary: discover claims is expected to find declared claims in README-like entry documents and linked docs, not every latent behavior hidden in code, transcripts, issue threads, or private operator memory.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 122,
+          "verbatim": "This entry-surface boundary is also the product's false-negative boundary.",
+          "primary": true
+        },
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 123,
+          "verbatim": "`discover claims` is expected to find declared claims in README-like entry documents and linked docs, not every latent user-facing behavior hidden in code, transcripts, issue threads, or private operator memory."
+        }
+      ],
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Claim discovery and review",
+      "primaryEpic": "D1-discovery",
+      "supportingEpics": [
+        "D1-discovery"
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Seeding classification hints is Cautilus Agent onboarding work: scan entry documents for rejected-alternative/non-goal conventions and claim vocabulary, propose hint lists with before/after extraction counts, and let the maintainer ratify them into the adapter before the first broad discovery.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 193,
+          "verbatim": "Seeding these hints is Cautilus Agent onboarding work: scan the entry documents for rejected-alternative and non-goal section conventions and for the repo's claim vocabulary, propose the hint lists with before/after extraction counts, and let the maintainer ratify them into the adapter before the first broad discovery, so repo-specific classification knowledge lives in the adapter instead of accumulating as hardcoded engine rules.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "S2-readiness",
+      "supportingEpics": [
+        "S2-readiness",
+        "A1-orchestration"
+      ],
+      "edgeRationale": "A1-orchestration is supported because seeding hints is part of the agent's onboarding orchestration before discovery.",
+      "unresolvedQuestions": []
+    },
+    {
+      "summary": "Cautilus Agent checks adapter availability, current claim-state artifacts, and recent git history when invoked.",
+      "excerpts": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 26,
+          "verbatim": "Cautilus Agent checks adapter availability, current claim-state artifacts, and recent git history.",
+          "primary": true
+        }
+      ],
+      "recommendedProof": "cautilus-eval",
+      "recommendedEvalSurface": "dev/skill",
+      "verificationReadiness": "needs-scenario",
+      "claimAudience": "developer",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "primaryEpic": "A1-orchestration",
+      "supportingEpics": [
+        "A1-orchestration",
+        "S2-readiness"
+      ],
+      "edgeRationale": "S2-readiness is supported because checking adapter availability and claim-state artifacts is readiness orientation work.",
+      "unresolvedQuestions": []
+    }
+  ],
+  "skippedSources": []
+}
