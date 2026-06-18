@@ -153,9 +153,9 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 | # | 명령 | 통과 조건 | 실행자 |
 |---|---|---|---|
 | 3.19 | `cautilus evaluate fixture --repo-root . --fixture fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json --output-dir /tmp/cautilus-oa-eval` | observed packet 생성, exit 0 | 기계적 |
-| 3.20 | `cautilus evaluate report build --input ./fixtures/reports/report-input.json --output /tmp/cautilus-oa-eval/report.json && cautilus evaluate evaluate review prepare-input --repo-root . --report-file /tmp/cautilus-oa-eval/report.json --output /tmp/cautilus-oa-eval/review.json` | review.json 생성, exit 0. 의존: report fixture | 기계적 |
-| 3.21 | `cautilus evaluate evaluate review build-prompt-input --review-packet /tmp/cautilus-oa-eval/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.20 | 기계적 |
-| 3.22 | `cautilus evaluate evaluate review render-prompt --input /tmp/cautilus-oa-eval/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.21 | 기계적 |
+| 3.20 | `cautilus evaluate report build --input ./fixtures/reports/report-input.json --output /tmp/cautilus-oa-eval/report.json && cautilus evaluate review prepare-input --repo-root . --report-file /tmp/cautilus-oa-eval/report.json --output /tmp/cautilus-oa-eval/review.json` | review.json 생성, exit 0. 의존: report fixture | 기계적 |
+| 3.21 | `cautilus evaluate review build-prompt-input --review-packet /tmp/cautilus-oa-eval/review.json` | review-prompt-input.json 생성, exit 0. 의존: 3.20 | 기계적 |
+| 3.22 | `cautilus evaluate review render-prompt --input /tmp/cautilus-oa-eval/review-prompt-input.json` | 프롬프트 텍스트 출력, exit 0. 의존: 3.21 | 기계적 |
 
 ---
 
@@ -230,7 +230,7 @@ consumer-readiness.md에 기록된 deeper evidence path. 전부 돌릴 필요는
 | # | 대상 | 명령 예시 | 통과 조건 | 비용 |
 |---|---|---|---|---|
 | 5.3 | workflow consumer | `cautilus evaluate fixture --repo-root <workflow-consumer-path> --fixture <fixture.json> --output-dir /tmp/cautilus-workflow-eval` | observed packet의 recommendation이 `accept-now` | 무료 |
-| 5.4 | workflow consumer | `cautilus evaluate evaluate review variants --repo-root <workflow-consumer-path> --adapter-name operator-recovery ...` | review summary에 passing variant 존재 | LLM |
+| 5.4 | workflow consumer | `cautilus evaluate review variants --repo-root <workflow-consumer-path> --adapter-name operator-recovery ...` | review summary에 passing variant 존재 | LLM |
 
 ---
 

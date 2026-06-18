@@ -201,13 +201,13 @@ cautilus evaluate fixture \
    templates instead of retyping ad-hoc `codex exec` or `claude -p` commands.
    When the repo keeps a checked-in wrapper such as
    `scripts/agent-runtime/run-executor-variants.mjs`, it should delegate to
-   `cautilus evaluate evaluate review variants` and stay a thin fanout shim instead of owning
+   `cautilus evaluate review variants` and stay a thin fanout shim instead of owning
    runtime semantics itself.
    When the repo already has a report packet but no fixed prompt file, let the
    runner synthesize the review packet and meta-prompt artifacts directly:
 
 ```bash
-cautilus evaluate evaluate review variants \
+cautilus evaluate review variants \
   --repo-root . \
   --workspace . \
   --report-file /tmp/cautilus-mode/report.json \
@@ -219,7 +219,7 @@ cautilus evaluate evaluate review variants \
    scenario file instead of a report packet:
 
 ```bash
-cautilus evaluate evaluate review variants \
+cautilus evaluate review variants \
   --repo-root . \
   --workspace . \
   --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
@@ -239,7 +239,7 @@ cautilus evaluate report build --input ./fixtures/reports/report-input.json
    packet that binds the report, artifact paths, and review questions:
 
 ```bash
-cautilus evaluate evaluate review prepare-input \
+cautilus evaluate review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
 ```
@@ -247,10 +247,10 @@ cautilus evaluate evaluate review prepare-input \
    glue:
 
 ```bash
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 
-cautilus evaluate evaluate review render-prompt \
+cautilus evaluate review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 ```
 5. If the user wants a repeatable local evaluator and none exists, create a

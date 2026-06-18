@@ -40,14 +40,14 @@ The consumer still owns:
 Build the packet:
 
 ```bash
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 ```
 
 Build the packet for a realized output artifact instead of prompt text:
 
 ```bash
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json \
   --output-under-test /tmp/cautilus-mode/analysis-output.json \
   --output-text-key analysis_text
@@ -56,7 +56,7 @@ cautilus evaluate evaluate review build-prompt-input \
 Build the packet directly from one scenario plus one realized output artifact:
 
 ```bash
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --repo-root . \
   --adapter-name analysis-prompts \
   --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
@@ -68,7 +68,7 @@ cautilus evaluate evaluate review build-prompt-input \
 Render the prompt:
 
 ```bash
-cautilus evaluate evaluate review render-prompt \
+cautilus evaluate review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 ```
 

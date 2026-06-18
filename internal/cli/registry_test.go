@@ -60,8 +60,32 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if !strings.Contains(usage, "cautilus evaluate observation --input ./eval-observed.json") {
 		t.Fatalf("usage missing evaluate observation example:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus evaluate evaluate review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review") {
+	if !strings.Contains(usage, "cautilus evaluate review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review") {
 		t.Fatalf("usage missing evaluate review variants example:\n%s", usage)
+	}
+}
+
+// TestRegistryUsageExamplePrefixMatchesPath guards against the "evaluate evaluate
+// review" class of defect: a cautilus-prefixed usage or example string that does
+// not lead with the command's own Path advertises an unroutable command form.
+func TestRegistryUsageExamplePrefixMatchesPath(t *testing.T) {
+	reg, err := LoadRegistry()
+	if err != nil {
+		t.Fatalf("LoadRegistry returned error: %v", err)
+	}
+	check := func(label, s, path string) {
+		if s == "" || !strings.HasPrefix(s, "cautilus ") {
+			return
+		}
+		after := strings.TrimPrefix(s, "cautilus ")
+		if after != path && !strings.HasPrefix(after, path+" ") {
+			t.Errorf("registry %s for command %q must lead with its path, got: %s", label, path, s)
+		}
+	}
+	for _, cmd := range reg.Commands {
+		path := strings.Join(cmd.Path, " ")
+		check("usage", cmd.Usage, path)
+		check("example", cmd.Example, path)
 	}
 }
 

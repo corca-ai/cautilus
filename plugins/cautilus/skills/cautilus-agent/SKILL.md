@@ -193,7 +193,7 @@ Use `cautilus doctor --repo-root . --scope agent-surface` or `doctor --scope age
 5. Run adapter-defined preflight commands before long evaluations.
 6. Run `cautilus evaluate fixture` for checked-in fixtures and read `eval-summary.json` as the first bounded evaluation decision.
 7. Build `report.json` only when the workflow needs the broader report/review/evidence/improve packet layer.
-8. If the adapter defines `executor_variants`, run `cautilus evaluate evaluate review variants` instead of retyping ad hoc shell commands.
+8. If the adapter defines `executor_variants`, run `cautilus evaluate review variants` instead of retyping ad hoc shell commands.
 If evaluate review variants are requested but unavailable on the selected adapter, treat that as a gate defect to fix or explicitly waive before release.
 9. Use `discover scenarios propose` when normalized proposal candidates already exist and the next move is a checked-in scenario packet.
 10. Use improve or GEPA-style search only after the claim and held-out proof surface are explicit.

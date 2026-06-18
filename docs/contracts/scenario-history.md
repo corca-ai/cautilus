@@ -259,7 +259,7 @@ Premortem (4 angles: cache migration / external consumer / devil's advocate / do
 - The legacy `cautilus mode evaluate --mode comparison` path was the only one that materialized a baseline-cache file. That command was retired with the evaluation-surfaces redesign; rebuilding the cache materialization on the new `cautilus evaluate fixture` surface is itself a separate slice and has not been picked up.
 - The legacy `run-self-dogfood.mjs` script that drove the cache-materialization branch was also retired; the new `dogfood:self:eval` flow does not yet exercise the comparison cache.
 - Zero scenario profile files are checked in across `.agents/`, `fixtures/`, and the repo root.
-- `cautilus evaluate evaluate review variants` and `cautilus evaluate observation` still contain zero `scenario-history` or `baseline-cache` persistence hooks today, so Part 2 still has no current call site.
+- `cautilus evaluate review variants` and `cautilus evaluate observation` still contain zero `scenario-history` or `baseline-cache` persistence hooks today, so Part 2 still has no current call site.
 - Live external consumers are not yet tracked in [consumer-readiness.md](../maintainers/consumer-readiness.md); the chatbot, skill-validation, and workflow entries are normalization-family reference fixtures, not live deployments.
 
 Conclusion: the "shared baseline across multiple profiles" problem Part 1 solves has zero occurrences today, and the "other entry points also want history" problem Part 2 solves has zero requesters.

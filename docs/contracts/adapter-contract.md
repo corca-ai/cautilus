@@ -425,7 +425,7 @@ Each named adapter should define its own:
 - optional `improve_search` defaults when that surface needs a different bounded search policy from the repo root adapter
 
 This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.
-When a repo runs evaluate review variants repeatedly, add a checked-in wrapper that loads the adapter and fans out `executor_variants`, but keep it as a thin delegate to `cautilus evaluate evaluate review variants` instead of letting it become a second runtime authority.
+When a repo runs evaluate review variants repeatedly, add a checked-in wrapper that loads the adapter and fans out `executor_variants`, but keep it as a thin delegate to `cautilus evaluate review variants` instead of letting it become a second runtime authority.
 
 ## Split Criteria
 

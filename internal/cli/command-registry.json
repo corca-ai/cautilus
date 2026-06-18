@@ -572,8 +572,8 @@
         "prepare-input"
       ],
       "group": "support",
-      "usage": "cautilus evaluate evaluate review prepare-input [args]",
-      "example": "cautilus evaluate evaluate review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
+      "usage": "cautilus evaluate review prepare-input [args]",
+      "example": "cautilus evaluate review prepare-input --repo-root . --report-file /tmp/cautilus-mode/report.json",
       "notes": [
         "If you need a minimal valid report packet before running review, start with `cautilus evaluate report build --example-input`.",
         "That example shows the minimum `humanReviewFindings` shape: `{ \"severity\": \"concern\", \"message\": \"...\", \"path\": \"optional\" }`."
@@ -616,8 +616,8 @@
         "build-prompt-input"
       ],
       "group": "support",
-      "usage": "cautilus evaluate evaluate review build-prompt-input [args]",
-      "example": "cautilus evaluate evaluate review build-prompt-input --review-packet /tmp/cautilus-mode/review.json"
+      "usage": "cautilus evaluate review build-prompt-input [args]",
+      "example": "cautilus evaluate review build-prompt-input --review-packet /tmp/cautilus-mode/review.json"
     },
     {
       "path": [
@@ -626,8 +626,8 @@
         "render-prompt"
       ],
       "group": "support",
-      "usage": "cautilus evaluate evaluate review render-prompt [args]",
-      "example": "cautilus evaluate evaluate review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json"
+      "usage": "cautilus evaluate review render-prompt [args]",
+      "example": "cautilus evaluate review render-prompt --input /tmp/cautilus-mode/review-prompt-input.json"
     },
     {
       "path": [
@@ -636,8 +636,8 @@
         "variants"
       ],
       "group": "support",
-      "usage": "cautilus evaluate evaluate review variants --repo-root <repo> --workspace <dir> [--prompt-file <review.md> --schema-file <schema.json>] [--output-dir <dir>]",
-      "example": "cautilus evaluate evaluate review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review",
+      "usage": "cautilus evaluate review variants --repo-root <repo> --workspace <dir> [--prompt-file <review.md> --schema-file <schema.json>] [--output-dir <dir>]",
+      "example": "cautilus evaluate review variants --repo-root . --workspace . --prompt-file ./review.md --schema-file ./schema.json --output-dir /tmp/cautilus-review",
       "notes": [
         "Use `--prompt-file` plus `--schema-file` for ad-hoc bounded review without first building a review packet.",
         "Omit those flags when the adapter or review prompt input provides the default prompt and schema."

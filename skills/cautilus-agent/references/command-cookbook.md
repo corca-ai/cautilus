@@ -78,19 +78,19 @@ cautilus evaluate fixture \
 ## Review prepare-input / build-prompt-input / render-prompt
 
 ```bash
-cautilus evaluate evaluate review prepare-input \
+cautilus evaluate review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
 
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json \
   --output-under-test /tmp/cautilus-mode/analysis-output.json \
   --output-text-key analysis_text
 
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --repo-root . \
   --adapter-name analysis-prompts \
   --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
@@ -98,7 +98,7 @@ cautilus evaluate evaluate review build-prompt-input \
   --output-under-test /tmp/cautilus-mode/replay-review.json \
   --output-text-key analysis_text
 
-cautilus evaluate evaluate review render-prompt \
+cautilus evaluate review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 ```
 
@@ -148,7 +148,7 @@ cautilus improve build-artifact \
 ## Review variants
 
 ```bash
-cautilus evaluate evaluate review variants \
+cautilus evaluate review variants \
   --repo-root . \
   --workspace . \
   --report-file /tmp/cautilus-mode/report.json \
@@ -156,7 +156,7 @@ cautilus evaluate evaluate review variants \
   --output-text-key analysis_text \
   --output-dir /tmp/cautilus-review
 
-cautilus evaluate evaluate review variants \
+cautilus evaluate review variants \
   --repo-root . \
   --adapter-name analysis-prompts \
   --workspace . \

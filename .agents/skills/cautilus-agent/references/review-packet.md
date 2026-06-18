@@ -28,7 +28,7 @@ lives.
 The first standalone surface is:
 
 ```bash
-cautilus evaluate evaluate review prepare-input \
+cautilus evaluate review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
 ```
