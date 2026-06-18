@@ -49,6 +49,7 @@ claim_discovery:
     non_claim_section_headings:
       - Rejected Alternatives
       - Alternatives rejected
+      - Premortem
   audience_hints:
     user:
       - README.md
