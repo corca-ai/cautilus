@@ -7,7 +7,9 @@ import process from "node:process";
 
 export const PHASES = [
 	{ id: "lint:eslint", label: "lint · eslint" },
-	{ id: "lint:specs", label: "lint · specs" },
+	// TODO(specdown-rewrite): temporarily disabled in verify while specdown is being rewritten.
+	// Restore together with the matching entry in run-verify.test.mjs.
+	// { id: "lint:specs", label: "lint · specs" },
 	{ id: "lint:scenario-normalizers", label: "lint · scenario normalizers" },
 	{ id: "lint:contracts", label: "lint · contracts" },
 	{ id: "claims:audit-evidence", label: "lint · claim evidence hashes" },
