@@ -2,30 +2,34 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — ④ specdown 재설계부터 시작해주세요.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 리드 프라이오리티(eval-judge frontier)로 갑시다.`
 
 doc 멘션만으로 픽업하면 이 트리거의 workflow를 실행하세요(파일 재독만 하지 말 것).
-**①·②·③ 모두 종결.**
-남은 시퀀스 작업은 **④ specdown 재설계** 하나, 그 외는 Discuss(열린 결정)뿐.
+**eval-trust 토대(①·②·③) 종결.** 이제 본 게임 = **리드 프라이오리티: eval determinism skew를 닫는 judge frontier.**
+먼저 `docs/contracts/eval-judge-collaboration.md` + `docs/contracts/facet-decomposition.md`를 읽고 아래 "Next Session" frontier 슬라이스에서 시작.
+(④ specdown 재설계는 맨 마지막 — eval-trust와 직교, 인프라성.)
 
 ## Current State
 
-- **이번 세션 (2026-06-19, ③ Epic DAG 종결):**
-  - **facet-native DAG realize**: 비준 답안지의 gold claim(accept 346 + relabel 19 = **365**; not-a-claim 10 제외) 위에 R14 tree + R15 epic DAG를 빌드. 양 트랙(user-product 69 / developer 296) + **통합 롤업**, 트랙별/통합 각각 tree+dag = 6 아티팩트. 불변식 pass(orphan 0 / multiEpic 138 / thin-epic 0). `epic-{tree,dag}-proposal{,.user-product,.developer}.json` + `EPIC-DAG.md`.
-  - **EDGE_MAP이 아니라 facet에서 read**: 새 gold set은 엔트리마다 `agentLabels.{primaryEpic,supportingEpics,edgeRationale,multiEpic}`를 이미 담음(slice-3 결론 실현). 신규 제너레이터 `scripts/build-epic-dag-from-facets.mjs`가 이를 verbatim read+검증. 옛 `build-epic-dag.mjs`(121-claim EDGE_MAP)는 그 핀 테스트째 보존. 실행 테스트 `build-epic-dag-from-facets.test.mjs`(16 케이스, 실아티팩트 회귀 가드 365/138/0 포함, cov 99%).
-  - **비준 캐비엇(중요)**: HITL은 verdict+proof-route만 비준; **epic 구조(primaryEpic/supportingEpics/edgeRationale)는 agent-assigned, 미비준 DRAFT**. 다음 단계 후보: 유지보수자 epic-structure 비준 패스(facet 편집 → 제너레이터 재실행, 가드가 드리프트 차단).
-- **지난 세션 (② 재큐레이션 종결):** cli-268 split(+신규 cli-266, 374→375) · family-representative 재정렬(`family-fold-coverage.md`) · closeout 과대주장 RCA+교정(`../../debug/2026-06-18-goldset-closeout-helper-fold-overclaim.md`).
-- **재추출 ground truth:** `goldset-v2-reextract-head` — both-track 답안지(375 entries: accept 346 / relabel 19 / not-a-claim 10 / badly-bounded 0), `goldset-v2-head`(306) supersede. 측정 확증: dev-track proof-route relabel **10.8%→6.4%**. `MEASUREMENT.proof-route.md`.
+- **리드 프라이오리티 judge — 메커니즘은 섰고, 모집단 일반화가 frontier:**
+  - 빌드 완료: 블라인드 capture→replay judge harness `scripts/agent-runtime/reasoning-soundness-judge.mjs`(codeFacets ∧ judgeFacets composite; always-sound judge는 게이트가 reject). calibration 3종(routing 6/6, bug→debug 5/5, conversation-goal harmony 5/5 + sc5 semantic control). 레퍼런스 템플릿 = `facet-decomposition.md`.
+  - **frontier(미해결)**: per-claim `recommendedProof`(259/375가 미검증 휴리스틱 태그)를 **per-facet routing**으로. 배선 방향 = adapter-owned `claim_discovery.classification_hints`(Agent 제안 → 유지보수자 비준; 첫 family `non_claim_section_headings` 라이브). D3 facet gold set `charness-artifacts/eval-trust/2026-06-10-recommendedproof-facet-gold-set-proposal.{md,json}`는 **agent-proposed·미비준** — 비준되면 per-facet 배선의 설계 입력+테스트 픽스처.
+  - **apex 배지**: Behavior Evaluation = **declared**(저장 번들 projection, 라이브 eval 아님; `docs/specs/index.spec.md`). reasoning-backed로 올리는 건 유지보수자 결정 + 별도 슬라이스.
+- **eval-trust 토대 (①·②·③ 종결):** `goldset-v2-reextract-head` = HEAD 비준 답안지(375; accept 346 / relabel 19 / not-a-claim 10 / bb 0), `goldset-v2-head`(306) supersede. ③ Epic DAG: 365 gold claim → 11-epic R14 tree + R15 DAG(`EPIC-DAG.md`; epic 구조는 DRAFT 미비준). 측정 확증 dev proof-route relabel **10.8%→6.4%**. 이 답안지가 judge frontier의 claim 모집단 + proof-route 규율 샘플.
 
-## Next Session: 후속 작업 (①·②·③ 종결, 남은 시퀀스 ④)
+## Next Session: 큰 작업 (리드 프라이오리티 먼저 → specdown 맨 끝)
 
-- **④ specdown 재설계** (유일한 남은 시퀀스 작업): 재작성 후 `lint:specs` 주석 복원(`run-verify.mjs`+`run-verify.test.mjs` 두 줄). eval-trust와 직교 — 언제든 단독 세션 가능.
-- **(선택) epic-structure 비준 패스**: ③의 DRAFT epic facet을 유지보수자가 비준/교정. eval-trust 후속, 급하지 않음.
+1. **D3 facet gold set 비준** (권장 첫 발): `2026-06-10-recommendedproof-facet-gold-set-proposal`를 유지보수자 비준 → per-facet `recommendedProof` 배선의 설계 입력+픽스처 확보. 비준 답안지 트랙 직속 후속.
+2. **per-facet routing 배선**: 비준된 facet gold set으로 다음 `classification_hints` family(또는 per-facet recommendedProof)를 discover에 착륙 — facet 단위로 code/judge/human 라우팅. portability: 엔진 하드코딩 금지, adapter-owned hint로.
+3. **judge 모집단 일반화 + 배지**: contestable/semantic claim들을 decompose해 judge reject-capability를 자연 unsound 케이스로 입증(judge의 진짜 frontier). 충분하면 apex Behavior Evaluation을 declared→reasoning-backed로 올리는 슬라이스.
+4. **(선택) 큰 후속**: ③ epic-structure 비준 패스; consumer-shaped corpus로 facet 측정 복제(external-validity 백로그); 개선 레이어 다음 seam(`docs/master-plan.md` Immediate Next Moves).
+5. **④ specdown 재설계 (맨 마지막)**: 재작성 후 `lint:specs` 주석 복원(`run-verify.mjs`+`run-verify.test.mjs` 두 줄). eval-trust와 직교 — 언제든 단독 세션 가능.
 
 ## Discuss (열린 결정)
 
-- **documented-content 일반화 재시도?** (이월, 선택): cet documented-content under-route(8.75%)는 실재하나 lean 문장이 README narrative precision을 깎음(3차 cut). 더 좁게 스코프한 규칙으로 recall만 취할지, 보류 유지할지 — 급하지 않음.
-- 심판 모델 고정값(sonnet) vs 제품 러너 정합/비용 (이월), harmony judge 배지 배선 (이월).
+- judge 모델 고정값(sonnet) vs 제품 러너 정합/비용 (이월).
+- ③ epic 구조 비준 시점 — judge가 epic을 신뢰하려면 필요, 급하지 않음.
+- documented-content 일반화 재시도? (이월, 선택): cet under-route(8.75%)는 실재하나 lean 문장이 README narrative precision을 깎음 — 더 좁은 규칙으로 recall만 취할지 보류 유지할지.
 
 ## 제약
 
@@ -33,8 +37,6 @@ push는 사용자 몫(의도적 보류). claim-source 편집 후 `npm run claims
 
 ## References
 
-- `charness-artifacts/eval-trust/goldset-v2-reextract-head/` — 답안지(375 entries, accept 346 / relabel 19 / not-a-claim 10 / badly-bounded 0) + `ANCHOR.md` + `HITL-CLOSEOUT.md` + `MEASUREMENT.proof-route.md` + `family-fold-coverage.md`. ③ Epic DAG: `EPIC-DAG.md` + `epic-{tree,dag}-proposal{,.user-product,.developer}.json`(365 gold claims, epic 구조 DRAFT 미비준). ① 종결 체인: `residual-misroute-cut2.md` → `residual-key-readjudication-cutC.md` → 증거 `cut2/`·`cutC/`·`cut3/`. ② 종결: `cli-268` split + `family-fold-coverage.md`, RCA `../../debug/2026-06-18-goldset-closeout-helper-fold-overclaim.md`. 사전채점 스크래치: `.charness/hitl/runtime/`(gitignored).
-- `charness-artifacts/eval-trust/goldset-v2-head/` — frozen before(306, `558cda7`) + `RECALL-PROBE-cli.md`(family-representative 정책의 출처).
-- `charness-artifacts/debug/2026-06-18-extraction-template-doc-binary-routing-drift.md` — doc↔바이너리 템플릿 드리프트 진단 + 패리티 가드.
-- `docs/contracts/claim-extraction-template.md` (doc) ↔ `internal/runtime/claim_extraction.go` (운영 템플릿) — 둘은 손으로 동기, 가드는 `claim_extraction_test.go`.
-- `scripts/build-gold-set-proposal.mjs`·`segment-goldset-by-audience.mjs`·`build-epic-dag-from-facets.mjs`(facet-native, reextract-head 트랙)·`build-epic-dag.mjs`(EDGE_MAP, agent-extraction 트랙) — 골드셋·세그먼트·DAG 도구. `docs/master-plan.md` — 로드맵.
+- **리드 프라이오리티**: 계약 `docs/contracts/eval-judge-collaboration.md` + `facet-decomposition.md`; 근거 findings `charness-artifacts/findings/2026-06-09-{determinism-intelligence-eval-skew,code-intelligence-harmony-boundary}.md`; harness `scripts/agent-runtime/reasoning-soundness-judge.mjs`(+calibration/verdicts `fixtures/eval/dev/repo/reasoning-soundness-*.json`); D3 facet gold set `charness-artifacts/eval-trust/2026-06-10-recommendedproof-facet-gold-set-proposal.{md,json}`; 배선 목표 `charness-artifacts/goals/2026-06-10-adapter-owned-discovery-classification.md`.
+- **eval-trust 답안지**: `charness-artifacts/eval-trust/goldset-v2-reextract-head/`(`ANCHOR.md` + `HITL-CLOSEOUT.md` + `MEASUREMENT.proof-route.md` + `EPIC-DAG.md` + `epic-{tree,dag}-proposal*.json` + `family-fold-coverage.md`). 종결 체인/RCA: `residual-misroute-cut2.md`·`residual-key-readjudication-cutC.md`·`../../debug/2026-06-18-goldset-closeout-helper-fold-overclaim.md`. before: `goldset-v2-head/`(306, `558cda7`) + `RECALL-PROBE-cli.md`.
+- **도구/템플릿**: `scripts/build-epic-dag-from-facets.mjs`(facet-native DAG)·`build-gold-set-proposal.mjs`·`segment-goldset-by-audience.mjs`. `docs/contracts/claim-extraction-template.md`(doc) ↔ `internal/runtime/claim_extraction.go`(운영, 가드 `claim_extraction_test.go`). `docs/master-plan.md` — 로드맵(lead-priority preamble은 프로토타입 완료 미반영; 계약 문서가 최신).
