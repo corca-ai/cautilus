@@ -1,0 +1,263 @@
+{
+  "generated": "2026-06-18",
+  "operativeTemplateHash": "sha256:b922fd5d...",
+  "routers": 3,
+  "probe": {
+    "residual": 16,
+    "control": 17
+  },
+  "controlAccuracy": {
+    "A": 0.8235294117647058,
+    "B": 0.9411764705882353,
+    "C": 0.9411764705882353,
+    "majority": 0.9411764705882353
+  },
+  "residualAccuracy": {
+    "A": 0.1875,
+    "B": 0.1875,
+    "C": 0.125,
+    "majority": 0.1875
+  },
+  "perResidual": [
+    {
+      "probeId": "P05",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-261",
+      "source": "claim-extraction-template.md",
+      "tier": "T3",
+      "blindRoute": "cautilus-eval",
+      "correctRoute": "deterministic",
+      "routers": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 0,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P07",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-346",
+      "source": "claim-extraction-template.md",
+      "tier": "T3",
+      "blindRoute": "human-auditable",
+      "correctRoute": "deterministic",
+      "routers": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 3,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P08",
+      "claimId": "claim-readme-md-16",
+      "source": "README.md",
+      "tier": "T1",
+      "blindRoute": "human-auditable",
+      "correctRoute": "deterministic",
+      "routers": [
+        "cautilus-eval",
+        "human-auditable",
+        "cautilus-eval"
+      ],
+      "reproducedCut1Misroute": 1,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P12",
+      "claimId": "claim-readme-md-85",
+      "source": "README.md",
+      "tier": "T2",
+      "blindRoute": "human-auditable",
+      "correctRoute": "deterministic",
+      "routers": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 3,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P15",
+      "claimId": "claim-readme-md-96",
+      "source": "README.md",
+      "tier": "T2",
+      "blindRoute": "human-auditable",
+      "correctRoute": "deterministic",
+      "routers": [
+        "cautilus-eval",
+        "cautilus-eval",
+        "cautilus-eval"
+      ],
+      "reproducedCut1Misroute": 0,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P18",
+      "claimId": "claim-readme-md-8",
+      "source": "README.md",
+      "tier": "T1",
+      "blindRoute": "deterministic",
+      "correctRoute": "cautilus-eval",
+      "routers": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "reproducedCut1Misroute": 3,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P19",
+      "claimId": "claim-readme-md-105",
+      "source": "README.md",
+      "tier": "T2",
+      "blindRoute": "human-auditable",
+      "correctRoute": "deterministic",
+      "routers": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 3,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P20",
+      "claimId": "claim-readme-md-128",
+      "source": "README.md",
+      "tier": "T1",
+      "blindRoute": "human-auditable",
+      "correctRoute": "cautilus-eval",
+      "routers": [
+        "deterministic",
+        "human-auditable",
+        "deterministic"
+      ],
+      "reproducedCut1Misroute": 1,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P22",
+      "claimId": "claim-readme-md-134",
+      "source": "README.md",
+      "tier": "T1",
+      "blindRoute": "human-auditable",
+      "correctRoute": "deterministic",
+      "routers": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 3,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P23",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-68-2",
+      "source": "claim-extraction-template.md",
+      "tier": "T2",
+      "blindRoute": "cautilus-eval",
+      "correctRoute": "deterministic",
+      "routers": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 0,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P24",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-69-2",
+      "source": "claim-extraction-template.md",
+      "tier": "T2",
+      "blindRoute": "cautilus-eval",
+      "correctRoute": "deterministic",
+      "routers": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 0,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P27",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-43",
+      "source": "claim-extraction-template.md",
+      "tier": "T2",
+      "blindRoute": "cautilus-eval",
+      "correctRoute": "deterministic",
+      "routers": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "reproducedCut1Misroute": 0,
+      "routedCorrect": 3
+    },
+    {
+      "probeId": "P29",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-58",
+      "source": "claim-extraction-template.md",
+      "tier": "T3",
+      "blindRoute": "cautilus-eval",
+      "correctRoute": "deterministic",
+      "routers": [
+        "deterministic",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 0,
+      "routedCorrect": 1
+    },
+    {
+      "probeId": "P31",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
+      "source": "claim-extraction-template.md",
+      "tier": "T2",
+      "blindRoute": "cautilus-eval",
+      "correctRoute": "deterministic",
+      "routers": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 0,
+      "routedCorrect": 0
+    },
+    {
+      "probeId": "P32",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-69",
+      "source": "claim-extraction-template.md",
+      "tier": "T2",
+      "blindRoute": "cautilus-eval",
+      "correctRoute": "deterministic",
+      "routers": [
+        "deterministic",
+        "deterministic",
+        "human-auditable"
+      ],
+      "reproducedCut1Misroute": 0,
+      "routedCorrect": 2
+    },
+    {
+      "probeId": "P33",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-78",
+      "source": "claim-extraction-template.md",
+      "tier": "T3",
+      "blindRoute": "cautilus-eval",
+      "correctRoute": "deterministic",
+      "routers": [
+        "cautilus-eval",
+        "deterministic",
+        "deterministic"
+      ],
+      "reproducedCut1Misroute": 1,
+      "routedCorrect": 2
+    }
+  ]
+}

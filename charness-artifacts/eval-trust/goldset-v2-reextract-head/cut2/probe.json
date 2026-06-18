@@ -1,0 +1,200 @@
+[
+  {
+    "probeId": "P01",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:177",
+    "summary": "Evidence preflight and evidence reconciliation remain separate steps with unchanged semantics.",
+    "excerpt": "Evidence preflight and evidence reconciliation remain separate steps with unchanged semantics."
+  },
+  {
+    "probeId": "P02",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:198",
+    "summary": "Anchoring normalization is whitespace-only (collapse runs of whitespace, trim) and is deliberately distinct from fingerprint normalization; the implementation must not unify them.",
+    "excerpt": "Anchoring normalization is whitespace-only (collapse runs of whitespace, trim); it is deliberately distinct from fingerprint normalization below, and the implementation must not unify them."
+  },
+  {
+    "probeId": "P03",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:212",
+    "summary": "apply-extraction recomputes source content hashes before validating, and if a source changed since extraction-input was generated the command fails by default and reports the drifted paths; --allow-stale-sources opts into applying anyway with the drift recorded in extractionAudit.",
+    "excerpt": "`apply-extraction` recomputes source content hashes before validating."
+  },
+  {
+    "probeId": "P04",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:229",
+    "summary": "For validate on extractionMode agent packets where the source hash matches the recorded hash, every excerpt must anchor; a failure is a hard validation error because a correctly applied packet can never contain one.",
+    "excerpt": "When a referenced source file is readable and its content hash matches the hash recorded in the packet, every excerpt must anchor; a failure is a hard validation error, because a correctly applied packet can never contain one."
+  },
+  {
+    "probeId": "P05",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:261",
+    "summary": "Verifying the Cautilus Agent flow itself is later Cautilus-eval-fixture work over the skill surface and is not a prerequisite for the comparison.",
+    "excerpt": "Verifying the Cautilus Agent flow itself is later Cautilus-eval-fixture work over the skill surface, following the existing self-dogfood fixture pattern, and is not a prerequisite for the comparison."
+  },
+  {
+    "probeId": "P06",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:298",
+    "summary": "New runtime surfaces ship with executable tests in the same slice (repo working rule).",
+    "excerpt": "New runtime surfaces ship with executable tests in the same slice (repo working rule)."
+  },
+  {
+    "probeId": "P07",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:346",
+    "summary": "This document is the canonical contract for the extraction seam during implementation; on conflict this document wins for extraction-seam detail and the workflow contract wins for workflow-level boundaries.",
+    "excerpt": "This document is the canonical contract for the extraction seam during implementation."
+  },
+  {
+    "probeId": "P08",
+    "sourceRef": "README.md:16",
+    "summary": "Cautilus proves its own promises with honest badges: readiness and claim discovery run live in executable specs (proven), behavior evaluation, bounded improvement, reviewable artifacts, and host ownership project saved evidence bundles (declared), and a testable-agent runner is promised.",
+    "excerpt": "Cautilus proves its own promises with honest badges ([the apex spec](./docs/specs/index.spec.md)): readiness and claim discovery run live in executable specs (**proven**), while behavior evaluation, bounded improvement, reviewable artifacts, and host ownership project saved evidence bundles (**declared**) and a testable-agent runner is **promised**."
+  },
+  {
+    "probeId": "P09",
+    "sourceRef": "README.md:19",
+    "summary": "Claim discovery and bounded improvement ship today and are opt-in for host repos that adopt them.",
+    "excerpt": "Claim discovery and bounded improvement ship today and are opt-in for host repos that adopt them."
+  },
+  {
+    "probeId": "P10",
+    "sourceRef": "README.md:60",
+    "summary": "The Cautilus Agent curates the discovery packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.",
+    "excerpt": "The Cautilus Agent curates that packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps."
+  },
+  {
+    "probeId": "P11",
+    "sourceRef": "README.md:84",
+    "summary": "Cautilus turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
+    "excerpt": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen."
+  },
+  {
+    "probeId": "P12",
+    "sourceRef": "README.md:85",
+    "summary": "The eval summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose.",
+    "excerpt": "The summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose."
+  },
+  {
+    "probeId": "P13",
+    "sourceRef": "README.md:86",
+    "summary": "After a fixture run, a human decides whether the evidence is enough for the host repo's current proof need.",
+    "excerpt": "Next step: a human decides whether that evidence is enough for the host repo's current proof need."
+  },
+  {
+    "probeId": "P14",
+    "sourceRef": "README.md:95",
+    "summary": "The dogfood run turned the question of whether the agent read and followed the repo instructions from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
+    "excerpt": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen."
+  },
+  {
+    "probeId": "P15",
+    "sourceRef": "README.md:96",
+    "summary": "The dogfood run exposed that routing proof is not backend subagent capability proof, and keeping that distinction in the packet prevented over-claiming what had been verified.",
+    "excerpt": "The same dogfood run also exposed a useful limit: routing proof is not backend subagent capability proof."
+  },
+  {
+    "probeId": "P16",
+    "sourceRef": "README.md:4",
+    "summary": "Cautilus lets you pin down the behavior that matters and prove it survives every change to prompts, skills, and models.",
+    "excerpt": "It lets you pin down the behavior that matters, prove it survives every change to your prompts, skills, and models, and improve it within explicit budgets—whether you're protecting an `AGENTS.md`, a single skill, a prompt, or a full agent loop."
+  },
+  {
+    "probeId": "P17",
+    "sourceRef": "README.md:6",
+    "summary": "Cautilus ships as a standalone binary plus Cautilus Agent that a host repo can install without copying another scaffold first.",
+    "excerpt": "`Cautilus` ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first."
+  },
+  {
+    "probeId": "P18",
+    "sourceRef": "README.md:8",
+    "summary": "Commands emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+    "excerpt": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator."
+  },
+  {
+    "probeId": "P19",
+    "sourceRef": "README.md:105",
+    "summary": "Claim discovery is proof planning, not a verdict that the repo is correct.",
+    "excerpt": "It is proof planning, not a verdict that the repo is correct."
+  },
+  {
+    "probeId": "P20",
+    "sourceRef": "README.md:128",
+    "summary": "Cautilus does not freeze one prompt string as the contract; it treats the behavior under evaluation as the contract (intent-first).",
+    "excerpt": "Unlike a prompt manager, `Cautilus` does not freeze one prompt string as the contract — it treats the behavior under evaluation as the contract (`intent-first`)."
+  },
+  {
+    "probeId": "P21",
+    "sourceRef": "README.md:131",
+    "summary": "Cautilus keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (bounded autonomy).",
+    "excerpt": "Unlike open-ended improver loops, `Cautilus` keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (`bounded autonomy`)."
+  },
+  {
+    "probeId": "P22",
+    "sourceRef": "README.md:134",
+    "summary": "Human-auditable claims stay readable, deterministic claims belong in ordinary tests and CI, evaluator-dependent behavior goes through cautilus evaluate, and improvement work waits until the proof surface is explicit.",
+    "excerpt": "Human-auditable claims stay readable."
+  },
+  {
+    "probeId": "P23",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+    "summary": "v2 routes an agent-behavior claim to cautilus-eval even when a deterministic schema check happens to pass, because a passing schema check does not prove the behavior.",
+    "excerpt": "route an agent-behavior claim to `cautilus-eval` even when a deterministic schema check happens to pass (a passing schema check does not prove the behavior)"
+  },
+  {
+    "probeId": "P24",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+    "summary": "The words reviewable/reproducible/auditable name a property the structure confers and are never on their own a reason to drop to human-auditable, which is reserved for proof that genuinely needs a human to inspect an outcome.",
+    "excerpt": "the words `reviewable` / `reproducible` / `auditable` name a property the structure confers, never on their own a reason to drop to `human-auditable`, which is reserved for proof that genuinely needs a human to inspect an outcome"
+  },
+  {
+    "probeId": "P25",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:81",
+    "summary": "Two repos with different adapter headings or epic catalogs produce different template hashes by design.",
+    "excerpt": "two repos with different adapter headings or epic catalogs produce different hashes by design"
+  },
+  {
+    "probeId": "P26",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:18",
+    "summary": "The extraction seam mirrors the review seam: the binary emits a deterministic input packet, the agent does the model-backed work, and the binary validates and applies the result.",
+    "excerpt": "the binary emits a deterministic input packet, the agent does the model-backed work, and the binary validates and applies the result"
+  },
+  {
+    "probeId": "P27",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:43",
+    "summary": "Running agent extraction sits behind the workflow contract's Model-Spend Confirmation rule: scan-scope confirmation authorizes extraction-input, but a separate extraction-budget confirmation is required before the agent extracts.",
+    "excerpt": "scan-scope confirmation authorizes `extraction-input`, but a separate extraction-budget confirmation is required before the Cautilus Agent actually extracts"
+  },
+  {
+    "probeId": "P28",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:46",
+    "summary": "extraction-input honors the same explicit --adapter override as discover claims, so measurement dry-runs on read-only corpora apply a proposed adapter without writing to the scanned repo.",
+    "excerpt": "`extraction-input` honors the same explicit `--adapter <path>` override as `discover claims`, so measurement dry-runs on read-only corpora apply a proposed adapter without writing to the scanned repo"
+  },
+  {
+    "probeId": "P29",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:58",
+    "summary": "v2 adds explicit prompts for two easy-to-miss claim shapes: design-principle claims and negative/scope-boundary/exclusion claims.",
+    "excerpt": "`v2` adds explicit prompts for the two claim shapes a recall probe showed the agent tends to miss because they assert a stance or a boundary rather than a feature: design-principle claims (for example \"X is a first-class …\", \"agents are first-class users\") and negative, scope-boundary, or exclusion claims (for example \"not for …\", \"does not …\", \"opt-in until …\")"
+  },
+  {
+    "probeId": "P30",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:65",
+    "summary": "Paraphrase belongs in summary only; an excerpt that does not survive anchoring validation causes the claim to be rejected.",
+    "excerpt": "Paraphrase belongs in `summary` only; an excerpt that does not survive anchoring validation causes the claim to be rejected."
+  },
+  {
+    "probeId": "P31",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+    "summary": "v2 routes recommendedProof to deterministic whenever a static repo-owned check could prove a capability claim, instead of defaulting it to human-auditable.",
+    "excerpt": "route to `deterministic` whenever a static repo-owned check could prove a capability claim (do not default it to `human-auditable`)"
+  },
+  {
+    "probeId": "P32",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+    "summary": "An ownership/boundary/isolation assignment is a structural fact a static check settles, so it routes deterministic even though it reads like design philosophy.",
+    "excerpt": "an *ownership / boundary / isolation* assignment (\"the binary owns X\", \"the consumer owns Y\", \"the run is isolated from user state\") is a structural fact a static check settles, so it routes `deterministic` even though it reads like design philosophy"
+  },
+  {
+    "probeId": "P33",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:78",
+    "summary": "When the agent is unsure whether text is a claim, it emits the claim with verificationReadiness blocked and an entry in unresolvedQuestions instead of silently dropping it.",
+    "excerpt": "it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it"
+  }
+]

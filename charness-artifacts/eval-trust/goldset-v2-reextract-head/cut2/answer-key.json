@@ -1,0 +1,266 @@
+{
+  "P01": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-177",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:177",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P02": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-198",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:198",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P03": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-212",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:212",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P04": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-229",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:229",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P05": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-261",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:261",
+    "kind": "residual",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P06": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-298",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:298",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P07": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-346",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:346",
+    "kind": "residual",
+    "blindRoute": "human-auditable",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P08": {
+    "claimId": "claim-readme-md-16",
+    "sourceRef": "README.md:16",
+    "kind": "residual",
+    "blindRoute": "human-auditable",
+    "correctRoute": "deterministic",
+    "tier": "T1"
+  },
+  "P09": {
+    "claimId": "claim-readme-md-19",
+    "sourceRef": "README.md:19",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P10": {
+    "claimId": "claim-readme-md-60",
+    "sourceRef": "README.md:60",
+    "kind": "control",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "cautilus-eval",
+    "tier": "T1"
+  },
+  "P11": {
+    "claimId": "claim-readme-md-84",
+    "sourceRef": "README.md:84",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P12": {
+    "claimId": "claim-readme-md-85",
+    "sourceRef": "README.md:85",
+    "kind": "residual",
+    "blindRoute": "human-auditable",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P13": {
+    "claimId": "claim-readme-md-86",
+    "sourceRef": "README.md:86",
+    "kind": "control",
+    "blindRoute": "human-auditable",
+    "correctRoute": "human-auditable",
+    "tier": "T2"
+  },
+  "P14": {
+    "claimId": "claim-readme-md-95",
+    "sourceRef": "README.md:95",
+    "kind": "control",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "cautilus-eval",
+    "tier": "T1"
+  },
+  "P15": {
+    "claimId": "claim-readme-md-96",
+    "sourceRef": "README.md:96",
+    "kind": "residual",
+    "blindRoute": "human-auditable",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P16": {
+    "claimId": "claim-readme-md-4",
+    "sourceRef": "README.md:4",
+    "kind": "control",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "cautilus-eval",
+    "tier": "T1"
+  },
+  "P17": {
+    "claimId": "claim-readme-md-6",
+    "sourceRef": "README.md:6",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P18": {
+    "claimId": "claim-readme-md-8",
+    "sourceRef": "README.md:8",
+    "kind": "residual",
+    "blindRoute": "deterministic",
+    "correctRoute": "cautilus-eval",
+    "tier": "T1"
+  },
+  "P19": {
+    "claimId": "claim-readme-md-105",
+    "sourceRef": "README.md:105",
+    "kind": "residual",
+    "blindRoute": "human-auditable",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P20": {
+    "claimId": "claim-readme-md-128",
+    "sourceRef": "README.md:128",
+    "kind": "residual",
+    "blindRoute": "human-auditable",
+    "correctRoute": "cautilus-eval",
+    "tier": "T1"
+  },
+  "P21": {
+    "claimId": "claim-readme-md-131",
+    "sourceRef": "README.md:131",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T1"
+  },
+  "P22": {
+    "claimId": "claim-readme-md-134",
+    "sourceRef": "README.md:134",
+    "kind": "residual",
+    "blindRoute": "human-auditable",
+    "correctRoute": "deterministic",
+    "tier": "T1"
+  },
+  "P23": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-68-2",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+    "kind": "residual",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P24": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-69-2",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+    "kind": "residual",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P25": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-81-2",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:81",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P26": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-18",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:18",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P27": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-43",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:43",
+    "kind": "residual",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P28": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-46",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:46",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P29": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-58",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:58",
+    "kind": "residual",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P30": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-65",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:65",
+    "kind": "control",
+    "blindRoute": "deterministic",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  },
+  "P31": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+    "kind": "residual",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P32": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-69",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+    "kind": "residual",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "deterministic",
+    "tier": "T2"
+  },
+  "P33": {
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-78",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:78",
+    "kind": "residual",
+    "blindRoute": "cautilus-eval",
+    "correctRoute": "deterministic",
+    "tier": "T3"
+  }
+}
