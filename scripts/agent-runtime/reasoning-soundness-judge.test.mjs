@@ -240,3 +240,45 @@ test("captured blind-judge verdicts replay green for every claim in the registry
 	}
 	assert.ok(replayed >= 1, "expected at least one claim to have a captured judge replay");
 });
+
+// --- Regression-variant detection (the product's actual job) ----------------------------------
+// A deliberately-worse instruction surface (the find-skills bootstrap dropped) was run through real
+// routing agents; the eval must flag the regressed logs as worse. The PROCESS facet (code) owns
+// "was the pinned bootstrap emitted"; the JUDGE owns "is the reasoning sound". These pin both halves.
+
+test("emitted_find_skills_bootstrap process facet reads the observed route", () => {
+	const emitted = { observedRoute: { bootstrapHelper: "charness:find-skills", workSkill: "none", firstToolCall: "Skill(find-skills)" } };
+	const dropped = { observedRoute: { bootstrapHelper: "none", workSkill: "none", firstToolCall: "Read README.md" } };
+	const missing = { reasonSummary: "no observed route at all" };
+	assert.equal(FORMAT_FACET_CHECKERS.emitted_find_skills_bootstrap(emitted), true);
+	assert.equal(FORMAT_FACET_CHECKERS.emitted_find_skills_bootstrap(dropped), false, "a regressed surface that drops the bootstrap fails the process facet");
+	assert.equal(FORMAT_FACET_CHECKERS.emitted_find_skills_bootstrap(missing), false, "no route present fails closed");
+});
+
+test("the routing-regression eval catches a worse variant: code flags the dropped bootstrap, the judge flags the fabricated reason", () => {
+	const calPath = join(FIXTURE_DIR, "reasoning-soundness-calibration.dev-repo-routing-regression.json");
+	const vPath = join(FIXTURE_DIR, "reasoning-soundness-judge-verdicts.dev-repo-routing-regression.json");
+	assert.ok(existsSync(calPath) && existsSync(vPath), "regression calibration + captured verdicts must exist");
+	const cal = loadCalibration(calPath);
+	const captured = JSON.parse(readFileSync(vPath, "utf-8"));
+	const result = compareVerdicts(cal, captured.verdicts);
+	assert.equal(result.passed, true, "the regression gate must pass on the captured verdicts");
+	assert.equal(result.rubberStampSuspected, false);
+
+	const byId = new Map(result.byCase.map((b) => [b.caseId, b]));
+	// Baseline (correct surface) passes both facets.
+	assert.equal(byId.get("baseline").got, "sound");
+	// The dropped-bootstrap regressions are caught DETERMINISTICALLY by code (process facet false),
+	// independent of the judge — the regression a process check owns.
+	for (const id of ["regressed-skip-haiku", "regressed-skip-sonnet"]) {
+		const row = byId.get(id);
+		assert.equal(row.got, "unsound", `${id} must be flagged worse`);
+		assert.equal(row.codeFacets.emitted_find_skills_bootstrap, false, `${id}'s regression is the dropped bootstrap`);
+	}
+	// The right-route-wrong-reason regression passes the code facet (bootstrap emitted) and is caught
+	// ONLY by the judge — the regression a token check would miss.
+	const control = byId.get("regressed-reason-control");
+	assert.equal(control.got, "unsound");
+	assert.equal(control.codeFacets.emitted_find_skills_bootstrap, true, "the control's route is correct; code alone would pass it");
+	assert.equal(control.judgeVerdict, "unsound", "only the judge catches the fabricated reason");
+});

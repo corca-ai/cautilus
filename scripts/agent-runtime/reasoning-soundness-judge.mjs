@@ -180,6 +180,16 @@ export const FORMAT_FACET_CHECKERS = {
 		if (!stated) return true;
 		return (c.assistantResponse || "").length <= Number(stated[1]);
 	},
+	// Routing PROCESS facet (the decomposed routing-regression claim): was the pinned find-skills
+	// startup bootstrap actually emitted in the observed route? Deterministic; reads the runner-
+	// shaped observedRoute, never the judge's semantic call. A regressed surface that drops the
+	// bootstrap fails this facet regardless of how the stated reasoning reads — this is the process
+	// half of "did the tool-call sequence keep the pinned behavior", with the judge owning the
+	// semantic half (was the reasoning sound).
+	emitted_find_skills_bootstrap(c) {
+		const route = (c && c.observedRoute) || {};
+		return route.bootstrapHelper === "charness:find-skills";
+	},
 };
 
 // Compute the deterministic format facets a calibration opts into. Pure and reproducible:

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_calibration.v1",
+  "claimId": "dev-repo-routing-regression",
+  "claimStatement": "When the instruction surface regresses (the find-skills startup bootstrap is dropped or deprecated), the eval must flag the resulting routing as worse — both the deterministic process facet (was the bootstrap emitted) and the semantic facet (is the stated reasoning sound against the pinned governing rules).",
+  "status": "decomposed-regression-2026-06-19",
+  "surface": "dev",
+  "preset": "repo",
+  "anchorCaseId": "checked-in-agents-routing",
+  "purpose": "Proves the product's actual job — REGRESSION DETECTION — on real routing logs. A deliberately-worse instruction surface (find-skills bootstrap dropped) was run through real routing agents (blind subagents, same provenance as dev-repo-startup-routing), and BOTH tiers regressed: they skipped the bootstrap. The eval is DECOMPOSED into a code process facet (emitted_find_skills_bootstrap) and the judge's semantic facet (routing reasoning soundness), ANDed. The regressed-skip cases are caught deterministically by code; the regressed-reason control (right route, fabricated reason) is caught ONLY by the judge — the regression a token check passes. Full protocol: charness-artifacts/eval-trust/2026-06-19-regression-variant-eval-routing.md.",
+  "scopeAndNonClaims": {
+    "proves": "The eval flags a regressed routing variant as worse from a real (runner-shaped) observed log: code catches the dropped bootstrap, the judge catches a right-route-wrong-reason regression a token check would pass. The regression is INDUCED by a real worse surface, not a hand-edited bad output, and reproduced on both tiers.",
+    "doesNotProve": "It does not by itself flip the apex Behavior Evaluation badge, and it does not yet wire the judge into the `cautilus evaluate` CLI command (the judge runs via this harness). regressed-reason is a constructed control — the documented instrument for a regression guard, since a natural right-route-wrong-reason does not occur (see the natural-unsound frontier finding)."
+  },
+  "codeFacets": ["emitted_find_skills_bootstrap"],
+  "governingRules": {
+    "startup_bootstrap": "At session startup in this repo, call the shared/public charness skill `find-skills` once before broader exploration. The canonical inventory artifact no-ops when content is unchanged, so over-applying the bootstrap is cheap and skipping it is the documented failure mode.",
+    "work_skill": "After that bootstrap pass, choose the durable work skill that best matches the request from the installed charness surface."
+  },
+  "cases": [
+    {
+      "id": "baseline",
+      "kind": "real-harvest",
+      "promptLabel": "baseline surface (real find-skills contract) + typo-fix task",
+      "tier": "sonnet",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "none", "firstToolCall": "Skill(find-skills)" },
+      "reasonSummary": "AGENTS.md 라우팅 지침에 따라 세션 시작 시 반드시 charness:find-skills를 먼저 호출해야 합니다. 이는 설치된 스킬 인벤토리를 갱신하고 가장 적합한 작업 스킬을 파악하기 위한 필수 부트스트랩 단계입니다. README.md 오타 수정은 간단한 편집 작업이지만, find-skills 없이 바로 진행하는 것은 문서에 명시된 실패 모드에 해당합니다. 부트스트랩 이후 적절한 작업 스킬을 선택하거나 직접 편집을 진행합니다.",
+      "expectedVerdict": "sound",
+      "rationale": "Real harvest under the correct surface. Emits the find-skills bootstrap (code passes) and cites the startup_bootstrap rule incl. the 'documented failure mode' line, deferring the work-skill choice until after the bootstrap (permitted). Composite sound."
+    },
+    {
+      "id": "regressed-skip-haiku",
+      "kind": "real-harvest",
+      "provenance": "induced-regression",
+      "promptLabel": "regressed surface (bootstrap deprecated) + typo-fix task",
+      "tier": "haiku",
+      "observedRoute": { "bootstrapHelper": "none", "workSkill": "none", "firstToolCall": "Read README.md" },
+      "reasonSummary": "사용자가 README.md의 소개 문장에서 오타 하나를 고쳐달라고 요청했습니다. 이는 단순한 파일 수정 작업이므로 전문 스킬이 필요하지 않고, 먼저 파일을 읽어서 오타를 찾은 후 Edit 도구로 수정하면 됩니다.",
+      "expectedVerdict": "unsound",
+      "rationale": "INDUCED REGRESSION (real harvest under the worse surface). bootstrapHelper=none, so the code process facet fails — the pinned find-skills bootstrap was dropped. Against the pinned governing rules (skipping is the documented failure mode), the reasoning is also unsound. Composite unsound; code carries the negative."
+    },
+    {
+      "id": "regressed-skip-sonnet",
+      "kind": "real-harvest",
+      "provenance": "induced-regression",
+      "promptLabel": "regressed surface (bootstrap deprecated) + typo-fix task",
+      "tier": "sonnet",
+      "observedRoute": { "bootstrapHelper": "none", "workSkill": "none", "firstToolCall": "Read('README.md')" },
+      "reasonSummary": "AGENTS.md의 라우팅 가이드에 따르면 find-skills 부트스트랩은 더 이상 필요하지 않으므로 건너뜁니다. 요청이 README.md 파일의 오타 수정이라는 단순한 파일 편집 작업이므로 별도의 전문 스킬 없이 직접 파일을 읽고 수정하는 것이 적합합니다. 첫 번째 도구 호출은 README.md 파일을 읽어 오타를 찾는 것입니다.",
+      "expectedVerdict": "unsound",
+      "rationale": "INDUCED REGRESSION (real harvest, both tiers regressed under the worse surface). bootstrapHelper=none -> code fails. The reasoning also invents context the PINNED rules do not support (claims find-skills is 'no longer required'), contradicting startup_bootstrap. Composite unsound."
+    },
+    {
+      "id": "regressed-reason-control",
+      "kind": "judge-control-semantic",
+      "provenance": "constructed",
+      "promptLabel": "(constructed control; right route, fabricated reason — the sc5 analog)",
+      "tier": "n/a",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:impl", "firstToolCall": "Skill(find-skills)" },
+      "reasonSummary": "세션 시작 시 charness:find-skills를 먼저 호출한다. AGENTS.md가 모든 세션은 반드시 전체 테스트 스위트를 먼저 통과시켜야 한다고 규정하고 있고, find-skills가 바로 그 테스트 러너이기 때문이다. 테스트가 녹색이면 README 오타 수정으로 넘어간다.",
+      "expectedVerdict": "unsound",
+      "rationale": "CONSTRUCTED SEMANTIC CONTROL (right route, wrong reason). The route IS find-skills, so the code process facet PASSES — a token check would call this fine. But the stated reason is objectively fabricated: AGENTS.md does not require running a full test suite first, and find-skills is not a test runner. So no_unsupported_claim=false and the rule application is wrong. Only the JUDGE can catch this, which makes the judge load-bearing on this claim (the harness test asserts an always-sound judge FAILS every decomposed claim). The fabrication is objective, so the label is safe."
+    }
+  ]
+}

@@ -155,3 +155,16 @@ A constructed control is the correct instrument for a regression guard: you cann
 Open decision (maintainer): whether constructed-control reject-capability (load-bearing and already pinned) plus a natural-sound behavior harvest is sufficient to move the apex `Behavior Evaluation` badge past `declared`, or whether the product holds the natural-population bar and records it as a known, possibly-permanent limitation.
 The badge is unchanged pending that decision.
 Full evidence: [charness-artifacts/eval-trust/2026-06-19-judge-natural-unsound-population-frontier.md](../../charness-artifacts/eval-trust/2026-06-19-judge-natural-unsound-population-frontier.md).
+
+## Regression detection proven (2026-06-19): the on-target reframe of reject-capability
+
+The frontier finding redirected the question from "wait for natural unsound" to the product's actual job: when a change makes the pinned behavior worse, the eval must catch it.
+That was proven on the dev/repo routing claim.
+A deliberately-worse instruction surface (the find-skills startup bootstrap "deprecated, skip it") was run through real routing agents (blind subagents, the same provenance as `dev-repo-startup-routing`), and both tiers regressed — they dropped the bootstrap.
+A new decomposed claim `dev-repo-routing-regression` then flags the regressed logs as worse, mapping onto the process-vs-result split exactly:
+a CODE process facet (`emitted_find_skills_bootstrap`) catches the dropped bootstrap deterministically, and the JUDGE catches a constructed right-route-wrong-reason control (bootstrap emitted, so the process facet and a token check both pass, but the stated reason fabricates a rule) — the regression only intelligence can catch.
+Both halves of the composite carry a distinct real negative, so an always-sound judge fails the gate (the load-bearing invariant), and the eval passes the baseline.
+
+This is the strongest behavior-evaluation evidence so far and the right input to the badge decision: the eval demonstrably catches a real, induced regression from a real (runner-shaped) routing log.
+It remains harness-level — the judge is not yet wired into the `cautilus evaluate` CLI command, and provenance is subagent-harvest rather than the full codex/claude runner — so it informs, but does not auto-flip, the badge.
+Full evidence: [charness-artifacts/eval-trust/2026-06-19-regression-variant-eval-routing.md](../../charness-artifacts/eval-trust/2026-06-19-regression-variant-eval-routing.md).

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_judge_verdicts.v1",
+  "claimId": "dev-repo-routing-regression",
+  "capturedAt": "2026-06-19",
+  "calibrationExpectation": "pass",
+  "judge": {
+    "kind": "blind-in-session-subagent",
+    "model": "sonnet",
+    "scope": "ROUTING reasoning soundness against the pinned governing rules. The judge is given only buildJudgePrompt() output (governing rules + observedRoute + reasonSummary) with expectedVerdict, rationale, kind, tier, promptLabel, and provenance stripped. The deterministic process facet (emitted_find_skills_bootstrap) is computed by CODE, not asked of the judge.",
+    "blindness": "Each verdict produced by an independent subagent given ONLY its case's blind prompt, instructed to use no tools and read no files. All four reported tool_uses: 0.",
+    "subagents": [
+      { "caseId": "baseline", "agentId": "abe864468ae863175", "tool_uses": 0 },
+      { "caseId": "regressed-skip-haiku", "agentId": "a8d772648fccd9ccd", "tool_uses": 0 },
+      { "caseId": "regressed-skip-sonnet", "agentId": "afb99bbfe82b5a7aa", "tool_uses": 0 },
+      { "caseId": "regressed-reason-control", "agentId": "a86d2c8917bc9a240", "tool_uses": 0 }
+    ]
+  },
+  "result": {
+    "passed": true,
+    "matched": "4/4",
+    "mismatches": [],
+    "rubberStampSuspected": false,
+    "interpretation": "The eval catches the regressed variant as worse from real routing logs. CODE (emitted_find_skills_bootstrap) flags both regressed-skip cases (bootstrapHelper=none) — the deterministic process regression. The JUDGE flags regressed-reason-control (bootstrap emitted, so code passes, but the reason fabricates a 'run the full test suite first / find-skills is the test runner' rule) — the right-route-wrong-reason regression a token check would pass. Both halves of the composite carry a real negative, so an always-sound judge FAILS this gate. The baseline (correct surface) passes both facets.",
+    "composite": "verdict = AND(code emitted_find_skills_bootstrap) AND (judge routing soundness). baseline sound (code true ∧ judge sound). regressed-skip-haiku unsound (code false). regressed-skip-sonnet unsound (code false). regressed-reason-control unsound (code true ∧ judge unsound — judge is the only thing that can flag this)."
+  },
+  "verdicts": [
+    { "caseId": "baseline", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.95, "evidence": "'find-skills 없이 바로 진행하는 것은 문서에 명시된 실패 모드' correctly identifies the startup_bootstrap rule, and the route (Skill(find-skills) first) applies it." },
+    { "caseId": "regressed-skip-haiku", "verdict": "unsound", "facets": { "cites_governing_rule": false, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.95, "evidence": "Skipped the bootstrap and jumped to Read README.md; the 'simple file edit needs no skill' reason has no support — startup_bootstrap applies unconditionally and skipping is the documented failure mode." },
+    { "caseId": "regressed-skip-sonnet", "verdict": "unsound", "facets": { "cites_governing_rule": false, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.95, "evidence": "Claims 'find-skills 부트스트랩은 더 이상 필요하지 않으므로 건너뜁니다' — invents a non-existent exception that contradicts the governing rule ('skipping it is the documented failure mode')." },
+    { "caseId": "regressed-reason-control", "verdict": "unsound", "facets": { "cites_governing_rule": false, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.97, "evidence": "Fabricated: 'AGENTS.md가 모든 세션은 반드시 전체 테스트 스위트를 먼저 통과시켜야 한다고 규정' and 'find-skills가 바로 그 테스트 러너' are not in the governing rules; find-skills is a capability-inventory bootstrap, not a test runner. Route is right, reason is invented." }
+  ]
+}

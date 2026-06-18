@@ -23,6 +23,10 @@ This is a DECOMPOSED claim, mapping directly onto the maintainer's process-vs-re
 - JUDGE semantic facet (the default routing facets `cites_governing_rule`, `rule_application_correct`, `no_unsupported_claim`): is the stated reasoning sound against the governing rules.
 - Composite verdict = code AND judge.
 
+The judge uses the DEFAULT routing brief and is intentionally NOT told to ignore the bootstrap emission.
+The overlap is benign and deliberate: code owns the mechanical fact (was the token emitted), the judge owns the quality of the stated reason, and they are different facets of the same decision — so a regressed-skip case is legitimately unsound both as a dropped token (code) and as reasoning that ignores the startup rule (judge), while the regressed-reason control is unsound only as reasoning (code passes).
+This is the same shape as the conversation-goal claim (code owns length/structure, judge owns substance) and avoids the mechanical-inconsistency trap that facet-decomposition.md step 4 warns about, because the judge is never asked to count or re-derive a mechanical facet.
+
 The governing rules are the pinned dev/repo routing contract (startup find-skills bootstrap, work-skill choice after bootstrap), identical to the existing `dev-repo-startup-routing` calibration.
 
 ## The two instruction surfaces (the variant)
@@ -65,6 +69,40 @@ Both halves of the composite carry a real negative: code carries regressed-skip,
 - Provenance is subagent-harvest at the same fidelity as the existing dev/repo calibration; running the full codex/claude runner end-to-end on the regressed surface is a fidelity upgrade left for the productization step (wiring the judge into `cautilus evaluate`, which this slice does NOT do).
 - regressed-reason is a constructed control, openly labeled, the documented instrument for a regression guard (you cannot wait for a natural "right route, wrong reason" to prove you would catch one).
 - The badge is not flipped here; this slice produces regression-detection evidence that is the right input to the badge-criterion decision.
+
+## Result: the regression reproduced on both tiers and the eval caught it
+
+The regressed surface induced the regression on BOTH tiers (blind harvest, `tool_uses: 0`):
+
+| case | surface | tier | observed bootstrapHelper | code facet | judge | composite | expected |
+|---|---|---|---|---|---|---|---|
+| baseline | correct | sonnet | charness:find-skills | pass | sound | **sound** | sound ✓ |
+| regressed-skip-haiku | regressed | haiku | none | FAIL | unsound | **unsound** | unsound ✓ |
+| regressed-skip-sonnet | regressed | sonnet | none | FAIL | unsound | **unsound** | unsound ✓ |
+| regressed-reason-control | (constructed) | n/a | charness:find-skills | pass | unsound | **unsound** | unsound ✓ |
+
+`compareVerdicts` → passed 4/4, `rubberStampSuspected: false`. The two halves carry distinct real negatives:
+- CODE caught the dropped bootstrap on both regressed-skip cases (`emitted_find_skills_bootstrap: false`), independent of the judge — the deterministic process regression. (The blind judge also returned unsound on both, so they are double-flagged; code is necessary-and-sufficient and the judge concurs — the judge did not say "sound" there.)
+- The JUDGE caught the regressed-reason control (bootstrap emitted, so the process facet passes and a token check would too) by recognizing the fabricated "find-skills is the test runner" rule — the right-route-wrong-reason regression only intelligence can catch.
+
+Notably, both regressed-skip agents were *following* their (broken) surface; relative to the PINNED governing rules the eval judges against, that is a regression, and the eval flagged it — which is exactly the product promise: pin the behavior, prove it survives (or detect when a change breaks) it.
+
+Executable gates (all green, `node --test reasoning-soundness-judge.test.mjs` → 16/16):
+- `emitted_find_skills_bootstrap process facet reads the observed route` (synthetic unit test).
+- `the routing-regression eval catches a worse variant ...` (pins the process-catches-skip / judge-catches-reason semantics).
+- the existing registry tests auto-adopt the new claim: captured verdicts replay green, and `an always-sound judge FAILS every decomposed claim` now also covers `dev-repo-routing-regression` (the regressed-reason control makes the judge load-bearing).
+
+## What this means for the badge
+
+This is the strongest behavior-evaluation evidence to date and the on-target one: the eval detects a real, induced regression from a real (runner-shaped) routing log, with the process facet and the semantic judge each carrying a distinct negative. It is the product promise demonstrated, not a synthetic-chat detour. It remains harness-level (the judge is not yet wired into the `cautilus evaluate` CLI), so it is input to the badge-criterion decision, not an automatic flip.
+
+## Critique
+
+Bounded fresh-eye subagent review 2026-06-19 returned **READY-WITH-EDITS, no blocker** (`node --test reasoning-soundness-judge.test.mjs` → 16/16).
+It hand-traced `compareVerdicts` for all four cases and confirmed: baseline→sound, both regressed-skip→unsound carried by the code facet (`emitted_find_skills_bootstrap: false`, independent of the judge), and regressed-reason-control→unsound with the code facet TRUE and the judge carrying it — and that an always-sound judge fails the gate ONLY because of the control, so the judge is genuinely and uniquely load-bearing.
+It confirmed the regression is real (induced via a worse surface and produced by real agents on both tiers, not hand-authored), that the regression is correctly defined relative to the PINNED governing rules, and that the regressed-reason control's "unsound" label is objectively safe (AGENTS.md has no test-suite-first rule and find-skills is a capability bootstrap, not a test runner — the cited rule is genuinely fabricated).
+It judged the facet overlap benign (code owns the mechanical token, the judge owns reason quality; no mechanical-inconsistency trap), the scope honestly stated (harness-level, subagent-harvest provenance, both acknowledged), and blindness preserved (`provenance` is in `LEAKY_CASE_FIELDS`, so the `constructed` tell cannot leak; all subagents `tool_uses: 0`).
+Folded edits: this critique record, the default-brief/benign-overlap note in the facets section, and the double-flagged clarification in the result table.
 
 ## Source
 
