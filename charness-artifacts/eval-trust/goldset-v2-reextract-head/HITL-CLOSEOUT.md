@@ -1,0 +1,63 @@
+# Re-Extraction Gold Set — HITL Closeout
+
+HITL session: `hitl-reextract-v2head-20260618` (2026-06-18).
+Target: `gold-set-proposal.json` (+ `.user-product.json` / `.developer.json`).
+Anchor: source content `628ccc7`; operative template `b922fd5d` (made effective in `b2a7291`); see `ANCHOR.md`.
+
+This is the **full both-track re-extraction** the goldset-v2-head closeouts deferred — re-extracting the same 5-source corpus under the now-operative edited v2 template, re-segmenting, and re-ratifying.
+It supersedes `../goldset-v2-head/` (306/306 at `558cda7`) as the current answer key; the before stays frozen as the proof-route measurement baseline.
+
+## What changed vs goldset-v2-head, and why a re-extraction at all
+
+The session-3 commit `080e7d0` edited the contract doc but left the operative template (the string the binary emits to extractors) stale — the "edited template" was never in effect.
+`b2a7291` fixed that doc<->binary drift (diagnosis: `../../debug/2026-06-18-extraction-template-doc-binary-routing-drift.md`), recomputing templateHash `41323548 -> b922fd5d`.
+This re-extraction is the first that actually runs under the edited routing guidance, so it both establishes fresh ground truth at HEAD and measures the edit's proof-route effect (`MEASUREMENT.proof-route.md`).
+
+## Operating model: source pre-grade -> maintainer exception-ratify
+
+Six per-source sub-agents (cli split a/b) pre-graded all 374 candidates under the locked R1-R18, emitting `{proposedVerdict, confidence, tier, labelChange, boundaryNote, sourceMoved, doubt, judgmentCall}` to `.charness/hitl/runtime/hitl-reextract-v2head-20260618/pregrade/`.
+The maintainer ratified by exception: the dominant proof-route relabel pattern as one decision, the not-a-claim batch, and **6 borderline not-a-claims individually**.
+**3 overrides** at the borderline pass (the only deviations from the pre-grade):
+
+- `claim-extraction-template-md-18` not-a-claim -> **accept** (R8: the extraction-seam-mirrors-review-seam composition has its own checkable content, not pure R9 framing).
+- `working-patterns-md-127` not-a-claim -> **accept** (the "standalone binary plus Cautilus Agent" product-surface promise is a load-bearing S1-install structural claim, not positioning).
+- `claim-extraction-template-md-346` not-a-claim -> **relabel** human-auditable -> deterministic (the conflict-precedence half is an R6 ownership/boundary assignment).
+
+The other 3 borderline (`readme-29` "Not for…" R16 carve-out, `cli-40` reader-caveat, `working-patterns-md-56` decomposition design-stance) were kept **not-a-claim** as pre-graded.
+
+## Result: 374 / 374 reviewed, 0 pending
+
+| disposition | n | meaning |
+| --- | --- | --- |
+| accept | 338 | correct extraction + correct labels (15 carried a recorded reservation, kept accept under R5/R11) |
+| relabel | 25 | correct claim, proof route corrected (22 toward deterministic; agentLabels left as-extracted, correction in note) |
+| not-a-claim | 10 | framing / positioning / pointer / external-example premise (R9/R16/R17/R18) |
+| badly-bounded | 1 | `cli-268` over-merge (shipped-surface fact fused with the preset catalog) -> curator split |
+
+Segmented: user-product 75 (accept 61 / relabel 6 / not-a-claim 7 / badly-bounded 1), developer 299 (accept 277 / relabel 19 / not-a-claim 3).
+
+## Headline harvest: the operative template reduced the measured systematic error
+
+- **Developer-track proof-route relabel rate 10.8% -> 6.4%** (clean comparison, both graded under locked R1-R18). The dense behavioral contract `claim-discovery-workflow.md` dropped to **2.5%** (2/80) — the generalization bit hardest exactly where the proof-route harvest concentrated.
+- **Two residual pockets** the edit did not fully resolve, now themselves measured: `claim-extraction-template.md` 11.3% (meta template-content claims read as behavioral) and `README.md` 13.5% (structural scope/boundary claims left on human-auditable). These are the next-iteration signal, recorded for a future confirming cut — NOT yet a template edit (R16: act on measured systematic error, but confirm these small concentrated residuals first).
+- Full analysis + caveats (denominator dilution; the user-product before baseline being pre-locked-rules) in `MEASUREMENT.proof-route.md`.
+
+## What this re-extraction closes (deferred from goldset-v2-head)
+
+- **Line renumber** — realized. Every excerpt is anchored at HEAD; no 558cda7-relative anchors remain.
+- **Curator splits §B** (the workflow over-merges) — resolved by re-extraction: blind per-source extraction re-bounded them as separate claims, and the pre-grade found only **1** badly-bounded (`cli-268`), not the 5 over-merges from before. The dense `claim-discovery-workflow.md` "split cleanly along distinct source lines."
+- **9 recall-gap helper sub-commands** — captured: the per-source high-recall pass grew cli 68 -> 101, surfacing the `prepare-input`/`render-*`/`summarize`/`validate` helpers as graded claims. NOTE this realizes them as *separate* claims rather than the family-representative fold the recall probe recommended; if the maintainer wants a leaner set, a family-fold recuration is a follow-up (see below).
+
+## Deferred follow-ups
+
+- **`cli-268` curator split** — the one badly-bounded; split the shipped-surface fact (line 266) from the 268-269 preset catalog at recuration.
+- **Granularity / family-fold** — cli grew to 101 (vs the recall probe's family-representative recommendation). Decide at a recuration pass whether to fold helper sub-commands under family representatives or keep them as separate T3 claims.
+- **Two residual misroute pockets** — one more confirming cut of `claim-extraction-template.md` (meta-content) and `README.md` (structural-scope) before deciding whether the lean generalization needs a second R16-gated refinement.
+- **Epic DAG** — not built (goldset-v2-head carried none either); build over the ratified tracks as a slice-3 follow-up.
+
+## Reproduce / inspect
+
+- Verdicts + rationale per claim: `gold-set-proposal.json` (maintainerVerdict + note + significanceTier on every entry).
+- Pre-grade inputs + slices + apply script: `.charness/hitl/runtime/hitl-reextract-v2head-20260618/` (gitignored local scratch).
+- Grading rules R1-R18 (locked, carried from the goldset-v2-head sessions): same runtime dir `rules.yaml`.
+- Blind oracle outputs: `blind/<source>.json`; merged result: `extraction-result.json`; anchored proof plan: `claims-agent.json`.

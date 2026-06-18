@@ -15,11 +15,11 @@ This snapshot re-extracts the same 5 sources under that operative template so th
 - **Operative template**: `b922fd5d`, made effective at commit `b2a7291`.
 - **Scope**: the same 5-source gold corpus, reproduced with explicit `--source` (README.md, docs/guides/cli.md, docs/contracts/claim-discovery-workflow.md, docs/contracts/claim-extraction-template.md, docs/internal/working-patterns.md), `explicitSources=true`, `linkedDepth=0`. The adapter default (README/AGENTS/CLAUDE + depth 3) would scan 68 sources; that broader corpus is a different, larger ground set and is out of scope for this 306-comparable measurement.
 
-## Status: RAW BLIND, NOT YET GROUND TRUTH
+## Status: RATIFIED GROUND TRUTH (374/374, 0 pending)
 
-The 374 candidates are `allPending=true`.
-This snapshot is **not** ratified ground truth yet — it becomes ground truth only after the source-by-source pre-grade (R1-R18) + maintainer exception-ratification (the same operating model as the developer-track `hitl-devtrack-v2head-20260618`).
-Until then `../goldset-v2-head/` remains the ratified 306/306 answer key.
+Ratified 2026-06-18 (`hitl-reextract-v2head-20260618`): accept 338 / relabel 25 / not-a-claim 10 / badly-bounded 1.
+This snapshot is now the current both-track answer key at HEAD and **supersedes** `../goldset-v2-head/` (306/306 at `558cda7`), which stays frozen as the proof-route measurement baseline.
+See `HITL-CLOSEOUT.md` for the operating model (source pre-grade -> maintainer exception-ratify, 3 overrides) and the harvest.
 
 ## Counts (raw blind, pre-HITL)
 
@@ -39,4 +39,4 @@ Until then `../goldset-v2-head/` remains the ratified 306/306 answer key.
 ## Deferred
 
 - **Epic DAG** — not built here. The DAG (`epic-tree-proposal.json` -> `epic-dag-proposal.json`) was only ever a slice-3 design artifact over `../goldset-v2-agent-extraction/`; `../goldset-v2-head/` itself carried no DAG. Building it over the ratified tracks is a post-ratification follow-up, same precedent.
-- **HITL ratification** — the next move (pre-grade -> maintainer exception-ratify), which also closes the deferred curator splits, the 9 recall-gap helper sub-commands (family-representative), and the line renumber from the goldset-v2-head closeouts.
+- **HITL ratification** — DONE (`HITL-CLOSEOUT.md`). It realized the line renumber (HEAD anchors), resolved the deferred curator splits by re-extraction (only `cli-268` remains as a single split), and captured the 9 recall-gap helper sub-commands (as separate claims, not family-folded — a granularity follow-up if a leaner set is wanted).

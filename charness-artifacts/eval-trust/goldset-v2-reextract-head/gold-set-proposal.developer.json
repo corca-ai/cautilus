@@ -30,6 +30,18 @@
     "R14",
     "R15"
   ],
+  "ratification": {
+    "session": "hitl-reextract-v2head-20260618",
+    "date": "2026-06-18",
+    "operatingModel": "source pre-grade (R1-R18) -> maintainer exception-ratify",
+    "overrides": 3,
+    "tally": {
+      "not-a-claim": 10,
+      "accept": 338,
+      "relabel": 25,
+      "badly-bounded": 1
+    }
+  },
   "track": "developer",
   "segmentedBy": "claimAudience",
   "segmentedFrom": "charness-artifacts/eval-trust/goldset-v2-reextract-head/gold-set-proposal.json",
@@ -55,8 +67,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "Not-a-claim — positioning/design-stance premise decomposed into claim-8 (R9/R16/R17/R18). Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-8",
@@ -79,8 +92,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route deterministic -> cautilus-eval (R6/R8/R12: load-bearing content is an agent/model/behavior outcome, not settled by a static check). agentLabels left as-extracted for the answer key; correction recorded here. Basis: R6 explicit contrast: 'packets let the next agent resume' behavior is its own content -> cautilus-eval. Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-60",
@@ -104,8 +118,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-96",
@@ -128,8 +143,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: honest-proof-scope distinction recorded in the packet is structurally checkable, not human inspection. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-readme-md-106",
@@ -153,8 +169,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-127",
@@ -177,8 +194,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-130",
@@ -201,8 +219,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-134",
@@ -226,8 +245,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: proof-layer-split routing model is a documented/structural contract per R12, not human-inspection-only. Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-readme-md-155",
@@ -250,8 +270,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-49",
@@ -272,8 +293,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-51",
@@ -294,8 +316,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-66",
@@ -316,8 +339,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-67",
@@ -338,8 +362,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-68",
@@ -360,8 +385,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-69",
@@ -382,8 +408,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-106",
@@ -406,8 +433,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-111",
@@ -428,8 +456,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-113",
@@ -450,8 +479,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-119",
@@ -472,8 +502,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-120",
@@ -494,8 +525,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): spans 120-121; borderline over-merge but it is a single rejection contract. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-122",
@@ -516,8 +548,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-124",
@@ -538,8 +571,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-125",
@@ -560,8 +594,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-126",
@@ -582,8 +617,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-127",
@@ -604,8 +640,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-128",
@@ -628,8 +665,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-129",
@@ -652,8 +690,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-130",
@@ -676,8 +715,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-guides-cli-md-132",
@@ -700,8 +740,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-133",
@@ -722,8 +763,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-134",
@@ -744,8 +786,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-135",
@@ -766,8 +809,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-137",
@@ -788,8 +832,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-139",
@@ -812,8 +857,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-140",
@@ -834,8 +880,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-141",
@@ -856,8 +903,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-142",
@@ -878,8 +926,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-180",
@@ -902,8 +951,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-181",
@@ -924,8 +974,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-182",
@@ -948,8 +999,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-183",
@@ -972,8 +1024,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-184",
@@ -996,8 +1049,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-186",
@@ -1018,8 +1072,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-187",
@@ -1040,8 +1095,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-188",
@@ -1062,8 +1118,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-189",
@@ -1086,8 +1143,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-191",
@@ -1108,8 +1166,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-192",
@@ -1132,8 +1191,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-212",
@@ -1154,8 +1214,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-213",
@@ -1176,8 +1237,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-214",
@@ -1198,8 +1260,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-258",
@@ -1222,8 +1285,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-259",
@@ -1244,8 +1308,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-261",
@@ -1268,8 +1333,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-267",
@@ -1290,8 +1356,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-271",
@@ -1312,8 +1379,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-272",
@@ -1334,8 +1402,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-273",
@@ -1356,8 +1425,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-296",
@@ -1378,8 +1448,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: 'canonical self-dogfood path' is a static repo fact checkable by reading package.json/docs, not a human-inspected outcome (R12). Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-308",
@@ -1403,8 +1474,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: fixture variants prove command/translation/packet PATHS lining up (doc frames fixture runs as path-lining-up evidence, not model behavior) -> deterministic per R12. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-310",
@@ -1426,8 +1498,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: load-bearing content is 'runner can use more than one provider backend' = a wiring/pluggability capability, fixture-backed not output-quality -> deterministic per R12. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-311",
@@ -1450,8 +1523,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-313",
@@ -1472,8 +1546,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-314",
@@ -1494,8 +1569,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-385",
@@ -1516,8 +1592,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-466",
@@ -1538,8 +1615,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-470",
@@ -1562,8 +1640,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-471",
@@ -1584,8 +1663,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-472",
@@ -1606,8 +1686,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-473",
@@ -1628,8 +1709,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-474",
@@ -1650,8 +1732,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-475",
@@ -1672,8 +1755,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-479",
@@ -1696,8 +1780,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-481",
@@ -1718,8 +1803,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-483",
@@ -1740,8 +1826,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-486",
@@ -1762,8 +1849,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-515",
@@ -1784,8 +1872,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-541",
@@ -1806,8 +1895,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-560",
@@ -1828,8 +1918,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-guides-cli-md-561",
@@ -1850,8 +1941,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
@@ -1872,8 +1964,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-6",
@@ -1897,8 +1990,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-9",
@@ -1921,8 +2015,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-9-2",
@@ -1945,8 +2040,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-15",
@@ -1967,8 +2063,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-16",
@@ -1989,8 +2086,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-17",
@@ -2013,8 +2111,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
@@ -2037,8 +2136,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-19",
@@ -2059,8 +2159,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-31",
@@ -2084,8 +2185,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-37",
@@ -2108,8 +2210,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
@@ -2130,8 +2233,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-41",
@@ -2152,8 +2256,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-47",
@@ -2176,8 +2281,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-60",
@@ -2200,8 +2306,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-65",
@@ -2224,8 +2331,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-77",
@@ -2248,8 +2356,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): borderline R17 restatement of md-60/65/682 boundary. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-78",
@@ -2270,8 +2379,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "Not-a-claim — R17 navigation pointer, not a gradeable behavior claim (R9/R16/R17/R18). Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-82",
@@ -2292,8 +2402,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: could read as R16 identity/positioning premise instead. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
@@ -2315,8 +2426,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-105",
@@ -2337,8 +2449,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-106",
@@ -2359,8 +2472,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-114",
@@ -2381,8 +2495,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-116",
@@ -2403,8 +2518,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-117",
@@ -2425,8 +2541,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-130",
@@ -2447,8 +2564,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-177",
@@ -2469,8 +2587,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-180",
@@ -2491,8 +2610,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-198",
@@ -2516,8 +2636,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): agent-primary extraction behavior -> cautilus-eval; vs R6 ownership reading. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-199",
@@ -2540,8 +2661,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-200",
@@ -2564,8 +2686,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
@@ -2588,8 +2711,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-202",
@@ -2613,8 +2737,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: references eval quality measurement; could stay cautilus-eval. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-256",
@@ -2635,8 +2760,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-284",
@@ -2657,8 +2783,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-288",
@@ -2679,8 +2806,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-293",
@@ -2701,8 +2829,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-350",
@@ -2723,8 +2852,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-353",
@@ -2745,8 +2875,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-355",
@@ -2767,8 +2898,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-361",
@@ -2789,8 +2921,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-426",
@@ -2812,8 +2945,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-437",
@@ -2835,8 +2969,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): merge+provenance leans structural; agent-merge behavior keeps eval defensible. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-439",
@@ -2857,8 +2992,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-407",
@@ -2879,8 +3015,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-416",
@@ -2901,8 +3038,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-448",
@@ -2923,8 +3061,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-473",
@@ -2945,8 +3084,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-478",
@@ -2967,8 +3107,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-495",
@@ -2989,8 +3130,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-496",
@@ -3011,8 +3153,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-497",
@@ -3033,8 +3176,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-500",
@@ -3055,8 +3199,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-543",
@@ -3080,8 +3225,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-545",
@@ -3102,8 +3248,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-565",
@@ -3124,8 +3271,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-570",
@@ -3146,8 +3294,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-571",
@@ -3168,8 +3317,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-576",
@@ -3190,8 +3340,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-578",
@@ -3212,8 +3363,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-579",
@@ -3234,8 +3386,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-580",
@@ -3256,8 +3409,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-582",
@@ -3278,8 +3432,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-584",
@@ -3300,8 +3455,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-585",
@@ -3322,8 +3478,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-587",
@@ -3344,8 +3501,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-633",
@@ -3368,8 +3526,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-668",
@@ -3390,8 +3549,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-669",
@@ -3412,8 +3572,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-671",
@@ -3434,8 +3595,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-672",
@@ -3457,8 +3619,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-682",
@@ -3481,8 +3644,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "significanceTier": "T1"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-683",
@@ -3503,8 +3667,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-738",
@@ -3525,8 +3690,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-760",
@@ -3547,8 +3713,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-122",
@@ -3569,8 +3736,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-193",
@@ -3594,8 +3762,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-26",
@@ -3619,8 +3788,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-18",
@@ -3643,8 +3813,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): could be read as a legitimate deterministic seam-shape umbrella rather than pure framing. Tier T2. [maintainer override @ratify-2026-06-18: not-a-claim -> accept: R8 seam-mirroring is a structural composition with its own checkable content, not pure R9 framing]",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-21",
@@ -3665,8 +3836,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-34",
@@ -3689,8 +3861,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-39",
@@ -3711,8 +3884,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-40",
@@ -3735,8 +3909,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-41",
@@ -3759,8 +3934,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-43",
@@ -3784,8 +3960,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: the gate guards an LLM activity, which can tempt an eval routing. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-44",
@@ -3806,8 +3983,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-46",
@@ -3828,8 +4006,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-46-2",
@@ -3852,8 +4031,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-50",
@@ -3874,8 +4054,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-51",
@@ -3896,8 +4077,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-53",
@@ -3918,8 +4100,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-58",
@@ -3943,8 +4126,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: the added prompts aim at a recall behavior, which can tempt eval routing. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-61",
@@ -3967,8 +4151,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-63",
@@ -3989,8 +4174,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-64",
@@ -4011,8 +4197,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-65",
@@ -4033,8 +4220,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-67",
@@ -4057,8 +4245,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
@@ -4082,8 +4271,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: describes a routing rule whose downstream effect is agent behavior, which can tempt eval. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-68-2",
@@ -4107,8 +4297,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: the rule's subject is agent-behavior routing, which can tempt eval. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-69",
@@ -4130,8 +4321,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: reads like design philosophy, but R6/R12 explicitly route ownership/boundary deterministic. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-69-2",
@@ -4153,8 +4345,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-70",
@@ -4175,8 +4368,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-72",
@@ -4197,8 +4391,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-73",
@@ -4219,8 +4414,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-76",
@@ -4243,8 +4439,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-76-2",
@@ -4265,8 +4462,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-78",
@@ -4290,8 +4488,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: phrased as agent behavior, which can tempt eval; but the claim is the template rule's existence. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-81",
@@ -4312,8 +4511,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-81-2",
@@ -4336,8 +4536,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-122",
@@ -4358,8 +4559,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-162",
@@ -4382,8 +4584,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-169",
@@ -4404,8 +4607,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-171",
@@ -4428,8 +4632,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-173",
@@ -4450,8 +4655,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-174",
@@ -4474,8 +4680,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-176",
@@ -4498,8 +4705,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-177",
@@ -4520,8 +4728,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-178",
@@ -4542,8 +4751,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-179",
@@ -4564,8 +4774,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-180",
@@ -4588,8 +4799,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-187",
@@ -4610,8 +4822,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-188",
@@ -4634,8 +4847,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-191",
@@ -4658,8 +4872,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-197",
@@ -4680,8 +4895,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-198",
@@ -4702,8 +4918,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-199",
@@ -4724,8 +4941,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-201",
@@ -4746,8 +4964,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-202",
@@ -4768,8 +4987,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-203",
@@ -4790,8 +5010,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-204",
@@ -4812,8 +5033,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-208",
@@ -4834,8 +5056,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-209",
@@ -4856,8 +5079,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-212",
@@ -4880,8 +5104,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-215",
@@ -4904,8 +5129,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-218",
@@ -4926,8 +5152,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-219",
@@ -4948,8 +5175,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-220",
@@ -4970,8 +5198,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-221",
@@ -4992,8 +5221,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-222",
@@ -5014,8 +5244,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-223",
@@ -5036,8 +5267,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-229",
@@ -5058,8 +5290,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-230",
@@ -5080,8 +5313,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-236",
@@ -5102,8 +5336,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-238",
@@ -5124,8 +5359,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-239",
@@ -5146,8 +5382,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-249",
@@ -5168,8 +5405,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-257",
@@ -5192,8 +5430,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-259",
@@ -5216,8 +5455,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-261",
@@ -5241,8 +5481,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: the deferred work is itself eval-fixture work, which can tempt eval routing for this sequencing claim. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-305",
@@ -5265,8 +5506,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-306",
@@ -5287,8 +5529,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-309",
@@ -5309,8 +5552,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-298",
@@ -5331,8 +5575,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-299",
@@ -5355,8 +5600,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-300",
@@ -5379,8 +5625,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-301",
@@ -5401,8 +5648,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-346",
@@ -5423,8 +5671,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: the conflict-precedence half is arguably a checkable boundary contract rather than pure metadata. Tier T3. [maintainer override @ratify-2026-06-18: not-a-claim -> relabel: the conflict-precedence half is an R6 ownership/boundary assignment, checkable -> deterministic]",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-359",
@@ -5447,8 +5696,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-8",
@@ -5469,8 +5719,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-10",
@@ -5492,8 +5743,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-11",
@@ -5515,8 +5767,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-16",
@@ -5537,8 +5790,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-19",
@@ -5559,8 +5813,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-21",
@@ -5581,8 +5836,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-24",
@@ -5603,8 +5859,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-25",
@@ -5625,8 +5882,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-27",
@@ -5647,8 +5905,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-30",
@@ -5669,8 +5928,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-35",
@@ -5691,8 +5951,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): section-presence is structurally checkable but content completeness needs judgment. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-38",
@@ -5713,8 +5974,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): Deferred Expansion section content completeness is judgment-bound. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-41",
@@ -5735,8 +5997,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): no-gap is structurally checkable but the renumber/one-commit discipline dominates. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-43",
@@ -5759,8 +6022,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-45",
@@ -5783,8 +6047,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-46",
@@ -5807,8 +6072,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route deterministic -> cautilus-eval (R6/R8/R12: load-bearing content is an agent/model/behavior outcome, not settled by a static check). agentLabels left as-extracted for the answer key; correction recorded here. Basis: R4: heading-exclusion is deterministic but the load-bearing part (prose narrative IS extracted as stale claim, S0-measured) is agent-review behavior. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-50",
@@ -5829,8 +6095,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): naming-consistency is lintable in principle but 'same concept' + 'as much as possible' needs human judgment. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-53",
@@ -5851,8 +6118,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-56",
@@ -5878,8 +6146,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "not-a-claim",
+      "note": "Not-a-claim — could read as a genuine dominant-decomposition design choice (R9/R16/R17/R18). Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-58",
@@ -5902,8 +6171,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-61",
@@ -5924,8 +6194,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-64",
@@ -5946,8 +6217,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-66",
@@ -5968,8 +6240,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-68",
@@ -5992,8 +6265,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-70",
@@ -6017,8 +6291,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-72",
@@ -6039,8 +6314,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-77",
@@ -6064,8 +6340,9 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-84",
@@ -6088,8 +6365,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-86",
@@ -6112,8 +6390,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-89",
@@ -6136,8 +6415,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-95",
@@ -6158,8 +6438,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-97",
@@ -6182,8 +6463,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-101",
@@ -6204,8 +6486,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-103",
@@ -6228,8 +6511,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): agent command-sequencing guardrail; could lean cautilus-eval but the hazard is auditable prose. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-109",
@@ -6250,8 +6534,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "relabel",
+      "note": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: R12: structural file-naming/path contract (sibling fixture claims 111/112 are deterministic). Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-111",
@@ -6274,8 +6559,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-112",
@@ -6298,8 +6584,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-118",
@@ -6322,8 +6609,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-120",
@@ -6344,8 +6632,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-126",
@@ -6368,8 +6657,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-127",
@@ -6392,8 +6682,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2. [maintainer override @ratify-2026-06-18: not-a-claim -> accept: load-bearing 'standalone binary plus Cautilus Agent' product-surface promise (S1-install structural claim), not mere positioning]",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-128",
@@ -6416,8 +6707,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-129",
@@ -6440,8 +6732,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-130",
@@ -6462,8 +6755,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-133",
@@ -6486,8 +6780,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): ownership-cut routes deterministic (R6) but 'responsibility hardens' is a judgment criterion that could be human-auditable. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-136",
@@ -6510,8 +6805,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-139",
@@ -6532,8 +6828,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-145",
@@ -6557,8 +6854,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): mostly process-history; verifiable core (live-targets/evaluate-live surfaces exist) is structural so deterministic defensible. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-148",
@@ -6581,8 +6879,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-152",
@@ -6605,8 +6904,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-157",
@@ -6627,8 +6927,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-158",
@@ -6651,8 +6952,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-159",
@@ -6675,8 +6977,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-160",
@@ -6699,8 +7002,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-161",
@@ -6721,8 +7025,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-165",
@@ -6743,8 +7048,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-173",
@@ -6765,8 +7071,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-177",
@@ -6787,8 +7094,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-180",
@@ -6811,8 +7119,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-185",
@@ -6835,8 +7144,9 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "significanceTier": "T3"
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-193",
@@ -6859,8 +7169,9 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "pending",
-      "note": ""
+      "maintainerVerdict": "accept",
+      "note": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "significanceTier": "T2"
     }
   ]
 }
