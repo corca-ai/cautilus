@@ -66,20 +66,31 @@ The T3-heavy shape confirms R13's prediction (contract/CLI sources skew spec-det
 
 ## Deferred follow-ups (source-edit + structural, NOT applied this session)
 
-### A. Source edits (record now, apply in a later doc pass + re-anchor)
-- **rewrite-source (3):** `README:163` drop the "shortest" superlative -> "an end-to-end adoption proof";
-  `template:196` trim the "(ratified 2026-06-10)" metadata tail; `template:358` the "Until the deferred
-  claims:refresh:all gate decision lands…" transitional caveat (re-evaluate when that gate lands).
+### A. Source edits (rewrite-source) — 2 of 3 APPLIED 2026-06-18 (commit `3bc1b06`)
+- **APPLIED** `README:163` "shortest" superlative dropped -> "an end-to-end adoption proof"; `template:196`
+  "(ratified 2026-06-10)" metadata tail trimmed from the Anchoring rule heading.
+- **STILL DEFERRED** `template:358` "Until the deferred claims:refresh:all gate decision lands…" transitional
+  caveat — its gate (the `claims:refresh:all` regenerate-vs-validate decision, still open in the template's
+  Deferred Decisions) has not landed, so the caveat stays live; re-evaluate when that gate lands.
+- These edits changed the HEAD verbatim of the two rewrite-source claims; their ratified verdicts carry by
+  `claimFingerprint` and reconcile at the re-extraction re-anchor.
 
-### B. Curator (split the over-merges into separate claims)
-- `workflow:95`, `workflow:289`, `workflow:497`, `workflow:729`, `cli:81` — see each `badly-bounded` note for the
-  intended split. `cli:81` -> two deterministic claims (`doctor binary --json` health vs `doctor commands --json`
-  discovery), mirroring the `cli:207` split already queued on the user-product side.
+### B. Curator (split the over-merges) — DEFERRED to the re-extraction session (maintainer, 2026-06-18)
+- `workflow:95` (3-way), `workflow:289` (8 heterogeneous routing rules, each a separate routing claim OR a
+  framing premise — per-item claim/premise judgment), `workflow:497` (refresh-entry vs validate, two seams),
+  `workflow:729` (behavior claim + an R17 evidence-pointer tail to drop), `cli:81` (`doctor binary --json`
+  health vs `doctor commands --json` discovery, mirroring the user-product `cli:207` split).
+- Folded into the re-extraction session rather than hand-applied now: the re-extraction with the edited v2
+  template produces correctly-bounded claims through blind-extract-then-ratify, where `workflow:289`'s
+  per-item claim-vs-premise calls belong; hand-authoring them now would bypass that discipline and be
+  replaced by the re-extraction anyway (maintainer decision 2026-06-18).
 
 ### C. Out of scope this session (next milestones)
 - **Mechanical line re-number** of both tracks to HEAD (deferred again here; folds into the next full regeneration).
-- **`cli.md` recall probe** — **DONE 2026-06-18** (`RECALL-PROBE-cli.md`). Result: gold recall of its own claims 68/68 (no phantoms); over-split hypothesis **refuted** (blind oracle split finer than gold in all 23 clustered regions); only real gaps are **9 deterministic helper sub-commands** (4x T2, 5x T3) in the scenarios/review/evidence/plugin families — no principle/boundary blind spot. The 9 are recorded, not added; they fold into the regeneration with a granularity-policy decision (one-claim-per-sub-command vs family-representative).
-- **Full both-track regeneration** at a clean future HEAD once the source edits (A) + curator splits (B) land, also closing the 9 recall-gap sub-commands per the granularity-policy decision.
+- **`cli.md` recall probe** — **DONE 2026-06-18** (`RECALL-PROBE-cli.md`). Result: gold recall of its own claims 68/68 (no phantoms); over-split hypothesis **refuted** (blind oracle split finer than gold; gold finer than both extractors in only 2 of 23 clusters); only real gaps are **9 deterministic helper sub-commands** (4x T2, 5x T3) in the scenarios/review/evidence/plugin families — no principle/boundary blind spot. **Granularity policy decided: family-representative** (keep the 9 folded under their family claim with a coverage note, not separate claims — R16 lean). The 9 fold into the re-extraction session, not added now.
+- **Extraction-template lean edit** — **DONE 2026-06-18** (commit `080e7d0`): the measured proof-route weakness folded into the template's routing guidance as one R16-locked lean generalization (ownership/boundary/isolation + reviewable/reproducible -> deterministic).
+- **Binary doubled-verb bug** — **FIXED 2026-06-18** (commit `dc1837c`): the cli.md typo was root-caused to the binary's command registry advertising the unroutable `evaluate evaluate review`; fixed across the binary + 23 doc/skill sites with a structural regression guard (`charness-artifacts/debug/2026-06-18-evaluate-review-doubled-verb.md`).
+- **Full both-track re-extraction** at a clean future HEAD — the remaining big move: re-extract 306 with the edited v2 template, re-segment, rebuild the DAG, re-ratify, and realize the line renumber; closes the deferred curator splits (B), the 9 recall-gap sub-commands (family-representative), and the renumber in one pass.
 
 ## Reproduce / inspect
 

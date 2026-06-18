@@ -44,6 +44,17 @@ So the line re-number now folds into the **next full both-track regeneration** a
 the deferred source edits (the 3 `rewrite-source` trims + the `badly-bounded` curator splits, recorded in
 `HITL-CLOSEOUT.developer.md`) land.
 
+**Update — recall + template + hygiene session (2026-06-18).** Three more source surfaces were tightened at
+HEAD (commit `3bc1b06`): `README:163` "shortest" dropped, `template:196` "(ratified 2026-06-10)" trimmed, and
+the `cli.md` `evaluate evaluate review` doubled verb fixed — the last root-caused to a binary command-registry
+bug and fixed product-wide (commit `dc1837c`, see `charness-artifacts/debug/2026-06-18-evaluate-review-doubled-verb.md`).
+The extraction template also gained a lean proof-route generalization (commit `080e7d0`). These further shift
+README/template/cli line numbers away from `558cda7`. Per maintainer decision (2026-06-18) the curator splits,
+the line renumber, and the 9 `cli.md` recall-gap helper sub-commands (`RECALL-PROBE-cli.md`, granularity policy
+= family-representative) all fold into the **re-extraction session**, not a partial hand-renumber now — a
+partial re-anchor over the reworded `claim-discovery-workflow.md` would leave a mixed-anchor gold set. Verdicts
+continue to carry by `claimFingerprint`; `template:358` stays unedited (its gate has not landed).
+
 Affected entries if/when re-numbered: the 5 `retire-source` entries (README:16/19/47/110 + cli:32) lost
 their source line (the maintainer removed it, as ratified) and become `source-removed`; README:54
 (`rewrite-source`) and README:112 (`accept`) have new verbatim text; the other ~49 entries only shift

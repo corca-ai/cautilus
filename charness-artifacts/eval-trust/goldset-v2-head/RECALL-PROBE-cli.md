@@ -72,16 +72,13 @@ Of the 42 blind-only candidates: **dup 30** (code-block comment lines restating 
 
 ## Disposition (NOT applied this session)
 
-The 9 real-gaps are **recorded, not added** to the gold set now — consistent with the developer-track discipline of deferring curation edits to the next full regeneration rather than mutating a clean 306/306 answer key mid-stream.
-They fold into milestone 3 (full both-track regeneration), with one **granularity-policy decision** to settle there:
+The 9 real-gaps are **recorded, not added** to the gold set now — consistent with the developer-track discipline of deferring curation edits to the re-extraction session rather than mutating a clean 306/306 answer key mid-stream.
 
-> Should each documented helper sub-command (`prepare-input` / `render-*` / `summarize` / `validate`) be its own claim, or is family-representative the intended granularity?
-> The blind structural oracle says one-claim-per-sub-command; the gold curator chose family-representative for these chains.
-> Settling this in the extraction template/curation policy (it touches milestone 2) determines whether the 9 are "gaps to close" or "correct folds." Until then they are logged as deterministic T2/T3 candidates.
+**Granularity policy (maintainer, 2026-06-18): family-representative.** Each family keeps its representative claim (`propose` / `variants` / `bundle`); the helper sub-commands (`prepare-input` / `render-*` / `summarize` / `validate`) stay folded under it with a coverage note rather than each becoming its own claim — keeping the gold set lean per R16 ("less but better") and avoiding a T3-minutiae blow-up. The 9 fold into the re-extraction session (alongside the deferred curator splits and the line renumber); the coverage note lands when that session recurates.
 
 No principle/boundary recall gap means no urgent gold-set patch is owed; the measurement is the deliverable.
 
-**Incidental source finding (out of probe scope):** the adjudication surfaced a doubled-verb typo `evaluate evaluate review` at 7 sites in `cli.md` (@558cda7 L408/413/417/423/432/436/447; still present at HEAD since the only `558cda7..HEAD` cli.md change was the Homebrew removal). A clean `evaluate evaluate review` -> `evaluate review` find-replace. Logged here as a candidate `rewrite-source` for the same later doc pass as the `HITL-CLOSEOUT.developer.md` §A trims; not a claim defect, so not routed to debug.
+**Incidental finding -> binary bug (now fixed):** the doubled-verb `evaluate evaluate review` was not a mere doc typo — tracing it found the binary's own command registry (`internal/cli/command-registry.json`) advertising the unroutable form in `cautilus evaluate review --help`, propagated to 23 doc/skill sites. Routed to `charness:debug`, root-caused (hand-authored registry strings + a test that asserted the doubled form), and fixed with a structural regression guard that requires every usage/example to lead with its command's path (commit `dc1837c`; diagnosis in `charness-artifacts/debug/2026-06-18-evaluate-review-doubled-verb.md`). `cli.md` itself was corrected in `3bc1b06`.
 
 ## Reproduce / inspect
 
