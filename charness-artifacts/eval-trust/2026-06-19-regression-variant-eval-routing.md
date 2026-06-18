@@ -94,7 +94,7 @@ Executable gates (all green, `node --test reasoning-soundness-judge.test.mjs` â†
 
 ## What this means for the badge
 
-This is the strongest behavior-evaluation evidence to date and the on-target one: the eval detects a real, induced regression from a real (runner-shaped) routing log, with the process facet and the semantic judge each carrying a distinct negative. It is the product promise demonstrated, not a synthetic-chat detour. It remains harness-level (the judge is not yet wired into the `cautilus evaluate` CLI), so it is input to the badge-criterion decision, not an automatic flip.
+This is the strongest behavior-evaluation evidence to date and the on-target one: the eval detects a real, induced regression from a real (runner-shaped) routing log, with the process facet and the semantic judge each carrying a distinct negative. It is the product promise demonstrated, not a synthetic-chat detour. It was harness-level at the time of this finding (the judge not yet wired into the `cautilus evaluate` CLI), so it is input to the badge-criterion decision, not an automatic flip; the CLI wiring has since landed (replay-based; see [2026-06-19-judge-tier-cli-wiring.md](./2026-06-19-judge-tier-cli-wiring.md)).
 
 ## Critique
 

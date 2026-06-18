@@ -29,6 +29,9 @@ function fail(message) {
 	process.exit(1);
 }
 
+// --backend, --output-dir, and --repo-root are accepted (the pipeline substitutes them into the
+// adapter command template) but inert here: this runner is a deterministic replay of captured
+// verdicts, so it does no runtime selection and writes only the observed packet at --output-file.
 const VALUE_OPTIONS = new Set(["--cases-file", "--output-file", "--calibration", "--verdicts", "--suite-id", "--backend", "--output-dir", "--repo-root"]);
 
 function parseArgs(argv) {

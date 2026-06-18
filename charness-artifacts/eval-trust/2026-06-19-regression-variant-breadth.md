@@ -92,8 +92,8 @@ Each baseline passes both facets on the correct surface.
 
 The earlier slice showed the eval catches a real, induced regression on one pinned behavior; this slice shows the same composite catches it on three distinct pinned behaviors, each with its own deterministic process facet and its own judge-load-bearing control.
 That moves the regression-detection evidence from "demonstrated once" toward "general across the pinned-behavior population", which is what a behavior-evaluation badge above `declared` would need.
-It remains harness-level (the judge is not yet wired into the `cautilus evaluate` CLI, and provenance is subagent-harvest), so it informs, but does not auto-flip, the badge.
-The next productization step is unchanged: wire the judge into `cautilus evaluate` with full-runner provenance, or have the maintainer accept the current harness breadth as sufficient and wire only the spec projection.
+It was harness-level at the time of this finding (the judge not yet wired into the `cautilus evaluate` CLI, provenance subagent-harvest), so it informs, but does not auto-flip, the badge.
+The CLI-wiring step has since landed (replay-based; see [2026-06-19-judge-tier-cli-wiring.md](./2026-06-19-judge-tier-cli-wiring.md)); the remaining productization step is full codex/claude runner provenance, or having the maintainer accept the current breadth as sufficient and wire only the spec projection.
 
 ## Critique
 

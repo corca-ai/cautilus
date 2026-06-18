@@ -166,7 +166,8 @@ a CODE process facet (`emitted_find_skills_bootstrap`) catches the dropped boots
 Both halves of the composite carry a distinct real negative, so an always-sound judge fails the gate (the load-bearing invariant), and the eval passes the baseline.
 
 This is the strongest behavior-evaluation evidence so far and the right input to the badge decision: the eval demonstrably catches a real, induced regression from a real (runner-shaped) routing log.
-It remains harness-level — the judge is not yet wired into the `cautilus evaluate` CLI command, and provenance is subagent-harvest rather than the full codex/claude runner — so it informs, but does not auto-flip, the badge.
+At the time of this finding it was harness-level — the judge was not yet wired into the `cautilus evaluate` CLI command, and provenance is subagent-harvest rather than the full codex/claude runner — so it informs, but does not auto-flip, the badge.
+The CLI-wiring half has since landed (see the 2026-06-19 wiring section at the end); the full-runner provenance half remains open.
 Full evidence: [charness-artifacts/eval-trust/2026-06-19-regression-variant-eval-routing.md](../../charness-artifacts/eval-trust/2026-06-19-regression-variant-eval-routing.md).
 
 ## Regression detection generalizes across pinned behaviors (2026-06-19): breadth, not one route
@@ -181,6 +182,24 @@ The composite is identical every time: a code process facet catches the dropped 
 Both halves carry a real negative on every claim, so an always-sound judge FAILS each gate, and a breadth-invariant test pins that the three claims own three distinct process facets and each carries a judge-load-bearing control.
 
 This moves the regression-detection evidence from "demonstrated once" toward "general across the pinned-behavior population", which is what a behavior-evaluation badge above `declared` would need.
-It is still harness-level (subagent-harvest provenance, judge not wired into `cautilus evaluate`), so the next productization step is unchanged: wire the judge into the CLI with full-runner provenance, or have the maintainer accept the current harness breadth as sufficient and wire only the spec projection.
+The judge tier has since been wired into `cautilus evaluate` (replay-based; the wiring section below); the remaining productization step is full codex/claude runner provenance, or having the maintainer accept the current evidence as sufficient and wiring only the spec projection.
 A bounded fresh-eye review returned READY with no blocker.
 Full evidence: [charness-artifacts/eval-trust/2026-06-19-regression-variant-breadth.md](../../charness-artifacts/eval-trust/2026-06-19-regression-variant-breadth.md).
+
+## Judge tier wired into `cautilus evaluate` (2026-06-19): replay-based, provenance gap remains
+
+The judge stopped being harness-only: the reasoning-soundness judge tier is now part of the product CLI's verdict.
+`cautilus evaluate` reads an optional per-evaluation `reasoningSoundness` composite verdict from the observed packet and ANDs it into the case status, so an `unsound` judgment fails the case and drives the suite recommendation to `reject`.
+This fills the semantic seat the all-deterministic field/fragment matchers left empty, exactly the determinism-skew this contract opened against.
+
+The code/intelligence boundary is preserved at the product edge.
+The generic Go engine stays repo-agnostic: it only reads a structured verdict and composites it deterministically (`internal/runtime/instruction_surface.go`), never importing the judge harness or re-deriving a repo-specific facet.
+The repo-specific judge logic lives in an adapter-owned runner (`scripts/agent-runtime/run-reasoning-judge-eval.mjs`) that recomputes the composite through the single-source-of-truth harness (`compareVerdicts`) and emits it into the observed packet — so the runner and the harness can never disagree on a verdict.
+
+It is dogfooded end-to-end on the routing regression: `cautilus evaluate fixture --adapter-name self-dogfood-routing-regression-eval` recommends `reject`, the baseline passes, both regressed-skip cases fail, and the right-route-wrong-reason control fails INSIDE the CLI via the judge alone (the deterministic routing matcher passes it) — the regression a token/route check would miss, now proven in the product CLI rather than only in the harness.
+
+Two honest scopes remain open.
+The judge's LLM inference is prove-then-project (the blind verdicts are captured once and replayed deterministically), the same discipline as the harness — the CLI orchestrates and composites, it does not call a live judge per run.
+And provenance is still blind-subagent-harvest, NOT full codex/claude product-runner capture; reproducing the regression pair through the full runner is the remaining fidelity step.
+The badge is not flipped by this wiring; moving the apex `Behavior Evaluation` badge past `declared` stays a maintainer decision.
+Full evidence: [charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md](../../charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md).
