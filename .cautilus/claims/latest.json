@@ -12377,7 +12377,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "fc222e33306ca70a2c2816d9b09a62ff358f5153",
+  "gitCommit": "4da48ff90f1b36081e019b121116a4a21761e300",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14013,7 +14013,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:2eb6938877bc969f41c99a28087fa80b61cc9863003e2bd34a9cc47577bcd2a3",
+      "contentHash": "sha256:80fd493f4970fb7ace2ff3b0b5607763e4802329f2c43c71c83f480809ea6d38",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
