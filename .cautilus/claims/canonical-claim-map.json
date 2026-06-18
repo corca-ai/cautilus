@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:d0d4b2ed55d1ab66acf4fc94dcb99051f094f024752320ea4a5b962f8d1a06ff"
+      "contentHash": "sha256:a5098b739a0e67f5ea48f43dbe2e641a9eaf15b1e36be43f1ac52b3680e419fa"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "8e61db536d6cb10495a673744168cb0f8c1c5b64",
+  "claimsPacketGitCommit": "09f8887fe89dbad98b8867d0065a8f2ff72ffc12",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 383,
   "catalogs": {
@@ -606,8 +606,8 @@
       "M11": 35,
       "M12": 12,
       "M2": 19,
-      "M3": 66,
-      "M4": 68,
+      "M3": 67,
+      "M4": 67,
       "M5": 24,
       "M6": 6,
       "M7": 11,
@@ -696,71 +696,71 @@
       "claim-docs-contracts-active-run-md-59",
       "claim-docs-contracts-active-run-md-221",
       "claim-docs-contracts-claim-discovery-workflow-md-5",
+      "claim-docs-contracts-claim-discovery-workflow-md-16",
       "claim-docs-contracts-claim-discovery-workflow-md-17",
       "claim-docs-contracts-claim-discovery-workflow-md-18",
-      "claim-docs-contracts-claim-discovery-workflow-md-19",
-      "claim-docs-contracts-claim-discovery-workflow-md-38",
-      "claim-docs-contracts-claim-discovery-workflow-md-48",
-      "claim-docs-contracts-claim-discovery-workflow-md-61",
-      "claim-docs-contracts-claim-discovery-workflow-md-66",
-      "claim-docs-contracts-claim-discovery-workflow-md-78",
-      "claim-docs-contracts-claim-discovery-workflow-md-86",
-      "claim-docs-contracts-claim-discovery-workflow-md-91",
-      "claim-docs-contracts-claim-discovery-workflow-md-93",
-      "claim-docs-contracts-claim-discovery-workflow-md-96",
-      "claim-docs-contracts-claim-discovery-workflow-md-129",
-      "claim-docs-contracts-claim-discovery-workflow-md-180",
-      "claim-docs-contracts-claim-discovery-workflow-md-182",
-      "claim-docs-contracts-claim-discovery-workflow-md-207",
+      "claim-docs-contracts-claim-discovery-workflow-md-37",
+      "claim-docs-contracts-claim-discovery-workflow-md-47",
+      "claim-docs-contracts-claim-discovery-workflow-md-60",
+      "claim-docs-contracts-claim-discovery-workflow-md-65",
+      "claim-docs-contracts-claim-discovery-workflow-md-77",
+      "claim-docs-contracts-claim-discovery-workflow-md-85",
+      "claim-docs-contracts-claim-discovery-workflow-md-90",
+      "claim-docs-contracts-claim-discovery-workflow-md-92",
+      "claim-docs-contracts-claim-discovery-workflow-md-95",
+      "claim-docs-contracts-claim-discovery-workflow-md-128",
+      "claim-docs-contracts-claim-discovery-workflow-md-179",
+      "claim-docs-contracts-claim-discovery-workflow-md-181",
+      "claim-docs-contracts-claim-discovery-workflow-md-206",
+      "claim-docs-contracts-claim-discovery-workflow-md-211",
       "claim-docs-contracts-claim-discovery-workflow-md-212",
-      "claim-docs-contracts-claim-discovery-workflow-md-213",
+      "claim-docs-contracts-claim-discovery-workflow-md-220",
       "claim-docs-contracts-claim-discovery-workflow-md-221",
-      "claim-docs-contracts-claim-discovery-workflow-md-222",
-      "claim-docs-contracts-claim-discovery-workflow-md-228",
-      "claim-docs-contracts-claim-discovery-workflow-md-232",
-      "claim-docs-contracts-claim-discovery-workflow-md-244",
+      "claim-docs-contracts-claim-discovery-workflow-md-227",
+      "claim-docs-contracts-claim-discovery-workflow-md-231",
+      "claim-docs-contracts-claim-discovery-workflow-md-243",
+      "claim-docs-contracts-claim-discovery-workflow-md-288",
       "claim-docs-contracts-claim-discovery-workflow-md-289",
-      "claim-docs-contracts-claim-discovery-workflow-md-290",
-      "claim-docs-contracts-claim-discovery-workflow-md-294",
-      "claim-docs-contracts-claim-discovery-workflow-md-296",
-      "claim-docs-contracts-claim-discovery-workflow-md-299",
-      "claim-docs-contracts-claim-discovery-workflow-md-357",
-      "claim-docs-contracts-claim-discovery-workflow-md-359",
-      "claim-docs-contracts-claim-discovery-workflow-md-362",
-      "claim-docs-contracts-claim-discovery-workflow-md-364",
-      "claim-docs-contracts-claim-discovery-workflow-md-397",
-      "claim-docs-contracts-claim-discovery-workflow-md-408",
-      "claim-docs-contracts-claim-discovery-workflow-md-410",
-      "claim-docs-contracts-claim-discovery-workflow-md-413",
-      "claim-docs-contracts-claim-discovery-workflow-md-438",
-      "claim-docs-contracts-claim-discovery-workflow-md-494",
-      "claim-docs-contracts-claim-discovery-workflow-md-496",
-      "claim-docs-contracts-claim-discovery-workflow-md-503",
-      "claim-docs-contracts-claim-discovery-workflow-md-518",
-      "claim-docs-contracts-claim-discovery-workflow-md-541",
-      "claim-docs-contracts-claim-discovery-workflow-md-544",
-      "claim-docs-contracts-claim-discovery-workflow-md-547",
-      "claim-docs-contracts-claim-discovery-workflow-md-562",
-      "claim-docs-contracts-claim-discovery-workflow-md-566",
-      "claim-docs-contracts-claim-discovery-workflow-md-598",
-      "claim-docs-contracts-claim-discovery-workflow-md-600",
-      "claim-docs-contracts-claim-discovery-workflow-md-603",
+      "claim-docs-contracts-claim-discovery-workflow-md-293",
+      "claim-docs-contracts-claim-discovery-workflow-md-295",
+      "claim-docs-contracts-claim-discovery-workflow-md-298",
+      "claim-docs-contracts-claim-discovery-workflow-md-356",
+      "claim-docs-contracts-claim-discovery-workflow-md-358",
+      "claim-docs-contracts-claim-discovery-workflow-md-361",
+      "claim-docs-contracts-claim-discovery-workflow-md-363",
+      "claim-docs-contracts-claim-discovery-workflow-md-396",
+      "claim-docs-contracts-claim-discovery-workflow-md-407",
+      "claim-docs-contracts-claim-discovery-workflow-md-409",
+      "claim-docs-contracts-claim-discovery-workflow-md-412",
+      "claim-docs-contracts-claim-discovery-workflow-md-437",
+      "claim-docs-contracts-claim-discovery-workflow-md-493",
+      "claim-docs-contracts-claim-discovery-workflow-md-495",
+      "claim-docs-contracts-claim-discovery-workflow-md-502",
+      "claim-docs-contracts-claim-discovery-workflow-md-517",
+      "claim-docs-contracts-claim-discovery-workflow-md-540",
+      "claim-docs-contracts-claim-discovery-workflow-md-543",
+      "claim-docs-contracts-claim-discovery-workflow-md-546",
+      "claim-docs-contracts-claim-discovery-workflow-md-561",
+      "claim-docs-contracts-claim-discovery-workflow-md-565",
+      "claim-docs-contracts-claim-discovery-workflow-md-597",
+      "claim-docs-contracts-claim-discovery-workflow-md-599",
+      "claim-docs-contracts-claim-discovery-workflow-md-602",
+      "claim-docs-contracts-claim-discovery-workflow-md-620",
       "claim-docs-contracts-claim-discovery-workflow-md-621",
       "claim-docs-contracts-claim-discovery-workflow-md-622",
-      "claim-docs-contracts-claim-discovery-workflow-md-623",
-      "claim-docs-contracts-claim-discovery-workflow-md-628",
-      "claim-docs-contracts-claim-discovery-workflow-md-639",
-      "claim-docs-contracts-claim-discovery-workflow-md-645",
-      "claim-docs-contracts-claim-discovery-workflow-md-677",
+      "claim-docs-contracts-claim-discovery-workflow-md-627",
+      "claim-docs-contracts-claim-discovery-workflow-md-638",
+      "claim-docs-contracts-claim-discovery-workflow-md-644",
+      "claim-docs-contracts-claim-discovery-workflow-md-676",
+      "claim-docs-contracts-claim-discovery-workflow-md-680",
       "claim-docs-contracts-claim-discovery-workflow-md-681",
       "claim-docs-contracts-claim-discovery-workflow-md-682",
-      "claim-docs-contracts-claim-discovery-workflow-md-683",
-      "claim-docs-contracts-claim-discovery-workflow-md-708",
-      "claim-docs-contracts-claim-discovery-workflow-md-737",
+      "claim-docs-contracts-claim-discovery-workflow-md-707",
+      "claim-docs-contracts-claim-discovery-workflow-md-736",
+      "claim-docs-contracts-claim-discovery-workflow-md-739",
       "claim-docs-contracts-claim-discovery-workflow-md-740",
       "claim-docs-contracts-claim-discovery-workflow-md-741",
-      "claim-docs-contracts-claim-discovery-workflow-md-742",
-      "claim-docs-contracts-claim-discovery-workflow-md-750",
+      "claim-docs-contracts-claim-discovery-workflow-md-749",
       "claim-docs-contracts-eval-judge-collaboration-md-45",
       "claim-docs-contracts-eval-judge-collaboration-md-84",
       "claim-docs-contracts-live-run-invocation-batch-md-28",
@@ -1906,16 +1906,16 @@
       "absorbedRawClaimIds": [
         "claim-docs-master-plan-md-78",
         "claim-docs-contracts-claim-discovery-workflow-md-5",
-        "claim-docs-contracts-claim-discovery-workflow-md-99",
-        "claim-docs-contracts-claim-discovery-workflow-md-129",
-        "claim-docs-contracts-claim-discovery-workflow-md-180",
-        "claim-docs-contracts-claim-discovery-workflow-md-222",
-        "claim-docs-contracts-claim-discovery-workflow-md-359",
-        "claim-docs-contracts-claim-discovery-workflow-md-496",
-        "claim-docs-contracts-claim-discovery-workflow-md-547",
-        "claim-docs-contracts-claim-discovery-workflow-md-600",
-        "claim-docs-contracts-claim-discovery-workflow-md-682",
-        "claim-docs-contracts-claim-discovery-workflow-md-737",
+        "claim-docs-contracts-claim-discovery-workflow-md-98",
+        "claim-docs-contracts-claim-discovery-workflow-md-128",
+        "claim-docs-contracts-claim-discovery-workflow-md-179",
+        "claim-docs-contracts-claim-discovery-workflow-md-221",
+        "claim-docs-contracts-claim-discovery-workflow-md-358",
+        "claim-docs-contracts-claim-discovery-workflow-md-495",
+        "claim-docs-contracts-claim-discovery-workflow-md-546",
+        "claim-docs-contracts-claim-discovery-workflow-md-599",
+        "claim-docs-contracts-claim-discovery-workflow-md-681",
+        "claim-docs-contracts-claim-discovery-workflow-md-736",
         "claim-docs-contracts-workbench-instance-discovery-md-100",
         "claim-docs-specs-contracts-claim-discovery-workflow-spec-md-13",
         "claim-docs-specs-contracts-claim-discovery-workflow-spec-md-17",
@@ -1933,66 +1933,66 @@
         },
         {
           "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
-          "claimFingerprint": "sha256:a03560d63b09185cf158d22401a9cf583efd5820886eb8862e22a388c775dc3f",
+          "claimFingerprint": "sha256:5a0fdc6b4117ac771a5bdbc188957a783ba29c8892c81933676b4d9d61e9c18e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-99",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-98",
           "claimFingerprint": "sha256:1428eec288b0dab0aa084911be814bf9b87c1d68f00e38164dbbba01e4331af3",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-129",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-128",
           "claimFingerprint": "sha256:5152f752501f8860f110aacfa7f6afe707833f4a1fa4c60e2c8d91307cc8213a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-180",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-179",
           "claimFingerprint": "sha256:65013747b67f063ffe2fcabc9c9b48ca6195e9e12ce8c3b0a7fca80e53f54f63",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-222",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-221",
           "claimFingerprint": "sha256:c8771569879ff2560b316b4ba714639e8cbf8c21156e0729a47ed22979780a64",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-359",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-358",
           "claimFingerprint": "sha256:3ae052d2e69bce5fd477651716c93abdc26b8279663de5c98b4c7f3922bbea72",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-496",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-495",
           "claimFingerprint": "sha256:f0756f4eadea360bee1378c6b6a5a8fb96ddd8f8f15bc3aa6b0a360acad415ca",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-547",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-546",
           "claimFingerprint": "sha256:ecd958f67380f970e9d5835bfb582ba49526aa572012ff9707f2a7c6eb20f98d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-600",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-599",
           "claimFingerprint": "sha256:cce31c9469a568f2944264556e5aa5b7b3f7d4d4c960d15d51184c3218bd4b0b",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-682",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-681",
           "claimFingerprint": "sha256:2f006cdc0b2c26694835121869f8eb2d65ff4327e293477d439a86c4f58f58a7",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-737",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-736",
           "claimFingerprint": "sha256:54f451eb5c40a5f8f0dcf84b2d5c1c1de64658cc01ce6deff9e52c33d9fbbdff",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2041,8 +2041,8 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 9,
-        "unknown": 10
+        "satisfied": 8,
+        "unknown": 11
       },
       "byReviewStatus": {
         "agent-reviewed": 11,
@@ -2061,7 +2061,7 @@
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 66,
+      "absorbedRawClaimCount": 67,
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
         "claim-agents-md-142",
@@ -2075,32 +2075,33 @@
         "claim-docs-specs-index-spec-md-48",
         "claim-docs-specs-index-spec-md-57",
         "claim-docs-specs-index-spec-md-69",
-        "claim-docs-contracts-claim-discovery-workflow-md-18",
-        "claim-docs-contracts-claim-discovery-workflow-md-38",
-        "claim-docs-contracts-claim-discovery-workflow-md-61",
-        "claim-docs-contracts-claim-discovery-workflow-md-66",
-        "claim-docs-contracts-claim-discovery-workflow-md-86",
+        "claim-docs-contracts-claim-discovery-workflow-md-17",
+        "claim-docs-contracts-claim-discovery-workflow-md-37",
+        "claim-docs-contracts-claim-discovery-workflow-md-60",
+        "claim-docs-contracts-claim-discovery-workflow-md-65",
+        "claim-docs-contracts-claim-discovery-workflow-md-85",
+        "claim-docs-contracts-claim-discovery-workflow-md-211",
         "claim-docs-contracts-claim-discovery-workflow-md-212",
-        "claim-docs-contracts-claim-discovery-workflow-md-213",
-        "claim-docs-contracts-claim-discovery-workflow-md-221",
-        "claim-docs-contracts-claim-discovery-workflow-md-228",
-        "claim-docs-contracts-claim-discovery-workflow-md-232",
-        "claim-docs-contracts-claim-discovery-workflow-md-244",
-        "claim-docs-contracts-claim-discovery-workflow-md-289",
-        "claim-docs-contracts-claim-discovery-workflow-md-294",
-        "claim-docs-contracts-claim-discovery-workflow-md-397",
-        "claim-docs-contracts-claim-discovery-workflow-md-410",
-        "claim-docs-contracts-claim-discovery-workflow-md-438",
-        "claim-docs-contracts-claim-discovery-workflow-md-541",
-        "claim-docs-contracts-claim-discovery-workflow-md-544",
-        "claim-docs-contracts-claim-discovery-workflow-md-598",
+        "claim-docs-contracts-claim-discovery-workflow-md-220",
+        "claim-docs-contracts-claim-discovery-workflow-md-227",
+        "claim-docs-contracts-claim-discovery-workflow-md-231",
+        "claim-docs-contracts-claim-discovery-workflow-md-243",
+        "claim-docs-contracts-claim-discovery-workflow-md-288",
+        "claim-docs-contracts-claim-discovery-workflow-md-293",
+        "claim-docs-contracts-claim-discovery-workflow-md-396",
+        "claim-docs-contracts-claim-discovery-workflow-md-409",
+        "claim-docs-contracts-claim-discovery-workflow-md-437",
+        "claim-docs-contracts-claim-discovery-workflow-md-540",
+        "claim-docs-contracts-claim-discovery-workflow-md-543",
+        "claim-docs-contracts-claim-discovery-workflow-md-565",
+        "claim-docs-contracts-claim-discovery-workflow-md-597",
+        "claim-docs-contracts-claim-discovery-workflow-md-620",
         "claim-docs-contracts-claim-discovery-workflow-md-621",
         "claim-docs-contracts-claim-discovery-workflow-md-622",
-        "claim-docs-contracts-claim-discovery-workflow-md-623",
-        "claim-docs-contracts-claim-discovery-workflow-md-628",
-        "claim-docs-contracts-claim-discovery-workflow-md-639",
-        "claim-docs-contracts-claim-discovery-workflow-md-681",
-        "claim-docs-contracts-claim-discovery-workflow-md-708",
+        "claim-docs-contracts-claim-discovery-workflow-md-627",
+        "claim-docs-contracts-claim-discovery-workflow-md-638",
+        "claim-docs-contracts-claim-discovery-workflow-md-680",
+        "claim-docs-contracts-claim-discovery-workflow-md-707",
         "claim-docs-contracts-eval-judge-collaboration-md-84",
         "claim-docs-contracts-live-run-invocation-batch-md-77",
         "claim-docs-contracts-reporting-md-48",
@@ -2204,157 +2205,163 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-17",
           "claimFingerprint": "sha256:026bc2e699e302cffccd21ad6f24d5ca77e3204bb5ffe629bb3210d6b87ba6bf",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-38",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-37",
           "claimFingerprint": "sha256:fcf0a1096c540b37d76da4ef466857d1ffb3eea5d38b1c1691ee5c384b1209a9",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-61",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-60",
           "claimFingerprint": "sha256:42108608e1cf924bd44556729ee33c68d1819d7b6828b8ada5bc68efeabb4ad7",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-66",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-65",
           "claimFingerprint": "sha256:58e7da20f2d80bede22d5cb75ec4c2bfd3564eac1f87394469cbab83a752b13e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-86",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
           "claimFingerprint": "sha256:23b2609ec0606719398151d4fd10883c068643714ddf534b75747a8a02ba3ace",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-212",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-211",
           "claimFingerprint": "sha256:5896c411a093c7da3175ebfaead305488e5570af07931d2b9b3167b4121a82cf",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-213",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-212",
           "claimFingerprint": "sha256:130735bbdf1969bf169ca06abc7358686ccfa2146461b0bdae476cafcbb6761d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-221",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-220",
           "claimFingerprint": "sha256:4aef4f23bd7b5543869264832beef7e0db95a9a7094b941ce469f424820f1b94",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-228",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-227",
           "claimFingerprint": "sha256:0199de8fd884565e9188f0b9bb149d1a891fe510ec5971fc8294d1152b5d1fb3",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-232",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-231",
           "claimFingerprint": "sha256:8c90cbaea9e84c7eb514e873fc8c051f75775f4e0009cb0b11c3ec69fe29f97e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-244",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-243",
           "claimFingerprint": "sha256:69eaca7025cabd6f096d720f0079544ac4a26a2f11f6d89fc7faa258979dcc0c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-289",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-288",
           "claimFingerprint": "sha256:8ca72db113d324be35c266102e9b03f89f0798792273549ac3040280249aac80",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-294",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-293",
           "claimFingerprint": "sha256:48f5766e7befdc0b2f0b0224cbc45ab1e20490741062c24f849126ad7ae5281a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-397",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-396",
           "claimFingerprint": "sha256:996dbc23d320598234669cd5cbba5c96da8a0442b76d051e9ea31fd9bd63403c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-410",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-409",
           "claimFingerprint": "sha256:a12296e46e907c111fb127f103a7d588877ddb4496baf69318064a4639b458bf",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-438",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-437",
           "claimFingerprint": "sha256:deb408e7451cf86da81343642ee16d254e781d34203123f1e4c2f674cdb35715",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-541",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-540",
           "claimFingerprint": "sha256:1805392de5c0317e891c93bdde8bda510268f256b92f8cc72746bf97ea08b7b2",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-544",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-543",
           "claimFingerprint": "sha256:b0f0c2d4778b860c11266fdbe9ac0321e58d5a2f3ba4f2612c493abc51f53794",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-598",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-565",
+          "claimFingerprint": "sha256:cf9b996efe054da8c1c4215651aad9eb3dadee70df68452d653c2761fd1b720b",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-597",
           "claimFingerprint": "sha256:a193435e176f49736db5b80cce7b172a5c37c50552974e6415814b8109df52c5",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-621",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-620",
           "claimFingerprint": "sha256:3d2c3d2301840242b752659f220762723dfa468d11688547d106a537736fe762",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-622",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-621",
           "claimFingerprint": "sha256:8eba8ebef3902c23c9cfe8bf9217ad9946d2146e24b0271fbea8af363c6b5da3",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-623",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-622",
           "claimFingerprint": "sha256:2f4267a19f2f19ebee6eb0625444b67649c805bb85fa44682e131b2ff2e7b77d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-628",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-627",
           "claimFingerprint": "sha256:7de8c9a43753e5fa399bc925d09b5cd194092042ee884a565b09c916ec9d60f8",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-639",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-638",
           "claimFingerprint": "sha256:49f8f8b14b258e94ebd520a3adcf9ea4c70cfd5392084ee4d6a292c6a0d3ac8a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-681",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-680",
           "claimFingerprint": "sha256:bdbc828a9ab620826a62a657e3583f56ca912f06527f977376408a4afcc572ec",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-708",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-707",
           "claimFingerprint": "sha256:b2338ca8431457f9797b38b147840619b01ad7549557616dd7b394b5972ef6b0",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2530,26 +2537,27 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 19,
-        "unknown": 47
+        "unknown": 48
       },
       "byReviewStatus": {
-        "agent-reviewed": 30,
-        "heuristic": 36
+        "agent-reviewed": 31,
+        "heuristic": 35,
+        "human-reviewed": 1
       },
       "byRecommendedProof": {
         "cautilus-eval": 19,
         "deterministic": 29,
-        "human-auditable": 18
+        "human-auditable": 19
       },
       "byMappingConfidence": {
         "low": 3,
-        "medium": 63
+        "medium": 64
       }
     },
     {
       "canonicalClaimId": "M4",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 68,
+      "absorbedRawClaimCount": 67,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-29",
@@ -2566,17 +2574,16 @@
         "claim-docs-specs-index-spec-md-87",
         "claim-docs-specs-index-spec-md-111",
         "claim-docs-contracts-active-run-md-3",
-        "claim-docs-contracts-claim-discovery-workflow-md-78",
-        "claim-docs-contracts-claim-discovery-workflow-md-91",
-        "claim-docs-contracts-claim-discovery-workflow-md-93",
-        "claim-docs-contracts-claim-discovery-workflow-md-182",
-        "claim-docs-contracts-claim-discovery-workflow-md-290",
-        "claim-docs-contracts-claim-discovery-workflow-md-296",
-        "claim-docs-contracts-claim-discovery-workflow-md-413",
-        "claim-docs-contracts-claim-discovery-workflow-md-494",
-        "claim-docs-contracts-claim-discovery-workflow-md-566",
-        "claim-docs-contracts-claim-discovery-workflow-md-683",
-        "claim-docs-contracts-claim-discovery-workflow-md-750",
+        "claim-docs-contracts-claim-discovery-workflow-md-77",
+        "claim-docs-contracts-claim-discovery-workflow-md-90",
+        "claim-docs-contracts-claim-discovery-workflow-md-92",
+        "claim-docs-contracts-claim-discovery-workflow-md-181",
+        "claim-docs-contracts-claim-discovery-workflow-md-289",
+        "claim-docs-contracts-claim-discovery-workflow-md-295",
+        "claim-docs-contracts-claim-discovery-workflow-md-412",
+        "claim-docs-contracts-claim-discovery-workflow-md-493",
+        "claim-docs-contracts-claim-discovery-workflow-md-682",
+        "claim-docs-contracts-claim-discovery-workflow-md-749",
         "claim-docs-contracts-live-run-invocation-md-24",
         "claim-docs-contracts-live-run-invocation-md-59",
         "claim-docs-contracts-reporting-md-131",
@@ -2712,67 +2719,61 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-78",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-77",
           "claimFingerprint": "sha256:4755325a9090d9e679305b3a06a1b7a3f122c44037faed7396ff609ac753d572",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-91",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-90",
           "claimFingerprint": "sha256:74518a9a34a9bf98a5c45e23baabd1bd3883b6f9254ee0a0df84b55d049bbbe4",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-93",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-92",
           "claimFingerprint": "sha256:496c841b68f5a55aed3144f3c38780213a70b876c7139adb652f187d0ebc768e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-182",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-181",
           "claimFingerprint": "sha256:931bf4f719385b85ea297bcc3cdd8b56c29eb2d9ca43e3d57acbe2a3c85a9734",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-290",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-289",
           "claimFingerprint": "sha256:da572ed3286b0f1ef82c84812bf748fbf889422e9874b45fcd7cd5197eb0faa7",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-296",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-295",
           "claimFingerprint": "sha256:3647c769bd0d7e394a06b1fd8ed656afe9f215d21539caad402d082349200012",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-413",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-412",
           "claimFingerprint": "sha256:9f1f52d5759d9b763f4e181c99e9e5d6da380819a69f14de78a12c4e396eb1eb",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-494",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-493",
           "claimFingerprint": "sha256:233ddd64b3884b831bf99f841a43fc02e8b5581c662b33163b79e5fc89659f4e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-566",
-          "claimFingerprint": "sha256:cf9b996efe054da8c1c4215651aad9eb3dadee70df68452d653c2761fd1b720b",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-683",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-682",
           "claimFingerprint": "sha256:56ea5f23fe5f5c9f2162924802d83660c4ce98925cc9c623e6f0da41159a4292",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-750",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-749",
           "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3032,20 +3033,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 50
+        "unknown": 49
       },
       "byReviewStatus": {
         "agent-reviewed": 28,
-        "heuristic": 40
+        "heuristic": 39
       },
       "byRecommendedProof": {
-        "cautilus-eval": 30,
+        "cautilus-eval": 29,
         "deterministic": 19,
         "human-auditable": 19
       },
       "byMappingConfidence": {
         "low": 3,
-        "medium": 65
+        "medium": 64
       }
     },
     {
@@ -3056,7 +3057,7 @@
         "claim-docs-contracts-adapter-contract-md-220",
         "claim-docs-master-plan-md-85",
         "claim-docs-specs-index-spec-md-40",
-        "claim-docs-contracts-claim-discovery-workflow-md-503",
+        "claim-docs-contracts-claim-discovery-workflow-md-502",
         "claim-docs-contracts-runner-readiness-md-45",
         "claim-docs-contracts-runner-readiness-md-121",
         "claim-docs-contracts-runner-readiness-md-140",
@@ -3098,7 +3099,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-503",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-502",
           "claimFingerprint": "sha256:d04d8eb163d803e2a529f013956a4a4cb5102b5eaf3da8c9dc592c131c78228f",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3246,34 +3247,34 @@
       "title": "Evidence State And Review Artifacts",
       "absorbedRawClaimCount": 6,
       "absorbedRawClaimIds": [
-        "claim-docs-contracts-claim-discovery-workflow-md-362",
+        "claim-docs-contracts-claim-discovery-workflow-md-361",
+        "claim-docs-contracts-claim-discovery-workflow-md-739",
         "claim-docs-contracts-claim-discovery-workflow-md-740",
         "claim-docs-contracts-claim-discovery-workflow-md-741",
-        "claim-docs-contracts-claim-discovery-workflow-md-742",
         "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
         "claim-docs-specs-evidence-index-spec-md-4"
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-362",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-361",
           "claimFingerprint": "sha256:bf7e15e70a50bc05958c792c5bf0b689d55b960ac5e3c166d6d0e1934b2b0cef",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-740",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-739",
           "claimFingerprint": "sha256:21c53f5ec4d397e49c7affa5c7be9dd23e9709e1649e3989c5fbaad619211e98",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-741",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-740",
           "claimFingerprint": "sha256:2a355e68ca6385415f36965dc2689f7f1d27014afc922e22e2703464b34100d2",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-742",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-741",
           "claimFingerprint": "sha256:d94d8642a7467878df80b58d110e874368ba1402147ff447dc961b4732eca82b",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3313,7 +3314,7 @@
       "absorbedRawClaimCount": 11,
       "absorbedRawClaimIds": [
         "claim-agents-md-32",
-        "claim-docs-contracts-claim-discovery-workflow-md-17",
+        "claim-docs-contracts-claim-discovery-workflow-md-16",
         "claim-docs-contracts-reporting-md-170",
         "claim-docs-specs-rules-evidence-gaps-spec-md-3",
         "claim-docs-contracts-improvement-md-34",
@@ -3332,7 +3333,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-17",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-16",
           "claimFingerprint": "sha256:75c4e7d11960b752d10cd0cf6b35251f894fc6e694769d6354796ff68f430d90",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3415,10 +3416,10 @@
       "title": "Readiness And Runtime Status",
       "absorbedRawClaimCount": 14,
       "absorbedRawClaimIds": [
-        "claim-docs-contracts-claim-discovery-workflow-md-19",
-        "claim-docs-contracts-claim-discovery-workflow-md-48",
-        "claim-docs-contracts-claim-discovery-workflow-md-562",
-        "claim-docs-contracts-claim-discovery-workflow-md-645",
+        "claim-docs-contracts-claim-discovery-workflow-md-18",
+        "claim-docs-contracts-claim-discovery-workflow-md-47",
+        "claim-docs-contracts-claim-discovery-workflow-md-561",
+        "claim-docs-contracts-claim-discovery-workflow-md-644",
         "claim-docs-contracts-live-run-invocation-md-12",
         "claim-docs-contracts-live-run-invocation-md-193",
         "claim-docs-contracts-runner-readiness-md-117",
@@ -3432,25 +3433,25 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-19",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
           "claimFingerprint": "sha256:fb36b6b34a6edbcea2f2a4a586280322069e9211f305ff1f8b79d553a8e83176",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-48",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-47",
           "claimFingerprint": "sha256:45b653427563292b6418370c4faf5171a5c0bca05f568f9fc6df60bb5358c2f0",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-562",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-561",
           "claimFingerprint": "sha256:a9943885f769ffe5d334af18d6d6402ccc92d0e356e348f91cc3428c920f80ff",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-645",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-644",
           "claimFingerprint": "sha256:733ee15e34015fb189dc278a2a3dd0177b43a5fe53b9540cfba3baa84bde7177",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3716,12 +3717,12 @@
         "claim-docs-master-plan-md-188",
         "claim-docs-specs-index-spec-md-94",
         "claim-docs-specs-index-spec-md-101",
-        "claim-docs-contracts-claim-discovery-workflow-md-96",
-        "claim-docs-contracts-claim-discovery-workflow-md-207",
-        "claim-docs-contracts-claim-discovery-workflow-md-357",
-        "claim-docs-contracts-claim-discovery-workflow-md-364",
-        "claim-docs-contracts-claim-discovery-workflow-md-408",
-        "claim-docs-contracts-claim-discovery-workflow-md-518",
+        "claim-docs-contracts-claim-discovery-workflow-md-95",
+        "claim-docs-contracts-claim-discovery-workflow-md-206",
+        "claim-docs-contracts-claim-discovery-workflow-md-356",
+        "claim-docs-contracts-claim-discovery-workflow-md-363",
+        "claim-docs-contracts-claim-discovery-workflow-md-407",
+        "claim-docs-contracts-claim-discovery-workflow-md-517",
         "claim-docs-contracts-eval-judge-collaboration-md-45",
         "claim-docs-contracts-reporting-md-123",
         "claim-docs-contracts-reporting-md-125",
@@ -3799,37 +3800,37 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-95",
           "claimFingerprint": "sha256:7d3319b0e7a1f160a74b9d107b204e7be679e30bf1ed3c65c38bb71be9be3d14",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-207",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-206",
           "claimFingerprint": "sha256:a6845a133b65a004148aab93666ff7c1a55d3abd582acf53177bf94928629dfa",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-357",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-356",
           "claimFingerprint": "sha256:a18081e054aa826cfbe8c33f84e82bd37288350f76b48affbbf379f6150ed00d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-364",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-363",
           "claimFingerprint": "sha256:cd6b3240fca5d92670e322831630b4d7532d9189f8a6f4af5654af0103b65116",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-408",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-407",
           "claimFingerprint": "sha256:2a32466ef9625c53036cca28142e05c9d37139c43ee5171a4b5aa9534dd860f2",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-518",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-517",
           "claimFingerprint": "sha256:f90e997f4729dc3eb1be36b181ba3eadb44b03a8f73e4b61a32eba841bd2a66c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3979,9 +3980,9 @@
       "absorbedRawClaimCount": 12,
       "absorbedRawClaimIds": [
         "claim-agents-md-68",
-        "claim-docs-contracts-claim-discovery-workflow-md-299",
-        "claim-docs-contracts-claim-discovery-workflow-md-603",
-        "claim-docs-contracts-claim-discovery-workflow-md-677",
+        "claim-docs-contracts-claim-discovery-workflow-md-298",
+        "claim-docs-contracts-claim-discovery-workflow-md-602",
+        "claim-docs-contracts-claim-discovery-workflow-md-676",
         "claim-docs-contracts-scenario-history-md-3",
         "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13",
         "claim-docs-specs-contracts-scenario-history-normalization-spec-md-17",
@@ -3999,19 +4000,19 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-299",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-298",
           "claimFingerprint": "sha256:12366ae1b1010607eff115267924c54661536c62df6052d080c79608e4d3e1b3",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-603",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-602",
           "claimFingerprint": "sha256:3ecb81a806bc3c24a1255bb07c84a0878e4972283ce120aa18f12ffddcc0008f",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-677",
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-676",
           "claimFingerprint": "sha256:b64603dc391e90986d777c1d616a0650bb4900a82928039d5649e49dc8c9d538",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -9108,12 +9109,12 @@
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
-      "summary": "`cautilus discover claims` currently emits a deterministic, source-ref-backed proof-plan skeleton.",
+      "summary": "`cautilus discover claims` emits a deterministic, source-ref-backed proof-plan skeleton — a fast, high-recall inventory.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
           "line": 5,
-          "excerpt": "`cautilus discover claims` currently emits a deterministic, source-ref-backed proof-plan skeleton."
+          "excerpt": "`cautilus discover claims` emits a deterministic, source-ref-backed proof-plan skeleton — a fast, high-recall inventory."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -9121,39 +9122,36 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
-      "reviewStatus": "agent-reviewed",
-      "claimFingerprint": "sha256:a03560d63b09185cf158d22401a9cf583efd5820886eb8862e22a388c775dc3f",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:5a0fdc6b4117ac771a5bdbc188957a783ba29c8892c81933676b4d9d61e9c18e",
       "canonicalClaimId": "M2",
-      "score": 12,
-      "runnerUpCanonicalClaimId": "M11",
-      "runnerUpScore": 10,
-      "scoreMargin": 2,
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 9,
+      "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "candidate",
         "deterministic",
         "discover",
         "discovery",
         "emit",
+        "high-recall",
+        "inventory",
         "keep",
-        "packet",
-        "proof",
         "review",
-        "source",
-        "source-ref-backed",
-        "test"
+        "source-ref-backed"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-17",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-16",
       "summary": "The binary owns deterministic packet production: scan traversal, extraction-input packets, anchoring validation, and state transitions.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 17,
+          "line": 16,
           "excerpt": "The binary owns deterministic packet production: scan traversal, extraction-input packets, anchoring validation, and state transitions."
         }
       ],
@@ -9185,12 +9183,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-17",
       "summary": "The Cautilus Agent owns claim extraction (following the product-owned extraction template), evidence reconciliation, and user-facing status.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 18,
+          "line": 17,
           "excerpt": "The Cautilus Agent owns claim extraction (following the product-owned extraction template), evidence reconciliation, and user-facing status."
         }
       ],
@@ -9222,12 +9220,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-19",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
       "summary": "Existing claim state refresh is selected by Cautilus Agent when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 19,
+          "line": 18,
           "excerpt": "Existing claim state refresh is selected by Cautilus Agent when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output."
         }
       ],
@@ -9263,12 +9261,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-38",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-37",
       "summary": "Running `discover claims` directly, without the Cautilus Agent, emits the deterministic heuristic baseline (`extractionMode: heuristic`) with no model calls; this is the reproducible floor for no-model environments, CI regeneration, and control tests.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 38,
+          "line": 37,
           "excerpt": "Running `discover claims` directly, without the Cautilus Agent, emits the deterministic heuristic baseline (`extractionMode: heuristic`) with no model calls; this is the reproducible floor for no-model environments, CI regeneration, and control tests."
         }
       ],
@@ -9304,12 +9302,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-48",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-47",
       "summary": "The binary should own deterministic behavior that can be rerun without model access:",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 48,
+          "line": 47,
           "excerpt": "The binary should own deterministic behavior that can be rerun without model access:"
         }
       ],
@@ -9342,12 +9340,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-61",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-60",
       "summary": "The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 61,
+          "line": 60,
           "excerpt": "The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation."
         }
       ],
@@ -9383,12 +9381,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-66",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-65",
       "summary": "The Cautilus Agent should own orchestration that depends on an agent:",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 66,
+          "line": 65,
           "excerpt": "The Cautilus Agent should own orchestration that depends on an agent:"
         }
       ],
@@ -9419,12 +9417,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-78",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-77",
       "summary": "This keeps the product agent-first without making the binary a host-specific agent runtime.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 78,
+          "line": 77,
           "excerpt": "This keeps the product agent-first without making the binary a host-specific agent runtime."
         }
       ],
@@ -9458,12 +9456,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-86",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
       "summary": "When packet claims are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL:",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 86,
+          "line": 85,
           "excerpt": "When packet claims are too granular to review directly, the Cautilus Agent should curate two canonical claim indexes before continuing HITL:"
         }
       ],
@@ -9499,12 +9497,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-91",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-90",
       "summary": "For a product with clear top-level jobs, the user-facing spec index should order claims by the user's feature mental model before cross-cutting implementation promises.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 91,
+          "line": 90,
           "excerpt": "For a product with clear top-level jobs, the user-facing spec index should order claims by the user's feature mental model before cross-cutting implementation promises."
         }
       ],
@@ -9536,12 +9534,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-93",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-92",
       "summary": "In other repos, the same rule should be driven by the repo's adapter, README, and source docs rather than by Cautilus-specific command names.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 93,
+          "line": 92,
           "excerpt": "In other repos, the same rule should be driven by the repo's adapter, README, and source docs rather than by Cautilus-specific command names."
         }
       ],
@@ -9573,12 +9571,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-95",
       "summary": "Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 96,
+          "line": 95,
           "excerpt": "Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available."
         }
       ],
@@ -9610,12 +9608,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-99",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-98",
       "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 99,
+          "line": 98,
           "excerpt": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids."
         }
       ],
@@ -9651,12 +9649,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-129",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-128",
       "summary": "Those findings should be recorded as narrative, catalog, alignment, or documentation work before expecting `discover claims` to emit them by default.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 129,
+          "line": 128,
           "excerpt": "Those findings should be recorded as narrative, catalog, alignment, or documentation work before expecting `discover claims` to emit them by default."
         }
       ],
@@ -9691,12 +9689,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-180",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-179",
       "summary": "The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 180,
+          "line": 179,
           "excerpt": "The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop."
         }
       ],
@@ -9730,12 +9728,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-182",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-181",
       "summary": "When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 182,
+          "line": 181,
           "excerpt": "When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy."
         }
       ],
@@ -9768,12 +9766,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-207",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-206",
       "summary": "That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 207,
+          "line": 206,
           "excerpt": "That selected map should drive status summaries and inspect/refresh branch commands, while `state_path` remains the default output path for first discovery."
         }
       ],
@@ -9809,12 +9807,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-212",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-211",
       "summary": "Before running a first broad scan, Cautilus Agent should say which entries and depth it will use.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 212,
+          "line": 211,
           "excerpt": "Before running a first broad scan, Cautilus Agent should say which entries and depth it will use."
         }
       ],
@@ -9845,12 +9843,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-213",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-212",
       "summary": "It should also show the deterministic bounds that will be applied:",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 213,
+          "line": 212,
           "excerpt": "It should also show the deterministic bounds that will be applied:"
         }
       ],
@@ -9883,27 +9881,27 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-221",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-220",
       "summary": "Cautilus Agent should ask the user to confirm or adjust that scope.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 221,
+          "line": 220,
           "excerpt": "Cautilus Agent should ask the user to confirm or adjust that scope."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:4aef4f23bd7b5543869264832beef7e0db95a9a7094b941ce469f424820f1b94",
       "canonicalClaimId": "M3",
-      "score": 7,
+      "score": 9,
       "runnerUpCanonicalClaimId": "M21",
-      "runnerUpScore": 7,
+      "runnerUpScore": 9,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -9911,20 +9909,22 @@
       "matchedKeywords": [
         "agent",
         "cautilu",
-        "dev/skill",
-        "fixture",
-        "prove",
+        "check",
+        "deterministic",
+        "routing",
         "skill",
+        "thi",
+        "work",
         "workflow"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-222",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-221",
       "summary": "After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 222,
+          "line": 221,
           "excerpt": "After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run."
         }
       ],
@@ -9958,12 +9958,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-228",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-227",
       "summary": "If the user already delegated autonomous continuation, Cautilus Agent may proceed within the recorded budget, but the budget still must be written to the packet.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 228,
+          "line": 227,
           "excerpt": "If the user already delegated autonomous continuation, Cautilus Agent may proceed within the recorded budget, but the budget still must be written to the packet."
         }
       ],
@@ -9998,12 +9998,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-232",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-231",
       "summary": "On the primary path, after `extraction-input` emits the deterministic packet, Cautilus Agent shows the extraction budget before extracting:",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 232,
+          "line": 231,
           "excerpt": "On the primary path, after `extraction-input` emits the deterministic packet, Cautilus Agent shows the extraction budget before extracting:"
         }
       ],
@@ -10039,12 +10039,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-244",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-243",
       "summary": "When the review seam runs — stale-evidence re-entry, human-review upgrade queues, or LLM review over heuristic-mode packets — Cautilus Agent shows the review plan before launching subagents or other LLM-backed review:",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 244,
+          "line": 243,
           "excerpt": "When the review seam runs — stale-evidence re-entry, human-review upgrade queues, or LLM review over heuristic-mode packets — Cautilus Agent shows the review plan before launching subagents or other LLM-backed review:"
         }
       ],
@@ -10080,12 +10080,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-289",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-288",
       "summary": "Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 289,
+          "line": 288,
           "excerpt": "Broad positioning or aggregate product promises should stay `human-auditable` and `verificationReadiness=blocked` until they are decomposed into concrete deterministic checks, scenario candidates, or Cautilus eval claims."
         }
       ],
@@ -10121,12 +10121,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-290",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-289",
       "summary": "The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 290,
+          "line": 289,
           "excerpt": "The claim should remain visible in the packet, but it should not become a fixture plan by default because one passing fixture would overclaim the umbrella promise."
         }
       ],
@@ -10159,12 +10159,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-294",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-293",
       "summary": "Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 294,
+          "line": 293,
           "excerpt": "Ownership-boundary explanations, such as product-owned versus adapter-owned responsibilities, should stay `human-auditable` and `needs-alignment` until the matching docs, code, adapters, and tests are reconciled."
         }
       ],
@@ -10196,12 +10196,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-296",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-295",
       "summary": "Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 296,
+          "line": 295,
           "excerpt": "Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior."
         }
       ],
@@ -10237,12 +10237,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-299",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-298",
       "summary": "Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 299,
+          "line": 298,
           "excerpt": "Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim."
         }
       ],
@@ -10273,12 +10273,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-357",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-356",
       "summary": "`verificationReadiness=ready-for-proof` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 357,
+          "line": 356,
           "excerpt": "`verificationReadiness=ready-for-proof` with `evidenceStatus=missing` means proof is absent but a test, fixture, or human-auditable check can now be created or run."
         }
       ],
@@ -10312,12 +10312,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-359",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-358",
       "summary": "`verificationReadiness=needs-alignment` means at least two truth surfaces must be reconciled before proof would be honest.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 359,
+          "line": 358,
           "excerpt": "`verificationReadiness=needs-alignment` means at least two truth surfaces must be reconciled before proof would be honest."
         }
       ],
@@ -10346,12 +10346,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-362",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-361",
       "summary": "Human review can accept a claim's framing or proof route, but it does not by itself satisfy the claim unless a direct or verified evidence ref also supports that claim.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 362,
+          "line": 361,
           "excerpt": "Human review can accept a claim's framing or proof route, but it does not by itself satisfy the claim unless a direct or verified evidence ref also supports that claim."
         }
       ],
@@ -10387,12 +10387,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-364",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-363",
       "summary": "`evidenceRefs[]` should use a minimum inspectable shape:",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 364,
+          "line": 363,
           "excerpt": "`evidenceRefs[]` should use a minimum inspectable shape:"
         }
       ],
@@ -10422,12 +10422,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-397",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-396",
       "summary": "The binary can do cheap deterministic preflight, but Cautilus Agent owns final interpretation.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 397,
+          "line": 396,
           "excerpt": "The binary can do cheap deterministic preflight, but Cautilus Agent owns final interpretation."
         }
       ],
@@ -10459,12 +10459,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-408",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-407",
       "summary": "The preflight should never assert that a claim is satisfied solely because a filename looks related.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 408,
+          "line": 407,
           "excerpt": "The preflight should never assert that a claim is satisfied solely because a filename looks related."
         }
       ],
@@ -10496,12 +10496,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-410",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-409",
       "summary": "Cautilus Agent review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 410,
+          "line": 409,
           "excerpt": "Cautilus Agent review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met."
         }
       ],
@@ -10537,12 +10537,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-413",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-412",
       "summary": "`unknown` should be used when the workflow did not inspect enough evidence to make an honest statement.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 413,
+          "line": 412,
           "excerpt": "`unknown` should be used when the workflow did not inspect enough evidence to make an honest statement."
         }
       ],
@@ -10573,12 +10573,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-438",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-437",
       "summary": "The parent Cautilus Agent merges results and keeps review provenance in the packet.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 438,
+          "line": 437,
           "excerpt": "The parent Cautilus Agent merges results and keeps review provenance in the packet."
         }
       ],
@@ -10611,12 +10611,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-494",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-493",
       "summary": "The binary may provide helper flags such as `discover claims --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 494,
+          "line": 493,
           "excerpt": "The binary may provide helper flags such as `discover claims --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`."
         }
       ],
@@ -10650,12 +10650,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-496",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-495",
       "summary": "When Cautilus Agent runs `discover claims --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 496,
+          "line": 495,
           "excerpt": "When Cautilus Agent runs `discover claims --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state."
         }
       ],
@@ -10690,12 +10690,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-503",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-502",
       "summary": "The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 503,
+          "line": 502,
           "excerpt": "The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:"
         }
       ],
@@ -10729,12 +10729,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-518",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-517",
       "summary": "After discovery or refresh, Cautilus Agent should report status in a compact decision-oriented shape:",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 518,
+          "line": 517,
           "excerpt": "After discovery or refresh, Cautilus Agent should report status in a compact decision-oriented shape:"
         }
       ],
@@ -10768,12 +10768,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-541",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-540",
       "summary": "Cautilus Agent should then ask the user which branch to take.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 541,
+          "line": 540,
           "excerpt": "Cautilus Agent should then ask the user which branch to take."
         }
       ],
@@ -10805,12 +10805,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-544",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-543",
       "summary": "Cautilus Agent should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 544,
+          "line": 543,
           "excerpt": "Cautilus Agent should not automatically launch expensive evaluator runs or broad code edits after status unless the user has already delegated that continuation and the recorded budget covers it."
         }
       ],
@@ -10846,12 +10846,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-547",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-546",
       "summary": "The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked docs.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 547,
+          "line": 546,
           "excerpt": "The status packet should include a `discoveryBoundary` block that says the packet is based on entry documents and linked docs."
         }
       ],
@@ -10859,35 +10859,37 @@
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
       "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
+      "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:ecd958f67380f970e9d5835bfb582ba49526aa572012ff9707f2a7c6eb20f98d",
       "canonicalClaimId": "M2",
-      "score": 7,
-      "runnerUpCanonicalClaimId": "M11",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M3",
       "runnerUpScore": 7,
-      "scoreMargin": 0,
+      "scoreMargin": 2,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "behavior",
+        "boundary",
         "doc",
         "document",
         "entry",
-        "evidence",
         "linked",
         "packet",
+        "skill",
         "statu"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-562",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-561",
       "summary": "Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 562,
+          "line": 561,
           "excerpt": "Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first."
         }
       ],
@@ -10922,12 +10924,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-566",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-565",
       "summary": "The workflow should avoid a `claim group` command.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 566,
+          "line": 565,
           "excerpt": "The workflow should avoid a `claim group` command."
         }
       ],
@@ -10937,33 +10939,35 @@
       "recommendedProof": "cautilus-eval",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
+      "reviewStatus": "human-reviewed",
       "claimFingerprint": "sha256:cf9b996efe054da8c1c4215651aad9eb3dadee70df68452d653c2761fd1b720b",
-      "canonicalClaimId": "M4",
-      "score": 7,
-      "runnerUpCanonicalClaimId": "M19",
-      "runnerUpScore": 7,
+      "canonicalClaimId": "M3",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M21",
+      "runnerUpScore": 9,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "cautilu",
+        "budget",
+        "claim-review",
         "command",
         "contract",
+        "dev/skill",
+        "eval",
         "fixture",
-        "host-owned",
-        "run",
+        "skill",
         "workflow"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-598",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-597",
       "summary": "Scan confirmation and LLM review confirmation must be separate.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 598,
+          "line": 597,
           "excerpt": "Scan confirmation and LLM review confirmation must be separate."
         }
       ],
@@ -10993,12 +10997,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-600",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-599",
       "summary": "Depth 3 must be paired with visible source, candidate, cluster, and review-budget bounds.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 600,
+          "line": 599,
           "excerpt": "Depth 3 must be paired with visible source, candidate, cluster, and review-budget bounds."
         }
       ],
@@ -11027,12 +11031,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-603",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-602",
       "summary": "Cautilus Agent may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 603,
+          "line": 602,
           "excerpt": "Cautilus Agent may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment."
         }
       ],
@@ -11068,12 +11072,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-621",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-620",
       "summary": "Helper flags under `discover claims` are enough if Cautilus Agent keeps the user-facing action as discover.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 621,
+          "line": 620,
           "excerpt": "Helper flags under `discover claims` are enough if Cautilus Agent keeps the user-facing action as discover."
         }
       ],
@@ -11106,12 +11110,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-622",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-621",
       "summary": "LLM-backed claim extraction or review should not move into the binary.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 622,
+          "line": 621,
           "excerpt": "LLM-backed claim extraction or review should not move into the binary."
         }
       ],
@@ -11142,12 +11146,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-623",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-622",
       "summary": "In this workflow, the binary stays deterministic and provider-neutral.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 623,
+          "line": 622,
           "excerpt": "In this workflow, the binary stays deterministic and provider-neutral."
         }
       ],
@@ -11182,12 +11186,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-628",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-627",
       "summary": "Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 628,
+          "line": 627,
           "excerpt": "Perfect subagent batch sizing should wait until the deterministic packet and skill control flow are dogfooded."
         }
       ],
@@ -11222,12 +11226,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-639",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-638",
       "summary": "In the claim discovery workflow, the Cautilus Agent owns claim extraction, LLM-backed claim review, budget explanation, and subagent orchestration.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 639,
+          "line": 638,
           "excerpt": "In the claim discovery workflow, the Cautilus Agent owns claim extraction, LLM-backed claim review, budget explanation, and subagent orchestration."
         }
       ],
@@ -11263,12 +11267,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-645",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-644",
       "summary": "Existing state refresh is selected by Cautilus Agent when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 645,
+          "line": 644,
           "excerpt": "Existing state refresh is selected by Cautilus Agent when prior claim JSON exists, but deterministic refresh-plan output owns the state transition."
         }
       ],
@@ -11303,12 +11307,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-677",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-676",
       "summary": "A user can invoke the Cautilus Agent without detailed input and get a clear status summary rather than a raw 500-claim dump.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 677,
+          "line": 676,
           "excerpt": "A user can invoke the Cautilus Agent without detailed input and get a clear status summary rather than a raw 500-claim dump."
         }
       ],
@@ -11342,12 +11346,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-681",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-680",
       "summary": "Agent extraction produces anchored claims with verbatim source refs and audit provenance, and the review seam preserves review provenance for the queues it serves.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 681,
+          "line": 680,
           "excerpt": "Agent extraction produces anchored claims with verbatim source refs and audit provenance, and the review seam preserves review provenance for the queues it serves."
         }
       ],
@@ -11380,12 +11384,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-682",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-681",
       "summary": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 682,
+          "line": 681,
           "excerpt": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work."
         }
       ],
@@ -11417,12 +11421,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-683",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-682",
       "summary": "The binary/skill boundary stays clean enough that consumer repos can use the binary plus Cautilus Agent without Cautilus importing host-specific prompts or adapters.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 683,
+          "line": 682,
           "excerpt": "The binary/skill boundary stays clean enough that consumer repos can use the binary plus Cautilus Agent without Cautilus importing host-specific prompts or adapters."
         }
       ],
@@ -11456,12 +11460,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-708",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-707",
       "summary": "The binary should remain deterministic and provider-neutral.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 708,
+          "line": 707,
           "excerpt": "The binary should remain deterministic and provider-neutral."
         }
       ],
@@ -11493,12 +11497,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-737",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-736",
       "summary": "`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 737,
+          "line": 736,
           "excerpt": "`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch."
         }
       ],
@@ -11533,12 +11537,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-740",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-739",
       "summary": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 740,
+          "line": 739,
           "excerpt": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning."
         }
       ],
@@ -11574,12 +11578,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-741",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-740",
       "summary": "`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 741,
+          "line": 740,
           "excerpt": "`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."
         }
       ],
@@ -11613,12 +11617,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-742",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-741",
       "summary": "Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 742,
+          "line": 741,
           "excerpt": "Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`."
         }
       ],
@@ -11650,12 +11654,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-750",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-749",
       "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
       "sourceRefs": [
         {
           "path": "docs/contracts/claim-discovery-workflow.md",
-          "line": 750,
+          "line": 749,
           "excerpt": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy."
         }
       ],

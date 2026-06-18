@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 179
+          "unknown": 177
         },
         "byReviewStatus": {
-          "heuristic": 179
+          "heuristic": 177
         },
-        "count": 179,
+        "count": 177,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,13 +24,13 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 147
+          "satisfied": 146
         },
         "byReviewStatus": {
-          "agent-reviewed": 146,
+          "agent-reviewed": 145,
           "human-reviewed": 1
         },
-        "count": 147,
+        "count": 146,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -44,14 +44,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 21
+          "unknown": 22
         },
         "byReviewStatus": {
           "agent-reviewed": 1,
-          "heuristic": 19,
+          "heuristic": 20,
           "human-reviewed": 1
         },
-        "count": 21,
+        "count": 22,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -59,19 +59,20 @@
           "claim-docs-specs-index-spec-md-57",
           "claim-docs-specs-index-spec-md-69",
           "claim-docs-specs-index-spec-md-94",
-          "claim-docs-contracts-claim-discovery-workflow-md-38"
+          "claim-docs-contracts-claim-discovery-workflow-md-5"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 110
+          "unknown": 109
         },
         "byReviewStatus": {
           "agent-reviewed": 8,
-          "heuristic": 102
+          "heuristic": 100,
+          "human-reviewed": 1
         },
-        "count": 110,
+        "count": 109,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -100,13 +101,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 37
+          "unknown": 38
         },
         "byReviewStatus": {
-          "agent-reviewed": 17,
+          "agent-reviewed": 18,
           "heuristic": 20
         },
-        "count": 37,
+        "count": 38,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -120,12 +121,12 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 32
+          "unknown": 31
         },
         "byReviewStatus": {
-          "heuristic": 32
+          "heuristic": 31
         },
-        "count": 32,
+        "count": 31,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -133,19 +134,19 @@
           "claim-docs-specs-index-spec-md-102",
           "claim-docs-specs-user-index-spec-md-27",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-21",
-          "claim-docs-contracts-claim-discovery-workflow-md-93"
+          "claim-docs-contracts-claim-discovery-workflow-md-92"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 35
+          "unknown": 36
         },
         "byReviewStatus": {
-          "agent-reviewed": 29,
+          "agent-reviewed": 30,
           "heuristic": 6
         },
-        "count": 35,
+        "count": 36,
         "id": "split-or-defer",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -192,27 +193,27 @@
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
-      "satisfied": 147,
-      "unknown": 236
+      "satisfied": 146,
+      "unknown": 237
     },
     "byLifecycle": {
       "new": 383
     },
     "byRecommendedProof": {
-      "cautilus-eval": 115,
+      "cautilus-eval": 114,
       "deterministic": 166,
-      "human-auditable": 102
+      "human-auditable": 103
     },
     "byReviewStatus": {
-      "agent-reviewed": 202,
-      "heuristic": 179,
-      "human-reviewed": 2
+      "agent-reviewed": 203,
+      "heuristic": 177,
+      "human-reviewed": 3
     },
     "byVerificationReadiness": {
-      "blocked": 35,
-      "needs-alignment": 37,
+      "blocked": 36,
+      "needs-alignment": 38,
       "needs-scenario": 1,
-      "ready-for-proof": 310
+      "ready-for-proof": 308
     }
   },
   "discoveryBoundary": {
@@ -420,7 +421,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 147,
+    "satisfiedClaimCount": 146,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1542,26 +1543,7 @@
         "summary": "`Cautilus` pins one product-owned per-run workspace root per workflow and keeps the reference sticky across consumer command invocations with a shell environment variable."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:84a7266e77583ccc0cea197a325d03093bfcc58f16184d0bbeeed49478e9bec4",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-contract-claim-discovery-proof-plan-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-5"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "`cautilus discover claims` currently emits a deterministic, source-ref-backed proof-plan skeleton."
-      },
-      {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-19",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1570,7 +1552,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-contract-refresh-selection-state-transition-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-19"
+              "claim-docs-contracts-claim-discovery-workflow-md-18"
             ]
           }
         ],
@@ -1580,7 +1562,7 @@
         "summary": "Existing claim state refresh is selected by Cautilus Agent when it detects a prior JSON packet, but the refresh plan and state transition must be recorded in deterministic packets or helper output."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-96",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-95",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1589,7 +1571,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-96",
+              "claim-docs-contracts-claim-discovery-workflow-md-95",
               "claim-docs-contracts-claim-discovery-workflow-md-98",
               "claim-docs-contracts-claim-discovery-workflow-md-695"
             ]
@@ -1601,7 +1583,7 @@
         "summary": "Review packets and machine-readable curation artifacts should preserve absorbed raw claim ids and fingerprints when available."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-99",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-98",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1611,7 +1593,7 @@
             "path": ".cautilus/claims/evidence-claim-workflow-canonical-review-input-2026-05-11.json",
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-95",
-              "claim-docs-contracts-claim-discovery-workflow-md-99",
+              "claim-docs-contracts-claim-discovery-workflow-md-98",
               "claim-docs-contracts-claim-discovery-workflow-md-695"
             ]
           }
@@ -1622,7 +1604,7 @@
         "summary": "When a repo maintains canonical catalogs, it should also keep a machine-readable mapping artifact that projects raw claim ids onto canonical user-facing or maintainer-facing claim ids."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-180",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-179",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1631,7 +1613,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-180",
+              "claim-docs-contracts-claim-discovery-workflow-md-179",
               "claim-docs-contracts-claim-discovery-workflow-md-361",
               "claim-docs-contracts-claim-discovery-workflow-md-374"
             ]
@@ -1643,7 +1625,7 @@
         "summary": "The binary only understands the portable labels `user`, `developer`, and `unclear`; richer semantic grouping remains review work for Cautilus Agent and reviewer loop."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-182",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-181",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1655,7 +1637,7 @@
               "claim-docs-contracts-adapter-contract-md-3",
               "claim-docs-contracts-adapter-contract-md-208",
               "claim-docs-contracts-adapter-contract-md-220",
-              "claim-docs-contracts-claim-discovery-workflow-md-182",
+              "claim-docs-contracts-claim-discovery-workflow-md-181",
               "claim-docs-contracts-claim-discovery-workflow-md-461",
               "claim-docs-contracts-claim-discovery-workflow-md-520",
               "claim-docs-contracts-runner-readiness-md-44",
@@ -1669,7 +1651,7 @@
         "summary": "When the adapter omits semantic groups, the binary emits `General product behavior` instead of using a Cautilus-specific taxonomy."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-222",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-221",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1678,7 +1660,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-proof-2026-05-04.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-222",
+              "claim-docs-contracts-claim-discovery-workflow-md-221",
               "claim-docs-contracts-reporting-md-111",
               "claim-docs-contracts-runtime-fingerprint-optimization-md-50"
             ]
@@ -1690,7 +1672,7 @@
         "summary": "After confirmation, the binary should record the effective scope in the packet so a future agent can reproduce or refresh the run."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-228",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-227",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1699,7 +1681,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-228",
+              "claim-docs-contracts-claim-discovery-workflow-md-227",
               "claim-docs-contracts-claim-discovery-workflow-md-561",
               "claim-docs-contracts-runtime-fingerprint-improvement-md-50"
             ]
@@ -1711,7 +1693,7 @@
         "summary": "If the user already delegated autonomous continuation, Cautilus Agent may proceed within the recorded budget, but the budget still must be written to the packet."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-397",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-396",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1721,7 +1703,7 @@
             "path": ".cautilus/claims/evidence-contract-binary-preflight-review-boundary-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-175",
-              "claim-docs-contracts-claim-discovery-workflow-md-397",
+              "claim-docs-contracts-claim-discovery-workflow-md-396",
               "claim-docs-contracts-claim-discovery-workflow-md-374"
             ]
           }
@@ -1732,7 +1714,7 @@
         "summary": "The binary can do cheap deterministic preflight, but Cautilus Agent owns final interpretation."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-408",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-407",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1741,7 +1723,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-deterministic-proof-batch-2026-05-04b.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-408"
+              "claim-docs-contracts-claim-discovery-workflow-md-407"
             ]
           }
         ],
@@ -1751,7 +1733,7 @@
         "summary": "The preflight should never assert that a claim is satisfied solely because a filename looks related."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-410",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-409",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1762,7 +1744,7 @@
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-175",
               "claim-docs-contracts-claim-discovery-workflow-md-361",
-              "claim-docs-contracts-claim-discovery-workflow-md-410"
+              "claim-docs-contracts-claim-discovery-workflow-md-409"
             ]
           }
         ],
@@ -1772,7 +1754,7 @@
         "summary": "Cautilus Agent review can upgrade them to `satisfied`, `partial`, `stale`, or `missing` only when the packet semantics above are met."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-496",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-495",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1781,7 +1763,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-496",
+              "claim-docs-contracts-claim-discovery-workflow-md-495",
               "claim-docs-contracts-claim-discovery-workflow-md-579",
               "claim-docs-contracts-claim-discovery-workflow-md-599"
             ]
@@ -1793,7 +1775,7 @@
         "summary": "When Cautilus Agent runs `discover claims --previous <packet>` for the actual refreshed proof plan, unchanged claim fingerprints carry forward reviewed labels, evidence refs, unresolved questions, and next-action state."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-503",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-502",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1806,7 +1788,7 @@
               "claim-docs-contracts-adapter-contract-md-208",
               "claim-docs-contracts-adapter-contract-md-220",
               "claim-docs-contracts-claim-discovery-workflow-md-178",
-              "claim-docs-contracts-claim-discovery-workflow-md-503",
+              "claim-docs-contracts-claim-discovery-workflow-md-502",
               "claim-docs-contracts-claim-discovery-workflow-md-520",
               "claim-docs-contracts-runner-readiness-md-44",
               "claim-docs-contracts-runner-readiness-md-117"
@@ -1819,7 +1801,7 @@
         "summary": "The refresh-plan packet should include a coordinator-facing summary rather than requiring every agent to reverse-engineer raw JSON fields:"
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-518",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-517",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1828,7 +1810,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-518",
+              "claim-docs-contracts-claim-discovery-workflow-md-517",
               "claim-docs-contracts-claim-discovery-workflow-md-630",
               "claim-docs-contracts-claim-discovery-workflow-md-635",
               "claim-docs-contracts-claim-discovery-workflow-md-691"
@@ -1841,7 +1823,7 @@
         "summary": "After discovery or refresh, Cautilus Agent should report status in a compact decision-oriented shape:"
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-562",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-561",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1855,7 +1837,7 @@
               "claim-docs-contracts-adapter-contract-md-220",
               "claim-docs-contracts-claim-discovery-workflow-md-178",
               "claim-docs-contracts-claim-discovery-workflow-md-461",
-              "claim-docs-contracts-claim-discovery-workflow-md-562",
+              "claim-docs-contracts-claim-discovery-workflow-md-561",
               "claim-docs-contracts-runner-readiness-md-44",
               "claim-docs-contracts-runner-readiness-md-117"
             ]
@@ -1867,7 +1849,7 @@
         "summary": "Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-603",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-602",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1877,7 +1859,7 @@
             "path": ".cautilus/claims/evidence-family-b-dev-skill-deterministic-proof-2026-05-20.json",
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-214",
-              "claim-docs-contracts-claim-discovery-workflow-md-603",
+              "claim-docs-contracts-claim-discovery-workflow-md-602",
               "claim-docs-contracts-runtime-fingerprint-improvement-md-50"
             ]
           }
@@ -1888,7 +1870,7 @@
         "summary": "Cautilus Agent may select refresh, but deterministic refresh-plan output must record baseline commit, target policy, changed sources, carried-forward claims, stale evidence reasons, and dirty-working-tree treatment."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-621",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-620",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1898,7 +1880,7 @@
             "path": ".cautilus/claims/evidence-contract-discover-refresh-carry-forward-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-461",
-              "claim-docs-contracts-claim-discovery-workflow-md-621",
+              "claim-docs-contracts-claim-discovery-workflow-md-620",
               "claim-docs-contracts-claim-discovery-workflow-md-599"
             ]
           }
@@ -1909,7 +1891,7 @@
         "summary": "Helper flags under `discover claims` are enough if Cautilus Agent keeps the user-facing action as discover."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-645",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-644",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1920,7 +1902,7 @@
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-461",
               "claim-docs-contracts-claim-discovery-workflow-md-579",
-              "claim-docs-contracts-claim-discovery-workflow-md-645"
+              "claim-docs-contracts-claim-discovery-workflow-md-644"
             ]
           }
         ],
@@ -1930,7 +1912,7 @@
         "summary": "Existing state refresh is selected by Cautilus Agent when prior claim JSON exists, but deterministic refresh-plan output owns the state transition."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-677",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-676",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1940,7 +1922,7 @@
             "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-483",
-              "claim-docs-contracts-claim-discovery-workflow-md-677",
+              "claim-docs-contracts-claim-discovery-workflow-md-676",
               "claim-docs-contracts-claim-discovery-workflow-md-635",
               "claim-docs-contracts-claim-discovery-workflow-md-691"
             ]
@@ -1952,7 +1934,7 @@
         "summary": "A user can invoke the Cautilus Agent without detailed input and get a clear status summary rather than a raw 500-claim dump."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-682",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-681",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1963,7 +1945,7 @@
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-483",
               "claim-docs-contracts-claim-discovery-workflow-md-630",
-              "claim-docs-contracts-claim-discovery-workflow-md-682",
+              "claim-docs-contracts-claim-discovery-workflow-md-681",
               "claim-docs-contracts-claim-discovery-workflow-md-691"
             ]
           }
@@ -1974,7 +1956,7 @@
         "summary": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-737",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-736",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1986,7 +1968,7 @@
               "claim-docs-contracts-claim-discovery-workflow-md-483",
               "claim-docs-contracts-claim-discovery-workflow-md-630",
               "claim-docs-contracts-claim-discovery-workflow-md-635",
-              "claim-docs-contracts-claim-discovery-workflow-md-737"
+              "claim-docs-contracts-claim-discovery-workflow-md-736"
             ]
           }
         ],
@@ -1996,7 +1978,7 @@
         "summary": "`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-740",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-739",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2005,7 +1987,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-claim-discovery-workflow-md-740",
+              "claim-docs-contracts-claim-discovery-workflow-md-739",
               "claim-docs-contracts-claim-discovery-workflow-md-695",
               "claim-docs-contracts-claim-discovery-workflow-md-704"
             ]
@@ -2017,7 +1999,7 @@
         "summary": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-741",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-740",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2027,7 +2009,7 @@
             "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-694",
-              "claim-docs-contracts-claim-discovery-workflow-md-741",
+              "claim-docs-contracts-claim-discovery-workflow-md-740",
               "claim-docs-contracts-claim-discovery-workflow-md-704"
             ]
           }
@@ -2038,7 +2020,7 @@
         "summary": "`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results."
       },
       {
-        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-750",
+        "claimId": "claim-docs-contracts-claim-discovery-workflow-md-749",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2049,7 +2031,7 @@
             "supportsClaimIds": [
               "claim-docs-contracts-claim-discovery-workflow-md-694",
               "claim-docs-contracts-claim-discovery-workflow-md-695",
-              "claim-docs-contracts-claim-discovery-workflow-md-750"
+              "claim-docs-contracts-claim-discovery-workflow-md-749"
             ]
           }
         ],
@@ -3522,7 +3504,7 @@
       }
     ]
   },
-  "gitCommit": "8e61db536d6cb10495a673744168cb0f8c1c5b64",
+  "gitCommit": "09f8887fe89dbad98b8867d0065a8f2ff72ffc12",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3534,10 +3516,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "8e61db536d6cb10495a673744168cb0f8c1c5b64",
+    "currentGitCommit": "09f8887fe89dbad98b8867d0065a8f2ff72ffc12",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "8e61db536d6cb10495a673744168cb0f8c1c5b64",
+    "packetGitCommit": "09f8887fe89dbad98b8867d0065a8f2ff72ffc12",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3561,8 +3543,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 159,
-    "needsAlignment": 37,
+    "heuristicClaimsReadyForReview": 157,
+    "needsAlignment": 38,
     "needsScenario": 1
   },
   "sampleClaims": [
