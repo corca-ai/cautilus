@@ -168,3 +168,19 @@ Both halves of the composite carry a distinct real negative, so an always-sound 
 This is the strongest behavior-evaluation evidence so far and the right input to the badge decision: the eval demonstrably catches a real, induced regression from a real (runner-shaped) routing log.
 It remains harness-level — the judge is not yet wired into the `cautilus evaluate` CLI command, and provenance is subagent-harvest rather than the full codex/claude runner — so it informs, but does not auto-flip, the badge.
 Full evidence: [charness-artifacts/eval-trust/2026-06-19-regression-variant-eval-routing.md](../../charness-artifacts/eval-trust/2026-06-19-regression-variant-eval-routing.md).
+
+## Regression detection generalizes across pinned behaviors (2026-06-19): breadth, not one route
+
+A single regression claim cannot show the composite is a general instrument rather than a one-route trick.
+So the same template was replicated onto two MORE pinned behaviors, each a different step, and the eval caught the induced regression on all three.
+
+The three claims regress distinct parts of the route, so each carries its own deterministic process facet:
+the startup find-skills bootstrap (`emitted_find_skills_bootstrap`, the template), the bug → `charness:debug` step (`routed_to_debug_before_fix`), and the external-source → `charness:gather` step (`routed_through_gather_before_use`).
+For each, a deliberately-worse surface that deprecates the pinned step was run through real blind routing agents, and BOTH tiers regressed — dropping the pinned route while keeping the bootstrap — so a single facet could not have caught all three.
+The composite is identical every time: a code process facet catches the dropped step deterministically on the regressed-skip cases, and the blind judge catches a constructed right-route-wrong-reason control (the pinned route IS taken, so code passes — only intelligence sees the fabricated reason).
+Both halves carry a real negative on every claim, so an always-sound judge FAILS each gate, and a breadth-invariant test pins that the three claims own three distinct process facets and each carries a judge-load-bearing control.
+
+This moves the regression-detection evidence from "demonstrated once" toward "general across the pinned-behavior population", which is what a behavior-evaluation badge above `declared` would need.
+It is still harness-level (subagent-harvest provenance, judge not wired into `cautilus evaluate`), so the next productization step is unchanged: wire the judge into the CLI with full-runner provenance, or have the maintainer accept the current harness breadth as sufficient and wire only the spec projection.
+A bounded fresh-eye review returned READY with no blocker.
+Full evidence: [charness-artifacts/eval-trust/2026-06-19-regression-variant-breadth.md](../../charness-artifacts/eval-trust/2026-06-19-regression-variant-breadth.md).
