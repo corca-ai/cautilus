@@ -2,34 +2,34 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — developer track 232 HITL을 시작해주세요. 시작 전 앵커 결정(developer 232를 새 HEAD로 재추출 vs 기존 line만 재번호)부터 확정.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 다음 마일스톤을 시작해주세요. 먼저 Discuss의 "다음 마일스톤 선택"부터 확정.`
 
 doc 멘션만으로 픽업하면 이 트리거의 workflow를 실행하세요(파일 재독만 하지 말 것).
+Both-track 골드셋 ground truth는 **완료**됐으니, 다음은 measurement 완성(recall) · harvest 반영(slice-3 템플릿) · 위생(소스편집→재생성) 중 택1.
 
 ## Current State
 
-- **Apex-consistency sweep 완료 (2026-06-18, commits `8e61db5`+`d97485c`)**: 5개 서브에이전트 탐색 → 레포 전체를 잠긴 apex(`docs/specs/index.spec.md` proof-badge proven/declared/promised)에 정합. 외부 포지셔닝(README "What's Ready Today" 섹션 + package/plugin×2/marketplace metadata desc·keywords·defaultPrompt)을 eval-only→full discover/eval/improve 프레임워크로; transitional "during the contract rewrite" 프레이밍 standing 가드레일화(SKILL.md L28/67·release-boundary·version-provenance·specs/old banner); `linked Markdown`→`linked docs` 잔여(SKILL.md·master-plan·adapter epic title); deprecated `docs/claims/*.md` **retire**(live canonical-map은 docs/specs 인덱스 사용, scan 제외 확인). claim-discovery.spec bucketCount 6→7 sync(README +2줄 shift가 dogfood claim README:95 재키잉→needs-scenario). `verify`/drift/hooks green, bounded review **ready**.
-- **needs-decision 해소 + specdown verify-disable (2026-06-18, `ee4616f`/`09f8887`/`fedc1d0`)**: specdown 전면 재작성 예정이라 verify/pre-push에서 `lint:specs`(specdown run) phase **임시 주석처리**(`run-verify.mjs` + `run-verify.test.mjs` 두 줄, 같이 복원). sweep 잔여 needs-decision 처리: [2] `release-adapter.yaml` Homebrew `brew uninstall`절 **삭제**, [3] `claim-discovery-workflow.md` lead apex-정합 리프레임(결정론 skeleton + Agent 큐레이션 = full workflow), [1] AGENTS.md:9 skip, [4][5](specs 2축·old/ proof)는 specdown 재설계로 흡수.
-- **그 전 (2026-06-18)**: doc-tightening+re-anchor(`3080482`/`36a3588`/`7c6ccda`), `linkedMarkdownDepth`→`linkedDocDepth` 리네임(legacy 키/필드 read-수용; Markdown-link **메커니즘** 식별자는 정밀어로 유지)·SKILL.md 정합(`a560cbb`). 상세 = `goldset-v2-head/ANCHOR.md`.
-- **user-product 골드셋 = DONE**: 74/74 file-ratified. verdict·tier·rule은 `charness-artifacts/eval-trust/goldset-v2-head/`에 박제(`HITL-CLOSEOUT.md` + `gold-set-proposal.user-product.json`). verdict는 `claimFingerprint`로 이월.
-- **defer된 것**: proposal/closeout의 line 앵커는 아직 `558cda7` 기준(재번호 미실행). developer-track 재추출 때 both-track 동시 재번호 — ANCHOR.md "Re-anchor status" 참조.
+- **Developer track 232 HITL 완료 (2026-06-18, `hitl-devtrack-v2head-20260618`)**: 운영모델 = 소스별 서브에이전트 6개 사전채점(R1–R18) → 인간 예외-비준, **오버라이드 0건**. 결과 **232/232, pending 0**: accept 192(46 reservation note 기록) / relabel 25 / not-a-claim 7 / badly-bounded 5 / rewrite-source 3. durable graded 220, tier T1 13·T2 85·T3 122(예측대로 T3 skew). 부모 `gold-set-proposal.json` **306/306, pending 0**(user-product 74 보존, 0 mismatch). 앵커: 기존 232를 `558cda7`로 HITL, **재번호 재차 defer**(claim-discovery-workflow.md만 리워드됐고 assertion 전부 무손상). 상세=`goldset-v2-head/HITL-CLOSEOUT.developer.md`.
+- **핵심 harvest**: proof-route 약점이 지배·정량화됐다 — relabel 25 중 24가 `→deterministic`(18 ha→det, 6 ce→det, 1 ha→ce outlier). 292 분석이 예측한 "클레임은 잘 찾되 proof 라우팅 ~20% 약함"이 232 계약 코퍼스에서 **10.8% relabel / ~10.3% proof-misroute**로 측정됨. R16/R12가 "systematic agent error 측정되면" 걸어둔 게이트 충족 → slice-3 템플릿 lean 일반화 후보가 이제 unblocked.
+- **그 전 (2026-06-18)**: user-product 74/74 ratified(`HITL-CLOSEOUT.md`); apex-consistency sweep(레포 전체를 잠긴 apex `docs/specs/index.spec.md` proof-badge에 정합); needs-decision 해소; specdown 전면 재작성 예정이라 verify/pre-push에서 `lint:specs` **임시 주석처리**(`run-verify.mjs`+`run-verify.test.mjs` 두 줄 같이 복원).
 
-## 다음 세션: Developer track 232 HITL
+## 다음 세션: 다음 마일스톤 (Discuss에서 택1)
 
-1. **앵커 결정(시작 전)**: `gold-set-proposal.developer.json`(558cda7, doc-tightening으로 line-shifted)을 새 HEAD로 재추출(=defer된 line 재번호 실현, 권장) vs 기존 line만 재번호. user-product과 같은 공유 코퍼스 shift.
-2. **HITL 실행**: epic-브랜치별 R10 결정카드 전수 리뷰. R1–R18 + verdict vocab(accept/relabel/not-a-claim/badly-bounded/retire-source/rewrite-source) 그대로. branch-staged apply+commit으로 verdict 파일 확정(working-state로 안 끝냄).
-3. **그 다음**: cli.md recall probe(과분할 표면, 골드셋 무접근 fresh 서브에이전트). 전면 both-track 재생성.
+1. **cli.md recall probe**: 과분할 표면(over-split) 점검. 골드셋 무접근 fresh 서브에이전트로 recall blind spot 측정 — precision은 양 트랙 끝났고 남은 측정 갭이 recall.
+2. **slice-3 템플릿 반영**: 정량화된 proof-route 오류를 추출 템플릿에 lean 일반화(R16/R12 scope 준수 — 선제 per-bullet 열거 금지, lean generalization만). master-plan slice 3.
+3. **위생 → 재생성**: deferred 소스편집(rewrite-source 3 trim + badly-bounded 5 curator split, `HITL-CLOSEOUT.developer.md` §A/B) 적용 → claims:refresh:all → 전면 both-track 재생성(여기서 line 재번호 실현).
 
 ## Discuss (열린 결정 / 이월 follow-up)
 
-- **앵커 방식**: 위 1번 — 재추출(verdict는 fingerprint carry 필요, `build-gold-set-proposal`은 항상 pending 방출) vs 재번호(verdict 보존).
-- **specdown 재설계 (예정, verify에서 임시 제거됨)**: 재작성 때 흡수할 것 — `docs/specs/old/**` archived proof 블록 inert화/삭제, ledger·evidence "open gap"↔apex "proven" 2축 표현 방식. 완료 후 `run-verify.mjs`/`run-verify.test.mjs`의 `lint:specs` 주석 복원. ([1] AGENTS.md:9 transitional 문구는 skip 결정.)
+- **다음 마일스톤 선택**: 위 1/2/3 중 어디부터. 권장 순서 = recall probe(측정 완성) → slice-3(harvest 반영) → 위생+재생성. 단 maintainer가 harvest를 먼저 제품에 반영하고 싶으면 2부터.
+- **앵커 재번호**: 양 트랙 verdict는 `claimFingerprint`로 carry. 기계적 line 재번호는 다음 전면 재생성에 접힘(소스편집 A/B 선반영 후).
+- **specdown 재설계 (예정, verify에서 임시 제거됨)**: 재작성 때 흡수 — `docs/specs/old/**` archived proof inert화/삭제, ledger·evidence "open gap"↔apex "proven" 2축 표현. 완료 후 `lint:specs` 주석 복원.
 - 심판 모델 고정값(sonnet) vs 제품 러너 정합/비용 (이월), harmony judge 배지 배선 (이월).
 
-## 핵심 수확·비준 모델 (pointer — 상세는 `HITL-CLOSEOUT.md`)
+## 핵심 수확·비준 모델 (pointer — 상세는 closeout들)
 
-- **292의 정체**: 과추출 아님 = audience 혼합 + 카운트 착시 + flatness + proof-route 라벨 ~20% 오류(에이전트는 클레임은 잘 찾되 proof 라우팅 약함).
-- **모델**: APEX(유저-가치 1줄, `docs/specs/index.spec.md`) / 6 에픽 브랜치 / 클레임=DAG(`scripts/build-epic-dag.mjs`→`epic-dag-proposal.json`, 16 multi-epic 엣지) / recall blind spot=원칙·경계 2종. R1–R18 durable 전문=`HITL-CLOSEOUT.md`, 런타임 rules.yaml=`hitl-userprod-v2head-20260617`.
+- **292의 정체**: 과추출 아님 = audience 혼합 + 카운트 착시 + flatness + proof-route 라벨 ~20% 오류. developer 트랙이 이 proof-route 오류를 정량 확증(위 harvest).
+- **모델**: APEX(유저-가치 1줄, `docs/specs/index.spec.md`) / 6 에픽 브랜치 / 클레임=DAG(supportingEpics facet) / recall blind spot=원칙·경계 2종. R1–R18 durable 전문 = 두 closeout + `hitl-devtrack-v2head-20260618/rules.yaml`.
 
 ## 제약
 
@@ -37,7 +37,8 @@ push는 사용자 몫(의도적 보류). claim-source 편집 후 `npm run claims
 
 ## References
 
-- `charness-artifacts/eval-trust/goldset-v2-head/` — 비준 골드셋 + `HITL-CLOSEOUT.md`(R1–R18, harvest) + `ANCHOR.md`(re-anchor status). developer 232 = `gold-set-proposal.developer.json`.
+- `charness-artifacts/eval-trust/goldset-v2-head/` — 비준 골드셋(both-track 306/306) + `HITL-CLOSEOUT.md`(user-product) + `HITL-CLOSEOUT.developer.md`(developer) + `ANCHOR.md`(re-anchor status).
+- `.charness/hitl/runtime/hitl-devtrack-v2head-20260618/` — developer 사전채점 슬라이스·pregrade·apply 스크립트·rules.yaml(R1–R18).
 - `scripts/build-gold-set-proposal.mjs`·`segment-goldset-by-audience.mjs`·`build-epic-dag.mjs`(전부 +test) — 골드셋·세그먼트·DAG 도구.
-- `docs/contracts/claim-extraction-template.md`·`docs/contracts/claim-discovery-workflow.md` — 추출 시임·워크플로우 계약.
+- `docs/contracts/claim-extraction-template.md`·`docs/contracts/claim-discovery-workflow.md` — 추출 시임·워크플로우 계약(slice-3 편집 대상).
 - `docs/master-plan.md` — 로드맵.
