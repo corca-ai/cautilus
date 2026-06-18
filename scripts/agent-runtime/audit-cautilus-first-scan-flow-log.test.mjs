@@ -61,7 +61,7 @@ function claudeBash(command) {
 test("passes first scan flow with discovery followed by discover claims status", () => {
 	const audit = auditFirstScanFlowLogText(jsonl([
 		toolCall("./bin/cautilus doctor status --repo-root . --json"),
-		assistant("The scan scope is README.md, AGENTS.md, CLAUDE.md with linked Markdown depth 3. Please confirm this scope or tell me a narrower explicit source set before I run discovery. LLM review needs a separate review budget."),
+		assistant("The scan scope is README.md, AGENTS.md, CLAUDE.md with linked docs depth 3. Please confirm this scope or tell me a narrower explicit source set before I run discovery. LLM review needs a separate review budget."),
 		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
 		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
 		assistant("Deterministic discovery is done; LLM review is separate and was not run."),
@@ -87,7 +87,7 @@ test("passes loose command execution transcript shape with pre-discover confirma
 			type: "item.completed",
 			item: {
 				type: "agent_message",
-				text: "Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md, with linked Markdown depth 3. Confirm this scan scope or adjust it before I run discovery. LLM review needs a separate review budget.",
+				text: "Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md, with linked docs depth 3. Confirm this scan scope or adjust it before I run discovery. LLM review needs a separate review budget.",
 			},
 		},
 		commandExecution("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
@@ -104,7 +104,7 @@ test("passes when discover claims and discover claims status are chained in one 
 			type: "item.completed",
 			item: {
 				type: "agent_message",
-				text: "Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md, with linked Markdown depth 3. Confirm this scan scope or adjust it before I run discovery.",
+				text: "Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md, with linked docs depth 3. Confirm this scan scope or adjust it before I run discovery.",
 			},
 		},
 		commandExecution("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json && ./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
@@ -117,7 +117,7 @@ test("passes when discover claims and discover claims status are chained in one 
 test("passes budgeted LLM claim review wording as review boundary", () => {
 	const audit = auditFirstScanFlowLogText(jsonl([
 		toolCall("./bin/cautilus doctor status --repo-root . --json"),
-		assistant("The scan scope is README.md, AGENTS.md, CLAUDE.md with linked Markdown depth 3. Confirm this scan scope or adjust it before I run discovery."),
+		assistant("The scan scope is README.md, AGENTS.md, CLAUDE.md with linked docs depth 3. Confirm this scan scope or adjust it before I run discovery."),
 		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
 		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
 		assistant("The next branch is budgeted claim review; do not launch it from this first scan."),
@@ -143,7 +143,7 @@ test("fails when first scan scope confirmation appears only after discovery", ()
 		toolCall("./bin/cautilus doctor status --repo-root . --json"),
 		assistant("I will run discovery now. LLM review needs a separate review budget."),
 		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
-		assistant("The scan scope was README.md, AGENTS.md, CLAUDE.md with linked Markdown depth 3. Please confirm or adjust it next time."),
+		assistant("The scan scope was README.md, AGENTS.md, CLAUDE.md with linked docs depth 3. Please confirm or adjust it next time."),
 		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
 	]));
 	assert.equal(audit.status, "failed");

@@ -58,7 +58,7 @@ claim_discovery:
   entries:
     - README.md
     - AGENTS.md
-  linked_markdown_depth: 3
+  linked_doc_depth: 3
   include:
     - docs/**/*.md
   exclude:
@@ -222,7 +222,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   For dev surfaces, a non-fixture coding-agent runtime may use adapter-declared `coding-agent-messaging` as observed proof while preserving assessment proof separately, but only when the observed packet reports matching runtime telemetry.
 - `claim_discovery`: optional bounded truth-surface configuration for `cautilus discover claims`.
   `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).
-  `linked_markdown_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries.
+  `linked_doc_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries (the legacy key `linked_markdown_depth` is still accepted).
   `include` and `exclude` are repo-relative glob filters applied to discovered Markdown sources.
   `state_path` tells agents where the repo expects the current claim-state packet to live.
   `related_state_paths` lets `doctor status` summarize read-only reviewed, evidenced, or promoted claim packets without treating them as the writable discovery baseline.

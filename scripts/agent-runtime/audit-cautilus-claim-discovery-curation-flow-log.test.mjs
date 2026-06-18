@@ -32,7 +32,7 @@ function assistant(text) {
 test("passes when the skill discovers claims and curates extraction and bucket signals", () => {
 	const audit = auditClaimDiscoveryCurationFlowLogText(jsonl([
 		toolCall("./bin/cautilus doctor status --repo-root . --json"),
-		assistant("Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md with linked Markdown depth 3. Confirm this scope or adjust it before I run discovery."),
+		assistant("Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md with linked docs depth 3. Confirm this scope or adjust it before I run discovery."),
 		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
 		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
 		assistant("Extraction heuristics used entry-doc headings and imperative promise signals, kept sourceRefs, and merged duplicate summaries by claimFingerprint. Reduce false positives where candidates are over-broad, then scan for likely false negatives: an in-scope missed claim is a discovery bug, while an out-of-scope missing public promise is a narrative gap. Next-work buckets include agent-plan-cautilus-eval, human-confirm-or-decompose, and split-or-defer. Stop before review launch, eval execution, or edits."),
@@ -44,7 +44,7 @@ test("passes when the skill discovers claims and curates extraction and bucket s
 test("fails when the flow only runs first scan without curation language", () => {
 	const audit = auditClaimDiscoveryCurationFlowLogText(jsonl([
 		toolCall("./bin/cautilus doctor status --repo-root . --json"),
-		assistant("Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md with linked Markdown depth 3. Confirm this scope or adjust it before I run discovery."),
+		assistant("Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md with linked docs depth 3. Confirm this scope or adjust it before I run discovery."),
 		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
 		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
 		assistant("Discovery is done."),
@@ -60,7 +60,7 @@ test("fails when the flow only runs first scan without curation language", () =>
 test("fails when the agent overruns into eval or review work", () => {
 	const audit = auditClaimDiscoveryCurationFlowLogText(jsonl([
 		toolCall("./bin/cautilus doctor status --repo-root . --json"),
-		assistant("Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md with linked Markdown depth 3. Confirm this scope or adjust it before I run discovery."),
+		assistant("Scan scope: entries are README.md, AGENTS.md, and CLAUDE.md with linked docs depth 3. Confirm this scope or adjust it before I run discovery."),
 		toolCall("./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json"),
 		toolCall("./bin/cautilus discover claims status --input .cautilus/claims/latest.json --sample-claims 10"),
 		assistant("Extraction signals, fingerprint dedup, false-positive curation, likely false-negative scan, and next-work buckets are ready."),

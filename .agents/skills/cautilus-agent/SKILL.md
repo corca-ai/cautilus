@@ -6,7 +6,7 @@ description: "Use when intentful behavior evaluation itself is the task and the 
 # Cautilus Agent
 
 Use Cautilus Agent when intentful behavior evaluation itself is the task and the repo wants to run the checked-in `Cautilus` workflow instead of rebuilding eval fixtures, packets, reports, claim discovery, review, or improve commands by hand.
-For external host repos during the current contract rewrite, treat `evaluate fixture`, `evaluate observation`, and post-run `eval skill-experiment compare` as stable; claim discovery automation, improve automation, live app-runner workflows, and review-learning capture remain opt-in.
+For external host repos, treat `evaluate fixture`, `evaluate observation`, and post-run `eval skill-experiment compare` as the stable cross-repo surface; claim discovery automation, improve automation, live app-runner workflows, and review-learning capture stay opt-in.
 `eval skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.
 
 Cautilus Agent assumes a Cautilus binary is available.
@@ -49,7 +49,7 @@ When invoked with no task detail, orient first:
 ```
 
 Read `cautilus.agent_status.v1` as the current product map.
-Summarize binary health, agent-surface readiness, adapter state, selected claim-state availability, scan entries, linked Markdown depth, and `nextBranches`.
+Summarize binary health, agent-surface readiness, adapter state, selected claim-state availability, scan entries, linked docs depth, and `nextBranches`.
 When `claimState.orientationState` is present, treat it as the selected claim map for status and branch commands.
 Keep `claimState.configuredState` as the writable discovery baseline, not necessarily the most useful review packet.
 Then help the user pick the next branch or stop, presenting branch labels and reasons in coordinator-facing language first.
@@ -68,6 +68,7 @@ In external consumer repos during the contract rewrite, use this path only after
 For these direct questions, do not run `discover claims` until scan entries/depth are stated and the user confirms or adjusts the scope; keep LLM review as a separate budgeted branch.
 Do not hard-code the search to README; by default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.
+Before the first broad scan, check the entry docs for non-claim section conventions and for non-English or repo-specific claim vocabulary, propose `claim_discovery.classification_hints` (`non_claim_section_headings`, `claim_lexicon_terms`) with before/after extraction counts for the maintainer to ratify into the adapter — dry-run proposals with `discover claims --adapter <proposed.yaml>` without writing to the repo; the binary executes ratified hints deterministically.
 
 Initial scan:
 

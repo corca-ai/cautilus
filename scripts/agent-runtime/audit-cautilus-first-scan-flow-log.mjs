@@ -171,11 +171,11 @@ function messageFindings(messageRecords, messages, firstDiscoverIndex) {
 			message: "The first-scan flow should explain the bounded scan scope.",
 		});
 	}
-	if (!/scan (?:entries|scope)|스캔 (?:범위|엔트리)|README\.md|AGENTS\.md|CLAUDE\.md/i.test(beforeDiscover) || !/(?:linked Markdown )?depth|깊이/i.test(beforeDiscover)) {
+	if (!/scan (?:entries|scope)|스캔 (?:범위|엔트리)|README\.md|AGENTS\.md|CLAUDE\.md/i.test(beforeDiscover) || !/(?:linked (?:Markdown|docs) )?depth|깊이/i.test(beforeDiscover)) {
 		findings.push({
 			severity: "error",
 			id: "missing_pre_discover_entries_and_depth",
-			message: "Before first discover claims, the skill should state the scan entries and linked Markdown depth.",
+			message: "Before first discover claims, the skill should state the scan entries and linked docs depth.",
 		});
 	}
 	if (!/(?:confirm|확인).*(?:scope|범위)|(?:adjust|조정).*(?:scope|범위)|(?:scope|범위).*(?:confirm|확인|adjust|조정)|narrower explicit source set|명시.*소스/i.test(beforeDiscover)) {

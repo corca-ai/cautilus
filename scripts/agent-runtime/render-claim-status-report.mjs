@@ -339,7 +339,7 @@ function renderDiscoveryBoundary(lines, claimsPacket) {
 	lines.push("## Discovery Boundary");
 	lines.push("");
 	lines.push(`- Entries: ${asArray(scope.entries).join(", ") || "-"}`);
-	lines.push(`- Traversal: ${scope.traversal ?? "-"}; linked Markdown depth: ${scope.linkedMarkdownDepth ?? "-"}`);
+	lines.push(`- Traversal: ${scope.traversal ?? "-"}; linked docs depth: ${scope.linkedDocDepth ?? scope.linkedMarkdownDepth ?? "-"}`);
 	lines.push(`- Gitignore policy: ${scope.gitignorePolicy ?? "-"}`);
 	lines.push(`- Explicit sources: ${scope.explicitSources === true ? "yes" : "no"}`);
 	if (asArray(scope.exclude).length > 0) {

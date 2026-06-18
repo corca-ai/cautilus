@@ -216,7 +216,7 @@ const claimDiscoverExampleOutput = `{
     ],
     "explicitSources": false,
     "include": [],
-    "linkedMarkdownDepth": 3,
+    "linkedDocDepth": 3,
     "traversal": "entry-markdown-links"
   },
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",

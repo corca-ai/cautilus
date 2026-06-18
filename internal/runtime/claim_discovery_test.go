@@ -3015,7 +3015,7 @@ func TestDiscoverClaimProofPlanFollowsMarkdownLinksToDepthThree(t *testing.T) {
 		t.Fatalf("expected three markdown graph edges, got %#v", graph)
 	}
 	scope := asMap(plan["effectiveScanScope"])
-	if scope["linkedMarkdownDepth"] != 3 {
+	if scope["linkedDocDepth"] != 3 {
 		t.Fatalf("expected depth 3 scan scope, got %#v", scope)
 	}
 }
@@ -3097,7 +3097,7 @@ func TestDiscoverClaimProofPlanHonorsAdapterExcludesForLinkedMarkdown(t *testing
 		"claim_discovery:",
 		"  entries:",
 		"    - README.md",
-		"  linked_markdown_depth: 3",
+		"  linked_doc_depth: 3",
 		"  exclude:",
 		"    - docs/specs/**",
 		"    - docs/claims/**",
@@ -3217,7 +3217,9 @@ func TestDiscoverClaimProofPlanUsesAdapterClaimDiscoveryEntries(t *testing.T) {
 		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
 	}
 	scope := asMap(plan["effectiveScanScope"])
-	if scope["adapterFound"] != true || scope["linkedMarkdownDepth"] != 1 {
+	// The adapter above uses the legacy `linked_markdown_depth` key; discovery
+	// should normalize it onto the canonical `linkedDocDepth` scan-scope field.
+	if scope["adapterFound"] != true || scope["linkedDocDepth"] != 1 {
 		t.Fatalf("expected adapter-backed scan scope, got %#v", scope)
 	}
 	if scope["adapterPath"] != ".agents/cautilus-adapter.yaml" ||

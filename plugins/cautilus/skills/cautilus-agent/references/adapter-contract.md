@@ -47,7 +47,7 @@ claim_discovery:
   entries:
     - README.md
     - AGENTS.md
-  linked_markdown_depth: 3
+  linked_doc_depth: 3
   include:
     - docs/**/*.md
   exclude:
@@ -144,7 +144,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
 - `default_runtime`: optional runtime choice (`codex`, `claude`, `fixture`, or `product`), defaults to `codex`. Overridden by `cautilus evaluate fixture --runtime`.
 - `claim_discovery`: optional bounded truth-surface configuration for `cautilus discover claims`.
   `entries` replaces the product default entry set (`README.md`, `AGENTS.md`, and `CLAUDE.md` when present).
-  `linked_markdown_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries.
+  `linked_doc_depth` defaults to `3` and controls repo-local Markdown link traversal from those entries (the legacy key `linked_markdown_depth` is still accepted).
   `include` and `exclude` are repo-relative glob filters applied to discovered Markdown sources.
   `state_path` tells agents where the repo expects the current claim-state packet to live.
   `evidence_roots` declares repo-relative roots worth checking during later evidence reconciliation; it does not prove claims by itself.

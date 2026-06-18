@@ -129,11 +129,11 @@ function preDiscoverScopeFindings(messageRecords, firstDiscoverIndex) {
 			.map((message) => message.text)
 			.join("\n\n");
 	const findings = [];
-	if (!SCAN_SCOPE_PATTERN.test(beforeDiscover) || !/(?:linked Markdown )?depth|깊이/i.test(beforeDiscover)) {
+	if (!SCAN_SCOPE_PATTERN.test(beforeDiscover) || !/(?:linked (?:Markdown|docs) )?depth|깊이/i.test(beforeDiscover)) {
 		findings.push({
 			severity: "error",
 			id: "missing_pre_discover_entries_and_depth",
-			message: "Before first discover claims, the skill should state the scan entries and linked Markdown depth.",
+			message: "Before first discover claims, the skill should state the scan entries and linked docs depth.",
 		});
 	}
 	if (!SCOPE_CONFIRM_PATTERN.test(beforeDiscover)) {

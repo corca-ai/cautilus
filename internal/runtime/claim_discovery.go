@@ -127,7 +127,7 @@ type claimDiscoveryConfig struct {
 	semanticGroups          []claimSemanticGroupRule
 	epicCatalog             []claimEpic
 	relatedStatePaths       []claimRelatedStatePath
-	linkedMarkdownDepth     int
+	linkedDocDepth          int
 	statePath               string
 	statePathSource         string
 	adapterPath             string
@@ -587,7 +587,7 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string, adapterPath
 		entries:                 []string{"README.md", "AGENTS.md", "CLAUDE.md"},
 		exclude:                 []string{".git/**", "node_modules/**", "dist/**", "coverage/**", "artifacts/**", "charness-artifacts/**"},
 		nonClaimSectionHeadings: append([]string{}, defaultNonClaimSectionHeadings...),
-		linkedMarkdownDepth:     3,
+		linkedDocDepth:          3,
 		statePath:               ".cautilus/claims/latest.json",
 		statePathSource:         "default",
 		explicitSources:         len(explicit) > 0,
@@ -635,8 +635,8 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string, adapterPath
 		if epicCatalog := resolveClaimEpicCatalog(claimConfig["epic_catalog"]); len(epicCatalog) > 0 {
 			config.epicCatalog = epicCatalog
 		}
-		if depth, ok := claimConfig["linked_markdown_depth"].(int); ok {
-			config.linkedMarkdownDepth = depth
+		if depth, ok := claimConfig["linked_doc_depth"].(int); ok {
+			config.linkedDocDepth = depth
 		}
 		if statePath := strings.TrimSpace(stringOrEmpty(claimConfig["state_path"])); statePath != "" {
 			normalized, err := normalizeClaimStatePath(statePath)
@@ -658,7 +658,7 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string, adapterPath
 	// still applies: file selection is orthogonal to how claims are classified.
 	if len(explicit) > 0 {
 		config.entries = normalizeClaimPathList(explicit)
-		config.linkedMarkdownDepth = 0
+		config.linkedDocDepth = 0
 	}
 	return config, nil
 }
@@ -883,7 +883,7 @@ func discoverClaimSources(repoRoot string, config claimDiscoveryConfig) ([]claim
 			discoveredFrom: from,
 		}
 		sources = append(sources, source)
-		if isMarkdownClaimSource(relPath) && depth < config.linkedMarkdownDepth {
+		if isMarkdownClaimSource(relPath) && depth < config.linkedDocDepth {
 			queue = append(queue, source)
 		}
 	}
@@ -2274,7 +2274,7 @@ func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
 		"nonClaimSectionHeadings": nonNilStringSlice(config.nonClaimSectionHeadings),
 		"claimLexiconTerms":       nonNilStringSlice(config.claimLexiconTerms),
 		"semanticGroups":          renderClaimSemanticGroups(config.semanticGroups),
-		"linkedMarkdownDepth":     config.linkedMarkdownDepth,
+		"linkedDocDepth":          config.linkedDocDepth,
 		"explicitSources":         config.explicitSources,
 		"adapterFound":            config.adapterFound,
 		"adapterPath":             config.adapterPath,
@@ -2569,7 +2569,7 @@ func claimStatusDiscoveryBoundary(scanScope map[string]any) map[string]any {
 		"sourceBasis":      "entry-docs-and-linked-markdown",
 		"traversal":        scanScope["traversal"],
 		"entries":          arrayOrEmpty(scanScope["entries"]),
-		"linkedDepth":      scanScope["linkedMarkdownDepth"],
+		"linkedDepth":      scanScope["linkedDocDepth"],
 		"gitignorePolicy":  scanScope["gitignorePolicy"],
 		"omissionPolicy":   "Claims not declared in configured entry documents or linked Markdown are outside deterministic discovery scope.",
 		"productSignal":    "A declared in-scope promise missed by discovery is a discover claims bug; an important behavior outside the scan boundary is a narrative or catalog gap.",

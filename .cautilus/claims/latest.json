@@ -2,8 +2,8 @@
   "candidateCount": 383,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 12,
-    "matchedClaimCount": 379,
+    "evidenceSupportIdRewriteCount": 0,
+    "matchedClaimCount": 383,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -12455,7 +12455,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:34fa6a784f17db9f42693de63a4013b1607529e2908b705a9021829643a95df4",
+    "implementationHash": "sha256:bf5c69198701861a235429217618e0683d96b8b12358344e48588302e50b0c7c",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v5"
@@ -12511,7 +12511,7 @@
     "explicitSources": false,
     "gitignorePolicy": "respect-repo-gitignore",
     "include": [],
-    "linkedMarkdownDepth": 3,
+    "linkedDocDepth": 3,
     "nonClaimSectionHeadings": [
       "Deferred Decisions",
       "Rejected Alternatives",
@@ -12619,7 +12619,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "3080482fb32af14a49176465e180eec051ec0ede",
+  "gitCommit": "11821ce810e7e015a1b530116224873af3fa3d7f",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14105,7 +14105,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:0b9898dbb934ea8933311ea0353ac8a0992fa21092289fcebde356d1e584c3a4",
+      "contentHash": "sha256:688a4589ba7a8803b1cb9966c3fa34a9793136e05b77d030c533542262ff9966",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "contract",
@@ -14245,7 +14245,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:9e8d1c58e2ff5a4e0423c0838f6cb202139ad73f0b05406efdc96a206fb31e40",
+      "contentHash": "sha256:39cecbc33a53991274ac0eb7c11ab1782ea65a45d18015942aac663c67fa5827",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -14755,7 +14755,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:46727acceb20c01effe6120c5266b9e4ef765c0d5b92e721bd8d681e1d4636fe",
+      "contentHash": "sha256:aa7eea686dae02783650806974a298d9642fbc516267b87dff8e9533a50c5927",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",

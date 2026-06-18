@@ -53,7 +53,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 		effectiveScanScope: {
 			entries: ["README.md"],
 			traversal: "entry-markdown-links",
-			linkedMarkdownDepth: 3,
+			linkedDocDepth: 3,
 			gitignorePolicy: "respect-repo-gitignore",
 			explicitSources: false,
 		},

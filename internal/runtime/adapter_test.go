@@ -216,11 +216,11 @@ func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
 		"version": float64(1),
 		"repo":    "demo",
 		"claim_discovery": map[string]any{
-			"entries":               []any{"README.md", "AGENTS.md"},
-			"linked_markdown_depth": float64(3),
-			"include":               []any{"docs/**/*.md"},
-			"exclude":               []any{"artifacts/**"},
-			"state_path":            ".cautilus/claims/latest.json",
+			"entries":          []any{"README.md", "AGENTS.md"},
+			"linked_doc_depth": float64(3),
+			"include":          []any{"docs/**/*.md"},
+			"exclude":          []any{"artifacts/**"},
+			"state_path":       ".cautilus/claims/latest.json",
 			"related_state_paths": []any{
 				map[string]any{
 					"role": "reviewed",
@@ -244,8 +244,8 @@ func TestValidateAdapterDataAcceptsClaimDiscoveryConfig(t *testing.T) {
 		t.Fatalf("validateAdapterData returned errors: %#v", errors)
 	}
 	claimDiscovery := asMap(validated["claim_discovery"])
-	if claimDiscovery["linked_markdown_depth"] != 3 {
-		t.Fatalf("expected linked_markdown_depth=3, got %#v", claimDiscovery)
+	if claimDiscovery["linked_doc_depth"] != 3 {
+		t.Fatalf("expected linked_doc_depth=3, got %#v", claimDiscovery)
 	}
 	if claimDiscovery["state_path"] != ".cautilus/claims/latest.json" {
 		t.Fatalf("expected state path in claim_discovery, got %#v", claimDiscovery)
@@ -292,7 +292,30 @@ func TestValidateAdapterDataRejectsUnknownClaimDiscoveryAudienceHint(t *testing.
 	}
 }
 
+func TestValidateAdapterDataAcceptsLegacyLinkedMarkdownDepth(t *testing.T) {
+	validated, errors := validateAdapterData(map[string]any{
+		"version": float64(1),
+		"repo":    "demo",
+		"claim_discovery": map[string]any{
+			"entries":               []any{"README.md"},
+			"linked_markdown_depth": float64(2),
+		},
+	})
+	if len(errors) > 0 {
+		t.Fatalf("legacy linked_markdown_depth should validate, got errors: %#v", errors)
+	}
+	claimDiscovery := asMap(validated["claim_discovery"])
+	if claimDiscovery["linked_doc_depth"] != 2 {
+		t.Fatalf("expected legacy linked_markdown_depth to normalize onto linked_doc_depth=2, got %#v", claimDiscovery)
+	}
+	if _, ok := claimDiscovery["linked_markdown_depth"]; ok {
+		t.Fatalf("expected legacy key to be normalized away, got %#v", claimDiscovery)
+	}
+}
+
 func TestValidateAdapterDataRejectsNegativeClaimDiscoveryDepth(t *testing.T) {
+	// Negative depth must fail through the legacy key too, proving the legacy
+	// alias still runs full validation.
 	_, errors := validateAdapterData(map[string]any{
 		"claim_discovery": map[string]any{
 			"linked_markdown_depth": float64(-1),

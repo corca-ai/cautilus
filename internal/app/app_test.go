@@ -301,7 +301,7 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 		"claim_discovery:",
 		"  entries:",
 		"    - README.md",
-		"  linked_markdown_depth: 3",
+		"  linked_doc_depth: 3",
 		"  state_path: state dir/latest claims.json",
 		"",
 	}, "\n")
@@ -358,8 +358,8 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 		t.Fatalf("expected runner readiness status in doctor status, got %#v", runnerReadiness)
 	}
 	scanScope := payload["scanScope"].(map[string]any)
-	if scanScope["linkedMarkdownDepth"] != float64(3) {
-		t.Fatalf("expected depth 3 scan scope, got %#v", scanScope["linkedMarkdownDepth"])
+	if scanScope["linkedDocDepth"] != float64(3) {
+		t.Fatalf("expected depth 3 scan scope, got %#v", scanScope["linkedDocDepth"])
 	}
 	body := stdout.String()
 	if !strings.Contains(body, "run_first_claim_scan") {

@@ -135,7 +135,7 @@ claim_discovery:
   entries:
     - README.md
     - AGENTS.md
-  linked_markdown_depth: 3
+  linked_doc_depth: 3
   include:
     - docs/**/*.md
   exclude:
@@ -715,7 +715,7 @@ The implementation slice that follows this design should include:
 
 The first implementation slice changed the binary skeleton:
 
-1. add adapter-owned `claim_discovery` entries, include/exclude globs, and `linked_markdown_depth`
+1. add adapter-owned `claim_discovery` entries, include/exclude globs, and `linked_doc_depth` (legacy `linked_markdown_depth` still accepted)
 2. implement entry plus repo-local Markdown link traversal with default depth `3`
 3. record effective scan scope and source graph in `cautilus.claim_proof_plan.v1` or the next schema
 4. replace `proofLayer` with the new split fields

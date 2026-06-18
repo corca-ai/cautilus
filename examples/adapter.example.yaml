@@ -15,7 +15,7 @@ claim_discovery:
   entries:
     - README.md
     - AGENTS.md
-  linked_markdown_depth: 3
+  linked_doc_depth: 3
   include:
     - docs/**/*.md
   exclude:

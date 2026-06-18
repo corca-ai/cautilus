@@ -620,14 +620,22 @@ func validateAdapterClaimDiscovery(value any) (map[string]any, []string) {
 			normalized["related_state_paths"] = paths
 		}
 	}
-	if raw, exists := record["linked_markdown_depth"]; exists && raw != nil {
-		depth, err := normalizeInteger(raw, "claim_discovery.linked_markdown_depth")
+	// linked_doc_depth is the canonical key; linked_markdown_depth is accepted as
+	// a legacy alias and normalized onto the canonical key.
+	depthKey := ""
+	if raw, exists := record["linked_doc_depth"]; exists && raw != nil {
+		depthKey = "linked_doc_depth"
+	} else if raw, exists := record["linked_markdown_depth"]; exists && raw != nil {
+		depthKey = "linked_markdown_depth"
+	}
+	if depthKey != "" {
+		depth, err := normalizeInteger(record[depthKey], "claim_discovery.linked_doc_depth")
 		if err != nil {
 			errors = append(errors, err.Error())
 		} else if depth != nil && *depth < 0 {
-			errors = append(errors, "claim_discovery.linked_markdown_depth must be greater than or equal to 0")
+			errors = append(errors, "claim_discovery.linked_doc_depth must be greater than or equal to 0")
 		} else if depth != nil {
-			normalized["linked_markdown_depth"] = *depth
+			normalized["linked_doc_depth"] = *depth
 		}
 	}
 	if raw, exists := record["state_path"]; exists && raw != nil {
