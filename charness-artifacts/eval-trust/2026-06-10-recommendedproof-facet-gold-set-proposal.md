@@ -1,5 +1,9 @@
 # recommendedProof facet gold-set proposal (D3)
 
+> SUPERSEDED-AS-LABELS (2026-06-19): this set was measured against packet `2a75d88c`, now 108 commits behind HEAD; ~half its sampled claimIds no longer exist at HEAD.
+> Regenerated against the HEAD ratified answer key at `2026-06-19-recommendedproof-facet-gold-set-v2head.{md,json}`.
+> The facet vocabulary, route discriminators, and verdict scheme carry forward as METHOD; do not ratify the labels here — ratify the regenerated set.
+
 Status: agent-proposed, 2026-06-10, revised after bounded fresh-eye critique and a maintainer portability challenge.
 Every label below is a proposal by a single agent labeler and is pending maintainer ratification, the same co-own rule that governed the sc5 semantic control.
 

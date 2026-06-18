@@ -56,7 +56,7 @@ Maintainer decision 2026-06-10 (after the D3 facet gold set and a portability ch
 Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.
 The first hint family is live: `non_claim_section_headings` filters rejected-alternatives and non-goal sections deterministically, proven on this repo by the gold set's ratified non-claim (`claim-docs-contracts-active-run-md-186`) disappearing from a live discovery run.
 Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).
-The gold-set protocol in `charness-artifacts/eval-trust/2026-06-10-recommendedproof-facet-gold-set-proposal.md` is the ratification harness for future hint proposals.
+The gold-set protocol is the ratification harness for future hint proposals; its current instance is `charness-artifacts/eval-trust/2026-06-19-recommendedproof-facet-gold-set-v2head.md`, regenerated against the HEAD ratified answer key and applying the ratified R6/R12 routing discriminators (the original `2026-06-10-recommendedproof-facet-gold-set-proposal.md` is superseded-as-labels: its packet is 108 commits behind HEAD, but its facet vocabulary and verdict scheme carry forward as method).
 Until routing hints land, decomposing a discovered claim is a manual application of the steps above.
 
 ## Alternatives rejected

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "cautilus.recommendedproof_facet_gold_set_proposal.v1",
-  "status": "agent-proposed; every label pending maintainer ratification (single labeler)",
+  "status": "SUPERSEDED-AS-LABELS (2026-06-19): measured against packet 2a75d88c (108 commits behind HEAD; ~half the sampled claimIds no longer exist at HEAD). Regenerated against the HEAD ratified answer key at 2026-06-19-recommendedproof-facet-gold-set-v2head.json. Facet vocabulary + route discriminators + verdict scheme carry forward as METHOD; do not ratify these labels.",
   "purpose": "D3: measure heuristic per-claim recommendedProof accuracy at facet granularity, and harvest the facet vocabulary real claims need, as design input for per-facet discover schema wiring.",
   "selectionRule": "From .cautilus/claims/latest.json claimCandidates with reviewStatus==heuristic, per recommendedProof tag: sort by claimId, pick indices round(i*(n-1)/11) for i in 0..11 (12 per tag).",
   "packetGitCommit": "2a75d88c00b8f4a93a54e149e8ce87654348a886",
