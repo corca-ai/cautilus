@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:b2fd2bf2bcceda9fc5e11810237d94468bd0378642f5530cd868fd4e2b15e47f"
+      "contentHash": "sha256:4874abfe5201a6594ae74d3d50be9f001ceb925fdd7d836378704a5465c99f31"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "4da48ff90f1b36081e019b121116a4a21761e300",
+  "claimsPacketGitCommit": "4a32d1837f94053e5a49656db43c17000df894b4",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 375,
+  "claimsPacketCandidateCount": 376,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -572,23 +572,23 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 375,
+    "totalRawClaimCount": 376,
     "userRawClaimCount": 105,
     "userMappedToCanonicalCount": 105,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 299,
+    "semanticReviewRecommendedCount": 300,
     "userSemanticReviewRecommendedCount": 33,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 270,
+      "mapped-to-maintainer-canonical": 271,
       "mapped-to-user-canonical": 105
     },
     "byAudience": {
-      "developer": 270,
+      "developer": 271,
       "user": 105
     },
     "byMappingConfidence": {
       "high": 76,
-      "low": 18,
+      "low": 19,
       "medium": 281
     },
     "byUserCanonicalClaimId": {
@@ -607,7 +607,7 @@
       "M12": 11,
       "M2": 18,
       "M3": 62,
-      "M4": 66,
+      "M4": 67,
       "M5": 24,
       "M6": 6,
       "M7": 11,
@@ -756,6 +756,7 @@
       "claim-docs-contracts-claim-discovery-workflow-md-749",
       "claim-docs-contracts-eval-judge-collaboration-md-45",
       "claim-docs-contracts-eval-judge-collaboration-md-84",
+      "claim-docs-contracts-eval-judge-collaboration-md-161",
       "claim-docs-contracts-live-run-invocation-batch-md-28",
       "claim-docs-contracts-live-run-invocation-batch-md-77",
       "claim-docs-contracts-live-run-invocation-batch-md-166",
@@ -2507,7 +2508,7 @@
     {
       "canonicalClaimId": "M4",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 66,
+      "absorbedRawClaimCount": 67,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-29",
@@ -2534,6 +2535,7 @@
         "claim-docs-contracts-claim-discovery-workflow-md-493",
         "claim-docs-contracts-claim-discovery-workflow-md-682",
         "claim-docs-contracts-claim-discovery-workflow-md-749",
+        "claim-docs-contracts-eval-judge-collaboration-md-161",
         "claim-docs-contracts-live-run-invocation-md-24",
         "claim-docs-contracts-live-run-invocation-md-59",
         "claim-docs-contracts-reporting-md-131",
@@ -2725,6 +2727,12 @@
           "claimId": "claim-docs-contracts-claim-discovery-workflow-md-749",
           "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
           "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-eval-judge-collaboration-md-161",
+          "claimFingerprint": "sha256:8ce9b05fa683495889bce8af3b7d2be874edd0565ab7be8b80bda7c8faebe1f1",
+          "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
@@ -2976,19 +2984,19 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 48
+        "unknown": 49
       },
       "byReviewStatus": {
         "agent-reviewed": 28,
-        "heuristic": 38
+        "heuristic": 39
       },
       "byRecommendedProof": {
-        "cautilus-eval": 28,
+        "cautilus-eval": 29,
         "deterministic": 19,
         "human-auditable": 19
       },
       "byMappingConfidence": {
-        "low": 3,
+        "low": 4,
         "medium": 63
       }
     },
@@ -11438,6 +11446,41 @@
         "skill",
         "thi",
         "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-eval-judge-collaboration-md-161",
+      "summary": "The frontier finding redirected the question from \"wait for natural unsound\" to the product's actual job: when a change makes the pinned behavior worse, the eval must catch it.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/eval-judge-collaboration.md",
+          "line": 161,
+          "excerpt": "The frontier finding redirected the question from \"wait for natural unsound\" to the product's actual job: when a change makes the pinned behavior worse, the eval must catch it."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:8ce9b05fa683495889bce8af3b7d2be874edd0565ab7be8b80bda7c8faebe1f1",
+      "canonicalClaimId": "M4",
+      "score": 6,
+      "runnerUpCanonicalClaimId": "M5",
+      "runnerUpScore": 6,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "behavior",
+        "cautilu",
+        "fixture",
+        "host-owned",
+        "product",
+        "run"
       ]
     },
     {

@@ -1,5 +1,5 @@
 {
-  "candidateCount": 375,
+  "candidateCount": 376,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
@@ -6533,6 +6533,37 @@
       "summary": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the structured rubric schema, a blind prompt builder that strips the expected label, rationale, and case kind, and a deterministic comparator with a rubber-stamp guard.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:8ce9b05fa683495889bce8af3b7d2be874edd0565ab7be8b80bda7c8faebe1f1",
+      "claimId": "claim-docs-contracts-eval-judge-collaboration-md-161",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The frontier finding redirected the question from \"wait for natural unsound\" to the product's actual job: when a change makes the pinned behavior worse, the eval must catch it.",
+          "line": 161,
+          "path": "docs/contracts/eval-judge-collaboration.md"
+        }
+      ],
+      "summary": "The frontier finding redirected the question from \"wait for natural unsound\" to the product's actual job: when a change makes the pinned behavior worse, the eval must catch it.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
       "claimAudience": "developer",
@@ -13476,7 +13507,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 270,
+      "developer": 271,
       "user": 105
     },
     "byClaimSemanticGroup": {
@@ -13486,33 +13517,33 @@
       "Documentation and contracts": 84,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 30,
+      "Improvement and improvement": 31,
       "Packets and reporting": 46,
       "Quality gates": 19,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
       "satisfied": 144,
-      "unknown": 231
+      "unknown": 232
     },
     "byLifecycle": {
-      "new": 375
+      "new": 376
     },
     "byRecommendedProof": {
-      "cautilus-eval": 110,
+      "cautilus-eval": 111,
       "deterministic": 165,
       "human-auditable": 100
     },
     "byReviewStatus": {
       "agent-reviewed": 200,
-      "heuristic": 173,
+      "heuristic": 174,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 34,
       "needs-alignment": 38,
       "needs-scenario": 1,
-      "ready-for-proof": 302
+      "ready-for-proof": 303
     }
   },
   "discoveryEngine": {
@@ -13708,7 +13739,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "4da48ff90f1b36081e019b121116a4a21761e300",
+  "gitCommit": "4a32d1837f94053e5a49656db43c17000df894b4",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -15476,7 +15507,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:80fd493f4970fb7ace2ff3b0b5607763e4802329f2c43c71c83f480809ea6d38",
+      "contentHash": "sha256:a37033f44a3bd8722f6275cdc39a7bb5a7ba6559a4be606c4d564ffe4adc9f00",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
