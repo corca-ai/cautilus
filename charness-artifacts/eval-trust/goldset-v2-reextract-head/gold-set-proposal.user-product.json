@@ -37,9 +37,9 @@
     "overrides": 3,
     "tally": {
       "not-a-claim": 10,
-      "accept": 344,
+      "accept": 346,
       "relabel": 19,
-      "badly-bounded": 1
+      "badly-bounded": 0
     },
     "amendments": [
       {
@@ -47,6 +47,12 @@
         "date": "2026-06-18",
         "change": "6 residual relabels un-relabeled to accept (blind route was correct; R3 over-applied) + 1 re-aimed (cet-261 eval->human-auditable). accept 338->344, relabel 25->19.",
         "evidence": "cutC/synthesis.json, residual-key-readjudication-cutC.md"
+      },
+      {
+        "task": "② recuration — cli-268 curator split + family-fold coverage note",
+        "date": "2026-06-18",
+        "change": "cli-268 badly-bounded over-merge split: re-bounded to the two-surfaces/four-presets catalog (268-269, accept/deterministic) and peeled the shipped-surface fact (line 266) into new claim cli-266 (accept/deterministic, T3, audience user). accept 344->346, badly-bounded 1->0, total 374->375. Granularity realigned to the ratified family-representative fold (RECALL-PROBE-cli.md): the 9 helper sub-commands stay covered by their family representatives; the prior closeout overclaim that they were surfaced as separate claims is corrected.",
+        "evidence": "docs/guides/cli.md:266-269, ../../debug/2026-06-18-goldset-closeout-helper-fold-overclaim.md"
       }
     ]
   },
@@ -1706,10 +1712,34 @@
       "significanceTier": "T3"
     },
     {
+      "claimId": "claim-docs-guides-cli-md-266",
+      "claimFingerprint": "sha256:c4701a0dae0b892e6854eae10cf673cda9e93d4936e978cceebd9d5a8641b21e",
+      "sourceRef": "docs/guides/cli.md:266",
+      "summary": "The shipped surface is cautilus evaluate.",
+      "agentLabels": {
+        "recommendedProof": "deterministic",
+        "verificationReadiness": "ready-for-proof",
+        "claimAudience": "user",
+        "claimSemanticGroup": "Evaluation surfaces",
+        "primaryEpic": "E1-evaluate",
+        "supportingEpics": [
+          "E1-evaluate"
+        ],
+        "edgeRationale": "Single-epic: the shipped cautilus evaluate surface is the E1-evaluate front door.",
+        "multiEpic": false
+      },
+      "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
+      "unresolvedQuestions": [],
+      "heuristicMatch": null,
+      "maintainerVerdict": "accept",
+      "note": "Curator split from cli-268 (2026-06-18 ② recuration): the shipped-surface fact (line 266) separated from the two-surfaces/four-presets catalog (268-269). Deterministic — the binary's top-level `cautilus evaluate` surface is a checkable static fact, distinct from the surface/preset enumeration and not covered by another claim. Tier T3.",
+      "significanceTier": "T3"
+    },
+    {
       "claimId": "claim-docs-guides-cli-md-268",
       "claimFingerprint": "sha256:75edcc08a8c1e27506b57eb59c442b43d42b3b67a75abba80846ffeb9a537242",
       "sourceRef": "docs/guides/cli.md:268",
-      "summary": "The shipped surface is cautilus evaluate, and Cautilus exposes two top-level surfaces and four presets: dev/repo for repo work contracts, dev/skill for checked-in or portable development skills, app/chat for multi-turn product conversation behavior, and app/prompt for single product input/output behavior.",
+      "summary": "Cautilus exposes two top-level surfaces and four presets: dev/repo for repo work contracts, dev/skill for checked-in or portable development skills, app/chat for multi-turn product conversation behavior, and app/prompt for single product input/output behavior.",
       "agentLabels": {
         "recommendedProof": "deterministic",
         "verificationReadiness": "ready-for-proof",
@@ -1726,8 +1756,8 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "badly-bounded",
-      "note": "Badly-bounded — Over-merge plus anchor mismatch: anchor 268 holds the two-surfaces/four-presets catalog, but the summary prepends 'The shipped surface is cautilus evaluate' from line 266 — a distinct contract. Split the shipped-surface fact from the preset enumeration; anchor the surface/preset claim at 268-269 without folding in 266.; curator split folds into recuration. Tier T3.",
+      "maintainerVerdict": "accept",
+      "note": "Curator split applied (2026-06-18 ② recuration): re-bounded to the two-surfaces/four-presets catalog at 268-269; the over-merged shipped-surface fact from line 266 was peeled into new claim cli-266. Primary excerpt (line 268) and fingerprint unchanged. Deterministic — static surface/preset enumeration. Tier T3.",
       "significanceTier": "T3"
     },
     {

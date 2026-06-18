@@ -37,9 +37,9 @@
     "overrides": 3,
     "tally": {
       "not-a-claim": 10,
-      "accept": 344,
+      "accept": 346,
       "relabel": 19,
-      "badly-bounded": 1
+      "badly-bounded": 0
     },
     "amendments": [
       {
@@ -47,6 +47,12 @@
         "date": "2026-06-18",
         "change": "6 residual relabels un-relabeled to accept (blind route was correct; R3 over-applied) + 1 re-aimed (cet-261 eval->human-auditable). accept 338->344, relabel 25->19.",
         "evidence": "cutC/synthesis.json, residual-key-readjudication-cutC.md"
+      },
+      {
+        "task": "② recuration — cli-268 curator split + family-fold coverage note",
+        "date": "2026-06-18",
+        "change": "Global provenance (no developer-track entry changed): cli-268 badly-bounded over-merge split into cli-268 (surface/preset catalog) + new user-track claim cli-266 (shipped-surface fact). accept 344->346, badly-bounded 1->0, total 374->375. Granularity realigned to the ratified family-representative fold; the 9 helper sub-commands stay covered by their family representatives.",
+        "evidence": "docs/guides/cli.md:266-269, ../../debug/2026-06-18-goldset-closeout-helper-fold-overclaim.md"
       }
     ]
   },

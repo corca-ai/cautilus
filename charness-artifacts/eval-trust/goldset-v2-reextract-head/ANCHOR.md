@@ -15,12 +15,13 @@ This snapshot re-extracts the same 5 sources under that operative template so th
 - **Operative template**: `b922fd5d`, made effective at commit `b2a7291`.
 - **Scope**: the same 5-source gold corpus, reproduced with explicit `--source` (README.md, docs/guides/cli.md, docs/contracts/claim-discovery-workflow.md, docs/contracts/claim-extraction-template.md, docs/internal/working-patterns.md), `explicitSources=true`, `linkedDepth=0`. The adapter default (README/AGENTS/CLAUDE + depth 3) would scan 68 sources; that broader corpus is a different, larger ground set and is out of scope for this 306-comparable measurement.
 
-## Status: RATIFIED GROUND TRUTH (374/374, 0 pending)
+## Status: RATIFIED GROUND TRUTH (375 entries, 0 pending)
 
-Ratified 2026-06-18 (`hitl-reextract-v2head-20260618`); amended 2026-06-18 (Option C residual re-adjudication): **accept 344 / relabel 19 / not-a-claim 10 / badly-bounded 1**.
+Ratified 2026-06-18 (`hitl-reextract-v2head-20260618`); amended 2026-06-18 twice — Option C residual re-adjudication, then ② recuration (`cli-268` curator split): **accept 346 / relabel 19 / not-a-claim 10 / badly-bounded 0 = 375**.
 This snapshot is now the current both-track answer key at HEAD and **supersedes** `../goldset-v2-head/` (306/306 at `558cda7`), which stays frozen as the proof-route measurement baseline.
 See `HITL-CLOSEOUT.md` for the operating model (source pre-grade -> maintainer exception-ratify, 3 overrides) and the harvest.
 The Option C amendment un-relabeled 6 residuals to accept (the blind route was correct; R3 had been over-applied) and re-aimed 1; see `residual-key-readjudication-cutC.md`.
+The ② recuration split the one badly-bounded over-merge `cli-268` into `cli-268` (surface/preset catalog) + new `cli-266` (shipped-surface fact), and landed the deferred family-fold coverage note; see `family-fold-coverage.md` and `../../debug/2026-06-18-goldset-closeout-helper-fold-overclaim.md`.
 
 ## Counts (raw blind, pre-HITL)
 
@@ -40,4 +41,4 @@ The Option C amendment un-relabeled 6 residuals to accept (the blind route was c
 ## Deferred
 
 - **Epic DAG** — not built here. The DAG (`epic-tree-proposal.json` -> `epic-dag-proposal.json`) was only ever a slice-3 design artifact over `../goldset-v2-agent-extraction/`; `../goldset-v2-head/` itself carried no DAG. Building it over the ratified tracks is a post-ratification follow-up, same precedent.
-- **HITL ratification** — DONE (`HITL-CLOSEOUT.md`). It realized the line renumber (HEAD anchors), resolved the deferred curator splits by re-extraction (only `cli-268` remains as a single split), and captured the 9 recall-gap helper sub-commands (as separate claims, not family-folded — a granularity follow-up if a leaner set is wanted).
+- **HITL ratification** — DONE (`HITL-CLOSEOUT.md`). It realized the line renumber (HEAD anchors) and resolved the deferred curator splits by re-extraction; the last one, `cli-268`, was split at the ② recuration. The 9 recall-gap helper sub-commands are folded under their family representatives per the ratified policy (`family-fold-coverage.md`) — the earlier note that they were captured "as separate claims" was a closeout overclaim, corrected in the ② recuration.

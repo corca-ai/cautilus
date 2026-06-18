@@ -41,6 +41,10 @@ Those 6 are un-relabeled to accept (user-product: readme-16, readme-128; develop
 New tally: **accept 344 / relabel 19 / not-a-claim 10 / badly-bounded 1** (user-product accept 63 / relabel 4; developer accept 281 / relabel 15).
 Basis and per-claim dispositions: `residual-key-readjudication-cutC.md`.
 
+**Amendment 2026-06-18 (② recuration — cli-268 split + family-fold correction).** The one badly-bounded over-merge `cli-268` was curator-split: re-bounded to the two-surfaces/four-presets catalog (268-269, accept/deterministic) and the over-merged shipped-surface fact (line 266) peeled into a new claim `cli-266` (accept/deterministic, T3, user track).
+New tally: **accept 346 / relabel 19 / not-a-claim 10 / badly-bounded 0 = 375** (user-product accept 65 / relabel 4 / not-a-claim 7 = 76; developer 299 unchanged).
+The same pass corrected a narrative defect this closeout carried (see the next bullet) and landed the deferred family-fold coverage note (`family-fold-coverage.md`); diagnosis in `../../debug/2026-06-18-goldset-closeout-helper-fold-overclaim.md`.
+
 ## Headline harvest: the operative template reduced the measured systematic error
 
 - **Developer-track proof-route relabel rate 10.8% -> 6.4%** (clean comparison, both graded under locked R1-R18). The dense behavioral contract `claim-discovery-workflow.md` dropped to **2.5%** (2/80) — the generalization bit hardest exactly where the proof-route harvest concentrated.
@@ -51,12 +55,12 @@ Basis and per-claim dispositions: `residual-key-readjudication-cutC.md`.
 
 - **Line renumber** — realized. Every excerpt is anchored at HEAD; no 558cda7-relative anchors remain.
 - **Curator splits §B** (the workflow over-merges) — resolved by re-extraction: blind per-source extraction re-bounded them as separate claims, and the pre-grade found only **1** badly-bounded (`cli-268`), not the 5 over-merges from before. The dense `claim-discovery-workflow.md` "split cleanly along distinct source lines."
-- **9 recall-gap helper sub-commands** — captured: the per-source high-recall pass grew cli 68 -> 101, surfacing the `prepare-input`/`render-*`/`summarize`/`validate` helpers as graded claims. NOTE this realizes them as *separate* claims rather than the family-representative fold the recall probe recommended; if the maintainer wants a leaner set, a family-fold recuration is a follow-up (see below).
+- **9 recall-gap helper sub-commands** — folded, per the ratified family-representative policy. CORRECTION (② recuration, 2026-06-18): the original wording here claimed the high-recall pass "surfac[ed] the `prepare-input`/`render-*`/`summarize`/`validate` helpers as graded claims" — that was false. The blind extractor surfaced 0 of the 9 (they sit inside bash code fences it skips), so the gold set has 0; the +33 cli growth (68 -> 101) came from other detail. The 9 stay folded under their family representatives, now explicitly recorded in `family-fold-coverage.md`. RCA: `../../debug/2026-06-18-goldset-closeout-helper-fold-overclaim.md`.
 
 ## Deferred follow-ups
 
-- **`cli-268` curator split** — the one badly-bounded; split the shipped-surface fact (line 266) from the 268-269 preset catalog at recuration.
-- **Granularity / family-fold** — cli grew to 101 (vs the recall probe's family-representative recommendation). Decide at a recuration pass whether to fold helper sub-commands under family representatives or keep them as separate T3 claims.
+- **`cli-268` curator split** — DONE (② recuration, 2026-06-18): split into `cli-268` (surface/preset catalog) + new `cli-266` (shipped-surface fact); see the amendment above.
+- **Granularity / family-fold** — DONE (② recuration, 2026-06-18): realigned to the ratified family-representative fold; the 9 helper sub-commands stay folded under their representatives, recorded in `family-fold-coverage.md`.
 - **Two residual misroute pockets** — one more confirming cut of `claim-extraction-template.md` (meta-content) and `README.md` (structural-scope) before deciding whether the lean generalization needs a second R16-gated refinement.
 - **Epic DAG** — not built (goldset-v2-head carried none either); build over the ratified tracks as a slice-3 follow-up.
 
