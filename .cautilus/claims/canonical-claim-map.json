@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:358c585bc0fb71e95edf5a6d159d017ce9fc1cd59ff0fa3b6122efcc21c3f8ce"
+      "contentHash": "sha256:2bc2033b60fdac81d4213d761c0a63ecce69300754a012d0d6762237310b5edf"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "1af07fc9abad618a2dcc48042868b4395ab94bfc",
+  "claimsPacketGitCommit": "9170ae4216a4b8b804a37a3219bbd16227ca0b92",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 383,
   "catalogs": {
@@ -2170,7 +2170,7 @@
         },
         {
           "claimId": "claim-docs-internal-working-patterns-md-63",
-          "claimFingerprint": "sha256:cbf9cdfc8b1b18367c67215ba849eca6bf4e2daa8737faf9cae482fc1b2315c7",
+          "claimFingerprint": "sha256:843c22ec20b7261d3e780ad6aae7abab9a6ee1664b62061b922d65f7d3dc8d7c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -7618,12 +7618,12 @@
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-63",
-      "summary": "\"aspect\" 라는 설명보다 \"every workflow leaves reviewable artifacts\" 나 \"missing evidence remains visible\" 이 더 좋은 product language 다.",
+      "summary": "\"aspect\" 같은 설명보다 \"every workflow leaves reviewable artifacts\" 나 \"missing evidence remains visible\" 이 더 좋은 product language 다.",
       "sourceRefs": [
         {
           "path": "docs/internal/working-patterns.md",
           "line": 63,
-          "excerpt": "\"aspect\" 라는 설명보다 \"every workflow leaves reviewable artifacts\" 나 \"missing evidence remains visible\" 이 더 좋은 product language 다."
+          "excerpt": "\"aspect\" 같은 설명보다 \"every workflow leaves reviewable artifacts\" 나 \"missing evidence remains visible\" 이 더 좋은 product language 다."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -7633,7 +7633,7 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:cbf9cdfc8b1b18367c67215ba849eca6bf4e2daa8737faf9cae482fc1b2315c7",
+      "claimFingerprint": "sha256:843c22ec20b7261d3e780ad6aae7abab9a6ee1664b62061b922d65f7d3dc8d7c",
       "canonicalClaimId": "M3",
       "score": 9,
       "runnerUpCanonicalClaimId": "M4",

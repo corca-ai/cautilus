@@ -3,7 +3,7 @@
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 383,
+    "matchedClaimCount": 382,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -3067,7 +3067,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:cbf9cdfc8b1b18367c67215ba849eca6bf4e2daa8737faf9cae482fc1b2315c7",
+      "claimFingerprint": "sha256:843c22ec20b7261d3e780ad6aae7abab9a6ee1664b62061b922d65f7d3dc8d7c",
       "claimId": "claim-docs-internal-working-patterns-md-63",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
@@ -3086,12 +3086,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "\"aspect\" 라는 설명보다 \"every workflow leaves reviewable artifacts\" 나 \"missing evidence remains visible\" 이 더 좋은 product language 다.",
+          "excerpt": "\"aspect\" 같은 설명보다 \"every workflow leaves reviewable artifacts\" 나 \"missing evidence remains visible\" 이 더 좋은 product language 다.",
           "line": 63,
           "path": "docs/internal/working-patterns.md"
         }
       ],
-      "summary": "\"aspect\" 라는 설명보다 \"every workflow leaves reviewable artifacts\" 나 \"missing evidence remains visible\" 이 더 좋은 product language 다.",
+      "summary": "\"aspect\" 같은 설명보다 \"every workflow leaves reviewable artifacts\" 나 \"missing evidence remains visible\" 이 더 좋은 product language 다.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -13985,7 +13985,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "1af07fc9abad618a2dcc48042868b4395ab94bfc",
+  "gitCommit": "9170ae4216a4b8b804a37a3219bbd16227ca0b92",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -15663,7 +15663,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:d3d50e157a6a609fa58c7d77e2e2627d5e9adb1e8f74f8c77ba05368e10a245b",
+      "contentHash": "sha256:b0d566cdbee595b9f7806fe38363609f95359f3d031403de2e45e11f0e7ded66",
       "depth": 1,
       "discoveredFrom": "AGENTS.md",
       "kind": "docs",
