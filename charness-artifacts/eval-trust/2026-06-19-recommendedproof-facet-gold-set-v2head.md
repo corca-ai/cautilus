@@ -72,10 +72,14 @@ The maintainer decided each individually (the other 32 were ratified as proposed
 - `claim-readme-md-139` (GEPA-style bounded prompt search seam) — **corrected**: dominant `cautilus-eval` → **deterministic**. Under R12, the six named mechanisms shipping is a static capability-existence check (the stronger reading), consistent with how other "ships X" claims route; the does-it-actually-improve outcome stays a separate eval facet. Verdict moves too-coarse → wrong.
 - `claim-docs-internal-working-patterns-md-61` ("cross-cutting concerns are not exposed in AOP terms in public docs") — flagged **retire-candidate** rather than routed. The maintainer's principle: *statements about what the system does not do are almost all retirement targets*. The dominant facet here is a whole-claim negative, so it is a discovery-curation retire signal, not a det/human routing decision; it is excluded from the routing-accuracy tally (the residual positive facet — public docs speak in concrete contracts — is human-auditable).
 
-### Open decision carried out of this ratification
+### Retire principle — resolved 2026-06-19
 
-The retire principle is broader than this one entry.
-Whether "what it does not do" negatives become a discovery-curation rule, and whether `wp-61`'s `accept` in `goldset-v2-reextract-head` is revisited, is carried as a separate maintainer decision and was **not** applied to the answer key here.
+The retire signal on `wp-61` was resolved the same session, and it is narrower than "add an engine rule":
+
+- It is **not** a discovery-curation engine rule. It is the already-ratified prose rule at `working-patterns.md:43-46` (2026-06-11): negative / transition-history behavior prose is unnecessary for first-time users and a stale-claim source. `wp-61` was that rule slipping through in the very doc that states it.
+- Scope (maintainer): retire only **transition / defensive / style** negatives. Capability-boundary and exclusion negatives (`does not execute skills`, `not for …`, intent-first prompt-freeze) are **kept** as first-class claims, because `claim-extraction-template.md:58` deliberately captures them as a measured recall target.
+- Action taken: the source statement at `working-patterns.md:61` was rewritten from the negative heading ("does not expose cross-cutting concerns in AOP terms") to the positive ("public docs speak in concrete contracts and evidence routes"). A scan of the five source docs found this was the only clear category-1 retirement target; the rest are intentional capability boundaries or agent-guideline imperatives.
+- The answer key `goldset-v2-reextract-head` stays **frozen** at its snapshot (`628ccc7`); the fix lands at HEAD so future re-extraction does not resurface the negative.
 
 ## Patterns the regeneration surfaces (to verify in review)
 

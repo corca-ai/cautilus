@@ -58,9 +58,9 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   Host-owned execution, Reviewable Artifacts, Evidence Gaps, vocabulary/packet consistency 같은 concern 은 별도 workflow 가 아니어도 index 에서 보이고 각 story 안의 proof 로 다시 투영되어야 한다.
   이 concern 들은 "또 하나의 audience view" 가 아니라 canonical promise model 위에 얹는 concern-first lens 다.
   User / Maintainer 는 독자 축이고, Primary workflow / Cross-cutting concern 은 분해 축이다.
-- **Cross-cutting concern 을 AOP 용어로 노출하지 않는다.**
-  내부 설계 렌즈로는 AOP / dominant decomposition 경고를 사용하되, public docs 는 concrete contract 와 evidence route 로 말한다.
-  "aspect" 라는 설명보다 "every workflow leaves reviewable artifacts" 나 "missing evidence remains visible" 이 더 좋은 product language 다.
+- **Public docs 는 cross-cutting concern 을 concrete contract 와 evidence route 로 말한다.**
+  AOP / dominant decomposition 렌즈는 내부 설계용으로만 쓴다.
+  "aspect" 같은 설명보다 "every workflow leaves reviewable artifacts" 나 "missing evidence remains visible" 이 더 좋은 product language 다.
 - **한 분해 축이 다른 관심사를 지우는지 self-check 한다.**
   user story 순서가 workflow 를 잘 설명해도, evidence visibility / host ownership / cost-budget / agent-human readability 가 특정 story 에 묻혀 사라지면 설계가 퇴행한 것이다.
   index 에 cross-cutting 항목을 남기고, maintainer side 에는 어떤 invariant 가 어느 story 를 제한하는지 mapping 을 둔다.
