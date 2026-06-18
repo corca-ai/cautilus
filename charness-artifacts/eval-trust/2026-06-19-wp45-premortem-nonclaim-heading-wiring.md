@@ -56,6 +56,12 @@ The latter is closed by claim-discovery-workflow.md Fixed Decisions: routing key
 The contract-legal realization of per-facet routing on the deterministic floor is the `non_claim_section_headings` discipline, which is what wp-45 actually points at.
 The kept-capability-boundary rule still holds: `Deprecated Surface Names`, `Probe Questions`, and `Deliberately Not Doing` mix real claims (extraction-template:58 recall targets) and are deliberately not heading-excluded.
 
+## Critique
+
+Bounded fresh-eye subagent review 2026-06-19 returned **READY**, no blockers, no required edits.
+It verified all 8 removed claims are Premortem process notes whose product substance is restated in body/decision sections (the highest-risk one, `runner-readiness-md-398`, is restated at `runner-readiness.md:5,50,116,340`; `-602` at `claim-discovery-workflow.md:644`), that the Fixed Decision reading is accurate and not over-claimed, that the Premortem section carries zero capability-boundary recall targets (the two grep-visible negatives are premortem rhetoric, not `not-for`/`does-not` product boundaries), and that the handoff next-action ordering is internally consistent with the Workflow Trigger.
+One non-blocking note: a sibling raw extraction packet (`claims-agent.json`) shows 374 while the ratified answer key is 375 (`ANCHOR.md`: accept 346 + relabel 19 + not-a-claim 10, after a `cli-268` over-merge split during recuration); the cross-check's referent is the 375-entry ratified answer key, so the count here is correct.
+
 ## Source
 
 Facet gold set: `charness-artifacts/eval-trust/2026-06-19-recommendedproof-facet-gold-set-v2head.{md,json}` (wp-45 ratification).
