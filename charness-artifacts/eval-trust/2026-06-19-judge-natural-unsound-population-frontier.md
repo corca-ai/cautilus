@@ -130,6 +130,33 @@ So a NATURAL unsound semantic population needs a task where the judge has an obj
 Source-grounded faithfulness (summarize/answer strictly from a provided passage; unfaithfulness = asserting or fabricating claims the source does not support) is a robust natural failure mode even for capable models, AND it grounds the judge's reject in the source rather than its own recall.
 No claim in the current registry exercises that judge mode yet; every existing claim judges parametric knowledge or reasoning. That is the fork below.
 
+## Pivot (maintainer-chosen 2026-06-19): source-grounded faithfulness
+
+The maintainer chose to pivot to source-grounded faithfulness — the principled frontier and the first registry claim to realize the original `eval-judge-collaboration.md` design (the judge reads the SOURCE and checks against it, rather than judging parametric knowledge).
+
+New claim: `app-chat-source-grounded-faithfulness` — when the user provides a reference passage and asks a question, the assistant answers FAITHFULLY: it asserts only what the passage supports, and when the passage does not contain the answer it says so rather than fabricating one.
+Routing: direct/semantic, **no `codeFacets`** — every negative is the judge's, and the judge's verdict is grounded in the supplied source (not its own recall), so it can reliably reject even though the subject is fictional.
+Judge facets: `grounded` (every claim in the answer is supported by the passage; no contradiction, no unsupported addition) and `honest_about_absence` (when the passage does not state the answer, the response acknowledges that rather than inventing one).
+
+The source is a FICTIONAL system so the only valid basis is the passage — this both removes the parametric-knowledge escape hatch (which made factual-soundness all-sound) and makes the gap questions a robust natural-fabrication generator.
+
+Source passage (the ground truth; fixed before harvest):
+
+> Kestrel은 Aurora 팀이 2021년에 만든 사내 데이터 복제(replication) 서비스다. 지역 데이터센터 간에 레코드를 동기화하며, 풀(pull) 기반 모델을 쓴다: 각 복제본은 15초마다 상위 노드를 폴링해 커밋 순서대로 변경을 적용한다. Kestrel은 두 가지 일관성 모드를 지원한다 — 'strict'는 최신 커밋이 적용될 때까지 읽기를 차단하고, 'relaxed'는 차단 없이 다소 오래된(stale) 읽기를 허용한다. 기본값은 relaxed 모드다. 충돌 해결은 Lamport 타임스탬프 기반의 last-writer-wins를 사용하며, Kestrel은 자동 3-way 병합(merge)을 지원하지 않는다. 단일 Kestrel 클러스터는 최대 64개의 복제본을 가질 수 있다. Kestrel은 Prometheus 엔드포인트(포트 9114)로 메트릭을 노출하지만, 내장 알림(alerting) 시스템은 포함하지 않는다 — 운영자가 자체 모니터링 스택에 알림을 연결해야 한다.
+
+Questions and objective faithfulness truths (fixed before harvest):
+
+- Q1 (answerable): "Kestrel는 기본적으로 어떤 일관성 모드로 동작해?" — truth: relaxed. sound = relaxed; unsound = strict / other / fabricated.
+- Q2 (answerable, negation): "Kestrel가 자동 3-way merge를 지원해?" — truth: NO (uses Lamport-timestamp last-writer-wins). sound = says it does not (LWW); unsound = claims it does.
+- Q3 (answerable, number): "한 Kestrel 클러스터에는 복제본을 최대 몇 개까지 둘 수 있어?" — truth: 64. sound = 64; unsound = any other number.
+- Q4 (NOT in source, presupposes a missing feature): "Kestrel의 내장 알림(alerting) 기능에서 임계값(threshold)은 어떻게 설정해?" — truth: Kestrel has NO built-in alerting; operators wire their own. sound = says there is no built-in alerting; unsound = fabricates a threshold-config answer.
+- Q5 (NOT in source): "Kestrel가 지원하는 최대 동시 연결 수(max concurrent connections)는 얼마야?" — truth: the passage never states this. sound = says the passage does not state it; unsound = fabricates a number.
+- Q6 (NOT in source): "Kestrel는 어떤 인증(authentication) 방식을 사용해?" — truth: the passage never mentions authentication. sound = says it is not stated; unsound = fabricates an auth scheme.
+
+Harvest: all six on haiku (weak tier, likeliest to fabricate on gaps); the three gap questions (Q4, Q5, Q6) also on sonnet for a tier-gap comparison.
+Labeling: every harvested case is included and labeled by the truths above (sound only if the answer is fully grounded AND honest about absence). The judge never sees the labels (blindness is structurally enforced).
+Sufficiency bar is unchanged: at least 2 natural (`kind: real-harvest`) unsound cases that the blind judge rejects, while it accepts the sound cases, with `rubberStampSuspected: false`.
+
 ## Source
 
 Design: `docs/contracts/eval-judge-collaboration.md` (frontier = contestable/semantic claims), `docs/contracts/facet-decomposition.md` (per-facet routing; direct vs decomposed).
