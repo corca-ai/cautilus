@@ -29,6 +29,7 @@ type instructionSurfaceEvaluationInput struct {
 	forbiddenSupportingFiles  []string
 	allowedFirstToolCalls     []string
 	expectedRouting           map[string]any
+	reasoningSoundness        map[string]any
 	blockerKind               *string
 	artifactRefs              []any
 	telemetry                 map[string]any
@@ -73,6 +74,11 @@ func BuildEvaluationSummary(input map[string]any, now time.Time) (map[string]any
 		"bootstrapHelperCounts":          map[string]any{},
 		"workSkillCounts":                map[string]any{},
 	}
+	judgeSummary := map[string]any{
+		"evaluationsWithReasoningJudge": 0,
+		"reasoningSound":                0,
+		"reasoningUnsound":              0,
+	}
 	variantAccumulators := map[string]map[string]any{}
 	evaluations := make([]any, 0, len(rawEvaluations))
 	for index, rawEvaluation := range rawEvaluations {
@@ -89,6 +95,7 @@ func BuildEvaluationSummary(input map[string]any, now time.Time) (map[string]any
 		counts["total"]++
 		counts[status]++
 		accumulateInstructionSurfaceSummary(surfaceSummary, asMap(result["expectationResults"]))
+		accumulateReasoningSoundnessSummary(judgeSummary, asMap(result["expectationResults"]))
 		accumulateInstructionRoutingSummary(routingSummary, asMap(result["routingEvaluation"]))
 		accumulateInstructionVariantSummary(variantAccumulators, asMap(result["instructionSurface"]), status, asMap(result["routingEvaluation"]))
 		evaluations = append(evaluations, result)
@@ -131,6 +138,11 @@ func BuildEvaluationSummary(input map[string]any, now time.Time) (map[string]any
 	}
 	if runtimeContext != nil {
 		summary["runtimeContext"] = runtimeContext
+	}
+	// Only surface the judge summary when at least one evaluation carried a reasoning-soundness
+	// verdict, so evals without a judge tier keep their existing summary shape unchanged.
+	if intFromAny(judgeSummary["evaluationsWithReasoningJudge"]) > 0 {
+		summary["judgeSummary"] = judgeSummary
 	}
 	if proof := EvaluationProofFromInput(input); len(proof) > 0 {
 		summary["proof"] = proof
@@ -224,6 +236,10 @@ func normalizeInstructionSurfaceEvaluationInput(input map[string]any, index int,
 	if err != nil {
 		return nil, err
 	}
+	reasoningSoundness, err := normalizeReasoningSoundnessVerdict(input["reasoningSoundness"], fmt.Sprintf("evaluations[%d].reasoningSoundness", index))
+	if err != nil {
+		return nil, err
+	}
 	blockerKind, err := normalizeOptionalString(input["blockerKind"], fmt.Sprintf("evaluations[%d].blockerKind", index))
 	if err != nil {
 		return nil, err
@@ -256,6 +272,7 @@ func normalizeInstructionSurfaceEvaluationInput(input map[string]any, index int,
 		forbiddenSupportingFiles:  forbiddenSupportingFiles,
 		allowedFirstToolCalls:     allowedFirstToolCalls,
 		expectedRouting:           expectedRouting,
+		reasoningSoundness:        reasoningSoundness,
 		blockerKind:               blockerKind,
 		artifactRefs:              artifactRefs,
 		telemetry:                 telemetry,
@@ -329,6 +346,99 @@ func normalizeObservedInstructionSurface(value any, field string) (map[string]an
 	}, nil
 }
 
+// normalizeReasoningSoundnessVerdict accepts the optional per-evaluation judge verdict the runner
+// emits into the observed packet. The runner (the intelligence observer in the code/intelligence
+// split) is responsible for producing the COMPOSITE verdict — code facets AND the blind judge's
+// semantic verdict — so the product engine only has to read a structured field and composite it
+// deterministically into the case status. The product never re-runs the judge or re-derives a
+// repo-specific facet; the only required field is the composite `verdict`. The breakdown fields
+// (judgeVerdict, codeFacets, confidence, evidence, claimId, provenance, rubberStampSuspected) are
+// optional and preserved for human audit.
+func normalizeReasoningSoundnessVerdict(value any, field string) (map[string]any, error) {
+	if value == nil {
+		return nil, nil
+	}
+	record := asMap(value)
+	if len(record) == 0 {
+		return nil, fmt.Errorf("%s must be an object", field)
+	}
+	verdict, err := normalizeNonEmptyString(record["verdict"], field+".verdict")
+	if err != nil {
+		return nil, err
+	}
+	if !containsString([]string{"sound", "unsound"}, verdict) {
+		return nil, fmt.Errorf("%s.verdict must be one of: sound, unsound", field)
+	}
+	normalized := map[string]any{"verdict": verdict}
+	for _, key := range []string{"claimId", "evidence", "provenance"} {
+		if value, err := normalizeOptionalString(record[key], field+"."+key); err != nil {
+			return nil, err
+		} else if value != nil {
+			normalized[key] = *value
+		}
+	}
+	if judgeVerdict, err := normalizeOptionalString(record["judgeVerdict"], field+".judgeVerdict"); err != nil {
+		return nil, err
+	} else if judgeVerdict != nil {
+		if !containsString([]string{"sound", "unsound"}, *judgeVerdict) {
+			return nil, fmt.Errorf("%s.judgeVerdict must be one of: sound, unsound", field)
+		}
+		normalized["judgeVerdict"] = *judgeVerdict
+	}
+	if _, ok := record["confidence"]; ok {
+		confidence, ok := toFloat(record["confidence"])
+		if !ok || confidence < 0 || confidence > 1 {
+			return nil, fmt.Errorf("%s.confidence must be a number between 0 and 1", field)
+		}
+		normalized["confidence"] = confidence
+	}
+	if _, ok := record["rubberStampSuspected"]; ok {
+		normalized["rubberStampSuspected"] = truthy(record["rubberStampSuspected"])
+	}
+	if rawFacets, ok := record["codeFacets"]; ok && rawFacets != nil {
+		facets := asMap(rawFacets)
+		if len(facets) == 0 {
+			return nil, fmt.Errorf("%s.codeFacets must be a non-empty object when present", field)
+		}
+		normalizedFacets := map[string]any{}
+		for key, raw := range facets {
+			normalizedFacets[key] = truthy(raw)
+		}
+		normalized["codeFacets"] = normalizedFacets
+	}
+	return normalized, nil
+}
+
+// evaluateReasoningSoundness composites the runner-emitted judge verdict into a deterministic
+// expectation result. An unsound composite fails the case — this is the semantic seat the
+// all-deterministic matchers above could not fill. A missing verdict is not_applicable, so cases
+// without a judge tier behave exactly as before.
+func evaluateReasoningSoundness(verdict map[string]any) map[string]any {
+	if len(verdict) == 0 {
+		return map[string]any{"status": "not_applicable"}
+	}
+	status := "failed"
+	if stringOrEmpty(verdict["verdict"]) == "sound" {
+		status = "passed"
+	}
+	result := map[string]any{"status": status}
+	for _, key := range []string{"verdict", "judgeVerdict", "claimId", "evidence", "provenance"} {
+		if value := stringOrEmpty(verdict[key]); value != "" {
+			result[key] = value
+		}
+	}
+	if confidence, ok := toFloat(verdict["confidence"]); ok {
+		result["confidence"] = confidence
+	}
+	if facets := asMap(verdict["codeFacets"]); len(facets) > 0 {
+		result["codeFacets"] = facets
+	}
+	if _, ok := verdict["rubberStampSuspected"]; ok {
+		result["rubberStampSuspected"] = truthy(verdict["rubberStampSuspected"])
+	}
+	return result
+}
+
 func evaluateInstructionSurfaceEvaluation(evaluation *instructionSurfaceEvaluationInput) map[string]any {
 	entryResult := evaluateInstructionEntryFile(evaluation.expectedEntryFile, evaluation.entryFile)
 	loadedInstructionFiles := augmentInstructionFilesWithEntry(evaluation.loadedInstructionFiles, evaluation.expectedEntryFile, evaluation.entryFile)
@@ -336,12 +446,14 @@ func evaluateInstructionSurfaceEvaluation(evaluation *instructionSurfaceEvaluati
 	supportingFilesResult := evaluateInstructionFileList(evaluation.requiredSupportingFiles, evaluation.forbiddenSupportingFiles, evaluation.loadedSupportingFiles)
 	routingResult := evaluateInstructionRouting(evaluation.expectedRouting, evaluation.routingDecision)
 	firstToolCallResult := evaluateAllowedFirstToolCall(evaluation.allowedFirstToolCalls, evaluation.routingDecision)
+	reasoningSoundnessResult := evaluateReasoningSoundness(evaluation.reasoningSoundness)
 	expectationResults := map[string]any{
-		"entryFile":        entryResult,
-		"instructionFiles": instructionFilesResult,
-		"supportingFiles":  supportingFilesResult,
-		"routing":          routingResult,
-		"firstToolCall":    firstToolCallResult,
+		"entryFile":          entryResult,
+		"instructionFiles":   instructionFilesResult,
+		"supportingFiles":    supportingFilesResult,
+		"routing":            routingResult,
+		"firstToolCall":      firstToolCallResult,
+		"reasoningSoundness": reasoningSoundnessResult,
 	}
 	status := "passed"
 	if evaluation.observationStatus == "blocked" {
@@ -524,7 +636,7 @@ func evaluateAllowedFirstToolCall(allowed []string, observed map[string]any) map
 }
 
 func expectationFailed(expectationResults map[string]any) bool {
-	for _, key := range []string{"entryFile", "instructionFiles", "supportingFiles", "routing", "firstToolCall"} {
+	for _, key := range []string{"entryFile", "instructionFiles", "supportingFiles", "routing", "firstToolCall", "reasoningSoundness"} {
 		if stringOrEmpty(asMap(expectationResults[key])["status"]) == "failed" {
 			return true
 		}
@@ -544,6 +656,23 @@ func accumulateInstructionSurfaceSummary(summary map[string]any, expectationResu
 	supportingFiles := asMap(expectationResults["supportingFiles"])
 	summary["requiredSupportingFileMisses"] = intFromAny(summary["requiredSupportingFileMisses"]) + len(arrayOrEmpty(supportingFiles["missingRequired"]))
 	summary["forbiddenSupportingFileViolations"] = intFromAny(summary["forbiddenSupportingFileViolations"]) + len(arrayOrEmpty(supportingFiles["forbiddenLoaded"]))
+}
+
+func accumulateReasoningSoundnessSummary(summary map[string]any, expectationResults map[string]any) {
+	result := asMap(expectationResults["reasoningSoundness"])
+	status := stringOrEmpty(result["status"])
+	if status == "" || status == "not_applicable" {
+		return
+	}
+	summary["evaluationsWithReasoningJudge"] = intFromAny(summary["evaluationsWithReasoningJudge"]) + 1
+	if stringOrEmpty(result["verdict"]) == "sound" {
+		summary["reasoningSound"] = intFromAny(summary["reasoningSound"]) + 1
+	} else {
+		summary["reasoningUnsound"] = intFromAny(summary["reasoningUnsound"]) + 1
+	}
+	if truthy(result["rubberStampSuspected"]) {
+		summary["rubberStampSuspected"] = intFromAny(summary["rubberStampSuspected"]) + 1
+	}
 }
 
 func accumulateInstructionRoutingSummary(summary map[string]any, routingEvaluation map[string]any) {

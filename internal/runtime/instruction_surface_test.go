@@ -170,6 +170,189 @@ func TestBuildEvaluationSummaryRejectsDisallowedFirstToolCall(t *testing.T) {
 	}
 }
 
+func TestBuildEvaluationSummaryCompositesReasoningSoundnessJudge(t *testing.T) {
+	now := time.Date(2026, 6, 19, 0, 0, 0, 0, time.UTC)
+	// Two cases whose deterministic expectations BOTH pass. The only difference is the
+	// runner-emitted reasoning-soundness verdict: the second case routes correctly (the
+	// all-deterministic matchers would pass it) but the judge flags the stated reason as
+	// unsound. The CLI must now fail it — this is the semantic seat the field/fragment
+	// matchers could not fill (the regressed-reason-control analog at the engine level).
+	summary, err := BuildEvaluationSummary(map[string]any{
+		"schemaVersion": "cautilus.evaluation_observed.v1",
+		"suiteId":       "reasoning-judge-demo",
+		"evaluations": []any{
+			map[string]any{
+				"evaluationId":           "sound-routing",
+				"prompt":                 "Read the repo instructions and decide.",
+				"startedAt":              "2026-06-19T00:00:00Z",
+				"observationStatus":      "observed",
+				"summary":                "Bootstrapped find-skills for a sound reason.",
+				"entryFile":              "AGENTS.md",
+				"loadedInstructionFiles": []any{"AGENTS.md"},
+				"loadedSupportingFiles":  []any{},
+				"routingDecision": map[string]any{
+					"bootstrapHelper": "charness:find-skills",
+					"workSkill":       "charness:impl",
+				},
+				"instructionSurface": map[string]any{
+					"surfaceLabel": "compact_agents",
+					"files":        []any{map[string]any{"path": "AGENTS.md", "kind": "file", "sourceKind": "workspace_default"}},
+				},
+				"expectedEntryFile":        "AGENTS.md",
+				"requiredInstructionFiles": []any{"AGENTS.md"},
+				"expectedRouting":          map[string]any{"bootstrapHelper": "charness:find-skills"},
+				"reasoningSoundness": map[string]any{
+					"verdict":      "sound",
+					"judgeVerdict": "sound",
+					"claimId":      "dev-repo-routing-regression",
+					"codeFacets":   map[string]any{"emitted_find_skills_bootstrap": true},
+					"confidence":   0.95,
+					"provenance":   "blind-subagent-harvest-replay",
+				},
+				"artifactRefs": []any{},
+			},
+			map[string]any{
+				"evaluationId":           "right-route-wrong-reason",
+				"prompt":                 "Read the repo instructions and decide.",
+				"startedAt":              "2026-06-19T00:01:00Z",
+				"observationStatus":      "observed",
+				"summary":                "Bootstrapped find-skills but fabricated the reason.",
+				"entryFile":              "AGENTS.md",
+				"loadedInstructionFiles": []any{"AGENTS.md"},
+				"loadedSupportingFiles":  []any{},
+				"routingDecision": map[string]any{
+					"bootstrapHelper": "charness:find-skills",
+					"workSkill":       "charness:impl",
+				},
+				"instructionSurface": map[string]any{
+					"surfaceLabel": "compact_agents",
+					"files":        []any{map[string]any{"path": "AGENTS.md", "kind": "file", "sourceKind": "workspace_default"}},
+				},
+				"expectedEntryFile":        "AGENTS.md",
+				"requiredInstructionFiles": []any{"AGENTS.md"},
+				"expectedRouting":          map[string]any{"bootstrapHelper": "charness:find-skills"},
+				"reasoningSoundness": map[string]any{
+					"verdict":      "unsound",
+					"judgeVerdict": "unsound",
+					"claimId":      "dev-repo-routing-regression",
+					"codeFacets":   map[string]any{"emitted_find_skills_bootstrap": true},
+					"confidence":   0.97,
+					"evidence":     "fabricated a 'find-skills is the test runner' rule",
+					"provenance":   "blind-subagent-harvest-replay",
+				},
+				"artifactRefs": []any{},
+			},
+		},
+	}, now)
+	if err != nil {
+		t.Fatalf("BuildEvaluationSummary returned error: %v", err)
+	}
+	if summary["recommendation"] != "reject" {
+		t.Fatalf("expected reject recommendation when the judge flags a case unsound, got %#v", summary["recommendation"])
+	}
+	counts := asMap(summary["evaluationCounts"])
+	if counts["passed"] != 1 || counts["failed"] != 1 {
+		t.Fatalf("unexpected evaluation counts: %#v", counts)
+	}
+	evaluations := arrayOrEmpty(summary["evaluations"])
+	soundCase := asMap(evaluations[0])
+	if status := stringOrEmpty(soundCase["status"]); status != "passed" {
+		t.Fatalf("expected the sound-reason case to pass, got %q", status)
+	}
+	wrongReason := asMap(evaluations[1])
+	if status := stringOrEmpty(wrongReason["status"]); status != "failed" {
+		t.Fatalf("expected the right-route-wrong-reason case to FAIL via the judge, got %q", status)
+	}
+	// The deterministic routing matcher PASSES on the failing case — only the judge carries the negative.
+	routingResult := asMap(asMap(wrongReason["expectationResults"])["routing"])
+	if stringOrEmpty(routingResult["status"]) != "passed" {
+		t.Fatalf("expected routing matcher to pass (judge is the sole negative), got %#v", routingResult)
+	}
+	judgeResult := asMap(asMap(wrongReason["expectationResults"])["reasoningSoundness"])
+	if judgeResult["status"] != "failed" || judgeResult["verdict"] != "unsound" {
+		t.Fatalf("expected the reasoning-soundness expectation to fail, got %#v", judgeResult)
+	}
+	if judgeResult["claimId"] != "dev-repo-routing-regression" || judgeResult["evidence"] == nil {
+		t.Fatalf("expected judge breakdown preserved for audit, got %#v", judgeResult)
+	}
+	judgeSummary := asMap(summary["judgeSummary"])
+	if judgeSummary["evaluationsWithReasoningJudge"] != 2 || judgeSummary["reasoningSound"] != 1 || judgeSummary["reasoningUnsound"] != 1 {
+		t.Fatalf("unexpected judge summary: %#v", judgeSummary)
+	}
+}
+
+func TestBuildEvaluationSummaryOmitsJudgeSummaryWithoutReasoningVerdict(t *testing.T) {
+	now := time.Date(2026, 6, 19, 0, 0, 0, 0, time.UTC)
+	summary, err := BuildEvaluationSummary(map[string]any{
+		"schemaVersion": "cautilus.evaluation_observed.v1",
+		"suiteId":       "instruction-surface-demo",
+		"evaluations": []any{
+			map[string]any{
+				"evaluationId":           "no-judge",
+				"prompt":                 "Read the repo instructions and decide.",
+				"startedAt":              "2026-06-19T00:00:00Z",
+				"observationStatus":      "observed",
+				"summary":                "No reasoning judge attached.",
+				"entryFile":              "AGENTS.md",
+				"loadedInstructionFiles": []any{"AGENTS.md"},
+				"loadedSupportingFiles":  []any{},
+				"routingDecision":        map[string]any{"bootstrapHelper": "charness:find-skills"},
+				"instructionSurface": map[string]any{
+					"surfaceLabel": "compact_agents",
+					"files":        []any{map[string]any{"path": "AGENTS.md", "kind": "file", "sourceKind": "workspace_default"}},
+				},
+				"expectedEntryFile":        "AGENTS.md",
+				"requiredInstructionFiles": []any{"AGENTS.md"},
+				"artifactRefs":             []any{},
+			},
+		},
+	}, now)
+	if err != nil {
+		t.Fatalf("BuildEvaluationSummary returned error: %v", err)
+	}
+	if _, ok := summary["judgeSummary"]; ok {
+		t.Fatalf("expected no judgeSummary when no evaluation carries a reasoning verdict")
+	}
+	evaluation := asMap(arrayOrEmpty(summary["evaluations"])[0])
+	reasoningResult := asMap(asMap(evaluation["expectationResults"])["reasoningSoundness"])
+	if reasoningResult["status"] != "not_applicable" {
+		t.Fatalf("expected reasoningSoundness not_applicable without a verdict, got %#v", reasoningResult)
+	}
+	if stringOrEmpty(evaluation["status"]) != "passed" {
+		t.Fatalf("expected the case to pass unchanged without a judge tier, got %q", stringOrEmpty(evaluation["status"]))
+	}
+}
+
+func TestNormalizeReasoningSoundnessVerdictRejectsBadVerdict(t *testing.T) {
+	now := time.Date(2026, 6, 19, 0, 0, 0, 0, time.UTC)
+	_, err := BuildEvaluationSummary(map[string]any{
+		"schemaVersion": "cautilus.evaluation_observed.v1",
+		"suiteId":       "instruction-surface-demo",
+		"evaluations": []any{
+			map[string]any{
+				"evaluationId":           "bad-verdict",
+				"prompt":                 "Read the repo instructions and decide.",
+				"startedAt":              "2026-06-19T00:00:00Z",
+				"observationStatus":      "observed",
+				"summary":                "Bad judge verdict value.",
+				"entryFile":              "AGENTS.md",
+				"loadedInstructionFiles": []any{"AGENTS.md"},
+				"loadedSupportingFiles":  []any{},
+				"routingDecision":        map[string]any{"bootstrapHelper": "charness:find-skills"},
+				"instructionSurface": map[string]any{
+					"surfaceLabel": "compact_agents",
+					"files":        []any{map[string]any{"path": "AGENTS.md", "kind": "file", "sourceKind": "workspace_default"}},
+				},
+				"reasoningSoundness": map[string]any{"verdict": "maybe"},
+				"artifactRefs":       []any{},
+			},
+		},
+	}, now)
+	if err == nil {
+		t.Fatalf("expected an error for an invalid reasoningSoundness.verdict")
+	}
+}
+
 func TestBuildEvaluationSummaryTreatsNamespacedRoutingTokensAsSameSkill(t *testing.T) {
 	now := time.Date(2026, 4, 26, 0, 0, 0, 0, time.UTC)
 	summary, err := BuildEvaluationSummary(map[string]any{
