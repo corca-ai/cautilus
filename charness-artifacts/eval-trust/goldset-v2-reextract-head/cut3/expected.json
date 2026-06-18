@@ -1,0 +1,72 @@
+{
+  "Q01": {
+    "origId": "R02",
+    "expect": "human-auditable",
+    "cat": "precision-narrative"
+  },
+  "Q02": {
+    "origId": "R03",
+    "expect": "deterministic",
+    "cat": "control-structural"
+  },
+  "Q03": {
+    "origId": "R04",
+    "expect": "human-auditable",
+    "cat": "precision-narrative"
+  },
+  "Q04": {
+    "origId": "R05",
+    "expect": "deterministic",
+    "cat": "control-structural"
+  },
+  "Q05": {
+    "origId": "R06",
+    "expect": "human-auditable",
+    "cat": "precision-narrative"
+  },
+  "Q06": {
+    "origId": "R07",
+    "expect": "human-auditable",
+    "cat": "precision-narrative"
+  },
+  "Q07": {
+    "origId": "R08",
+    "expect": "deterministic",
+    "cat": "recall"
+  },
+  "Q08": {
+    "origId": "R09",
+    "expect": "deterministic",
+    "cat": "recall"
+  },
+  "Q09": {
+    "origId": "R10",
+    "expect": "deterministic",
+    "cat": "recall"
+  },
+  "Q10": {
+    "origId": "R11",
+    "expect": "deterministic",
+    "cat": "recall"
+  },
+  "Q11": {
+    "origId": "R12",
+    "expect": "deterministic",
+    "cat": "recall"
+  },
+  "Q12": {
+    "origId": "R13",
+    "expect": "deterministic",
+    "cat": "recall"
+  },
+  "Q13": {
+    "origId": "R14",
+    "expect": "cautilus-eval",
+    "cat": "precision-behavior"
+  },
+  "Q14": {
+    "origId": "R16",
+    "expect": "deterministic",
+    "cat": "recall"
+  }
+}

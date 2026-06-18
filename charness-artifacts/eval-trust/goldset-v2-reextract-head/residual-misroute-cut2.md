@@ -77,6 +77,8 @@ Confirming cut complete. The systematic-vs-noise question is answered (**class-s
 This artifact records the measurement; the operative template is unchanged pending that decision.
 The ratified answer key (`goldset-v2-reextract-head`, 374/374) stands as the current ground truth — Option C would revisit only the 16 residual relabels under explicit R3, not reopen the full ratification.
 
+**RESOLVED (2026-06-18, `residual-key-readjudication-cutC.md`).** The maintainer chose Option C. Re-adjudication found R3 over-applied unevenly: the README residual was mostly a gold-key over-relabel (5/7 dissolved; corrected 13.5% → 3.8%), while the claim-extraction-template documented-content class survived as a real under-route (8.75%). Key amended (accept 344 / relabel 19). The scoped Option A template edit was validated by a 3rd cut and **held** (recall gain but a precision regression on README narrative); the operative template stays `b922fd5d`.
+
 ## Counterweight review
 
 A bounded fresh-eye reviewer (read-only) reviewed this cut's design and conclusion before escalation.

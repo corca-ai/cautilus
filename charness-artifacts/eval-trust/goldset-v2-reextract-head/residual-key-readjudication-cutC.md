@@ -62,8 +62,22 @@ These amend ratified ground truth, so they are recorded here as **proposed** and
 
 R01 and R06 carried the maintainer's *cautilus-eval* relabels (behavioral readings) rather than deterministic, so they are not R3-over-application in the strict sense; the sharpened-R3 adjudicators read them as the blind route (deterministic / human-auditable), and the proposed amendment defers to that structural/design-stance reading. Both are the most contested of the seven (3/3 and 2/3).
 
+## Scoped Option A — pre-landing validation (3rd cut)
+
+Before landing the documented-content-description generalization in the operative template, it was validated by a 3rd routing cut (`cut3/`): a candidate sentence (`cut3/candidate-generalization.txt`) was given to three fresh routers over 14 claims — the 7 cet documented-content targets (expect a move to `deterministic`), the 4 README narrative claims this re-adjudication corrected to `human-auditable` (precision guard), the one genuine behavior claim (expect `cautilus-eval`), and 2 README structural controls.
+
+| category | result | reading |
+| --- | --- | --- |
+| recall (cet documented-content) | **21/21 deterministic** | the generalization works decisively — up from ~30% in cut-2 |
+| precision — behavior (template-78) | **3/3 cautilus-eval** | the "behavior actually happens → eval" clause holds |
+| precision — narrative (README) | **5/12 (42%)** | REGRESSION: intent-first 0/3, proof-layer-policy 1/3 — pulled toward `deterministic` |
+| README structural controls (R03/R05) | 0/6 | routers still route these `human-auditable` regardless (their "hold deterministic" is itself contestable) |
+
+**Verdict: not landed.** The lean sentence achieves the recall goal but cannot cleanly separate "describes a documentation artifact's literal content" (deterministic, correct) from "describes the product's design philosophy or proof-routing policy" (human-auditable, correct) — so it regresses precision on exactly the README narrative this re-adjudication just corrected. Under R16 (act only on a clean systematic-error fix), a recall gain bought with a precision regression on freshly-corrected claims is not a clean win.
+The actual defect — the over-relabeled key — was already fixed by the Option C amendment; the operative template does not need this edit to be correct, so it stays at `b922fd5d`.
+
 ## Status
 
-Re-adjudication complete; dispositions proposed.
-The ratified key is **unchanged** until the maintainer confirms the amendments.
-On confirmation, the next step is the scoped **Option A**: add the single documented-content-description generalization to the operative `routingGuidance` (parity guard + doc sync), then a 3rd confirming cut over `claim-extraction-template.md` only.
+Re-adjudication complete and **applied** to the ratified key (accept 344 / relabel 19 / not-a-claim 10 / badly-bounded 1; see `ANCHOR.md` amendment).
+Scoped Option A was validated by the 3rd cut and **held (not landed)**: it gains recall on the cet documented-content class but regresses precision on README narrative, so the operative template stays `b922fd5d`.
+The documented-content-description under-route is now a characterized, recorded class available for a future, more tightly-scoped template iteration if the recall gain is later judged worth a narrower rule — but it is not a current edit.
