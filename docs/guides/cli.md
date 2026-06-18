@@ -399,22 +399,22 @@ baseline?"
 
 ```bash
 # assemble a durable review packet around a report
-cautilus evaluate evaluate review prepare-input \
+cautilus evaluate review prepare-input \
   --repo-root . \
   --report-file /tmp/cautilus-mode/report.json
 
 # build the product-owned meta-prompt packet
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json
 
 # with output-under-test evidence
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --review-packet /tmp/cautilus-mode/review.json \
   --output-under-test /tmp/cautilus-mode/analysis-output.json \
   --output-text-key analysis_text
 
 # build from scenario replay
-cautilus evaluate evaluate review build-prompt-input \
+cautilus evaluate review build-prompt-input \
   --repo-root . \
   --adapter-name analysis-prompts \
   --scenario-file .agents/cautilus-scenarios/analysis-prompts/proposals.json \
@@ -423,11 +423,11 @@ cautilus evaluate evaluate review build-prompt-input \
   --output-text-key analysis_text
 
 # render the review prompt
-cautilus evaluate evaluate review render-prompt \
+cautilus evaluate review render-prompt \
   --input /tmp/cautilus-mode/review-prompt-input.json
 
 # run every executor variant defined by an adapter
-cautilus evaluate evaluate review variants \
+cautilus evaluate review variants \
   --repo-root /path/to/repo \
   --adapter-name code-quality \
   --workspace /path/to/repo \
@@ -438,7 +438,7 @@ cautilus evaluate evaluate review variants \
   --output-dir /tmp/cautilus-review
 
 # run an ad-hoc bounded review without first building a review packet
-cautilus evaluate evaluate review variants \
+cautilus evaluate review variants \
   --repo-root /path/to/repo \
   --workspace /path/to/repo \
   --prompt-file /tmp/review.md \

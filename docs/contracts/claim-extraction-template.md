@@ -194,7 +194,7 @@ Three shipped consumers key off `reviewStatus`, so this contract states each int
 
 ## Anchoring And Fingerprint Semantics
 
-**Anchoring rule (ratified 2026-06-10):** an excerpt is anchored when its whitespace-normalized text is a substring of the whitespace-normalized content of the source file at the claimed path.
+**Anchoring rule:** an excerpt is anchored when its whitespace-normalized text is a substring of the whitespace-normalized content of the source file at the claimed path.
 Anchoring normalization is whitespace-only (collapse runs of whitespace, trim); it is deliberately distinct from fingerprint normalization below, and the implementation must not unify them.
 The anchoring corpus is the raw file content, including code fences and frontmatter, not the heuristic extractor's filtered block view; the agent quoted from the raw file, so the binary checks against the raw file.
 The line number is a locator hint, not part of the anchoring predicate, consistent with the existing rule that line number is a locator, not identity.

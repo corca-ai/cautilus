@@ -152,7 +152,7 @@ The result is not just a pass/fail bit: it is a set of machine-readable packets 
 See [docs/specs/user/reviewable-artifacts.spec.md](./docs/specs/user/reviewable-artifacts.spec.md) for the rendered-artifact claim.
 
 Use `cautilus doctor --next-action` for the next onboarding step, `cautilus doctor --scope agent-surface` for agent-surface discoverability, and `cautilus doctor` for repo wiring readiness.
-From this repo, `npm run consumer:onboard:smoke` is the shortest end-to-end adoption proof against a fresh consumer.
+From this repo, `npm run consumer:onboard:smoke` is an end-to-end adoption proof against a fresh consumer.
 
 ## Read More
 
