@@ -60,3 +60,4 @@ numbers.
 - `template-block.json` — the template handed to the blind extractors.
 - `HITL-CLOSEOUT.md` — user-product ratification summary, new rules R16–R18, deferred follow-ups.
 - `HITL-CLOSEOUT.developer.md` — developer-track ratification summary, proof-route harvest, deferred source-edit + curator follow-ups.
+- `RECALL-PROBE-cli.md` (+ `recall-probe-cli/`) — the recall half of the measurement for `cli.md`: gold recall 68/68, over-split refuted, 9 deterministic helper-sub-command gaps recorded for the next regeneration. Evidence: blind oracle outputs, line reconciliation, rule adjudication.

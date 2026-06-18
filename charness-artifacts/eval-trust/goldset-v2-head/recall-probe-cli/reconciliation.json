@@ -1,0 +1,617 @@
+{
+  "generated": "recall-probe cli.md @558cda7",
+  "window": 2,
+  "goldCount": 68,
+  "blindA": 143,
+  "blindB": 105,
+  "goldNotRefound": [
+    {
+      "line": 11,
+      "id": "claim-docs-guides-cli-md-11",
+      "v": "accept",
+      "sum": "Cautilus installs via a tagged-release install script and `cautilus init` installs the CLI plus the Cautilus Agent into a host repo."
+    }
+  ],
+  "blindOnly": [
+    {
+      "line": 18,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus init installs the CLI plus Cautilus Agent into a host repo",
+      "anchor": "install CLI + Cautilus Agent into a host repo"
+    },
+    {
+      "line": 24,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus version --verbose inspects local version provenance",
+      "anchor": "inspect local version provenance"
+    },
+    {
+      "line": 41,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus doctor adapter resolves and validates the adapter",
+      "anchor": "resolve and validate the adapter"
+    },
+    {
+      "line": 84,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus doctor commands performs command discovery safe for wrapper tooling and agent runtimes",
+      "anchor": "command discovery, safe for wrapper tooling and agent runtimes"
+    },
+    {
+      "line": 86,
+      "srcs": [
+        "B"
+      ],
+      "corroborated": true,
+      "proofGuess": "deterministic",
+      "summary": "doctor status provides no-input agent orientation over binary, adapter, agent-surface, and claim state",
+      "anchor": "no-input agent orientation over binary, adapter, agent-surface, and claim state"
+    },
+    {
+      "line": 87,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": true,
+      "proofGuess": "deterministic",
+      "summary": "cautilus doctor status gives no-input agent orientation over binary, adapter, agent-surface, and claim state",
+      "anchor": "no-input agent orientation over binary, adapter, agent-surface, and claim state"
+    },
+    {
+      "line": 90,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus doctor reports repo readiness for evaluation",
+      "anchor": "repo readiness for evaluation"
+    },
+    {
+      "line": 93,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "doctor --next-action gives one current onboarding step plus the exact continuation loop",
+      "anchor": "one current onboarding step plus the exact continuation loop"
+    },
+    {
+      "line": 96,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "doctor --scope agent-surface checks local agent-skill discoverability in a consumer repo",
+      "anchor": "local agent-skill discoverability in a consumer repo"
+    },
+    {
+      "line": 99,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus discover claims performs declared-claim discovery and proof planning",
+      "anchor": "declared-claim discovery and proof planning"
+    },
+    {
+      "line": 107,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus discover scenarios emits the scenario-normalization catalog for proposal-input examples",
+      "anchor": "scenario-normalization catalog, for agents that need proposal-input examples"
+    },
+    {
+      "line": 160,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus discover live-targets lists live consumer targets the host repo exposes to Cautilus",
+      "anchor": "list live consumer targets that this host repo exposes to Cautilus"
+    },
+    {
+      "line": 163,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "cautilus-eval",
+      "summary": "cautilus evaluate live runs one bounded live scenario request against one selected instance",
+      "anchor": "run one bounded live scenario request against one selected instance"
+    },
+    {
+      "line": 170,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "evaluate live prepare-request-batch turns draft scenarios into a canonical live-run request batch",
+      "anchor": "turn draft scenarios into a canonical live-run request batch"
+    },
+    {
+      "line": 175,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "cautilus-eval",
+      "summary": "evaluate live scenarios runs many explicit live scenario requests against one selected instance",
+      "anchor": "run many explicit live scenario requests against one selected instance"
+    },
+    {
+      "line": 183,
+      "srcs": [
+        "B"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "An eval live instance is one live consumer target selectable by stable id",
+      "anchor": "is one live consumer target on this host that `Cautilus` can select by stable id"
+    },
+    {
+      "line": 204,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus init run starts a fresh per-run subdirectory under one stable artifact root and pins it",
+      "anchor": "start a fresh per-run subdirectory under one stable artifact root and pin it"
+    },
+    {
+      "line": 213,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus doctor artifacts prune prunes older Cautilus artifact bundles",
+      "anchor": "prune older Cautilus artifact bundles"
+    },
+    {
+      "line": 230,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "discover scenarios normalize skill normalizes skill-evaluation summaries",
+      "anchor": "normalize skill-evaluation summaries"
+    },
+    {
+      "line": 234,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "discover scenarios normalize workflow normalizes durable-workflow run summaries",
+      "anchor": "normalize durable-workflow run summaries"
+    },
+    {
+      "line": 238,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "discover scenarios prepare-input assembles a proposal-input packet from split normalized source files",
+      "anchor": "assemble a proposal-input packet from split normalized source files"
+    },
+    {
+      "line": 247,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "discover scenarios propose generates a scenario proposal packet from normalized input",
+      "anchor": "generate a scenario proposal packet from normalized input"
+    },
+    {
+      "line": 251,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "discover scenarios review-conversations builds a scenario-centric conversation review packet from normalized chatbot threads",
+      "anchor": "build a scenario-centric conversation review packet from normalized chatbot threads"
+    },
+    {
+      "line": 255,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "discover scenarios render-conversation-review-html renders the conversation review packet into HTML",
+      "anchor": "render the conversation review packet into HTML"
+    },
+    {
+      "line": 259,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "discover scenarios summarize-telemetry summarizes scenario-level cost, token, and duration telemetry",
+      "anchor": "summarize scenario-level cost, token, and duration telemetry"
+    },
+    {
+      "line": 297,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "cautilus evaluate skill-experiment compares one sandboxed skill-clone experiment after host-owned execution",
+      "anchor": "compare one sandboxed skill-clone experiment after host-owned execution"
+    },
+    {
+      "line": 400,
+      "srcs": [
+        "B"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "report build answers what the first product-owned decision packet is for candidate versus baseline",
+      "anchor": "what is the first product-owned decision packet for this candidate versus the"
+    },
+    {
+      "line": 408,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "evaluate review prepare-input assembles a durable review packet around a report",
+      "anchor": "assemble a durable review packet around a report"
+    },
+    {
+      "line": 413,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "evaluate review build-prompt-input builds the product-owned meta-prompt packet",
+      "anchor": "build the product-owned meta-prompt packet"
+    },
+    {
+      "line": 432,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "evaluate review render-prompt renders the review prompt",
+      "anchor": "render the review prompt"
+    },
+    {
+      "line": 436,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "cautilus-eval",
+      "summary": "evaluate review variants runs every executor variant defined by an adapter",
+      "anchor": "run every executor variant defined by an adapter"
+    },
+    {
+      "line": 447,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "cautilus-eval",
+      "summary": "evaluate review variants can run an ad-hoc bounded review without first building a review packet",
+      "anchor": "run an ad-hoc bounded review without first building a review packet"
+    },
+    {
+      "line": 455,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "review feedback build normalizes a source-bound review outcome into review-learning evidence",
+      "anchor": "normalize a source-bound review outcome into review-learning evidence"
+    },
+    {
+      "line": 467,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "review feedback summarize summarizes selected review-learning packets by method family and disposition",
+      "anchor": "summarize selected review-learning packets by method family and disposition"
+    },
+    {
+      "line": 488,
+      "srcs": [
+        "A",
+        "B"
+      ],
+      "corroborated": true,
+      "proofGuess": "deterministic",
+      "summary": "missing_critical disposition may omit proposal evidence, recording that the method missed a needed proposal",
+      "anchor": "`missing_critical` may omit proposal evidence"
+    },
+    {
+      "line": 489,
+      "srcs": [
+        "B"
+      ],
+      "corroborated": true,
+      "proofGuess": "deterministic",
+      "summary": "Its disposition vocabulary is about review usefulness rather than pass/fail status",
+      "anchor": "is about review usefulness rather than pass/fail status"
+    },
+    {
+      "line": 502,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "evaluate evidence prepare-input prepares normalized evidence input",
+      "anchor": "prepare normalized evidence input"
+    },
+    {
+      "line": 531,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "cautilus-eval",
+      "summary": "improve propose produces a bounded one-shot improvement proposal from the improve input",
+      "anchor": "cautilus improve propose"
+    },
+    {
+      "line": 541,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "doctor artifacts render-self-dogfood-html refreshes the static HTML view of the current self-dogfood bundle",
+      "anchor": "refresh the static HTML view of the current checked-in self-dogfood bundle"
+    },
+    {
+      "line": 543,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "doctor artifacts render-self-dogfood-experiments-html refreshes the static HTML comparison view of the latest experiments bundle",
+      "anchor": "refresh the static HTML comparison view of the current latest experiments bundle"
+    },
+    {
+      "line": 557,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "claude plugins validate validates the checked-in Claude marketplace and plugin manifest",
+      "anchor": "validate the checked-in Claude marketplace and plugin manifest"
+    },
+    {
+      "line": 561,
+      "srcs": [
+        "A"
+      ],
+      "corroborated": false,
+      "proofGuess": "deterministic",
+      "summary": "check-codex-marketplace.mjs verifies Codex can discover the repo-local marketplace entry",
+      "anchor": "verify Codex can discover the repo-local marketplace entry"
+    }
+  ],
+  "structuralAnchorOverlap": {
+    "goldLines": 68,
+    "exactMatchA": 61,
+    "exactMatchB": 52,
+    "exactMatchEither": 64,
+    "within2A": 66,
+    "within2B": 59,
+    "note": "Recall here means 'a blind extractor surfaced a claim at this exact source line', confirming a real assertion sits there. cli.md puts each command on a labeled comment/heading line, so high exact-line agreement is expected from shared structure, not independent corroboration."
+  },
+  "overSplitTable": [
+    {
+      "window": "L72-74",
+      "gold": 2,
+      "blindA": 3,
+      "blindB": 2,
+      "unionGEgold": true
+    },
+    {
+      "window": "L110-111",
+      "gold": 2,
+      "blindA": 1,
+      "blindB": 1,
+      "unionGEgold": false
+    },
+    {
+      "window": "L111-115",
+      "gold": 3,
+      "blindA": 3,
+      "blindB": 3,
+      "unionGEgold": true
+    },
+    {
+      "window": "L115-117",
+      "gold": 2,
+      "blindA": 3,
+      "blindB": 3,
+      "unionGEgold": true
+    },
+    {
+      "window": "L120-122",
+      "gold": 3,
+      "blindA": 2,
+      "blindB": 2,
+      "unionGEgold": false
+    },
+    {
+      "window": "L122-124",
+      "gold": 2,
+      "blindA": 2,
+      "blindB": 1,
+      "unionGEgold": true
+    },
+    {
+      "window": "L128-130",
+      "gold": 3,
+      "blindA": 3,
+      "blindB": 3,
+      "unionGEgold": true
+    },
+    {
+      "window": "L134-135",
+      "gold": 2,
+      "blindA": 2,
+      "blindB": 2,
+      "unionGEgold": true
+    },
+    {
+      "window": "L135-137",
+      "gold": 2,
+      "blindA": 3,
+      "blindB": 2,
+      "unionGEgold": true
+    },
+    {
+      "window": "L141-143",
+      "gold": 2,
+      "blindA": 3,
+      "blindB": 2,
+      "unionGEgold": true
+    },
+    {
+      "window": "L143-145",
+      "gold": 2,
+      "blindA": 3,
+      "blindB": 3,
+      "unionGEgold": true
+    },
+    {
+      "window": "L186-188",
+      "gold": 3,
+      "blindA": 3,
+      "blindB": 3,
+      "unionGEgold": true
+    },
+    {
+      "window": "L187-190",
+      "gold": 4,
+      "blindA": 4,
+      "blindB": 4,
+      "unionGEgold": true
+    },
+    {
+      "window": "L193-195",
+      "gold": 2,
+      "blindA": 3,
+      "blindB": 2,
+      "unionGEgold": true
+    },
+    {
+      "window": "L218-220",
+      "gold": 2,
+      "blindA": 3,
+      "blindB": 3,
+      "unionGEgold": true
+    },
+    {
+      "window": "L263-265",
+      "gold": 2,
+      "blindA": 3,
+      "blindB": 2,
+      "unionGEgold": true
+    },
+    {
+      "window": "L265-267",
+      "gold": 2,
+      "blindA": 2,
+      "blindB": 3,
+      "unionGEgold": true
+    },
+    {
+      "window": "L274-276",
+      "gold": 2,
+      "blindA": 1,
+      "blindB": 3,
+      "unionGEgold": true
+    },
+    {
+      "window": "L317-319",
+      "gold": 2,
+      "blindA": 2,
+      "blindB": 2,
+      "unionGEgold": true
+    },
+    {
+      "window": "L476-477",
+      "gold": 2,
+      "blindA": 2,
+      "blindB": 2,
+      "unionGEgold": true
+    },
+    {
+      "window": "L477-480",
+      "gold": 3,
+      "blindA": 4,
+      "blindB": 4,
+      "unionGEgold": true
+    },
+    {
+      "window": "L519-521",
+      "gold": 2,
+      "blindA": 2,
+      "blindB": 3,
+      "unionGEgold": true
+    },
+    {
+      "window": "L566-567",
+      "gold": 2,
+      "blindA": 2,
+      "blindB": 2,
+      "unionGEgold": true
+    }
+  ],
+  "overSplitSummary": {
+    "clusters": 23,
+    "goldFinerThanBoth": 2,
+    "blindAUnderGold": 3,
+    "blindBUnderGold": 3,
+    "unionGEgoldClusters": 21
+  }
+}

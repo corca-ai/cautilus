@@ -1,0 +1,860 @@
+[
+  {
+    "line": 18,
+    "summary": "cautilus init installs the CLI plus Cautilus Agent into a host repo",
+    "anchor": "install CLI + Cautilus Agent into a host repo",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 21,
+    "summary": "cautilus update refreshes the CLI and the checked-in Cautilus Agent in a repo",
+    "anchor": "refresh the CLI and the checked-in Cautilus Agent",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 24,
+    "summary": "cautilus version --verbose inspects local version provenance",
+    "anchor": "inspect local version provenance",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 27,
+    "summary": "cautilus version --verbose is the quickest binary-only summary of the product surface",
+    "anchor": "quickest binary-only summary of what",
+    "proofGuess": "human-auditable"
+  },
+  {
+    "line": 32,
+    "summary": "Legacy Homebrew installs are not a supported update channel",
+    "anchor": "Legacy Homebrew installs are not a supported update channel anymore",
+    "proofGuess": "human-auditable"
+  },
+  {
+    "line": 38,
+    "summary": "cautilus init adapter generates a minimal repo-local adapter scaffold",
+    "anchor": "generate a minimal repo-local adapter scaffold",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 41,
+    "summary": "cautilus doctor adapter resolves and validates the adapter",
+    "anchor": "resolve and validate the adapter",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 45,
+    "summary": "Each starter ships a pre-filled adapter, canonical input fixture, and a README",
+    "anchor": "ships a pre-filled `cautilus-adapter.yaml`, a canonical input fixture",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 48,
+    "summary": "A minimal adapter must wire at least one real runnable path to reach doctor ready",
+    "anchor": "must wire at least one real runnable path to reach `doctor ready`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 55,
+    "summary": "--codex-home-mode isolated keeps user config and session state out of the eval",
+    "anchor": "keeps user config and session state out of the eval",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 55,
+    "summary": "--codex-auth-mode inherit copies only Codex auth into the isolated home",
+    "anchor": "copies only Codex auth into the isolated home",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 56,
+    "summary": "--codex-auth-mode env relies on OPENAI_API_KEY for auth",
+    "anchor": "intentionally relies on `OPENAI_API_KEY`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 57,
+    "summary": "Runner reports runner_auth_missing before spending the live run when no auth source is available",
+    "anchor": "reports `runner_auth_missing` before spending the whole live run",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 72,
+    "summary": "evaluate fixture chooses the runner whose surfaces contains the fixture surface key",
+    "anchor": "chooses the runner whose `surfaces` contains the fixture surface key",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 73,
+    "summary": "The {runner_id} placeholder is available to command templates",
+    "anchor": "The `{runner_id}` placeholder is available to command templates",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 74,
+    "summary": "Fixture runtime reports observed proof class fixture-smoke even when adapter declares a stronger runner class",
+    "anchor": "the observed proof class is `fixture-smoke`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 75,
+    "summary": "dev/repo and dev/skill non-fixture runtime may report coding-agent-messaging class only with matching runtime telemetry",
+    "anchor": "may report the adapter-declared `coding-agent-messaging` class",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 81,
+    "summary": "cautilus doctor binary reports binary health with no repo required",
+    "anchor": "binary health, no repo required",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 84,
+    "summary": "cautilus doctor commands performs command discovery safe for wrapper tooling and agent runtimes",
+    "anchor": "command discovery, safe for wrapper tooling and agent runtimes",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 87,
+    "summary": "cautilus doctor status gives no-input agent orientation over binary, adapter, agent-surface, and claim state",
+    "anchor": "no-input agent orientation over binary, adapter, agent-surface, and claim state",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 90,
+    "summary": "cautilus doctor reports repo readiness for evaluation",
+    "anchor": "repo readiness for evaluation",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 93,
+    "summary": "doctor --next-action gives one current onboarding step plus the exact continuation loop",
+    "anchor": "one current onboarding step plus the exact continuation loop",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 96,
+    "summary": "doctor --scope agent-surface checks local agent-skill discoverability in a consumer repo",
+    "anchor": "local agent-skill discoverability in a consumer repo",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 99,
+    "summary": "cautilus discover claims performs declared-claim discovery and proof planning",
+    "anchor": "declared-claim discovery and proof planning",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 107,
+    "summary": "cautilus discover scenarios emits the scenario-normalization catalog for proposal-input examples",
+    "anchor": "scenario-normalization catalog, for agents that need proposal-input examples",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 110,
+    "summary": "cautilus <subcommand> --help exits 0 for the registered native command surface including grouped topics",
+    "anchor": "exits `0` for the registered native command surface",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 112,
+    "summary": "doctor status --json emits cautilus.agent_status.v1, a read-only orientation packet",
+    "anchor": "It emits `cautilus.agent_status.v1`: a read-only orientation packet",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 114,
+    "summary": "When runner proof is not ready, next action can point at runner assessment setup before the first eval loop",
+    "anchor": "that next action can point at runner assessment setup",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 115,
+    "summary": "doctor --scope agent-surface verifies only the Cautilus Agent and local agent-surface install",
+    "anchor": "verify only the Cautilus Agent and local agent-surface install",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 116,
+    "summary": "default doctor (--scope repo) verifies the repo has a real runnable evaluation path",
+    "anchor": "verify the repo has a real runnable evaluation path",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 117,
+    "summary": "Each doctor check separates stable contract from run-specific observation",
+    "anchor": "separates stable contract from run-specific observation",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 118,
+    "summary": "Each doctor check reports id, ok, meaning, and detail fields",
+    "anchor": "`id` names the machine-readable readiness condition, `ok` reports the boolean",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 119,
+    "summary": "External prerequisite checks put resolved binary path in detail when present and searched PATH when missing",
+    "anchor": "put the resolved binary path in `detail` when present",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 120,
+    "summary": "Repo-scope ready doctor payload includes first_bounded_run starter packet loop plus scenario-normalization catalog",
+    "anchor": "the JSON payload includes `first_bounded_run`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 121,
+    "summary": "doctor --adapter-name validates a named adapter under .agents/cautilus-adapters/ at repo scope",
+    "anchor": "run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 123,
+    "summary": "Default discovery starts from adapter-owned claim entries or README/AGENTS/CLAUDE and follows local Markdown links to depth 3",
+    "anchor": "follows repo-local Markdown links to depth 3",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 124,
+    "summary": "--previous with --refresh-plan enables deterministic refresh planning inside discover",
+    "anchor": "for deterministic refresh planning inside the same discover workflow",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 125,
+    "summary": "The refresh-plan packet includes refreshSummary with counts, changed source hotspots, and next actions",
+    "anchor": "includes `refreshSummary`, which gives agent-readable counts",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 127,
+    "summary": "The CLI rejects writing refresh-plan packets over saved claim-map paths due to schema mismatch",
+    "anchor": "The CLI rejects that overwrite",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 128,
+    "summary": "Normal discovery output is cautilus.claim_proof_plan.v1, a proof plan rather than a verdict",
+    "anchor": "it is a proof plan rather than a verdict",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 129,
+    "summary": "discover claims status summarizes an existing claim packet without rescanning with bounded examples",
+    "anchor": "summarize an existing claim packet without rescanning",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 130,
+    "summary": "The status summary includes gitState signaling staleness that requires a refresh-plan before review or planning",
+    "anchor": "The summary includes `gitState`; when it reports `isStale=true`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 131,
+    "summary": "The status summary includes evidenceSatisfaction exposing satisfied claims and evidence refs",
+    "anchor": "includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 132,
+    "summary": "gitState.isStale tracks recorded claim-source changes, not every HEAD change",
+    "anchor": "tracks recorded claim-source changes, not every HEAD change",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 133,
+    "summary": "Commits adding only generated claim artifacts report headDrift with fresh-with-head-drift, allowing review to continue",
+    "anchor": "`gitState` reports `headDrift=true` with `comparisonStatus=fresh-with-head-drift`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 134,
+    "summary": "discover claims extraction-input emits the deterministic agent-extraction input packet with hashes, template, hints, and bounds",
+    "anchor": "emit the deterministic agent-extraction input packet",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 135,
+    "summary": "discover claims apply-extraction validates an agent extraction result, anchors excerpts, and composes the agent proof plan",
+    "anchor": "validate an agent extraction result, anchor every verbatim excerpt",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 136,
+    "summary": "Neither extraction command calls an LLM; invalid claims are rejected into rejectedClaims rather than silently dropped",
+    "anchor": "Neither command calls an LLM; unanchored, unbounded, or out-of-scope claims are rejected",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 137,
+    "summary": "discover claims review-input prepares bounded deterministic review clusters for an agent or subagent",
+    "anchor": "prepare bounded deterministic review clusters for an agent or subagent",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 138,
+    "summary": "review-input emits cautilus.claim_review_input.v1 and does not call an LLM or mark claims satisfied",
+    "anchor": "does not call an LLM or mark claims satisfied",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 139,
+    "summary": "review input may include possibleEvidenceRefs as reviewer hints when adapter evidence_roots have bundles",
+    "anchor": "review input may include `possibleEvidenceRefs`; these are reviewer hints only",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 140,
+    "summary": "Already-satisfied or already-reviewed claims are skipped by default and recorded under skippedClaims",
+    "anchor": "already reviewed are skipped by default and recorded under `skippedClaims`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 141,
+    "summary": "discover claims apply-review merges reviewed labels and evidence refs back into a claim packet",
+    "anchor": "merge reviewed labels and evidence refs back into a claim packet",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 142,
+    "summary": "apply-review rejects evidenceStatus=satisfied unless a direct or verified evidence ref supports the claim",
+    "anchor": "rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 143,
+    "summary": "discover claims validate emits cautilus.claim_validation_report.v1 and fails fast on invalid packet shape or evidence refs",
+    "anchor": "fail fast on invalid packet shape or evidence refs",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 144,
+    "summary": "discover claims validate does not mutate the packet or search for evidence",
+    "anchor": "It does not mutate the packet or search for evidence",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 145,
+    "summary": "evaluate claims plan turns ready cautilus-eval claims into cautilus.claim_eval_plan.v1",
+    "anchor": "turn ready `cautilus-eval` claims into `cautilus.claim_eval_plan.v1`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 146,
+    "summary": "Claims marked evidenceStatus=satisfied are skipped by default in eval planning",
+    "anchor": "are skipped by default because they do not need a new eval fixture plan",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 147,
+    "summary": "The eval plan packet preserves claim ids, surfaces, source refs, intents, and questions but writes no host fixtures or runners",
+    "anchor": "deliberately does not write host-owned fixtures or runners",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 148,
+    "summary": "review-input, apply-review, and evaluate claims plan reject stale claim packets by default unless --allow-stale-claims overrides",
+    "anchor": "reject stale claim packets by default; `--allow-stale-claims` is an explicit operator override",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 160,
+    "summary": "cautilus discover live-targets lists live consumer targets the host repo exposes to Cautilus",
+    "anchor": "list live consumer targets that this host repo exposes to Cautilus",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 163,
+    "summary": "cautilus evaluate live runs one bounded live scenario request against one selected instance",
+    "anchor": "run one bounded live scenario request against one selected instance",
+    "proofGuess": "cautilus-eval"
+  },
+  {
+    "line": 170,
+    "summary": "evaluate live prepare-request-batch turns draft scenarios into a canonical live-run request batch",
+    "anchor": "turn draft scenarios into a canonical live-run request batch",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 175,
+    "summary": "evaluate live scenarios runs many explicit live scenario requests against one selected instance",
+    "anchor": "run many explicit live scenario requests against one selected instance",
+    "proofGuess": "cautilus-eval"
+  },
+  {
+    "line": 186,
+    "summary": "discover live-targets resolves explicit instances or a probe command into one workbench_instance_catalog.v1 packet",
+    "anchor": "into the same `cautilus.workbench_instance_catalog.v1` packet",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 187,
+    "summary": "evaluate live takes one instance id plus one request packet and returns one bounded result packet",
+    "anchor": "returns one bounded result packet",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 188,
+    "summary": "prepare-request-batch turns draft scenarios or catalog-candidate packet into a canonical invocation request batch artifact",
+    "anchor": "into a canonical `cautilus.live_run_invocation_request_batch.v1` artifact",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 189,
+    "summary": "evaluate live scenarios schedules requests in-process, retries only on transient class when asked, and writes one aggregated batch result",
+    "anchor": "schedules the requests in-process, retries only when the batch packet asks",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 190,
+    "summary": "The product owns the packet boundary and status semantics",
+    "anchor": "The product owns the packet boundary and status semantics",
+    "proofGuess": "human-auditable"
+  },
+  {
+    "line": 191,
+    "summary": "The consumer owns actual launch, auth, and runtime wiring through its adapter command",
+    "anchor": "consumer still owns actual launch, auth, and runtime wiring",
+    "proofGuess": "human-auditable"
+  },
+  {
+    "line": 192,
+    "summary": "consumer_single_turn_command_template lets the same command own a product-managed multi-turn chatbot loop",
+    "anchor": "own a product-managed multi-turn chatbot loop above a consumer-owned single-turn seam",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 193,
+    "summary": "The loop allocates one stable per-request workspace dir and exposes it via {workspace_dir} placeholder",
+    "anchor": "allocates one stable per-request workspace directory",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 194,
+    "summary": "When workspace_prepare_command_template is declared, Cautilus runs that prepare command once before the first turn",
+    "anchor": "runs that consumer-owned prepare command once before the first turn",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 195,
+    "summary": "For persona_prompt simulator kind, the adapter provides simulator_persona_command_template calling evaluate live persona",
+    "anchor": "the adapter additionally provides `simulator_persona_command_template`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 197,
+    "summary": "When consumer_evaluator_command_template is declared, Cautilus materializes evaluator input and expects an evaluator result verdict",
+    "anchor": "materializes one `cautilus.live_run_evaluator_input.v1` packet and expects one",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 198,
+    "summary": "The batch flow keeps prep and execution separate: prep owns request synthesis, run-scenarios owns concurrency, retry, and artifact layout",
+    "anchor": "keeps prep and execution separate on purpose",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 204,
+    "summary": "cautilus init run starts a fresh per-run subdirectory under one stable artifact root and pins it",
+    "anchor": "start a fresh per-run subdirectory under one stable artifact root and pin it",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 207,
+    "summary": "evaluate comparison prepare prepares clean baseline and candidate git worktrees for a compare run",
+    "anchor": "prepare clean baseline and candidate git worktrees for a compare run",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 213,
+    "summary": "cautilus doctor artifacts prune prunes older Cautilus artifact bundles",
+    "anchor": "prune older Cautilus artifact bundles",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 218,
+    "summary": "workspace start defaults --root to ./.cautilus/runs/ auto-created on first use and prints CAUTILUS_RUN_DIR export",
+    "anchor": "defaults `--root` to `./.cautilus/runs/` (auto-created on first use)",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 219,
+    "summary": "Passing --json instead of eval returns the machine-readable payload",
+    "anchor": "Pass `--json` instead of `eval` when a script needs the machine-readable payload",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 220,
+    "summary": "Downstream commands reuse the pinned CAUTILUS_RUN_DIR or auto-materialize a fresh runDir and print Active run to stderr",
+    "anchor": "reuse that active `runDir`; if nothing is pinned they auto-materialize",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 226,
+    "summary": "discover scenarios normalize chatbot normalizes chatbot-style conversation summaries",
+    "anchor": "normalize chatbot-style conversation summaries",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 230,
+    "summary": "discover scenarios normalize skill normalizes skill-evaluation summaries",
+    "anchor": "normalize skill-evaluation summaries",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 234,
+    "summary": "discover scenarios normalize workflow normalizes durable-workflow run summaries",
+    "anchor": "normalize durable-workflow run summaries",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 238,
+    "summary": "discover scenarios prepare-input assembles a proposal-input packet from split normalized source files",
+    "anchor": "assemble a proposal-input packet from split normalized source files",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 247,
+    "summary": "discover scenarios propose generates a scenario proposal packet from normalized input",
+    "anchor": "generate a scenario proposal packet from normalized input",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 251,
+    "summary": "discover scenarios review-conversations builds a scenario-centric conversation review packet from normalized chatbot threads",
+    "anchor": "build a scenario-centric conversation review packet from normalized chatbot threads",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 255,
+    "summary": "discover scenarios render-conversation-review-html renders the conversation review packet into HTML",
+    "anchor": "render the conversation review packet into HTML",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 259,
+    "summary": "discover scenarios summarize-telemetry summarizes scenario-level cost, token, and duration telemetry",
+    "anchor": "summarize scenario-level cost, token, and duration telemetry",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 263,
+    "summary": "Every normalize command plus observation and report build accepts --example-input to print a minimal valid packet to stdout",
+    "anchor": "accepts `--example-input`: it prints a minimal valid packet to stdout",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 264,
+    "summary": "discover scenarios --json exposes inspect commands under normalizationFamilies[*].exampleInputCli",
+    "anchor": "exposes those same inspect commands under `normalizationFamilies[*].exampleInputCli`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 265,
+    "summary": "discover scenarios propose preserves the full ranked proposals list in the canonical JSON output",
+    "anchor": "preserves the full ranked `proposals` list in the canonical JSON output",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 266,
+    "summary": "The propose packet also emits an attentionView, a bounded human-facing shortlist derived from the ranked set",
+    "anchor": "emits an `attentionView`, which is a bounded human-facing shortlist",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 268,
+    "summary": "review-conversations links normalized threads to proposals and coverage hints for behavior-eval evidence review",
+    "anchor": "links normalized chatbot threads to scenario proposals and coverage hints",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 276,
+    "summary": "cautilus evaluate fixture runs a checked-in fixture through an adapter-owned runner and evaluates the observed packet",
+    "anchor": "runs a checked-in fixture through an adapter-owned runner",
+    "proofGuess": "cautilus-eval"
+  },
+  {
+    "line": 277,
+    "summary": "evaluate fixture records a top-level proof object in eval-observed.json and eval-summary.json on runner readiness",
+    "anchor": "records a top-level `proof` object in `eval-observed.json` and `eval-summary.json`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 278,
+    "summary": "When runner_readiness.runners is declared, evaluate fixture selects the runner by the fixture surface key",
+    "anchor": "selects the runner by the fixture surface key before rendering the command template",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 279,
+    "summary": "Fixture-runtime runs report fixture-smoke and preserve adapter-declared proof class only as declared metadata",
+    "anchor": "Fixture-runtime runs are reported as `fixture-smoke`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 280,
+    "summary": "cautilus evaluate observation evaluates an already-observed packet without launching the runner again",
+    "anchor": "evaluates an already-observed packet without launching the runner again",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 297,
+    "summary": "cautilus evaluate skill-experiment compares one sandboxed skill-clone experiment after host-owned execution",
+    "anchor": "compare one sandboxed skill-clone experiment after host-owned execution",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 314,
+    "summary": "The fixture dogfood variants prove app/chat and app/prompt fixture translation, adapter runner, and evaluator packet paths",
+    "anchor": "prove the `app / chat` and `app / prompt` fixture translation",
+    "proofGuess": "cautilus-eval"
+  },
+  {
+    "line": 315,
+    "summary": "The Codex dogfood variants run the same checked-in fixtures through the Codex backend",
+    "anchor": "run the same checked-in fixtures through the Codex backend",
+    "proofGuess": "cautilus-eval"
+  },
+  {
+    "line": 316,
+    "summary": "The Claude variants run the same fixtures through the Claude backend, proving multi-provider backend support",
+    "anchor": "proving that the app surface runner can use more than one provider backend",
+    "proofGuess": "cautilus-eval"
+  },
+  {
+    "line": 317,
+    "summary": "Backend variants are not eval live product-runner proof and report productProofReady=false until an app-owned runner assessment exists",
+    "anchor": "report `productProofReady=false` until an app-owned runner assessment exists",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 319,
+    "summary": "evaluate skill-experiment emits skill_clone_experiment_report.v1 with variant_ran, delta, rubric match, coverage delta, isolation notes, and a promotion recommendation",
+    "anchor": "emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 320,
+    "summary": "evaluate skill-experiment does not install, mutate, or execute skills; host runners provide baseline and variant outputs",
+    "anchor": "does not install, mutate, or execute skills",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 390,
+    "summary": "--runtime fixture gives cheap command-routing proof over fixture-backed runner results",
+    "anchor": "cheap command-routing proof over fixture-backed runner results",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 391,
+    "summary": "--runtime fixture is not evidence of good model-backed skill execution, only that command surface, adapter, translation, and evaluation line up",
+    "anchor": "It is not evidence that a model-backed skill execution is good",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 397,
+    "summary": "evaluate report build builds a machine-readable evaluation report packet from explicit mode runs",
+    "anchor": "build a machine-readable evaluation report packet from explicit mode runs",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 408,
+    "summary": "evaluate review prepare-input assembles a durable review packet around a report",
+    "anchor": "assemble a durable review packet around a report",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 413,
+    "summary": "evaluate review build-prompt-input builds the product-owned meta-prompt packet",
+    "anchor": "build the product-owned meta-prompt packet",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 432,
+    "summary": "evaluate review render-prompt renders the review prompt",
+    "anchor": "render the review prompt",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 436,
+    "summary": "evaluate review variants runs every executor variant defined by an adapter",
+    "anchor": "run every executor variant defined by an adapter",
+    "proofGuess": "cautilus-eval"
+  },
+  {
+    "line": 447,
+    "summary": "evaluate review variants can run an ad-hoc bounded review without first building a review packet",
+    "anchor": "run an ad-hoc bounded review without first building a review packet",
+    "proofGuess": "cautilus-eval"
+  },
+  {
+    "line": 455,
+    "summary": "review feedback build normalizes a source-bound review outcome into review-learning evidence",
+    "anchor": "normalize a source-bound review outcome into review-learning evidence",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 467,
+    "summary": "review feedback summarize summarizes selected review-learning packets by method family and disposition",
+    "anchor": "summarize selected review-learning packets by method family and disposition",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 472,
+    "summary": "evaluate report build --example-input produces a minimal valid report packet",
+    "anchor": "run `cautilus evaluate report build --example-input`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 476,
+    "summary": "evaluate review variants writes a product-owned review-summary.json plus per-variant result files",
+    "anchor": "writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 477,
+    "summary": "A variant can finish passed, blocked, or failed; blocked runs carry machine-readable reason codes",
+    "anchor": "blocked runs carry machine-readable reason codes instead of prose-only abort text",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 478,
+    "summary": "Local executor readiness failures such as missing auth are classified as blocked unavailable_executor, not negative verdicts",
+    "anchor": "classified as blocked `unavailable_executor` results rather than negative review verdicts",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 479,
+    "summary": "When one variant passes and another does not, the summary sets partialSuccess and lifts passing outputs into successfulVariantOutputs",
+    "anchor": "the summary sets `partialSuccess: true` and lifts the passing outputs",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 480,
+    "summary": "When --output-under-test is present, the review prompt switches into output_under_test mode treating the artifact as primary evidence",
+    "anchor": "switches into `output_under_test` mode and treats the referenced artifact as primary evidence",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 481,
+    "summary": "When --output-text-key is present, Cautilus extracts that JSON narrative span into the rendered prompt",
+    "anchor": "extracts that JSON narrative span into the rendered prompt",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 485,
+    "summary": "review feedback build writes cautilus.review_feedback.v1",
+    "anchor": "`review feedback build` writes `cautilus.review_feedback.v1`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 486,
+    "summary": "review feedback build preserves source review reference plus normalized method, proposal, disposition, and note fields",
+    "anchor": "preserves a source review reference plus normalized method, proposal, disposition, and note fields",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 488,
+    "summary": "missing_critical disposition may omit proposal evidence, recording that the method missed a needed proposal",
+    "anchor": "`missing_critical` may omit proposal evidence",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 492,
+    "summary": "review feedback summarize writes cautilus.review_feedback_summary.v1",
+    "anchor": "`review feedback summarize` writes `cautilus.review_feedback_summary.v1`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 493,
+    "summary": "review feedback summarize counts review-useful dispositions overall and by method family, keeping source-review refs per input",
+    "anchor": "counts review-useful dispositions overall and by method family",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 494,
+    "summary": "review feedback summarize does not discover active-run defaults or treat dispositions as pass/fail status",
+    "anchor": "does not discover active-run defaults or treat dispositions as evaluator pass/fail",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 502,
+    "summary": "evaluate evidence prepare-input prepares normalized evidence input",
+    "anchor": "prepare normalized evidence input",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 509,
+    "summary": "evaluate evidence bundle builds the evidence bundle",
+    "anchor": "build the evidence bundle",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 519,
+    "summary": "cautilus improve is the improvement front door",
+    "anchor": "`cautilus improve` is the improvement front door",
+    "proofGuess": "human-auditable"
+  },
+  {
+    "line": 521,
+    "summary": "Reports whose productRunnerProofReadiness is blocked cannot become improve inputs until runner-backed product proof is ready",
+    "anchor": "blocked cannot become improve inputs until runner-backed product proof is ready",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 525,
+    "summary": "improve prepare-input prepares the bounded one-shot improver input from report, review summary, and history",
+    "anchor": "The bounded one-shot improver",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 531,
+    "summary": "improve propose produces a bounded one-shot improvement proposal from the improve input",
+    "anchor": "cautilus improve propose",
+    "proofGuess": "cautilus-eval"
+  },
+  {
+    "line": 541,
+    "summary": "doctor artifacts render-self-dogfood-html refreshes the static HTML view of the current self-dogfood bundle",
+    "anchor": "refresh the static HTML view of the current checked-in self-dogfood bundle",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 543,
+    "summary": "doctor artifacts render-self-dogfood-experiments-html refreshes the static HTML comparison view of the latest experiments bundle",
+    "anchor": "refresh the static HTML comparison view of the current latest experiments bundle",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 547,
+    "summary": "The rendered HTML is read-only over summary.json, report.json, and review-summary.json, which remain source of truth",
+    "anchor": "The rendered HTML is read-only over `summary.json`, `report.json`, and `review-summary.json`",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 557,
+    "summary": "claude plugins validate validates the checked-in Claude marketplace and plugin manifest",
+    "anchor": "validate the checked-in Claude marketplace and plugin manifest",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 561,
+    "summary": "check-codex-marketplace.mjs verifies Codex can discover the repo-local marketplace entry",
+    "anchor": "verify Codex can discover the repo-local marketplace entry",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 566,
+    "summary": "Most underlying Node scripts are still runnable directly when a wrapper needs them without the cautilus binary",
+    "anchor": "Most underlying Node scripts are still runnable directly",
+    "proofGuess": "deterministic"
+  },
+  {
+    "line": 567,
+    "summary": "discover live-targets and evaluate live are Go-owned and should be called through the CLI not direct node paths",
+    "anchor": "are Go-owned now and should be called through the CLI",
+    "proofGuess": "deterministic"
+  }
+]

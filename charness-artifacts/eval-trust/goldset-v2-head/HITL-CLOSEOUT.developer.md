@@ -78,8 +78,8 @@ The T3-heavy shape confirms R13's prediction (contract/CLI sources skew spec-det
 
 ### C. Out of scope this session (next milestones)
 - **Mechanical line re-number** of both tracks to HEAD (deferred again here; folds into the next full regeneration).
-- **`cli.md` recall probe** — over-split-surface check with a fresh gold-set-blind sub-agent.
-- **Full both-track regeneration** at a clean future HEAD once the source edits (A) + curator splits (B) land.
+- **`cli.md` recall probe** — **DONE 2026-06-18** (`RECALL-PROBE-cli.md`). Result: gold recall of its own claims 68/68 (no phantoms); over-split hypothesis **refuted** (blind oracle split finer than gold in all 23 clustered regions); only real gaps are **9 deterministic helper sub-commands** (4x T2, 5x T3) in the scenarios/review/evidence/plugin families — no principle/boundary blind spot. The 9 are recorded, not added; they fold into the regeneration with a granularity-policy decision (one-claim-per-sub-command vs family-representative).
+- **Full both-track regeneration** at a clean future HEAD once the source edits (A) + curator splits (B) land, also closing the 9 recall-gap sub-commands per the granularity-policy decision.
 
 ## Reproduce / inspect
 

@@ -1,0 +1,380 @@
+[
+  {
+    "line": 18,
+    "class": "dup",
+    "goldRef": 11,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "Same init-installs-CLI-plus-Agent assertion already held by gold:11 install-lifecycle claim; comment restates prose."
+  },
+  {
+    "line": 24,
+    "class": "dup",
+    "goldRef": 27,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "version --verbose provenance already covered by gold:27 readiness-orientation claim; this is the comment restatement."
+  },
+  {
+    "line": 41,
+    "class": "dup",
+    "goldRef": 38,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "doctor adapter resolve/validate already in gold:38 adapter-bootstrap claim; comment restates."
+  },
+  {
+    "line": 84,
+    "class": "dup",
+    "goldRef": 81,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "doctor commands discovery already in gold:81 doctor-probes claim; comment restatement just missed the window."
+  },
+  {
+    "line": 86,
+    "class": "dup",
+    "goldRef": 111,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "doctor status no-input orientation already gold:111; comment restates the agent_status.v1 claim."
+  },
+  {
+    "line": 87,
+    "class": "dup",
+    "goldRef": 111,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "Same doctor status orientation assertion as gold:111; duplicate comment line."
+  },
+  {
+    "line": 90,
+    "class": "dup",
+    "goldRef": 115,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "default doctor repo-readiness already gold:115 doctor-scope claim; comment restates."
+  },
+  {
+    "line": 93,
+    "class": "dup",
+    "goldRef": 113,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "doctor --next-action onboarding step already gold:113; comment restatement."
+  },
+  {
+    "line": 96,
+    "class": "dup",
+    "goldRef": 115,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "doctor --scope agent-surface already gold:115 doctor-scope claim; comment restates."
+  },
+  {
+    "line": 99,
+    "class": "dup",
+    "goldRef": 122,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "discover claims declared-claim discovery and proof planning already gold:122; comment restatement."
+  },
+  {
+    "line": 107,
+    "class": "dup",
+    "goldRef": 226,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R17",
+    "reason": "scenario-normalization catalog pointer; capability folded under gold:226 normalize family and gold:120 first_bounded_run mention."
+  },
+  {
+    "line": 160,
+    "class": "dup",
+    "goldRef": 186,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "discover live-targets lists live consumer targets already gold:186; comment restatement of catalog claim."
+  },
+  {
+    "line": 163,
+    "class": "dup",
+    "goldRef": 187,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "evaluate live one-request-one-result already gold:187; comment restates. Proof deterministic (packet boundary), not cautilus-eval."
+  },
+  {
+    "line": 170,
+    "class": "dup",
+    "goldRef": 188,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "prepare-request-batch turns drafts into request batch already gold:188; comment restatement."
+  },
+  {
+    "line": 175,
+    "class": "dup",
+    "goldRef": 189,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "evaluate live scenarios batch already gold:189; comment restatement. Proof deterministic packet scheduling, not cautilus-eval."
+  },
+  {
+    "line": 183,
+    "class": "dup",
+    "goldRef": 186,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "eval-live-instance definition already folded into gold:186 live-targets claim ('one live consumer target selectable by stable id')."
+  },
+  {
+    "line": 204,
+    "class": "dup",
+    "goldRef": 218,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "init run fresh per-run subdir + pin already gold:218 workspace-management claim; comment restatement."
+  },
+  {
+    "line": 213,
+    "class": "dup",
+    "goldRef": 207,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "doctor artifacts prune --keep-last already gold:207 workspace-management claim; comment restatement."
+  },
+  {
+    "line": 230,
+    "class": "granularity",
+    "goldRef": 226,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R14",
+    "reason": "normalize skill is a sub-input of gold:226 'normalize accepts chatbot, skill, workflow' family; deliberately folded."
+  },
+  {
+    "line": 234,
+    "class": "granularity",
+    "goldRef": 226,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R14",
+    "reason": "normalize workflow is a sub-input of gold:226 normalize family claim; deliberately folded subcommand."
+  },
+  {
+    "line": 238,
+    "class": "real-gap",
+    "goldRef": null,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R12",
+    "reason": "discover scenarios prepare-input assembling proposal-input from split normalized files is a distinct command unrepresented in gold; deterministic packet assembly."
+  },
+  {
+    "line": 247,
+    "class": "dup",
+    "goldRef": 265,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "scenarios propose generates proposal packet already gold:265 (preserves ranked proposals + attentionView); comment restatement of same command."
+  },
+  {
+    "line": 251,
+    "class": "dup",
+    "goldRef": 267,
+    "proofRoute": "human-auditable",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "review-conversations builds scenario-centric conversation review packet already gold:267; comment restatement."
+  },
+  {
+    "line": 255,
+    "class": "real-gap",
+    "goldRef": null,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R12",
+    "reason": "render-conversation-review-html renders the review packet into HTML; distinct command absent from gold; deterministic static render."
+  },
+  {
+    "line": 259,
+    "class": "real-gap",
+    "goldRef": null,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R12",
+    "reason": "summarize-telemetry summarizes scenario cost/token/duration; distinct command capability with no gold entry; deterministic summary."
+  },
+  {
+    "line": 297,
+    "class": "dup",
+    "goldRef": 319,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "skill-experiment compares one sandboxed skill-clone after host execution already gold:319; comment restatement."
+  },
+  {
+    "line": 400,
+    "class": "not-a-claim",
+    "goldRef": 397,
+    "proofRoute": null,
+    "tier": null,
+    "rule": "R17",
+    "reason": "'what is the first decision packet' is the rhetorical question framing for report build; restates gold:397 value-prop, not a new claim."
+  },
+  {
+    "line": 408,
+    "class": "real-gap",
+    "goldRef": null,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R12",
+    "reason": "evaluate review prepare-input assembles a durable review packet around a report; distinct command absent from gold; deterministic packet assembly."
+  },
+  {
+    "line": 413,
+    "class": "real-gap",
+    "goldRef": null,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R12",
+    "reason": "evaluate review build-prompt-input builds the product-owned meta-prompt packet; distinct command absent from gold; deterministic."
+  },
+  {
+    "line": 432,
+    "class": "real-gap",
+    "goldRef": null,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R12",
+    "reason": "evaluate review render-prompt renders the review prompt; distinct command absent from gold; deterministic render."
+  },
+  {
+    "line": 436,
+    "class": "dup",
+    "goldRef": 476,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "review variants runs every adapter executor variant already gold:476; comment restatement. Proof deterministic packet/status, not cautilus-eval."
+  },
+  {
+    "line": 447,
+    "class": "dup",
+    "goldRef": 476,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "ad-hoc bounded review via --prompt-file/--schema-file already folded into gold:476 review-variants claim."
+  },
+  {
+    "line": 455,
+    "class": "dup",
+    "goldRef": 485,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "review feedback build normalizes source-bound review outcome already gold:485; comment restatement."
+  },
+  {
+    "line": 467,
+    "class": "dup",
+    "goldRef": 492,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "review feedback summarize by method family/disposition already gold:492; comment restatement."
+  },
+  {
+    "line": 488,
+    "class": "dup",
+    "goldRef": 485,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "missing_critical may omit proposal evidence already folded into gold:485 review-feedback build claim."
+  },
+  {
+    "line": 489,
+    "class": "dup",
+    "goldRef": 485,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "disposition vocabulary about review usefulness not pass/fail already in gold:485 review-feedback claim."
+  },
+  {
+    "line": 502,
+    "class": "real-gap",
+    "goldRef": null,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R12",
+    "reason": "evaluate evidence prepare-input prepares normalized evidence input; distinct command, gold only has evidence bundle (509); deterministic."
+  },
+  {
+    "line": 531,
+    "class": "dup",
+    "goldRef": 525,
+    "proofRoute": "deterministic",
+    "tier": "T2",
+    "rule": "R11",
+    "reason": "improve propose already folded into gold:525 one-shot-improver claim (prepare-input + propose). Proof deterministic seam, not cautilus-eval."
+  },
+  {
+    "line": 541,
+    "class": "dup",
+    "goldRef": 547,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "render-self-dogfood-html already in gold:547 self-dogfood-rendering claim; comment restatement."
+  },
+  {
+    "line": 543,
+    "class": "dup",
+    "goldRef": 547,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R11",
+    "reason": "render-self-dogfood-experiments-html already in gold:547 self-dogfood-rendering claim; comment restatement."
+  },
+  {
+    "line": 557,
+    "class": "real-gap",
+    "goldRef": null,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R12",
+    "reason": "claude plugins validate the checked-in marketplace/plugin manifest is a distinct release-surface capability unrepresented in gold; deterministic validation."
+  },
+  {
+    "line": 561,
+    "class": "real-gap",
+    "goldRef": null,
+    "proofRoute": "deterministic",
+    "tier": "T3",
+    "rule": "R12",
+    "reason": "check-codex-marketplace.mjs verifies Codex can discover the repo-local marketplace entry; distinct release-surface check absent from gold; deterministic."
+  }
+]
