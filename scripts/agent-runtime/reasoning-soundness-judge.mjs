@@ -190,6 +190,17 @@ export const FORMAT_FACET_CHECKERS = {
 		const route = (c && c.observedRoute) || {};
 		return route.bootstrapHelper === "charness:find-skills";
 	},
+	// Routing PROCESS facet (the decomposed bug->debug-routing-regression claim): did the observed
+	// route send the work to the pinned `charness:debug` skill before applying a fix? Deterministic;
+	// reads the runner-shaped observedRoute, never the judge's semantic call. A regressed surface that
+	// deprecates the debug step and routes straight to impl/edit fails this facet regardless of how the
+	// stated reasoning reads — the process half of "did the route keep the pinned bug->debug behavior",
+	// with the judge owning the semantic half (was the reasoning sound). This pins a DIFFERENT step than
+	// emitted_find_skills_bootstrap, showing the process-facet pattern generalizes beyond startup routing.
+	routed_to_debug_before_fix(c) {
+		const route = (c && c.observedRoute) || {};
+		return route.workSkill === "charness:debug";
+	},
 };
 
 // Compute the deterministic format facets a calibration opts into. Pure and reproducible:

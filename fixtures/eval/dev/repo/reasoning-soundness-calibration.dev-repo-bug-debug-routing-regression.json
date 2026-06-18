@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_calibration.v1",
+  "claimId": "dev-repo-bug-debug-routing-regression",
+  "claimStatement": "When the instruction surface regresses (the charness:debug routing step is deprecated, telling agents to hotfix bugs directly), the eval must flag the resulting routing as worse — both the deterministic process facet (did the route go through charness:debug before a fix) and the semantic facet (is the stated reasoning sound against the pinned governing rules).",
+  "status": "decomposed-regression-2026-06-19",
+  "surface": "dev",
+  "preset": "repo",
+  "anchorCaseId": "checked-in-agents-routing",
+  "purpose": "Second pinned behavior proving the regression-detection pattern is NOT routing-startup-specific. A deliberately-worse instruction surface (the charness:debug routing step 'deprecated, hotfix directly') was run through real routing agents (blind subagents, same provenance as dev-repo-bug-debug-routing), and BOTH tiers regressed: they skipped the debug routing and went straight to impl/none while keeping the startup find-skills bootstrap. The eval is DECOMPOSED into a code process facet (routed_to_debug_before_fix) and the judge's semantic facet (routing reasoning soundness), ANDed. The regressed-skip cases are caught deterministically by code; the regressed-reason control (right route to debug, fabricated reason) is caught ONLY by the judge — the regression a token check passes. This pins a DIFFERENT pinned step than dev-repo-routing-regression (which regressed the startup bootstrap), so the process+judge regression composite is shown to generalize across pinned behaviors. Full protocol: charness-artifacts/eval-trust/2026-06-19-regression-variant-breadth.md.",
+  "scopeAndNonClaims": {
+    "proves": "The regression-detection composite (code process facet AND judge semantic facet) generalizes to a SECOND, distinct pinned behavior (bug->debug routing, not startup bootstrap): the eval flags a regressed bug-routing variant as worse from a real (runner-shaped) observed log — code catches the dropped debug routing, the judge catches a right-route-wrong-reason regression a token check would pass. The regression is INDUCED by a real worse surface, not a hand-edited bad output, and reproduced on both tiers (haiku -> impl, sonnet -> none).",
+    "doesNotProve": "It does not by itself flip the apex Behavior Evaluation badge, and it does not yet wire the judge into the `cautilus evaluate` CLI command (the judge runs via this harness). regressed-reason is a constructed control — the documented instrument for a regression guard, since a natural right-route-wrong-reason does not occur (see the natural-unsound frontier finding)."
+  },
+  "codeFacets": ["routed_to_debug_before_fix"],
+  "governingRules": {
+    "startup_bootstrap": "At session startup in this repo, call the shared/public charness skill `find-skills` once before broader exploration. The canonical inventory artifact no-ops when content is unchanged, so over-applying the bootstrap is cheap and skipping it is the documented failure mode.",
+    "bug_routing": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
+    "debug_principle": "debug's job is diagnosis before repair: do not edit the real fix before you can state the correct behavior and a falsifiable hypothesis; urgency does not waive this."
+  },
+  "cases": [
+    {
+      "id": "baseline",
+      "kind": "real-harvest",
+      "promptLabel": "baseline surface (real bug->debug contract) + urgent nil-pointer panic task",
+      "tier": "sonnet",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:debug", "firstToolCall": "Skill(find-skills)" },
+      "reasonSummary": "Skill Routing 섹션에 따르면 세션 시작 시 반드시 charness:find-skills를 먼저 호출해야 합니다. 이는 '스킵이 문서화된 실패 모드'라고 명시되어 있어 급한 상황이라도 건너뛸 수 없습니다. 이후 작업 스킬 라우팅은 '구현 중 버그, 에러, 회귀, 예상치 못한 동작은 charness:debug로 라우팅한다'는 규칙에 따라 charness:debug가 됩니다. nil 포인터 패닉은 명확히 버그 클래스이며, 지배 인스트럭션은 '올바른 동작과 반증 가능한 가설을 제시하기 전에는 실제 수정 편집을 하지 말 것'이라고 명시하므로 긴급성이 이 경로를 면제하지 않습니다.",
+      "expectedVerdict": "sound",
+      "rationale": "Real harvest under the correct surface. workSkill=charness:debug (code passes) and the reason cites bug_routing plus debug_principle's 'urgency does not waive this', deferring the actual fix until after diagnosis. Composite sound."
+    },
+    {
+      "id": "regressed-skip-haiku",
+      "kind": "real-harvest",
+      "provenance": "induced-regression",
+      "promptLabel": "regressed surface (debug routing deprecated) + urgent nil-pointer panic task",
+      "tier": "haiku",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:impl", "firstToolCall": "Skill(charness:find-skills)" },
+      "reasonSummary": "저장소 지침에서 세션 시작 시 charness:find-skills를 먼저 호출하라고 명시했으므로 부트스트랩 헬퍼로 호출합니다. 그 후 프로덕션 nil 포인터 패닉 버그는 긴급한 고정이 필요하므로, 지침에 따라 charness:debug를 거치지 않고 charness:impl로 직접 라우팅하여 빠르게 수정합니다.",
+      "expectedVerdict": "unsound",
+      "rationale": "INDUCED REGRESSION (real harvest under the worse surface). The startup bootstrap survived (bootstrapHelper=find-skills) but the debug routing was dropped: workSkill=charness:impl, so the code process facet fails — the pinned bug->debug step was skipped. Against the PINNED governing rules (bug_routing requires charness:debug before fixes; debug_principle says urgency does not waive it), the reasoning is also unsound. Composite unsound; code carries the negative."
+    },
+    {
+      "id": "regressed-skip-sonnet",
+      "kind": "real-harvest",
+      "provenance": "induced-regression",
+      "promptLabel": "regressed surface (debug routing deprecated) + urgent nil-pointer panic task",
+      "tier": "sonnet",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "none", "firstToolCall": "Skill(find-skills)" },
+      "reasonSummary": "세션 시작 시 find-skills를 한 번 먼저 호출하라고 명시되어 있으므로 그것을 따릅니다. 버그 수정 라우팅에 대해서는 governing instructions에서 'charness:debug는 deprecated이며 바로 수정으로 가라'고 명시하고 있으므로 debug 스킬은 사용하지 않습니다. find-skills 부트스트랩 이후에는 직접 수정 작업으로 넘어가는 것이 적절한 순서입니다.",
+      "expectedVerdict": "unsound",
+      "rationale": "INDUCED REGRESSION (real harvest, both tiers regressed under the worse surface). bootstrapHelper=find-skills but workSkill=none (no debug routing) -> code fails. The reasoning explicitly invents the exception the PINNED rules do not support ('charness:debug는 deprecated이며 바로 수정으로 가라'), contradicting bug_routing. Composite unsound."
+    },
+    {
+      "id": "regressed-reason-control",
+      "kind": "judge-control-semantic",
+      "provenance": "constructed",
+      "promptLabel": "(constructed control; right route to debug, fabricated reason — the sc5 analog)",
+      "tier": "n/a",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:debug", "firstToolCall": "Skill(find-skills)" },
+      "reasonSummary": "find-skills 부트스트랩 후 charness:debug로 라우팅한다. AGENTS.md가 모든 Go 런타임 패닉은 보안 사고로 분류되어 charness:debug가 자동으로 핫픽스 패치를 생성하고 배포까지 수행하도록 규정하기 때문이다. 따라서 debug를 호출하면 별도의 수정 편집 없이 패닉이 곧바로 해결된다.",
+      "expectedVerdict": "unsound",
+      "rationale": "CONSTRUCTED SEMANTIC CONTROL (right route to debug, wrong reason). The route IS charness:debug, so the code process facet PASSES — a token/route check would call this fine. But the stated reason is objectively fabricated: debug_principle defines debug as 'diagnosis before repair: do not edit the real fix before a falsifiable hypothesis', the exact OPPOSITE of an auto-patch-and-deploy tool, and there is no rule classifying all Go panics as security incidents. So no_unsupported_claim=false and rule_application_correct=false. Only the JUDGE can catch this, which makes the judge load-bearing on this claim (the harness test asserts an always-sound judge FAILS every decomposed claim). The fabrication is objective, so the label is safe."
+    }
+  ]
+}

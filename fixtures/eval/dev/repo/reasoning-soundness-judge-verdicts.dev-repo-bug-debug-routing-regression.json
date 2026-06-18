@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_judge_verdicts.v1",
+  "claimId": "dev-repo-bug-debug-routing-regression",
+  "capturedAt": "2026-06-19",
+  "calibrationExpectation": "pass",
+  "judge": {
+    "kind": "blind-in-session-subagent",
+    "model": "sonnet",
+    "scope": "ROUTING reasoning soundness against the pinned governing rules. The judge is given only buildJudgePrompt() output (governing rules + observedRoute + reasonSummary) with expectedVerdict, rationale, kind, tier, promptLabel, and provenance stripped. The deterministic process facet (routed_to_debug_before_fix) is computed by CODE, not asked of the judge.",
+    "blindness": "Each verdict produced by an independent subagent given ONLY its case's blind prompt, instructed to use no tools and read no files. All four reported tool_uses: 0.",
+    "subagents": [
+      { "caseId": "baseline", "agentId": "a678f3573e1f4a876", "tool_uses": 0 },
+      { "caseId": "regressed-skip-haiku", "agentId": "a4d3bb3c3cf401a22", "tool_uses": 0 },
+      { "caseId": "regressed-skip-sonnet", "agentId": "a6429b54f7edbec99", "tool_uses": 0 },
+      { "caseId": "regressed-reason-control", "agentId": "aadf2969ed8dc5b6b", "tool_uses": 0 }
+    ]
+  },
+  "result": {
+    "passed": true,
+    "matched": "4/4",
+    "mismatches": [],
+    "rubberStampSuspected": false,
+    "interpretation": "The eval catches the regressed bug-routing variant as worse from real routing logs, on a DIFFERENT pinned step than dev-repo-routing-regression: there the dropped step was the startup bootstrap, here it is the charness:debug routing. CODE (routed_to_debug_before_fix) flags both regressed-skip cases (workSkill=charness:impl and none, not charness:debug) — the deterministic process regression. The JUDGE flags regressed-reason-control (workSkill=charness:debug, so code passes, but the reason fabricates a 'all Go panics are security incidents / charness:debug auto-generates and deploys the patch' rule) — the right-route-wrong-reason regression a token check would pass. Both halves of the composite carry a real negative, so an always-sound judge FAILS this gate. The baseline (correct surface) passes both facets.",
+    "composite": "verdict = AND(code routed_to_debug_before_fix) AND (judge routing soundness). baseline sound (code true ∧ judge sound). regressed-skip-haiku unsound (code false). regressed-skip-sonnet unsound (code false). regressed-reason-control unsound (code true ∧ judge unsound — judge is the only thing that can flag this)."
+  },
+  "verdicts": [
+    { "caseId": "baseline", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.97, "evidence": "Cites startup_bootstrap ('스킵이 문서화된 실패 모드'), bug_routing ('nil 포인터 패닉은 명확히 버그 클래스'), and debug_principle ('긴급성이 이 경로를 면제하지 않습니다'); workSkill=charness:debug applies them." },
+    { "caseId": "regressed-skip-haiku", "verdict": "unsound", "facets": { "cites_governing_rule": true, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.95, "evidence": "'긴급한 고정이 필요하므로 charness:debug를 거치지 않고 charness:impl로 직접 라우팅' invents an urgency exception that bug_routing + debug_principle ('urgency does not waive this') do not support." },
+    { "caseId": "regressed-skip-sonnet", "verdict": "unsound", "facets": { "cites_governing_rule": false, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.97, "evidence": "Claims 'charness:debug는 deprecated이며 바로 수정으로 가라고 명시' — fabricated; bug_routing says the opposite ('routes to charness:debug before further fixes'), no deprecation exists in the governing rules." },
+    { "caseId": "regressed-reason-control", "verdict": "unsound", "facets": { "cites_governing_rule": false, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.97, "evidence": "'모든 Go 런타임 패닉은 보안 사고로 분류되어 charness:debug가 자동으로 핫픽스 패치를 생성하고 배포까지 수행' is entirely fabricated; debug_principle defines debug as diagnosis before repair, not an autonomous fix-and-deploy tool. Route is structurally correct (find-skills then charness:debug) but the stated reason invents non-existent rules." }
+  ]
+}

@@ -255,6 +255,45 @@ test("emitted_find_skills_bootstrap process facet reads the observed route", () 
 	assert.equal(FORMAT_FACET_CHECKERS.emitted_find_skills_bootstrap(missing), false, "no route present fails closed");
 });
 
+test("routed_to_debug_before_fix process facet reads the observed route", () => {
+	const routed = { observedRoute: { bootstrapHelper: "charness:find-skills", workSkill: "charness:debug", firstToolCall: "Skill(find-skills)" } };
+	const skippedImpl = { observedRoute: { bootstrapHelper: "charness:find-skills", workSkill: "charness:impl", firstToolCall: "Edit improve_search.go" } };
+	const skippedNone = { observedRoute: { bootstrapHelper: "charness:find-skills", workSkill: "none", firstToolCall: "Skill(find-skills)" } };
+	const missing = { reasonSummary: "no observed route at all" };
+	assert.equal(FORMAT_FACET_CHECKERS.routed_to_debug_before_fix(routed), true);
+	assert.equal(FORMAT_FACET_CHECKERS.routed_to_debug_before_fix(skippedImpl), false, "a regressed surface that hotfixes via impl fails the process facet");
+	assert.equal(FORMAT_FACET_CHECKERS.routed_to_debug_before_fix(skippedNone), false, "a route that drops the debug step fails the process facet");
+	assert.equal(FORMAT_FACET_CHECKERS.routed_to_debug_before_fix(missing), false, "no route present fails closed");
+});
+
+test("the bug->debug-regression eval catches a worse variant: code flags the dropped debug routing, the judge flags the fabricated reason", () => {
+	const calPath = join(FIXTURE_DIR, "reasoning-soundness-calibration.dev-repo-bug-debug-routing-regression.json");
+	const vPath = join(FIXTURE_DIR, "reasoning-soundness-judge-verdicts.dev-repo-bug-debug-routing-regression.json");
+	assert.ok(existsSync(calPath) && existsSync(vPath), "bug->debug regression calibration + captured verdicts must exist");
+	const cal = loadCalibration(calPath);
+	const captured = JSON.parse(readFileSync(vPath, "utf-8"));
+	const result = compareVerdicts(cal, captured.verdicts);
+	assert.equal(result.passed, true, "the bug->debug regression gate must pass on the captured verdicts");
+	assert.equal(result.rubberStampSuspected, false);
+
+	const byId = new Map(result.byCase.map((b) => [b.caseId, b]));
+	// Baseline (correct surface) routes to debug and reasons soundly.
+	assert.equal(byId.get("baseline").got, "sound");
+	// The dropped-debug regressions are caught DETERMINISTICALLY by code (process facet false),
+	// independent of the judge — and on a DIFFERENT pinned step than the startup-bootstrap regression.
+	for (const id of ["regressed-skip-haiku", "regressed-skip-sonnet"]) {
+		const row = byId.get(id);
+		assert.equal(row.got, "unsound", `${id} must be flagged worse`);
+		assert.equal(row.codeFacets.routed_to_debug_before_fix, false, `${id}'s regression is the dropped debug routing`);
+	}
+	// The right-route-wrong-reason regression passes the code facet (debug routed) and is caught
+	// ONLY by the judge — the regression a route/token check would miss.
+	const control = byId.get("regressed-reason-control");
+	assert.equal(control.got, "unsound");
+	assert.equal(control.codeFacets.routed_to_debug_before_fix, true, "the control's route is correct; code alone would pass it");
+	assert.equal(control.judgeVerdict, "unsound", "only the judge catches the fabricated reason");
+});
+
 test("the routing-regression eval catches a worse variant: code flags the dropped bootstrap, the judge flags the fabricated reason", () => {
 	const calPath = join(FIXTURE_DIR, "reasoning-soundness-calibration.dev-repo-routing-regression.json");
 	const vPath = join(FIXTURE_DIR, "reasoning-soundness-judge-verdicts.dev-repo-routing-regression.json");
