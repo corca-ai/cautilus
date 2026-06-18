@@ -16,7 +16,7 @@ fresh_checkout_probes:
   - "npm run generated:drift:check"
 
 update_instructions:
-  - "Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`. Any legacy Homebrew copy should be removed first with `brew uninstall cautilus`."
+  - "Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`."
   - "Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus init` in the host repo."
 
 real_host_required_surfaces: []

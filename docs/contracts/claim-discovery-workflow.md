@@ -1,10 +1,9 @@
 # Claim Discovery Workflow
 
-## Problem
+## Workflow
 
-`cautilus discover claims` currently emits a deterministic, source-ref-backed proof-plan skeleton.
-That is useful as a fast inventory, but it is not yet the workflow users expect when they ask an agent to "use Cautilus" on a repo.
-A real user wants to know which declared behavior claims exist, which ones are already covered by deterministic tests or existing Cautilus evidence, which ones still need evaluator-backed scenarios, and which surfaces must be aligned before verification is honest.
+`cautilus discover claims` emits a deterministic, source-ref-backed proof-plan skeleton — a fast, high-recall inventory.
+The Cautilus Agent curates that skeleton into the workflow a user expects when they ask an agent to "use Cautilus" on a repo: which declared behavior claims exist, which are already covered by deterministic tests or existing Cautilus evidence, which still need evaluator-backed scenarios, and which surfaces must be aligned before verification is honest.
 
 The product should preserve a simple user-facing entry point while keeping the product boundary clean:
 for claim discovery and claim review, the binary owns deterministic packet production and state transitions, and the Cautilus Agent owns agent orchestration, LLM-backed claim review, subagent fanout, user confirmation, and next-action conversation.
