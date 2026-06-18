@@ -1,0 +1,263 @@
+{
+  "generated": "2026-06-18",
+  "task": "Option C — re-adjudicate 16 residual relabels under sharpened R3 (substance-check vs string-check)",
+  "adjudicators": 3,
+  "entries": [
+    {
+      "id": "R01",
+      "claimId": "claim-readme-md-8",
+      "sourceRef": "README.md:8",
+      "blindRoute": "deterministic",
+      "priorRelabelTo": "cautilus-eval",
+      "adjudicators": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "3/3",
+      "proposedDisposition": "UN-RELABEL->accept"
+    },
+    {
+      "id": "R02",
+      "claimId": "claim-readme-md-16",
+      "sourceRef": "README.md:16",
+      "blindRoute": "human-auditable",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "human-auditable",
+        "deterministic",
+        "human-auditable"
+      ],
+      "majority": "human-auditable",
+      "agreement": "2/3",
+      "proposedDisposition": "UN-RELABEL->accept"
+    },
+    {
+      "id": "R03",
+      "claimId": "claim-readme-md-85",
+      "sourceRef": "README.md:85",
+      "blindRoute": "human-auditable",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "3/3",
+      "proposedDisposition": "HOLD"
+    },
+    {
+      "id": "R04",
+      "claimId": "claim-readme-md-96",
+      "sourceRef": "README.md:96",
+      "blindRoute": "human-auditable",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "majority": "human-auditable",
+      "agreement": "3/3",
+      "proposedDisposition": "UN-RELABEL->accept"
+    },
+    {
+      "id": "R05",
+      "claimId": "claim-readme-md-105",
+      "sourceRef": "README.md:105",
+      "blindRoute": "human-auditable",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "human-auditable",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "2/3",
+      "proposedDisposition": "HOLD"
+    },
+    {
+      "id": "R06",
+      "claimId": "claim-readme-md-128",
+      "sourceRef": "README.md:128",
+      "blindRoute": "human-auditable",
+      "priorRelabelTo": "cautilus-eval",
+      "adjudicators": [
+        "human-auditable",
+        "deterministic",
+        "human-auditable"
+      ],
+      "majority": "human-auditable",
+      "agreement": "2/3",
+      "proposedDisposition": "UN-RELABEL->accept"
+    },
+    {
+      "id": "R07",
+      "claimId": "claim-readme-md-134",
+      "sourceRef": "README.md:134",
+      "blindRoute": "human-auditable",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "human-auditable",
+        "human-auditable",
+        "human-auditable"
+      ],
+      "majority": "human-auditable",
+      "agreement": "3/3",
+      "proposedDisposition": "UN-RELABEL->accept"
+    },
+    {
+      "id": "R08",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-43",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:43",
+      "blindRoute": "cautilus-eval",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "3/3",
+      "proposedDisposition": "HOLD"
+    },
+    {
+      "id": "R09",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-58",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:58",
+      "blindRoute": "cautilus-eval",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "3/3",
+      "proposedDisposition": "HOLD"
+    },
+    {
+      "id": "R10",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+      "blindRoute": "cautilus-eval",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "3/3",
+      "proposedDisposition": "HOLD"
+    },
+    {
+      "id": "R11",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-68-2",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+      "blindRoute": "cautilus-eval",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "3/3",
+      "proposedDisposition": "HOLD"
+    },
+    {
+      "id": "R12",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-69",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+      "blindRoute": "cautilus-eval",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "3/3",
+      "proposedDisposition": "HOLD"
+    },
+    {
+      "id": "R13",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-69-2",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+      "blindRoute": "cautilus-eval",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "3/3",
+      "proposedDisposition": "HOLD"
+    },
+    {
+      "id": "R14",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-78",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:78",
+      "blindRoute": "cautilus-eval",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "cautilus-eval",
+        "cautilus-eval",
+        "cautilus-eval"
+      ],
+      "majority": "cautilus-eval",
+      "agreement": "3/3",
+      "proposedDisposition": "UN-RELABEL->accept"
+    },
+    {
+      "id": "R15",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-261",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:261",
+      "blindRoute": "cautilus-eval",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "human-auditable",
+        "deterministic",
+        "human-auditable"
+      ],
+      "majority": "human-auditable",
+      "agreement": "2/3",
+      "proposedDisposition": "RE-AIM->human-auditable"
+    },
+    {
+      "id": "R16",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-346",
+      "sourceRef": "docs/contracts/claim-extraction-template.md:346",
+      "blindRoute": "human-auditable",
+      "priorRelabelTo": "deterministic",
+      "adjudicators": [
+        "deterministic",
+        "deterministic",
+        "deterministic"
+      ],
+      "majority": "deterministic",
+      "agreement": "3/3",
+      "proposedDisposition": "HOLD"
+    }
+  ],
+  "summary": {
+    "hold": 9,
+    "unrelabelToAccept": 6,
+    "reaim": 1,
+    "newCounts": {
+      "accept": 344,
+      "relabel": 19,
+      "notAClaim": 10,
+      "badlyBounded": 1,
+      "total": 374
+    },
+    "perSourceResidualRelabelAfterC": {
+      "claim-extraction-template.md": "8/80 = 10.0% (7/80 = 8.75% documented-content under-route)",
+      "README.md": "2/52 = 3.8% (was 13.5%)"
+    }
+  }
+}

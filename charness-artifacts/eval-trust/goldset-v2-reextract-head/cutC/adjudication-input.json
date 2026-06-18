@@ -1,0 +1,114 @@
+[
+  {
+    "id": "R01",
+    "claimId": "claim-readme-md-8",
+    "sourceRef": "README.md:8",
+    "summary": "Commands emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator.",
+    "excerpt": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator."
+  },
+  {
+    "id": "R02",
+    "claimId": "claim-readme-md-16",
+    "sourceRef": "README.md:16",
+    "summary": "Cautilus proves its own promises with honest badges: readiness and claim discovery run live in executable specs (proven), behavior evaluation, bounded improvement, reviewable artifacts, and host ownership project saved evidence bundles (declared), and a testable-agent runner is promised.",
+    "excerpt": "Cautilus proves its own promises with honest badges ([the apex spec](./docs/specs/index.spec.md)): readiness and claim discovery run live in executable specs (**proven**), while behavior evaluation, bounded improvement, reviewable artifacts, and host ownership project saved evidence bundles (**declared**) and a testable-agent runner is **promised**."
+  },
+  {
+    "id": "R03",
+    "claimId": "claim-readme-md-85",
+    "sourceRef": "README.md:85",
+    "summary": "The eval summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose.",
+    "excerpt": "The summary is not a global product verdict; it is evidence for the behavior fixture and adapter path that the host repo chose."
+  },
+  {
+    "id": "R04",
+    "claimId": "claim-readme-md-96",
+    "sourceRef": "README.md:96",
+    "summary": "The dogfood run exposed that routing proof is not backend subagent capability proof, and keeping that distinction in the packet prevented over-claiming what had been verified.",
+    "excerpt": "The same dogfood run also exposed a useful limit: routing proof is not backend subagent capability proof."
+  },
+  {
+    "id": "R05",
+    "claimId": "claim-readme-md-105",
+    "sourceRef": "README.md:105",
+    "summary": "Claim discovery is proof planning, not a verdict that the repo is correct.",
+    "excerpt": "It is proof planning, not a verdict that the repo is correct."
+  },
+  {
+    "id": "R06",
+    "claimId": "claim-readme-md-128",
+    "sourceRef": "README.md:128",
+    "summary": "Cautilus does not freeze one prompt string as the contract; it treats the behavior under evaluation as the contract (intent-first).",
+    "excerpt": "Unlike a prompt manager, `Cautilus` does not freeze one prompt string as the contract — it treats the behavior under evaluation as the contract (`intent-first`)."
+  },
+  {
+    "id": "R07",
+    "claimId": "claim-readme-md-134",
+    "sourceRef": "README.md:134",
+    "summary": "Human-auditable claims stay readable, deterministic claims belong in ordinary tests and CI, evaluator-dependent behavior goes through cautilus evaluate, and improvement work waits until the proof surface is explicit.",
+    "excerpt": "Human-auditable claims stay readable."
+  },
+  {
+    "id": "R08",
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-43",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:43",
+    "summary": "Running agent extraction sits behind the workflow contract's Model-Spend Confirmation rule: scan-scope confirmation authorizes extraction-input, but a separate extraction-budget confirmation is required before the agent extracts.",
+    "excerpt": "scan-scope confirmation authorizes `extraction-input`, but a separate extraction-budget confirmation is required before the Cautilus Agent actually extracts"
+  },
+  {
+    "id": "R09",
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-58",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:58",
+    "summary": "v2 adds explicit prompts for two easy-to-miss claim shapes: design-principle claims and negative/scope-boundary/exclusion claims.",
+    "excerpt": "`v2` adds explicit prompts for the two claim shapes a recall probe showed the agent tends to miss because they assert a stance or a boundary rather than a feature: design-principle claims (for example \"X is a first-class …\", \"agents are first-class users\") and negative, scope-boundary, or exclusion claims (for example \"not for …\", \"does not …\", \"opt-in until …\")"
+  },
+  {
+    "id": "R10",
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+    "summary": "v2 routes recommendedProof to deterministic whenever a static repo-owned check could prove a capability claim, instead of defaulting it to human-auditable.",
+    "excerpt": "route to `deterministic` whenever a static repo-owned check could prove a capability claim (do not default it to `human-auditable`)"
+  },
+  {
+    "id": "R11",
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-68-2",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+    "summary": "v2 routes an agent-behavior claim to cautilus-eval even when a deterministic schema check happens to pass, because a passing schema check does not prove the behavior.",
+    "excerpt": "route an agent-behavior claim to `cautilus-eval` even when a deterministic schema check happens to pass (a passing schema check does not prove the behavior)"
+  },
+  {
+    "id": "R12",
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-69",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+    "summary": "An ownership/boundary/isolation assignment is a structural fact a static check settles, so it routes deterministic even though it reads like design philosophy.",
+    "excerpt": "an *ownership / boundary / isolation* assignment (\"the binary owns X\", \"the consumer owns Y\", \"the run is isolated from user state\") is a structural fact a static check settles, so it routes `deterministic` even though it reads like design philosophy"
+  },
+  {
+    "id": "R13",
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-69-2",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+    "summary": "The words reviewable/reproducible/auditable name a property the structure confers and are never on their own a reason to drop to human-auditable, which is reserved for proof that genuinely needs a human to inspect an outcome.",
+    "excerpt": "the words `reviewable` / `reproducible` / `auditable` name a property the structure confers, never on their own a reason to drop to `human-auditable`, which is reserved for proof that genuinely needs a human to inspect an outcome"
+  },
+  {
+    "id": "R14",
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-78",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:78",
+    "summary": "When the agent is unsure whether text is a claim, it emits the claim with verificationReadiness blocked and an entry in unresolvedQuestions instead of silently dropping it.",
+    "excerpt": "it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it"
+  },
+  {
+    "id": "R15",
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-261",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:261",
+    "summary": "Verifying the Cautilus Agent flow itself is later Cautilus-eval-fixture work over the skill surface and is not a prerequisite for the comparison.",
+    "excerpt": "Verifying the Cautilus Agent flow itself is later Cautilus-eval-fixture work over the skill surface, following the existing self-dogfood fixture pattern, and is not a prerequisite for the comparison."
+  },
+  {
+    "id": "R16",
+    "claimId": "claim-docs-contracts-claim-extraction-template-md-346",
+    "sourceRef": "docs/contracts/claim-extraction-template.md:346",
+    "summary": "This document is the canonical contract for the extraction seam during implementation; on conflict this document wins for extraction-seam detail and the workflow contract wins for workflow-level boundaries.",
+    "excerpt": "This document is the canonical contract for the extraction seam during implementation."
+  }
+]
