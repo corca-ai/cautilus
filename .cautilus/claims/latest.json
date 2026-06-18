@@ -12620,7 +12620,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "dc1837c6057ff81dce53b206097c232c2e5f6103",
+  "gitCommit": "1af07fc9abad618a2dcc48042868b4395ab94bfc",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14616,7 +14616,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:cf7be05763431b3b65e8061eeea2e5f0751a65ed2f0beb385f8886451b3bfac4",
+      "contentHash": "sha256:ca747c1bfb5b184a3a3dbed313820cdef51ae40aae879fb957622e7c8153f3dd",
       "depth": 3,
       "discoveredFrom": "docs/contracts/eval-judge-collaboration.md",
       "kind": "contract",
