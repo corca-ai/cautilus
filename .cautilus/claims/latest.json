@@ -1,9 +1,9 @@
 {
-  "candidateCount": 376,
+  "candidateCount": 377,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 375,
+    "matchedClaimCount": 376,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -5900,6 +5900,35 @@
       "summary": "The frontier finding redirected the question from \"wait for natural unsound\" to the product's actual job: when a change makes the pinned behavior worse, the eval must catch it.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:6e8f65f6f016845fdac81edb1570666542f99df2b192fb2a93f2e4c9311219f3",
+      "claimId": "claim-docs-contracts-eval-judge-collaboration-md-196",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The generic Go engine stays repo-agnostic: it only reads a structured verdict and composites it deterministically (`internal/runtime/instruction_surface.go`), never importing the judge harness or re-deriving a repo-specific facet.",
+          "line": 196,
+          "path": "docs/contracts/eval-judge-collaboration.md"
+        }
+      ],
+      "summary": "The generic Go engine stays repo-agnostic: it only reads a structured verdict and composites it deterministically (`internal/runtime/instruction_surface.go`), never importing the judge harness or re-deriving a repo-specific facet.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
       "claimAudience": "developer",
@@ -12176,11 +12205,11 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 271,
+      "developer": 272,
       "user": 105
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 59,
+      "Adapter and portability": 60,
       "Agent and skill workflow": 83,
       "Claim discovery and review": 51,
       "Documentation and contracts": 84,
@@ -12194,25 +12223,25 @@
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 309
+      "unknown": 310
     },
     "byLifecycle": {
-      "new": 376
+      "new": 377
     },
     "byRecommendedProof": {
       "cautilus-eval": 139,
-      "deterministic": 131,
+      "deterministic": 132,
       "human-auditable": 106
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 265
+      "heuristic": 266
     },
     "byVerificationReadiness": {
       "blocked": 14,
       "needs-alignment": 51,
       "needs-scenario": 12,
-      "ready-for-proof": 299
+      "ready-for-proof": 300
     }
   },
   "discoveryEngine": {
@@ -12408,7 +12437,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "4a32d1837f94053e5a49656db43c17000df894b4",
+  "gitCommit": "f7ba9f8a4245ffc7205ff0c45d47450d07de4984",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14044,7 +14073,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:a37033f44a3bd8722f6275cdc39a7bb5a7ba6559a4be606c4d564ffe4adc9f00",
+      "contentHash": "sha256:44f1ce1c94514f3250ee9c8267a89d380f19ad5c0cd435ffc17c8aa78b6191cc",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
