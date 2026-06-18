@@ -2,41 +2,45 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 회귀 claim 넓히고 evaluate CLI 배선으로 갑시다.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 풀 러너 provenance로 회귀 페어 재현해서 배지 결정 입력을 완성합시다.`
 
 doc 멘션만으로 픽업하면 이 트리거의 workflow를 실행하세요(파일 재독만 하지 말 것).
-**eval-trust 토대(①·②·③) 종결. judge frontier 정의적 결론 + 회귀 탐지 입증(2026-06-19).** 이제 본 게임 = **회귀 claim 넓히기 → judge를 `cautilus evaluate` CLI에 배선**(배지 declared→reasoning-backed의 길).
-먼저 `docs/contracts/eval-judge-collaboration.md`(특히 "Regression detection proven 2026-06-19")와 `charness-artifacts/eval-trust/2026-06-19-regression-variant-eval-routing.md`를 읽고 아래 "Next Session" 1번에서 시작.
-(④ specdown 재설계는 맨 마지막 — eval-trust와 직교, 인프라성.)
+**stage 1(회귀 claim 폭 확대)·stage 2(a) CLI 배선 종결(2026-06-19).** judge tier가 이제 `cautilus evaluate` 안에서 회귀를 잡는다(리플레이 기반).
+남은 본 게임 = **풀 codex/claude 러너 provenance**(서브에이전트 harvest가 유일한 갭) → 배지 `declared` 탈출 결정.
+먼저 `docs/contracts/eval-judge-collaboration.md`의 "Judge tier wired into `cautilus evaluate` (2026-06-19)" 섹션과 `charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md`를 읽고 아래 "Next Session" 1번에서 시작.
 
 ## Current State
 
-- **리드 프라이오리티 judge — 메커니즘·회귀 탐지 입증 완료, 다음은 폭 확대 + CLI 배선:**
-  - 빌드 완료: 블라인드 capture→replay judge harness `scripts/agent-runtime/reasoning-soundness-judge.mjs`(codeFacets ∧ judgeFacets composite; always-sound judge는 게이트가 reject). calibration 3종(routing 6/6, bug→debug 5/5, conversation-goal harmony 5/5 + sc5 semantic control). 레퍼런스 템플릿 = `facet-decomposition.md`.
-  - **per-facet routing 배선 — 첫 착륙 완료(2026-06-19)**: wp-45 규율을 휴리스틱 floor에 착륙 — cautilus adapter `non_claim_section_headings`에 `Premortem` 추가(383→375, process-note 8개 제거, 답안지 충돌 0, engine 무변경). per-claim recommendedProof를 hint family로 만드는 길은 Fixed Decision(routing=agent-primary, extraction template)으로 닫힘; 증거 `charness-artifacts/eval-trust/2026-06-19-wp45-premortem-nonclaim-heading-wiring.md`. 배선 방향 = adapter-owned `claim_discovery.classification_hints`(Agent 제안 → 유지보수자 비준; family `non_claim_section_headings`·`claim_lexicon_terms` 라이브). facet gold set = HEAD 답안지 기준 재생성 + **유지보수자 비준 완료**(2026-06-19): `charness-artifacts/eval-trust/2026-06-19-recommendedproof-facet-gold-set-v2head.{md,json}`(36엔트리; 32 as-proposed / readme-139 corrected→det / wp-61 retire-candidate; 2026-06-10판은 108커밋 stale라 superseded-as-labels). 이게 per-facet 배선의 설계 입력+테스트 픽스처. 비준 신호: dominant-correct 29/35(구판 18/35), R6/R12 적용으로 det 12/12 exact, 답안지 relabel 3건 facet view 일치, 답안지 accept인데 facet 재라우팅 비준된 divergence 2건(cdw-23→human, wp-45→det = non_claim_section_headings 규율과 직결).
-  - **judge 모집단 일반화 — 정의적 결론(2026-06-19)**: judge reject-capability를 **자연 unsound 모집단**으로 입증하려 시도 → 실패가 아니라 정의적 발견. 사전등록 후 31개 blind harvest(factual-soundness 15 + source-grounded faithfulness 16, 2 tier, easy+hard 함정), **자연 unsound 0건**(haiku조차 false-premise 정정·source grounding·gap abstention·misquote 거부·overclaim 거부 전부 통과). 프로그램 전체 ~44 응답 중 자연 unsound는 conversation-goal sc2(길이=code 영역) 단 1건. **현 모델은 well-posed semantic task에서 자연 semantic unsound를 안 만든다** → 자연 reject-population harvest는 비실용적(judge 약점 아님, generator 속성). manufacture 금지 규율 유지. 재해석: natural harvest=현 행동이 sound라는 양성 증명, judge reject=regression guard로 constructed control(sc5·rubber-stamp)이 입증·load-bearing 테스트가 고정. 증거 `charness-artifacts/eval-trust/2026-06-19-judge-natural-unsound-population-frontier.md`.
-  - **회귀 탐지 입증 — on-target 착륙(2026-06-19)**: natural-unsound 우회를 떠나 제품의 진짜 일(회귀 탐지)을 입증. 망가뜨린 instruction surface(find-skills 부트스트랩 "deprecated, skip")를 진짜 라우팅 에이전트(blind 서브에이전트)에 줘서 **양 tier 모두 부트스트랩을 건너뛰는 회귀를 유도**. 새 decomposed claim `dev-repo-routing-regression`이 회귀 로그를 worse로 잡음 — **process facet(code: `emitted_find_skills_bootstrap`)이 건너뜀을 결정론적으로, judge가 right-route-wrong-reason 구성 control(부트스트랩은 emit되어 토큰체크는 통과, 이유는 fabricated)을 잡음**. 양쪽이 각자 negative를 carry → always-sound judge가 gate fail(load-bearing). 16/16 테스트 green. 단 harness-level(judge가 `cautilus evaluate` CLI에 미배선, provenance는 서브에이전트 harvest). 증거 `charness-artifacts/eval-trust/2026-06-19-regression-variant-eval-routing.md`.
-  - **apex 배지**: Behavior Evaluation = **declared**(저장 번들 projection, 라이브 eval 아님; `docs/specs/index.spec.md`). reasoning-backed로 올리는 건 유지보수자 결정 + 별도 슬라이스. **열린 결정**: 회귀 탐지가 harness에서 입증된 지금, (a) 이 증거(process+judge가 유도된 회귀를 잡음 + natural-sound 행동 harvest)를 충분조건으로 받아 배지를 올릴지 vs (b) bar 유지. 올리려면 다음 단계 = judge를 `cautilus evaluate` CLI에 배선 + 풀 러너 provenance.
-- **eval-trust 토대 (①·②·③ 종결):** `goldset-v2-reextract-head` = HEAD 비준 답안지(375; accept 346 / relabel 19 / not-a-claim 10 / bb 0), `goldset-v2-head`(306) supersede. ③ Epic DAG: 365 gold claim → 11-epic R14 tree + R15 DAG(`EPIC-DAG.md`; epic 구조는 DRAFT 미비준). 측정 확증 dev proof-route relabel **10.8%→6.4%**. 이 답안지가 judge frontier의 claim 모집단 + proof-route 규율 샘플.
+- **stage 1 — 회귀 탐지 폭 확대 종결:** 회귀 탐지가 **3개의 서로 다른 pinned step**에서 작동(각각 고유 code process facet + judge-load-bearing right-route-wrong-reason control, 양 tier 실 harvest):
+  - `dev-repo-routing-regression`(startup 부트스트랩, `emitted_find_skills_bootstrap`) — 기존 템플릿
+  - `dev-repo-bug-debug-routing-regression`(bug→`charness:debug`, `routed_to_debug_before_fix`) — 신규
+  - `dev-repo-gather-routing-regression`(외부소스→`charness:gather`, `routed_through_gather_before_use`) — 신규
+  - breadth-invariant 테스트가 3 distinct facet을 고정. harness 21/21 green. 증거 `charness-artifacts/eval-trust/2026-06-19-regression-variant-breadth.md`.
+- **stage 2(a) — judge tier가 `cautilus evaluate`에 배선(리플레이 기반):** 제네릭 Go 엔진(`internal/runtime/instruction_surface.go`)이 observed 패킷의 `reasoningSoundness` composite verdict을 읽어 케이스 status에 AND 합성(unsound→fail→recommendation reject). repo-specific judge 로직은 adapter-owned 러너(`scripts/agent-runtime/run-reasoning-judge-eval.mjs`)가 SOT harness `compareVerdicts`로 계산해 패킷에 emit(엔진은 harness 미import). dogfood: `cautilus evaluate fixture --adapter-name self-dogfood-routing-regression-eval` → reject, baseline pass, regressed-skip fail, **control은 라우팅 매처 pass인데 judge로만 fail**(토큰체크가 놓치는 회귀를 CLI 안에서 잡음). e2e 테스트 `scripts/on-demand/judge-tier-eval-dogfood.test.mjs`. bounded fresh-eye READY(블로커 없음). 증거 `charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md`.
+- **남은 2개의 정직한 갭(배지 미플립):** (1) judge LLM 추론은 prove-then-project(blind verdict 1회 캡처→결정론 리플레이; CLI는 합성·오케스트레이션만, 라이브 호출 아님). (2) provenance가 여전히 blind-subagent-harvest — 풀 codex/claude 러너 캡처가 아님.
+- **apex 배지:** Behavior Evaluation = **declared** 유지. 올리는 건 유지보수자 결정 + 별도 슬라이스.
 
-## Next Session: 큰 작업 (리드 프라이오리티 먼저 → specdown 맨 끝)
+## Next Session: 풀 러너 provenance → 배지 결정 (리드)
 
-1. **회귀 claim 넓히기 → CLI 배선 (리드, 순서대로)**: 회귀 탐지가 harness에서 입증됨(위 Current State; `dev-repo-routing-regression`이 템플릿). **(1단계) 폭 확대** — routing 외 다른 pinned behavior(bug→debug, gather, conversation-goal)에도 worse-variant 회귀 페어를 추가해 process facet + judge 회귀 탐지가 여러 claim에서 작동함을 보인다(각 페어: 정상 baseline + 유도된 regressed-skip + judge-carried right-route-wrong-reason control). **(2단계) (a) CLI 배선** — judge를 `cautilus evaluate`에 배선 + 풀 러너(codex/claude) provenance로 회귀 페어 재현 → 배지 declared→reasoning-backed의 정직한 길(현재 harness-level·서브에이전트 harvest가 유일한 갭). 대안 (b): 유지보수자가 현 harness 증거를 충분조건으로 받아 spec projection만 배선.
-2. **(선택) per-facet 잔여 + 큰 후속**: per-facet routing 첫 착륙(wp-45→Premortem)은 끝났고 더는 리드 프라이오리티 아님 — routing은 별도 스키마가 아니라 (a) agent-primary extraction template + (b) `non_claim_section_headings` discipline으로 실현됨. 잔여 후보 = Deprecated Surface Names / Probe Questions / Deliberately Not Doing 섹션의 혼재 claim(헤딩 일괄 제외 불가 — 실재 claim + kept capability-boundary, per-claim source 정리로만). 그 밖에: ③ epic-structure 비준 패스; consumer-shaped corpus로 facet 측정 복제(external-validity 백로그); 개선 레이어 다음 seam(`docs/master-plan.md` Immediate Next Moves).
-3. **④ specdown 재설계 (맨 마지막)**: 재작성 후 `lint:specs` 주석 복원(`run-verify.mjs`+`run-verify.test.mjs` 두 줄). eval-trust와 직교 — 언제든 단독 세션 가능.
+1. **(리드) 풀 codex/claude 러너 provenance**: 서브에이전트 harvest 대신 실제 제품 러너로 baseline vs regressed instruction surface를 돌려 진짜 observed 라우팅 로그를 만들고(기존 `scripts/run-self-dogfood-eval.mjs` → `scripts/agent-runtime/run-local-eval-test.mjs` 경로 활용), 그 로그를 `cautilus evaluate`의 judge tier로 채점 → 회귀 페어를 풀 러너 fidelity로 재현. 이게 마지막 fidelity 갭. **대안/병행**: 유지보수자가 현 증거(breadth + CLI-wired replay)를 충분조건으로 받아 배지를 `declared` 위로 올리고 spec projection만 배선(`docs/specs/index.spec.md`).
+2. **(선택) 잔여 + 큰 후속**: per-facet routing 잔여(Deprecated/Probe/Not-Doing 섹션 혼재 claim, per-claim source 정리로만); ③ epic-structure 비준; consumer-shaped corpus로 facet 측정 복제(external-validity 백로그).
+3. **④ specdown 재설계 (맨 마지막)**: 재작성 후 `lint:specs` 주석 복원(`run-verify.mjs`+`run-verify.test.mjs` 두 줄). eval-trust와 직교 — 언제든 단독 세션.
 
 ## Discuss (열린 결정)
 
+- **배지 기준(가장 큰 결정)**: 현 증거(3 pinned behavior breadth + judge tier가 CLI 안에서 control을 잡음, 리플레이 fidelity)가 `declared` 탈출에 충분한가, 아니면 풀 러너 provenance까지 요구하나?
+- CLI 안 라이브 judge vs prove-then-project 리플레이 — 배지가 라이브 호출을 요구하나, 리플레이 fidelity로 충분한가?
 - judge 모델 고정값(sonnet) vs 제품 러너 정합/비용 (이월).
 - ③ epic 구조 비준 시점 — judge가 epic을 신뢰하려면 필요, 급하지 않음.
-- documented-content 일반화 재시도? (이월, 선택): cet under-route(8.75%)는 실재하나 lean 문장이 README narrative precision을 깎음 — 더 좁은 규칙으로 recall만 취할지 보류 유지할지.
 
 ## 제약
 
-push는 사용자 몫(의도적 보류). claim-source 편집 후 `npm run claims:refresh:all`(소스 커밋 → refresh → 패킷 커밋 순서; gitState.isStale은 소스 드리프트 기준). 운영 추출 템플릿은 doc이 아니라 `internal/runtime/claim_extraction.go`에 있음(편집 시 패리티 가드+doc 동기). ground truth 전 큐레이션 빌드 금지. raw를 큐레이션 후 채점 금지(recall은 별도 probe). docs/internal/* 제외 금지. critique/fresh-eye 리뷰는 서브에이전트 위임. bug/error/regression은 `charness:debug` 라우팅.
+push는 사용자 몫(의도적 보류). claim-source 편집 후 `npm run claims:refresh:all`(소스 커밋 → refresh → 패킷 커밋 순서; gitState.isStale은 소스 드리프트 기준 — 이번 세션에서 calibration fixture 편집이 트리거함). 운영 추출 템플릿은 `internal/runtime/claim_extraction.go`. ground truth 전 큐레이션 빌드 금지. raw를 큐레이션 후 채점 금지. 제네릭 엔진은 repo-specific judge 로직/facet을 import·재구현 금지(adapter-owned 러너가 소유). critique/fresh-eye 리뷰는 서브에이전트 위임. bug/error/regression은 `charness:debug` 라우팅. 새 런타임 표면엔 executable test.
 
 ## References
 
-- **리드 프라이오리티**: 계약 `docs/contracts/eval-judge-collaboration.md` + `facet-decomposition.md`; 근거 findings `charness-artifacts/findings/2026-06-09-{determinism-intelligence-eval-skew,code-intelligence-harmony-boundary}.md`; harness `scripts/agent-runtime/reasoning-soundness-judge.mjs`(+calibration/verdicts `fixtures/eval/dev/repo/reasoning-soundness-*.json`); facet gold set(재생성·비준, HEAD 답안지 기준) `charness-artifacts/eval-trust/2026-06-19-recommendedproof-facet-gold-set-v2head.{md,json}`(선택규칙=goldset-v2-reextract-head gold 365 중 blind route별 12; 구판 `2026-06-10-...proposal.{md,json}`는 superseded-as-labels); 배선 목표 `charness-artifacts/goals/2026-06-10-adapter-owned-discovery-classification.md`.
-- **eval-trust 답안지**: `charness-artifacts/eval-trust/goldset-v2-reextract-head/`(`ANCHOR.md` + `HITL-CLOSEOUT.md` + `MEASUREMENT.proof-route.md` + `EPIC-DAG.md` + `epic-{tree,dag}-proposal*.json` + `family-fold-coverage.md`). 종결 체인/RCA: `residual-misroute-cut2.md`·`residual-key-readjudication-cutC.md`·`../../debug/2026-06-18-goldset-closeout-helper-fold-overclaim.md`. before: `goldset-v2-head/`(306, `558cda7`) + `RECALL-PROBE-cli.md`.
-- **도구/템플릿**: `scripts/build-epic-dag-from-facets.mjs`(facet-native DAG)·`build-gold-set-proposal.mjs`·`segment-goldset-by-audience.mjs`. `docs/contracts/claim-extraction-template.md`(doc) ↔ `internal/runtime/claim_extraction.go`(운영, 가드 `claim_extraction_test.go`). `docs/master-plan.md` — 로드맵(lead-priority preamble은 프로토타입 완료 미반영; 계약 문서가 최신).
+- **계약**: `docs/contracts/eval-judge-collaboration.md`(특히 "Judge tier wired into `cautilus evaluate` (2026-06-19)") + `facet-decomposition.md`.
+- **증거**: `charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md`(CLI 배선) · `2026-06-19-regression-variant-breadth.md`(3 pinned behavior) · `2026-06-19-regression-variant-eval-routing.md`(템플릿).
+- **엔진/러너**: `internal/runtime/instruction_surface.go`(+`instruction_surface_test.go`) · `scripts/agent-runtime/run-reasoning-judge-eval.mjs`(+test, +`scripts/on-demand/judge-tier-eval-dogfood.test.mjs`) · 어댑터 `.agents/cautilus-adapters/self-dogfood-routing-regression-eval.yaml` · cases `fixtures/eval/dev/repo/routing-regression-eval-cases.json`.
+- **harness**: `scripts/agent-runtime/reasoning-soundness-judge.mjs`(+test); calibration/verdicts `fixtures/eval/dev/repo/reasoning-soundness-{calibration,judge-verdicts}.dev-repo-{routing,bug-debug,gather}-routing-regression.json`.
+- **eval-trust 답안지**: `charness-artifacts/eval-trust/goldset-v2-reextract-head/`(HEAD 비준 365). 로드맵 `docs/master-plan.md`.
