@@ -137,3 +137,21 @@ Apply the same facet-decomposition discipline as the template for routing the `d
 Today `discover` tags each whole claim with a single `recommendedProof` (`deterministic | cautilus-eval | human-auditable`), but the harmony finding says that line falls INSIDE a claim, facet by facet.
 The generalization is to express `recommendedProof` per facet, not per claim: decompose each discovered claim into facets, route mechanical facets to code checkers, genuinely semantic facets to a bounded judge, and the rest to human review, then AND them.
 The decomposition contract for that template lives in [docs/contracts/facet-decomposition.md](./facet-decomposition.md).
+
+## Frontier result (2026-06-19): natural semantic unsound does not occur for capable models on these single-turn surfaces
+
+A slice attempted to close the honest gap stated above — to prove the judge's reject-capability on a *population of natural unsound cases* rather than a single constructed control.
+It pre-registered objective ground truths, then harvested 31 blind chat responses across two new semantic claim families and two model tiers: factual-soundness (false-premise traps) and source-grounded faithfulness — the first attempt at the judge-reads-the-source design, with gap, misquote, overclaim, boundary-fabrication, and false-attribute traps over a fictional passage.
+Every harvested response was sound: 0 natural unsound, even on the weak tier.
+With the prototype's record this is roughly 44 real responses and exactly one natural unsound ever (conversation-goal sc2), which was an instruction-following miss that code owns, never a semantic content error.
+
+The finding: current capable models do not emit natural semantic unsound on well-posed single-turn tasks — they correct false premises, ground to a supplied source, abstain honestly on gaps, resist sycophantic misquotes, and refuse to overclaim or fabricate.
+A natural reject-population is therefore impractical to harvest on these surfaces and tiers; this is a property of the generators, not a weakness of the judge, and the no-manufacturing discipline was held.
+
+This reframes the proof rather than defeating it.
+The natural harvest is a positive proof that the current behavior is sound, and the judge's reject-capability — its role as a REGRESSION GUARD that fires if a future prompt/skill/model change makes the agent unsound — is exactly what the constructed controls (sc5, the rubber-stamp controls) demonstrate and the load-bearing test pins.
+A constructed control is the correct instrument for a regression guard: you cannot wait for a natural regression to prove you would catch one.
+
+Open decision (maintainer): whether constructed-control reject-capability (load-bearing and already pinned) plus a natural-sound behavior harvest is sufficient to move the apex `Behavior Evaluation` badge past `declared`, or whether the product holds the natural-population bar and records it as a known, possibly-permanent limitation.
+The badge is unchanged pending that decision.
+Full evidence: [charness-artifacts/eval-trust/2026-06-19-judge-natural-unsound-population-frontier.md](../../charness-artifacts/eval-trust/2026-06-19-judge-natural-unsound-population-frontier.md).
