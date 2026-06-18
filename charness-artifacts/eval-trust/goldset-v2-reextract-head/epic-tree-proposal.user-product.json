@@ -1,0 +1,549 @@
+{
+  "schemaVersion": "cautilus.epic_tree_proposal.v1-draft",
+  "status": "DRAFT",
+  "track": "user-product",
+  "derivedFrom": "charness-artifacts/eval-trust/goldset-v2-reextract-head/gold-set-proposal.user-product.json",
+  "generator": "scripts/build-epic-dag-from-facets.mjs",
+  "model": "R14 claim tree: APEX root + 6 branches, single-parent (primaryEpic = the claim's home epic facet), shallow epic->claim, no orphans. alsoSupports records the non-home epics the claim edges to in the R15 DAG.",
+  "branches": [
+    "APEX",
+    "Agent",
+    "Setup",
+    "Discover",
+    "Eval",
+    "Improve",
+    "Meta/Cross"
+  ],
+  "totalClaims": 69,
+  "orphanCount": 0,
+  "epics": [
+    {
+      "epicId": "APEX",
+      "branch": "APEX",
+      "title": "Cautilus keeps agent/workflow behavior honest across prompt/skill/wrapper change",
+      "claimCount": 3,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-4",
+          "sourceRef": "README.md:4",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "I1-bounded-improvement"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-89",
+          "sourceRef": "README.md:89",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-128",
+          "sourceRef": "README.md:128",
+          "group": "Evaluation surfaces"
+        }
+      ]
+    },
+    {
+      "epicId": "A1-orchestration",
+      "branch": "Agent",
+      "title": "The Cautilus Agent owns workflow routing, sequencing, and guardrails",
+      "claimCount": 2,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-146",
+          "sourceRef": "README.md:146",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-23",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:23",
+          "group": "Agent and skill workflow"
+        }
+      ]
+    },
+    {
+      "epicId": "A2-curation-review",
+      "branch": "Agent",
+      "title": "The Cautilus Agent curates discovery packets and drives structured review",
+      "claimCount": 2,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-131",
+          "sourceRef": "docs/guides/cli.md:131",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-517",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:517",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "S1-install",
+      "branch": "Setup",
+      "title": "Cautilus installs as a shared machine-level binary plus repo-local agent surface (no scaffold copy)",
+      "claimCount": 13,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-6",
+          "sourceRef": "README.md:6",
+          "group": "Release and packaging"
+        },
+        {
+          "claimId": "claim-readme-md-9",
+          "sourceRef": "README.md:9",
+          "group": "Release and packaging"
+        },
+        {
+          "claimId": "claim-readme-md-10",
+          "sourceRef": "README.md:10",
+          "group": "Release and packaging"
+        },
+        {
+          "claimId": "claim-readme-md-11",
+          "sourceRef": "README.md:11",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "M1-proven-on-itself"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-35",
+          "sourceRef": "README.md:35",
+          "group": "Release and packaging",
+          "alsoSupports": [
+            "S2-readiness"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-44",
+          "sourceRef": "README.md:44",
+          "group": "Release and packaging"
+        },
+        {
+          "claimId": "claim-readme-md-47",
+          "sourceRef": "README.md:47",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-147",
+          "sourceRef": "README.md:147",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-150",
+          "sourceRef": "README.md:150",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S2-readiness"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-13",
+          "sourceRef": "docs/guides/cli.md:13",
+          "group": "Release and packaging"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-16",
+          "sourceRef": "docs/guides/cli.md:16",
+          "group": "Release and packaging"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-31",
+          "sourceRef": "docs/guides/cli.md:31",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-39",
+          "sourceRef": "docs/guides/cli.md:39",
+          "group": "Adapter and portability"
+        }
+      ]
+    },
+    {
+      "epicId": "S2-readiness",
+      "branch": "Setup",
+      "title": "doctor/version report setup, onboarding, agent-surface, and wiring readiness",
+      "claimCount": 12,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-154",
+          "sourceRef": "README.md:154",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-23",
+          "sourceRef": "docs/guides/cli.md:23",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-34",
+          "sourceRef": "docs/guides/cli.md:34",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-42",
+          "sourceRef": "docs/guides/cli.md:42",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-74",
+          "sourceRef": "docs/guides/cli.md:74",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-80",
+          "sourceRef": "docs/guides/cli.md:80",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-86",
+          "sourceRef": "docs/guides/cli.md:86",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-89",
+          "sourceRef": "docs/guides/cli.md:89",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-108",
+          "sourceRef": "docs/guides/cli.md:108",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-110",
+          "sourceRef": "docs/guides/cli.md:110",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-114",
+          "sourceRef": "docs/guides/cli.md:114",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-115",
+          "sourceRef": "docs/guides/cli.md:115",
+          "group": "Adapter and portability"
+        }
+      ]
+    },
+    {
+      "epicId": "D1-discovery",
+      "branch": "Discover",
+      "title": "Claim discovery turns adapter-owned docs + linked Markdown into bounded proof-plan candidates (not a verdict)",
+      "claimCount": 8,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-19",
+          "sourceRef": "README.md:19",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "I1-bounded-improvement"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-59",
+          "sourceRef": "README.md:59",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-104",
+          "sourceRef": "README.md:104",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-readme-md-105",
+          "sourceRef": "README.md:105",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-77",
+          "sourceRef": "docs/guides/cli.md:77",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "S2-readiness"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-104",
+          "sourceRef": "docs/guides/cli.md:104",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-117",
+          "sourceRef": "docs/guides/cli.md:117",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-123",
+          "sourceRef": "docs/guides/cli.md:123",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "D2-review-refresh",
+      "branch": "Discover",
+      "title": "Deterministic claim review/refresh: cluster, apply-review, refresh, status, stale-gating, model-spend gating",
+      "claimCount": 1,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-118",
+          "sourceRef": "docs/guides/cli.md:118",
+          "group": "Claim discovery and review"
+        }
+      ]
+    },
+    {
+      "epicId": "E1-evaluate",
+      "branch": "Eval",
+      "title": "evaluate fixture/observation runs checked-in inputs through adapter-owned runners and evaluates the packet",
+      "claimCount": 16,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-17",
+          "sourceRef": "README.md:17",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E2-scenarios-experiments"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-68",
+          "sourceRef": "README.md:68",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-readme-md-69",
+          "sourceRef": "README.md:69",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-readme-md-84",
+          "sourceRef": "README.md:84",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-readme-md-85",
+          "sourceRef": "README.md:85",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-readme-md-86",
+          "sourceRef": "README.md:86",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-readme-md-95",
+          "sourceRef": "README.md:95",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "M1-proven-on-itself"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-108",
+          "sourceRef": "README.md:108",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E2-scenarios-experiments"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-122",
+          "sourceRef": "README.md:122",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "APEX"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-151",
+          "sourceRef": "README.md:151",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-206",
+          "sourceRef": "docs/guides/cli.md:206",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-266",
+          "sourceRef": "docs/guides/cli.md:266",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-268",
+          "sourceRef": "docs/guides/cli.md:268",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E2-scenarios-experiments"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-270",
+          "sourceRef": "docs/guides/cli.md:270",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-274",
+          "sourceRef": "docs/guides/cli.md:274",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-390",
+          "sourceRef": "docs/guides/cli.md:390",
+          "group": "Packets and reporting"
+        }
+      ]
+    },
+    {
+      "epicId": "E2-scenarios-experiments",
+      "branch": "Eval",
+      "title": "Scenario proposal/attention and skill-experiment compare over preserved baseline/variant outputs",
+      "claimCount": 3,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-18",
+          "sourceRef": "README.md:18",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-199",
+          "sourceRef": "docs/guides/cli.md:199",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-257",
+          "sourceRef": "docs/guides/cli.md:257",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "I1-bounded-improvement",
+      "branch": "Improve",
+      "title": "Improvement search/revision is bounded by budgets, checkpoints, and blocked-readiness (bounded autonomy)",
+      "claimCount": 5,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-121",
+          "sourceRef": "README.md:121",
+          "group": "Improvement and improvement",
+          "alsoSupports": [
+            "E2-scenarios-experiments"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-129",
+          "sourceRef": "README.md:129",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-131",
+          "sourceRef": "README.md:131",
+          "group": "Improvement and improvement"
+        },
+        {
+          "claimId": "claim-readme-md-139",
+          "sourceRef": "README.md:139",
+          "group": "Improvement and improvement"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-513",
+          "sourceRef": "docs/guides/cli.md:513",
+          "group": "Improvement and improvement"
+        }
+      ]
+    },
+    {
+      "epicId": "M1-proven-on-itself",
+      "branch": "Meta/Cross",
+      "title": "Cautilus is proven on itself: specs, dogfood evidence, held-out validation, structured review",
+      "claimCount": 4,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-12",
+          "sourceRef": "README.md:12",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-16",
+          "sourceRef": "README.md:16",
+          "group": "Documentation and contracts",
+          "alsoSupports": [
+            "APEX",
+            "S2-readiness",
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-61",
+          "sourceRef": "README.md:61",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "S2-readiness"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-62",
+          "sourceRef": "README.md:62",
+          "group": "Documentation and contracts"
+        }
+      ]
+    }
+  ]
+}

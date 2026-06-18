@@ -36,9 +36,10 @@ The ② recuration split the one badly-bounded over-merge `cli-268` into `cli-26
 - `extraction-result.json` — the merged 5-source extraction result handed to apply-extraction.
 - `claims-agent.json` — the anchored `claim_proof_plan.v1` (374 candidates, 0 rejected).
 - `gold-set-proposal.json` / `.user-product.json` / `.developer.json` — the segmented proposal, all entries `pending`.
+- `epic-tree-proposal{,.user-product,.developer}.json` / `epic-dag-proposal{,.user-product,.developer}.json` — the R14 tree + R15 epic DAG realized over the gold claims from the template-emitted per-claim epic facets; see `EPIC-DAG.md`.
 - `MEASUREMENT.proof-route.md` — the before/after proof-route analysis with caveats; the after-HITL relabel-rate confirmation is appended at ratification.
 
 ## Deferred
 
-- **Epic DAG** — not built here. The DAG (`epic-tree-proposal.json` -> `epic-dag-proposal.json`) was only ever a slice-3 design artifact over `../goldset-v2-agent-extraction/`; `../goldset-v2-head/` itself carried no DAG. Building it over the ratified tracks is a post-ratification follow-up, same precedent.
+- **Epic DAG** — BUILT (③ Epic DAG, 2026-06-19); see `EPIC-DAG.md`. The R14 tree + R15 DAG are realized over the gold claims (365 = accept 346 + relabel 19; not-a-claim excluded) for both tracks plus a combined roll-up, read from the template-emitted per-claim epic facets rather than the old hand-routed `EDGE_MAP`. The epic STRUCTURE is DRAFT pending a maintainer ratification pass (the HITL ratified verdict + proof-route, not the epic assignments).
 - **HITL ratification** — DONE (`HITL-CLOSEOUT.md`). It realized the line renumber (HEAD anchors) and resolved the deferred curator splits by re-extraction; the last one, `cli-268`, was split at the ② recuration. The 9 recall-gap helper sub-commands are folded under their family representatives per the ratified policy (`family-fold-coverage.md`) — the earlier note that they were captured "as separate claims" was a closeout overclaim, corrected in the ② recuration.

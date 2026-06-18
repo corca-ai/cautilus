@@ -1,0 +1,1912 @@
+{
+  "schemaVersion": "cautilus.epic_tree_proposal.v1-draft",
+  "status": "DRAFT",
+  "track": "developer",
+  "derivedFrom": "charness-artifacts/eval-trust/goldset-v2-reextract-head/gold-set-proposal.developer.json",
+  "generator": "scripts/build-epic-dag-from-facets.mjs",
+  "model": "R14 claim tree: APEX root + 6 branches, single-parent (primaryEpic = the claim's home epic facet), shallow epic->claim, no orphans. alsoSupports records the non-home epics the claim edges to in the R15 DAG.",
+  "branches": [
+    "APEX",
+    "Agent",
+    "Setup",
+    "Discover",
+    "Eval",
+    "Improve",
+    "Meta/Cross"
+  ],
+  "totalClaims": 296,
+  "orphanCount": 0,
+  "epics": [
+    {
+      "epicId": "APEX",
+      "branch": "APEX",
+      "title": "Cautilus keeps agent/workflow behavior honest across prompt/skill/wrapper change",
+      "claimCount": 2,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-134",
+          "sourceRef": "README.md:134",
+          "group": "Quality gates",
+          "alsoSupports": [
+            "E1-evaluate",
+            "I1-bounded-improvement"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-68",
+          "sourceRef": "docs/internal/working-patterns.md:68",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "A1-orchestration",
+      "branch": "Agent",
+      "title": "The Cautilus Agent owns workflow routing, sequencing, and guardrails",
+      "claimCount": 28,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-8",
+          "sourceRef": "README.md:8",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "APEX"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-127",
+          "sourceRef": "README.md:127",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "APEX"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-560",
+          "sourceRef": "docs/guides/cli.md:560",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-561",
+          "sourceRef": "docs/guides/cli.md:561",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-9-2",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:9",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-31",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:31",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "I1-bounded-improvement"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-60",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:60",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-65",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:65",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-77",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:77",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-633",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:633",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-26",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:26",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "S2-readiness"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-40",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:40",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-299",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:299",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "S2-readiness"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-8",
+          "sourceRef": "docs/internal/working-patterns.md:8",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-10",
+          "sourceRef": "docs/internal/working-patterns.md:10",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-11",
+          "sourceRef": "docs/internal/working-patterns.md:11",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-16",
+          "sourceRef": "docs/internal/working-patterns.md:16",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-19",
+          "sourceRef": "docs/internal/working-patterns.md:19",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-21",
+          "sourceRef": "docs/internal/working-patterns.md:21",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-24",
+          "sourceRef": "docs/internal/working-patterns.md:24",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-25",
+          "sourceRef": "docs/internal/working-patterns.md:25",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-27",
+          "sourceRef": "docs/internal/working-patterns.md:27",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-30",
+          "sourceRef": "docs/internal/working-patterns.md:30",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-70",
+          "sourceRef": "docs/internal/working-patterns.md:70",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-77",
+          "sourceRef": "docs/internal/working-patterns.md:77",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-103",
+          "sourceRef": "docs/internal/working-patterns.md:103",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-129",
+          "sourceRef": "docs/internal/working-patterns.md:129",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-165",
+          "sourceRef": "docs/internal/working-patterns.md:165",
+          "group": "Agent and skill workflow"
+        }
+      ]
+    },
+    {
+      "epicId": "A2-curation-review",
+      "branch": "Agent",
+      "title": "The Cautilus Agent curates discovery packets and drives structured review",
+      "claimCount": 28,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-60",
+          "sourceRef": "README.md:60",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-106",
+          "sourceRef": "README.md:106",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-130",
+          "sourceRef": "README.md:130",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "E2-scenarios-experiments"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-129",
+          "sourceRef": "docs/guides/cli.md:129",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-130",
+          "sourceRef": "docs/guides/cli.md:130",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-470",
+          "sourceRef": "docs/guides/cli.md:470",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-471",
+          "sourceRef": "docs/guides/cli.md:471",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-472",
+          "sourceRef": "docs/guides/cli.md:472",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-473",
+          "sourceRef": "docs/guides/cli.md:473",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-474",
+          "sourceRef": "docs/guides/cli.md:474",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-475",
+          "sourceRef": "docs/guides/cli.md:475",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-479",
+          "sourceRef": "docs/guides/cli.md:479",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-481",
+          "sourceRef": "docs/guides/cli.md:481",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-483",
+          "sourceRef": "docs/guides/cli.md:483",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-486",
+          "sourceRef": "docs/guides/cli.md:486",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-6",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:6",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-17",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:17",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-82",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:82",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-85",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:85",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-198",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:198",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-426",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:426",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-437",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:437",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-58",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:58",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-68-2",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:68",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-69",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-69-2",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:69",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-78",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:78",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "S1-install",
+      "branch": "Setup",
+      "title": "Cautilus installs as a shared machine-level binary plus repo-local agent surface (no scaffold copy)",
+      "claimCount": 15,
+      "claims": [
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-682",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:682",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-46-2",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:46",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-111",
+          "sourceRef": "docs/internal/working-patterns.md:111",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "E2-scenarios-experiments"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-112",
+          "sourceRef": "docs/internal/working-patterns.md:112",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "M1-proven-on-itself"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-126",
+          "sourceRef": "docs/internal/working-patterns.md:126",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-127",
+          "sourceRef": "docs/internal/working-patterns.md:127",
+          "group": "Release and packaging",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-128",
+          "sourceRef": "docs/internal/working-patterns.md:128",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S2-readiness"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-130",
+          "sourceRef": "docs/internal/working-patterns.md:130",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-133",
+          "sourceRef": "docs/internal/working-patterns.md:133",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-139",
+          "sourceRef": "docs/internal/working-patterns.md:139",
+          "group": "Release and packaging"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-152",
+          "sourceRef": "docs/internal/working-patterns.md:152",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S2-readiness"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-157",
+          "sourceRef": "docs/internal/working-patterns.md:157",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-161",
+          "sourceRef": "docs/internal/working-patterns.md:161",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-180",
+          "sourceRef": "docs/internal/working-patterns.md:180",
+          "group": "Release and packaging",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-185",
+          "sourceRef": "docs/internal/working-patterns.md:185",
+          "group": "Quality gates",
+          "alsoSupports": [
+            "E2-scenarios-experiments"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "S2-readiness",
+      "branch": "Setup",
+      "title": "doctor/version report setup, onboarding, agent-surface, and wiring readiness",
+      "claimCount": 9,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-106",
+          "sourceRef": "docs/guides/cli.md:106",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-111",
+          "sourceRef": "docs/guides/cli.md:111",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-113",
+          "sourceRef": "docs/guides/cli.md:113",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-193",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:193",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-84",
+          "sourceRef": "docs/internal/working-patterns.md:84",
+          "group": "Release and packaging",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-136",
+          "sourceRef": "docs/internal/working-patterns.md:136",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-158",
+          "sourceRef": "docs/internal/working-patterns.md:158",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-159",
+          "sourceRef": "docs/internal/working-patterns.md:159",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-160",
+          "sourceRef": "docs/internal/working-patterns.md:160",
+          "group": "Release and packaging",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "D1-discovery",
+      "branch": "Discover",
+      "title": "Claim discovery turns adapter-owned docs + linked Markdown into bounded proof-plan candidates (not a verdict)",
+      "claimCount": 77,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-122",
+          "sourceRef": "docs/guides/cli.md:122",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-128",
+          "sourceRef": "docs/guides/cli.md:128",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-258",
+          "sourceRef": "docs/guides/cli.md:258",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "E2-scenarios-experiments"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-5",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:5",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-9",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:9",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-15",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:15",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-16",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:16",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-37",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:37",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "M1-proven-on-itself"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-47",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:47",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-105",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:105",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-106",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:106",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-114",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:114",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-116",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:116",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-117",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:117",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-130",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:130",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-177",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:177",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-180",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:180",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-199",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:199",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-201",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:201",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "M1-proven-on-itself"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-256",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:256",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-448",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:448",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-473",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:473",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-545",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:545",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-565",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:565",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-570",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:570",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-571",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:571",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-587",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:587",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-668",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:668",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-669",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:669",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-122",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:122",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-18",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:18",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-21",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:21",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-34",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:34",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-39",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:39",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-41",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:41",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-46",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:46",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-50",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:50",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-51",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:51",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-53",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:53",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-61",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:61",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-63",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:63",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-64",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:64",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-65",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:65",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-67",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:67",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-70",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:70",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-72",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:72",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-73",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:73",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-76",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:76",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-76-2",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:76",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-81",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:81",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-81-2",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:81",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-162",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:162",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-169",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:169",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-171",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:171",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-173",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:173",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-176",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:176",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-178",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:178",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-179",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:179",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-180",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:180",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-197",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:197",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-198",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:198",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-199",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:199",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-201",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:201",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-202",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:202",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-203",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:203",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-204",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:204",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-208",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:208",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-209",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:209",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-220",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:220",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-223",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:223",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-249",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:249",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-257",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:257",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "M1-proven-on-itself"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-305",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:305",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-309",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:309",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-300",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:300",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-346",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:346",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-46",
+          "sourceRef": "docs/internal/working-patterns.md:46",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "D2-review-refresh",
+      "branch": "Discover",
+      "title": "Deterministic claim review/refresh: cluster, apply-review, refresh, status, stale-gating, model-spend gating",
+      "claimCount": 60,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-119",
+          "sourceRef": "docs/guides/cli.md:119",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-120",
+          "sourceRef": "docs/guides/cli.md:120",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-124",
+          "sourceRef": "docs/guides/cli.md:124",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-125",
+          "sourceRef": "docs/guides/cli.md:125",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-126",
+          "sourceRef": "docs/guides/cli.md:126",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-127",
+          "sourceRef": "docs/guides/cli.md:127",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-132",
+          "sourceRef": "docs/guides/cli.md:132",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-133",
+          "sourceRef": "docs/guides/cli.md:133",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-134",
+          "sourceRef": "docs/guides/cli.md:134",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-135",
+          "sourceRef": "docs/guides/cli.md:135",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-137",
+          "sourceRef": "docs/guides/cli.md:137",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-142",
+          "sourceRef": "docs/guides/cli.md:142",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-18",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:18",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-19",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:19",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-39",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:39",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-41",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:41",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-200",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:200",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "I1-bounded-improvement"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-284",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:284",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-288",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:288",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-293",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:293",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-350",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:350",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-353",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:353",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-355",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:355",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-361",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:361",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-439",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:439",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-407",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:407",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-416",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:416",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-478",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:478",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-495",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:495",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-496",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:496",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-497",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:497",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-500",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:500",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-576",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:576",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-578",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:578",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-579",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:579",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-580",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:580",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-585",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:585",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-671",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:671",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-683",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:683",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-738",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:738",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-760",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:760",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-122",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:122",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-174",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:174",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-177",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:177",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-187",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:187",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-188",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:188",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-212",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:212",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-215",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:215",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-218",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:218",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-219",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:219",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-221",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:221",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-222",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:222",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-229",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:229",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-230",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:230",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-236",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:236",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-238",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:238",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-239",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:239",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-306",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:306",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-301",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:301",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-86",
+          "sourceRef": "docs/internal/working-patterns.md:86",
+          "group": "Release and packaging",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "E1-evaluate",
+      "branch": "Eval",
+      "title": "evaluate fixture/observation runs checked-in inputs through adapter-owned runners and evaluates the packet",
+      "claimCount": 33,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-49",
+          "sourceRef": "docs/guides/cli.md:49",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-51",
+          "sourceRef": "docs/guides/cli.md:51",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-66",
+          "sourceRef": "docs/guides/cli.md:66",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-67",
+          "sourceRef": "docs/guides/cli.md:67",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-68",
+          "sourceRef": "docs/guides/cli.md:68",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-69",
+          "sourceRef": "docs/guides/cli.md:69",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-139",
+          "sourceRef": "docs/guides/cli.md:139",
+          "group": "Claim discovery and review",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-140",
+          "sourceRef": "docs/guides/cli.md:140",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-141",
+          "sourceRef": "docs/guides/cli.md:141",
+          "group": "Claim discovery and review"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-180",
+          "sourceRef": "docs/guides/cli.md:180",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-181",
+          "sourceRef": "docs/guides/cli.md:181",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-184",
+          "sourceRef": "docs/guides/cli.md:184",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-186",
+          "sourceRef": "docs/guides/cli.md:186",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-187",
+          "sourceRef": "docs/guides/cli.md:187",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-188",
+          "sourceRef": "docs/guides/cli.md:188",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-191",
+          "sourceRef": "docs/guides/cli.md:191",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-212",
+          "sourceRef": "docs/guides/cli.md:212",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-213",
+          "sourceRef": "docs/guides/cli.md:213",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-214",
+          "sourceRef": "docs/guides/cli.md:214",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-267",
+          "sourceRef": "docs/guides/cli.md:267",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-271",
+          "sourceRef": "docs/guides/cli.md:271",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-272",
+          "sourceRef": "docs/guides/cli.md:272",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-273",
+          "sourceRef": "docs/guides/cli.md:273",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-308",
+          "sourceRef": "docs/guides/cli.md:308",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "M1-proven-on-itself"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-310",
+          "sourceRef": "docs/guides/cli.md:310",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-311",
+          "sourceRef": "docs/guides/cli.md:311",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "M1-proven-on-itself"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-385",
+          "sourceRef": "docs/guides/cli.md:385",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-466",
+          "sourceRef": "docs/guides/cli.md:466",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-582",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:582",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-584",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:584",
+          "group": "Evaluation surfaces"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-191",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:191",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "I1-bounded-improvement"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-145",
+          "sourceRef": "docs/internal/working-patterns.md:145",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "D1-discovery",
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-148",
+          "sourceRef": "docs/internal/working-patterns.md:148",
+          "group": "Adapter and portability",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        }
+      ]
+    },
+    {
+      "epicId": "E2-scenarios-experiments",
+      "branch": "Eval",
+      "title": "Scenario proposal/attention and skill-experiment compare over preserved baseline/variant outputs",
+      "claimCount": 10,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-182",
+          "sourceRef": "docs/guides/cli.md:182",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-183",
+          "sourceRef": "docs/guides/cli.md:183",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-189",
+          "sourceRef": "docs/guides/cli.md:189",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-192",
+          "sourceRef": "docs/guides/cli.md:192",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-259",
+          "sourceRef": "docs/guides/cli.md:259",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-261",
+          "sourceRef": "docs/guides/cli.md:261",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-313",
+          "sourceRef": "docs/guides/cli.md:313",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-314",
+          "sourceRef": "docs/guides/cli.md:314",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-109",
+          "sourceRef": "docs/internal/working-patterns.md:109",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-173",
+          "sourceRef": "docs/internal/working-patterns.md:173",
+          "group": "Evaluation surfaces"
+        }
+      ]
+    },
+    {
+      "epicId": "I1-bounded-improvement",
+      "branch": "Improve",
+      "title": "Improvement search/revision is bounded by budgets, checkpoints, and blocked-readiness (bounded autonomy)",
+      "claimCount": 5,
+      "claims": [
+        {
+          "claimId": "claim-docs-guides-cli-md-515",
+          "sourceRef": "docs/guides/cli.md:515",
+          "group": "Improvement and improvement"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-543",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:543",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-672",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:672",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-43",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:43",
+          "group": "Agent and skill workflow",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-44",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:44",
+          "group": "Packets and reporting"
+        }
+      ]
+    },
+    {
+      "epicId": "M1-proven-on-itself",
+      "branch": "Meta/Cross",
+      "title": "Cautilus is proven on itself: specs, dogfood evidence, held-out validation, structured review",
+      "claimCount": 29,
+      "claims": [
+        {
+          "claimId": "claim-readme-md-96",
+          "sourceRef": "README.md:96",
+          "group": "Packets and reporting",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-readme-md-155",
+          "sourceRef": "README.md:155",
+          "group": "Quality gates",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-296",
+          "sourceRef": "docs/guides/cli.md:296",
+          "group": "Agent and skill workflow"
+        },
+        {
+          "claimId": "claim-docs-guides-cli-md-541",
+          "sourceRef": "docs/guides/cli.md:541",
+          "group": "Packets and reporting"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-202",
+          "sourceRef": "docs/contracts/claim-discovery-workflow.md:202",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E1-evaluate"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-259",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:259",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "E2-scenarios-experiments"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-261",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:261",
+          "group": "Evaluation surfaces",
+          "alsoSupports": [
+            "A1-orchestration"
+          ]
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-298",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:298",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-359",
+          "sourceRef": "docs/contracts/claim-extraction-template.md:359",
+          "group": "Quality gates",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-35",
+          "sourceRef": "docs/internal/working-patterns.md:35",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-38",
+          "sourceRef": "docs/internal/working-patterns.md:38",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-41",
+          "sourceRef": "docs/internal/working-patterns.md:41",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-43",
+          "sourceRef": "docs/internal/working-patterns.md:43",
+          "group": "Documentation and contracts",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-45",
+          "sourceRef": "docs/internal/working-patterns.md:45",
+          "group": "Documentation and contracts",
+          "alsoSupports": [
+            "D1-discovery"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-50",
+          "sourceRef": "docs/internal/working-patterns.md:50",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-53",
+          "sourceRef": "docs/internal/working-patterns.md:53",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-58",
+          "sourceRef": "docs/internal/working-patterns.md:58",
+          "group": "Documentation and contracts",
+          "alsoSupports": [
+            "APEX"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-61",
+          "sourceRef": "docs/internal/working-patterns.md:61",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-64",
+          "sourceRef": "docs/internal/working-patterns.md:64",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-66",
+          "sourceRef": "docs/internal/working-patterns.md:66",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-72",
+          "sourceRef": "docs/internal/working-patterns.md:72",
+          "group": "Documentation and contracts"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-89",
+          "sourceRef": "docs/internal/working-patterns.md:89",
+          "group": "Quality gates",
+          "alsoSupports": [
+            "D2-review-refresh"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-95",
+          "sourceRef": "docs/internal/working-patterns.md:95",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-97",
+          "sourceRef": "docs/internal/working-patterns.md:97",
+          "group": "Quality gates",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-101",
+          "sourceRef": "docs/internal/working-patterns.md:101",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-118",
+          "sourceRef": "docs/internal/working-patterns.md:118",
+          "group": "Quality gates",
+          "alsoSupports": [
+            "S1-install"
+          ]
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-120",
+          "sourceRef": "docs/internal/working-patterns.md:120",
+          "group": "Quality gates"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-177",
+          "sourceRef": "docs/internal/working-patterns.md:177",
+          "group": "Adapter and portability"
+        },
+        {
+          "claimId": "claim-docs-internal-working-patterns-md-193",
+          "sourceRef": "docs/internal/working-patterns.md:193",
+          "group": "Documentation and contracts",
+          "alsoSupports": [
+            "A2-curation-review"
+          ]
+        }
+      ]
+    }
+  ]
+}
