@@ -1,7 +1,8 @@
 # recommendedProof facet gold-set proposal — regenerated against the HEAD answer key (D3 v2)
 
-Status: agent-proposed, 2026-06-19, pending maintainer ratification (single labeler).
-Every facet decomposition below is a proposal; record corrections in the JSON sibling (`maintainerVerdict` per entry), and tallies are recomputed after ratification, not hand-edited.
+Status: maintainer-ratified 2026-06-19 (interactive, single session, exception-ratify model).
+32 entries ratified as proposed; `readme-139` corrected (dominant → deterministic); `wp-61` flagged retire-candidate.
+The authoritative per-entry record (with `maintainerVerdict`, `ratifiedDominantRoute`, `ratifiedTagVerdict`) is the JSON sibling; tallies are computed, not hand-edited.
 
 ## Why this regeneration exists
 
@@ -37,18 +38,19 @@ So an ownership clause is **not** split off into a phantom `[deterministic] stat
 This collapses several D3-era "too-coarse ownership splits" back to exact-deterministic; `claim-docs-contracts-claim-extraction-template-md-18` is the clearest case (the "agent does the model-backed work" clause is a seam boundary, not a behavior facet).
 This is the single biggest reason the regenerated tallies are cleaner than 2026-06-10's, and it is a real rule change, not a labeler mood difference.
 
-## Computed tallies (pre-ratification)
+## Computed tallies (ratified)
 
-Verdict compares the proposed dominant facet route against the blind per-claim `recommendedProof`.
+Verdict compares the dominant facet route against the blind per-claim `recommendedProof`.
+The table is the ratified state; the two changes from the agent proposal are `readme-139` (too-coarse → wrong, dominant corrected to deterministic) and `wp-61` (was wrong, now retire-candidate, excluded from the routing tally).
 
-| blind route | n | exact | too-coarse | wrong |
-|---|---|---|---|---|
-| deterministic | 12 | 12 | 0 | 0 |
-| cautilus-eval | 12 | 2 | 7 | 3 |
-| human-auditable | 12 | 6 | 3 | 3 |
-| **all** | 36 | 20 | 10 | 6 |
+| blind route | n | exact | too-coarse | wrong | retire |
+|---|---|---|---|---|---|
+| deterministic | 12 | 12 | 0 | 0 | 0 |
+| cautilus-eval | 12 | 2 | 6 | 4 | 0 |
+| human-auditable | 12 | 6 | 3 | 2 | 1 |
+| **all** | 36 | 20 | 9 | 6 | 1 |
 
-- Dominant-correct (per-claim route == dominant facet route): **30/36 (83%)**, versus the 2026-06-10 set's 18/35 (51%).
+- Dominant-correct (per-claim route == dominant facet route): **29/35 (83%)** with the retire-candidate excluded, versus the 2026-06-10 set's 18/35 (51%).
 - Facet route counts across all entries: 43 deterministic, 14 human-auditable, 10 cautilus-eval — even in a sample stratified to over-represent the two non-deterministic routes, genuinely-semantic facets are the minority.
 
 The accuracy jump is consistent with the proof-route measurement: the operative template v2 plus the ratified R6/R12 discipline reduced both the `cautilus-eval` over-assignment and the `human-auditable`-hides-deterministic pattern that dominated the 2026-06-10 set.
@@ -60,14 +62,20 @@ All 3 land as **wrong** in the facet verdict, each in the same direction as the 
 `cet-261` eval→human, `cet-68` eval→deterministic, `cdw-82` human→deterministic.
 The facet decomposition agreeing with every ratified relabel in the sample is the validity check that the routing is not drifting from the answer key.
 
-## The high-value review targets: facet view diverges from ratified per-claim accept
+## Ratification outcomes on the contested entries
 
-Three entries were ratified **accept** at the per-claim level but the facet view proposes a different dominant route.
-These are the entries where the maintainer's facet ratification matters most, because they test whether per-facet granularity is sharper than the accepted per-claim route or whether the proposal is over-routing.
+Three entries were accepted at the per-claim level in the answer key but the facet view proposed a different dominant route; a fourth was a corrected dominance call.
+The maintainer decided each individually (the other 32 were ratified as proposed under the exception model).
 
-- `claim-docs-contracts-claim-discovery-workflow-md-23` ("primary user flow starts from an agent session") — ratified accept-as-`cautilus-eval`; facet view says dominant **human-auditable** (an R16/R9 positioning premise) with no substantive eval facet. The ratified note itself flagged it "borderline R16/R9 positioning premise," which supports the divergence. Dominance debatable.
-- `claim-docs-internal-working-patterns-md-45` ("rejected/not-done decisions live only under explicit decision-section headings") — ratified accept-as-`human-auditable`; facet view says dominant **deterministic**, because this *is* the `non_claim_section_headings` placement rule that a scanner already enforces. Directly relevant to the classification_hints wiring. Dominance debatable.
-- `claim-docs-internal-working-patterns-md-61` ("cross-cutting concerns are not exposed in AOP terms in public docs") — ratified accept-as-`human-auditable`; facet view says dominant **deterministic** (a negative lexical check: no AOP vocabulary in public docs), with the positive "speak concretely" as the human half. Dominance debatable.
+- `claim-docs-contracts-claim-discovery-workflow-md-23` ("primary user flow starts from an agent session") — answer-key accept-as-`cautilus-eval`; facet re-routing to dominant **human-auditable** (an R16/R9 positioning premise, no substantive eval facet) **accepted**. The answer-key note itself flagged it "borderline R16/R9 positioning premise."
+- `claim-docs-internal-working-patterns-md-45` ("rejected/not-done decisions live only under explicit decision-section headings") — answer-key accept-as-`human-auditable`; facet re-routing to dominant **deterministic accepted**, because this *is* the `non_claim_section_headings` placement rule a scanner already enforces. Directly informs the classification_hints wiring.
+- `claim-readme-md-139` (GEPA-style bounded prompt search seam) — **corrected**: dominant `cautilus-eval` → **deterministic**. Under R12, the six named mechanisms shipping is a static capability-existence check (the stronger reading), consistent with how other "ships X" claims route; the does-it-actually-improve outcome stays a separate eval facet. Verdict moves too-coarse → wrong.
+- `claim-docs-internal-working-patterns-md-61` ("cross-cutting concerns are not exposed in AOP terms in public docs") — flagged **retire-candidate** rather than routed. The maintainer's principle: *statements about what the system does not do are almost all retirement targets*. The dominant facet here is a whole-claim negative, so it is a discovery-curation retire signal, not a det/human routing decision; it is excluded from the routing-accuracy tally (the residual positive facet — public docs speak in concrete contracts — is human-auditable).
+
+### Open decision carried out of this ratification
+
+The retire principle is broader than this one entry.
+Whether "what it does not do" negatives become a discovery-curation rule, and whether `wp-61`'s `accept` in `goldset-v2-reextract-head` is revisited, is carried as a separate maintainer decision and was **not** applied to the answer key here.
 
 ## Patterns the regeneration surfaces (to verify in review)
 
@@ -75,14 +83,13 @@ These are the entries where the maintainer's facet ratification matters most, be
 2. `cautilus-eval` over-assignment shrank but did not vanish: 5 of 12 are misroutes (3 wrong + the 2 that are too-coarse only because a deterministic facet hides under a genuine eval dominant), down from the 2026-06-10 set where 8 of 12 were wrong. `cet-68` is the measured `claim-extraction-template` documented-content residual (route a template-content fact as behavior) that MEASUREMENT.proof-route.md flagged at 8.75%.
 3. `human-auditable` is correct far more often here (6/12 exact) because the `working-patterns.md`-heavy sample contains genuine operating-policy and process claims that are correctly human; the 3 misroutes are doc-placement and lexical-constraint claims that hide a deterministic check (pattern 2).
 4. Every claim whose dominant facet is `cautilus-eval` still carries at least one deterministic (or human) facet underneath, consistent with the facet-decomposition template's core rule — except the two pure-behavior eval claims (`wp-10`, `readme-60`), which are exact precisely because they have no separable mechanical facet.
-5. No not-a-claim entries, because the HITL already removed them from the gold population — the facet gold set inherits the answer key's curation discipline instead of re-litigating it.
+5. No not-a-claim entries, because the HITL already removed them from the gold population — the facet gold set inherits the answer key's curation discipline instead of re-litigating it. Ratification did surface one retire-candidate (`wp-61`), a whole-claim negative the maintainer flagged under the "what-it-does-not-do statements are mostly retirement targets" principle — a curation signal that points back at the answer key, not a routing miss.
 
-## How to review
+## Review record
 
-The durable thing under review is each entry's **facet decomposition** (the facets and their routes); dominant route and tag verdict are derived scoring.
-Confirm or correct the facet list and routes in the JSON sibling (`maintainerVerdict` per entry); flag any facet that is missing, mislabeled, or not honestly checkable on its proposed route.
-Start with the 3 divergence entries above and the 7 `dominanceConfidence: debatable` entries (`cdw-23`, `cdw-437`, `readme-139`, `readme-95`, `cdw-82`, `wp-45`, `wp-61`) — the clear-confidence exacts need only a spot check.
-The full per-entry facet text lives in `2026-06-19-recommendedproof-facet-gold-set-v2head.json`; this prose carries the reading, not the authoritative record.
+The durable thing reviewed was each entry's **facet decomposition** (the facets and their routes); dominant route and tag verdict are derived scoring.
+The maintainer ratified under the exception model: the 32 clear/batch entries were ratified as proposed, and the contested entries (the 3 answer-key divergences plus the 7 `dominanceConfidence: debatable` entries — `cdw-23`, `cdw-437`, `readme-139`, `readme-95`, `cdw-82`, `wp-45`, `wp-61`) were decided individually; the four that changed or were called out are in *Ratification outcomes* above.
+The authoritative per-entry record (`maintainerVerdict`, `ratifiedDominantRoute`, `ratifiedTagVerdict`, `maintainerNote`) lives in `2026-06-19-recommendedproof-facet-gold-set-v2head.json`; this prose carries the reading, not the record.
 
 ## Critique
 

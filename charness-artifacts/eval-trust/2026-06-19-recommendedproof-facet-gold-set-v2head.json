@@ -1,44 +1,89 @@
 {
   "schemaVersion": "cautilus.recommendedproof_facet_gold_set_proposal.v2",
-  "status": "agent-proposed, 2026-06-19; every label pending maintainer ratification (single labeler). Regenerated against the HEAD ratified answer key.",
+  "status": "maintainer-ratified 2026-06-19 (interactive, single session; exception-ratify model). 32 entries ratified as proposed; 2 corrected (readme-139 dominant -> deterministic); 1 retire-candidate (wp-61). Regenerated against the HEAD ratified answer key.",
   "supersedes": "charness-artifacts/eval-trust/2026-06-10-recommendedproof-facet-gold-set-proposal.{md,json} (measured against packet 2a75d88c, 108 commits behind HEAD; ~half its sampled claimIds no longer exist at HEAD). Facet vocabulary, the route discriminators, and the verdict scheme carry forward as METHOD; the labels are re-derived on the current population.",
-  "purpose": "D3 (regenerated): measure the HEAD answer key's per-claim recommendedProof accuracy at facet granularity, and harvest the per-facet routing real claims need, as design input + test fixture for per-facet recommendedProof wiring. Stratified by the blind extractor's per-claim recommendedProof (the analog of the old heuristic tag); the ratified maintainerVerdict (accept/relabel) is the per-claim ground truth the facet view is checked against.",
+  "purpose": "D3 (regenerated): measure the HEAD answer key's per-claim recommendedProof accuracy at facet granularity, and harvest the per-facet routing real claims need, as design input + test fixture for per-facet recommendedProof wiring. Stratified by the blind extractor's per-claim recommendedProof (the analog of the old heuristic tag); the answer key's per-claim verdict (accept/relabel) is the ground truth the facet view is checked against.",
   "answerKey": "charness-artifacts/eval-trust/goldset-v2-reextract-head/ (375 ratified entries; accept 346 / relabel 19 / not-a-claim 10; gold = accept+relabel = 365). Operative template b922fd5d; source anchor 628ccc7; ratified 2026-06-18 (hitl-reextract-v2head-20260618 + Option C + recuration).",
   "selectionRule": "From goldset-v2-reextract-head/gold-set-proposal.json entries with maintainerVerdict in {accept,relabel}, per blind agentLabels.recommendedProof: sort by claimId, pick indices round(i*(n-1)/11) for i in 0..11 (12 per route). Gold-population distribution: deterministic 277, human-auditable 51, cautilus-eval 37.",
   "ratifiedRulesApplied": "The decompositions apply the HEAD answer key's ratified R6/R12 discriminators, which postdate the 2026-06-10 D3 set. R6/R12: an ownership/boundary/sequencing assignment, or a static repo-owned check that could prove a capability, routes DETERMINISTIC -- the actual agent behavior is a DIFFERENT claim's content and is not split off as a phantom eval facet. This collapses several D3-era 'too-coarse ownership splits' back to exact-deterministic (e.g. cet-18).",
+  "maintainerRatification": {
+    "date": "2026-06-19",
+    "model": "exception-ratify (32 clear/batch ratified as proposed; contested decided individually)",
+    "decisions": {
+      "claim-docs-contracts-claim-discovery-workflow-md-23": "facet re-routing accepted: dominant human-auditable; divergence from answer-key accept-as-eval confirmed",
+      "claim-docs-internal-working-patterns-md-45": "facet re-routing accepted: dominant deterministic (non_claim_section_headings rule); divergence confirmed",
+      "claim-readme-md-139": "corrected: dominant cautilus-eval -> deterministic (R12 ships-X); too-coarse -> wrong",
+      "claim-docs-internal-working-patterns-md-61": "retire-candidate: whole-claim negative ('what it does not do' statements are almost all retirement targets)"
+    },
+    "openDecision": "Maintainer principle 'statements about what it does not do are almost all retirement targets' -- whether it becomes a discovery-curation rule, and whether wp-61's accept in goldset-v2-reextract-head is revisited, is carried as a separate decision and NOT applied to the answer key here."
+  },
   "verdictDefinitions": {
     "exact": "every substantive facet routes to the blind per-claim route's class",
     "too-coarse": "the dominant facet matches the blind route but at least one substantive facet routes elsewhere",
-    "wrong": "the dominant facet routes to a different class than the blind route"
+    "wrong": "the dominant facet routes to a different class than the blind route",
+    "retire-candidate": "the claim's dominant facet is a whole-claim negative the maintainer flags for retirement; excluded from routing-accuracy tallies"
   },
   "computedTallies": {
-    "byBlindRoute": {
-      "deterministic": {
-        "exact": 12
+    "proposed": {
+      "byBlindRoute": {
+        "deterministic": {
+          "exact": 12
+        },
+        "cautilus-eval": {
+          "too-coarse": 7,
+          "wrong": 3,
+          "exact": 2
+        },
+        "human-auditable": {
+          "wrong": 3,
+          "exact": 6,
+          "too-coarse": 3
+        }
       },
-      "cautilus-eval": {
-        "too-coarse": 7,
-        "wrong": 3,
-        "exact": 2
+      "overall": {
+        "exact": 20,
+        "too-coarse": 10,
+        "wrong": 6
       },
-      "human-auditable": {
-        "wrong": 3,
-        "exact": 6,
-        "too-coarse": 3
-      }
+      "dominantCorrect": "30/36"
     },
-    "overall": {
-      "exact": 20,
-      "too-coarse": 10,
-      "wrong": 6
+    "ratified": {
+      "byBlindRoute": {
+        "deterministic": {
+          "exact": 12
+        },
+        "cautilus-eval": {
+          "too-coarse": 6,
+          "wrong": 4,
+          "exact": 2
+        },
+        "human-auditable": {
+          "wrong": 2,
+          "exact": 6,
+          "too-coarse": 3,
+          "retire-candidate": 1
+        }
+      },
+      "overall": {
+        "exact": 20,
+        "too-coarse": 9,
+        "wrong": 6,
+        "retire-candidate": 1
+      },
+      "dominantCorrect": "29/35 (retire-candidate excluded)",
+      "corrected": [
+        "claim-readme-md-139"
+      ],
+      "retireCandidate": [
+        "claim-docs-internal-working-patterns-md-61"
+      ]
     },
-    "dominantCorrect": "30/36",
     "facetRouteCounts": {
       "deterministic": 43,
       "cautilus-eval": 10,
       "human-auditable": 14
     },
-    "divergesFromRatifiedPerClaim": [
+    "divergesFromAnswerKeyPerClaim": [
       "claim-docs-contracts-claim-discovery-workflow-md-23",
       "claim-docs-internal-working-patterns-md-45",
       "claim-docs-internal-working-patterns-md-61"
@@ -60,8 +105,8 @@
       "sourceRef": "docs/contracts/claim-discovery-workflow.md:105",
       "summary": "Default discovery starts from entry surfaces and follows only repo-local Markdown links.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -77,9 +122,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Pure traversal behavior; both facets mechanically checkable.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-37",
@@ -87,8 +135,8 @@
       "sourceRef": "docs/contracts/claim-discovery-workflow.md:37",
       "summary": "Running `discover claims` directly without the Cautilus Agent emits the deterministic heuristic baseline (extractionMode: heuristic) with no model calls, the reproducible floor for no-model environments, CI regeneration, and control tests.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -108,9 +156,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Reproducible no-model baseline; all facets deterministic.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-585",
@@ -118,8 +169,8 @@
       "sourceRef": "docs/contracts/claim-discovery-workflow.md:585",
       "summary": "discover claims validate emits cautilus.claim_validation_report.v1 for packet shape and evidence-ref checks without mutating claims.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -139,9 +190,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Schema + negative non-mutation; deterministic.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-18",
@@ -149,8 +203,8 @@
       "sourceRef": "docs/contracts/claim-extraction-template.md:18",
       "summary": "The extraction seam mirrors the review seam: the binary emits a deterministic input packet, the agent does the model-backed work, and the binary validates and applies the result.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): could be read as a legitimate deterministic seam-shape umbrella rather than pure framing. Tier T2. [maintainer override @ratify-2026-06-18: not-a-claim -> accept: R8 seam-mirroring is a structural composition with its own checkable content, not pure R9 framing]",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): could be read as a legitimate deterministic seam-shape umbrella rather than pure framing. Tier T2. [maintainer override @ratify-2026-06-18: not-a-claim -> accept: R8 seam-mirroring is a structural composition with its own checkable content, not pure R9 framing]",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -170,9 +224,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "R6 reconciliation: the 'agent does the model-backed work' clause is a SEAM BOUNDARY (deterministic), not a behavior facet; the agent's extraction quality is a separate claim's content (R6 discriminator). The D3-era pattern of splitting ownership into [det-stated]+[eval-behavior] is superseded here by the ratified R6 rule. Ratified accept (maintainer override not-a-claim->accept: R8 seam-mirroring has checkable content).",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-236",
@@ -180,8 +237,8 @@
       "sourceRef": "docs/contracts/claim-extraction-template.md:236",
       "summary": "Refresh binds re-extraction to changed sources via the recorded git commit plus per-source content hashes.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -197,9 +254,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Change-binding via recorded hashes; deterministic.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-63",
@@ -207,8 +267,8 @@
       "sourceRef": "docs/contracts/claim-extraction-template.md:63",
       "summary": "Every claim must carry at least one excerpt copied exactly from the source text, with its source path and a line locator.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -224,9 +284,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Verbatim-anchoring rule; deterministic (this rule IS the anchoring validator).",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-guides-cli-md-125",
@@ -234,8 +297,8 @@
       "sourceRef": "docs/guides/cli.md:125",
       "summary": "The discover claims status summary includes evidenceSatisfaction so satisfied claims and their evidence refs are visible without reading the full claim packet first.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -247,9 +310,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "'visible without reading the full packet' is a deterministic consequence of the field being in the summary, not an independently-evaluable usability facet (contrast D3 cdw-382 'make curation efficient', which could fail even when present).",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-guides-cli-md-188",
@@ -257,8 +323,8 @@
       "sourceRef": "docs/guides/cli.md:188",
       "summary": "When the adapter declares workspace_prepare_command_template, Cautilus runs that consumer-owned prepare command once before the first turn.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -274,9 +340,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Conditional prepare-command behavior; deterministic.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-guides-cli-md-34",
@@ -284,8 +353,8 @@
       "sourceRef": "docs/guides/cli.md:34",
       "summary": "cautilus doctor adapter resolves and validates the adapter.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "user",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -301,9 +370,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Resolve + validate; deterministic.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-guides-cli-md-69",
@@ -311,8 +383,8 @@
       "sourceRef": "docs/guides/cli.md:69",
       "summary": "For dev/repo and dev/skill, a non-fixture coding-agent runtime may report the adapter-declared coding-agent-messaging class while preserving the smoke assessment as assessment metadata, but only when the observed packet reports the matching runtime telemetry.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -332,9 +404,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Conditional reporting with a telemetry guard; all deterministic including the negative.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-readme-md-108",
@@ -342,8 +417,8 @@
       "sourceRef": "README.md:108",
       "summary": "Evaluation uses two top-level surfaces: dev for AI-assisted development work such as repo contracts, tools, and skills, and app for AI-powered product behavior such as chat, prompt, and service responses.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "user",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -359,9 +434,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Surface taxonomy is a static contract.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-readme-md-9",
@@ -369,8 +447,8 @@
       "sourceRef": "README.md:9",
       "summary": "Cautilus installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
       "blindRecommendedProof": "deterministic",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "user",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -386,9 +464,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Install/packaging structure; both checkable.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-193",
@@ -396,8 +477,8 @@
       "sourceRef": "docs/contracts/claim-discovery-workflow.md:193",
       "summary": "Seeding classification hints is Cautilus Agent onboarding work: scan entry documents for rejected-alternative/non-goal conventions and claim vocabulary, propose hint lists with before/after extraction counts, and let the maintainer ratify them into the adapter before the first broad discovery.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -417,9 +498,12 @@
       "proposedDominantRoute": "cautilus-eval",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "The substantive promise is the agent producing sound hint proposals (eval); the assignment and the ratification-gate sequencing are deterministic boundaries.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "cautilus-eval",
+      "ratifiedTagVerdict": "too-coarse",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-23",
@@ -427,8 +511,8 @@
       "sourceRef": "docs/contracts/claim-discovery-workflow.md:23",
       "summary": "The primary user flow starts from an agent session, not from a human reading a CLI manual.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): borderline R16/R9 positioning premise for the numbered flow. Tier T1.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): borderline R16/R9 positioning premise for the numbered flow. Tier T1.",
       "claimAudience": "user",
       "significanceTier": "T1",
       "proposedFacets": [
@@ -444,9 +528,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "debatable",
       "proposedTagVerdict": "wrong",
-      "divergesFromRatifiedPerClaim": true,
+      "divergesFromAnswerKeyPerClaim": true,
       "note": "DIVERGES from ratified accept-as-eval. No substantive agent-behavior facet to evaluate: this is an R16/R9 positioning premise (proven by reading the design) plus a structural entrypoint fact. The ratified note itself flagged it 'borderline R16/R9 positioning premise', which supports the human/det reading over eval. cautilus-eval over-assignment (pattern 1).",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "wrong",
+      "maintainerNote": "Maintainer accepted the facet re-routing: dominant human-auditable (R16/R9 positioning premise), no substantive eval facet. Confirms divergence from the answer key's per-claim accept-as-cautilus-eval."
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-437",
@@ -454,8 +541,8 @@
       "sourceRef": "docs/contracts/claim-discovery-workflow.md:437",
       "summary": "The parent Cautilus Agent merges subagent review results and keeps review provenance in the packet.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): merge+provenance leans structural; agent-merge behavior keeps eval defensible. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): merge+provenance leans structural; agent-merge behavior keeps eval defensible. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -471,9 +558,12 @@
       "proposedDominantRoute": "cautilus-eval",
       "dominanceConfidence": "debatable",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Ratified accept with reservation 'merge+provenance leans structural'. The provenance-in-packet facet is deterministic; the agent-merge is the eval facet. Dominance debatable per the ratified reservation.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "cautilus-eval",
+      "ratifiedTagVerdict": "too-coarse",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-6",
@@ -481,8 +571,8 @@
       "sourceRef": "docs/contracts/claim-discovery-workflow.md:6",
       "summary": "The Cautilus Agent curates the discovery skeleton into the workflow a user expects when asking an agent to use Cautilus on a repo: which claims exist, which are covered, which need scenarios, which surfaces need alignment.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
       "claimAudience": "developer",
       "significanceTier": "T1",
       "proposedFacets": [
@@ -498,9 +588,12 @@
       "proposedDominantRoute": "cautilus-eval",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Genuine agent-curation eval claim with a deterministic data-availability facet underneath.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "cautilus-eval",
+      "ratifiedTagVerdict": "too-coarse",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-261",
@@ -508,8 +601,8 @@
       "sourceRef": "docs/contracts/claim-extraction-template.md:261",
       "summary": "Verifying the Cautilus Agent flow itself is later Cautilus-eval-fixture work over the skill surface and is not a prerequisite for the comparison.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "relabel",
-      "ratifiedNote": "Relabel — proof route cautilus-eval -> human-auditable (Option C re-adjudication 2026-06-18, re-aimed from the prior eval->deterministic): a sequencing/scope assertion with no substance check; reading the contract is the proof (2/3 adjudicators). agentLabels left as-extracted. Tier T3.",
+      "answerKeyVerdict": "relabel",
+      "answerKeyNote": "Relabel — proof route cautilus-eval -> human-auditable (Option C re-adjudication 2026-06-18, re-aimed from the prior eval->deterministic): a sequencing/scope assertion with no substance check; reading the contract is the proof (2/3 adjudicators). agentLabels left as-extracted. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -521,9 +614,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "wrong",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "MATCHES ratified relabel (eval->human-auditable, Option C): a scope/sequencing assertion with no substance check; reading the contract is the proof. Confirms the per-claim relabel at facet granularity.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "wrong",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-68",
@@ -531,8 +627,8 @@
       "sourceRef": "docs/contracts/claim-extraction-template.md:68",
       "summary": "v2 routes recommendedProof to deterministic whenever a static repo-owned check could prove a capability claim, instead of defaulting it to human-auditable.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "relabel",
-      "ratifiedNote": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: describes a routing rule whose downstream effect is agent behavior, which can tempt eval. Tier T2.",
+      "answerKeyVerdict": "relabel",
+      "answerKeyNote": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: describes a routing rule whose downstream effect is agent behavior, which can tempt eval. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -544,9 +640,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "wrong",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "MATCHES ratified relabel (eval->deterministic, R6/R12). This is the 'meta template-content read as behavioral' class -- the cet documented-content under-route residual measured at 8.75% in MEASUREMENT.proof-route.md. The facet view confirms it routes deterministic.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "wrong",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-78",
@@ -554,8 +653,8 @@
       "sourceRef": "docs/contracts/claim-extraction-template.md:78",
       "summary": "When the agent is unsure whether text is a claim, it emits the claim with verificationReadiness blocked and an entry in unresolvedQuestions instead of silently dropping it.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept (Option C re-adjudication 2026-06-18): the blind route cautilus-eval was correct; the prior relabel to deterministic was a key error. The agent emit-blocked-when-unsure behavior is settled only by agent execution (3/3 adjudicators). Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept (Option C re-adjudication 2026-06-18): the blind route cautilus-eval was correct; the prior relabel to deterministic was a key error. The agent emit-blocked-when-unsure behavior is settled only by agent execution (3/3 adjudicators). Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -571,9 +670,12 @@
       "proposedDominantRoute": "cautilus-eval",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "MATCHES ratified accept (Option C: blind eval correct; the emit-blocked-when-unsure agent judgment is settled only by execution). The schema-support facet is the deterministic half.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "cautilus-eval",
+      "ratifiedTagVerdict": "too-coarse",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-10",
@@ -581,8 +683,8 @@
       "sourceRef": "docs/internal/working-patterns.md:10",
       "summary": "The agent does not voluntarily run review gates on vague unease alone, but a review gate that has entered scope is treated as already delegated.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -598,9 +700,12 @@
       "proposedDominantRoute": "cautilus-eval",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Genuine dual agent-behavior claim; both facets are semantic routing-discipline outcomes (the reasoning-soundness judge's domain).",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "cautilus-eval",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-77",
@@ -608,8 +713,8 @@
       "sourceRef": "docs/internal/working-patterns.md:77",
       "summary": "specdown-flavored language (docs/specs/**/*.spec.md, run:shell, doctest, check:jq, specdown HTML report, report.json) must first be discovered through the Charness support/specdown skill: check support/specdown in the find-skills inventory and read its syntax/best-practices/cli/report reference before treating it as plain Markdown/HITL work.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -625,9 +730,12 @@
       "proposedDominantRoute": "cautilus-eval",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "A routing claim (same family as the reasoning-soundness prototype): the routing soundness is eval; the trigger vocabulary is a deterministic list.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "cautilus-eval",
+      "ratifiedTagVerdict": "too-coarse",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-readme-md-139",
@@ -635,8 +743,8 @@
       "sourceRef": "README.md:139",
       "summary": "Cautilus ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
       "claimAudience": "user",
       "significanceTier": "T1",
       "proposedFacets": [
@@ -652,9 +760,12 @@
       "proposedDominantRoute": "cautilus-eval",
       "dominanceConfidence": "debatable",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "The flagship improvement promise. Dominance debatable, leaning deterministic: under R12 as written, the existence of the six named mechanisms is a static capability-existence check -- the STRONGER reading -> dominant-deterministic, which flips the verdict to 'wrong'. Only the does-it-actually-improve-prompts outcome is genuinely eval. Marked dominant-eval to match the ratified accept-as-eval, but the maintainer should weigh the R12 'ships X' reading that makes it wrong.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "corrected",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "wrong",
+      "maintainerNote": "Maintainer: dominant cautilus-eval -> deterministic. Under R12 the six named mechanisms shipping is a static capability-existence check (the stronger reading), consistent with how other 'ships X' claims (e.g. readme-9) route deterministic; the does-it-actually-improve outcome stays a separate eval facet. Verdict too-coarse -> wrong. Diverges from the answer key's per-claim accept-as-cautilus-eval."
     },
     {
       "claimId": "claim-readme-md-60",
@@ -662,8 +773,8 @@
       "sourceRef": "README.md:60",
       "summary": "The Cautilus Agent curates the discovery packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T1.",
       "claimAudience": "developer",
       "significanceTier": "T1",
       "proposedFacets": [
@@ -675,9 +786,12 @@
       "proposedDominantRoute": "cautilus-eval",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Pure agent-curation-quality eval claim (same family as cdw-6); no separable deterministic facet.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "cautilus-eval",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-readme-md-95",
@@ -685,8 +799,8 @@
       "sourceRef": "README.md:95",
       "summary": "The dogfood run turned the question of whether the agent read and followed the repo instructions from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
       "blindRecommendedProof": "cautilus-eval",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): phrased as dogfood-specific but R18 carves the general turn-judgment-into-reproducible-packet capability as the real claim. Tier T1.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction + audience/group/proof labels correct; reservation recorded (kept accept under R5/R11): phrased as dogfood-specific but R18 carves the general turn-judgment-into-reproducible-packet capability as the real claim. Tier T1.",
       "claimAudience": "user",
       "significanceTier": "T1",
       "proposedFacets": [
@@ -706,9 +820,12 @@
       "proposedDominantRoute": "cautilus-eval",
       "dominanceConfidence": "debatable",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "R18 carves the general 'turn transcript-judgment into a reproducible packet' capability as the real claim. Composite: reproducible-packet (det) + following-behavior capture (eval) + reopen acceptance (human). Dominance debatable (the reproducible-packet capability could be read as the det dominant, cf. D3 reviewable-artifacts-spec-3); marked dominant-eval to match ratified accept.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "cautilus-eval",
+      "ratifiedTagVerdict": "too-coarse",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-82",
@@ -716,8 +833,8 @@
       "sourceRef": "docs/contracts/claim-discovery-workflow.md:82",
       "summary": "Claim packets are high-recall proof-planning inputs, not the primary human review surface once the maintainer is judging product meaning, duplication, audience fit, or next-action grouping.",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "relabel",
-      "ratifiedNote": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: could read as R16 identity/positioning premise instead. Tier T2.",
+      "answerKeyVerdict": "relabel",
+      "answerKeyNote": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: could read as R16 identity/positioning premise instead. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -729,9 +846,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "debatable",
       "proposedTagVerdict": "wrong",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "MATCHES ratified relabel (human->deterministic, R6/R12 boundary assignment). The ratified note flags 'could read as R16 identity/positioning premise' (human), so dominance is debatable; the relabel chose deterministic. human-auditable hiding a deterministic boundary (pattern 2).",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "wrong",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-101",
@@ -739,8 +859,8 @@
       "sourceRef": "docs/internal/working-patterns.md:101",
       "summary": "When a standing gate has landed, escape hatches are re-evaluated: temporary enforcement escapes (e.g. `Must*` helpers) are checked for whether they can be deleted once the gate is in.",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -752,9 +872,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "A working-pattern practice; the claim is the re-evaluation discipline, not a specific deletion. Genuinely human.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-128",
@@ -762,8 +885,8 @@
       "sourceRef": "docs/internal/working-patterns.md:128",
       "summary": "Stable commands an operator directly expects via `cautilus ...`, surfaces a release artifact calls officially supported, and surfaces whose error contract will be strongly pinned long-term default to being pulled up into the Go CLI.",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -775,9 +898,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Promotion-policy criteria; the judgment of whether a surface meets them is human.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-157",
@@ -785,8 +911,8 @@
       "sourceRef": "docs/internal/working-patterns.md:157",
       "summary": "Go promotion trigger: the adapter indirection (e.g. `consumer_command_template`) stays stable across two or three sessions.",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -798,9 +924,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Promotion-trigger judgment criterion; human.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-160",
@@ -808,8 +937,8 @@
       "sourceRef": "docs/internal/working-patterns.md:160",
       "summary": "Go promotion trigger: it becomes worth including in binary-level smoke / help text / command discovery.",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -821,9 +950,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Promotion-trigger judgment criterion; human.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-21",
@@ -831,8 +963,8 @@
       "sourceRef": "docs/internal/working-patterns.md:21",
       "summary": "One counterweight pass runs right after premortem: a single counterweight agent is asked to flag over-worry/YAGNI/premature improvement, and it classifies each finding into one of four buckets (must-fix before release, cheap to fold in, over-worry to ignore, valid but defer).",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -848,9 +980,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "The practice/sequencing is human; the four-bucket taxonomy is a checkable documented structure.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "too-coarse",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-30",
@@ -858,8 +993,8 @@
       "sourceRef": "docs/internal/working-patterns.md:30",
       "summary": "Iterative premortem: after partially applying round-1 results, a round 2 runs again on the new decisions that arose from those changes.",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -871,9 +1006,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "Process pattern; human.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-45",
@@ -881,8 +1019,8 @@
       "sourceRef": "docs/internal/working-patterns.md:45",
       "summary": "Rejected or not-done decisions live only in explicit decision sections with `Fixed Decisions` / `Deliberately Not Doing` style headings and in goal artifacts.",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -898,9 +1036,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "debatable",
       "proposedTagVerdict": "wrong",
-      "divergesFromRatifiedPerClaim": true,
+      "divergesFromAnswerKeyPerClaim": true,
       "note": "DIVERGES from ratified accept-as-human. The dominant facet IS the non_claim_section_headings discipline: a placement rule a scanner enforces (rejected-decision statements must not appear outside those headings) -- the live classification hint family. human-auditable hiding a deterministic placement rule (pattern 2). High-value review item: directly relevant to classification_hints wiring.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "wrong",
+      "maintainerNote": "Maintainer accepted the facet re-routing: dominant deterministic (the non_claim_section_headings placement rule a scanner enforces). Confirms divergence from the answer key's per-claim accept-as-human; directly informs classification_hints wiring."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-61",
@@ -908,8 +1049,8 @@
       "sourceRef": "docs/internal/working-patterns.md:61",
       "summary": "Cross-cutting concerns are not exposed in AOP terms in public docs: internal design uses AOP/dominant-decomposition warnings, but public docs speak in concrete contracts and evidence routes (e.g. 'every workflow leaves reviewable artifacts', 'missing evidence remains visible' rather than 'aspect').",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T3.",
       "claimAudience": "developer",
       "significanceTier": "T3",
       "proposedFacets": [
@@ -925,9 +1066,12 @@
       "proposedDominantRoute": "deterministic",
       "dominanceConfidence": "debatable",
       "proposedTagVerdict": "wrong",
-      "divergesFromRatifiedPerClaim": true,
+      "divergesFromAnswerKeyPerClaim": true,
       "note": "DIVERGES from ratified accept-as-human. The headline is a negative lexical constraint (no AOP terms in public docs) that a scanner can enforce -> deterministic; the positive 'speak concretely' is the human-judged half. Dominance debatable (the design-communication philosophy could be read as dominant-human). Surfaced as a facet-vs-per-claim granularity divergence.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "retire-candidate",
+      "ratifiedDominantRoute": "deterministic",
+      "ratifiedTagVerdict": "retire-candidate",
+      "maintainerNote": "Maintainer: 'statements about what it does not do are almost all retirement targets.' The dominant facet ('public docs do NOT contain AOP vocabulary') is a whole-claim negative, so it is a discovery-curation RETIRE signal rather than a det/human routing decision; excluded from the routing-accuracy tally (analogous to the not-a-claim lane). The residual positive facet (public docs speak in concrete contracts) is human-auditable. OPEN: whether this becomes a discovery-curation rule and whether this claim's accept in goldset-v2-reextract-head is revisited -- carried as a separate decision, not applied here."
     },
     {
       "claimId": "claim-docs-internal-working-patterns-md-86",
@@ -935,8 +1079,8 @@
       "sourceRef": "docs/internal/working-patterns.md:86",
       "summary": "When a v1 surface name leaks archetype vocabulary, the default is catalog-level deprecation (alias + silent normalization) rather than a schema bump; a schema bump is only for when there is a real reason to force consumer migration.",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept — extraction correct; audience/group/proof labels correct. Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -952,9 +1096,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "The when-to-bump policy is human judgment; the alias/normalization mechanism is a checkable deterministic facet.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "too-coarse",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-readme-md-128",
@@ -962,8 +1109,8 @@
       "sourceRef": "README.md:128",
       "summary": "Cautilus does not freeze one prompt string as the contract; it treats the behavior under evaluation as the contract (intent-first).",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept (Option C re-adjudication 2026-06-18): the blind route human-auditable was correct; the prior relabel to cautilus-eval over-read the intent-first design philosophy as behavior. Behavior-as-contract is a design stance proven by reading the design (2/3 adjudicators). Tier T1.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept (Option C re-adjudication 2026-06-18): the blind route human-auditable was correct; the prior relabel to cautilus-eval over-read the intent-first design philosophy as behavior. Behavior-as-contract is a design stance proven by reading the design (2/3 adjudicators). Tier T1.",
       "claimAudience": "user",
       "significanceTier": "T1",
       "proposedFacets": [
@@ -979,9 +1126,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "too-coarse",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "MATCHES ratified accept (Option C: blind human correct; prior eval-relabel over-read the philosophy as behavior). Dominant is the intent-first design stance (human); the no-frozen-prompt negative is a deterministic facet.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "too-coarse",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     },
     {
       "claimId": "claim-readme-md-96",
@@ -989,8 +1139,8 @@
       "sourceRef": "README.md:96",
       "summary": "The dogfood run exposed that routing proof is not backend subagent capability proof, and keeping that distinction in the packet prevented over-claiming what had been verified.",
       "blindRecommendedProof": "human-auditable",
-      "ratifiedVerdict": "accept",
-      "ratifiedNote": "Accept (Option C re-adjudication 2026-06-18): the blind route human-auditable was correct; the prior relabel to deterministic over-applied R3. A dogfood retro narrative about what a run exposed, no substance check (3/3 adjudicators). Tier T2.",
+      "answerKeyVerdict": "accept",
+      "answerKeyNote": "Accept (Option C re-adjudication 2026-06-18): the blind route human-auditable was correct; the prior relabel to deterministic over-applied R3. A dogfood retro narrative about what a run exposed, no substance check (3/3 adjudicators). Tier T2.",
       "claimAudience": "developer",
       "significanceTier": "T2",
       "proposedFacets": [
@@ -1002,9 +1152,12 @@
       "proposedDominantRoute": "human-auditable",
       "dominanceConfidence": "clear",
       "proposedTagVerdict": "exact",
-      "divergesFromRatifiedPerClaim": false,
+      "divergesFromAnswerKeyPerClaim": false,
       "note": "MATCHES ratified accept (Option C): a dogfood retro narrative about what a run exposed, no substance check and nothing to re-run. Genuinely human.",
-      "maintainerVerdict": null
+      "maintainerVerdict": "ratified",
+      "ratifiedDominantRoute": "human-auditable",
+      "ratifiedTagVerdict": "exact",
+      "maintainerNote": "Ratified as proposed (clear/batch)."
     }
   ]
 }
