@@ -162,7 +162,7 @@ claim_discovery:
       userStory: "As an adopter, I want doctor/version to report setup, onboarding, and wiring readiness, so that I know exactly what to fix before a first bounded run."
     - epicId: D1-discovery
       branch: Discover
-      title: "Claim discovery turns adapter-owned docs + linked Markdown into bounded proof-plan candidates (not a verdict)"
+      title: "Claim discovery turns adapter-owned docs + linked docs into bounded proof-plan candidates (not a verdict)"
       userStory: "As a maintainer, I want discovery to turn my adapter-owned docs into bounded proof-plan candidates (not a verdict), so that I start from source-ref-backed claims rather than a blank page."
     - epicId: D2-review-refresh
       branch: Discover

@@ -21,7 +21,7 @@ The target product is:
 
 The product has three connected jobs:
 
-1. discover declared behavior claims worth proving from adapter-owned entry docs, README.md, AGENTS.md, CLAUDE.md, and linked repo-local Markdown
+1. discover declared behavior claims worth proving from adapter-owned entry docs, README.md, AGENTS.md, CLAUDE.md, and linked repo-local docs
 2. verify selected claims through bounded evaluation fixtures, observed packets, summaries, reports, and review surfaces
 3. improve behavior through bounded improvement and GEPA-style search after the proof surface is honest
 

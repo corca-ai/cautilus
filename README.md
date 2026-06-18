@@ -11,10 +11,12 @@ The binary is shared across repos.
 The Cautilus Agent surface, adapter wiring, prompts, and instruction-routing surface are not.
 They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.
 
-## Current Release Boundary
+## What's Ready Today
 
-Host repos can use `cautilus evaluate fixture`, `cautilus evaluate observation`, and post-run `cautilus evaluate skill-experiment` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.
+Cautilus proves its own promises with honest badges ([the apex spec](./docs/specs/index.spec.md)): readiness and claim discovery run live in executable specs (**proven**), while behavior evaluation, bounded improvement, reviewable artifacts, and host ownership project saved evidence bundles (**declared**) and a testable-agent runner is **promised**.
+For cross-repo adoption, the bounded evaluation loop is the most ready slice: host repos can use `cautilus evaluate fixture`, `cautilus evaluate observation`, and post-run `cautilus evaluate skill-experiment` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.
 `skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.
+Claim discovery and bounded improvement ship today and are opt-in for host repos that adopt them.
 
 ## Who It Is For
 

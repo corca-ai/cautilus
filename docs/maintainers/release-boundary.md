@@ -1,6 +1,6 @@
 # Release Boundary
 
-This note fixes what counts as the standalone `Cautilus` product surface before wider consumer rollout.
+This note fixes what counts as the standalone `Cautilus` product surface — what the product ships and owns versus what stays in the host repo.
 
 ## Product-Owned Surface
 
@@ -51,12 +51,12 @@ The current honest install story is:
 12. after the tag is live, let the tag-triggered release workflow retry [verify-public-release.mjs](../../scripts/release/verify-public-release.mjs) until the public GitHub release assets reflect the tagged version
 13. keep `cautilus update` aligned with the tagged-release install surface so release-asset installs re-materialize the managed binary wrapper
 
-This repo is still not claiming npm publication or a public Codex/Claude plugin distribution flow.
-The plugin surfaces remain repo-local test fixtures, not the canonical consumer install contract.
+Cautilus distributes through tagged GitHub releases, not npm or a public Codex/Claude plugin distribution flow.
+The plugin surfaces are repo-local test fixtures, not the canonical consumer install contract.
 
 ## Versioning Discipline
 
-Before wider reuse, keep these compatibility rules:
+Keep these compatibility rules:
 
 - breaking contract changes must update checked-in docs and fixtures in the same change
 - CLI help, Cautilus Agent instructions, and executable specs should describe the same commands

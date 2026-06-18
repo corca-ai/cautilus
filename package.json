@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.16.1",
   "type": "module",
-  "description": "Adapter-driven intentful behavior evaluation toolkit",
+  "description": "Adapter-driven framework for discovering, evaluating, and improving agent behavior",
   "engines": {
     "node": ">=22"
   },

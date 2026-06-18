@@ -89,7 +89,7 @@ Define one product-owned contract for:
 
 ## Canonical Artifact
 
-This file is the canonical design note for version provenance and update-check behavior until the surface stabilizes enough to fold back into broader release docs.
+This file is the canonical design note for version provenance and update-check behavior.
 
 ## First Implementation Slice
 

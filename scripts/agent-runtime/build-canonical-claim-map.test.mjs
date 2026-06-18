@@ -53,8 +53,8 @@ Source anchors: docs/specs/evaluation-surfaces.spec.md.
 test("buildCanonicalClaimMap maps raw user and maintainer claims to canonical catalogs", () => {
 	const packet = buildCanonicalClaimMap({
 		args: {
-			userCatalog: "docs/claims/user-facing.md",
-			maintainerCatalog: "docs/claims/maintainer-facing.md",
+			userCatalog: "docs/specs/user/index.spec.md",
+			maintainerCatalog: "docs/specs/contracts/index.spec.md",
 		},
 		userCatalogMarkdown,
 		maintainerCatalogMarkdown,
@@ -106,8 +106,8 @@ test("buildCanonicalClaimMap maps raw user and maintainer claims to canonical ca
 test("buildCanonicalClaimMap leaves low-confidence claims for review", () => {
 	const packet = buildCanonicalClaimMap({
 		args: {
-			userCatalog: "docs/claims/user-facing.md",
-			maintainerCatalog: "docs/claims/maintainer-facing.md",
+			userCatalog: "docs/specs/user/index.spec.md",
+			maintainerCatalog: "docs/specs/contracts/index.spec.md",
 		},
 		userCatalogMarkdown,
 		maintainerCatalogMarkdown,

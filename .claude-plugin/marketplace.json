@@ -13,12 +13,14 @@
       "name": "cautilus",
       "source": "./plugins/cautilus",
       "version": "0.16.1",
-      "description": "Standalone intentful behavior evaluation CLI and bundled skill.",
+      "description": "Standalone CLI and bundled agent for discovering, evaluating, and improving agent behavior.",
       "keywords": [
+        "agent-behavior",
+        "claim-discovery",
         "evaluation",
-        "baseline",
-        "skill",
-        "cli"
+        "improvement",
+        "cli",
+        "skill"
       ]
     }
   ]

@@ -1,6 +1,8 @@
 # Cautilus Public Specs
 
-These documents are the public contract for the currently shipped `Cautilus` surface.
+> Archived — superseded by [the apex spec](../index.spec.md). Kept for historical context.
+
+These documents were the public contract for a previously shipped `Cautilus` surface.
 Each page explains one bounded claim and keeps a cheap executable proof next to the prose.
 The proofs use the repo-local `./bin/cautilus` wrapper because this report is generated from a source checkout, not from an installed binary on `PATH`.
 

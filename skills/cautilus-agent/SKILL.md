@@ -25,7 +25,7 @@ Cautilus Agent owns routing, sequencing, user-facing decision boundaries, and LL
 
 The current external-adoption front door is `eval`: verify bounded intentful behavior with explicit fixtures and adapters, and compare host-preserved skill experiment outputs after a run.
 The broader product also includes opt-in `claim` and `improve` surfaces.
-During the contract rewrite, do not present `claim`, `improve`, live app-runner workflows, or review-learning packet capture as stable cross-repo defaults.
+Do not present `claim`, `improve`, live app-runner workflows, or review-learning packet capture as stable cross-repo defaults; they are opt-in surfaces a host repo adopts deliberately.
 
 ## CLI First
 
@@ -64,7 +64,7 @@ If claim state exists, read or refresh that packet before planning new proof wor
 ## Declared Claim Discovery
 
 Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created.
-In external consumer repos during the contract rewrite, use this path only after the user explicitly opts into non-eval Cautilus work.
+In external consumer repos, use this path only after the user explicitly opts into non-eval Cautilus work.
 For these direct questions, do not run `discover claims` until scan entries/depth are stated and the user confirms or adjusts the scope; keep LLM review as a separate budgeted branch.
 Do not hard-code the search to README; by default, the binary starts from adapter-owned `claim_discovery.entries` or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
 Use repeated `--source` arguments only when the user or adapter has selected an explicit truth-surface inventory.
@@ -101,7 +101,7 @@ Status from existing state:
 Before creating fixtures, keep proof class and readiness separate.
 Use `human-auditable` for source/doc judgment, `deterministic` for unit/lint/type/build/schema/CI proof, `cautilus-eval` for model/agent/prompt/skill/workflow evidence, `needs-scenario` for claims needing scenario decomposition, and `needs-alignment` for docs/code/adapter/skill surfaces that must be reconciled before proof would be honest.
 
-After discovery or refresh, summarize scanned entry files, linked Markdown count and depth, raw candidate count, claim summary by proof mechanism/readiness/evidence/review/lifecycle, and the groups that look ready for deterministic tests, Cautilus scenarios, alignment work, or human-auditable review.
+After discovery or refresh, summarize scanned entry files, linked docs count and depth, raw candidate count, claim summary by proof mechanism/readiness/evidence/review/lifecycle, and the groups that look ready for deterministic tests, Cautilus scenarios, alignment work, or human-auditable review.
 When the next natural branch is claim review, explain that it is a budgeted LLM review branch before presenting it as a choice.
 The coordinator should understand that choosing review means setting a review budget before any reviewer lanes, result application, eval planning, edits, or commits happen.
 Use `discover claims status --sample-claims <n>` as the canonical status view before hand-inspecting packet fields.
