@@ -13985,7 +13985,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "080e7d05f9e443535285838a78f6c30ba663c5a1",
+  "gitCommit": "dc1837c6057ff81dce53b206097c232c2e5f6103",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -15594,7 +15594,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:65adadc9407129d8acd256973a79927f10e95c38f6ef9a8310d8310311d0ef16",
+      "contentHash": "sha256:f95ce0f073f8bfe046f2e70fde0d6ce0cdf0e5903989646a1d14fb6016f15713",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -15603,7 +15603,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:688a4589ba7a8803b1cb9966c3fa34a9793136e05b77d030c533542262ff9966",
+      "contentHash": "sha256:fe2bc98da35698385115a144140691e99e22e99bdc954b72c0c9d5a9dabdb7a6",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "contract",
@@ -15613,7 +15613,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:7661381c4dd755a5452d404bd0ab28b6900c992514e298bb0edb024d841cc223",
+      "contentHash": "sha256:34fdf00395d000eebf6e54aa90b858e2ff78ad8e48787a375bc29ad65c8a4c71",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "contract",
@@ -15623,7 +15623,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:1276a4f0971242044ddf3087fc4de5794fedd493f22c40098c300bc51aab579f",
+      "contentHash": "sha256:eeedc1efaecd60b35bd0a43bf24b9bf0f4cd1f731aafd47d03eb5fd5bf4db7a0",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -15643,7 +15643,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:ca9a653365fcf97ce502259b28550b2a84b7d571ab9646b43242f794d06bd30c",
+      "contentHash": "sha256:eecaa67700df82b1fc2518a7d703ff49e2d78ded887f0d89934caf48cddb43a6",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -15813,7 +15813,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:82802024e1ac79f1527323f4f4f3e300810219607b884ffd749c7d963fc66be3",
+      "contentHash": "sha256:046ed0104d0751df18d5811b23912d4473f674417d3b06ab69713de91eb526ae",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -16103,7 +16103,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:2da50dcdabefad524e48c96750be8bb7141b9e8d492a16488bfb124631fe4481",
+      "contentHash": "sha256:2a371f4ebf06f3d5cac48dc46d4e31a606c53dcfdbcdfc5d056994895d6115dc",
       "depth": 3,
       "discoveredFrom": "docs/contracts/claim-discovery-workflow.md",
       "kind": "contract",
@@ -16253,7 +16253,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:de94f6e334f878871ad60f9c1759b084ffeb23ecf7923622bef87c221212e251",
+      "contentHash": "sha256:338b661ea3ad988ec978e2df753fa198a6078150361d86f13c1529c86e2b6fb7",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",
