@@ -20,6 +20,8 @@ export default [
 			"dist/**",
 			"artifacts/**",
 			".artifacts/**",
+			".charness/hitl/runtime/**",
+			".charness/retro/**",
 			"_site/**",
 			"__pycache__/**",
 		],
