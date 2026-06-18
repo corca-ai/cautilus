@@ -214,6 +214,15 @@ func TestBuildClaimExtractionInputTemplateV2EmitsEpicFacetsAndRecallPrompts(t *t
 	if !strings.Contains(routing, "enabler") || !strings.Contains(routing, "schema check does not prove") {
 		t.Fatalf("routingGuidance must carry the enabler rubric and the schema-check caveat, got %q", routing)
 	}
+	// Proof-route generalization (R16-locked, gold-set-measured): the operative
+	// template must carry the ownership/boundary and reviewable/reproducible routing
+	// folded in by the contract-doc edit, so a doc-only edit cannot silently leave the
+	// binary template stale (charness-artifacts/debug/2026-06-18-extraction-template-doc-binary-routing-drift.md).
+	for _, want := range []string{"ownership/boundary/isolation", "reviewable/reproducible/auditable"} {
+		if !strings.Contains(routing, want) {
+			t.Fatalf("routingGuidance must carry the %q proof-route generalization, got %q", want, routing)
+		}
+	}
 }
 
 func TestBuildClaimExtractionInputRendersAdapterEpicCatalog(t *testing.T) {
