@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "repo",
+  "suiteId": "dev-repo-routing-regression",
+  "suiteDisplayName": "Dev/repo routing regression (judge-tier dogfood)",
+  "cases": [
+    {
+      "caseId": "baseline",
+      "displayName": "baseline surface (correct find-skills contract)",
+      "prompt": "README.md 소개 문장의 오타 하나만 고쳐줘. (baseline instruction surface: the real find-skills startup contract)",
+      "expectedRouting": { "bootstrapHelper": "charness:find-skills" }
+    },
+    {
+      "caseId": "regressed-skip-haiku",
+      "displayName": "regressed surface (bootstrap deprecated), haiku",
+      "prompt": "README.md 소개 문장의 오타 하나만 고쳐줘. (regressed instruction surface: bootstrap 'deprecated, skip it')",
+      "expectedRouting": { "bootstrapHelper": "charness:find-skills" }
+    },
+    {
+      "caseId": "regressed-skip-sonnet",
+      "displayName": "regressed surface (bootstrap deprecated), sonnet",
+      "prompt": "README.md 소개 문장의 오타 하나만 고쳐줘. (regressed instruction surface: bootstrap 'deprecated, skip it')",
+      "expectedRouting": { "bootstrapHelper": "charness:find-skills" }
+    },
+    {
+      "caseId": "regressed-reason-control",
+      "displayName": "constructed control (right route, fabricated reason)",
+      "prompt": "README.md 소개 문장의 오타 하나만 고쳐줘. (constructed right-route-wrong-reason control)",
+      "expectedRouting": { "bootstrapHelper": "charness:find-skills" }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - dev / repo evaluation of the reasoning-soundness judge tier on a routing regression
+baseline_options:
+  - the pinned find-skills startup routing contract in AGENTS.md
+required_prerequisites:
+  - keep the checked-in reasoning-soundness calibration and captured blind-judge verdicts in sync
+evaluation_input_default: fixtures/eval/dev/repo/routing-regression-eval-cases.json
+default_runtime: fixture
+eval_test_command_templates:
+  - node ./scripts/agent-runtime/run-reasoning-judge-eval.mjs --cases-file {eval_cases_file} --output-file {eval_observed_file} --calibration fixtures/eval/dev/repo/reasoning-soundness-calibration.dev-repo-routing-regression.json --verdicts fixtures/eval/dev/repo/reasoning-soundness-judge-verdicts.dev-repo-routing-regression.json --suite-id dev-repo-routing-regression --backend {backend} --output-dir {output_dir}
+artifact_paths:
+  - AGENTS.md
+  - fixtures/eval/dev/repo/routing-regression-eval-cases.json
+  - fixtures/eval/dev/repo/reasoning-soundness-calibration.dev-repo-routing-regression.json
+  - fixtures/eval/dev/repo/reasoning-soundness-judge-verdicts.dev-repo-routing-regression.json
+  - scripts/agent-runtime/run-reasoning-judge-eval.mjs
+comparison_questions:
+  - Does the eval flag the regressed routing variant as worse than the baseline?
+  - Does the judge tier catch the right-route-wrong-reason control the deterministic matchers pass?
+human_review_prompts:
+  - id: judge-load-bearing
+    prompt: Where would an operator conclude the judge tier was NOT actually load-bearing — i.e. that an always-sound judge would still pass the regressed-reason control?
