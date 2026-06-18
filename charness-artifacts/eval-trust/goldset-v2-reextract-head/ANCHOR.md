@@ -17,9 +17,10 @@ This snapshot re-extracts the same 5 sources under that operative template so th
 
 ## Status: RATIFIED GROUND TRUTH (374/374, 0 pending)
 
-Ratified 2026-06-18 (`hitl-reextract-v2head-20260618`): accept 338 / relabel 25 / not-a-claim 10 / badly-bounded 1.
+Ratified 2026-06-18 (`hitl-reextract-v2head-20260618`); amended 2026-06-18 (Option C residual re-adjudication): **accept 344 / relabel 19 / not-a-claim 10 / badly-bounded 1**.
 This snapshot is now the current both-track answer key at HEAD and **supersedes** `../goldset-v2-head/` (306/306 at `558cda7`), which stays frozen as the proof-route measurement baseline.
 See `HITL-CLOSEOUT.md` for the operating model (source pre-grade -> maintainer exception-ratify, 3 overrides) and the harvest.
+The Option C amendment un-relabeled 6 residuals to accept (the blind route was correct; R3 had been over-applied) and re-aimed 1; see `residual-key-readjudication-cutC.md`.
 
 ## Counts (raw blind, pre-HITL)
 

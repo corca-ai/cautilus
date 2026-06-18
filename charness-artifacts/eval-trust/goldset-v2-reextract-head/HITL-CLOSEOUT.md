@@ -36,6 +36,11 @@ The other 3 borderline (`readme-29` "Not for…" R16 carve-out, `cli-40` reader-
 
 Segmented: user-product 75 (accept 61 / relabel 6 / not-a-claim 7 / badly-bounded 1), developer 299 (accept 277 / relabel 19 / not-a-claim 3).
 
+**Amendment 2026-06-18 (Option C residual re-adjudication).** A sharpened-R3 re-adjudication of the 16 residual relabels (forcing a substance-level check, not a "the doc contains this sentence" string check) found R3 had been over-applied on 6 of them: the blind route was correct and the relabel was the error.
+Those 6 are un-relabeled to accept (user-product: readme-16, readme-128; developer: readme-8, readme-96, readme-134, template-78), and 1 is re-aimed (template-261 eval->human-auditable).
+New tally: **accept 344 / relabel 19 / not-a-claim 10 / badly-bounded 1** (user-product accept 63 / relabel 4; developer accept 281 / relabel 15).
+Basis and per-claim dispositions: `residual-key-readjudication-cutC.md`.
+
 ## Headline harvest: the operative template reduced the measured systematic error
 
 - **Developer-track proof-route relabel rate 10.8% -> 6.4%** (clean comparison, both graded under locked R1-R18). The dense behavioral contract `claim-discovery-workflow.md` dropped to **2.5%** (2/80) — the generalization bit hardest exactly where the proof-route harvest concentrated.

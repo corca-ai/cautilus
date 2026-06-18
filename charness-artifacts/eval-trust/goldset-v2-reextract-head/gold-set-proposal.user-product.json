@@ -37,10 +37,18 @@
     "overrides": 3,
     "tally": {
       "not-a-claim": 10,
-      "accept": 338,
-      "relabel": 25,
+      "accept": 344,
+      "relabel": 19,
       "badly-bounded": 1
-    }
+    },
+    "amendments": [
+      {
+        "task": "Option C — residual key re-adjudication under sharpened R3",
+        "date": "2026-06-18",
+        "change": "6 residual relabels un-relabeled to accept (blind route was correct; R3 over-applied) + 1 re-aimed (cet-261 eval->human-auditable). accept 338->344, relabel 25->19.",
+        "evidence": "cutC/synthesis.json, residual-key-readjudication-cutC.md"
+      }
+    ]
   },
   "track": "user-product",
   "segmentedBy": "claimAudience",
@@ -270,8 +278,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "relabel",
-      "note": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: badge proven/declared/promised state is structurally checkable against executable spec, not human inspection. Tier T1.",
+      "maintainerVerdict": "accept",
+      "note": "Accept (Option C re-adjudication 2026-06-18): the blind route human-auditable was correct; the prior relabel to deterministic over-applied R3. Badge proven/declared/promised state needs human judgment of current proof reality, no substance check (2/3 adjudicators). Tier T1.",
       "significanceTier": "T1"
     },
     {
@@ -903,8 +911,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "relabel",
-      "note": "Relabel — proof route human-auditable -> cautilus-eval (R6/R8/R12: load-bearing content is an agent/model/behavior outcome, not settled by a static check). agentLabels left as-extracted for the answer key; correction recorded here. Basis: intent-first behavior-as-contract is an apex behavior outcome (R8) not readable-by-inspection. Tier T1.",
+      "maintainerVerdict": "accept",
+      "note": "Accept (Option C re-adjudication 2026-06-18): the blind route human-auditable was correct; the prior relabel to cautilus-eval over-read the intent-first design philosophy as behavior. Behavior-as-contract is a design stance proven by reading the design (2/3 adjudicators). Tier T1.",
       "significanceTier": "T1"
     },
     {

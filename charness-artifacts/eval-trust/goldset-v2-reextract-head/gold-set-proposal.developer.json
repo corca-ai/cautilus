@@ -37,10 +37,18 @@
     "overrides": 3,
     "tally": {
       "not-a-claim": 10,
-      "accept": 338,
-      "relabel": 25,
+      "accept": 344,
+      "relabel": 19,
       "badly-bounded": 1
-    }
+    },
+    "amendments": [
+      {
+        "task": "Option C — residual key re-adjudication under sharpened R3",
+        "date": "2026-06-18",
+        "change": "6 residual relabels un-relabeled to accept (blind route was correct; R3 over-applied) + 1 re-aimed (cet-261 eval->human-auditable). accept 338->344, relabel 25->19.",
+        "evidence": "cutC/synthesis.json, residual-key-readjudication-cutC.md"
+      }
+    ]
   },
   "track": "developer",
   "segmentedBy": "claimAudience",
@@ -92,8 +100,8 @@
       "proofRationale": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "relabel",
-      "note": "Relabel — proof route deterministic -> cautilus-eval (R6/R8/R12: load-bearing content is an agent/model/behavior outcome, not settled by a static check). agentLabels left as-extracted for the answer key; correction recorded here. Basis: R6 explicit contrast: 'packets let the next agent resume' behavior is its own content -> cautilus-eval. Tier T1.",
+      "maintainerVerdict": "accept",
+      "note": "Accept (Option C re-adjudication 2026-06-18): the blind route deterministic was correct; the prior relabel to cautilus-eval over-read the resume-sufficiency as behavior. Durable-packet emission is a checkable output-contract under sharpened R3 (3/3 adjudicators named a packet-schema substance check). Tier T1.",
       "significanceTier": "T1"
     },
     {
@@ -143,8 +151,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "relabel",
-      "note": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: honest-proof-scope distinction recorded in the packet is structurally checkable, not human inspection. Tier T2.",
+      "maintainerVerdict": "accept",
+      "note": "Accept (Option C re-adjudication 2026-06-18): the blind route human-auditable was correct; the prior relabel to deterministic over-applied R3. A dogfood retro narrative about what a run exposed, no substance check (3/3 adjudicators). Tier T2.",
       "significanceTier": "T2"
     },
     {
@@ -245,8 +253,8 @@
       "proofRationale": "The claim can be checked by reading current source, docs, or generated artifacts.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "relabel",
-      "note": "Relabel — proof route human-auditable -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: proof-layer-split routing model is a documented/structural contract per R12, not human-inspection-only. Tier T1.",
+      "maintainerVerdict": "accept",
+      "note": "Accept (Option C re-adjudication 2026-06-18): the blind route human-auditable was correct; the prior relabel to deterministic over-applied R3. Proof-layer routing-policy prose, no substance check (3/3 adjudicators). Tier T1.",
       "significanceTier": "T1"
     },
     {
@@ -4488,8 +4496,8 @@
       "proofRationale": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence.",
       "unresolvedQuestions": [],
       "heuristicMatch": null,
-      "maintainerVerdict": "relabel",
-      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: phrased as agent behavior, which can tempt eval; but the claim is the template rule's existence. Tier T3.",
+      "maintainerVerdict": "accept",
+      "note": "Accept (Option C re-adjudication 2026-06-18): the blind route cautilus-eval was correct; the prior relabel to deterministic was a key error. The agent emit-blocked-when-unsure behavior is settled only by agent execution (3/3 adjudicators). Tier T3.",
       "significanceTier": "T3"
     },
     {
@@ -5482,7 +5490,7 @@
       "unresolvedQuestions": [],
       "heuristicMatch": null,
       "maintainerVerdict": "relabel",
-      "note": "Relabel — proof route cautilus-eval -> deterministic (R6/R12: enabler is a static/structural contract or ownership/boundary assignment, checkable in principle (R3), not an agent-behavior outcome). agentLabels left as-extracted for the answer key; correction recorded here. Basis: the deferred work is itself eval-fixture work, which can tempt eval routing for this sequencing claim. Tier T3.",
+      "note": "Relabel — proof route cautilus-eval -> human-auditable (Option C re-adjudication 2026-06-18, re-aimed from the prior eval->deterministic): a sequencing/scope assertion with no substance check; reading the contract is the proof (2/3 adjudicators). agentLabels left as-extracted. Tier T3.",
       "significanceTier": "T3"
     },
     {
