@@ -10690,7 +10690,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-259",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -10702,7 +10702,7 @@
             "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
             "claim-docs-specs-user-claim-discovery-spec-md-6",
             "claim-docs-specs-user-claim-discovery-spec-md-160",
-            "claim-docs-specs-user-claim-discovery-spec-md-259"
+            "claim-docs-specs-user-claim-discovery-spec-md-261"
           ]
         }
       ],
@@ -10721,7 +10721,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet.",
-          "line": 259,
+          "line": 261,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -10734,7 +10734,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-262",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-264",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10753,7 +10753,7 @@
       "sourceRefs": [
         {
           "excerpt": "This spec only verifies that the agent-run skill check is prepared.",
-          "line": 262,
+          "line": 264,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -13993,7 +13993,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "a560cbbe72215ea5fb820fdd0b7f80671c1fab85",
+  "gitCommit": "8e61db536d6cb10495a673744168cb0f8c1c5b64",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -16061,7 +16061,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:288e879234568f186a5ec02691e214660a088d8ca9b765816320d403d674f79f",
+      "contentHash": "sha256:c0c87f36c953dc9e88e9efc82bdb178f34658b62a9502bfd2a9a51ff00fbfc08",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",

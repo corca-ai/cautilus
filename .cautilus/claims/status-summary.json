@@ -2945,7 +2945,7 @@
         "summary": "`discover claims status` owns the next-action summary over a saved discovery packet."
       },
       {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-259",
+        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2957,7 +2957,7 @@
               "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-claim-discovery-spec-md-6",
               "claim-docs-specs-user-claim-discovery-spec-md-160",
-              "claim-docs-specs-user-claim-discovery-spec-md-259"
+              "claim-docs-specs-user-claim-discovery-spec-md-261"
             ]
           }
         ],
@@ -3522,7 +3522,7 @@
       }
     ]
   },
-  "gitCommit": "a560cbbe72215ea5fb820fdd0b7f80671c1fab85",
+  "gitCommit": "8e61db536d6cb10495a673744168cb0f8c1c5b64",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3534,10 +3534,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "a560cbbe72215ea5fb820fdd0b7f80671c1fab85",
+    "currentGitCommit": "8e61db536d6cb10495a673744168cb0f8c1c5b64",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "a560cbbe72215ea5fb820fdd0b7f80671c1fab85",
+    "packetGitCommit": "8e61db536d6cb10495a673744168cb0f8c1c5b64",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
