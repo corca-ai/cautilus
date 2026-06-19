@@ -210,3 +210,11 @@ The remaining gap after the CLI wiring is provenance: the judge grades a separat
 The convergence overlays a judge-tier facet onto the real-surface dogfood so the judge grades the dogfood runner's own captured reasoning, with full-runner provenance (`full-runner-capture-replay`) — closing the full-runner-provenance step this contract left open above.
 The decisions are closed in the build spec [realsurface-judge-convergence.md](./realsurface-judge-convergence.md): prove-then-project on the real surface (no live judge per run), AGENTS.md first, governing rules transferred while the sound case is re-grounded on the real capture, and the attach kept adapter-owned so the generic engine and runtime stay judge-logic-free.
 The badge stays at `declared`; closing this convergence makes the `declared` exit available but the flip remains a separate maintainer decision.
+
+## Next step (done, result): the same convergence on the cautilus-agent skill surface
+
+The skill surface (`self-dogfood-eval-skill`) was the synthetic-island state AGENTS.md escaped: it ran a real no-input orientation but scored it with deterministic matchers only, and the judge had never graded it.
+The convergence is closed in [skill-surface-judge-convergence.md](./skill-surface-judge-convergence.md): the judge now grades the Cautilus Agent's GENUINE captured no-input orientation reasoning (a fresh full-runner skill capture, checked in over the hand-authored stand-in), ANDed with the deterministic matchers, with a constructed surface-clean-wrong-reason control the judge alone fails.
+This needed a generic engine extension — `skill_evaluation.go` gained the same optional `reasoningSoundness` read-and-AND the instruction surface already had (generic verdict-compositing, symmetric and judge-logic-free), reusing the same helpers — plus a new skill process facet (`held_no_input_orientation`) and rewritten orientation governing rules sourced from the skill's own `SKILL.md`.
+Proven end-to-end: `cautilus evaluate fixture --adapter-name self-dogfood-skill-judge-eval` passes the genuine baseline (surface matchers AND judge sound, `full-runner-capture-replay`) and fails the control solely via the judge.
+With both AGENTS.md and the skill surface closed, the `declared` exit is now available on both surfaces; the apex flip remains a separate maintainer decision.

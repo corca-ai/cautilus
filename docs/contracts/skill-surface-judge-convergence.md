@@ -1,6 +1,6 @@
 # Skill-surface judge convergence: the judge grades the Cautilus Agent's genuine orientation reasoning
 
-Status: spec (decisions closed, pending bounded critique before `impl`), 2026-06-19.
+Status: result (converged + dogfooded end-to-end through the product binary), 2026-06-19.
 Extends [realsurface-judge-convergence.md](./realsurface-judge-convergence.md) from the AGENTS.md surface to the `cautilus-agent` skill surface, per the handoff's "스킬-표면 수렴" lead.
 
 ## Problem
@@ -81,6 +81,7 @@ Close the four decisions discussed with the maintainer (below), then implement, 
   Unlike the AGENTS.md route (a structured field the reason is separate from), the skill matchers already inspect the `summary` text, and — a mechanism the implementer must build the control against — those fragment matchers run in the RUNNER (`applyObservationExpectations` in `skill-test-expectations.mjs`), folded into `outcome: "failed"` before the engine ever sees the case; so for the engine's judge AND to be the decisive gate, the control must keep `outcome: passed`, which means its constructed `summary` must contain the required fragments (`adapter`, `claim`, `next branch`), avoid every `forbiddenSummaryFragments` entry from the no-input case (`first_bounded_run`, `first bounded run`, `bounded eval`, `bounded run`, `첫 bounded run`, `eval readiness`, `eval test`, `eval 실행`, `scenarios --json`), its command log must contain `agent status` and avoid every `forbiddenCommandFragments` entry, and it must carry the code-facet's `observedOrientation` signal as true — yet still fabricate a rule the judge alone catches.
   The fabrication must be objective (e.g. claiming the read-only status orientation auto-refreshes the claim packet, or that proceeding past status auto-consumes a paid LLM review budget — both contradict the skill, which makes status read-only and LLM review a separately-budgeted opt-in branch).
   Resolved by constructing the control to pass all matchers and the code facet and confirming the blind judge flags only it.
+  Execution nuance (folded from the impl critique): in fixture mode the runner passes `commandText = null`, so the COMMAND-fragment matchers are inert and the surface gate that actually runs is the summary-fragment matchers; the load-bearing proof therefore rests on the summary matchers plus the code facet plus the judge, and the control would also pass the command matchers under a real command log (it runs only the read-only `doctor status`).
 
 - PQ3 — does the live capture actually run in this environment?
   The codex and claude backends are present and the agent surface is materialized, but the configured model or sandbox could still block the run.
@@ -147,6 +148,9 @@ A bounded fresh-eye subagent critique of this spec returned READY-WITH-EDITS wit
 The severe edit was a registry-coverage misread: the registry tests hardcode `fixtures/eval/dev/repo`, so a `dev/skill` calibration would inherit none of the load-bearing/replay coverage and AC3 would be vacuous — resolved in FD4 by extending the registry-wide tests to also scan `dev/skill`.
 The other edits corrected the skill payload shape (it is FLAT with no `expectationResults`, so `reasoningSoundness` attaches directly and the reused `judgeSummary` accumulator needs a `{"reasoningSoundness": result}` wrapper — FD5, AC1), pinned that the fragment matchers run in the runner so the control must keep `outcome: passed` (PQ2), and bound the baseline case `id` to the exact fixture `caseId` so the enricher matches (FD6).
 The critique confirmed FD5's boundary-honesty claim (the reused Go helpers only read and count a structured verdict; all facet computation stays in the `.mjs` harness) and the no-manufacturing/sequencing discipline.
+
+A bounded fresh-eye subagent critique of the IMPLEMENTATION returned READY with no blocker and no edits: boundary honesty clean (the engine only reads and composites the verdict, no judge/facet logic in Go), the judge is the sole gate on the control (it passes every summary matcher and the code facet, failing only via `reasoningSoundness`), the baseline is a genuine byte-identical real capture graded sound by a real blind pass, the registry picks up the new claim and an always-sound judge fails it, and a missing verdict leaves cases byte-unchanged.
+Its one non-blocking observation — that the command-fragment matchers are inert in fixture mode — is folded into PQ2 above.
 
 ## Canonical Artifact
 
