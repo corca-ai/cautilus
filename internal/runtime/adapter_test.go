@@ -13,7 +13,7 @@ func TestValidateAdapterDataAcceptsExplicitInstanceDiscovery(t *testing.T) {
 			"instances": []any{
 				map[string]any{
 					"id":            "example-app",
-					"display_label": "private external chat product Production",
+					"display_label": "Example App Production",
 					"data_root":     "/Users/operator/.example-app/example-app",
 					"paths": map[string]any{
 						"scenario_store":         "/Users/operator/.example-app/example-app/scenarios.json",
@@ -41,7 +41,7 @@ func TestValidateAdapterDataAcceptsExplicitInstanceDiscovery(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected instance mapping, got %#v", instances[0])
 	}
-	if first["display_label"] != "private external chat product Production" {
+	if first["display_label"] != "Example App Production" {
 		t.Fatalf("unexpected display_label: %#v", first["display_label"])
 	}
 }
@@ -79,7 +79,7 @@ func TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation(t *t
 			"instances": []any{
 				map[string]any{
 					"id":            "example-app",
-					"display_label": "private external chat product Production",
+					"display_label": "Example App Production",
 				},
 			},
 		},

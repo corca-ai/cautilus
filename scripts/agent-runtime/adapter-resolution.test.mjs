@@ -128,7 +128,7 @@ test("resolve_adapter preserves workbench discovery and live invocation seams", 
 				"  kind: explicit",
 				"  instances:",
 				"    - id: example-app",
-				"      display_label: private external chat product Production",
+				"      display_label: Example App Production",
 				"      data_root: /Users/operator/.example-app/example-app",
 				"      paths:",
 				"        scenario_store: /Users/operator/.example-app/example-app/scenarios.json",
@@ -144,7 +144,7 @@ test("resolve_adapter preserves workbench discovery and live invocation seams", 
 		const payload = JSON.parse(stdout);
 		assert.equal(payload.valid, true);
 		assert.equal(payload.data.instance_discovery.kind, "explicit");
-		assert.equal(payload.data.instance_discovery.instances[0].display_label, "private external chat product Production");
+		assert.equal(payload.data.instance_discovery.instances[0].display_label, "Example App Production");
 		assert.match(payload.data.live_run_invocation.command_template, /cautilus workbench run-live/);
 		assert.match(payload.data.live_run_invocation.consumer_command_template, /scripts\/consumer\/run-live-instance-scenario/);
 		assert.match(payload.data.live_run_invocation.workspace_prepare_command_template, /\{workspace_dir\}/);

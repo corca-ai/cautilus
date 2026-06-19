@@ -19,7 +19,7 @@ parent-delegated
 
 ## Change
 
-Review of the private external chat product replay fixture expansion, blind Sonnet memory-continuity verdicts, app/chat proof tests, user/apex spec sync, handoff refresh, and memory-continuity evidence artifact.
+Review of the anonymized external-chat replay fixture expansion, blind Sonnet memory-continuity verdicts, app/chat proof tests, user/apex spec sync, handoff refresh, and memory-continuity evidence artifact.
 
 ## Angles
 

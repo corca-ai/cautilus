@@ -119,7 +119,7 @@ func TestNormalizeChatbotProposalCandidatesEmitsEventTriggeredFollowup(t *testin
 // profile (success: secret_safe_handling, guardrail: no_secret_retention), and that
 // a secret noun WITHOUT a storage verb (or a storage verb without a secret noun)
 // does not falsely trigger it. This is a generic chatbot guardrail pattern, not a
-// host-specific one; the real private external chat product prod log only supplies the evidence that it occurs.
+// host-specific one; the real example app prod log only supplies the evidence that it occurs.
 func TestNormalizeChatbotProposalCandidatesEmitsSecretInChatGuardrail(t *testing.T) {
 	conversationWith := func(text string) map[string]any {
 		return map[string]any{

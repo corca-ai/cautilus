@@ -282,12 +282,12 @@ instance_discovery:
   kind: explicit
   instances:
     - id: example-app
-      display_label: private external chat product Production
-      data_root: /Users/operator/.example-app/example-app
+      display_label: Example App Production
+      data_root: /Users/operator/.external-chat/external-chat
       paths:
-        scenario_store: /Users/operator/.example-app/example-app/scenarios.json
-        conversation_summaries: /Users/operator/.example-app/example-app/human-conversations/normalized
-        scenario_results: /Users/operator/.example-app/example-app/simulation-results
+        scenario_store: /Users/operator/.external-chat/external-chat/scenarios.json
+        conversation_summaries: /Users/operator/.external-chat/external-chat/human-conversations/normalized
+        scenario_results: /Users/operator/.external-chat/external-chat/simulation-results
 ```
 
 Fixed rules:

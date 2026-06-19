@@ -175,7 +175,7 @@ cautilus evaluate live scenarios \
 ```
 
 An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.
-For a example-app-like consumer, that may mean `example-app`, `example-app-dev`, or another named runtime.
+For a multi-instance consumer, that may mean `external-chat`, `external-chat-dev`, or another named runtime.
 For a simple adopter, the catalog may contain only one default instance.
 `cautilus discover live-targets` resolves either explicit adapter instances or a consumer-owned probe command into the same `cautilus.workbench_instance_catalog.v1` packet.
 `cautilus evaluate live` takes one selected instance id plus one request packet and returns one bounded result packet.

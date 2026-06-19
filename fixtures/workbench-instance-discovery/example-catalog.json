@@ -4,7 +4,7 @@
   "instances": [
     {
       "instanceId": "example-app",
-      "displayLabel": "private external chat product Production",
+      "displayLabel": "Example App Production",
       "description": "Primary local production-like instance on the operator workstation.",
       "dataRoot": "/Users/operator/.example-app/example-app",
       "paths": {
@@ -19,7 +19,7 @@
     },
     {
       "instanceId": "example-app-dev",
-      "displayLabel": "private external chat product Dev",
+      "displayLabel": "Example App Dev",
       "dataRoot": "/Users/operator/.example-app/example-app-dev",
       "paths": {
         "scenarioStore": "/Users/operator/.example-app/example-app-dev/scenarios.json",

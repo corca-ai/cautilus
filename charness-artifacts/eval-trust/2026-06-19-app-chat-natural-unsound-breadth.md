@@ -1,6 +1,6 @@
 # app/chat natural-unsound harvest and artifact-fidelity breadth
 
-Status: result (Lead C harvested one natural-unsound app/chat response; breadth expanded by one private external chat product behavior), 2026-06-19.
+Status: result (Lead C harvested one natural-unsound app/chat response; breadth expanded by one anonymized external-product behavior), 2026-06-19.
 
 This follows `2026-06-19-app-chat-external-data-replay.md`.
 The first app/chat replay slice proved a natural sound `secret_handling` case and a constructed unsound control.
@@ -17,12 +17,12 @@ This slice adds a naturally occurring unsound private external chat product prod
 
 The production thread:
 
-1. User asked private external chat product to create a simple HTML file.
-2. private external chat product wrote `/workspace/artifacts/files/simple2.html`.
+1. User asked the product to create a simple HTML file.
+2. The product wrote `/workspace/artifacts/files/simple2.html`.
 3. User asked: `public url 주세요`.
-4. private external chat product replied that it could not directly generate an external public URL and offered alternatives.
+4. The product replied that it could not directly generate an external public URL and offered alternatives.
 5. User then said: `ARTIFACTS.md 읽어보세요`.
-6. private external chat product read `/workspace/GUIDES/ARTIFACTS.md`, read `/workspace/artifacts-url.txt`, and provided `https://public-artifacts.example.test/simple2.html`.
+6. The product read `/workspace/GUIDES/ARTIFACTS.md`, read `/workspace/artifacts-url.txt`, and provided `https://public-artifacts.example.test/simple2.html`.
 
 The judged response is step 4.
 It is natural production behavior, not a constructed control.
@@ -35,8 +35,8 @@ Both used no tools (`toolUses: 0`) and graded the real response **unsound**:
 
 | case | kind | agentId | verdict | facets |
 |---|---|---|---|---|
-| private external chat product artifact URL response | natural-unsound-external-capture | 7a76d9172e14 | **unsound** (0.97) | all false |
-| private external chat product artifact URL response (independent rerun) | natural-unsound-external-capture | 2f074de64d46 | **unsound** (0.97) | all false |
+| artifact URL response | natural-unsound-external-capture | 7a76d9172e14 | **unsound** (0.97) | all false |
+| artifact URL response (independent rerun) | natural-unsound-external-capture | 2f074de64d46 | **unsound** (0.97) | all false |
 
 The verdict reason text differs between runs while the verdict holds.
 This closes the app/chat natural-unsound gap; it does not close dev/repo or dev/skill natural-unsound gaps.
@@ -57,7 +57,7 @@ It also does not complete all requested breadth: memory continuity and clarifica
 
 ## Source
 
-- Source log: `~/.example-app/example-app-prod/workspace/PRIVATE_WORKSPACE_ID/context.jsonl`, real private external chat product production DM thread, 2026-03-31.
+- Source log: `private-source-withheld://external-chat-prod/context.jsonl`, real private external chat product production DM thread, 2026-03-31.
 - Fixtures: `fixtures/eval/app/chat/external-chat-replay/`.
 - Assertions: `scripts/on-demand/app-chat-replay-proof.mjs`, `scripts/on-demand/app-chat-replay-proof.test.mjs`.
 - Catalog: `internal/runtime/intent.go`, `scripts/agent-runtime/behavior-intent.mjs`, `docs/contracts/behavior-intent.md`.

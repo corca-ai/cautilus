@@ -1,10 +1,11 @@
-// Deterministic standing gate for the app/chat external-data REPLAY proof (private external chat product prod logs).
+// Deterministic standing gate for the app/chat external-data REPLAY proof
+// (an anonymized private external chat product log).
 //
 // It replays the checked-in capture and the blind Sonnet verdicts through the SAME assertions the
 // proof module exposes, so the displayed grade and the graded grade cannot drift. It runs no live
 // agent and no live judge; it belongs to test:on-demand, never to standing verify.
 //
-// Scope reminder: this proves EXTERNAL VALIDITY (real private external chat product production behavior, not self-dogfood)
+// Scope reminder: this proves EXTERNAL VALIDITY (real anonymized external product behavior, not self-dogfood)
 // plus the load-bearing INTENT JUDGE on app/chat, now with natural sound secret-handling,
 // memory-continuity, and clarification-first cases, plus one natural unsound artifact-fidelity case.
 // App-agent liveness stays deferred (replay slice).
@@ -53,15 +54,15 @@ const rerunMemoryVerdict = verdictsRerun.verdicts.find((v) => v.caseId === MEMOR
 const clarificationVerdict = verdicts.verdicts.find((v) => v.caseId === CLARIFICATION_CASE_ID);
 const rerunClarificationVerdict = verdictsRerun.verdicts.find((v) => v.caseId === CLARIFICATION_CASE_ID);
 
-test("the checked-in capture is a genuine external-product replay of real private external chat product production behavior", () => {
+test("the checked-in capture is an anonymized external-product replay", () => {
 	const evidence = assertExternalReplayCapture(capture);
 	assert.equal(evidence.behaviorSurface, "secret_handling");
 	// Provenance honesty: it is an external product log replay, not a self-dogfood fixture, and the
 	// raw secret was redacted before check-in.
 	assert.equal(capture.provenance.kind, "external-product-log-replay");
-	assert.equal(capture.provenance.instance, "example-app-prod");
+	assert.equal(capture.provenance.instance, "external-chat-replay");
 	assert.match(capture.provenance.redaction, /REDACTED|redact/i);
-	assert.equal(capture.evaluations[0].telemetry.runtime, "example-app");
+	assert.equal(capture.evaluations[0].telemetry.runtime, "external-chat");
 	// The redaction held: no raw OpenAI-style key leaked into the checked-in response.
 	assert.ok(!/sk-[A-Za-z0-9]{20,}/.test(evidence.finalText));
 });
@@ -74,7 +75,7 @@ test("the scenario was produced by the generic normalize-chatbot mechanism, inte
 	assert.equal(scenario.intentProfile.guardrailDimensions[0].id, "no_secret_retention");
 });
 
-test("the artifact fidelity breadth scenario is a real private external chat product production capture, not a constructed control", () => {
+test("the artifact fidelity breadth scenario is a real external-product capture, not a constructed control", () => {
 	const evidence = assertExternalReplayCapture(capture, ARTIFACT_CASE_ID);
 	const artifactEvaluation = findEvaluation(ARTIFACT_CASE_ID);
 	assert.equal(evidence.behaviorSurface, "artifact_fidelity");
@@ -130,12 +131,12 @@ test("the clarification-first breadth scenario asks for missing weather location
 	assert.equal(scenario.intentProfile.successDimensions[0].id, "target_clarification");
 });
 
-test("the blind judge graded private external chat product's real external response SOUND with no tools", () => {
+test("the blind judge graded the external product's real response SOUND with no tools", () => {
 	const evidence = assertBlindSoundVerdict(realVerdict);
 	const secretEvaluation = findEvaluation(SECRET_CASE_ID);
 	assert.equal(realVerdict.expected, "sound");
 	assert.ok(evidence.reasonSummary.length > 0);
-	// Provenance honesty: the graded response is private external chat product's verbatim production reply carried in the capture.
+	// Provenance honesty: the graded response is the product's verbatim production reply carried in the capture.
 	assert.equal(realVerdict.caseId, secretEvaluation.evaluationId);
 	assert.equal(realVerdict.observedResponse, secretEvaluation.observed.finalText);
 });
@@ -170,7 +171,7 @@ test("two independent blind judge runs both grade the natural artifact failure u
 	assert.notEqual(naturalUnsoundVerdict.agentId, rerunNaturalUnsoundVerdict.agentId);
 });
 
-test("the blind judge graded private external chat product's real memory-continuity response SOUND with no tools", () => {
+test("the blind judge graded the external product's real memory-continuity response SOUND with no tools", () => {
 	const evidence = assertBlindSoundVerdict(memoryVerdict);
 	const memoryEvaluation = findEvaluation(MEMORY_CASE_ID);
 	assert.equal(memoryVerdict.expected, "sound");
@@ -188,7 +189,7 @@ test("two independent blind judge runs both grade memory continuity sound", () =
 	assert.notEqual(memoryVerdict.agentId, rerunMemoryVerdict.agentId);
 });
 
-test("the blind judge graded private external chat product's real clarification-first response SOUND with no tools", () => {
+test("the blind judge graded the external product's real clarification-first response SOUND with no tools", () => {
 	const evidence = assertBlindSoundVerdict(clarificationVerdict);
 	const clarificationEvaluation = findEvaluation(CLARIFICATION_CASE_ID);
 	assert.equal(clarificationVerdict.expected, "sound");

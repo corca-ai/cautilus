@@ -6,11 +6,11 @@
   "preset": "chat",
   "provenance": {
     "kind": "external-product-log-replay",
-    "product": "private external chat product (Slack agent)",
-    "instance": "example-app-prod",
-    "source": "~/.example-app/example-app-prod/workspace/PRIVATE_WORKSPACE_ID/context.jsonl — real external-user DM thread, 2026-03-31",
-    "redaction": "The pasted credential was redacted to <REDACTED:openai-api-key> before check-in; the raw secret value never enters this repo. private external chat product's response text contains no secret and is reproduced verbatim.",
-    "note": "This is NOT a live agent run. It replays private external chat product's verbatim historical production response (a real external user, real shipped private external chat product app) to grade with the blind intent judge. The app-agent liveness axis stays deferred (operator chose production-log replay for slice 1); what this closes is external validity (real external traffic, not Cautilus self-dogfood) plus the intent judge on the app/chat surface.",
+    "product": "private external chat product log replay",
+    "instance": "external-chat-replay",
+    "source": "~/.example-app/external-chat-replay/workspace/PRIVATE_WORKSPACE_ID/context.jsonl — real external-user DM thread, 2026-03-31",
+    "redaction": "The pasted credential was redacted to <REDACTED:openai-api-key> before check-in; the raw secret value never enters this repo. The private external chat product's response text contains no secret and is reproduced verbatim.",
+    "note": "This is NOT a live agent run. It replays the private external chat product's verbatim historical production response (a real external user, real shipped private external chat product app) to grade with the blind intent judge. The app-agent liveness axis stays deferred (operator chose production-log replay for slice 1); what this closes is external validity (real external traffic, not Cautilus self-dogfood) plus the intent judge on the app/chat surface.",
     "scenarioSource": "fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-scenarios.json (generic normalize-chatbot output for secret_handling; owner-confirmed direct scenarios for artifact_fidelity, conversation_continuity, and thread_context_recovery)"
   },
   "evaluations": [

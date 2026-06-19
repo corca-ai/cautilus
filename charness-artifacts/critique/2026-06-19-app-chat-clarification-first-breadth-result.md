@@ -20,7 +20,7 @@ parent-delegated
 
 ## Change
 
-Review of the private external chat product replay fixture expansion, blind Sonnet clarification-first verdicts, app/chat proof tests, user/apex spec sync, handoff refresh, and clarification-first evidence artifact.
+Review of the anonymized external-chat replay fixture expansion, blind Sonnet clarification-first verdicts, app/chat proof tests, user/apex spec sync, handoff refresh, and clarification-first evidence artifact.
 
 ## Angles
 
@@ -61,7 +61,7 @@ Review of the private external chat product replay fixture expansion, blind Sonn
 ## Deliberately Not Doing
 
 This slice does not close app/chat liveness, app/prompt proof debt, or dev-surface natural-unsound proof.
-It also does not claim that private external chat product will always clarify every future missing-location weather request; it records and gates this owner-confirmed production-log replay.
+It also does not claim that the product will always clarify every future missing-location weather request; it records and gates this owner-confirmed production-log replay.
 
 ## Next Move
 

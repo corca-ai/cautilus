@@ -19,7 +19,7 @@ parent-delegated
 
 ## Change
 
-Review of the `artifact_fidelity` behavior-intent catalog addition, private external chat product replay fixture expansion, blind Sonnet verdict replay, app/chat proof tests, apex/user spec sync, handoff refresh, gitleaks fixture allowlist, and claim refresh commits.
+Review of the `artifact_fidelity` behavior-intent catalog addition, anonymized external-chat replay fixture expansion, blind Sonnet verdict replay, app/chat proof tests, apex/user spec sync, handoff refresh, gitleaks fixture allowlist, and claim refresh commits.
 
 ## Angles
 
@@ -34,7 +34,7 @@ Review of the `artifact_fidelity` behavior-intent catalog addition, private exte
 - The artifact-fidelity test did not bind `postHocEvidence`, the final public URL, and the verdict `observedResponse` tightly enough to the capture; fixed with exact assertions.
 - The natural-unsound rerun verdict did not explicitly pin the artifact case id; fixed.
 - `npm run verify` initially failed because this clone lacked `golangci-lint`, `govulncheck`, and `c8`; installed the repo-pinned/locked tools and reran verify.
-- `gitleaks` flagged historical private external chat product replay `threadKey` fixture strings as `generic-api-key`; fixed with a narrow path+line allowlist in `.gitleaks.toml`.
+- `gitleaks` flagged historical replay `threadKey` fixture strings as `generic-api-key`; fixed with a narrow path+line allowlist in `.gitleaks.toml`.
 
 ## Counterweight Triage
 
@@ -62,4 +62,4 @@ This slice does not add a catalog parity gate, normalize artifact-fidelity autom
 
 ## Next Move
 
-Commit the critique fixes and result artifact, keep the two proof commits intact, and continue next session with either remaining private external chat product breadth, app/chat liveness, or app/prompt proof debt.
+Commit the critique fixes and result artifact, keep the two proof commits intact, and continue next session with either remaining app/chat liveness or app/prompt proof debt.

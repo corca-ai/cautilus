@@ -15,8 +15,8 @@ Both modes normalize to the same packet so `eval live` commands can route by `in
 
 An instance is one live consumer target on this host that `Cautilus` can select by stable id.
 It is not the adapter itself and it is not the scenario packet.
-It is the concrete thing an operator wants to inspect or run against, such as one local private external chat product environment, one named dev runtime, or one single default app deployment on a laptop.
-This vocabulary started from private external chat product-style multi-instance workbench needs, but the contract also applies to a simple repo that exposes only one default instance.
+It is the concrete thing an operator wants to inspect or run against, such as one local app environment, one named dev runtime, or one single default app deployment on a laptop.
+This vocabulary started from multi-instance workbench needs, but the contract also applies to a simple repo that exposes only one default instance.
 
 ## Fixed Decisions
 
@@ -25,7 +25,7 @@ This vocabulary started from private external chat product-style multi-instance 
 - Every instance must expose a stable `instanceId` and a human-facing `displayLabel`.
 - Every instance must expose either `dataRoot`, typed `paths`, or both.
 - The contract does not force one canonical storage root such as `.cautilus/`.
-- The product does not hardcode private external chat product's route layout or directory names into this seam.
+- The product does not hardcode a consumer app's route layout or directory names into this seam.
 
 ## Packet Shape
 

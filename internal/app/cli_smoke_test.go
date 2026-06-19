@@ -4376,12 +4376,12 @@ func TestCLIEvalSkillExperimentCompareWritesPromotionReport(t *testing.T) {
 			"skillId": "announcement-style-lab",
 			"status":  "passed",
 			"output": map[string]any{
-				"text":       "Draft covers Slack thread, private external chat product control repo, and user-facing in-progress coverage.",
-				"sourceRefs": []any{"Slack thread", "private external chat product control repo", "user-facing in-progress coverage"},
+				"text":       "Draft covers Slack thread, ExampleApp control repo, and user-facing in-progress coverage.",
+				"sourceRefs": []any{"Slack thread", "ExampleApp control repo", "user-facing in-progress coverage"},
 			},
 		},
 		"sourceCoverageObligations": []any{
-			map[string]any{"id": "control-repo", "ref": "private external chat product control repo", "required": true},
+			map[string]any{"id": "control-repo", "ref": "ExampleApp control repo", "required": true},
 			map[string]any{"id": "progress", "ref": "user-facing in-progress coverage", "required": true},
 		},
 		"isolation": map[string]any{
@@ -5223,7 +5223,7 @@ func TestCLILiveEvalDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 		`  "instances": [`,
 		"    {",
 		`      "instanceId": "example-app-dev",`,
-		`      "displayLabel": "private external chat product Dev",`,
+		`      "displayLabel": "Example App Dev",`,
 		fmt.Sprintf(`      "dataRoot": %q`, filepath.Join(root, ".runtime", "example-app-dev")),
 		"    }",
 		"  ]",
@@ -5254,7 +5254,7 @@ func TestCLILiveEvalDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 	payload := parseJSONObject(t, stdout)
 	instances := payload["instances"].([]any)
 	instance := instances[0].(map[string]any)
-	if instance["instanceId"] != "example-app-dev" || instance["displayLabel"] != "private external chat product Dev" {
+	if instance["instanceId"] != "example-app-dev" || instance["displayLabel"] != "Example App Dev" {
 		t.Fatalf("unexpected command-backed catalog: %#v", payload)
 	}
 }
@@ -5274,7 +5274,7 @@ func TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 		`  "instances": [`,
 		"    {",
 		`      "instanceId": "example-app-dev",`,
-		`      "displayLabel": "private external chat product Dev",`,
+		`      "displayLabel": "Example App Dev",`,
 		fmt.Sprintf(`      "dataRoot": %q`, filepath.Join(root, ".runtime", "example-app-dev")),
 		"    }",
 		"  ]",
@@ -5305,7 +5305,7 @@ func TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 	payload := parseJSONObject(t, stdout)
 	instances := payload["instances"].([]any)
 	instance := instances[0].(map[string]any)
-	if instance["instanceId"] != "example-app-dev" || instance["displayLabel"] != "private external chat product Dev" {
+	if instance["instanceId"] != "example-app-dev" || instance["displayLabel"] != "Example App Dev" {
 		t.Fatalf("unexpected command-backed catalog when probe warns on stderr: %#v", payload)
 	}
 }

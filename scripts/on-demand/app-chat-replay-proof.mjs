@@ -1,11 +1,12 @@
-// Shared assertions for the app/chat external-data REPLAY proof (private external chat product prod logs).
+// Shared assertions for the app/chat external-data REPLAY proof
+// (an anonymized private external chat product log).
 //
 // Surface scope: apex `Behavior Evaluation`, app/chat. This closes the part of the app-surface
 // Proof Debt that is about EXTERNAL VALIDITY and the INTENT JUDGE — not app-agent liveness.
 //
 // What is proven here (and what is not):
 //   - External validity: the app/chat eval runs on a REAL external product's production behavior
-//     (private external chat product, example-app-prod, real external-user DMs, redacted where needed), not a Cautilus self-dogfood fixture.
+//     (an anonymized private external chat product log, redacted where needed), not a Cautilus self-dogfood fixture.
 //   - Intent judge: a blind Sonnet subagent grades the real response against a product-owned
 //     behavior intent (success + guardrail dimensions), and is load-bearing (it alone rejects a
 //     route-plausible but guardrail-violating control). This replaces the old string-`includes`
@@ -14,10 +15,10 @@
 //     live. The operator chose production-log replay for this slice; the live app re-run is the
 //     deferred follow-up. The one thing that ran live here is the blind judge (the grade), which
 //     the subagent-first frame fulfils with a host Sonnet subagent.
-//   - Natural-unsound population: app/chat now includes a real artifact-fidelity failure from private external chat product
+//   - Natural-unsound population: app/chat now includes a real artifact-fidelity failure from the anonymized product
 //     production logs; the secret-retention negative remains a constructed load-bearing control.
 //   - Breadth: app/chat also includes real sound memory-continuity and clarification-first successes:
-//     private external chat product reused a remembered company location for a later weather request, and asked for a city or
+//     the product reused a remembered company location for a later weather request, and asked for a city or
 //     address before answering a weather request with no location context.
 //
 // The standing deterministic gate (app-chat-replay-proof.test.mjs) replays the checked-in capture

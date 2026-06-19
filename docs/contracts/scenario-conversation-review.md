@@ -43,7 +43,7 @@ That gap kept `#16` open even after proposal generation and static proposal HTML
 
 ## Deliberately Not Doing
 
-- binding the product to private external chat product's route layout
+- binding the product to a consumer app's route layout
 - forcing a shared run-data home before the adapter contract exists
 - mixing organizational audit concerns into the behavior-evaluation surface
 

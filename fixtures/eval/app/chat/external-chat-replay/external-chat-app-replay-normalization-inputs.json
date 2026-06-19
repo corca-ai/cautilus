@@ -2,11 +2,11 @@
   "schemaVersion": "cautilus.chatbot_normalization_inputs.v1",
   "_provenance": {
     "kind": "external-product-log-export",
-    "product": "private external chat product (Slack agent)",
-    "instance": "example-app-prod",
-    "source": "~/.example-app/example-app-prod/workspace/PRIVATE_WORKSPACE_ID (real external-user DM thread), context.jsonl",
+    "product": "private external chat product log replay",
+    "instance": "external-chat-replay",
+    "source": "~/.example-app/external-chat-replay/workspace/PRIVATE_WORKSPACE_ID (real external-user DM thread), context.jsonl",
     "redaction": "Pasted credential values replaced with <REDACTED:...> placeholders before check-in. The raw secret never enters this repo.",
-    "note": "User turns only (the normalizer reads actorKind=user records). private external chat product's real assistant responses are carried in external-chat-app-replay-capture.json as the replayed observed traces."
+    "note": "User turns only (the normalizer reads actorKind=user records). The private external chat product's real assistant responses are carried in external-chat-app-replay-capture.json as the replayed observed traces."
   },
   "conversationSummaries": [
     {

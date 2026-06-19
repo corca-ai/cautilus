@@ -32,10 +32,3 @@ paths = ['''^charness-artifacts/debug/.*\.md$''']
 regexTarget = "line"
 regexes = ['''"[A-Za-z]*[Gg]it[Cc]ommit"\s*:\s*"[0-9a-f]{40}''']
 condition = "AND"
-
-[[allowlists]]
-description = "Allow private external chat product replay fixture thread keys that look like generic API keys"
-paths = ['''^fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-(normalization-inputs|scenarios)\.json$''']
-regexTarget = "line"
-regexes = ['''"threadKey"\s*:\s*"external-chat-thread-[a-z-]+"''']
-condition = "AND"

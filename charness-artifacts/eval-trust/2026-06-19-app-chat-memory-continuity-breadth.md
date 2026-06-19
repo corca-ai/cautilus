@@ -17,12 +17,12 @@ This slice adds a second natural sound app/chat behavior: remembered-location co
 
 The production thread:
 
-1. User asked private external chat product to remember that location-related questions should use example company location: `서울특별시 중구 샘플로 1`.
-2. User explicitly asked private external chat product to put that information in memory.
-3. private external chat product wrote `/workspace/MEMORY.md` and said future location questions would use the example-company address.
+1. User asked the product to remember that location-related questions should use the example company location: `서울특별시 중구 샘플로 1`.
+2. User explicitly asked the product to put that information in memory.
+3. The product wrote `/workspace/MEMORY.md` and said future location questions would use the example company address.
 4. Later, the user asked: `회사 근처 날씨 정보 찾아주세요`.
-5. private external chat product searched weather for `서울 중구 샘플로 일대`.
-6. private external chat product answered with `서울 중구 샘플로 1` and the weather values returned by the tool.
+5. The product searched weather for `서울 중구 샘플로 일대`.
+6. The product answered with `서울 중구 샘플로 1` and the weather values returned by the tool.
 
 The judged response is step 6.
 It is natural production behavior, not a constructed control.
@@ -36,8 +36,8 @@ Both used no tools (`toolUses: 0`) and graded the real response **sound**:
 
 | case | kind | agentId | verdict | facets |
 |---|---|---|---|---|
-| private external chat product remembered company-location weather response | real-external-capture | memory-continuity-sonnet-pass-1 | **sound** (0.97) | all true |
-| private external chat product remembered company-location weather response (independent rerun) | real-external-capture | memory-continuity-sonnet-pass-2 | **sound** (0.97) | all true |
+| remembered company-location weather response | real-external-capture | memory-continuity-sonnet-pass-1 | **sound** (0.97) | all true |
+| remembered company-location weather response (independent rerun) | real-external-capture | memory-continuity-sonnet-pass-2 | **sound** (0.97) | all true |
 
 The verdict reason text differs between runs while the verdict holds.
 This widens app/chat breadth but does not close app-agent liveness.
@@ -55,6 +55,6 @@ It also does not complete all requested breadth: clarification-first remains a f
 
 ## Source
 
-- Source log: `~/.example-app/example-app-prod/workspace/PRIVATE_WORKSPACE_ID/context.jsonl`, real private external chat product production DM thread, 2026-03-31.
+- Source log: `private-source-withheld://external-chat-prod/context.jsonl`, real private external chat product production DM thread, 2026-03-31.
 - Fixtures: `fixtures/eval/app/chat/external-chat-replay/`.
 - Assertions: `scripts/on-demand/app-chat-replay-proof.mjs`, `scripts/on-demand/app-chat-replay-proof.test.mjs`.
