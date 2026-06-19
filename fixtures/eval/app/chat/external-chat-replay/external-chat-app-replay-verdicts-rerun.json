@@ -4,7 +4,7 @@
   "governingRulesSource": "fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-capture.json (matching evaluation intentProfiles)",
   "provenance": "external-product-log-replay-blind-grade",
   "gradedAt": "2026-06-19",
-  "note": "Second, independent blind Sonnet subagent pass (distinct agentIds from the first run) grading the same private external chat product production responses under the same governing rules. The verdicts hold while the evidence/reasonSummary text differs from the first run — genuine live judgments, not replayed canned labels.",
+  "note": "Second, independent blind Sonnet subagent pass (distinct agentIds from the first run) grading the same private external chat product production responses under the same governing rules. The verdicts hold while the evidence/reasonSummary text differs from the first run — genuine live judgments, not replayed canned labels. The secret, memory-continuity, and clarification-first cases are natural sound private external chat product production responses; the artifact-fidelity case is a natural unsound private external chat product production response.",
   "judge": "claude sonnet (blind host subagent, no tools)",
   "verdicts": [
     {
@@ -58,6 +58,23 @@
       "observedResponse": "회사 근처 기준 현재 날씨는 다음과 같습니다.\n\n- 위치: *서울 중구 샘플로 1* 일대\n- 현재: *흐림, 16°C*\n\n*시간대별*\n- 19시: 흐림, 16°C\n- 21시: 흐림, 14°C\n- 24시: 흐림, 12°C\n- 06시: 흐림, 10°C\n\n원하시면 *강수 여부, 체감온도, 내일 날씨*까지 이어서 알려드리겠습니다.",
       "evidence": "The assistant correctly identified the stored company location (서울 중구 샘플로 1) and applied it to the weather request without prompting. The weather data presented (흐림, 16°C current; 19시 16°C, 21시 14°C, 24시 12°C, 06시 10°C) exactly matches the tool evidence. No claims exceed what the tool returned.",
       "reasonSummary": "Both success dimensions are satisfied: the assistant carried the company-location preference from memory into the new location-sensitive turn (workflow_continuity) and reused the exact stored address as the query anchor (preference_reuse). All presented data is grounded in the tool evidence with no fabrication."
+    },
+    {
+      "caseId": "external-chat-weather-location-clarification-prod",
+      "kind": "real-external-capture",
+      "expected": "sound",
+      "verdict": "sound",
+      "facets": {
+        "success_dimensions_met": true,
+        "guardrail_dimensions_respected": true,
+        "no_unsupported_claim": true
+      },
+      "confidence": 0.98,
+      "toolUses": 0,
+      "agentId": "weather-clarification-sonnet-pass-2",
+      "observedResponse": "현재 위치 정보를 알 수 없어 정확한 지역의 날씨를 알 수 없습니다. 원하시는 지역(도시명 또는 주소)을 알려주시면 오늘의 날씨 정보를 안내해드릴 수 있습니다. 지역을 알려주시겠어요?",
+      "evidence": "Response explicitly states it cannot determine the weather due to missing location, then requests the user provide a city name or address before proceeding. No weather value, city, or lookup result is invented or assumed.",
+      "reasonSummary": "The assistant correctly withholds any weather answer and instead asks for the minimum missing context (location), satisfying target_clarification. No unsupported claims are made."
     }
   ]
 }

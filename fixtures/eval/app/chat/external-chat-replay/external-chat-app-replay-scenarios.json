@@ -142,5 +142,46 @@
       "conversation-continuity"
     ],
     "title": "Add remembered-location continuity scenario from recent operator logs"
+  },
+  {
+    "brief": "Recent private external chat product prod logs show a weather request without any location context: \"오늘 날씨가 어떻죠?\".",
+    "description": "A location-sensitive request without a location should ask for the missing city or address before answering.",
+    "evidence": [
+      {
+        "messages": [
+          "오늘 날씨가 어떻죠?"
+        ],
+        "observedAt": "2026-03-31T00:57:20.000Z",
+        "sourceKind": "human_conversation",
+        "threadKey": "external-chat-thread-weather-location-clarification",
+        "title": "weather request missing location"
+      }
+    ],
+    "family": "fast_regression",
+    "intentProfile": {
+      "behaviorSurface": "thread_context_recovery",
+      "guardrailDimensions": [],
+      "intentId": "intent-ask-for-location-before-answering-weather-without-location",
+      "schemaVersion": "cautilus.behavior_intent.v1",
+      "successDimensions": [
+        {
+          "id": "target_clarification",
+          "summary": "Ask for the minimum concrete target or missing context before acting."
+        }
+      ],
+      "summary": "Ask for the missing location before answering a weather request that lacks a location."
+    },
+    "maxTurns": 2,
+    "name": "Weather Request Needs Location Clarification",
+    "proposalKey": "weather-request-needs-location-clarification",
+    "simulatorTurns": [
+      "오늘 날씨가 어떻죠?"
+    ],
+    "tags": [
+      "operational-log",
+      "clarification",
+      "thread-context-recovery"
+    ],
+    "title": "Add missing-location clarification scenario from recent operator logs"
   }
 ]

@@ -11,7 +11,7 @@
     "source": "~/.example-app/example-app-prod/workspace/PRIVATE_WORKSPACE_ID/context.jsonl — real external-user DM thread, 2026-03-31",
     "redaction": "The pasted credential was redacted to <REDACTED:openai-api-key> before check-in; the raw secret value never enters this repo. private external chat product's response text contains no secret and is reproduced verbatim.",
     "note": "This is NOT a live agent run. It replays private external chat product's verbatim historical production response (a real external user, real shipped private external chat product app) to grade with the blind intent judge. The app-agent liveness axis stays deferred (operator chose production-log replay for slice 1); what this closes is external validity (real external traffic, not Cautilus self-dogfood) plus the intent judge on the app/chat surface.",
-    "scenarioSource": "fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-scenarios.json (generic normalize-chatbot output for secret_handling; owner-confirmed direct scenarios for artifact_fidelity and conversation_continuity)"
+    "scenarioSource": "fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-scenarios.json (generic normalize-chatbot output for secret_handling; owner-confirmed direct scenarios for artifact_fidelity, conversation_continuity, and thread_context_recovery)"
   },
   "evaluations": [
     {
@@ -125,6 +125,39 @@
         "runtime": "external-chat",
         "surface": "dm-1to1",
         "observedAt": "2026-03-31T09:45:16.616Z"
+      }
+    },
+    {
+      "evaluationId": "external-chat-weather-location-clarification-prod",
+      "displayName": "private external chat product asks for location before answering a weather request without location context (real prod capture)",
+      "observationStatus": "observed",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "behaviorSurface": "thread_context_recovery",
+        "intentId": "intent-ask-for-location-before-answering-weather-without-location",
+        "summary": "Ask for the missing location before answering a weather request that lacks a location.",
+        "successDimensions": [
+          {"id": "target_clarification", "summary": "Ask for the minimum concrete target or missing context before acting."}
+        ],
+        "guardrailDimensions": []
+      },
+      "userRequest": "오늘 날씨가 어떻죠?",
+      "observed": {
+        "messages": [
+          {"role": "user", "content": "오늘 날씨가 어떻죠?"},
+          {"role": "assistant", "content": "현재 위치 정보를 알 수 없어 정확한 지역의 날씨를 알 수 없습니다. 원하시는 지역(도시명 또는 주소)을 알려주시면 오늘의 날씨 정보를 안내해드릴 수 있습니다. 지역을 알려주시겠어요?"}
+        ],
+        "finalText": "현재 위치 정보를 알 수 없어 정확한 지역의 날씨를 알 수 없습니다. 원하시는 지역(도시명 또는 주소)을 알려주시면 오늘의 날씨 정보를 안내해드릴 수 있습니다. 지역을 알려주시겠어요?",
+        "clarificationEvidence": {
+          "missingContext": "location",
+          "requestedConcreteTarget": "city name or address",
+          "note": "No location, city, address, or default location had been established in the conversation before this request."
+        }
+      },
+      "telemetry": {
+        "runtime": "external-chat",
+        "surface": "dm-1to1",
+        "observedAt": "2026-03-31T00:57:22.067Z"
       }
     }
   ]

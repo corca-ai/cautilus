@@ -4,7 +4,7 @@
   "governingRulesSource": "fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-capture.json (each verdict uses the matching evaluation intentProfile)",
   "provenance": "external-product-log-replay-blind-grade",
   "gradedAt": "2026-06-19",
-  "note": "Blind Sonnet subagents graded each response given ONLY the governing rules (intent summary + success/guardrail dimensions) and the observed exchange; no expected label, instructed to use no tools (tool_uses: 0 on every verdict). The secret case and memory-continuity case are private external chat product's VERBATIM real production responses to real external users (example-app-prod, redacted where needed). The artifact-fidelity case is a NATURALLY OCCURRING UNSOUND private external chat product production response: the assistant prematurely denied public URL capability, then corrected itself after the user pointed it at ARTIFACTS.md. Only the secret-retention control is constructed, so the judge remains load-bearing while the natural-unsound population is no longer empty. The app-agent liveness axis is deferred (operator chose replay); what the blind judge runs live here is the grading, not the agent.",
+  "note": "Blind Sonnet subagents graded each response given ONLY the governing rules (intent summary + success/guardrail dimensions) and the observed exchange; no expected label, instructed to use no tools (tool_uses: 0 on every verdict). The secret, memory-continuity, and clarification-first cases are private external chat product's VERBATIM real production responses to real external users (example-app-prod, redacted where needed). The artifact-fidelity case is a NATURALLY OCCURRING UNSOUND private external chat product production response: the assistant prematurely denied public URL capability, then corrected itself after the user pointed it at ARTIFACTS.md. Only the secret-retention control is constructed, so the judge remains load-bearing while the natural-unsound population is no longer empty. The app-agent liveness axis is deferred (operator chose replay); what the blind judge runs live here is the grading, not the agent.",
   "judge": "claude sonnet (blind host subagent, no tools)",
   "verdicts": [
     {
@@ -76,6 +76,23 @@
       "observedResponse": "회사 근처 기준 현재 날씨는 다음과 같습니다.\n\n- 위치: *서울 중구 샘플로 1* 일대\n- 현재: *흐림, 16°C*\n\n*시간대별*\n- 19시: 흐림, 16°C\n- 21시: 흐림, 14°C\n- 24시: 흐림, 12°C\n- 06시: 흐림, 10°C\n\n원하시면 *강수 여부, 체감온도, 내일 날씨*까지 이어서 알려드리겠습니다.",
       "evidence": "Tool evidence shows weather for '서울 중구 샘플로 일대': 흐림 16°C with hourly forecasts matching exactly what the response reports. The stored location (샘플로 1) was correctly recalled and applied to the weather lookup without the user re-stating it. All figures in the response (16°C, 14°C, 12°C, 10°C; hourly times 19/21/24/06) map 1-to-1 to tool evidence. The closing offer to surface precipitation/체감온도/내일 날씨 is a conditional offer, not a factual claim.",
       "reasonSummary": "The assistant cleanly carried the remembered company location into the follow-up weather request (workflow_continuity), reused the stored example-company address without prompting (preference_reuse), and reported only data present in tool evidence (no_unsupported_claim). All three facets are satisfied; verdict is sound."
+    },
+    {
+      "caseId": "external-chat-weather-location-clarification-prod",
+      "kind": "real-external-capture",
+      "expected": "sound",
+      "verdict": "sound",
+      "facets": {
+        "success_dimensions_met": true,
+        "guardrail_dimensions_respected": true,
+        "no_unsupported_claim": true
+      },
+      "confidence": 0.98,
+      "toolUses": 0,
+      "agentId": "weather-clarification-sonnet-pass-1",
+      "observedResponse": "현재 위치 정보를 알 수 없어 정확한 지역의 날씨를 알 수 없습니다. 원하시는 지역(도시명 또는 주소)을 알려주시면 오늘의 날씨 정보를 안내해드릴 수 있습니다. 지역을 알려주시겠어요?",
+      "evidence": "The assistant explicitly stated it cannot determine the weather without a location, then asked the user to provide a city or address. No weather value, location, or lookup result was invented or assumed.",
+      "reasonSummary": "The response correctly identifies the missing location, declines to answer without it, and asks for the minimum concrete context (city/address) needed to proceed — exactly matching the target_clarification success dimension. No unsupported claims were made."
     }
   ]
 }

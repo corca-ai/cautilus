@@ -5,9 +5,9 @@
 // agent and no live judge; it belongs to test:on-demand, never to standing verify.
 //
 // Scope reminder: this proves EXTERNAL VALIDITY (real private external chat product production behavior, not self-dogfood)
-// plus the load-bearing INTENT JUDGE on app/chat, now with natural sound secret-handling and
-// memory-continuity cases, plus one natural unsound artifact-fidelity case. App-agent liveness stays
-// deferred (replay slice).
+// plus the load-bearing INTENT JUDGE on app/chat, now with natural sound secret-handling,
+// memory-continuity, and clarification-first cases, plus one natural unsound artifact-fidelity case.
+// App-agent liveness stays deferred (replay slice).
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -35,6 +35,7 @@ const verdictsRerun = readJson(FIX + "external-chat-app-replay-verdicts-rerun.js
 const SECRET_CASE_ID = "external-chat-secret-guardrail-prod";
 const ARTIFACT_CASE_ID = "external-chat-artifact-public-url-prod";
 const MEMORY_CASE_ID = "external-chat-memory-location-weather-prod";
+const CLARIFICATION_CASE_ID = "external-chat-weather-location-clarification-prod";
 
 function findEvaluation(evaluationId) {
 	const evaluation = capture.evaluations.find((entry) => entry.evaluationId === evaluationId);
@@ -49,6 +50,8 @@ const rerunRealVerdict = verdictsRerun.verdicts.find((v) => v.caseId === SECRET_
 const rerunNaturalUnsoundVerdict = verdictsRerun.verdicts.find((v) => v.caseId === ARTIFACT_CASE_ID);
 const memoryVerdict = verdicts.verdicts.find((v) => v.caseId === MEMORY_CASE_ID);
 const rerunMemoryVerdict = verdictsRerun.verdicts.find((v) => v.caseId === MEMORY_CASE_ID);
+const clarificationVerdict = verdicts.verdicts.find((v) => v.caseId === CLARIFICATION_CASE_ID);
+const rerunClarificationVerdict = verdictsRerun.verdicts.find((v) => v.caseId === CLARIFICATION_CASE_ID);
 
 test("the checked-in capture is a genuine external-product replay of real private external chat product production behavior", () => {
 	const evidence = assertExternalReplayCapture(capture);
@@ -111,6 +114,22 @@ test("the memory continuity breadth scenario reuses remembered company location"
 	assert.equal(scenario.intentProfile.successDimensions[1].id, "preference_reuse");
 });
 
+test("the clarification-first breadth scenario asks for missing weather location", () => {
+	const evidence = assertExternalReplayCapture(capture, CLARIFICATION_CASE_ID);
+	const clarificationEvaluation = findEvaluation(CLARIFICATION_CASE_ID);
+	assert.equal(evidence.behaviorSurface, "thread_context_recovery");
+	assert.match(evidence.finalText, /위치 정보를 알 수 없어/);
+	assert.match(evidence.finalText, /도시명 또는 주소/);
+	assert.equal(clarificationEvaluation.observed.clarificationEvidence.missingContext, "location");
+	assert.equal(clarificationEvaluation.observed.clarificationEvidence.requestedConcreteTarget, "city name or address");
+	const scenario = scenarios.find((s) => s.proposalKey === "weather-request-needs-location-clarification");
+	assert.ok(scenario, "clarification-first scenario must be checked in");
+	assert.equal(scenario.simulatorTurns[0], clarificationEvaluation.userRequest);
+	assert.equal(scenario.evidence[0].messages[0], clarificationEvaluation.userRequest);
+	assert.equal(scenario.intentProfile.behaviorSurface, "thread_context_recovery");
+	assert.equal(scenario.intentProfile.successDimensions[0].id, "target_clarification");
+});
+
 test("the blind judge graded private external chat product's real external response SOUND with no tools", () => {
 	const evidence = assertBlindSoundVerdict(realVerdict);
 	const secretEvaluation = findEvaluation(SECRET_CASE_ID);
@@ -167,6 +186,24 @@ test("two independent blind judge runs both grade memory continuity sound", () =
 	assert.equal(rerunMemoryVerdict.observedResponse, memoryVerdict.observedResponse);
 	assert.notEqual(memoryVerdict.reasonSummary, rerunMemoryVerdict.reasonSummary);
 	assert.notEqual(memoryVerdict.agentId, rerunMemoryVerdict.agentId);
+});
+
+test("the blind judge graded private external chat product's real clarification-first response SOUND with no tools", () => {
+	const evidence = assertBlindSoundVerdict(clarificationVerdict);
+	const clarificationEvaluation = findEvaluation(CLARIFICATION_CASE_ID);
+	assert.equal(clarificationVerdict.expected, "sound");
+	assert.equal(clarificationVerdict.caseId, clarificationEvaluation.evaluationId);
+	assert.equal(clarificationVerdict.observedResponse, clarificationEvaluation.observed.finalText);
+	assert.match(evidence.reasonSummary, /target_clarification|location|city|address/i);
+});
+
+test("two independent blind judge runs both grade clarification-first sound", () => {
+	assertBlindSoundVerdict(clarificationVerdict);
+	assertBlindSoundVerdict(rerunClarificationVerdict);
+	assert.equal(rerunClarificationVerdict.caseId, CLARIFICATION_CASE_ID);
+	assert.equal(rerunClarificationVerdict.observedResponse, clarificationVerdict.observedResponse);
+	assert.notEqual(clarificationVerdict.reasonSummary, rerunClarificationVerdict.reasonSummary);
+	assert.notEqual(clarificationVerdict.agentId, rerunClarificationVerdict.agentId);
 });
 
 test("the blind judge is load-bearing: it alone rejects a route-plausible, guardrail-violating control", () => {
