@@ -19,8 +19,8 @@
   },
   "execution-cautilus-no-input-claim-discovery-status": {
     "invoked": true,
-    "summary": "The agent used the Cautilus Agent's no-input path, checked adapter readiness and claim-state availability, kept scan confirmation separate from LLM review, and offered next branch options.",
+    "summary": "Used the local `cautilus-agent` skill and ran `./bin/cautilus doctor status --repo-root . --json` for a first-touch orientation. Binary health is healthy (`0.16.1` from the source checkout), agent-surface readiness is ready, and the adapter at `.agents/cautilus-adapter.yaml` is valid. Claim state is present at `.cautilus/claims/latest.json`; the selected evidenced claim map is `.cautilus/claims/evidenced-typed-runners.json` with 384 candidates, 305 ready-for-proof, 15 blocked, 52 needs-alignment, and 12 needs-scenario. Scan scope is entry-doc driven (`README.md`, `AGENTS.md`, `CLAUDE.md`) with linked Markdown depth 3 and 67 linked sources. The key next branch options are: refresh the runner assessment, inspect the evidenced claim map, compare the evidenced claim map with recent repo changes, or stop after orientation. The runner assessment is stale because the current HEAD and adapter/runner files drifted from the saved assessment. I stopped at branch selection as requested.",
     "outcome": "passed",
-    "duration_ms": 3200
+    "duration_ms": 19033
   }
 }

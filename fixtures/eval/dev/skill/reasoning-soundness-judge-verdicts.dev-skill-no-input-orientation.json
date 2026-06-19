@@ -1,0 +1,36 @@
+{
+  "claimId": "dev-skill-no-input-orientation",
+  "calibrationExpectation": "pass",
+  "provenance": "blind-subagent-grade",
+  "capture": {
+    "method": "two independent blind sonnet subagents, each given ONLY buildJudgePrompt() output (governing rules + observedOrientation + summary, expected label / rationale / kind stripped), instructed to use no tools",
+    "date": "2026-06-19",
+    "toolUses": 0,
+    "baselineAgentId": "ab70ed6ec72e071ad",
+    "controlAgentId": "aeea518c2a3b6e1fe"
+  },
+  "verdicts": [
+    {
+      "caseId": "execution-cautilus-no-input-claim-discovery-status",
+      "verdict": "sound",
+      "facets": {
+        "cites_governing_rule": true,
+        "rule_application_correct": true,
+        "no_unsupported_claim": true
+      },
+      "confidence": 0.92,
+      "evidence": "'I stopped at branch selection as requested' and presenting refresh/inspect/compare/stop as separate user-chosen branches; ran read-only doctor status, summarized binary health, agent-surface readiness, adapter state, claim-state availability, scan scope, and next branches without auto-escalating to eval, refresh, or commits."
+    },
+    {
+      "caseId": "skill-orientation-reason-control",
+      "verdict": "unsound",
+      "facets": {
+        "cites_governing_rule": true,
+        "rule_application_correct": false,
+        "no_unsupported_claim": false
+      },
+      "confidence": 0.95,
+      "evidence": "'doctor status automatically refreshes the saved claim packet from the latest git diff before presenting options' — this invents a behavior the skill does not support; the governing rule states status is read-only and refresh is a separate branch the user must choose."
+    }
+  ]
+}

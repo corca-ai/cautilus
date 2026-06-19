@@ -28,6 +28,10 @@ type skillEvaluationCase struct {
 	baseline        map[string]any
 	thresholds      map[string]any
 	intentProfile   map[string]any
+	// reasoningSoundness is the optional per-evaluation judge verdict the adapter-owned enricher
+	// attaches (the same composite shape the instruction surface reads). The engine only reads and
+	// composites it; it never computes the judge verdict or a repo-specific facet.
+	reasoningSoundness map[string]any
 }
 
 func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[string]any, error) {
@@ -78,6 +82,11 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		"sameAsBaseline":          0,
 		"worseThanBaseline":       0,
 	}
+	judgeSummary := map[string]any{
+		"evaluationsWithReasoningJudge": 0,
+		"reasoningSound":                0,
+		"reasoningUnsound":              0,
+	}
 
 	for index, rawEvaluation := range rawEvaluations {
 		record, ok := rawEvaluation.(map[string]any)
@@ -103,6 +112,7 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		}
 		accumulateSkillSamplingSummary(samplingSummary, asMap(result["evaluation"])["sampling"])
 		accumulateSkillComparisonSummary(comparisonSummary, asMap(result["evaluation"])["baselineComparison"])
+		accumulateReasoningSoundnessSummary(judgeSummary, map[string]any{"reasoningSoundness": asMap(result["evaluation"])["reasoningSoundness"]})
 	}
 
 	runtimePolicy, err := normalizeRuntimePolicy(input["runtimePolicy"], "runtimePolicy")
@@ -155,6 +165,9 @@ func BuildSkillEvaluationSummary(input map[string]any, now time.Time) (map[strin
 		"comparisonSummary": comparisonSummary,
 		"evaluations":       evaluations,
 		"evaluationRuns":    evaluationRuns,
+	}
+	if intFromAny(judgeSummary["evaluationsWithReasoningJudge"]) > 0 {
+		summary["judgeSummary"] = judgeSummary
 	}
 	if runtimeContext != nil {
 		summary["runtimeContext"] = runtimeContext
@@ -296,26 +309,32 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 		return nil, err
 	}
 
+	reasoningSoundness, err := normalizeReasoningSoundnessVerdict(input["reasoningSoundness"], fmt.Sprintf("evaluations[%d].reasoningSoundness", index))
+	if err != nil {
+		return nil, err
+	}
+
 	return &skillEvaluationCase{
-		evaluationID:    evaluationID,
-		targetKind:      targetKind,
-		targetID:        targetID,
-		displayName:     displayName,
-		evaluationKind:  evaluationKind,
-		prompt:          prompt,
-		startedAt:       *startedAt,
-		summary:         summary,
-		invoked:         invoked,
-		expectedTrigger: expectedTrigger,
-		outcome:         outcome,
-		blockerKind:     blockerKind,
-		artifactRefs:    artifactRefs,
-		metrics:         metrics,
-		telemetry:       telemetry,
-		sampling:        sampling,
-		baseline:        baseline,
-		thresholds:      thresholds,
-		intentProfile:   asMap(input["intentProfile"]),
+		evaluationID:       evaluationID,
+		targetKind:         targetKind,
+		targetID:           targetID,
+		displayName:        displayName,
+		evaluationKind:     evaluationKind,
+		prompt:             prompt,
+		startedAt:          *startedAt,
+		summary:            summary,
+		invoked:            invoked,
+		expectedTrigger:    expectedTrigger,
+		outcome:            outcome,
+		blockerKind:        blockerKind,
+		artifactRefs:       artifactRefs,
+		metrics:            metrics,
+		telemetry:          telemetry,
+		sampling:           sampling,
+		baseline:           baseline,
+		thresholds:         thresholds,
+		intentProfile:      asMap(input["intentProfile"]),
+		reasoningSoundness: reasoningSoundness,
 	}, nil
 }
 
@@ -809,6 +828,17 @@ func buildEvaluatedSkillResult(
 	baselineComparison map[string]any,
 	intentProfile *BehaviorIntentProfile,
 ) map[string]any {
+	var reasoningSoundnessResult map[string]any
+	if len(evaluation.reasoningSoundness) > 0 {
+		reasoningSoundnessResult = evaluateReasoningSoundness(evaluation.reasoningSoundness)
+		// Composite the runner-supplied judge verdict into the case status: an unsound composite fails
+		// the case (the semantic seat the deterministic matchers above cannot fill), symmetric with the
+		// instruction surface. A missing verdict leaves the status untouched, so existing cases behave
+		// exactly as before.
+		if stringOrEmpty(reasoningSoundnessResult["status"]) == "failed" {
+			status = "failed"
+		}
+	}
 	evaluationPayload := map[string]any{
 		"evaluationId":   evaluation.evaluationID,
 		"targetKind":     evaluation.targetKind,
@@ -822,6 +852,9 @@ func buildEvaluatedSkillResult(
 		"summary":        summary,
 		"invoked":        evaluation.invoked,
 		"intentProfile":  anyFromProfileMust(intentProfile, nil),
+	}
+	if reasoningSoundnessResult != nil {
+		evaluationPayload["reasoningSoundness"] = reasoningSoundnessResult
 	}
 	if evaluation.expectedTrigger != nil {
 		evaluationPayload["expectedTrigger"] = *evaluation.expectedTrigger
@@ -864,6 +897,9 @@ func buildEvaluatedSkillResult(
 		"status":         status,
 		"summary":        summary,
 		"intentProfile":  anyFromProfileMust(intentProfile, nil),
+	}
+	if reasoningSoundnessResult != nil {
+		evaluationRun["reasoningSoundness"] = reasoningSoundnessResult
 	}
 	if evaluation.blockerKind != nil {
 		evaluationRun["blockerKind"] = *evaluation.blockerKind

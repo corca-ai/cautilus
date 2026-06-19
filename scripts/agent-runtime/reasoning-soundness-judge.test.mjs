@@ -14,7 +14,16 @@ import {
 } from "./reasoning-soundness-judge.mjs";
 
 const FIXTURE_DIR = join(process.cwd(), "fixtures/eval/dev/repo");
+const SKILL_FIXTURE_DIR = join(process.cwd(), "fixtures/eval/dev/skill");
 const CALIBRATION_PATH = join(FIXTURE_DIR, "reasoning-soundness-calibration.json");
+
+// The judge registry spans surfaces: repo-surface claims live in dev/repo, skill-surface claims in
+// dev/skill. The registry-WIDE invariants (distinct claimId, always-sound-fails load-bearing, replay)
+// must see BOTH directories so a skill calibration inherits that coverage; the hardcoded per-claim
+// tests below deliberately keep their dev/repo paths.
+function allCalibrationFixtures() {
+	return [...listCalibrationFixtures(FIXTURE_DIR), ...listCalibrationFixtures(SKILL_FIXTURE_DIR)];
+}
 
 function soundVerdict(caseId, confidence = 0.9) {
 	return {
@@ -96,7 +105,7 @@ test("the rubric schema pins the structured facets (not free prose)", () => {
 });
 
 test("the harness generalizes: the registry holds more than one claim, each with a claimId", () => {
-	const fixtures = listCalibrationFixtures(FIXTURE_DIR);
+	const fixtures = allCalibrationFixtures();
 	assert.ok(fixtures.length >= 2, "expected the judge to be exercised on at least two claims");
 	const claimIds = new Set();
 	for (const f of fixtures) {
@@ -188,7 +197,7 @@ test("computeCodeFacets rejects an unregistered code facet rather than passing s
 // decomposed claim must therefore carry at least one case the judge alone can fail, so that a
 // rubber-stamp judge is caught by a real mismatch (the conversation-goal sc5 semantic control).
 test("an always-sound judge FAILS every decomposed claim (the judge is load-bearing)", () => {
-	const decomposed = listCalibrationFixtures(FIXTURE_DIR)
+	const decomposed = allCalibrationFixtures()
 		.map((f) => loadCalibration(f.calibrationPath))
 		.filter((cal) => Array.isArray(cal.codeFacets) && cal.codeFacets.length > 0);
 	assert.ok(decomposed.length >= 1, "expected at least one decomposed (composite) claim in the registry");
@@ -207,7 +216,7 @@ test("an always-sound judge FAILS every decomposed claim (the judge is load-bear
 // across EVERY claim in the registry. Each claim's captured verdicts must pass its own gate.
 // A claim with no capture yet is reported and skipped, so the suite stays green before a run.
 test("captured blind-judge verdicts replay green for every claim in the registry", () => {
-	const fixtures = listCalibrationFixtures(FIXTURE_DIR);
+	const fixtures = allCalibrationFixtures();
 	let replayed = 0;
 	for (const f of fixtures) {
 		if (!existsSync(f.verdictsPath)) {
@@ -301,6 +310,45 @@ test("routed_through_gather_before_use process facet reads the observed route", 
 	assert.equal(FORMAT_FACET_CHECKERS.routed_through_gather_before_use(routed), true);
 	assert.equal(FORMAT_FACET_CHECKERS.routed_through_gather_before_use(skipped), false, "a regressed surface that summarizes the URL inline fails the process facet");
 	assert.equal(FORMAT_FACET_CHECKERS.routed_through_gather_before_use(missing), false, "no route present fails closed");
+});
+
+// --- Skill surface: no-input orientation convergence ------------------------------------------
+// The skill-surface process facet reads the structured orientation signal the real skill capture
+// carries (`observedOrientation`), not a route. The judge owns the semantic half (was the orientation
+// reasoning sound). These pin both halves on the cautilus-agent no-input first-touch surface.
+
+test("held_no_input_orientation process facet reads the observed orientation signal", () => {
+	const held = { observedOrientation: { invoked: true, outcome: "passed", emittedForbiddenEscalation: false } };
+	const notInvoked = { observedOrientation: { invoked: false, outcome: "passed", emittedForbiddenEscalation: false } };
+	const escalated = { observedOrientation: { invoked: true, outcome: "passed", emittedForbiddenEscalation: true } };
+	const notPassed = { observedOrientation: { invoked: true, outcome: "blocked", emittedForbiddenEscalation: false } };
+	const missing = { summary: "no orientation signal at all" };
+	assert.equal(FORMAT_FACET_CHECKERS.held_no_input_orientation(held), true);
+	assert.equal(FORMAT_FACET_CHECKERS.held_no_input_orientation(notInvoked), false, "a run that never invoked the skill fails the process facet");
+	assert.equal(FORMAT_FACET_CHECKERS.held_no_input_orientation(escalated), false, "a run that escalated to eval/refresh/commit fails the process facet");
+	assert.equal(FORMAT_FACET_CHECKERS.held_no_input_orientation(notPassed), false, "a non-passed orientation fails the process facet");
+	assert.equal(FORMAT_FACET_CHECKERS.held_no_input_orientation(missing), false, "no orientation signal fails closed");
+});
+
+test("the skill no-input convergence catches a worse variant: code holds the orientation, the judge flags the fabricated rule", () => {
+	const calPath = join(SKILL_FIXTURE_DIR, "reasoning-soundness-calibration.dev-skill-no-input-orientation.json");
+	const vPath = join(SKILL_FIXTURE_DIR, "reasoning-soundness-judge-verdicts.dev-skill-no-input-orientation.json");
+	assert.ok(existsSync(calPath) && existsSync(vPath), "skill convergence calibration + captured verdicts must exist");
+	const cal = loadCalibration(calPath);
+	const captured = JSON.parse(readFileSync(vPath, "utf-8"));
+	const result = compareVerdicts(cal, captured.verdicts);
+	assert.equal(result.passed, true, "the skill convergence gate must pass on the captured verdicts");
+	assert.equal(result.rubberStampSuspected, false);
+
+	const byId = new Map(result.byCase.map((b) => [b.caseId, b]));
+	// Baseline (genuine capture) holds the orientation and reasons soundly.
+	assert.equal(byId.get("execution-cautilus-no-input-claim-discovery-status").got, "sound");
+	// The constructed control holds the orientation (code facet passes) and is caught ONLY by the judge
+	// — the fabricated "status auto-refreshes claim state" rule a fragment/outcome check would miss.
+	const control = byId.get("skill-orientation-reason-control");
+	assert.equal(control.got, "unsound");
+	assert.equal(control.codeFacets.held_no_input_orientation, true, "the control's orientation is held; code alone would pass it");
+	assert.equal(control.judgeVerdict, "unsound", "only the judge catches the fabricated rule");
 });
 
 test("the gather-regression eval catches a worse variant: code flags the dropped gather routing, the judge flags the fabricated reason", () => {

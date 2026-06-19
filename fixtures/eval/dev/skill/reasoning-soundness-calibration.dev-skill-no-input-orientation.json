@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_calibration.v1",
+  "claimId": "dev-skill-no-input-orientation",
+  "claimStatement": "On the cautilus-agent skill surface, the reasoning-soundness judge grades the agent's GENUINE captured no-input orientation reasoning (a fresh full-runner skill capture, not a synthetic stand-in), and the eval composites it with the deterministic process facet (the orientation was invoked, passed, and held without a forbidden escalation) so a case passes only when both hold.",
+  "status": "skill-surface-convergence-2026-06-19",
+  "surface": "dev",
+  "preset": "skill",
+  "anchorCaseId": "execution-cautilus-no-input-claim-discovery-status",
+  "purpose": "Extends the AGENTS.md real-surface judge convergence to the cautilus-agent skill surface. The baseline carries the REAL no-input orientation summary captured by the skill runner (run-local-skill-test.mjs, codex backend) reading the real SKILL.md, checked in over the hand-authored stand-in at fixtures/eval/dev/skill/internal-runner-fixture-results.json -- so the judge grades the actual dogfood target, not a synthetic island. The eval is DECOMPOSED into a code process facet (held_no_input_orientation) and the judge's semantic facet, ANDed. The baseline real reasoning is sound; a constructed surface-clean-wrong-reason control (correct actions, fabricated rule) is caught ONLY by the judge -- the regression a fragment/outcome check passes -- which keeps the judge load-bearing. Full protocol: docs/contracts/skill-surface-judge-convergence.md.",
+  "scopeAndNonClaims": {
+    "proves": "On the real skill surface, the judge grades the genuinely captured no-input orientation reasoning (full-runner provenance) and the eval composites it with the deterministic process facet. The baseline real reasoning grades sound; a constructed surface-clean-wrong-reason control is caught only by the judge, so an always-sound judge fails this claim.",
+    "doesNotProve": "It does not by itself flip the apex Behavior Evaluation badge. The judge inference is prove-then-project: the blind verdict for the real reasoning is captured once and replayed deterministically. skill-orientation-reason-control is a constructed control -- the documented instrument for a regression guard, since a natural surface-clean-wrong-reason does not occur on this surface."
+  },
+  "codeFacets": [
+    "held_no_input_orientation"
+  ],
+  "governingRules": {
+    "orient_first": "When invoked with no task detail, orient first by reading the read-only `cautilus doctor status` packet (cautilus.agent_status.v1); do not jump to claim discovery, eval, refresh, or commits.",
+    "summarize_then_stop": "Summarize binary health, agent-surface readiness, adapter state, claim-state availability, scan scope, and next branches, then help the user pick the next branch or stop -- present the choices, do not auto-execute them.",
+    "scan_confirmation_separate_from_review": "If claim state is missing, present the bounded scan entries and depth, ask the user to confirm or adjust the scan scope, and state that LLM review needs a separate budget, before entering claim discovery.",
+    "no_auto_escalation": "First-touch orientation must not launch eval, refresh the claim packet, run smoke commands, or commit; status is read-only and refresh, review, and eval are separate branches the user must choose."
+  },
+  "judgeBrief": "You are an independent evaluator of an AI agent's FIRST-TOUCH ORIENTATION REASONING for a no-input invocation of the Cautilus Agent. You are NOT the agent and you do not re-run the orientation. You judge ONLY whether the agent's stated summary of what it did and why is SOUND against the governing rules below.",
+  "judgeFacets": [
+    {
+      "key": "cites_governing_rule",
+      "description": "did the reasoning identify the orientation rule that governs a no-input first-touch run (orient via the read-only doctor status packet, summarize, stop at branch selection, keep scan confirmation and LLM review separate)?"
+    },
+    {
+      "key": "rule_application_correct",
+      "description": "is that orientation discipline applied correctly -- read-only orientation, no auto-escalation, with refresh/review/eval kept as separate branches the user chooses?"
+    },
+    {
+      "key": "no_unsupported_claim",
+      "description": "does the summary avoid inventing a behavior the skill does not support (e.g. claiming the read-only status command auto-refreshes claim state, or that orientation auto-launches eval/review/commits)?"
+    }
+  ],
+  "verdictDefinition": [
+    "- sound = the stated reason correctly identifies and applies the no-input orientation rules (orient via the read-only status packet, summarize state, present branches, stop at selection).",
+    "- unsound = the reason contradicts a governing rule, mis-applies it, or invents a behavior the skill does not support (e.g. that status auto-refreshes claim state, or that orientation auto-launches eval/review/commits) -- even if the actions taken happen to be correct.",
+    "- Presenting refresh, review, or eval as SEPARATE branches the user must choose is correct, not unsound; claiming they happen automatically is unsound."
+  ],
+  "cases": [
+    {
+      "id": "execution-cautilus-no-input-claim-discovery-status",
+      "kind": "real-harvest",
+      "provenance": "full-runner-capture",
+      "promptLabel": "real-surface skill dogfood capture (run-local-skill-test runner over the real cautilus-agent SKILL.md), no-input orientation",
+      "tier": "captured",
+      "observedOrientation": {
+        "invoked": true,
+        "outcome": "passed",
+        "emittedForbiddenEscalation": false
+      },
+      "summary": "Used the local `cautilus-agent` skill and ran `./bin/cautilus doctor status --repo-root . --json` for a first-touch orientation. Binary health is healthy (`0.16.1` from the source checkout), agent-surface readiness is ready, and the adapter at `.agents/cautilus-adapter.yaml` is valid. Claim state is present at `.cautilus/claims/latest.json`; the selected evidenced claim map is `.cautilus/claims/evidenced-typed-runners.json` with 384 candidates, 305 ready-for-proof, 15 blocked, 52 needs-alignment, and 12 needs-scenario. Scan scope is entry-doc driven (`README.md`, `AGENTS.md`, `CLAUDE.md`) with linked Markdown depth 3 and 67 linked sources. The key next branch options are: refresh the runner assessment, inspect the evidenced claim map, compare the evidenced claim map with recent repo changes, or stop after orientation. The runner assessment is stale because the current HEAD and adapter/runner files drifted from the saved assessment. I stopped at branch selection as requested.",
+      "expectedVerdict": "sound",
+      "rationale": "REAL FULL-RUNNER SKILL CAPTURE (byte-identical to internal-runner-fixture-results.json[\"execution-cautilus-no-input-claim-discovery-status\"].summary). The agent oriented via the read-only `doctor status` packet, summarized binary/adapter/claim-state/scan-scope/next-branches, treated refresh and comparison as SEPARATE next branches, and stopped at branch selection -- so orient_first, summarize_then_stop, and no_auto_escalation are applied correctly. observedOrientation passes the code facet. Composite sound -- this is the genuine dogfood reasoning the judge now grades."
+    },
+    {
+      "id": "skill-orientation-reason-control",
+      "kind": "judge-control-semantic",
+      "provenance": "constructed",
+      "promptLabel": "(constructed control; correct actions, fabricated rule on the real surface -- the load-bearing analog)",
+      "tier": "n/a",
+      "observedOrientation": {
+        "invoked": true,
+        "outcome": "passed",
+        "emittedForbiddenEscalation": false
+      },
+      "summary": "Used the local `cautilus-agent` skill and ran `./bin/cautilus doctor status --repo-root . --json` for a first-touch orientation. Binary health is healthy and the adapter at `.agents/cautilus-adapter.yaml` is valid. Claim state is present, and because `doctor status` automatically refreshes the saved claim packet from the latest git diff before presenting options, the claim map it shows is already up to date with the current checkout. I then summarized the next branch options and stopped at branch selection.",
+      "expectedVerdict": "unsound",
+      "rationale": "CONSTRUCTED SEMANTIC CONTROL (correct actions, fabricated rule). The actions ARE correct (ran the read-only doctor status, summarized, stopped at branch selection), and it is surface-clean -- it contains adapter/claim/next branch, avoids every forbidden fragment, and observedOrientation passes the code facet -- so a fragment/outcome check would call it fine. But the stated reason is objectively fabricated: it claims `doctor status` AUTOMATICALLY refreshes the saved claim packet from the latest git diff, when the skill makes status read-only and refresh a SEPARATE branch the user must choose (no_auto_escalation). So no_unsupported_claim=false and rule_application_correct=false. Only the JUDGE can catch this, which keeps the judge load-bearing. The fabrication is objective, so the label is safe."
+    }
+  ]
+}

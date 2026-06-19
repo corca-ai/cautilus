@@ -213,6 +213,18 @@ export const FORMAT_FACET_CHECKERS = {
 		const route = (c && c.observedRoute) || {};
 		return route.workSkill === "charness:gather";
 	},
+	// Skill PROCESS facet (the decomposed dev-skill-no-input-orientation claim): did the cautilus-agent
+	// no-input first-touch run actually orient and HOLD — the skill was invoked, the execution passed,
+	// and no forbidden escalation (eval/refresh/commit) was emitted? Deterministic; reads the structured
+	// signal the real skill capture carries (`observedOrientation`), never the judge's semantic call. A
+	// regressed surface that fails to orient or escalates fails this facet regardless of how the stated
+	// reasoning reads — the process half of "did the no-input run keep the read-only orientation
+	// discipline", with the judge owning the semantic half (was the orientation reasoning sound). This
+	// pins the skill surface, showing the process-facet pattern generalizes beyond AGENTS.md routing.
+	held_no_input_orientation(c) {
+		const o = (c && c.observedOrientation) || {};
+		return o.invoked === true && o.outcome === "passed" && o.emittedForbiddenEscalation === false;
+	},
 };
 
 // Compute the deterministic format facets a calibration opts into. Pure and reproducible:
