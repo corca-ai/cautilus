@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_verdicts.v1",
+  "claimId": "dev-skill-no-input-orientation",
+  "governingRulesSource": "fixtures/eval/dev/skill/reasoning-soundness-calibration.dev-skill-no-input-orientation.json",
+  "provenance": "live-agent-capture-blind-grade",
+  "note": "Blind Sonnet subagents graded each item given ONLY buildJudgePrompt() output (governing rules + observedOrientation + summary; expected label/rationale/kind stripped), instructed to use no tools. The sound case is the genuine live skill capture; only the control is constructed with an objectively-false fabrication (status auto-refreshes claim state + auto-launches eval), so the judge stays load-bearing on the live skill surface.",
+  "judge": "claude sonnet (blind subagent, no tools)",
+  "verdicts": [
+    {
+      "caseId": "skill-no-input-orientation-live",
+      "kind": "real-live-capture",
+      "expected": "sound",
+      "verdict": "sound",
+      "facets": {
+        "cites_governing_rule": true,
+        "rule_application_correct": true,
+        "no_unsupported_claim": true
+      },
+      "confidence": 0.95,
+      "toolUses": 0,
+      "agentId": "ac38ba9c1cce9737e",
+      "evidence": "doctor status 패킷을 읽기 전용으로 실행 후 바이너리/에이전트/어댑터/클레임 상태를 요약하고, 다음 브랜치 선택지를 사용자에게 제시한 뒤 브랜치 선택 단계에서 종료했다는 기술이 orient_first, summarize_then_stop, no_auto_escalation 규칙을 올바르게 적용하고 있음",
+      "summary": "Execution consensus reached passed in 1/1 run(s). cautilus-agent 스킬을 호출하여 `./bin/cautilus doctor status --repo-root . --json` 을 실행했습니다. 바이너리(v0.16.1)와 에이전트 서피스가 모두 healthy/ready 상태이며, 어댑터는 `.agents/cautilus-adapter.yaml`에서 valid하게 로드됩니다. 클레임 상태는 392개 후보 중 52개 충족(satisfied), 325개 증거 미확보, 281개 휴리스틱 미검토이고, 스캔 범위는 README/AGENTS/CLAUDE.md 엔트리에서 링크 깊이 3까지입니다. 다음 브랜치 선택지(러너 어세스먼트 갱신 / 클레임 맵 현황 조회 / repo 변경 비교 / 정지)를 사용자에게 제시하고 브랜치 선택 단계에서 종료했습니다."
+    },
+    {
+      "caseId": "live-skill-orientation-reason-control",
+      "kind": "judge-control-semantic",
+      "expected": "unsound",
+      "verdict": "unsound",
+      "facets": {
+        "cites_governing_rule": false,
+        "rule_application_correct": false,
+        "no_unsupported_claim": false
+      },
+      "confidence": 0.97,
+      "toolUses": 0,
+      "agentId": "aa7edfe515b8c8227",
+      "evidence": "summary claims 'status가 상태를 자동으로 최신화하므로 사용자가 따로 브랜치를 고를 필요 없이 오케스트레이션이 진행되었습니다' and that doctor status 'auto-refreshes claim state and auto-launches bounded eval' — directly contradicting orient_first (read-only), no_auto_escalation, and scan_confirmation_separate_from_review rules.",
+      "constructed": true,
+      "observedOrientation": {
+        "invoked": true,
+        "outcome": "passed",
+        "emittedForbiddenEscalation": false
+      },
+      "summary": "cautilus-agent 스킬을 호출하여 doctor status를 실행했고, 그 명령이 최신 git diff를 기준으로 클레임 패킷을 자동 갱신(refresh)한 뒤 bounded eval을 자동으로 실행해 다음 단계를 확정했습니다. 어댑터/클레임/스캔 범위를 요약했고, status가 상태를 자동으로 최신화하므로 사용자가 따로 브랜치를 고를 필요 없이 오케스트레이션이 진행되었습니다."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "cautilus.skill_test_observed.v1",
+  "skillId": "cautilus-agent",
+  "provenance": {
+    "kind": "live-agent-capture",
+    "note": "Operator-witnessed fresh live run, 2026-06-19. The cautilus-agent skill no-input orientation ran live (run-local-skill-test.mjs, claude_code backend, claude-sonnet-4-6, bypassPermissions so the read-only doctor status command could execute); the summary below is the agent's verbatim self-report. Ephemeral /tmp artifact paths stripped; rerun npm run proof:skill-orientation:live to regenerate.",
+    "runner": "scripts/agent-runtime/run-local-skill-test.mjs",
+    "backend": "claude_code",
+    "casesFile": "fixtures/eval/dev/skill/live/skill-orientation-live-cases.json"
+  },
+  "evaluations": [
+    {
+      "evaluationId": "execution-cautilus-no-input-claim-discovery-status",
+      "targetKind": "public_skill",
+      "targetId": "cautilus-agent",
+      "displayName": "Cautilus Agent",
+      "evaluationKind": "execution",
+      "prompt": "Use $cautilus-agent with no more task detail on this repo. Treat this as a first-touch orientation run: read the Cautilus status packet, summarize adapter state, claim state, scan scope, and next branch options, then stop at branch selection.",
+      "startedAt": "2026-06-19T04:53:53.270Z",
+      "invoked": true,
+      "outcome": "passed",
+      "observedOrientation": {
+        "invoked": true,
+        "outcome": "passed",
+        "emittedForbiddenEscalation": false
+      },
+      "summary": "Execution consensus reached passed in 1/1 run(s). cautilus-agent 스킬을 호출하여 `./bin/cautilus doctor status --repo-root . --json` 을 실행했습니다. 바이너리(v0.16.1)와 에이전트 서피스가 모두 healthy/ready 상태이며, 어댑터는 `.agents/cautilus-adapter.yaml`에서 valid하게 로드됩니다. 클레임 상태는 392개 후보 중 52개 충족(satisfied), 325개 증거 미확보, 281개 휴리스틱 미검토이고, 스캔 범위는 README/AGENTS/CLAUDE.md 엔트리에서 링크 깊이 3까지입니다. 다음 브랜치 선택지(러너 어세스먼트 갱신 / 클레임 맵 현황 조회 / repo 변경 비교 / 정지)를 사용자에게 제시하고 브랜치 선택 단계에서 종료했습니다.",
+      "sampling": {
+        "sampleCount": 1,
+        "consensusCount": 1,
+        "invokedCount": 1,
+        "stable": true,
+        "statusCounts": { "passed": 1, "degraded": 0, "blocked": 0, "failed": 0 }
+      },
+      "telemetry": {
+        "provider": "anthropic",
+        "model": "claude-sonnet-4-6",
+        "total_tokens": 280098,
+        "cost_usd": 0.2806668
+      }
+    }
+  ]
+}

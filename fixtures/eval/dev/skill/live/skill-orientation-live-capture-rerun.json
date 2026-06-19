@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "cautilus.skill_test_observed.v1",
+  "skillId": "cautilus-agent",
+  "provenance": {
+    "kind": "live-agent-capture",
+    "note": "Second independent live run, 2026-06-19, via `npm run proof:skill-orientation:live`. Same operator-witnessed session as skill-orientation-live-capture.json but a separate live invocation (claude_code, claude-sonnet-4-6, bypassPermissions). Checked in to anchor the 'reasoning differs run to run, orientation invariant holds' claim in artifacts, not narrative. Ephemeral /tmp artifact paths stripped.",
+    "runner": "scripts/on-demand/skill-orientation-live-proof.mjs",
+    "backend": "claude_code"
+  },
+  "evaluations": [
+    {
+      "evaluationId": "execution-cautilus-no-input-claim-discovery-status",
+      "targetKind": "public_skill",
+      "targetId": "cautilus-agent",
+      "evaluationKind": "execution",
+      "startedAt": "2026-06-19T04:59:01.482Z",
+      "invoked": true,
+      "outcome": "passed",
+      "observedOrientation": {
+        "invoked": true,
+        "outcome": "passed",
+        "emittedForbiddenEscalation": false
+      },
+      "summary": "Execution consensus reached passed in 1/1 run(s). Invoked charness:find-skills (bootstrap) then cautilus-agent (no-input orientation). Ran ./bin/cautilus doctor status --repo-root . --json and read the cautilus.agent_status.v1 packet. Binary: v0.16.1 healthy, 61 commands. Agent surface: ready (skill installed, Claude link present). Adapter: .agents/cautilus-adapter.yaml, valid, no warnings. Claim state: orientationState points to .cautilus/claims/evidenced-typed-runners.json (present); 144 claims already satisfied, 111 need eval planning, 41 need human alignment, 35 split-or-defer, 31 human confirm, 29 need deterministic proof, 1 needs scenario design; 190 cross-cutting heuristic labels need review. Scan scope: entries README.md/AGENTS.md/CLAUDE.md, link depth 3. Presented 4 next branch options and stopped at branch selection as instructed.",
+      "telemetry": {
+        "provider": "anthropic",
+        "model": "claude-sonnet-4-6",
+        "cost_usd": 0.2472783
+      }
+    }
+  ]
+}

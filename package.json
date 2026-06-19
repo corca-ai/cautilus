@@ -40,6 +40,7 @@
     "dogfood:self:html": "./bin/cautilus doctor artifacts render-self-dogfood-html",
     "consumer:onboard:smoke": "node scripts/on-demand/smoke-external-consumer.mjs",
     "proof:behavior-eval:live": "node scripts/on-demand/behavior-eval-live-proof.mjs",
+    "proof:skill-orientation:live": "node scripts/on-demand/skill-orientation-live-proof.mjs",
     "skills:sync-packaged": "node scripts/release/sync-packaged-skill.mjs",
     "release:claim-freshness": "node scripts/release/check-claim-freshness.mjs",
     "release:prepare": "node scripts/release/prepare-release.mjs",
