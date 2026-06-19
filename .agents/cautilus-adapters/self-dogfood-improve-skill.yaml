@@ -1,0 +1,22 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - dev / skill held-out orientation surface used as the live improve-search candidate gate
+baseline_options:
+  - baseline git ref in the same repo via {baseline_ref}
+required_prerequisites:
+  - materialize the local Cautilus Agent surface before running the held-out orientation eval
+preflight_commands:
+  - ./bin/cautilus init --repo-root . --overwrite
+  - ./bin/cautilus doctor --repo-root . --scope agent-surface
+evaluation_input_default: fixtures/eval/dev/skill/improve/skill-orientation-improve.fixture.json
+eval_test_command_templates:
+  - node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/local-skill-test --backend {backend} --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode bypassPermissions --claude-allowed-tools 'Bash(cautilus *)'
+artifact_paths:
+  - skills/cautilus-agent/SKILL.md
+  - fixtures/eval/dev/skill/improve/skill-orientation-improve.fixture.json
+comparison_questions:
+  - Does the candidate orientation prompt read the read-only status packet, summarize adapter/claim/next-branch state, and hold at branch selection without escalating?
+human_review_prompts:
+  - id: held-out-orientation
+    prompt: Where would an operator still conclude that the candidate orientation prompt escapes the held-out orientation discipline (skips doctor status, escalates to eval/next-action, or fails to hold at branch selection)?
