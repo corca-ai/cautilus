@@ -2,45 +2,42 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — 풀 러너 provenance로 회귀 페어 재현해서 배지 결정 입력을 완성합시다.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — judge tier를 실제-surface dogfood(AGENTS.md·cautilus-agent)에 수렴시킵시다.`
 
 doc 멘션만으로 픽업하면 이 트리거의 workflow를 실행하세요(파일 재독만 하지 말 것).
-**stage 1(회귀 claim 폭 확대)·stage 2(a) CLI 배선 종결(2026-06-19).** judge tier가 이제 `cautilus evaluate` 안에서 회귀를 잡는다(리플레이 기반).
-남은 본 게임 = **풀 codex/claude 러너 provenance**(서브에이전트 harvest가 유일한 갭) → 배지 `declared` 탈출 결정.
-먼저 `docs/contracts/eval-judge-collaboration.md`의 "Judge tier wired into `cautilus evaluate` (2026-06-19)" 섹션과 `charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md`를 읽고 아래 "Next Session" 1번에서 시작.
+**stage 1(회귀 breadth)·stage 2(a) judge tier CLI 배선 종결(2026-06-19).** 다음 본 게임 = **judge를 합성 섬에서 실제 dogfood 대상으로 수렴**.
+먼저 `docs/contracts/eval-judge-collaboration.md`의 "Judge tier wired into `cautilus evaluate` (2026-06-19)" 섹션과 `charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md`를 읽고 아래 "Next Session" 1번에서 시작. `spec`으로 열린 결정부터 닫고 impl.
 
 ## Current State
 
-- **stage 1 — 회귀 탐지 폭 확대 종결:** 회귀 탐지가 **3개의 서로 다른 pinned step**에서 작동(각각 고유 code process facet + judge-load-bearing right-route-wrong-reason control, 양 tier 실 harvest):
-  - `dev-repo-routing-regression`(startup 부트스트랩, `emitted_find_skills_bootstrap`) — 기존 템플릿
-  - `dev-repo-bug-debug-routing-regression`(bug→`charness:debug`, `routed_to_debug_before_fix`) — 신규
-  - `dev-repo-gather-routing-regression`(외부소스→`charness:gather`, `routed_through_gather_before_use`) — 신규
-  - breadth-invariant 테스트가 3 distinct facet을 고정. harness 21/21 green. 증거 `charness-artifacts/eval-trust/2026-06-19-regression-variant-breadth.md`.
-- **stage 2(a) — judge tier가 `cautilus evaluate`에 배선(리플레이 기반):** 제네릭 Go 엔진(`internal/runtime/instruction_surface.go`)이 observed 패킷의 `reasoningSoundness` composite verdict을 읽어 케이스 status에 AND 합성(unsound→fail→recommendation reject). repo-specific judge 로직은 adapter-owned 러너(`scripts/agent-runtime/run-reasoning-judge-eval.mjs`)가 SOT harness `compareVerdicts`로 계산해 패킷에 emit(엔진은 harness 미import). dogfood: `cautilus evaluate fixture --adapter-name self-dogfood-routing-regression-eval` → reject, baseline pass, regressed-skip fail, **control은 라우팅 매처 pass인데 judge로만 fail**(토큰체크가 놓치는 회귀를 CLI 안에서 잡음). e2e 테스트 `scripts/on-demand/judge-tier-eval-dogfood.test.mjs`. bounded fresh-eye READY(블로커 없음). 증거 `charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md`.
-- **남은 2개의 정직한 갭(배지 미플립):** (1) judge LLM 추론은 prove-then-project(blind verdict 1회 캡처→결정론 리플레이; CLI는 합성·오케스트레이션만, 라이브 호출 아님). (2) provenance가 여전히 blind-subagent-harvest — 풀 codex/claude 러너 캡처가 아님.
-- **apex 배지:** Behavior Evaluation = **declared** 유지. 올리는 건 유지보수자 결정 + 별도 슬라이스.
+- **stage 1 — 회귀 breadth 종결:** 회귀 탐지가 3개 pinned step에서 작동(routing 부트스트랩 / bug→`charness:debug` / 외부소스→`charness:gather`), 각각 code process facet + judge-load-bearing control. harness 21/21. 증거 `charness-artifacts/eval-trust/2026-06-19-regression-variant-breadth.md`.
+- **stage 2(a) — judge tier가 `cautilus evaluate`에 generic 배선:** 엔진(`internal/runtime/instruction_surface.go`)이 observed 패킷의 `reasoningSoundness` composite verdict을 읽어 case status에 AND 합성(unsound→reject). adapter-owned 러너가 SOT `compareVerdicts`로 계산. dogfood `self-dogfood-routing-regression-eval`. 증거 `2026-06-19-judge-tier-cli-wiring.md`.
+- **핵심 갭(2026-06-19 진단, 다음 액션의 이유): 두 세계가 끊겨 있다.**
+  - **실제-surface dogfood는 있으나 결정론적뿐:** AGENTS.md → `self-dogfood-eval`(픽스처 `checked-in-agents-routing`); cautilus-agent 스킬 → `dev/skill` 가족(`self-dogfood-eval-skill` + `fixtures/eval/dev/skill/cautilus-*.fixture.json`). 둘 다 실제 러너(`run-self-dogfood-eval.mjs`→`run-local-eval-test.mjs`, `run-local-skill-test.mjs`)로 실제 surface를 읽지만 채점은 routing/trigger/command-fragment 매처뿐 — 계약이 비판한 thin proxy.
+  - **judge tier는 합성 섬:** `self-dogfood-routing-regression-eval`은 패러프레이즈 surface + 서브에이전트 harvest 리플레이를 채점. **judge가 진짜 AGENTS.md / cautilus-agent 행동을 채점한 적 없음.**
+  - **좋은 소식(수렴이 작은 이유):** `run-local-eval-test.mjs`가 **이미 `routingDecision.reasonSummary`를 캡처**(267·274줄 = 실제 러너 추론)하고, 엔진은 `reasoningSoundness`를 이미 generic하게 합성. 빠진 건 그 실제 reasonSummary로 judge verdict을 내 패킷에 붙이는 한 스텝뿐.
+- **apex 배지:** Behavior Evaluation = **declared** 유지(유지보수자 결정 + 별도 슬라이스).
 
-## Next Session: 풀 러너 provenance → 배지 결정 (리드)
+## Next Session: judge ↔ 실제-surface dogfood 수렴 (리드)
 
-1. **(리드) 풀 codex/claude 러너 provenance**: 서브에이전트 harvest 대신 실제 제품 러너로 baseline vs regressed instruction surface를 돌려 진짜 observed 라우팅 로그를 만들고(기존 `scripts/run-self-dogfood-eval.mjs` → `scripts/agent-runtime/run-local-eval-test.mjs` 경로 활용), 그 로그를 `cautilus evaluate`의 judge tier로 채점 → 회귀 페어를 풀 러너 fidelity로 재현. 이게 마지막 fidelity 갭. **대안/병행**: 유지보수자가 현 증거(breadth + CLI-wired replay)를 충분조건으로 받아 배지를 `declared` 위로 올리고 spec projection만 배선(`docs/specs/index.spec.md`).
-2. **(선택) 잔여 + 큰 후속**: per-facet routing 잔여(Deprecated/Probe/Not-Doing 섹션 혼재 claim, per-claim source 정리로만); ③ epic-structure 비준; consumer-shaped corpus로 facet 측정 복제(external-validity 백로그).
-3. **④ specdown 재설계 (맨 마지막)**: 재작성 후 `lint:specs` 주석 복원(`run-verify.mjs`+`run-verify.test.mjs` 두 줄). eval-trust와 직교 — 언제든 단독 세션.
+1. **(리드) 실제-surface dogfood에 judge-tier facet 얹기.** AGENTS.md(`self-dogfood-eval`)부터, 다음 cautilus-agent(`self-dogfood-eval-skill`). 러너가 이미 내는 `routingDecision.reasonSummary`(실제 AGENTS.md를 읽은 진짜 추론)를 governing rules 대비 채점해 `reasoningSoundness`로 패킷에 붙이면, 엔진이 기존 결정론적 체크와 AND 합성. 이게 "풀 러너 provenance"와 "judge가 진짜 dogfood 대상 채점"을 한 번에 닫음. `spec`으로 아래 열린 결정 먼저 → impl → dogfood + executable test.
+2. **(선택) 잔여:** per-facet routing 잔여; ③ epic-structure 비준; consumer-shaped corpus 복제(external-validity).
+3. **④ specdown 재설계 (맨 마지막):** 재작성 후 `lint:specs` 주석 복원(`run-verify.mjs`+`run-verify.test.mjs` 두 줄). eval-trust와 직교.
 
-## Discuss (열린 결정)
+## Discuss (열린 결정 — spec에서 닫을 것)
 
-- **배지 기준(가장 큰 결정)**: 현 증거(3 pinned behavior breadth + judge tier가 CLI 안에서 control을 잡음, 리플레이 fidelity)가 `declared` 탈출에 충분한가, 아니면 풀 러너 provenance까지 요구하나?
-- CLI 안 라이브 judge vs prove-then-project 리플레이 — 배지가 라이브 호출을 요구하나, 리플레이 fidelity로 충분한가?
-- judge 모델 고정값(sonnet) vs 제품 러너 정합/비용 (이월).
-- ③ epic 구조 비준 시점 — judge가 epic을 신뢰하려면 필요, 급하지 않음.
+- **실제 run에서 judge verdict 출처(THE 결정):** (a) 러너가 매 run마다 라이브 judge LLM 호출(진짜 live, run당 비용·비결정론) vs (b) prove-then-project를 **실제 surface 기준으로** — 실제-러너 reasoning을 1회 harvest→blind 채점→리플레이(지금과 같은 규율, 단 provenance가 진짜). (b) 우선 권장.
+- 어느 어댑터부터 — AGENTS.md(단순) 먼저.
+- 기존 routing calibration이 그대로 transfer되나, 아니면 실제-러너 reasoning 기준으로 governing rules/calibration 재정초가 필요한가.
+- **배지 기준(이월):** 이 수렴이 닫히면 풀 러너 provenance도 사실상 닫힘 → `declared` 탈출 결정 가능.
 
 ## 제약
 
-push는 사용자 몫(의도적 보류). claim-source 편집 후 `npm run claims:refresh:all`(소스 커밋 → refresh → 패킷 커밋 순서; gitState.isStale은 소스 드리프트 기준 — 이번 세션에서 calibration fixture 편집이 트리거함). 운영 추출 템플릿은 `internal/runtime/claim_extraction.go`. ground truth 전 큐레이션 빌드 금지. raw를 큐레이션 후 채점 금지. 제네릭 엔진은 repo-specific judge 로직/facet을 import·재구현 금지(adapter-owned 러너가 소유). critique/fresh-eye 리뷰는 서브에이전트 위임. bug/error/regression은 `charness:debug` 라우팅. 새 런타임 표면엔 executable test.
+push는 사용자 몫(보류). claim-source 편집 후 `npm run claims:refresh:all`(소스 커밋 → refresh → 패킷 커밋; 이번 세션 calibration fixture 편집이 트리거함). 제네릭 엔진은 repo-specific judge 로직/facet import·재구현 금지(adapter-owned 러너 소유). ground truth 전 큐레이션 금지. bug/error/regression은 `charness:debug`. 새 런타임 표면엔 executable test. critique/fresh-eye는 서브에이전트 위임.
 
 ## References
 
-- **계약**: `docs/contracts/eval-judge-collaboration.md`(특히 "Judge tier wired into `cautilus evaluate` (2026-06-19)") + `facet-decomposition.md`.
-- **증거**: `charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md`(CLI 배선) · `2026-06-19-regression-variant-breadth.md`(3 pinned behavior) · `2026-06-19-regression-variant-eval-routing.md`(템플릿).
-- **엔진/러너**: `internal/runtime/instruction_surface.go`(+`instruction_surface_test.go`) · `scripts/agent-runtime/run-reasoning-judge-eval.mjs`(+test, +`scripts/on-demand/judge-tier-eval-dogfood.test.mjs`) · 어댑터 `.agents/cautilus-adapters/self-dogfood-routing-regression-eval.yaml` · cases `fixtures/eval/dev/repo/routing-regression-eval-cases.json`.
-- **harness**: `scripts/agent-runtime/reasoning-soundness-judge.mjs`(+test); calibration/verdicts `fixtures/eval/dev/repo/reasoning-soundness-{calibration,judge-verdicts}.dev-repo-{routing,bug-debug,gather}-routing-regression.json`.
-- **eval-trust 답안지**: `charness-artifacts/eval-trust/goldset-v2-reextract-head/`(HEAD 비준 365). 로드맵 `docs/master-plan.md`.
+- **계약/증거**: `docs/contracts/eval-judge-collaboration.md`(2026-06-19 wiring 섹션)·`facet-decomposition.md`; `charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md`·`2026-06-19-regression-variant-breadth.md`.
+- **실제-surface dogfood(수렴 대상)**: 어댑터 `.agents/cautilus-adapters/self-dogfood-eval.yaml`·`self-dogfood-eval-skill.yaml`; 러너 `scripts/run-self-dogfood-eval.mjs`→`scripts/agent-runtime/run-local-eval-test.mjs`·`run-local-skill-test.mjs`; 픽스처 `fixtures/eval/dev/repo/checked-in-agents-routing.fixture.json`·`fixtures/eval/dev/skill/cautilus-*.fixture.json`.
+- **judge 엔진/러너/harness**: `internal/runtime/instruction_surface.go`(+test); `scripts/agent-runtime/run-reasoning-judge-eval.mjs`(+test, +`scripts/on-demand/judge-tier-eval-dogfood.test.mjs`), 어댑터 `self-dogfood-routing-regression-eval.yaml`; `scripts/agent-runtime/reasoning-soundness-judge.mjs`(+ calibration/verdicts `reasoning-soundness-{calibration,judge-verdicts}.dev-repo-{routing,bug-debug,gather}-routing-regression.json`).
+- 로드맵 `docs/master-plan.md`; 답안지 `charness-artifacts/eval-trust/goldset-v2-reextract-head/`.
