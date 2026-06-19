@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:083b394aac5850f5ce589c02736877339e28c5619895003b10be02a42d8b749b",
+    "claimsHash": "sha256:2010ba6fa87a3664658d672af86d59dd6a74d63ca9c425ed41679227579d9c1d",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:2cafbe610b1ef57288a70e9d4ab2347753e420eacdef05c6c9bc1df82bc9d07c",
+    "statusHash": "sha256:97f3281ef7166dd81f0c0fa895603c70f3aab2080b23d5a5bc0f791da296a2f7",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,10 +22,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "c1b73109dd717b7b9eac2bf49fb74f7e73fb6999",
+    "currentGitCommit": "94d997e2f528c10625df1ec65cd562e0ee996f9d",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "c1b73109dd717b7b9eac2bf49fb74f7e73fb6999",
+    "packetGitCommit": "94d997e2f528c10625df1ec65cd562e0ee996f9d",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -37,43 +37,42 @@
       "unknown": 250
     },
     "byRecommendedProof": {
-      "cautilus-eval": 117,
-      "deterministic": 172,
+      "cautilus-eval": 118,
+      "deterministic": 171,
       "human-auditable": 105
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 41,
-      "needs-scenario": 1,
-      "ready-for-proof": 317
+      "ready-for-proof": 318
     },
     "byReviewStatus": {
-      "agent-reviewed": 200,
-      "heuristic": 192,
+      "agent-reviewed": 199,
+      "heuristic": 193,
       "human-reviewed": 2
     }
   },
   "openCautilusEval": {
-    "total": 113,
-    "readyForProof": 113,
+    "total": 114,
+    "readyForProof": 114,
     "needsScenario": 0,
     "bySurface": {
       "(none)": 6,
       "app/chat": 4,
       "app/prompt": 9,
       "dev/repo": 69,
-      "dev/skill": 25
+      "dev/skill": 26
     },
     "byReadiness": {
-      "ready for proof": 113
+      "ready for proof": 114
     },
     "rawByReadiness": {
-      "ready-for-proof": 113
+      "ready-for-proof": 114
     },
     "proofReadySamples": [
       {
-        "claimId": "claim-readme-md-47",
-        "source": "README.md:47",
+        "claimId": "claim-readme-md-48",
+        "source": "README.md:48",
         "surface": "dev/repo",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -81,8 +80,8 @@
         "summary": "You can also hand setup to an agent instead of running these steps yourself."
       },
       {
-        "claimId": "claim-readme-md-84",
-        "source": "README.md:84",
+        "claimId": "claim-readme-md-85",
+        "source": "README.md:85",
         "surface": "dev/skill",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -90,8 +89,17 @@
         "summary": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen."
       },
       {
-        "claimId": "claim-readme-md-108",
-        "source": "README.md:108",
+        "claimId": "claim-readme-md-96",
+        "source": "README.md:96",
+        "surface": "dev/skill",
+        "readiness": "ready for proof",
+        "rawReadiness": "ready-for-proof",
+        "review": "heuristic",
+        "summary": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen."
+      },
+      {
+        "claimId": "claim-readme-md-109",
+        "source": "README.md:109",
         "surface": "dev/skill",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -99,8 +107,8 @@
         "summary": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses."
       },
       {
-        "claimId": "claim-readme-md-121",
-        "source": "README.md:121",
+        "claimId": "claim-readme-md-122",
+        "source": "README.md:122",
         "surface": "app/chat",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -133,15 +141,6 @@
         "rawReadiness": "ready-for-proof",
         "review": "heuristic",
         "summary": "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home."
-      },
-      {
-        "claimId": "claim-docs-guides-cli-md-313",
-        "source": "docs/guides/cli.md:313",
-        "surface": "dev/skill",
-        "readiness": "ready for proof",
-        "rawReadiness": "ready-for-proof",
-        "review": "heuristic",
-        "summary": "`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation."
       }
     ],
     "scenarioSamples": []
@@ -175,29 +174,17 @@
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 113,
+      "count": 114,
       "actor": "agent",
       "evidence": {
-        "unknown": 113
+        "unknown": 114
       },
       "review": {
         "agent-reviewed": 8,
-        "heuristic": 104,
+        "heuristic": 105,
         "human-reviewed": 1
       },
       "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
-    },
-    {
-      "id": "agent-design-scenario",
-      "count": 1,
-      "actor": "agent",
-      "evidence": {
-        "unknown": 1
-      },
-      "review": {
-        "agent-reviewed": 1
-      },
-      "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
     },
     {
       "id": "human-align-surfaces",
@@ -241,15 +228,15 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 192,
+      "count": 193,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [
         "claim-readme-md-6",
-        "claim-readme-md-47",
-        "claim-readme-md-59",
-        "claim-readme-md-84",
-        "claim-readme-md-108"
+        "claim-readme-md-48",
+        "claim-readme-md-60",
+        "claim-readme-md-85",
+        "claim-readme-md-96"
       ]
     }
   ]

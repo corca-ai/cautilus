@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:083b394aac5850f5ce589c02736877339e28c5619895003b10be02a42d8b749b"
+      "contentHash": "sha256:2010ba6fa87a3664658d672af86d59dd6a74d63ca9c425ed41679227579d9c1d"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "c1b73109dd717b7b9eac2bf49fb74f7e73fb6999",
+  "claimsPacketGitCommit": "94d997e2f528c10625df1ec65cd562e0ee996f9d",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 394,
   "catalogs": {
@@ -576,8 +576,8 @@
     "userRawClaimCount": 108,
     "userMappedToCanonicalCount": 108,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 315,
-    "userSemanticReviewRecommendedCount": 33,
+    "semanticReviewRecommendedCount": 316,
+    "userSemanticReviewRecommendedCount": 34,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 286,
       "mapped-to-user-canonical": 108
@@ -587,14 +587,14 @@
       "user": 108
     },
     "byMappingConfidence": {
-      "high": 79,
+      "high": 78,
       "low": 19,
-      "medium": 296
+      "medium": 297
     },
     "byUserCanonicalClaimId": {
       "U1": 22,
-      "U2": 61,
-      "U3": 10,
+      "U2": 62,
+      "U3": 9,
       "U4": 3,
       "U5": 5,
       "U6": 1,
@@ -627,10 +627,10 @@
       "claim-readme-md-6",
       "claim-readme-md-8",
       "claim-readme-md-12",
-      "claim-readme-md-69",
-      "claim-readme-md-108",
-      "claim-readme-md-148",
-      "claim-readme-md-151",
+      "claim-readme-md-70",
+      "claim-readme-md-109",
+      "claim-readme-md-149",
+      "claim-readme-md-152",
       "claim-docs-contracts-adapter-contract-md-3",
       "claim-docs-contracts-adapter-contract-md-220",
       "claim-docs-contracts-adapter-contract-md-221",
@@ -653,6 +653,7 @@
       "claim-docs-guides-cli-md-184",
       "claim-docs-guides-cli-md-260",
       "claim-docs-guides-cli-md-270",
+      "claim-docs-guides-cli-md-313",
       "claim-docs-guides-cli-md-561",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-25",
@@ -678,16 +679,16 @@
       "claim-docs-master-plan-md-188",
       "claim-docs-specs-index-spec-md-12",
       "claim-docs-specs-index-spec-md-26",
-      "claim-docs-specs-index-spec-md-44",
-      "claim-docs-specs-index-spec-md-52",
-      "claim-docs-specs-index-spec-md-61",
-      "claim-docs-specs-index-spec-md-67",
-      "claim-docs-specs-index-spec-md-73",
-      "claim-docs-specs-index-spec-md-91",
-      "claim-docs-specs-index-spec-md-98",
-      "claim-docs-specs-index-spec-md-105",
+      "claim-docs-specs-index-spec-md-45",
+      "claim-docs-specs-index-spec-md-53",
+      "claim-docs-specs-index-spec-md-62",
+      "claim-docs-specs-index-spec-md-68",
+      "claim-docs-specs-index-spec-md-74",
+      "claim-docs-specs-index-spec-md-92",
+      "claim-docs-specs-index-spec-md-99",
       "claim-docs-specs-index-spec-md-106",
-      "claim-docs-specs-index-spec-md-115",
+      "claim-docs-specs-index-spec-md-107",
+      "claim-docs-specs-index-spec-md-116",
       "claim-docs-specs-user-index-spec-md-5",
       "claim-docs-specs-user-index-spec-md-22",
       "claim-docs-specs-user-index-spec-md-26",
@@ -939,9 +940,9 @@
       "title": "Readiness",
       "absorbedRawClaimCount": 22,
       "absorbedRawClaimIds": [
-        "claim-readme-md-61",
-        "claim-readme-md-69",
-        "claim-readme-md-148",
+        "claim-readme-md-62",
+        "claim-readme-md-70",
+        "claim-readme-md-149",
         "claim-docs-guides-cli-md-108",
         "claim-docs-guides-cli-md-115",
         "claim-docs-guides-consumer-adoption-md-25",
@@ -964,19 +965,19 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-readme-md-61",
+          "claimId": "claim-readme-md-62",
           "claimFingerprint": "sha256:25f326356227fb2317af75db3dca0b6ac32161558c644ef0f1b1073bce3c175f",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-69",
+          "claimId": "claim-readme-md-70",
           "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-readme-md-148",
+          "claimId": "claim-readme-md-149",
           "claimFingerprint": "sha256:9b65cef61eb4ef1f46e9e2d36eee961958d83aea45370a49787a9c5e27c1c18c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1117,19 +1118,20 @@
     {
       "canonicalClaimId": "U2",
       "title": "Claim Discovery",
-      "absorbedRawClaimCount": 61,
+      "absorbedRawClaimCount": 62,
       "absorbedRawClaimIds": [
         "claim-readme-md-6",
         "claim-readme-md-8",
         "claim-readme-md-9",
         "claim-readme-md-12",
-        "claim-readme-md-47",
-        "claim-readme-md-59",
-        "claim-readme-md-84",
-        "claim-readme-md-95",
-        "claim-readme-md-121",
-        "claim-readme-md-142",
-        "claim-readme-md-151",
+        "claim-readme-md-48",
+        "claim-readme-md-60",
+        "claim-readme-md-85",
+        "claim-readme-md-96",
+        "claim-readme-md-109",
+        "claim-readme-md-122",
+        "claim-readme-md-143",
+        "claim-readme-md-152",
         "claim-docs-guides-cli-md-49",
         "claim-docs-guides-cli-md-106",
         "claim-docs-guides-cli-md-116",
@@ -1207,43 +1209,49 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-readme-md-47",
+          "claimId": "claim-readme-md-48",
           "claimFingerprint": "sha256:440dfe9ad14280d2cea20de7228484be57c3137e61f24d507988bd8d5a5220d9",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-59",
+          "claimId": "claim-readme-md-60",
           "claimFingerprint": "sha256:2351b132ae813dfb9df2fca5291372e65c4232b981aab4f685bfefa3b3f135aa",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-84",
+          "claimId": "claim-readme-md-85",
           "claimFingerprint": "sha256:e1d40b8af228eee85cfe4d1bf48eb7be58e13f6c5737038ab9c41ef1ac6eb0d2",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-95",
+          "claimId": "claim-readme-md-96",
           "claimFingerprint": "sha256:fee6e2c9ba896bb38525850e1fe855de7d93cf287bc9948a54652f685ee3dce2",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-121",
+          "claimId": "claim-readme-md-109",
+          "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-readme-md-122",
           "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-142",
+          "claimId": "claim-readme-md-143",
           "claimFingerprint": "sha256:26fb3d242b29d1859c5171dda55376329d47dc400c8136fb67df8562a6160c5a",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-readme-md-151",
+          "claimId": "claim-readme-md-152",
           "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1317,8 +1325,8 @@
         {
           "claimId": "claim-docs-guides-cli-md-313",
           "claimFingerprint": "sha256:b28f7d01f52d258ce498f0d4c910a6dd3d7d8d2a7d7efa4b5501e7acda656369",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-guides-cli-md-471",
@@ -1551,45 +1559,38 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 27,
-        "unknown": 34
+        "unknown": 35
       },
       "byReviewStatus": {
-        "agent-reviewed": 39,
-        "heuristic": 22
+        "agent-reviewed": 38,
+        "heuristic": 24
       },
       "byRecommendedProof": {
-        "cautilus-eval": 12,
-        "deterministic": 31,
+        "cautilus-eval": 14,
+        "deterministic": 30,
         "human-auditable": 18
       },
       "byMappingConfidence": {
-        "high": 42,
-        "medium": 19
+        "high": 41,
+        "medium": 21
       }
     },
     {
       "canonicalClaimId": "U3",
       "title": "Behavior Evaluation",
-      "absorbedRawClaimCount": 10,
+      "absorbedRawClaimCount": 9,
       "absorbedRawClaimIds": [
-        "claim-readme-md-108",
         "claim-docs-guides-cli-md-177",
         "claim-docs-guides-evaluation-process-md-270",
         "claim-docs-specs-user-evaluation-spec-md-4",
         "claim-docs-specs-user-evaluation-spec-md-8",
         "claim-docs-specs-user-evaluation-spec-md-25",
         "claim-docs-specs-user-evaluation-spec-md-50",
-        "claim-docs-specs-user-evaluation-spec-md-89",
-        "claim-docs-specs-user-evaluation-spec-md-108",
-        "claim-docs-specs-user-evaluation-spec-md-119"
+        "claim-docs-specs-user-evaluation-spec-md-121",
+        "claim-docs-specs-user-evaluation-spec-md-140",
+        "claim-docs-specs-user-evaluation-spec-md-151"
       ],
       "absorbedRawClaims": [
-        {
-          "claimId": "claim-readme-md-108",
-          "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
         {
           "claimId": "claim-docs-guides-cli-md-177",
           "claimFingerprint": "sha256:10dc5fd8f817011f748f06bba796f3567abb6cfd596947ecff3ff1f6fdf00e95",
@@ -1627,19 +1628,19 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-89",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-121",
           "claimFingerprint": "sha256:0517842296e793d47cb2971efb5dd9a10e5692c313fb44555f79697cb9afd4a8",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-108",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-140",
           "claimFingerprint": "sha256:14a67a2548b2b02abf555ed0e63e7e0f8d039455c3ea20abbb2421357d26abfc",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-119",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-151",
           "claimFingerprint": "sha256:975ddb4b73f5d58343ad945ea52b461229f4ee82871c007140da3d50dd284a9e",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -1647,20 +1648,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 2,
-        "unknown": 8
+        "unknown": 7
       },
       "byReviewStatus": {
         "agent-reviewed": 5,
-        "heuristic": 5
+        "heuristic": 4
       },
       "byRecommendedProof": {
-        "cautilus-eval": 7,
+        "cautilus-eval": 6,
         "deterministic": 2,
         "human-auditable": 1
       },
       "byMappingConfidence": {
         "high": 7,
-        "medium": 3
+        "medium": 2
       }
     },
     {
@@ -1869,7 +1870,7 @@
       "absorbedRawClaimCount": 7,
       "absorbedRawClaimIds": [
         "claim-agents-md-101",
-        "claim-docs-specs-index-spec-md-106",
+        "claim-docs-specs-index-spec-md-107",
         "claim-docs-contracts-runner-readiness-md-172",
         "claim-docs-specs-contracts-rules-policy-spec-md-6",
         "claim-docs-specs-ledger-index-spec-md-4",
@@ -1884,7 +1885,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-106",
+          "claimId": "claim-docs-specs-index-spec-md-107",
           "claimFingerprint": "sha256:1ab96b0fe9f3873a6a1566a7f716dd22305cc69e7daa1f97e6cd09673907c27c",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
@@ -2103,9 +2104,9 @@
         "claim-docs-internal-working-patterns-md-63",
         "claim-docs-master-plan-md-32",
         "claim-docs-specs-index-spec-md-26",
-        "claim-docs-specs-index-spec-md-52",
-        "claim-docs-specs-index-spec-md-61",
-        "claim-docs-specs-index-spec-md-73",
+        "claim-docs-specs-index-spec-md-53",
+        "claim-docs-specs-index-spec-md-62",
+        "claim-docs-specs-index-spec-md-74",
         "claim-docs-contracts-claim-discovery-workflow-md-17",
         "claim-docs-contracts-claim-discovery-workflow-md-37",
         "claim-docs-contracts-claim-discovery-workflow-md-60",
@@ -2220,19 +2221,19 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-52",
+          "claimId": "claim-docs-specs-index-spec-md-53",
           "claimFingerprint": "sha256:4ef3336bee96e8d78694634b02d769a7ad7f290928cefc70ccc35d92faf63be2",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-61",
+          "claimId": "claim-docs-specs-index-spec-md-62",
           "claimFingerprint": "sha256:b98e7a9a853b1a711857835acea325943c907530631ec6982b6aac39c3fbc6e6",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-73",
+          "claimId": "claim-docs-specs-index-spec-md-74",
           "claimFingerprint": "sha256:db7a1cc3f9138ac9bc1519d4d3d6852622f89036483e427d4e7f28076fa478df",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2615,9 +2616,9 @@
         "claim-docs-contracts-adapter-contract-md-427",
         "claim-docs-master-plan-md-29",
         "claim-docs-master-plan-md-57",
-        "claim-docs-specs-index-spec-md-67",
-        "claim-docs-specs-index-spec-md-91",
-        "claim-docs-specs-index-spec-md-115",
+        "claim-docs-specs-index-spec-md-68",
+        "claim-docs-specs-index-spec-md-92",
+        "claim-docs-specs-index-spec-md-116",
         "claim-docs-contracts-active-run-md-3",
         "claim-docs-contracts-claim-discovery-workflow-md-77",
         "claim-docs-contracts-claim-discovery-workflow-md-90",
@@ -2742,19 +2743,19 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-67",
+          "claimId": "claim-docs-specs-index-spec-md-68",
           "claimFingerprint": "sha256:065809df07f59620399b32872ba30153d50934b36c2170bfdec9b76e0a7431db",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-91",
+          "claimId": "claim-docs-specs-index-spec-md-92",
           "claimFingerprint": "sha256:5fd46ccf3657e8dac686297fee7d75014e7cd05fe333e6417d44d6500d9cf550",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-115",
+          "claimId": "claim-docs-specs-index-spec-md-116",
           "claimFingerprint": "sha256:de989796dc3b153d17e7f7dc3b91cf8b7205f7add5eeb0b7205f2af3caf50a8e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3115,7 +3116,7 @@
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-220",
         "claim-docs-master-plan-md-85",
-        "claim-docs-specs-index-spec-md-44",
+        "claim-docs-specs-index-spec-md-45",
         "claim-docs-contracts-claim-discovery-workflow-md-502",
         "claim-docs-contracts-runner-readiness-md-45",
         "claim-docs-contracts-runner-readiness-md-121",
@@ -3153,7 +3154,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-44",
+          "claimId": "claim-docs-specs-index-spec-md-45",
           "claimFingerprint": "sha256:4e87c29b29acc1bf00b4b33ce73357ebd1f19f8f2ce61322a556138aec60e732",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3796,8 +3797,8 @@
         "claim-docs-contracts-review-packet-md-3",
         "claim-docs-master-plan-md-30",
         "claim-docs-master-plan-md-188",
-        "claim-docs-specs-index-spec-md-98",
-        "claim-docs-specs-index-spec-md-105",
+        "claim-docs-specs-index-spec-md-99",
+        "claim-docs-specs-index-spec-md-106",
         "claim-docs-contracts-claim-discovery-workflow-md-95",
         "claim-docs-contracts-claim-discovery-workflow-md-206",
         "claim-docs-contracts-claim-discovery-workflow-md-356",
@@ -3871,13 +3872,13 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-98",
+          "claimId": "claim-docs-specs-index-spec-md-99",
           "claimFingerprint": "sha256:831ac10a11da47176620c521e3cd218bbb059bd41d98b960dc37b7ac4129523e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-105",
+          "claimId": "claim-docs-specs-index-spec-md-106",
           "claimFingerprint": "sha256:d304fd59bc29554230c0f6e525925f28e60c8d1926dbc28052cbc0444a7476a3",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -4888,12 +4889,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-47",
+      "claimId": "claim-readme-md-48",
       "summary": "You can also hand setup to an agent instead of running these steps yourself.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 47,
+          "line": 48,
           "excerpt": "You can also hand setup to an agent instead of running these steps yourself."
         }
       ],
@@ -4929,12 +4930,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-59",
+      "claimId": "claim-readme-md-60",
       "summary": "Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 59,
+          "line": 60,
           "excerpt": "Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review."
         }
       ],
@@ -4970,12 +4971,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-61",
+      "claimId": "claim-readme-md-62",
       "summary": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 61,
+          "line": 62,
           "excerpt": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work."
         }
       ],
@@ -5011,12 +5012,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-69",
+      "claimId": "claim-readme-md-70",
       "summary": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 69,
+          "line": 70,
           "excerpt": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets."
         }
       ],
@@ -5052,12 +5053,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-84",
+      "claimId": "claim-readme-md-85",
       "summary": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 84,
+          "line": 85,
           "excerpt": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen."
         }
       ],
@@ -5093,28 +5094,28 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-95",
+      "claimId": "claim-readme-md-96",
       "summary": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 95,
+          "line": 96,
           "excerpt": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen."
         }
       ],
       "disposition": "mapped-to-user-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "user",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "needs-scenario",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
-      "reviewStatus": "agent-reviewed",
+      "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:fee6e2c9ba896bb38525850e1fe855de7d93cf287bc9948a54652f685ee3dce2",
       "canonicalClaimId": "U2",
-      "score": 18,
-      "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 12,
-      "scoreMargin": 6,
+      "score": 17,
+      "runnerUpCanonicalClaimId": "U7",
+      "runnerUpScore": 9,
+      "scoreMargin": 8,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -5122,24 +5123,24 @@
         "agent",
         "another",
         "artifact",
+        "cautilus-eval",
         "create",
-        "deterministic",
+        "dev/skill",
+        "fixture",
         "judgment",
         "maintainer",
-        "next",
         "packet",
         "read",
-        "readme.md",
-        "repo"
+        "readme.md"
       ]
     },
     {
-      "claimId": "claim-readme-md-108",
+      "claimId": "claim-readme-md-109",
       "summary": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 108,
+          "line": 109,
           "excerpt": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses."
         }
       ],
@@ -5151,36 +5152,36 @@
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
-      "canonicalClaimId": "U3",
-      "score": 20,
-      "runnerUpCanonicalClaimId": "U2",
+      "canonicalClaimId": "U2",
+      "score": 19,
+      "runnerUpCanonicalClaimId": "U3",
       "runnerUpScore": 19,
-      "scoreMargin": 1,
+      "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
-        "app",
         "behavior",
         "cautilu",
-        "chat",
-        "dev",
+        "cautilus-eval",
+        "create",
         "dev/skill",
         "evaluate",
         "evaluation",
         "fixture",
-        "host-owned",
-        "prompt"
+        "product",
+        "prompt",
+        "readme.md"
       ]
     },
     {
-      "claimId": "claim-readme-md-121",
+      "claimId": "claim-readme-md-122",
       "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 121,
+          "line": 122,
           "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest."
         }
       ],
@@ -5216,12 +5217,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-142",
+      "claimId": "claim-readme-md-143",
       "summary": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 142,
+          "line": 143,
           "excerpt": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives."
         }
       ],
@@ -5257,12 +5258,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-148",
+      "claimId": "claim-readme-md-149",
       "summary": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 148,
+          "line": 149,
           "excerpt": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`."
         }
       ],
@@ -5296,12 +5297,12 @@
       ]
     },
     {
-      "claimId": "claim-readme-md-151",
+      "claimId": "claim-readme-md-152",
       "summary": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
       "sourceRefs": [
         {
           "path": "README.md",
-          "line": 151,
+          "line": 152,
           "excerpt": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen."
         }
       ],
@@ -6305,8 +6306,8 @@
       "canonicalClaimId": "U2",
       "score": 11,
       "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 7,
-      "scoreMargin": 4,
+      "runnerUpScore": 8,
+      "scoreMargin": 3,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -6426,8 +6427,8 @@
       "canonicalClaimId": "U2",
       "score": 17,
       "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 13,
-      "scoreMargin": 4,
+      "runnerUpScore": 14,
+      "scoreMargin": 3,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -6549,10 +6550,10 @@
       "canonicalClaimId": "U2",
       "score": 13,
       "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 10,
-      "scoreMargin": 3,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
+      "runnerUpScore": 11,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
@@ -7118,8 +7119,8 @@
       "canonicalClaimId": "U2",
       "score": 10,
       "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 8,
-      "scoreMargin": 2,
+      "runnerUpScore": 9,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -7444,8 +7445,8 @@
       "canonicalClaimId": "U2",
       "score": 12,
       "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 8,
-      "scoreMargin": 4,
+      "runnerUpScore": 9,
+      "scoreMargin": 3,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -7560,9 +7561,9 @@
       "claimFingerprint": "sha256:0d27645b25db70340d8acaf99b749b91ab7c833cb6b38b829595a6f41acd4597",
       "canonicalClaimId": "U2",
       "score": 17,
-      "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 13,
-      "scoreMargin": 4,
+      "runnerUpCanonicalClaimId": "U1",
+      "runnerUpScore": 12,
+      "scoreMargin": 5,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -8141,12 +8142,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-44",
+      "claimId": "claim-docs-specs-index-spec-md-45",
       "summary": "CLI ↔ Agent: the CLI runs your agent and records what it did; the agent turns that into scenarios and reads the result.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 44,
+          "line": 45,
           "excerpt": "CLI ↔ Agent: the CLI runs your agent and records what it did; the agent turns that into scenarios and reads the result."
         }
       ],
@@ -8179,12 +8180,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-52",
+      "claimId": "claim-docs-specs-index-spec-md-53",
       "summary": "CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 52,
+          "line": 53,
           "excerpt": "CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it."
         }
       ],
@@ -8215,12 +8216,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-61",
+      "claimId": "claim-docs-specs-index-spec-md-62",
       "summary": "You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 61,
+          "line": 62,
           "excerpt": "You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against."
         }
       ],
@@ -8255,12 +8256,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-67",
+      "claimId": "claim-docs-specs-index-spec-md-68",
       "summary": "Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 67,
+          "line": 68,
           "excerpt": "Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow."
         }
       ],
@@ -8295,12 +8296,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-73",
+      "claimId": "claim-docs-specs-index-spec-md-74",
       "summary": "You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 73,
+          "line": 74,
           "excerpt": "You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good."
         }
       ],
@@ -8336,12 +8337,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-91",
+      "claimId": "claim-docs-specs-index-spec-md-92",
       "summary": "Each subclaim on a spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 91,
+          "line": 92,
           "excerpt": "Each subclaim on a spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact."
         }
       ],
@@ -8375,12 +8376,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-98",
+      "claimId": "claim-docs-specs-index-spec-md-99",
       "summary": "For each subclaim, either (a) add an executable check that runs the actual scenario and asserts on the produced packet/file, or (b) link a concrete existing evidence bundle, audit fixture, or packet path that proves that specific subclaim.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 98,
+          "line": 99,
           "excerpt": "For each subclaim, either (a) add an executable check that runs the actual scenario and asserts on the produced packet/file, or (b) link a concrete existing evidence bundle, audit fixture, or packet path that proves that specific subclaim."
         }
       ],
@@ -8416,12 +8417,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-105",
+      "claimId": "claim-docs-specs-index-spec-md-106",
       "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 105,
+          "line": 106,
           "excerpt": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise."
         }
       ],
@@ -8456,12 +8457,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-106",
+      "claimId": "claim-docs-specs-index-spec-md-107",
       "summary": "A `gap` means missing or weak evidence that stays visible.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 106,
+          "line": 107,
           "excerpt": "A `gap` means missing or weak evidence that stays visible."
         }
       ],
@@ -8491,12 +8492,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-115",
+      "claimId": "claim-docs-specs-index-spec-md-116",
       "summary": "[Promise Ledger](ledger/index.spec.md) — which behavior claims Cautilus makes, how they relate, and which workflow or contract owns each.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 115,
+          "line": 116,
           "excerpt": "[Promise Ledger](ledger/index.spec.md) — which behavior claims Cautilus makes, how they relate, and which workflow or contract owns each."
         }
       ],
@@ -8701,12 +8702,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-89",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-121",
       "summary": "A user can choose the behavior surface that matches the evaluation intent.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 89,
+          "line": 121,
           "excerpt": "A user can choose the behavior surface that matches the evaluation intent."
         }
       ],
@@ -8744,12 +8745,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-108",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-140",
       "summary": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 108,
+          "line": 140,
           "excerpt": "A user can evaluate behavior without Cautilus taking over host-owned execution."
         }
       ],
@@ -8787,12 +8788,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-119",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-151",
       "summary": "A user can reopen observed behavior and summary packets after each eval.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 119,
+          "line": 151,
           "excerpt": "A user can reopen observed behavior and summary packets after each eval."
         }
       ],

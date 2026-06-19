@@ -3,20 +3,20 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 192
+          "unknown": 193
         },
         "byReviewStatus": {
-          "heuristic": 192
+          "heuristic": 193
         },
-        "count": 192,
+        "count": 193,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-6",
-          "claim-readme-md-47",
-          "claim-readme-md-59",
-          "claim-readme-md-84",
-          "claim-readme-md-108"
+          "claim-readme-md-48",
+          "claim-readme-md-60",
+          "claim-readme-md-85",
+          "claim-readme-md-96"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
       }
@@ -37,7 +37,7 @@
           "claim-readme-md-8",
           "claim-readme-md-9",
           "claim-readme-md-12",
-          "claim-readme-md-61"
+          "claim-readme-md-62"
         ],
         "summary": "Proof is already attached and valid under packet semantics."
       },
@@ -55,48 +55,33 @@
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-6",
-          "claim-docs-specs-index-spec-md-61",
-          "claim-docs-specs-index-spec-md-73",
-          "claim-docs-specs-index-spec-md-98",
+          "claim-docs-specs-index-spec-md-62",
+          "claim-docs-specs-index-spec-md-74",
+          "claim-docs-specs-index-spec-md-99",
           "claim-docs-contracts-claim-discovery-workflow-md-5"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 113
+          "unknown": 114
         },
         "byReviewStatus": {
           "agent-reviewed": 8,
-          "heuristic": 104,
+          "heuristic": 105,
           "human-reviewed": 1
         },
-        "count": 113,
+        "count": 114,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-readme-md-47",
-          "claim-readme-md-84",
-          "claim-readme-md-108",
-          "claim-readme-md-121",
-          "claim-docs-contracts-adapter-contract-md-221"
+          "claim-readme-md-48",
+          "claim-readme-md-85",
+          "claim-readme-md-96",
+          "claim-readme-md-109",
+          "claim-readme-md-122"
         ],
         "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
-      },
-      {
-        "byEvidenceStatus": {
-          "unknown": 1
-        },
-        "byReviewStatus": {
-          "agent-reviewed": 1
-        },
-        "count": 1,
-        "id": "agent-design-scenario",
-        "recommendedActor": "agent",
-        "sampleClaimIds": [
-          "claim-readme-md-95"
-        ],
-        "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
       },
       {
         "byEvidenceStatus": {
@@ -129,8 +114,8 @@
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
-          "claim-readme-md-59",
-          "claim-docs-specs-index-spec-md-106",
+          "claim-readme-md-60",
+          "claim-docs-specs-index-spec-md-107",
           "claim-docs-specs-user-index-spec-md-27",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-21",
           "claim-docs-contracts-claim-discovery-workflow-md-92"
@@ -199,20 +184,19 @@
       "new": 394
     },
     "byRecommendedProof": {
-      "cautilus-eval": 117,
-      "deterministic": 172,
+      "cautilus-eval": 118,
+      "deterministic": 171,
       "human-auditable": 105
     },
     "byReviewStatus": {
-      "agent-reviewed": 200,
-      "heuristic": 192,
+      "agent-reviewed": 199,
+      "heuristic": 193,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 41,
-      "needs-scenario": 1,
-      "ready-for-proof": 317
+      "ready-for-proof": 318
     }
   },
   "discoveryBoundary": {
@@ -504,7 +488,7 @@
         "summary": "They stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it."
       },
       {
-        "claimId": "claim-readme-md-61",
+        "claimId": "claim-readme-md-62",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -513,7 +497,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-readme-spec-report-renderer-independence-2026-05-16.json",
             "supportsClaimIds": [
-              "claim-readme-md-61"
+              "claim-readme-md-62"
             ]
           }
         ],
@@ -523,7 +507,7 @@
         "summary": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work."
       },
       {
-        "claimId": "claim-readme-md-69",
+        "claimId": "claim-readme-md-70",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -532,7 +516,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-readme-bounded-eval-loop-2026-05-16.json",
             "supportsClaimIds": [
-              "claim-readme-md-69"
+              "claim-readme-md-70"
             ]
           }
         ],
@@ -542,7 +526,7 @@
         "summary": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets."
       },
       {
-        "claimId": "claim-readme-md-148",
+        "claimId": "claim-readme-md-149",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -551,7 +535,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-readme-md-148",
+              "claim-readme-md-149",
               "claim-readme-md-160"
             ]
           }
@@ -562,7 +546,7 @@
         "summary": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`."
       },
       {
-        "claimId": "claim-readme-md-151",
+        "claimId": "claim-readme-md-152",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -572,7 +556,7 @@
             "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
             "supportsClaimIds": [
               "claim-readme-md-157",
-              "claim-readme-md-151"
+              "claim-readme-md-152"
             ]
           }
         ],
@@ -1398,7 +1382,7 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
-        "claimId": "claim-docs-specs-index-spec-md-105",
+        "claimId": "claim-docs-specs-index-spec-md-106",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1407,7 +1391,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-index-spec-md-105"
+              "claim-docs-specs-index-spec-md-106"
             ]
           }
         ],
@@ -1417,7 +1401,7 @@
         "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise."
       },
       {
-        "claimId": "claim-docs-specs-user-evaluation-spec-md-119",
+        "claimId": "claim-docs-specs-user-evaluation-spec-md-151",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1426,7 +1410,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-user-evaluation-spec-md-119"
+              "claim-docs-specs-user-evaluation-spec-md-151"
             ]
           }
         ],
@@ -3462,7 +3446,7 @@
       }
     ]
   },
-  "gitCommit": "c1b73109dd717b7b9eac2bf49fb74f7e73fb6999",
+  "gitCommit": "94d997e2f528c10625df1ec65cd562e0ee996f9d",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3474,10 +3458,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "c1b73109dd717b7b9eac2bf49fb74f7e73fb6999",
+    "currentGitCommit": "94d997e2f528c10625df1ec65cd562e0ee996f9d",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "c1b73109dd717b7b9eac2bf49fb74f7e73fb6999",
+    "packetGitCommit": "94d997e2f528c10625df1ec65cd562e0ee996f9d",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3501,9 +3485,9 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 169,
+    "heuristicClaimsReadyForReview": 170,
     "needsAlignment": 41,
-    "needsScenario": 1
+    "needsScenario": 0
   },
   "sampleClaims": [
     {
