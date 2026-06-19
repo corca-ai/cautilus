@@ -13,7 +13,7 @@ The promise stays honest because the badge is earned by what that spec actually 
 - **declared** — the evidence exists as a saved bundle, but the behavior has not been re-run live yet (named in Proof Debt)
 - **promised** — stated, with no executable proof attached yet (named in Proof Debt)
 
-Today, two promises are proven live and the rest are declared or promised.
+Today, three promises are proven live and the rest are declared or promised.
 That split is the point: this page shows the real state of the work.
 
 ## What Cautilus Does For You
@@ -32,11 +32,14 @@ Point Cautilus at your repo and you get back every promise your docs make, as a 
 Proof: [Claim Discovery spec](user/claim-discovery.spec.md) (runs `cautilus discover claims` on a sample repo and asserts the routing output).
 CLI ↔ Agent: the CLI reads your docs and drafts a first pass; the agent sharpens it, groups it, and decides what to do next.
 
-### Behavior Evaluation — declared
+### Behavior Evaluation — proven
 
 You see whether the agents in your repo behave the way you intend — the coding agent you build with (does it follow your repo's rules and pick the right skill?) and the app you ship (does its chatbot give the right answers across a multi-turn conversation, and does a single prompt return what it should?).
+The coding agent on your repo is proven live: an on-demand executable proof (`npm run proof:behavior-eval:live`) drives the real agent (claude/Sonnet) against your own `AGENTS.md` and asserts it orients on the repo rules and routes to the find-skills bootstrap — held across two independent live runs whose reasoning text differed but whose routing invariant did not — and a blind Sonnet judge graded the genuine live reasoning sound while rejecting a route-correct, reason-fabricated control.
+The app you ship (multi-turn chatbot, single prompt) is not yet live-proven; those surfaces still project their saved evidence bundle — see Proof Debt.
 
-Proof: [Behavior Evaluation spec](user/evaluation.spec.md) — today it projects a saved eval-surfaces bundle rather than running a live eval; see Proof Debt.
+Proof: [Behavior Evaluation spec](user/evaluation.spec.md) (the standing check replays the operator-witnessed live capture and its blind verdicts so the displayed invariant matches the graded one; `npm run proof:behavior-eval:live` reruns it live on demand, off the standing path for cost).
+Limitation: the judge's reject-capability is proven via a constructed wrong-reason control; no naturally-occurring unsound capture has been harvested on either surface yet.
 CLI ↔ Agent: the CLI runs your agent and records what it did; the agent turns that into scenarios and reads the result.
 
 ### Bounded Improvement — declared
@@ -76,7 +79,7 @@ What it would take to move each unproven promise to a live **proven** badge. Thi
 
 | Promise | Current | To reach proven |
 | --- | --- | --- |
-| Behavior Evaluation | declared (projects `evidence-current-eval-surfaces` bundle; `proofClass: declared-eval-runner`) | a live `cautilus evaluate` run over an owner-confirmed scenario/fixture, asserted in the spec |
+| Behavior Evaluation — app surfaces | the coding-agent dev/repo flagship is proven live (`npm run proof:behavior-eval:live`); the `app/chat` and `app/prompt` surfaces still project the saved `evidence-current-eval-surfaces` bundle | a live app-runner eval over an owner-confirmed app scenario, asserted in the spec |
 | Bounded Improvement | declared (projects a saved bundle) | a live `cautilus improve` loop on a held-out scenario, asserted in the spec |
 | Reviewable Artifacts | declared (projects saved packets) | regenerate packets live in the spec and assert their shape |
 | Host Ownership | declared (projects onboarding bundle) | wire the existing `consumer:onboard:smoke` live run into the spec |

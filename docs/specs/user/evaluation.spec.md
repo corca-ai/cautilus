@@ -2,6 +2,23 @@
 
 When deterministic checks pass but behavior is still uncertain, the user needs a bounded way to compare observed intentful behavior.
 Using the `cautilus evaluate` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state.
+The dev/repo coding-agent flagship is proven live on demand; the remaining surfaces project their latest selected evidence bundle.
+
+## The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the find-skills bootstrap.
+
+This is not a projected bundle.
+`npm run proof:behavior-eval:live` drives the real agent (claude/Sonnet) against this repo's own `AGENTS.md` and asserts the stable cross-runtime routing invariant on a FRESH capture; a blind Sonnet judge graded the genuine live reasoning sound and a constructed wrong-reason control unsound, keeping the judge load-bearing.
+The standing check below replays the operator-witnessed capture and its blind verdicts so the displayed invariant matches the graded one, while the live cost stays on demand.
+
+> check:cautilus-json-file
+| path | json_path | equals |
+| --- | --- | --- |
+| fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].observationStatus | observed |
+| fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].entryFile | AGENTS.md |
+| fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].routingDecision.bootstrapHelper | charness:find-skills |
+| fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].telemetry.runtime | claude_code |
+| fixtures/eval/dev/repo/live/behavior-eval-live-verdicts.json | verdicts[0].verdict | sound |
+| fixtures/eval/dev/repo/live/behavior-eval-live-verdicts.json | verdicts[1].verdict | unsound |
 
 ## A user can choose the behavior surface that matches the evaluation intent.
 

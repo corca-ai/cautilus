@@ -218,3 +218,11 @@ The convergence is closed in [skill-surface-judge-convergence.md](./skill-surfac
 This needed a generic engine extension — `skill_evaluation.go` gained the same optional `reasoningSoundness` read-and-AND the instruction surface already had (generic verdict-compositing, symmetric and judge-logic-free), reusing the same helpers — plus a new skill process facet (`held_no_input_orientation`) and rewritten orientation governing rules sourced from the skill's own `SKILL.md`.
 Proven end-to-end: `cautilus evaluate fixture --adapter-name self-dogfood-skill-judge-eval` passes the genuine baseline (surface matchers AND judge sound, `full-runner-capture-replay`) and fails the control solely via the judge.
 With both AGENTS.md and the skill surface closed, the `declared` exit is now available on both surfaces; the apex flip remains a separate maintainer decision.
+
+## Next step (done, result): the liveness axis closed and the apex badge flipped to proven
+
+The maintainer lifted the 2026-06-09 "live-agent runtime is OUT for cost" constraint, so the remaining axis — the judge graded a HISTORICAL codex capture replayed, not a fresh live run — was closed by running the real agent live.
+The decisions are closed in [behavior-eval-live-proof.md](./behavior-eval-live-proof.md): an on-demand proof (`npm run proof:behavior-eval:live`) drives the real agent (claude/Sonnet) against this repo's own `AGENTS.md` and asserts the stable cross-runtime invariant (orients on AGENTS.md, routes to the find-skills bootstrap) on a FRESH capture, with a blind Sonnet judge grading the genuine live reasoning sound and a constructed control unsound.
+The live run is gated on demand (never in standing verify); a deterministic test replays the operator-witnessed capture through the same `assertLiveInvariant` so the displayed invariant cannot drift from the graded one.
+The apex `Behavior Evaluation` badge is now `proven`, scoped to the dev/repo coding-agent flagship, with the app-ship surfaces kept in Proof Debt and the natural-unsound population stated as a limitation.
+Full evidence: [charness-artifacts/eval-trust/2026-06-19-behavior-eval-live-proven.md](../../charness-artifacts/eval-trust/2026-06-19-behavior-eval-live-proven.md).
