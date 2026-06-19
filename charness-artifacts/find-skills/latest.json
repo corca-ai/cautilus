@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-05-26T11:27:28Z",
+  "generated_at": "2026-06-19T04:51:40Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -16,6 +16,31 @@
       "prefer_local_first": true
     },
     "public_skills": [
+      {
+        "id": "achieve",
+        "name": "achieve",
+        "description": "Use when operating a long-running autonomous objective as an auditable goal lifecycle: interview prose intent into a reviewable goal artifact under charness-artifacts/goals/, keep slice progress and verification visible during the run, and prove the goal with honest non-claims at the end. Coordinates ideation/spec/impl/quality/issue/critique/retro around one goal artifact instead of replacing them, and stays a goal operator rather than a task execution engine.",
+        "summary": "Use when operating a long-running autonomous objective as an auditable goal lifecycle: interview prose intent into a reviewable goal artifact under charness-artifacts/goals/, keep slice progress and verification visible during the run, and prove the goal with honest non-claims at the end. Coordinates ideation/spec/impl/quality/issue/critique/retro around one goal artifact instead of replacing them, and stays a goal operator rather than a task execution engine.",
+        "path": "skills/achieve/SKILL.md",
+        "skill_dir": "skills/achieve",
+        "canonical_path": "skills/achieve/SKILL.md",
+        "trigger_phrases": [
+          "achieve",
+          "achieve skill",
+          "achieve 스킬",
+          "charness:achieve"
+        ],
+        "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
+          "skills/achieve/references/lifecycle.md",
+          "skills/achieve/references/goal-artifact.md",
+          "shared/references/retro-issue-destination-split.md",
+          "skills/achieve/references/coordination.md",
+          "skills/achieve/references/index.md"
+        ],
+        "source": "local-public",
+        "layer": "public skill"
+      },
       {
         "id": "announcement",
         "name": "announcement",
@@ -124,6 +149,7 @@
           "charness:critique"
         ],
         "referenced_paths": [
+          "skills/critique/references/cadence.md",
           "shared/references/fresh-eye-subagent-review.md",
           "skills/critique/references/autonomous-trigger.md",
           "skills/critique/references/premortem-decision.md",
@@ -135,6 +161,7 @@
           "skills/critique/references/prepare-packet.md",
           "skills/critique/references/angle-selection.md",
           "skills/critique/references/counterweight-triage.md",
+          "skills/critique/references/confirmed-input-over-anchoring.md",
           "skills/critique/references/adapter-contract.md",
           "shared/references/agent-assessment-invariant.md"
         ],
@@ -158,8 +185,10 @@
         "referenced_paths": [
           "skills/issue/references/causal-review.md",
           "shared/references/bootstrap-resolution.md",
+          "skills/debug/references/disconfirmer-first.md",
           "skills/debug/references/named-target-verification.md",
           "skills/debug/references/five-whys-causal-chain.md",
+          "skills/debug/references/invariant-first-review.md",
           "skills/debug/references/detection-gap.md",
           "skills/debug/references/sibling-search.md",
           "shared/references/rca-ledger-append.md",
@@ -187,6 +216,7 @@
           "charness:find-skills"
         ],
         "referenced_paths": [
+          "skills/find-skills/references/session-start-routing.md",
           "shared/references/bootstrap-resolution.md",
           "skills/find-skills/adapter.example.yaml",
           "skills/find-skills/references/adapter-contract.md",
@@ -223,7 +253,7 @@
           "skills/gather/references/source-priority.md",
           "skills/gather/references/document-seams.md",
           "skills/gather/references/capability-contract.md",
-          "skills/gather/references/google-workspace-via-gws.md",
+          "skills/gather/references/google-workspace-access.md",
           "skills/gather/scripts/write_record.py"
         ],
         "source": "local-public",
@@ -247,6 +277,7 @@
           "skills/handoff/references/continuation-sequence.md",
           "shared/references/bootstrap-resolution.md",
           "skills/handoff/references/spill-targets.md",
+          "skills/handoff/references/chunked-routing.md",
           "shared/references/closeout-discipline.md",
           "shared/references/fresh-eye-subagent-review.md",
           "skills/handoff/references/adapter-contract.md",
@@ -284,6 +315,32 @@
           "skills/hitl/scripts/check_review_state.py",
           "skills/hitl/scripts/render_report.py",
           "skills/hitl/scripts/sync_review_artifact.py"
+        ],
+        "source": "local-public",
+        "layer": "public skill"
+      },
+      {
+        "id": "hotl",
+        "name": "hotl",
+        "description": "Use when applied live behavior needs human-on-the-loop closure: inventory what needs proof, write a proof packet before execution, run or record roundtrip/readback evidence through repo-owned commands, and keep every loop entry verified or explicitly dispositioned so unproven behavior is never closed as working.",
+        "summary": "Use when applied live behavior needs human-on-the-loop closure: inventory what needs proof, write a proof packet before execution, run or record roundtrip/readback evidence through repo-owned commands, and keep every loop entry verified or explicitly dispositioned so unproven behavior is never closed as working.",
+        "path": "skills/hotl/SKILL.md",
+        "skill_dir": "skills/hotl",
+        "canonical_path": "skills/hotl/SKILL.md",
+        "trigger_phrases": [
+          "hotl",
+          "hotl skill",
+          "hotl 스킬",
+          "charness:hotl"
+        ],
+        "referenced_paths": [
+          "shared/references/bootstrap-resolution.md",
+          "skills/hotl/references/ledger-and-dispositions.md",
+          "skills/hotl/references/proof-rules.md",
+          "skills/hotl/references/adapter-contract.md",
+          "shared/references/external-capability-proof-ladder.md",
+          "skills/hotl/scripts/resolve_adapter.py",
+          "skills/hotl/scripts/init_adapter.py"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -342,6 +399,7 @@
           "skills/impl/references/adapter-contract.md",
           "shared/references/source-bound-records.md",
           "skills/impl/SKILL.md",
+          "shared/references/active-goal-coordination.md",
           "shared/references/prescribed-path-self-test.md",
           "shared/references/external-capability-proof-ladder.md",
           "skills/impl/references/contract-consumption.md",
@@ -370,14 +428,16 @@
           "shared/references/external-capability-proof-ladder.md",
           "shared/references/bootstrap-resolution.md",
           "skills/issue/references/closeout-discipline.md",
+          "skills/issue/references/issue-shaping.md",
           "skills/issue/references/causal-review.md",
           "skills/issue/references/resolution-brief.md",
           "shared/references/rca-ledger-append.md",
-          "skills/issue/references/issue-shaping.md",
           "skills/issue/references/resolve-flow.md",
           "shared/references/fresh-eye-subagent-review.md",
+          "shared/references/active-goal-coordination.md",
           "skills/issue/scripts/issue_tool.py",
           "skills/issue/scripts/issue_runtime.py",
+          "skills/issue/scripts/issue_create.py",
           "skills/issue/scripts/resolve_adapter.py",
           "skills/issue/scripts/init_adapter.py"
         ],
@@ -425,7 +485,14 @@
           "quality",
           "quality skill",
           "quality 스킬",
-          "charness:quality"
+          "charness:quality",
+          "test quality",
+          "testability",
+          "test DSL",
+          "test helper ergonomics",
+          "boundary-bypass ratchet",
+          "boundary bypass",
+          "quality gate"
         ],
         "referenced_paths": [
           "shared/references/bootstrap-resolution.md",
@@ -438,6 +505,9 @@
           "skills/quality/references/cautilus-on-demand.md",
           "skills/quality/references/behavior-testing.md",
           "skills/quality/references/inventory-consumer-fields.json",
+          "skills/quality/references/ci-recoverable-gate-triage.md",
+          "skills/quality/references/quality-signal-scorecard.md",
+          "skills/quality/references/boundary-bypass-ratchet.md",
           "skills/quality/references/agent-production-runtime.md",
           "shared/references/external-capability-proof-ladder.md",
           "skills/quality/references/maintainer-local-enforcement.md",
@@ -448,6 +518,7 @@
           "skills/quality/references/automation-promotion.md",
           "skills/quality/references/bootstrap-posture.md",
           "skills/quality/references/brittle-source-guards.md",
+          "skills/quality/references/boundary-bypass-payload.example.json",
           "skills/quality/references/cli-ergonomics-smells.md",
           "skills/quality/references/coverage-floor-exemptions.txt",
           "skills/quality/references/coverage_floor_inventory.py",
@@ -469,6 +540,7 @@
           "skills/quality/references/security-npm.md",
           "skills/quality/references/security-pnpm.md",
           "skills/quality/references/security-uv.md",
+          "skills/quality/references/standing-doc-provenance.md",
           "skills/quality/references/standing-gate-verbosity.md",
           "skills/quality/references/startup-probes.md",
           "skills/quality/references/validate_spec_pytest_references.py",
@@ -493,10 +565,13 @@
         ],
         "referenced_paths": [
           "shared/references/bootstrap-resolution.md",
-          "shared/references/closeout-discipline.md",
+          "shared/references/fresh-eye-subagent-review.md",
+          "skills/release/references/install-surface.md",
+          "skills/issue/references/closeout-discipline.md",
           "skills/release/references/adapter-contract.md",
           "skills/release/references/version-policy.md",
-          "skills/release/references/install-surface.md"
+          "skills/release/references/closeout-critique-gate.md",
+          "shared/references/closeout-discipline.md"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -520,11 +595,12 @@
           "skills/retro/references/adapter-contract.md",
           "skills/retro/references/phase-aware-efficiency.md",
           "skills/retro/references/waste-sibling-scan.md",
+          "shared/references/retro-issue-destination-split.md",
           "shared/references/rca-ledger-append.md",
+          "skills/retro/references/trigger-and-persistence.md",
+          "skills/retro/references/expert-lens.md",
           "skills/retro/references/mode-guide.md",
           "skills/retro/references/section-guide.md",
-          "skills/retro/references/expert-lens.md",
-          "skills/retro/references/trigger-and-persistence.md",
           "skills/retro/references/weekly-trends.md",
           "skills/debug/references/sibling-search.md"
         ],
@@ -554,6 +630,7 @@
           "skills/setup/references/probe-surface.md",
           "skills/setup/references/retro-memory-seam.md",
           "skills/setup/references/bootstrap-seams.md",
+          "shared/references/fresh-eye-subagent-review.md",
           "skills/setup/references/github-actions-defaults.md",
           "skills/setup/references/operator-acceptance-synthesis.md",
           "shared/references/agent-assessment-invariant.md"
@@ -766,7 +843,7 @@
             "slack.files.read"
           ],
           "env_vars": [
-            "SLACK_BOT_TOKEN"
+            "Slack credential grant"
           ],
           "permission_scopes": [
             "channels:history",
@@ -803,7 +880,7 @@
           {
             "layer_id": "slack-bot-env",
             "layer_type": "env",
-            "summary": "Fall back to `SLACK_BOT_TOKEN` in ordinary local operator setups."
+            "summary": "Fall back to `Slack credential grant` in ordinary local operator setups."
           },
           {
             "layer_id": "slack-channel-operator-step",
@@ -925,7 +1002,7 @@
           {
             "layer_id": "web-fetch-authenticated-binaries",
             "layer_type": "authenticated-binary",
-            "summary": "Use authenticated or installed binaries such as `gh`, `yt-dlp`, `defuddle`, or `agent-browser` only when the selected route or fallback stage explicitly calls for them."
+            "summary": "Use host-mediated fetch helpers only when the selected route or fallback stage explicitly calls for them."
           },
           {
             "layer_id": "web-fetch-operator-step",
@@ -957,6 +1034,7 @@
       {
         "id": "agent-browser",
         "kind": "external_binary_with_skill",
+        "summary": "Browser automation CLI for JS-rendered pages, DOM inspection, interactive browser debugging, and browser-mediated `gather` fallback when private SaaS acquisition cannot stay on an official API/export path.",
         "access_modes": [
           "binary",
           "human-only",
@@ -1010,6 +1088,7 @@
       {
         "id": "cautilus",
         "kind": "external_binary_with_skill",
+        "summary": "Standalone evaluation engine and bundled skill for bounded behavior review beyond repo-local deterministic gates.",
         "access_modes": [
           "binary",
           "human-only",
@@ -1048,6 +1127,7 @@
       {
         "id": "defuddle",
         "kind": "external_binary",
+        "summary": "Article and documentation page cleaner used by gather/web-fetch to turn cluttered public HTML into readable markdown before falling back to browser-mediated acquisition.",
         "access_modes": [
           "binary",
           "degraded"
@@ -1078,8 +1158,9 @@
         "layer": "external integration"
       },
       {
-        "id": "github-gh",
-        "kind": "external_binary",
+        "id": "github-worker",
+        "kind": "external capability",
+        "summary": "Authenticated GitHub CLI provider for repository, pull request, issue, and discussion gather flows.",
         "access_modes": [
           "binary",
           "public",
@@ -1103,7 +1184,7 @@
           {
             "layer_id": "authenticated-gh",
             "layer_type": "authenticated-binary",
-            "summary": "Prefer an already authenticated `gh` session for private GitHub gather."
+            "summary": "Prefer an already host-mediated GitHub credential session for private GitHub gather."
           },
           {
             "layer_id": "public-github-fallback",
@@ -1116,13 +1197,14 @@
           "issue"
         ],
         "recommendation_role": null,
-        "path": "integrations/tools/github-gh.json",
+        "path": "integrations/tools/github-worker.json",
         "source": "local-integration",
         "layer": "external integration"
       },
       {
         "id": "gitleaks",
         "kind": "external_binary",
+        "summary": "Fast Go-based secret scanner. Preferred over the secretlint fallback by `scripts/check-secrets.sh`; sub-second on the charness tree vs ~5s for the npm secretlint path.",
         "access_modes": [
           "binary",
           "degraded"
@@ -1153,6 +1235,7 @@
       {
         "id": "glow",
         "kind": "external_binary",
+        "summary": "Terminal markdown renderer used by doc-facing seams such as `narrative` and `quality` for width-specific rendered review artifacts.",
         "access_modes": [
           "binary",
           "degraded"
@@ -1182,66 +1265,44 @@
         "layer": "external integration"
       },
       {
-        "id": "gws-cli",
+        "id": "nose",
         "kind": "external_binary",
+        "summary": "Advisory code clone-family scanner used by `quality` to surface refactoring candidates beyond exact document near-copy checks.",
         "access_modes": [
           "binary",
-          "human-only",
           "degraded"
         ],
         "support_state": "integration-only",
         "support_skill_path": null,
         "discovery_stub_path": null,
-        "capability_requirements": {
-          "permission_scopes": [
-            "https://www.googleapis.com/auth/drive.readonly",
-            "https://www.googleapis.com/auth/documents.readonly",
-            "https://www.googleapis.com/auth/spreadsheets.readonly",
-            "https://www.googleapis.com/auth/presentations.readonly"
-          ]
-        },
+        "capability_requirements": {},
         "intent_triggers": [
-          "google docs",
-          "google drive",
-          "google sheets",
-          "google slides",
-          "gmail api",
-          "gmail message",
-          "google calendar",
-          "google workspace",
-          "gws gather",
-          "workspace gather"
+          "nose",
+          "clone family",
+          "code clone",
+          "semantic clone",
+          "near duplicate code",
+          "refactoring candidates",
+          "duplication refactor",
+          "duplicate code advisory",
+          "중복 리팩토링",
+          "코드 중복"
         ],
         "strong_intent_triggers": [],
-        "config_layers": [
-          {
-            "layer_id": "authenticated-gws-cli",
-            "layer_type": "authenticated-binary",
-            "summary": "Prefer an already authenticated `gws` session for private Google Workspace gather."
-          },
-          {
-            "layer_id": "gws-auth-operator-step",
-            "layer_type": "operator-step",
-            "summary": "When no auth state exists yet, the operator may need `gws auth setup --login` or `gws auth login` before gather can proceed. This is a human-driven step and is not advertised as an agent-runtime fallback path."
-          }
-        ],
-        "readiness_checks": [
-          {
-            "check_id": "gws-auth-ready",
-            "summary": "Google Workspace CLI has an authenticated configuration available."
-          }
-        ],
+        "config_layers": [],
+        "readiness_checks": [],
         "supports_public_skills": [
-          "gather"
+          "quality"
         ],
-        "recommendation_role": "runtime",
-        "path": "integrations/tools/gws-cli.json",
+        "recommendation_role": "validation",
+        "path": "integrations/tools/nose.json",
         "source": "local-integration",
         "layer": "external integration"
       },
       {
         "id": "ruff",
         "kind": "external_binary",
+        "summary": "Fast Python linter used by `scripts/run-quality.sh` as the standing Python lint gate, including mccabe complexity checks.",
         "access_modes": [
           "binary"
         ],
@@ -1271,6 +1332,7 @@
       {
         "id": "specdown",
         "kind": "external_binary",
+        "summary": "Executable specification runner that turns Markdown specs into runnable tests and reports.",
         "access_modes": [
           "binary",
           "human-only",
@@ -1321,6 +1383,7 @@
       {
         "id": "tokei",
         "kind": "external_binary",
+        "summary": "Fast multi-language source-lines-of-code counter. Use when `quality` needs an honest SLOC inventory that separates code, comments, and blanks instead of treating raw `splitlines()` totals as code size.",
         "access_modes": [
           "binary",
           "degraded"
@@ -1352,6 +1415,7 @@
       {
         "id": "vulture",
         "kind": "external_binary",
+        "summary": "Python dead-code and dead-file advisory scanner. Use after the Ruff baseline when whole-repo reachability or stale modules are the quality question.",
         "access_modes": [
           "binary",
           "degraded"
@@ -1423,6 +1487,8 @@
     "support_skill_recommendations": [],
     "support_recommendation_query": null,
     "workflow_recommendations": [],
+    "public_skill_recommendations": [],
+    "public_recommendation_query": null,
     "support_recommendation_note": null
   }
 }
