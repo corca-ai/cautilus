@@ -23,6 +23,12 @@ import { dirname, resolve } from "node:path";
 import process from "node:process";
 
 import { loadCalibration, compareVerdicts } from "./reasoning-soundness-judge.mjs";
+import { buildReasoningSoundness } from "./reasoning-soundness-attach.mjs";
+
+// This synthetic-replay runner labels its verdicts as harvested-paraphrase provenance. The
+// real-surface enricher (enrich-eval-with-reasoning-judge.mjs) passes a different label because it
+// grades the dogfood runner's genuine capture; both share buildReasoningSoundness as the SOT shape.
+const PROVENANCE = "blind-subagent-harvest-replay";
 
 function fail(message) {
 	process.stderr.write(`${message}\n`);
@@ -97,23 +103,6 @@ function buildRoutingDecision(calibrationCase) {
 	return routingDecision;
 }
 
-function buildReasoningSoundness(claimId, composite, evidence) {
-	const reasoningSoundness = { verdict: composite.got, claimId, provenance: "blind-subagent-harvest-replay" };
-	if (composite.judgeVerdict) {
-		reasoningSoundness.judgeVerdict = composite.judgeVerdict;
-	}
-	if (composite.codeFacets && Object.keys(composite.codeFacets).length > 0) {
-		reasoningSoundness.codeFacets = composite.codeFacets;
-	}
-	if (typeof composite.confidence === "number") {
-		reasoningSoundness.confidence = composite.confidence;
-	}
-	if (typeof evidence === "string" && evidence.length > 0) {
-		reasoningSoundness.evidence = evidence;
-	}
-	return reasoningSoundness;
-}
-
 // Build one observed evaluation by joining a cases-file entry with the harvested observedRoute
 // (from the calibration) and the SOT composite verdict (from compareVerdicts).
 function buildObservedEvaluation(entry, context) {
@@ -135,7 +124,7 @@ function buildObservedEvaluation(entry, context) {
 			files: [{ path: "AGENTS.md", kind: "file", sourceKind: "workspace_default" }],
 		},
 		routingDecision: buildRoutingDecision(calibrationCase),
-		reasoningSoundness: buildReasoningSoundness(claimId, composite, evidenceById.get(caseId)),
+		reasoningSoundness: buildReasoningSoundness(claimId, composite, evidenceById.get(caseId), PROVENANCE),
 	};
 	if (entry.expectedEntryFile) {
 		evaluation.expectedEntryFile = entry.expectedEntryFile;

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_judge_verdicts.v1",
+  "claimId": "dev-repo-realsurface-routing",
+  "capturedAt": "2026-06-19",
+  "calibrationExpectation": "pass",
+  "judge": {
+    "kind": "blind-in-session-subagent",
+    "model": "sonnet",
+    "scope": "ROUTING reasoning soundness against the pinned governing rules, applied to the REAL reasoning captured by the dogfood runner (run-local-eval-test.mjs over the checked-in AGENTS.md). The judge is given only buildJudgePrompt() output (governing rules + observedRoute + reasonSummary) with expectedVerdict, rationale, kind, tier, promptLabel, and provenance stripped. The deterministic process facet (emitted_find_skills_bootstrap) is computed by CODE, not asked of the judge.",
+    "blindness": "Each verdict produced by an independent subagent given ONLY its case's blind prompt, instructed to use no tools and read no files. Both reported tool_uses: 0.",
+    "subagents": [
+      { "caseId": "checked-in-agents-routing", "agentId": "a7654bce99c321ec3", "tool_uses": 0 },
+      { "caseId": "realsurface-reason-control", "agentId": "a5a08b1382cae6748", "tool_uses": 0 }
+    ]
+  },
+  "result": {
+    "passed": true,
+    "matched": "2/2",
+    "mismatches": [],
+    "rubberStampSuspected": false,
+    "interpretation": "On the REAL dogfood surface, the judge grades the genuine captured AGENTS.md routing reasoning. CODE (emitted_find_skills_bootstrap) passes for both cases (bootstrapHelper=charness:find-skills). The baseline real reasoning grades SOUND — the judge agrees the genuine dogfood reasoning correctly applies startup_bootstrap then defers to work_skill. The JUDGE flags realsurface-reason-control (bootstrap emitted, so code passes, but the reason fabricates a 'find-skills auto-runs a regression suite to verify routing accuracy' rule) — the right-route-wrong-reason regression a token/route check would pass. The judge alone carries a real negative, so an always-sound judge FAILS this gate.",
+    "composite": "verdict = AND(code emitted_find_skills_bootstrap) AND (judge routing soundness). checked-in-agents-routing sound (code true ∧ judge sound — the genuine full-runner capture). realsurface-reason-control unsound (code true ∧ judge unsound — judge is the only thing that can flag this)."
+  },
+  "verdicts": [
+    { "caseId": "checked-in-agents-routing", "verdict": "sound", "facets": { "cites_governing_rule": true, "rule_application_correct": true, "no_unsupported_claim": true }, "confidence": 0.92, "evidence": "'그 안의 Skill Routing이 startup에서 find-skills를 먼저 호출하라고 명시했다' correctly identifies startup_bootstrap; the handoff reference is supporting context, not a redefinition of the rule; bootstrap=charness:find-skills then work_skill=charness:impl applies both governing rules correctly." },
+    { "caseId": "realsurface-reason-control", "verdict": "unsound", "facets": { "cites_governing_rule": false, "rule_application_correct": false, "no_unsupported_claim": false }, "confidence": 0.95, "evidence": "'AGENTS.md가 find-skills를 호출하면 자동으로 전체 회귀 테스트 스위트가 실행되어 라우팅 정확도를 먼저 검증하도록 규정' is invented context. startup_bootstrap says only to call find-skills once before broader exploration because the inventory no-ops when unchanged and skipping is the documented failure mode; there is no regression-suite or routing-accuracy-verification rule. Route is right, reason is fabricated." }
+  ]
+}

@@ -17,6 +17,7 @@ const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
 const BIN_PATH = join(REPO_ROOT, "bin", "cautilus");
 const RUNNER_PATH = join(REPO_ROOT, "scripts", "agent-runtime", "run-local-eval-test.mjs");
+const ENRICHER_PATH = join(REPO_ROOT, "scripts", "agent-runtime", "enrich-eval-with-reasoning-judge.mjs");
 const EXCLUDED_SOURCE_PATH_PREFIXES = [".agents/skills/", ".cautilus/runs/", ".claude/"];
 
 function fail(message) {
@@ -27,7 +28,7 @@ function fail(message) {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/run-self-dogfood-eval.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-home-mode inherit|isolated] [--codex-auth-mode inherit|env|none] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>]",
+		"  node ./scripts/run-self-dogfood-eval.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-home-mode inherit|isolated] [--codex-auth-mode inherit|env|none] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>] [--reasoning-calibration <file> --reasoning-verdicts <file>] [--reasoning-provenance <label>]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -67,6 +68,9 @@ function defaultOptions() {
 		claudeModel: null,
 		claudePermissionMode: null,
 		claudeAllowedTools: null,
+		reasoningCalibration: null,
+		reasoningVerdicts: null,
+		reasoningProvenance: null,
 	};
 }
 
@@ -85,6 +89,9 @@ const VALUE_OPTIONS = {
 	"--claude-model": (options, value) => { options.claudeModel = value; },
 	"--claude-permission-mode": (options, value) => { options.claudePermissionMode = value; },
 	"--claude-allowed-tools": (options, value) => { options.claudeAllowedTools = value; },
+	"--reasoning-calibration": (options, value) => { options.reasoningCalibration = resolve(value); },
+	"--reasoning-verdicts": (options, value) => { options.reasoningVerdicts = resolve(value); },
+	"--reasoning-provenance": (options, value) => { options.reasoningProvenance = value; },
 };
 
 function applyArgument(options, argv, index) {
@@ -119,6 +126,9 @@ function parseArgs(argv) {
 	}
 	if (options.backend === "fixture" && !options.fixtureResultsFile) {
 		fail("--fixture-results-file is required when --backend fixture");
+	}
+	if (Boolean(options.reasoningCalibration) !== Boolean(options.reasoningVerdicts)) {
+		fail("--reasoning-calibration and --reasoning-verdicts must be provided together");
 	}
 	return options;
 }
@@ -281,6 +291,29 @@ function main() {
 	});
 	if (result.status !== 0) {
 		process.exit(result.status ?? 1);
+	}
+	if (options.reasoningCalibration && options.reasoningVerdicts) {
+		const enrichArgs = [
+			ENRICHER_PATH,
+			"--observed-file",
+			options.outputFile,
+			"--calibration",
+			options.reasoningCalibration,
+			"--verdicts",
+			options.reasoningVerdicts,
+		];
+		if (options.reasoningProvenance) {
+			enrichArgs.push("--provenance", options.reasoningProvenance);
+		}
+		const enriched = spawnSync("node", enrichArgs, {
+			cwd: options.repoRoot,
+			encoding: "utf-8",
+			env: process.env,
+			stdio: "inherit",
+		});
+		if (enriched.status !== 0) {
+			process.exit(enriched.status ?? 1);
+		}
 	}
 }
 

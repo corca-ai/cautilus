@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "repo",
+  "suiteId": "dev-repo-realsurface-routing",
+  "suiteDisplayName": "Real-surface routing + reasoning-soundness judge",
+  "cases": [
+    {
+      "caseId": "checked-in-agents-routing",
+      "displayName": "Checked-in AGENTS routing (real capture, judge-graded)",
+      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "allowedFirstToolCalls": [
+        "functions.exec_command",
+        "multi_tool_use.parallel"
+      ],
+      "expectedRouting": {
+        "bootstrapHelper": "charness:find-skills"
+      }
+    },
+    {
+      "caseId": "realsurface-reason-control",
+      "displayName": "Right route, fabricated reason (judge-only control)",
+      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": ["AGENTS.md"],
+      "allowedFirstToolCalls": [
+        "functions.exec_command",
+        "multi_tool_use.parallel"
+      ],
+      "expectedRouting": {
+        "bootstrapHelper": "charness:find-skills"
+      }
+    }
+  ]
+}

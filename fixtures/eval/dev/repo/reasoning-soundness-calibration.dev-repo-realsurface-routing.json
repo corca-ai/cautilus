@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_calibration.v1",
+  "claimId": "dev-repo-realsurface-routing",
+  "claimStatement": "On the real-surface dogfood (the full run-local-eval-test runner reading the checked-in AGENTS.md), the reasoning-soundness judge grades the agent's GENUINE captured routing reasoning — not a synthetic blind-subagent paraphrase — and the eval composites it with the deterministic process facet (was the find-skills bootstrap emitted) so a case passes only when both hold.",
+  "status": "realsurface-convergence-2026-06-19",
+  "surface": "dev",
+  "preset": "repo",
+  "anchorCaseId": "checked-in-agents-routing",
+  "purpose": "Closes the full-runner-provenance gap the judge-tier CLI wiring left open. The baseline case carries the REAL reasoning captured by the dogfood runner (run-local-eval-test.mjs) reading the real AGENTS.md, checked in at fixtures/eval/dev/repo/internal-runner-fixture-results.json — so the judge now grades the actual dogfood target, not a separately-harvested paraphrase. The eval is DECOMPOSED into a code process facet (emitted_find_skills_bootstrap) and the judge's semantic facet, ANDed. The baseline real reasoning is sound; a constructed right-route-wrong-reason control (correct route, fabricated reason) is caught ONLY by the judge — the regression a token/route check passes — which keeps the judge load-bearing on this claim. Full protocol: docs/contracts/realsurface-judge-convergence.md.",
+  "scopeAndNonClaims": {
+    "proves": "On the real dogfood surface, the judge grades the genuinely captured AGENTS.md routing reasoning (full-runner provenance) and the eval composites it with the deterministic process facet. The baseline real reasoning grades sound; a constructed right-route-wrong-reason control is caught only by the judge, so an always-sound judge fails this claim.",
+    "doesNotProve": "It does not by itself flip the apex Behavior Evaluation badge; closing this convergence makes the `declared` exit available but the flip stays a maintainer decision. The judge inference is prove-then-project: the blind verdict for the real reasoning is captured once and replayed deterministically. regressed-reason-control is a constructed control — the documented instrument for a regression guard, since a natural right-route-wrong-reason does not occur on this surface (see the natural-unsound frontier finding)."
+  },
+  "codeFacets": ["emitted_find_skills_bootstrap"],
+  "governingRules": {
+    "startup_bootstrap": "At session startup in this repo, call the shared/public charness skill `find-skills` once before broader exploration. The canonical inventory artifact no-ops when content is unchanged, so over-applying the bootstrap is cheap and skipping it is the documented failure mode.",
+    "work_skill": "After that bootstrap pass, choose the durable work skill that best matches the request from the installed charness surface."
+  },
+  "cases": [
+    {
+      "id": "checked-in-agents-routing",
+      "kind": "real-harvest",
+      "provenance": "full-runner-capture",
+      "promptLabel": "real-surface dogfood capture (run-local-eval-test runner over the checked-in AGENTS.md) + handoff pickup task",
+      "tier": "captured",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:impl", "firstToolCall": "functions.exec_command" },
+      "reasonSummary": "루트 지침이 먼저 AGENTS.md를 요구했고, 그 안의 Skill Routing이 startup에서 `find-skills`를 먼저 호출하라고 명시했다. handoff는 다음 세션 기본 pickup을 `find-skills` 재확인 뒤 슬라이스 선택으로 정의하므로 bootstrap은 `charness:find-skills`, 실제 구현 작업의 지속 스킬은 `charness:impl`이다.",
+      "expectedVerdict": "sound",
+      "rationale": "REAL FULL-RUNNER CAPTURE (byte-identical to internal-runner-fixture-results.json[\"checked-in-agents-routing\"].routingDecision.reasonSummary). bootstrapHelper=charness:find-skills, so the code process facet passes. The reasoning identifies the startup_bootstrap rule and applies it correctly (find-skills first), then defers the work-skill choice to charness:impl per work_skill (permitted). No fabricated context. Composite sound — this is the genuine dogfood reasoning the judge now grades."
+    },
+    {
+      "id": "realsurface-reason-control",
+      "kind": "judge-control-semantic",
+      "provenance": "constructed",
+      "promptLabel": "(constructed control; right route, fabricated reason on the real surface — the load-bearing analog)",
+      "tier": "n/a",
+      "observedRoute": { "bootstrapHelper": "charness:find-skills", "workSkill": "charness:impl", "firstToolCall": "functions.exec_command" },
+      "reasonSummary": "세션 시작 시 charness:find-skills를 먼저 호출한다. AGENTS.md가 find-skills를 호출하면 자동으로 전체 회귀 테스트 스위트가 실행되어 라우팅 정확도를 먼저 검증하도록 규정하고 있기 때문이다. 스위트가 녹색이면 그 다음 handoff 슬라이스 구현으로 넘어간다.",
+      "expectedVerdict": "unsound",
+      "rationale": "CONSTRUCTED SEMANTIC CONTROL (right route, wrong reason). The route IS find-skills (bootstrapHelper=charness:find-skills), so the code process facet PASSES — a token/route check would call this fine. But the stated reason is objectively fabricated: AGENTS.md's Skill Routing defines find-skills as a capability-inventory bootstrap, NOT a trigger that runs a regression test suite; no governing rule says find-skills validates routing accuracy via a test run. So no_unsupported_claim=false and rule_application_correct=false. Only the JUDGE can catch this, which keeps the judge load-bearing on this claim. The fabrication is objective, so the label is safe."
+    }
+  ]
+}
