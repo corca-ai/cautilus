@@ -38,7 +38,7 @@ if [ -x ./bin/cautilus ]; then CAUTILUS_BIN=./bin/cautilus; fi
 
 Let the binary print command families and packet examples.
 Use `"$CAUTILUS_BIN" commands --json`, `"$CAUTILUS_BIN" --help`, portable `cautilus doctor commands --json` / `cautilus --help`, or a command's `--example-input` / `--example-output` surface instead of copying broad command lists into the answer.
-Use [command-cookbook.md](references/command-cookbook.md) only after the binary has identified the relevant command family and a concrete multi-step invocation is needed.
+Use `references/command-cookbook.md` only after the binary has identified the relevant command family and a concrete multi-step invocation is needed.
 
 ## No-Input Orientation
 
@@ -191,7 +191,7 @@ If evaluate review variants are requested but unavailable on the selected adapte
 10. Use improve or GEPA-style search only after the claim and held-out proof surface are explicit.
 11. Report exact commands, exact adapter selection, exact artifact paths, and the final recommendation.
 
-When the target repo is `Cautilus` itself, prefer the checked-in self-dogfood wrappers over rebuilding the mode/report/review chain by hand; see [self-dogfood-runner.md](references/self-dogfood-runner.md) for wrapper entries and claim boundaries.
+When the target repo is `Cautilus` itself, prefer the checked-in self-dogfood wrappers over rebuilding the mode/report/review chain by hand; see `references/self-dogfood-runner.md` for wrapper entries and claim boundaries.
 
 ## Packet Reading
 
