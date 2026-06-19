@@ -110,11 +110,11 @@ Build 에 해당하는 것들, Measure 에, Learn 에 해당하는 걸로 그룹
 메모:
 • 현재의 뮤테이션 테스트는 코드의 강건함을 테스트한다. 유저 행동에 대한 대응의 강건함은? 멍키 테스트 같은 게 있었던 것 같기도 하고. 이상한 값 넣어본다거나. 
 • 크릴이 하는 일도 유사한 면이 있다. 가능한 모든 동작을 해보는 거. 
-• 이거 관련 용어나 연구 찾아보고 싶은데 @Ceal 도와줘 $cexit
+• 이거 관련 용어나 연구 찾아보고 싶은데 @private external chat product 도와줘 $cexit
 
 ---
 
-**Ceal** · 2026-05-16 07:37
+**private external chat product** · 2026-05-16 07:37
 
 좋은 키워드 묶음은 이쪽이에요.  가장 가까운 용어 - Monkey testing: 랜덤/반무작위 사용자 입력, 클릭, 이벤트를 넣어 앱이 깨지는지 보는 테스트 - Fuzz testing / fuzzing: 이상한 값, 경계값, 무작위 입력을 넣어 취약점·크래시를 찾는 테스트 - Property-based testing: “항상 성립해야 하는 성질”을 정하고 다양한 입력을 자동 생성해 검증 - Model-based testing: 사용자의 가능한 상태 전이/행동 모델을 만들고 경로를 생성해 테스트 - Exploratory testing: 사람이 제품을 탐색하면서 예상 밖 행동/흐름을 찾는 테스트 - Chaos engineering: 운영 환경에서 일부러 장애/불안정성을 주입해 시스템 강건함을 보는 접근  유저 행동 강건함 쪽으로 더 가까운 표현 - User behavior robustness testing - Interaction fuzzing - UI fuzzing / GUI fuzzing - Event sequence testing - Combinatorial interaction testing - Adversarial user testing - Behavioral testing for interactive systems - End-user error resilience / misuse testing  크릴/CAPS 맥락에 붙이면 좋을 프레이밍 - 코드 뮤테이션 테스트: “코드가 조금 바뀌어도 테스트가 잡아내는가?” - 유저 행동 뮤테이션 테스트: “사용자의 행동이 이상하게 변형되어도 제품/에이전트가 견디는가?” - 에이전트식 탐색: “가능한 행동 공간을 돌아다니며 실패·기회·학습 신호를 찾는가?”  임시 이름으로는 Behavior Mutation Testing 또는 User-Action Fuzzing이 꽤 괜찮아 보여요.   조금 더 연구 냄새 나는 이름은 Model-based Interaction Fuzzing 쪽이고요.  찾아볼 검색어는 이렇게 시작하면 좋겠습니다.  "GUI fuzzing" user interaction testing "model based testing" user behavior "property based testing" UI "monkey testing" mobile app robustness "interaction fuzzing" software testing "event sequence testing" GUI "adversarial testing" user behavior "combinatorial interaction testing" UI  제 감각으로는 지금 메모의 중심은 “코드의 변형”이 아니라 “행동 시퀀스의 변형”을 테스트하는 방법론 같아요.   그래서 출발점은 GUI fuzzing + model-based testing + property-based testing 조합이 좋아 보입니다.
 
@@ -122,10 +122,10 @@ Build 에 해당하는 것들, Measure 에, Learn 에 해당하는 걸로 그룹
 
 **BAE Hwidong** · 2026-05-16 07:38
 
-$ceal:exit
+$example-app:exit
 
 ---
 
-**Ceal** · 2026-05-16 07:38
+**private external chat product** · 2026-05-16 07:38
 
 이 thread는 종료되었습니다. 다시 열릴 때까지 더 이상 응답하지 않습니다.

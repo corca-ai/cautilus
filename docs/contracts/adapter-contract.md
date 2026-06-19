@@ -281,13 +281,13 @@ Explicit discovery:
 instance_discovery:
   kind: explicit
   instances:
-    - id: ceal
-      display_label: Ceal Production
-      data_root: /Users/operator/.ceal/ceal
+    - id: example-app
+      display_label: private external chat product Production
+      data_root: /Users/operator/.example-app/example-app
       paths:
-        scenario_store: /Users/operator/.ceal/ceal/scenarios.json
-        conversation_summaries: /Users/operator/.ceal/ceal/human-conversations/normalized
-        scenario_results: /Users/operator/.ceal/ceal/simulation-results
+        scenario_store: /Users/operator/.example-app/example-app/scenarios.json
+        conversation_summaries: /Users/operator/.example-app/example-app/human-conversations/normalized
+        scenario_results: /Users/operator/.example-app/example-app/simulation-results
 ```
 
 Fixed rules:

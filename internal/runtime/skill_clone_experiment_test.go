@@ -13,7 +13,7 @@ func TestBuildSkillCloneExperimentReportPromotesCoveredVariant(t *testing.T) {
 		"experimentId":  "announcement-style-lab",
 		"taskPacket": map[string]any{
 			"path":    "charness-artifacts/announcement/style-lab-input.md",
-			"summary": "draft a Ceal announcement from preserved sources",
+			"summary": "draft a private external chat product announcement from preserved sources",
 		},
 		"baseline": map[string]any{
 			"skillId": "announcement",
@@ -27,20 +27,20 @@ func TestBuildSkillCloneExperimentReportPromotesCoveredVariant(t *testing.T) {
 			"skillId": "announcement-style-lab",
 			"status":  "passed",
 			"output": map[string]any{
-				"text":       "Draft covers Slack thread, Ceal control repo, and user-facing in-progress coverage.",
-				"sourceRefs": []any{"Slack thread", "Ceal control repo", "user-facing in-progress coverage"},
+				"text":       "Draft covers Slack thread, private external chat product control repo, and user-facing in-progress coverage.",
+				"sourceRefs": []any{"Slack thread", "private external chat product control repo", "user-facing in-progress coverage"},
 			},
 		},
 		"exemplar": map[string]any{
 			"id":     "prior-strong-announcement",
 			"status": "passed",
 			"output": map[string]any{
-				"text":       "Prior strong announcement covers Ceal control repo.",
-				"sourceRefs": []any{"Ceal control repo"},
+				"text":       "Prior strong announcement covers private external chat product control repo.",
+				"sourceRefs": []any{"private external chat product control repo"},
 			},
 		},
 		"sourceCoverageObligations": []any{
-			map[string]any{"id": "control-repo", "ref": "Ceal control repo", "required": true},
+			map[string]any{"id": "control-repo", "ref": "private external chat product control repo", "required": true},
 			map[string]any{"id": "user-progress", "ref": "user-facing in-progress coverage", "required": true},
 		},
 		"rubricPhrases": []any{"control repo"},

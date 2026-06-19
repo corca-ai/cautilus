@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cautilus.live_run_invocation_request.v1",
   "requestId": "live-run-review-after-retro-001",
-  "instanceId": "ceal",
+  "instanceId": "example-app",
   "timeoutMs": 45000,
   "captureTranscript": true,
   "consumerMetadata": {

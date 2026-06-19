@@ -3,27 +3,27 @@
   "generatedAt": "2026-04-20T07:00:00Z",
   "instances": [
     {
-      "instanceId": "ceal",
-      "displayLabel": "Ceal Production",
+      "instanceId": "example-app",
+      "displayLabel": "private external chat product Production",
       "description": "Primary local production-like instance on the operator workstation.",
-      "dataRoot": "/Users/operator/.ceal/ceal",
+      "dataRoot": "/Users/operator/.example-app/example-app",
       "paths": {
-        "scenarioStore": "/Users/operator/.ceal/ceal/scenarios.json",
-        "conversationSummaries": "/Users/operator/.ceal/ceal/human-conversations/normalized",
-        "conversationTranscripts": "/Users/operator/.ceal/ceal/human-conversations/raw",
-        "proposalCandidates": "/Users/operator/.ceal/ceal/scenario-proposals",
-        "scenarioResults": "/Users/operator/.ceal/ceal/simulation-results",
-        "runArtifacts": "/Users/operator/.ceal/ceal/agent-runs",
-        "compareArtifacts": "/Users/operator/.ceal/ceal/scenario-compare"
+        "scenarioStore": "/Users/operator/.example-app/example-app/scenarios.json",
+        "conversationSummaries": "/Users/operator/.example-app/example-app/human-conversations/normalized",
+        "conversationTranscripts": "/Users/operator/.example-app/example-app/human-conversations/raw",
+        "proposalCandidates": "/Users/operator/.example-app/example-app/scenario-proposals",
+        "scenarioResults": "/Users/operator/.example-app/example-app/simulation-results",
+        "runArtifacts": "/Users/operator/.example-app/example-app/agent-runs",
+        "compareArtifacts": "/Users/operator/.example-app/example-app/scenario-compare"
       }
     },
     {
-      "instanceId": "ceal-dev",
-      "displayLabel": "Ceal Dev",
-      "dataRoot": "/Users/operator/.ceal/ceal-dev",
+      "instanceId": "example-app-dev",
+      "displayLabel": "private external chat product Dev",
+      "dataRoot": "/Users/operator/.example-app/example-app-dev",
       "paths": {
-        "scenarioStore": "/Users/operator/.ceal/ceal-dev/scenarios.json",
-        "scenarioResults": "/Users/operator/.ceal/ceal-dev/simulation-results"
+        "scenarioStore": "/Users/operator/.example-app/example-app-dev/scenarios.json",
+        "scenarioResults": "/Users/operator/.example-app/example-app-dev/simulation-results"
       }
     }
   ]

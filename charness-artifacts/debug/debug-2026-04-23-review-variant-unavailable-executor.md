@@ -14,7 +14,7 @@ then the unavailable executor should be classified as blocked with a machine-rea
 
 ## Observed Facts
 
-- GitHub issue #28 reported a Ceal closeout run on 2026-04-23 with Cautilus `0.11.0`.
+- GitHub issue #28 reported a private external chat product closeout run on 2026-04-23 with Cautilus `0.11.0`.
 - `codex-review` passed and produced structured findings.
 - `claude-review` failed because the local Claude CLI returned an API `401` authentication error.
 - The top-level summary status was `failed`, even though one variant produced useful evidence.

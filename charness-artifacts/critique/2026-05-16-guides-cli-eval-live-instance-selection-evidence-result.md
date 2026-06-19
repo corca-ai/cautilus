@@ -6,7 +6,7 @@ Fresh-eye review for the claim evidence refresh that moves `claim-docs-guides-cl
 
 Success means the evidence stays current-claim-id-bound to the `docs/guides/cli.md` claim that an eval live instance is one live consumer target on this host selected by stable id.
 
-Out of scope: proving real Ceal or other consumer runtime execution, eval-live behavior quality, batch/persona/workspace adjacent claims, and product ownership of consumer launch/auth/runtime wiring.
+Out of scope: proving real private external chat product or other consumer runtime execution, eval-live behavior quality, batch/persona/workspace adjacent claims, and product ownership of consumer launch/auth/runtime wiring.
 
 ## Fresh-Eye Satisfaction
 
@@ -32,7 +32,7 @@ Three bounded reviewers inspected the pending evidence bundle, review-result, ge
 
 ## Over-Worry
 
-- Requiring real Ceal or external consumer execution would exceed this claim; the claim is stable instance-id selection and packet dispatch boundary proof.
+- Requiring real private external chat product or external consumer execution would exceed this claim; the claim is stable instance-id selection and packet dispatch boundary proof.
 - Persona, batch, and workspace tests appearing in the focused command list do not break the slice because the decision and review-result reason stay narrowed to stable id selection.
 - The command catalog JSON shape using command usage/path rather than a top-level command name is not a blocker for this evidence.
 

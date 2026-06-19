@@ -12,12 +12,12 @@ func TestValidateAdapterDataAcceptsExplicitInstanceDiscovery(t *testing.T) {
 			"kind": "explicit",
 			"instances": []any{
 				map[string]any{
-					"id":            "ceal",
-					"display_label": "Ceal Production",
-					"data_root":     "/Users/operator/.ceal/ceal",
+					"id":            "example-app",
+					"display_label": "private external chat product Production",
+					"data_root":     "/Users/operator/.example-app/example-app",
 					"paths": map[string]any{
-						"scenario_store":         "/Users/operator/.ceal/ceal/scenarios.json",
-						"conversation_summaries": "/Users/operator/.ceal/ceal/human-conversations/normalized",
+						"scenario_store":         "/Users/operator/.example-app/example-app/scenarios.json",
+						"conversation_summaries": "/Users/operator/.example-app/example-app/human-conversations/normalized",
 					},
 				},
 			},
@@ -41,7 +41,7 @@ func TestValidateAdapterDataAcceptsExplicitInstanceDiscovery(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected instance mapping, got %#v", instances[0])
 	}
-	if first["display_label"] != "Ceal Production" {
+	if first["display_label"] != "private external chat product Production" {
 		t.Fatalf("unexpected display_label: %#v", first["display_label"])
 	}
 }
@@ -78,8 +78,8 @@ func TestValidateAdapterDataRejectsExplicitInstanceDiscoveryWithoutLocation(t *t
 			"kind": "explicit",
 			"instances": []any{
 				map[string]any{
-					"id":            "ceal",
-					"display_label": "Ceal Production",
+					"id":            "example-app",
+					"display_label": "private external chat product Production",
 				},
 			},
 		},

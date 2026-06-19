@@ -3,7 +3,7 @@ Date: 2026-04-21
 
 ## Problem
 
-`release-artifacts` for tag `v0.8.1` failed during `npm run verify` because `lint:links` reported broken links in `docs/internal/handoff.md` that pointed to `../../../ceal/...`.
+`release-artifacts` for tag `v0.8.1` failed during `npm run verify` because `lint:links` reported broken links in `docs/internal/handoff.md` that pointed to `../../../example-app/...`.
 
 ## Correct Behavior
 
@@ -14,15 +14,15 @@ then that link should resolve to another checked-in path inside this repo rather
 ## Observed Facts
 
 - GitHub Actions `release-artifacts #28` failed in the `npm run verify` step.
-- The job log showed broken relative links in `docs/internal/handoff.md` pointing into a sibling `ceal` checkout.
+- The job log showed broken relative links in `docs/internal/handoff.md` pointing into a sibling `example-app` checkout.
 - The local checker only verified whether the resolved path existed on the current filesystem.
-- The maintainer workstation had a sibling `../ceal` checkout, so the invalid boundary escaped local detection.
+- The maintainer workstation had a sibling `../example-app` checkout, so the invalid boundary escaped local detection.
 - GitHub Actions ran in a clean single-repo checkout, so the same links failed there.
 
 ## Reproduction
 
 1. Inspect the released workflow logs for `release-artifacts #28`.
-2. Observe `lint:links` fail on `docs/internal/handoff.md` with `../../../ceal/...` targets.
+2. Observe `lint:links` fail on `docs/internal/handoff.md` with `../../../example-app/...` targets.
 3. Inspect `scripts/check-markdown-links.mjs` and confirm it resolved local links against the live filesystem without enforcing repo-root boundaries.
 
 ## Candidate Causes

@@ -182,7 +182,7 @@ The product-owned loop also materializes supporting JSON artifacts when that pat
 
 ## Non-Goals
 
-- copying Ceal's current `run-simulation` route
+- copying private external chat product's current `run-simulation` route
 - defining multi-instance discovery in this slice
 - forcing one consumer-owned run artifact layout
 - bundling broader audit or compliance browsing into the invocation seam

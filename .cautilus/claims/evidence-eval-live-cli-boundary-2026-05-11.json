@@ -12,7 +12,7 @@
     "targetSurface": "eval live CLI and adapter live invocation boundary",
     "claimBoundary": "Only the three listed docs/cli-reference eval-live claims are marked satisfied.",
     "notClaimed": [
-      "A real Ceal or other consumer runtime was launched.",
+      "A real private external chat product or other consumer runtime was launched.",
       "The example fixture paths prove live app behavior quality.",
       "Every adapter must use persona_prompt simulation; only adapters with persona_prompt scenarios need simulator_persona_command_template.",
       "All historical direct Node helper scripts are unsupported; only the shipped eval-live runtime entrypoints named here are Go-owned CLI surfaces."

@@ -14,7 +14,7 @@ The reporter's job-to-be-done is to understand whether Cautilus can attribute LL
 
 The GitHub issue is the source of truth for the request.
 The referenced Threads post was still not available through direct agent browsing during this review.
-The local `ceal` command was not installed in this workspace, so the Slack source thread could not be refreshed from `slack://C08SF10EVMX/1778890590.261979`.
+The local `example-app` command was not installed in this workspace, so the Slack source thread could not be refreshed from `slack://C08SF10EVMX/1778890590.261979`.
 
 ## Current Hotspots And Evidence
 

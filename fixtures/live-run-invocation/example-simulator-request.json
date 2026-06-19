@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cautilus.live_run_simulator_request.v1",
   "requestId": "live-run-persona-review-001",
-  "instanceId": "ceal",
+  "instanceId": "example-app",
   "scenarioId": "persona-review",
   "turnIndex": 2,
   "maxTurns": 3,

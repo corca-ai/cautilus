@@ -11,7 +11,7 @@ Done-early policy: continue_next_improvement
 This file is the living goal scratchpad. It becomes active only when the user
 runs the activation command.
 
-Discuss before activation: resolved 2026-06-10 — the consumer corpora are maintainer-named read-only sibling checkouts (`../yt-digest` Korean, `../charness` and `../ceal` English); the maintainer chose shaped-only (no hook activation) because heavy mid-stream intervention is expected at every ratification point.
+Discuss before activation: resolved 2026-06-10 — the consumer corpora are maintainer-named read-only sibling checkouts (`../yt-digest` Korean, `../charness` and `../example-app` English); the maintainer chose shaped-only (no hook activation) because heavy mid-stream intervention is expected at every ratification point.
 
 ## Active Operating Frame
 
@@ -32,7 +32,7 @@ Discuss before activation: resolved 2026-06-10 — the consumer corpora are main
 Discovery classification knowledge that varies per repo lives in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer, with the portability claim measured rather than asserted.
 Concretely, by the end of this goal:
 a Korean-documented consumer repo (`../yt-digest`) extracts claims through an adapter-proposed lexicon hint family instead of extracting almost nothing;
-proof-routing hints carry the ratified gold-set corrections so the facet routes are honest on this repo and measured on `../charness` and `../ceal`;
+proof-routing hints carry the ratified gold-set corrections so the facet routes are honest on this repo and measured on `../charness` and `../example-app`;
 the hardcoded `Deferred Decisions` heading is absorbed into `non_claim_section_headings` portable defaults;
 and the paused gold-set HITL queue (c02 onward) has progressed with maintainer verdicts recorded into the gold-set JSON.
 The promotion bar and priority order are already contract: `docs/contracts/claim-discovery-workflow.md` (hint-family promotion criteria, 2026-06-10).
@@ -50,7 +50,7 @@ The promotion bar and priority order are already contract: `docs/contracts/claim
 ## Boundaries
 
 - External side-effect scope: none planned; all changes land locally in this repo and `git push` stays user-owned.
-- Corpus access is read-only filesystem scanning of `../yt-digest`, `../charness`, `../ceal`; measurement artifacts (counts, samples, proposed hints) are recorded in THIS repo under `charness-artifacts/eval-trust/`, and corpus excerpts quoted in artifacts stay minimal.
+- Corpus access is read-only filesystem scanning of `../yt-digest`, `../charness`, `../example-app`; measurement artifacts (counts, samples, proposed hints) are recorded in THIS repo under `charness-artifacts/eval-trust/`, and corpus excerpts quoted in artifacts stay minimal.
 - `skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget; packaged copy parity is maintained.
 - Engine changes must keep the control-test invariant: classification filters come from the adapter, never from new repo-specific hardcoding (portable defaults are allowed when generalized, like the planned Deferred Decisions absorption).
 - Claim-state refresh chain (`npm run claims:refresh:all`) runs after any claim-source-touching slice.
@@ -111,13 +111,13 @@ during the run:
 ## Slice Log
 
 - 2026-06-10 S1 done: three-corpus baseline measured and recorded at `charness-artifacts/eval-trust/2026-06-10-discovery-classification-s1-baseline.md`.
-  yt-digest extracts 0 candidates from 3 sources (verb-lexicon gap confirmed, traversal healthy); charness 227/56 sources, ceal 308/85 sources, so the English-extraction stop condition did not trigger and S2 stays scoped to the non-English lexicon family.
+  yt-digest extracts 0 candidates from 3 sources (verb-lexicon gap confirmed, traversal healthy); charness 227/56 sources, example-app 308/85 sources, so the English-extraction stop condition did not trigger and S2 stays scoped to the non-English lexicon family.
   Two S2 design inputs surfaced: Korean predicates need substring/suffix matching (space-padded containment can never match), and applying hints to a read-only corpus needs an explicit `--adapter <path>` override on `discover claims` (or a temp-copy harness).
   Routing: fresh-eye plan critique delegated to a bounded subagent (running); S1 measurement itself was direct CLI evidence work, no skill route needed beyond session bootstrap.
 - 2026-06-10 S2 engine + S4 done in one engine slice (same functions, same session): `claim_lexicon_terms` hint family (substring match, rune-counted 20–260 bounds, extend-only, fallback routing lane), `discover claims --adapter <path>` override for read-only corpus measurement, hardcoded `Deferred Decisions` branch deleted into the portable `non_claim_section_headings` default with union merge.
   Maintainer ratified all four S2 semantics decisions, the `--adapter` mechanism, and S4 union-no-opt-out interactively; S0 HITL explicitly skipped this session.
   Proposal artifact with measured 0 → 19 yt-digest extraction: `charness-artifacts/eval-trust/2026-06-10-discovery-classification-s2-lexicon-proposal.md` (term list pending ratification).
-  Claim-disappearance eyeball diff recorded there: this repo 376 → 378, charness 227 → 227, ceal 308 → 307.
+  Claim-disappearance eyeball diff recorded there: this repo 376 → 378, charness 227 → 227, example-app 308 → 307.
   Routing: maintainer decisions captured via interactive ratification; implementation direct per `impl` conventions; debug detour (lexicon hints silently dropped) root-caused to the adapter classification_hints whitelist in `internal/runtime/adapter.go` before fixing, per the debug-first rule.
 - 2026-06-10 redesign landed: maintainer challenged the lexical heuristic after the S2 term proposal; agent-primary extraction direction ratified and recorded in `## Redesign Decision`, contract, and master plan.
   S3 dissolved, S0 repurposed, S2 term ratification deferred (baseline-mode-only relevance).
@@ -149,11 +149,11 @@ during the run:
 - `charness-artifacts/eval-trust/2026-06-10-recommendedproof-facet-gold-set-proposal.md` + `.json` — proposed labels, portability boundary, external-validity caveat; the ratification harness for hint proposals.
 - `.charness/hitl/runtime/hitl-20260609-235609/` — paused HITL session (queue, state, scratchpad; c01–c03 accepted, paused at c04 pending the docs-truth rewrite; rules R1–R6 carry forward).
 - Commits `a09505e` (first hint family, engine+adapter+SKILL.md), `12816e2`/`8e003e2` (gold set), `432b290` (promotion criteria/roadmap).
-- Maintainer decisions this session: corpus choice (`../yt-digest`, `../charness`, `../ceal`), shaped-only activation, tie-break demotion, sc5 ratification.
+- Maintainer decisions this session: corpus choice (`../yt-digest`, `../charness`, `../example-app`), shaped-only activation, tie-break demotion, sc5 ratification.
 
 ## Interview Decisions
 
-- Corpus for external validity: options were a real host repo, a checked-in synthetic fixture, or both. Maintainer chose three real sibling checkouts (`../yt-digest` Korean, `../charness`, `../ceal` English). Synthetic-only was rejected as weak external validity; checked-in regression fixtures may still be distilled from findings later (S2/S3 may propose that, maintainer decides then).
+- Corpus for external validity: options were a real host repo, a checked-in synthetic fixture, or both. Maintainer chose three real sibling checkouts (`../yt-digest` Korean, `../charness`, `../example-app` English). Synthetic-only was rejected as weak external validity; checked-in regression fixtures may still be distilled from findings later (S2/S3 may propose that, maintainer decides then).
 - Activation: maintainer explicitly withheld activation because every slice has ratification pauses; the goal is a planning surface, not an autonomous run. Assumed consequence: slices are executed in normal interactive sessions that treat this artifact as the slice memory surface.
 - HITL placement: not separately asked; default taken to include the paused gold-set review as S0 because its ratified labels are an input to S3. The maintainer can reorder or interleave S0 with other slices freely.
 - Priority order: carried from the maintainer-approved roadmap (lexicon gap first, then proof routing, then residue absorption); not re-asked.
@@ -166,7 +166,7 @@ Bounded fresh-eye plan critique run 2026-06-10 (delegated subagent, read-only, v
    Resolution adopted: S2 includes a portable fallback classification for hint-matched lines that no routing case claims (`human-auditable`, readiness `blocked`-equivalent inspect lane, `reviewStatus=heuristic`); minimal S3 vocabulary is NOT pulled forward.
 2. S2 acceptance ("hints applied to read-only yt-digest") had no mechanism. Resolution: maintainer decision recorded below (adapter override vs temp-copy harness).
 3. Hint-family matching semantics must be contract-decided before wiring: match mode (substring vs space-padded token) and rune-vs-byte length bounds (current 20–260 is bytes, ≈7–86 Korean chars, silently rejecting moderate Korean sentences). Also: yt-digest README feature bullets are noun-final (스크래핑/분류/생성), so a predicate lexicon alone may under-match list-style claims — known S2 review item.
-4. S1 raw counts are gameable (recall gain vs noise injection indistinguishable). Resolution: S2/S3 measurement uses a small labeled sample per corpus for precision, before/after pairs run in the same session against recorded corpus commits (S1 artifact already records commits), and S3 on charness/ceal uses a bounded sampling protocol rather than full-list ratification.
+4. S1 raw counts are gameable (recall gain vs noise injection indistinguishable). Resolution: S2/S3 measurement uses a small labeled sample per corpus for precision, before/after pairs run in the same session against recorded corpus commits (S1 artifact already records commits), and S3 on charness/example-app uses a bounded sampling protocol rather than full-list ratification.
 
 Act-before-ship (folded into slice execution): S3 hint precedence vs the ordered switch's broad catch-alls must be contract-stated; S3 needs a no-regression check on deterministic-tag claims and a label-flip diff over non-sampled claims; S3 corrects per-claim tags only (facet schema stays out of scope); S4 needs explicit merge-vs-override semantics for portable defaults plus a claim-disappearance diff for maintainer eyeball; the with/without control test does not prove absence of new hardcoding — add a frozen default-config golden fixture; S0 can be batched down to the ~14 S3-critical verdicts with the remainder resumable-optional; Korean precision leaks (English-only open-question/definition filters) are a known S2 review item.
 

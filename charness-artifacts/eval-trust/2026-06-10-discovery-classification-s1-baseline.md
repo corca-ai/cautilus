@@ -11,7 +11,7 @@ Reproduce: `./bin/cautilus discover claims --repo-root ../<corpus> --output /tmp
 | --- | --- | --- | --- | --- |
 | `../yt-digest` | Korean | `99d10cf` | clean | none (portable defaults) |
 | `../charness` | English | `2bbd8a40` | clean | `.agents/cautilus-adapter.yaml`, no `classification_hints` |
-| `../ceal` | English | `8368964b` | clean | `.agents/cautilus-adapter.yaml`, no `classification_hints` |
+| `../example-app` | English | `8368964b` | clean | `.agents/cautilus-adapter.yaml`, no `classification_hints` |
 
 ## Results
 
@@ -19,7 +19,7 @@ Reproduce: `./bin/cautilus discover claims --repo-root ../<corpus> --output /tmp
 | --- | --- | --- | --- | --- | --- |
 | yt-digest | 3 | **0** | 0 | 0 | 0 |
 | charness | 56 | 227 | 68 | 100 | 59 |
-| ceal | 85 | 308 | 92 | 158 | 58 |
+| example-app | 85 | 308 | 92 | 158 | 58 |
 
 All three runs recorded `nonClaimSectionHeadings: []` in `effectiveScanScope` (no corpus configures classification hints today).
 
@@ -42,17 +42,17 @@ Two structural observations that bound what a lexicon hint can fix:
 
 ## English corpora: shaping assumption check
 
-The S1 stop condition ("English corpora also extract near nothing") did **not** trigger: charness and ceal extract richly through the same lexicon.
+The S1 stop condition ("English corpora also extract near nothing") did **not** trigger: charness and example-app extract richly through the same lexicon.
 S2 therefore stays scoped as the non-English lexicon hint family rather than a general extraction redesign.
 Shape notes for the S3 routing measurement later:
 
 - Both English corpora skew toward `cautilus-eval` (100/227 and 158/308), consistent with this repo's gold-set pattern 1 (cautilus-eval over-assignment) being worth measuring on consumer corpora, exactly as the gold set's external-validity caveat asked.
-- Top candidate sources are deep doc trees (`docs/public-skill-validation.md`, `docs/specs/ceal-harness-and-skill-ecosystem.spec.md`), so depth-3 traversal is doing real work on English consumer repos.
+- Top candidate sources are deep doc trees (`docs/public-skill-validation.md`, `docs/specs/example-app-harness-and-skill-ecosystem.spec.md`), so depth-3 traversal is doing real work on English consumer repos.
 
 ## Measurement caveats
 
 - Counts are raw heuristic candidates, not reviewed claims; precision on the English corpora is unmeasured here (S3 routing measurement will sample it).
-- charness and ceal adapters differ from yt-digest (entries/excludes), so cross-corpus count comparisons are shape evidence, not a controlled experiment; the controlled comparison is per-corpus before/after once hints exist.
+- charness and example-app adapters differ from yt-digest (entries/excludes), so cross-corpus count comparisons are shape evidence, not a controlled experiment; the controlled comparison is per-corpus before/after once hints exist.
 - `discover claims` has no adapter-path override flag today, so applying proposed hints to a read-only corpus requires either a new explicit `--adapter <path>` flag or a temp-copy harness; this is recorded as an S2 design input.
 
 ## Next

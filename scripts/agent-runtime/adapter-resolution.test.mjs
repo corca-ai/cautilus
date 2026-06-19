@@ -127,11 +127,11 @@ test("resolve_adapter preserves workbench discovery and live invocation seams", 
 				"instance_discovery:",
 				"  kind: explicit",
 				"  instances:",
-				"    - id: ceal",
-				"      display_label: Ceal Production",
-				"      data_root: /Users/operator/.ceal/ceal",
+				"    - id: example-app",
+				"      display_label: private external chat product Production",
+				"      data_root: /Users/operator/.example-app/example-app",
 				"      paths:",
-				"        scenario_store: /Users/operator/.ceal/ceal/scenarios.json",
+				"        scenario_store: /Users/operator/.example-app/example-app/scenarios.json",
 				"live_run_invocation:",
 				"  command_template: cautilus workbench run-live --repo-root {repo_root} --adapter {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
 				"  consumer_command_template: node scripts/consumer/run-live-instance-scenario.mjs --repo-root {repo_root} --adapter-path {adapter_path} --instance-id {instance_id} --request-file {request_file} --output-file {output_file}",
@@ -144,7 +144,7 @@ test("resolve_adapter preserves workbench discovery and live invocation seams", 
 		const payload = JSON.parse(stdout);
 		assert.equal(payload.valid, true);
 		assert.equal(payload.data.instance_discovery.kind, "explicit");
-		assert.equal(payload.data.instance_discovery.instances[0].display_label, "Ceal Production");
+		assert.equal(payload.data.instance_discovery.instances[0].display_label, "private external chat product Production");
 		assert.match(payload.data.live_run_invocation.command_template, /cautilus workbench run-live/);
 		assert.match(payload.data.live_run_invocation.consumer_command_template, /scripts\/consumer\/run-live-instance-scenario/);
 		assert.match(payload.data.live_run_invocation.workspace_prepare_command_template, /\{workspace_dir\}/);

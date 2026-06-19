@@ -252,7 +252,7 @@
       ],
       "group": "workflow",
       "usage": "cautilus evaluate live --instance-id <id> --request-file <request.json> --output-file <result.json> [args]",
-      "example": "cautilus evaluate live --repo-root . --instance-id ceal --request-file /tmp/request.json --output-file /tmp/result.json",
+      "example": "cautilus evaluate live --repo-root . --instance-id example-app --request-file /tmp/request.json --output-file /tmp/result.json",
       "notes": [
         "Runs one bounded live app request and writes `cautilus.live_run_invocation_result.v1`.",
         "The adapter may still delegate actual runtime launch to a consumer-owned command template."
@@ -279,7 +279,7 @@
       ],
       "group": "workflow",
       "usage": "cautilus evaluate live scenarios --instance-id <id> --requests-file <batch.json> --output-file <result.json> [--concurrency <n>] [args]",
-      "example": "cautilus evaluate live scenarios --repo-root . --instance-id ceal --requests-file /tmp/request-batch.json --output-file /tmp/batch-result.json --concurrency 4",
+      "example": "cautilus evaluate live scenarios --repo-root . --instance-id example-app --requests-file /tmp/request-batch.json --output-file /tmp/batch-result.json --concurrency 4",
       "notes": [
         "Runs an explicit live request batch for app evals and writes `cautilus.live_run_invocation_batch_result.v1`.",
         "Each attempt writes nested request/result artifacts under `<output-file>.d/runs/`."

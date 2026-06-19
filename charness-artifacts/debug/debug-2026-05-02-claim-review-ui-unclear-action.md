@@ -24,7 +24,7 @@ The full report should be reference material, not the primary interaction surfac
 
 ```bash
 AGENT_BROWSER_SESSION=cautilus-review-mobile agent-browser set viewport 390 844
-AGENT_BROWSER_SESSION=cautilus-review-mobile agent-browser open 'https://denver-closing-unix-nano.trycloudflare.com/?token=...'
+AGENT_BROWSER_SESSION=cautilus-review-mobile agent-browser open 'https://denver-closing-unix-nano.example.test/?token=...'
 AGENT_BROWSER_SESSION=cautilus-review-mobile agent-browser snapshot -c -d 3
 ```
 

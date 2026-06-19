@@ -2,7 +2,7 @@
   "name": "cautilus-local",
   "owner": {
     "name": "Corca",
-    "email": "contact@corca.ai"
+    "email": "contact@example.test"
   },
   "metadata": {
     "description": "Local Claude Code marketplace for the standalone Cautilus skill package",

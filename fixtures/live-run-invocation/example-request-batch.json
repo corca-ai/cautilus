@@ -1,6 +1,6 @@
 {
   "schemaVersion": "cautilus.live_run_invocation_request_batch.v1",
-  "instanceId": "ceal",
+  "instanceId": "example-app",
   "retryPolicy": {
     "maxAttempts": 2,
     "retryOnClasses": [
@@ -12,7 +12,7 @@
     {
       "schemaVersion": "cautilus.live_run_invocation_request.v1",
       "requestId": "review-after-retro-sample-1",
-      "instanceId": "ceal",
+      "instanceId": "example-app",
       "timeoutMs": 30000,
       "captureTranscript": true,
       "scenario": {
@@ -33,7 +33,7 @@
     {
       "schemaVersion": "cautilus.live_run_invocation_request.v1",
       "requestId": "review-after-retro-sample-2",
-      "instanceId": "ceal",
+      "instanceId": "example-app",
       "timeoutMs": 30000,
       "captureTranscript": true,
       "scenario": {

@@ -4370,12 +4370,12 @@ func TestCLIEvalSkillExperimentCompareWritesPromotionReport(t *testing.T) {
 			"skillId": "announcement-style-lab",
 			"status":  "passed",
 			"output": map[string]any{
-				"text":       "Draft covers Slack thread, Ceal control repo, and user-facing in-progress coverage.",
-				"sourceRefs": []any{"Slack thread", "Ceal control repo", "user-facing in-progress coverage"},
+				"text":       "Draft covers Slack thread, private external chat product control repo, and user-facing in-progress coverage.",
+				"sourceRefs": []any{"Slack thread", "private external chat product control repo", "user-facing in-progress coverage"},
 			},
 		},
 		"sourceCoverageObligations": []any{
-			map[string]any{"id": "control-repo", "ref": "Ceal control repo", "required": true},
+			map[string]any{"id": "control-repo", "ref": "private external chat product control repo", "required": true},
 			map[string]any{"id": "progress", "ref": "user-facing in-progress coverage", "required": true},
 		},
 		"isolation": map[string]any{
@@ -5216,9 +5216,9 @@ func TestCLILiveEvalDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 		`  "schemaVersion": "cautilus.workbench_instance_catalog.v1",`,
 		`  "instances": [`,
 		"    {",
-		`      "instanceId": "ceal-dev",`,
-		`      "displayLabel": "Ceal Dev",`,
-		fmt.Sprintf(`      "dataRoot": %q`, filepath.Join(root, ".runtime", "ceal-dev")),
+		`      "instanceId": "example-app-dev",`,
+		`      "displayLabel": "private external chat product Dev",`,
+		fmt.Sprintf(`      "dataRoot": %q`, filepath.Join(root, ".runtime", "example-app-dev")),
 		"    }",
 		"  ]",
 		"}",
@@ -5248,7 +5248,7 @@ func TestCLILiveEvalDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 	payload := parseJSONObject(t, stdout)
 	instances := payload["instances"].([]any)
 	instance := instances[0].(map[string]any)
-	if instance["instanceId"] != "ceal-dev" || instance["displayLabel"] != "Ceal Dev" {
+	if instance["instanceId"] != "example-app-dev" || instance["displayLabel"] != "private external chat product Dev" {
 		t.Fatalf("unexpected command-backed catalog: %#v", payload)
 	}
 }
@@ -5261,15 +5261,15 @@ func TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 	}
 	writeExecutableFile(t, root, "discover.sh", strings.Join([]string{
 		"#!/bin/sh",
-		"printf '%s\\n' '[discover-instances] skipped ceal-prod: observability.port missing' >&2",
+		"printf '%s\\n' '[discover-instances] skipped example-app-prod: observability.port missing' >&2",
 		"cat <<'EOF'",
 		"{",
 		`  "schemaVersion": "cautilus.workbench_instance_catalog.v1",`,
 		`  "instances": [`,
 		"    {",
-		`      "instanceId": "ceal-dev",`,
-		`      "displayLabel": "Ceal Dev",`,
-		fmt.Sprintf(`      "dataRoot": %q`, filepath.Join(root, ".runtime", "ceal-dev")),
+		`      "instanceId": "example-app-dev",`,
+		`      "displayLabel": "private external chat product Dev",`,
+		fmt.Sprintf(`      "dataRoot": %q`, filepath.Join(root, ".runtime", "example-app-dev")),
 		"    }",
 		"  ]",
 		"}",
@@ -5299,7 +5299,7 @@ func TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 	payload := parseJSONObject(t, stdout)
 	instances := payload["instances"].([]any)
 	instance := instances[0].(map[string]any)
-	if instance["instanceId"] != "ceal-dev" || instance["displayLabel"] != "Ceal Dev" {
+	if instance["instanceId"] != "example-app-dev" || instance["displayLabel"] != "private external chat product Dev" {
 		t.Fatalf("unexpected command-backed catalog when probe warns on stderr: %#v", payload)
 	}
 }
@@ -5354,7 +5354,7 @@ func TestCLILiveEvalRunLiveDispatchesConsumerCommand(t *testing.T) {
 	writeJSONFile(t, requestPath, map[string]any{
 		"schemaVersion": contracts.LiveRunInvocationRequestSchema,
 		"requestId":     "req-123",
-		"instanceId":    "ceal",
+		"instanceId":    "example-app",
 		"timeoutMs":     30000,
 		"scenario": map[string]any{
 			"scenarioId":      "scenario-1",
@@ -5373,7 +5373,7 @@ func TestCLILiveEvalRunLiveDispatchesConsumerCommand(t *testing.T) {
 		"--repo-root",
 		root,
 		"--instance-id",
-		"ceal",
+		"example-app",
 		"--request-file",
 		requestPath,
 		"--output-file",
@@ -5389,7 +5389,7 @@ func TestCLILiveEvalRunLiveDispatchesConsumerCommand(t *testing.T) {
 	if result["schemaVersion"] != contracts.LiveRunInvocationResultSchema || result["executionStatus"] != "completed" {
 		t.Fatalf("unexpected live result payload: %#v", result)
 	}
-	if result["instanceId"] != "ceal" || result["requestId"] != "req-123" {
+	if result["instanceId"] != "example-app" || result["requestId"] != "req-123" {
 		t.Fatalf("unexpected identity fields in live result: %#v", result)
 	}
 }
@@ -5446,7 +5446,7 @@ func TestCLILiveEvalRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 	writeJSONFile(t, requestPath, map[string]any{
 		"schemaVersion": contracts.LiveRunInvocationRequestSchema,
 		"requestId":     "req-456",
-		"instanceId":    "ceal-dev",
+		"instanceId":    "example-app-dev",
 		"timeoutMs":     30000,
 		"scenario": map[string]any{
 			"scenarioId":      "scenario-blocked",
@@ -5465,7 +5465,7 @@ func TestCLILiveEvalRunLiveAcceptsBlockedConsumerResult(t *testing.T) {
 		"--repo-root",
 		root,
 		"--instance-id",
-		"ceal-dev",
+		"example-app-dev",
 		"--request-file",
 		requestPath,
 		"--output-file",
@@ -5579,7 +5579,7 @@ func TestCLILiveEvalRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 	writeJSONFile(t, requestPath, map[string]any{
 		"schemaVersion":     contracts.LiveRunInvocationRequestSchema,
 		"requestId":         "req-scripted-123",
-		"instanceId":        "ceal",
+		"instanceId":        "example-app",
 		"timeoutMs":         30000,
 		"captureTranscript": true,
 		"consumerMetadata": map[string]any{
@@ -5608,7 +5608,7 @@ func TestCLILiveEvalRunLiveCanExecuteProductOwnedScriptedLoop(t *testing.T) {
 		"--repo-root",
 		root,
 		"--instance-id",
-		"ceal",
+		"example-app",
 		"--request-file",
 		requestPath,
 		"--output-file",
@@ -5732,7 +5732,7 @@ func TestCLILiveEvalRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 	requestBatchPath := filepath.Join(root, "request-batch.json")
 	writeJSONFile(t, prepareInputPath, map[string]any{
 		"schemaVersion":      contracts.LiveRunInvocationBatchPrepareInputSchema,
-		"instanceId":         "ceal",
+		"instanceId":         "example-app",
 		"timeoutMs":          30000,
 		"samplesPerScenario": 1,
 		"captureTranscript":  true,
@@ -5799,7 +5799,7 @@ func TestCLILiveEvalRunScenariosExecutesExplicitRequestBatch(t *testing.T) {
 		"--repo-root",
 		root,
 		"--instance-id",
-		"ceal",
+		"example-app",
 		"--requests-file",
 		requestBatchPath,
 		"--output-file",
@@ -5862,7 +5862,7 @@ func TestCLILiveEvalPrepareRequestBatchAcceptsCatalogCandidates(t *testing.T) {
 	outputPath := filepath.Join(root, "request-batch.json")
 	writeJSONFile(t, inputPath, map[string]any{
 		"schemaVersion":      contracts.LiveRunInvocationBatchPrepareCatalogInputSchema,
-		"instanceId":         "ceal",
+		"instanceId":         "example-app",
 		"timeoutMs":          45000,
 		"samplesPerScenario": 2,
 		"requestIdPrefix":    "held-out",
@@ -6023,7 +6023,7 @@ func TestCLILiveEvalRunScenariosRetriesTransientFailures(t *testing.T) {
 	requestBatchPath := filepath.Join(root, "request-batch.json")
 	writeJSONFile(t, requestBatchPath, map[string]any{
 		"schemaVersion": contracts.LiveRunInvocationBatchRequestSchema,
-		"instanceId":    "ceal",
+		"instanceId":    "example-app",
 		"retryPolicy": map[string]any{
 			"maxAttempts":    2,
 			"retryOnClasses": []any{"rate_limit"},
@@ -6032,7 +6032,7 @@ func TestCLILiveEvalRunScenariosRetriesTransientFailures(t *testing.T) {
 			map[string]any{
 				"schemaVersion": contracts.LiveRunInvocationRequestSchema,
 				"requestId":     "retry-on-rate-limit",
-				"instanceId":    "ceal",
+				"instanceId":    "example-app",
 				"timeoutMs":     30000,
 				"scenario": map[string]any{
 					"scenarioId":      "scenario-retry",
@@ -6056,7 +6056,7 @@ func TestCLILiveEvalRunScenariosRetriesTransientFailures(t *testing.T) {
 		"--repo-root",
 		root,
 		"--instance-id",
-		"ceal",
+		"example-app",
 		"--requests-file",
 		requestBatchPath,
 		"--output-file",
@@ -6167,7 +6167,7 @@ func TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 	writeJSONFile(t, requestPath, map[string]any{
 		"schemaVersion":     contracts.LiveRunInvocationRequestSchema,
 		"requestId":         "req-persona-123",
-		"instanceId":        "ceal",
+		"instanceId":        "example-app",
 		"timeoutMs":         30000,
 		"captureTranscript": true,
 		"consumerMetadata": map[string]any{
@@ -6194,7 +6194,7 @@ func TestCLILiveEvalRunLiveCanExecutePersonaPromptLoop(t *testing.T) {
 		"--repo-root",
 		root,
 		"--instance-id",
-		"ceal",
+		"example-app",
 		"--request-file",
 		requestPath,
 		"--output-file",
@@ -6271,7 +6271,7 @@ func TestCLILiveEvalRunSimulatorPersonaCanContinueFromFixture(t *testing.T) {
 	writeJSONFile(t, requestPath, map[string]any{
 		"schemaVersion": contracts.LiveRunSimulatorRequestSchema,
 		"requestId":     "req-persona-continue",
-		"instanceId":    "ceal",
+		"instanceId":    "example-app",
 		"scenarioId":    "scenario-persona",
 		"turnIndex":     1,
 		"maxTurns":      3,
@@ -6331,7 +6331,7 @@ func TestCLILiveEvalRunSimulatorPersonaCanStopFromFixture(t *testing.T) {
 	writeJSONFile(t, requestPath, map[string]any{
 		"schemaVersion": contracts.LiveRunSimulatorRequestSchema,
 		"requestId":     "req-persona-stop",
-		"instanceId":    "ceal",
+		"instanceId":    "example-app",
 		"scenarioId":    "scenario-persona",
 		"turnIndex":     2,
 		"maxTurns":      3,

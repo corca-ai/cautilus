@@ -1,7 +1,7 @@
 {
   "schemaVersion": "cautilus.live_run_invocation_result.v1",
   "requestId": "live-run-review-after-retro-001",
-  "instanceId": "ceal",
+  "instanceId": "example-app",
   "executionStatus": "completed",
   "summary": "The selected live instance completed the scripted chat loop and returned to the review workflow after the retro turn.",
   "stopReason": "scripted_turns_exhausted",
@@ -64,8 +64,8 @@
     }
   ],
   "artifactPaths": [
-    "/Users/operator/.ceal/ceal/agent-runs/live-run-review-after-retro-001.json",
-    "/Users/operator/.ceal/ceal/agent-runs/live-run-review-after-retro-001.json.d/evaluator-input.json",
-    "/Users/operator/.ceal/ceal/agent-runs/live-run-review-after-retro-001.json.d/transcript.json"
+    "/Users/operator/.example-app/example-app/agent-runs/live-run-review-after-retro-001.json",
+    "/Users/operator/.example-app/example-app/agent-runs/live-run-review-after-retro-001.json.d/evaluator-input.json",
+    "/Users/operator/.example-app/example-app/agent-runs/live-run-review-after-retro-001.json.d/transcript.json"
   ]
 }

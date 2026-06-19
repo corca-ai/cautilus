@@ -156,7 +156,7 @@ cautilus evaluate live prepare-request-batch \
 
 cautilus evaluate live scenarios \
   --repo-root /path/to/repo \
-  --instance-id ceal \
+  --instance-id example-app \
   --requests-file /tmp/request-batch.json \
   --output-file /tmp/batch-result.json \
   --concurrency 4

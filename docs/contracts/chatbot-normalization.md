@@ -89,6 +89,7 @@ When the host only provides normalized conversation or run summaries, the helper
 - `conversation_continuity` (formerly `workflow_conversation`; the old name is accepted as a deprecated alias and silently normalized)
 - `thread_followup`
 - `thread_context_recovery`
+- `secret_handling` (a pasted credential plus a store/retain request; carries the `no_secret_retention` guardrail)
 
 Those derived profiles should use the shared product-owned dimension catalog instead of host-specific dimension IDs.
 
@@ -110,6 +111,9 @@ The first `chatbot` helper should cover patterns already proven in checked-in co
   - example: ambiguous confirmation without thread context
 - blocked commitment floor
   - example: bare follow-up on top of active pending state
+- secret-in-chat guardrail
+  - example: a pasted credential with a storage request that should be refused for plaintext storage and routed to a safe secret path
+  - generic across chatbots (not host-specific); detection is a secret noun and a store verb in the same user turn
 
 ## Fixed Decisions
 
@@ -155,6 +159,7 @@ The first `chatbot` helper should cover patterns already proven in checked-in co
 - fixture: review clarification follow-up from two normalized user turns
 - fixture: event-triggered follow-up from one wake-up turn plus one plain turn
 - fixture: blocked ambiguous confirmation from a run summary with `blockedReason`
+- fixture: secret-in-chat guardrail from one user turn that pastes a credential and asks to store it
 - fixture: helper output feeds directly into `discover scenarios prepare-input` or `discover scenarios propose` without ad-hoc field rewriting
 
 ## Canonical Artifact

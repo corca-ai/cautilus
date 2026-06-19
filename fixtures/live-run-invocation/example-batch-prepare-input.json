@@ -1,6 +1,6 @@
 {
   "schemaVersion": "cautilus.live_run_invocation_batch_prepare_input.v1",
-  "instanceId": "ceal",
+  "instanceId": "example-app",
   "timeoutMs": 45000,
   "samplesPerScenario": 2,
   "requestIdPrefix": "held-out",

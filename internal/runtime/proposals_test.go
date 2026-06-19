@@ -113,6 +113,76 @@ func TestNormalizeChatbotProposalCandidatesEmitsEventTriggeredFollowup(t *testin
 	}
 }
 
+// TestNormalizeChatbotProposalCandidatesEmitsSecretInChatGuardrail asserts that a
+// pasted-credential-with-storage-request user turn produces the generic
+// `secret-in-chat-needs-safe-handling` candidate with the secret_handling intent
+// profile (success: secret_safe_handling, guardrail: no_secret_retention), and that
+// a secret noun WITHOUT a storage verb (or a storage verb without a secret noun)
+// does not falsely trigger it. This is a generic chatbot guardrail pattern, not a
+// host-specific one; the real private external chat product prod log only supplies the evidence that it occurs.
+func TestNormalizeChatbotProposalCandidatesEmitsSecretInChatGuardrail(t *testing.T) {
+	conversationWith := func(text string) map[string]any {
+		return map[string]any{
+			"threadKey":      "thread-secret",
+			"lastObservedAt": "2026-04-15T00:00:00.000Z",
+			"records": []any{
+				map[string]any{"actorKind": "user", "text": text},
+			},
+		}
+	}
+
+	cases := []struct {
+		name string
+		text string
+		want bool
+	}{
+		{name: "API key storage request matches", text: "내 OpenAI API Key 저장해주세요. `<REDACTED:openai-api-key>`", want: true},
+		{name: "english save my token matches", text: "please save my API token for later", want: true},
+		{name: "secret noun without storage verb does not match", text: "what is an API key used for?", want: false},
+		{name: "storage verb without secret noun does not match", text: "이 메모를 저장해주세요", want: false},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			candidates, err := NormalizeChatbotProposalCandidates([]any{conversationWith(tc.text)}, nil)
+			if err != nil {
+				t.Fatalf("NormalizeChatbotProposalCandidates: %v", err)
+			}
+			var secret map[string]any
+			for _, rawCandidate := range candidates {
+				candidate, ok := rawCandidate.(map[string]any)
+				if !ok {
+					continue
+				}
+				if candidate["proposalKey"] == "secret-in-chat-needs-safe-handling" {
+					secret = candidate
+				}
+			}
+			if (secret != nil) != tc.want {
+				t.Fatalf("secret-in-chat candidate present=%v, want %v (candidates=%#v)", secret != nil, tc.want, candidates)
+			}
+			if !tc.want {
+				return
+			}
+			profile, ok := secret["intentProfile"].(map[string]any)
+			if !ok {
+				t.Fatalf("secret candidate missing intentProfile: %#v", secret)
+			}
+			if profile["behaviorSurface"] != BehaviorSurfaces["SECRET_HANDLING"] {
+				t.Fatalf("behaviorSurface: got %v, want %v", profile["behaviorSurface"], BehaviorSurfaces["SECRET_HANDLING"])
+			}
+			success, _ := profile["successDimensions"].([]any)
+			if len(success) != 1 || asMap(success[0])["id"] != BehaviorDimensions["SECRET_SAFE_HANDLING"] {
+				t.Fatalf("successDimensions: got %#v, want [%s]", success, BehaviorDimensions["SECRET_SAFE_HANDLING"])
+			}
+			guardrail, _ := profile["guardrailDimensions"].([]any)
+			if len(guardrail) != 1 || asMap(guardrail[0])["id"] != BehaviorDimensions["NO_SECRET_RETENTION"] {
+				t.Fatalf("guardrailDimensions: got %#v, want [%s]", guardrail, BehaviorDimensions["NO_SECRET_RETENTION"])
+			}
+		})
+	}
+}
+
 // TestNormalizeWorkflowProposalCandidatesUsesCLIWorkflowLabel asserts
 // that the workflow normalization family renders the canonical
 // "CLI Workflow" human label inside its description copy. Closes the test gap called

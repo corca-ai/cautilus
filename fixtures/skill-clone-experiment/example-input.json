@@ -3,7 +3,7 @@
   "experimentId": "announcement-style-lab",
   "taskPacket": {
     "path": "charness-artifacts/announcement/style-lab-input.md",
-    "summary": "Draft a Ceal announcement from preserved source notes."
+    "summary": "Draft a private external chat product announcement from preserved source notes."
   },
   "baseline": {
     "id": "baseline-current-announcement",
@@ -12,7 +12,7 @@
     "status": "passed",
     "output": {
       "summary": "The baseline announcement improved tone but did not mention every active source obligation.",
-      "text": "Ceal announcement draft based on Slack discussion.",
+      "text": "private external chat product announcement draft based on Slack discussion.",
       "sourceRefs": ["Slack thread"]
     }
   },
@@ -23,8 +23,8 @@
     "status": "passed",
     "output": {
       "summary": "The variant keeps the improved tone and covers control repo plus user-facing in-progress state.",
-      "text": "Ceal announcement draft based on Slack discussion, Ceal control repo, and user-facing in-progress coverage.",
-      "sourceRefs": ["Slack thread", "Ceal control repo", "user-facing in-progress coverage"]
+      "text": "private external chat product announcement draft based on Slack discussion, private external chat product control repo, and user-facing in-progress coverage.",
+      "sourceRefs": ["Slack thread", "private external chat product control repo", "user-facing in-progress coverage"]
     }
   },
   "exemplar": {
@@ -39,7 +39,7 @@
   "sourceCoverageObligations": [
     {
       "id": "control-repo",
-      "ref": "Ceal control repo",
+      "ref": "private external chat product control repo",
       "required": true
     },
     {

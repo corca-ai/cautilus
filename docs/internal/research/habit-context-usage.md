@@ -5,12 +5,12 @@
 - GitHub issue: <https://github.com/corca-ai/cautilus/issues/45>
 - Source identity captured in the issue: `slack://C05J5LTFSCU/1778805288.184149`
 - Gathered Slack artifact: [2026-05-17-slack-habit-context-usage-thread.md](../../../charness-artifacts/gather/2026-05-17-slack-habit-context-usage-thread.md)
-- Sibling issues: charness <https://github.com/corca-ai/charness/issues/171>, crill <https://github.com/corca-ai/crill/issues/10>, ceal <https://github.com/corca-ai/ceal/issues/102>
+- Sibling issues: charness <https://github.com/corca-ai/charness/issues/171>, crill <https://github.com/corca-ai/crill/issues/10>, example-app <https://github.com/corca-ai/example-app/issues/102>
 
 ## Freshness
 
 The Slack source was gathered through the Charness `gather` Slack adapter on 2026-05-17.
-The gathered artifact is repo-local working context for this design, while Slack and Ceal remain outside Cautilus's product boundary.
+The gathered artifact is repo-local working context for this design, while Slack and private external chat product remain outside Cautilus's product boundary.
 Future updates should refresh the gathered artifact through `gather`, not teach Cautilus how to read Slack directly.
 
 ## Existing Product Boundary
@@ -24,7 +24,7 @@ The habit/context frame should therefore enter Cautilus as optional, explicit pa
 ## Source Reading
 
 The Slack thread started as an actual wellness challenge workflow, not as an abstract analytics discussion.
-The operator asked Ceal to check a Slack thread every day at 10:30 KST for 30 days, detect whether the previous day's record had been posted, and either ask for the missing record or give short feedback.
+The operator asked private external chat product to check a Slack thread every day at 10:30 KST for 30 days, detect whether the previous day's record had been posted, and either ask for the missing record or give short feedback.
 The first setup response registered a dedicated skill and schedule, but a later check found that the scheduled tick had failed because the workflow was not registered in the workspace registry.
 That failure is important because it shows that repeated behavior depends on trigger reliability, setup visibility, and explicit workflow readiness, not only user motivation.
 
