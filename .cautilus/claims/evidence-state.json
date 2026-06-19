@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:3b6e0f8529a6917317ae50a93fc94f161cb5bd3b6286c8fa0bd64e76f1cdf923",
+    "claimsHash": "sha256:307aaf39403d42f2a08f27447b6194217203373db79510c797e44b641d7c9413",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:ca806b60280a6bdd9315a8f663561e73bdae7d8c36f94b31212d489cc51051d5",
+    "statusHash": "sha256:5695f0e8f5f4679f641a584d5546ba0c10280f0297e574c05aff69c14de95477",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -12,23 +12,8 @@
     }
   },
   "gitState": {
-    "changedFileCount": 14,
-    "changedFiles": [
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/eval-plan-after-scenario-design-2026-05-17.json",
-      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-04.json",
-      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-17.json",
-      ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
-      ".cautilus/claims/evidence-state.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
-      ".cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json",
-      ".cautilus/claims/status-summary.json",
-      "docs/specs/evidence/claim-evidence-state.md"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -36,12 +21,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "43beda817250262dc4bdf5d9d3ead6901694a9b0",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "5a271a3eae1ab8e8445a8fa93dafc8215618cb7b",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "6b3947987e497e69c81cb0c800abe12d1609000a",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "5a271a3eae1ab8e8445a8fa93dafc8215618cb7b",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "totals": {

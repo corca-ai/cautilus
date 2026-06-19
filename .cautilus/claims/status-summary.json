@@ -55,9 +55,9 @@
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-6",
-          "claim-docs-specs-index-spec-md-62",
-          "claim-docs-specs-index-spec-md-74",
-          "claim-docs-specs-index-spec-md-99",
+          "claim-docs-specs-index-spec-md-65",
+          "claim-docs-specs-index-spec-md-77",
+          "claim-docs-specs-index-spec-md-102",
           "claim-docs-contracts-claim-discovery-workflow-md-5"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
@@ -115,7 +115,7 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-60",
-          "claim-docs-specs-index-spec-md-107",
+          "claim-docs-specs-index-spec-md-110",
           "claim-docs-specs-user-index-spec-md-27",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-21",
           "claim-docs-contracts-claim-discovery-workflow-md-92"
@@ -1382,7 +1382,7 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
-        "claimId": "claim-docs-specs-index-spec-md-106",
+        "claimId": "claim-docs-specs-index-spec-md-109",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1391,7 +1391,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-index-spec-md-106"
+              "claim-docs-specs-index-spec-md-109"
             ]
           }
         ],
@@ -1401,7 +1401,7 @@
         "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise."
       },
       {
-        "claimId": "claim-docs-specs-user-evaluation-spec-md-160",
+        "claimId": "claim-docs-specs-user-evaluation-spec-md-163",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1410,7 +1410,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-user-evaluation-spec-md-160"
+              "claim-docs-specs-user-evaluation-spec-md-163"
             ]
           }
         ],
@@ -3446,25 +3446,10 @@
       }
     ]
   },
-  "gitCommit": "6b3947987e497e69c81cb0c800abe12d1609000a",
+  "gitCommit": "5a271a3eae1ab8e8445a8fa93dafc8215618cb7b",
   "gitState": {
-    "changedFileCount": 14,
-    "changedFiles": [
-      ".cautilus/claims/canonical-claim-map.json",
-      ".cautilus/claims/claim-status-report.md",
-      ".cautilus/claims/eval-plan-after-scenario-design-2026-05-17.json",
-      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-04.json",
-      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-17.json",
-      ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
-      ".cautilus/claims/evidence-state.json",
-      ".cautilus/claims/evidenced-typed-runners.json",
-      ".cautilus/claims/latest.json",
-      ".cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json",
-      ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
-      ".cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json",
-      ".cautilus/claims/status-summary.json",
-      "docs/specs/evidence/claim-evidence-state.md"
-    ],
+    "changedFileCount": 0,
+    "changedFiles": [],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -3472,12 +3457,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh-with-head-drift",
-    "currentGitCommit": "43beda817250262dc4bdf5d9d3ead6901694a9b0",
-    "headDrift": true,
+    "comparisonStatus": "fresh",
+    "currentGitCommit": "5a271a3eae1ab8e8445a8fa93dafc8215618cb7b",
+    "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "6b3947987e497e69c81cb0c800abe12d1609000a",
-    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
+    "packetGitCommit": "5a271a3eae1ab8e8445a8fa93dafc8215618cb7b",
+    "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
