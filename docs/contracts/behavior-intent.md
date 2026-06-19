@@ -36,6 +36,7 @@ Current product-owned catalog:
 - `operator_workflow_recovery` durable workflow recovery or resumability surface
 - `review_variant_workflow` review prompt or executor-variant workflow surface
 - `secret_handling` whether a pasted credential is refused for plaintext storage and routed to a safe secret path
+- `artifact_fidelity` whether a created artifact is exposed through the runtime's artifact workflow without premature capability denial
 
 ## Dimension Catalog
 
@@ -57,6 +58,7 @@ Current success-dimension catalog:
 - `workflow_recovery` Recover the workflow cleanly when the known blocker reappears.
 - `review_evidence_legibility` Keep review evidence and verdict framing legible to a human reviewer.
 - `secret_safe_handling` Refuse plaintext secret storage and route the credential to a safe handling path.
+- `artifact_url_resolution` Resolve and provide the public artifact URL when the runtime exposes a public base URL.
 
 Current guardrail-dimension catalog:
 
@@ -66,6 +68,7 @@ Current guardrail-dimension catalog:
 - `history_focuses_next_probe` Use scenario history only to focus the next bounded probe, not to justify overfitting.
 - `rerun_relevant_gates` Stop after one bounded revision and rerun the relevant gates.
 - `no_secret_retention` Do not store, echo, or persist the raw secret in chat, memory, or files.
+- `no_premature_capability_denial` Do not deny artifact URL capability before checking the applicable artifact guidance or runtime state.
 
 ## Ownership
 
@@ -113,6 +116,10 @@ Current seam-level defaults:
   - `secret_handling`
   - `secret_safe_handling`
   - guardrail `no_secret_retention`
+- app/chat artifact-fidelity direct scenario
+  - `artifact_fidelity`
+  - `artifact_url_resolution`
+  - guardrail `no_premature_capability_denial`
 - skill validation candidate
   - `skill_validation`
   - `validation_integrity`

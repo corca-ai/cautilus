@@ -5,7 +5,7 @@
 //
 // What is proven here (and what is not):
 //   - External validity: the app/chat eval runs on a REAL external product's production behavior
-//     (private external chat product, example-app-prod, a real external-user DM, redacted), not a Cautilus self-dogfood fixture.
+//     (private external chat product, example-app-prod, real external-user DMs, redacted where needed), not a Cautilus self-dogfood fixture.
 //   - Intent judge: a blind Sonnet subagent grades the real response against a product-owned
 //     behavior intent (success + guardrail dimensions), and is load-bearing (it alone rejects a
 //     route-plausible but guardrail-violating control). This replaces the old string-`includes`
@@ -14,6 +14,8 @@
 //     live. The operator chose production-log replay for this slice; the live app re-run is the
 //     deferred follow-up. The one thing that ran live here is the blind judge (the grade), which
 //     the subagent-first frame fulfils with a host Sonnet subagent.
+//   - Natural-unsound population: app/chat now includes a real artifact-fidelity failure from private external chat product
+//     production logs; the secret-retention negative remains a constructed load-bearing control.
 //
 // The standing deterministic gate (app-chat-replay-proof.test.mjs) replays the checked-in capture
 // and blind verdicts through the SAME assertions below, so the displayed grade and the graded
@@ -23,16 +25,19 @@ export const SOUND_FACET_KEYS = ["success_dimensions_met", "guardrail_dimensions
 
 // Returns the first observed evaluation or throws. Kept separate so the capture assertion below
 // stays under the lint complexity bar.
-function firstObservedEvaluation(capture) {
+function findObservedEvaluation(capture, evaluationId) {
 	if (!capture || typeof capture !== "object") {
 		throw new Error("assertExternalReplayCapture: no capture object");
 	}
 	if (!capture.provenance || capture.provenance.kind !== "external-product-log-replay") {
 		throw new Error(`capture is not an external-product-log-replay: kind=${capture.provenance && capture.provenance.kind}`);
 	}
-	const evaluation = Array.isArray(capture.evaluations) ? capture.evaluations[0] : undefined;
+	const evaluations = Array.isArray(capture.evaluations) ? capture.evaluations : [];
+	const evaluation = evaluationId
+		? evaluations.find((entry) => entry && entry.evaluationId === evaluationId)
+		: evaluations[0];
 	if (!evaluation) {
-		throw new Error("capture has no evaluations[0]");
+		throw new Error(evaluationId ? `capture has no evaluation ${evaluationId}` : "capture has no evaluations[0]");
 	}
 	if (evaluation.observationStatus !== "observed") {
 		throw new Error(`capture evaluation was not observed: observationStatus=${evaluation.observationStatus}`);
@@ -45,8 +50,8 @@ function firstObservedEvaluation(capture) {
 // not a cryptographic guarantee; this checks they are present and well-formed and that no raw key
 // leaked, but genuineness ultimately rests on the operator-witnessed capture. Throws on any miss;
 // returns a small evidence object on success.
-export function assertExternalReplayCapture(capture) {
-	const evaluation = firstObservedEvaluation(capture);
+export function assertExternalReplayCapture(capture, evaluationId) {
+	const evaluation = findObservedEvaluation(capture, evaluationId);
 	const surface = evaluation.intentProfile && evaluation.intentProfile.behaviorSurface;
 	if (!surface) {
 		throw new Error("capture evaluation carries no intentProfile.behaviorSurface");
@@ -103,6 +108,30 @@ export function assertControlIsLoadBearing(controlVerdict) {
 		throw new Error(`load-bearing gate failed: an on-topic control must be graded unsound, got ${controlVerdict.verdict}`);
 	}
 	return { observedResponse: controlVerdict.observedResponse, onTopic };
+}
+
+export function assertNaturalUnsoundVerdict(verdict) {
+	if (!verdict || typeof verdict !== "object") {
+		throw new Error("assertNaturalUnsoundVerdict: no verdict");
+	}
+	if (verdict.kind !== "natural-unsound-external-capture") {
+		throw new Error(`natural unsound verdict must use natural-unsound-external-capture kind, got ${verdict.kind}`);
+	}
+	if (verdict.constructed !== false) {
+		throw new Error("natural unsound verdict must not be constructed");
+	}
+	if (verdict.verdict !== "unsound") {
+		throw new Error(`expected a natural unsound verdict, got ${verdict.verdict}`);
+	}
+	if (verdict.toolUses !== 0) {
+		throw new Error(`blind judge must use no tools, got toolUses=${verdict.toolUses}`);
+	}
+	for (const key of SOUND_FACET_KEYS) {
+		if (verdict.facets[key] !== false) {
+			throw new Error(`natural unsound facet ${key} must be false`);
+		}
+	}
+	return { reasonSummary: verdict.reasonSummary || "", observedResponse: verdict.observedResponse || "" };
 }
 
 export const REPLAY_PROOF = { SOUND_FACET_KEYS };

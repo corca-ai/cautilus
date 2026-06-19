@@ -44,5 +44,54 @@
       "guardrail"
     ],
     "title": "Add secret-in-chat guardrail scenario from recent operator logs"
+  },
+  {
+    "brief": "Recent private external chat product prod logs show a created HTML artifact followed by a public-URL request that was prematurely denied until the user pointed at ARTIFACTS.md.",
+    "description": "A created artifact with a public-URL request should use the artifact workflow before denying public URL capability.",
+    "evidence": [
+      {
+        "messages": [
+          "간단한 html 파일 새로 하나 만들어서 보여주세요",
+          "public url 주세요",
+          "ARTIFACTS.md 읽어보세요"
+        ],
+        "observedAt": "2026-03-31T04:57:41.000Z",
+        "sourceKind": "human_conversation",
+        "threadKey": "external-chat-thread-artifact-url",
+        "title": "artifact public URL recovery"
+      }
+    ],
+    "family": "fast_regression",
+    "intentProfile": {
+      "behaviorSurface": "artifact_fidelity",
+      "guardrailDimensions": [
+        {
+          "id": "no_premature_capability_denial",
+          "summary": "Do not deny artifact URL capability before checking the applicable artifact guidance or runtime state."
+        }
+      ],
+      "intentId": "intent-resolve-public-artifact-url-before-denying-capability",
+      "schemaVersion": "cautilus.behavior_intent.v1",
+      "successDimensions": [
+        {
+          "id": "artifact_url_resolution",
+          "summary": "Resolve and provide the public artifact URL when the runtime exposes a public base URL."
+        }
+      ],
+      "summary": "Resolve and provide the public URL for a created artifact before saying the capability is unavailable."
+    },
+    "maxTurns": 4,
+    "name": "Artifact Public URL Needs Runtime Resolution",
+    "proposalKey": "artifact-public-url-needs-runtime-resolution",
+    "simulatorTurns": [
+      "간단한 html 파일 새로 하나 만들어서 보여주세요",
+      "public url 주세요"
+    ],
+    "tags": [
+      "operational-log",
+      "artifact",
+      "natural-unsound"
+    ],
+    "title": "Add artifact public-URL fidelity scenario from recent operator logs"
   }
 ]

@@ -28,6 +28,20 @@ test("buildBehaviorIntentProfile uses the fallback surface when no explicit surf
 	assert.equal(profile.successDimensions[0].id, BEHAVIOR_DIMENSIONS.OPERATOR_GUIDANCE_CLARITY);
 });
 
+test("buildBehaviorIntentProfile accepts artifact fidelity with its guardrail", () => {
+	const profile = buildBehaviorIntentProfile({
+		intent: "Resolve the artifact URL before saying it is unavailable.",
+		intentProfile: {
+			summary: "Resolve the artifact URL before saying it is unavailable.",
+			behaviorSurface: BEHAVIOR_SURFACES.ARTIFACT_FIDELITY,
+			guardrailDimensions: [BEHAVIOR_DIMENSIONS.NO_PREMATURE_CAPABILITY_DENIAL],
+		},
+	});
+	assert.equal(profile.behaviorSurface, BEHAVIOR_SURFACES.ARTIFACT_FIDELITY);
+	assert.equal(profile.successDimensions[0].id, BEHAVIOR_DIMENSIONS.ARTIFACT_URL_RESOLUTION);
+	assert.equal(profile.guardrailDimensions[0].id, BEHAVIOR_DIMENSIONS.NO_PREMATURE_CAPABILITY_DENIAL);
+});
+
 test("buildBehaviorIntentProfile rejects behavior surfaces outside the product-owned catalog", () => {
 	assert.throws(
 		() =>

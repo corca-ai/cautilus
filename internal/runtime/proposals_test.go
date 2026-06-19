@@ -393,3 +393,30 @@ func TestBuildBehaviorIntentProfileNormalizesDeprecatedSurfaceAlias(t *testing.T
 		t.Fatalf("expected profile schema to use behavior intent contract %q, got %q", contracts.BehaviorIntentSchema, profile.SchemaVersion)
 	}
 }
+
+func TestBuildBehaviorIntentProfileAcceptsArtifactFidelity(t *testing.T) {
+	intentProfile := map[string]any{
+		"summary":             "Resolve the artifact URL before saying it is unavailable.",
+		"behaviorSurface":     BehaviorSurfaces["ARTIFACT_FIDELITY"],
+		"guardrailDimensions": []any{BehaviorDimensions["NO_PREMATURE_CAPABILITY_DENIAL"]},
+	}
+	profile, err := BuildBehaviorIntentProfile(
+		"Resolve the artifact URL before saying it is unavailable.",
+		intentProfile,
+		BehaviorSurfaces["OPERATOR_BEHAVIOR"],
+		nil,
+		nil,
+	)
+	if err != nil {
+		t.Fatalf("BuildBehaviorIntentProfile: %v", err)
+	}
+	if profile.BehaviorSurface != BehaviorSurfaces["ARTIFACT_FIDELITY"] {
+		t.Fatalf("expected artifact_fidelity surface, got %q", profile.BehaviorSurface)
+	}
+	if len(profile.SuccessDimensions) != 1 || profile.SuccessDimensions[0].ID != BehaviorDimensions["ARTIFACT_URL_RESOLUTION"] {
+		t.Fatalf("unexpected success dimensions: %#v", profile.SuccessDimensions)
+	}
+	if len(profile.GuardrailDimensions) != 1 || profile.GuardrailDimensions[0].ID != BehaviorDimensions["NO_PREMATURE_CAPABILITY_DENIAL"] {
+		t.Fatalf("unexpected guardrail dimensions: %#v", profile.GuardrailDimensions)
+	}
+}

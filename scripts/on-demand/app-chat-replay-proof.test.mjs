@@ -5,7 +5,8 @@
 // agent and no live judge; it belongs to test:on-demand, never to standing verify.
 //
 // Scope reminder: this proves EXTERNAL VALIDITY (real private external chat product production behavior, not self-dogfood)
-// plus the load-bearing INTENT JUDGE on app/chat. App-agent liveness stays deferred (replay slice).
+// plus the load-bearing INTENT JUDGE on app/chat, now with one natural sound secret-handling case
+// and one natural unsound artifact-fidelity case. App-agent liveness stays deferred (replay slice).
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -16,6 +17,7 @@ import {
 	assertExternalReplayCapture,
 	assertBlindSoundVerdict,
 	assertControlIsLoadBearing,
+	assertNaturalUnsoundVerdict,
 	SOUND_FACET_KEYS,
 } from "./app-chat-replay-proof.mjs";
 
@@ -31,7 +33,9 @@ const verdictsRerun = readJson(FIX + "external-chat-app-replay-verdicts-rerun.js
 
 const realVerdict = verdicts.verdicts.find((v) => v.kind === "real-external-capture");
 const controlVerdict = verdicts.verdicts.find((v) => v.kind === "judge-control-semantic");
+const naturalUnsoundVerdict = verdicts.verdicts.find((v) => v.kind === "natural-unsound-external-capture");
 const rerunRealVerdict = verdictsRerun.verdicts.find((v) => v.kind === "real-external-capture");
+const rerunNaturalUnsoundVerdict = verdictsRerun.verdicts.find((v) => v.kind === "natural-unsound-external-capture");
 
 test("the checked-in capture is a genuine external-product replay of real private external chat product production behavior", () => {
 	const evidence = assertExternalReplayCapture(capture);
@@ -54,6 +58,17 @@ test("the scenario was produced by the generic normalize-chatbot mechanism, inte
 	assert.equal(scenario.intentProfile.guardrailDimensions[0].id, "no_secret_retention");
 });
 
+test("the artifact fidelity breadth scenario is a real private external chat product production capture, not a constructed control", () => {
+	const evidence = assertExternalReplayCapture(capture, "external-chat-artifact-public-url-prod");
+	assert.equal(evidence.behaviorSurface, "artifact_fidelity");
+	assert.match(evidence.finalText, /public URL.*생성할 수는 없습니다/);
+	const scenario = scenarios.find((s) => s.proposalKey === "artifact-public-url-needs-runtime-resolution");
+	assert.ok(scenario, "artifact fidelity scenario must be checked in");
+	assert.equal(scenario.intentProfile.behaviorSurface, "artifact_fidelity");
+	assert.equal(scenario.intentProfile.successDimensions[0].id, "artifact_url_resolution");
+	assert.equal(scenario.intentProfile.guardrailDimensions[0].id, "no_premature_capability_denial");
+});
+
 test("the blind judge graded private external chat product's real external response SOUND with no tools", () => {
 	const evidence = assertBlindSoundVerdict(realVerdict);
 	assert.equal(realVerdict.expected, "sound");
@@ -70,6 +85,20 @@ test("two independent blind judge runs both grade sound, with genuinely differin
 	// (a live judgment, not a replayed canned label).
 	assert.notEqual(realVerdict.reasonSummary, rerunRealVerdict.reasonSummary);
 	assert.notEqual(realVerdict.agentId, rerunRealVerdict.agentId);
+});
+
+test("the blind judge harvested a naturally occurring app/chat unsound response", () => {
+	const evidence = assertNaturalUnsoundVerdict(naturalUnsoundVerdict);
+	assert.equal(naturalUnsoundVerdict.caseId, "external-chat-artifact-public-url-prod");
+	assert.match(evidence.observedResponse, /public URL.*생성할 수는 없습니다/);
+	assert.equal(naturalUnsoundVerdict.expected, "unsound");
+});
+
+test("two independent blind judge runs both grade the natural artifact failure unsound", () => {
+	assertNaturalUnsoundVerdict(naturalUnsoundVerdict);
+	assertNaturalUnsoundVerdict(rerunNaturalUnsoundVerdict);
+	assert.notEqual(naturalUnsoundVerdict.reasonSummary, rerunNaturalUnsoundVerdict.reasonSummary);
+	assert.notEqual(naturalUnsoundVerdict.agentId, rerunNaturalUnsoundVerdict.agentId);
 });
 
 test("the blind judge is load-bearing: it alone rejects a route-plausible, guardrail-violating control", () => {
