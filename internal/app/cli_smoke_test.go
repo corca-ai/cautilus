@@ -610,8 +610,14 @@ printf '{"verdict":"pass","summary":"standalone smoke","findings":[{"severity":"
 	if output["summary"] != "standalone smoke" {
 		t.Fatalf("expected standalone smoke summary, got %#v", output["summary"])
 	}
-	if strings.Contains(string(mustJSONMarshal(t, summary)), "/home/ubuntu/") {
-		t.Fatalf("unexpected host-local path leak in %#v", summary)
+	// Guard against leaking a real host home-dir path. The summary legitimately contains the temp
+	// repo root (asserted above), so strip that prefix before checking — otherwise a TMPDIR that
+	// lives under the home directory (e.g. /home/<user>/.cache/tmp) is a false positive. A genuine
+	// leak would reference a home path OUTSIDE the sandboxed temp root and survive the strip.
+	homeDir, _ := os.UserHomeDir()
+	sanitized := strings.ReplaceAll(string(mustJSONMarshal(t, summary)), root, "<root>")
+	if homeDir != "" && strings.Contains(sanitized, homeDir+string(os.PathSeparator)) {
+		t.Fatalf("unexpected host-local path leak (home %q outside the temp repo root) in %#v", homeDir, summary)
 	}
 }
 
