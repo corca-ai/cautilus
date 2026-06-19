@@ -153,8 +153,18 @@ The natural harvest is a positive proof that the current behavior is sound, and 
 A constructed control is the correct instrument for a regression guard: you cannot wait for a natural regression to prove you would catch one.
 
 Open decision (maintainer): whether constructed-control reject-capability (load-bearing and already pinned) plus a natural-sound behavior harvest is sufficient to move the apex `Behavior Evaluation` badge past `declared`, or whether the product holds the natural-population bar and records it as a known, possibly-permanent limitation.
-The badge is unchanged pending that decision.
 Full evidence: [charness-artifacts/eval-trust/2026-06-19-judge-natural-unsound-population-frontier.md](../../charness-artifacts/eval-trust/2026-06-19-judge-natural-unsound-population-frontier.md).
+
+## Decision (maintainer, 2026-06-19): constructed-control reject-capability is the proven standard
+
+The maintainer resolved the open decision above: constructed-control reject-capability — load-bearing and pinned by the `an always-sound judge FAILS every decomposed claim` invariant in `scripts/agent-runtime/reasoning-soundness-judge.test.mjs`, generalized across three distinct pinned routing behaviors — plus the natural-sound behavior harvest (~44 real responses, two tiers, easy and hard traps, zero natural semantic unsound) is sufficient to move the apex `Behavior Evaluation` badge past `declared`.
+The reasoning the maintainer accepted: a natural unsound population is impractical to harvest on these surfaces because current capable models do not emit natural semantic unsound on well-posed single-turn tasks — a property of the generators, not a weakness of the judge — and a constructed control is the correct instrument for a regression guard, since you cannot wait for a natural regression to prove you would catch one.
+The natural-population bar is recorded as a known, possibly-permanent limitation rather than an open debt; a genuinely weaker/older model, adversarial multi-turn pressure, or a much harder reasoning/code domain could still produce natural unsound, and `app/chat` already carries one natural unsound from real external production data.
+
+Scope of the flip, stated honestly: the badge moves to `proven` scoped to the dev coding-agent surfaces (`dev/repo` routing and `dev/skill` orientation, both proven live on demand) with the judge proven load-bearing as a regression guard.
+The app-ship surfaces stay as named Proof Debt — this decision does not make `app/chat` live (its agent run is still replayed from the production log) or close `app/prompt` product-runner proof; those remain the app-surface Proof Debt rows in the apex.
+The spec-projection wiring of this decision (apex badge flip, evaluation spec intro, this contract) lands in the same slice.
+Full evidence: [charness-artifacts/eval-trust/2026-06-19-behavior-eval-badge-proven.md](../../charness-artifacts/eval-trust/2026-06-19-behavior-eval-badge-proven.md).
 
 ## Regression detection proven (2026-06-19): the on-target reframe of reject-capability
 
