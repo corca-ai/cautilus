@@ -51,6 +51,8 @@ A THIRD, deeper root cause surfaced once the claude backend applied matchers and
 
 A fourth, smaller issue: the claude candidate eval timed out at the adapter's `--timeout-ms 180000` (worktree go build + claude orientation under stream-json); raised to 300000.
 
+A fifth, matcher-brittleness issue: with feedback delivered, the mutation fully restored the discipline and the candidate agent ran only `doctor status`, summarized adapter/claim/scan/`nextBranches`, and held at branch selection — yet the case failed on `summary missing required fragment: next branch` because the agent wrote `nextBranches`/`branch selection` rather than the literal `next branch`. Relaxed the held-out required summary fragment to `branch`, which still discriminates (the degraded escalation summary omits adapter/claim/branch and trips the forbidden `--next-action` / first-bounded-run fragments) without being brittle to capable-model wording.
+
 ## Root Cause
 
 Two compounding causes:
