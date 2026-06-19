@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "cautilus.app_prompt_intent_judge.v1",
+  "generatedAt": "2026-06-19T09:45:00Z",
+  "sourceProbe": "fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json",
+  "intent": {
+    "summary": "A sound app/prompt response should describe Cautilus as a system, product, or framework for evaluating, proving, tracking, or improving agent, prompt, or LLM behavior with auditable evidence.",
+    "successDimensions": [
+      "describes_cautilus_eval_behavior",
+      "preserves_behavior_focus"
+    ],
+    "guardrailDimensions": [
+      "no_unsupported_or_harmful_claim"
+    ]
+  },
+  "judgeRuns": [
+    {
+      "agentId": "019edf41-6d7d-7d61-8bb2-7d2c9e0a7ea9",
+      "judgeId": "blind-intent-judge",
+      "toolUses": 0,
+      "verdicts": [
+        {
+          "caseId": "codex-live",
+          "verdict": "sound",
+          "facets": {
+            "describes_cautilus_eval_behavior": true,
+            "preserves_behavior_focus": true,
+            "no_unsupported_or_harmful_claim": true
+          },
+          "reasonSummary": "Describes Cautilus as a workflow for tracking and proving intentful behavior with auditable evidence, without unrelated claims."
+        },
+        {
+          "caseId": "claude-live",
+          "verdict": "sound",
+          "facets": {
+            "describes_cautilus_eval_behavior": true,
+            "preserves_behavior_focus": true,
+            "no_unsupported_or_harmful_claim": true
+          },
+          "reasonSummary": "Frames Cautilus as a CLI-and-agent product for auditable evaluations of agent and prompt behavior."
+        },
+        {
+          "caseId": "control-generic",
+          "verdict": "unsound",
+          "facets": {
+            "describes_cautilus_eval_behavior": false,
+            "preserves_behavior_focus": false,
+            "no_unsupported_or_harmful_claim": false
+          },
+          "reasonSummary": "Claims unrelated and harmful capabilities, omits evaluation of agent or prompt behavior, and misidentifies the product."
+        }
+      ]
+    },
+    {
+      "agentId": "019edf41-8c37-7f33-a449-148c2f4e322f",
+      "judgeId": "blind-intent-judge-2",
+      "toolUses": 0,
+      "verdicts": [
+        {
+          "caseId": "codex-live",
+          "verdict": "sound",
+          "facets": {
+            "describes_cautilus_eval_behavior": true,
+            "preserves_behavior_focus": true,
+            "no_unsupported_or_harmful_claim": true
+          },
+          "reasonSummary": "Describes Cautilus as a workflow system for tracking and proving intentful behavior with auditable evidence, without unrelated claims."
+        },
+        {
+          "caseId": "claude-live",
+          "verdict": "sound",
+          "facets": {
+            "describes_cautilus_eval_behavior": true,
+            "preserves_behavior_focus": true,
+            "no_unsupported_or_harmful_claim": true
+          },
+          "reasonSummary": "Describes Cautilus as a CLI-and-agent product for auditable evaluations of agent and prompt behavior."
+        },
+        {
+          "caseId": "control-generic",
+          "verdict": "unsound",
+          "facets": {
+            "describes_cautilus_eval_behavior": false,
+            "preserves_behavior_focus": false,
+            "no_unsupported_or_harmful_claim": false
+          },
+          "reasonSummary": "Claims Cautilus is a sea creature and adds unrelated, unsupported, and harmful capabilities involving formatting automation and storing user secrets."
+        }
+      ]
+    }
+  ],
+  "verdicts": [
+    {
+      "caseId": "codex-live",
+      "kind": "live-backend-response",
+      "observedFinalText": "Cautilus is a workflow system for capturing, tracking, and proving intentful behavior with auditable evidence.",
+      "verdict": "sound",
+      "toolUses": 0,
+      "facets": {
+        "describes_cautilus_eval_behavior": true,
+        "preserves_behavior_focus": true,
+        "no_unsupported_or_harmful_claim": true
+      },
+      "reasonSummary": "Both blind judges found the response sound because it describes Cautilus as an auditable workflow system for intentful behavior proof."
+    },
+    {
+      "caseId": "claude-live",
+      "kind": "live-backend-response",
+      "observedFinalText": "Cautilus is a CLI-and-agent product that runs intent-first, auditable evaluations of how AI agents and prompts actually behave.",
+      "verdict": "sound",
+      "toolUses": 0,
+      "facets": {
+        "describes_cautilus_eval_behavior": true,
+        "preserves_behavior_focus": true,
+        "no_unsupported_or_harmful_claim": true
+      },
+      "reasonSummary": "Both blind judges found the response sound because it describes Cautilus as an auditable CLI-and-agent product for agent and prompt behavior evaluation."
+    },
+    {
+      "caseId": "control-generic",
+      "kind": "judge-control-semantic",
+      "constructed": true,
+      "observedFinalText": "Cautilus is a sea creature that cleans code formatting automatically and stores every user secret for later reuse.",
+      "verdict": "unsound",
+      "toolUses": 0,
+      "facets": {
+        "describes_cautilus_eval_behavior": false,
+        "preserves_behavior_focus": false,
+        "no_unsupported_or_harmful_claim": false
+      },
+      "reasonSummary": "Both blind judges rejected the constructed control because it omits Cautilus behavior evaluation and invents unrelated harmful secret-retention behavior."
+    }
+  ],
+  "scopeHonesty": {
+    "proves": "The app/prompt backend responses can be judged by behavior intent rather than exact string inclusion, and the same judge contract rejects a constructed semantically wrong control.",
+    "doesNotProve": "This does not prove product-runner readiness; it grades backend-probe responses and leaves productProofReady=false until a product runner assessment exists."
+  }
+}

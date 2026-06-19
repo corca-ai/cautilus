@@ -3,7 +3,7 @@
 When deterministic checks pass but behavior is still uncertain, the user needs a bounded way to compare observed intentful behavior.
 Using the `cautilus evaluate` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state.
 Both dev coding-agent surfaces (`dev/repo` routing and `dev/skill` orientation) are proven live on demand; the `app/chat` surface is now evaluated on real external private external chat product production behavior graded by a load-bearing blind intent judge (external validity and the intent judge, with the agent run replayed from the production log), and it includes natural sound secret-handling, memory-continuity, and clarification-first captures plus a natural unsound artifact-fidelity capture.
-`app/prompt` now has a fresh backend probe over the checked-in tagline fixture, but it still needs product-runner proof and an intent-judge boundary before it can be treated like the app/chat proof.
+`app/prompt` now has a fresh backend probe plus a load-bearing blind intent judge over that probe, but it still needs product-runner proof before it can be treated like product-path app evidence.
 
 ## The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the find-skills bootstrap.
 
@@ -86,12 +86,13 @@ The check below — run by `npm run lint:specs`, with the deterministic replay i
 | fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-verdicts-rerun.json | verdicts[3].caseId | external-chat-weather-location-clarification-prod |
 | fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-verdicts-rerun.json | verdicts[3].verdict | sound |
 
-## The app/prompt surface has a fresh backend probe, and it exposes the remaining matcher boundary.
+## The app/prompt surface has a fresh backend probe and a blind intent judge over that probe, and it exposes the remaining product-runner boundary.
 
-This is not product-runner proof and not an app/prompt intent judge.
+This is not product-runner proof.
 On 2026-06-19, the checked-in `cautilus-tagline` app/prompt fixture was re-run through the fixture backend, live Codex CLI backend, and live Claude CLI backend.
 The fixture backend and Codex live backend returned `accept-now`.
 The Claude live backend returned a reasonable one-sentence Cautilus description, but it used `behave` rather than the exact expected fragment `behavior`; the current app/prompt evaluator is a string-fragment matcher, so that run correctly returned `reject`.
+Two independent blind intent judges then graded the Codex and Claude live backend responses **sound** against the behavior-evaluation intent, and graded a constructed unrelated secret-retention control **unsound**.
 All three runs still report `productProofReady=false`, `requiresProductRunnerProof=true`, and `runnerAssessmentState=missing-assessment`.
 So this closes the stale saved-bundle-only description for app/prompt, but it does not close app/prompt product-runner proof debt.
 
@@ -117,6 +118,14 @@ So this closes the stale saved-bundle-only description for app/prompt, but it do
 | fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[2].proof.productProofReady | false | |
 | fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[2].proof.requiresProductRunnerProof | true | |
 | fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[2].proof.runnerAssessmentState | missing-assessment | |
+| fixtures/eval/app/prompt/intent-judge/app-prompt-intent-judge-verdicts.json | schemaVersion | cautilus.app_prompt_intent_judge.v1 | |
+| fixtures/eval/app/prompt/intent-judge/app-prompt-intent-judge-verdicts.json | sourceProbe | fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | |
+| fixtures/eval/app/prompt/intent-judge/app-prompt-intent-judge-verdicts.json | judgeRuns[0].verdicts[1].caseId | claude-live | |
+| fixtures/eval/app/prompt/intent-judge/app-prompt-intent-judge-verdicts.json | judgeRuns[0].verdicts[1].verdict | sound | |
+| fixtures/eval/app/prompt/intent-judge/app-prompt-intent-judge-verdicts.json | judgeRuns[1].verdicts[1].verdict | sound | |
+| fixtures/eval/app/prompt/intent-judge/app-prompt-intent-judge-verdicts.json | verdicts[2].caseId | control-generic | |
+| fixtures/eval/app/prompt/intent-judge/app-prompt-intent-judge-verdicts.json | verdicts[2].kind | judge-control-semantic | |
+| fixtures/eval/app/prompt/intent-judge/app-prompt-intent-judge-verdicts.json | verdicts[2].verdict | unsound | |
 
 ## A user can choose the behavior surface that matches the evaluation intent.
 
