@@ -203,3 +203,10 @@ The judge's LLM inference is prove-then-project (the blind verdicts are captured
 And provenance is still blind-subagent-harvest, NOT full codex/claude product-runner capture; reproducing the regression pair through the full runner is the remaining fidelity step.
 The badge is not flipped by this wiring; moving the apex `Behavior Evaluation` badge past `declared` stays a maintainer decision.
 Full evidence: [charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md](../../charness-artifacts/eval-trust/2026-06-19-judge-tier-cli-wiring.md).
+
+## Next step (decided, spec): the judge grades the real dogfood surface, not a synthetic island
+
+The remaining gap after the CLI wiring is provenance: the judge grades a separately-harvested blind-subagent paraphrase, while the real-surface dogfood (`self-dogfood-eval`) captures the genuine `AGENTS.md` routing reasoning but scores it deterministically only.
+The convergence overlays a judge-tier facet onto the real-surface dogfood so the judge grades the dogfood runner's own captured reasoning, with full-runner provenance (`full-runner-capture-replay`) — closing the full-runner-provenance step this contract left open above.
+The decisions are closed in the build spec [realsurface-judge-convergence.md](./realsurface-judge-convergence.md): prove-then-project on the real surface (no live judge per run), AGENTS.md first, governing rules transferred while the sound case is re-grounded on the real capture, and the attach kept adapter-owned so the generic engine and runtime stay judge-logic-free.
+The badge stays at `declared`; closing this convergence makes the `declared` exit available but the flip remains a separate maintainer decision.
