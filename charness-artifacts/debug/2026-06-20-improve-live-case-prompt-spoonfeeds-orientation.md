@@ -47,6 +47,10 @@ Three live calibration cycles uncovered a deeper, second root cause beyond the s
 
 So the held-out gate is non-deterministic per backend: codex applies the matchers (but resolves repo-root inconsistently), claude is reliable on cwd (but self-grades, so a degraded prompt that emits a forbidden `--next-action` still "passes").
 
+A THIRD, deeper root cause surfaced once the claude backend applied matchers and the loop reached mutation: the codex mutation kept the degraded `doctor --next-action` escalation and even listed it as a "preserved strength", because the mutation prompt's Reflection Batch arrived EMPTY. A Go unit harness over the live search-input proved feedbackSignals had all three scenario-tagged findings AND every finding matched the scenario id, yet `improveSearchBuildReflectionBatch` returned empty buckets and feedback. `improveSearchScenarioSignalMap` accumulates buckets/feedback into in-memory `[]string` values stored in a `map[string]any`, then reads them back via `stringSliceOrEmptyRuntime`, which delegates to `arrayOrEmpty` — and `arrayOrEmpty` only matches `[]any`, so a freshly-written `[]string` read back as empty. The accumulation reset every iteration and the final `uniqueStrings(stringSliceOrEmptyRuntime(...))` line cleared whatever survived. Net effect: improve-search NEVER delivered per-scenario buckets or feedback to the mutation prompt — mutations were blind. Fixed by teaching `stringSliceOrEmptyRuntime` to handle a Go `[]string` directly; an isolated mutation run with the feedback present then fully restored the `doctor status` + summarize + hold discipline.
+
+A fourth, smaller issue: the claude candidate eval timed out at the adapter's `--timeout-ms 180000` (worktree go build + claude orientation under stream-json); raised to 300000.
+
 ## Root Cause
 
 Two compounding causes:

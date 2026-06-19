@@ -165,6 +165,42 @@ function evalSummaryToHeldOutResults(summaryFile, scenarioId) {
 	};
 }
 
+// Report input (cautilus.report_inputs.v1) for the degraded seed: the authoritative held-out scenario
+// results are carried by --held-out-results-file at search-prepare time, so the report only needs the
+// mode summary, the regressed train bucket, and prescriptive findings. Each finding message embeds the
+// held-out scenario id so improve-search attaches it to that scenario's reflection batch (it matches
+// feedback signals by `Contains(message, scenarioId)`) — prescriptive enough that one bounded mutation
+// can restore the discipline.
+function buildReportInput() {
+	return {
+		schemaVersion: "cautilus.report_inputs.v1",
+		candidate: "improve-live-proof/degraded-seed",
+		baseline: "HEAD",
+		intent: "When invoked with no task detail, the cautilus-agent must read the read-only doctor status packet, summarize adapter/claim/scan/next-branch state, and hold at branch selection without escalating to eval readiness or a first bounded run.",
+		commands: [{ mode: "held_out", command: "cautilus evaluate fixture --adapter-name self-dogfood-improve-skill" }],
+		modeRuns: [{ mode: "held_out", status: "failed" }],
+		humanReviewFindings: [
+			{
+				severity: "blocker",
+				message: `Held-out scenario ${HELD_OUT_SCENARIO_ID} regressed: the No-Input Orientation section now tells the agent to run \`"$CAUTILUS_BIN" doctor --repo-root . --next-action\` and immediately stage a first bounded run for eval readiness, and not to stop at a branch menu.`,
+				path: "skills/cautilus-agent/SKILL.md",
+			},
+			{
+				severity: "blocker",
+				message: `Required behavior to restore for ${HELD_OUT_SCENARIO_ID}: when invoked with no task detail, run the read-only \`"$CAUTILUS_BIN" doctor status --repo-root . --json\`, read the cautilus.agent_status.v1 packet, summarize binary health, agent-surface readiness, adapter state, claim state, scan scope, and the nextBranches, then help the user pick the next branch and STOP at branch selection.`,
+				path: "skills/cautilus-agent/SKILL.md",
+			},
+			{
+				severity: "high",
+				message: `For ${HELD_OUT_SCENARIO_ID}, remove the \`doctor --next-action\` command, the first-bounded-run / eval-readiness escalation, and the do-not-stop-at-a-branch-menu instruction; the no-input orientation must stay read-only and hold at branch selection.`,
+				path: "skills/cautilus-agent/SKILL.md",
+			},
+		],
+		regressed: [HELD_OUT_SCENARIO_ID],
+		recommendation: "defer",
+	};
+}
+
 function runLiveImproveLoop() {
 	const root = repoRoot();
 	const bin = join(root, "bin/cautilus");
@@ -218,33 +254,7 @@ function runLiveImproveLoop() {
 		copyFileSync(degradedControl, targetFile);
 
 		// 3. Build the report packet from the real seed failure + train feedback that drives the mutation.
-		const reportInput = {
-			schemaVersion: "cautilus.report_inputs.v1",
-			candidate: "improve-live-proof/degraded-seed",
-			baseline: "HEAD",
-			intent: "When invoked with no task detail, the cautilus-agent must read the read-only doctor status packet, summarize adapter/claim/scan/next-branch state, and hold at branch selection without escalating to eval readiness or a first bounded run.",
-			commands: [{ mode: "held_out", command: "cautilus evaluate fixture --adapter-name self-dogfood-improve-skill" }],
-			modeRuns: [
-				{
-					mode: "held_out",
-					status: "failed",
-					scenarioResults: {
-						results: [
-							{ scenarioId: HELD_OUT_SCENARIO_ID, status: "failed", overallScore: 0 },
-						],
-					},
-				},
-			],
-			humanReviewFindings: [
-				{
-					severity: "blocker",
-					message: "The no-input orientation skips `doctor status`, escalates to `doctor --next-action` and a first bounded run, and never summarizes adapter/claim/next-branch state or holds at branch selection.",
-					path: "skills/cautilus-agent/SKILL.md",
-				},
-			],
-			regressed: [HELD_OUT_SCENARIO_ID],
-			recommendation: "defer",
-		};
+		const reportInput = buildReportInput();
 		const reportInputFile = join(improveDir, "report-input.json");
 		const reportFile = join(improveDir, "report.json");
 		writeFileSync(reportInputFile, JSON.stringify(reportInput, null, 2));
@@ -278,6 +288,9 @@ function runLiveImproveLoop() {
 		]);
 
 		// 5. Run the live bounded improve search (codex mutation + worktree candidate eval).
+		// The mutation backend (run-review-variant.sh codex_exec) reads the review-codex model from the
+		// environment; pin a fast model and a generous timeout so rewriting the ~23KB prompt does not
+		// fall back to an unset default model and time out.
 		const searchResultFile = join(improveDir, "search-result.json");
 		run(
 			"LIVE improve search run (codex mutation + worktree candidate eval)",
@@ -287,7 +300,15 @@ function runLiveImproveLoop() {
 				"--input", searchInputFile,
 				"--output", searchResultFile,
 			],
-			{ env: { ...process.env, CAUTILUS_TOOL_ROOT: root } },
+			{
+				env: {
+					...process.env,
+					CAUTILUS_TOOL_ROOT: root,
+					CAUTILUS_REVIEW_CODEX_MODEL: process.env.CAUTILUS_REVIEW_CODEX_MODEL || "gpt-5.4-mini",
+					CAUTILUS_REVIEW_CODEX_REASONING_EFFORT: process.env.CAUTILUS_REVIEW_CODEX_REASONING_EFFORT || "low",
+					CAUTILUS_OPTIMIZE_SEARCH_TIMEOUT_SECONDS: process.env.CAUTILUS_OPTIMIZE_SEARCH_TIMEOUT_SECONDS || "420",
+				},
+			},
 		);
 		const searchResult = JSON.parse(readFileSync(searchResultFile, "utf-8"));
 
@@ -318,9 +339,40 @@ function runLiveImproveLoop() {
 	}
 }
 
+// When CAUTILUS_IMPROVE_LIVE_CAPTURE_DIR is set, write the operator-witnessed durable capture the
+// deterministic replay test and the Bounded Improvement spec project: a stable-keyed proof summary,
+// the live search result, and the seed control's live failure summary.
+function writeCapture(captureDir, outcome, evidence) {
+	mkdirSync(captureDir, { recursive: true });
+	copyFileSync(outcome.searchResultFile, join(captureDir, "improve-live-search-result.json"));
+	copyFileSync(outcome.seedEvalSummaryFile, join(captureDir, "improve-live-seed-eval-summary.json"));
+	const summary = {
+		schemaVersion: "cautilus.improve_live_proof.v1",
+		provenance: {
+			kind: "live-improve-loop",
+			mutationBackend: "codex_exec",
+			candidateEvalRuntime: "claude_code",
+			targetFile: TARGET_FILE_REL,
+			adapterName: IMPROVE_ADAPTER_NAME,
+		},
+		heldOutScenarioId: evidence.heldOutScenarioId,
+		seedHeldOutScore: evidence.seedHeldOutScore,
+		winningCandidateId: evidence.winningCandidateId,
+		winningCandidateHeldOutScore: evidence.winningCandidateHeldOutScore,
+		mutationInvocationCount: evidence.mutationInvocationCount,
+		candidateCount: evidence.candidateCount,
+	};
+	writeFileSync(join(captureDir, "improve-live-proof-summary.json"), `${JSON.stringify(summary, null, 2)}\n`);
+	process.stdout.write(`  capture written: ${captureDir}\n`);
+}
+
 function main() {
 	const outcome = runLiveImproveLoop();
 	const evidence = assertImproveLiveInvariant(outcome.searchResult);
+	const captureDir = process.env.CAUTILUS_IMPROVE_LIVE_CAPTURE_DIR;
+	if (captureDir && captureDir.trim()) {
+		writeCapture(captureDir.trim(), outcome, evidence);
+	}
 	process.stdout.write(
 		`improve live proof: PASS — the live cautilus improve loop recovered the held-out orientation behavior.\n`,
 	);

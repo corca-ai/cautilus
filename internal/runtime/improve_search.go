@@ -3250,6 +3250,18 @@ func improveSearchScoreForCandidate(matrix []any, candidateID string, scenarioID
 }
 
 func stringSliceOrEmptyRuntime(value any) []string {
+	// Handle in-memory []string (e.g. accumulator slices this package writes back into a map[string]any)
+	// directly: arrayOrEmpty only matches []any, so without this a []string we just stored reads back as
+	// empty — which silently dropped reflection-batch buckets and feedback before they reached mutation.
+	if typed, ok := value.([]string); ok {
+		result := make([]string, 0, len(typed))
+		for _, text := range typed {
+			if text != "" {
+				result = append(result, text)
+			}
+		}
+		return result
+	}
 	result := []string{}
 	for _, raw := range arrayOrEmpty(value) {
 		if text := stringOrEmpty(raw); text != "" {
