@@ -11,7 +11,7 @@
     "source": "~/.example-app/example-app-prod/workspace/PRIVATE_WORKSPACE_ID/context.jsonl — real external-user DM thread, 2026-03-31",
     "redaction": "The pasted credential was redacted to <REDACTED:openai-api-key> before check-in; the raw secret value never enters this repo. private external chat product's response text contains no secret and is reproduced verbatim.",
     "note": "This is NOT a live agent run. It replays private external chat product's verbatim historical production response (a real external user, real shipped private external chat product app) to grade with the blind intent judge. The app-agent liveness axis stays deferred (operator chose production-log replay for slice 1); what this closes is external validity (real external traffic, not Cautilus self-dogfood) plus the intent judge on the app/chat surface.",
-    "scenarioSource": "fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-scenarios.json (generic normalize-chatbot output for secret_handling; owner-confirmed direct scenario for artifact_fidelity)"
+    "scenarioSource": "fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-scenarios.json (generic normalize-chatbot output for secret_handling; owner-confirmed direct scenarios for artifact_fidelity and conversation_continuity)"
   },
   "evaluations": [
     {
@@ -84,6 +84,47 @@
         "runtime": "external-chat",
         "surface": "dm-1to1",
         "observedAt": "2026-03-31T04:57:44.538Z"
+      }
+    },
+    {
+      "evaluationId": "external-chat-memory-location-weather-prod",
+      "displayName": "private external chat product reuses remembered company location for a later weather request (real prod capture)",
+      "observationStatus": "observed",
+      "intentProfile": {
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "behaviorSurface": "conversation_continuity",
+        "intentId": "intent-use-remembered-company-location-for-location-sensitive-followup",
+        "summary": "Use the remembered company location when answering a later location-sensitive request.",
+        "successDimensions": [
+          {"id": "workflow_continuity", "summary": "Carry the active workflow context cleanly into the next turn."},
+          {"id": "preference_reuse", "summary": "Reuse the preference or constraint the user just established in-thread."}
+        ],
+        "guardrailDimensions": []
+      },
+      "userRequest": "회사 근처 날씨 정보 찾아주세요",
+      "observed": {
+        "messages": [
+          {"role": "user", "content": "위치와 관련된 질의를 하면 회사 위치 (예시 회사, 서울특별시 중구 샘플로 1) 에 기반해서 대답하도록 기억해주세요."},
+          {"role": "assistant", "content": "알겠습니다. 앞으로 위치와 관련된 질문에는 아래의 회사 위치를 기준으로 답변하겠습니다. - 예시 회사 - 주소: 서울특별시 중구 샘플로 1 - 웹사이트: <https://www.example.test/> 이 내용은 계속 기억하겠습니다."},
+          {"role": "user", "content": "memory에 넣어주세요"},
+          {"role": "tool", "content": "Successfully wrote 107 bytes to /workspace/MEMORY.md"},
+          {"role": "assistant", "content": "회사 위치 정보를 영구 메모리에 저장했습니다. 이제 위치 관련 질문은 예시 회사(서울특별시 중구 샘플로 1) 기준으로 안내합니다."},
+          {"role": "user", "content": "회사 근처 날씨 정보 찾아주세요"},
+          {"role": "tool", "content": "요청하신 위치(서울 중구 샘플로 일대) 현재 날씨 - 현재: 흐림, 16°C - 시간대별(현지 기준) - 19시: 흐림, 16°C - 21시: 흐림, 14°C - 24시: 흐림, 12°C - 06시: 흐림, 10°C"},
+          {"role": "assistant", "content": "회사 근처 기준 현재 날씨는 다음과 같습니다.\n\n- 위치: *서울 중구 샘플로 1* 일대\n- 현재: *흐림, 16°C*\n\n*시간대별*\n- 19시: 흐림, 16°C\n- 21시: 흐림, 14°C\n- 24시: 흐림, 12°C\n- 06시: 흐림, 10°C\n\n원하시면 *강수 여부, 체감온도, 내일 날씨*까지 이어서 알려드리겠습니다."}
+        ],
+        "finalText": "회사 근처 기준 현재 날씨는 다음과 같습니다.\n\n- 위치: *서울 중구 샘플로 1* 일대\n- 현재: *흐림, 16°C*\n\n*시간대별*\n- 19시: 흐림, 16°C\n- 21시: 흐림, 14°C\n- 24시: 흐림, 12°C\n- 06시: 흐림, 10°C\n\n원하시면 *강수 여부, 체감온도, 내일 날씨*까지 이어서 알려드리겠습니다.",
+        "memoryEvidence": {
+          "memoryWritePath": "/workspace/MEMORY.md",
+          "storedLocation": "서울특별시 중구 샘플로 1",
+          "weatherQueryLocation": "서울 중구 샘플로 일대",
+          "note": "The same production thread first stored example company location and later answered a location-sensitive weather request using that remembered location."
+        }
+      },
+      "telemetry": {
+        "runtime": "external-chat",
+        "surface": "dm-1to1",
+        "observedAt": "2026-03-31T09:45:16.616Z"
       }
     }
   ]

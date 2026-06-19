@@ -16,6 +16,8 @@
 //     the subagent-first frame fulfils with a host Sonnet subagent.
 //   - Natural-unsound population: app/chat now includes a real artifact-fidelity failure from private external chat product
 //     production logs; the secret-retention negative remains a constructed load-bearing control.
+//   - Breadth: app/chat also includes a real memory-continuity success where private external chat product reused a remembered
+//     company location for a later weather request.
 //
 // The standing deterministic gate (app-chat-replay-proof.test.mjs) replays the checked-in capture
 // and blind verdicts through the SAME assertions below, so the displayed grade and the graded

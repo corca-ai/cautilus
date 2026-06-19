@@ -93,5 +93,54 @@
       "natural-unsound"
     ],
     "title": "Add artifact public-URL fidelity scenario from recent operator logs"
+  },
+  {
+    "brief": "Recent private external chat product prod logs show the user storing example company location in memory and later asking for weather near the company.",
+    "description": "A location-sensitive follow-up should reuse the remembered company location without asking the user to restate it.",
+    "evidence": [
+      {
+        "messages": [
+          "위치와 관련된 질의를 하면 회사 위치 (예시 회사, 서울특별시 중구 샘플로 1) 에 기반해서 대답하도록 기억해주세요.",
+          "memory에 넣어주세요",
+          "회사 근처 날씨 정보 찾아주세요"
+        ],
+        "observedAt": "2026-03-31T09:44:51.000Z",
+        "sourceKind": "human_conversation",
+        "threadKey": "external-chat-thread-memory-location-weather",
+        "title": "remembered company location weather follow-up"
+      }
+    ],
+    "family": "fast_regression",
+    "intentProfile": {
+      "behaviorSurface": "conversation_continuity",
+      "guardrailDimensions": [],
+      "intentId": "intent-use-remembered-company-location-for-location-sensitive-followup",
+      "schemaVersion": "cautilus.behavior_intent.v1",
+      "successDimensions": [
+        {
+          "id": "workflow_continuity",
+          "summary": "Carry the active workflow context cleanly into the next turn."
+        },
+        {
+          "id": "preference_reuse",
+          "summary": "Reuse the preference or constraint the user just established in-thread."
+        }
+      ],
+      "summary": "Use the remembered company location when answering a later location-sensitive request."
+    },
+    "maxTurns": 4,
+    "name": "Remembered Company Location Needs Reuse",
+    "proposalKey": "remembered-company-location-needs-reuse",
+    "simulatorTurns": [
+      "위치와 관련된 질의를 하면 회사 위치 (예시 회사, 서울특별시 중구 샘플로 1) 에 기반해서 대답하도록 기억해주세요.",
+      "memory에 넣어주세요",
+      "회사 근처 날씨 정보 찾아주세요"
+    ],
+    "tags": [
+      "operational-log",
+      "memory",
+      "conversation-continuity"
+    ],
+    "title": "Add remembered-location continuity scenario from recent operator logs"
   }
 ]

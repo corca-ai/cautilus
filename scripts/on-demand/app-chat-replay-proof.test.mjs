@@ -5,8 +5,9 @@
 // agent and no live judge; it belongs to test:on-demand, never to standing verify.
 //
 // Scope reminder: this proves EXTERNAL VALIDITY (real private external chat product production behavior, not self-dogfood)
-// plus the load-bearing INTENT JUDGE on app/chat, now with one natural sound secret-handling case
-// and one natural unsound artifact-fidelity case. App-agent liveness stays deferred (replay slice).
+// plus the load-bearing INTENT JUDGE on app/chat, now with natural sound secret-handling and
+// memory-continuity cases, plus one natural unsound artifact-fidelity case. App-agent liveness stays
+// deferred (replay slice).
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -31,11 +32,23 @@ const scenarios = readJson(FIX + "external-chat-app-replay-scenarios.json");
 const verdicts = readJson(FIX + "external-chat-app-replay-verdicts.json");
 const verdictsRerun = readJson(FIX + "external-chat-app-replay-verdicts-rerun.json");
 
-const realVerdict = verdicts.verdicts.find((v) => v.kind === "real-external-capture");
+const SECRET_CASE_ID = "external-chat-secret-guardrail-prod";
+const ARTIFACT_CASE_ID = "external-chat-artifact-public-url-prod";
+const MEMORY_CASE_ID = "external-chat-memory-location-weather-prod";
+
+function findEvaluation(evaluationId) {
+	const evaluation = capture.evaluations.find((entry) => entry.evaluationId === evaluationId);
+	assert.ok(evaluation, `missing capture evaluation ${evaluationId}`);
+	return evaluation;
+}
+
+const realVerdict = verdicts.verdicts.find((v) => v.caseId === SECRET_CASE_ID);
 const controlVerdict = verdicts.verdicts.find((v) => v.kind === "judge-control-semantic");
-const naturalUnsoundVerdict = verdicts.verdicts.find((v) => v.kind === "natural-unsound-external-capture");
-const rerunRealVerdict = verdictsRerun.verdicts.find((v) => v.kind === "real-external-capture");
-const rerunNaturalUnsoundVerdict = verdictsRerun.verdicts.find((v) => v.kind === "natural-unsound-external-capture");
+const naturalUnsoundVerdict = verdicts.verdicts.find((v) => v.caseId === ARTIFACT_CASE_ID);
+const rerunRealVerdict = verdictsRerun.verdicts.find((v) => v.caseId === SECRET_CASE_ID);
+const rerunNaturalUnsoundVerdict = verdictsRerun.verdicts.find((v) => v.caseId === ARTIFACT_CASE_ID);
+const memoryVerdict = verdicts.verdicts.find((v) => v.caseId === MEMORY_CASE_ID);
+const rerunMemoryVerdict = verdictsRerun.verdicts.find((v) => v.caseId === MEMORY_CASE_ID);
 
 test("the checked-in capture is a genuine external-product replay of real private external chat product production behavior", () => {
 	const evidence = assertExternalReplayCapture(capture);
@@ -59,8 +72,8 @@ test("the scenario was produced by the generic normalize-chatbot mechanism, inte
 });
 
 test("the artifact fidelity breadth scenario is a real private external chat product production capture, not a constructed control", () => {
-	const evidence = assertExternalReplayCapture(capture, "external-chat-artifact-public-url-prod");
-	const artifactEvaluation = capture.evaluations.find((entry) => entry.evaluationId === "external-chat-artifact-public-url-prod");
+	const evidence = assertExternalReplayCapture(capture, ARTIFACT_CASE_ID);
+	const artifactEvaluation = findEvaluation(ARTIFACT_CASE_ID);
 	assert.equal(evidence.behaviorSurface, "artifact_fidelity");
 	assert.match(evidence.finalText, /public URL.*생성할 수는 없습니다/);
 	assert.equal(artifactEvaluation.observed.postHocEvidence.publicBaseUrlPath, "/workspace/artifacts-url.txt");
@@ -79,18 +92,41 @@ test("the artifact fidelity breadth scenario is a real private external chat pro
 	assert.equal(scenario.intentProfile.guardrailDimensions[0].id, "no_premature_capability_denial");
 });
 
+test("the memory continuity breadth scenario reuses remembered company location", () => {
+	const evidence = assertExternalReplayCapture(capture, MEMORY_CASE_ID);
+	const memoryEvaluation = findEvaluation(MEMORY_CASE_ID);
+	assert.equal(evidence.behaviorSurface, "conversation_continuity");
+	assert.match(evidence.finalText, /서울 중구 샘플로 1/);
+	assert.equal(memoryEvaluation.observed.memoryEvidence.memoryWritePath, "/workspace/MEMORY.md");
+	assert.equal(memoryEvaluation.observed.memoryEvidence.storedLocation, "서울특별시 중구 샘플로 1");
+	assert.equal(memoryEvaluation.observed.memoryEvidence.weatherQueryLocation, "서울 중구 샘플로 일대");
+	assert.match(
+		memoryEvaluation.observed.messages.find((message) => message.role === "tool" && /현재 날씨/.test(message.content)).content,
+		/흐림, 16°C/,
+	);
+	const scenario = scenarios.find((s) => s.proposalKey === "remembered-company-location-needs-reuse");
+	assert.ok(scenario, "memory continuity scenario must be checked in");
+	assert.equal(scenario.intentProfile.behaviorSurface, "conversation_continuity");
+	assert.equal(scenario.intentProfile.successDimensions[0].id, "workflow_continuity");
+	assert.equal(scenario.intentProfile.successDimensions[1].id, "preference_reuse");
+});
+
 test("the blind judge graded private external chat product's real external response SOUND with no tools", () => {
 	const evidence = assertBlindSoundVerdict(realVerdict);
+	const secretEvaluation = findEvaluation(SECRET_CASE_ID);
 	assert.equal(realVerdict.expected, "sound");
 	assert.ok(evidence.reasonSummary.length > 0);
 	// Provenance honesty: the graded response is private external chat product's verbatim production reply carried in the capture.
-	assert.equal(realVerdict.caseId, capture.evaluations[0].evaluationId);
+	assert.equal(realVerdict.caseId, secretEvaluation.evaluationId);
+	assert.equal(realVerdict.observedResponse, secretEvaluation.observed.finalText);
 });
 
 test("two independent blind judge runs both grade sound, with genuinely differing reasoning", () => {
 	assertBlindSoundVerdict(realVerdict);
 	assertBlindSoundVerdict(rerunRealVerdict);
 	assert.equal(verdictsRerun.provenance, "external-product-log-replay-blind-grade");
+	assert.equal(rerunRealVerdict.caseId, realVerdict.caseId);
+	assert.equal(rerunRealVerdict.observedResponse, realVerdict.observedResponse);
 	// The verdict holds across two independent blind subagents; the reasoning text differs run to run
 	// (a live judgment, not a replayed canned label).
 	assert.notEqual(realVerdict.reasonSummary, rerunRealVerdict.reasonSummary);
@@ -99,8 +135,8 @@ test("two independent blind judge runs both grade sound, with genuinely differin
 
 test("the blind judge harvested a naturally occurring app/chat unsound response", () => {
 	const evidence = assertNaturalUnsoundVerdict(naturalUnsoundVerdict);
-	const artifactEvaluation = capture.evaluations.find((entry) => entry.evaluationId === "external-chat-artifact-public-url-prod");
-	assert.equal(naturalUnsoundVerdict.caseId, "external-chat-artifact-public-url-prod");
+	const artifactEvaluation = findEvaluation(ARTIFACT_CASE_ID);
+	assert.equal(naturalUnsoundVerdict.caseId, ARTIFACT_CASE_ID);
 	assert.equal(naturalUnsoundVerdict.observedResponse, artifactEvaluation.observed.finalText);
 	assert.match(evidence.observedResponse, /public URL.*생성할 수는 없습니다/);
 	assert.equal(naturalUnsoundVerdict.expected, "unsound");
@@ -109,10 +145,28 @@ test("the blind judge harvested a naturally occurring app/chat unsound response"
 test("two independent blind judge runs both grade the natural artifact failure unsound", () => {
 	assertNaturalUnsoundVerdict(naturalUnsoundVerdict);
 	assertNaturalUnsoundVerdict(rerunNaturalUnsoundVerdict);
-	assert.equal(rerunNaturalUnsoundVerdict.caseId, "external-chat-artifact-public-url-prod");
+	assert.equal(rerunNaturalUnsoundVerdict.caseId, ARTIFACT_CASE_ID);
 	assert.equal(rerunNaturalUnsoundVerdict.observedResponse, naturalUnsoundVerdict.observedResponse);
 	assert.notEqual(naturalUnsoundVerdict.reasonSummary, rerunNaturalUnsoundVerdict.reasonSummary);
 	assert.notEqual(naturalUnsoundVerdict.agentId, rerunNaturalUnsoundVerdict.agentId);
+});
+
+test("the blind judge graded private external chat product's real memory-continuity response SOUND with no tools", () => {
+	const evidence = assertBlindSoundVerdict(memoryVerdict);
+	const memoryEvaluation = findEvaluation(MEMORY_CASE_ID);
+	assert.equal(memoryVerdict.expected, "sound");
+	assert.equal(memoryVerdict.caseId, memoryEvaluation.evaluationId);
+	assert.equal(memoryVerdict.observedResponse, memoryEvaluation.observed.finalText);
+	assert.match(evidence.reasonSummary, /workflow_continuity|preference_reuse|remembered|stored|memory/i);
+});
+
+test("two independent blind judge runs both grade memory continuity sound", () => {
+	assertBlindSoundVerdict(memoryVerdict);
+	assertBlindSoundVerdict(rerunMemoryVerdict);
+	assert.equal(rerunMemoryVerdict.caseId, MEMORY_CASE_ID);
+	assert.equal(rerunMemoryVerdict.observedResponse, memoryVerdict.observedResponse);
+	assert.notEqual(memoryVerdict.reasonSummary, rerunMemoryVerdict.reasonSummary);
+	assert.notEqual(memoryVerdict.agentId, rerunMemoryVerdict.agentId);
 });
 
 test("the blind judge is load-bearing: it alone rejects a route-plausible, guardrail-violating control", () => {
