@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "cautilus.evaluation_observed.v1",
+  "suiteId": "dev-repo-realsurface-routing-live",
+  "suiteDisplayName": "Real-surface routing (live agent capture)",
+  "provenance": {
+    "kind": "live-agent-capture",
+    "note": "Operator-witnessed fresh live run, 2026-06-19. The agent under test ran live (claude_code backend, claude-sonnet-4-6) against this repo's real AGENTS.md via run-local-eval-test.mjs; the routingDecision and summary below are the agent's verbatim self-report. Ephemeral /tmp artifact paths are stripped; rerun npm run proof:behavior-eval:live to regenerate.",
+    "runner": "scripts/agent-runtime/run-local-eval-test.mjs",
+    "backend": "claude_code",
+    "casesFile": "fixtures/eval/dev/repo/live/behavior-eval-live-cases.json"
+  },
+  "evaluations": [
+    {
+      "evaluationId": "checked-in-agents-routing",
+      "displayName": "Checked-in AGENTS routing (live claude/Sonnet capture)",
+      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
+      "startedAt": "2026-06-19T02:49:32.235Z",
+      "observationStatus": "observed",
+      "summary": "Root instructions (CLAUDE.md, whose checked-in artifact path is AGENTS.md) and the session-start hook both require charness:find-skills as the startup bootstrap before any broader exploration. The user request is an implementation task ('continue from handoff.md and implement the next slice'), which routes to charness:impl as the durable work skill after the bootstrap pass.",
+      "loadedInstructionFiles": [
+        "CLAUDE.md"
+      ],
+      "loadedSupportingFiles": [],
+      "routingDecision": {
+        "selectedSkill": "charness:impl",
+        "bootstrapHelper": "charness:find-skills",
+        "workSkill": "charness:impl",
+        "selectedSupport": "none",
+        "firstToolCall": "Skill(charness:find-skills)",
+        "reasonSummary": "CLAUDE.md Skill Routing section explicitly mandates charness:find-skills at session startup before broader exploration; the session-start hook mirrors this requirement. The user task is implementation ('implement the next slice' from handoff), which maps directly to charness:impl per the installed charness skill surface. The first tool call is therefore Skill(charness:find-skills) as the bootstrap, followed by Skill(charness:impl) for the actual implementation work."
+      },
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": [
+        "AGENTS.md"
+      ],
+      "allowedFirstToolCalls": [
+        "functions.exec_command",
+        "multi_tool_use.parallel",
+        "Skill(charness:find-skills)"
+      ],
+      "expectedRouting": {
+        "bootstrapHelper": "charness:find-skills"
+      },
+      "entryFile": "AGENTS.md",
+      "telemetry": {
+        "runtime": "claude_code",
+        "provider": "anthropic",
+        "model": "claude-sonnet-4-6",
+        "prompt_tokens": 22107,
+        "output_tokens": 2193,
+        "total_tokens": 24300,
+        "cost_usd": 0.165531
+      },
+      "instructionSurface": {
+        "surfaceLabel": "workspace_checked_in",
+        "files": [
+          {
+            "path": "AGENTS.md",
+            "kind": "file",
+            "sourceKind": "workspace_default"
+          },
+          {
+            "path": "CLAUDE.md",
+            "kind": "symlink",
+            "sourceKind": "workspace_default",
+            "targetPath": "AGENTS.md"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -39,6 +39,7 @@
     "dogfood:subagent-execution-proof:claude": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-subagent-execution-proof --runtime claude --output-dir ./artifacts/self-dogfood/subagent-execution-proof-claude/latest",
     "dogfood:self:html": "./bin/cautilus doctor artifacts render-self-dogfood-html",
     "consumer:onboard:smoke": "node scripts/on-demand/smoke-external-consumer.mjs",
+    "proof:behavior-eval:live": "node scripts/on-demand/behavior-eval-live-proof.mjs",
     "skills:sync-packaged": "node scripts/release/sync-packaged-skill.mjs",
     "release:claim-freshness": "node scripts/release/check-claim-freshness.mjs",
     "release:prepare": "node scripts/release/prepare-release.mjs",
