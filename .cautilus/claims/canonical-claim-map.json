@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:23c048c880a8670c15837bd96bc2f032353229b136f230d518f6124ea750958e"
+      "contentHash": "sha256:dc1bb46e2c56bd8baebd0b0fea8e48380619de163f1bc77d8f459efddef8a0f7"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "f7ba9f8a4245ffc7205ff0c45d47450d07de4984",
+  "claimsPacketGitCommit": "63c0f77196d9f0620f1bd3ff8d0e494e67088639",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 377,
+  "claimsPacketCandidateCount": 384,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -572,24 +572,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 377,
+    "totalRawClaimCount": 384,
     "userRawClaimCount": 105,
     "userMappedToCanonicalCount": 105,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 301,
+    "semanticReviewRecommendedCount": 308,
     "userSemanticReviewRecommendedCount": 33,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 272,
+      "mapped-to-maintainer-canonical": 279,
       "mapped-to-user-canonical": 105
     },
     "byAudience": {
-      "developer": 272,
+      "developer": 279,
       "user": 105
     },
     "byMappingConfidence": {
       "high": 76,
       "low": 19,
-      "medium": 282
+      "medium": 289
     },
     "byUserCanonicalClaimId": {
       "U1": 22,
@@ -601,14 +601,14 @@
       "U7": 6
     },
     "byMaintainerCanonicalClaimId": {
-      "M1": 6,
-      "M10": 11,
-      "M11": 35,
+      "M1": 7,
+      "M10": 12,
+      "M11": 36,
       "M12": 11,
       "M2": 18,
-      "M3": 63,
+      "M3": 66,
       "M4": 67,
-      "M5": 24,
+      "M5": 25,
       "M6": 6,
       "M7": 11,
       "M8": 14,
@@ -875,6 +875,13 @@
       "claim-docs-contracts-improvement-md-132",
       "claim-docs-contracts-improvement-md-136",
       "claim-docs-contracts-improvement-md-151",
+      "claim-docs-contracts-realsurface-judge-convergence-md-11",
+      "claim-docs-contracts-realsurface-judge-convergence-md-32",
+      "claim-docs-contracts-realsurface-judge-convergence-md-34",
+      "claim-docs-contracts-realsurface-judge-convergence-md-43",
+      "claim-docs-contracts-realsurface-judge-convergence-md-45",
+      "claim-docs-contracts-realsurface-judge-convergence-md-90",
+      "claim-docs-contracts-realsurface-judge-convergence-md-98",
       "claim-docs-contracts-runtime-fingerprint-improvement-md-3",
       "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
       "claim-docs-contracts-runtime-fingerprint-improvement-md-34",
@@ -1829,13 +1836,14 @@
     {
       "canonicalClaimId": "M1",
       "title": "Contract Cross-Cutting Rule Policy",
-      "absorbedRawClaimCount": 6,
+      "absorbedRawClaimCount": 7,
       "absorbedRawClaimIds": [
         "claim-agents-md-101",
         "claim-docs-specs-index-spec-md-102",
         "claim-docs-contracts-runner-readiness-md-172",
         "claim-docs-specs-contracts-rules-policy-spec-md-6",
         "claim-docs-specs-ledger-index-spec-md-4",
+        "claim-docs-contracts-realsurface-judge-convergence-md-90",
         "claim-docs-specs-evidence-gaps-spec-md-9"
       ],
       "absorbedRawClaims": [
@@ -1870,6 +1878,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-90",
+          "claimFingerprint": "sha256:7e26bf22468b63b499643321d0038f6179c4ab0b06b969900927630c45a62454",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-specs-evidence-gaps-spec-md-9",
           "claimFingerprint": "sha256:af4a1eccd3abb5466aa2fc120761e2b89ca619c5c20962059463ed09c5884695",
           "mappingConfidence": "medium",
@@ -1877,20 +1891,20 @@
         }
       ],
       "byEvidenceStatus": {
-        "unknown": 6
+        "unknown": 7
       },
       "byReviewStatus": {
         "agent-reviewed": 1,
-        "heuristic": 5
+        "heuristic": 6
       },
       "byRecommendedProof": {
         "cautilus-eval": 2,
-        "human-auditable": 4
+        "human-auditable": 5
       },
       "byMappingConfidence": {
         "high": 1,
         "low": 2,
-        "medium": 3
+        "medium": 4
       }
     },
     {
@@ -2048,7 +2062,7 @@
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 63,
+      "absorbedRawClaimCount": 66,
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
         "claim-agents-md-142",
@@ -2105,6 +2119,9 @@
         "claim-docs-contracts-claim-extraction-template-md-357",
         "claim-docs-contracts-facet-decomposition-md-30",
         "claim-docs-contracts-facet-decomposition-md-36",
+        "claim-docs-contracts-realsurface-judge-convergence-md-32",
+        "claim-docs-contracts-realsurface-judge-convergence-md-43",
+        "claim-docs-contracts-realsurface-judge-convergence-md-98",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
         "claim-docs-contracts-scenario-proposal-sources-md-28",
         "claim-skills-cautilus-agent-skill-md-13",
@@ -2446,6 +2463,24 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-32",
+          "claimFingerprint": "sha256:4c3da38417cbd36e6f3e48ade811804a7b6afc1b681904789e2ed19387308571",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-43",
+          "claimFingerprint": "sha256:66dc060209a4620b70140e3565f9f813f828e91a205385754112b886199f56c3",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-98",
+          "claimFingerprint": "sha256:6387b188a2aa7effcf0523e6ecb19c2dca03f3b8d4dae6fbbb3e238eae422859",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
           "claimFingerprint": "sha256:5b4aa826a977bd6abed0596d72f0a3bba779e7c5d880765a0bd1e59d1439d44d",
           "mappingConfidence": "medium",
@@ -2496,21 +2531,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 45
+        "unknown": 48
       },
       "byReviewStatus": {
         "agent-reviewed": 28,
-        "heuristic": 34,
+        "heuristic": 37,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
         "cautilus-eval": 17,
-        "deterministic": 29,
+        "deterministic": 32,
         "human-auditable": 17
       },
       "byMappingConfidence": {
         "low": 2,
-        "medium": 61
+        "medium": 64
       }
     },
     {
@@ -3011,7 +3046,7 @@
     {
       "canonicalClaimId": "M5",
       "title": "Evaluation Surfaces And Runners",
-      "absorbedRawClaimCount": 24,
+      "absorbedRawClaimCount": 25,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-220",
         "claim-docs-master-plan-md-85",
@@ -3030,6 +3065,7 @@
         "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
         "claim-docs-specs-rules-cost-and-proof-freshness-spec-md-3",
         "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+        "claim-docs-contracts-realsurface-judge-convergence-md-45",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-42",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
@@ -3142,6 +3178,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-45",
+          "claimFingerprint": "sha256:0fcf85911583e5098c06e6b2f5755b433ff30d548ad1c26c7e3e7290f005b0b0",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
           "claimFingerprint": "sha256:08d93168049eadacc2c094b7a88b6d03a8526e9d1369ea055058ed10603f962d",
           "mappingConfidence": "medium",
@@ -3186,19 +3228,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 13,
-        "unknown": 11
+        "unknown": 12
       },
       "byReviewStatus": {
         "agent-reviewed": 13,
-        "heuristic": 11
+        "heuristic": 12
       },
       "byRecommendedProof": {
         "cautilus-eval": 12,
-        "deterministic": 12
+        "deterministic": 12,
+        "human-auditable": 1
       },
       "byMappingConfidence": {
         "low": 1,
-        "medium": 23
+        "medium": 24
       }
     },
     {
@@ -3562,7 +3605,7 @@
     {
       "canonicalClaimId": "M10",
       "title": "Live Invocation Runtime",
-      "absorbedRawClaimCount": 11,
+      "absorbedRawClaimCount": 12,
       "absorbedRawClaimIds": [
         "claim-docs-master-plan-md-91",
         "claim-docs-specs-index-spec-md-12",
@@ -3573,6 +3616,7 @@
         "claim-docs-contracts-reporting-md-50",
         "claim-docs-contracts-runner-readiness-md-208",
         "claim-docs-specs-contracts-live-invocation-runtime-spec-md-13",
+        "claim-docs-contracts-realsurface-judge-convergence-md-11",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-100",
         "claim-docs-specs-ledger-names-and-keys-spec-md-4"
       ],
@@ -3632,6 +3676,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-11",
+          "claimFingerprint": "sha256:465772f780f5263e6d75a067f9f0619934a74d9e3f91edf4ae576066f30b5773",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-100",
           "claimFingerprint": "sha256:88135551ab27a00915b4ef2441bc41ba5de58ea3f13b85eadbac2506cf431f9d",
           "mappingConfidence": "medium",
@@ -3646,26 +3696,26 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 2,
-        "unknown": 9
+        "unknown": 10
       },
       "byReviewStatus": {
         "agent-reviewed": 5,
-        "heuristic": 6
+        "heuristic": 7
       },
       "byRecommendedProof": {
-        "cautilus-eval": 5,
+        "cautilus-eval": 6,
         "deterministic": 3,
         "human-auditable": 3
       },
       "byMappingConfidence": {
         "low": 1,
-        "medium": 10
+        "medium": 11
       }
     },
     {
       "canonicalClaimId": "M11",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 35,
+      "absorbedRawClaimCount": 36,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-231",
         "claim-docs-contracts-adapter-contract-md-446",
@@ -3698,6 +3748,7 @@
         "claim-docs-contracts-facet-decomposition-md-46",
         "claim-docs-contracts-facet-decomposition-md-58",
         "claim-docs-contracts-improvement-md-27",
+        "claim-docs-contracts-realsurface-judge-convergence-md-34",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-190",
         "claim-docs-contracts-scenario-proposal-sources-md-40",
         "claim-docs-contracts-scenario-proposal-sources-md-216",
@@ -3891,6 +3942,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-34",
+          "claimFingerprint": "sha256:7999383e2ed5f328d1059e9da0f52196f422a25d9ebe0c406fede3fcfed18e53",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-190",
           "claimFingerprint": "sha256:67576f222383159761b9ea092fb7c44d591d2f1036800696b57a27efa7132625",
           "mappingConfidence": "medium",
@@ -3917,20 +3974,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 18
+        "unknown": 19
       },
       "byReviewStatus": {
         "agent-reviewed": 19,
-        "heuristic": 16
+        "heuristic": 17
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
-        "deterministic": 21,
+        "deterministic": 22,
         "human-auditable": 10
       },
       "byMappingConfidence": {
         "low": 2,
-        "medium": 33
+        "medium": 34
       }
     },
     {
@@ -17595,6 +17652,267 @@
         "revision",
         "schema",
         "test"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-11",
+      "summary": "`self-dogfood-eval` (and the default adapter's real-surface flow) runs a real agent against the real `AGENTS.md`, and `run-local-eval-test.mjs` already captures the genuine `routingDecision.reasonSummary` the agent produced.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/realsurface-judge-convergence.md",
+          "line": 11,
+          "excerpt": "`self-dogfood-eval` (and the default adapter's real-surface flow) runs a real agent against the real `AGENTS.md`, and `run-local-eval-test.mjs` already captures the genuine `routingDecision.reasonSummary` the agent produced."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:465772f780f5263e6d75a067f9f0619934a74d9e3f91edf4ae576066f30b5773",
+      "canonicalClaimId": "M10",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M20",
+      "runnerUpScore": 7,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "adapter",
+        "against",
+        "agent",
+        "cautilu",
+        "fixture",
+        "host-owned",
+        "run"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-32",
+      "summary": "This keeps the dogfood gate deterministic and zero-live-cost, and — because the graded reasoning is now the dogfood runner's own `AGENTS.md` capture — the provenance is genuinely full-runner, labeled `full-runner-capture-replay`.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/realsurface-judge-convergence.md",
+          "line": 32,
+          "excerpt": "This keeps the dogfood gate deterministic and zero-live-cost, and — because the graded reasoning is now the dogfood runner's own `AGENTS.md` capture — the provenance is genuinely full-runner, labeled `full-runner-capture-replay`."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:4c3da38417cbd36e6f3e48ade811804a7b6afc1b681904789e2ed19387308571",
+      "canonicalClaimId": "M3",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 9,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "check",
+        "deterministic",
+        "keep",
+        "lint",
+        "schema",
+        "skill",
+        "thi",
+        "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-34",
+      "summary": "It reintroduces per-run cost and non-determinism into a standing gate the whole repo keeps deterministic, with no fidelity gain over grading the already-captured real reasoning.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/realsurface-judge-convergence.md",
+          "line": 34,
+          "excerpt": "It reintroduces per-run cost and non-determinism into a standing gate the whole repo keeps deterministic, with no fidelity gain over grading the already-captured real reasoning."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:7999383e2ed5f328d1059e9da0f52196f422a25d9ebe0c406fede3fcfed18e53",
+      "canonicalClaimId": "M11",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M14",
+      "runnerUpScore": 8,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "add",
+        "build",
+        "check",
+        "contract",
+        "deterministic",
+        "keep",
+        "over",
+        "schema"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-43",
+      "summary": "The decomposition declares `codeFacets: [\"emitted_find_skills_bootstrap\"]`, since the real route emits the bootstrap, so the deterministic process facet stays the code half and the judge owns the semantic half.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/realsurface-judge-convergence.md",
+          "line": 43,
+          "excerpt": "The decomposition declares `codeFacets: [\"emitted_find_skills_bootstrap\"]`, since the real route emits the bootstrap, so the deterministic process facet stays the code half and the judge owns the semantic half."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:66dc060209a4620b70140e3565f9f813f828e91a205385754112b886199f56c3",
+      "canonicalClaimId": "M3",
+      "score": 12,
+      "runnerUpCanonicalClaimId": "M21",
+      "runnerUpScore": 12,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "check",
+        "code",
+        "deterministic",
+        "keep",
+        "lint",
+        "route",
+        "schema",
+        "skill",
+        "stay",
+        "thi",
+        "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-45",
+      "summary": "FD4 — attach via adapter-owned enrichment; the generic runtime runner stays pure.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/realsurface-judge-convergence.md",
+          "line": 45,
+          "excerpt": "FD4 — attach via adapter-owned enrichment; the generic runtime runner stays pure."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:0fcf85911583e5098c06e6b2f5755b433ff30d548ad1c26c7e3e7290f005b0b0",
+      "canonicalClaimId": "M5",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M28",
+      "runnerUpScore": 7,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "cli",
+        "runner",
+        "runtime",
+        "stay",
+        "surface",
+        "test",
+        "via"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-90",
+      "summary": "Any bug, error, or regression encountered routes to `charness:debug` before further fixes.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/realsurface-judge-convergence.md",
+          "line": 90,
+          "excerpt": "Any bug, error, or regression encountered routes to `charness:debug` before further fixes."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "blocked",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:7e26bf22468b63b499643321d0038f6179c4ab0b06b969900927630c45a62454",
+      "canonicalClaimId": "M1",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 6,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "contract",
+        "error",
+        "evidence",
+        "keep",
+        "route",
+        "rule",
+        "thi"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-98",
+      "summary": "SC5 — the existing deterministic real-surface dogfood gate stays green (no regression from the wiring).",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/realsurface-judge-convergence.md",
+          "line": 98,
+          "excerpt": "SC5 — the existing deterministic real-surface dogfood gate stays green (no regression from the wiring)."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:6387b188a2aa7effcf0523e6ecb19c2dca03f3b8d4dae6fbbb3e238eae422859",
+      "canonicalClaimId": "M3",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M11",
+      "runnerUpScore": 8,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "check",
+        "contract",
+        "deterministic",
+        "keep",
+        "lint",
+        "schema",
+        "stay",
+        "thi"
       ]
     },
     {

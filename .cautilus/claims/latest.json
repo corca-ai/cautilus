@@ -1,9 +1,9 @@
 {
-  "candidateCount": 377,
+  "candidateCount": 384,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 376,
+    "matchedClaimCount": 384,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -10818,6 +10818,213 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:465772f780f5263e6d75a067f9f0619934a74d9e3f91edf4ae576066f30b5773",
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-11",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`self-dogfood-eval` (and the default adapter's real-surface flow) runs a real agent against the real `AGENTS.md`, and `run-local-eval-test.mjs` already captures the genuine `routingDecision.reasonSummary` the agent produced.",
+          "line": 11,
+          "path": "docs/contracts/realsurface-judge-convergence.md"
+        }
+      ],
+      "summary": "`self-dogfood-eval` (and the default adapter's real-surface flow) runs a real agent against the real `AGENTS.md`, and `run-local-eval-test.mjs` already captures the genuine `routingDecision.reasonSummary` the agent produced.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:4c3da38417cbd36e6f3e48ade811804a7b6afc1b681904789e2ed19387308571",
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-32",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "This keeps the dogfood gate deterministic and zero-live-cost, and — because the graded reasoning is now the dogfood runner's own `AGENTS.md` capture — the provenance is genuinely full-runner, labeled `full-runner-capture-replay`.",
+          "line": 32,
+          "path": "docs/contracts/realsurface-judge-convergence.md"
+        }
+      ],
+      "summary": "This keeps the dogfood gate deterministic and zero-live-cost, and — because the graded reasoning is now the dogfood runner's own `AGENTS.md` capture — the provenance is genuinely full-runner, labeled `full-runner-capture-replay`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:7999383e2ed5f328d1059e9da0f52196f422a25d9ebe0c406fede3fcfed18e53",
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-34",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It reintroduces per-run cost and non-determinism into a standing gate the whole repo keeps deterministic, with no fidelity gain over grading the already-captured real reasoning.",
+          "line": 34,
+          "path": "docs/contracts/realsurface-judge-convergence.md"
+        }
+      ],
+      "summary": "It reintroduces per-run cost and non-determinism into a standing gate the whole repo keeps deterministic, with no fidelity gain over grading the already-captured real reasoning.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:66dc060209a4620b70140e3565f9f813f828e91a205385754112b886199f56c3",
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-43",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The decomposition declares `codeFacets: [\"emitted_find_skills_bootstrap\"]`, since the real route emits the bootstrap, so the deterministic process facet stays the code half and the judge owns the semantic half.",
+          "line": 43,
+          "path": "docs/contracts/realsurface-judge-convergence.md"
+        }
+      ],
+      "summary": "The decomposition declares `codeFacets: [\"emitted_find_skills_bootstrap\"]`, since the real route emits the bootstrap, so the deterministic process facet stays the code half and the judge owns the semantic half.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:0fcf85911583e5098c06e6b2f5755b433ff30d548ad1c26c7e3e7290f005b0b0",
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-45",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/eval-judge-collaboration.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "FD4 — attach via adapter-owned enrichment; the generic runtime runner stays pure.",
+          "line": 45,
+          "path": "docs/contracts/realsurface-judge-convergence.md"
+        }
+      ],
+      "summary": "FD4 — attach via adapter-owned enrichment; the generic runtime runner stays pure.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:7e26bf22468b63b499643321d0038f6179c4ab0b06b969900927630c45a62454",
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-90",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "blocked",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep this as an operating rule or narrow it into an audited process claim with concrete incident evidence.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Any bug, error, or regression encountered routes to `charness:debug` before further fixes.",
+          "line": 90,
+          "path": "docs/contracts/realsurface-judge-convergence.md"
+        }
+      ],
+      "summary": "Any bug, error, or regression encountered routes to `charness:debug` before further fixes.",
+      "verificationReadiness": "blocked",
+      "whyThisLayer": "The claim is an operator-policy rule; a single eval fixture cannot prove every future agent will follow it."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:6387b188a2aa7effcf0523e6ecb19c2dca03f3b8d4dae6fbbb3e238eae422859",
+      "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-98",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/eval-judge-collaboration.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "SC5 — the existing deterministic real-surface dogfood gate stays green (no regression from the wiring).",
+          "line": 98,
+          "path": "docs/contracts/realsurface-judge-convergence.md"
+        }
+      ],
+      "summary": "SC5 — the existing deterministic real-surface dogfood gate stays green (no regression from the wiring).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9439758a64f49e80cb32475f05284116cb316d201c022b012b81deb8e0d582ab",
       "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-3",
       "claimSemanticGroup": "Packets and reporting",
@@ -12205,14 +12412,14 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 272,
+      "developer": 279,
       "user": 105
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 60,
-      "Agent and skill workflow": 83,
+      "Adapter and portability": 62,
+      "Agent and skill workflow": 85,
       "Claim discovery and review": 51,
-      "Documentation and contracts": 84,
+      "Documentation and contracts": 87,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 31,
@@ -12223,25 +12430,25 @@
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 310
+      "unknown": 317
     },
     "byLifecycle": {
-      "new": 377
+      "new": 384
     },
     "byRecommendedProof": {
-      "cautilus-eval": 139,
-      "deterministic": 132,
-      "human-auditable": 106
+      "cautilus-eval": 140,
+      "deterministic": 136,
+      "human-auditable": 108
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 266
+      "heuristic": 273
     },
     "byVerificationReadiness": {
-      "blocked": 14,
-      "needs-alignment": 51,
+      "blocked": 15,
+      "needs-alignment": 52,
       "needs-scenario": 12,
-      "ready-for-proof": 300
+      "ready-for-proof": 305
     }
   },
   "discoveryEngine": {
@@ -12437,7 +12644,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "f7ba9f8a4245ffc7205ff0c45d47450d07de4984",
+  "gitCommit": "63c0f77196d9f0620f1bd3ff8d0e494e67088639",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -12818,7 +13025,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 68,
+  "sourceCount": 69,
   "sourceGraph": [
     {
       "depth": 1,
@@ -13365,6 +13572,12 @@
       "from": "docs/contracts/eval-judge-collaboration.md",
       "kind": "markdown-link",
       "to": "docs/contracts/facet-decomposition.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/eval-judge-collaboration.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/realsurface-judge-convergence.md"
     },
     {
       "depth": 3,
@@ -14073,7 +14286,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:44f1ce1c94514f3250ee9c8267a89d380f19ad5c0cd435ffc17c8aa78b6191cc",
+      "contentHash": "sha256:9a4c4e734d8d0733ee5680d9c13fdf71074c43614319a0678d64bb5e94c6cd63",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -14448,6 +14661,16 @@
       "discoveredFrom": "docs/contracts/active-run.md",
       "kind": "contract",
       "path": "docs/contracts/improvement.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:df7f5c4e1156759ce92cf3de5aaa4af0ded4bbcf1dc74d629c3346e5efff8f82",
+      "depth": 3,
+      "discoveredFrom": "docs/contracts/eval-judge-collaboration.md",
+      "kind": "contract",
+      "path": "docs/contracts/realsurface-judge-convergence.md",
       "status": "read"
     },
     {
