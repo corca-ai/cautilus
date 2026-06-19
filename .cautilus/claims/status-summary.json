@@ -879,7 +879,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:468f007800393a0e686336b0952de5a5e0e3487d136a55a1ad7123e9e07420e4",
+            "contentHash": "sha256:a9689aa107eece71ddec7e5cd054bda4521c523749ba6ec8f2e269bf344b6c7d",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
@@ -2570,7 +2570,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+            "contentHash": "sha256:af823f8c62828283c94c511f6dd1c741739c9096172f683b8aab3e53d94ce378",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
@@ -2609,7 +2609,7 @@
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+            "contentHash": "sha256:af823f8c62828283c94c511f6dd1c741739c9096172f683b8aab3e53d94ce378",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
@@ -3446,10 +3446,25 @@
       }
     ]
   },
-  "gitCommit": "c485d7cf8459f26a99485ad8c0c675e6e442ab56",
+  "gitCommit": "6b3947987e497e69c81cb0c800abe12d1609000a",
   "gitState": {
-    "changedFileCount": 0,
-    "changedFiles": [],
+    "changedFileCount": 14,
+    "changedFiles": [
+      ".cautilus/claims/canonical-claim-map.json",
+      ".cautilus/claims/claim-status-report.md",
+      ".cautilus/claims/eval-plan-after-scenario-design-2026-05-17.json",
+      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-04.json",
+      ".cautilus/claims/eval-plan-agent-reviewed-eval-2026-05-17.json",
+      ".cautilus/claims/eval-plan-reviewed-eval-claims-2026-05-03.json",
+      ".cautilus/claims/evidence-state.json",
+      ".cautilus/claims/evidenced-typed-runners.json",
+      ".cautilus/claims/latest.json",
+      ".cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json",
+      ".cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
+      ".cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json",
+      ".cautilus/claims/status-summary.json",
+      "docs/specs/evidence/claim-evidence-state.md"
+    ],
     "changedFilesBasis": {
       "meaning": "changedFiles lists files committed between packetGitCommit and currentGitCommit; it does not include unstaged, staged, or untracked working-tree files.",
       "scope": "committed-diff-between-packet-and-current-head",
@@ -3457,12 +3472,12 @@
     },
     "changedSourceCount": 0,
     "changedSources": [],
-    "comparisonStatus": "fresh",
-    "currentGitCommit": "c485d7cf8459f26a99485ad8c0c675e6e442ab56",
-    "headDrift": false,
+    "comparisonStatus": "fresh-with-head-drift",
+    "currentGitCommit": "43beda817250262dc4bdf5d9d3ead6901694a9b0",
+    "headDrift": true,
     "isStale": false,
-    "packetGitCommit": "c485d7cf8459f26a99485ad8c0c675e6e442ab56",
-    "recommendedAction": "The claim packet commit matches the inspected checkout.",
+    "packetGitCommit": "6b3947987e497e69c81cb0c800abe12d1609000a",
+    "recommendedAction": "The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",

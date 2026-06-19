@@ -24,7 +24,7 @@
               "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+              "contentHash": "sha256:af823f8c62828283c94c511f6dd1c741739c9096172f683b8aab3e53d94ce378",
               "supportsClaimIds": [
                 "claim-docs-contracts-workbench-instance-discovery-md-25",
                 "claim-docs-contracts-workbench-instance-discovery-md-101"
@@ -63,7 +63,7 @@
               "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+              "contentHash": "sha256:af823f8c62828283c94c511f6dd1c741739c9096172f683b8aab3e53d94ce378",
               "supportsClaimIds": [
                 "claim-docs-contracts-workbench-instance-discovery-md-25",
                 "claim-docs-contracts-workbench-instance-discovery-md-101"

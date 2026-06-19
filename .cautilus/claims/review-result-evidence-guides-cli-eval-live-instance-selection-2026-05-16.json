@@ -24,7 +24,7 @@
               "path": ".cautilus/claims/evidence-guides-cli-eval-live-instance-selection-2026-05-16.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:468f007800393a0e686336b0952de5a5e0e3487d136a55a1ad7123e9e07420e4",
+              "contentHash": "sha256:a9689aa107eece71ddec7e5cd054bda4521c523749ba6ec8f2e269bf344b6c7d",
               "supportsClaimIds": [
                 "claim-docs-guides-cli-md-180"
               ]

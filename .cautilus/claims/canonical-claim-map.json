@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:a2718a712028ac168512ea9fbbfa7e3cf0c417ec9ed022d24fdc735cbfa971d7"
+      "contentHash": "sha256:45fe3d3d9a773216bc278432d44c6b6de8c77eaac45c26998fa1fc396e1f6c77"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "c485d7cf8459f26a99485ad8c0c675e6e442ab56",
+  "claimsPacketGitCommit": "6b3947987e497e69c81cb0c800abe12d1609000a",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 394,
   "catalogs": {
@@ -576,8 +576,8 @@
     "userRawClaimCount": 108,
     "userMappedToCanonicalCount": 108,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 316,
-    "userSemanticReviewRecommendedCount": 34,
+    "semanticReviewRecommendedCount": 317,
+    "userSemanticReviewRecommendedCount": 35,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 286,
       "mapped-to-user-canonical": 108
@@ -587,14 +587,14 @@
       "user": 108
     },
     "byMappingConfidence": {
-      "high": 78,
+      "high": 77,
       "low": 19,
-      "medium": 297
+      "medium": 298
     },
     "byUserCanonicalClaimId": {
       "U1": 22,
-      "U2": 62,
-      "U3": 9,
+      "U2": 61,
+      "U3": 10,
       "U4": 3,
       "U5": 5,
       "U6": 1,
@@ -662,6 +662,7 @@
       "claim-docs-guides-consumer-adoption-md-106",
       "claim-docs-guides-consumer-adoption-md-107",
       "claim-docs-guides-evaluation-process-md-52",
+      "claim-docs-guides-evaluation-process-md-253",
       "claim-docs-guides-evaluation-process-md-269",
       "claim-docs-guides-evaluation-process-md-270",
       "claim-docs-guides-evaluation-process-md-308",
@@ -1118,7 +1119,7 @@
     {
       "canonicalClaimId": "U2",
       "title": "Claim Discovery",
-      "absorbedRawClaimCount": 62,
+      "absorbedRawClaimCount": 61,
       "absorbedRawClaimIds": [
         "claim-readme-md-6",
         "claim-readme-md-8",
@@ -1128,7 +1129,6 @@
         "claim-readme-md-60",
         "claim-readme-md-85",
         "claim-readme-md-96",
-        "claim-readme-md-109",
         "claim-readme-md-122",
         "claim-readme-md-143",
         "claim-readme-md-152",
@@ -1231,12 +1231,6 @@
           "claimFingerprint": "sha256:fee6e2c9ba896bb38525850e1fe855de7d93cf287bc9948a54652f685ee3dce2",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
-        },
-        {
-          "claimId": "claim-readme-md-109",
-          "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-readme-md-122",
@@ -1403,8 +1397,8 @@
         {
           "claimId": "claim-docs-guides-evaluation-process-md-253",
           "claimFingerprint": "sha256:bd1727a2c94b086b9544d09769750e9a036855429b04810a8fa455b4a0238470",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-guides-evaluation-process-md-269",
@@ -1559,27 +1553,28 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 27,
-        "unknown": 35
+        "unknown": 34
       },
       "byReviewStatus": {
         "agent-reviewed": 38,
-        "heuristic": 24
+        "heuristic": 23
       },
       "byRecommendedProof": {
-        "cautilus-eval": 14,
+        "cautilus-eval": 13,
         "deterministic": 30,
         "human-auditable": 18
       },
       "byMappingConfidence": {
-        "high": 41,
+        "high": 40,
         "medium": 21
       }
     },
     {
       "canonicalClaimId": "U3",
       "title": "Behavior Evaluation",
-      "absorbedRawClaimCount": 9,
+      "absorbedRawClaimCount": 10,
       "absorbedRawClaimIds": [
+        "claim-readme-md-109",
         "claim-docs-guides-cli-md-177",
         "claim-docs-guides-evaluation-process-md-270",
         "claim-docs-specs-user-evaluation-spec-md-4",
@@ -1591,6 +1586,12 @@
         "claim-docs-specs-user-evaluation-spec-md-160"
       ],
       "absorbedRawClaims": [
+        {
+          "claimId": "claim-readme-md-109",
+          "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
         {
           "claimId": "claim-docs-guides-cli-md-177",
           "claimFingerprint": "sha256:10dc5fd8f817011f748f06bba796f3567abb6cfd596947ecff3ff1f6fdf00e95",
@@ -1648,20 +1649,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 2,
-        "unknown": 7
+        "unknown": 8
       },
       "byReviewStatus": {
         "agent-reviewed": 5,
-        "heuristic": 4
+        "heuristic": 5
       },
       "byRecommendedProof": {
-        "cautilus-eval": 6,
+        "cautilus-eval": 7,
         "deterministic": 2,
         "human-auditable": 1
       },
       "byMappingConfidence": {
         "high": 7,
-        "medium": 2
+        "medium": 3
       }
     },
     {
@@ -5152,27 +5153,27 @@
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
-      "canonicalClaimId": "U2",
-      "score": 19,
-      "runnerUpCanonicalClaimId": "U3",
+      "canonicalClaimId": "U3",
+      "score": 20,
+      "runnerUpCanonicalClaimId": "U2",
       "runnerUpScore": 19,
-      "scoreMargin": 0,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
+        "app",
         "behavior",
         "cautilu",
-        "cautilus-eval",
-        "create",
+        "chat",
+        "dev",
         "dev/skill",
         "evaluate",
         "evaluation",
         "fixture",
-        "product",
-        "prompt",
-        "readme.md"
+        "host-owned",
+        "product"
       ]
     },
     {
@@ -6306,8 +6307,8 @@
       "canonicalClaimId": "U2",
       "score": 11,
       "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 8,
-      "scoreMargin": 3,
+      "runnerUpScore": 9,
+      "scoreMargin": 2,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -7239,11 +7240,11 @@
       "claimFingerprint": "sha256:bd1727a2c94b086b9544d09769750e9a036855429b04810a8fa455b4a0238470",
       "canonicalClaimId": "U2",
       "score": 14,
-      "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 11,
-      "scoreMargin": 3,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
+      "runnerUpCanonicalClaimId": "U3",
+      "runnerUpScore": 12,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "agent",
@@ -7561,9 +7562,9 @@
       "claimFingerprint": "sha256:0d27645b25db70340d8acaf99b749b91ab7c833cb6b38b829595a6f41acd4597",
       "canonicalClaimId": "U2",
       "score": 17,
-      "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 12,
-      "scoreMargin": 5,
+      "runnerUpCanonicalClaimId": "U3",
+      "runnerUpScore": 13,
+      "scoreMargin": 4,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],

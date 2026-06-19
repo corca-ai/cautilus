@@ -24,7 +24,7 @@
               "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
+              "contentHash": "sha256:4136021b4fda068b99984ab8a2de3b180cc67e3a9251ce8ea9c01d376ce0e624",
               "supportsClaimIds": [
                 "claim-docs-cli-reference-md-176",
                 "claim-docs-cli-reference-md-188",
@@ -49,7 +49,7 @@
               "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
+              "contentHash": "sha256:4136021b4fda068b99984ab8a2de3b180cc67e3a9251ce8ea9c01d376ce0e624",
               "supportsClaimIds": [
                 "claim-docs-cli-reference-md-176",
                 "claim-docs-cli-reference-md-188",
@@ -74,7 +74,7 @@
               "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
               "kind": "cautilus-claim-evidence-bundle",
               "matchKind": "verified",
-              "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
+              "contentHash": "sha256:4136021b4fda068b99984ab8a2de3b180cc67e3a9251ce8ea9c01d376ce0e624",
               "supportsClaimIds": [
                 "claim-docs-cli-reference-md-176",
                 "claim-docs-cli-reference-md-188",

@@ -1,12 +1,12 @@
 {
   "candidateCount": 394,
   "carryForward": {
-    "changedEvidenceRefCount": 0,
+    "changedEvidenceRefCount": 3,
     "evidenceSupportIdRewriteCount": 0,
     "matchedClaimCount": 394,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
-    "staleEvidenceClaimCount": 16,
+    "staleEvidenceClaimCount": 19,
     "strategy": "claimFingerprint",
     "unsupportedEvidenceRefCount": 16
   },
@@ -1575,7 +1575,7 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:a34815dfb15bcae9e882d202875ec2912048fa94cdd00228281edb892b45ab9c",
+          "contentHash": "sha256:4136021b4fda068b99984ab8a2de3b180cc67e3a9251ce8ea9c01d376ce0e624",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json",
@@ -1588,7 +1588,8 @@
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence ref .cautilus/claims/evidence-eval-live-cli-boundary-2026-05-11.json contentHash changed.",
       "groupHints": [
         "audience:user",
         "deterministic",
@@ -1596,7 +1597,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -8161,7 +8162,7 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+          "contentHash": "sha256:af823f8c62828283c94c511f6dd1c741739c9096172f683b8aab3e53d94ce378",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
@@ -8171,8 +8172,8 @@
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by adapter validation, eval live discover, and catalog schema tests: each discovered instance must carry stable instanceId and human-facing displayLabel fields.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence ref .cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json contentHash changed.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -8180,7 +8181,7 @@
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep adapter validation and catalog schema tests current when changing instance discovery fields.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -8309,7 +8310,7 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:3a235ed865e9035da7e6bef3175c6bd09a479e609f2138ec698c187c483d8832",
+          "contentHash": "sha256:af823f8c62828283c94c511f6dd1c741739c9096172f683b8aab3e53d94ce378",
           "kind": "cautilus-claim-evidence-bundle",
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json",
@@ -8319,8 +8320,8 @@
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by eval live discover tests and the catalog schema: adapter path fields normalize into typed packet fields such as scenarioStore rather than product-owned hardcoded route templates.",
+      "evidenceStatus": "stale",
+      "evidenceStatusReason": "Carried evidence requires re-review: evidence ref .cautilus/claims/evidence-workbench-instance-catalog-contract-2026-05-03.json contentHash changed.",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -8328,7 +8329,7 @@
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep typed path normalization and catalog schema tests current when adding scenario-adjacent path keys.",
+      "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
       "recommendedProof": "human-auditable",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -12735,8 +12736,8 @@
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
-      "satisfied": 52,
-      "stale": 15,
+      "satisfied": 49,
+      "stale": 18,
       "unknown": 327
     },
     "byLifecycle": {
@@ -12951,7 +12952,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "c485d7cf8459f26a99485ad8c0c675e6e442ab56",
+  "gitCommit": "6b3947987e497e69c81cb0c800abe12d1609000a",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14446,7 +14447,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:78e1d8f3627cfc5d0bd8a7094b2d6696e8eaa9f8ad3de0171a2c1755c581084a",
+      "contentHash": "sha256:ab278e181887e1260e344e57967d398a1ff6909f30f13c2a6ef4ecbf759150ea",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -14455,7 +14456,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:fe2bc98da35698385115a144140691e99e22e99bdc954b72c0c9d5a9dabdb7a6",
+      "contentHash": "sha256:69985ac5157fe6170fa1da79411211fb5fc062ae3b40964c4edbf25c61a10872",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "contract",
@@ -14475,7 +14476,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:eeedc1efaecd60b35bd0a43bf24b9bf0f4cd1f731aafd47d03eb5fd5bf4db7a0",
+      "contentHash": "sha256:ec18a16ca3b784b7cb214e6b5d8ba246a66da373b1371df52662228e2011455d",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -14545,7 +14546,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:bf6090fa222780c89f6e9a75f9af54df303f6408c56526464e0ffbd085a06f07",
+      "contentHash": "sha256:a43cc6daad5694a0d57e5ca558e590b78b810275cf8c2a258684275b20e56d8a",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -14555,7 +14556,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:88521877e9373cfe86d89c74ea9676c233ee9cf98f935d3a7cc224c6a355ee37",
+      "contentHash": "sha256:de2332ddb85631cc36c8c77882091a0490be3a858c768c98fb63c193c9932d3f",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -14615,7 +14616,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:8a056c7ff60bd8962e702eb48a63e955cca9f168b18dce29c3727411055d8567",
+      "contentHash": "sha256:c0c97ac254430b044fb07753cf2e02dace34ce1098df9cbc623c6d3af3ca0f0c",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -14625,7 +14626,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:7c32eea95fb799766dcfd7d38c4c035f021aa6039c93ad763672c22b4f1d981b",
+      "contentHash": "sha256:261dddc7bc3e05e31daef68be56941c70d30a2e17079049a0a0932282ffb2bf5",
       "depth": 2,
       "discoveredFrom": "docs/contracts/adapter-contract.md",
       "kind": "contract",
@@ -14675,7 +14676,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:7a41d6b7ca9974fe346299a58b1227e470829cccc67cd7d0f1fb52e785b1e517",
+      "contentHash": "sha256:0cf3233eafa4c77b436eb853147fc4461d3926dcac1da16f5f337a100fb9931b",
       "depth": 2,
       "discoveredFrom": "docs/contracts/adapter-contract.md",
       "kind": "contract",

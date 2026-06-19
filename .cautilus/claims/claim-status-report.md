@@ -9,11 +9,11 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Status packet: .cautilus/claims/status-summary.json
 - Candidate count: 394
 - Source count: 71
-- Packet source commit: c485d7cf8459f26a99485ad8c0c675e6e442ab56
+- Packet source commit: 6b3947987e497e69c81cb0c800abe12d1609000a
 - Snapshot notice: gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.
-- Git state snapshot: fresh; stale=no
+- Git state snapshot: fresh-with-head-drift; stale=no
 - Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded
-- Snapshot recommendation: The claim packet commit matches the inspected checkout.
+- Snapshot recommendation: The current HEAD differs from the packet commit, but no recorded claim source changed; review and eval planning may continue.
 
 ## Scoreboard
 
@@ -30,20 +30,20 @@ Review readiness: heuristicClaimsReadyForReview: 170, needsAlignment: 41, needsS
 ## Canonical Claim Map
 
 - Map packet: .cautilus/claims/canonical-claim-map.json
-- Input status: current
+- Input status: stale; claims packet hash differs
 - User raw claims: 108
 - User claims mapped to U1-U7: 108
 - User claims not mapped to U1-U7: 0
-- User mappings recommended for semantic sampling: 34
+- User mappings recommended for semantic sampling: 35
 - Maintainer claims mapped to M1-M34: M1: 7, M10: 12, M11: 37, M12: 11, M2: 18, M3: 69, M4: 69, M5: 25, M6: 6, M7: 12, M8: 14, M9: 6
 - All raw claims by disposition: mapped-to-maintainer-canonical: 286, mapped-to-user-canonical: 108
-- Mapping confidence: high: 78, low: 19, medium: 297
+- Mapping confidence: high: 77, low: 19, medium: 298
 
 | User claim | Title | Raw claims | Evidence | Review |
 | --- | --- | --- | --- | --- |
 | U1 | Readiness | 22 | satisfied: 10, unknown: 12 | agent-reviewed: 10, heuristic: 12 |
-| U2 | Claim Discovery | 62 | satisfied: 27, unknown: 35 | agent-reviewed: 38, heuristic: 24 |
-| U3 | Behavior Evaluation | 9 | satisfied: 2, unknown: 7 | agent-reviewed: 5, heuristic: 4 |
+| U2 | Claim Discovery | 61 | satisfied: 27, unknown: 34 | agent-reviewed: 38, heuristic: 23 |
+| U3 | Behavior Evaluation | 10 | satisfied: 2, unknown: 8 | agent-reviewed: 5, heuristic: 5 |
 | U4 | Bounded Improvement | 3 | unknown: 3 | agent-reviewed: 2, heuristic: 1 |
 | U5 | Reviewable Artifacts | 5 | satisfied: 4, unknown: 1 | agent-reviewed: 4, heuristic: 1 |
 | U6 | Evidence Gaps | 1 | satisfied: 1 | agent-reviewed: 1 |
@@ -103,7 +103,7 @@ Maintainer semantic sampling queue:
 | M11 | Reporting And Review Variants | claim-docs-contracts-adapter-contract-md-231 (medium), claim-docs-contracts-adapter-contract-md-446 (medium), claim-docs-contracts-adapter-contract-md-452 (medium), claim-docs-contracts-adapter-contract-md-498 (medium) |
 | M12 | Scenario History And Proposal Normalization | claim-agents-md-68 (medium), claim-docs-contracts-claim-discovery-workflow-md-298 (medium), claim-docs-contracts-claim-discovery-workflow-md-676 (medium), claim-docs-contracts-scenario-history-md-3 (medium) |
 
-Semantic sampling recommended for 316 raw claim(s): claim-agents-md-12, claim-agents-md-29, claim-agents-md-32, claim-agents-md-68, claim-agents-md-95, claim-agents-md-100, claim-agents-md-101, claim-agents-md-142, ...
+Semantic sampling recommended for 317 raw claim(s): claim-agents-md-12, claim-agents-md-29, claim-agents-md-32, claim-agents-md-68, claim-agents-md-95, claim-agents-md-100, claim-agents-md-101, claim-agents-md-142, ...
 
 ## Next Work
 
