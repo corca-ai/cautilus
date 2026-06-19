@@ -2,7 +2,7 @@
 
 When deterministic checks pass but behavior is still uncertain, the user needs a bounded way to compare observed intentful behavior.
 Using the `cautilus evaluate` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state.
-The dev/repo coding-agent flagship is proven live on demand; the remaining surfaces project their latest selected evidence bundle.
+Both dev coding-agent surfaces (`dev/repo` routing and `dev/skill` orientation) are proven live on demand; the app surfaces project their latest selected evidence bundle.
 
 ## The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the find-skills bootstrap.
 
@@ -20,6 +20,22 @@ The check below — run by `npm run lint:specs`, on demand rather than in the de
 | fixtures/eval/dev/repo/live/behavior-eval-live-capture-rerun.json | evaluations[0].routingDecision.bootstrapHelper | charness:find-skills |
 | fixtures/eval/dev/repo/live/behavior-eval-live-verdicts.json | verdicts[0].verdict | sound |
 | fixtures/eval/dev/repo/live/behavior-eval-live-verdicts.json | verdicts[1].verdict | unsound |
+
+## The cautilus-agent skill is proven live: its no-input orientation runs the read-only status and holds.
+
+This is not a projected bundle either.
+`npm run proof:skill-orientation:live` (`scripts/on-demand/skill-orientation-live-proof.mjs`) drives the real cautilus-agent skill with no task detail; the agent runs the read-only `./bin/cautilus doctor status` packet, summarizes adapter/claim/scan/next-branch state, and stops at branch selection — asserted as the stable invariant (invoked + orientation passed) on a FRESH capture. A blind Sonnet judge graded the genuine live orientation sound and a constructed auto-escalation control unsound.
+The check below — run by `npm run lint:specs`, on demand rather than in the default `npm run verify` — projects two operator-witnessed live captures and their blind verdicts.
+
+> check:cautilus-json-file
+| path | json_path | equals |
+| --- | --- | --- |
+| fixtures/eval/dev/skill/live/skill-orientation-live-capture.json | evaluations[0].invoked | true |
+| fixtures/eval/dev/skill/live/skill-orientation-live-capture.json | evaluations[0].outcome | passed |
+| fixtures/eval/dev/skill/live/skill-orientation-live-capture.json | evaluations[0].telemetry.model | claude-sonnet-4-6 |
+| fixtures/eval/dev/skill/live/skill-orientation-live-capture-rerun.json | evaluations[0].outcome | passed |
+| fixtures/eval/dev/skill/live/skill-orientation-live-verdicts.json | verdicts[0].verdict | sound |
+| fixtures/eval/dev/skill/live/skill-orientation-live-verdicts.json | verdicts[1].verdict | unsound |
 
 ## A user can choose the behavior surface that matches the evaluation intent.
 
