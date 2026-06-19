@@ -41,7 +41,7 @@ function verdictByCase(entries) {
 	return new Map(entries.map((entry) => [entry.caseId, entry]));
 }
 
-export function assertIntentJudgePacket(packet) {
+function assertPacketShape(packet) {
 	if (!packet || typeof packet !== "object") {
 		throw new Error("intent judge packet must be an object");
 	}
@@ -58,20 +58,32 @@ export function assertIntentJudgePacket(packet) {
 	if (!Array.isArray(packet.judgeRuns) || packet.judgeRuns.length !== 2) {
 		throw new Error("intent judge packet must contain exactly two judgeRuns");
 	}
+}
+
+function assertJudgeVerdictAgreement(index, verdict, aggregate) {
+	const aggregateVerdict = aggregate.get(verdict.caseId);
+	if (verdict.verdict !== aggregateVerdict.verdict) {
+		throw new Error(`judgeRuns[${index}] verdict ${verdict.caseId} disagrees with aggregate`);
+	}
+	const expectedFacetValue = verdict.caseId === "control-generic" ? false : true;
+	assertFacetShape(verdict, expectedFacetValue);
+}
+
+function assertJudgeRun(index, run, aggregate) {
+	if (run.toolUses !== 0) {
+		throw new Error(`judgeRuns[${index}] must use no tools`);
+	}
+	assertUniqueCaseSet(run.verdicts, `judgeRuns[${index}].verdicts`);
+	for (const verdict of run.verdicts) {
+		assertJudgeVerdictAgreement(index, verdict, aggregate);
+	}
+}
+
+export function assertIntentJudgePacket(packet) {
+	assertPacketShape(packet);
 	const aggregate = verdictByCase(packet.verdicts);
 	for (const [index, run] of packet.judgeRuns.entries()) {
-		if (run.toolUses !== 0) {
-			throw new Error(`judgeRuns[${index}] must use no tools`);
-		}
-		assertUniqueCaseSet(run.verdicts, `judgeRuns[${index}].verdicts`);
-		for (const verdict of run.verdicts) {
-			const aggregateVerdict = aggregate.get(verdict.caseId);
-			if (verdict.verdict !== aggregateVerdict.verdict) {
-				throw new Error(`judgeRuns[${index}] verdict ${verdict.caseId} disagrees with aggregate`);
-			}
-			const expectedFacetValue = verdict.caseId === "control-generic" ? false : true;
-			assertFacetShape(verdict, expectedFacetValue);
-		}
+		assertJudgeRun(index, run, aggregate);
 	}
 	return packet;
 }
