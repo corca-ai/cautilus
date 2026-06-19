@@ -37,7 +37,8 @@ test("buildObservedSkillEvaluationInput materializes a normalized packet from fi
 	assert.equal(packet.evaluations[2].evaluationId, "execution-cautilus-no-input-claim-discovery-status");
 	assert.equal(packet.evaluations[2].outcome, "passed");
 	assert.equal(packet.evaluations[2].thresholds.max_duration_ms, 180000);
-	assert.equal(packet.evaluations[2].metrics.duration_ms, 3200);
+	// The no-input stand-in was upgraded to the genuine full-runner orientation capture (19033ms).
+	assert.equal(packet.evaluations[2].metrics.duration_ms, 19033);
 	assert.ok(packet.evaluations[0].artifactRefs.some((ref) => ref.kind === "aggregate"));
 });
 
