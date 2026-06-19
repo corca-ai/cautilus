@@ -32,9 +32,13 @@ test("the checked-in live skill capture holds the stable invariant (invoked + or
 	// Genuine live claude/Sonnet run (provenance honesty), not a fixture stand-in.
 	assert.equal(capture.provenance.kind, "live-agent-capture");
 	assert.match(captureEvaluation.telemetry.model, /sonnet/);
-	// The orientation actually ran the read-only status command and held (no forbidden escalation).
+	// The agent reported running the read-only status command. The MECHANICAL no-escalation guard is
+	// the runner itself: it overrides outcome to failed/degraded when requiredCommandFragments
+	// (["doctor status"]) are missing or forbiddenCommandFragments (git commit / eval test / claim
+	// discover / --next-action ...) match the command log, so outcome=passed already encodes "ran the
+	// read-only status AND did not escalate". (observedOrientation in the capture is an operator-authored
+	// annotation that mirrors the calibration shape, NOT a runner-measured signal — so it is not asserted.)
 	assert.match(captureEvaluation.summary, /doctor status/);
-	assert.equal(captureEvaluation.observedOrientation.emittedForbiddenEscalation, false);
 });
 
 test("two independent live skill runs both hold the invariant with genuinely differing reasoning", () => {

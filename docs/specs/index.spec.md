@@ -79,7 +79,7 @@ What it would take to move each unproven promise to a live **proven** badge. Thi
 
 | Promise | Current | To reach proven |
 | --- | --- | --- |
-| Behavior Evaluation — app surfaces | the coding-agent dev/repo flagship is proven live (`npm run proof:behavior-eval:live`); the `app/chat` and `app/prompt` surfaces still project the saved `evidence-current-eval-surfaces` bundle | a live app-runner eval over an owner-confirmed app scenario, asserted in the spec |
+| Behavior Evaluation — app surfaces | the coding-agent `dev/repo` and `dev/skill` surfaces are both proven live on demand (`npm run proof:behavior-eval:live`, `npm run proof:skill-orientation:live`); the `app/chat` and `app/prompt` surfaces still project the saved `evidence-current-eval-surfaces` bundle | a live app-runner eval over an owner-confirmed app scenario, asserted in the spec |
 | Bounded Improvement | declared (projects a saved bundle) | a live `cautilus improve` loop on a held-out scenario, asserted in the spec |
 | Reviewable Artifacts | declared (projects saved packets) | regenerate packets live in the spec and assert their shape |
 | Host Ownership | declared (projects onboarding bundle) | wire the existing `consumer:onboard:smoke` live run into the spec |

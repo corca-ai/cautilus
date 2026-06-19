@@ -52,6 +52,14 @@ Captured at `fixtures/eval/dev/skill/live/skill-orientation-live-verdicts.json`;
 
 `docs/specs/index.spec.md`: the `Behavior Evaluation` proof text now states BOTH dev surfaces are proven live (`npm run proof:behavior-eval:live` + `npm run proof:skill-orientation:live`). The badge stays `proven`; the app-ship surfaces stay in Proof Debt; the natural-unsound population stays a stated limitation.
 
+## Critique
+
+A bounded fresh-eye subagent critique (Sonnet) returned READY-WITH-EDITS, no blockers; both edits folded:
+- the apex Proof Debt "Current" cell was stale ("dev/repo flagship") — corrected to name both dev surfaces proven live;
+- the standing test asserted `observedOrientation.emittedForbiddenEscalation` as if runner-measured, but the runner's output schema is `{invoked, summary, outcome}` and `observedOrientation` is an operator-authored annotation — the assertion was removed and replaced with a comment that the MECHANICAL no-escalation guard is the runner's `forbiddenCommandFragments` override on `outcome` (a degraded/escalating run cannot reach `outcome: passed`).
+
+The critique confirmed: `outcome === passed` is a meaningful invariant (the runner forces failed/degraded when `requiredCommandFragments`/`forbiddenCommandFragments` fail), `bypassPermissions` is disclosed and honest for a read-only orientation, the control fabrication is objectively false against `SKILL.md`, the blind verdict is byte-tied with `tool_uses: 0`, the apex scope is honestly bounded, and no generic engine/runner was touched.
+
 ## Source
 
 Spec/contract: `docs/contracts/behavior-eval-live-proof.md` (the live-proof pattern; this slice applies it to the skill surface).

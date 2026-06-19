@@ -3,7 +3,7 @@
   "skillId": "cautilus-agent",
   "provenance": {
     "kind": "live-agent-capture",
-    "note": "Operator-witnessed fresh live run, 2026-06-19. The cautilus-agent skill no-input orientation ran live (run-local-skill-test.mjs, claude_code backend, claude-sonnet-4-6, bypassPermissions so the read-only doctor status command could execute); the summary below is the agent's verbatim self-report. Ephemeral /tmp artifact paths stripped; rerun npm run proof:skill-orientation:live to regenerate.",
+    "note": "Operator-witnessed fresh live run, 2026-06-19. The cautilus-agent skill no-input orientation ran live (run-local-skill-test.mjs, claude_code backend, claude-sonnet-4-6, bypassPermissions so the read-only doctor status command could execute); the summary/invoked/outcome below are the runner's output (the summary is the agent's verbatim self-report). The observedOrientation block is an operator-authored annotation mirroring the calibration shape, NOT a runner-measured signal — the mechanical no-escalation guard is the runner's forbiddenCommandFragments override on outcome. Ephemeral /tmp artifact paths stripped; rerun npm run proof:skill-orientation:live to regenerate.",
     "runner": "scripts/agent-runtime/run-local-skill-test.mjs",
     "backend": "claude_code",
     "casesFile": "fixtures/eval/dev/skill/live/skill-orientation-live-cases.json"
