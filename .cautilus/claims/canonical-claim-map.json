@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:dc1bb46e2c56bd8baebd0b0fea8e48380619de163f1bc77d8f459efddef8a0f7"
+      "contentHash": "sha256:18712770cda77e5197a8e7bd6034ac11f40c2022dc34ac201c521ac4255e8da7"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "63c0f77196d9f0620f1bd3ff8d0e494e67088639",
+  "claimsPacketGitCommit": "25f27fc4568b7edf9c3fc1ec64aef6c9a028c5f2",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 384,
+  "claimsPacketCandidateCount": 390,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -572,24 +572,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 384,
+    "totalRawClaimCount": 390,
     "userRawClaimCount": 105,
     "userMappedToCanonicalCount": 105,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 308,
+    "semanticReviewRecommendedCount": 314,
     "userSemanticReviewRecommendedCount": 33,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 279,
+      "mapped-to-maintainer-canonical": 285,
       "mapped-to-user-canonical": 105
     },
     "byAudience": {
-      "developer": 279,
+      "developer": 285,
       "user": 105
     },
     "byMappingConfidence": {
       "high": 76,
       "low": 19,
-      "medium": 289
+      "medium": 295
     },
     "byUserCanonicalClaimId": {
       "U1": 22,
@@ -603,14 +603,14 @@
     "byMaintainerCanonicalClaimId": {
       "M1": 7,
       "M10": 12,
-      "M11": 36,
+      "M11": 37,
       "M12": 11,
       "M2": 18,
-      "M3": 66,
-      "M4": 67,
+      "M3": 68,
+      "M4": 69,
       "M5": 25,
       "M6": 6,
-      "M7": 11,
+      "M7": 12,
       "M8": 14,
       "M9": 6
     },
@@ -758,6 +758,7 @@
       "claim-docs-contracts-eval-judge-collaboration-md-84",
       "claim-docs-contracts-eval-judge-collaboration-md-161",
       "claim-docs-contracts-eval-judge-collaboration-md-196",
+      "claim-docs-contracts-eval-judge-collaboration-md-220",
       "claim-docs-contracts-live-run-invocation-batch-md-28",
       "claim-docs-contracts-live-run-invocation-batch-md-77",
       "claim-docs-contracts-live-run-invocation-batch-md-166",
@@ -903,6 +904,11 @@
       "claim-docs-contracts-scenario-proposal-sources-md-216",
       "claim-docs-contracts-scenario-proposal-sources-md-235",
       "claim-docs-contracts-scenario-proposal-sources-md-236",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-67",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-70",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-71",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-114",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-150",
       "claim-docs-specs-evidence-gaps-spec-md-9",
       "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
       "claim-docs-specs-evidence-latest-selected-evidence-spec-md-11",
@@ -2062,7 +2068,7 @@
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 66,
+      "absorbedRawClaimCount": 68,
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
         "claim-agents-md-142",
@@ -2100,6 +2106,7 @@
         "claim-docs-contracts-claim-discovery-workflow-md-707",
         "claim-docs-contracts-eval-judge-collaboration-md-84",
         "claim-docs-contracts-eval-judge-collaboration-md-196",
+        "claim-docs-contracts-eval-judge-collaboration-md-220",
         "claim-docs-contracts-live-run-invocation-batch-md-77",
         "claim-docs-contracts-reporting-md-48",
         "claim-docs-contracts-runner-readiness-md-29",
@@ -2124,6 +2131,7 @@
         "claim-docs-contracts-realsurface-judge-convergence-md-98",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
         "claim-docs-contracts-scenario-proposal-sources-md-28",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-67",
         "claim-skills-cautilus-agent-skill-md-13",
         "claim-skills-cautilus-agent-skill-md-22",
         "claim-skills-cautilus-agent-skill-md-23",
@@ -2349,6 +2357,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-eval-judge-collaboration-md-220",
+          "claimFingerprint": "sha256:5246c2b14fc1142f4674411e7ff20f3f78b7a217e8c8e982f00d38797e41c677",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
           "claimFingerprint": "sha256:57c666ca6aca677b5b250c22b235e4a0d037aaaa07bb1c66151ad9947217cabf",
           "mappingConfidence": "medium",
@@ -2493,6 +2507,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-67",
+          "claimFingerprint": "sha256:bd5e43021cd7983f46ba4c1e36d44b01e05df351ec10536ca045e50c0775ccc1",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-skills-cautilus-agent-skill-md-13",
           "claimFingerprint": "sha256:472e59de361f21a5a5e3e1d85308f65a4e14d34e4c524f59b3cabd292719d42d",
           "mappingConfidence": "medium",
@@ -2531,27 +2551,27 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 48
+        "unknown": 50
       },
       "byReviewStatus": {
         "agent-reviewed": 28,
-        "heuristic": 37,
+        "heuristic": 39,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
-        "cautilus-eval": 17,
+        "cautilus-eval": 19,
         "deterministic": 32,
         "human-auditable": 17
       },
       "byMappingConfidence": {
         "low": 2,
-        "medium": 64
+        "medium": 66
       }
     },
     {
       "canonicalClaimId": "M4",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 67,
+      "absorbedRawClaimCount": 69,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-29",
@@ -2618,6 +2638,8 @@
         "claim-docs-contracts-runtime-fingerprint-improvement-md-41",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-261",
         "claim-docs-contracts-scenario-proposal-sources-md-152",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-70",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-114",
         "claim-docs-specs-ledger-names-and-keys-spec-md-26",
         "claim-skills-cautilus-agent-skill-md-156"
       ],
@@ -3013,6 +3035,18 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-70",
+          "claimFingerprint": "sha256:443e7c74c8f3d0b0c8da066f0b8ba23937d030e9b897ebde2c5104e4407b6006",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-114",
+          "claimFingerprint": "sha256:0fc08a5ad1dfa36e3f9e30760fb80c3a907a47362ce58d537f5403b7a0819b40",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-specs-ledger-names-and-keys-spec-md-26",
           "claimFingerprint": "sha256:b9c9b267134965303f42bf501abb0001040b1b14f65d8316589d7cd9460ea223",
           "mappingConfidence": "low",
@@ -3027,20 +3061,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 49
+        "unknown": 51
       },
       "byReviewStatus": {
         "agent-reviewed": 28,
-        "heuristic": 39
+        "heuristic": 41
       },
       "byRecommendedProof": {
         "cautilus-eval": 29,
-        "deterministic": 19,
-        "human-auditable": 19
+        "deterministic": 20,
+        "human-auditable": 20
       },
       "byMappingConfidence": {
         "low": 4,
-        "medium": 63
+        "medium": 65
       }
     },
     {
@@ -3313,7 +3347,7 @@
     {
       "canonicalClaimId": "M7",
       "title": "Improvement Loop",
-      "absorbedRawClaimCount": 11,
+      "absorbedRawClaimCount": 12,
       "absorbedRawClaimIds": [
         "claim-agents-md-32",
         "claim-docs-contracts-claim-discovery-workflow-md-16",
@@ -3324,6 +3358,7 @@
         "claim-docs-contracts-improvement-md-151",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-47",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-71",
         "claim-docs-specs-ledger-improvement-spec-md-5",
         "claim-docs-specs-ledger-promise-ledger-spec-md-16"
       ],
@@ -3383,6 +3418,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-71",
+          "claimFingerprint": "sha256:28bb4891c1d86ec702c748be91493994e1a436787372ced5a68e101b91749649",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-specs-ledger-improvement-spec-md-5",
           "claimFingerprint": "sha256:3506e9f5cbc0175a547c31afdc6eb818bf20736601df0b8d0fca8d4fe8e1db26",
           "mappingConfidence": "medium",
@@ -3397,20 +3438,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 4,
-        "unknown": 7
+        "unknown": 8
       },
       "byReviewStatus": {
         "agent-reviewed": 7,
-        "heuristic": 4
+        "heuristic": 5
       },
       "byRecommendedProof": {
         "cautilus-eval": 3,
         "deterministic": 4,
-        "human-auditable": 4
+        "human-auditable": 5
       },
       "byMappingConfidence": {
         "low": 2,
-        "medium": 9
+        "medium": 10
       }
     },
     {
@@ -3715,7 +3756,7 @@
     {
       "canonicalClaimId": "M11",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 36,
+      "absorbedRawClaimCount": 37,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-231",
         "claim-docs-contracts-adapter-contract-md-446",
@@ -3752,6 +3793,7 @@
         "claim-docs-contracts-runtime-fingerprint-improvement-md-190",
         "claim-docs-contracts-scenario-proposal-sources-md-40",
         "claim-docs-contracts-scenario-proposal-sources-md-216",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-150",
         "claim-docs-specs-evidence-latest-selected-evidence-spec-md-11"
       ],
       "absorbedRawClaims": [
@@ -3966,6 +4008,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-150",
+          "claimFingerprint": "sha256:d2273e0d62ccc64ffdc1616f4aa0504e1a7baffa99b602d1f194e5eba6dc9275",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-specs-evidence-latest-selected-evidence-spec-md-11",
           "claimFingerprint": "sha256:44a0def569c22aec92b1bc5390f8cb9e86544eb02c2318fb9af1197b37b68041",
           "mappingConfidence": "medium",
@@ -3974,20 +4022,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 19
+        "unknown": 20
       },
       "byReviewStatus": {
         "agent-reviewed": 19,
-        "heuristic": 17
+        "heuristic": 18
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
         "deterministic": 22,
-        "human-auditable": 10
+        "human-auditable": 11
       },
       "byMappingConfidence": {
         "low": 2,
-        "medium": 34
+        "medium": 35
       }
     },
     {
@@ -11588,6 +11636,45 @@
       ]
     },
     {
+      "claimId": "claim-docs-contracts-eval-judge-collaboration-md-220",
+      "summary": "With both AGENTS.md and the skill surface closed, the `declared` exit is now available on both surfaces; the apex flip remains a separate maintainer decision.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/eval-judge-collaboration.md",
+          "line": 220,
+          "excerpt": "With both AGENTS.md and the skill surface closed, the `declared` exit is now available on both surfaces; the apex flip remains a separate maintainer decision."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:5246c2b14fc1142f4674411e7ff20f3f78b7a217e8c8e982f00d38797e41c677",
+      "canonicalClaimId": "M3",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M21",
+      "runnerUpScore": 10,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "cautilu",
+        "decision",
+        "dev/skill",
+        "fixture",
+        "maintainer",
+        "run",
+        "skill",
+        "surface",
+        "workflow"
+      ]
+    },
+    {
       "claimId": "claim-docs-contracts-live-run-invocation-batch-md-28",
       "summary": "Raw provider-error interpretation stays consumer-owned.",
       "sourceRefs": [
@@ -17850,6 +17937,11 @@
           "path": "docs/contracts/realsurface-judge-convergence.md",
           "line": 90,
           "excerpt": "Any bug, error, or regression encountered routes to `charness:debug` before further fixes."
+        },
+        {
+          "path": "docs/contracts/skill-surface-judge-convergence.md",
+          "line": 119,
+          "excerpt": "Any bug, error, or regression encountered routes to `charness:debug` before further fixes."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -18697,6 +18789,195 @@
         "scenario",
         "skill",
         "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-67",
+      "summary": "FD6 — attach via the existing generic enricher and a new judge-eval skill adapter; the badge stays `declared` (maintainer decision: \"이번엔 유지, 이후 flip 제안\").",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/skill-surface-judge-convergence.md",
+          "line": 67,
+          "excerpt": "FD6 — attach via the existing generic enricher and a new judge-eval skill adapter; the badge stays `declared` (maintainer decision: \"이번엔 유지, 이후 flip 제안\")."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:bd5e43021cd7983f46ba4c1e36d44b01e05df351ec10536ca045e50c0775ccc1",
+      "canonicalClaimId": "M3",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 9,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "cautilu",
+        "decision",
+        "dev/skill",
+        "fixture",
+        "maintainer",
+        "run",
+        "skill",
+        "stay",
+        "via"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-70",
+      "summary": "A new judge-eval skill adapter chains the skill runner then the enricher (mirroring `self-dogfood-realsurface-judge-eval`), so `cautilus evaluate fixture --adapter-name <skill-judge-adapter>` runs the real skill dogfood path and then the judge tier.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/skill-surface-judge-convergence.md",
+          "line": 70,
+          "excerpt": "A new judge-eval skill adapter chains the skill runner then the enricher (mirroring `self-dogfood-realsurface-judge-eval`), so `cautilus evaluate fixture --adapter-name <skill-judge-adapter>` runs the real skill dogfood path and then the judge tier."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:443e7c74c8f3d0b0c8da066f0b8ba23937d030e9b897ebde2c5104e4407b6006",
+      "canonicalClaimId": "M4",
+      "score": 13,
+      "runnerUpCanonicalClaimId": "M19",
+      "runnerUpScore": 13,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "adapter",
+        "cautilu",
+        "deterministic",
+        "dogfood",
+        "fixture",
+        "keep",
+        "lint",
+        "new",
+        "path",
+        "run",
+        "runner",
+        "schema"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-71",
+      "summary": "The apex `Behavior Evaluation` badge stays at `declared` this slice; once both surfaces are closed the maintainer is presented a separate flip-proposal slice (the natural-unsound-population gap is the documented remaining bar).",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/skill-surface-judge-convergence.md",
+          "line": 71,
+          "excerpt": "The apex `Behavior Evaluation` badge stays at `declared` this slice; once both surfaces are closed the maintainer is presented a separate flip-proposal slice (the natural-unsound-population gap is the documented remaining bar)."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:28bb4891c1d86ec702c748be91493994e1a436787372ced5a68e101b91749649",
+      "canonicalClaimId": "M7",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M17",
+      "runnerUpScore": 8,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "behavior",
+        "evaluation",
+        "evidence",
+        "gap",
+        "least",
+        "maintainer",
+        "one",
+        "surface"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-114",
+      "summary": "The generic Go engine extension must stay generic verdict-compositing symmetric with the instruction surface; no repo-specific judge or facet logic enters the engine or the generic runtime runner, and the judge half stays in adapter-owned `scripts/`.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/skill-surface-judge-convergence.md",
+          "line": 114,
+          "excerpt": "The generic Go engine extension must stay generic verdict-compositing symmetric with the instruction surface; no repo-specific judge or facet logic enters the engine or the generic runtime runner, and the judge half stays in adapter-owned `scripts/`."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:0fc08a5ad1dfa36e3f9e30760fb80c3a907a47362ce58d537f5403b7a0819b40",
+      "canonicalClaimId": "M4",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M19",
+      "runnerUpScore": 8,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "adapter",
+        "generic",
+        "logic",
+        "repo-specific",
+        "runner",
+        "runtime",
+        "test",
+        "thi"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-150",
+      "summary": "The critique confirmed FD5's boundary-honesty claim (the reused Go helpers only read and count a structured verdict; all facet computation stays in the `.mjs` harness) and the no-manufacturing/sequencing discipline.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/skill-surface-judge-convergence.md",
+          "line": 150,
+          "excerpt": "The critique confirmed FD5's boundary-honesty claim (the reused Go helpers only read and count a structured verdict; all facet computation stays in the `.mjs` harness) and the no-manufacturing/sequencing discipline."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:d2273e0d62ccc64ffdc1616f4aa0504e1a7baffa99b602d1f194e5eba6dc9275",
+      "canonicalClaimId": "M11",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M14",
+      "runnerUpScore": 7,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "contract",
+        "count",
+        "only",
+        "surface",
+        "test",
+        "treating",
+        "verdict"
       ]
     },
     {
