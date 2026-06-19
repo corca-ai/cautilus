@@ -1,0 +1,31 @@
+version: 1
+repo: cautilus
+evaluation_surfaces:
+  - dev / skill evaluation of the reasoning-soundness judge tier on the cautilus-agent no-input orientation surface
+baseline_options:
+  - the no-input orientation discipline in skills/cautilus-agent/SKILL.md
+required_prerequisites:
+  - keep the checked-in genuine orientation capture, reasoning-soundness calibration, and captured blind-judge verdicts in sync
+evaluation_input_default: fixtures/eval/dev/skill/skill-judge-eval-cases.json
+default_runtime: fixture
+eval_test_command_templates:
+  - node ./scripts/agent-runtime/run-local-skill-test.mjs --repo-root . --workspace {candidate_repo} --cases-file {eval_cases_file} --output-file {eval_observed_file} --artifact-dir {output_dir}/local-skill-test --backend {backend} --fixture-results-file fixtures/eval/dev/skill/skill-judge-eval-fixture-results.json --sandbox read-only --timeout-ms 180000 --codex-model gpt-5.4-mini --codex-reasoning-effort low --codex-config project_doc_max_bytes=0 --codex-config include_apps_instructions=false --codex-config include_environment_context=false --claude-permission-mode dontAsk --claude-allowed-tools 'Bash(cautilus *)' && node ./scripts/agent-runtime/enrich-eval-with-reasoning-judge.mjs --observed-file {eval_observed_file} --calibration fixtures/eval/dev/skill/reasoning-soundness-calibration.dev-skill-no-input-orientation.json --verdicts fixtures/eval/dev/skill/reasoning-soundness-judge-verdicts.dev-skill-no-input-orientation.json --provenance full-runner-capture-replay --claim-id dev-skill-no-input-orientation
+artifact_paths:
+  - skills/cautilus-agent/SKILL.md
+  - fixtures/eval/dev/skill/skill-judge-eval-cases.json
+  - fixtures/eval/dev/skill/skill-judge-eval-fixture-results.json
+  - fixtures/eval/dev/skill/internal-runner-fixture-results.json
+  - fixtures/eval/dev/skill/reasoning-soundness-calibration.dev-skill-no-input-orientation.json
+  - fixtures/eval/dev/skill/reasoning-soundness-judge-verdicts.dev-skill-no-input-orientation.json
+  - scripts/agent-runtime/run-local-skill-test.mjs
+  - scripts/agent-runtime/enrich-eval-with-reasoning-judge.mjs
+  - scripts/agent-runtime/reasoning-soundness-attach.mjs
+comparison_questions:
+  - Does the eval grade the skill runner's GENUINE captured no-input orientation reasoning, not a synthetic stand-in?
+  - Does a skill case pass only when the deterministic surface matchers AND the reasoning-soundness judge both hold?
+  - Does the judge tier catch the surface-clean-wrong-reason control the deterministic matchers pass?
+human_review_prompts:
+  - id: full-runner-provenance-skill
+    prompt: Where would an operator conclude the graded reasoning was NOT the skill runner's real capture (full-runner provenance), i.e. that the judge is still scoring a synthetic stand-in?
+  - id: judge-load-bearing-skill
+    prompt: Where would an operator conclude the judge tier was NOT actually load-bearing on the skill surface — i.e. that an always-sound judge would still pass the skill-orientation-reason-control?
