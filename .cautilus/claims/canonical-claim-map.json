@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:4f50f4a0d83d6fe97e29359157b0745bcf2013b4063b268d771e9a1b59bf40b0"
+      "contentHash": "sha256:6d39ee747deed5c1f4e00de50eafc59e352b44957341145961c34bbb66ef56e5"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "6ed9721f3535d5119723eccb0f417685aa7fb457",
+  "claimsPacketGitCommit": "c7878b25f287344466b27d4d82ebece709bab7c8",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 394,
   "catalogs": {
@@ -1578,10 +1578,10 @@
         "claim-docs-specs-user-evaluation-spec-md-4",
         "claim-docs-specs-user-evaluation-spec-md-8",
         "claim-docs-specs-user-evaluation-spec-md-25",
-        "claim-docs-specs-user-evaluation-spec-md-48",
-        "claim-docs-specs-user-evaluation-spec-md-67",
-        "claim-docs-specs-user-evaluation-spec-md-86",
-        "claim-docs-specs-user-evaluation-spec-md-97"
+        "claim-docs-specs-user-evaluation-spec-md-49",
+        "claim-docs-specs-user-evaluation-spec-md-81",
+        "claim-docs-specs-user-evaluation-spec-md-100",
+        "claim-docs-specs-user-evaluation-spec-md-111"
       ],
       "absorbedRawClaims": [
         {
@@ -1621,25 +1621,25 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-48",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-49",
           "claimFingerprint": "sha256:5c24925bdf26dd23fdce627645bf9cb74517324dddaa9748802a522e1363786f",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-67",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-81",
           "claimFingerprint": "sha256:0517842296e793d47cb2971efb5dd9a10e5692c313fb44555f79697cb9afd4a8",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-86",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-100",
           "claimFingerprint": "sha256:14a67a2548b2b02abf555ed0e63e7e0f8d039455c3ea20abbb2421357d26abfc",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-97",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-111",
           "claimFingerprint": "sha256:975ddb4b73f5d58343ad945ea52b461229f4ee82871c007140da3d50dd284a9e",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -6386,8 +6386,8 @@
       "canonicalClaimId": "U2",
       "score": 11,
       "runnerUpCanonicalClaimId": "U3",
-      "runnerUpScore": 7,
-      "scoreMargin": 4,
+      "runnerUpScore": 8,
+      "scoreMargin": 3,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -7319,10 +7319,10 @@
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:c4e3a1449eae3ee64e174c26d97bbf9deff1ae5b30fa9f26c18a8bdc11199ed3",
       "canonicalClaimId": "U3",
-      "score": 16,
+      "score": 17,
       "runnerUpCanonicalClaimId": "U2",
       "runnerUpScore": 15,
-      "scoreMargin": 1,
+      "scoreMargin": 2,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -7335,10 +7335,10 @@
         "host",
         "normalize",
         "packet",
+        "plu",
         "raw",
         "recommendation",
-        "satisfied",
-        "scenario"
+        "satisfied"
       ]
     },
     {
@@ -7443,9 +7443,9 @@
       "claimFingerprint": "sha256:75425af6738960680c6834184aff7b0a51e0ec1a5f15d5e50c7294c9bc1a6f7a",
       "canonicalClaimId": "U2",
       "score": 12,
-      "runnerUpCanonicalClaimId": "U1",
-      "runnerUpScore": 7,
-      "scoreMargin": 5,
+      "runnerUpCanonicalClaimId": "U3",
+      "runnerUpScore": 8,
+      "scoreMargin": 4,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],
@@ -8658,12 +8658,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-48",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-49",
       "summary": "The agent run itself is replayed from the production log rather than re-run live; the live app re-run stays in Proof Debt.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 48,
+          "line": 49,
           "excerpt": "The agent run itself is replayed from the production log rather than re-run live; the live app re-run stays in Proof Debt."
         }
       ],
@@ -8701,12 +8701,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-67",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-81",
       "summary": "A user can choose the behavior surface that matches the evaluation intent.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 67,
+          "line": 81,
           "excerpt": "A user can choose the behavior surface that matches the evaluation intent."
         }
       ],
@@ -8744,12 +8744,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-86",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-100",
       "summary": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 86,
+          "line": 100,
           "excerpt": "A user can evaluate behavior without Cautilus taking over host-owned execution."
         }
       ],
@@ -8787,12 +8787,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-97",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-111",
       "summary": "A user can reopen observed behavior and summary packets after each eval.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 97,
+          "line": 111,
           "excerpt": "A user can reopen observed behavior and summary packets after each eval."
         }
       ],

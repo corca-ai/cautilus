@@ -1417,7 +1417,7 @@
         "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise."
       },
       {
-        "claimId": "claim-docs-specs-user-evaluation-spec-md-97",
+        "claimId": "claim-docs-specs-user-evaluation-spec-md-111",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1426,7 +1426,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-user-evaluation-spec-md-97"
+              "claim-docs-specs-user-evaluation-spec-md-111"
             ]
           }
         ],
@@ -3462,7 +3462,7 @@
       }
     ]
   },
-  "gitCommit": "6ed9721f3535d5119723eccb0f417685aa7fb457",
+  "gitCommit": "c7878b25f287344466b27d4d82ebece709bab7c8",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3474,10 +3474,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "6ed9721f3535d5119723eccb0f417685aa7fb457",
+    "currentGitCommit": "c7878b25f287344466b27d4d82ebece709bab7c8",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "6ed9721f3535d5119723eccb0f417685aa7fb457",
+    "packetGitCommit": "c7878b25f287344466b27d4d82ebece709bab7c8",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

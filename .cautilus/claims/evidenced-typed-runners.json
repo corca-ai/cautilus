@@ -3871,7 +3871,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:5c24925bdf26dd23fdce627645bf9cb74517324dddaa9748802a522e1363786f",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-48",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-49",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3890,7 +3890,7 @@
       "sourceRefs": [
         {
           "excerpt": "The agent run itself is replayed from the production log rather than re-run live; the live app re-run stays in Proof Debt.",
-          "line": 48,
+          "line": 49,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3902,7 +3902,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0517842296e793d47cb2971efb5dd9a10e5692c313fb44555f79697cb9afd4a8",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-67",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-81",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3921,7 +3921,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can choose the behavior surface that matches the evaluation intent.",
-          "line": 67,
+          "line": 81,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3933,7 +3933,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:14a67a2548b2b02abf555ed0e63e7e0f8d039455c3ea20abbb2421357d26abfc",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-86",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-100",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -3943,7 +3943,7 @@
           "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
           "supportsClaimIds": [
             "claim-docs-specs-user-evaluation-spec-md-4",
-            "claim-docs-specs-user-evaluation-spec-md-86"
+            "claim-docs-specs-user-evaluation-spec-md-100"
           ]
         }
       ],
@@ -3963,7 +3963,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
-          "line": 86,
+          "line": 100,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3978,7 +3978,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:975ddb4b73f5d58343ad945ea52b461229f4ee82871c007140da3d50dd284a9e",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-97",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-111",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -3987,7 +3987,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-specs-user-evaluation-spec-md-97"
+            "claim-docs-specs-user-evaluation-spec-md-111"
           ]
         }
       ],
@@ -4006,7 +4006,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can reopen observed behavior and summary packets after each eval.",
-          "line": 97,
+          "line": 111,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -14282,7 +14282,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "6ed9721f3535d5119723eccb0f417685aa7fb457",
+  "gitCommit": "c7878b25f287344466b27d4d82ebece709bab7c8",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -16008,7 +16008,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:e27328b6bfcf83f47cdbe8e13fa08b1fcdc1211f8613b8b46f449895ac6058a2",
+      "contentHash": "sha256:f167bf6e9a610817dd9ce78e805eea216493c17a5c66beaf4ca713213e9b12c5",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -16018,7 +16018,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:24427b3157973d06028423b3f6d18af7f2bd53a07263b8f716bfc33e8be7a20d",
+      "contentHash": "sha256:8f4ef8038ea5dcc3184da1fe241bef0321018229e889176fb0fa8109af347a44",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
