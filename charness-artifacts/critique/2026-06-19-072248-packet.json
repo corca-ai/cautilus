@@ -1,0 +1,38 @@
+{
+  "kind": "charness.critique_prepare_packet",
+  "version": 1,
+  "repo": "cautilus",
+  "generated_at": "2026-06-19T07:22:48Z",
+  "prepared_for": "app-chat-natural-unsound-artifact-proof",
+  "changed_ref": null,
+  "adapter_path": ".agents/critique-adapter.yaml",
+  "reviewer_tier_evidence": {
+    "requested_tier": "high-leverage",
+    "requested_spawn_fields": {},
+    "host_exposure_state": "pending-parent-spawn",
+    "application_state": "unverified-by-packet",
+    "instruction": "Review artifacts must record requested_fields_sent, metadata-hidden, host-defaulted, unsupported, or applied only when host-confirmed."
+  },
+  "sections": [
+    {
+      "id": "surface-critique-release-packaging",
+      "title": "Surface Critique — release-packaging",
+      "content_kind": "script",
+      "producer": "node scripts/prepare-surface-critique-packet.mjs --format md --surface-id release-packaging",
+      "content": "# Surface Critique Packet — release-packaging\n\n**Scope:** This packet only checks the deterministic rule families listed below for the named surface. A `ready` status here does **not** imply that other repo surfaces are clean — broader critique still applies.\n\n- Surface ID: `release-packaging`\n- Covered rule families: `retro_registration`, `release_control_docs`, `release_prepare_rewrites`, `versioned_json_audit`, `retro_contract_cases`\n- Status: `ready`\n\n## Findings\n\n_No findings in covered rule families._\n",
+      "ok": true,
+      "errors": []
+    },
+    {
+      "id": "surface-critique-cli-agent-product",
+      "title": "Surface Critique — cli-agent-product",
+      "content_kind": "script",
+      "producer": "node scripts/prepare-surface-critique-packet.mjs --format md --surface-id cli-agent-product",
+      "content": "# Surface Critique Packet — cli-agent-product\n\n**Scope:** This packet only checks the deterministic rule families listed below for the named surface. A `ready` status here does **not** imply that other repo surfaces are clean — broader critique still applies.\n\n- Surface ID: `cli-agent-product`\n- Covered rule families: `packaged_skill_tree_parity`, `packaged_skill_content_sync`\n- Status: `ready`\n\n## Findings\n\n_No findings in covered rule families._\n",
+      "ok": true,
+      "errors": []
+    }
+  ],
+  "section_count": 2,
+  "ok": true
+}

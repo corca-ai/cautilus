@@ -49,7 +49,7 @@ It also does not complete all requested breadth: memory continuity and clarifica
 
 ## Executable gates
 
-- `node --test scripts/on-demand/app-chat-replay-proof.test.mjs` now asserts 9 checks: external replay, secret intent scenario, artifact fidelity scenario, sound secret verdict, independent sound rerun, natural artifact unsound, independent unsound rerun, constructed control load-bearing, and tamper failure.
+- `node --test scripts/on-demand/app-chat-replay-proof.test.mjs` now asserts 10 checks: external replay, secret intent scenario, artifact fidelity scenario, sound secret verdict, independent sound rerun, natural artifact unsound, independent unsound rerun, constructed control load-bearing, tamper failure, and opposite grading between the real secret case and the control.
 - `go test ./internal/runtime/` covers the new Go behavior-intent catalog entries.
 - `node --test scripts/agent-runtime/behavior-intent.test.mjs` covers the JS behavior-intent catalog entries.
 - `npm run lint:specs docs/specs/user/evaluation.spec.md` projects the new app/chat natural-unsound rows.

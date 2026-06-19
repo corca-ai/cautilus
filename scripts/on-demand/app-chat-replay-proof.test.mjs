@@ -60,8 +60,18 @@ test("the scenario was produced by the generic normalize-chatbot mechanism, inte
 
 test("the artifact fidelity breadth scenario is a real private external chat product production capture, not a constructed control", () => {
 	const evidence = assertExternalReplayCapture(capture, "external-chat-artifact-public-url-prod");
+	const artifactEvaluation = capture.evaluations.find((entry) => entry.evaluationId === "external-chat-artifact-public-url-prod");
 	assert.equal(evidence.behaviorSurface, "artifact_fidelity");
 	assert.match(evidence.finalText, /public URL.*생성할 수는 없습니다/);
+	assert.equal(artifactEvaluation.observed.postHocEvidence.publicBaseUrlPath, "/workspace/artifacts-url.txt");
+	assert.equal(
+		artifactEvaluation.observed.postHocEvidence.correctPublicUrl,
+		"https://public-artifacts.example.test/simple2.html",
+	);
+	assert.match(
+		artifactEvaluation.observed.messages.at(-1).content,
+		/https:\/\/public-artifacts\.example\.test\/simple2\.html/,
+	);
 	const scenario = scenarios.find((s) => s.proposalKey === "artifact-public-url-needs-runtime-resolution");
 	assert.ok(scenario, "artifact fidelity scenario must be checked in");
 	assert.equal(scenario.intentProfile.behaviorSurface, "artifact_fidelity");
@@ -89,7 +99,9 @@ test("two independent blind judge runs both grade sound, with genuinely differin
 
 test("the blind judge harvested a naturally occurring app/chat unsound response", () => {
 	const evidence = assertNaturalUnsoundVerdict(naturalUnsoundVerdict);
+	const artifactEvaluation = capture.evaluations.find((entry) => entry.evaluationId === "external-chat-artifact-public-url-prod");
 	assert.equal(naturalUnsoundVerdict.caseId, "external-chat-artifact-public-url-prod");
+	assert.equal(naturalUnsoundVerdict.observedResponse, artifactEvaluation.observed.finalText);
 	assert.match(evidence.observedResponse, /public URL.*생성할 수는 없습니다/);
 	assert.equal(naturalUnsoundVerdict.expected, "unsound");
 });
@@ -97,6 +109,8 @@ test("the blind judge harvested a naturally occurring app/chat unsound response"
 test("two independent blind judge runs both grade the natural artifact failure unsound", () => {
 	assertNaturalUnsoundVerdict(naturalUnsoundVerdict);
 	assertNaturalUnsoundVerdict(rerunNaturalUnsoundVerdict);
+	assert.equal(rerunNaturalUnsoundVerdict.caseId, "external-chat-artifact-public-url-prod");
+	assert.equal(rerunNaturalUnsoundVerdict.observedResponse, naturalUnsoundVerdict.observedResponse);
 	assert.notEqual(naturalUnsoundVerdict.reasonSummary, rerunNaturalUnsoundVerdict.reasonSummary);
 	assert.notEqual(naturalUnsoundVerdict.agentId, rerunNaturalUnsoundVerdict.agentId);
 });

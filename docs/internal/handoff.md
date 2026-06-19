@@ -5,7 +5,7 @@
 권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — app/chat 자연-unsound harvest + artifact breadth가 착지했으니, (1) 남은 private external chat product breadth 2개(메모리 연속성·명확화-우선)를 추가하거나, (2) app/chat liveness(라이브 앱 재실행)로 가거나, (3) app/prompt proof debt로 갑시다.`
 
 doc 멘션만으로 픽업하면 이 트리거의 workflow를 실행하세요(파일 재독만 하지 말 것).
-**app/chat replay는 이제 자연 sound(secret) + 자연 unsound(artifact fidelity)를 둘 다 가진다.** `app/chat` 표면은 진짜 외부 제품(private external chat product, example-app-prod, 40명 실유저) 프로덕션 행동을 load-bearing 블라인드 intent judge로 평가한다 — external-validity + intent-judge + app/chat 자연-unsound gap을 닫음(string-match → intent judge; constructed-only → natural unsound 포함). 단 **app-agent liveness는 deferred**(유저가 replay 선택; agent는 프로덕션 로그에서 replay, 라이브 재실행 아님). apex 배지는 여전히 `proven`(dev 표면이 carry), app/chat 행 + Proof Debt가 정직하게 갱신됨. 남은 Proof Debt: app/chat liveness, app/prompt, 그리고 breadth(메모리 연속성·명확화-우선).
+**app/chat replay는 이제 자연 sound(secret) + 자연 unsound(artifact fidelity)를 둘 다 가진다.** `app/chat` 표면은 진짜 외부 제품(private external chat product, example-app-prod)의 실제 production DM thread에서 나온 행동을 load-bearing 블라인드 intent judge로 평가한다 — external-validity + intent-judge + app/chat 자연-unsound gap을 닫음(string-match → intent judge; constructed-only → natural unsound 포함). 단 **app-agent liveness는 deferred**(유저가 replay 선택; agent는 프로덕션 로그에서 replay, 라이브 재실행 아님). apex 배지는 여전히 `proven`(dev 표면이 carry), app/chat 행 + Proof Debt가 정직하게 갱신됨. 남은 Proof Debt: app/chat liveness, app/prompt, 그리고 breadth(메모리 연속성·명확화-우선).
 먼저 `charness-artifacts/eval-trust/2026-06-19-app-chat-external-data-replay.md`, `charness-artifacts/eval-trust/2026-06-19-app-chat-natural-unsound-breadth.md`, `docs/specs/index.spec.md`를 읽고 아래 "Next Session"에서 시작.
 
 ## Current State
