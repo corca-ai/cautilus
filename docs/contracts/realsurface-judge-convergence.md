@@ -37,7 +37,7 @@ Close the handoff's open decisions first (below), then implement, dogfood, and p
   AGENTS.md is the simpler surface and its real capture already exists, so the convergence is provable here with the least new machinery.
 
 - FD3 — transfer the governing rules, re-ground the sound case on the real capture.
-  The governing rules (`startup_bootstrap`, `work_skill`) and the constructed `regressed-reason-control` transfer unchanged from `dev-repo-routing-regression`.
+  The governing rules (`startup_bootstrap`, `work_skill`) and the constructed `realsurface-reason-control` transfer unchanged from `dev-repo-routing-regression`.
   The baseline/sound case must carry the real captured `reasonSummary` and `observedRoute` from `internal-runner-fixture-results.json` — not the blind-subagent paraphrase — because grading the real reasoning is the entire point of the convergence.
   The `observedRoute` mirrors the full real `routingDecision` (`workSkill: "charness:impl"`, `firstToolCall: "functions.exec_command"`), not the regression baseline's `workSkill: "none"`, so the route fields are the real capture's, never re-paraphrased or silently normalized.
   The decomposition declares `codeFacets: ["emitted_find_skills_bootstrap"]`, since the real route emits the bootstrap, so the deterministic process facet stays the code half and the judge owns the semantic half.
@@ -102,7 +102,7 @@ Close the handoff's open decisions first (below), then implement, dogfood, and p
 - AC1 (SC1, SC2, SC3) — a new on-demand test (mirroring `scripts/on-demand/judge-tier-eval-dogfood.test.mjs`) drives the converged real-surface eval in fixture mode and asserts: the enriched packet carries `reasoningSoundness` with provenance `full-runner-capture-replay`; the baseline passes (surface matchers AND judge sound); and a constructed control fails solely via `reasoningSoundness.status` with the surface/routing matchers passing.
 - AC2 (SC4) — `node --test scripts/agent-runtime/reasoning-soundness-judge.test.mjs` picks up the new calibration through the registry and its existing invariants assert it passes its gate, an always-sound judge fails it, and the captured verdicts replay green.
   The replay invariant *skips* (does not fail) a calibration whose sibling verdicts file is absent, so AC2 is only real once the blind grade of step 3 is checked in; a missing verdicts file is a vacuous green, not proof.
-- AC3 (SC4) — the new calibration carries the real captured baseline reasoning and a constructed `regressed-reason-control`; a unit assertion (in the SOT test or the dogfood test) pins that the baseline `reasonSummary` is byte-identical to `internal-runner-fixture-results.json["checked-in-agents-routing"].routingDecision.reasonSummary`, so the gate cannot silently drift back to a paraphrase.
+- AC3 (SC4) — the new calibration carries the real captured baseline reasoning and a constructed `realsurface-reason-control`; a unit assertion (in the SOT test or the dogfood test) pins that the baseline `reasonSummary` is byte-identical to `internal-runner-fixture-results.json["checked-in-agents-routing"].routingDecision.reasonSummary`, so the gate cannot silently drift back to a paraphrase.
 - AC4 (SC5) — `npm run verify` and the existing real-surface dogfood path stay green after wiring.
 
 ## Critique
@@ -127,7 +127,7 @@ This document is canonical during implementation.
 One slice, because the real capture already exists.
 
 1. Factor the composite-to-`reasoningSoundness` mapping out of `run-reasoning-judge-eval.mjs` into a shared SOT helper, with the provenance string as a parameter (the regression runner keeps `blind-subagent-harvest-replay`).
-2. Add `fixtures/eval/dev/repo/reasoning-soundness-calibration.dev-repo-realsurface-routing.json`: baseline = the real captured reasoning/route from `internal-runner-fixture-results.json` (`expectedVerdict: sound`), plus the constructed `regressed-reason-control`, with `codeFacets: ["emitted_find_skills_bootstrap"]` and the transferred governing rules.
+2. Add `fixtures/eval/dev/repo/reasoning-soundness-calibration.dev-repo-realsurface-routing.json`: baseline = the real captured reasoning/route from `internal-runner-fixture-results.json` (`expectedVerdict: sound`), plus the constructed `realsurface-reason-control`, with `codeFacets: ["emitted_find_skills_bootstrap"]` and the transferred governing rules.
 3. Blind-grade once (PROVE): run the blind judge on those two cases and check in `reasoning-soundness-judge-verdicts.dev-repo-realsurface-routing.json`.
 4. Add an adapter-owned enricher that attaches the SOT composite to the real-surface dogfood packet per case (provenance `full-runner-capture-replay`), and wire it so `self-dogfood-eval`'s packet carries it without touching the generic runtime runner.
 5. Add the on-demand dogfood test (AC1); confirm the registry tests (AC2) and the deterministic gate (AC4) stay green.

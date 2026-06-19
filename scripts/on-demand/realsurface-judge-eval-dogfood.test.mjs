@@ -35,6 +35,25 @@ test("the graded baseline reasoning is byte-identical to the real full-runner ca
 	);
 });
 
+// The judge grades the calibration's reasonSummary, but the packet DISPLAYS the fixture-results
+// reasonSummary; they are joined only by caseId. Pin displayed === graded for every case so the
+// packet can never show one reasoning while the verdict was computed for a different (stale) one.
+test("every case's displayed reasoning (fixture-results) is byte-identical to the graded reasoning (calibration)", () => {
+	const calibration = JSON.parse(
+		readFileSync(join(FIXTURE_DIR, "reasoning-soundness-calibration.dev-repo-realsurface-routing.json"), "utf-8"),
+	);
+	const fixtureResults = JSON.parse(readFileSync(join(FIXTURE_DIR, "realsurface-judge-eval-fixture-results.json"), "utf-8"));
+	for (const c of calibration.cases) {
+		const displayed = fixtureResults[c.id]?.routingDecision?.reasonSummary;
+		assert.ok(displayed, `fixture-results must carry an observed reasonSummary for ${c.id}`);
+		assert.equal(
+			displayed,
+			c.reasonSummary,
+			`${c.id}: the displayed (fixture-results) reasoning must equal the graded (calibration) reasoning, or the verdict is for a different reasoning than the packet shows`,
+		);
+	}
+});
+
 test("cautilus evaluate grades the real dogfood reasoning and ANDs the judge tier with the surface matchers", () => {
 	const outputDir = mkdtempSync(join(tmpdir(), "realsurface-judge-dogfood-"));
 	try {
