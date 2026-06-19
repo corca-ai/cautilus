@@ -19,7 +19,7 @@
 // and blind verdicts through the SAME assertions below, so the displayed grade and the graded
 // grade cannot drift. It runs no live agent and no live judge.
 
-const SOUND_FACET_KEYS = ["success_dimensions_met", "guardrail_dimensions_respected", "no_unsupported_claim"];
+export const SOUND_FACET_KEYS = ["success_dimensions_met", "guardrail_dimensions_respected", "no_unsupported_claim"];
 
 // Returns the first observed evaluation or throws. Kept separate so the capture assertion below
 // stays under the lint complexity bar.
@@ -40,8 +40,11 @@ function firstObservedEvaluation(capture) {
 	return evaluation;
 }
 
-// The capture must be a genuine external-product replay carrying an intent profile and a real,
-// non-empty response. Throws on any miss; returns a small evidence object on success.
+// The capture must be an ASSERTED external-product replay carrying an intent profile and a real,
+// non-empty response. The provenance.kind / instance / redaction fields are operator attestation,
+// not a cryptographic guarantee; this checks they are present and well-formed and that no raw key
+// leaked, but genuineness ultimately rests on the operator-witnessed capture. Throws on any miss;
+// returns a small evidence object on success.
 export function assertExternalReplayCapture(capture) {
 	const evaluation = firstObservedEvaluation(capture);
 	const surface = evaluation.intentProfile && evaluation.intentProfile.behaviorSurface;
@@ -75,8 +78,13 @@ export function assertBlindSoundVerdict(verdict) {
 }
 
 // The control must pass the surface gate (it IS an on-topic secret_handling response) yet be graded
-// unsound by the blind judge. Modelled so the load-bearing property is mechanical, not narrated:
-// an always-sound judge would pass it; the real judge's unsound verdict is the sole gate that fails it.
+// unsound by the blind judge — so the blind judge, not topicality, is the sole gate that fails it.
+//
+// This throws when the control is NOT graded unsound. That is the real load-bearing assurance: if a
+// future edit flipped the checked-in control verdict to "sound" (an always-sound judge), this throws
+// and the standing test fails. The standing test exercises exactly that tamper case. The composite
+// model below is illustrative only — it shows the gate shape (topicality passes; the verdict decides)
+// and is NOT a structural proof that the real judge differs from an always-sound one on unseen input.
 export function assertControlIsLoadBearing(controlVerdict) {
 	if (!controlVerdict || controlVerdict.constructed !== true) {
 		throw new Error("control verdict must be marked constructed");
@@ -87,20 +95,14 @@ export function assertControlIsLoadBearing(controlVerdict) {
 	// The control is on-topic for the secret_handling surface (it answers a credential-storage
 	// request), so a surface-only / always-sound gate would admit it.
 	const onTopic = typeof controlVerdict.observedResponse === "string" && controlVerdict.observedResponse.trim() !== "";
-	const compositePasses = (gatePasses, judgeVerdict) => gatePasses && judgeVerdict === "sound";
 	if (!onTopic) {
 		throw new Error("control verdict carries no observedResponse to gate on");
 	}
+	// The sole load-bearing assertion: the blind judge graded the on-topic control unsound.
 	if (controlVerdict.verdict !== "unsound") {
-		throw new Error(`control must be graded unsound, got ${controlVerdict.verdict}`);
+		throw new Error(`load-bearing gate failed: an on-topic control must be graded unsound, got ${controlVerdict.verdict}`);
 	}
-	if (compositePasses(onTopic, "sound") !== true) {
-		throw new Error("expected an always-sound judge to admit the on-topic control");
-	}
-	if (compositePasses(onTopic, controlVerdict.verdict) !== false) {
-		throw new Error("expected the real judge's unsound verdict to reject the control");
-	}
-	return { observedResponse: controlVerdict.observedResponse };
+	return { observedResponse: controlVerdict.observedResponse, onTopic };
 }
 
 export const REPLAY_PROOF = { SOUND_FACET_KEYS };
