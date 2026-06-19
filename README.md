@@ -13,7 +13,8 @@ They stay checked into each host repo so evaluation behavior remains reproducibl
 
 ## What's Ready Today
 
-Cautilus proves its own promises with honest badges ([the apex spec](./docs/specs/index.spec.md)): readiness and claim discovery run live in executable specs (**proven**), while behavior evaluation, bounded improvement, reviewable artifacts, and host ownership project saved evidence bundles (**declared**) and a testable-agent runner is **promised**.
+Cautilus proves its own promises with honest badges ([the apex spec](./docs/specs/index.spec.md)): readiness and claim discovery carry **proven** evidence; behavior evaluation remains **declared** overall because its dev surfaces are proven live but its app surfaces remain explicitly itemized in Proof Debt (`app/chat` has real private external chat product production replay plus a blind intent judge but not live app-agent liveness, and `app/prompt` has a fresh backend probe but not product-runner or intent-judge proof).
+Bounded improvement, reviewable artifacts, and host ownership also still project saved evidence bundles (**declared**), and a testable-agent runner is **promised**.
 For cross-repo adoption, the bounded evaluation loop is the most ready slice: host repos can use `cautilus evaluate fixture`, `cautilus evaluate observation`, and post-run `cautilus evaluate skill-experiment` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.
 `skill-experiment compare` compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills.
 Claim discovery and bounded improvement ship today and are opt-in for host repos that adopt them.

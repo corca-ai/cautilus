@@ -3,7 +3,7 @@
 When deterministic checks pass but behavior is still uncertain, the user needs a bounded way to compare observed intentful behavior.
 Using the `cautilus evaluate` CLI command and the `cautilus-agent` skill, a user can evaluate behavior across `dev/repo`, `dev/skill`, `app/chat`, and `app/prompt` surfaces without turning the host repo's runners, prompts, or policy into Cautilus-owned state.
 Both dev coding-agent surfaces (`dev/repo` routing and `dev/skill` orientation) are proven live on demand; the `app/chat` surface is now evaluated on real external private external chat product production behavior graded by a load-bearing blind intent judge (external validity and the intent judge, with the agent run replayed from the production log), and it includes natural sound secret-handling, memory-continuity, and clarification-first captures plus a natural unsound artifact-fidelity capture.
-`app/prompt` still projects its latest selected evidence bundle.
+`app/prompt` now has a fresh backend probe over the checked-in tagline fixture, but it still needs product-runner proof and an intent-judge boundary before it can be treated like the app/chat proof.
 
 ## The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the find-skills bootstrap.
 
@@ -86,10 +86,42 @@ The check below — run by `npm run lint:specs`, with the deterministic replay i
 | fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-verdicts-rerun.json | verdicts[3].caseId | external-chat-weather-location-clarification-prod |
 | fixtures/eval/app/chat/external-chat-replay/external-chat-app-replay-verdicts-rerun.json | verdicts[3].verdict | sound |
 
+## The app/prompt surface has a fresh backend probe, and it exposes the remaining matcher boundary.
+
+This is not product-runner proof and not an app/prompt intent judge.
+On 2026-06-19, the checked-in `cautilus-tagline` app/prompt fixture was re-run through the fixture backend, live Codex CLI backend, and live Claude CLI backend.
+The fixture backend and Codex live backend returned `accept-now`.
+The Claude live backend returned a reasonable one-sentence Cautilus description, but it used `behave` rather than the exact expected fragment `behavior`; the current app/prompt evaluator is a string-fragment matcher, so that run correctly returned `reject`.
+All three runs still report `productProofReady=false`, `requiresProductRunnerProof=true`, and `runnerAssessmentState=missing-assessment`.
+So this closes the stale saved-bundle-only description for app/prompt, but it does not close app/prompt product-runner proof debt.
+
+> check:cautilus-json-file
+| path | json_path | equals | includes |
+| --- | --- | --- | --- |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | schemaVersion | cautilus.app_prompt_backend_probe.v1 | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | sourceFixture | fixtures/eval/app/prompt/cautilus-tagline.fixture.json | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | expectedFinalTextFragment | behavior | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[0].runtime | fixture | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[0].recommendation | accept-now | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[0].proof.productProofReady | false | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[0].proof.requiresProductRunnerProof | true | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[0].proof.runnerAssessmentState | missing-assessment | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[1].runtime | codex | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[1].recommendation | accept-now | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[1].proof.productProofReady | false | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[1].proof.requiresProductRunnerProof | true | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[1].proof.runnerAssessmentState | missing-assessment | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[2].runtime | claude | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[2].recommendation | reject | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[2].evaluation.matcherBoundary | | string-fragment matcher rejects |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[2].proof.productProofReady | false | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[2].proof.requiresProductRunnerProof | true | |
+| fixtures/eval/app/prompt/backend-probe/app-prompt-backend-probe-capture.json | runs[2].proof.runnerAssessmentState | missing-assessment | |
+
 ## A user can choose the behavior surface that matches the evaluation intent.
 
-The current eval-surface evidence covers repo-contract behavior, checked-in skill behavior, multi-turn app chat behavior, and single prompt input/output behavior.
-This spec projects the latest selected evidence bundle instead of rerunning expensive eval work.
+The older selected eval-surface evidence bundle still covers repo-contract behavior, checked-in skill behavior, multi-turn app chat behavior, and single prompt input/output behavior.
+This section projects that legacy cross-surface bundle for coverage continuity; the fresher app/chat and app/prompt proof boundaries are asserted in the sections above.
 
 ```run:shell
 # Show the target surfaces from the latest selected eval-surface evidence.

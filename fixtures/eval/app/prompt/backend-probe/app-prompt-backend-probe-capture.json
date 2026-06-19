@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "cautilus.app_prompt_backend_probe.v1",
+  "claimId": "app-prompt-backend-proof-boundary",
+  "generatedAt": "2026-06-19T08:58:35Z",
+  "sourceFixture": "fixtures/eval/app/prompt/cautilus-tagline.fixture.json",
+  "caseId": "one-line-behavior-eval",
+  "input": "Describe Cautilus in one short sentence.",
+  "expectedFinalTextFragment": "behavior",
+  "runs": [
+    {
+      "runId": "app-prompt-fixture-2026-06-19",
+      "runtime": "fixture",
+      "command": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-app-prompt --output-dir /tmp/cautilus-app-prompt-probe",
+      "recommendation": "accept-now",
+      "schemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+      "proof": {
+        "targetSurface": "app/prompt",
+        "runtime": "fixture",
+        "proofClass": "fixture-smoke",
+        "productProofReady": false,
+        "requiresProductRunnerProof": true,
+        "runnerAssessmentState": "missing-assessment"
+      },
+      "evaluation": {
+        "status": "passed",
+        "match": true,
+        "harness": "fixture-backend",
+        "provider": "anthropic",
+        "model": "claude-sonnet-4-6",
+        "observedFinalText": "Fixture response includes behavior."
+      }
+    },
+    {
+      "runId": "app-prompt-codex-2026-06-19",
+      "runtime": "codex",
+      "command": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-app-prompt --runtime codex --output-dir /tmp/cautilus-app-prompt-codex-probe",
+      "recommendation": "accept-now",
+      "schemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+      "proof": {
+        "targetSurface": "app/prompt",
+        "runtime": "codex",
+        "proofClass": "declared-eval-runner",
+        "productProofReady": false,
+        "requiresProductRunnerProof": true,
+        "runnerAssessmentState": "missing-assessment"
+      },
+      "evaluation": {
+        "status": "passed",
+        "match": true,
+        "harness": "codex_exec",
+        "provider": "openai",
+        "model": "gpt-5.4-mini",
+        "observedFinalText": "Cautilus is a workflow system for capturing, tracking, and proving intentful behavior with auditable evidence."
+      }
+    },
+    {
+      "runId": "app-prompt-claude-2026-06-19",
+      "runtime": "claude",
+      "command": "./bin/cautilus evaluate fixture --repo-root . --adapter-name self-dogfood-app-prompt --runtime claude --output-dir /tmp/cautilus-app-prompt-claude-probe",
+      "recommendation": "reject",
+      "schemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+      "proof": {
+        "targetSurface": "app/prompt",
+        "runtime": "claude",
+        "proofClass": "declared-eval-runner",
+        "productProofReady": false,
+        "requiresProductRunnerProof": true,
+        "runnerAssessmentState": "missing-assessment"
+      },
+      "evaluation": {
+        "status": "failed",
+        "match": false,
+        "harness": "claude_code",
+        "provider": "anthropic",
+        "model": "claude-default",
+        "observedFinalText": "Cautilus is a CLI-and-agent product that runs intent-first, auditable evaluations of how AI agents and prompts actually behave.",
+        "matcherBoundary": "The response describes behavior semantically with 'behave' but does not contain the exact expected fragment 'behavior', so the current app/prompt string-fragment matcher rejects it."
+      }
+    }
+  ],
+  "scopeHonesty": {
+    "proves": "The app/prompt fixture translates and runs through fixture, live Codex CLI, and live Claude CLI backends, and the checked-in replay makes the matcher boundary auditable.",
+    "doesNotProve": "This is not product-runner proof and not an intent judge; productProofReady remains false for every run."
+  }
+}
