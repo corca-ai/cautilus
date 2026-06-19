@@ -10,7 +10,8 @@ import {
 	artifactRef,
 	sampleDir,
 } from "./run-local-skill-test.mjs";
-import { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
+import { extractClaudeTelemetry, resolveClaudeResultEnvelope } from "./skill-test-telemetry.mjs";
+import { applyObservationExpectations } from "./skill-test-expectations.mjs";
 
 export { extractClaudeTelemetry } from "./skill-test-telemetry.mjs";
 
@@ -29,7 +30,11 @@ export function claudeArgs(options) {
 	const args = [
 		"-p",
 		"--no-session-persistence",
-		"--output-format", "json",
+		// stream-json (with --verbose) emits the per-turn tool_use transcript so the deterministic
+		// command-fragment matchers can be applied to the claude backend, symmetric to codex; the
+		// final `type:"result"` line still carries the structured result and usage envelope.
+		"--output-format", "stream-json",
+		"--verbose",
 		"--exclude-dynamic-system-prompt-sections",
 	];
 	if (options.claudeModel ?? options.model) {
@@ -69,6 +74,10 @@ function extractJSON(text) {
 }
 
 export function parseClaudeOutput(raw) {
+	const envelope = resolveClaudeResultEnvelope(raw);
+	if (envelope && envelope.result !== undefined) {
+		return extractJSON(typeof envelope.result === "string" ? envelope.result : JSON.stringify(envelope.result));
+	}
 	try {
 		const parsed = JSON.parse(raw);
 		if (parsed.result !== undefined) {
@@ -77,6 +86,55 @@ export function parseClaudeOutput(raw) {
 		return parsed;
 	} catch {
 		return extractJSON(raw);
+	}
+}
+
+// Collect the agent's shell command log from a claude stream-json transcript so the deterministic
+// command-fragment matchers (requiredCommandFragments / forbiddenCommandFragments) can be applied.
+// Returns null when no transcript is available (e.g. single-object `json` output), which keeps the
+// command matchers a no-op rather than asserting against an empty log.
+export function extractClaudeCommandText(raw) {
+	const commands = [];
+	for (const line of String(raw ?? "").split("\n")) {
+		const trimmed = line.trim();
+		if (!trimmed) {
+			continue;
+		}
+		let parsed;
+		try {
+			parsed = JSON.parse(trimmed);
+		} catch {
+			continue;
+		}
+		collectClaudeToolCommands(parsed, commands);
+	}
+	return commands.length > 0 ? commands.join("\n") : null;
+}
+
+function collectToolUseCommand(value, output) {
+	if (value.type !== "tool_use" || !value.input || typeof value.input !== "object") {
+		return;
+	}
+	for (const key of ["command", "cmd", "description"]) {
+		if (typeof value.input[key] === "string" && value.input[key].trim()) {
+			output.push(value.input[key]);
+		}
+	}
+}
+
+function collectClaudeToolCommands(value, output) {
+	if (Array.isArray(value)) {
+		value.forEach((entry) => collectClaudeToolCommands(entry, output));
+		return;
+	}
+	if (!value || typeof value !== "object") {
+		return;
+	}
+	collectToolUseCommand(value, output);
+	for (const entry of Object.values(value)) {
+		if (entry && typeof entry === "object") {
+			collectClaudeToolCommands(entry, output);
+		}
 	}
 }
 
@@ -127,19 +185,23 @@ export function runClaudeSample(options, testCase, artifactDir, sampleIndex) {
 	const telemetry = extractClaudeTelemetry(result.stdout ?? "", options);
 	writeFileSync(outputFile, `${JSON.stringify(observed, null, 2)}\n`);
 	artifactRefs.push(artifactRef("result", outputFile));
-	return normalizeObservedResult(
+	return applyObservationExpectations(
 		testCase,
-		{
-			...observed,
-			...(telemetry ? {
-				metrics: {
-					total_tokens: telemetry.total_tokens,
-					cost_usd: telemetry.cost_usd,
-				},
-				telemetry,
-			} : {}),
-		},
-		durationMs,
-		artifactRefs,
+		normalizeObservedResult(
+			testCase,
+			{
+				...observed,
+				...(telemetry ? {
+					metrics: {
+						total_tokens: telemetry.total_tokens,
+						cost_usd: telemetry.cost_usd,
+					},
+					telemetry,
+				} : {}),
+			},
+			durationMs,
+			artifactRefs,
+		),
+		extractClaudeCommandText(result.stdout ?? ""),
 	);
 }

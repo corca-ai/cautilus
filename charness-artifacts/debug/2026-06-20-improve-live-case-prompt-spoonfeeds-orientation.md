@@ -39,12 +39,22 @@ If the held-out case prompt is reduced to a genuinely minimal no-input invocatio
 
 ## Verification
 
-Pending: re-run the same calibration with the minimal prompt and confirm GOOD passes and DEGRADED fails.
-This is recorded as the next step before the fix is treated as proven.
+Three live calibration cycles uncovered a deeper, second root cause beyond the spoon-feeding:
+
+1. minimal prompt + codex backend: GOOD failed because codex resolved `--repo-root .` to `/home/hwidong` (not the worktree), reporting `missing_agent_surface` even though the preflight `init` materialized the surface (`doctor --scope agent-surface` reported `ready: true`). Codex's repo-root resolution is prompt-sensitive; the spoon-fed prompt anchored it, the minimal one did not.
+2. open prompt + claude backend: GOOD passed (calibration) but the DEGRADED seed control ALSO passed. The degraded agent DID follow the degraded directive (it ran `./bin/cautilus doctor --repo-root . --next-action`, the result.json shows `--next-action`, and the summary says "eval test") — yet outcome was `passed`.
+3. The degraded `result.json` has only `{invoked, summary, outcome}` and `expectationFindings: undefined`. `scripts/agent-runtime/skill-test-claude-backend.mjs` never calls `applyObservationExpectations` (grep count 0), so the claude backend skips the deterministic `requiredCommandFragments` / `forbiddenCommandFragments` / `requiredSummaryFragments` / `forbiddenSummaryFragments` matchers entirely and accepts the agent's SELF-GRADED `outcome`. The codex backend (`runCodexSample`) does apply them (`applyObservationExpectations(..., extractCodexCommandText(result.stdout))`).
+
+So the held-out gate is non-deterministic per backend: codex applies the matchers (but resolves repo-root inconsistently), claude is reliable on cwd (but self-grades, so a degraded prompt that emits a forbidden `--next-action` still "passes").
 
 ## Root Cause
 
-The held-out case prompt was inherited from `cautilus-skill-routing.fixture.json` case 3, which spoon-feeds the orientation recipe so the case validates "can the agent orient when told how" rather than "does the SKILL.md make the agent orient." For an improve proof where SKILL.md is the mutation target, the prompt must withhold the recipe so the prompt-under-test is load-bearing.
+Two compounding causes:
+
+1. (prompt) The held-out case prompt was inherited from `cautilus-skill-routing.fixture.json` case 3, which spoon-feeds the orientation recipe, so the case validates "can the agent orient when told how" rather than "does the SKILL.md make the agent orient." Fixed by the open prompt.
+2. (gate, load-bearing) `skill-test-claude-backend.mjs` does not apply `applyObservationExpectations`, so the claude backend grades execution cases purely by the agent's self-reported `outcome` and ignores the fixture's deterministic command/summary fragment matchers. A degraded prompt that drives the wrong command (`doctor --next-action`) still self-grades `passed`. The codex backend applies the matchers but resolves `--repo-root` inconsistently under a bare prompt. Neither backend, as-is, yields a deterministic good-vs-degraded differential for the orientation behavior.
+
+The smallest correct fix is to make the claude backend apply the same deterministic expectation matchers the codex backend already applies, extracting the agent's command log from the claude stream-json transcript. That restores a deterministic, backend-symmetric gate and gives the improve loop a reliable held-out differential on the proven (claude) backend.
 
 ## Invariant Proof
 

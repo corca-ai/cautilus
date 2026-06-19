@@ -65,6 +65,25 @@ function parseClaudeEnvelope(raw) {
 	}
 }
 
+// Resolve the final `type:"result"` envelope from either a single-object `--output-format json`
+// payload or a `--output-format stream-json` JSONL stream (where the result is the last line).
+export function resolveClaudeResultEnvelope(raw) {
+	if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+		return raw;
+	}
+	const single = parseClaudeEnvelope(raw);
+	if (single && (single.type === "result" || single.result !== undefined || isObjectRecord(single.usage))) {
+		return single;
+	}
+	const lines = parseJsonLines(raw);
+	for (let index = lines.length - 1; index >= 0; index -= 1) {
+		if (lines[index]?.type === "result") {
+			return lines[index];
+		}
+	}
+	return single;
+}
+
 function compactTelemetry(telemetry) {
 	const compact = {};
 	for (const [key, value] of Object.entries(telemetry)) {
@@ -338,7 +357,7 @@ export function aggregateSkillTelemetry(results) {
 }
 
 export function extractClaudeTelemetry(raw, options = {}) {
-	const envelope = typeof raw === "string" ? parseClaudeEnvelope(raw) : raw;
+	const envelope = resolveClaudeResultEnvelope(raw);
 	if (!envelope) {
 		return null;
 	}
