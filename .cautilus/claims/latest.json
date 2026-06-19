@@ -1,9 +1,9 @@
 {
-  "candidateCount": 393,
+  "candidateCount": 394,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 392,
+    "matchedClaimCount": 393,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -3568,8 +3568,39 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:5c24925bdf26dd23fdce627645bf9cb74517324dddaa9748802a522e1363786f",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-46",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The agent run itself is replayed from the production log rather than re-run live; the live app re-run stays in Proof Debt.",
+          "line": 46,
+          "path": "docs/specs/user/evaluation.spec.md"
+        }
+      ],
+      "summary": "The agent run itself is replayed from the production log rather than re-run live; the live app re-run stays in Proof Debt.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0517842296e793d47cb2971efb5dd9a10e5692c313fb44555f79697cb9afd4a8",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-40",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-60",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3588,7 +3619,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can choose the behavior surface that matches the evaluation intent.",
-          "line": 40,
+          "line": 60,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3600,7 +3631,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:14a67a2548b2b02abf555ed0e63e7e0f8d039455c3ea20abbb2421357d26abfc",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-59",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-79",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3618,7 +3649,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
-          "line": 59,
+          "line": 79,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3630,7 +3661,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:975ddb4b73f5d58343ad945ea52b461229f4ee82871c007140da3d50dd284a9e",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-70",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-90",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3647,7 +3678,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can reopen observed behavior and summary packets after each eval.",
-          "line": 70,
+          "line": 90,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -12689,11 +12720,11 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 286,
-      "user": 107
+      "user": 108
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 88,
+      "Agent and skill workflow": 89,
       "Claim discovery and review": 51,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
@@ -12706,25 +12737,25 @@
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 326
+      "unknown": 327
     },
     "byLifecycle": {
-      "new": 393
+      "new": 394
     },
     "byRecommendedProof": {
-      "cautilus-eval": 144,
+      "cautilus-eval": 145,
       "deterministic": 138,
       "human-auditable": 111
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 282
+      "heuristic": 283
     },
     "byVerificationReadiness": {
       "blocked": 15,
       "needs-alignment": 54,
       "needs-scenario": 12,
-      "ready-for-proof": 312
+      "ready-for-proof": 313
     }
   },
   "discoveryEngine": {
@@ -12920,7 +12951,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "c319573412a32a0826cd84c6d25b7cd108c48fde",
+  "gitCommit": "628b14dbb8577924ea2738e38f9d51a7b6a7c22c",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14514,7 +14545,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:e71fa084c0f20ad1d8a22526cf5c373af786bf5cfe5de1ca27f95d712e142b16",
+      "contentHash": "sha256:7a27d4febb62502a066b69b8bdc97e21cffb5aeecf0485aec27bcbaba3b88818",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -14524,7 +14555,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:25105b504002725112fc0e628c114ca8bf8289677539de53c733542fc67a9fa0",
+      "contentHash": "sha256:8e62d0eebccfc6fa5716c2494bd37832056c089c8b0059e33c98924037ee6d1e",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
