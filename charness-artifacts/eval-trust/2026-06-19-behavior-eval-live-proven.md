@@ -27,14 +27,14 @@ Still open (honest scope, kept in apex Proof Debt / stated as a limitation):
 
 ## Result: two independent live runs held the invariant; the judge graded the genuine reasoning sound
 
-Two independent live runs (each a real `claude_code` Sonnet invocation against the real `AGENTS.md`):
+Two independent live runs (each a real `claude_code` Sonnet invocation against the real `AGENTS.md`), both checked in so the claim is artifact-anchored, not narrated:
 
-| run | observationStatus | entryFile | bootstrapHelper | reasonSummary | invariant |
+| run | checked-in artifact | observationStatus | entryFile | bootstrapHelper | invariant |
 |---|---|---|---|---|---|
-| capture (checked in) | observed | AGENTS.md | charness:find-skills | "CLAUDE.md Skill Routing section explicitly mandates charness:find-skills at session startup ... maps directly to charness:impl ..." | **held** |
-| `npm run proof:behavior-eval:live` rerun | observed | AGENTS.md | charness:find-skills | "CLAUDE.md Skill Routing section and the session-start hook both mandate ... After that bootstrap pass ... charness:impl ..." | **held** |
+| first capture | `behavior-eval-live-capture.json` | observed | AGENTS.md | charness:find-skills | **held** |
+| `npm run proof:behavior-eval:live` rerun | `behavior-eval-live-capture-rerun.json` | observed | AGENTS.md | charness:find-skills | **held** |
 
-The reasoning text DIFFERED between runs (genuinely live, non-deterministic) but the routing invariant did not — the proof is live, not a replayed fluke.
+The reasoning text DIFFERED between the two captures (genuinely live, non-deterministic) but the routing invariant did not — the proof is live, not a replayed fluke. The standing test asserts both captures hold the invariant AND that their reasonSummaries differ.
 
 PROVE step (one-time blind grade, Sonnet, no tools, `tool_uses: 0`):
 - The genuine live capture → **sound** (0.95, all facets true; agentId `a325b34a1fd381e75`). The real live reasoning grades sound, not a manufactured pass.
@@ -61,6 +61,6 @@ A bounded fresh-eye subagent critique (Sonnet) of the build is recorded in the s
 
 Spec/contract: `docs/contracts/behavior-eval-live-proof.md` (decisions closed).
 Live driver + standing test: `scripts/on-demand/behavior-eval-live-proof.mjs`, `scripts/on-demand/behavior-eval-live-proof.test.mjs`.
-Fixtures: `fixtures/eval/dev/repo/live/behavior-eval-live-cases.json`, `behavior-eval-live-capture.json`, `behavior-eval-live-verdicts.json`.
+Fixtures: `fixtures/eval/dev/repo/live/behavior-eval-live-cases.json`, `behavior-eval-live-capture.json`, `behavior-eval-live-capture-rerun.json`, `behavior-eval-live-verdicts.json`.
 Truth surfaces: `docs/specs/user/evaluation.spec.md`, `docs/specs/index.spec.md`.
 Prior: `charness-artifacts/eval-trust/2026-06-19-realsurface-judge-convergence.md`, `2026-06-19-skill-surface-judge-convergence.md`.

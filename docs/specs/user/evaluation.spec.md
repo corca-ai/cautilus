@@ -7,8 +7,8 @@ The dev/repo coding-agent flagship is proven live on demand; the remaining surfa
 ## The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the find-skills bootstrap.
 
 This is not a projected bundle.
-`npm run proof:behavior-eval:live` drives the real agent (claude/Sonnet) against this repo's own `AGENTS.md` and asserts the stable cross-runtime routing invariant on a FRESH capture; a blind Sonnet judge graded the genuine live reasoning sound and a constructed wrong-reason control unsound, keeping the judge load-bearing.
-The standing check below replays the operator-witnessed capture and its blind verdicts so the displayed invariant matches the graded one, while the live cost stays on demand.
+`npm run proof:behavior-eval:live` (`scripts/on-demand/behavior-eval-live-proof.mjs`) drives the real agent (claude/Sonnet) against this repo's own `AGENTS.md` and asserts the stable cross-runtime routing invariant on a FRESH capture; a blind Sonnet judge graded the genuine live reasoning sound and a constructed wrong-reason control unsound, keeping the judge load-bearing.
+The check below — run by `npm run lint:specs`, on demand rather than in the default `npm run verify` — projects two operator-witnessed live captures and their blind verdicts so the displayed invariant matches the graded one, while the live agent run stays behind `npm run proof:behavior-eval:live`.
 
 > check:cautilus-json-file
 | path | json_path | equals |
@@ -17,6 +17,7 @@ The standing check below replays the operator-witnessed capture and its blind ve
 | fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].entryFile | AGENTS.md |
 | fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].routingDecision.bootstrapHelper | charness:find-skills |
 | fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].telemetry.runtime | claude_code |
+| fixtures/eval/dev/repo/live/behavior-eval-live-capture-rerun.json | evaluations[0].routingDecision.bootstrapHelper | charness:find-skills |
 | fixtures/eval/dev/repo/live/behavior-eval-live-verdicts.json | verdicts[0].verdict | sound |
 | fixtures/eval/dev/repo/live/behavior-eval-live-verdicts.json | verdicts[1].verdict | unsound |
 

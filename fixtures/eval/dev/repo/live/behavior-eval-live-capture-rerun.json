@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "cautilus.evaluation_observed.v1",
+  "suiteId": "dev-repo-realsurface-routing-live",
+  "suiteDisplayName": "Real-surface routing (live agent capture, independent rerun)",
+  "provenance": {
+    "kind": "live-agent-capture",
+    "note": "Second independent live run, 2026-06-19, via `npm run proof:behavior-eval:live`. Same operator-witnessed session as behavior-eval-live-capture.json but a separate live agent invocation (claude_code, claude-sonnet-4-6). Checked in to anchor the 'reasoning differs run to run, routing invariant holds' claim in artifacts, not narrative. Ephemeral /tmp artifact paths stripped.",
+    "runner": "scripts/on-demand/behavior-eval-live-proof.mjs",
+    "backend": "claude_code"
+  },
+  "evaluations": [
+    {
+      "evaluationId": "checked-in-agents-routing",
+      "displayName": "Checked-in AGENTS routing (live claude/Sonnet capture, rerun)",
+      "startedAt": "2026-06-19T03:00:16.490Z",
+      "observationStatus": "observed",
+      "summary": "Root instruction surface (AGENTS.md) and CLAUDE.md both direct session startup through charness:find-skills as a capability bootstrap before broader exploration. For an implementation task continuing from handoff, the durable work skill is charness:impl.",
+      "routingDecision": {
+        "selectedSkill": "charness:impl",
+        "bootstrapHelper": "charness:find-skills",
+        "workSkill": "charness:impl",
+        "selectedSupport": "none",
+        "firstToolCall": "Skill(charness:find-skills)",
+        "reasonSummary": "CLAUDE.md Skill Routing section and the session-start hook both mandate calling charness:find-skills once at session startup before broader exploration to map installed capabilities. After that bootstrap pass, the user task is 'implement the next slice', which maps directly to charness:impl as the durable work skill. charness:handoff informs what to continue from, but the execution vehicle for implementation work is charness:impl."
+      },
+      "entryFile": "AGENTS.md",
+      "telemetry": {
+        "runtime": "claude_code",
+        "provider": "anthropic",
+        "model": "claude-sonnet-4-6",
+        "total_tokens": 24195,
+        "cost_usd": 0.0379575
+      }
+    }
+  ]
+}

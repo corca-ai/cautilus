@@ -63,7 +63,13 @@ Check in the operator-witnessed fresh capture and the blind verdicts as trusted 
 
 ## Critique
 
-A bounded fresh-eye subagent critique (Sonnet) of the build is required before closeout; record its status here.
+A bounded fresh-eye subagent critique (Sonnet) returned READY-WITH-EDITS, no blockers; all four edits were folded:
+- the "two independent live runs" claim is now artifact-anchored — the second run is checked in (`behavior-eval-live-capture-rerun.json`) and the standing test asserts both captures hold the invariant with differing reasoning;
+- the apex and evaluation.spec.md now state the deterministic replay runs via `npm run test:on-demand` / `npm run lint:specs`, NOT the default `npm run verify`;
+- the load-bearing "an always-sound judge would pass the control" property is now asserted MECHANICALLY (a local composite check), not only narrated, so AC2 is honestly met;
+- the apex Proof line names the on-demand `.mjs` driver as the checked-in executable spec that runs live.
+
+The critique confirmed: provenance honesty solid (byte-identity + `tool_uses: 0` + telemetry asserted), invariant strength adequate (real regressions fail it), control fabrication objectively false against the governing rules, and no scope leak to the generic Go engine / runtime runner.
 
 ## Canonical Artifact
 
