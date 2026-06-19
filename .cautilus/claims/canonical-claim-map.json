@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:2010ba6fa87a3664658d672af86d59dd6a74d63ca9c425ed41679227579d9c1d"
+      "contentHash": "sha256:a2718a712028ac168512ea9fbbfa7e3cf0c417ec9ed022d24fdc735cbfa971d7"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "94d997e2f528c10625df1ec65cd562e0ee996f9d",
+  "claimsPacketGitCommit": "c485d7cf8459f26a99485ad8c0c675e6e442ab56",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 394,
   "catalogs": {
@@ -1179,8 +1179,8 @@
         "claim-docs-specs-user-claim-discovery-spec-md-159",
         "claim-docs-specs-user-claim-discovery-spec-md-190",
         "claim-docs-specs-user-claim-discovery-spec-md-219",
-        "claim-docs-specs-user-claim-discovery-spec-md-261",
-        "claim-docs-specs-user-claim-discovery-spec-md-264",
+        "claim-docs-specs-user-claim-discovery-spec-md-259",
+        "claim-docs-specs-user-claim-discovery-spec-md-262",
         "claim-docs-specs-user-evidence-gaps-spec-md-36"
       ],
       "absorbedRawClaims": [
@@ -1539,13 +1539,13 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-259",
           "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-264",
+          "claimId": "claim-docs-specs-user-claim-discovery-spec-md-262",
           "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -1586,9 +1586,9 @@
         "claim-docs-specs-user-evaluation-spec-md-8",
         "claim-docs-specs-user-evaluation-spec-md-25",
         "claim-docs-specs-user-evaluation-spec-md-50",
-        "claim-docs-specs-user-evaluation-spec-md-121",
-        "claim-docs-specs-user-evaluation-spec-md-140",
-        "claim-docs-specs-user-evaluation-spec-md-151"
+        "claim-docs-specs-user-evaluation-spec-md-130",
+        "claim-docs-specs-user-evaluation-spec-md-149",
+        "claim-docs-specs-user-evaluation-spec-md-160"
       ],
       "absorbedRawClaims": [
         {
@@ -1628,19 +1628,19 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-121",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-130",
           "claimFingerprint": "sha256:0517842296e793d47cb2971efb5dd9a10e5692c313fb44555f79697cb9afd4a8",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-140",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-149",
           "claimFingerprint": "sha256:14a67a2548b2b02abf555ed0e63e7e0f8d039455c3ea20abbb2421357d26abfc",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-evaluation-spec-md-151",
+          "claimId": "claim-docs-specs-user-evaluation-spec-md-160",
           "claimFingerprint": "sha256:975ddb4b73f5d58343ad945ea52b461229f4ee82871c007140da3d50dd284a9e",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -8702,12 +8702,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-121",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-130",
       "summary": "A user can choose the behavior surface that matches the evaluation intent.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 121,
+          "line": 130,
           "excerpt": "A user can choose the behavior surface that matches the evaluation intent."
         }
       ],
@@ -8745,12 +8745,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-140",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-149",
       "summary": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 140,
+          "line": 149,
           "excerpt": "A user can evaluate behavior without Cautilus taking over host-owned execution."
         }
       ],
@@ -8788,12 +8788,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-151",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-160",
       "summary": "A user can reopen observed behavior and summary packets after each eval.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/evaluation.spec.md",
-          "line": 151,
+          "line": 160,
           "excerpt": "A user can reopen observed behavior and summary packets after each eval."
         }
       ],
@@ -16126,12 +16126,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-259",
       "summary": "`discover claims status` owns next-action summaries over that saved packet.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 261,
+          "line": 259,
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet."
         }
       ],
@@ -16169,12 +16169,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-264",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-262",
       "summary": "This spec only verifies that the agent-run skill check is prepared.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/claim-discovery.spec.md",
-          "line": 264,
+          "line": 262,
           "excerpt": "This spec only verifies that the agent-run skill check is prepared."
         }
       ],

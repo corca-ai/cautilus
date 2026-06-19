@@ -3600,7 +3600,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0517842296e793d47cb2971efb5dd9a10e5692c313fb44555f79697cb9afd4a8",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-121",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-130",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3619,7 +3619,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can choose the behavior surface that matches the evaluation intent.",
-          "line": 121,
+          "line": 130,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3631,7 +3631,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:14a67a2548b2b02abf555ed0e63e7e0f8d039455c3ea20abbb2421357d26abfc",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-140",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-149",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3649,7 +3649,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
-          "line": 140,
+          "line": 149,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3661,7 +3661,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:975ddb4b73f5d58343ad945ea52b461229f4ee82871c007140da3d50dd284a9e",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-151",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-160",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3678,7 +3678,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can reopen observed behavior and summary packets after each eval.",
-          "line": 151,
+          "line": 160,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -9607,7 +9607,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-261",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-259",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9624,7 +9624,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet.",
-          "line": 261,
+          "line": 259,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9636,7 +9636,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-264",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-262",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9655,7 +9655,7 @@
       "sourceRefs": [
         {
           "excerpt": "This spec only verifies that the agent-run skill check is prepared.",
-          "line": 264,
+          "line": 262,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -12951,7 +12951,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "94d997e2f528c10625df1ec65cd562e0ee996f9d",
+  "gitCommit": "c485d7cf8459f26a99485ad8c0c675e6e442ab56",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14446,7 +14446,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:c4bd3e61644bf151b6aeefad6da05e7c8d89042ab9771a29426c36763938c488",
+      "contentHash": "sha256:78e1d8f3627cfc5d0bd8a7094b2d6696e8eaa9f8ad3de0171a2c1755c581084a",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -14545,7 +14545,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:adc77d3f99734ab6c1e76c9784bfdb60ed74c32241815f315f06cb220a142576",
+      "contentHash": "sha256:bf6090fa222780c89f6e9a75f9af54df303f6408c56526464e0ffbd085a06f07",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -14555,7 +14555,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:3883a5439d9741f7b759085fa43abef0bc71189eecd8dcd0a5fefada86ed68cc",
+      "contentHash": "sha256:88521877e9373cfe86d89c74ea9676c233ee9cf98f935d3a7cc224c6a355ee37",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -14905,7 +14905,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:c0c87f36c953dc9e88e9efc82bdb178f34658b62a9502bfd2a9a51ff00fbfc08",
+      "contentHash": "sha256:288e879234568f186a5ec02691e214660a088d8ca9b765816320d403d674f79f",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
