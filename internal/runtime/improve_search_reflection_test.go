@@ -49,3 +49,30 @@ func TestStringSliceOrEmptyRuntimeHandlesGoStringSlice(t *testing.T) {
 		t.Fatalf("expected [a b], got %v", got)
 	}
 }
+
+// Regression: eval-summary evaluations carry the scenario/case id as `evaluationId` (caseId is absent
+// on the dev/skill surface). If held-out entries fall back to `displayName`, the candidate's matrix
+// entry no longer matches the held-out scenario set, the dominating candidate never reaches the
+// frontier, and the search wrongly stays blocked.
+func TestHeldOutEntriesUseEvaluationIdAsScenarioId(t *testing.T) {
+	summary := map[string]any{
+		"recommendation": "accept-now",
+		"evaluations": []any{
+			map[string]any{
+				"evaluationId": "execution-cautilus-no-input-claim-discovery-status",
+				"displayName":  "Cautilus Agent",
+				"status":       "passed",
+			},
+		},
+	}
+	entries := improveSearchHeldOutEntriesFromEvalSummary(summary, "g1-1-codex-exec")
+	if len(entries) != 1 {
+		t.Fatalf("expected one held-out entry, got %d", len(entries))
+	}
+	if got := stringOrEmpty(entries[0]["scenarioId"]); got != "execution-cautilus-no-input-claim-discovery-status" {
+		t.Fatalf("expected scenarioId from evaluationId, got %q", got)
+	}
+	if score, _ := toFloat(entries[0]["score"]); score != 100 {
+		t.Fatalf("expected passed score 100, got %v", score)
+	}
+}

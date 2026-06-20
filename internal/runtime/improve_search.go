@@ -3018,7 +3018,12 @@ func improveSearchHeldOutEntriesFromEvalSummary(summary map[string]any, candidat
 	entries := []map[string]any{}
 	for _, rawEvaluation := range arrayOrEmpty(summary["evaluations"]) {
 		evaluation := asMap(rawEvaluation)
-		caseID := firstNonEmpty(stringOrEmpty(evaluation["caseId"]), stringOrEmpty(evaluation["displayName"]))
+		// eval-summary evaluations carry the scenario/case id as `evaluationId`; only fall back to
+		// `displayName` when neither a caseId nor an evaluationId is present. Using displayName as the
+		// held-out scenario id makes the candidate matrix entry mismatch the held-out scenario set
+		// (which uses the real case id), so the dominating candidate never reaches the frontier and the
+		// search wrongly stays blocked.
+		caseID := firstNonEmpty(stringOrEmpty(evaluation["caseId"]), stringOrEmpty(evaluation["evaluationId"]), stringOrEmpty(evaluation["displayName"]))
 		if caseID == "" {
 			continue
 		}
