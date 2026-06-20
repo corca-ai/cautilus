@@ -12,4 +12,4 @@ Key: `rule.cost-and-proof-freshness`.
 
 ## Evidence State
 
-The missing checked-in held-out improve cycle is tracked as `gap.improve-held-out-cycle` in [Proof Gaps](../evidence/gaps.spec.md).
+The held-out improve cycle is now proven live on the dev/skill surface: `npm run proof:improve:live` runs a real bounded improve loop that recovers a held-out scenario it was never tuned on, with the operator-witnessed capture under `fixtures/eval/dev/skill/improve/live/` replayed deterministically and projected by [Bounded Improvement](../user/improvement.spec.md).

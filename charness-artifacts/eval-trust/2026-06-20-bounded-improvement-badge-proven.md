@@ -40,6 +40,12 @@ The proof was unprovable until these real product/runner bugs were fixed (all ro
 
 Supporting fixes: load-bearing held-out prompt (minimal/open prompt so SKILL.md drives the behavior), claude candidate-eval backend + reliable cwd, wording-robust matchers (`branch` not `next branch`; dropped negation-brittle forbidden SUMMARY fragments; rely on forbidden COMMAND fragments), candidate-eval timeout 300s.
 
+## Fresh-eye critique
+
+Bounded fresh-eye / counterweight review delegated to a Sonnet subagent (read-only). Verdict: **READY-WITH-EDITS**.
+Honesty (constructed control allowed, win is a real live capture, badge scoped to dev/skill) — fine; load-bearing (assert requires real mutation + seed<100 + candidate>=100>seed, four negative replay tests) — fine; the three bug fixes correct and narrowly scoped, claude-backend matchers are the right direction (the self-grading path was the bug) — fine; spec check table asserts the win precisely; no overclaim.
+One real-but-minor edit applied: `docs/specs/rules/cost-and-proof-freshness.spec.md` still referenced the now-closed `gap.improve-held-out-cycle` as open — rewritten to point at the live proof.
+
 ## Gates
 
 - `npm run lint:specs` — 42 specs ok (includes the new live improve check).
