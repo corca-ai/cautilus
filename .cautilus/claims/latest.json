@@ -3,7 +3,7 @@
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 394,
+    "matchedClaimCount": 396,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -13009,7 +13009,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "99f7dcecb4a7d33be22c22ffe6e357f19200cfc1",
+  "gitCommit": "c3eec1662e1089fe316e17f23f7ddcfb12786c32",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14110,12 +14110,6 @@
       "depth": 3,
       "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/evidence/gaps.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
-      "kind": "markdown-link",
       "to": "docs/specs/user/evaluation.spec.md"
     },
     {
@@ -14905,7 +14899,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:ab7fd85d80e656c94e9cc245d1cc72c1a57304e769b401b556bb27b5a40242c5",
+      "contentHash": "sha256:ed0faf29c17f0ab920370885276f3cb390911ff98c39338ad8556cdfeb18171a",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",

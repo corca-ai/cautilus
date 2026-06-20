@@ -9,7 +9,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Status packet: .cautilus/claims/status-summary.json
 - Candidate count: 396
 - Source count: 71
-- Packet source commit: 99f7dcecb4a7d33be22c22ffe6e357f19200cfc1
+- Packet source commit: c3eec1662e1089fe316e17f23f7ddcfb12786c32
 - Snapshot notice: gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.
 - Git state snapshot: fresh; stale=no
 - Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded
