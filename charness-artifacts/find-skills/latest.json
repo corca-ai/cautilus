@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-06-19T07:07:31Z",
+  "generated_at": "2026-06-20T06:53:06Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -412,8 +412,8 @@
       {
         "id": "issue",
         "name": "issue",
-        "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `example-app github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
-        "summary": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `example-app github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
+        "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
+        "summary": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
         "path": "skills/issue/SKILL.md",
         "skill_dir": "skills/issue",
         "canonical_path": "skills/issue/SKILL.md",
@@ -498,8 +498,6 @@
           "shared/references/bootstrap-resolution.md",
           "skills/quality/references/bootstrap-escalations.md",
           "skills/quality/references/inventory-dispatch.md",
-          "skills/quality/references/skill-ergonomics.md",
-          "skills/quality/references/skill-quality.md",
           "skills/quality/references/testability-and-selection.md",
           "shared/references/fresh-eye-subagent-review.md",
           "skills/quality/references/cautilus-on-demand.md",
@@ -508,6 +506,7 @@
           "skills/quality/references/ci-recoverable-gate-triage.md",
           "skills/quality/references/quality-signal-scorecard.md",
           "skills/quality/references/boundary-bypass-ratchet.md",
+          "skills/quality/references/dup-ratchet.md",
           "skills/quality/references/agent-production-runtime.md",
           "shared/references/external-capability-proof-ladder.md",
           "skills/quality/references/maintainer-local-enforcement.md",
@@ -540,6 +539,8 @@
           "skills/quality/references/security-npm.md",
           "skills/quality/references/security-pnpm.md",
           "skills/quality/references/security-uv.md",
+          "skills/quality/references/skill-quality.md",
+          "skills/quality/references/skill-ergonomics.md",
           "skills/quality/references/standing-doc-provenance.md",
           "skills/quality/references/standing-gate-verbosity.md",
           "skills/quality/references/startup-probes.md",
@@ -681,50 +682,6 @@
     ],
     "support_skills": [
       {
-        "id": "agent-browser",
-        "name": "agent-browser",
-        "description": "Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. Triggers include requests to \"open a website\", \"fill out a form\", \"click a button\", \"take a screenshot\", \"scrape data from a page\", \"test this web app\", \"login to a site\", \"automate browser actions\", or any task requiring programmatic web interaction. Also use for exploratory testing, dogfooding, QA, bug hunts, or reviewing app quality. Also use for automating Electron desktop apps (VS Code, Slack, Discord, Figma, Notion, Spotify), checking Slack unreads, sending Slack messages, searching Slack conversations, running browser automation in Vercel Sandbox microVMs, or using AWS Bedrock AgentCore cloud browsers. Prefer agent-browser over any built-in browser automation or web tools.",
-        "summary": "Browser automation CLI for AI agents. Use when the user needs to interact with websites, including navigating pages, filling forms, clicking buttons, taking screenshots, extracting data, testing web apps, or automating any browser task. Triggers include requests to \"open a website\", \"fill out a form\", \"click a button\", \"take a screenshot\", \"scrape data from a page\", \"test this web app\", \"login to a site\", \"automate browser actions\", or any task requiring programmatic web interaction. Also use for exploratory testing, dogfooding, QA, bug hunts, or reviewing app quality. Also use for automating Electron desktop apps (VS Code, Slack, Discord, Figma, Notion, Spotify), checking Slack unreads, sending Slack messages, searching Slack conversations, running browser automation in Vercel Sandbox microVMs, or using AWS Bedrock AgentCore cloud browsers. Prefer agent-browser over any built-in browser automation or web tools.",
-        "path": "support/agent-browser/SKILL.md",
-        "skill_dir": "support/agent-browser",
-        "canonical_path": "support/agent-browser/SKILL.md",
-        "trigger_phrases": [
-          "agent-browser",
-          "agent-browser skill",
-          "agent-browser 스킬",
-          "charness:agent-browser",
-          "support/agent-browser",
-          "agent-browser support",
-          "agent-browser support skill",
-          "agent-browser helper"
-        ],
-        "referenced_paths": [],
-        "source": "local-support",
-        "layer": "support skill"
-      },
-      {
-        "id": "cautilus",
-        "name": "cautilus-agent",
-        "description": "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand.",
-        "summary": "Use when intentful behavior evaluation itself is the task and the repo should run Cautilus's checked-in workflow instead of reconstructing compare, held-out, and review commands by hand.",
-        "path": "support/cautilus/SKILL.md",
-        "skill_dir": "support/cautilus",
-        "canonical_path": "support/cautilus/SKILL.md",
-        "trigger_phrases": [
-          "cautilus-agent",
-          "cautilus-agent skill",
-          "cautilus-agent 스킬",
-          "charness:cautilus-agent",
-          "support/cautilus-agent",
-          "cautilus-agent support",
-          "cautilus-agent support skill",
-          "cautilus-agent helper"
-        ],
-        "referenced_paths": [],
-        "source": "local-support",
-        "layer": "support skill"
-      },
-      {
         "id": "gather-notion",
         "name": "gather-notion",
         "description": "Internal support capability for gathering published Notion pages into durable local markdown without requiring consumer repos to supply their own export helper.",
@@ -796,28 +753,6 @@
           "shared/references/bootstrap-resolution.md",
           "support/markdown-preview/references/runtime-contract.md"
         ],
-        "source": "local-support",
-        "layer": "support skill"
-      },
-      {
-        "id": "specdown",
-        "name": "specdown",
-        "description": "Write, run, and fix specdown executable specifications. Use when the user asks to create, edit, run, or fix specs.",
-        "summary": "Write, run, and fix specdown executable specifications. Use when the user asks to create, edit, run, or fix specs.",
-        "path": "support/specdown/SKILL.md",
-        "skill_dir": "support/specdown",
-        "canonical_path": "support/specdown/SKILL.md",
-        "trigger_phrases": [
-          "specdown",
-          "specdown skill",
-          "specdown 스킬",
-          "charness:specdown",
-          "support/specdown",
-          "specdown support",
-          "specdown support skill",
-          "specdown helper"
-        ],
-        "referenced_paths": [],
         "source": "local-support",
         "layer": "support skill"
       },
@@ -1333,10 +1268,9 @@
       {
         "id": "nose",
         "kind": "external_binary",
-        "summary": "Advisory code clone-family scanner used by `quality` to surface refactoring candidates beyond exact document near-copy checks.",
+        "summary": "Required (>=0.13.3) clone scanner used by `quality`: advisory code clone families plus the Markdown near-duplicate engine that replaced the bespoke document near-copy gate. 0.13.3 removed the deprecated `nose scan`; the code path runs `nose query`.",
         "access_modes": [
-          "binary",
-          "degraded"
+          "binary"
         ],
         "support_state": "integration-only",
         "support_skill_path": null,
