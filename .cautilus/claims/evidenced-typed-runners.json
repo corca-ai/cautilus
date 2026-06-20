@@ -12361,7 +12361,7 @@
         },
         {
           "excerpt": "Any bug, error, or regression encountered routes to `charness:debug` before further fixes.",
-          "line": 119,
+          "line": 125,
           "path": "docs/contracts/skill-surface-judge-convergence.md"
         }
       ],
@@ -13203,7 +13203,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:bd5e43021cd7983f46ba4c1e36d44b01e05df351ec10536ca045e50c0775ccc1",
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-67",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-73",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -13222,7 +13222,7 @@
       "sourceRefs": [
         {
           "excerpt": "FD6 — attach via the existing generic enricher and a new judge-eval skill adapter; the badge stays `declared` (maintainer decision: \"이번엔 유지, 이후 flip 제안\").",
-          "line": 67,
+          "line": 73,
           "path": "docs/contracts/skill-surface-judge-convergence.md"
         }
       ],
@@ -13234,7 +13234,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:443e7c74c8f3d0b0c8da066f0b8ba23937d030e9b897ebde2c5104e4407b6006",
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-70",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-76",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -13251,7 +13251,7 @@
       "sourceRefs": [
         {
           "excerpt": "A new judge-eval skill adapter chains the skill runner then the enricher (mirroring `self-dogfood-realsurface-judge-eval`), so `cautilus evaluate fixture --adapter-name <skill-judge-adapter>` runs the real skill dogfood path and then the judge tier.",
-          "line": 70,
+          "line": 76,
           "path": "docs/contracts/skill-surface-judge-convergence.md"
         }
       ],
@@ -13263,7 +13263,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:28bb4891c1d86ec702c748be91493994e1a436787372ced5a68e101b91749649",
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-71",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-77",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -13280,7 +13280,7 @@
       "sourceRefs": [
         {
           "excerpt": "The apex `Behavior Evaluation` badge stays at `declared` this slice; once both surfaces are closed the maintainer is presented a separate flip-proposal slice (the natural-unsound-population gap is the documented remaining bar).",
-          "line": 71,
+          "line": 77,
           "path": "docs/contracts/skill-surface-judge-convergence.md"
         }
       ],
@@ -13292,7 +13292,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0fc08a5ad1dfa36e3f9e30760fb80c3a907a47362ce58d537f5403b7a0819b40",
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-114",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-120",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -13310,7 +13310,7 @@
       "sourceRefs": [
         {
           "excerpt": "The generic Go engine extension must stay generic verdict-compositing symmetric with the instruction surface; no repo-specific judge or facet logic enters the engine or the generic runtime runner, and the judge half stays in adapter-owned `scripts/`.",
-          "line": 114,
+          "line": 120,
           "path": "docs/contracts/skill-surface-judge-convergence.md"
         }
       ],
@@ -13322,7 +13322,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d2273e0d62ccc64ffdc1616f4aa0504e1a7baffa99b602d1f194e5eba6dc9275",
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-150",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-156",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -13340,7 +13340,7 @@
       "sourceRefs": [
         {
           "excerpt": "The critique confirmed FD5's boundary-honesty claim (the reused Go helpers only read and count a structured verdict; all facet computation stays in the `.mjs` harness) and the no-manufacturing/sequencing discipline.",
-          "line": 150,
+          "line": 156,
           "path": "docs/contracts/skill-surface-judge-convergence.md"
         }
       ],
@@ -14397,7 +14397,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "c3e5d1f450388be0bba4899b83ab1c8026f7fe62",
+  "gitCommit": "59113a046957051fce7abc8ecfea566759a6d688",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -16684,7 +16684,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:3ec9fce068ebf9b728569ccdbe6e420e1d86f3bec3c2341d5239f6f759855d62",
+      "contentHash": "sha256:cf3795a202ed2c33aed9f5d9bf856a32ed1e5a3a81419c23902f1218a149f03c",
       "depth": 3,
       "discoveredFrom": "docs/contracts/eval-judge-collaboration.md",
       "kind": "contract",

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:71524af438097d77803abe41e8b97e3220184b575e50d27288984a8840119b2b"
+      "contentHash": "sha256:2e662fd771d32dd785ff9c08eae48d519c15998f7e9b2d9b31713bc0ca41a816"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "c3e5d1f450388be0bba4899b83ab1c8026f7fe62",
+  "claimsPacketGitCommit": "59113a046957051fce7abc8ecfea566759a6d688",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 398,
   "catalogs": {
@@ -911,11 +911,11 @@
       "claim-docs-contracts-scenario-proposal-sources-md-216",
       "claim-docs-contracts-scenario-proposal-sources-md-235",
       "claim-docs-contracts-scenario-proposal-sources-md-236",
-      "claim-docs-contracts-skill-surface-judge-convergence-md-67",
-      "claim-docs-contracts-skill-surface-judge-convergence-md-70",
-      "claim-docs-contracts-skill-surface-judge-convergence-md-71",
-      "claim-docs-contracts-skill-surface-judge-convergence-md-114",
-      "claim-docs-contracts-skill-surface-judge-convergence-md-150",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-73",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-76",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-77",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-120",
+      "claim-docs-contracts-skill-surface-judge-convergence-md-156",
       "claim-docs-specs-evidence-gaps-spec-md-9",
       "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
       "claim-docs-specs-evidence-latest-selected-evidence-spec-md-11",
@@ -1888,7 +1888,7 @@
         "claim-docs-specs-contracts-rules-policy-spec-md-6",
         "claim-docs-specs-ledger-index-spec-md-4",
         "claim-docs-contracts-realsurface-judge-convergence-md-90",
-        "claim-docs-contracts-skill-surface-judge-convergence-md-71",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-77",
         "claim-docs-specs-evidence-gaps-spec-md-9"
       ],
       "absorbedRawClaims": [
@@ -1929,7 +1929,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-71",
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-77",
           "claimFingerprint": "sha256:28bb4891c1d86ec702c748be91493994e1a436787372ced5a68e101b91749649",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2186,7 +2186,7 @@
         "claim-docs-contracts-realsurface-judge-convergence-md-98",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
         "claim-docs-contracts-scenario-proposal-sources-md-28",
-        "claim-docs-contracts-skill-surface-judge-convergence-md-67",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-73",
         "claim-skills-cautilus-agent-skill-md-13",
         "claim-skills-cautilus-agent-skill-md-22",
         "claim-skills-cautilus-agent-skill-md-23",
@@ -2580,7 +2580,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-67",
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-73",
           "claimFingerprint": "sha256:bd5e43021cd7983f46ba4c1e36d44b01e05df351ec10536ca045e50c0775ccc1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2712,8 +2712,8 @@
         "claim-docs-contracts-runtime-fingerprint-improvement-md-41",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-261",
         "claim-docs-contracts-scenario-proposal-sources-md-152",
-        "claim-docs-contracts-skill-surface-judge-convergence-md-70",
-        "claim-docs-contracts-skill-surface-judge-convergence-md-114",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-76",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-120",
         "claim-docs-specs-ledger-names-and-keys-spec-md-26",
         "claim-skills-cautilus-agent-skill-md-156"
       ],
@@ -3115,13 +3115,13 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-70",
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-76",
           "claimFingerprint": "sha256:443e7c74c8f3d0b0c8da066f0b8ba23937d030e9b897ebde2c5104e4407b6006",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-114",
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-120",
           "claimFingerprint": "sha256:0fc08a5ad1dfa36e3f9e30760fb80c3a907a47362ce58d537f5403b7a0819b40",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3849,7 +3849,7 @@
         "claim-docs-contracts-runtime-fingerprint-improvement-md-190",
         "claim-docs-contracts-scenario-proposal-sources-md-40",
         "claim-docs-contracts-scenario-proposal-sources-md-216",
-        "claim-docs-contracts-skill-surface-judge-convergence-md-150",
+        "claim-docs-contracts-skill-surface-judge-convergence-md-156",
         "claim-docs-specs-evidence-latest-selected-evidence-spec-md-11"
       ],
       "absorbedRawClaims": [
@@ -4076,7 +4076,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-150",
+          "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-156",
           "claimFingerprint": "sha256:d2273e0d62ccc64ffdc1616f4aa0504e1a7baffa99b602d1f194e5eba6dc9275",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -18296,7 +18296,7 @@
         },
         {
           "path": "docs/contracts/skill-surface-judge-convergence.md",
-          "line": 119,
+          "line": 125,
           "excerpt": "Any bug, error, or regression encountered routes to `charness:debug` before further fixes."
         }
       ],
@@ -19148,12 +19148,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-67",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-73",
       "summary": "FD6 — attach via the existing generic enricher and a new judge-eval skill adapter; the badge stays `declared` (maintainer decision: \"이번엔 유지, 이후 flip 제안\").",
       "sourceRefs": [
         {
           "path": "docs/contracts/skill-surface-judge-convergence.md",
-          "line": 67,
+          "line": 73,
           "excerpt": "FD6 — attach via the existing generic enricher and a new judge-eval skill adapter; the badge stays `declared` (maintainer decision: \"이번엔 유지, 이후 flip 제안\")."
         }
       ],
@@ -19186,12 +19186,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-70",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-76",
       "summary": "A new judge-eval skill adapter chains the skill runner then the enricher (mirroring `self-dogfood-realsurface-judge-eval`), so `cautilus evaluate fixture --adapter-name <skill-judge-adapter>` runs the real skill dogfood path and then the judge tier.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skill-surface-judge-convergence.md",
-          "line": 70,
+          "line": 76,
           "excerpt": "A new judge-eval skill adapter chains the skill runner then the enricher (mirroring `self-dogfood-realsurface-judge-eval`), so `cautilus evaluate fixture --adapter-name <skill-judge-adapter>` runs the real skill dogfood path and then the judge tier."
         }
       ],
@@ -19227,12 +19227,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-71",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-77",
       "summary": "The apex `Behavior Evaluation` badge stays at `declared` this slice; once both surfaces are closed the maintainer is presented a separate flip-proposal slice (the natural-unsound-population gap is the documented remaining bar).",
       "sourceRefs": [
         {
           "path": "docs/contracts/skill-surface-judge-convergence.md",
-          "line": 71,
+          "line": 77,
           "excerpt": "The apex `Behavior Evaluation` badge stays at `declared` this slice; once both surfaces are closed the maintainer is presented a separate flip-proposal slice (the natural-unsound-population gap is the documented remaining bar)."
         }
       ],
@@ -19263,12 +19263,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-114",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-120",
       "summary": "The generic Go engine extension must stay generic verdict-compositing symmetric with the instruction surface; no repo-specific judge or facet logic enters the engine or the generic runtime runner, and the judge half stays in adapter-owned `scripts/`.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skill-surface-judge-convergence.md",
-          "line": 114,
+          "line": 120,
           "excerpt": "The generic Go engine extension must stay generic verdict-compositing symmetric with the instruction surface; no repo-specific judge or facet logic enters the engine or the generic runtime runner, and the judge half stays in adapter-owned `scripts/`."
         }
       ],
@@ -19300,12 +19300,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-150",
+      "claimId": "claim-docs-contracts-skill-surface-judge-convergence-md-156",
       "summary": "The critique confirmed FD5's boundary-honesty claim (the reused Go helpers only read and count a structured verdict; all facet computation stays in the `.mjs` harness) and the no-manufacturing/sequencing discipline.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skill-surface-judge-convergence.md",
-          "line": 150,
+          "line": 156,
           "excerpt": "The critique confirmed FD5's boundary-honesty claim (the reused Go helpers only read and count a structured verdict; all facet computation stays in the `.mjs` harness) and the no-manufacturing/sequencing discipline."
         }
       ],
