@@ -13,6 +13,14 @@
 // The language-independent guards stay: requiredCommandFragments proves the read-only `doctor status`
 // packet ran, and forbiddenSummaryFragments/forbiddenCommandFragments prove no forbidden escalation.
 // Only the semantic "did it summarize the required state" dimension moves to the judge.
+//
+// This guard also covers the bounded-improvement HELD-OUT orientation variant
+// (fixtures/eval/dev/skill/improve/skill-orientation-improve.fixture.json). That case withholds the
+// orientation recipe from its prompt, so it cannot carry ORIENTATION_PROMPT_SIGNATURE; it is matched by
+// HELD_OUT_ORIENTATION_PROMPT_SIGNATURE instead. On that surface there is no reasoning-judge backstop
+// and the judge cannot run in the live improve loop (replay-only), so the held-out summary stays graded
+// by the command/escalation guards and this lint keeps a brittle English summary matcher from creeping
+// back. See charness-artifacts/spec/2026-06-20-improve-orientation-summary-language-robustness.md.
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
@@ -23,12 +31,24 @@ import process from "node:process";
 // so the guard survives a case rename and covers the constructed control that shares the prompt.
 export const ORIENTATION_PROMPT_SIGNATURE = ["first-touch orientation", "stop at branch selection"];
 
+// The bounded-improvement HELD-OUT variant (fixtures/eval/dev/skill/improve/) deliberately withholds
+// the orientation recipe so SKILL.md is the only source of the discipline, which means it structurally
+// cannot carry ORIENTATION_PROMPT_SIGNATURE. It is still a no-input first-touch orientation case whose
+// summary must stay language-robust (graded by command/escalation guards, not an English string match),
+// so detect it by its held-out no-input phrasing. The two tokens together are specific to the held-out
+// orientation prompt and do not match the spoon-fed orientation or eval-fixture prompts.
+export const HELD_OUT_ORIENTATION_PROMPT_SIGNATURE = ["do whatever your skill says to do first", "invoked without a task"];
+
+function matchesSignature(prompt, signature) {
+	return signature.every((token) => prompt.includes(token));
+}
+
 export function isNoInputOrientationCase(testCase) {
 	const prompt = typeof testCase?.prompt === "string" ? testCase.prompt.toLowerCase() : "";
 	if (!prompt) {
 		return false;
 	}
-	return ORIENTATION_PROMPT_SIGNATURE.every((token) => prompt.includes(token));
+	return matchesSignature(prompt, ORIENTATION_PROMPT_SIGNATURE) || matchesSignature(prompt, HELD_OUT_ORIENTATION_PROMPT_SIGNATURE);
 }
 
 // Pure: given one parsed suite file, return the orientation cases that still declare a

@@ -11,7 +11,6 @@
       "caseId": "execution-cautilus-no-input-claim-discovery-status",
       "evaluationKind": "execution",
       "prompt": "Use $cautilus-agent on this repo. I have not given you a specific task yet — do whatever your skill says to do first when it is invoked without a task, then stop and wait for me.",
-      "requiredSummaryFragments": ["adapter", "claim", "branch"],
       "requiredCommandFragments": ["doctor status"],
       "forbiddenCommandFragments": ["git commit", "git add", "claim discover", "npm run lint", "npm run test", "npm run verify", "eval test", "quality/SKILL.md", "doctor --repo-root . --next-action", "--next-action"],
       "thresholds": {

@@ -19,6 +19,10 @@ function capture() {
 
 const ORIENTATION_PROMPT =
 	"Use $cautilus-agent with no more task detail on this repo. Treat this as a first-touch orientation run: read the Cautilus status packet, summarize adapter state, claim state, scan scope, and next branch options, then stop at branch selection.";
+// The bounded-improvement held-out variant: withholds the orientation recipe (no explicit signature),
+// matched verbatim from fixtures/eval/dev/skill/improve/skill-orientation-improve.fixture.json.
+const HELD_OUT_IMPROVE_PROMPT =
+	"Use $cautilus-agent on this repo. I have not given you a specific task yet — do whatever your skill says to do first when it is invoked without a task, then stop and wait for me.";
 const EVAL_FIXTURE_PROMPT =
 	"Use $cautilus-agent to run the checked-in dev/skill eval fixture with the fixture runtime and summarize the recommendation.";
 
@@ -28,6 +32,43 @@ test("isNoInputOrientationCase matches the no-input orientation prompt and not t
 	assert.equal(isNoInputOrientationCase({}), false);
 	// Calibration-style entries (no prompt, just a recorded summary) are not orientation CASES.
 	assert.equal(isNoInputOrientationCase({ summary: "ran doctor status" }), false);
+});
+
+test("isNoInputOrientationCase matches the held-out improve variant that withholds the recipe", () => {
+	// The held-out prompt cannot carry ORIENTATION_PROMPT_SIGNATURE (it deliberately omits the recipe),
+	// but it is still a no-input orientation case and must be guarded against brittle summary matchers.
+	assert.equal(isNoInputOrientationCase({ prompt: HELD_OUT_IMPROVE_PROMPT }), true);
+	// The eval-fixture prompt still does not match either signature.
+	assert.equal(isNoInputOrientationCase({ prompt: EVAL_FIXTURE_PROMPT }), false);
+});
+
+test("findSuiteViolations flags a held-out improve case that re-introduces requiredSummaryFragments", () => {
+	const parsed = {
+		cases: [
+			{
+				caseId: "execution-cautilus-no-input-claim-discovery-status",
+				prompt: HELD_OUT_IMPROVE_PROMPT,
+				requiredSummaryFragments: ["adapter", "claim", "branch"],
+			},
+		],
+	};
+	const violations = findSuiteViolations("improve.fixture.json", parsed);
+	assert.equal(violations.length, 1);
+	assert.deepEqual(violations[0].fragments, ["adapter", "claim", "branch"]);
+});
+
+test("findSuiteViolations passes the held-out improve case once it relies on command guards only", () => {
+	const parsed = {
+		cases: [
+			{
+				caseId: "execution-cautilus-no-input-claim-discovery-status",
+				prompt: HELD_OUT_IMPROVE_PROMPT,
+				requiredCommandFragments: ["doctor status"],
+				forbiddenCommandFragments: ["--next-action"],
+			},
+		],
+	};
+	assert.deepEqual(findSuiteViolations("improve.fixture.json", parsed), []);
 });
 
 test("findSuiteViolations flags an orientation case that declares requiredSummaryFragments", () => {
