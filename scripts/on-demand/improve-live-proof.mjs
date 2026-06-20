@@ -13,7 +13,7 @@
 // Gated behind `npm run proof:improve:live`; never in `npm run verify` or a standing `specdown run`.
 
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, writeFileSync, copyFileSync, mkdirSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync, copyFileSync, mkdirSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import process from "node:process";
@@ -213,10 +213,19 @@ function runLiveImproveLoop() {
 	mkdirSync(improveDir, { recursive: true });
 
 	const originalSkill = readFileSync(targetFile, "utf-8");
+	// The seed full-gate checkpoint evaluates the seed in the MAIN repo workspace; its preflight
+	// `cautilus init --overwrite` re-materializes the agent surface from the (temporarily degraded)
+	// canonical SKILL.md, so back up and restore the materialized copy too — otherwise the degraded
+	// control would leak into .agents/skills/cautilus-agent/SKILL.md after the run.
+	const materializedFile = join(root, ".agents/skills/cautilus-agent/SKILL.md");
+	const originalMaterialized = existsSync(materializedFile) ? readFileSync(materializedFile, "utf-8") : null;
 	let restored = false;
 	const restore = () => {
 		if (!restored) {
 			writeFileSync(targetFile, originalSkill);
+			if (originalMaterialized !== null) {
+				writeFileSync(materializedFile, originalMaterialized);
+			}
 			restored = true;
 		}
 		// Always remove the throwaway seed worktree even if the run threw mid-flight, and prune the
