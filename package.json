@@ -70,6 +70,8 @@
     "specdown:pages": "npm run lint:specs && node scripts/prepare-specdown-pages.mjs",
     "audit:surface": "node scripts/agent-runtime/build-surface-audit.mjs --repo-root .",
     "audit:surface:check": "node scripts/agent-runtime/build-surface-audit.mjs --check --repo-root .",
+    "specdown:project": "node scripts/agent-runtime/build-goldset-projection.mjs --repo-root .",
+    "specdown:project:check": "node scripts/agent-runtime/build-goldset-projection.mjs --check --repo-root .",
     "security:govulncheck": "node scripts/run-govulncheck.mjs ./...",
     "security:secrets": "gitleaks detect --source . --no-banner --redact",
     "test:go": "go test ./cmd/... ./internal/...",

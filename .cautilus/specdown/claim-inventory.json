@@ -1,0 +1,892 @@
+{
+  "schemaVersion": "cautilus.claim_inventory.v1",
+  "generatedFrom": {
+    "goldSet": "charness-artifacts/eval-trust/goldset-v2-head/gold-set-proposal.user-product.json",
+    "track": "user-product",
+    "sourcePacket": "charness-artifacts/eval-trust/goldset-v2-head/claims-agent.json",
+    "packetGitCommit": "558cda76d9bd044a65cf94bce751c8752c69c9dc",
+    "templateHash": "sha256:41323548a2d04b1c4f383a240d84e6ec5a94ef1ca73ff371e9a62b3695902e60",
+    "badgeMap": "docs/specs/audit/claim-badge-map.json",
+    "proofRouteOverrides": "docs/specs/audit/claim-proof-route-overrides.json",
+    "registry": "docs/specs/audit/surface-registry.json"
+  },
+  "summary": {
+    "totalEntries": 74,
+    "durableGraded": 56,
+    "nonGraded": 18,
+    "byTier": {
+      "T1": 7,
+      "T2": 41,
+      "T3": 8
+    },
+    "byVerdict": {
+      "accept": 54,
+      "relabel": 1,
+      "rewrite-source": 1
+    },
+    "nonGradedByVerdict": {
+      "not-a-claim": 11,
+      "retire-source": 5,
+      "badly-bounded": 2
+    },
+    "t1BadgeBindings": 7,
+    "overridesApplied": 1
+  },
+  "entriesByFingerprint": {
+    "sha256:9018c538fe5ded20087c5b9c3dea13abd9b803fb454e5fd768c05164a726b596": {
+      "claimId": "claim-readme-md-4",
+      "significanceTier": "T1",
+      "ratifiedProofRoute": "cautilus-eval",
+      "recommendedProof": "cautilus-eval",
+      "routeOverridden": false,
+      "primaryEpic": "APEX",
+      "summary": "Cautilus lets you pin the behavior that matters, prove it survives every change to prompts/skills/models, and improve it within explicit budgets, whether protecting an AGENTS.md, a single skill, a prompt, or a full agent loop.",
+      "sourceRef": "README.md:4",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": "behavior-evaluation"
+    },
+    "sha256:b2db3970d5430186c25796dcfce79426d64725377fd3d1a18a81687f66126add": {
+      "claimId": "claim-readme-md-5",
+      "significanceTier": "T1",
+      "ratifiedProofRoute": "cautilus-eval",
+      "recommendedProof": "cautilus-eval",
+      "routeOverridden": false,
+      "primaryEpic": "APEX",
+      "summary": "The three jobs connect: discover declared claims worth proving from selected source docs, verify curated claims through bounded evaluation packets, and improve behavior once the proof surface is honest.",
+      "sourceRef": "README.md:5",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": "claim-discovery"
+    },
+    "sha256:32437872b5e4ba1773bff79aab81ce278f3baca552daa84b30ffe00bdfadfb74": {
+      "claimId": "claim-readme-md-6",
+      "significanceTier": "T1",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "Cautilus ships as a standalone binary plus Cautilus Agent that a host repo can install without copying another scaffold first.",
+      "sourceRef": "README.md:6",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": "host-ownership"
+    },
+    "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8": {
+      "claimId": "claim-readme-md-8",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "cautilus-eval",
+      "recommendedProof": "deterministic",
+      "routeOverridden": true,
+      "primaryEpic": "A1-orchestration",
+      "summary": "Commands should emit durable packets with enough state for the next agent to resume, not only terminal prose for a human operator (design-principle claim).",
+      "sourceRef": "README.md:8",
+      "audience": "user",
+      "maintainerVerdict": "relabel",
+      "badge": null
+    },
+    "sha256:424580d0b53e416034e88a9299a9c47f1645659c1e4e36cb016a17053b65c8b0": {
+      "claimId": "claim-readme-md-9",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "Cautilus installs as a machine-level binary, but its agent-facing surface is intentionally repo-local.",
+      "sourceRef": "README.md:9",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:5ac1fc63d49f447facac64b699cea25da2ce7911bedbb18335cac08e5dc827f5": {
+      "claimId": "claim-readme-md-11",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "The Cautilus Agent surface, adapter wiring, prompts, and instruction-routing surface are not shared across repos; they stay checked into each host repo so evaluation behavior remains reproducible, reviewable, and owned by the repo that declares it.",
+      "sourceRef": "README.md:11",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:0ebd46f6f44f1425e2c0f62b6ace10e3aa778ab8c11b4fdba0fac00f5739b8ff": {
+      "claimId": "claim-readme-md-17",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "Host repos can use cautilus evaluate fixture, evaluate observation, and post-run evaluate skill-experiment with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.",
+      "sourceRef": "README.md:17",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:8bf95f9315ce120371a13d106c151cde2c265da7e6ac7c920ab08905efc7b406": {
+      "claimId": "claim-readme-md-18",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E2-scenarios-experiments",
+      "summary": "skill-experiment compare compares host-preserved baseline and variant outputs; it does not clone, install, or execute skills (scope-boundary claim).",
+      "sourceRef": "README.md:18",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:c4d76a0109b31ae8120dbd25811c7cd13c16c7e6f208e53432a62ae16bb6b591": {
+      "claimId": "claim-readme-md-35",
+      "significanceTier": "T3",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "Cautilus runs on native macOS or native Linux, requires a target host repo editable locally, and requires git on PATH.",
+      "sourceRef": "README.md:35",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:130fe3aa8aeec4109bfcf3ca6a4eb8ed85578aad3bd76ce424f96de956d930dc": {
+      "claimId": "claim-readme-md-44",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "Cautilus is installed via the install.sh script piped to sh, after which cautilus init is run inside the host repo.",
+      "sourceRef": "README.md:44",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:7f2153a2863ecefb8e467538bd6ce5568ebcc796ce1ad4ceca8956e961ed77de": {
+      "claimId": "claim-readme-md-54",
+      "significanceTier": "T3",
+      "ratifiedProofRoute": "cautilus-eval",
+      "recommendedProof": "cautilus-eval",
+      "routeOverridden": false,
+      "primaryEpic": "S2-readiness",
+      "summary": "To hand setup to an agent, ask it to repeat cautilus doctor --repo-root . --next-action, follow exactly what the packet says, and stop only after cautilus doctor --repo-root . reports readiness plus a first_bounded_run.",
+      "sourceRef": "README.md:54",
+      "audience": "user",
+      "maintainerVerdict": "rewrite-source",
+      "badge": null
+    },
+    "sha256:b0e6459a0cb2fedb2cdae59831454b9162d9b71d96c095bea7d1dcdde08520f6": {
+      "claimId": "claim-readme-md-65",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "M1-proven-on-itself",
+      "summary": "docs/specs/index.spec.md is the top-level 'proven on itself' apex and the specdown entry; the user and maintainer spec indexes it links to remain the curated claim source of truth.",
+      "sourceRef": "README.md:65",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:2351b132ae813dfb9df2fca5291372e65c4232b981aab4f685bfefa3b3f135aa": {
+      "claimId": "claim-readme-md-66",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "D1-discovery",
+      "summary": "Raw discover claims packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
+      "sourceRef": "README.md:66",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:d86efe24767d201f86fa6b4f59a19f4b87689cfd278c2ee648573e80b0e4616f": {
+      "claimId": "claim-readme-md-67",
+      "significanceTier": "T1",
+      "ratifiedProofRoute": "cautilus-eval",
+      "recommendedProof": "cautilus-eval",
+      "routeOverridden": false,
+      "primaryEpic": "A2-curation-review",
+      "summary": "The Cautilus Agent curates the raw discovery packet against the repo: reduce false positives, raise likely missing public promises, and separate in-scope discovery bugs from out-of-scope narrative gaps.",
+      "sourceRef": "README.md:67",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": "claim-discovery"
+    },
+    "sha256:25f326356227fb2317af75db3dca0b6ac32161558c644ef0f1b1073bce3c175f": {
+      "claimId": "claim-readme-md-68",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "M1-proven-on-itself",
+      "summary": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
+      "sourceRef": "README.md:68",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:a8cf94a267754b28ed0ce1c378a0bbb88ee81dcad5e196efce19a5f7a40135b5": {
+      "claimId": "claim-readme-md-69",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "M1-proven-on-itself",
+      "summary": "Each claim page pairs a bounded product promise with executable evidence or an explicit evidence gap.",
+      "sourceRef": "README.md:69",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:94b71beb9c16b57527a646ff37d53747c9b6194995b263bd02c205cb00e3ecb8": {
+      "claimId": "claim-readme-md-75",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "The one bounded eval loop needs one checked-in cautilus.evaluation_input.v1 fixture and a host-owned adapter runner.",
+      "sourceRef": "README.md:75",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7": {
+      "claimId": "claim-readme-md-76",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "The bounded eval loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
+      "sourceRef": "README.md:76",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:e1d40b8af228eee85cfe4d1bf48eb7be58e13f6c5737038ab9c41ef1ac6eb0d2": {
+      "claimId": "claim-readme-md-91",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "Cautilus turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
+      "sourceRef": "README.md:91",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:e8b1a9fc3c20bbcde254639817f98114d86ca2f81ff8e4f5ad05f4c4957279ff": {
+      "claimId": "claim-readme-md-92",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "The summary is not a global product verdict; it is evidence for the behavior fixture and adapter path the host repo chose (scope-boundary claim).",
+      "sourceRef": "README.md:92",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:fc191dde1fc86448ffbfe1a676d41f44248725f3acf14e288a4602abc6e8d337": {
+      "claimId": "claim-readme-md-93",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "After the bounded loop, a human decides whether that evidence is enough for the host repo's current proof need.",
+      "sourceRef": "README.md:93",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:fee6e2c9ba896bb38525850e1fe855de7d93cf287bc9948a54652f685ee3dce2": {
+      "claimId": "claim-readme-md-102",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "cautilus-eval",
+      "recommendedProof": "cautilus-eval",
+      "routeOverridden": false,
+      "primaryEpic": "M1-proven-on-itself",
+      "summary": "The dogfood run turned 'did the agent read and follow the repo instructions?' from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
+      "sourceRef": "README.md:102",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:b09e7dfcbd282acab004453529610cf66b012e863203e83e9b894a17aa8969bb": {
+      "claimId": "claim-readme-md-103",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "M1-proven-on-itself",
+      "summary": "The dogfood run exposed that routing proof is not backend subagent capability proof, and keeping that distinction in the packet prevented over-claiming what had been verified.",
+      "sourceRef": "README.md:103",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:a978ca2e5a711544ad630ceaff22bccd2dfac87c71ee2bbf476fa4042b66cea0": {
+      "claimId": "claim-readme-md-112",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "D1-discovery",
+      "summary": "Claim discovery turns adapter-owned entry docs and linked Markdown into cautilus.claim_proof_plan.v1 candidates.",
+      "sourceRef": "README.md:112",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:2276e0abccd4b6dfa2a61954f87d3391fc7f0b1d1417970a439c9e690cdf8e08": {
+      "claimId": "claim-readme-md-113",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "D1-discovery",
+      "summary": "Claim discovery is proof planning, not a verdict that the repo is correct (scope-boundary claim).",
+      "sourceRef": "README.md:113",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0": {
+      "claimId": "claim-readme-md-116",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "Evaluation uses two top-level surfaces: dev for AI-assisted development work such as repo contracts, tools, and skills, and app for AI-powered product behavior such as chat, prompt, and service responses.",
+      "sourceRef": "README.md:116",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:6b58da3516f2509fd1bb999d85d87612efe6d7110be630677b344a94340a2df3": {
+      "claimId": "claim-readme-md-135",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "A1-orchestration",
+      "summary": "Cautilus treats packets, CLI commands, and repo instructions as agent-facing interfaces first, with HTML as a human-readable mirror, not the source of truth (design-principle and contrast claim).",
+      "sourceRef": "README.md:135",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:876d422ecc6981fb0023f848c23f90ac2be7fc0f9b0e2e615109b89044a5d21e": {
+      "claimId": "claim-readme-md-136",
+      "significanceTier": "T1",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "APEX",
+      "summary": "Cautilus does not freeze one prompt string as the contract; it treats the behavior under evaluation as the contract (intent-first principle).",
+      "sourceRef": "README.md:136",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": "behavior-evaluation"
+    },
+    "sha256:fca2fcfa646dc5c2d8a0113e913a099de9824ac235a6afcb08a50e2d84894960": {
+      "claimId": "claim-readme-md-137",
+      "significanceTier": "T1",
+      "ratifiedProofRoute": "cautilus-eval",
+      "recommendedProof": "cautilus-eval",
+      "routeOverridden": false,
+      "primaryEpic": "E2-scenarios-experiments",
+      "summary": "Cautilus separates iteration from protected validation and keeps evidence reopenable from files (held-out honesty, packet-first principle).",
+      "sourceRef": "README.md:137",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": "reviewable-artifacts"
+    },
+    "sha256:494077b76c2dbdc170741f2dad5f9bc4ad692b060b4ef0bdf13694e1f52e5829": {
+      "claimId": "claim-readme-md-138",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "A2-curation-review",
+      "summary": "Cautilus makes adapters, reports, review files, and compare artifacts first-class product boundaries (structured review principle).",
+      "sourceRef": "README.md:138",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:3f7d53374b3ad0a1f98d080a07490f3b717148e78267be931104835aebcc23ec": {
+      "claimId": "claim-readme-md-139",
+      "significanceTier": "T1",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "I1-bounded-improvement",
+      "summary": "Cautilus keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions (bounded autonomy principle).",
+      "sourceRef": "README.md:139",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": "bounded-improvement"
+    },
+    "sha256:fbec603cc714b9964110b1a1bf5e7040e3b259e9342b83c396679d3b6530d69d": {
+      "claimId": "claim-readme-md-142",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "APEX",
+      "summary": "Human-auditable claims stay readable, deterministic claims belong in ordinary tests and CI, evaluator-dependent behavior goes through cautilus evaluate, and improvement work waits until the proof surface is explicit (proof-layer split principle).",
+      "sourceRef": "README.md:142",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:c9942c56f6453d6c4c7a2d3a0f4b2c05d22ca5c2fd361cf207a4519ac65403e7": {
+      "claimId": "claim-readme-md-147",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "I1-bounded-improvement",
+      "summary": "Cautilus ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.",
+      "sourceRef": "README.md:147",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:33b516a29471b1bfddfd5b9b204ba8a5051edeb3b409edd1106952f1df089a29": {
+      "claimId": "claim-readme-md-154",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "Two entry points share one host-owned cautilus-adapter.yaml and return the same durable decision surface.",
+      "sourceRef": "README.md:154",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:f4689e81e0aa80a165d8e584a21f63736e1f449a7d28ca64fe02a15272c5f8cc": {
+      "claimId": "claim-readme-md-155",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "A1-orchestration",
+      "summary": "Operators use the standalone CLI, while Claude and Codex use the repo-local Cautilus Agent that cautilus init installs under .agents/skills/cautilus-agent/.",
+      "sourceRef": "README.md:155",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:547880c2ac98a99fec4231dc4911c6e6dc263d79f397e119d112e8bca62fcccd": {
+      "claimId": "claim-readme-md-158",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "The minimum host-repo shape is an adapter, an installed Cautilus Agent, and run artifacts such as eval-cases.json, eval-observed.json, and eval-summary.json.",
+      "sourceRef": "README.md:158",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97": {
+      "claimId": "claim-readme-md-159",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "The result is not just a pass/fail bit; it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
+      "sourceRef": "README.md:159",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:59e68472ebbc1938ba23b1ca364151e297029a35ccdaf86fa7a972f552addfbb": {
+      "claimId": "claim-readme-md-162",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S2-readiness",
+      "summary": "cautilus doctor --next-action gives the next onboarding step, cautilus doctor --scope agent-surface reports agent-surface discoverability, and cautilus doctor reports repo wiring readiness.",
+      "sourceRef": "README.md:162",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:b64603dc391e90986d777c1d616a0650bb4900a82928039d5649e49dc8c9d538": {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-677",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "cautilus-eval",
+      "recommendedProof": "cautilus-eval",
+      "routeOverridden": false,
+      "primaryEpic": "A1-orchestration",
+      "summary": "A user can invoke the Cautilus Agent without detailed input and get a clear status summary rather than a raw 500-claim dump.",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:677",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:840de7d99890a9946c8247432f2079cb4b26107aaa650500dd5b7ea626bc6b8b": {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-678",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "cautilus-eval",
+      "recommendedProof": "cautilus-eval",
+      "routeOverridden": false,
+      "primaryEpic": "D1-discovery",
+      "summary": "The first broad scan is bounded by entry sources plus linked Markdown depth 3, and the user sees that scope before it runs.",
+      "sourceRef": "docs/contracts/claim-discovery-workflow.md:678",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:de82c162db6f58c6a75baf377c8d9e0ebe47abdbb941578e02714ac644cc6b18": {
+      "claimId": "claim-docs-guides-cli-md-11",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "Cautilus installs via a tagged-release install script and `cautilus init` installs the CLI plus the Cautilus Agent into a host repo.",
+      "sourceRef": "docs/guides/cli.md:11",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:7b37f5e76a51f1531f3168ae2bb4736fc8bb647f9f646191d361282f97d409e1": {
+      "claimId": "claim-docs-guides-cli-md-21",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "`cautilus update` refreshes the CLI and the checked-in Cautilus Agent in a repo.",
+      "sourceRef": "docs/guides/cli.md:21",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:66bcb81b16e5fb7d406bb1b40c83ea17fa94d0f2d2df91ed7143e48362eb6354": {
+      "claimId": "claim-docs-guides-cli-md-27",
+      "significanceTier": "T3",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S2-readiness",
+      "summary": "`cautilus version --verbose` reports local version provenance and is the quickest binary-only summary of the current product surface: who it is for, which normalization family or eval surface to start from, and which report fields matter when a run rejects.",
+      "sourceRef": "docs/guides/cli.md:27",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:ab84fbc47fdb37aa280c8b4ab787d7bd218863b44eed71e1b5cd7e5adf089dff": {
+      "claimId": "claim-docs-guides-cli-md-38",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "`cautilus init adapter` generates a minimal repo-local adapter scaffold and `cautilus doctor adapter` resolves and validates the adapter.",
+      "sourceRef": "docs/guides/cli.md:38",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:a85ea1cafcf29bcb341eb664704e51fe4ac4d98e1531aa9f48384cfba6106a46": {
+      "claimId": "claim-docs-guides-cli-md-45",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "S1-install",
+      "summary": "Each starter kit ships a pre-filled `cautilus-adapter.yaml`, a canonical input fixture, and a README explaining what to replace next; starter placeholders are bootstrap help, not proof a real consumer workflow is wired.",
+      "sourceRef": "docs/guides/cli.md:45",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:42d4b1e7962fef48b0f13d82d7cbda78a5ca064411adb499360862bc976ccbee": {
+      "claimId": "claim-docs-guides-cli-md-110",
+      "significanceTier": "T3",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "S2-readiness",
+      "summary": "`cautilus <subcommand> --help` exits 0 for the registered native command surface, including grouped topics such as `cautilus improve search --help`.",
+      "sourceRef": "docs/guides/cli.md:110",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:98b12d35a753f4d4f8cb0d2e366a9eb02a48e099e6c0e0353533c5a509516117": {
+      "claimId": "claim-docs-guides-cli-md-218",
+      "significanceTier": "T3",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "`cautilus init run` starts a fresh per-run subdirectory under one stable artifact root and pins it; `workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on first use) and prints `export CAUTILUS_RUN_DIR=<absolute runDir>`, with `--json` available for machine-readable payloads.",
+      "sourceRef": "docs/guides/cli.md:218",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:d566920f4cb7d8b847e557f43d19a6f15b8cc99db95340cb18f0eae25325daf5": {
+      "claimId": "claim-docs-guides-cli-md-226",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E2-scenarios-experiments",
+      "summary": "`cautilus discover scenarios normalize` accepts chatbot, skill, and workflow summary inputs and normalizes them into scenario-normalization packets.",
+      "sourceRef": "docs/guides/cli.md:226",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:14374dac52410bf46a9e4e5bccf23f0e0f724bd00e694b355f600cbb07ee7e4d": {
+      "claimId": "claim-docs-guides-cli-md-263",
+      "significanceTier": "T3",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E2-scenarios-experiments",
+      "summary": "Every normalize command plus `cautilus evaluate observation` and `cautilus evaluate report build` accepts `--example-input`, printing a minimal valid packet to stdout that can be piped back into the same command so operators can inspect the expected shape without clicking into a fixture on GitHub; these example commands are also exposed under `normalizationFamilies[*].exampleInputCli` in `discover scenarios --json`.",
+      "sourceRef": "docs/guides/cli.md:263",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:75edcc08a8c1e27506b57eb59c442b43d42b3b67a75abba80846ffeb9a537242": {
+      "claimId": "claim-docs-guides-cli-md-274",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "Cautilus exposes two top-level evaluation surfaces and four presets: `dev / repo` for repo work contracts (replacing the prior `cautilus instruction-surface` commands), `dev / skill` for checked-in or portable development skills, `app / chat` for multi-turn product conversation behavior, and `app / prompt` for single product input/output behavior.",
+      "sourceRef": "docs/guides/cli.md:274",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:10543cfa7fe683eed032d52bbb2f2fabd74cd3e14f1e0c5ae0d56077713f9569": {
+      "claimId": "claim-docs-guides-cli-md-276",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "`cautilus evaluate fixture` runs a checked-in `evaluation_input.v1` fixture through an adapter-owned runner and then evaluates the observed packet, recording a top-level `proof` object in `eval-observed.json` and `eval-summary.json` when runner readiness can identify the proof class or assessment state.",
+      "sourceRef": "docs/guides/cli.md:276",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:403dc2c5a7bb481b04a09127224a7bfc782fba56048029af5e7ddb02f2b2088f": {
+      "claimId": "claim-docs-guides-cli-md-280",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.",
+      "sourceRef": "docs/guides/cli.md:280",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:dbdd62e0893f4051ca4dfe4d10707a9b5f52fbed7a760f33ea4923d9be8f2e38": {
+      "claimId": "claim-docs-guides-cli-md-397",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "`cautilus evaluate report build` builds a machine-readable evaluation report packet from explicit mode runs, answering what the first product-owned decision packet is for this candidate versus the baseline.",
+      "sourceRef": "docs/guides/cli.md:397",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:c768d284afdc6555e9cc62f9dee8a12567cf200f33cfc457a21504779a6cb878": {
+      "claimId": "claim-docs-guides-cli-md-472",
+      "significanceTier": "T3",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "E1-evaluate",
+      "summary": "A minimal valid report packet is available via `cautilus evaluate report build --example-input`, including the minimum `humanReviewFindings` shape `{ \"severity\": \"concern\", \"message\": \"...\", \"path\": \"optional\" }`.",
+      "sourceRef": "docs/guides/cli.md:472",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:183be9c5cb3996a986b60797d2b1d14d47fc4ca231ed9c47e90e379f18f9f94f": {
+      "claimId": "claim-docs-guides-cli-md-519",
+      "significanceTier": "T2",
+      "ratifiedProofRoute": "human-auditable",
+      "recommendedProof": "human-auditable",
+      "routeOverridden": false,
+      "primaryEpic": "I1-bounded-improvement",
+      "summary": "`cautilus improve` is the improvement front door, to be used only after the claim and eval proof surface are explicit enough that an improvement loop has something honest to improve against.",
+      "sourceRef": "docs/guides/cli.md:519",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    },
+    "sha256:d3baf983e2e24c193a9fb7b5c7f6576aae99601ac7b8a7e703df43d7e7bd6cc7": {
+      "claimId": "claim-docs-guides-cli-md-525",
+      "significanceTier": "T3",
+      "ratifiedProofRoute": "deterministic",
+      "recommendedProof": "deterministic",
+      "routeOverridden": false,
+      "primaryEpic": "I1-bounded-improvement",
+      "summary": "The bounded one-shot improver runs via `cautilus improve prepare-input` and `cautilus improve propose`.",
+      "sourceRef": "docs/guides/cli.md:525",
+      "audience": "user",
+      "maintainerVerdict": "accept",
+      "badge": null
+    }
+  },
+  "reconciliation": {
+    "registryBadgeCount": 7,
+    "badges": [
+      {
+        "badge": "readiness",
+        "registryProofClass": "deterministic",
+        "boundT1": [],
+        "divergence": "no-t1-claim"
+      },
+      {
+        "badge": "claim-discovery",
+        "registryProofClass": "deterministic",
+        "boundT1": [
+          {
+            "claimFingerprint": "sha256:b2db3970d5430186c25796dcfce79426d64725377fd3d1a18a81687f66126add",
+            "claimId": "claim-readme-md-5",
+            "ratifiedProofRoute": "cautilus-eval",
+            "impliedProofClass": "live-replayed",
+            "matchesRegistry": false
+          },
+          {
+            "claimFingerprint": "sha256:d86efe24767d201f86fa6b4f59a19f4b87689cfd278c2ee648573e80b0e4616f",
+            "claimId": "claim-readme-md-67",
+            "ratifiedProofRoute": "cautilus-eval",
+            "impliedProofClass": "live-replayed",
+            "matchesRegistry": false
+          }
+        ],
+        "divergence": "route-class-mismatch",
+        "mismatchedClaims": [
+          "claim-readme-md-5",
+          "claim-readme-md-67"
+        ]
+      },
+      {
+        "badge": "behavior-evaluation",
+        "registryProofClass": "live-replayed",
+        "boundT1": [
+          {
+            "claimFingerprint": "sha256:9018c538fe5ded20087c5b9c3dea13abd9b803fb454e5fd768c05164a726b596",
+            "claimId": "claim-readme-md-4",
+            "ratifiedProofRoute": "cautilus-eval",
+            "impliedProofClass": "live-replayed",
+            "matchesRegistry": true
+          },
+          {
+            "claimFingerprint": "sha256:876d422ecc6981fb0023f848c23f90ac2be7fc0f9b0e2e615109b89044a5d21e",
+            "claimId": "claim-readme-md-136",
+            "ratifiedProofRoute": "human-auditable",
+            "impliedProofClass": null,
+            "matchesRegistry": false
+          }
+        ],
+        "divergence": "route-class-mismatch",
+        "mismatchedClaims": [
+          "claim-readme-md-136"
+        ]
+      },
+      {
+        "badge": "bounded-improvement",
+        "registryProofClass": "live-replayed",
+        "boundT1": [
+          {
+            "claimFingerprint": "sha256:3f7d53374b3ad0a1f98d080a07490f3b717148e78267be931104835aebcc23ec",
+            "claimId": "claim-readme-md-139",
+            "ratifiedProofRoute": "deterministic",
+            "impliedProofClass": "deterministic",
+            "matchesRegistry": false
+          }
+        ],
+        "divergence": "route-class-mismatch",
+        "mismatchedClaims": [
+          "claim-readme-md-139"
+        ]
+      },
+      {
+        "badge": "reviewable-artifacts",
+        "registryProofClass": "projected-bundle",
+        "boundT1": [
+          {
+            "claimFingerprint": "sha256:fca2fcfa646dc5c2d8a0113e913a099de9824ac235a6afcb08a50e2d84894960",
+            "claimId": "claim-readme-md-137",
+            "ratifiedProofRoute": "cautilus-eval",
+            "impliedProofClass": "live-replayed",
+            "matchesRegistry": false
+          }
+        ],
+        "divergence": "route-class-mismatch",
+        "mismatchedClaims": [
+          "claim-readme-md-137"
+        ]
+      },
+      {
+        "badge": "host-ownership",
+        "registryProofClass": "projected-bundle",
+        "boundT1": [
+          {
+            "claimFingerprint": "sha256:32437872b5e4ba1773bff79aab81ce278f3baca552daa84b30ffe00bdfadfb74",
+            "claimId": "claim-readme-md-6",
+            "ratifiedProofRoute": "deterministic",
+            "impliedProofClass": "deterministic",
+            "matchesRegistry": false
+          }
+        ],
+        "divergence": "route-class-mismatch",
+        "mismatchedClaims": [
+          "claim-readme-md-6"
+        ]
+      },
+      {
+        "badge": "a-testable-agent",
+        "registryProofClass": "none",
+        "boundT1": [],
+        "divergence": "no-t1-claim"
+      }
+    ],
+    "divergenceCount": 7,
+    "divergentBadges": [
+      "readiness",
+      "claim-discovery",
+      "behavior-evaluation",
+      "bounded-improvement",
+      "reviewable-artifacts",
+      "host-ownership",
+      "a-testable-agent"
+    ]
+  }
+}

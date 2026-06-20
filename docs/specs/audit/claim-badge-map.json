@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "cautilus.claim_badge_map.v1",
+  "description": "Explicit reconciliation map from the HITL-ratified gold set's T1 headline claims to the apex promise badges (docs/specs/index.spec.md). The mapping is NOT 1:1 by primaryEpic: three T1 entries share primaryEpic=APEX and the epic vocabulary is disjoint from the badge IDs, so the binding is declared here by claimFingerprint and reviewed as data, never inferred from primaryEpic. A badge may receive zero, one, or several T1 claims; readiness and a-testable-agent intentionally have no T1 headline claim, which the reconciliation surfaces as divergence rather than hiding. Anchor by claimFingerprint only (line numbers in the gold set are stale relative to HEAD). Source gold set: charness-artifacts/eval-trust/goldset-v2-head/gold-set-proposal.user-product.json (track user-product, packet 558cda76).",
+  "validBadgeIds": [
+    "readiness",
+    "claim-discovery",
+    "behavior-evaluation",
+    "bounded-improvement",
+    "reviewable-artifacts",
+    "host-ownership",
+    "a-testable-agent"
+  ],
+  "bindings": [
+    {
+      "claimFingerprint": "sha256:9018c538fe5ded20087c5b9c3dea13abd9b803fb454e5fd768c05164a726b596",
+      "claimId": "claim-readme-md-4",
+      "badge": "behavior-evaluation",
+      "rationale": "Headline value-prop (primaryEpic APEX, semantic group behavior-pinning): pin the behavior that matters and prove it survives every change to prompts/skills/models. The 'prove it survives' core is the Behavior Evaluation promise."
+    },
+    {
+      "claimFingerprint": "sha256:b2db3970d5430186c25796dcfce79426d64725377fd3d1a18a81687f66126add",
+      "claimId": "claim-readme-md-5",
+      "badge": "claim-discovery",
+      "rationale": "Three-jobs product-scope claim (primaryEpic APEX) led by 'discover declared claims worth proving from selected source docs' — the worklist origin that the Claim Discovery promise delivers."
+    },
+    {
+      "claimFingerprint": "sha256:32437872b5e4ba1773bff79aab81ce278f3baca552daa84b30ffe00bdfadfb74",
+      "claimId": "claim-readme-md-6",
+      "badge": "host-ownership",
+      "rationale": "Install-shape claim (primaryEpic S1-install): ships as a standalone binary plus Cautilus Agent that a host repo installs without copying another scaffold first. The host installs and owns; Cautilus brings only the generic surface."
+    },
+    {
+      "claimFingerprint": "sha256:d86efe24767d201f86fa6b4f59a19f4b87689cfd278c2ee648573e80b0e4616f",
+      "claimId": "claim-readme-md-67",
+      "badge": "claim-discovery",
+      "rationale": "Agent-curation claim (primaryEpic A2-curation-review): the Cautilus Agent curates the raw discovery packet against the repo (reduce false positives, raise missing public promises). This is the curation half of Claim Discovery."
+    },
+    {
+      "claimFingerprint": "sha256:876d422ecc6981fb0023f848c23f90ac2be7fc0f9b0e2e615109b89044a5d21e",
+      "claimId": "claim-readme-md-136",
+      "badge": "behavior-evaluation",
+      "rationale": "Intent-first principle (primaryEpic APEX): does not freeze one prompt string as the contract, treats the behavior under evaluation as the contract. This is the thesis of Behavior Evaluation."
+    },
+    {
+      "claimFingerprint": "sha256:fca2fcfa646dc5c2d8a0113e913a099de9824ac235a6afcb08a50e2d84894960",
+      "claimId": "claim-readme-md-137",
+      "badge": "reviewable-artifacts",
+      "rationale": "Held-out-honesty / packet-first claim (primaryEpic E2-scenarios-experiments): separates iteration from protected validation and keeps evidence reopenable from files. Reopenable evidence is the Reviewable Artifacts promise."
+    },
+    {
+      "claimFingerprint": "sha256:3f7d53374b3ad0a1f98d080a07490f3b717148e78267be931104835aebcc23ec",
+      "claimId": "claim-readme-md-139",
+      "badge": "bounded-improvement",
+      "rationale": "Bounded-autonomy principle (primaryEpic I1-bounded-improvement): keeps search and revision explicitly bounded by budgets, checkpoints, and blocked-readiness conditions. Direct match to the Bounded Improvement promise."
+    }
+  ]
+}

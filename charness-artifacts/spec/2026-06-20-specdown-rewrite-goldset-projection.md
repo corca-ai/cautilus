@@ -4,6 +4,11 @@ Status: spec (canonical during implementation), 2026-06-20.
 Design + critique only this session; implementation is the next session's pickup (maintainer instruction).
 Decision route: the maintainer accepted the "project, don't patch" approach with the hybrid generate-vs-prose split, user-product track only, and `claimFingerprint` anchoring (this session's recommendation, ratified by "ok 이거").
 
+First Implementation Slice — LANDED 2026-06-20 (read-only projector, zero gate/page change).
+The projector, the explicit `fingerprint→badge` map, the structured proof-route override surface, the generated fingerprint-keyed inventory, the reconciliation, and the AC1–AC4 tests are in; `npm run verify` is green (AC6).
+PQ1 and PQ2 are resolved against the real data (see below); evidence: `charness-artifacts/findings/2026-06-20-specdown-goldset-projection-first-slice.md`.
+Remaining phases (the 2-axis ledger/evidence collapse, `docs/specs/old/**` neutralization + `lint:specs` exit criterion) are unchanged and still owned by SC4/SC5/AC5.
+
 ## Problem
 
 The spec surface under `docs/specs/` is hand-authored across three framings of the same claim set — the apex promise page (`index.spec.md`, 7 badges), the promise ledger (`ledger/`), and the evidence state (`evidence/`).
@@ -63,10 +68,14 @@ No spec pages, no scripts, and no gate changes land this session beyond this art
 
 - PQ1 — Empirically resolved by the critique: the mapping is NOT 1:1 by `primaryEpic` (three T1 share `APEX`; epic vocabulary is disjoint from badge IDs; some badges have no T1 claim), so an explicit `fingerprint→badge` map is required.
   The residual probe is the exact contents of that map and whether T2 mechanisms also bind to badges, decided by the first slice's projector against the real data (AC1).
+  RESOLVED (impl): the explicit map is `docs/specs/audit/claim-badge-map.json` (7 bindings, each with rationale) — the three APEX-epic claims route to distinct badges (`behavior-evaluation`, `claim-discovery`, `behavior-evaluation`), two different-epic claims (`-5`, `-67`) share `claim-discovery`, and `readiness`/`a-testable-agent` get no T1 headline claim (surfaced by the reconciliation, not hidden).
+  T2 mechanisms do NOT bind to badges this slice; only T1 carries a badge.
 
 - PQ2 — Where does the ratified proof route live for `relabel`/`rewrite-source` entries — only in the prose `note`, or in a structured field the projector can read deterministically?
   If only in prose, the projection needs a structured override surface (a small checked-in fingerprint→route map, or a one-time enrichment of the gold set) so the projector does not parse free text.
   Resolved during the first slice while reading the 56 durable-graded entries.
+  RESOLVED (impl): only `claim-readme-md-8` (relabel) carries a route correction, and it lives ONLY in the prose `note` (`agentLabels.recommendedProof` keeps the pre-relabel `deterministic`); `claim-readme-md-54` (rewrite-source) corrects the source, not the route, so its `cautilus-eval` route needs no override.
+  The structured override surface is `docs/specs/audit/claim-proof-route-overrides.json` (`claim-readme-md-8` → `cautilus-eval`, R6/R12); `resolveProofRoute` reads the override then falls back to `recommendedProof`, never the `note`.
 
 - PQ3 — What exactly do the `ledger/` and `evidence/` pages become: fully generated views, or a thin generated state block plus retained prose?
   Expected: a generated tier/verdict/route state table per page, with the surrounding prose hand-authored, consistent with FD3.

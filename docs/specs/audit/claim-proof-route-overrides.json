@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "cautilus.claim_proof_route_override.v1",
+  "description": "Structured ratified proof-route overrides for durable-graded gold-set entries whose maintainer verdict corrected the route, where the corrected route survives only in the prose `note` and the structured agentLabels.recommendedProof still carries the pre-verdict value. The projector reads this surface instead of parsing free text (FD5/PQ2). An entry absent here resolves its route from agentLabels.recommendedProof verbatim. Anchor by claimFingerprint only. Each ratifiedProofRoute must be one of the gold-set route vocabulary values: deterministic, cautilus-eval, human-auditable.",
+  "validRoutes": [
+    "deterministic",
+    "cautilus-eval",
+    "human-auditable"
+  ],
+  "overrides": [
+    {
+      "claimFingerprint": "sha256:b207b54490c0db2ab75bded7ba0421b0d2898a095ed7948180593c7e765f40e8",
+      "claimId": "claim-readme-md-8",
+      "maintainerVerdict": "relabel",
+      "recommendedProofBefore": "deterministic",
+      "ratifiedProofRoute": "cautilus-eval",
+      "ruleRef": "R6/R12",
+      "rationale": "Relabel deterministic -> cautilus-eval: R6 precedent ruled this exact claim cautilus-eval — 'enough state for the next agent to resume' is behavioral content, not a schema check. The structured agentLabels.recommendedProof keeps the pre-relabel value `deterministic`; the ratified route lives only in the entry note, so it is pinned here."
+    }
+  ]
+}
