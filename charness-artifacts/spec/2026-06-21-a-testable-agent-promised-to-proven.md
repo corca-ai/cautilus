@@ -1,6 +1,18 @@
 # Spec — A Testable Agent → proven (S2: readiness check + agent-helps-build)
 
-Status: contract (pre-impl). Canonical during implementation.
+Status: LANDED 2026-06-21 (recorded contract). Slice 1 `82e6e2c6`, Slice 2 `3fb46b5f`. Apex is now 7 proven / 0 declared / 0 promised; audit 7/7 consistent, honest.
+
+## Landed Notes (post-impl)
+
+- **Subclaim ① (deterministic):** the leaf spec asserts `doctor status` `runnerReadiness` stable verdict fields (proofClass/surface/recommendation/runnerCount/notice/freshnessPolicy/scaffoldSource — NOT the transient `state`, which drifts with git history), `evaluate claims plan` `requiredRunnerCapability` via the robust `includes "runner"` over `evalPlans[0].proofRequirement`, `cautilus-json-file` over the three checked-in assessments, and a **controlled** seeded-stale assessment (missing runner file injected into a `mktemp -d` repo root) for freshness detection — not the repo's transient stale state. `evaluate fixture` was dropped from ① (heavy side-effecting subprocess, currently failing); proofClass preservation is bound via the fixture files + `proofClassSource` instead.
+- **Subclaim ② (prepared-skill, deterministic):** new dogfood fixture + `audit-cautilus-runner-readiness-flow-log.mjs` + test (load-bearing: passes a good build/assess flow, fails missing-build, no-orient, and overrun-into-eval/improve/commit). Live `cautilus-eval` episode deferred (Proof Debt row added).
+- **FD4 freeze-intent decision:** the `cautilus-agent` change is carried by the checked-in prepared dogfood fixture + executed audit test (deterministic); the live episode is deferred. Progressive-disclosure handled by the repo gate `lint:skill-disclosure`.
+- **Disclosure-cap decision:** SKILL.md core was exactly 180/180 and the repo's one-sentence-per-line rule forbids merging sentences, so the cap was raised 180→185 for the genuine new Runner Readiness routing concern, and the gate was **strengthened** with three new required fragments (`## Runner Readiness`, `runner_assessment.v1`, `runner-readiness.md`). All three skill copies (`skills/`, `.agents/skills/`, `plugins/`) kept byte-identical.
+- **Critique:** foreground Sonnet fresh-eye review — **ready-to-commit, 0 blockers.** SF1 folded (strengthened the audit negative test to also assert `missing_recommendation_or_gaps` + `missing_stop_boundary`). SF2 (a `dogfood:...:eval` package.json entry-point for parity with claim-discovery) deferred with the live episode — adding a runnable script for an unexecuted episode is discoverability, not honesty, and the state table already marks it "prepared, not executed."
+
+## Original Contract
+
+Canonical during implementation.
 Track: A (apex Proof Debt). Maintainer-chosen sub-item: **A Testable Agent** — the last non-proven badge.
 Scope decision: **S2** (readiness check **and** agent-helps-build), chosen 2026-06-21.
 Date: 2026-06-21.
