@@ -29,6 +29,7 @@ The GitHub binary/install surface remains the public release boundary.
 
 This release includes the commits after `v0.16.1` up to the release commit. Representative commits:
 
+- Bump CI Go toolchain 1.26.3 -> 1.26.4 (patches GO-2026-5039 net/textproto and GO-2026-5037 crypto/x509 so govulncheck/verify and the release build pass)
 - Flip apex Bounded Improvement badge to proven (dev/skill live held-out loop)
 - Fix improve-search held-out scenario id mismatch (frontier always picked seed)
 - Fix improve-search dropping per-scenario mutation feedback (blind mutations)
