@@ -1,0 +1,231 @@
+{
+  "comparisonSummary": {
+    "betterThanBaseline": 0,
+    "evaluationsWithBaseline": 0,
+    "sameAsBaseline": 0,
+    "worseThanBaseline": 0
+  },
+  "evaluatedAt": "2026-06-20T00:23:41.754168115Z",
+  "evaluationCounts": {
+    "blocked": 0,
+    "degraded": 0,
+    "execution": 1,
+    "failed": 1,
+    "passed": 0,
+    "total": 1,
+    "trigger": 0,
+    "unstable": 0
+  },
+  "evaluationRuns": [
+    {
+      "artifactRefs": [
+        {
+          "kind": "prompt",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/prompt.md"
+        },
+        {
+          "kind": "raw",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/result.raw"
+        },
+        {
+          "kind": "stderr",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/result.stderr"
+        },
+        {
+          "kind": "result",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/result.json"
+        },
+        {
+          "kind": "aggregate",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/aggregate.json"
+        }
+      ],
+      "displayName": "Cautilus Agent",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-cautilus-agent-should-complete-the-intended-task-cleanly-once-the-skill-is-invok",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "Cautilus Agent should complete the intended task cleanly once the skill is invoked."
+      },
+      "metrics": {
+        "cost_usd": 0.5171795,
+        "duration_ms": 80795,
+        "total_tokens": 243884
+      },
+      "sampling": {
+        "consensusCount": 1,
+        "consensusRate": 1,
+        "derivedStatus": "failed",
+        "invocationRate": 1,
+        "invokedCount": 1,
+        "passCount": 0,
+        "passRate": 0,
+        "sampleCount": 1,
+        "stable": true,
+        "statusCounts": {
+          "blocked": 0,
+          "degraded": 0,
+          "failed": 1,
+          "passed": 0
+        },
+        "unstable": false
+      },
+      "startedAt": "2026-06-20T00:23:41.742Z",
+      "status": "failed",
+      "summary": "Execution consensus reached failed in 1/1 run(s). Invoked the local cautilus-agent skill. With no task given, I followed its No-Input Orientation: resolved the checked-in launcher ./bin/cautilus (v0.16.1, preferred over PATH in the product repo) and ran `doctor --repo-root . --next-action`. Orientation reported binary healthy, agent surface ready, adapter valid, and claim state present, with one next-action hint: refresh the stale runner assessment, then re-run the next-action loop. Per the user's explicit 'do the first thing, then stop and wait' instruction, I stopped at the orientation boundary instead of continuing to stage the first bounded eval run. Expectation failure: summary missing required fragment: branch; command log included forbidden fragment: doctor --repo-root . --next-action; command log included forbidden fragment: --next-action.",
+      "surface": "execution_quality",
+      "targetId": "cautilus-agent",
+      "targetKind": "public_skill",
+      "telemetry": {
+        "cache_creation_input_tokens": 25518,
+        "cache_read_input_tokens": 208189,
+        "completion_tokens": 5351,
+        "cost_usd": 0.5171795,
+        "model": "claude-opus-4-8[1m]",
+        "output_tokens": 5351,
+        "prompt_tokens": 238533,
+        "provider": "anthropic",
+        "runtimeFingerprint": {
+          "model": "claude-opus-4-8[1m]",
+          "provider": "anthropic"
+        },
+        "total_tokens": 243884,
+        "uncached_input_tokens": 4826
+      }
+    }
+  ],
+  "evaluations": [
+    {
+      "artifactRefs": [
+        {
+          "kind": "prompt",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/prompt.md"
+        },
+        {
+          "kind": "raw",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/result.raw"
+        },
+        {
+          "kind": "stderr",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/result.stderr"
+        },
+        {
+          "kind": "result",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/result.json"
+        },
+        {
+          "kind": "aggregate",
+          "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/seed-eval/local-skill-test/execution-cautilus-no-input-claim-discovery-status/aggregate.json"
+        }
+      ],
+      "displayName": "Cautilus Agent",
+      "evaluationId": "execution-cautilus-no-input-claim-discovery-status",
+      "evaluationKind": "execution",
+      "intentProfile": {
+        "behaviorSurface": "skill_execution_quality",
+        "guardrailDimensions": [],
+        "intentId": "intent-cautilus-agent-should-complete-the-intended-task-cleanly-once-the-skill-is-invok",
+        "schemaVersion": "cautilus.behavior_intent.v1",
+        "successDimensions": [
+          {
+            "id": "skill_task_fidelity",
+            "summary": "Complete the intended task cleanly once the skill is invoked."
+          },
+          {
+            "id": "runtime_budget_respect",
+            "summary": "Stay within the declared runtime or token budget when one is provided."
+          }
+        ],
+        "summary": "Cautilus Agent should complete the intended task cleanly once the skill is invoked."
+      },
+      "invoked": true,
+      "metrics": {
+        "cost_usd": 0.5171795,
+        "duration_ms": 80795,
+        "total_tokens": 243884
+      },
+      "prompt": "Use $cautilus-agent on this repo. I have not given you a specific task yet — do whatever your skill says to do first when it is invoked without a task, then stop and wait for me.",
+      "sampling": {
+        "consensusCount": 1,
+        "consensusRate": 1,
+        "derivedStatus": "failed",
+        "invocationRate": 1,
+        "invokedCount": 1,
+        "passCount": 0,
+        "passRate": 0,
+        "sampleCount": 1,
+        "stable": true,
+        "statusCounts": {
+          "blocked": 0,
+          "degraded": 0,
+          "failed": 1,
+          "passed": 0
+        },
+        "unstable": false
+      },
+      "startedAt": "2026-06-20T00:23:41.742Z",
+      "status": "failed",
+      "summary": "Execution consensus reached failed in 1/1 run(s). Invoked the local cautilus-agent skill. With no task given, I followed its No-Input Orientation: resolved the checked-in launcher ./bin/cautilus (v0.16.1, preferred over PATH in the product repo) and ran `doctor --repo-root . --next-action`. Orientation reported binary healthy, agent surface ready, adapter valid, and claim state present, with one next-action hint: refresh the stale runner assessment, then re-run the next-action loop. Per the user's explicit 'do the first thing, then stop and wait' instruction, I stopped at the orientation boundary instead of continuing to stage the first bounded eval run. Expectation failure: summary missing required fragment: branch; command log included forbidden fragment: doctor --repo-root . --next-action; command log included forbidden fragment: --next-action.",
+      "surface": "execution_quality",
+      "targetId": "cautilus-agent",
+      "targetKind": "public_skill",
+      "telemetry": {
+        "cache_creation_input_tokens": 25518,
+        "cache_read_input_tokens": 208189,
+        "completion_tokens": 5351,
+        "cost_usd": 0.5171795,
+        "model": "claude-opus-4-8[1m]",
+        "output_tokens": 5351,
+        "prompt_tokens": 238533,
+        "provider": "anthropic",
+        "runtimeFingerprint": {
+          "model": "claude-opus-4-8[1m]",
+          "provider": "anthropic"
+        },
+        "total_tokens": 243884,
+        "uncached_input_tokens": 4826
+      },
+      "thresholds": {
+        "max_duration_ms": 300000
+      }
+    }
+  ],
+  "proof": {
+    "assessmentPath": ".cautilus/runners/default-eval-runner.assessment.json",
+    "productProofReady": true,
+    "proofClass": "declared-eval-runner",
+    "proofClassSource": "adapter-template",
+    "requiresProductRunnerProof": false,
+    "runnerAssessmentState": "missing-assessment",
+    "runnerId": "default-eval-runner",
+    "runtime": "claude",
+    "targetSurface": "dev/skill"
+  },
+  "recommendation": "reject",
+  "samplingSummary": {
+    "evaluationsWithSampling": 1,
+    "overallConsensusRate": 1,
+    "overallInvocationRate": 1,
+    "overallPassRate": 0,
+    "totalConsensusSamples": 1,
+    "totalInvocations": 1,
+    "totalPassingSamples": 0,
+    "totalSamples": 1,
+    "unstableEvaluations": 0
+  },
+  "schemaVersion": "cautilus.skill_evaluation_summary.v1",
+  "skillDisplayName": "Cautilus Agent",
+  "skillId": "cautilus-agent"
+}

@@ -2,6 +2,26 @@
 
 When a behavior target needs improvement, the user needs bounded search that preserves intent, budget, protected checks, and reviewable changes.
 Using the `cautilus improve` CLI command and the `cautilus-agent` skill, a user can improve a selected behavior target while preserving held-out evidence and revision artifacts.
+The bounded improve loop is proven live on the dev/skill surface: a degraded prompt is rewritten until it recovers a held-out scenario it was never tuned on, and the change is produced as a reviewable proposal you approve before applying.
+
+## The bounded improve loop is proven live: a degraded prompt is rewritten until it recovers a held-out scenario it was never tuned on.
+
+This is not a projected bundle.
+`npm run proof:improve:live` (`scripts/on-demand/improve-live-proof.mjs`) constructs a degraded control prompt — the current cautilus-agent SKILL.md with its No-Input Orientation discipline replaced by an escalation directive — confirms with a live agent that the seed control FAILS the held-out orientation scenario, then runs a real bounded `cautilus improve search` (live codex mutation plus a worktree candidate eval) and asserts that a mutated candidate the search was never tuned on recovers the held-out behavior.
+The working-tree SKILL.md is restored before the proof exits, and neither the degraded seed nor the mutated candidate ever ships — the loop produces a reviewable proposal and revision artifact you approve before applying.
+The check below — run by `npm run lint:specs`, with the deterministic replay in `npm run test:on-demand`, not the default `npm run verify` — projects the operator-witnessed live proof summary, the live search result, and the seed control's live failure capture so the displayed win matches the asserted one.
+
+> check:cautilus-json-file
+| path | json_path | equals |
+| --- | --- | --- |
+| fixtures/eval/dev/skill/improve/live/improve-live-proof-summary.json | schemaVersion | cautilus.improve_live_proof.v1 |
+| fixtures/eval/dev/skill/improve/live/improve-live-proof-summary.json | provenance.kind | live-improve-loop |
+| fixtures/eval/dev/skill/improve/live/improve-live-proof-summary.json | heldOutScenarioId | execution-cautilus-no-input-claim-discovery-status |
+| fixtures/eval/dev/skill/improve/live/improve-live-proof-summary.json | seedHeldOutScore | 0 |
+| fixtures/eval/dev/skill/improve/live/improve-live-proof-summary.json | winningCandidateHeldOutScore | 100 |
+| fixtures/eval/dev/skill/improve/live/improve-live-search-result.json | schemaVersion | cautilus.improve_search_result.v1 |
+| fixtures/eval/dev/skill/improve/live/improve-live-search-result.json | status | completed |
+| fixtures/eval/dev/skill/improve/live/improve-live-seed-eval-summary.json | recommendation | reject |
 
 ## A user starts improvement from explicit claim, eval, and target packets rather than an open-ended retry loop.
 

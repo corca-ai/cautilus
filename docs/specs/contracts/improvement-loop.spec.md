@@ -3,9 +3,9 @@
 Improvement is a bounded behavior-improvement loop.
 
 Map keys: `promise.improvement`, `rule.evidence-gaps`, `rule.cost-and-proof-freshness`, `rule.reviewable-artifacts`.
-Evidence path: deterministic plus held-out eval.
-Evidence status: open gap.
-Next action: connect improve packet tests to at least one held-out eval proof before treating improvement claims as satisfied.
+Evidence path: deterministic packet tests plus a live held-out improve cycle.
+Evidence status: satisfied on the dev/skill surface.
+Next action: extend the live held-out improve proof beyond the dev/skill orientation surface as new improvement targets are adopted.
 Terms covered here: improve prepare-input, search budget, checkpoint, frontier, proposal, held-out validation, protected checks, runtime fingerprint, blocked readiness, reuse.
 
 ## Maintainer Promise
@@ -23,7 +23,8 @@ Improvement starts from an explicit behavior target and budget, and records what
 
 - [scripts/agent-runtime/improvement-contract-schemas.test.mjs](../../../scripts/agent-runtime/improvement-contract-schemas.test.mjs) verifies checked-in improve input, proposal, and revision packets against schemas; [scripts/agent-runtime/improve-search-contract-schemas.test.mjs](../../../scripts/agent-runtime/improve-search-contract-schemas.test.mjs) does the same for search input/result, including budget, checkpoint, and frontier fields.
 - [internal/runtime/evaluation_proof_test.go](../../../internal/runtime/evaluation_proof_test.go) `TestImproveInputRejectsBlockedProductRunnerProof` and `TestEvaluationProofPreservesBlockersThroughSummary` show blocked-readiness states reaching the improve packet rather than being masked.
+- `npm run proof:improve:live` ([scripts/on-demand/improve-live-proof.mjs](../../../scripts/on-demand/improve-live-proof.mjs)) runs a real live bounded improve cycle on the dev/skill orientation surface: it constructs a degraded seed control, confirms its live held-out failure, runs codex mutation plus a worktree candidate eval, and asserts the mutated candidate recovers the held-out scenario. The operator-witnessed capture under `fixtures/eval/dev/skill/improve/live/` is replayed deterministically by [scripts/on-demand/improve-live-proof.test.mjs](../../../scripts/on-demand/improve-live-proof.test.mjs) and projected by [the Bounded Improvement spec](../user/improvement.spec.md).
 
 ## Evidence Gaps
 
-- Held-out eval result packet attached to a real improve run so improvement claims have a reopenable before/after evidence pair. Owner: maintainer. Next action: capture a self-dogfood improve cycle with held-out validation under `artifacts/self-dogfood/` and link both summaries.
+- The live held-out improve proof currently covers the dev/skill orientation prompt target. Owner: maintainer. Next action: extend the live held-out improve proof to additional improvement targets as they are adopted.

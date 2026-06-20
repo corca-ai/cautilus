@@ -12,11 +12,12 @@ Bounded Improvement improves a selected behavior target while preserving intent,
 
 ## Evidence State
 
-Evidence status: open gap.
-The packet route is checked, but maintainer evidence still calls out held-out proof gaps for real improve cycles.
+Evidence status: proven on the dev/skill surface.
+The packet route is checked, and a live bounded improve cycle (`npm run proof:improve:live`) proves the loop recovers a held-out scenario it was never tuned on, with the operator-witnessed capture replayed deterministically.
 
 ```run:shell
-# Verify improvement links point to existing docs.
+# Verify improvement links and the live improve proof capture exist.
 test -f docs/specs/user/improvement.spec.md
 test -f docs/specs/contracts/improvement-loop.spec.md
+test -f fixtures/eval/dev/skill/improve/live/improve-live-proof-summary.json
 ```

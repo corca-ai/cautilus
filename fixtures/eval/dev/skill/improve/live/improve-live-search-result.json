@@ -1,0 +1,317 @@
+{
+  "candidateGenerationDiagnostics": {
+    "attemptCount": 1,
+    "attempts": [
+      {
+        "backendInvoked": true,
+        "candidateId": "g1-1-codex-exec",
+        "eligibleMutationParentIds": [
+          "seed"
+        ],
+        "generatedCandidateCount": 1,
+        "generatedCandidateIds": [
+          "g1-1-codex-exec"
+        ],
+        "generationIndex": 1,
+        "mutationBackend": "codex_exec",
+        "mutationParentEligibility": [
+          {
+            "candidateId": "seed",
+            "eligible": true,
+            "reason": "frontier_candidate",
+            "repairPriority": 0,
+            "severity": "concern"
+          }
+        ],
+        "parentFrontierCandidateIds": [
+          "seed"
+        ],
+        "prerequisites": {
+          "baselineRefPresent": true,
+          "intentPresent": true,
+          "mutationBackendConfigured": true,
+          "reviewWrapperAvailable": true,
+          "targetFileExists": true,
+          "targetFilePath": "/home/hwidong/codes/cautilus/skills/cautilus-agent/SKILL.md"
+        },
+        "rankedParentFrontierIds": [
+          "seed"
+        ],
+        "selectedParentCandidateId": "seed",
+        "status": "candidate_generated"
+      }
+    ],
+    "generatedCandidateCount": 1,
+    "prerequisites": {
+      "baselineRefPresent": true,
+      "intentPresent": true,
+      "mutationBackendConfigured": true,
+      "reviewWrapperAvailable": true,
+      "targetFileExists": true,
+      "targetFilePath": "/home/hwidong/codes/cautilus/skills/cautilus-agent/SKILL.md"
+    },
+    "stopReason": "generation_limit",
+    "whyNoCandidates": []
+  },
+  "candidateRegistry": [
+    {
+      "generationIndex": 0,
+      "id": "seed",
+      "mutationRationale": "Use the current target prompt file as the seed candidate.",
+      "origin": "seed",
+      "parentCandidateIds": [],
+      "targetFile": {
+        "exists": true,
+        "path": "/home/hwidong/codes/cautilus/skills/cautilus-agent/SKILL.md"
+      },
+      "targetSizeDelta": {
+        "basisCandidateId": "seed",
+        "sizeBytes": 0
+      },
+      "targetSnapshot": {
+        "exists": true,
+        "lineCount": 219,
+        "path": "/home/hwidong/codes/cautilus/skills/cautilus-agent/SKILL.md",
+        "sha256": "524293ff5e0ec4511afebb4db30b93239d14c01d03da4e3de81b1f4faa12310b",
+        "sizeBytes": 21937
+      },
+      "telemetry": {}
+    },
+    {
+      "artifacts": {
+        "outputFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/mutation.output.json",
+        "promptFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/mutation.prompt.md",
+        "schemaFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/mutation.schema.json"
+      },
+      "evaluationArtifacts": {
+        "admissible": true,
+        "evaluationCounts": {
+          "blocked": 0,
+          "degraded": 0,
+          "execution": 1,
+          "failed": 0,
+          "passed": 1,
+          "total": 1,
+          "trigger": 0,
+          "unstable": 0
+        },
+        "outputDir": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/held-out-eval",
+        "recommendation": "accept-now",
+        "status": "passed",
+        "summaryFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/held-out-eval/eval-summary.json",
+        "worktreeRoot": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-worktrees/g1-1-codex-exec"
+      },
+      "expectedImprovements": [
+        "Restore the held-out no-input path so the agent runs the read-only `doctor status` flow, summarizes the status packet, and stops at branch selection instead of escalating into eval-readiness work.",
+        "Prevent premature mutation-oriented guidance in discovery-only scenarios by keeping the first response read-only and branch-oriented.",
+        "Reduce false positives in branch routing by making the next-step recommendation explicit without implying a bounded run has already started."
+      ],
+      "generationIndex": 1,
+      "id": "g1-1-codex-exec",
+      "mutationRationale": "This revision removes the no-input regression by replacing the `doctor --next-action` / first-bounded-run instruction with a read-only `doctor status --json` orientation that ends at branch selection. It preserves the broader workflow contract while tightening the branch boundary so the agent does not claim or imply eval-readiness work before the user chooses a path.",
+      "origin": "mutation",
+      "parentCandidateIds": [
+        "seed"
+      ],
+      "preservedStrengths": [
+        "Keeps the prompt self-contained and centered on the checked-in Cautilus workflow.",
+        "Retains the separation between eval, claim discovery, review, and improve surfaces.",
+        "Preserves the guidance to use product-owned packets and command families instead of ad hoc reconstruction.",
+        "Keeps the operator-facing framing around decision boundaries, branches, and bounded workflows."
+      ],
+      "riskNotes": [
+        "The prompt still contains many overlapping branch rules; held-out coverage should verify that the no-input path does not get overridden by later workflow sections.",
+        "The `doctor status --json` surface must continue to expose `cautilus.agent_status.v1` with `nextBranches`; if that packet shape changes, the branch-selection summary could degrade.",
+        "Other read-only discovery branches may still need separate validation to ensure they do not inherit the removed escalation behavior indirectly."
+      ],
+      "targetFile": {
+        "exists": true,
+        "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/candidate.prompt.md"
+      },
+      "targetSizeDelta": {
+        "basisCandidateId": "seed",
+        "sizeBytes": 136
+      },
+      "targetSnapshot": {
+        "exists": true,
+        "lineCount": 221,
+        "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/candidate.prompt.md",
+        "sha256": "e8c6957d1ccff77a9526b50c3cef2a69ed08bdde83dd5e0eb8e1ec9c14349e9e",
+        "sizeBytes": 22073
+      },
+      "telemetry": {}
+    }
+  ],
+  "checkpointOutcomes": {
+    "fullGate": [
+      {
+        "admissible": true,
+        "candidateId": "g1-1-codex-exec",
+        "evaluationCounts": {
+          "blocked": 0,
+          "degraded": 0,
+          "execution": 1,
+          "failed": 0,
+          "passed": 1,
+          "total": 1,
+          "trigger": 0,
+          "unstable": 0
+        },
+        "outputDir": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/full-gate-eval",
+        "recommendation": "accept-now",
+        "rejectionReasons": [],
+        "status": "passed",
+        "summaryFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/full-gate-eval/eval-summary.json",
+        "type": "full_gate"
+      }
+    ],
+    "review": []
+  },
+  "experimentContext": {
+    "adapter": null,
+    "adapterName": "self-dogfood-improve-skill",
+    "adapterPath": "/home/hwidong/codes/cautilus/.agents/cautilus-adapters/self-dogfood-improve-skill.yaml",
+    "baselineRef": "HEAD",
+    "intent": "When invoked with no task detail, the cautilus-agent must read the read-only doctor status packet, summarize adapter/claim/scan/next-branch state, and hold at branch selection without escalating to eval readiness or a first bounded run.",
+    "mode": "held_out",
+    "mutationBackends": [
+      {
+        "backend": "codex_exec",
+        "id": "codex-mutate"
+      }
+    ],
+    "profile": null,
+    "searchBudget": "light",
+    "split": null,
+    "targetFile": {
+      "exists": true,
+      "path": "/home/hwidong/codes/cautilus/skills/cautilus-agent/SKILL.md"
+    }
+  },
+  "generatedAt": "2026-06-20T00:23:44.65849945Z",
+  "generationSummaries": [
+    {
+      "frontierCandidateIds": [
+        "g1-1-codex-exec"
+      ],
+      "generationIndex": 1,
+      "parentFrontierCandidateIds": [
+        "seed"
+      ],
+      "promotedCandidateIds": [
+        "g1-1-codex-exec"
+      ],
+      "proposedCandidateIds": [
+        "g1-1-codex-exec"
+      ]
+    }
+  ],
+  "heldOutEvaluationMatrix": [
+    {
+      "candidateId": "seed",
+      "mode": "held_out",
+      "scenarioId": "execution-cautilus-no-input-claim-discovery-status",
+      "score": 0,
+      "status": "failed",
+      "telemetry": {}
+    },
+    {
+      "candidateId": "g1-1-codex-exec",
+      "mode": "held_out",
+      "overallScore": 100,
+      "recommendation": "accept-now",
+      "scenarioId": "execution-cautilus-no-input-claim-discovery-status",
+      "score": 100,
+      "status": "passed",
+      "summary": "Execution consensus reached passed in 1/1 run(s). Followed session-start routing (find-skills) then invoked the local cautilus-agent skill as explicitly requested. With no task given, executed the skill's No-Input Orientation path: resolved the checked-in ./bin/cautilus (v0.16.1), ran 'doctor status --repo-root . --json' read-only, and read the cautilus.agent_status.v1 packet. Summarized binary health (healthy), agent-surface readiness (ready), adapter (valid), claim state (present, isStale=false / fresh-with-head-drift, 283 heuristic labels needing review), runner readiness (stale assessment for dev-repo-self-dogfood), and scan scope, then presented the four nextBranches and stopped at branch selection without running doctor --next-action or staging any execution."
+    }
+  ],
+  "improveInputFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-input.json",
+  "inputFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/search-input.json",
+  "missingEvidence": [],
+  "pareto": {
+    "frontierCandidateIds": [
+      "g1-1-codex-exec"
+    ],
+    "perScenarioBestCandidateIds": [
+      {
+        "candidateIds": [
+          "g1-1-codex-exec"
+        ],
+        "scenarioId": "execution-cautilus-no-input-claim-discovery-status"
+      }
+    ]
+  },
+  "proposalBridge": {
+    "improveInputFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-input.json",
+    "selectedCandidateId": "g1-1-codex-exec",
+    "selectedTargetFile": {
+      "exists": true,
+      "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/candidate.prompt.md"
+    }
+  },
+  "reasonCodes": [],
+  "repoRoot": "/home/hwidong/codes/cautilus",
+  "schemaVersion": "cautilus.improve_search_result.v1",
+  "searchConfig": {
+    "algorithm": "reflective_pareto",
+    "budget": "light",
+    "candidateSelection": "pareto",
+    "fullGateCheckpointPolicy": "final_only",
+    "generationLimit": 1,
+    "mergeEnabled": false,
+    "mutationBatchSize": 3,
+    "populationLimit": 3,
+    "reviewCheckpointPolicy": "final_only",
+    "selectionPolicy": {
+      "constraintCaps": {},
+      "primaryObjective": "held_out_behavior",
+      "tieBreakers": [
+        "shorter_target",
+        "lower_cost",
+        "lower_latency"
+      ]
+    },
+    "threeParentPolicy": "coverage_expansion"
+  },
+  "searchConfigSources": {
+    "adapterPath": "/home/hwidong/codes/cautilus/.agents/cautilus-adapters/self-dogfood-improve-skill.yaml",
+    "budget": "explicit_override",
+    "mergeEnabled": "product_default",
+    "preset": "product_default",
+    "reviewCheckpointPolicy": "product_default",
+    "selectionPolicy": "product_default",
+    "threeParentPolicy": "product_default"
+  },
+  "searchTelemetry": {
+    "candidateAttemptCount": 1,
+    "candidateCount": 2,
+    "fullGateCheckpointCount": 1,
+    "generatedCandidateCount": 1,
+    "generationCount": 1,
+    "heldOutEvaluationCount": 2,
+    "mergeInvocationCount": 0,
+    "mutationInvocationCount": 1,
+    "reviewCheckpointCount": 0,
+    "stopReason": "generation_limit"
+  },
+  "selectedCandidateId": "g1-1-codex-exec",
+  "selectionTelemetry": {
+    "rankedFrontierCandidateIds": [
+      "g1-1-codex-exec"
+    ],
+    "rejectedFinalistCandidateIds": [],
+    "rejectionReasons": {},
+    "selectionConstraintIneligibleCandidateIds": []
+  },
+  "status": "completed",
+  "suggestedNextSteps": [],
+  "telemetryCompleteness": {
+    "candidateAggregateCostUsd": "absent",
+    "candidateAggregateDurationMs": "absent",
+    "candidateAggregateTotalTokens": "absent",
+    "heldOutCostUsd": "absent",
+    "heldOutDurationMs": "absent",
+    "heldOutTotalTokens": "absent"
+  }
+}

@@ -146,6 +146,7 @@ Product-owned pieces shipped:
 - GEPA-style `improve-search v2` with reflective mutation, bounded merge, checkpoint feedback, severity-aware rejected-sibling handling, and selection caps — implementation and dogfood evidence both closed
 - Cautilus Agent meta-prompts read report packets, compare artifacts, review verdicts, and scenario history
 - product-owned helper scripts carry the bounded improvement loop orchestration (input build, propose, build-artifact)
+- live held-out improve loop proven on the dev/skill surface (`npm run proof:improve:live`): a degraded prompt is rewritten until a mutated candidate recovers a held-out scenario it was never tuned on (seed 0, winner 100), surfacing and fixing three load-bearing improve-search/runner bugs along the way — the apex `Bounded Improvement` badge is now proven
 
 Still open:
 

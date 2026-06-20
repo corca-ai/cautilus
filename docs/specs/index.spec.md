@@ -13,7 +13,7 @@ The promise stays honest because the badge is earned by what that spec actually 
 - **declared** — the evidence exists as a saved bundle, but the behavior has not been re-run live yet (named in Proof Debt)
 - **promised** — stated, with no executable proof attached yet (named in Proof Debt)
 
-Today, three promises are proven live and the rest are declared or promised.
+Today, four promises are proven live and the rest are declared or promised.
 That split is the point: this page shows the real state of the work.
 
 ## What Cautilus Does For You
@@ -47,12 +47,13 @@ That harvest is positive context, not a gate: its raw responses live in session 
 What stays in Proof Debt is app-ship surface coverage, not the dev judge: `app/chat` liveness (its agent run is replayed from the production log rather than re-run live, though that replay already includes one natural unsound capture) and `app/prompt` product-runner proof.
 CLI ↔ Agent: the CLI runs your agent and records what it did; the agent turns that into scenarios and reads the result.
 
-### Bounded Improvement — declared
+### Bounded Improvement — proven on the dev/skill surface
 
 You hand Cautilus a prompt that's failing your eval and it rewrites the prompt until it passes — keeping the agent's intent intact, holding or lowering cost, and proving the win on held-out examples it was never tuned on.
 You approve every change before it ships.
+This is proven live on the dev/skill surface: `npm run proof:improve:live` constructs a degraded cautilus-agent orientation prompt, confirms with a live agent that the seed control FAILS the held-out orientation scenario, then runs a real bounded `cautilus improve search` (live codex mutation plus a worktree candidate eval) and asserts that a mutated candidate it was never tuned on recovers the held-out behavior (seed scores 0, the winning candidate scores 100) — producing a reviewable proposal while the working-tree prompt is restored and nothing degraded or mutated ever ships.
 
-Proof: [Bounded Improvement spec](user/improvement.spec.md) — today it projects a saved bundle rather than running a live improve loop; see Proof Debt.
+Proof: [Bounded Improvement spec](user/improvement.spec.md) (`scripts/on-demand/improve-live-proof.mjs`, the checked-in executable spec that runs the loop live and asserts; its operator-witnessed capture is replayed deterministically by `npm run test:on-demand` and projected by the spec via `npm run lint:specs`). The live loop runs on demand — not in the default `npm run verify` — and each live rerun costs a real agent run.
 CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it.
 
 ## Why You Can Trust It
@@ -85,7 +86,6 @@ What it would take to move each unproven promise to a live **proven** badge. Thi
 | Promise | Current | To reach proven |
 | --- | --- | --- |
 | Behavior Evaluation — app surfaces | the coding-agent `dev/repo` and `dev/skill` surfaces are both proven live on demand (`npm run proof:behavior-eval:live`, `npm run proof:skill-orientation:live`); `app/chat` now evaluates an anonymized external product-log replay with a load-bearing blind intent judge (`npm run test:on-demand` replays the checked-in capture + blind verdicts), including natural sound secret handling, natural sound memory continuity, natural sound clarification-first behavior, and natural unsound artifact fidelity, closing external validity, the intent judge, and the app/chat natural-unsound gap, but its agent run is replayed from the production log rather than live; `app/prompt` now has a fresh fixture/Codex/Claude backend probe plus a load-bearing blind intent judge over that probe while still reporting `productProofReady=false` | a live app-runner re-run over an owner-confirmed app scenario for `app/chat` liveness, and product-runner proof for `app/prompt`, asserted in the spec |
-| Bounded Improvement | declared (projects a saved bundle) | a live `cautilus improve` loop on a held-out scenario, asserted in the spec |
 | Reviewable Artifacts | declared (projects saved packets) | regenerate packets live in the spec and assert their shape |
 | Host Ownership | declared (projects onboarding bundle) | wire the existing `consumer:onboard:smoke` live run into the spec |
 | A Testable Agent | promised (no spec) | author a spec backed by the runner-readiness/verification contracts |

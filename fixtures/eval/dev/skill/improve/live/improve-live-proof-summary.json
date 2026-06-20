@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "cautilus.improve_live_proof.v1",
+  "provenance": {
+    "kind": "live-improve-loop",
+    "mutationBackend": "codex_exec",
+    "candidateEvalRuntime": "claude_code",
+    "targetFile": "skills/cautilus-agent/SKILL.md",
+    "adapterName": "self-dogfood-improve-skill"
+  },
+  "heldOutScenarioId": "execution-cautilus-no-input-claim-discovery-status",
+  "seedHeldOutScore": 0,
+  "winningCandidateId": "g1-1-codex-exec",
+  "winningCandidateHeldOutScore": 100,
+  "mutationInvocationCount": 1,
+  "candidateCount": 2
+}
