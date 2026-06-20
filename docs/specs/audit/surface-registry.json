@@ -83,11 +83,16 @@
     {
       "id": "a-testable-agent",
       "title": "A Testable Agent",
-      "proofClass": "none",
-      "proofSpec": null,
-      "proofCommand": null,
+      "proofClass": "deterministic",
+      "proofSpec": "docs/specs/user/a-testable-agent.spec.md",
+      "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
-      "evidence": []
+      "evidence": [
+        ".cautilus/runners/dev-repo-self-dogfood.assessment.json",
+        "fixtures/runner-readiness/example-assessment.json",
+        "fixtures/runner-readiness/example-live-run-assessment.json",
+        "fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json"
+      ]
     }
   ]
 }

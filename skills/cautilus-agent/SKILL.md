@@ -184,6 +184,13 @@ Use `cautilus discover scenarios --json` only when you need the proposal-input n
 Use `cautilus doctor --repo-root .` when the selected branch is repo evaluation readiness.
 Use `cautilus doctor --repo-root . --scope agent-surface` or `doctor --scope agent-surface` when the selected branch is only local Cautilus Agent install/readiness.
 
+## Runner Readiness
+
+Runner readiness is a setup substrate under `claim`, `eval`, and `improve`, not a fourth job, so orient it from `doctor status` `runnerReadiness` and its next branches and treat missing, smoke-only, stale, or not-ready states as the blocker to clear before app behavior proof.
+When app proof is required, help the user build a headless product runner that reuses the real product path instead of a prompt-only mock, and help produce a `cautilus.runner_assessment.v1` at the binary-named scaffold path, letting the binary own the scaffold source and fields rather than authoring from prose.
+Keep the proof class honest and stop `improve` when the selected claim needs runner-backed proof that is absent, stale, or only `fixture-smoke` or `coding-agent-messaging`; only `in-process-product-runner` or `live-product-runner` with a `ready-for-selected-surface` assessment may back an app behavior-change claim.
+See [runner-readiness.md](references/runner-readiness.md) for the build and assessment sequence and the assessment fields.
+
 ## Workflow
 
 1. Start from `doctor status`, an explicit user branch, or an existing Cautilus packet.

@@ -22,9 +22,9 @@
   "summary": {
     "total": 7,
     "byClaimedStatus": {
-      "proven": 6,
+      "proven": 7,
       "declared": 0,
-      "promised": 1
+      "promised": 0
     },
     "consistent": 7,
     "inconsistent": 0,
@@ -209,25 +209,30 @@
     {
       "id": "a-testable-agent",
       "title": "A Testable Agent",
-      "claimedStatus": "promised",
-      "claimedStatusPhrase": "promised",
-      "proofClass": "none",
-      "proofClassMeaning": "stated, with no executable proof attached yet.",
-      "proofSpec": null,
-      "proofCommand": null,
+      "claimedStatus": "proven",
+      "claimedStatusPhrase": "proven",
+      "proofClass": "deterministic",
+      "proofClassMeaning": "`npm run lint:specs` runs the command/file checks live on every run.",
+      "proofSpec": "docs/specs/user/a-testable-agent.spec.md",
+      "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
-      "evidence": [],
+      "evidence": [
+        ".cautilus/runners/dev-repo-self-dogfood.assessment.json",
+        "fixtures/runner-readiness/example-assessment.json",
+        "fixtures/runner-readiness/example-live-run-assessment.json",
+        "fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json"
+      ],
       "observed": {
-        "proofSpecExists": false,
-        "checkCount": 0,
-        "evidenceCount": 0,
+        "proofSpecExists": true,
+        "checkCount": 5,
+        "evidenceCount": 4,
         "missingEvidence": [],
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
         "nonSubstantiveEvidence": [],
         "evidenceSubstantive": true,
-        "observedStatus": "promised"
+        "observedStatus": "proven"
       },
       "consistent": true,
       "inconsistencyReasons": []

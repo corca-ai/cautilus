@@ -873,7 +873,7 @@
       },
       {
         "badge": "a-testable-agent",
-        "registryProofClass": "none",
+        "registryProofClass": "deterministic",
         "boundT1": [],
         "divergence": "no-t1-claim"
       }

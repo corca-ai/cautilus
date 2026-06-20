@@ -58,6 +58,7 @@
   "scripts/agent-runtime/audit-cautilus-review-prepare-flow-log.mjs": 72.85,
   "scripts/agent-runtime/audit-cautilus-review-to-eval-flow-log.mjs": 59.75,
   "scripts/agent-runtime/audit-cautilus-reviewer-launch-flow-log.mjs": 77.53,
+  "scripts/agent-runtime/audit-cautilus-runner-readiness-flow-log.mjs": 73.54,
   "scripts/agent-runtime/audit-claim-evidence-hashes.mjs": 68.84,
   "scripts/agent-runtime/behavior-intent.mjs": 93.04,
   "scripts/agent-runtime/build-canonical-claim-map.mjs": 88.01,

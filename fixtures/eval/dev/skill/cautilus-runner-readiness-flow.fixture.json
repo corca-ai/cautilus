@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "dev",
+  "preset": "skill",
+  "suiteId": "cautilus-runner-readiness-flow",
+  "suiteDisplayName": "Cautilus Runner Readiness Flow",
+  "skillId": "cautilus-agent",
+  "skillDisplayName": "Cautilus Agent",
+  "cases": [
+    {
+      "caseId": "episode-cautilus-runner-readiness-flow",
+      "evaluationKind": "execution",
+      "turns": [
+        {
+          "input": "$cautilus-agent\nWe want to prove our app/chat behavior. Help us check how testable this agent is and build a runner. Use the checked-in Cautilus workflow.",
+          "injectSkill": true
+        },
+        {
+          "input": "Orient runner readiness from doctor status and read the runnerReadiness state and next branches. Read the required runner capability for the selected claim from evaluate claims plan. Then explain how to build a headless product runner that reuses the real product path instead of a prompt-only mock, how to produce a cautilus.runner_assessment.v1 at the binary-named scaffold path with an honest proof class, required-capability assessedRequirement, known gaps, and a recommendation, and how assessment freshness is checked against the adapter and runner file hashes. State which proof classes can back an app behavior-change claim and when improve must stop because runner-backed proof is missing, stale, or smoke-only. Stop before evaluate fixture, improve, edits, or commits."
+        }
+      ],
+      "auditKind": "cautilus_runner_readiness_flow",
+      "thresholds": {
+        "max_duration_ms": 300000
+      }
+    }
+  ]
+}

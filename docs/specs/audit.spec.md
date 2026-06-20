@@ -16,7 +16,7 @@ A badge is honest only when `consistent` is true; the apex's own check block fai
 | Dimension | Value |
 | --- | --- |
 | Badges | 7 |
-| Claimed | proven: 6, declared: 0, promised: 1 |
+| Claimed | proven: 7, declared: 0, promised: 0 |
 | Consistent | 7 / 7 |
 | Honest | yes |
 
@@ -30,7 +30,7 @@ A badge is honest only when `consistent` is true; the apex's own check block fai
 | ✅ | [Bounded Improvement](user/improvement.spec.md) | proven | proven | cautilus-eval | `npm run lint:specs` | 3 file(s) | replayed; live re-run `npm run proof:improve:live` |
 | ✅ | [Reviewable Artifacts](user/reviewable-artifacts.spec.md) | proven | proven | deterministic | `npm run lint:specs` | live command checks | runs every gate |
 | ✅ | [Host Ownership](user/ownership.spec.md) | proven | proven | human-auditable | `npm run lint:specs` | 1 file(s) | witnessed; live re-run `npm run consumer:onboard:smoke` |
-| ✅ | A Testable Agent | promised | promised | none | — | — | no executable proof yet |
+| ✅ | [A Testable Agent](user/a-testable-agent.spec.md) | proven | proven | deterministic | `npm run lint:specs` | 4 file(s) | runs every gate |
 
 ## Proof Class Meanings
 

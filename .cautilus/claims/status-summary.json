@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 204
+          "unknown": 206
         },
         "byReviewStatus": {
-          "heuristic": 204
+          "heuristic": 206
         },
-        "count": 204,
+        "count": 206,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -64,14 +64,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 119
+          "unknown": 121
         },
         "byReviewStatus": {
           "agent-reviewed": 8,
-          "heuristic": 110,
+          "heuristic": 112,
           "human-reviewed": 1
         },
-        "count": 119,
+        "count": 121,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -115,7 +115,7 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-60",
-          "claim-docs-specs-index-spec-md-157",
+          "claim-docs-specs-index-spec-md-164",
           "claim-docs-specs-user-index-spec-md-27",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-61",
           "claim-docs-contracts-claim-discovery-workflow-md-92"
@@ -144,7 +144,7 @@
       }
     ]
   },
-  "candidateCount": 405,
+  "candidateCount": 407,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -161,13 +161,13 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 291,
+      "developer": 293,
       "user": 114
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 93,
-      "Claim discovery and review": 54,
+      "Agent and skill workflow": 94,
+      "Claim discovery and review": 55,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
@@ -178,25 +178,25 @@
     },
     "byEvidenceStatus": {
       "satisfied": 144,
-      "unknown": 261
+      "unknown": 263
     },
     "byLifecycle": {
-      "new": 405
+      "new": 407
     },
     "byRecommendedProof": {
-      "cautilus-eval": 123,
+      "cautilus-eval": 125,
       "deterministic": 176,
       "human-auditable": 106
     },
     "byReviewStatus": {
       "agent-reviewed": 199,
-      "heuristic": 204,
+      "heuristic": 206,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 42,
-      "ready-for-proof": 328
+      "ready-for-proof": 330
     }
   },
   "discoveryBoundary": {
@@ -1382,7 +1382,7 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
-        "claimId": "claim-docs-specs-index-spec-md-156",
+        "claimId": "claim-docs-specs-index-spec-md-163",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1391,7 +1391,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-index-spec-md-156"
+              "claim-docs-specs-index-spec-md-163"
             ]
           }
         ],
@@ -3426,7 +3426,7 @@
         "summary": "Use this path when the user asks whether a repo proves what it claims, whether docs and behavior are aligned, or which scenarios still need to be created."
       },
       {
-        "claimId": "claim-skills-cautilus-agent-skill-md-220",
+        "claimId": "claim-skills-cautilus-agent-skill-md-227",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -3435,7 +3435,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-packet-first-skill-flow-2026-05-03.json",
             "supportsClaimIds": [
-              "claim-skills-cautilus-agent-skill-md-220"
+              "claim-skills-cautilus-agent-skill-md-227"
             ]
           }
         ],
@@ -3446,7 +3446,7 @@
       }
     ]
   },
-  "gitCommit": "b75f1cfdcc73ab7e2103786b3c63683d0fa15557",
+  "gitCommit": "82e6e2c65e8ac322450ccd17d7187b627d7a374f",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3458,10 +3458,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "b75f1cfdcc73ab7e2103786b3c63683d0fa15557",
+    "currentGitCommit": "82e6e2c65e8ac322450ccd17d7187b627d7a374f",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "b75f1cfdcc73ab7e2103786b3c63683d0fa15557",
+    "packetGitCommit": "82e6e2c65e8ac322450ccd17d7187b627d7a374f",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3485,7 +3485,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 180,
+    "heuristicClaimsReadyForReview": 182,
     "needsAlignment": 42,
     "needsScenario": 0
   },

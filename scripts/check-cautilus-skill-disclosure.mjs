@@ -2,7 +2,12 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 const SOURCE_SKILL = "skills/cautilus-agent/SKILL.md";
 const PACKAGED_SKILL = "plugins/cautilus/skills/cautilus-agent/SKILL.md";
-const MAX_NONEMPTY_LINES = 180;
+// Budget grew from 180 to 185 when the Runner Readiness routing concern was added
+// to the core: a genuine Agent-owned routing/sequencing surface (orient runner
+// readiness, gate app proof on proof class, stop improve without runner-backed
+// proof). Its build/assess detail stays in references/runner-readiness.md, and the
+// "## Runner Readiness" required fragment below keeps the routing in the core.
+const MAX_NONEMPTY_LINES = 185;
 
 const REQUIRED_FRAGMENTS = [
 	"## CLI First",
@@ -20,6 +25,9 @@ const REQUIRED_FRAGMENTS = [
 	"doctor --scope agent-surface",
 	"evaluate review variants are requested but unavailable",
 	"command-cookbook.md",
+	"## Runner Readiness",
+	"runner_assessment.v1",
+	"runner-readiness.md",
 ];
 
 const FORBIDDEN_FRAGMENTS = [

@@ -10,13 +10,13 @@ Each promise below gives you what you get in one line, how far it's proven today
 The promise stays honest because the badge is earned by what that spec actually runs, not by what this page asserts.
 
 - **proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):
-  - *deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery, Reviewable Artifacts).
+  - *deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery, Reviewable Artifacts, A Testable Agent).
   - *cautilus-eval* — the default run replays an operator-witnessed live agent capture and a blind judge verdict; the live agent re-run is opt-in and costs a real agent run (Behavior Evaluation, Bounded Improvement).
   - *human-auditable* — an operator witnessed the live run and vouches for it; the default run replays the checked-in capture and the live re-run is opt-in, with no automated judge (accepted where a full deterministic or eval proof would be disproportionately costly).
 - **declared** — the evidence exists as a saved bundle, but the behavior has not been re-run live yet (named in Proof Debt)
 - **promised** — stated, with no executable proof attached yet (named in Proof Debt)
 
-Today, six promises are proven, none are declared, and one is promised.
+Today, all seven promises are proven, none are declared, and none are promised.
 That split is the point: this page shows the real state of the work, and the [Honesty Audit](audit.spec.md) binds each badge to its proof route so the split cannot quietly drift.
 
 ## What Cautilus Does For You
@@ -81,11 +81,15 @@ The default `npm run lint:specs` replays the operator-witnessed capture; the liv
 Proof: [Host Ownership spec](user/ownership.spec.md) (projects `fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json`, the operator-witnessed `consumer:onboard:smoke` capture).
 CLI ↔ Agent: the CLI runs the onboarding and records the invariant; the agent reads it and routes the next step.
 
-### A Testable Agent — promised
+### A Testable Agent — proven
 
 You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good.
+This is proven **deterministic**: on every `npm run lint:specs` the spec re-runs `doctor status` for a live runner-readiness verdict, asserts the checked-in runner assessments carry substantive proof-class and required-capability verdicts, reads the runner capability `evaluate claims plan` requires, and seeds a stale assessment so freshness detection fires.
+The Cautilus agent half is proven *prepared*: the `cautilus-agent` skill routes runner creation and assessment, and a checked-in dogfood fixture plus an executed audit test grade that the flow asks for readiness orientation, a headless-runner build, assessment authoring, and stop discipline.
+What stays deferred is a live agent-builds-a-runner episode — named in Proof Debt — so the badge does not read as if a live agent already built and graded a runner.
 
-Proof: none yet — see Proof Debt. Background: [runner readiness contract](../contracts/runner-readiness.md).
+Proof: [A Testable Agent spec](user/a-testable-agent.spec.md) (live runner-readiness verdict, substantive assessment fixtures, required-runner-capability planning, controlled stale-assessment detection, and a prepared-skill check whose audit test runs in `npm run test:node`). Background: [runner readiness contract](../contracts/runner-readiness.md).
+CLI ↔ Agent: the CLI emits the readiness verdict and names the required runner capability and scaffold source; the agent sequences the build-and-assess flow and decides when the proof is strong enough.
 
 ## Honesty Audit
 
@@ -101,9 +105,9 @@ The check reads the generated audit manifest and fails specdown if any badge ove
 | .cautilus/audit/surface-audit.json | schemaVersion | cautilus.surface_audit.v1 |
 | .cautilus/audit/surface-audit.json | summary.honest | true |
 | .cautilus/audit/surface-audit.json | summary.total | 7 |
-| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.proven | 6 |
+| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.proven | 7 |
 | .cautilus/audit/surface-audit.json | summary.byClaimedStatus.declared | 0 |
-| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.promised | 1 |
+| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.promised | 0 |
 | .cautilus/audit/surface-audit.json | summary.inconsistent | 0 |
 | .cautilus/audit/surface-audit.json | summary.orphanIssueCount | 0 |
 | .cautilus/audit/surface-audit.json | badges[id=readiness].consistent | true |
@@ -126,7 +130,10 @@ The check reads the generated audit manifest and fails specdown if any badge ove
 | .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.evidenceReferenced | true |
 | .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.evidenceSubstantive | true |
 | .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].consistent | true |
-| .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].observed.observedStatus | promised |
+| .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].observed.observedStatus | proven |
+| .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].proofClass | deterministic |
+| .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].observed.evidenceReferenced | true |
+| .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].observed.evidenceSubstantive | true |
 
 ## Proof Debt
 
@@ -135,7 +142,7 @@ What it would take to move each unproven promise to a live **proven** badge. Thi
 | Promise | Current | To reach proven |
 | --- | --- | --- |
 | Behavior Evaluation — app surfaces | the coding-agent `dev/repo` and `dev/skill` surfaces are both proven live on demand (`npm run proof:behavior-eval:live`, `npm run proof:skill-orientation:live`); `app/chat` now evaluates an anonymized external product-log replay with a load-bearing blind intent judge (`npm run test:on-demand` replays the checked-in capture + blind verdicts), including natural sound secret handling, natural sound memory continuity, natural sound clarification-first behavior, and natural unsound artifact fidelity, closing external validity, the intent judge, and the app/chat natural-unsound gap, but its agent run is replayed from the production log rather than live; `app/prompt` now has a fresh fixture/Codex/Claude backend probe plus a load-bearing blind intent judge over that probe while still reporting `productProofReady=false` | a live app-runner re-run over an owner-confirmed app scenario for `app/chat` liveness, and product-runner proof for `app/prompt`, asserted in the spec |
-| A Testable Agent | promised (no spec) | author a spec backed by the runner-readiness/verification contracts |
+| A Testable Agent — live runner-building episode | the testability/readiness check is proven deterministic, and the `cautilus-agent` skill is proven *prepared* to guide runner creation and assessment (checked-in routing + dogfood fixture graded by an executed audit test) | a live `cautilus-eval` episode where the agent actually builds and assesses a headless runner against an owner-confirmed scenario, asserted in the spec |
 
 ## How Proof Works Here
 

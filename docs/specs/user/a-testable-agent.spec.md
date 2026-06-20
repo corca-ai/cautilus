@@ -90,3 +90,45 @@ printf '%s\n' "$out"
 | runnerReadiness.reason | runner-assessment-stale |
 | runnerReadiness.staleReasons[kind=runnerFile].kind | runnerFile |
 | runnerReadiness.staleReasons[kind=runnerFile].path | scripts/does-not-exist-runner.mjs |
+
+## The Cautilus agent helps you build and assess a runner.
+
+The `cautilus-agent` skill carries the runner-readiness routing: orient runner readiness from `doctor status`, read the required runner capability for the selected claim, help build a headless product runner that reuses the real product path, help produce a `cautilus.runner_assessment.v1` packet at the binary-named scaffold path, keep the proof class honest, and stop `improve` when runner-backed proof is missing, stale, or smoke-only — while the binary owns command discovery, the scaffold source, and freshness.
+This subclaim checks that the dogfood fixture and audit hook are *prepared* to ask for and grade that build-and-assess flow.
+It does not execute the Cautilus eval episode or claim that a live runner-building episode has passed; that live `cautilus-eval` episode is deferred and named in the apex Proof Debt.
+
+The prepared dogfood episode asks the agent to orient readiness and then help build and assess a runner, and to stop before eval execution, improve, edits, or commits.
+
+```run:shell
+$ jq -r '.cases[0].turns[1].input as $p | "asks-orient=" + ($p|contains("Orient runner readiness")|tostring), "asks-build-runner=" + ($p|contains("headless product runner")|tostring), "asks-assessment=" + ($p|contains("runner_assessment.v1")|tostring), "asks-proof-class-boundary=" + ($p|contains("which proof classes can back an app behavior-change claim")|tostring), "stops-before-eval-or-commit=" + ($p|contains("Stop before evaluate fixture, improve, edits, or commits")|tostring)' fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json
+asks-orient=true
+asks-build-runner=true
+asks-assessment=true
+asks-proof-class-boundary=true
+stops-before-eval-or-commit=true
+```
+
+The audit hook is executable and load-bearing: it passes a flow that orients readiness and helps build and assess a runner, and fails one that orients but never helps build or assess, never orients at all, or overruns into eval, improve, or commits.
+
+```run:shell
+$ node --test --test-reporter=dot --test-reporter-destination=stdout scripts/agent-runtime/audit-cautilus-runner-readiness-flow-log.test.mjs >/dev/null && echo runner-readiness-audit-unit-test=passed
+runner-readiness-audit-unit-test=passed
+```
+
+The prepared dogfood fixture is a machine-readable evaluation input that names the runner-readiness audit kind and asks for the build-and-assess behaviors, so the Surface Honesty Audit binds the badge to a prepared skill flow rather than to skill prose alone.
+
+> check:cautilus-json-file
+| path | json_path | equals | includes |
+| --- | --- | --- | --- |
+| fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json | schemaVersion | cautilus.evaluation_input.v1 | |
+| fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json | suiteId | cautilus-runner-readiness-flow | |
+| fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json | skillId | cautilus-agent | |
+| fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json | cases[0].auditKind | cautilus_runner_readiness_flow | |
+| fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json | cases[0].turns[1].input | | headless product runner |
+| fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json | cases[0].turns[1].input | | runner_assessment.v1 |
+
+| behavior to check | prepared artifact | current state |
+| --- | --- | --- |
+| the skill routes runner creation and assessment as sequencing and judgment | `skills/cautilus-agent/SKILL.md` (`## Runner Readiness`) and `skills/cautilus-agent/references/runner-readiness.md` | prepared, not executed |
+| the dogfood episode asks for readiness orientation, headless-runner build, assessment authoring, proof-class boundary, and stop discipline | `fixtures/eval/dev/skill/cautilus-runner-readiness-flow.fixture.json` | prepared, not executed |
+| the transcript is audited for the build-and-assess flow instead of manually trusted | `scripts/agent-runtime/audit-cautilus-runner-readiness-flow-log.mjs` | prepared, executed in `npm run test:node` |
