@@ -1,5 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
 	auditSurface,
@@ -7,6 +10,7 @@ import {
 	computeObserved,
 	countSpecChecks,
 	extractCheckedFilePaths,
+	extractSubstantiveFilePaths,
 	parseApexBadges,
 	renderAuditMarkdown,
 	slugify,
@@ -49,6 +53,7 @@ function honestWorld() {
 		fileExists: (path) => present.has(path),
 		readCheckCount: () => 2,
 		readReferencedFilePaths: () => allEvidence,
+		readSubstantiveFilePaths: () => allEvidence,
 	};
 }
 
@@ -113,6 +118,122 @@ test("extractCheckedFilePaths honors the path column position and skips empty ce
 		"| y |  | 2 |",
 	].join("\n");
 	assert.deepEqual([...extractCheckedFilePaths(body)], ["fixtures/c.json"]);
+});
+
+test("extractSubstantiveFilePaths counts value-bearing assertions on non-schemaVersion paths", () => {
+	const body = [
+		"> check:cautilus-json-file",
+		"| path | json_path | equals | includes | min_number |",
+		"| --- | --- | --- | --- | --- |",
+		"| fixtures/eq.json | outcome | passed |  |  |",
+		"| fixtures/inc.json | summary |  | packets |  |",
+		"| fixtures/min.json | sourceCount |  |  | 1 |",
+	].join("\n");
+	assert.deepEqual(
+		[...extractSubstantiveFilePaths(body)].sort(),
+		["fixtures/eq.json", "fixtures/inc.json", "fixtures/min.json"],
+	);
+});
+
+test("extractSubstantiveFilePaths omits trivial rows: schemaVersion (incl. nested), exists-only, min_number 0, empty cells", () => {
+	const body = [
+		"> check:cautilus-json-file",
+		"| path | json_path | equals | exists | min_number | includes |",
+		"| --- | --- | --- | --- | --- | --- |",
+		"| fixtures/schema.json | schemaVersion | cautilus.x.v1 |  |  |  |",
+		"| fixtures/nested.json | a.b.observed.schemaVersion | cautilus.y.v1 |  |  |  |",
+		"| fixtures/exists.json | field |  | yes |  |  |",
+		"| fixtures/min0.json | count |  |  | 0 |  |",
+		"| fixtures/empty.json | field |  |  |  |  |",
+		"| fixtures/emptyinc.json | field |  |  |  |  |",
+	].join("\n");
+	assert.deepEqual([...extractSubstantiveFilePaths(body)], []);
+});
+
+test("extractSubstantiveFilePaths counts a file with a trivial AND a substantive row (substantive wins)", () => {
+	const body = [
+		"> check:cautilus-json-file",
+		"| path | json_path | equals |",
+		"| --- | --- | --- |",
+		"| fixtures/mixed.json | schemaVersion | cautilus.z.v1 |",
+		"| fixtures/mixed.json | recommendation | reject |",
+	].join("\n");
+	assert.deepEqual([...extractSubstantiveFilePaths(body)], ["fixtures/mixed.json"]);
+});
+
+test("extractSubstantiveFilePaths ignores fenced examples and non-file checks", () => {
+	const body = [
+		"> check:cautilus-json-file",
+		"| path | json_path | equals |",
+		"| --- | --- | --- |",
+		"| fixtures/real.json | outcome | passed |",
+		"> check:cautilus-json-command(command=foo)",
+		"| path | equals |",
+		"| --- | --- |",
+		"| checks[id=x].ok | true |",
+		"```md",
+		"> check:cautilus-json-file",
+		"| path | json_path | equals |",
+		"| --- | --- | --- |",
+		"| fixtures/fenced.json | outcome | passed |",
+		"```",
+	].join("\n");
+	assert.deepEqual([...extractSubstantiveFilePaths(body)], ["fixtures/real.json"]);
+});
+
+test("computeObserved downgrades a route whose evidence is referenced but only by a trivial check", () => {
+	const observed = computeObserved(REGISTRY[1], {
+		fileExists: () => true,
+		readCheckCount: () => 2,
+		readReferencedFilePaths: () => ["fixtures/capture.json"], // read by some check
+		readSubstantiveFilePaths: () => [], // but never substantively
+	});
+	assert.equal(observed.evidenceReferenced, true);
+	assert.equal(observed.evidenceSubstantive, false);
+	assert.deepEqual(observed.nonSubstantiveEvidence, ["fixtures/capture.json"]);
+	assert.equal(observed.observedStatus, "unproven");
+});
+
+test("auditSurface fails when a badge's evidence is referenced only by a trivial check (hollow assertion)", () => {
+	const world = honestWorld();
+	const result = auditSurface({
+		apexMarkdown: APEX,
+		registry: REGISTRY,
+		fileExists: world.fileExists,
+		readCheckCount: world.readCheckCount,
+		readReferencedFilePaths: world.readReferencedFilePaths,
+		// evaluation.spec.md reads its evidence, but (as if weakened to a schemaVersion-only
+		// touch) it asserts nothing substantive on it.
+		readSubstantiveFilePaths: (path) =>
+			path === "specs/evaluation.spec.md" ? [] : world.readSubstantiveFilePaths(path),
+	});
+	const badge = result.badges.find((b) => b.id === "behavior-evaluation");
+	assert.equal(badge.observed.evidenceReferenced, true);
+	assert.equal(badge.observed.evidenceSubstantive, false);
+	assert.deepEqual(badge.observed.nonSubstantiveEvidence, ["fixtures/capture.json"]);
+	assert.equal(badge.observed.observedStatus, "unproven");
+	assert.equal(badge.consistent, false);
+	assert.match(badge.inconsistencyReasons.join(" "), /referenced only by a trivial check/);
+	assert.equal(result.summary.honest, false);
+});
+
+test("every registry-declared evidence file is substantively referenced by its leaf spec (AC3: floor lands green)", () => {
+	const repoRoot = resolve(fileURLToPath(new URL("../../", import.meta.url)));
+	const registry = JSON.parse(
+		readFileSync(resolve(repoRoot, "docs/specs/audit/surface-registry.json"), "utf-8"),
+	).routes;
+	for (const route of registry) {
+		if (!route.proofSpec || (route.evidence || []).length === 0) {
+			continue;
+		}
+		const substantive = extractSubstantiveFilePaths(readFileSync(resolve(repoRoot, route.proofSpec), "utf-8"));
+		for (const file of route.evidence) {
+			assert.ok(
+				substantive.has(file),
+				`${route.id}: evidence ${file} is not substantively referenced in ${route.proofSpec}`,
+			);
+		}
+	}
 });
 
 test("parseApexBadges ignores badge headings inside code fences", () => {

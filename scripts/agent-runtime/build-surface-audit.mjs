@@ -15,7 +15,13 @@ import { dirname, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
-import { buildManifest, countSpecChecks, extractCheckedFilePaths, renderAuditMarkdown } from "./surface-audit-lib.mjs";
+import {
+	buildManifest,
+	countSpecChecks,
+	extractCheckedFilePaths,
+	extractSubstantiveFilePaths,
+	renderAuditMarkdown,
+} from "./surface-audit-lib.mjs";
 
 export const APEX_PATH = "docs/specs/index.spec.md";
 export const REGISTRY_PATH = "docs/specs/audit/surface-registry.json";
@@ -80,6 +86,8 @@ export function generate(repoRoot) {
 	const readCheckCount = (path) => countSpecChecks(readFileSync(resolve(repoRoot, path), "utf-8"));
 	const readReferencedFilePaths = (path) =>
 		extractCheckedFilePaths(readFileSync(resolve(repoRoot, path), "utf-8"));
+	const readSubstantiveFilePaths = (path) =>
+		extractSubstantiveFilePaths(readFileSync(resolve(repoRoot, path), "utf-8"));
 
 	const manifest = buildManifest({
 		apexPath: APEX_PATH,
@@ -89,6 +97,7 @@ export function generate(repoRoot) {
 		fileExists,
 		readCheckCount,
 		readReferencedFilePaths,
+		readSubstantiveFilePaths,
 	});
 	const manifestText = serializeManifest(manifest);
 	const pageText = `${renderAuditMarkdown(manifest, { manifestPath: MANIFEST_PATH })}\n`;

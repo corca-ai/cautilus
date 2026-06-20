@@ -10,6 +10,7 @@
     "observedStatus": "the level the proof route actually delivers, recomputed by inspecting the leaf spec checks and evidence files",
     "consistent": "claimedStatus === observedStatus and the proof route is intact",
     "evidenceReferenced": "every evidence file the route declares is actually read by a cautilus-json-file check in the leaf spec, so the proof route cannot point at an unrelated spec or pad its evidence count with files the spec never asserts on",
+    "evidenceSubstantive": "every evidence file the route declares is read by at least one SUBSTANTIVE cautilus-json-file check — a value-bearing equals/includes/min_number≥1/meaning assertion on a field other than schemaVersion, not merely an exists or version-tag touch — so a route cannot satisfy the reference with a hollow well-formedness check",
     "proofClasses": {
       "deterministic": "`npm run lint:specs` runs the command/file checks live on every run.",
       "live-replayed": "the default run replays an operator-witnessed live capture and blind verdict; the live agent re-run is opt-in and costs a real agent run.",
@@ -50,6 +51,8 @@
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
+        "nonSubstantiveEvidence": [],
+        "evidenceSubstantive": true,
         "observedStatus": "proven"
       },
       "consistent": true,
@@ -78,6 +81,8 @@
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
+        "nonSubstantiveEvidence": [],
+        "evidenceSubstantive": true,
         "observedStatus": "proven"
       },
       "consistent": true,
@@ -109,6 +114,8 @@
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
+        "nonSubstantiveEvidence": [],
+        "evidenceSubstantive": true,
         "observedStatus": "proven"
       },
       "consistent": true,
@@ -137,6 +144,8 @@
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
+        "nonSubstantiveEvidence": [],
+        "evidenceSubstantive": true,
         "observedStatus": "proven"
       },
       "consistent": true,
@@ -165,6 +174,8 @@
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
+        "nonSubstantiveEvidence": [],
+        "evidenceSubstantive": true,
         "observedStatus": "declared"
       },
       "consistent": true,
@@ -193,6 +204,8 @@
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
+        "nonSubstantiveEvidence": [],
+        "evidenceSubstantive": true,
         "observedStatus": "declared"
       },
       "consistent": true,
@@ -217,6 +230,8 @@
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
+        "nonSubstantiveEvidence": [],
+        "evidenceSubstantive": true,
         "observedStatus": "promised"
       },
       "consistent": true,
