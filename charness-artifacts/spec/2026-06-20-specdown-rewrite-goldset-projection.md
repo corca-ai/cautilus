@@ -9,6 +9,11 @@ The projector, the explicit `fingerprint→badge` map, the structured proof-rout
 PQ1 and PQ2 are resolved against the real data (see below); evidence: `charness-artifacts/findings/2026-06-20-specdown-goldset-projection-first-slice.md`.
 Remaining phases (the 2-axis ledger/evidence collapse, `docs/specs/old/**` neutralization + `lint:specs` exit criterion) are unchanged and still owned by SC4/SC5/AC5.
 
+Phase 2 First Slice — LANDED 2026-06-20 (SC4 generated-state foundation, no source-prose retirement yet).
+PQ3 is resolved (below): the inventory is rendered ONCE into a standalone generated `docs/specs/evidence/projected-claim-state.md` (pure lib `projected-claim-state-lib.mjs` + thin shell `render-projected-claim-state.mjs`, mirroring `render-claim-evidence-state.mjs`), linked from the evidence and ledger indexes, with the full gold-set→inventory→page chain now gated in `npm run verify` (`specdown:project:check` + `specdown:claim-state:check`, both newly wired).
+21 executable tests + coverage (lib 99.1%/shell 98.4%); `npm run verify` green; fresh-eye Sonnet critique READY-WITH-EDITS, no blocker.
+Still owned by SC4/FD5: retiring the not-a-claim(11)/retire-source(5) source prose (README/cli — triggers `claims:refresh:all`) and pointing the remaining hand-authored ledger/evidence state at the generated page; SC5/AC5 (`old/**` neutralization) unchanged.
+
 ## Problem
 
 The spec surface under `docs/specs/` is hand-authored across three framings of the same claim set — the apex promise page (`index.spec.md`, 7 badges), the promise ledger (`ledger/`), and the evidence state (`evidence/`).
@@ -80,6 +85,10 @@ No spec pages, no scripts, and no gate changes land this session beyond this art
 - PQ3 — What exactly do the `ledger/` and `evidence/` pages become: fully generated views, or a thin generated state block plus retained prose?
   Expected: a generated tier/verdict/route state table per page, with the surrounding prose hand-authored, consistent with FD3.
   Resolved as the later phases project those pages.
+  RESOLVED (impl, Phase 2 first slice): thin generated state + retained hand prose, implemented via the repo's established generate+check precedent (`render-claim-evidence-state.mjs` → a generated `.md`) rather than per-page injected regions.
+  The generated tier/verdict/route/reconciliation state is rendered ONCE from the inventory into a standalone `docs/specs/evidence/projected-claim-state.md`, which the evidence index and the ledger index link to; the surrounding prose stays hand-authored in the existing `.spec.md` pages.
+  This keeps generated content out of the executable spec graph (no fragile mixing with `run:shell`/link validation) and honors FD7 ("spec pages consume the projected inventory").
+  The gold-set claim taxonomy (fingerprint/epic/badge) is distinct from the promise/rule ownership taxonomy the ledger tables carry, so those ownership tables legitimately stay hand-authored; what is now generated-once is the ratified tier/verdict/route claim state.
 
 ## Deferred Decisions
 
@@ -119,6 +128,7 @@ No spec pages, no scripts, and no gate changes land this session beyond this art
 - SC2 — The 7 T1 claims project and bind to the 7 apex badges (PQ1 resolved), and the binding is asserted by a test, so a future gold-set change that drops or re-tiers a T1 claim is caught.
 - SC3 — The apex badge proof routes (the `surface-registry.json` the audit gate consumes) are reconciled with the projected ratified proof routes — any divergence is surfaced, not silently tolerated.
 - SC4 — The ledger and evidence-state pages present a generated tier/verdict/route state derived from the projection, removing the 3-axis hand-maintained divergence (later phase).
+  Phase 2 first slice LANDED: the generated state is rendered once into `docs/specs/evidence/projected-claim-state.md` and linked from the evidence + ledger indexes (PQ3 resolved); retiring the remaining hand-authored restatement and the not-a-claim/retire-source source prose (FD5) is the remaining SC4 work.
 - SC5 — `docs/specs/old/**` proof blocks are inert and `lint:specs` is restored in `run-verify.mjs` (+ test), green over the projected tree (the exit criterion, FD6).
 - SC6 — Throughout, no ratified verdict is altered and no badge honesty level changes without the audit gate agreeing.
 

@@ -27,6 +27,7 @@ Spec entry: [Cautilus](../index.spec.md).
 ## Evidence State
 
 - [Evidence State](../evidence/index.spec.md)
+- [Projected Claim State](../evidence/projected-claim-state.md): the generated tier/verdict/route view of the ratified claim set.
 
 ```run:shell
 # Verify that the ledger's reading views exist.

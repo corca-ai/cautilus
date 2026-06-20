@@ -9,6 +9,8 @@ export const PHASES = [
 	{ id: "lint:eslint", label: "lint · eslint" },
 	{ id: "audit:surface:check", label: "lint · surface honesty audit" },
 	{ id: "lint:specs", label: "lint · specs" },
+	{ id: "specdown:project:check", label: "lint · specdown gold-set projection" },
+	{ id: "specdown:claim-state:check", label: "lint · projected claim state" },
 	{ id: "lint:scenario-normalizers", label: "lint · scenario normalizers" },
 	{ id: "lint:contracts", label: "lint · contracts" },
 	{ id: "claims:audit-evidence", label: "lint · claim evidence hashes" },
