@@ -50,8 +50,9 @@ None. Every apex badge matches the level its proof route delivers.
 - Each badge's claimed level matches the level its proof route is observed to deliver (`consistent`).
 - Every apex badge has a registry proof route and every registry route has an apex badge (no orphans).
 - The leaf spec for each non-promised badge carries executable `> check:` blocks and its evidence files exist.
+- Every evidence file a non-promised badge declares is actually read by a `cautilus-json-file` check in its leaf spec (`evidenceReferenced`), so the proof route cannot redirect to an unrelated spec or pad its evidence count with files the spec never asserts on.
 
-This audit is STRUCTURAL, not semantic: it confirms each badge has a real, intact proof route, but it does NOT verify that the leaf spec's check blocks actually test the claimed behavior end-to-end, nor that the registry points its proof route at the right spec. That correctness is the leaf-spec author's and code review's responsibility; `npm run lint:specs` runs the leaf checks themselves and fails if any break.
+This audit is SEMANTICALLY BOUND for every badge that declares evidence: the evidence-reference check closes the redirect/hollow gap a purely structural "the leaf has some checks" test leaves open. What it still does NOT verify is whether each referencing check's ASSERTION exercises the claimed behavior end-to-end — a check could read the right evidence file and still assert something weak — so that correctness stays the leaf-spec author's and code review's responsibility; `npm run lint:specs` runs the leaf checks themselves and fails if any break. Evidence-less command-proof routes (Readiness) carry no evidence to cross-reference, so they stay bound to their leaf spec by title plus their own live `cautilus doctor` checks rather than by an evidence cross-reference.
 It also does NOT re-run the live agent proofs; live evidence is replayed from operator-witnessed captures and re-run on demand via the per-badge `Freshness` command.
 
 > check:cautilus-json-file

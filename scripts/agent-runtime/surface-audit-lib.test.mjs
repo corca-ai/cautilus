@@ -6,6 +6,7 @@ import {
 	buildManifest,
 	computeObserved,
 	countSpecChecks,
+	extractCheckedFilePaths,
 	parseApexBadges,
 	renderAuditMarkdown,
 	slugify,
@@ -33,7 +34,8 @@ const REGISTRY = [
 	{ id: "a-testable-agent", title: "A Testable Agent", proofClass: "none", proofSpec: null, proofCommand: null, liveOptInCommand: null, evidence: [] },
 ];
 
-// Everything present, every leaf carries checks.
+// Everything present, every leaf carries checks, and every leaf references all
+// of its declared evidence (so the semantic cross-check passes).
 function honestWorld() {
 	const present = new Set([
 		"specs/readiness.spec.md",
@@ -42,9 +44,11 @@ function honestWorld() {
 		"fixtures/capture.json",
 		"bundle.json",
 	]);
+	const allEvidence = REGISTRY.flatMap((entry) => entry.evidence || []);
 	return {
 		fileExists: (path) => present.has(path),
 		readCheckCount: () => 2,
+		readReferencedFilePaths: () => allEvidence,
 	};
 }
 
@@ -76,6 +80,41 @@ test("countSpecChecks ignores check directives inside code fences", () => {
 	assert.equal(countSpecChecks(body), 2);
 });
 
+test("extractCheckedFilePaths returns only cautilus-json-file table paths", () => {
+	const body = [
+		"intro prose",
+		"> check:cautilus-json-file",
+		"| path | json_path | equals |",
+		"| --- | --- | --- |",
+		"| fixtures/a.json | x | 1 |",
+		"| fixtures/b.json | y | 2 |",
+		"",
+		"more prose",
+		"> check:cautilus-json-command(command=foo)",
+		"| path | equals |",
+		"| --- | --- |",
+		"| checks[id=x].ok | true |",
+		"```md",
+		"> check:cautilus-json-file",
+		"| path | json_path | equals |",
+		"| --- | --- | --- |",
+		"| fixtures/fenced.json | z | 3 |",
+		"```",
+	].join("\n");
+	assert.deepEqual([...extractCheckedFilePaths(body)].sort(), ["fixtures/a.json", "fixtures/b.json"]);
+});
+
+test("extractCheckedFilePaths honors the path column position and skips empty cells", () => {
+	const body = [
+		"> check:cautilus-json-file",
+		"| json_path | path | equals |",
+		"| --- | --- | --- |",
+		"| x | fixtures/c.json | 1 |",
+		"| y |  | 2 |",
+	].join("\n");
+	assert.deepEqual([...extractCheckedFilePaths(body)], ["fixtures/c.json"]);
+});
+
 test("parseApexBadges ignores badge headings inside code fences", () => {
 	const body = ["### Real Badge — proven", "```md", "### Fenced Example — proven", "```", "### Another Real — declared"].join("\n");
 	assert.deepEqual(
@@ -103,6 +142,28 @@ test("computeObserved downgrades a route with missing evidence to unproven", () 
 test("computeObserved downgrades a route whose leaf carries no checks", () => {
 	const observed = computeObserved(REGISTRY[0], { fileExists: () => true, readCheckCount: () => 0 });
 	assert.equal(observed.observedStatus, "unproven");
+});
+
+test("computeObserved downgrades a route whose evidence the leaf spec never references", () => {
+	const observed = computeObserved(REGISTRY[1], {
+		fileExists: () => true,
+		readCheckCount: () => 2,
+		readReferencedFilePaths: () => [], // leaf spec carries checks but references no files
+	});
+	assert.equal(observed.evidenceReferenced, false);
+	assert.deepEqual(observed.unreferencedEvidence, ["fixtures/capture.json"]);
+	assert.equal(observed.observedStatus, "unproven");
+});
+
+test("computeObserved keeps a route proven when every evidence file is referenced", () => {
+	const observed = computeObserved(REGISTRY[1], {
+		fileExists: () => true,
+		readCheckCount: () => 2,
+		readReferencedFilePaths: () => ["fixtures/capture.json", "unrelated.json"],
+	});
+	assert.equal(observed.evidenceReferenced, true);
+	assert.deepEqual(observed.unreferencedEvidence, []);
+	assert.equal(observed.observedStatus, "proven");
 });
 
 test("a none-class route is observed as promised without a proof spec", () => {
@@ -141,6 +202,27 @@ test("auditSurface fails when claimed-proven evidence is missing", () => {
 	const badge = result.badges.find((b) => b.id === "behavior-evaluation");
 	assert.equal(badge.consistent, false);
 	assert.match(badge.inconsistencyReasons.join(" "), /missing evidence/);
+});
+
+test("auditSurface fails when a badge's evidence is not referenced by its proof spec (redirect/hollow)", () => {
+	const world = honestWorld();
+	const result = auditSurface({
+		apexMarkdown: APEX,
+		registry: REGISTRY,
+		fileExists: world.fileExists,
+		readCheckCount: world.readCheckCount,
+		// evaluation.spec.md exists and carries checks, but (as if redirected to an
+		// unrelated spec) it references none of behavior-evaluation's evidence.
+		readReferencedFilePaths: (path) =>
+			path === "specs/evaluation.spec.md" ? [] : world.readReferencedFilePaths(path),
+	});
+	const badge = result.badges.find((b) => b.id === "behavior-evaluation");
+	assert.equal(badge.observed.evidenceReferenced, false);
+	assert.deepEqual(badge.observed.unreferencedEvidence, ["fixtures/capture.json"]);
+	assert.equal(badge.observed.observedStatus, "unproven");
+	assert.equal(badge.consistent, false);
+	assert.match(badge.inconsistencyReasons.join(" "), /not referenced/);
+	assert.equal(result.summary.honest, false);
 });
 
 test("auditSurface flags an apex badge with no registry route", () => {

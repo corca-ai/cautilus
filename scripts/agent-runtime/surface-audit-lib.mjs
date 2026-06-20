@@ -114,28 +114,140 @@ export function countSpecChecks(specBody) {
 	return count;
 }
 
-export function computeObserved(entry, { fileExists, readCheckCount }) {
+function parseTableRow(line) {
+	return line
+		.trim()
+		.replace(/^\|/, "")
+		.replace(/\|$/, "")
+		.split("|")
+		.map((cell) => cell.trim());
+}
+
+function isSeparatorRow(cells) {
+	return cells.length > 0 && cells.every((cell) => /^:?-+:?$/.test(cell));
+}
+
+// Walk a spec body once, fence-aware, splitting it into one block per `> check:`
+// directive: { kind, tableLines }. Lines before the first directive and any
+// fenced content are ignored, so a check shown as an EXAMPLE inside a code fence
+// never produces a block.
+function collectCheckBlocks(specBody) {
+	const blocks = [];
+	let inFence = false;
+	let current = null;
+	for (const line of String(specBody).split("\n")) {
+		if (isFenceDelimiter(line)) {
+			inFence = !inFence;
+			current = null;
+			continue;
+		}
+		if (inFence) {
+			continue;
+		}
+		const checkMatch = /^\s*>\s*check:([a-z0-9-]+)/i.exec(line);
+		if (checkMatch) {
+			current = { kind: checkMatch[1].toLowerCase(), tableLines: [] };
+			blocks.push(current);
+		} else if (current && /^\s*\|/.test(line)) {
+			current.tableLines.push(line);
+		} else {
+			current = null;
+		}
+	}
+	return blocks;
+}
+
+// Return the values in the `path` column of a markdown table, skipping the header
+// and separator rows and empty cells.
+function tablePathColumnValues(tableLines) {
+	if (tableLines.length === 0) {
+		return [];
+	}
+	const [header, ...rows] = tableLines;
+	const pathColumn = parseTableRow(header).indexOf("path");
+	if (pathColumn < 0) {
+		return [];
+	}
+	return rows
+		.map(parseTableRow)
+		.filter((cells) => !isSeparatorRow(cells) && cells[pathColumn])
+		.map((cells) => cells[pathColumn]);
+}
+
+// Extract the set of checked-in FILE paths a spec body actually asserts on: the
+// `path` column of every `> check:cautilus-json-file` table. This is the semantic
+// spine of the audit. A purely structural audit ("the leaf carries some checks")
+// cannot tell whether the route points at the right spec or whether the evidence
+// it declares is decorative; this can. Only `cautilus-json-file` checks read a
+// file by path — other kinds (e.g. `cautilus-json-command`) put a JSON path, not
+// a file path, in their `path` column, so they are never counted.
+export function extractCheckedFilePaths(specBody) {
+	const paths = new Set();
+	for (const block of collectCheckBlocks(specBody)) {
+		if (block.kind === "cautilus-json-file") {
+			for (const value of tablePathColumnValues(block.tableLines)) {
+				paths.add(value);
+			}
+		}
+	}
+	return paths;
+}
+
+// Semantic binding: each declared evidence file must actually be read by a
+// `cautilus-json-file` check in the proof spec. This is what closes the
+// redirect/hollow gap — a route that points its proofSpec at an unrelated spec,
+// or pads its evidence list with files the spec never asserts on, no longer
+// observes as proven. Skipped (treated as referenced) only when the caller
+// supplies no reference reader — pure-unit callers that do not exercise this
+// layer; the real build always supplies it.
+function computeEvidenceReference(entry, proofSpecExists, readReferencedFilePaths) {
+	const evidence = entry.evidence || [];
+	const canCheck =
+		entry.proofSpec && proofSpecExists && evidence.length > 0 && typeof readReferencedFilePaths === "function";
+	if (!canCheck) {
+		return { unreferencedEvidence: [], evidenceReferenced: true };
+	}
+	const referenced = new Set(readReferencedFilePaths(entry.proofSpec));
+	const unreferencedEvidence = evidence.filter((path) => !referenced.has(path));
+	return { unreferencedEvidence, evidenceReferenced: unreferencedEvidence.length === 0 };
+}
+
+function observeStatus(proofClass, { proofSpecExists, checkCount, evidencePresent, evidenceReferenced }) {
+	if (proofClass === "none") {
+		return "promised";
+	}
+	const classMeta = PROOF_CLASSES[proofClass];
+	const routeOk =
+		Boolean(classMeta) && proofSpecExists && checkCount > 0 && evidencePresent && evidenceReferenced;
+	return routeOk ? classMeta.provenLevel : UNPROVEN;
+}
+
+export function computeObserved(entry, { fileExists, readCheckCount, readReferencedFilePaths }) {
 	const proofSpec = entry.proofSpec || null;
 	const proofSpecExists = proofSpec ? Boolean(fileExists(proofSpec)) : false;
 	const checkCount = proofSpec && proofSpecExists ? readCheckCount(proofSpec) : 0;
 	const evidence = entry.evidence || [];
 	const missingEvidence = evidence.filter((path) => !fileExists(path));
 	const evidencePresent = missingEvidence.length === 0;
-	const proofClass = entry.proofClass;
-	let observedStatus;
-	if (proofClass === "none") {
-		observedStatus = "promised";
-	} else {
-		const classMeta = PROOF_CLASSES[proofClass];
-		const routeOk = Boolean(classMeta) && proofSpecExists && checkCount > 0 && evidencePresent;
-		observedStatus = routeOk ? classMeta.provenLevel : UNPROVEN;
-	}
+	const { unreferencedEvidence, evidenceReferenced } = computeEvidenceReference(
+		entry,
+		proofSpecExists,
+		readReferencedFilePaths,
+	);
+	const observedStatus = observeStatus(entry.proofClass, {
+		proofSpecExists,
+		checkCount,
+		evidencePresent,
+		evidenceReferenced,
+	});
 	return {
 		proofSpecExists,
 		checkCount,
 		evidenceCount: evidence.length,
 		missingEvidence,
 		evidencePresent,
+		unreferencedEvidence,
+		evidenceReferenced,
 		observedStatus,
 	};
 }
@@ -163,6 +275,11 @@ function inconsistencyReasons(badge, entry, observed) {
 	if (observed.missingEvidence.length > 0) {
 		reasons.push(`missing evidence files: ${observed.missingEvidence.join(", ")}`);
 	}
+	if (observed.unreferencedEvidence && observed.unreferencedEvidence.length > 0) {
+		reasons.push(
+			`evidence not referenced by any cautilus-json-file check in ${entry.proofSpec}: ${observed.unreferencedEvidence.join(", ")} (the proof route may point at the wrong spec, or the leaf spec does not assert on this evidence)`,
+		);
+	}
 	return reasons;
 }
 
@@ -171,7 +288,7 @@ function emptyRoute(badge) {
 }
 
 function unprovenObserved() {
-	return { proofSpecExists: false, checkCount: 0, evidenceCount: 0, missingEvidence: [], evidencePresent: false, observedStatus: UNPROVEN };
+	return { proofSpecExists: false, checkCount: 0, evidenceCount: 0, missingEvidence: [], evidencePresent: false, unreferencedEvidence: [], evidenceReferenced: false, observedStatus: UNPROVEN };
 }
 
 function auditBadge(badge, entry, predicates) {
@@ -196,14 +313,14 @@ function auditBadge(badge, entry, predicates) {
 	};
 }
 
-export function auditSurface({ apexMarkdown, registry, fileExists, readCheckCount }) {
+export function auditSurface({ apexMarkdown, registry, fileExists, readCheckCount, readReferencedFilePaths }) {
 	const apexBadges = parseApexBadges(apexMarkdown);
 	const registryByTitle = new Map(registry.map((entry) => [entry.title, entry]));
 	const apexTitles = new Set(apexBadges.map((badge) => badge.title));
 	const orphanIssues = [];
 
 	const badges = apexBadges.map((badge) =>
-		auditBadge(badge, registryByTitle.get(badge.title) || null, { fileExists, readCheckCount }),
+		auditBadge(badge, registryByTitle.get(badge.title) || null, { fileExists, readCheckCount, readReferencedFilePaths }),
 	);
 
 	for (const badge of apexBadges) {
@@ -242,8 +359,8 @@ function summarize(badges, orphanIssues) {
 	};
 }
 
-export function buildManifest({ apexPath, registryPath, apexMarkdown, registry, fileExists, readCheckCount }) {
-	const audited = auditSurface({ apexMarkdown, registry, fileExists, readCheckCount });
+export function buildManifest({ apexPath, registryPath, apexMarkdown, registry, fileExists, readCheckCount, readReferencedFilePaths }) {
+	const audited = auditSurface({ apexMarkdown, registry, fileExists, readCheckCount, readReferencedFilePaths });
 	return {
 		schemaVersion: SCHEMA_VERSION,
 		generatedFrom: {
@@ -255,6 +372,8 @@ export function buildManifest({ apexPath, registryPath, apexMarkdown, registry, 
 			claimedStatus: "the badge level declared in the apex spec",
 			observedStatus: "the level the proof route actually delivers, recomputed by inspecting the leaf spec checks and evidence files",
 			consistent: "claimedStatus === observedStatus and the proof route is intact",
+			evidenceReferenced:
+				"every evidence file the route declares is actually read by a cautilus-json-file check in the leaf spec, so the proof route cannot point at an unrelated spec or pad its evidence count with files the spec never asserts on",
 			proofClasses: Object.fromEntries(
 				Object.entries(PROOF_CLASSES).map(([key, value]) => [key, value.meaning]),
 			),
@@ -276,8 +395,16 @@ function evidenceCell(badge) {
 	if (badge.evidence.length === 0) {
 		return "live command checks";
 	}
+	const flags = [];
 	const missing = badge.observed.missingEvidence.length;
-	const suffix = missing > 0 ? ` (⚠ ${missing} missing)` : "";
+	const unreferenced = badge.observed.unreferencedEvidence ? badge.observed.unreferencedEvidence.length : 0;
+	if (missing > 0) {
+		flags.push(`⚠ ${missing} missing`);
+	}
+	if (unreferenced > 0) {
+		flags.push(`⚠ ${unreferenced} unreferenced`);
+	}
+	const suffix = flags.length > 0 ? ` (${flags.join(", ")})` : "";
 	return `${badge.evidence.length} file(s)${suffix}`;
 }
 
@@ -369,8 +496,9 @@ function renderAssertions(manifestPath) {
 		"- Each badge's claimed level matches the level its proof route is observed to deliver (`consistent`).",
 		"- Every apex badge has a registry proof route and every registry route has an apex badge (no orphans).",
 		"- The leaf spec for each non-promised badge carries executable `> check:` blocks and its evidence files exist.",
+		"- Every evidence file a non-promised badge declares is actually read by a `cautilus-json-file` check in its leaf spec (`evidenceReferenced`), so the proof route cannot redirect to an unrelated spec or pad its evidence count with files the spec never asserts on.",
 		"",
-		"This audit is STRUCTURAL, not semantic: it confirms each badge has a real, intact proof route, but it does NOT verify that the leaf spec's check blocks actually test the claimed behavior end-to-end, nor that the registry points its proof route at the right spec. That correctness is the leaf-spec author's and code review's responsibility; `npm run lint:specs` runs the leaf checks themselves and fails if any break.",
+		"This audit is SEMANTICALLY BOUND for every badge that declares evidence: the evidence-reference check closes the redirect/hollow gap a purely structural \"the leaf has some checks\" test leaves open. What it still does NOT verify is whether each referencing check's ASSERTION exercises the claimed behavior end-to-end — a check could read the right evidence file and still assert something weak — so that correctness stays the leaf-spec author's and code review's responsibility; `npm run lint:specs` runs the leaf checks themselves and fails if any break. Evidence-less command-proof routes (Readiness) carry no evidence to cross-reference, so they stay bound to their leaf spec by title plus their own live `cautilus doctor` checks rather than by an evidence cross-reference.",
 		"It also does NOT re-run the live agent proofs; live evidence is replayed from operator-witnessed captures and re-run on demand via the per-badge `Freshness` command.",
 		"",
 		"> check:cautilus-json-file",

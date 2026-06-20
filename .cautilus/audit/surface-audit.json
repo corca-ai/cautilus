@@ -9,6 +9,7 @@
     "claimedStatus": "the badge level declared in the apex spec",
     "observedStatus": "the level the proof route actually delivers, recomputed by inspecting the leaf spec checks and evidence files",
     "consistent": "claimedStatus === observedStatus and the proof route is intact",
+    "evidenceReferenced": "every evidence file the route declares is actually read by a cautilus-json-file check in the leaf spec, so the proof route cannot point at an unrelated spec or pad its evidence count with files the spec never asserts on",
     "proofClasses": {
       "deterministic": "`npm run lint:specs` runs the command/file checks live on every run.",
       "live-replayed": "the default run replays an operator-witnessed live capture and blind verdict; the live agent re-run is opt-in and costs a real agent run.",
@@ -47,6 +48,8 @@
         "evidenceCount": 0,
         "missingEvidence": [],
         "evidencePresent": true,
+        "unreferencedEvidence": [],
+        "evidenceReferenced": true,
         "observedStatus": "proven"
       },
       "consistent": true,
@@ -73,6 +76,8 @@
         "evidenceCount": 3,
         "missingEvidence": [],
         "evidencePresent": true,
+        "unreferencedEvidence": [],
+        "evidenceReferenced": true,
         "observedStatus": "proven"
       },
       "consistent": true,
@@ -102,6 +107,8 @@
         "evidenceCount": 6,
         "missingEvidence": [],
         "evidencePresent": true,
+        "unreferencedEvidence": [],
+        "evidenceReferenced": true,
         "observedStatus": "proven"
       },
       "consistent": true,
@@ -128,6 +135,8 @@
         "evidenceCount": 3,
         "missingEvidence": [],
         "evidencePresent": true,
+        "unreferencedEvidence": [],
+        "evidenceReferenced": true,
         "observedStatus": "proven"
       },
       "consistent": true,
@@ -154,6 +163,8 @@
         "evidenceCount": 3,
         "missingEvidence": [],
         "evidencePresent": true,
+        "unreferencedEvidence": [],
+        "evidenceReferenced": true,
         "observedStatus": "declared"
       },
       "consistent": true,
@@ -180,6 +191,8 @@
         "evidenceCount": 3,
         "missingEvidence": [],
         "evidencePresent": true,
+        "unreferencedEvidence": [],
+        "evidenceReferenced": true,
         "observedStatus": "declared"
       },
       "consistent": true,
@@ -202,6 +215,8 @@
         "evidenceCount": 0,
         "missingEvidence": [],
         "evidencePresent": true,
+        "unreferencedEvidence": [],
+        "evidenceReferenced": true,
         "observedStatus": "promised"
       },
       "consistent": true,

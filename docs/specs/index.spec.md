@@ -85,8 +85,9 @@ Proof: none yet — see Proof Debt. Background: [runner readiness contract](../c
 
 Every badge above is bound to its proof route, so a badge cannot claim more than its proof actually delivers.
 [Surface Honesty Audit](audit.spec.md) is the navigable, runnable per-badge map: for each promise it shows the level this page CLAIMS, the level the proof route is OBSERVED to deliver (recomputed by inspecting the leaf spec's checks and evidence files), the proof class, the command that runs it, and whether the two agree.
+The binding is semantic, not just structural: for every badge that declares evidence, each evidence file must actually be read by a `cautilus-json-file` check in its leaf spec, so a route cannot point at an unrelated spec or pad its evidence count with files the spec never asserts on.
 Run `npm run audit:surface` to regenerate it, or `npm run audit:surface:check` to fail on drift or over-claim; `npm run lint:specs` runs the leaf proofs plus the check block below.
-The check reads the generated audit manifest and fails specdown if any badge over-claims, or if this page and the proof-route registry disagree about which badges exist.
+The check reads the generated audit manifest and fails specdown if any badge over-claims, if a badge's evidence is not referenced by its proof spec, or if this page and the proof-route registry disagree about which badges exist.
 
 > check:cautilus-json-file
 | path | json_path | equals |
@@ -103,14 +104,19 @@ The check reads the generated audit manifest and fails specdown if any badge ove
 | .cautilus/audit/surface-audit.json | badges[id=readiness].observed.observedStatus | proven |
 | .cautilus/audit/surface-audit.json | badges[id=claim-discovery].consistent | true |
 | .cautilus/audit/surface-audit.json | badges[id=claim-discovery].observed.observedStatus | proven |
+| .cautilus/audit/surface-audit.json | badges[id=claim-discovery].observed.evidenceReferenced | true |
 | .cautilus/audit/surface-audit.json | badges[id=behavior-evaluation].consistent | true |
 | .cautilus/audit/surface-audit.json | badges[id=behavior-evaluation].observed.observedStatus | proven |
+| .cautilus/audit/surface-audit.json | badges[id=behavior-evaluation].observed.evidenceReferenced | true |
 | .cautilus/audit/surface-audit.json | badges[id=bounded-improvement].consistent | true |
 | .cautilus/audit/surface-audit.json | badges[id=bounded-improvement].observed.observedStatus | proven |
+| .cautilus/audit/surface-audit.json | badges[id=bounded-improvement].observed.evidenceReferenced | true |
 | .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].consistent | true |
 | .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].observed.observedStatus | declared |
+| .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].observed.evidenceReferenced | true |
 | .cautilus/audit/surface-audit.json | badges[id=host-ownership].consistent | true |
 | .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.observedStatus | declared |
+| .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.evidenceReferenced | true |
 | .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].consistent | true |
 | .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].observed.observedStatus | promised |
 
