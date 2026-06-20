@@ -14397,7 +14397,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "80e051a98507c20bd51f08aba4e5e0c59c494434",
+  "gitCommit": "b082597ad85906adfe355f5a3314890b67180751",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14927,7 +14927,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 72,
+  "sourceCount": 73,
   "sourceGraph": [
     {
       "depth": 1,
@@ -15585,6 +15585,12 @@
     },
     {
       "depth": 3,
+      "from": "docs/specs/evidence/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/evidence/projected-claim-state.md"
+    },
+    {
+      "depth": 3,
       "from": "docs/specs/rules/agent-human-resumability.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/active-run-workspace.spec.md"
@@ -15996,6 +16002,12 @@
       "from": "docs/specs/ledger/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/evidence/index.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/evidence/projected-claim-state.md"
     },
     {
       "depth": 3,
@@ -16464,7 +16476,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:b093157e69a85a1b85ee9c49f7cbe02e1a7c2c295c7ca8f93a8b0fcf62aeef04",
+      "contentHash": "sha256:f9dae63670624a14ed0874dd01d189445f99651126e62467b29d316993f7b14a",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -16474,7 +16486,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:754ca67f7650dbb7e9dbfb3259e9990eb75dfa6ca44f86ddfef5b872e63b5faa",
+      "contentHash": "sha256:60540535600797562251417087033fe88915b6a6f67714ea7235c6a9780da35b",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -16719,6 +16731,16 @@
       "discoveredFrom": "docs/specs/evidence/index.spec.md",
       "kind": "spec",
       "path": "docs/specs/evidence/latest-selected-evidence.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "contentHash": "sha256:640007e4c4b6bda4cc30f9885a10da98a40738a0b6777894fe23ae9868516006",
+      "depth": 3,
+      "discoveredFrom": "docs/specs/evidence/index.spec.md",
+      "kind": "spec",
+      "path": "docs/specs/evidence/projected-claim-state.md",
       "status": "read"
     },
     {

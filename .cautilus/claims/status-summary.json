@@ -3446,7 +3446,7 @@
       }
     ]
   },
-  "gitCommit": "80e051a98507c20bd51f08aba4e5e0c59c494434",
+  "gitCommit": "b082597ad85906adfe355f5a3314890b67180751",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3458,17 +3458,17 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "80e051a98507c20bd51f08aba4e5e0c59c494434",
+    "currentGitCommit": "b082597ad85906adfe355f5a3314890b67180751",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "80e051a98507c20bd51f08aba4e5e0c59c494434",
+    "packetGitCommit": "b082597ad85906adfe355f5a3314890b67180751",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "linkedMarkdownSourceCount": 70,
+  "linkedMarkdownSourceCount": 71,
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "recommendedNextActions": [
     {
@@ -3515,6 +3515,6 @@
     }
   ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
-  "sourceCount": 72,
+  "sourceCount": 73,
   "sourceRoot": "."
 }
