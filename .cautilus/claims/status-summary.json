@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 200
+          "unknown": 204
         },
         "byReviewStatus": {
-          "heuristic": 200
+          "heuristic": 204
         },
-        "count": 200,
+        "count": 204,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -64,14 +64,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 116
+          "unknown": 119
         },
         "byReviewStatus": {
           "agent-reviewed": 8,
-          "heuristic": 107,
+          "heuristic": 110,
           "human-reviewed": 1
         },
-        "count": 116,
+        "count": 119,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -85,13 +85,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 41
+          "unknown": 42
         },
         "byReviewStatus": {
           "agent-reviewed": 18,
-          "heuristic": 23
+          "heuristic": 24
         },
-        "count": 41,
+        "count": 42,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -144,7 +144,7 @@
       }
     ]
   },
-  "candidateCount": 401,
+  "candidateCount": 405,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -162,41 +162,41 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 291,
-      "user": 110
+      "user": 114
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 92,
-      "Claim discovery and review": 52,
+      "Agent and skill workflow": 93,
+      "Claim discovery and review": 54,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 32,
       "Packets and reporting": 47,
-      "Quality gates": 21,
+      "Quality gates": 22,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
       "satisfied": 144,
-      "unknown": 257
+      "unknown": 261
     },
     "byLifecycle": {
-      "new": 401
+      "new": 405
     },
     "byRecommendedProof": {
-      "cautilus-eval": 120,
+      "cautilus-eval": 123,
       "deterministic": 176,
-      "human-auditable": 105
+      "human-auditable": 106
     },
     "byReviewStatus": {
       "agent-reviewed": 199,
-      "heuristic": 200,
+      "heuristic": 204,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
-      "needs-alignment": 41,
-      "ready-for-proof": 325
+      "needs-alignment": 42,
+      "ready-for-proof": 328
     }
   },
   "discoveryBoundary": {
@@ -3446,7 +3446,7 @@
       }
     ]
   },
-  "gitCommit": "86ecc52b3c9b76f390a03812382f5c654d0dd964",
+  "gitCommit": "b75f1cfdcc73ab7e2103786b3c63683d0fa15557",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3458,17 +3458,17 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "86ecc52b3c9b76f390a03812382f5c654d0dd964",
+    "currentGitCommit": "b75f1cfdcc73ab7e2103786b3c63683d0fa15557",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "86ecc52b3c9b76f390a03812382f5c654d0dd964",
+    "packetGitCommit": "b75f1cfdcc73ab7e2103786b3c63683d0fa15557",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "linkedMarkdownSourceCount": 71,
+  "linkedMarkdownSourceCount": 72,
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "recommendedNextActions": [
     {
@@ -3485,8 +3485,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 177,
-    "needsAlignment": 41,
+    "heuristicClaimsReadyForReview": 180,
+    "needsAlignment": 42,
     "needsScenario": 0
   },
   "sampleClaims": [
@@ -3515,6 +3515,6 @@
     }
   ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
-  "sourceCount": 73,
+  "sourceCount": 74,
   "sourceRoot": "."
 }

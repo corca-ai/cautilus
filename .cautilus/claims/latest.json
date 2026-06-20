@@ -1,5 +1,5 @@
 {
-  "candidateCount": 401,
+  "candidateCount": 405,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
@@ -3928,7 +3928,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:73885eb2c9399de0be6807fe9399da21adaa8b1db5e64394a16c0e9bf84af4d8",
-      "claimId": "claim-docs-specs-user-index-spec-md-31",
+      "claimId": "claim-docs-specs-user-index-spec-md-32",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3947,7 +3947,7 @@
       "sourceRefs": [
         {
           "excerpt": "Shared concerns should stay visible here and should also appear locally inside the main stories where they constrain the workflow.",
-          "line": 31,
+          "line": 32,
           "path": "docs/specs/user/index.spec.md"
         }
       ],
@@ -9421,6 +9421,129 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:5618379777e5e400210b07cfa81addc9b9e3ca50ebc76586d5a5e3d61de71d6e",
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-3",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/specs/user/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Before you can prove an agent's behavior, you need a clean headless runner for Cautilus to drive and an honest verdict on whether that runner is fit for the surface you want to prove.",
+          "line": 3,
+          "path": "docs/specs/user/a-testable-agent.spec.md"
+        }
+      ],
+      "summary": "Before you can prove an agent's behavior, you need a clean headless runner for Cautilus to drive and an honest verdict on whether that runner is fit for the surface you want to prove.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:54ac82eb1cd956c4240b6be149eb1bae06910878485a26f0e810328cc0fe3d4a",
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-4",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable",
+        "linked-from:docs/specs/user/index.spec.md",
+        "needs-alignment",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Using the `cautilus` CLI and the checked-in runner-readiness fixtures, you can check how testable your agent is: the binary emits a runner-readiness verdict, names the runner capability each claim needs, and flags an assessment that has drifted out of date.",
+          "line": 4,
+          "path": "docs/specs/user/a-testable-agent.spec.md"
+        }
+      ],
+      "summary": "Using the `cautilus` CLI and the checked-in runner-readiness fixtures, you can check how testable your agent is: the binary emits a runner-readiness verdict, names the runner capability each claim needs, and flags an assessment that has drifted out of date.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:59ff3cbfc9f3ecfe715f85f783a00b5c41079e0dc3a0e17038acefc5cd3dba1d",
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-7",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/specs/user/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "You can check how testable your agent is.",
+          "line": 7,
+          "path": "docs/specs/user/a-testable-agent.spec.md"
+        }
+      ],
+      "summary": "You can check how testable your agent is.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:26cdf3fdc348b4457608e2c7e6c2a7c00e657a4f790f704a4e131c4c51f75341",
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-17",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:docs/specs/user/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The binary emits a live runner-readiness verdict for this repo's agent.",
+          "line": 17,
+          "path": "docs/specs/user/a-testable-agent.spec.md"
+        }
+      ],
+      "summary": "The binary emits a live runner-readiness verdict for this repo's agent.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0e0558ad3eeec05342602ae4e7f81aa9652b6b4296efa3d98ca82f57e67c2ff1",
       "claimId": "claim-docs-specs-user-claim-discovery-spec-md-3",
       "claimSemanticGroup": "Documentation and contracts",
@@ -12925,42 +13048,42 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 291,
-      "user": 110
+      "user": 114
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 92,
-      "Claim discovery and review": 52,
+      "Agent and skill workflow": 93,
+      "Claim discovery and review": 54,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 32,
       "Packets and reporting": 47,
-      "Quality gates": 21,
+      "Quality gates": 22,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 334
+      "unknown": 338
     },
     "byLifecycle": {
-      "new": 401
+      "new": 405
     },
     "byRecommendedProof": {
-      "cautilus-eval": 147,
+      "cautilus-eval": 150,
       "deterministic": 143,
-      "human-auditable": 111
+      "human-auditable": 112
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 290
+      "heuristic": 294
     },
     "byVerificationReadiness": {
       "blocked": 15,
-      "needs-alignment": 54,
+      "needs-alignment": 55,
       "needs-scenario": 12,
-      "ready-for-proof": 320
+      "ready-for-proof": 323
     }
   },
   "discoveryEngine": {
@@ -13156,7 +13279,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "86ecc52b3c9b76f390a03812382f5c654d0dd964",
+  "gitCommit": "b75f1cfdcc73ab7e2103786b3c63683d0fa15557",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -13537,7 +13660,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 73,
+  "sourceCount": 74,
   "sourceGraph": [
     {
       "depth": 1,
@@ -14012,6 +14135,12 @@
       "from": "docs/specs/user/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/index.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/a-testable-agent.spec.md"
     },
     {
       "depth": 2,
@@ -14836,7 +14965,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:00fdcaee58c9bd1520b615f82091044919f78fe5c620430a6828c2cff16b386c",
+      "contentHash": "sha256:692347a7a164c7119d34cef165ff00d8b00920bb67bfa02701f5fda687399b49",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -15181,6 +15310,16 @@
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
       "path": "docs/specs/rules/vocabulary-consistency.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:83f261fe440989bc26bde2ef645bc6f36a81931aed3959ae5be131b9e7e674c5",
+      "depth": 2,
+      "discoveredFrom": "docs/specs/user/index.spec.md",
+      "kind": "spec",
+      "path": "docs/specs/user/a-testable-agent.spec.md",
       "status": "read"
     },
     {

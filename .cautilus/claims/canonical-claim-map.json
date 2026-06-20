@@ -4,24 +4,24 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:3a9191aeab176fac35483e6d020a2826270baa5797c6017d0d172251ecbd3ea5"
+      "contentHash": "sha256:23a9afe6d92db97f66df3294998664f6f3b392659487f7b4749616e107623edd"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
-      "contentHash": "sha256:00fdcaee58c9bd1520b615f82091044919f78fe5c620430a6828c2cff16b386c"
+      "contentHash": "sha256:692347a7a164c7119d34cef165ff00d8b00920bb67bfa02701f5fda687399b49"
     },
     "maintainerCatalog": {
       "path": "docs/specs/contracts/index.spec.md",
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "86ecc52b3c9b76f390a03812382f5c654d0dd964",
+  "claimsPacketGitCommit": "b75f1cfdcc73ab7e2103786b3c63683d0fa15557",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 401,
+  "claimsPacketCandidateCount": 405,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
-      "claimCount": 7,
+      "claimCount": 8,
       "claims": [
         {
           "id": "U1",
@@ -84,6 +84,15 @@
           "filePath": "docs/specs/user/ownership.spec.md",
           "sourceAnchors": [
             "docs/specs/user/ownership.spec.md"
+          ]
+        },
+        {
+          "id": "U8",
+          "title": "A Testable Agent",
+          "audience": "user",
+          "filePath": "docs/specs/user/a-testable-agent.spec.md",
+          "sourceAnchors": [
+            "docs/specs/user/a-testable-agent.spec.md"
           ]
         }
       ]
@@ -572,24 +581,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 401,
-    "userRawClaimCount": 110,
-    "userMappedToCanonicalCount": 110,
+    "totalRawClaimCount": 405,
+    "userRawClaimCount": 114,
+    "userMappedToCanonicalCount": 114,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 327,
-    "userSemanticReviewRecommendedCount": 40,
+    "semanticReviewRecommendedCount": 328,
+    "userSemanticReviewRecommendedCount": 41,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 291,
-      "mapped-to-user-canonical": 110
+      "mapped-to-user-canonical": 114
     },
     "byAudience": {
       "developer": 291,
-      "user": 110
+      "user": 114
     },
     "byMappingConfidence": {
-      "high": 74,
+      "high": 77,
       "low": 20,
-      "medium": 307
+      "medium": 308
     },
     "byUserCanonicalClaimId": {
       "U1": 22,
@@ -598,7 +607,8 @@
       "U4": 4,
       "U5": 6,
       "U6": 1,
-      "U7": 7
+      "U7": 7,
+      "U8": 4
     },
     "byMaintainerCanonicalClaimId": {
       "M1": 8,
@@ -630,6 +640,7 @@
       "claim-readme-md-70",
       "claim-readme-md-85",
       "claim-readme-md-109",
+      "claim-readme-md-122",
       "claim-readme-md-149",
       "claim-readme-md-152",
       "claim-docs-contracts-adapter-contract-md-3",
@@ -1175,7 +1186,7 @@
         "claim-docs-guides-evaluation-process-md-322",
         "claim-docs-specs-user-index-spec-md-22",
         "claim-docs-specs-user-index-spec-md-27",
-        "claim-docs-specs-user-index-spec-md-31",
+        "claim-docs-specs-user-index-spec-md-32",
         "claim-docs-specs-user-claim-discovery-spec-md-3",
         "claim-docs-specs-user-claim-discovery-spec-md-6",
         "claim-docs-specs-user-claim-discovery-spec-md-31",
@@ -1237,8 +1248,8 @@
         {
           "claimId": "claim-readme-md-122",
           "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-readme-md-143",
@@ -1457,7 +1468,7 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-user-index-spec-md-31",
+          "claimId": "claim-docs-specs-user-index-spec-md-32",
           "claimFingerprint": "sha256:73885eb2c9399de0be6807fe9399da21adaa8b1db5e64394a16c0e9bf84af4d8",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -1561,8 +1572,8 @@
         "human-auditable": 17
       },
       "byMappingConfidence": {
-        "high": 32,
-        "medium": 27
+        "high": 31,
+        "medium": 28
       }
     },
     {
@@ -1885,6 +1896,56 @@
       "byMappingConfidence": {
         "high": 6,
         "medium": 1
+      }
+    },
+    {
+      "canonicalClaimId": "U8",
+      "title": "A Testable Agent",
+      "absorbedRawClaimCount": 4,
+      "absorbedRawClaimIds": [
+        "claim-docs-specs-user-a-testable-agent-spec-md-3",
+        "claim-docs-specs-user-a-testable-agent-spec-md-4",
+        "claim-docs-specs-user-a-testable-agent-spec-md-7",
+        "claim-docs-specs-user-a-testable-agent-spec-md-17"
+      ],
+      "absorbedRawClaims": [
+        {
+          "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-3",
+          "claimFingerprint": "sha256:5618379777e5e400210b07cfa81addc9b9e3ca50ebc76586d5a5e3d61de71d6e",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-4",
+          "claimFingerprint": "sha256:54ac82eb1cd956c4240b6be149eb1bae06910878485a26f0e810328cc0fe3d4a",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-7",
+          "claimFingerprint": "sha256:59ff3cbfc9f3ecfe715f85f783a00b5c41079e0dc3a0e17038acefc5cd3dba1d",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-17",
+          "claimFingerprint": "sha256:26cdf3fdc348b4457608e2c7e6c2a7c00e657a4f790f704a4e131c4c51f75341",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        }
+      ],
+      "byEvidenceStatus": {
+        "unknown": 4
+      },
+      "byReviewStatus": {
+        "heuristic": 4
+      },
+      "byRecommendedProof": {
+        "cautilus-eval": 3,
+        "human-auditable": 1
+      },
+      "byMappingConfidence": {
+        "high": 4
       }
     }
   ],
@@ -5258,11 +5319,11 @@
       "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
       "canonicalClaimId": "U2",
       "score": 13,
-      "runnerUpCanonicalClaimId": "U5",
-      "runnerUpScore": 9,
-      "scoreMargin": 4,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
+      "runnerUpCanonicalClaimId": "U8",
+      "runnerUpScore": 11,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "case",
@@ -9215,12 +9276,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-user-index-spec-md-31",
+      "claimId": "claim-docs-specs-user-index-spec-md-32",
       "summary": "Shared concerns should stay visible here and should also appear locally inside the main stories where they constrain the workflow.",
       "sourceRefs": [
         {
           "path": "docs/specs/user/index.spec.md",
-          "line": 31,
+          "line": 32,
           "excerpt": "Shared concerns should stay visible here and should also appear locally inside the main stories where they constrain the workflow."
         }
       ],
@@ -15913,6 +15974,177 @@
         "same",
         "test",
         "vocabulary"
+      ]
+    },
+    {
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-3",
+      "summary": "Before you can prove an agent's behavior, you need a clean headless runner for Cautilus to drive and an honest verdict on whether that runner is fit for the surface you want to prove.",
+      "sourceRefs": [
+        {
+          "path": "docs/specs/user/a-testable-agent.spec.md",
+          "line": 3,
+          "excerpt": "Before you can prove an agent's behavior, you need a clean headless runner for Cautilus to drive and an honest verdict on whether that runner is fit for the surface you want to prove."
+        }
+      ],
+      "disposition": "mapped-to-user-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "user",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:5618379777e5e400210b07cfa81addc9b9e3ca50ebc76586d5a5e3d61de71d6e",
+      "canonicalClaimId": "U8",
+      "score": 27,
+      "runnerUpCanonicalClaimId": "U2",
+      "runnerUpScore": 15,
+      "scoreMargin": 12,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [
+        "docs/specs/user/a-testable-agent.spec.md"
+      ],
+      "matchedKeywords": [
+        "agent",
+        "behavior",
+        "cautilu",
+        "cautilus-eval",
+        "clean",
+        "dev/repo",
+        "drive",
+        "evaluate",
+        "fit",
+        "fixture",
+        "headles",
+        "honest"
+      ]
+    },
+    {
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-4",
+      "summary": "Using the `cautilus` CLI and the checked-in runner-readiness fixtures, you can check how testable your agent is: the binary emits a runner-readiness verdict, names the runner capability each claim needs, and flags an assessment that has drifted out of date.",
+      "sourceRefs": [
+        {
+          "path": "docs/specs/user/a-testable-agent.spec.md",
+          "line": 4,
+          "excerpt": "Using the `cautilus` CLI and the checked-in runner-readiness fixtures, you can check how testable your agent is: the binary emits a runner-readiness verdict, names the runner capability each claim needs, and flags an assessment that has drifted out of date."
+        }
+      ],
+      "disposition": "mapped-to-user-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "user",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:54ac82eb1cd956c4240b6be149eb1bae06910878485a26f0e810328cc0fe3d4a",
+      "canonicalClaimId": "U8",
+      "score": 32,
+      "runnerUpCanonicalClaimId": "U2",
+      "runnerUpScore": 23,
+      "scoreMargin": 9,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [
+        "docs/specs/user/a-testable-agent.spec.md"
+      ],
+      "matchedKeywords": [
+        "adapter",
+        "agent",
+        "assessment",
+        "binary",
+        "capability",
+        "cautilu",
+        "check",
+        "checked-in",
+        "cli",
+        "date",
+        "drifted",
+        "emit"
+      ]
+    },
+    {
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-7",
+      "summary": "You can check how testable your agent is.",
+      "sourceRefs": [
+        {
+          "path": "docs/specs/user/a-testable-agent.spec.md",
+          "line": 7,
+          "excerpt": "You can check how testable your agent is."
+        }
+      ],
+      "disposition": "mapped-to-user-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "user",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:59ff3cbfc9f3ecfe715f85f783a00b5c41079e0dc3a0e17038acefc5cd3dba1d",
+      "canonicalClaimId": "U8",
+      "score": 17,
+      "runnerUpCanonicalClaimId": "U3",
+      "runnerUpScore": 10,
+      "scoreMargin": 7,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [
+        "docs/specs/user/a-testable-agent.spec.md"
+      ],
+      "matchedKeywords": [
+        "agent",
+        "cautilu",
+        "cautilus-eval",
+        "check",
+        "dev/repo",
+        "evaluate",
+        "fixture",
+        "run",
+        "testable",
+        "you",
+        "your"
+      ]
+    },
+    {
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-17",
+      "summary": "The binary emits a live runner-readiness verdict for this repo's agent.",
+      "sourceRefs": [
+        {
+          "path": "docs/specs/user/a-testable-agent.spec.md",
+          "line": 17,
+          "excerpt": "The binary emits a live runner-readiness verdict for this repo's agent."
+        }
+      ],
+      "disposition": "mapped-to-user-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "user",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:26cdf3fdc348b4457608e2c7e6c2a7c00e657a4f790f704a4e131c4c51f75341",
+      "canonicalClaimId": "U8",
+      "score": 20,
+      "runnerUpCanonicalClaimId": "U2",
+      "runnerUpScore": 13,
+      "scoreMargin": 7,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [
+        "docs/specs/user/a-testable-agent.spec.md"
+      ],
+      "matchedKeywords": [
+        "agent",
+        "binary",
+        "cautilu",
+        "cautilus-eval",
+        "dev/repo",
+        "emit",
+        "evaluate",
+        "fixture",
+        "live",
+        "repo",
+        "run",
+        "runner-readines"
       ]
     },
     {
