@@ -33,7 +33,7 @@ const APEX = [
 
 const REGISTRY = [
 	{ id: "readiness", title: "Readiness", proofClass: "deterministic", proofSpec: "specs/readiness.spec.md", proofCommand: "npm run lint:specs", liveOptInCommand: null, evidence: [] },
-	{ id: "behavior-evaluation", title: "Behavior Evaluation", proofClass: "live-replayed", proofSpec: "specs/evaluation.spec.md", proofCommand: "npm run lint:specs", liveOptInCommand: "npm run proof:behavior-eval:live", evidence: ["fixtures/capture.json"] },
+	{ id: "behavior-evaluation", title: "Behavior Evaluation", proofClass: "cautilus-eval", proofSpec: "specs/evaluation.spec.md", proofCommand: "npm run lint:specs", liveOptInCommand: "npm run proof:behavior-eval:live", evidence: ["fixtures/capture.json"] },
 	{ id: "reviewable-artifacts", title: "Reviewable Artifacts", proofClass: "projected-bundle", proofSpec: "specs/reviewable.spec.md", proofCommand: "npm run lint:specs", liveOptInCommand: null, evidence: ["bundle.json"] },
 	{ id: "a-testable-agent", title: "A Testable Agent", proofClass: "none", proofSpec: null, proofCommand: null, liveOptInCommand: null, evidence: [] },
 ];

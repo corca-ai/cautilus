@@ -9,9 +9,10 @@ This page is Cautilus's own promises, proven on Cautilus itself.
 Each promise below gives you what you get in one line, how far it's proven today, and a link to the executable spec that proves it.
 The promise stays honest because the badge is earned by what that spec actually runs, not by what this page asserts.
 
-- **proven** — a checked-in executable spec asserts the behavior end-to-end, in one of two honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct:
+- **proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):
   - *deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery).
-  - *live-replayed* — the default run replays an operator-witnessed live capture and a blind judge verdict; the live agent re-run is opt-in and costs a real agent run (Behavior Evaluation, Bounded Improvement).
+  - *cautilus-eval* — the default run replays an operator-witnessed live agent capture and a blind judge verdict; the live agent re-run is opt-in and costs a real agent run (Behavior Evaluation, Bounded Improvement).
+  - *human-auditable* — an operator witnessed the live run and vouches for it; the default run replays the checked-in capture and the live re-run is opt-in, with no automated judge (accepted where a full deterministic or eval proof would be disproportionately costly).
 - **declared** — the evidence exists as a saved bundle, but the behavior has not been re-run live yet (named in Proof Debt)
 - **promised** — stated, with no executable proof attached yet (named in Proof Debt)
 

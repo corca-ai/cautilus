@@ -35,15 +35,16 @@ export const APEX_BADGE_IDS = [
 // The gold-set proof route vocabulary (agentLabels.recommendedProof / overrides).
 export const VALID_PROOF_ROUTES = ["deterministic", "cautilus-eval", "human-auditable"];
 
-// Gold-set proof route → apex registry proof class. The two are distinct axes:
-// the gold-set route is the ratified recommendation for HOW a claim should be
-// proven; the registry proofClass is what the apex's chosen leaf spec delivers
-// today. `human-auditable` has no registry counterpart, so a badge whose ratified
-// route is human-auditable surfaces as a divergence rather than aligning.
+// Gold-set proof route → apex registry proof class. As of 2026-06-21 the apex
+// proof-class vocabulary was realigned to the gold-set route vocabulary, so the
+// three proven verdict modes share one name and this bridge is the IDENTITY map:
+// `deterministic`, `cautilus-eval`, and `human-auditable` each map to themselves.
+// (`projected-bundle`/`none` are realization tiers with no route counterpart, so
+// a badge still at those tiers reconciles as a route-class-mismatch by design.)
 export const ROUTE_TO_PROOF_CLASS = {
 	deterministic: "deterministic",
-	"cautilus-eval": "live-replayed",
-	"human-auditable": null,
+	"cautilus-eval": "cautilus-eval",
+	"human-auditable": "human-auditable",
 };
 
 export function isDurableGraded(entry) {

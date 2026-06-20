@@ -26,8 +26,8 @@ A badge is honest only when `consistent` is true; the apex's own check block fai
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | ✅ | [Readiness](user/doctor-readiness.spec.md) | proven | proven | deterministic | `npm run lint:specs` | live command checks | runs every gate |
 | ✅ | [Claim Discovery](user/claim-discovery.spec.md) | proven | proven | deterministic | `npm run lint:specs` | 3 file(s) | runs every gate |
-| ✅ | [Behavior Evaluation](user/evaluation.spec.md) | proven | proven | live-replayed | `npm run lint:specs` | 6 file(s) | replayed; live re-run `npm run proof:behavior-eval:live && npm run proof:skill-orientation:live` |
-| ✅ | [Bounded Improvement](user/improvement.spec.md) | proven | proven | live-replayed | `npm run lint:specs` | 3 file(s) | replayed; live re-run `npm run proof:improve:live` |
+| ✅ | [Behavior Evaluation](user/evaluation.spec.md) | proven | proven | cautilus-eval | `npm run lint:specs` | 6 file(s) | replayed; live re-run `npm run proof:behavior-eval:live && npm run proof:skill-orientation:live` |
+| ✅ | [Bounded Improvement](user/improvement.spec.md) | proven | proven | cautilus-eval | `npm run lint:specs` | 3 file(s) | replayed; live re-run `npm run proof:improve:live` |
 | ✅ | [Reviewable Artifacts](user/reviewable-artifacts.spec.md) | declared | declared | projected-bundle | `npm run lint:specs` | 3 file(s) | replayed |
 | ✅ | [Host Ownership](user/ownership.spec.md) | declared | declared | projected-bundle | `npm run lint:specs` | 3 file(s) | projected; live `npm run consumer:onboard:smoke` |
 | ✅ | A Testable Agent | promised | promised | none | — | — | no executable proof yet |
@@ -37,7 +37,8 @@ A badge is honest only when `consistent` is true; the apex's own check block fai
 | Class | What `proven`/`declared` means for this class |
 | --- | --- |
 | deterministic | `npm run lint:specs` runs the command/file checks live on every run. |
-| live-replayed | the default run replays an operator-witnessed live capture and blind verdict; the live agent re-run is opt-in and costs a real agent run. |
+| cautilus-eval | the default run replays an operator-witnessed live agent capture and a blind judge verdict from the Cautilus eval tier; the live agent re-run is opt-in and costs a real agent run. |
+| human-auditable | an operator witnessed the live run and vouches for it; the default run replays the checked-in capture and the live re-run is opt-in. No automated judge — accepted where a full deterministic or eval proof would be disproportionately costly. |
 | projected-bundle | the proof projects a saved evidence bundle; the behavior has not been re-run live yet. |
 | none | stated, with no executable proof attached yet. |
 

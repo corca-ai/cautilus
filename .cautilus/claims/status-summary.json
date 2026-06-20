@@ -56,9 +56,9 @@
         "sampleClaimIds": [
           "claim-readme-md-6",
           "claim-docs-specs-index-spec-md-13",
-          "claim-docs-specs-index-spec-md-68",
-          "claim-docs-specs-index-spec-md-80",
-          "claim-docs-specs-index-spec-md-89"
+          "claim-docs-specs-index-spec-md-69",
+          "claim-docs-specs-index-spec-md-81",
+          "claim-docs-specs-index-spec-md-90"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -115,7 +115,7 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-60",
-          "claim-docs-specs-index-spec-md-151",
+          "claim-docs-specs-index-spec-md-152",
           "claim-docs-specs-user-index-spec-md-27",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-21",
           "claim-docs-contracts-claim-discovery-workflow-md-92"
@@ -1382,7 +1382,7 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
-        "claimId": "claim-docs-specs-index-spec-md-150",
+        "claimId": "claim-docs-specs-index-spec-md-151",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1391,7 +1391,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-index-spec-md-150"
+              "claim-docs-specs-index-spec-md-151"
             ]
           }
         ],
@@ -3446,7 +3446,7 @@
       }
     ]
   },
-  "gitCommit": "b082597ad85906adfe355f5a3314890b67180751",
+  "gitCommit": "8855aed0f8d9917e6acb95b9efceb454d3618523",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3458,10 +3458,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "b082597ad85906adfe355f5a3314890b67180751",
+    "currentGitCommit": "8855aed0f8d9917e6acb95b9efceb454d3618523",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "b082597ad85906adfe355f5a3314890b67180751",
+    "packetGitCommit": "8855aed0f8d9917e6acb95b9efceb454d3618523",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

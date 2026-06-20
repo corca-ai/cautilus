@@ -3,7 +3,8 @@
   "description": "Proof route for each apex promise badge. This file declares ONLY where each badge's proof lives (leaf spec, proof class, command, evidence files) and never the badge level. The badge level is declared once, in docs/specs/index.spec.md. build-surface-audit.mjs recomputes the observed level from these routes and fails the audit when the apex over-claims relative to what a route delivers. Match registry routes to apex badges by exact title. The audit is now semantically bound for every route that declares evidence: each declared evidence file must be read by a cautilus-json-file check in proofSpec, so pointing proofSpec at an unrelated spec or padding evidence with files the spec never asserts on makes the route observe as unproven. What stays unverified is whether each referencing check's assertion actually exercises this badge's behavior end-to-end — leaf-spec review and `npm run lint:specs` running the checks themselves carry that correctness — and evidence-less command-proof routes (Readiness) carry nothing to cross-reference, so they stay bound to proofSpec by title plus their own live checks.",
   "proofClasses": {
     "deterministic": "npm run lint:specs runs the command/file checks live on every run",
-    "live-replayed": "the default run replays an operator-witnessed live capture and blind verdict; the live agent re-run is opt-in",
+    "cautilus-eval": "the default run replays an operator-witnessed live agent capture and a blind judge verdict from the Cautilus eval tier; the live agent re-run is opt-in",
+    "human-auditable": "an operator witnessed the live run and vouches for it; the default run replays the checked-in capture and the live re-run is opt-in, with no automated judge",
     "projected-bundle": "the proof projects a saved evidence bundle; the behavior has not been re-run live yet",
     "none": "stated, with no executable proof attached yet"
   },
@@ -33,7 +34,7 @@
     {
       "id": "behavior-evaluation",
       "title": "Behavior Evaluation",
-      "proofClass": "live-replayed",
+      "proofClass": "cautilus-eval",
       "proofSpec": "docs/specs/user/evaluation.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run proof:behavior-eval:live && npm run proof:skill-orientation:live",
@@ -49,7 +50,7 @@
     {
       "id": "bounded-improvement",
       "title": "Bounded Improvement",
-      "proofClass": "live-replayed",
+      "proofClass": "cautilus-eval",
       "proofSpec": "docs/specs/user/improvement.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run proof:improve:live",

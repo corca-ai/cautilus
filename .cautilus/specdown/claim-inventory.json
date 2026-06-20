@@ -779,14 +779,14 @@
             "claimFingerprint": "sha256:b2db3970d5430186c25796dcfce79426d64725377fd3d1a18a81687f66126add",
             "claimId": "claim-readme-md-5",
             "ratifiedProofRoute": "cautilus-eval",
-            "impliedProofClass": "live-replayed",
+            "impliedProofClass": "cautilus-eval",
             "matchesRegistry": false
           },
           {
             "claimFingerprint": "sha256:d86efe24767d201f86fa6b4f59a19f4b87689cfd278c2ee648573e80b0e4616f",
             "claimId": "claim-readme-md-67",
             "ratifiedProofRoute": "cautilus-eval",
-            "impliedProofClass": "live-replayed",
+            "impliedProofClass": "cautilus-eval",
             "matchesRegistry": false
           }
         ],
@@ -798,20 +798,20 @@
       },
       {
         "badge": "behavior-evaluation",
-        "registryProofClass": "live-replayed",
+        "registryProofClass": "cautilus-eval",
         "boundT1": [
           {
             "claimFingerprint": "sha256:9018c538fe5ded20087c5b9c3dea13abd9b803fb454e5fd768c05164a726b596",
             "claimId": "claim-readme-md-4",
             "ratifiedProofRoute": "cautilus-eval",
-            "impliedProofClass": "live-replayed",
+            "impliedProofClass": "cautilus-eval",
             "matchesRegistry": true
           },
           {
             "claimFingerprint": "sha256:876d422ecc6981fb0023f848c23f90ac2be7fc0f9b0e2e615109b89044a5d21e",
             "claimId": "claim-readme-md-136",
             "ratifiedProofRoute": "human-auditable",
-            "impliedProofClass": null,
+            "impliedProofClass": "human-auditable",
             "matchesRegistry": false
           }
         ],
@@ -822,7 +822,7 @@
       },
       {
         "badge": "bounded-improvement",
-        "registryProofClass": "live-replayed",
+        "registryProofClass": "cautilus-eval",
         "boundT1": [
           {
             "claimFingerprint": "sha256:3f7d53374b3ad0a1f98d080a07490f3b717148e78267be931104835aebcc23ec",
@@ -845,7 +845,7 @@
             "claimFingerprint": "sha256:fca2fcfa646dc5c2d8a0113e913a099de9824ac235a6afcb08a50e2d84894960",
             "claimId": "claim-readme-md-137",
             "ratifiedProofRoute": "cautilus-eval",
-            "impliedProofClass": "live-replayed",
+            "impliedProofClass": "cautilus-eval",
             "matchesRegistry": false
           }
         ],

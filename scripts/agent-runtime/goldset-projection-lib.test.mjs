@@ -229,13 +229,13 @@ test("AC4: reconciliation surfaces badges with no ratified T1 headline claim", (
 test("AC4: reconciliation reports per-claim route/proof-class alignment", () => {
 	const { reconciliation } = realInventory();
 	const behavior = reconciliation.badges.find((b) => b.badge === "behavior-evaluation");
-	// claim-4 (cautilus-eval) maps to live-replayed === the registry proof class.
+	// claim-4 (cautilus-eval) maps to cautilus-eval === the registry proof class.
 	const aligned = behavior.boundT1.find((c) => c.claimId === "claim-readme-md-4");
-	assert.equal(aligned.impliedProofClass, "live-replayed");
+	assert.equal(aligned.impliedProofClass, "cautilus-eval");
 	assert.equal(aligned.matchesRegistry, true);
-	// claim-136 (human-auditable) has no registry counterpart -> surfaced.
+	// claim-136 (human-auditable) does not match the badge's cautilus-eval class -> surfaced.
 	const unmapped = behavior.boundT1.find((c) => c.claimId === "claim-readme-md-136");
-	assert.equal(unmapped.impliedProofClass, null);
+	assert.equal(unmapped.impliedProofClass, "human-auditable");
 	assert.equal(unmapped.matchesRegistry, false);
 	assert.equal(behavior.divergence, "route-class-mismatch");
 });
@@ -308,10 +308,10 @@ test("summarize counts tiers, verdicts, and non-graded buckets", () => {
 	assert.deepEqual(summary.nonGradedByVerdict, { "not-a-claim": 1, "retire-source": 1 });
 });
 
-test("ROUTE_TO_PROOF_CLASS keeps the two vocabularies explicit", () => {
+test("ROUTE_TO_PROOF_CLASS is the identity map (one shared verdict-mode vocabulary)", () => {
 	assert.equal(ROUTE_TO_PROOF_CLASS.deterministic, "deterministic");
-	assert.equal(ROUTE_TO_PROOF_CLASS["cautilus-eval"], "live-replayed");
-	assert.equal(ROUTE_TO_PROOF_CLASS["human-auditable"], null);
+	assert.equal(ROUTE_TO_PROOF_CLASS["cautilus-eval"], "cautilus-eval");
+	assert.equal(ROUTE_TO_PROOF_CLASS["human-auditable"], "human-auditable");
 });
 
 // ---------------------------------------------------------------------------

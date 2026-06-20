@@ -27,11 +27,17 @@ export const PROOF_CLASSES = {
 		meaning:
 			"`npm run lint:specs` runs the command/file checks live on every run.",
 	},
-	"live-replayed": {
+	"cautilus-eval": {
 		provenLevel: "proven",
-		label: "live-replayed",
+		label: "cautilus-eval",
 		meaning:
-			"the default run replays an operator-witnessed live capture and blind verdict; the live agent re-run is opt-in and costs a real agent run.",
+			"the default run replays an operator-witnessed live agent capture and a blind judge verdict from the Cautilus eval tier; the live agent re-run is opt-in and costs a real agent run.",
+	},
+	"human-auditable": {
+		provenLevel: "proven",
+		label: "human-auditable",
+		meaning:
+			"an operator witnessed the live run and vouches for it; the default run replays the checked-in capture and the live re-run is opt-in. No automated judge — accepted where a full deterministic or eval proof would be disproportionately costly.",
 	},
 	"projected-bundle": {
 		provenLevel: "declared",
@@ -526,7 +532,7 @@ function evidenceCell(badge) {
 }
 
 function refreshCell(badge) {
-	if (badge.proofClass === "live-replayed" && badge.liveOptInCommand) {
+	if (badge.proofClass === "cautilus-eval" && badge.liveOptInCommand) {
 		return `replayed; live re-run \`${badge.liveOptInCommand}\``;
 	}
 	if (badge.proofClass === "projected-bundle" && badge.liveOptInCommand) {
