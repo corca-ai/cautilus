@@ -14,6 +14,20 @@ PQ3 is resolved (below): the inventory is rendered ONCE into a standalone genera
 21 executable tests + coverage (lib 99.1%/shell 98.4%); `npm run verify` green; fresh-eye Sonnet critique READY-WITH-EDITS, no blocker.
 Still owned by SC4/FD5: retiring the not-a-claim(11)/retire-source(5) source prose (README/cli — triggers `claims:refresh:all`) and pointing the remaining hand-authored ledger/evidence state at the generated page; SC5/AC5 (`old/**` neutralization) unchanged.
 
+### Phase 2 Remaining — Ratified Decisions (2026-06-20, maintainer)
+
+These were confirmed with the maintainer in the Phase-2-first-slice closeout session and govern the next (execution) session.
+
+- D1 — Verdict→action for the 18 non-graded entries is NOT uniform.
+  Only `retire-source` (5: `claim-readme-md-16`/`-19`/`-47`/`-110`, `claim-docs-guides-cli-md-32`) authorizes removing/correcting the source prose.
+  `not-a-claim` (11) is tracking-only — leave the README/cli prose intact (a not-a-claim line is often good prose that simply is not a product claim); do NOT delete it.
+  `badly-bounded` (2: `claim-readme-md-129`, `claim-docs-guides-cli-md-207`) gets a narrowing rewrite, not deletion.
+- D2 — The source-prose retirement happens IN the Phase 2 remainder, together with `npm run claims:refresh:all` before push (it edits claim sources `README.md`/`docs/guides/cli.md`).
+  Anchor the live target lines by fingerprint/summary content, not the gold set's stale line numbers (some targets may already be trimmed at HEAD by `3080482`/`3bc1b06`); reconcile "still-live at HEAD" first.
+- D3 — SC4 "done" requires actually DELETING/REPLACING the hand-maintained claim-STATE tables that the projection now subsumes, not merely adding the generated page and linking it.
+  Guardrail: the generated `projected-claim-state.md` carries ONLY the gold-set-ratified 56-claim tier/verdict/route state. It does NOT carry the claims-packet 398-candidate evidence backlog (`evidence/claim-evidence-state.md`, a different generated source) nor the evidence-route ownership map (`evidence/evidence-map.spec.md`). So delete/replace applies only to hand-maintained tables whose content is genuinely subsumed by the projection; content with no projection equivalent must be migrated or kept, never silently dropped. The next session confirms the exact table list against this boundary before deleting.
+- D4 — PQ3 stays resolved as a standalone generated `.md` + links (NOT per-page injected regions).
+
 ## Problem
 
 The spec surface under `docs/specs/` is hand-authored across three framings of the same claim set — the apex promise page (`index.spec.md`, 7 badges), the promise ledger (`ledger/`), and the evidence state (`evidence/`).
