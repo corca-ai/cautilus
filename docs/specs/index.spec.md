@@ -10,13 +10,13 @@ Each promise below gives you what you get in one line, how far it's proven today
 The promise stays honest because the badge is earned by what that spec actually runs, not by what this page asserts.
 
 - **proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):
-  - *deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery).
+  - *deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery, Reviewable Artifacts).
   - *cautilus-eval* — the default run replays an operator-witnessed live agent capture and a blind judge verdict; the live agent re-run is opt-in and costs a real agent run (Behavior Evaluation, Bounded Improvement).
   - *human-auditable* — an operator witnessed the live run and vouches for it; the default run replays the checked-in capture and the live re-run is opt-in, with no automated judge (accepted where a full deterministic or eval proof would be disproportionately costly).
 - **declared** — the evidence exists as a saved bundle, but the behavior has not been re-run live yet (named in Proof Debt)
 - **promised** — stated, with no executable proof attached yet (named in Proof Debt)
 
-Today, five promises are proven, one is declared, and one is promised.
+Today, six promises are proven, none are declared, and one is promised.
 That split is the point: this page shows the real state of the work, and the [Honesty Audit](audit.spec.md) binds each badge to its proof route so the split cannot quietly drift.
 
 ## What Cautilus Does For You
@@ -64,11 +64,13 @@ CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the
 Cautilus marks each promise with how far it's actually proven, and keeps that mark in plain sight.
 So everything on this page is the real state of the work — which is what makes the proven marks worth anything.
 
-### Reviewable Artifacts — declared
+### Reviewable Artifacts — proven
 
 You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against.
+This is proven **deterministic**: on every `npm run lint:specs` the spec re-runs the packet commands, renders the readable views, and asserts on the fresh output — no saved bundle is projected.
 
-Proof: [Reviewable Artifacts spec](user/reviewable-artifacts.spec.md) — it projects saved packet bundles rather than regenerating them live; see Proof Debt.
+Proof: [Reviewable Artifacts spec](user/reviewable-artifacts.spec.md) (regenerates the agent-status, claim-status, validation, and eval-plan packets live, renders two readable views and asserts each preserves the JSON packet as the audit source, and seeds a stale candidate so the status report surfaces stale, blocked, and missing evidence).
+CLI ↔ Agent: the CLI emits the packets and renders the views; the agent reopens them to decide what to inspect or do next.
 
 ### Host Ownership — proven
 
@@ -99,8 +101,8 @@ The check reads the generated audit manifest and fails specdown if any badge ove
 | .cautilus/audit/surface-audit.json | schemaVersion | cautilus.surface_audit.v1 |
 | .cautilus/audit/surface-audit.json | summary.honest | true |
 | .cautilus/audit/surface-audit.json | summary.total | 7 |
-| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.proven | 5 |
-| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.declared | 1 |
+| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.proven | 6 |
+| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.declared | 0 |
 | .cautilus/audit/surface-audit.json | summary.byClaimedStatus.promised | 1 |
 | .cautilus/audit/surface-audit.json | summary.inconsistent | 0 |
 | .cautilus/audit/surface-audit.json | summary.orphanIssueCount | 0 |
@@ -116,7 +118,8 @@ The check reads the generated audit manifest and fails specdown if any badge ove
 | .cautilus/audit/surface-audit.json | badges[id=bounded-improvement].observed.observedStatus | proven |
 | .cautilus/audit/surface-audit.json | badges[id=bounded-improvement].observed.evidenceReferenced | true |
 | .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].consistent | true |
-| .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].observed.observedStatus | declared |
+| .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].observed.observedStatus | proven |
+| .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].proofClass | deterministic |
 | .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].observed.evidenceReferenced | true |
 | .cautilus/audit/surface-audit.json | badges[id=host-ownership].consistent | true |
 | .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.observedStatus | proven |
@@ -132,7 +135,6 @@ What it would take to move each unproven promise to a live **proven** badge. Thi
 | Promise | Current | To reach proven |
 | --- | --- | --- |
 | Behavior Evaluation — app surfaces | the coding-agent `dev/repo` and `dev/skill` surfaces are both proven live on demand (`npm run proof:behavior-eval:live`, `npm run proof:skill-orientation:live`); `app/chat` now evaluates an anonymized external product-log replay with a load-bearing blind intent judge (`npm run test:on-demand` replays the checked-in capture + blind verdicts), including natural sound secret handling, natural sound memory continuity, natural sound clarification-first behavior, and natural unsound artifact fidelity, closing external validity, the intent judge, and the app/chat natural-unsound gap, but its agent run is replayed from the production log rather than live; `app/prompt` now has a fresh fixture/Codex/Claude backend probe plus a load-bearing blind intent judge over that probe while still reporting `productProofReady=false` | a live app-runner re-run over an owner-confirmed app scenario for `app/chat` liveness, and product-runner proof for `app/prompt`, asserted in the spec |
-| Reviewable Artifacts | declared (projects saved packets) | regenerate packets live in the spec and assert their shape |
 | A Testable Agent | promised (no spec) | author a spec backed by the runner-readiness/verification contracts |
 
 ## How Proof Works Here

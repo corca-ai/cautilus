@@ -63,15 +63,11 @@
     {
       "id": "reviewable-artifacts",
       "title": "Reviewable Artifacts",
-      "proofClass": "projected-bundle",
+      "proofClass": "deterministic",
       "proofSpec": "docs/specs/user/reviewable-artifacts.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
-      "evidence": [
-        ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
-        ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
-        ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json"
-      ]
+      "evidence": []
     },
     {
       "id": "host-ownership",

@@ -1,5 +1,5 @@
 {
-  "candidateCount": 399,
+  "candidateCount": 401,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
@@ -3145,7 +3145,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:ee6e176307f544a6e07989167448b55508782d23b97ca13557209db40be113af",
+      "claimFingerprint": "sha256:0862edd0c61ffc0fc6260a27e8b90c8a843dbed7fe657efa711115b477e3963b",
       "claimId": "claim-docs-specs-index-spec-md-13",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
@@ -3162,12 +3162,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "*deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery).",
+          "excerpt": "*deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery, Reviewable Artifacts).",
           "line": 13,
           "path": "docs/specs/index.spec.md"
         }
       ],
-      "summary": "*deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery).",
+      "summary": "*deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery, Reviewable Artifacts).",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -3296,8 +3296,37 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:601ef4ef8c5bc38ddfc1ece6ec707082e4de63a016ab68987406faf0118ce2b7",
+      "claimId": "claim-docs-specs-index-spec-md-73",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "CLI ↔ Agent: the CLI emits the packets and renders the views; the agent reopens them to decide what to inspect or do next.",
+          "line": 73,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "CLI ↔ Agent: the CLI emits the packets and renders the views; the agent reopens them to decide what to inspect or do next.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:065809df07f59620399b32872ba30153d50934b36c2170bfdec9b76e0a7431db",
-      "claimId": "claim-docs-specs-index-spec-md-75",
+      "claimId": "claim-docs-specs-index-spec-md-77",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3316,7 +3345,7 @@
       "sourceRefs": [
         {
           "excerpt": "Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow.",
-          "line": 75,
+          "line": 77,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3328,7 +3357,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:37b6397e0812c652dce87da090101251b8d90989ad8ca585628156e7e68ce18e",
-      "claimId": "claim-docs-specs-index-spec-md-80",
+      "claimId": "claim-docs-specs-index-spec-md-82",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3347,7 +3376,7 @@
       "sourceRefs": [
         {
           "excerpt": "CLI ↔ Agent: the CLI runs the onboarding and records the invariant; the agent reads it and routes the next step.",
-          "line": 80,
+          "line": 82,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3359,7 +3388,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:db7a1cc3f9138ac9bc1519d4d3d6852622f89036483e427d4e7f28076fa478df",
-      "claimId": "claim-docs-specs-index-spec-md-84",
+      "claimId": "claim-docs-specs-index-spec-md-86",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3376,7 +3405,7 @@
       "sourceRefs": [
         {
           "excerpt": "You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good.",
-          "line": 84,
+          "line": 86,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3388,7 +3417,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:4823ab1a80a04cdcb10dbe3d1dece7439de04f9a75db2a834a5dc6b8a06f543d",
-      "claimId": "claim-docs-specs-index-spec-md-93",
+      "claimId": "claim-docs-specs-index-spec-md-95",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3405,7 +3434,7 @@
       "sourceRefs": [
         {
           "excerpt": "Run `npm run audit:surface` to regenerate it, or `npm run audit:surface:check` to fail on drift or over-claim; `npm run lint:specs` runs the leaf proofs plus the check block below.",
-          "line": 93,
+          "line": 95,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3417,7 +3446,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:5fd46ccf3657e8dac686297fee7d75014e7cd05fe333e6417d44d6500d9cf550",
-      "claimId": "claim-docs-specs-index-spec-md-140",
+      "claimId": "claim-docs-specs-index-spec-md-142",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3436,7 +3465,7 @@
       "sourceRefs": [
         {
           "excerpt": "Each subclaim on a spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
-          "line": 140,
+          "line": 142,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3448,7 +3477,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:831ac10a11da47176620c521e3cd218bbb059bd41d98b960dc37b7ac4129523e",
-      "claimId": "claim-docs-specs-index-spec-md-147",
+      "claimId": "claim-docs-specs-index-spec-md-149",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3465,7 +3494,7 @@
       "sourceRefs": [
         {
           "excerpt": "For each subclaim, either (a) add an executable check that runs the actual scenario and asserts on the produced packet/file, or (b) link a concrete existing evidence bundle, audit fixture, or packet path that proves that specific subclaim.",
-          "line": 147,
+          "line": 149,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3477,7 +3506,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:d304fd59bc29554230c0f6e525925f28e60c8d1926dbc28052cbc0444a7476a3",
-      "claimId": "claim-docs-specs-index-spec-md-154",
+      "claimId": "claim-docs-specs-index-spec-md-156",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3494,7 +3523,7 @@
       "sourceRefs": [
         {
           "excerpt": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise.",
-          "line": 154,
+          "line": 156,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3506,7 +3535,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:1ab96b0fe9f3873a6a1566a7f716dd22305cc69e7daa1f97e6cd09673907c27c",
-      "claimId": "claim-docs-specs-index-spec-md-155",
+      "claimId": "claim-docs-specs-index-spec-md-157",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3523,7 +3552,7 @@
       "sourceRefs": [
         {
           "excerpt": "A `gap` means missing or weak evidence that stays visible.",
-          "line": 155,
+          "line": 157,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3535,7 +3564,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:de989796dc3b153d17e7f7dc3b91cf8b7205f7add5eeb0b7205f2af3caf50a8e",
-      "claimId": "claim-docs-specs-index-spec-md-164",
+      "claimId": "claim-docs-specs-index-spec-md-166",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3554,7 +3583,7 @@
       "sourceRefs": [
         {
           "excerpt": "[Promise Ledger](ledger/index.spec.md) — which behavior claims Cautilus makes, how they relate, and which workflow or contract owns each.",
-          "line": 164,
+          "line": 166,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3988,7 +4017,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6f1d53b63c55437a8dba5e2715e79937723944de9c742996061a11766aea838f",
-      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-6",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4005,7 +4034,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user or agent can reopen JSON packets as the audit source of truth.",
-          "line": 6,
+          "line": 7,
           "path": "docs/specs/user/reviewable-artifacts.spec.md"
         }
       ],
@@ -4017,7 +4046,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fbeade814cdb79e38bc860b82568c0157823aa114fcd852ae78a6877150b3681",
-      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-21",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-61",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4034,13 +4063,42 @@
       "sourceRefs": [
         {
           "excerpt": "A user can read generated views without losing the packet source of truth.",
-          "line": 21,
+          "line": 61,
           "path": "docs/specs/user/reviewable-artifacts.spec.md"
         }
       ],
       "summary": "A user can read generated views without losing the packet source of truth.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:93ef4fc3ee9b56a91a713fa0e2993e6a0a45ef23f8b36a64ad7a8a662e892150",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-64",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The checks below render two readable views live from the canonical packets and confirm each view states that the JSON packet remains the audit source, while the source packet stays a valid machine-readable proof plan.",
+          "line": 64,
+          "path": "docs/specs/user/reviewable-artifacts.spec.md"
+        }
+      ],
+      "summary": "The checks below render two readable views live from the canonical packets and confirm each view states that the JSON packet remains the audit source, while the source packet stays a valid machine-readable proof plan.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names packet shape, durability, or machine-readable output that should be protected by deterministic schema or golden-output checks."
     },
     {
       "claimAudience": "developer",
@@ -12866,43 +12924,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 290,
-      "user": 109
+      "developer": 291,
+      "user": 110
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 91,
+      "Agent and skill workflow": 92,
       "Claim discovery and review": 52,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 32,
-      "Packets and reporting": 46,
+      "Packets and reporting": 47,
       "Quality gates": 21,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 332
+      "unknown": 334
     },
     "byLifecycle": {
-      "new": 399
+      "new": 401
     },
     "byRecommendedProof": {
       "cautilus-eval": 147,
-      "deterministic": 141,
+      "deterministic": 143,
       "human-auditable": 111
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 288
+      "heuristic": 290
     },
     "byVerificationReadiness": {
       "blocked": 15,
       "needs-alignment": 54,
       "needs-scenario": 12,
-      "ready-for-proof": 318
+      "ready-for-proof": 320
     }
   },
   "discoveryEngine": {
@@ -13098,7 +13156,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "66c5d39ed6c3fd8de2c15c823b3d4aed7a93b96f",
+  "gitCommit": "2dd0cd5bab9ad49515d866905d21db34e22f6a21",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14758,7 +14816,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:072ce2b285ecd7cc8fce332c15d6f6a5c2e2dcae74d2be31b7e302f219e6d737",
+      "contentHash": "sha256:2359425e0e94bfbd6b0b115adbd4dd06418a11a0bde264481045885a76023ff0",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -14788,7 +14846,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:dde62241d12cffb9fcfc34a5abfab8ac3f32b4ca1182142ffe8a05c1ab9db56c",
+      "contentHash": "sha256:d47818e3ad663a4a4bec2453f1a262eb94791041ab756c5960ca915428630c5b",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -14898,7 +14956,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:70d97e02e332323b92a2725da561c43238c8c87515d96cbf253593baaa63682e",
+      "contentHash": "sha256:9ac92219395784e4e0e2681b4253cca6200eff93c204635db8856ff08228af67",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -15288,7 +15346,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:f4630189f9da4409c579d2234045a773c9831e3b9520dd93a6bb14b79be99c33",
+      "contentHash": "sha256:7faa43c18495223d0b98bb3b1e32b7dbea6174e7e130cad25fbcaa7724863377",
       "depth": 3,
       "discoveredFrom": "docs/specs/evidence/index.spec.md",
       "kind": "spec",

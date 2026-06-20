@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 198
+          "unknown": 200
         },
         "byReviewStatus": {
-          "heuristic": 198
+          "heuristic": 200
         },
-        "count": 198,
+        "count": 200,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,22 +43,22 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 32
+          "unknown": 34
         },
         "byReviewStatus": {
           "agent-reviewed": 1,
-          "heuristic": 30,
+          "heuristic": 32,
           "human-reviewed": 1
         },
-        "count": 32,
+        "count": 34,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-6",
           "claim-docs-specs-index-spec-md-13",
           "claim-docs-specs-index-spec-md-69",
-          "claim-docs-specs-index-spec-md-84",
-          "claim-docs-specs-index-spec-md-93"
+          "claim-docs-specs-index-spec-md-73",
+          "claim-docs-specs-index-spec-md-86"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -115,9 +115,9 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-60",
-          "claim-docs-specs-index-spec-md-155",
+          "claim-docs-specs-index-spec-md-157",
           "claim-docs-specs-user-index-spec-md-27",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-21",
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-61",
           "claim-docs-contracts-claim-discovery-workflow-md-92"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
@@ -144,7 +144,7 @@
       }
     ]
   },
-  "candidateCount": 399,
+  "candidateCount": 401,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -161,42 +161,42 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 290,
-      "user": 109
+      "developer": 291,
+      "user": 110
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 91,
+      "Agent and skill workflow": 92,
       "Claim discovery and review": 52,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 32,
-      "Packets and reporting": 46,
+      "Packets and reporting": 47,
       "Quality gates": 21,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
       "satisfied": 144,
-      "unknown": 255
+      "unknown": 257
     },
     "byLifecycle": {
-      "new": 399
+      "new": 401
     },
     "byRecommendedProof": {
       "cautilus-eval": 120,
-      "deterministic": 174,
+      "deterministic": 176,
       "human-auditable": 105
     },
     "byReviewStatus": {
       "agent-reviewed": 199,
-      "heuristic": 198,
+      "heuristic": 200,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 41,
-      "ready-for-proof": 323
+      "ready-for-proof": 325
     }
   },
   "discoveryBoundary": {
@@ -1382,7 +1382,7 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
-        "claimId": "claim-docs-specs-index-spec-md-154",
+        "claimId": "claim-docs-specs-index-spec-md-156",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1391,7 +1391,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-index-spec-md-154"
+              "claim-docs-specs-index-spec-md-156"
             ]
           }
         ],
@@ -1486,7 +1486,7 @@
         "summary": "Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review."
       },
       {
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-6",
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1498,7 +1498,7 @@
               "claim-docs-specs-user-index-spec-md-26",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-7"
             ]
           }
         ],
@@ -3446,7 +3446,7 @@
       }
     ]
   },
-  "gitCommit": "66c5d39ed6c3fd8de2c15c823b3d4aed7a93b96f",
+  "gitCommit": "2dd0cd5bab9ad49515d866905d21db34e22f6a21",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3458,10 +3458,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "66c5d39ed6c3fd8de2c15c823b3d4aed7a93b96f",
+    "currentGitCommit": "2dd0cd5bab9ad49515d866905d21db34e22f6a21",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "66c5d39ed6c3fd8de2c15c823b3d4aed7a93b96f",
+    "packetGitCommit": "2dd0cd5bab9ad49515d866905d21db34e22f6a21",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3485,7 +3485,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 175,
+    "heuristicClaimsReadyForReview": 177,
     "needsAlignment": 41,
     "needsScenario": 0
   },

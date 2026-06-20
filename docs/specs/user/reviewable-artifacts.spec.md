@@ -2,50 +2,102 @@
 
 After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory.
 Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review.
+Each subclaim below regenerates its packet or view live on every `npm run lint:specs` and asserts on the fresh output, instead of projecting a saved evidence bundle.
 
 ## A user or agent can reopen JSON packets as the audit source of truth.
 
 Core command surfaces emit schema-versioned packets with state summaries, next branches, git state, validation state, and eval planning state.
+The checks below re-run those commands live and assert on the fresh stdout packets.
 
-```run:shell
-# Show durable packet surfaces from the latest selected evidence bundle.
-jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-durable-packets-2026-05-03.json
+```run:shell -> $canon
+# Resolve this repo's canonical claim proof-plan packet (kept fresh by claims:refresh:all).
+jq -r '.inputPath' .cautilus/claims/status-summary.json
 ```
 
-> check:cautilus-json-file
-| path | json_path | equals | includes |
+```run:shell
+# Show the four packet surfaces emitted fresh from the current repo and canonical packet.
+./bin/cautilus doctor status --repo-root . --json | jq '{schemaVersion, mode}'
+./bin/cautilus discover claims status --input "${canon}" | jq '{schemaVersion, candidateCount}'
+./bin/cautilus discover claims validate --claims "${canon}" | jq '{schemaVersion, valid}'
+./bin/cautilus evaluate claims plan --claims "${canon}" --allow-stale-claims | jq '{schemaVersion}'
+```
+
+### Agent orientation packet: next branches and git/claim state
+
+> check:cautilus-json-command(command=cautilus doctor status --repo-root . --json)
+| path | equals | includes | min_number |
 | --- | --- | --- | --- |
-| .cautilus/claims/evidence-durable-packets-2026-05-03.json | decision.evidenceStatus | satisfied | |
-| .cautilus/claims/evidence-durable-packets-2026-05-03.json | summary | | structured Cautilus packets |
+| schemaVersion | cautilus.agent_status.v1 | | |
+| mode | orientation | | |
+| notice | | before running discovery, evaluation, review, improvement, edits, or commits | |
+| nextBranches.length | | | 1 |
+
+### Claim status summary: state summary and git state
+
+> check:cautilus-json-command(command=cautilus discover claims status --input ${canon})
+| path | equals | includes | min_number |
+| --- | --- | --- | --- |
+| schemaVersion | cautilus.claim_status_summary.v1 | | |
+| candidateCount | | | 1 |
+| nonVerdictNotice | | Discovery creates candidates | |
+| gitState.changedFileCount | | | 0 |
+
+### Claim validation report: validation state
+
+> check:cautilus-json-command(command=cautilus discover claims validate --claims ${canon})
+| path | equals |
+| --- | --- |
+| schemaVersion | cautilus.claim_validation_report.v1 |
+| valid | true |
+
+### Claim eval plan: eval planning state
+
+> check:cautilus-json-command(command=cautilus evaluate claims plan --claims ${canon} --allow-stale-claims)
+| path | equals | includes |
+| --- | --- | --- |
+| schemaVersion | cautilus.claim_eval_plan.v1 | |
+| nonWriterNotice | | plans eval fixtures but does not write host-owned fixtures |
 
 ## A user can read generated views without losing the packet source of truth.
 
-The generated-view matrix and renderer tests cover the shipped readable artifact families and preserve JSON packets or source artifacts as the audit source.
+Readable views are generated from the machine-readable packets and keep the JSON packet as the audit source rather than replacing it.
+The checks below render two readable views live from the canonical packets and confirm each view states that the JSON packet remains the audit source, while the source packet stays a valid machine-readable proof plan.
 
 ```run:shell
-# Show the readable report behaviors proven by the latest selected evidence bundle.
-jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json
+$ sh -lc 'canon="$(jq -r ".inputPath" .cautilus/claims/status-summary.json)"; out="$(mktemp -d)"; node scripts/agent-runtime/render-claim-status-report.mjs --claims "$canon" --status .cautilus/claims/status-summary.json --output "$out/report.md" >/dev/null; grep -q "Use the JSON packets as the audit source" "$out/report.md" && echo status-report-notice-present'
+status-report-notice-present
 ```
 
+```run:shell
+$ sh -lc 'canon="$(jq -r ".inputPath" .cautilus/claims/status-summary.json)"; out="$(mktemp -d)"; node scripts/agent-runtime/render-claim-discovery-review.mjs --claims "$canon" --status .cautilus/claims/status-summary.json --output "$out/review.md" >/dev/null; grep -q "The JSON packet is the audit source" "$out/review.md" && echo discovery-review-notice-present'
+discovery-review-notice-present
+```
+
+The packet the views were rendered from is still a machine-readable proof plan, so the readable views are projections over it rather than the source of truth.
+
 > check:cautilus-json-file
-| path | json_path | equals | includes |
+| path | json_path | equals | min_number |
 | --- | --- | --- | --- |
-| .cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json | decision.evidenceStatus | satisfied | |
-| .cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json | checkedInEvidence[0].kind | reviewable-artifact-projection-matrix | |
-| .cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json | summary | | machine-readable packets |
+| .cautilus/claims/evidenced-typed-runners.json | schemaVersion | cautilus.claim_proof_plan.v1 | |
+| .cautilus/claims/evidenced-typed-runners.json | candidateCount | | 1 |
 
 ## A user can see stale, blocked, and missing evidence in report views.
 
-The status-report evidence covers evidence-gap buckets, validation summaries, refresh-plan currentness, and separate comment packets for human review.
+The status report makes evidence gaps visible: stale evidence as a cross-cutting signal, blocked claims and missing-proof claims as next-action buckets.
+The check below regenerates the status summary live over a packet seeded with one stale-evidence candidate (mutated from the canonical packet, which already carries blocked and missing-proof claims), so all three gap states surface in one fresh report.
 
-```run:shell
-# Show the stale, blocked, and missing evidence behaviors proven by the latest selected report evidence.
-jq '[.commandEvidence[] | {command, observed}]' .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json
+```run:shell -> $stale_packet
+# Seed one stale-evidence candidate so the live status report must surface a stale signal
+# alongside the blocked and missing-proof states the canonical packet already carries.
+out=$(mktemp -d)
+jq '(.claimCandidates[0].evidenceStatus) = "stale"' "${canon}" > "$out/claims-stale.json"
+printf '%s\n' "$out/claims-stale.json"
 ```
 
-> check:cautilus-json-file
-| path | json_path | equals | includes |
-| --- | --- | --- | --- |
-| .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | decision.evidenceStatus | satisfied | |
-| .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | commandEvidence[0].observed.protectedBehaviors[2] | | stale state |
-| .cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json | commandEvidence[0].observed.protectedBehaviors[5] | | separate JSON packet |
+> check:cautilus-json-command(command=cautilus discover claims status --input ${stale_packet})
+| path | equals |
+| --- | --- |
+| schemaVersion | cautilus.claim_status_summary.v1 |
+| actionSummary.crossCuttingSignals[id=stale-evidence].id | stale-evidence |
+| actionSummary.primaryBuckets[id=split-or-defer].id | split-or-defer |
+| actionSummary.primaryBuckets[id=agent-add-deterministic-proof].id | agent-add-deterministic-proof |

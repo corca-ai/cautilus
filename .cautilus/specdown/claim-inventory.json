@@ -839,7 +839,7 @@
       },
       {
         "badge": "reviewable-artifacts",
-        "registryProofClass": "projected-bundle",
+        "registryProofClass": "deterministic",
         "boundT1": [
           {
             "claimFingerprint": "sha256:fca2fcfa646dc5c2d8a0113e913a099de9824ac235a6afcb08a50e2d84894960",

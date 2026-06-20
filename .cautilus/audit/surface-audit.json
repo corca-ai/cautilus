@@ -22,8 +22,8 @@
   "summary": {
     "total": 7,
     "byClaimedStatus": {
-      "proven": 5,
-      "declared": 1,
+      "proven": 6,
+      "declared": 0,
       "promised": 1
     },
     "consistent": 7,
@@ -155,29 +155,25 @@
     {
       "id": "reviewable-artifacts",
       "title": "Reviewable Artifacts",
-      "claimedStatus": "declared",
-      "claimedStatusPhrase": "declared",
-      "proofClass": "projected-bundle",
-      "proofClassMeaning": "the proof projects a saved evidence bundle; the behavior has not been re-run live yet.",
+      "claimedStatus": "proven",
+      "claimedStatusPhrase": "proven",
+      "proofClass": "deterministic",
+      "proofClassMeaning": "`npm run lint:specs` runs the command/file checks live on every run.",
       "proofSpec": "docs/specs/user/reviewable-artifacts.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
-      "evidence": [
-        ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
-        ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
-        ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json"
-      ],
+      "evidence": [],
       "observed": {
         "proofSpecExists": true,
-        "checkCount": 3,
-        "evidenceCount": 3,
+        "checkCount": 6,
+        "evidenceCount": 0,
         "missingEvidence": [],
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
         "nonSubstantiveEvidence": [],
         "evidenceSubstantive": true,
-        "observedStatus": "declared"
+        "observedStatus": "proven"
       },
       "consistent": true,
       "inconsistencyReasons": []
