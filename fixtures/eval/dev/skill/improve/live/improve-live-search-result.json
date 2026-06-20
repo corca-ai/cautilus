@@ -79,9 +79,9 @@
     },
     {
       "artifacts": {
-        "outputFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/mutation.output.json",
-        "promptFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/mutation.prompt.md",
-        "schemaFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/mutation.schema.json"
+        "outputFile": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/mutation.output.json",
+        "promptFile": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/mutation.prompt.md",
+        "schemaFile": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/mutation.schema.json"
       },
       "evaluationArtifacts": {
         "admissible": true,
@@ -95,49 +95,48 @@
           "trigger": 0,
           "unstable": 0
         },
-        "outputDir": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/held-out-eval",
+        "outputDir": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/held-out-eval",
         "recommendation": "accept-now",
         "status": "passed",
-        "summaryFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/held-out-eval/eval-summary.json",
-        "worktreeRoot": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-worktrees/g1-1-codex-exec"
+        "summaryFile": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/held-out-eval/eval-summary.json",
+        "worktreeRoot": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-worktrees/g1-1-codex-exec"
       },
       "expectedImprovements": [
-        "Restore the held-out no-input path so the agent runs the read-only `doctor status` flow, summarizes the status packet, and stops at branch selection instead of escalating into eval-readiness work.",
-        "Prevent premature mutation-oriented guidance in discovery-only scenarios by keeping the first response read-only and branch-oriented.",
-        "Reduce false positives in branch routing by making the next-step recommendation explicit without implying a bounded run has already started."
+        "Restores the held-out no-input orientation so the agent stays read-only at branch selection instead of escalating into `doctor --next-action` and eval-readiness staging.",
+        "Makes the first response to missing task detail summarize binary health, agent-surface readiness, adapter state, claim state, scan scope, and `nextBranches` from `doctor status --json`.",
+        "Keeps the branch-selection flow bounded and explicit, reducing the chance of prematurely starting discovery, review, or eval work without user direction."
       ],
       "generationIndex": 1,
       "id": "g1-1-codex-exec",
-      "mutationRationale": "This revision removes the no-input regression by replacing the `doctor --next-action` / first-bounded-run instruction with a read-only `doctor status --json` orientation that ends at branch selection. It preserves the broader workflow contract while tightening the branch boundary so the agent does not claim or imply eval-readiness work before the user chooses a path.",
+      "mutationRationale": "I replaced the no-input orientation with a read-only `doctor status --json` flow that stops at branch selection and removed the `doctor --next-action` / first-bounded-run escalation. The rest of the prompt was preserved so the revision is narrowly focused on restoring the held-out behavior without widening scope.",
       "origin": "mutation",
       "parentCandidateIds": [
         "seed"
       ],
       "preservedStrengths": [
-        "Keeps the prompt self-contained and centered on the checked-in Cautilus workflow.",
-        "Retains the separation between eval, claim discovery, review, and improve surfaces.",
-        "Preserves the guidance to use product-owned packets and command families instead of ad hoc reconstruction.",
-        "Keeps the operator-facing framing around decision boundaries, branches, and bounded workflows."
+        "Preserves the CLI-first guidance and the preference for the checked-in `./bin/cautilus` launcher in the product repo.",
+        "Keeps claim discovery, refresh, status, review budgeting, and eval routing as distinct branches with separate boundaries.",
+        "Retains the requirement to treat stale claim packets as a stop condition and to avoid claiming success without evidence."
       ],
       "riskNotes": [
-        "The prompt still contains many overlapping branch rules; held-out coverage should verify that the no-input path does not get overridden by later workflow sections.",
-        "The `doctor status --json` surface must continue to expose `cautilus.agent_status.v1` with `nextBranches`; if that packet shape changes, the branch-selection summary could degrade.",
-        "Other read-only discovery branches may still need separate validation to ensure they do not inherit the removed escalation behavior indirectly."
+        "The revised no-input path still needs held-out validation to confirm it does not implicitly suggest eval readiness or staged runs elsewhere in surrounding guidance.",
+        "Some later sections still mention `doctor --repo-root .` for other branches, so the scenario should verify those references do not leak into the no-input path.",
+        "The prompt remains long and highly stateful, so nearby instructions could still create ambiguity if another branch is selected from the status packet."
       ],
       "targetFile": {
         "exists": true,
-        "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/candidate.prompt.md"
+        "path": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/candidate.prompt.md"
       },
       "targetSizeDelta": {
         "basisCandidateId": "seed",
-        "sizeBytes": 136
+        "sizeBytes": 192
       },
       "targetSnapshot": {
         "exists": true,
-        "lineCount": 221,
-        "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/candidate.prompt.md",
-        "sha256": "e8c6957d1ccff77a9526b50c3cef2a69ed08bdde83dd5e0eb8e1ec9c14349e9e",
-        "sizeBytes": 22073
+        "lineCount": 220,
+        "path": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/candidate.prompt.md",
+        "sha256": "e8c2bd1dca82fa58d9e50bfb81ce88d440531a0d6ca9cf62da2ee21d4e576d66",
+        "sizeBytes": 22129
       },
       "telemetry": {}
     }
@@ -157,11 +156,11 @@
           "trigger": 0,
           "unstable": 0
         },
-        "outputDir": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/full-gate-eval",
+        "outputDir": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/full-gate-eval",
         "recommendation": "accept-now",
         "rejectionReasons": [],
         "status": "passed",
-        "summaryFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/full-gate-eval/eval-summary.json",
+        "summaryFile": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/full-gate-eval/eval-summary.json",
         "type": "full_gate"
       }
     ],
@@ -188,7 +187,7 @@
       "path": "/home/hwidong/codes/cautilus/skills/cautilus-agent/SKILL.md"
     }
   },
-  "generatedAt": "2026-06-20T00:23:44.65849945Z",
+  "generatedAt": "2026-06-20T08:02:42.206378071Z",
   "generationSummaries": [
     {
       "frontierCandidateIds": [
@@ -223,11 +222,11 @@
       "scenarioId": "execution-cautilus-no-input-claim-discovery-status",
       "score": 100,
       "status": "passed",
-      "summary": "Execution consensus reached passed in 1/1 run(s). Followed session-start routing (find-skills) then invoked the local cautilus-agent skill as explicitly requested. With no task given, executed the skill's No-Input Orientation path: resolved the checked-in ./bin/cautilus (v0.16.1), ran 'doctor status --repo-root . --json' read-only, and read the cautilus.agent_status.v1 packet. Summarized binary health (healthy), agent-surface readiness (ready), adapter (valid), claim state (present, isStale=false / fresh-with-head-drift, 283 heuristic labels needing review), runner readiness (stale assessment for dev-repo-self-dogfood), and scan scope, then presented the four nextBranches and stopped at branch selection without running doctor --next-action or staging any execution."
+      "summary": "Execution consensus reached passed in 1/1 run(s). Followed session-start routing (charness:find-skills) then invoked the local cautilus-agent skill. Because no task was given, I executed the skill's No-Input Orientation path: resolved the binary to ./bin/cautilus (v0.16.2, source_checkout, healthy, 61 commands), ran `./bin/cautilus doctor status --repo-root . --json`, and read the cautilus.agent_status.v1 orientation packet (status=ready, mode=orientation). Summary of packet: binary healthy; agent surface ready (skill_installed + claude_skills_link both ok); adapter found+valid at .agents/cautilus-adapter.yaml with no errors/warnings; claim state present at .cautilus/claims/latest.json with primary buckets (52 already-satisfied, 109 add-deterministic-proof, 124 plan-cautilus-eval, 12 design-scenario, 49 human-align-surfaces, 37 human-confirm/decompose, 15 split-or-defer) plus cross-cutting signals (287 heuristic-review-needed, 15 stale-evidence); scan scope entries README.md/AGENTS.md/CLAUDE.md; runner readiness shows the dev-repo-self-dogfood runner assessment is stale (head drift), surfacing a refresh branch. nextBranches: (1) refresh_runner_assessment — Refresh the runner assessment [writes files]; (2) show_existing_claims — Inspect the evidenced claim map; (3) refresh_claims_from_diff — Compare the evidenced claim map with recent repo changes; (4) stop — Stop after orientation. Per the skill I stayed read-only, did not run discovery/next-action/eval or stage any run, and am holding at branch selection waiting for the user to pick a next branch."
     }
   ],
-  "improveInputFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-input.json",
-  "inputFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/search-input.json",
+  "improveInputFile": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-input.json",
+  "inputFile": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/search-input.json",
   "missingEvidence": [],
   "pareto": {
     "frontierCandidateIds": [
@@ -243,11 +242,11 @@
     ]
   },
   "proposalBridge": {
-    "improveInputFile": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-input.json",
+    "improveInputFile": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-input.json",
     "selectedCandidateId": "g1-1-codex-exec",
     "selectedTargetFile": {
       "exists": true,
-      "path": "/home/hwidong/.cache/tmp/improve-live-lyV1QD/improve/improve-search-candidates/g1-1-codex-exec/candidate.prompt.md"
+      "path": "/home/hwidong/.cache/tmp/improve-live-2Ozpmy/improve/improve-search-candidates/g1-1-codex-exec/candidate.prompt.md"
     }
   },
   "reasonCodes": [],
