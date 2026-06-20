@@ -63,19 +63,29 @@ Local release-close gates (green):
 - `check_real_host_proof`: no release-time real-host proof required for this slice.
 - `check_requested_review_gate`: ok (advisory-only; no `requested_review_commands` configured).
 
+Public release verification (after publish):
+
+- `release-artifacts` workflow (run `27857517645`, tag `v0.16.2`): `npm run verify`, build, attest, gh-release, and the `verify-public-release` job all succeeded.
+- `node scripts/release/verify-public-release.mjs --version v0.16.2 --repo corca-ai/cautilus --json`: ok, all expected assets present with a complete checksum manifest.
+- `npm run release:smoke-install -- --channel install_sh --version v0.16.2 --repo corca-ai/cautilus --json`: ok, installed `0.16.2`; `cautilus update` reports already current at v0.16.2.
+
 ## Public Release
 
-Pending. The actual branch push, tag, and GitHub release are the maintainer's step (push is reserved to the maintainer in this repo).
-After the maintainer publishes, this section should be filled with the released tag `v0.16.2`, release commit, URL, published-at timestamp, asset list, and the public-verification + install-smoke results.
+- Released tag: `v0.16.2`.
+- Release commit: `701d094c84a559e4f01a0d6f599a8ed39bf0167e`.
+- URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.16.2`.
+- Published at: `2026-06-20T02:35:16Z`.
+- Public boundary: GitHub tagged binary/install surface. npm publication and public Claude/Codex plugin distribution are not claimed by this release.
+- Assets:
+  - `cautilus_0.16.2_darwin_arm64.tar.gz`
+  - `cautilus_0.16.2_darwin_x64.tar.gz`
+  - `cautilus_0.16.2_linux_arm64.tar.gz`
+  - `cautilus_0.16.2_linux_x64.tar.gz`
+  - `cautilus-v0.16.2-checksums.txt`
+  - `cautilus-v0.16.2.sha256`
+  - `release-notes-v0.16.2.md`
 
-Suggested publish command (maintainer runs):
-
-```bash
-npm run release:publish -- --version 0.16.2 --dry-run --json   # preview
-npm run release:publish -- --version 0.16.2                     # branch push + tag
-node scripts/release/verify-public-release.mjs --version v0.16.2 --repo corca-ai/cautilus --json
-npm run release:smoke-install -- --channel install_sh --version v0.16.2 --repo corca-ai/cautilus --json
-```
+Recovery note: the first `v0.16.2` tag (commit `6bbafb49`) failed its `release-artifacts` build at the `npm run verify` govulncheck step (CI pinned Go 1.26.3, which carries patched stdlib CVEs). No release was published from that tag. The tag was re-pointed to commit `701d094c` (CI Go bumped to 1.26.4) and re-pushed; the release published cleanly from there.
 
 ## Operator Update Steps
 
@@ -86,6 +96,7 @@ npm run release:smoke-install -- --channel install_sh --version v0.16.2 --repo c
 
 ## Open Risks
 
-- This record is written BEFORE the public push/tag/publish, which the maintainer performs. The Public Release and public-verification sections are pending and must be completed after publish.
+- The `v0.16.2` tag was re-pointed after the first build failed on a CI Go-version pin; the immutable tag now points at `701d094c` and the published release corresponds to that commit. The earlier `6bbafb49` tag produced no release.
+- CI Go-version pins were behind a patched stdlib (1.26.3 vs 1.26.4) and went unnoticed because `main`'s `verify` workflow was red for days; consider automating the toolchain-pin bump so a stale pin does not silently block future releases (see `charness-artifacts/debug/2026-06-20-ci-govulncheck-go-version-pin.md`).
 - Requested-review enforcement is advisory-only because `.agents/release-adapter.yaml` has no `requested_review_commands`.
 - The live improve proof currently covers the dev/skill orientation prompt target; extending it to additional improvement targets stays open (improvement-loop contract Evidence Gaps).
