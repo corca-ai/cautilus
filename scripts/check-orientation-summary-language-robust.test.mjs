@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -40,6 +40,23 @@ test("isNoInputOrientationCase matches the held-out improve variant that withhol
 	assert.equal(isNoInputOrientationCase({ prompt: HELD_OUT_IMPROVE_PROMPT }), true);
 	// The eval-fixture prompt still does not match either signature.
 	assert.equal(isNoInputOrientationCase({ prompt: EVAL_FIXTURE_PROMPT }), false);
+	// Cross-non-contamination: the two signatures stay disjoint — neither prompt matches the other's tokens.
+	assert.equal(HELD_OUT_IMPROVE_PROMPT.toLowerCase().includes("first-touch orientation"), false);
+	assert.equal(ORIENTATION_PROMPT.toLowerCase().includes("do whatever your skill says to do first"), false);
+});
+
+test("the real improve held-out fixture keeps the language-independent command guards (AC1)", () => {
+	// Reads the actual checked-in fixture so the gate cannot silently drop the command guards that now
+	// carry seed-FAIL after the English requiredSummaryFragments were removed.
+	const fixturePath = resolve(
+		fileURLToPath(new URL("../fixtures/eval/dev/skill/improve/skill-orientation-improve.fixture.json", import.meta.url)),
+	);
+	const fixture = JSON.parse(readFileSync(fixturePath, "utf-8"));
+	const testCase = fixture.cases[0];
+	assert.equal(isNoInputOrientationCase(testCase), true);
+	assert.ok(!Array.isArray(testCase.requiredSummaryFragments) || testCase.requiredSummaryFragments.length === 0);
+	assert.ok(Array.isArray(testCase.requiredCommandFragments) && testCase.requiredCommandFragments.includes("doctor status"));
+	assert.ok(Array.isArray(testCase.forbiddenCommandFragments) && testCase.forbiddenCommandFragments.includes("--next-action"));
 });
 
 test("findSuiteViolations flags a held-out improve case that re-introduces requiredSummaryFragments", () => {

@@ -124,10 +124,14 @@ export function runCli(fixturesRoot, streams = {}) {
 		stderr.write(`  ${rel} :: ${violation.caseId} -> ${JSON.stringify(violation.fragments)}\n`);
 	}
 	stderr.write(
-		"\nThe orientation summary is graded semantically by the language-robust reasoning-soundness judge\n" +
-		"(reasoning-soundness-calibration.dev-skill-no-input-orientation.json). Remove requiredSummaryFragments\n" +
-		"from the orientation case; keep requiredCommandFragments + forbidden*Fragments as the language-independent\n" +
-		"packet/escalation guards. See charness-artifacts/debug/2026-06-20-skill-orientation-live-summary-fragment-language.md.\n",
+		"\nOn the dev/skill no-input orientation surface the summary is graded semantically by the language-robust\n" +
+		"reasoning-soundness judge (reasoning-soundness-calibration.dev-skill-no-input-orientation.json). On the\n" +
+		"held-out improve surface there is no judge backstop and the judge cannot run in the live improve loop, so\n" +
+		"the summary stays graded by the command/escalation guards only. Either way the fix is the same: remove\n" +
+		"requiredSummaryFragments from the orientation case and keep requiredCommandFragments + forbidden*Fragments\n" +
+		"as the language-independent packet/escalation guards.\n" +
+		"See charness-artifacts/debug/2026-06-20-skill-orientation-live-summary-fragment-language.md and\n" +
+		"charness-artifacts/spec/2026-06-20-improve-orientation-summary-language-robustness.md.\n",
 	);
 	return 1;
 }
