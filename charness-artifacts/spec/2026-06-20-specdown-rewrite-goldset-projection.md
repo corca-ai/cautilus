@@ -16,7 +16,7 @@ Phase 2 Remainder — LANDED 2026-06-20 (execution session; SC4 closed by reconc
 Source-prose retirement (FD5/D1/D2) needed no edit at HEAD: the 5 `retire-source` lines were already removed in `3080482`, the 2 `badly-bounded` curator splits were explicitly deferred to the gold-set re-extraction session in `3bc1b06` ("curator splits fold into the deferred re-extraction session"), and the 11 `not-a-claim` lines are tracking-only good prose kept in place — so no claim source changed and `claims:refresh:all` was not triggered.
 The D3 delete/replace target is empty under its own guardrail: a full read of every table in `docs/specs/` found NO hand-maintained per-claim tier/verdict/route table — the ledger and evidence pages carry distinct, non-subsumed lenses (promise→contract ownership in `ledger/promise-ledger.spec.md`, evidence-route ownership in `evidence/evidence-map.spec.md`, the generated 398-candidate backlog in `evidence/claim-evidence-state.md`, proof gaps, and naming), so FD3's premise that those pages "restate the badge/tier state by hand" was empirically false.
 The projection FILLS the previously-missing gold-set tier/verdict/route facet rather than replacing a redundant table, so SC4's single-source intent is satisfied by the first slice's generated page + links plus this reconciliation; nothing was deleted because the guardrail forbids dropping non-subsumed content.
-SC5/AC5 (`old/**` neutralization) unchanged — Phase 3.
+Phase 3 (FD6/SC5/AC5) also LANDED this session: the `old/**` blocks were already inert (unreachable from the apex entry, so FD6's "live risk" premise was likewise false), and a reachability guard in `check-specs.mjs` (+ tests) now fails the gate if the apex graph ever reaches `old/**`/`archive/**`, making the inertness a guaranteed one.
 
 ### Phase 2 Remaining — Ratified Decisions (2026-06-20, maintainer)
 
@@ -87,7 +87,8 @@ No spec pages, no scripts, and no gate changes land this session beyond this art
   `not-a-claim` and `retire-source` verdicts mark prose to retire; some source trims already landed in `3080482`/`3bc1b06`.
 
 - FD6 — The gate is already ON; the exit criterion is the projected tree green under it, and neutralizing `docs/specs/old/**` is first-slice (or pre-slice) work, not deferred.
-  `lint:specs` was re-enabled in `f1b4fc4b`, so the 11 archived `run:shell` blocks under `docs/specs/old/**` already run on every `npm run verify` — make them inert (delete or fence them) early because they execute live CLI commands that a CLI or spec-tree change can break.
+  `lint:specs` was re-enabled in `f1b4fc4b`; this decision assumed the 11 archived `run:shell` blocks under `docs/specs/old/**` therefore run on every `npm run verify` and are a live risk.
+  (Phase 3 reconciliation, 2026-06-20: that premise was empirically false. specdown traverses the link graph from the apex entry, and NOTHING reachable links to `docs/specs/archive/index.spec.md` — the only bridge to `old/` — so neither `old/**` (11 blocks) nor `archive/**` (1 block) is reached or executed; the fresh `lint:specs` report references zero `old/`/`archive/` files, and `check-specs.mjs` already skips both dirs. They were already inert via unreachability — but accidentally, so a future re-link would silently make all 12 blocks live again. Phase 3 closes that by adding a gated reachability guard in `check-specs.mjs` instead of fencing each block, turning accidental inertness into a guaranteed one.)
   The rewrite's done-signal is that the projected tree (apex + ledger + evidence views) passes the already-active `lint:specs` green; do not weaken or re-disable the gate to land intermediate slices.
 
 - FD7 — The projector is a product-owned script, gold set stays an artifact.
@@ -154,7 +155,8 @@ No spec pages, no scripts, and no gate changes land this session beyond this art
 - SC4 — DONE 2026-06-20. The ledger and evidence surface read a generated tier/verdict/route state from `docs/specs/evidence/projected-claim-state.md` (rendered once from the fingerprint-keyed inventory, linked from the evidence + ledger indexes), instead of maintaining claim state by hand.
   The "remaining SC4 work" (retire the hand-authored restatement + the not-a-claim/retire-source source prose) resolved to no-ops on reconciliation: no hand-maintained tier/verdict/route table existed to retire (the pages carry distinct non-subsumed lenses), and the FD5 source prose was already trimmed in `3080482` (`badly-bounded` deferred in `3bc1b06`), so no claim source changed and `claims:refresh:all` was not triggered.
   See the Phase 2 Remainder note for the full reconciliation.
-- SC5 — `docs/specs/old/**` proof blocks are inert and `lint:specs` is restored in `run-verify.mjs` (+ test), green over the projected tree (the exit criterion, FD6).
+- SC5 — DONE 2026-06-20. `docs/specs/old/**` proof blocks are inert and `lint:specs` is restored in `run-verify.mjs`, green over the projected tree (the exit criterion, FD6).
+  Reconciliation: the blocks were already inert (unreachable from the apex entry), and `lint:specs` was already in the verify PHASES; Phase 3 made the inertness a gated guarantee by adding a reachability guard to `check-specs.mjs` (+ tests) that fails the gate if the apex graph ever reaches `old/**` or `archive/**`.
 - SC6 — Throughout, no ratified verdict is altered and no badge honesty level changes without the audit gate agreeing.
 
 ## Acceptance Checks
@@ -163,7 +165,7 @@ No spec pages, no scripts, and no gate changes land this session beyond this art
 - AC2 (SC2) — a regression test asserts that dropping or re-tiering a T1 claim in the projected inventory fails (the projection is load-bearing, not decorative).
 - AC3 (PQ2) — the projector resolves the ratified proof route for the `relabel` and `rewrite-source` entries deterministically (from a structured field or a checked-in override surface), never by parsing the prose `note`; a test pins the README:8 relabel route.
 - AC4 (SC3) — a check reconciles the projected ratified proof routes against `surface-registry.json`; any divergence is reported.
-- AC5 (SC5) — early in the rewrite (because `lint:specs` is already on): `docs/specs/old/**`'s 11 `run:shell` blocks no longer execute under specdown, and `npm run verify` stays green with `lint:specs` over the projected tree.
+- AC5 (SC5) — DONE: `docs/specs/old/**`'s 11 `run:shell` blocks no longer execute under specdown (they never did at HEAD — unreachable from the entry), `npm run verify` stays green with `lint:specs` over the projected tree, and the new `check-specs.mjs` reachability guard + its two tests pin that the apex graph cannot reach `old/**`/`archive/**` (a re-link fails the gate instead of silently executing the archived blocks).
 - AC6 — `npm run verify` and `npm run test` stay green at every slice boundary; the projector clears the coverage floor.
 
 ## Critique

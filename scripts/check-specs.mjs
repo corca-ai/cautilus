@@ -68,6 +68,18 @@ function repoRelative(repoRoot, specPath) {
 	return relative(repoRoot, specPath).replaceAll("\\", "/");
 }
 
+// Archived spec trees are kept for historical context but carry live run:shell blocks.
+// They are intentionally out of the apex graph so specdown never executes them; this prefix
+// list lets the reachability guard fail the gate if a future link pulls them back in.
+const ARCHIVED_SPEC_PREFIXES = ["docs/specs/old/", "docs/specs/archive/"];
+
+function archivedSpecsReachableFrom(repoRoot, linkedSpecPaths) {
+	return [...linkedSpecPaths]
+		.map((specPath) => repoRelative(repoRoot, specPath))
+		.filter((rel) => ARCHIVED_SPEC_PREFIXES.some((prefix) => rel.startsWith(prefix)))
+		.sort();
+}
+
 function usage() {
 	return [
 		"Usage: node scripts/check-specs.mjs [spec-file ...]",
@@ -128,6 +140,16 @@ export function checkSpecs({ repoRoot = process.cwd(), targets = [] } = {}) {
 		? resolveTargetSpecPaths(repoRoot, specsDir, targets)
 		: listSpecFiles(specsDir);
 	const linkedSpecPaths = discoverLinkedSpecs(indexPath);
+
+	const archivedReached = archivedSpecsReachableFrom(repoRoot, linkedSpecPaths);
+	if (archivedReached.length > 0) {
+		throw fail(
+			`Specdown entry reaches archived spec(s) that must stay inert: ${archivedReached.join(", ")}. ` +
+				"Archived specs under docs/specs/old/ and docs/specs/archive/ carry live run:shell blocks; " +
+				"linking them back into the apex graph would execute them on every gate. " +
+				"Remove the link, or move the page out of old/ or archive/ if it is being de-archived deliberately.",
+		);
+	}
 
 	for (const specPath of specFiles) {
 		const content = readFileSync(specPath, "utf-8");
