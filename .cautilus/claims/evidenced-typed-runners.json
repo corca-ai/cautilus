@@ -3630,7 +3630,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:4823ab1a80a04cdcb10dbe3d1dece7439de04f9a75db2a834a5dc6b8a06f543d",
-      "claimId": "claim-docs-specs-index-spec-md-88",
+      "claimId": "claim-docs-specs-index-spec-md-89",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3647,7 +3647,7 @@
       "sourceRefs": [
         {
           "excerpt": "Run `npm run audit:surface` to regenerate it, or `npm run audit:surface:check` to fail on drift or over-claim; `npm run lint:specs` runs the leaf proofs plus the check block below.",
-          "line": 88,
+          "line": 89,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3659,7 +3659,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:5fd46ccf3657e8dac686297fee7d75014e7cd05fe333e6417d44d6500d9cf550",
-      "claimId": "claim-docs-specs-index-spec-md-130",
+      "claimId": "claim-docs-specs-index-spec-md-136",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3678,7 +3678,7 @@
       "sourceRefs": [
         {
           "excerpt": "Each subclaim on a spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
-          "line": 130,
+          "line": 136,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3690,7 +3690,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:831ac10a11da47176620c521e3cd218bbb059bd41d98b960dc37b7ac4129523e",
-      "claimId": "claim-docs-specs-index-spec-md-137",
+      "claimId": "claim-docs-specs-index-spec-md-143",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3707,7 +3707,7 @@
       "sourceRefs": [
         {
           "excerpt": "For each subclaim, either (a) add an executable check that runs the actual scenario and asserts on the produced packet/file, or (b) link a concrete existing evidence bundle, audit fixture, or packet path that proves that specific subclaim.",
-          "line": 137,
+          "line": 143,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3719,7 +3719,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:d304fd59bc29554230c0f6e525925f28e60c8d1926dbc28052cbc0444a7476a3",
-      "claimId": "claim-docs-specs-index-spec-md-144",
+      "claimId": "claim-docs-specs-index-spec-md-150",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -3728,7 +3728,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-specs-index-spec-md-144"
+            "claim-docs-specs-index-spec-md-150"
           ]
         }
       ],
@@ -3747,7 +3747,7 @@
       "sourceRefs": [
         {
           "excerpt": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise.",
-          "line": 144,
+          "line": 150,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3760,7 +3760,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:1ab96b0fe9f3873a6a1566a7f716dd22305cc69e7daa1f97e6cd09673907c27c",
-      "claimId": "claim-docs-specs-index-spec-md-145",
+      "claimId": "claim-docs-specs-index-spec-md-151",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3777,7 +3777,7 @@
       "sourceRefs": [
         {
           "excerpt": "A `gap` means missing or weak evidence that stays visible.",
-          "line": 145,
+          "line": 151,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3789,7 +3789,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:de989796dc3b153d17e7f7dc3b91cf8b7205f7add5eeb0b7205f2af3caf50a8e",
-      "claimId": "claim-docs-specs-index-spec-md-154",
+      "claimId": "claim-docs-specs-index-spec-md-160",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3808,7 +3808,7 @@
       "sourceRefs": [
         {
           "excerpt": "[Promise Ledger](ledger/index.spec.md) — which behavior claims Cautilus makes, how they relate, and which workflow or contract owns each.",
-          "line": 154,
+          "line": 160,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -14397,7 +14397,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "15027699fd7175ec17e3a5cc607ec5e2fdaf872f",
+  "gitCommit": "c3e5d1f450388be0bba4899b83ab1c8026f7fe62",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -16194,7 +16194,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:584134a3363941cf344f04ed26193932f3f5a57ca03111c0cf514a2deba8c5bc",
+      "contentHash": "sha256:72811e1b57e21931376ee223a67010945c42a98d42764d045efb3315f91d2473",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -16334,7 +16334,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:40923f255b92a59f8ba28b6107ab3ca385760cb76e724b9b7362266a8cf70c88",
+      "contentHash": "sha256:5d206240751998f9d3abc12b002c7d3dcc71a675fec1e85bf24cb7b6adc995db",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
