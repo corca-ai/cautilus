@@ -40,7 +40,7 @@ jq -r '.inputPath' .cautilus/claims/status-summary.json
 | schemaVersion | cautilus.claim_status_summary.v1 | | |
 | candidateCount | | | 1 |
 | nonVerdictNotice | | Discovery creates candidates | |
-| gitState.changedFileCount | | | 0 |
+| gitStateSnapshotNotice | | gitState is computed when this status packet is generated | |
 
 ### Claim validation report: validation state
 
@@ -93,6 +93,15 @@ out=$(mktemp -d)
 jq '(.claimCandidates[0].evidenceStatus) = "stale"' "${canon}" > "$out/claims-stale.json"
 printf '%s\n' "$out/claims-stale.json"
 ```
+
+The rendered status report view shows the stale signal in human-readable text, not only in the packet.
+
+```run:shell
+$ sh -lc 'canon="$(jq -r ".inputPath" .cautilus/claims/status-summary.json)"; out="$(mktemp -d)"; jq "(.claimCandidates[0].evidenceStatus)=\"stale\"" "$canon" > "$out/stale.json"; ./bin/cautilus discover claims status --input "$out/stale.json" --output "$out/status.json" >/dev/null 2>&1; node scripts/agent-runtime/render-claim-status-report.mjs --claims "$out/stale.json" --status "$out/status.json" --output "$out/report.md" >/dev/null 2>&1; grep -q "Cross-cutting signal: stale-evidence" "$out/report.md" && echo report-shows-stale'
+report-shows-stale
+```
+
+The status summary packet behind that view buckets all three gap states together.
 
 > check:cautilus-json-command(command=cautilus discover claims status --input ${stale_packet})
 | path | equals |
