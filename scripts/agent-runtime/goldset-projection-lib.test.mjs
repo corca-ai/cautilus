@@ -150,7 +150,7 @@ test("AC2: dropping a T1 claim from the gold set fails validation", () => {
 	const errors = validateInventory(inventory, loadRealInputs().badgeMapDoc);
 	assert.ok(errors.some((e) => e.includes("expected 7 T1")), errors.join("; "));
 	assert.ok(
-		errors.some((e) => e.includes("claim-readme-md-4") && e.includes("not a durable-graded T1")),
+		errors.some((e) => e.includes("claim-readme-md-4") && e.includes("not a durable-graded entry")),
 		errors.join("; "),
 	);
 });
@@ -161,13 +161,16 @@ test("AC2: re-tiering a T1 claim to T2 fails validation", () => {
 		if (entry.claimFingerprint === FP.bounded) entry.significanceTier = "T2";
 	}
 	const inventory = buildInventory({ ...loadRealInputs(), goldSet });
-	// The re-tiered claim loses its T1 badge binding...
+	// The re-tiered claim loses its badge: projectEntry only sets a badge on the
+	// T1 path (`tier === "T1" ? badgeMap.get(...) : null`), so shifting to T2
+	// nulls it. The claim stays durable-graded, just no longer T1.
 	assert.equal(inventory.entriesByFingerprint[FP.bounded].badge, null);
+	assert.equal(inventory.entriesByFingerprint[FP.bounded].significanceTier, "T2");
 	assert.equal(t1Records(inventory).length, 6);
 	const errors = validateInventory(inventory, loadRealInputs().badgeMapDoc);
 	assert.ok(errors.some((e) => e.includes("expected 7 T1")), errors.join("; "));
 	assert.ok(
-		errors.some((e) => e.includes("claim-readme-md-139")),
+		errors.some((e) => e.includes("claim-readme-md-139") && e.includes("not T1")),
 		errors.join("; "),
 	);
 });

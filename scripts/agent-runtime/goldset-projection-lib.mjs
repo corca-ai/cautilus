@@ -217,33 +217,54 @@ export function t1Records(inventory) {
 		.map(([claimFingerprint, record]) => ({ claimFingerprint, ...record }));
 }
 
-// Structural validation used by `--check` so a malformed projection fails loud:
-// exactly the 7 T1 claims project, each binds to a known badge, every badge-map
-// binding references a real durable-graded T1 fingerprint, and the graded/
-// non-graded split is internally consistent.
-export function validateInventory(inventory, badgeMapDoc) {
+function validateT1Badges(t1, validBadges) {
 	const errors = [];
-	const t1 = t1Records(inventory);
-	if (t1.length !== 7) errors.push(`expected 7 T1 entries, got ${t1.length}`);
-	const validBadges = new Set(badgeMapDoc.validBadgeIds || APEX_BADGE_IDS);
 	for (const record of t1) {
 		if (!record.badge) errors.push(`T1 ${record.claimId} has no badge binding`);
 		else if (!validBadges.has(record.badge)) {
 			errors.push(`T1 ${record.claimId} bound to unknown badge ${record.badge}`);
 		}
 	}
-	const t1Fingerprints = new Set(t1.map((record) => record.claimFingerprint));
-	for (const binding of badgeMapDoc.bindings || []) {
-		if (!t1Fingerprints.has(binding.claimFingerprint)) {
-			errors.push(`badge-map binding ${binding.claimId} is not a durable-graded T1 fingerprint`);
-		}
-	}
-	const { byTier, durableGraded, nonGraded, totalEntries } = inventory.summary;
+	return errors;
+}
+
+// A badge-map binding must point at a durable-graded T1 fingerprint. Name the two
+// failure modes distinctly: a dropped binding (gone from the graded set entirely)
+// vs a re-tiered one (still graded, no longer T1).
+function validateBinding(binding, t1Fingerprints, gradedByFingerprint) {
+	if (t1Fingerprints.has(binding.claimFingerprint)) return null;
+	const graded = gradedByFingerprint[binding.claimFingerprint];
+	if (!graded) return `badge-map binding ${binding.claimId} is not a durable-graded entry`;
+	return `badge-map binding ${binding.claimId} is durable-graded but not T1 (tier ${graded.significanceTier})`;
+}
+
+function validateSplit(summary) {
+	const errors = [];
+	const { byTier, durableGraded, nonGraded, totalEntries } = summary;
 	if (byTier.T1 + byTier.T2 + byTier.T3 !== durableGraded) {
 		errors.push("tier counts do not sum to durableGraded");
 	}
 	if (durableGraded + nonGraded !== totalEntries) {
 		errors.push("durableGraded + nonGraded does not equal totalEntries");
 	}
+	return errors;
+}
+
+// Structural validation used by `--check` so a malformed projection fails loud:
+// exactly the 7 T1 claims project, each binds to a known badge, every badge-map
+// binding references a real durable-graded T1 fingerprint, and the graded/
+// non-graded split is internally consistent.
+export function validateInventory(inventory, badgeMapDoc) {
+	const t1 = t1Records(inventory);
+	const validBadges = new Set(badgeMapDoc.validBadgeIds || APEX_BADGE_IDS);
+	const t1Fingerprints = new Set(t1.map((record) => record.claimFingerprint));
+	const errors = [];
+	if (t1.length !== 7) errors.push(`expected 7 T1 entries, got ${t1.length}`);
+	errors.push(...validateT1Badges(t1, validBadges));
+	for (const binding of badgeMapDoc.bindings || []) {
+		const error = validateBinding(binding, t1Fingerprints, inventory.entriesByFingerprint);
+		if (error) errors.push(error);
+	}
+	errors.push(...validateSplit(inventory.summary));
 	return errors;
 }
