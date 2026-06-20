@@ -1,5 +1,5 @@
 {
-  "candidateCount": 394,
+  "candidateCount": 396,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
@@ -3358,7 +3358,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-188",
+      "claimId": "claim-docs-master-plan-md-189",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3376,7 +3376,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
-          "line": 188,
+          "line": 189,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3481,7 +3481,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:4ef3336bee96e8d78694634b02d769a7ad7f290928cefc70ccc35d92faf63be2",
-      "claimId": "claim-docs-specs-index-spec-md-56",
+      "claimId": "claim-docs-specs-index-spec-md-57",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3500,7 +3500,7 @@
       "sourceRefs": [
         {
           "excerpt": "CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it.",
-          "line": 56,
+          "line": 57,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3512,7 +3512,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:b98e7a9a853b1a711857835acea325943c907530631ec6982b6aac39c3fbc6e6",
-      "claimId": "claim-docs-specs-index-spec-md-65",
+      "claimId": "claim-docs-specs-index-spec-md-66",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3529,7 +3529,7 @@
       "sourceRefs": [
         {
           "excerpt": "You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against.",
-          "line": 65,
+          "line": 66,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3541,7 +3541,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:065809df07f59620399b32872ba30153d50934b36c2170bfdec9b76e0a7431db",
-      "claimId": "claim-docs-specs-index-spec-md-71",
+      "claimId": "claim-docs-specs-index-spec-md-72",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3560,7 +3560,7 @@
       "sourceRefs": [
         {
           "excerpt": "Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow.",
-          "line": 71,
+          "line": 72,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3572,7 +3572,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:db7a1cc3f9138ac9bc1519d4d3d6852622f89036483e427d4e7f28076fa478df",
-      "claimId": "claim-docs-specs-index-spec-md-77",
+      "claimId": "claim-docs-specs-index-spec-md-78",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3589,7 +3589,7 @@
       "sourceRefs": [
         {
           "excerpt": "You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good.",
-          "line": 77,
+          "line": 78,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -11070,8 +11070,39 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a6c921e241db204bb14aa9dcb5558e56b8fd7cda629056aa5b93932c7a112382",
+      "claimId": "claim-docs-specs-user-improvement-spec-md-11",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "cautilus-eval",
+        "dev/skill",
+        "linked-from:docs/specs/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The working-tree SKILL.md is restored before the proof exits, and neither the degraded seed nor the mutated candidate ever ships — the loop produces a reviewable proposal and revision artifact you approve before applying.",
+          "line": 11,
+          "path": "docs/specs/user/improvement.spec.md"
+        }
+      ],
+      "summary": "The working-tree SKILL.md is restored before the proof exits, and neither the degraded seed nor the mutated candidate ever ships — the loop produces a reviewable proposal and revision artifact you approve before applying.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3ac32edb3c002ee19619d433a92dfc4055d35fdde165e9fb3effdebb13f47006",
-      "claimId": "claim-docs-specs-user-improvement-spec-md-23",
+      "claimId": "claim-docs-specs-user-improvement-spec-md-43",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [
         {
@@ -11080,7 +11111,7 @@
           "matchKind": "possible",
           "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-specs-user-improvement-spec-md-23",
+            "claim-docs-specs-user-improvement-spec-md-43",
             "claim-docs-specs-user-improvement-spec-md-41",
             "claim-docs-specs-ledger-improvement-spec-md-5",
             "claim-docs-specs-ledger-promise-ledger-spec-md-16"
@@ -11103,7 +11134,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can improve behavior while preserving protected checks, held-out evidence, and explicit budget.",
-          "line": 23,
+          "line": 43,
           "path": "docs/specs/user/improvement.spec.md"
         }
       ],
@@ -11118,7 +11149,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:311c81292005b1a22ed14f5e9edaf547d6135b708feb80f89567ce4e10842d95",
-      "claimId": "claim-docs-specs-user-improvement-spec-md-41",
+      "claimId": "claim-docs-specs-user-improvement-spec-md-61",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [
         {
@@ -11128,7 +11159,7 @@
           "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
           "supportsClaimIds": [
             "claim-docs-specs-user-improvement-spec-md-23",
-            "claim-docs-specs-user-improvement-spec-md-41",
+            "claim-docs-specs-user-improvement-spec-md-61",
             "claim-docs-specs-ledger-improvement-spec-md-5",
             "claim-docs-specs-ledger-promise-ledger-spec-md-16"
           ]
@@ -11152,7 +11183,7 @@
       "sourceRefs": [
         {
           "excerpt": "Improvement produces a proposal and revision artifact that preserve source files, stop conditions, prioritized evidence, and follow-up checks.",
-          "line": 41,
+          "line": 61,
           "path": "docs/specs/user/improvement.spec.md"
         }
       ],
@@ -13496,6 +13527,35 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:84bfe2ea4eeda3033f0e6dcac825e0e0d32d292acb04c7639b082ed5aa3a765c",
+      "claimId": "claim-docs-specs-ledger-improvement-spec-md-16",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:docs/specs/rules/evidence-gaps.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The packet route is checked, and a live bounded improve cycle (`npm run proof:improve:live`) proves the loop recovers a held-out scenario it was never tuned on, with the operator-witnessed capture replayed deterministically.",
+          "line": 16,
+          "path": "docs/specs/ledger/improvement.spec.md"
+        }
+      ],
+      "summary": "The packet route is checked, and a live bounded improve cycle (`npm run proof:improve:live`) proves the loop recovers a held-out scenario it was never tuned on, with the operator-witnessed capture replayed deterministically.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:1adbf232b44dd57e3ae1733bc9c2cf40c239479fe530dd29b96b2a751a1360fa",
       "claimId": "claim-docs-specs-ledger-names-and-keys-spec-md-4",
       "claimSemanticGroup": "Documentation and contracts",
@@ -14048,42 +14108,42 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 286,
-      "user": 108
+      "developer": 287,
+      "user": 109
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 89,
+      "Agent and skill workflow": 90,
       "Claim discovery and review": 51,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 31,
+      "Improvement and improvement": 32,
       "Packets and reporting": 46,
       "Quality gates": 20,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
       "satisfied": 144,
-      "unknown": 250
+      "unknown": 252
     },
     "byLifecycle": {
-      "new": 394
+      "new": 396
     },
     "byRecommendedProof": {
-      "cautilus-eval": 118,
-      "deterministic": 171,
+      "cautilus-eval": 119,
+      "deterministic": 172,
       "human-auditable": 105
     },
     "byReviewStatus": {
       "agent-reviewed": 199,
-      "heuristic": 193,
+      "heuristic": 195,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 41,
-      "ready-for-proof": 318
+      "ready-for-proof": 320
     }
   },
   "discoveryEngine": {
@@ -14279,7 +14339,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "5a271a3eae1ab8e8445a8fa93dafc8215618cb7b",
+  "gitCommit": "99f7dcecb4a7d33be22c22ffe6e357f19200cfc1",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14480,7 +14540,7 @@
     "appliedResultCount": 103,
     "skippedResultCount": 37,
     "keptUpdateCount": 281,
-    "rewrittenUpdateCount": 121,
+    "rewrittenUpdateCount": 123,
     "droppedUpdateCount": 247,
     "provenanceMode": "aggregate-current-review-results"
   },
@@ -15413,6 +15473,12 @@
     },
     {
       "depth": 3,
+      "from": "docs/specs/contracts/improvement-loop.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/improvement.spec.md"
+    },
+    {
+      "depth": 3,
       "from": "docs/specs/contracts/live-invocation-runtime.spec.md",
       "kind": "markdown-link",
       "to": "docs/contracts/live-run-invocation-batch.md"
@@ -16008,7 +16074,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:fc8328dc5fdeec549878f3f21461e9baf27040b7ec3d9d3351729354263147a6",
+      "contentHash": "sha256:18e025646cca499bbd4928604386e30d98c8e4a2c6a00b25f72432dadbdb6c2e",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -16028,7 +16094,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:2516813fe9593450f2d86e1ae20e20039da573eb81791fbef90cc2acd2f23486",
+      "contentHash": "sha256:5119fa9821afe591a063bc25fe5070a1e5c4a7eac826816c6d0877eab2e392b3",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -16228,7 +16294,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:d3578d5217bf43df62d3b657b57f737cb5e5a8953d016f506217184aa5c0451f",
+      "contentHash": "sha256:9c3ca32a76fb14996629d389ea43f2332075f5b5e7a6435801e46d64d63a0fb6",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -16418,7 +16484,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:909860d6f824ec914a149db158e9527cd78e9dd2f0e087ba63cab43b0ac081f5",
+      "contentHash": "sha256:dabe520c1ee280399fdbf4c00dd1af0d072f22a9adb2a7b575bd978a0815c712",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -16528,7 +16594,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:cd3b0c18ffbcfa1aa4b857763a1acd774304c60c5c8eaaa7ccdd84d477b3d240",
+      "contentHash": "sha256:4d133a527bf08fe4228b1e4b3722c7cbdaebde9c449320359cd7491f05bc78c7",
       "depth": 3,
       "discoveredFrom": "docs/specs/evidence/index.spec.md",
       "kind": "spec",
@@ -16578,7 +16644,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:ad07776f81f60dfeddd029c2360d3dd2055a1c1d838e560c3ce8961765412183",
+      "contentHash": "sha256:bc13cdcd7881d4f50a22f698a51dec6143a0d7b62263ddf3afeea21fb2095b16",
       "depth": 3,
       "discoveredFrom": "docs/specs/rules/evidence-gaps.spec.md",
       "kind": "spec",

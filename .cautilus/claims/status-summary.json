@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 193
+          "unknown": 195
         },
         "byReviewStatus": {
-          "heuristic": 193
+          "heuristic": 195
         },
-        "count": 193,
+        "count": 195,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,20 +43,20 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 29
+          "unknown": 30
         },
         "byReviewStatus": {
           "agent-reviewed": 1,
-          "heuristic": 27,
+          "heuristic": 28,
           "human-reviewed": 1
         },
-        "count": 29,
+        "count": 30,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-6",
-          "claim-docs-specs-index-spec-md-65",
-          "claim-docs-specs-index-spec-md-77",
+          "claim-docs-specs-index-spec-md-66",
+          "claim-docs-specs-index-spec-md-78",
           "claim-docs-specs-index-spec-md-102",
           "claim-docs-contracts-claim-discovery-workflow-md-5"
         ],
@@ -64,14 +64,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 114
+          "unknown": 115
         },
         "byReviewStatus": {
           "agent-reviewed": 8,
-          "heuristic": 105,
+          "heuristic": 106,
           "human-reviewed": 1
         },
-        "count": 114,
+        "count": 115,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -144,7 +144,7 @@
       }
     ]
   },
-  "candidateCount": 394,
+  "candidateCount": 396,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -161,42 +161,42 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 286,
-      "user": 108
+      "developer": 287,
+      "user": 109
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 89,
+      "Agent and skill workflow": 90,
       "Claim discovery and review": 51,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 31,
+      "Improvement and improvement": 32,
       "Packets and reporting": 46,
       "Quality gates": 20,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
       "satisfied": 144,
-      "unknown": 250
+      "unknown": 252
     },
     "byLifecycle": {
-      "new": 394
+      "new": 396
     },
     "byRecommendedProof": {
-      "cautilus-eval": 118,
-      "deterministic": 171,
+      "cautilus-eval": 119,
+      "deterministic": 172,
       "human-auditable": 105
     },
     "byReviewStatus": {
       "agent-reviewed": 199,
-      "heuristic": 193,
+      "heuristic": 195,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 41,
-      "ready-for-proof": 318
+      "ready-for-proof": 320
     }
   },
   "discoveryBoundary": {
@@ -3446,7 +3446,7 @@
       }
     ]
   },
-  "gitCommit": "5a271a3eae1ab8e8445a8fa93dafc8215618cb7b",
+  "gitCommit": "99f7dcecb4a7d33be22c22ffe6e357f19200cfc1",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3458,10 +3458,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "5a271a3eae1ab8e8445a8fa93dafc8215618cb7b",
+    "currentGitCommit": "99f7dcecb4a7d33be22c22ffe6e357f19200cfc1",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "5a271a3eae1ab8e8445a8fa93dafc8215618cb7b",
+    "packetGitCommit": "99f7dcecb4a7d33be22c22ffe6e357f19200cfc1",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3485,7 +3485,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 170,
+    "heuristicClaimsReadyForReview": 172,
     "needsAlignment": 41,
     "needsScenario": 0
   },
