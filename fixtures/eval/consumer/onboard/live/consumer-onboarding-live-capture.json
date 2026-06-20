@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "cautilus.consumer_onboarding_capture.v1",
+  "suiteId": "consumer-onboarding-live",
+  "suiteDisplayName": "External consumer onboarding (operator-witnessed live run)",
+  "provenance": {
+    "kind": "operator-witnessed-onboarding",
+    "note": "Operator-witnessed fresh live run. `cautilus init` -> `init adapter` -> `doctor` -> one bounded `evaluate fixture` in a fresh temp git repo whose adapter, fixture, and runner are host-owned. Ephemeral workspace paths are relativized to the consumer repo root; rerun `npm run consumer:onboard:smoke` to regenerate.",
+    "command": "npm run consumer:onboard:smoke",
+    "runner": "scripts/on-demand/smoke-external-consumer.mjs"
+  },
+  "onboarding": {
+    "ready": true,
+    "evalRecommendation": "accept-now",
+    "evalSchemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+    "hostOwned": {
+      "adapterPath": ".agents/cautilus-adapter.yaml",
+      "runnerPath": ".agents/cautilus-smoke-eval.mjs",
+      "fixturePath": "fixtures/eval/app/prompt/onboarding-smoke.fixture.json"
+    },
+    "steps": [
+      "git",
+      "seed-bootstrap-gitignore",
+      "git",
+      "git",
+      "cautilus init",
+      "cautilus init adapter",
+      "seed-first-bounded-run-fixture",
+      "seed-first-bounded-run-runner",
+      "seed-ready-adapter",
+      "git",
+      "git",
+      "cautilus doctor adapter",
+      "cautilus doctor",
+      "cautilus evaluate fixture"
+    ]
+  }
+}

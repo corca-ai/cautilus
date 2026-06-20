@@ -22,8 +22,8 @@
   "summary": {
     "total": 7,
     "byClaimedStatus": {
-      "proven": 4,
-      "declared": 2,
+      "proven": 5,
+      "declared": 1,
       "promised": 1
     },
     "consistent": 7,
@@ -185,29 +185,27 @@
     {
       "id": "host-ownership",
       "title": "Host Ownership",
-      "claimedStatus": "declared",
-      "claimedStatusPhrase": "declared",
-      "proofClass": "projected-bundle",
-      "proofClassMeaning": "the proof projects a saved evidence bundle; the behavior has not been re-run live yet.",
+      "claimedStatus": "proven",
+      "claimedStatusPhrase": "proven",
+      "proofClass": "human-auditable",
+      "proofClassMeaning": "an operator witnessed the live run and vouches for it; the default run replays the checked-in capture and the live re-run is opt-in. No automated judge — accepted where a full deterministic or eval proof would be disproportionately costly.",
       "proofSpec": "docs/specs/user/ownership.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run consumer:onboard:smoke",
       "evidence": [
-        ".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json",
-        ".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json",
-        ".cautilus/claims/evidence-durable-packets-2026-05-03.json"
+        "fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json"
       ],
       "observed": {
         "proofSpecExists": true,
         "checkCount": 3,
-        "evidenceCount": 3,
+        "evidenceCount": 1,
         "missingEvidence": [],
         "evidencePresent": true,
         "unreferencedEvidence": [],
         "evidenceReferenced": true,
         "nonSubstantiveEvidence": [],
         "evidenceSubstantive": true,
-        "observedStatus": "declared"
+        "observedStatus": "proven"
       },
       "consistent": true,
       "inconsistencyReasons": []

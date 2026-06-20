@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 197
+          "unknown": 198
         },
         "byReviewStatus": {
-          "heuristic": 197
+          "heuristic": 198
         },
-        "count": 197,
+        "count": 198,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -57,21 +57,21 @@
           "claim-readme-md-6",
           "claim-docs-specs-index-spec-md-13",
           "claim-docs-specs-index-spec-md-69",
-          "claim-docs-specs-index-spec-md-81",
-          "claim-docs-specs-index-spec-md-90"
+          "claim-docs-specs-index-spec-md-84",
+          "claim-docs-specs-index-spec-md-93"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 115
+          "unknown": 116
         },
         "byReviewStatus": {
           "agent-reviewed": 8,
-          "heuristic": 106,
+          "heuristic": 107,
           "human-reviewed": 1
         },
-        "count": 115,
+        "count": 116,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -115,7 +115,7 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-60",
-          "claim-docs-specs-index-spec-md-152",
+          "claim-docs-specs-index-spec-md-155",
           "claim-docs-specs-user-index-spec-md-27",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-21",
           "claim-docs-contracts-claim-discovery-workflow-md-92"
@@ -144,7 +144,7 @@
       }
     ]
   },
-  "candidateCount": 398,
+  "candidateCount": 399,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -161,12 +161,12 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 289,
+      "developer": 290,
       "user": 109
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 90,
+      "Agent and skill workflow": 91,
       "Claim discovery and review": 52,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
@@ -178,25 +178,25 @@
     },
     "byEvidenceStatus": {
       "satisfied": 144,
-      "unknown": 254
+      "unknown": 255
     },
     "byLifecycle": {
-      "new": 398
+      "new": 399
     },
     "byRecommendedProof": {
-      "cautilus-eval": 119,
+      "cautilus-eval": 120,
       "deterministic": 174,
       "human-auditable": 105
     },
     "byReviewStatus": {
       "agent-reviewed": 199,
-      "heuristic": 197,
+      "heuristic": 198,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 41,
-      "ready-for-proof": 322
+      "ready-for-proof": 323
     }
   },
   "discoveryBoundary": {
@@ -1382,7 +1382,7 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
-        "claimId": "claim-docs-specs-index-spec-md-151",
+        "claimId": "claim-docs-specs-index-spec-md-154",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1391,7 +1391,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-index-spec-md-151"
+              "claim-docs-specs-index-spec-md-154"
             ]
           }
         ],
@@ -2937,7 +2937,7 @@
         "summary": "A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy."
       },
       {
-        "claimId": "claim-docs-specs-user-ownership-spec-md-45",
+        "claimId": "claim-docs-specs-user-ownership-spec-md-49",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2948,7 +2948,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-user-evidence-gaps-spec-md-8",
               "claim-docs-specs-user-ownership-spec-md-27",
-              "claim-docs-specs-user-ownership-spec-md-45",
+              "claim-docs-specs-user-ownership-spec-md-49",
               "claim-docs-contracts-improvement-md-27",
               "claim-docs-contracts-improvement-md-34"
             ]
@@ -3446,7 +3446,7 @@
       }
     ]
   },
-  "gitCommit": "8855aed0f8d9917e6acb95b9efceb454d3618523",
+  "gitCommit": "66c5d39ed6c3fd8de2c15c823b3d4aed7a93b96f",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3458,10 +3458,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "8855aed0f8d9917e6acb95b9efceb454d3618523",
+    "currentGitCommit": "66c5d39ed6c3fd8de2c15c823b3d4aed7a93b96f",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "8855aed0f8d9917e6acb95b9efceb454d3618523",
+    "packetGitCommit": "66c5d39ed6c3fd8de2c15c823b3d4aed7a93b96f",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3485,7 +3485,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 174,
+    "heuristicClaimsReadyForReview": 175,
     "needsAlignment": 41,
     "needsScenario": 0
   },

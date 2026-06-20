@@ -535,6 +535,9 @@ function refreshCell(badge) {
 	if (badge.proofClass === "cautilus-eval" && badge.liveOptInCommand) {
 		return `replayed; live re-run \`${badge.liveOptInCommand}\``;
 	}
+	if (badge.proofClass === "human-auditable" && badge.liveOptInCommand) {
+		return `witnessed; live re-run \`${badge.liveOptInCommand}\``;
+	}
 	if (badge.proofClass === "projected-bundle" && badge.liveOptInCommand) {
 		return `projected; live \`${badge.liveOptInCommand}\``;
 	}

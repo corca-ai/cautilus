@@ -1,14 +1,20 @@
 import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
+
+// Canonical checked-in capture path. `npm run consumer:onboard:smoke` writes an
+// operator-witnessed capture here (volatile temp paths relativized, no timestamps
+// or costs) so docs/specs/user/ownership.spec.md can replay it deterministically
+// in `npm run lint:specs`, and the live re-run regenerates it without drift.
+export const DEFAULT_CAPTURE_PATH = "fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json";
 
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/on-demand/smoke-external-consumer.mjs [--cautilus-bin <path>] [--output-dir <path>] [--keep-workdir] [--json]",
+		"  node ./scripts/on-demand/smoke-external-consumer.mjs [--cautilus-bin <path>] [--output-dir <path>] [--keep-workdir] [--json] [--capture-path <path>] [--no-capture]",
 	].join("\n");
 	const stream = exitCode === 0 ? process.stdout : process.stderr;
 	stream.write(`${text}\n`);
@@ -29,6 +35,8 @@ function parseArgs(argv = process.argv.slice(2)) {
 		outputDir: "",
 		keepWorkdir: false,
 		json: false,
+		writeCapture: true,
+		capturePath: resolve(process.cwd(), DEFAULT_CAPTURE_PATH),
 	};
 	for (let index = 0; index < argv.length; index += 1) {
 		index = applyArg(options, argv, index);
@@ -49,9 +57,14 @@ function applyArg(options, argv, index) {
 		options.json = true;
 		return index;
 	}
+	if (arg === "--no-capture") {
+		options.writeCapture = false;
+		return index;
+	}
 	const valueMap = {
 		"--cautilus-bin": "cautilusBin",
 		"--output-dir": "outputDir",
+		"--capture-path": "capturePath",
 	};
 	const target = valueMap[arg];
 	if (!target) {
@@ -278,6 +291,56 @@ export function readDoctorReady(stdout) {
 	return payload.ready === true;
 }
 
+// Normalize a smoke summary into a stable, operator-witnessed onboarding capture.
+// Volatile data (temp workspace paths, stdout/stderr, durations, costs) is stripped
+// so a fresh `npm run consumer:onboard:smoke` regenerates an identical artifact: the
+// host-owned paths are relativized to the consumer repo root, and the cautilus
+// binary path collapses to "cautilus". This is the human-auditable proof the apex
+// Host Ownership badge replays — an operator ran it and vouches for the invariant.
+export function buildOnboardingCapture(summary) {
+	const rel = (path) => (path ? relative(summary.repoRoot, path).replaceAll("\\", "/") : null);
+	const stepLabel = (entry) => {
+		if (entry.command === summary.cautilusBin) {
+			const sub = (entry.args || []).filter((arg) => !arg.startsWith("-") && !arg.includes("/"));
+			return ["cautilus", ...sub].join(" ").trim();
+		}
+		if (/(^|\/)git$/.test(entry.command)) {
+			return "git";
+		}
+		return entry.command;
+	};
+	return {
+		schemaVersion: "cautilus.consumer_onboarding_capture.v1",
+		suiteId: "consumer-onboarding-live",
+		suiteDisplayName: "External consumer onboarding (operator-witnessed live run)",
+		provenance: {
+			kind: "operator-witnessed-onboarding",
+			note:
+				"Operator-witnessed fresh live run. `cautilus init` -> `init adapter` -> `doctor` -> one bounded `evaluate fixture` in a fresh temp git repo whose adapter, fixture, and runner are host-owned. Ephemeral workspace paths are relativized to the consumer repo root; rerun `npm run consumer:onboard:smoke` to regenerate.",
+			command: "npm run consumer:onboard:smoke",
+			runner: "scripts/on-demand/smoke-external-consumer.mjs",
+		},
+		onboarding: {
+			ready: summary.ready === true,
+			evalRecommendation: summary.evalSummary?.recommendation ?? null,
+			evalSchemaVersion: summary.evalSummary?.schemaVersion ?? null,
+			hostOwned: {
+				adapterPath: rel(summary.adapterPath),
+				runnerPath: rel(summary.runnerPath),
+				fixturePath: rel(summary.fixturePath),
+			},
+			steps: (summary.commands || []).map(stepLabel),
+		},
+	};
+}
+
+export function writeOnboardingCapture(summary, capturePath) {
+	const capture = buildOnboardingCapture(summary);
+	mkdirSync(dirname(capturePath), { recursive: true });
+	writeFileSync(capturePath, `${JSON.stringify(capture, null, 2)}\n`, "utf-8");
+	return capturePath;
+}
+
 export async function runExternalConsumerOnboardingSmoke(
 	{ cautilusBin, outputDir = "", keepWorkdir = false },
 	{ execCommand = runCommand } = {},
@@ -389,6 +452,10 @@ export async function main(argv = process.argv.slice(2)) {
 		const options = parseArgs(argv);
 		const result = await runExternalConsumerOnboardingSmoke(options);
 		process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+		if (options.writeCapture && result.ok) {
+			const capturePath = writeOnboardingCapture(result, options.capturePath);
+			process.stderr.write(`wrote onboarding capture: ${relative(process.cwd(), capturePath)}\n`);
+		}
 		if (!result.ok) {
 			process.exit(1);
 		}

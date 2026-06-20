@@ -16,7 +16,7 @@ The promise stays honest because the badge is earned by what that spec actually 
 - **declared** — the evidence exists as a saved bundle, but the behavior has not been re-run live yet (named in Proof Debt)
 - **promised** — stated, with no executable proof attached yet (named in Proof Debt)
 
-Today, four promises are proven, two are declared, and one is promised.
+Today, five promises are proven, one is declared, and one is promised.
 That split is the point: this page shows the real state of the work, and the [Honesty Audit](audit.spec.md) binds each badge to its proof route so the split cannot quietly drift.
 
 ## What Cautilus Does For You
@@ -70,11 +70,14 @@ You, the next teammate, or the next agent can reopen exactly what happened: ever
 
 Proof: [Reviewable Artifacts spec](user/reviewable-artifacts.spec.md) — it projects saved packet bundles rather than regenerating them live; see Proof Debt.
 
-### Host Ownership — declared
+### Host Ownership — proven
 
 Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow.
+This is proven **human-auditable**: an operator ran `npm run consumer:onboard:smoke` and vouches for a fresh external consumer installing Cautilus, initializing adapter wiring, reaching doctor readiness, and running one bounded `evaluate fixture` in a temporary git repo whose adapter, fixture, and runner are all host-owned.
+The default `npm run lint:specs` replays the operator-witnessed capture; the live re-run is opt-in and regenerates it without drift. There is no automated judge — the onboarding outcome is a deterministic invariant the operator witnessed.
 
-Proof: [Host Ownership spec](user/ownership.spec.md). A live onboarding smoke (`npm run consumer:onboard:smoke`) already exists and would upgrade this to proven; see Proof Debt.
+Proof: [Host Ownership spec](user/ownership.spec.md) (projects `fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json`, the operator-witnessed `consumer:onboard:smoke` capture).
+CLI ↔ Agent: the CLI runs the onboarding and records the invariant; the agent reads it and routes the next step.
 
 ### A Testable Agent — promised
 
@@ -96,8 +99,8 @@ The check reads the generated audit manifest and fails specdown if any badge ove
 | .cautilus/audit/surface-audit.json | schemaVersion | cautilus.surface_audit.v1 |
 | .cautilus/audit/surface-audit.json | summary.honest | true |
 | .cautilus/audit/surface-audit.json | summary.total | 7 |
-| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.proven | 4 |
-| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.declared | 2 |
+| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.proven | 5 |
+| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.declared | 1 |
 | .cautilus/audit/surface-audit.json | summary.byClaimedStatus.promised | 1 |
 | .cautilus/audit/surface-audit.json | summary.inconsistent | 0 |
 | .cautilus/audit/surface-audit.json | summary.orphanIssueCount | 0 |
@@ -116,8 +119,9 @@ The check reads the generated audit manifest and fails specdown if any badge ove
 | .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].observed.observedStatus | declared |
 | .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].observed.evidenceReferenced | true |
 | .cautilus/audit/surface-audit.json | badges[id=host-ownership].consistent | true |
-| .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.observedStatus | declared |
+| .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.observedStatus | proven |
 | .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.evidenceReferenced | true |
+| .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.evidenceSubstantive | true |
 | .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].consistent | true |
 | .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].observed.observedStatus | promised |
 
@@ -129,7 +133,6 @@ What it would take to move each unproven promise to a live **proven** badge. Thi
 | --- | --- | --- |
 | Behavior Evaluation — app surfaces | the coding-agent `dev/repo` and `dev/skill` surfaces are both proven live on demand (`npm run proof:behavior-eval:live`, `npm run proof:skill-orientation:live`); `app/chat` now evaluates an anonymized external product-log replay with a load-bearing blind intent judge (`npm run test:on-demand` replays the checked-in capture + blind verdicts), including natural sound secret handling, natural sound memory continuity, natural sound clarification-first behavior, and natural unsound artifact fidelity, closing external validity, the intent judge, and the app/chat natural-unsound gap, but its agent run is replayed from the production log rather than live; `app/prompt` now has a fresh fixture/Codex/Claude backend probe plus a load-bearing blind intent judge over that probe while still reporting `productProofReady=false` | a live app-runner re-run over an owner-confirmed app scenario for `app/chat` liveness, and product-runner proof for `app/prompt`, asserted in the spec |
 | Reviewable Artifacts | declared (projects saved packets) | regenerate packets live in the spec and assert their shape |
-| Host Ownership | declared (projects onboarding bundle) | wire the existing `consumer:onboard:smoke` live run into the spec |
 | A Testable Agent | promised (no spec) | author a spec backed by the runner-readiness/verification contracts |
 
 ## How Proof Works Here

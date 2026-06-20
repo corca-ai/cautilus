@@ -3,7 +3,7 @@ import { existsSync, lstatSync, readFileSync, rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 import test from "node:test";
 
-import { runExternalConsumerOnboardingSmoke } from "./smoke-external-consumer.mjs";
+import { buildOnboardingCapture, runExternalConsumerOnboardingSmoke } from "./smoke-external-consumer.mjs";
 
 test("external consumer onboarding smoke bootstraps a repo through the first bounded run", async () => {
 	const repoRoot = resolve(process.cwd(), "bin", "cautilus");
@@ -34,6 +34,27 @@ test("external consumer onboarding smoke bootstraps a repo through the first bou
 			result.commands.some((entry) => entry.args.includes("evaluate") && entry.args.includes("fixture")),
 			true,
 		);
+	} finally {
+		rmSync(result.workdir, { recursive: true, force: true });
+	}
+});
+
+test("the onboarding capture records the human-auditable invariant the apex Host Ownership badge replays", async () => {
+	const cautilusBin = resolve(process.cwd(), "bin", "cautilus");
+	const result = await runExternalConsumerOnboardingSmoke({ cautilusBin, keepWorkdir: true });
+	try {
+		const capture = buildOnboardingCapture(result);
+		assert.equal(capture.schemaVersion, "cautilus.consumer_onboarding_capture.v1");
+		assert.equal(capture.provenance.kind, "operator-witnessed-onboarding");
+		// The load-bearing invariant the leaf spec asserts on.
+		assert.equal(capture.onboarding.ready, true);
+		assert.equal(capture.onboarding.evalRecommendation, "accept-now");
+		assert.match(capture.onboarding.hostOwned.runnerPath, /cautilus-smoke-eval\.mjs$/);
+		assert.match(capture.onboarding.hostOwned.adapterPath, /\.agents\/cautilus-adapter\.yaml$/);
+		assert.ok(capture.onboarding.steps.includes("cautilus evaluate fixture"));
+		// Host-owned paths must be repo-relative — no absolute temp-workspace leakage.
+		assert.equal(capture.onboarding.hostOwned.runnerPath.startsWith("/"), false);
+		assert.equal(capture.onboarding.hostOwned.adapterPath.startsWith("/"), false);
 	} finally {
 		rmSync(result.workdir, { recursive: true, force: true });
 	}

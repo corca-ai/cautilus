@@ -856,7 +856,7 @@
       },
       {
         "badge": "host-ownership",
-        "registryProofClass": "projected-bundle",
+        "registryProofClass": "human-auditable",
         "boundT1": [
           {
             "claimFingerprint": "sha256:32437872b5e4ba1773bff79aab81ce278f3baca552daa84b30ffe00bdfadfb74",

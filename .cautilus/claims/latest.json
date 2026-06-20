@@ -1,9 +1,9 @@
 {
-  "candidateCount": 398,
+  "candidateCount": 399,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 397,
+    "matchedClaimCount": 398,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -3327,8 +3327,39 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:37b6397e0812c652dce87da090101251b8d90989ad8ca585628156e7e68ce18e",
+      "claimId": "claim-docs-specs-index-spec-md-80",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "linked-from:README.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "CLI ↔ Agent: the CLI runs the onboarding and records the invariant; the agent reads it and routes the next step.",
+          "line": 80,
+          "path": "docs/specs/index.spec.md"
+        }
+      ],
+      "summary": "CLI ↔ Agent: the CLI runs the onboarding and records the invariant; the agent reads it and routes the next step.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:db7a1cc3f9138ac9bc1519d4d3d6852622f89036483e427d4e7f28076fa478df",
-      "claimId": "claim-docs-specs-index-spec-md-81",
+      "claimId": "claim-docs-specs-index-spec-md-84",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3345,7 +3376,7 @@
       "sourceRefs": [
         {
           "excerpt": "You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good.",
-          "line": 81,
+          "line": 84,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3357,7 +3388,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:4823ab1a80a04cdcb10dbe3d1dece7439de04f9a75db2a834a5dc6b8a06f543d",
-      "claimId": "claim-docs-specs-index-spec-md-90",
+      "claimId": "claim-docs-specs-index-spec-md-93",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3374,7 +3405,7 @@
       "sourceRefs": [
         {
           "excerpt": "Run `npm run audit:surface` to regenerate it, or `npm run audit:surface:check` to fail on drift or over-claim; `npm run lint:specs` runs the leaf proofs plus the check block below.",
-          "line": 90,
+          "line": 93,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3386,7 +3417,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:5fd46ccf3657e8dac686297fee7d75014e7cd05fe333e6417d44d6500d9cf550",
-      "claimId": "claim-docs-specs-index-spec-md-137",
+      "claimId": "claim-docs-specs-index-spec-md-140",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3405,7 +3436,7 @@
       "sourceRefs": [
         {
           "excerpt": "Each subclaim on a spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
-          "line": 137,
+          "line": 140,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3417,7 +3448,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:831ac10a11da47176620c521e3cd218bbb059bd41d98b960dc37b7ac4129523e",
-      "claimId": "claim-docs-specs-index-spec-md-144",
+      "claimId": "claim-docs-specs-index-spec-md-147",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3434,7 +3465,7 @@
       "sourceRefs": [
         {
           "excerpt": "For each subclaim, either (a) add an executable check that runs the actual scenario and asserts on the produced packet/file, or (b) link a concrete existing evidence bundle, audit fixture, or packet path that proves that specific subclaim.",
-          "line": 144,
+          "line": 147,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3446,7 +3477,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:d304fd59bc29554230c0f6e525925f28e60c8d1926dbc28052cbc0444a7476a3",
-      "claimId": "claim-docs-specs-index-spec-md-151",
+      "claimId": "claim-docs-specs-index-spec-md-154",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3463,7 +3494,7 @@
       "sourceRefs": [
         {
           "excerpt": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise.",
-          "line": 151,
+          "line": 154,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3475,7 +3506,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:1ab96b0fe9f3873a6a1566a7f716dd22305cc69e7daa1f97e6cd09673907c27c",
-      "claimId": "claim-docs-specs-index-spec-md-152",
+      "claimId": "claim-docs-specs-index-spec-md-155",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3492,7 +3523,7 @@
       "sourceRefs": [
         {
           "excerpt": "A `gap` means missing or weak evidence that stays visible.",
-          "line": 152,
+          "line": 155,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -3504,7 +3535,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:de989796dc3b153d17e7f7dc3b91cf8b7205f7add5eeb0b7205f2af3caf50a8e",
-      "claimId": "claim-docs-specs-index-spec-md-161",
+      "claimId": "claim-docs-specs-index-spec-md-164",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3523,7 +3554,7 @@
       "sourceRefs": [
         {
           "excerpt": "[Promise Ledger](ledger/index.spec.md) — which behavior claims Cautilus makes, how they relate, and which workflow or contract owns each.",
-          "line": 161,
+          "line": 164,
           "path": "docs/specs/index.spec.md"
         }
       ],
@@ -10332,7 +10363,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b6e8f783eef78fb7de12d865929e7044095d64f4871dc46c6b2df281247716b2",
-      "claimId": "claim-docs-specs-user-ownership-spec-md-43",
+      "claimId": "claim-docs-specs-user-ownership-spec-md-47",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10351,7 +10382,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can rely on Cautilus for packets and workflow boundaries, not host policy.",
-          "line": 43,
+          "line": 47,
           "path": "docs/specs/user/ownership.spec.md"
         }
       ],
@@ -10363,7 +10394,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:85da31c828c4dbbb3a0dfa610157368d7b0b6c743405bf8512d48f5e28394853",
-      "claimId": "claim-docs-specs-user-ownership-spec-md-45",
+      "claimId": "claim-docs-specs-user-ownership-spec-md-49",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10380,7 +10411,7 @@
       "sourceRefs": [
         {
           "excerpt": "The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen.",
-          "line": 45,
+          "line": 49,
           "path": "docs/specs/user/ownership.spec.md"
         }
       ],
@@ -12835,12 +12866,12 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 289,
+      "developer": 290,
       "user": 109
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 90,
+      "Agent and skill workflow": 91,
       "Claim discovery and review": 52,
       "Documentation and contracts": 89,
       "Evaluation surfaces": 1,
@@ -12853,25 +12884,25 @@
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 331
+      "unknown": 332
     },
     "byLifecycle": {
-      "new": 398
+      "new": 399
     },
     "byRecommendedProof": {
-      "cautilus-eval": 146,
+      "cautilus-eval": 147,
       "deterministic": 141,
       "human-auditable": 111
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 287
+      "heuristic": 288
     },
     "byVerificationReadiness": {
       "blocked": 15,
       "needs-alignment": 54,
       "needs-scenario": 12,
-      "ready-for-proof": 317
+      "ready-for-proof": 318
     }
   },
   "discoveryEngine": {
@@ -13067,7 +13098,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "8855aed0f8d9917e6acb95b9efceb454d3618523",
+  "gitCommit": "66c5d39ed6c3fd8de2c15c823b3d4aed7a93b96f",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14727,7 +14758,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:98898dcfed8637767d3f08934fe2706f65ce550875e1ba26f24453a342794418",
+      "contentHash": "sha256:072ce2b285ecd7cc8fce332c15d6f6a5c2e2dcae74d2be31b7e302f219e6d737",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -14867,7 +14898,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:7d62fda59f2ca51da4a43499abc4ff025682de364e67c12f5a893060b9b3e0f7",
+      "contentHash": "sha256:70d97e02e332323b92a2725da561c43238c8c87515d96cbf253593baaa63682e",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -15137,7 +15168,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:dfafec3d1ec7c4aa187bdf29720a21edc31e733a06120220b09e6bd056ad13d7",
+      "contentHash": "sha256:2777bffe89359a3bd2451541acf676d133eac4360d3b3655c2ba11fd2f0fc1a4",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -15257,7 +15288,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:1ecb9e21d92f5588a32d6649c58f159588861cb0ff5aa396fcf7cbff12452688",
+      "contentHash": "sha256:f4630189f9da4409c579d2234045a773c9831e3b9520dd93a6bb14b79be99c33",
       "depth": 3,
       "discoveredFrom": "docs/specs/evidence/index.spec.md",
       "kind": "spec",

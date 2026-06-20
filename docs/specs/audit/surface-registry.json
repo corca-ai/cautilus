@@ -76,14 +76,12 @@
     {
       "id": "host-ownership",
       "title": "Host Ownership",
-      "proofClass": "projected-bundle",
+      "proofClass": "human-auditable",
       "proofSpec": "docs/specs/user/ownership.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run consumer:onboard:smoke",
       "evidence": [
-        ".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json",
-        ".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json",
-        ".cautilus/claims/evidence-durable-packets-2026-05-03.json"
+        "fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json"
       ]
     },
     {

@@ -66,7 +66,7 @@ How each apex badge's ratified proof route relates to the registry proof class t
 | behavior-evaluation | cautilus-eval | route-class-mismatch | claim-readme-md-136 |
 | bounded-improvement | cautilus-eval | route-class-mismatch | claim-readme-md-139 |
 | reviewable-artifacts | projected-bundle | route-class-mismatch | claim-readme-md-137 |
-| host-ownership | projected-bundle | route-class-mismatch | claim-readme-md-6 |
+| host-ownership | human-auditable | route-class-mismatch | claim-readme-md-6 |
 | a-testable-agent | none | no-t1-claim | - |
 
 Divergent badges: 7/7.
