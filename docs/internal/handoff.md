@@ -2,41 +2,42 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — v0.16.2 릴리즈가 publish·검증 완료됐으니, 이제 "모든 표면이 정말 proven인지" 정직성 audit = specdown을 그 audit 표면으로 재설계합시다.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — surface honesty audit가 착지했으니, 이제 audit를 structural→semantic으로 한 단계 더 단단하게(각 badge의 leaf check 블록이 그 badge의 evidence를 실제로 검증하는지) 또는 남은 라이브 재실행/Go-pin 신선도 중 하나를 골라 진행합시다.`
 
 doc 멘션만으로 픽업하면 이 트리거의 workflow를 실행하세요(파일 재독만 하지 말 것).
-합의된 남은 시퀀스: **전 표면 정직성 audit + specdown 재설계(둘을 합쳐 specdown을 "모든 표면을 정직하게 증명·감사하는 표면"으로).**
+지난 합의 시퀀스(**전 표면 정직성 audit + specdown 재설계**)는 이번 세션에 착지 완료. 아래 "Next"에서 다음 슬라이스를 고르세요.
 
-## Release v0.16.2 — PUBLISHED + verified (2026-06-20)
+## This Session — Surface Honesty Audit 착지 (2026-06-20, 미push)
 
-- **publish·검증 완료.** tag `v0.16.2` @ commit `701d094c`, URL `https://github.com/corca-ai/cautilus/releases/tag/v0.16.2`, published `2026-06-20T02:35:16Z`, asset 7개(linux/darwin × arm64/x64 + checksums + sha256 + notes). `release-artifacts` 워크플로(run 27857517645) verify→build→attest→gh-release→verify-public-release 전부 ✓. 독립 `verify-public-release` ok. install smoke ok(v0.16.2 설치·update 확인). 레코드 `charness-artifacts/release/latest.md`.
-- **출시 스코프:** 바이너리 improve-search 엔진 버그픽스(internal/runtime). 번들 Cautilus Agent는 v0.16.1과 byte-동일.
-- **릴리즈 중 발견·수정한 선행 CI 이슈:** CI가 Go **1.26.3** 핀이라 govulncheck가 stdlib CVE 2개(GO-2026-5039 net/textproto, GO-2026-5037 crypto/x509; 둘 다 1.26.4 fixed) 잡아 **main verify가 며칠째 red**였고 첫 v0.16.2 빌드(commit 6bbafb49)가 실패. 3개 워크플로 Go **1.26.4**로 bump → 통과, tag를 701d094c로 재지정 후 재-publish. debug `charness-artifacts/debug/2026-06-20-ci-govulncheck-go-version-pin.md`. follow-up: CI Go-pin 신선도 자동화 검토.
+- **specdown을 audit 표면으로 재설계 완료.** apex(`docs/specs/index.spec.md`)가 specdown entry인데 badge 단어(proven/declared/promised)가 **bound 안 된 prose**였음 — 배지가 근거 없이 "proven"으로 drift해도 specdown green. 이제 배지가 load-bearing.
+  - apex가 badge **level**만 선언, 새 registry(`docs/specs/audit/surface-registry.json`)는 proof **route**만 선언(level 미포함). generator가 reality 검사(leaf에 `> check:` 블록 있나? evidence 파일 존재?)로 **observed level 재계산**, `consistent = claimed===observed`.
+  - apex에 load-bearing check 블록 추가 → 배지가 over-claim하거나 apex↔registry 불일치 시 **specdown FAIL**. 네비게이션용 `docs/specs/audit.spec.md` 생성(배지→proof route→class→freshness 맵).
+  - legend가 proven-deterministic(매 gate 실행) vs proven-live-replayed(capture replay; live 재실행 opt-in) 구분.
+  - **gap 3 수정:** `lint:specs`(=specdown)가 standing `verify`에서 주석 처리돼 있었음("specdown rewrite 중"). 복원 + `audit:surface:check`를 verify·lint·pre-push에 추가 → binding이 standing gate에서 실제로 강제됨.
+- **정직성 audit 결과:** deterministic layer green(`lint:specs` 43 specs, `test:on-demand` exit 0). audit = 7 badge(**4 proven / 2 declared / 1 promised**), 전부 consistent, `honest=true`. 라이브 재실행은 사용자 결정으로 **deterministic replay로 충분**(추가 agent 비용 없음); 라이브 재확인은 per-badge `Freshness` 명령으로 opt-in.
+- **명령:** `npm run audit:surface`(빌드) · `npm run audit:surface:check`(drift+honesty gate). lib `scripts/agent-runtime/surface-audit-lib.mjs`(+test 15개), CLI `build-surface-audit.mjs`. manifest `.cautilus/audit/surface-audit.json`.
+- **fresh-eye critique(Sonnet 서브에이전트): READY-WITH-EDITS, 4건 전부 fold.** fence-aware 파싱(코드펜스 안 예시 `> check:`/`### — proven` 미카운트)+회귀 테스트, structural-not-semantic 한계를 audit 페이지·registry에 명시.
+- **검증:** `npm run verify` 전 phase 통과(2회, 최종 green) · `audit:surface:check`·`generated:drift:check`·`hooks:check` clean · git clean.
+- **커밋(미push):** `f1b4fc4b`(audit 슬라이스), `b1eea399`(claim refresh — audit.spec.md가 새 claim source, source 71→72/candidate 396→398).
 
 ## Current State
 
-- **apex `Bounded Improvement` = proven (dev/skill surface).** 라이브 `cautilus improve` 루프가 held-out 시나리오를 복구함을 실증: degraded seed control(현 SKILL.md − No-Input Orientation 규율)이 라이브로 FAIL(score 0), codex mutation이 재작성한 후보가 held-out PASS(score 100), search `status: completed`. 워킹트리 SKILL.md는 try/finally로 원복, degraded/mutated 둘 다 ship 안 함(control-only, 제조 아님). wiring: `docs/specs/index.spec.md`(배지), `docs/specs/user/improvement.spec.md`(라이브 섹션+check), `docs/specs/{contracts/improvement-loop,ledger/improvement,evidence/gaps,rules/cost-and-proof-freshness}.spec.md`. fresh-eye critique(Sonnet 서브에이전트) READY-WITH-EDITS(stale gap 참조 1건 fold). **로컬 커밋 완료, 미push**(push는 사용자 몫). 증거: `charness-artifacts/eval-trust/2026-06-20-bounded-improvement-badge-proven.md`.
-- **proof/test:** `npm run proof:improve:live`(라이브, on-demand) · 결정적 replay `scripts/on-demand/improve-live-proof.test.mjs`(7/7) · 캡처 `fixtures/eval/dev/skill/improve/live/`. `npm run verify` 전 phase 통과, `lint:specs` 42 ok, `claims:refresh:all`+`evidence-state:check` ok, `hooks:check` ready, git clean.
-- **이번 세션이 고친 load-bearing 제품 버그 3종(improve가 사실상 작동 안 하던 원인):** (1) claude eval 백엔드가 deterministic matcher 미적용(self-grade) → stream-json으로 command log 캡처 + matcher 적용; (2) `improveSearchScenarioSignalMap`이 in-memory []string를 되읽지 못해 reflection-batch feedback 전부 드롭(mutation blind) → `stringSliceOrEmptyRuntime` []string 처리; (3) `improveSearchHeldOutEntriesFromEvalSummary`가 `caseId` 폴백→`displayName`이라 후보 scenarioId 불일치로 frontier가 항상 seed → `evaluationId` 우선. 회귀 테스트 핀 + `charness-artifacts/debug/2026-06-20-improve-live-case-prompt-spoonfeeds-orientation.md`.
-- **릴리즈 상태(결정 필요):** 이번 세션이 `internal/runtime/improve_search.go`(출시 표면) + eval 런너(`scripts/agent-runtime/`)를 바꿈 — improve 루프 동작이 실제로 바뀜(이전엔 mutation blind+항상 blocked). 핸드오프 규칙상 "출시 표면 변경 착지 시 릴리즈 컷" 조건 충족. 단 release는 deliberate 결정 + CLI+Cautilus Agent progressive-disclosure quality 패스 필요 → 다음 세션에서 컷 여부 결정.
+- **apex 4 badge = honest-proven으로 bound됨.** Readiness·Claim Discovery(deterministic), Behavior Evaluation·Bounded Improvement(live-replayed). Reviewable Artifacts·Host Ownership=declared(projected-bundle), A Testable Agent=promised(none). 모두 audit consistent.
+- **릴리즈 불필요:** 이번 세션은 docs/specs + JS(scripts) + package.json만 변경. 출시 표면(`internal/runtime/*.go`, `skills/cautilus-agent/`)·번들 Agent 무변경. v0.16.2가 현재 published HEAD.
 
-## Next Session: 순서
+## Next: 다음 슬라이스 중 택1
 
-1. **전 표면 정직성 audit + specdown 재설계(합침).** "모든 표면이 정말 proven인지" 검토 = 각 배지 proof를 실제로 돌려 정직성 확인(일부 외부 실행 증거 수령 허용) → specdown을 그 audit이 navigable·runnable하도록 재구성(apex specdown entry 재작성). 즉 specdown을 "모든 표면을 정직하게 증명·감사하는 표면"으로 설계. quality/hotl 성격 + specdown 재설계가 한 흐름. (이번 릴리즈가 보여준 교훈: 가정하지 말고 라이브로 강제하면 결함이 드러난다 — improve 3버그, CI Go-pin red 모두 그렇게 발견.)
-2. (선택) CI Go-version pin 신선도 자동화(renovate/dependabot 또는 verify step).
-
-## Discuss (열린 결정)
-
-- 라이브 improve proof는 dev/skill 오리엔테이션 프롬프트 1개 타깃에만 proven. 추가 improvement 타깃으로 확장은 open(improvement-loop 계약 Evidence Gaps에 기록) — maintainer 투자 결정.
-- 남은 app-surface Proof Debt: app/chat liveness(라이브 외부 제품+비용), app/prompt product-runner proof(진짜 prompt product). 둘 다 real-product 의존.
+1. **Audit를 structural→semantic으로 강화(critique가 짚은 핵심 한계).** 현재 audit는 "leaf에 check 블록이 존재"만 확인하지, 그 check가 **이 badge의 behavior/evidence를 실제로 검증**하는지는 미확인 + registry가 proofSpec를 엉뚱한 spec으로 redirect해도 통과. 다음 단계: registry route의 evidence 파일이 해당 leaf spec의 check 블록에서 실제 참조되는지 교차검증(generator가 leaf check 테이블의 path를 파싱해 registry evidence와 매칭). 이러면 redirect/공허한 check 공격이 닫힘.
+2. **라이브 2배지 실제 재실행(이번엔 deferred).** `npm run proof:behavior-eval:live`·`proof:skill-orientation:live`·`proof:improve:live`를 Sonnet 서브에이전트로 돌려 end-to-end 정직성 재확인(real agent 비용).
+3. **CI Go-version pin 신선도 자동화**(이전 핸드오프 follow-up; renovate/dependabot 또는 verify step).
 
 ## 제약
 
-push는 사용자 몫(보류). claim-source(spec/AGENTS 등) 편집 후 `npm run claims:refresh:all`(소스 커밋→refresh→패킷 커밋); `status-summary.json is stale` push 실패 시 필요. 제네릭 엔진·런타임에 repo-specific judge 로직 금지. ground truth 제조 금지(seed=구성된 control만, 점수는 진짜 라이브 캡처). 새 런타임 표면엔 executable test. bug/error/regression은 `charness:debug`. critique/fresh-eye·라이브 runtime은 서브에이전트(Sonnet) 위임.
+push는 사용자 몫(보류; 미push 커밋 2개). claim-source(spec/AGENTS 등) 편집 후 `npm run claims:refresh:all`(소스 커밋→refresh→패킷 커밋); `status-summary.json is stale` push 실패 시 필요. apex가 claim source이고 audit.spec.md도 이제 scan 범위. 제네릭 엔진·런타임에 repo-specific judge 로직 금지. ground truth 제조 금지. 새 런타임 표면엔 executable test. bug/error/regression은 `charness:debug`. critique/fresh-eye·라이브 runtime은 서브에이전트(Sonnet) 위임.
 
 ## References
 
-- **배지 결정/증거**: `charness-artifacts/eval-trust/2026-06-20-bounded-improvement-badge-proven.md`; 디버그 `charness-artifacts/debug/2026-06-20-improve-live-case-prompt-spoonfeeds-orientation.md`.
-- **배지 SOT**: `docs/specs/index.spec.md` · `docs/specs/user/improvement.spec.md`. 로드맵 `docs/master-plan.md`(Phase 5 improve: 라이브 held-out 루프 proven).
-- **라이브 proof**: `npm run proof:improve:live` · `proof:behavior-eval:live` · `proof:skill-orientation:live`. 하니스 `scripts/on-demand/improve-live-proof.mjs`(어댑터 `self-dogfood-improve-skill`, degraded control `fixtures/eval/dev/skill/improve/degraded-orientation-skill.md`).
-- **선행 배지**: Behavior Evaluation proven(`charness-artifacts/eval-trust/2026-06-19-behavior-eval-badge-proven.md`).
+- **audit 표면**: `docs/specs/audit.spec.md`(네비) · `docs/specs/audit/surface-registry.json`(route SOT) · `.cautilus/audit/surface-audit.json`(manifest) · `docs/specs/index.spec.md`(배지 선언 + Honesty Audit check 블록).
+- **엔진**: `scripts/agent-runtime/surface-audit-lib.mjs`(+`surface-audit-lib.test.mjs`) · `build-surface-audit.mjs`. gate 배선: `scripts/run-verify.mjs` PHASES, `package.json` lint 체인, `scripts/check-generated-artifact-drift.mjs`.
+- **배지 SOT/proof**: `docs/specs/index.spec.md` · `docs/specs/user/*.spec.md`. 라이브 proof: `npm run proof:improve:live`·`proof:behavior-eval:live`·`proof:skill-orientation:live`.
+- **선행 배지 증거**: `charness-artifacts/eval-trust/2026-06-20-bounded-improvement-badge-proven.md` · `2026-06-19-behavior-eval-badge-proven.md`.
