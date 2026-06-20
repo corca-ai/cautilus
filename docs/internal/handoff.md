@@ -2,37 +2,35 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — Behavior Evaluation 배지가 proven으로 착지·push됐고 릴리즈는 취소(출시 산출물 무변경)했으니, 이제 improve(라이브 cautilus improve 루프 proof)로 갑시다.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — Bounded Improvement 배지가 proven으로 착지(로컬 커밋, 미push)됐으니, 이제 (a) 릴리즈 컷 여부를 먼저 결정하고(이번에 internal/ 출시 표면이 바뀜) (b) 그다음 specdown 재설계로 갑시다.`
 
 doc 멘션만으로 픽업하면 이 트리거의 workflow를 실행하세요(파일 재독만 하지 말 것).
-합의된 남은 시퀀스: **improve(라이브 cautilus improve 루프 proof) → specdown 재설계(맨 마지막).** 릴리즈는 출시 표면(plugins/·skills/cautilus-agent/·bin/·cmd/·internal/·install.sh) 변경이 실제로 착지할 때만 cut.
+합의된 남은 시퀀스: **릴리즈 컷 결정(이번 세션이 internal/ 출시 표면을 변경함) → specdown 재설계(맨 마지막).**
 
 ## Current State
 
-- **apex `Behavior Evaluation` = proven (dev coding-agent 표면으로 scoped).** maintainer가 constructed-control reject-capability(load-bearing; `always-sound judge FAILS every decomposed claim` invariant + 3-behavior breadth로 핀)를 + natural-sound harvest와 함께 declared 너머 proven의 충분 기준으로 수락(2026-06-19). natural-population bar는 known(possibly-permanent) limitation으로 보존. wiring: `docs/contracts/eval-judge-collaboration.md`(Decision 섹션), `docs/specs/index.spec.md`(배지), `docs/specs/user/evaluation.spec.md`(intro). fresh-eye critique READY-WITH-EDITS(harvest-provenance 노트 fold). `lint:specs` 42 ok, judge invariants 23 ok, `npm run verify` 전 phase 통과, `claims:refresh:all` + `evidence-state:check` ok. **origin/main에 push 완료**(`f1b2c14b`, pre-push verify+drift 통과). 증거: `charness-artifacts/eval-trust/2026-06-19-behavior-eval-badge-proven.md`.
-- **릴리즈 = 취소(2026-06-20).** 출시 표면(바이너리 embed `skills/cautilus-agent` + `plugins/cautilus`)이 v0.16.1과 byte-동일 — 이번 세션은 docs/specs/contracts/claim-packet만 바꿔 version bump 정당성 없음. badge-proven 마일스톤은 main push로 이미 라이브. 릴리즈는 출시-표면 변경 착지 시에만.
-- **B(app/prompt product-runner proof) = DEFERRED(정직 debt).** self-dogfood엔 진짜 prompt product가 없어 `productProofReady=true`를 제조 없이 못 만듦 — `app/chat` liveness와 구조적 sibling. 어세스먼트 패킷에 4 레그를 `present`로 적는 건 제조 트랩(금지).
-- **C(dev 자연-unsound harvest) = 이미 소진·수락.** `2026-06-19-judge-natural-unsound-population-frontier.md`: ~44 실응답, 0 자연 unsound, "impractical to harvest" maintainer-accepted. 재-harvest는 재확인이거나 제조. 그 finding이 surface한 배지-criterion 결정을 위에서 닫음.
-- **app eval 실행 상태:** replay 메커니즘은 오늘 작동(`discover scenarios normalize chatbot` + `app_chat/app_prompt_evaluation.go` + `evaluate live persona/request batch`). app/chat replay-eval는 착지함. **라이브 재실행(liveness)** 만 진짜 외부 제품 + 비용 필요.
+- **apex `Bounded Improvement` = proven (dev/skill surface).** 라이브 `cautilus improve` 루프가 held-out 시나리오를 복구함을 실증: degraded seed control(현 SKILL.md − No-Input Orientation 규율)이 라이브로 FAIL(score 0), codex mutation이 재작성한 후보가 held-out PASS(score 100), search `status: completed`. 워킹트리 SKILL.md는 try/finally로 원복, degraded/mutated 둘 다 ship 안 함(control-only, 제조 아님). wiring: `docs/specs/index.spec.md`(배지), `docs/specs/user/improvement.spec.md`(라이브 섹션+check), `docs/specs/{contracts/improvement-loop,ledger/improvement,evidence/gaps,rules/cost-and-proof-freshness}.spec.md`. fresh-eye critique(Sonnet 서브에이전트) READY-WITH-EDITS(stale gap 참조 1건 fold). **로컬 커밋 완료, 미push**(push는 사용자 몫). 증거: `charness-artifacts/eval-trust/2026-06-20-bounded-improvement-badge-proven.md`.
+- **proof/test:** `npm run proof:improve:live`(라이브, on-demand) · 결정적 replay `scripts/on-demand/improve-live-proof.test.mjs`(7/7) · 캡처 `fixtures/eval/dev/skill/improve/live/`. `npm run verify` 전 phase 통과, `lint:specs` 42 ok, `claims:refresh:all`+`evidence-state:check` ok, `hooks:check` ready, git clean.
+- **이번 세션이 고친 load-bearing 제품 버그 3종(improve가 사실상 작동 안 하던 원인):** (1) claude eval 백엔드가 deterministic matcher 미적용(self-grade) → stream-json으로 command log 캡처 + matcher 적용; (2) `improveSearchScenarioSignalMap`이 in-memory []string를 되읽지 못해 reflection-batch feedback 전부 드롭(mutation blind) → `stringSliceOrEmptyRuntime` []string 처리; (3) `improveSearchHeldOutEntriesFromEvalSummary`가 `caseId` 폴백→`displayName`이라 후보 scenarioId 불일치로 frontier가 항상 seed → `evaluationId` 우선. 회귀 테스트 핀 + `charness-artifacts/debug/2026-06-20-improve-live-case-prompt-spoonfeeds-orientation.md`.
+- **릴리즈 상태(결정 필요):** 이번 세션이 `internal/runtime/improve_search.go`(출시 표면) + eval 런너(`scripts/agent-runtime/`)를 바꿈 — improve 루프 동작이 실제로 바뀜(이전엔 mutation blind+항상 blocked). 핸드오프 규칙상 "출시 표면 변경 착지 시 릴리즈 컷" 조건 충족. 단 release는 deliberate 결정 + CLI+Cautilus Agent progressive-disclosure quality 패스 필요 → 다음 세션에서 컷 여부 결정.
 
 ## Next Session: 순서
 
-1. **improve(라이브 루프 proof) — 다음 apex 기둥.** `Bounded Improvement` 배지는 아직 declared(저장 번들 투영). held-out 시나리오에서 라이브 `cautilus improve` 루프 1회 + spec assert. 메커니즘(`improve-search v2`)은 존재; 라이브-proof 축만 비어 있음 — eval의 prove-then-project→라이브 패턴 그대로. 라이브 비용·held-out 시나리오 선택 필요.
+1. **릴리즈 컷 여부 결정.** internal/improve-search 버그 수정이 shipped 바이너리 improve 동작을 바꿈. 컷하면 `charness:release` + CLI/Agent progressive-disclosure quality 패스. 안 컷하면 명시적으로 defer 사유 기록.
 2. **specdown 재설계(맨 마지막).** proof 표면 안정 후 apex specdown entry 재작성.
-- (릴리즈는 시퀀스에서 제외 — 출시 표면 변경이 실제 착지하면 그때 `charness:release`로 cut. 그때는 CLI+Cautilus Agent progressive-disclosure quality 패스 필요.)
 
 ## Discuss (열린 결정)
 
-- improve 라이브 루프: 어떤 held-out 시나리오로 증명할지 + 라이브 비용 승인 — maintainer 결정.
-- 남은 app-surface Proof Debt: app/chat liveness(라이브 외부 제품+비용), app/prompt product-runner proof(진짜 prompt product). 둘 다 real-product 의존, 별도 maintainer 투자 결정.
+- 라이브 improve proof는 dev/skill 오리엔테이션 프롬프트 1개 타깃에만 proven. 추가 improvement 타깃으로 확장은 open(improvement-loop 계약 Evidence Gaps에 기록) — maintainer 투자 결정.
+- 남은 app-surface Proof Debt: app/chat liveness(라이브 외부 제품+비용), app/prompt product-runner proof(진짜 prompt product). 둘 다 real-product 의존.
 
 ## 제약
 
-push는 사용자 몫(보류). claim-source(apex/evaluation.spec/AGENTS 등) 편집 후 `npm run claims:refresh:all`(소스 커밋 → refresh → 패킷 커밋); `status-summary.json is stale` push 실패 시 필요. 제네릭 엔진·런타임에 repo-specific judge 로직 금지. ground truth 제조 금지(sound=진짜 라이브 캡처, control만 구성). 새 런타임 표면엔 executable test. bug/error/regression은 `charness:debug`. critique/fresh-eye·라이브 runtime은 서브에이전트(Sonnet) 위임.
+push는 사용자 몫(보류). claim-source(spec/AGENTS 등) 편집 후 `npm run claims:refresh:all`(소스 커밋→refresh→패킷 커밋); `status-summary.json is stale` push 실패 시 필요. 제네릭 엔진·런타임에 repo-specific judge 로직 금지. ground truth 제조 금지(seed=구성된 control만, 점수는 진짜 라이브 캡처). 새 런타임 표면엔 executable test. bug/error/regression은 `charness:debug`. critique/fresh-eye·라이브 runtime은 서브에이전트(Sonnet) 위임.
 
 ## References
 
-- **배지 결정/증거**: `charness-artifacts/eval-trust/2026-06-19-behavior-eval-badge-proven.md` · `2026-06-19-judge-natural-unsound-population-frontier.md`; 계약 `docs/contracts/eval-judge-collaboration.md`(Decision 섹션).
-- **배지 SOT**: `docs/specs/index.spec.md` · `docs/specs/user/evaluation.spec.md`. 로드맵 `docs/master-plan.md`(Phase 5 improve mostly-done, Phase 6 in-progress).
-- **라이브 dev proof**: `npm run proof:behavior-eval:live` · `proof:skill-orientation:live`; 라이브 invariant 핀 `scripts/agent-runtime/reasoning-soundness-judge.test.mjs`.
-- **app 메커니즘**: `cautilus discover scenarios normalize chatbot`, `app_chat_evaluation.go`/`app_prompt_evaluation.go`, `evaluate live persona/request batch`. runner 검증 계약 `docs/contracts/runner-verification.md`.
+- **배지 결정/증거**: `charness-artifacts/eval-trust/2026-06-20-bounded-improvement-badge-proven.md`; 디버그 `charness-artifacts/debug/2026-06-20-improve-live-case-prompt-spoonfeeds-orientation.md`.
+- **배지 SOT**: `docs/specs/index.spec.md` · `docs/specs/user/improvement.spec.md`. 로드맵 `docs/master-plan.md`(Phase 5 improve: 라이브 held-out 루프 proven).
+- **라이브 proof**: `npm run proof:improve:live` · `proof:behavior-eval:live` · `proof:skill-orientation:live`. 하니스 `scripts/on-demand/improve-live-proof.mjs`(어댑터 `self-dogfood-improve-skill`, degraded control `fixtures/eval/dev/skill/improve/degraded-orientation-skill.md`).
+- **선행 배지**: Behavior Evaluation proven(`charness-artifacts/eval-trust/2026-06-19-behavior-eval-badge-proven.md`).
