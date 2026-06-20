@@ -2,36 +2,36 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — audit 잔여(③)의 구조적 절반이 착지했습니다(evidenceSubstantive floor: 각 레지스트리 evidence 파일은 schemaVersion/exists 같은 hollow touch가 아니라 ≥1개의 substantive assertion으로 참조돼야 proven). 메인테이너는 이제 specdown 재작성 트랙으로 전환 의향. 그 전에 남은 audit-트랙 항목은 의미적 intent-judge(deferred·optional, 게이트-비호환)뿐이고 구조는 전부 green. specdown 재작성을 집으면 먼저 그 범위를 spec으로 좁히고 impl 직행 금지·critique 경유. 작은 슬라이스를 원하면 CI Go-pin 신선도 또는 improve ①a(둘 다 deferred).`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — specdown 재작성의 설계+critique가 끝났습니다(스펙 canonical: charness-artifacts/spec/2026-06-20-specdown-rewrite-goldset-projection.md, READY-WITH-EDITS·4 edit fold). 이번 세션은 impl 안 함 — 다음 세션이 First Implementation Slice를 charness:impl로 집으세요. 첫 슬라이스 = read-only projector(gold set→fingerprint-keyed claim 인벤토리) + 명시적 fingerprint→badge 맵 + relabel-route override surface, 게이트/페이지 변경 0. 스펙의 Fixed Decisions·AC1~AC4·First Implementation Slice를 계약으로 읽고, 버그/회귀는 charness:debug, 랜딩 전 critique 경유.`
 
 doc 멘션만으로 픽업하면 이 트리거의 workflow를 실행하세요(파일 재독만 하지 말 것).
 
 ## Current State
 
-- **Audit 잔여 ③ 구조적 절반 착지.** 커밋: spec `4d263b97`, impl `b2391e0d`. Surface Honesty Audit의 evidence 바인딩을 "evidence 파일이 *읽히는지*"(`evidenceReferenced`)에서 "≥1개 **substantive** check로 읽히는지"(`evidenceSubstantive`)로 상향. substantive = 비-`schemaVersion` 경로에 값-담지 `equals`/`includes`/`min_number≥1`/`meaning`(빈 셀 comparator는 어댑터가 no-op 취급 → trivial). hollow 약화(schemaVersion-only)는 이제 badge를 `unproven`으로 떨구고 `audit:surface --check` 게이트 실패.
-- **Latent-not-active**: 모든 레지스트리 evidence가 이미 substantive 참조 → floor는 all-true로 착지(회귀 가드). 구조적 padding 갭만 닫고, assertion 값이 *의미적으로 정당한지*는 의도적으로 판단 안 함 → 그게 deferred intent-judge. audit 페이지의 잔여 문단을 그에 맞게 재작성.
-- **검증**: `npm run verify` 전 phase green(302s, `audit:surface --check` clean 7/7 honest, coverage floor OK), 유닛 27/27(AC3 실파일 회귀 + hollow→unproven 포함). lib는 순수 유지(fs는 build 스크립트). 두 Sonnet critique(spec READY-WITH-EDITS 1 edit fold, impl READY 0 blocker) 모두 코드 대조 file:line 인용.
-- **배지 변화 없음**(7개 전부 레벨 유지·honest). **미push 커밋 누적**(push는 사용자 몫). tree clean(claims refresh 후). 릴리즈 불필요(출시 표면 무변경).
+- **specdown 재작성 설계 착지(impl 미착수, 의도된 경계).** 커밋 spec `2ba82e3e`. 방향 = **project, not patch**: `docs/specs/` 표면을 손으로 쓴 3축(apex/ledger/evidence)에서 **HITL 비준 gold set**(`charness-artifacts/eval-trust/goldset-v2-head/gold-set-proposal.user-product.json`, 74 user-product, R1–R18)의 projection으로 재생성 → 2축 불일치를 구성적으로 제거. `claimFingerprint` 앵커(line 아님), hybrid generate(인벤토리·tier·proof-route 바인딩)+prose(배지 카피), **user track만**(dev 232 defer).
+- **critique가 코드/데이터로 잡은 4개**(폴드됨): (1) `lint:specs`는 이미 **ON**(`f1b4fc4b`) — `docs/specs/old/**`의 **live `run:shell` 11개**가 매 verify 실행 → inert화는 *초반* 작업; (2) T1 7개 ↔ 배지 7개는 **1:1 아님**(3개가 `primaryEpic=APEX`, epic 어휘가 badge ID와 disjoint) → 명시적 `fingerprint→badge` 맵 필수; (3) relabel(`claim-readme-md-8`) ratified route는 **prose-only**(`agentLabels.recommendedProof`는 pre-relabel 값) → override surface가 day-1; (4) `significanceTier`는 top-level 필드. **FD2(fingerprint 키 안정성) 확인됨.**
+- **선행(이번 세션 앞부분): audit 잔여 ③ 구조적 절반 착지** — `evidenceSubstantive` floor(커밋 `b2391e0d`). 이게 projection이 먹일 proof-route 바인딩 층이라 재작성과 자연 연결. 의미적 intent-judge는 deferred·게이트-비호환.
+- **미push 커밋 누적**(push는 사용자 몫). tree clean. 배지 변화 없음(7개 honest 유지). 릴리즈 불필요.
 
-## Next: 다음 트랙
+## Next: specdown 재작성 (스펙 단계 순서)
 
-1. **specdown 재작성(메인테이너 다음 트랙).** 아직 spec 없음 — 집으면 먼저 범위를 spec으로 좁히고 critique 경유. audit-트랙은 이 전환 전에 구조적으로 정리됨.
-2. **Audit 잔여 ③ 의미적 절반(deferred·optional).** 각 substantive assertion의 값이 behavior를 실제로 정당화하는지 verdict하는 LLM intent-judge. deterministic `lint:specs` 게이트에서 못 돎(replay 전용) → standing이 아니라 opt-in일 수밖에. 구조적 padding은 이미 닫혀 marginal. per-assertion 의미 강도를 원할 때만.
-3. **작은 deferred 슬라이스**: CI Go-version pin 신선도 자동화 · improve `①a` replay-parity judge 수렴(둘 다 marginal, 이전 핸드오프 잔여).
+1. **First slice (projector, 게이트 변경 0).** gold set→durable-graded 56개 필터→`claimFingerprint`-keyed 인벤토리 아티팩트(`{significanceTier, ratifiedProofRoute, primaryEpic, summary, sourceRef, audience}`). day-1에 `fingerprint→badge` 맵 + `fingerprint→ratifiedProofRoute` override(relabel용). 7 T1 projection + 56/18 split을 테스트로 고정. `surface-registry.json`과 reconcile(read-only). AC1~AC4.
+2. **2축 붕괴.** ledger/evidence를 인벤토리에서 파생된 generated 뷰로(prose는 손으로). not-a-claim/retire-source 판정 → 해당 prose 은퇴.
+3. **old/ inert + 게이트 유지.** `docs/specs/old/**` 11개 `run:shell` 블록 inert(초반에), 이미 ON인 `lint:specs`를 projected tree에서 green 유지(= exit). 게이트 약화·재비활성 금지.
 
-> 더 큰 frontier(Behavior Eval **app 표면** liveness/product-runner, Reviewable Artifacts·Host Ownership **declared→proven**, A Testable Agent **promised→스펙**)는 apex **Proof Debt**(`docs/specs/index.spec.md`)가 durable하게 소유 — 위 트랙과 별개의 더 긴 길. handoff는 ledger를 복제하지 않고 거기를 가리킴.
+> 더 큰 frontier(app 표면 liveness, declared→proven, A Testable Agent)는 apex **Proof Debt**(`docs/specs/index.spec.md`)가 소유 — 별개 트랙. 재작성이 그 표현을 projection으로 일원화하면 거기로 자연 수렴.
 
 ## Discuss (maintainer 결정 필요)
 
-- 없음. specdown 재작성 범위는 그 슬라이스를 집을 때 spec으로 좁힘.
+- 없음. 방향(project-not-patch·hybrid·user-track·fingerprint)은 메인테이너 비준됨. 첫 슬라이스의 `fingerprint→badge` 맵 내용·override surface 형태는 impl 중 데이터로 결정(PQ1/PQ2).
 
 ## 제약
 
-claim-source(spec/AGENTS/scanner 등) 편집 후 `npm run claims:refresh:all`(소스 커밋→refresh→패킷 커밋); `status-summary.json is stale` push 실패 시 필요. 생성 산출물(`.cautilus/audit/surface-audit.json`, `docs/specs/audit.spec.md`)은 손으로 고치지 말고 `npm run audit:surface`로 재생성. 제네릭 lib는 순수 유지(fs/process 금지, repo-specific 로직 금지). 새 런타임 표면엔 executable test + coverage floor. bug/error/regression은 `charness:debug`. critique/fresh-eye·라이브 runtime은 Sonnet 서브에이전트 위임.
+gold set은 *체크인 아티팩트*로 소비(코드 import 금지, generic 엔진에 정본 로직 금지). `claimFingerprint`로만 앵커(line 금지 — 앵커는 `558cda7` 기준 stale). 새 projector는 executable test + coverage floor. `lint:specs` ON 상태 유지 — 약화 금지. claim-source(spec/AGENTS/scanner) 편집 시 `npm run claims:refresh:all`. bug/error/regression은 `charness:debug`. critique/fresh-eye·라이브 runtime은 Sonnet 서브에이전트 위임.
 
 ## References
 
-- **이번 슬라이스**: spec `charness-artifacts/spec/2026-06-20-surface-audit-assertion-value-floor.md` · evidence `charness-artifacts/findings/2026-06-20-surface-audit-assertion-value-floor.md` · 엔진 `scripts/agent-runtime/surface-audit-lib.mjs`(+`.test.mjs`) · 빌드 `scripts/agent-runtime/build-surface-audit.mjs` · 어댑터 어휘 `scripts/specdown/cautilus-adapter.mjs`.
-- **audit 표면**: 페이지 `docs/specs/audit.spec.md` · 레지스트리 `docs/specs/audit/surface-registry.json` · 매니페스트 `.cautilus/audit/surface-audit.json`.
-- **선행 슬라이스(improve 언어-robust ①b)**: spec `charness-artifacts/spec/2026-06-20-improve-orientation-summary-language-robustness.md` · evidence `charness-artifacts/eval-trust/2026-06-20-improve-orientation-language-robust-live-confirmed.md`.
-- **라이브 proof**: `npm run proof:improve:live` · `proof:skill-orientation:live` · `proof:behavior-eval:live`.
+- **재작성 계약(canonical)**: `charness-artifacts/spec/2026-06-20-specdown-rewrite-goldset-projection.md`.
+- **HITL 정본**: gold set `charness-artifacts/eval-trust/goldset-v2-head/gold-set-proposal.user-product.json` · closeout `…/HITL-CLOSEOUT.md` · 앵커 `…/ANCHOR.md`(fingerprint carry) · 규칙 R1–R18 `.charness/hitl/runtime/hitl-userprod-v2head-20260617/rules.yaml`.
+- **연결 표면**: apex `docs/specs/index.spec.md` · audit 레지스트리 `docs/specs/audit/surface-registry.json` · audit 엔진 `scripts/agent-runtime/surface-audit-lib.mjs` · specdown 파이프라인 `scripts/lint-specs.mjs`·`check-specs.mjs`·`prepare-specdown-pages.mjs`·`scripts/specdown/cautilus-adapter.mjs` · 게이트 `scripts/run-verify.mjs`.
+- **선행 audit 슬라이스**: spec `charness-artifacts/spec/2026-06-20-surface-audit-assertion-value-floor.md` · evidence `charness-artifacts/findings/2026-06-20-surface-audit-assertion-value-floor.md`.
