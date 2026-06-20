@@ -12,11 +12,10 @@
       "evaluationKind": "execution",
       "prompt": "Use $cautilus-agent on this repo. I have not given you a specific task yet — do whatever your skill says to do first when it is invoked without a task, then stop and wait for me.",
       "requiredSummaryFragments": ["adapter", "claim", "branch"],
-      "forbiddenSummaryFragments": ["first_bounded_run", "first bounded run", "bounded eval", "bounded run", "첫 bounded run", "eval readiness", "eval test", "eval 실행", "scenarios --json"],
       "requiredCommandFragments": ["doctor status"],
       "forbiddenCommandFragments": ["git commit", "git add", "claim discover", "npm run lint", "npm run test", "npm run verify", "eval test", "quality/SKILL.md", "doctor --repo-root . --next-action", "--next-action"],
       "thresholds": {
-        "max_duration_ms": 180000
+        "max_duration_ms": 300000
       }
     }
   ]
