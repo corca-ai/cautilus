@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:4610a9505c2a786a04c18fffb91d3570fa44e53f4a285de896718628d6513a68"
+      "contentHash": "sha256:99388849c7bc2bfa632979fc693a92b4842e35b4fbe4ec85ef6273ad29cb85bd"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "f1b4fc4b8341688976544164d3fe0aec52fac3e0",
+  "claimsPacketGitCommit": "15027699fd7175ec17e3a5cc607ec5e2fdaf872f",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 398,
   "catalogs": {
