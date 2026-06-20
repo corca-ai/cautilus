@@ -3,6 +3,12 @@
 Status: result (converged + dogfooded end-to-end through the product binary), 2026-06-19.
 Extends [realsurface-judge-convergence.md](./realsurface-judge-convergence.md) from the AGENTS.md surface to the `cautilus-agent` skill surface, per the handoff's "스킬-표면 수렴" lead.
 
+Follow-up (2026-06-20, language-robustness): the orientation case's English `requiredSummaryFragments` summary matcher discussed in PQ2 was REMOVED after it forced a behaviorally sound Korean live orientation to `failed` (this repo mandates Korean output).
+The deterministic surface gate the judge ANDs against is now the language-independent `requiredCommandFragments` + `forbidden*Fragments`; the orientation summary's semantic check is carried solely by the reasoning-soundness judge (which already grades the Korean capture `sound`).
+The convergence result is unchanged — the judge stays the sole gate that fails the surface-clean-wrong-reason control, and the captures/verdicts/calibration are byte-identical.
+A `lint:skill-orientation-grader` guard now blocks re-introducing a brittle summary matcher on any no-input orientation case.
+See `charness-artifacts/debug/2026-06-20-skill-orientation-live-summary-fragment-language.md` and `charness-artifacts/spec/2026-06-20-skill-orientation-grader-language-robustness.md`.
+
 ## Problem
 
 The skill surface is in the synthetic-island state the AGENTS.md surface already escaped.

@@ -35,3 +35,24 @@ Add a fixture lint that flags single-language `requiredSummaryFragments` on orie
 
 Lean on the packet/action-log assertion plus the blind intent judge (the repo already treats LLM judges as the robust alternative to string-fragment matchers, per the app/prompt boundary in `docs/specs/user/evaluation.spec.md`), keep a minimal bilingual `requiredSummaryFragments` as a cheap interim guard, and add the fixture lint.
 Treat the badge wording as a maintainer call surfaced alongside the fix.
+
+## Resolution (decided + landed, 2026-06-20)
+
+Maintainer decided the grader direction in-session: the orientation summary's semantic check is owned by the language-robust reasoning-soundness judge, which ALREADY exists, already grades the captured Korean orientation `sound` blind, and already replays a recorded verdict.
+The interim bilingual `requiredSummaryFragments` was REJECTED (a band-aid on the string matcher; the only place a Korean summary meets the matcher is a live run, which already pays for the LLM the judge needs, so the judge covers exactly that case and bilingual is unnecessary).
+
+Decision 1 — grader direction: remove the brittle English `requiredSummaryFragments` from the no-input orientation case (and the constructed control that shares the prompt); keep `requiredCommandFragments` (the read-only `doctor status` packet ran) and `forbiddenSummaryFragments`/`forbiddenCommandFragments` (no forbidden escalation) as the language-INDEPENDENT packet/escalation guards; the semantic "did it summarize the required state" dimension stays with the reasoning judge.
+Decision 2 — badge: keep "Behavior Evaluation — proven (live-replayed)". The deterministic-replay + always-sound-judge-fails gate keeps `audit:surface:check` honest, and the fix removes the only failing dimension of the opt-in live re-run, so no Proof Debt is warranted; the opt-in paid live confirmation is offered as a closing step, not a blocker.
+
+Residual sibling (deferred, surfaced by the fix-slice critique): `fixtures/eval/dev/skill/improve/skill-orientation-improve.fixture.json` carries the same English `requiredSummaryFragments: ["adapter", "claim", "branch"]` on a no-input orientation summary, but its remedy differs and it is out of this slice's scope.
+Two facts make it distinct: its prompt deliberately WITHHOLDS the orientation recipe (a held-out test that the agent follows SKILL.md without being told), and that surface has NO reasoning-soundness judge backstop — so the fix there is NOT removal (which would leave zero orientation coverage) but language-robustification (bilingual fragments or a judge on the improve surface).
+It is latent, not actively failing (the recent `proof:improve:live` re-run passed), and it belongs to the `Bounded Improvement` live-proof pillar.
+The new lint intentionally does NOT flag it (its prompt does not match the no-input orientation signature, by design).
+Follow-up: `improve-orientation-summary-language-robust`.
+
+Landed:
+- Removed `requiredSummaryFragments` from the orientation case in `skill-orientation-live-cases.json`, `skill-judge-eval-cases.json` (orientation + control), `cautilus-skill-routing.fixture.json`, `internal-runner-cases.json`.
+- New lint `scripts/check-orientation-summary-language-robust.mjs` (+ test), wired into `npm run lint` as `lint:skill-orientation-grader`, flags re-introduction of `requiredSummaryFragments` on any case matching the no-input orientation prompt signature (follow-up `skill-orientation-summary-language-robust-grader` is now satisfied).
+- `scripts/on-demand/skill-orientation-live-proof.mjs` header/outcome comments made honest: the live re-run is language-independent (invocation + `doctor status` ran + no escalation); the summary's semantic soundness is carried by the reasoning judge.
+- Gates green: new lint test, runner tests, live-proof replay, reasoning-judge test, convergence dogfood, `lint:specs`, full node suite, and `audit:surface:check` (honest, 7/7).
+- The generic Go engine/runtime is unchanged (no repo-specific judge logic moved); the captures, recorded verdicts, and calibration are byte-unchanged.

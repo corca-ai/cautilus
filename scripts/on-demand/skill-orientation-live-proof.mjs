@@ -4,9 +4,18 @@
 // This drives the real cautilus-agent skill no-input orientation live: the agent (claude_code, Sonnet)
 // invokes $cautilus-agent with no task detail, runs the read-only `cautilus doctor status` packet,
 // summarizes adapter/claim/scan/next-branch state, and STOPS at branch selection. It asserts the
-// stable invariant (the skill was invoked AND the orientation passed — it ran the read-only status,
-// summarized, and held without forbidden escalation) on the FRESH capture. Gated behind
+// stable invariant (the skill was invoked AND the orientation passed — it ran the read-only status
+// and held without forbidden escalation) on the FRESH capture. Gated behind
 // `npm run proof:skill-orientation:live`; never in `npm run verify` or standing `specdown run`.
+//
+// Language-robustness (2026-06-20): the live re-run's pass/fail is LANGUAGE-INDEPENDENT. It rests on
+// invocation + the read-only `doctor status` command running (requiredCommandFragments) + no forbidden
+// escalation (forbidden*Fragments) — never on English summary literals. The orientation summary's
+// SEMANTIC soundness (did it summarize the required state and apply the orient/summarize/stop rules) is
+// carried by the reasoning-soundness judge, which grades the captured summary blind and language-robust
+// and replays a recorded verdict; the brittle English requiredSummaryFragments was removed from the
+// orientation case after it forced a behaviorally sound Korean orientation to `failed`
+// (charness-artifacts/debug/2026-06-20-skill-orientation-live-summary-fragment-language.md).
 //
 // Permission note: the claude_code skill backend ignores --sandbox and exposes only --permission-mode
 // + --allowedTools; `dontAsk` does NOT grant Bash in headless claude, so the read-only `doctor status`
@@ -35,10 +44,12 @@ export function assertSkillLiveInvariant(evaluation) {
 	if (evaluation.invoked !== STABLE_INVARIANT.invoked) {
 		throw new Error(`the cautilus-agent skill was not invoked: invoked=${evaluation.invoked}`);
 	}
-	// outcome=passed encodes the held orientation: it ran the read-only doctor status, summarized the
-	// required adapter/claim/next-branch state, and emitted no forbidden escalation. A degraded/failed
-	// outcome means the no-input orientation regressed (e.g. could not read the status packet, or
-	// escalated to eval/refresh/commit).
+	// outcome=passed encodes the held orientation language-independently: the runner overrides outcome to
+	// failed/degraded when requiredCommandFragments (["doctor status"]) are missing or forbidden*Fragments
+	// match, so passed means it ran the read-only status AND emitted no forbidden escalation. A
+	// degraded/failed outcome means the no-input orientation regressed (e.g. could not read the status
+	// packet, or escalated to eval/refresh/commit). The summary's semantic soundness is graded separately
+	// by the reasoning-soundness judge (blind, language-robust, replayed), not by English summary literals.
 	if (evaluation.outcome !== STABLE_INVARIANT.outcome) {
 		throw new Error(`the no-input orientation did not pass: outcome=${evaluation.outcome}`);
 	}
