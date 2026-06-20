@@ -39,8 +39,8 @@ test("PHASES covers every npm run verify sub-phase", () => {
 	const ids = PHASES.map((p) => p.id);
 	assert.deepEqual(ids, [
 		"lint:eslint",
-		// TODO(specdown-rewrite): restore together with the lint:specs phase in run-verify.mjs.
-		// "lint:specs",
+		"audit:surface:check",
+		"lint:specs",
 		"lint:scenario-normalizers",
 		"lint:contracts",
 		"claims:audit-evidence",

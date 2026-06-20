@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "cautilus.surface_audit_registry.v1",
+  "description": "Proof route for each apex promise badge. This file declares ONLY where each badge's proof lives (leaf spec, proof class, command, evidence files) and never the badge level. The badge level is declared once, in docs/specs/index.spec.md. build-surface-audit.mjs recomputes the observed level from these routes and fails the audit when the apex over-claims relative to what a route delivers. Match registry routes to apex badges by exact title. The audit is structural, not semantic: it does not prevent a proofSpec from pointing at an unrelated spec, and it does not verify the check blocks actually test this badge's behavior — leaf-spec review and `npm run lint:specs` running the checks themselves carry that correctness.",
+  "proofClasses": {
+    "deterministic": "npm run lint:specs runs the command/file checks live on every run",
+    "live-replayed": "the default run replays an operator-witnessed live capture and blind verdict; the live agent re-run is opt-in",
+    "projected-bundle": "the proof projects a saved evidence bundle; the behavior has not been re-run live yet",
+    "none": "stated, with no executable proof attached yet"
+  },
+  "routes": [
+    {
+      "id": "readiness",
+      "title": "Readiness",
+      "proofClass": "deterministic",
+      "proofSpec": "docs/specs/user/doctor-readiness.spec.md",
+      "proofCommand": "npm run lint:specs",
+      "liveOptInCommand": null,
+      "evidence": []
+    },
+    {
+      "id": "claim-discovery",
+      "title": "Claim Discovery",
+      "proofClass": "deterministic",
+      "proofSpec": "docs/specs/user/claim-discovery.spec.md",
+      "proofCommand": "npm run lint:specs",
+      "liveOptInCommand": null,
+      "evidence": [
+        ".cautilus/claims/status-summary.json",
+        ".cautilus/claims/evidence-claim-discover-proof-routing-2026-05-03.json",
+        "fixtures/eval/dev/skill/cautilus-claim-discovery-curation-flow.fixture.json"
+      ]
+    },
+    {
+      "id": "behavior-evaluation",
+      "title": "Behavior Evaluation",
+      "proofClass": "live-replayed",
+      "proofSpec": "docs/specs/user/evaluation.spec.md",
+      "proofCommand": "npm run lint:specs",
+      "liveOptInCommand": "npm run proof:behavior-eval:live && npm run proof:skill-orientation:live",
+      "evidence": [
+        "fixtures/eval/dev/repo/live/behavior-eval-live-capture.json",
+        "fixtures/eval/dev/repo/live/behavior-eval-live-capture-rerun.json",
+        "fixtures/eval/dev/repo/live/behavior-eval-live-verdicts.json",
+        "fixtures/eval/dev/skill/live/skill-orientation-live-capture.json",
+        "fixtures/eval/dev/skill/live/skill-orientation-live-capture-rerun.json",
+        "fixtures/eval/dev/skill/live/skill-orientation-live-verdicts.json"
+      ]
+    },
+    {
+      "id": "bounded-improvement",
+      "title": "Bounded Improvement",
+      "proofClass": "live-replayed",
+      "proofSpec": "docs/specs/user/improvement.spec.md",
+      "proofCommand": "npm run lint:specs",
+      "liveOptInCommand": "npm run proof:improve:live",
+      "evidence": [
+        "fixtures/eval/dev/skill/improve/live/improve-live-proof-summary.json",
+        "fixtures/eval/dev/skill/improve/live/improve-live-search-result.json",
+        "fixtures/eval/dev/skill/improve/live/improve-live-seed-eval-summary.json"
+      ]
+    },
+    {
+      "id": "reviewable-artifacts",
+      "title": "Reviewable Artifacts",
+      "proofClass": "projected-bundle",
+      "proofSpec": "docs/specs/user/reviewable-artifacts.spec.md",
+      "proofCommand": "npm run lint:specs",
+      "liveOptInCommand": null,
+      "evidence": [
+        ".cautilus/claims/evidence-durable-packets-2026-05-03.json",
+        ".cautilus/claims/evidence-reviewable-artifact-projections-2026-05-03.json",
+        ".cautilus/claims/evidence-reviewable-proof-debt-reports-2026-05-03.json"
+      ]
+    },
+    {
+      "id": "host-ownership",
+      "title": "Host Ownership",
+      "proofClass": "projected-bundle",
+      "proofSpec": "docs/specs/user/ownership.spec.md",
+      "proofCommand": "npm run lint:specs",
+      "liveOptInCommand": "npm run consumer:onboard:smoke",
+      "evidence": [
+        ".cautilus/claims/evidence-adapter-discovery-contracts-2026-05-03.json",
+        ".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json",
+        ".cautilus/claims/evidence-durable-packets-2026-05-03.json"
+      ]
+    },
+    {
+      "id": "a-testable-agent",
+      "title": "A Testable Agent",
+      "proofClass": "none",
+      "proofSpec": null,
+      "proofCommand": null,
+      "liveOptInCommand": null,
+      "evidence": []
+    }
+  ]
+}

@@ -8,6 +8,8 @@ export const DEFAULT_GENERATED_ARTIFACTS = [
 	".cautilus/claims/evidence-state.json",
 	".cautilus/claims/status-summary.json",
 	"docs/specs/evidence/claim-evidence-state.md",
+	".cautilus/audit/surface-audit.json",
+	"docs/specs/audit.spec.md",
 ];
 
 function usage(exitCode = 0) {

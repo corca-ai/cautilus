@@ -26,6 +26,7 @@ function initRepo(root) {
 	git(root, ["config", "user.name", "Cautilus Test"]);
 	git(root, ["config", "user.email", "test@example.com"]);
 	mkdirSync(join(root, ".cautilus", "claims"), { recursive: true });
+	mkdirSync(join(root, ".cautilus", "audit"), { recursive: true });
 	mkdirSync(join(root, "docs", "specs", "evidence"), { recursive: true });
 	for (const path of DEFAULT_GENERATED_ARTIFACTS) {
 		writeFileSync(join(root, path), `${path}: clean\n`, "utf-8");

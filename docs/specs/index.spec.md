@@ -9,12 +9,14 @@ This page is Cautilus's own promises, proven on Cautilus itself.
 Each promise below gives you what you get in one line, how far it's proven today, and a link to the executable spec that proves it.
 The promise stays honest because the badge is earned by what that spec actually runs, not by what this page asserts.
 
-- **proven** — a checked-in executable spec runs the behavior live and asserts on the result
+- **proven** — a checked-in executable spec asserts the behavior end-to-end, in one of two honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct:
+  - *deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery).
+  - *live-replayed* — the default run replays an operator-witnessed live capture and a blind judge verdict; the live agent re-run is opt-in and costs a real agent run (Behavior Evaluation, Bounded Improvement).
 - **declared** — the evidence exists as a saved bundle, but the behavior has not been re-run live yet (named in Proof Debt)
 - **promised** — stated, with no executable proof attached yet (named in Proof Debt)
 
-Today, four promises are proven live and the rest are declared or promised.
-That split is the point: this page shows the real state of the work.
+Today, four promises are proven, two are declared, and one is promised.
+That split is the point: this page shows the real state of the work, and the [Honesty Audit](audit.spec.md) binds each badge to its proof route so the split cannot quietly drift.
 
 ## What Cautilus Does For You
 
@@ -78,6 +80,39 @@ Proof: [Host Ownership spec](user/ownership.spec.md). A live onboarding smoke (`
 You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good.
 
 Proof: none yet — see Proof Debt. Background: [runner readiness contract](../contracts/runner-readiness.md).
+
+## Honesty Audit
+
+Every badge above is bound to its proof route, so a badge cannot claim more than its proof actually delivers.
+[Surface Honesty Audit](audit.spec.md) is the navigable, runnable per-badge map: for each promise it shows the level this page CLAIMS, the level the proof route is OBSERVED to deliver (recomputed by inspecting the leaf spec's checks and evidence files), the proof class, the command that runs it, and whether the two agree.
+Run `npm run audit:surface` to regenerate it, or `npm run audit:surface:check` to fail on drift or over-claim; `npm run lint:specs` runs the leaf proofs plus the check block below.
+The check reads the generated audit manifest and fails specdown if any badge over-claims, or if this page and the proof-route registry disagree about which badges exist.
+
+> check:cautilus-json-file
+| path | json_path | equals |
+| --- | --- | --- |
+| .cautilus/audit/surface-audit.json | schemaVersion | cautilus.surface_audit.v1 |
+| .cautilus/audit/surface-audit.json | summary.honest | true |
+| .cautilus/audit/surface-audit.json | summary.total | 7 |
+| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.proven | 4 |
+| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.declared | 2 |
+| .cautilus/audit/surface-audit.json | summary.byClaimedStatus.promised | 1 |
+| .cautilus/audit/surface-audit.json | summary.inconsistent | 0 |
+| .cautilus/audit/surface-audit.json | summary.orphanIssueCount | 0 |
+| .cautilus/audit/surface-audit.json | badges[id=readiness].consistent | true |
+| .cautilus/audit/surface-audit.json | badges[id=readiness].observed.observedStatus | proven |
+| .cautilus/audit/surface-audit.json | badges[id=claim-discovery].consistent | true |
+| .cautilus/audit/surface-audit.json | badges[id=claim-discovery].observed.observedStatus | proven |
+| .cautilus/audit/surface-audit.json | badges[id=behavior-evaluation].consistent | true |
+| .cautilus/audit/surface-audit.json | badges[id=behavior-evaluation].observed.observedStatus | proven |
+| .cautilus/audit/surface-audit.json | badges[id=bounded-improvement].consistent | true |
+| .cautilus/audit/surface-audit.json | badges[id=bounded-improvement].observed.observedStatus | proven |
+| .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].consistent | true |
+| .cautilus/audit/surface-audit.json | badges[id=reviewable-artifacts].observed.observedStatus | declared |
+| .cautilus/audit/surface-audit.json | badges[id=host-ownership].consistent | true |
+| .cautilus/audit/surface-audit.json | badges[id=host-ownership].observed.observedStatus | declared |
+| .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].consistent | true |
+| .cautilus/audit/surface-audit.json | badges[id=a-testable-agent].observed.observedStatus | promised |
 
 ## Proof Debt
 
