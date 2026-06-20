@@ -12,7 +12,11 @@ Remaining phases (the 2-axis ledger/evidence collapse, `docs/specs/old/**` neutr
 Phase 2 First Slice — LANDED 2026-06-20 (SC4 generated-state foundation, no source-prose retirement yet).
 PQ3 is resolved (below): the inventory is rendered ONCE into a standalone generated `docs/specs/evidence/projected-claim-state.md` (pure lib `projected-claim-state-lib.mjs` + thin shell `render-projected-claim-state.mjs`, mirroring `render-claim-evidence-state.mjs`), linked from the evidence and ledger indexes, with the full gold-set→inventory→page chain now gated in `npm run verify` (`specdown:project:check` + `specdown:claim-state:check`, both newly wired).
 21 executable tests + coverage (lib 99.1%/shell 98.4%); `npm run verify` green; fresh-eye Sonnet critique READY-WITH-EDITS, no blocker.
-Still owned by SC4/FD5: retiring the not-a-claim(11)/retire-source(5) source prose (README/cli — triggers `claims:refresh:all`) and pointing the remaining hand-authored ledger/evidence state at the generated page; SC5/AC5 (`old/**` neutralization) unchanged.
+Phase 2 Remainder — LANDED 2026-06-20 (execution session; SC4 closed by reconciliation, zero source edits, zero page deletions).
+Source-prose retirement (FD5/D1/D2) needed no edit at HEAD: the 5 `retire-source` lines were already removed in `3080482`, the 2 `badly-bounded` curator splits were explicitly deferred to the gold-set re-extraction session in `3bc1b06` ("curator splits fold into the deferred re-extraction session"), and the 11 `not-a-claim` lines are tracking-only good prose kept in place — so no claim source changed and `claims:refresh:all` was not triggered.
+The D3 delete/replace target is empty under its own guardrail: a full read of every table in `docs/specs/` found NO hand-maintained per-claim tier/verdict/route table — the ledger and evidence pages carry distinct, non-subsumed lenses (promise→contract ownership in `ledger/promise-ledger.spec.md`, evidence-route ownership in `evidence/evidence-map.spec.md`, the generated 398-candidate backlog in `evidence/claim-evidence-state.md`, proof gaps, and naming), so FD3's premise that those pages "restate the badge/tier state by hand" was empirically false.
+The projection FILLS the previously-missing gold-set tier/verdict/route facet rather than replacing a redundant table, so SC4's single-source intent is satisfied by the first slice's generated page + links plus this reconciliation; nothing was deleted because the guardrail forbids dropping non-subsumed content.
+SC5/AC5 (`old/**` neutralization) unchanged — Phase 3.
 
 ### Phase 2 Remaining — Ratified Decisions (2026-06-20, maintainer)
 
@@ -27,6 +31,11 @@ These were confirmed with the maintainer in the Phase-2-first-slice closeout ses
 - D3 — SC4 "done" requires actually DELETING/REPLACING the hand-maintained claim-STATE tables that the projection now subsumes, not merely adding the generated page and linking it.
   Guardrail: the generated `projected-claim-state.md` carries ONLY the gold-set-ratified 56-claim tier/verdict/route state. It does NOT carry the claims-packet 398-candidate evidence backlog (`evidence/claim-evidence-state.md`, a different generated source) nor the evidence-route ownership map (`evidence/evidence-map.spec.md`). So delete/replace applies only to hand-maintained tables whose content is genuinely subsumed by the projection; content with no projection equivalent must be migrated or kept, never silently dropped. The next session confirms the exact table list against this boundary before deleting.
 - D4 — PQ3 stays resolved as a standalone generated `.md` + links (NOT per-page injected regions).
+
+Execution outcome (2026-06-20, this session, confirming the handoff's "confirm the exact list before deleting" step):
+D1/D2 needed no source edit — all 5 `retire-source` lines were already trimmed in `3080482`, the 2 `badly-bounded` curator splits were deferred to the re-extraction session in `3bc1b06`, and the 11 `not-a-claim` lines were kept — so `claims:refresh:all` did not run.
+D3's confirmed delete-list is EMPTY under its own guardrail: no hand-maintained tier/verdict/route table exists to subsume (the candidate pages carry ownership/route/backlog/gap/naming lenses, all explicitly "kept" by the guardrail).
+So SC4 closes via the projection + links already landed plus this reconciliation, not a deletion; the literal "must delete something" rested on FD3's premise, which a full page read found false.
 
 ## Problem
 
@@ -62,7 +71,8 @@ No spec pages, no scripts, and no gate changes land this session beyond this art
   Fingerprint keying is the loose-coupling mechanism that keeps the projection from breaking on every doc edit; a slice that keyed on line numbers would re-introduce the brittleness the gold set already escaped.
 
 - FD3 — Hybrid generate-vs-prose.
-  GENERATE from the gold set: the claim inventory, the per-claim significance tier, the proof-route binding (which feeds the existing `surface-registry.json` + `evidenceSubstantive` audit floor), and the badge/tier state that the ledger and evidence-state pages currently restate by hand.
+  GENERATE from the gold set: the claim inventory, the per-claim significance tier, the proof-route binding (which feeds the existing `surface-registry.json` + `evidenceSubstantive` audit floor), and the gold-set tier/verdict/route state.
+  (This decision originally framed that state as what "the ledger and evidence-state pages currently restate by hand"; the Phase 2 Remainder note corrects that premise — those pages in fact carry distinct ownership/route/backlog lenses, so the projection ADDS this facet rather than replacing a hand-maintained table. The hybrid generate-vs-prose decision itself stands.)
   HAND-AUTHOR: the per-badge narrative persuasion prose on the apex page.
   Rejected: full-generate (loses the persuasion-prose quality the apex reading surface needs); all-hand (keeps the 3-axis drift this rewrite exists to remove).
 
@@ -141,8 +151,9 @@ No spec pages, no scripts, and no gate changes land this session beyond this art
   Field paths (verified against the gold set): `significanceTier` is a TOP-LEVEL entry field (not under `agentLabels`); `recommendedProof`/`primaryEpic`/`claimAudience` are under `agentLabels`; `claimFingerprint`/`sourceRef`/`summary`/`maintainerVerdict`/`note` are top-level.
 - SC2 — The 7 T1 claims project and bind to the 7 apex badges (PQ1 resolved), and the binding is asserted by a test, so a future gold-set change that drops or re-tiers a T1 claim is caught.
 - SC3 — The apex badge proof routes (the `surface-registry.json` the audit gate consumes) are reconciled with the projected ratified proof routes — any divergence is surfaced, not silently tolerated.
-- SC4 — The ledger and evidence-state pages present a generated tier/verdict/route state derived from the projection, removing the 3-axis hand-maintained divergence (later phase).
-  Phase 2 first slice LANDED: the generated state is rendered once into `docs/specs/evidence/projected-claim-state.md` and linked from the evidence + ledger indexes (PQ3 resolved); retiring the remaining hand-authored restatement and the not-a-claim/retire-source source prose (FD5) is the remaining SC4 work.
+- SC4 — DONE 2026-06-20. The ledger and evidence surface read a generated tier/verdict/route state from `docs/specs/evidence/projected-claim-state.md` (rendered once from the fingerprint-keyed inventory, linked from the evidence + ledger indexes), instead of maintaining claim state by hand.
+  The "remaining SC4 work" (retire the hand-authored restatement + the not-a-claim/retire-source source prose) resolved to no-ops on reconciliation: no hand-maintained tier/verdict/route table existed to retire (the pages carry distinct non-subsumed lenses), and the FD5 source prose was already trimmed in `3080482` (`badly-bounded` deferred in `3bc1b06`), so no claim source changed and `claims:refresh:all` was not triggered.
+  See the Phase 2 Remainder note for the full reconciliation.
 - SC5 — `docs/specs/old/**` proof blocks are inert and `lint:specs` is restored in `run-verify.mjs` (+ test), green over the projected tree (the exit criterion, FD6).
 - SC6 — Throughout, no ratified verdict is altered and no badge honesty level changes without the audit gate agreeing.
 
