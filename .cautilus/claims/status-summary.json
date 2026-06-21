@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 293
+          "unknown": 294
         },
         "byReviewStatus": {
-          "heuristic": 293
+          "heuristic": 294
         },
-        "count": 293,
+        "count": 294,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 86
+          "unknown": 89
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 82,
+          "heuristic": 85,
           "human-reviewed": 2
         },
-        "count": 86,
+        "count": 89,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -58,19 +58,19 @@
           "claim-readme-md-6",
           "claim-readme-md-140",
           "claim-docs-contracts-adapter-contract-md-344",
-          "claim-docs-guides-cli-md-183"
+          "claim-docs-guides-cli-md-49"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
       {
         "byEvidenceStatus": {
-          "unknown": 137
+          "unknown": 135
         },
         "byReviewStatus": {
           "agent-reviewed": 6,
-          "heuristic": 131
+          "heuristic": 129
         },
-        "count": 137,
+        "count": 135,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -158,7 +158,7 @@
       }
     ]
   },
-  "candidateCount": 488,
+  "candidateCount": 489,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -175,7 +175,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 359,
+      "developer": 360,
       "user": 129
     },
     "byClaimSemanticGroup": {
@@ -187,31 +187,31 @@
       "General product behavior": 1,
       "Improvement and improvement": 39,
       "Packets and reporting": 56,
-      "Quality gates": 30,
+      "Quality gates": 31,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 142,
-      "unknown": 346
+      "unknown": 347
     },
     "byLifecycle": {
-      "new": 488
+      "new": 489
     },
     "byRecommendedProof": {
-      "cautilus-eval": 142,
-      "deterministic": 226,
+      "cautilus-eval": 140,
+      "deterministic": 229,
       "human-auditable": 120
     },
     "byReviewStatus": {
       "agent-reviewed": 193,
-      "heuristic": 293,
+      "heuristic": 294,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 34,
       "needs-alignment": 49,
       "needs-scenario": 1,
-      "ready-for-proof": 404
+      "ready-for-proof": 405
     }
   },
   "discoveryBoundary": {
@@ -256,7 +256,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:e0ddc8c7583f1b1f087ba6bee0356fef96ac7c82c618d98d07aa736204e9ecfc",
+    "implementationHash": "sha256:d622c4366f3b93c48a528e3dd20e1ee8193961f9f9c69ef657d7e86d3000403b",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v5"
@@ -3416,7 +3416,7 @@
       }
     ]
   },
-  "gitCommit": "5837798b280cdae3f169b5f73cb361816466e4a6",
+  "gitCommit": "1e89616d146034b0bc96fc5c27fff20c503b4f78",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3428,10 +3428,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "5837798b280cdae3f169b5f73cb361816466e4a6",
+    "currentGitCommit": "1e89616d146034b0bc96fc5c27fff20c503b4f78",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "5837798b280cdae3f169b5f73cb361816466e4a6",
+    "packetGitCommit": "1e89616d146034b0bc96fc5c27fff20c503b4f78",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3455,7 +3455,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 259,
+    "heuristicClaimsReadyForReview": 260,
     "needsAlignment": 49,
     "needsScenario": 1
   },

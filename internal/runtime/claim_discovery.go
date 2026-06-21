@@ -1510,6 +1510,12 @@ func adapterLexiconFallbackClassification() claimClassification {
 // identifier such as `cautilus.claim_review_input.v1`.
 var cautilusPayloadVersionPattern = regexp.MustCompile(`cautilus\.[a-z0-9_]+\.v[0-9]`)
 
+// cliFlagOptionPattern matches a long CLI-option token such as --codex-home-mode
+// or --output-text-key (two dashes, a leading letter, then at least one more
+// letter/digit/dash). A standalone "--", a single dash, or a markdown rule like
+// "--- " (the dash is followed by a space) is intentionally not a flag.
+var cliFlagOptionPattern = regexp.MustCompile(`--[a-z][a-z0-9-]+`)
+
 // namedPacketEmissionClaim recognizes the Fork B named-packet shape: a claim
 // whose dominant facet is emitting a named, versioned Cautilus packet, or that
 // explicitly does not call an LLM — both schema/golden-checkable deterministic
@@ -1540,6 +1546,45 @@ func namedPacketEmissionClaim(lower string) bool {
 	}
 	return cautilusPayloadVersionPattern.MatchString(lower) &&
 		containsAny(lower, []string{" emit", " produces ", " writes ", " outputs ", " output ", " records "})
+}
+
+// cliFlagSemanticsClaim recognizes the Fork B CLI-flag-semantics shape: a claim
+// whose dominant facet is what a named CLI flag DOES to config, session state,
+// auth, or IO (keeps / copies / extracts) — a deterministic command-contract
+// mechanism the broad noun catch-all would otherwise sweep into cautilus-eval
+// because the same line co-mentions an eval/judge noun.
+//
+// Two precision controls, in order:
+//   - the judgment-verb guard returns false on a behavior JUDGMENT (judges /
+//     grades / rates / scores / verdict / better / worse / ...). Unlike
+//     namedPacketEmissionClaim's guard it deliberately does NOT exclude the bare
+//     noun " judge ": a line that says "... so the judge can read the output"
+//     describes the deterministic flag effect with the judge as the reader of
+//     that output, not a quality judgment (gold-confirmed claim #7). Pinned by
+//     the unit guard table.
+//   - the tight, gold-confirmed verb set {keeps, copies, extracts} is the
+//     PRIMARY precision control: it is what keeps a genuine agent-behavior flag
+//     claim ("--json gives the Cautilus Agent a packet so it can choose a
+//     branch") in cautilus-eval — its verbs are outside the set, so it is never
+//     reached. Broadening the set is deferred and gold-gated.
+//
+// Verbs match with both surrounding spaces, so "extracted"/"extraction" and a
+// sentence-final "... copies." (no trailing space) intentionally do NOT match;
+// do not "tidy" these into bare stems, which would silently broaden the trigger.
+// Contract: charness-artifacts/eval-trust/2026-06-21-fork-b-cli-flag-semantics.spec.md
+func cliFlagSemanticsClaim(lower string) bool {
+	if containsAny(lower, []string{
+		" judges ", " judged ", " judgment", " verdict",
+		" grade ", " grades ", " graded ", " grading",
+		" score ", " scores ", " scored ", " scoring",
+		" rate ", " rates ", " rated ", " rating",
+		" better", " worse", " pass ", " passes ", " fail ", " fails ",
+		" sound ", " unsound ", " evaluates whether ", " assess ", " assesses ",
+	}) {
+		return false
+	}
+	return cliFlagOptionPattern.MatchString(lower) &&
+		containsAny(lower, []string{" keeps ", " copies ", " extracts "})
 }
 
 func classifyClaimLine(line string) (claimClassification, bool) {
@@ -1601,6 +1646,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "ready-for-proof",
 			why:                   "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21).",
 			next:                  "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+		}, true
+	case cliFlagSemanticsClaim(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-for-proof",
+			why:                   "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21).",
+			next:                  "Keep or add deterministic CLI flag-contract or golden-output proof for the named flag; route any behavior-quality subclaim to Cautilus eval separately.",
 		}, true
 	case reviewBudgetConfirmationClaim(lower):
 		return claimClassification{

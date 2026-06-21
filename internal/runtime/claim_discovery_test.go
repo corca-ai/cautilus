@@ -4186,6 +4186,77 @@ func TestNamedPacketEmissionClaimGuard(t *testing.T) {
 	}
 }
 
+func TestClaimClassificationForkBCLIFlagSemanticsRoutingIsFrozen(t *testing.T) {
+	// Frozen golden for the 2026-06-21 Fork B CLI-flag-semantics discriminator.
+	// Any future broadening of cliFlagSemanticsClaim (the verb set or the guard)
+	// must surface here as a diff and force gold-set review.
+	// Contract: charness-artifacts/eval-trust/2026-06-21-fork-b-cli-flag-semantics.spec.md
+	cases := []struct {
+		name          string
+		line          string
+		wantProof     string
+		wantReadiness string
+	}{
+		// Intended flips (gold-confirmed deterministic, were over-assigned to cautilus-eval).
+		{"cli-flag-codex-home-auth", "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home.", "deterministic", "ready-for-proof"},
+		{"cli-flag-output-text-key", "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.", "deterministic", "ready-for-proof"},
+		// Judgment-guard negative control: a behavior JUDGMENT whose flag/run keeps output
+		// stays cautilus-eval. The eval noun ("agent's behavior") makes it reach the broad
+		// catch-all AFTER the guard rejects the flag-semantics case (it is routed, not dropped).
+		{"negative-judge-grades-behavior", "With `--rubric-strict`, the judge grades the agent's behavior harder and the run keeps only the failing transcripts.", "cautilus-eval", ""},
+		// Agent-behavior non-flip control: a flag claim whose verb is outside the tight set
+		// (gives/choose) is genuine agent behavior and stays cautilus-eval.
+		{"agent-behavior-doctor-json", "`doctor status --json` gives the Cautilus Agent a packet so it can choose a next branch.", "cautilus-eval", ""},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got, ok := classifyClaimLine(tc.line)
+			if !ok {
+				t.Fatalf("expected a classification for %q, got none", tc.line)
+			}
+			if got.recommendedProof != tc.wantProof {
+				t.Fatalf("recommendedProof: want %q, got %q (%q)", tc.wantProof, got.recommendedProof, tc.line)
+			}
+			if tc.wantReadiness != "" && got.verificationReadiness != tc.wantReadiness {
+				t.Fatalf("verificationReadiness: want %q, got %q (%q)", tc.wantReadiness, got.verificationReadiness, tc.line)
+			}
+		})
+	}
+}
+
+func TestCliFlagSemanticsClaimGuard(t *testing.T) {
+	// Unit guard for cliFlagSemanticsClaim: it fires only on a long CLI-flag token
+	// plus a gold-confirmed flag-effect verb {keeps, copies, extracts}, never on a
+	// judgment verb, and never without a flag token. The bare noun " judge " is
+	// deliberately allowed (the divergence from namedPacketEmissionClaim's guard).
+	pad := func(line string) string { return " " + strings.ToLower(line) + " " }
+	cases := []struct {
+		name string
+		line string
+		want bool
+	}{
+		{"flag-keeps-copies", "`--codex-home-mode isolated` keeps config out while `--codex-auth-mode inherit` copies only auth.", true},
+		{"flag-extracts", "When `--output-text-key` is present, Cautilus extracts that JSON span into the rendered prompt.", true},
+		// Bare-noun control: " judge " as the reader of output must NOT block the flip
+		// (this line routes human-auditable today; the predicate firing is what matters).
+		{"bare-noun-judge-allowed", "When `--transcript-key` is set, Cautilus copies the transcript so the judge can read it.", true},
+		// Judgment-verb guard: a real judgment keeps the predicate false.
+		{"guard-judge-grades", "With `--rubric-strict`, the judge grades the variant harder and keeps only failures.", false},
+		// No-flag control: a flag-effect verb without a flag token does not fire.
+		{"no-flag-not-fired", "The runner keeps the workspace clean between cases.", false},
+		// Synonym false-negative pin: a deliberately-deferred synonym (isolates) is NOT in
+		// the verb set; broadening to catch it must re-trigger gold review (this asserts it).
+		{"synonym-isolates-deferred", "`--codex-home-mode isolated` isolates user config and session state from the eval.", false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := cliFlagSemanticsClaim(pad(tc.line)); got != tc.want {
+				t.Fatalf("cliFlagSemanticsClaim(%q) = %v, want %v", tc.line, got, tc.want)
+			}
+		})
+	}
+}
+
 func TestDiscoverClaimProofPlanAdapterProofRouteHintRoutesUnclassifiedLine(t *testing.T) {
 	doc := strings.Join([]string{
 		"# Demo",

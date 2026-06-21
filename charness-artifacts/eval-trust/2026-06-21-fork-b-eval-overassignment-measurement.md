@@ -66,7 +66,39 @@ Gates met: **G1** #5/#6 route `deterministic`; **G2** the synthetic eval-judgmen
 
 Measurement-fidelity note: the live population also grew by ~11 deterministic candidates that are claim-shaped sentences in this slice's own contract realignment (`facet-decomposition.md` Fork B paragraph) — self-extraction, separate from the routing change, the same effect the prior slices noted. The routing effect itself is the 2 eval→det flips above.
 
-Remaining (next Fork B slices): overlap eval→det is now 8 (the deferred shapes: schema-field-persistence #10, static-taxonomy #2, CLI-flag #3, status-routing #4, extraction #7, command-absence #9, R6-ish boundary #8). `human-auditable → deterministic` ×9 stays an R6/R12-scope question, not Fork B.
+Remaining after named-packet (next Fork B slices): overlap eval→det was 8 (the deferred shapes: schema-field-persistence #10, static-taxonomy #2, CLI-flag #3, status-routing #4, extraction #7, command-absence #9, R6-ish boundary #8). `human-auditable → deterministic` ×9 stays an R6/R12-scope question, not Fork B.
+
+## After: CLI-flag-semantics discriminator landed (2026-06-21, Fork B slice 2)
+
+Re-measured after `npm run claims:refresh:all` on an unchanged 488-candidate population (HEAD vs post-slice diff confirms no population shift).
+Build contract: [2026-06-21-fork-b-cli-flag-semantics.spec.md](./2026-06-21-fork-b-cli-flag-semantics.spec.md).
+
+| metric | before (Fork B slice 1) | after (Fork B slice 2) |
+| --- | --- | --- |
+| overlap `cautilus-eval → deterministic` | 8 | **6** (#3, #7 resolved) |
+| overlap agreeing count | 34 | **36** |
+| over-correction `deterministic → (key cautilus-eval)` | 5 | **5** (no new) |
+| over-correction `deterministic → (key human-auditable)` | 0 | **0** |
+| live `cautilus-eval` total | 168 | **165** (−3) |
+
+The `cliFlagSemanticsClaim` discriminator (long `--[a-z][a-z0-9-]+` flag token + gold-confirmed flag-effect verb `{keeps, copies, extracts}`, with a judgment-verb guard that allows the bare noun `judge`) flipped exactly **three** live candidates:
+- **#3** (`8e3786…`, gold `deterministic`, T2) — `keeps`/`copies` on the codex `--codex-home-mode`/`--codex-auth-mode` flags;
+- **#7** (`84f315…`, gold `deterministic`, T3) — `extracts` on `--output-text-key` ("so the judge can read" — bare-noun `judge`, intentionally allowed);
+- **`5eb5…`** (NOT-IN-KEY) — off-overlap collateral, `keeps writing to stdout` on the `--input`/`--output` canonical-filename contract; deterministic-shaped, recorded honestly, no gold answer to validate against.
+
+The over-flip surface held: the three flag-bearing eval claims that must stay `cautilus-eval` did — `78e2…` (flag-usage *when*-guidance, verb outside the set), `3d2a…` (`--output-dir` precedence, verb outside the set), and the decisive `a8e4…` (`doctor status --json` gives the Cautilus Agent a packet so it can **choose** a branch — genuine agent behavior, protected by the tight verb set, not the guard).
+
+Gates met: **G1** #3/#7 route `deterministic`; **G2** judgment-guard synthetic stays `cautilus-eval`, agent-behavior `a8e4` stays `cautilus-eval`, unit guard table green (bare-noun allowed, judgment-verb/`no-flag`/`isolates`-synonym rejected); **G3** overlap eval→det dropped 8→6, agreeing rose 34→36, zero new over-correction; **G4** live eval dropped by exactly 3 = two overlap flips (#3, #7) + one recorded off-overlap collateral (`5eb5`), no unrelated eval claim lost, population unchanged at 488.
+
+Accepted residual (recorded, fresh-eye critique): an agent-behavior flag claim that used a flag-effect verb (`extracts` etc.) *would* flip; zero such lines exist in the live corpus today, and this re-measurement confirms no third unexpected flip. If one appears later it surfaces as an unexpected over-flip and forces an actor-guard.
+
+Measurement-fidelity note: the clean routing measurement above (488 population) was taken before the contract realignment. After editing this slice's `facet-decomposition.md` paragraph and re-running `claims:refresh:all`, the population grew by exactly 1 deterministic self-extracted candidate (a claim-shaped sentence in the realignment prose), 488 → 489 — the same self-extraction effect the prior slices noted, separate from the routing change. The live `cautilus-eval` total stayed 165 and every gate above held unchanged.
+
+Authority-vs-flip note (2nd fresh-eye review, counterfactual-confirmed): in the live corpus `cliFlagSemanticsClaim` is the routing authority for **7** candidates, but only **3** are true flips (#3, #7, `5eb5`). The other 4 (`04ac0c0a`, `05cfeb55`, `40340b4a`, and this slice's own self-extracted prose `79c8f8c3`) were already `deterministic` via later switch cases, so the new case claims them earlier without changing their outcome. Disabling the discriminator reverts exactly the 3 flips and nothing else — so "drop of exactly 3" is complete, not a partial count.
+
+Overlap-denominator note: the fingerprint overlap denominator grew 54 → 56 across the two Fork B slices (population growth + self-extraction), so the slice-2 deltas (agreeing 34 → 36, eval→det 8 → 6) are reported on the current 56-fingerprint overlap, not slice 1's 54.
+
+Remaining (next Fork B slices): overlap eval→det is now **6** — the deferred shapes packet-emission prose #1, static-taxonomy #2, status-routing #4, R6-ish boundary #8, command-absence #9, schema-field-persistence #10. `human-auditable → deterministic` ×9 stays an R6/R12-scope question, not Fork B.
 
 ## Reproduction
 

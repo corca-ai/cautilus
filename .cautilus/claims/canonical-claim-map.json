@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:aaec258a39f181c41b1a306b4bf40bfc38ddeec4202ee1eb2a391ff252f2fea5"
+      "contentHash": "sha256:17fb0fc083e8fdca204d7c7406a7b2607bfca889159d854b77652ca6df8fe0dc"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "5837798b280cdae3f169b5f73cb361816466e4a6",
+  "claimsPacketGitCommit": "1e89616d146034b0bc96fc5c27fff20c503b4f78",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 488,
+  "claimsPacketCandidateCount": 489,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,24 +200,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 488,
+    "totalRawClaimCount": 489,
     "userRawClaimCount": 129,
     "userMappedToCanonicalCount": 0,
     "userUnmappedCount": 129,
-    "semanticReviewRecommendedCount": 413,
+    "semanticReviewRecommendedCount": 414,
     "userSemanticReviewRecommendedCount": 129,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 359,
+      "mapped-to-maintainer-canonical": 360,
       "user-review-needed": 129
     },
     "byAudience": {
-      "developer": 359,
+      "developer": 360,
       "user": 129
     },
     "byMappingConfidence": {
       "high": 75,
       "low": 148,
-      "medium": 265
+      "medium": 266
     },
     "byUserCanonicalClaimId": {},
     "byMaintainerCanonicalClaimId": {
@@ -226,7 +226,7 @@
       "M11": 46,
       "M12": 10,
       "M2": 23,
-      "M3": 93,
+      "M3": 94,
       "M4": 81,
       "M5": 33,
       "M6": 11,
@@ -583,7 +583,8 @@
       "claim-docs-contracts-facet-decomposition-md-64",
       "claim-docs-contracts-facet-decomposition-md-65",
       "claim-docs-contracts-facet-decomposition-md-73",
-      "claim-docs-contracts-facet-decomposition-md-75",
+      "claim-docs-contracts-facet-decomposition-md-78",
+      "claim-docs-contracts-facet-decomposition-md-80",
       "claim-docs-contracts-live-run-invocation-batch-md-28",
       "claim-docs-contracts-live-run-invocation-batch-md-77",
       "claim-docs-contracts-live-run-invocation-batch-md-166",
@@ -1032,7 +1033,7 @@
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 93,
+      "absorbedRawClaimCount": 94,
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
         "claim-agents-md-142",
@@ -1083,6 +1084,7 @@
         "claim-docs-contracts-facet-decomposition-md-56",
         "claim-docs-contracts-facet-decomposition-md-57",
         "claim-docs-contracts-facet-decomposition-md-67",
+        "claim-docs-contracts-facet-decomposition-md-73",
         "claim-docs-contracts-live-run-invocation-batch-md-77",
         "claim-docs-contracts-reporting-md-48",
         "claim-docs-contracts-runner-readiness-md-29",
@@ -1424,6 +1426,12 @@
           "requiresSemanticReview": false
         },
         {
+          "claimId": "claim-docs-contracts-facet-decomposition-md-73",
+          "claimFingerprint": "sha256:79c8f8c3a2612881ad856d60b19fd847cbab24630118ce6f99accea6fc431398",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
           "claimFingerprint": "sha256:57c666ca6aca677b5b250c22b235e4a0d037aaaa07bb1c66151ad9947217cabf",
           "mappingConfidence": "medium",
@@ -1690,21 +1698,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 75
+        "unknown": 76
       },
       "byReviewStatus": {
         "agent-reviewed": 27,
-        "heuristic": 66
+        "heuristic": 67
       },
       "byRecommendedProof": {
         "cautilus-eval": 27,
-        "deterministic": 50,
+        "deterministic": 51,
         "human-auditable": 16
       },
       "byMappingConfidence": {
         "high": 21,
         "low": 1,
-        "medium": 71
+        "medium": 72
       }
     },
     {
@@ -2785,7 +2793,7 @@
         "claim-docs-contracts-claim-discovery-workflow-md-572",
         "claim-docs-contracts-claim-discovery-workflow-md-655",
         "claim-docs-contracts-eval-judge-collaboration-md-119",
-        "claim-docs-contracts-facet-decomposition-md-73",
+        "claim-docs-contracts-facet-decomposition-md-78",
         "claim-docs-contracts-live-run-invocation-md-12",
         "claim-docs-contracts-live-run-invocation-md-193",
         "claim-docs-contracts-runner-readiness-md-117",
@@ -2844,7 +2852,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-73",
+          "claimId": "claim-docs-contracts-facet-decomposition-md-78",
           "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3019,8 +3027,8 @@
         "heuristic": 5
       },
       "byRecommendedProof": {
-        "cautilus-eval": 6,
-        "deterministic": 1,
+        "cautilus-eval": 5,
+        "deterministic": 2,
         "human-auditable": 1
       },
       "byMappingConfidence": {
@@ -3194,7 +3202,7 @@
         "claim-docs-contracts-facet-decomposition-md-46",
         "claim-docs-contracts-facet-decomposition-md-64",
         "claim-docs-contracts-facet-decomposition-md-65",
-        "claim-docs-contracts-facet-decomposition-md-75",
+        "claim-docs-contracts-facet-decomposition-md-80",
         "claim-docs-contracts-reporting-md-123",
         "claim-docs-contracts-reporting-md-125",
         "claim-docs-contracts-reporting-md-129",
@@ -3348,7 +3356,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-75",
+          "claimId": "claim-docs-contracts-facet-decomposition-md-80",
           "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -5141,7 +5149,7 @@
       "disposition": "user-review-needed",
       "mappingStatus": "needs-catalog-review",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
@@ -8597,16 +8605,16 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:5eb57231361d84a31fcd9c4a2635c4496177f908861629bc65c19913ddf41a5d",
       "canonicalClaimId": "M9",
-      "score": 14,
+      "score": 16,
       "runnerUpCanonicalClaimId": "M5",
-      "runnerUpScore": 12,
-      "scoreMargin": 2,
+      "runnerUpScore": 15,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -8619,10 +8627,10 @@
         "contract",
         "decide",
         "default",
+        "deterministic",
         "docs/contracts/active-run.md",
         "explicit",
-        "keep",
-        "output"
+        "keep"
       ]
     },
     {
@@ -12253,11 +12261,51 @@
     },
     {
       "claimId": "claim-docs-contracts-facet-decomposition-md-73",
-      "summary": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
+      "summary": "The tight verb set (not the guard) is the precision control that keeps a genuine agent-behavior flag claim (`doctor status --json` lets the Cautilus Agent choose a branch) in `cautilus-eval`; broadening the verb set is deferred and gold-gated.",
       "sourceRefs": [
         {
           "path": "docs/contracts/facet-decomposition.md",
           "line": 73,
+          "excerpt": "The tight verb set (not the guard) is the precision control that keeps a genuine agent-behavior flag claim (`doctor status --json` lets the Cautilus Agent choose a branch) in `cautilus-eval`; broadening the verb set is deferred and gold-gated."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:79c8f8c3a2612881ad856d60b19fd847cbab24630118ce6f99accea6fc431398",
+      "canonicalClaimId": "M3",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M8",
+      "runnerUpScore": 9,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "any",
+        "cautilu",
+        "deterministic",
+        "doctor",
+        "eval",
+        "json",
+        "keep",
+        "route",
+        "statu",
+        "subclaim"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-facet-decomposition-md-78",
+      "summary": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/facet-decomposition.md",
+          "line": 78,
           "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer."
         }
       ],
@@ -12291,12 +12339,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-75",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-80",
       "summary": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
       "sourceRefs": [
         {
           "path": "docs/contracts/facet-decomposition.md",
-          "line": 75,
+          "line": 80,
           "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only)."
         }
       ],

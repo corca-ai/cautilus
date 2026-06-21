@@ -1,9 +1,9 @@
 {
-  "candidateCount": 488,
+  "candidateCount": 489,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 486,
+    "matchedClaimCount": 488,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -1453,15 +1453,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic CLI flag-contract or golden-output proof for the named flag; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -1472,7 +1470,7 @@
       ],
       "summary": "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -1598,7 +1596,7 @@
       ],
       "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name \u003cname\u003e` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -2175,16 +2173,14 @@
       "evidenceStatus": "stale",
       "evidenceStatusReason": "Carried evidence requires re-review: evidence bundle evidence-review-output-text-key-2026-05-11.json does not list current claimId claim-docs-cli-reference-md-466 in createdForClaimIds.",
       "groupHints": [
-        "app/prompt",
         "audience:user",
-        "cautilus-eval",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
       "nextAction": "Refresh or re-review the stale evidence refs before treating this claim as satisfied.",
-      "recommendedEvalSurface": "app/prompt",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -2195,7 +2191,7 @@
       ],
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -2498,7 +2494,7 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep or add deterministic CLI flag-contract or golden-output proof for the named flag; route any behavior-quality subclaim to Cautilus eval separately.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -2510,7 +2506,7 @@
       ],
       "summary": "The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -\u003e evaluate observation` packet loop and keeps the `cautilus discover scenarios --json` catalog nearby only for proposal-input examples.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -2550,7 +2546,7 @@
       ],
       "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name \u003cname\u003e` for repo-scope validation.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -4886,15 +4882,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/repo",
+        "deterministic",
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic CLI flag-contract or golden-output proof for the named flag; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -4905,7 +4899,7 @@
       ],
       "summary": "Each consume-only slice decides which canonical filenames become the default for its `--input`-style and `--output`-style flags, records the decision inline in the Canonical Filenames table above, and preserves whatever pre-active-run backwards-compatible behavior the command already had (for example, `evaluate review prepare-input` keeps writing to stdout when neither an active run nor an explicit `--output` is available).",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "developer",
@@ -7740,8 +7734,37 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
+      "claimFingerprint": "sha256:79c8f8c3a2612881ad856d60b19fd847cbab24630118ce6f99accea6fc431398",
       "claimId": "claim-docs-contracts-facet-decomposition-md-73",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic CLI flag-contract or golden-output proof for the named flag; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The tight verb set (not the guard) is the precision control that keeps a genuine agent-behavior flag claim (`doctor status --json` lets the Cautilus Agent choose a branch) in `cautilus-eval`; broadening the verb set is deferred and gold-gated.",
+          "line": 73,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "The tight verb set (not the guard) is the precision control that keeps a genuine agent-behavior flag claim (`doctor status --json` lets the Cautilus Agent choose a branch) in `cautilus-eval`; broadening the verb set is deferred and gold-gated.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-78",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7758,7 +7781,7 @@
       "sourceRefs": [
         {
           "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
-          "line": 73,
+          "line": 78,
           "path": "docs/contracts/facet-decomposition.md"
         }
       ],
@@ -7770,7 +7793,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-75",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-80",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7787,7 +7810,7 @@
       "sourceRefs": [
         {
           "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
-          "line": 75,
+          "line": 80,
           "path": "docs/contracts/facet-decomposition.md"
         }
       ],
@@ -15497,7 +15520,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 359,
+      "developer": 360,
       "user": 129
     },
     "byClaimSemanticGroup": {
@@ -15509,31 +15532,31 @@
       "General product behavior": 1,
       "Improvement and improvement": 39,
       "Packets and reporting": 56,
-      "Quality gates": 30,
+      "Quality gates": 31,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 421
+      "unknown": 422
     },
     "byLifecycle": {
-      "new": 488
+      "new": 489
     },
     "byRecommendedProof": {
-      "cautilus-eval": 168,
-      "deterministic": 197,
+      "cautilus-eval": 165,
+      "deterministic": 201,
       "human-auditable": 123
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 377
+      "heuristic": 378
     },
     "byVerificationReadiness": {
       "blocked": 15,
       "needs-alignment": 59,
       "needs-scenario": 10,
-      "ready-for-proof": 404
+      "ready-for-proof": 405
     }
   },
   "discoveryEngine": {
@@ -15564,7 +15587,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:e0ddc8c7583f1b1f087ba6bee0356fef96ac7c82c618d98d07aa736204e9ecfc",
+    "implementationHash": "sha256:d622c4366f3b93c48a528e3dd20e1ee8193961f9f9c69ef657d7e86d3000403b",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v5"
@@ -15732,7 +15755,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "5837798b280cdae3f169b5f73cb361816466e4a6",
+  "gitCommit": "1e89616d146034b0bc96fc5c27fff20c503b4f78",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -17618,7 +17641,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:28ef82f282516c82e3c4facf8089c6fcbe267ce9bb2e5bfdb061d7fafd634fc7",
+      "contentHash": "sha256:c8795b640afccf973dfa01af45630517c0215a20f735d69a430188fc5986126f",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
