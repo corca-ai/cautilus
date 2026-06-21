@@ -1,3 +1,7 @@
+---
+type: promise
+---
+
 # Bounded Improvement
 
 When a behavior target needs improvement, the user needs bounded search that preserves intent, budget, protected checks, and reviewable changes.

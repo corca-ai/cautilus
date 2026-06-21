@@ -12,9 +12,4 @@ Key: `rule.reviewable-artifacts`.
 
 ## Link Checks
 
-```run:shell
-# Verify the current user-facing reviewable-artifacts page exists.
-test -f docs/specs/user/reviewable-artifacts.spec.md
-```
-
 Current evidence details live in [Evidence State](../evidence/index.spec.md).

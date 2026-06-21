@@ -1,3 +1,7 @@
+---
+type: promise
+---
+
 # A Testable Agent
 
 Before you can prove an agent's behavior, you need a clean headless runner for Cautilus to drive and an honest verdict on whether that runner is fit for the surface you want to prove.

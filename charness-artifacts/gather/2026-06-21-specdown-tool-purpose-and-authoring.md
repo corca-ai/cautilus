@@ -45,7 +45,7 @@ Documents are **nodes (atoms: one document = one node, no heading-level refs; fr
 
 - Declare `trace.types` (e.g. `theme, epic, story, at`) and `trace.edges` with `from`/`to`/`count` (UML multiplicity like `"1 → 1..*"`), optional `acyclic`/`transitive`.
 - Edge direction = UML dependency: `from` is the dependent, `to` is the dependency; the `from` doc contains the link.
-- Author edges as standard Markdown links with an `<edge_name>::` prefix in the link text: `[covers::Login Story](../stories/login.md)`. Plain links without `name::` are pure **navigation** links (no trace semantics).
+- Author edges as standard Markdown links with an `<edge_name>::` prefix in the link text. Concretely: a normal Markdown link whose visible text begins with `covers::` (for example link text `covers::Login Story` with destination `../stories/login.md`) records a `covers` edge. The literal bracket/paren link form is described in words here rather than written out, so repo link checkers and `specdown trace` do not treat this documentation example as a live link. Plain links without a `name::` prefix are pure **navigation** links (no trace semantics).
 - `specdown trace --strict` fails if any node violates declared cardinality (e.g. a story with no acceptance-test link, an orphan, a cardinality breach). "Everything else is derived."
 - Cross-type edges are inherently acyclic by the type system.
 - A document with a `type` not in config is an error; untyped docs can be navigation targets but not trace sources/targets.

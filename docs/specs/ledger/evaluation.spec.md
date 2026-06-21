@@ -14,9 +14,3 @@ Behavior Evaluation gives users a bounded way to evaluate intentful behavior acr
 
 Evidence status: open gap.
 Selected evidence bundles are shown in the user view without rerunning expensive eval loops, and maintainer routes own fixture and runner proof.
-
-```run:shell
-# Verify evaluation links point to existing docs.
-test -f docs/specs/user/evaluation.spec.md
-test -f docs/specs/contracts/evaluation-surfaces-runners.spec.md
-```

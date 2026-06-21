@@ -60,6 +60,41 @@ function runFullSpecdown(repoRoot) {
 	runCommand("specdown", ["run", "-quiet"], { cwd: repoRoot });
 }
 
+// Validate the typed traceability graph (specdown.json `trace`). This is the
+// principled replacement for hand-written reachability source guards: it fails
+// when a typed promise has no apex badge edge or an edge violates its declared
+// from/to type. Output is captured so a valid graph prints one summary line
+// instead of the full JSON; on failure the raw validation errors are surfaced.
+function runTraceStrict(repoRoot) {
+	const result = spawnSync("specdown", ["trace", "-strict"], { cwd: repoRoot, encoding: "utf-8" });
+	if (result.error) {
+		throw result.error;
+	}
+	if (result.status !== 0) {
+		process.stderr.write(result.stdout ?? "");
+		process.stderr.write(result.stderr ?? "");
+		process.exit(result.status ?? 1);
+	}
+	let docs = 0;
+	let edges = 0;
+	try {
+		const graph = JSON.parse(result.stdout);
+		docs = graph.documents?.length ?? 0;
+		edges = graph.directEdges?.length ?? 0;
+	} catch {
+		// Non-JSON output on success is unexpected; fall through to the non-vacuity guard.
+	}
+	// Non-vacuity guard: `specdown trace -strict` exits 0 when no document carries a
+	// `type:`, so the gate would pass without validating any cardinality (e.g. if the
+	// apex lost its frontmatter). A standing gate that can pass on an empty graph is
+	// not load-bearing, so fail explicitly when zero typed documents are found.
+	if (docs < 1) {
+		process.stderr.write("specdown trace -strict: no typed documents found — the trace gate would pass vacuously\n");
+		process.exit(1);
+	}
+	process.stdout.write(`specdown trace -strict: ${docs} typed doc(s), ${edges} edge(s), graph valid\n`);
+}
+
 function runFocusedSpecdown(repoRoot, target, index) {
 	const config = readSpecdownConfig(repoRoot);
 	const targetEntry = repoRelative(repoRoot, target);
@@ -88,6 +123,7 @@ export function main(argv = process.argv.slice(2)) {
 
 		if (options.targets.length === 0) {
 			runFullSpecdown(repoRoot);
+			runTraceStrict(repoRoot);
 			return;
 		}
 

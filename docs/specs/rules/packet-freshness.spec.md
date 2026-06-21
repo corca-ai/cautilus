@@ -13,8 +13,3 @@ Key: `rule.packet-freshness`.
 ## Link Checks
 
 Current evidence details live in [Evidence State](../evidence/index.spec.md).
-
-```run:shell
-# Verify the maintainer routes that currently own packet-freshness proof exist.
-node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/contracts/evidence-state-artifacts.spec.md", "docs/specs/contracts/reporting-review-variants.spec.md"]) { if (!fs.existsSync(path)) throw new Error("missing " + path); }'
-```

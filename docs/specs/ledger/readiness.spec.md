@@ -14,9 +14,3 @@ Readiness means a user can tell whether Cautilus can safely operate in the selec
 
 Evidence status: open gap.
 The user view has strong executable readiness examples, while the maintainer view still calls out absence proof for readiness not implying behavior-claim satisfaction.
-
-```run:shell
-# Verify readiness links point to existing docs.
-test -f docs/specs/user/doctor-readiness.spec.md
-test -f docs/specs/contracts/readiness-runtime-status.spec.md
-```

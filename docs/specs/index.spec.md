@@ -1,3 +1,7 @@
+---
+type: apex
+---
+
 # Cautilus, Proven On Itself
 
 You build agents — coding assistants, chatbots, skills, workflows — and you need to know they do what you intend.
@@ -25,14 +29,14 @@ That split is the point: this page shows the real state of the work, and the [Ho
 
 Before your first evaluation, you can see exactly what's ready and what to set up next — and you'll get the same clear answer every run.
 
-Proof: [Readiness spec](user/doctor-readiness.spec.md) (builds the CLI, runs `cautilus doctor` on sample repos, asserts the JSON and exit codes).
+Proof: [badges::Readiness spec](user/doctor-readiness.spec.md) (builds the CLI, runs `cautilus doctor` on sample repos, asserts the JSON and exit codes).
 CLI ↔ Agent: the CLI runs the checks and prints the verdict; the agent suggests which workflow to run next.
 
 ### Claim Discovery — proven
 
 Point Cautilus at your repo and you get back every promise your docs make, as a worklist — each one linked to the exact line that declares it, and marked proven only once real evidence backs it.
 
-Proof: [Claim Discovery spec](user/claim-discovery.spec.md) (runs `cautilus discover claims` on a sample repo and asserts the routing output).
+Proof: [badges::Claim Discovery spec](user/claim-discovery.spec.md) (runs `cautilus discover claims` on a sample repo and asserts the routing output).
 CLI ↔ Agent: the CLI reads your docs and drafts a first pass; the agent sharpens it, groups it, and decides what to do next.
 
 ### Behavior Evaluation — proven on the dev coding-agent surfaces; app-ship surfaces in Proof Debt
@@ -43,7 +47,7 @@ The app you ship: the `app/chat` surface is now evaluated on an anonymized real 
 That closes external validity and the intent judge on that surface, and the replay now includes natural sound secret-handling, memory-continuity, and clarification-first captures plus a natural unsound artifact-fidelity capture; what stays deferred there is app-agent liveness, because the responses are replayed from the production log rather than re-run live.
 The `app/prompt` surface now has a fresh backend probe over the checked-in tagline fixture plus a load-bearing blind intent judge over that probe: fixture and Codex live backends pass, Claude live backend exposes the current string-fragment matcher boundary by returning `reject` for a semantically close response that does not contain the exact expected fragment, and the blind intent judge grades both live backend responses sound while rejecting a constructed semantic control; product-runner proof remains deferred — see Proof Debt.
 
-Proof: the on-demand live proofs `npm run proof:behavior-eval:live` and `npm run proof:skill-orientation:live` (`scripts/on-demand/behavior-eval-live-proof.mjs`, `scripts/on-demand/skill-orientation-live-proof.mjs`) are the checked-in executable specs that run the dev agents live and assert; their operator-witnessed captures and blind verdicts are replayed deterministically by `npm run test:on-demand` and projected by [the Behavior Evaluation spec](user/evaluation.spec.md) via `npm run lint:specs`, so the displayed invariant matches the graded one. The app/chat replay, app/prompt backend probe, and app/prompt intent-judge verdicts are also replayed by `npm run test:on-demand` and projected by the same spec, but both app surfaces still carry the Proof Debt named below. The live dev proofs run on demand — not in the default `npm run verify` — and each live rerun costs a real agent run.
+Proof: the on-demand live proofs `npm run proof:behavior-eval:live` and `npm run proof:skill-orientation:live` (`scripts/on-demand/behavior-eval-live-proof.mjs`, `scripts/on-demand/skill-orientation-live-proof.mjs`) are the checked-in executable specs that run the dev agents live and assert; their operator-witnessed captures and blind verdicts are replayed deterministically by `npm run test:on-demand` and projected by [badges::the Behavior Evaluation spec](user/evaluation.spec.md) via `npm run lint:specs`, so the displayed invariant matches the graded one. The app/chat replay, app/prompt backend probe, and app/prompt intent-judge verdicts are also replayed by `npm run test:on-demand` and projected by the same spec, but both app surfaces still carry the Proof Debt named below. The live dev proofs run on demand — not in the default `npm run verify` — and each live rerun costs a real agent run.
 Reject-capability: the dev-surface judges are load-bearing regression guards, not rubber stamps — a checked-in invariant (`an always-sound judge FAILS every decomposed claim`, `scripts/agent-runtime/reasoning-soundness-judge.test.mjs`) fails the gate if the judge stops discriminating, and the same composite catches a deliberately-worse routing variant across three distinct pinned behaviors.
 A population of *natural* unsound cases is impractical to harvest on these surfaces: across ~44 real harvested responses over two model tiers and easy and hard traps, zero natural semantic unsound occurred — a property of current capable models, not a weakness of the judge — so the maintainer accepted constructed-control reject-capability plus the natural-sound behavior harvest as the proven standard (2026-06-19, recorded in [the judge-collaboration contract](../contracts/eval-judge-collaboration.md)), with the natural-population bar kept as a known, possibly-permanent limitation.
 That harvest is positive context, not a gate: its raw responses live in session transcripts while the prompts, objective truths, and tally are pre-registered in the frontier evidence — the load-bearing gate is the checked-in `always-sound judge FAILS` invariant plus the two on-demand live proofs, not the harvest count.
@@ -56,7 +60,7 @@ You hand Cautilus a prompt that's failing your eval and it rewrites the prompt u
 You approve every change before it ships.
 This is proven live on the dev/skill surface: `npm run proof:improve:live` constructs a degraded cautilus-agent orientation prompt, confirms with a live agent that the seed control FAILS the held-out orientation scenario, then runs a real bounded `cautilus improve search` (live codex mutation plus a worktree candidate eval) and asserts that a mutated candidate it was never tuned on recovers the held-out behavior (seed scores 0, the winning candidate scores 100) — producing a reviewable proposal while the working-tree prompt is restored and nothing degraded or mutated ever ships.
 
-Proof: [Bounded Improvement spec](user/improvement.spec.md) (`scripts/on-demand/improve-live-proof.mjs`, the checked-in executable spec that runs the loop live and asserts; its operator-witnessed capture is replayed deterministically by `npm run test:on-demand` and projected by the spec via `npm run lint:specs`). The live loop runs on demand — not in the default `npm run verify` — and each live rerun costs a real agent run.
+Proof: [badges::Bounded Improvement spec](user/improvement.spec.md) (`scripts/on-demand/improve-live-proof.mjs`, the checked-in executable spec that runs the loop live and asserts; its operator-witnessed capture is replayed deterministically by `npm run test:on-demand` and projected by the spec via `npm run lint:specs`). The live loop runs on demand — not in the default `npm run verify` — and each live rerun costs a real agent run.
 CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it.
 
 ## Why You Can Trust It
@@ -69,7 +73,7 @@ So everything on this page is the real state of the work — which is what makes
 You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against.
 This is proven **deterministic**: on every `npm run lint:specs` the spec re-runs the packet commands, renders the readable views, and asserts on the fresh output — no saved bundle is projected.
 
-Proof: [Reviewable Artifacts spec](user/reviewable-artifacts.spec.md) (regenerates the agent-status, claim-status, validation, and eval-plan packets live, renders two readable views and asserts each preserves the JSON packet as the audit source, and seeds a stale candidate so the status report surfaces stale, blocked, and missing evidence).
+Proof: [badges::Reviewable Artifacts spec](user/reviewable-artifacts.spec.md) (regenerates the agent-status, claim-status, validation, and eval-plan packets live, renders two readable views and asserts each preserves the JSON packet as the audit source, and seeds a stale candidate so the status report surfaces stale, blocked, and missing evidence).
 CLI ↔ Agent: the CLI emits the packets and renders the views; the agent reopens them to decide what to inspect or do next.
 
 ### Host Ownership — proven
@@ -78,7 +82,7 @@ Everything specific to you — your prompts, fixtures, and policy — stays in y
 This is proven **human-auditable**: an operator ran `npm run consumer:onboard:smoke` and vouches for a fresh external consumer installing Cautilus, initializing adapter wiring, reaching doctor readiness, and running one bounded `evaluate fixture` in a temporary git repo whose adapter, fixture, and runner are all host-owned.
 The default `npm run lint:specs` replays the operator-witnessed capture; the live re-run is opt-in and regenerates it without drift. There is no automated judge — the onboarding outcome is a deterministic invariant the operator witnessed.
 
-Proof: [Host Ownership spec](user/ownership.spec.md) (projects `fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json`, the operator-witnessed `consumer:onboard:smoke` capture).
+Proof: [badges::Host Ownership spec](user/ownership.spec.md) (projects `fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json`, the operator-witnessed `consumer:onboard:smoke` capture).
 CLI ↔ Agent: the CLI runs the onboarding and records the invariant; the agent reads it and routes the next step.
 
 ### A Testable Agent — proven
@@ -88,7 +92,7 @@ This is proven **deterministic**: on every `npm run lint:specs` the spec re-runs
 The Cautilus agent half is proven *prepared*: the `cautilus-agent` skill routes runner creation and assessment, and a checked-in dogfood fixture plus an executed audit test grade that the flow asks for readiness orientation, a headless-runner build, assessment authoring, and stop discipline.
 What stays deferred is a live agent-builds-a-runner episode — named in Proof Debt — so the badge does not read as if a live agent already built and graded a runner.
 
-Proof: [A Testable Agent spec](user/a-testable-agent.spec.md) (live runner-readiness verdict, substantive assessment fixtures, required-runner-capability planning, controlled stale-assessment detection, and a prepared-skill check whose audit test runs in `npm run test:node`). Background: [runner readiness contract](../contracts/runner-readiness.md).
+Proof: [badges::A Testable Agent spec](user/a-testable-agent.spec.md) (live runner-readiness verdict, substantive assessment fixtures, required-runner-capability planning, controlled stale-assessment detection, and a prepared-skill check whose audit test runs in `npm run test:node`). Background: [runner readiness contract](../contracts/runner-readiness.md).
 CLI ↔ Agent: the CLI emits the readiness verdict and names the required runner capability and scaffold source; the agent sequences the build-and-assess flow and decides when the proof is strong enough.
 
 ## Honesty Audit

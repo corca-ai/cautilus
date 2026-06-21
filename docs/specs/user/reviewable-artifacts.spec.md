@@ -1,3 +1,7 @@
+---
+type: promise
+---
+
 # Reviewable Artifacts
 
 After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory.

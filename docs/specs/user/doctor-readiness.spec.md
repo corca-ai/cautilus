@@ -1,3 +1,7 @@
+---
+type: promise
+---
+
 # Readiness
 
 Before a repo spends agent time on claim discovery, evaluation, or improvement, the user needs to know whether Cautilus can safely operate there and what setup is still missing.

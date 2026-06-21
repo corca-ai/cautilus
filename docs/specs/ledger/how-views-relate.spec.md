@@ -33,5 +33,6 @@ The model favors stable concepts and short commitments over explanation of past 
 
 ## Traceability
 
-The current traceability contract is Markdown reachability plus executable Specdown checks.
-Typed Specdown traceability is tracked as `gap.traceability-config` in [Proof Gaps](../evidence/gaps.spec.md).
+The traceability contract is typed Specdown traceability, configured in `specdown.json` and validated by `specdown trace -strict`.
+Today the typed spine is the apex and the seven promises, joined by `badges::`-prefixed apex-to-promise edges; promise-to-rule and promise-to-contract edges are a later slice.
+Markdown reachability (`scripts/check-specs.mjs`) still runs alongside it until trace is proven equivalent.

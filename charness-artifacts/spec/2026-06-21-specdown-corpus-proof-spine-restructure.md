@@ -137,6 +137,22 @@ Slice 1, in order:
 6. Wire `specdown trace -strict` into `npm run lint:specs` (or `verify`) as a standing gate — only after step 5 confirms it is non-vacuous and load-bearing.
 7. Run `claims:refresh:all` (frontmatter edits change claim-source content), then `npm run verify` + `audit:surface:check`; record before/after `specdown run` timing in the closeout.
 
+## Slice 1 Delivered (2026-06-21)
+
+Executed and verified (`npm run verify` green, `npm run hooks:check` ready, honesty audit 7/7 honest):
+
+- `specdown.json` gained a `trace` block: `types: [apex, promise]`, edge `badges` (apex→promise, count `1 → 1..*`), and an `ignore` list covering old/archive, the generated `.md` pages, and the repo-wide non-spec trees (`charness-artifacts/**`, `node_modules/**`, `.git/**`, `.artifacts/**`).
+- The apex (`type: apex`) and all seven promise leaves (`type: promise`) are typed; the seven apex "Proof:" links carry the `badges::` prefix, so `specdown trace -strict` validates 8 docs / 7 edges.
+- `scripts/lint-specs.mjs` wires `specdown trace -strict` into the standing `lint:specs`, with a non-vacuity guard (fails if zero typed docs) and two new tests covering the full-run path.
+- 17 Class A reachability guard blocks were deleted across ledger/rules/evidence/contracts pages; the Class B content checks (`evidence/index`, `ledger/improvement` json, `user/claim-discovery` yaml) and Class C `!fail` gap markers were retained. (The inventory was 17 reachability guards, not the 15 first estimated — the grep, not the prior Explore pass, was authoritative.)
+- `gap.traceability-config` is closed: its `!fail` block and gaps-table row are removed, and the two stale references (`names-and-keys`, `how-views-relate`) are updated.
+
+Deviations from the first draft (recorded so the next session does not re-discover them):
+
+- SCOPE NARROWED: Slice 1 delivers only the apex→promise `badges` spine. The `rule` and `contract` node types and the `governed-by` / `implemented-by` edges are deferred to a follow-on slice (with the multi-view collapse, since the promise↔rule/contract relationships currently live in the ledger/index pages). The Success Criteria line "a reader can trace any promise to its rules, contracts, and proof" is the FULL-restructure goal, not Slice 1's bar.
+- REGRESSION (understood, deterministic): editing claim-source docs (frontmatter) reclassified one `ownership.spec.md` candidate from `human-align-surfaces` to `agent-design-scenario`, taking the live status summary from 6 to 7 buckets. `user/claim-discovery.spec.md` asserts on this live bucketing, so its doctest + check table were synced to the true current 7-bucket state. This is honest current-state mirroring, not check-gaming.
+- RESIDUAL RISK: `user/claim-discovery.spec.md` (and any spec asserting on this repo's live `.cautilus/claims/*` aggregates) is brittle — every future `docs/specs/**` edit can perturb the bucketing and re-break it. The later slices should consider making such assertions structural (subset / count-floor) rather than exact-ordered, so the restructure does not keep tripping this coupling.
+
 ## Migration Map (full target, for context)
 
 - Slice 1 (this slice): traceability foundation + source-guard removal, no load-bearing moves.

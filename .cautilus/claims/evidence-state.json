@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:5b60f232dfe56406600bc4e92dc09d0101116adb5b6354e788faa7aa9e94141a",
+    "claimsHash": "sha256:e46b89634d118bb94475c94843d6337ef7025041974cd8ca649be3a1adafc7be",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:e4c808c1f46355d543caa607d6367b47a31fc6cf4b1be3769e038b02223d8a89",
+    "statusHash": "sha256:a988e73008f6c8c81c9af48a513d675ba4edcec3610dd2c18abaf638f43e55cd",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,10 +22,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "82e6e2c65e8ac322450ccd17d7187b627d7a374f",
+    "currentGitCommit": "1d321cf297be1bd772d011a7af0a465705f987bb",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "82e6e2c65e8ac322450ccd17d7187b627d7a374f",
+    "packetGitCommit": "1d321cf297be1bd772d011a7af0a465705f987bb",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -37,13 +37,14 @@
       "unknown": 263
     },
     "byRecommendedProof": {
-      "cautilus-eval": 125,
+      "cautilus-eval": 126,
       "deterministic": 176,
-      "human-auditable": 106
+      "human-auditable": 105
     },
     "byVerificationReadiness": {
       "blocked": 35,
-      "needs-alignment": 42,
+      "needs-alignment": 41,
+      "needs-scenario": 1,
       "ready-for-proof": 330
     },
     "byReviewStatus": {
@@ -53,20 +54,22 @@
     }
   },
   "openCautilusEval": {
-    "total": 121,
+    "total": 122,
     "readyForProof": 121,
-    "needsScenario": 0,
+    "needsScenario": 1,
     "bySurface": {
-      "(none)": 6,
+      "(none)": 7,
       "app/chat": 4,
       "app/prompt": 9,
       "dev/repo": 74,
       "dev/skill": 28
     },
     "byReadiness": {
+      "needs scenario": 1,
       "ready for proof": 121
     },
     "rawByReadiness": {
+      "needs-scenario": 1,
       "ready-for-proof": 121
     },
     "proofReadySamples": [
@@ -143,7 +146,17 @@
         "summary": "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home."
       }
     ],
-    "scenarioSamples": []
+    "scenarioSamples": [
+      {
+        "claimId": "claim-docs-specs-user-ownership-spec-md-7",
+        "source": "docs/specs/user/ownership.spec.md:7",
+        "surface": "surface undecided",
+        "readiness": "needs scenario",
+        "rawReadiness": "needs-scenario",
+        "review": "agent-reviewed",
+        "summary": "Before Cautilus can evaluate behavior honestly, the user needs host-specific prompts, models, credentials, runtime wiring, and acceptance policy to stay in the host repo."
+      }
+    ]
   },
   "actionBuckets": [
     {
@@ -187,14 +200,26 @@
       "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
     },
     {
-      "id": "human-align-surfaces",
-      "count": 42,
-      "actor": "human",
+      "id": "agent-design-scenario",
+      "count": 1,
+      "actor": "agent",
       "evidence": {
-        "unknown": 42
+        "unknown": 1
       },
       "review": {
-        "agent-reviewed": 18,
+        "agent-reviewed": 1
+      },
+      "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
+    },
+    {
+      "id": "human-align-surfaces",
+      "count": 41,
+      "actor": "human",
+      "evidence": {
+        "unknown": 41
+      },
+      "review": {
+        "agent-reviewed": 17,
         "heuristic": 24
       },
       "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."

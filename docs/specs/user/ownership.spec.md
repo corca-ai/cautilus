@@ -1,3 +1,7 @@
+---
+type: promise
+---
+
 # Host Ownership
 
 Before Cautilus can evaluate behavior honestly, the user needs host-specific prompts, models, credentials, runtime wiring, and acceptance policy to stay in the host repo.

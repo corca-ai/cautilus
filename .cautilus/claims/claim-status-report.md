@@ -9,7 +9,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Status packet: .cautilus/claims/status-summary.json
 - Candidate count: 407
 - Source count: 74
-- Packet source commit: 82e6e2c65e8ac322450ccd17d7187b627d7a374f
+- Packet source commit: 1d321cf297be1bd772d011a7af0a465705f987bb
 - Snapshot notice: gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.
 - Git state snapshot: fresh; stale=no
 - Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded
@@ -21,11 +21,11 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 | --- | --- |
 | Evidence | satisfied: 144, unknown: 263 |
 | Review | agent-reviewed: 199, heuristic: 206, human-reviewed: 2 |
-| Recommended proof | cautilus-eval: 125, deterministic: 176, human-auditable: 106 |
-| Verification readiness | blocked: 35, needs-alignment: 42, ready-for-proof: 330 |
+| Recommended proof | cautilus-eval: 126, deterministic: 176, human-auditable: 105 |
+| Verification readiness | blocked: 35, needs-alignment: 41, needs-scenario: 1, ready-for-proof: 330 |
 | Audience | developer: 293, user: 114 |
 
-Review readiness: heuristicClaimsReadyForReview: 182, needsAlignment: 42, needsScenario: 0.
+Review readiness: heuristicClaimsReadyForReview: 182, needsAlignment: 41, needsScenario: 1.
 
 ## Canonical Claim Map
 
@@ -35,9 +35,9 @@ Review readiness: heuristicClaimsReadyForReview: 182, needsAlignment: 42, needsS
 - User claims mapped to U1-U8: 114
 - User claims not mapped to U1-U8: 0
 - User mappings recommended for semantic sampling: 41
-- Maintainer claims mapped to M1-M34: M1: 8, M10: 11, M11: 39, M12: 11, M2: 19, M3: 73, M4: 71, M5: 26, M6: 6, M7: 8, M8: 14, M9: 7
+- Maintainer claims mapped to M1-M34: M1: 6, M10: 11, M11: 40, M12: 11, M2: 19, M3: 73, M4: 72, M5: 26, M6: 6, M7: 8, M8: 14, M9: 7
 - All raw claims by disposition: mapped-to-maintainer-canonical: 293, mapped-to-user-canonical: 114
-- Mapping confidence: high: 77, low: 20, medium: 310
+- Mapping confidence: high: 77, low: 21, medium: 309
 
 | User claim | Title | Raw claims | Evidence | Review |
 | --- | --- | --- | --- | --- |
@@ -52,17 +52,17 @@ Review readiness: heuristicClaimsReadyForReview: 182, needsAlignment: 42, needsS
 
 | Maintainer claim | Title | Raw claims | Proof | Evidence | Review |
 | --- | --- | --- | --- | --- | --- |
-| M1 | Contract Cross-Cutting Rule Policy | 8 | cautilus-eval: 2, human-auditable: 6 | unknown: 8 | agent-reviewed: 1, heuristic: 7 |
+| M1 | Contract Cross-Cutting Rule Policy | 6 | cautilus-eval: 2, human-auditable: 4 | unknown: 6 | heuristic: 6 |
 | M2 | Claim Discovery Workflow | 19 | deterministic: 9, human-auditable: 10 | satisfied: 8, unknown: 11 | agent-reviewed: 11, heuristic: 8 |
 | M3 | Binary And Skill Boundary | 73 | cautilus-eval: 21, deterministic: 35, human-auditable: 17 | satisfied: 18, unknown: 55 | agent-reviewed: 28, heuristic: 44, human-reviewed: 1 |
-| M4 | Adapter And Host Ownership | 71 | cautilus-eval: 31, deterministic: 20, human-auditable: 20 | satisfied: 18, unknown: 53 | agent-reviewed: 28, heuristic: 43 |
+| M4 | Adapter And Host Ownership | 72 | cautilus-eval: 31, deterministic: 20, human-auditable: 21 | satisfied: 18, unknown: 54 | agent-reviewed: 29, heuristic: 43 |
 | M5 | Evaluation Surfaces And Runners | 26 | cautilus-eval: 12, deterministic: 13, human-auditable: 1 | satisfied: 13, unknown: 13 | agent-reviewed: 13, heuristic: 13 |
 | M6 | Evidence State And Review Artifacts | 6 | deterministic: 3, human-auditable: 3 | satisfied: 3, unknown: 3 | agent-reviewed: 3, heuristic: 3 |
 | M7 | Improvement Loop | 8 | cautilus-eval: 3, deterministic: 3, human-auditable: 2 | satisfied: 2, unknown: 6 | agent-reviewed: 5, heuristic: 3 |
 | M8 | Readiness And Runtime Status | 14 | cautilus-eval: 2, deterministic: 10, human-auditable: 2 | satisfied: 10, unknown: 4 | agent-reviewed: 12, heuristic: 2 |
 | M9 | Active Run And Workspace Lifecycle | 7 | cautilus-eval: 5, deterministic: 1, human-auditable: 1 | satisfied: 1, unknown: 6 | agent-reviewed: 3, heuristic: 4 |
 | M10 | Live Invocation Runtime | 11 | cautilus-eval: 5, deterministic: 3, human-auditable: 3 | satisfied: 2, unknown: 9 | agent-reviewed: 5, heuristic: 6 |
-| M11 | Reporting And Review Variants | 39 | cautilus-eval: 4, deterministic: 23, human-auditable: 12 | satisfied: 18, unknown: 21 | agent-reviewed: 20, heuristic: 19 |
+| M11 | Reporting And Review Variants | 40 | cautilus-eval: 4, deterministic: 23, human-auditable: 13 | satisfied: 18, unknown: 22 | agent-reviewed: 20, heuristic: 20 |
 | M12 | Scenario History And Proposal Normalization | 11 | cautilus-eval: 2, deterministic: 6, human-auditable: 3 | satisfied: 5, unknown: 6 | agent-reviewed: 7, heuristic: 3, human-reviewed: 1 |
 | M13 | Evidence State And Review Artifacts | 0 | - | - | - |
 | M14 | Reporting And Review Variants | 0 | - | - | - |
@@ -91,11 +91,11 @@ Maintainer semantic sampling queue:
 
 | Maintainer claim | Title | Sample raw claims |
 | --- | --- | --- |
-| M1 | Contract Cross-Cutting Rule Policy | claim-agents-md-101 (medium), claim-docs-specs-index-spec-md-164 (low), claim-docs-contracts-runner-readiness-md-172 (low), claim-docs-specs-ledger-index-spec-md-4 (medium) |
+| M1 | Contract Cross-Cutting Rule Policy | claim-docs-contracts-runner-readiness-md-172 (low), claim-docs-specs-ledger-index-spec-md-4 (medium), claim-docs-contracts-realsurface-judge-convergence-md-90 (low), claim-docs-contracts-skill-surface-judge-convergence-md-77 (medium) |
 | M2 | Claim Discovery Workflow | claim-docs-master-plan-md-78 (medium), claim-docs-contracts-claim-discovery-workflow-md-5 (medium), claim-docs-contracts-claim-discovery-workflow-md-16 (medium), claim-docs-contracts-claim-discovery-workflow-md-128 (medium) |
 | M3 | Binary And Skill Boundary | claim-agents-md-100 (medium), claim-agents-md-142 (medium), claim-docs-contracts-adapter-contract-md-494 (low), claim-docs-contracts-adapter-contract-md-552 (medium) |
-| M4 | Adapter And Host Ownership | claim-agents-md-12 (medium), claim-agents-md-29 (medium), claim-agents-md-95 (medium), claim-docs-contracts-adapter-contract-md-3 (medium) |
-| M5 | Evaluation Surfaces And Runners | claim-docs-contracts-adapter-contract-md-220 (medium), claim-docs-master-plan-md-85 (medium), claim-docs-specs-index-spec-md-51 (medium), claim-docs-specs-index-spec-md-73 (medium) |
+| M4 | Adapter And Host Ownership | claim-agents-md-12 (medium), claim-agents-md-29 (medium), claim-agents-md-95 (medium), claim-agents-md-101 (medium) |
+| M5 | Evaluation Surfaces And Runners | claim-docs-contracts-adapter-contract-md-220 (medium), claim-docs-master-plan-md-85 (medium), claim-docs-specs-index-spec-md-55 (medium), claim-docs-specs-index-spec-md-77 (medium) |
 | M6 | Evidence State And Review Artifacts | claim-docs-contracts-claim-discovery-workflow-md-361 (medium), claim-docs-contracts-claim-discovery-workflow-md-739 (medium), claim-docs-contracts-claim-discovery-workflow-md-740 (medium), claim-docs-contracts-claim-discovery-workflow-md-741 (medium) |
 | M7 | Improvement Loop | claim-agents-md-32 (medium), claim-docs-contracts-reporting-md-170 (low), claim-docs-contracts-improvement-md-34 (medium), claim-docs-contracts-runtime-fingerprint-improvement-md-47 (low) |
 | M8 | Readiness And Runtime Status | claim-docs-contracts-claim-discovery-workflow-md-18 (medium), claim-docs-contracts-claim-discovery-workflow-md-47 (medium), claim-docs-contracts-claim-discovery-workflow-md-561 (medium), claim-docs-contracts-claim-discovery-workflow-md-644 (medium) |
@@ -108,9 +108,10 @@ Semantic sampling recommended for 330 raw claim(s): claim-agents-md-12, claim-ag
 
 ## Next Work
 
-- Human review is still meaningful for human-align-surfaces=42, human-confirm-or-decompose=31, split-or-defer=35.
+- Human review is still meaningful for human-align-surfaces=41, human-confirm-or-decompose=31, split-or-defer=35.
 - Agent next proof work: connect deterministic gates for 34 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 121 claim(s), after reviewing heuristic labels where needed.
+- Scenario design work remains for 1 claim(s).
 
 ## Action Buckets
 
@@ -119,7 +120,8 @@ Semantic sampling recommended for 330 raw claim(s): claim-agents-md-12, claim-ag
 | already-satisfied | none | 144 | agent-reviewed: 144 | satisfied: 144 | Proof is already attached and valid under packet semantics. |
 | agent-add-deterministic-proof | agent | 34 | agent-reviewed: 1, heuristic: 32, human-reviewed: 1 | unknown: 34 | Add or connect unit, lint, build, schema, spec, or CI proof. |
 | agent-plan-cautilus-eval | agent | 121 | agent-reviewed: 8, heuristic: 112, human-reviewed: 1 | unknown: 121 | Draft or select Cautilus eval scenarios for ready eval claims. |
-| human-align-surfaces | human | 42 | agent-reviewed: 18, heuristic: 24 | unknown: 42 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
+| agent-design-scenario | agent | 1 | agent-reviewed: 1 | unknown: 1 | Decompose the behavior into a concrete scenario before protected eval planning. |
+| human-align-surfaces | human | 41 | agent-reviewed: 17, heuristic: 24 | unknown: 41 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 31 | heuristic: 31 | unknown: 31 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 35 | agent-reviewed: 28, heuristic: 7 | unknown: 35 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
@@ -132,10 +134,10 @@ Add or connect unit, lint, build, schema, spec, or CI proof.
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
 | claim-readme-md-6 | README.md:6 | deterministic | ready-for-proof | heuristic | unknown | `Cautilus` ships as a standalone binary plus Cautilus Agent, which a host repo can install without copying another scaffold first. |
-| claim-docs-specs-index-spec-md-13 | docs/specs/index.spec.md:13 | deterministic | ready-for-proof | heuristic | unknown | *deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery, Reviewable Artifacts, A Testable Agent). |
-| claim-docs-specs-index-spec-md-69 | docs/specs/index.spec.md:69 | deterministic | ready-for-proof | heuristic | unknown | You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against. |
-| claim-docs-specs-index-spec-md-73 | docs/specs/index.spec.md:73 | deterministic | ready-for-proof | heuristic | unknown | CLI ↔ Agent: the CLI emits the packets and renders the views; the agent reopens them to decide what to inspect or do next. |
-| claim-docs-specs-index-spec-md-86 | docs/specs/index.spec.md:86 | deterministic | ready-for-proof | heuristic | unknown | You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good. |
+| claim-docs-specs-index-spec-md-17 | docs/specs/index.spec.md:17 | deterministic | ready-for-proof | heuristic | unknown | *deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery, Reviewable Artifacts, A Testable Agent). |
+| claim-docs-specs-index-spec-md-73 | docs/specs/index.spec.md:73 | deterministic | ready-for-proof | heuristic | unknown | You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against. |
+| claim-docs-specs-index-spec-md-77 | docs/specs/index.spec.md:77 | deterministic | ready-for-proof | heuristic | unknown | CLI ↔ Agent: the CLI emits the packets and renders the views; the agent reopens them to decide what to inspect or do next. |
+| claim-docs-specs-index-spec-md-90 | docs/specs/index.spec.md:90 | deterministic | ready-for-proof | heuristic | unknown | You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good. |
 
 ### agent-plan-cautilus-eval
 
@@ -148,6 +150,16 @@ Draft or select Cautilus eval scenarios for ready eval claims.
 | claim-readme-md-96 | README.md:96 | cautilus-eval | ready-for-proof | heuristic | unknown | That turned "did the agent read and follow the repo instructions?" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen. |
 | claim-readme-md-109 | README.md:109 | cautilus-eval | ready-for-proof | heuristic | unknown | Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses. |
 | claim-readme-md-122 | README.md:122 | cautilus-eval | ready-for-proof | agent-reviewed | unknown | `Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest. |
+
+### agent-design-scenario
+
+Decompose the behavior into a concrete scenario before protected eval planning.
+
+Full bucket detail is shown because this bucket is not ready for proof.
+
+| Claim | Source | Proof | Readiness | Review | Evidence | Summary |
+| --- | --- | --- | --- | --- | --- | --- |
+| claim-docs-specs-user-ownership-spec-md-7 | docs/specs/user/ownership.spec.md:7 | cautilus-eval | needs-scenario | agent-reviewed | unknown | Before Cautilus can evaluate behavior honestly, the user needs host-specific prompts, models, credentials, runtime wiring, and acceptance policy to stay in the host repo. |
 
 ### human-align-surfaces
 
@@ -186,11 +198,10 @@ Full bucket detail is shown because this bucket is not ready for proof.
 | claim-docs-specs-contracts-live-invocation-runtime-spec-md-13 | docs/specs/contracts/live-invocation-runtime.spec.md:13 | human-auditable | needs-alignment | heuristic | unknown | Cautilus owns the generic request and result packet shape and the loop boundary, while the host-owned adapter still owns provider calls, backend flags, route layout, model choice, credentials, and product-specific response semantics. |
 | claim-docs-specs-rules-host-owned-execution-spec-md-4 | docs/specs/rules/host-owned-execution.spec.md:4 | human-auditable | needs-alignment | heuristic | unknown | Cautilus owns generic workflow contracts, packet shapes, command boundaries, and evidence routes. |
 | claim-docs-specs-rules-vocabulary-consistency-spec-md-3 | docs/specs/rules/vocabulary-consistency.spec.md:3 | human-auditable | needs-alignment | agent-reviewed | unknown | The same product concept should keep the same name in user-facing prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests. |
-| claim-docs-specs-user-a-testable-agent-spec-md-4 | docs/specs/user/a-testable-agent.spec.md:4 | human-auditable | needs-alignment | heuristic | unknown | Using the `cautilus` CLI and the checked-in runner-readiness fixtures, you can check how testable your agent is: the binary emits a runner-readiness verdict, names the runner capability each claim needs, and flags an assessment that has drifted out of date. |
-| claim-docs-specs-user-claim-discovery-spec-md-37 | docs/specs/user/claim-discovery.spec.md:37 | human-auditable | needs-alignment | heuristic | unknown | If an important behavior appears only outside that boundary, such as in code, transcripts, issues, or private operator memory, Cautilus Agent or a human can raise it as a documentation, catalog, or alignment gap. |
-| claim-docs-specs-user-claim-discovery-spec-md-122 | docs/specs/user/claim-discovery.spec.md:122 | human-auditable | needs-alignment | heuristic | unknown | Without the hint the same document yields zero candidates, which keeps the lexicon adapter-owned rather than hardcoded. |
-| claim-docs-specs-user-ownership-spec-md-3 | docs/specs/user/ownership.spec.md:3 | human-auditable | needs-alignment | agent-reviewed | unknown | Before Cautilus can evaluate behavior honestly, the user needs host-specific prompts, models, credentials, runtime wiring, and acceptance policy to stay in the host repo. |
-| claim-docs-specs-user-ownership-spec-md-4 | docs/specs/user/ownership.spec.md:4 | human-auditable | needs-alignment | heuristic | unknown | Using the `cautilus init adapter`, `cautilus doctor adapter`, and `cautilus doctor` CLI commands with the `cautilus-agent` skill, a user can keep host-owned execution in place while Cautilus standardizes workflow packets and boundaries. |
+| claim-docs-specs-user-a-testable-agent-spec-md-8 | docs/specs/user/a-testable-agent.spec.md:8 | human-auditable | needs-alignment | heuristic | unknown | Using the `cautilus` CLI and the checked-in runner-readiness fixtures, you can check how testable your agent is: the binary emits a runner-readiness verdict, names the runner capability each claim needs, and flags an assessment that has drifted out of date. |
+| claim-docs-specs-user-claim-discovery-spec-md-41 | docs/specs/user/claim-discovery.spec.md:41 | human-auditable | needs-alignment | heuristic | unknown | If an important behavior appears only outside that boundary, such as in code, transcripts, issues, or private operator memory, Cautilus Agent or a human can raise it as a documentation, catalog, or alignment gap. |
+| claim-docs-specs-user-claim-discovery-spec-md-126 | docs/specs/user/claim-discovery.spec.md:126 | human-auditable | needs-alignment | heuristic | unknown | Without the hint the same document yields zero candidates, which keeps the lexicon adapter-owned rather than hardcoded. |
+| claim-docs-specs-user-ownership-spec-md-8 | docs/specs/user/ownership.spec.md:8 | human-auditable | needs-alignment | heuristic | unknown | Using the `cautilus init adapter`, `cautilus doctor adapter`, and `cautilus doctor` CLI commands with the `cautilus-agent` skill, a user can keep host-owned execution in place while Cautilus standardizes workflow packets and boundaries. |
 | claim-docs-contracts-claim-extraction-template-md-39 | docs/contracts/claim-extraction-template.md:39 | human-auditable | needs-alignment | heuristic | unknown | The binary owns `sourceInventory`, `sourceGraph`, `effectiveScanScope`, git commit, and per-source content hashes in every mode. |
 | claim-docs-contracts-claim-extraction-template-md-299 | docs/contracts/claim-extraction-template.md:299 | human-auditable | needs-alignment | heuristic | unknown | `skills/cautilus-agent/SKILL.md` stays within the 180-nonempty-line disclosure budget when the agent flow is updated; binary-owned detail (packet examples, command catalogs) belongs to the binary's help and docs per the progressive-disclosure rule. |
 | claim-docs-contracts-claim-extraction-template-md-306 | docs/contracts/claim-extraction-template.md:306 | human-auditable | needs-alignment | heuristic | unknown | (`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.) |
@@ -207,9 +218,9 @@ Confirm, decompose, or accept a human-auditable claim before treating it as prov
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
 | claim-readme-md-60 | README.md:60 | human-auditable | ready-for-proof | heuristic | unknown | Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review. |
-| claim-docs-specs-index-spec-md-164 | docs/specs/index.spec.md:164 | human-auditable | ready-for-proof | heuristic | unknown | A `gap` means missing or weak evidence that stays visible. |
+| claim-docs-specs-index-spec-md-168 | docs/specs/index.spec.md:168 | human-auditable | ready-for-proof | heuristic | unknown | A `gap` means missing or weak evidence that stays visible. |
 | claim-docs-specs-user-index-spec-md-27 | docs/specs/user/index.spec.md:27 | human-auditable | ready-for-proof | heuristic | unknown | Evidence Gaps (evidence-gaps.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed. |
-| claim-docs-specs-user-reviewable-artifacts-spec-md-61 | docs/specs/user/reviewable-artifacts.spec.md:61 | human-auditable | ready-for-proof | heuristic | unknown | A user can read generated views without losing the packet source of truth. |
+| claim-docs-specs-user-reviewable-artifacts-spec-md-65 | docs/specs/user/reviewable-artifacts.spec.md:65 | human-auditable | ready-for-proof | heuristic | unknown | A user can read generated views without losing the packet source of truth. |
 | claim-docs-contracts-claim-discovery-workflow-md-92 | docs/contracts/claim-discovery-workflow.md:92 | human-auditable | ready-for-proof | heuristic | unknown | In other repos, the same rule should be driven by the repo's adapter, README, and source docs rather than by Cautilus-specific command names. |
 
 ### split-or-defer
@@ -262,7 +273,7 @@ Active updates still match the current claim packet; superseded updates are hist
 
 | Packet | Mode | Reviewer | Clusters | Active | Superseded | Proof | Readiness |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| .cautilus/claims/review-result-agent-design-scenario-proposals-2026-05-17.json | - | - | 1 | 4 | 0 | cautilus-eval: 4 | ready-for-proof: 4 |
+| .cautilus/claims/review-result-agent-design-scenario-proposals-2026-05-17.json | - | - | 1 | 3 | 0 | cautilus-eval: 3 | ready-for-proof: 3 |
 | .cautilus/claims/review-result-agent-plan-cautilus-eval-2026-05-04.json | parallel-agent-review | - | 1 | 1 | 2 | deterministic: 1 | needs-alignment: 1 |
 | .cautilus/claims/review-result-agent-status-safe-branch-catalog-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
@@ -271,11 +282,10 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-contract-reporting-telemetry-packets-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | needs-alignment: 1, ready-for-proof: 4 |
 | .cautilus/claims/review-result-contract-runner-readiness-packets-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | ready-for-proof: 5 |
-| .cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json | - | - | 1 | 4 | 4 | deterministic: 2, human-auditable: 2 | blocked: 2, ready-for-proof: 2 |
-| .cautilus/claims/review-result-current-eval-surfaces-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json | - | - | 1 | 4 | 3 | deterministic: 2, human-auditable: 2 | blocked: 2, ready-for-proof: 2 |
 | .cautilus/claims/review-result-deterministic-proof-batch-2026-05-04.json | - | - | 1 | 3 | 1 | deterministic: 3 | ready-for-proof: 3 |
 | .cautilus/claims/review-result-deterministic-ready-heuristic-2026-05-03.json | - | - | 3 | 6 | 3 | deterministic: 5, human-auditable: 1 | blocked: 1, ready-for-proof: 5 |
-| .cautilus/claims/review-result-eval-bucket-user-b-2026-05-03.json | - | - | 0 | 0 | 3 | - | - |
+| .cautilus/claims/review-result-eval-bucket-user-b-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-eval-bucket-user-c-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-eval-heuristic-batch-2026-05-03.json | - | - | 1 | 1 | 5 | human-auditable: 1 | needs-alignment: 1 |
 | .cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json | - | - | 1 | 1 | 1 | deterministic: 1 | ready-for-proof: 1 |
@@ -317,18 +327,17 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-llm-batch6.json | - | - | 3 | 7 | 3 | human-auditable: 7 | blocked: 5, needs-alignment: 2 |
 | .cautilus/claims/review-result-loop1-lane-a.json | - | codex | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-loop2-lane-a.json | - | codex | 0 | 0 | 2 | - | - |
-| .cautilus/claims/review-result-ownership-evidence-gaps-improvement-2026-05-17.json | - | - | 1 | 4 | 0 | deterministic: 4 | ready-for-proof: 4 |
+| .cautilus/claims/review-result-ownership-evidence-gaps-improvement-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
 | .cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json | - | - | 1 | 1 | 0 | human-auditable: 1 | blocked: 1 |
-| .cautilus/claims/review-result-readiness-triage-2026-05-10.json | action-bucket-readiness-triage | codex-current-agent | 1 | 2 | 10 | human-auditable: 2 | blocked: 1, needs-alignment: 1 |
+| .cautilus/claims/review-result-readiness-triage-2026-05-10.json | action-bucket-readiness-triage | codex-current-agent | 1 | 1 | 9 | human-auditable: 1 | blocked: 1 |
 | .cautilus/claims/review-result-readiness-triage-replay-2026-06-10.json | id-drift-replay-repair | claude-current-agent | 1 | 2 | 1 | deterministic: 1, human-auditable: 1 | blocked: 1, ready-for-proof: 1 |
 | .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json | - | - | 2 | 5 | 4 | deterministic: 4, human-auditable: 1 | needs-alignment: 1, ready-for-proof: 4 |
 | .cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json | - | - | 1 | 1 | 0 | unchanged: 1 | unchanged: 1 |
-| .cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
-| .cautilus/claims/review-result-reviewable-artifacts-proof-gap-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-spec-binary-skill-boundary-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
 | .cautilus/claims/review-result-spec-reviewable-eval-surfaces-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | ready-for-proof: 5 |
-| .cautilus/claims/review-result-user-claim-discovery-reviewable-artifacts-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 2, human-auditable: 1 | needs-alignment: 1, ready-for-proof: 2 |
+| .cautilus/claims/review-result-user-claim-discovery-reviewable-artifacts-2026-05-17.json | - | - | 1 | 2 | 1 | deterministic: 1, human-auditable: 1 | needs-alignment: 1, ready-for-proof: 1 |
 | .cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json | - | - | 1 | 2 | 1 | deterministic: 2 | ready-for-proof: 2 |
 
 ### .cautilus/claims/review-result-human-align-action-bucket.json
@@ -358,7 +367,6 @@ Active updates still match the current claim packet; superseded updates are hist
 | Claim | Proof | Readiness | Evidence | Next action |
 | --- | --- | --- | --- | --- |
 | claim-docs-specs-rules-reviewable-artifacts-spec-md-3 | deterministic | ready-for-proof | satisfied | Keep the reviewable artifact projection matrix, renderer tests, and rule-level spec links aligned when adding a new packet-backed readable view. |
-| claim-docs-specs-user-claim-discovery-spec-md-6 | deterministic | ready-for-proof | satisfied | Keep claim-discovery CLI tests and Cautilus Agent flow audits synchronized when changing candidate extraction, source refs, curation prompts, or next-work routing. |
 | claim-docs-specs-rules-vocabulary-consistency-spec-md-3 | human-auditable | needs-alignment | unknown | Resolve `gap.vocabulary-evidence-bundle` by defining the vocabulary probe scope across user prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests, then create `.cautilus/claims/evidence-vocabulary-consistency-current.json` or record an explicit waiver. |
 
 ## Validation

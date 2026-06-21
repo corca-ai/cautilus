@@ -19,8 +19,3 @@ The standing spec report should show selected durable evidence and name stale or
 | prepared | the fixture, adapter, or review route exists, and the live proof run remains open |
 | stale | an artifact exists but should be refreshed before it supports a fresh claim |
 | open gap | the proof condition is visible and unresolved |
-
-```run:shell
-# Verify the selected-evidence policy has a gap page to point to.
-node -e 'if (!require("node:fs").existsSync("docs/specs/evidence/gaps.spec.md")) throw new Error("missing evidence gap page")'
-```

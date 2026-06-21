@@ -12,9 +12,4 @@ Key: `rule.evidence-gaps`.
 
 ## Link Checks
 
-```run:shell
-# Verify the user-facing evidence-gaps page exists.
-test -f docs/specs/user/evidence-gaps.spec.md
-```
-
 Current open proof gaps live in [Proof Gaps](../evidence/gaps.spec.md).

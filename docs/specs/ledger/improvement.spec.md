@@ -16,8 +16,6 @@ Evidence status: proven on the dev/skill surface.
 The packet route is checked, and a live bounded improve cycle (`npm run proof:improve:live`) proves the loop recovers a held-out scenario it was never tuned on, with the operator-witnessed capture replayed deterministically.
 
 ```run:shell
-# Verify improvement links and the live improve proof capture exist.
-test -f docs/specs/user/improvement.spec.md
-test -f docs/specs/contracts/improvement-loop.spec.md
+# Verify the live improve proof capture exists (evidence-presence check; doc reachability is covered by specdown trace).
 test -f fixtures/eval/dev/skill/improve/live/improve-live-proof-summary.json
 ```

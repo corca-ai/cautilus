@@ -8,7 +8,4 @@ open the route that owns the contract, then use [Cross-Cutting Rules](../rules/i
 
 ## Policy Checks
 
-```run:shell
-# Verify the policy has both sides of the map available.
-node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/contracts/index.spec.md", "docs/specs/rules/index.spec.md"]) { if (!fs.existsSync(path)) throw new Error("missing " + path); }'
-```
+Both sides of the map (contracts index and cross-cutting rules index) stay reachable from the apex; reachability is enforced by `specdown trace -strict` and `scripts/check-specs.mjs`, not a per-page existence guard.

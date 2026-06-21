@@ -55,10 +55,10 @@
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-readme-md-6",
-          "claim-docs-specs-index-spec-md-13",
-          "claim-docs-specs-index-spec-md-69",
+          "claim-docs-specs-index-spec-md-17",
           "claim-docs-specs-index-spec-md-73",
-          "claim-docs-specs-index-spec-md-86"
+          "claim-docs-specs-index-spec-md-77",
+          "claim-docs-specs-index-spec-md-90"
         ],
         "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
       },
@@ -85,13 +85,28 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 42
+          "unknown": 1
         },
         "byReviewStatus": {
-          "agent-reviewed": 18,
+          "agent-reviewed": 1
+        },
+        "count": 1,
+        "id": "agent-design-scenario",
+        "recommendedActor": "agent",
+        "sampleClaimIds": [
+          "claim-docs-specs-user-ownership-spec-md-7"
+        ],
+        "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
+      },
+      {
+        "byEvidenceStatus": {
+          "unknown": 41
+        },
+        "byReviewStatus": {
+          "agent-reviewed": 17,
           "heuristic": 24
         },
-        "count": 42,
+        "count": 41,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -115,9 +130,9 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-60",
-          "claim-docs-specs-index-spec-md-164",
+          "claim-docs-specs-index-spec-md-168",
           "claim-docs-specs-user-index-spec-md-27",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-61",
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-65",
           "claim-docs-contracts-claim-discovery-workflow-md-92"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
@@ -184,9 +199,9 @@
       "new": 407
     },
     "byRecommendedProof": {
-      "cautilus-eval": 125,
+      "cautilus-eval": 126,
       "deterministic": 176,
-      "human-auditable": 106
+      "human-auditable": 105
     },
     "byReviewStatus": {
       "agent-reviewed": 199,
@@ -195,7 +210,8 @@
     },
     "byVerificationReadiness": {
       "blocked": 35,
-      "needs-alignment": 42,
+      "needs-alignment": 41,
+      "needs-scenario": 1,
       "ready-for-proof": 330
     }
   },
@@ -1382,7 +1398,7 @@
         "summary": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing."
       },
       {
-        "claimId": "claim-docs-specs-index-spec-md-163",
+        "claimId": "claim-docs-specs-index-spec-md-167",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1391,7 +1407,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-spec-vocabulary-evidence-definition-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-index-spec-md-163"
+              "claim-docs-specs-index-spec-md-167"
             ]
           }
         ],
@@ -1401,7 +1417,7 @@
         "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise."
       },
       {
-        "claimId": "claim-docs-specs-user-evaluation-spec-md-163",
+        "claimId": "claim-docs-specs-user-evaluation-spec-md-167",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1410,7 +1426,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-user-evaluation-spec-md-163"
+              "claim-docs-specs-user-evaluation-spec-md-167"
             ]
           }
         ],
@@ -1442,7 +1458,7 @@
         "summary": "[Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen."
       },
       {
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1452,7 +1468,7 @@
             "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-specs-user-index-spec-md-26",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
             ]
@@ -1464,7 +1480,7 @@
         "summary": "After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory."
       },
       {
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-8",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1475,7 +1491,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-user-index-spec-md-26",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-8",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
             ]
           }
@@ -1486,7 +1502,7 @@
         "summary": "Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review."
       },
       {
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-11",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1498,7 +1514,7 @@
               "claim-docs-specs-user-index-spec-md-26",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-7"
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-11"
             ]
           }
         ],
@@ -2825,7 +2841,7 @@
         "summary": "Every workflow should leave machine-readable packets and readable reports that another person or agent can reopen without trusting chat memory."
       },
       {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-6",
+        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-10",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2835,7 +2851,7 @@
             "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
-              "claim-docs-specs-user-claim-discovery-spec-md-6",
+              "claim-docs-specs-user-claim-discovery-spec-md-10",
               "claim-docs-specs-user-claim-discovery-spec-md-160",
               "claim-docs-specs-user-claim-discovery-spec-md-199"
             ]
@@ -2847,7 +2863,7 @@
         "summary": "Using the `cautilus discover claims` CLI command and the `cautilus-agent` skill, a user can turn scattered repo promises into a source-referenced worklist: what Cautilus found, what looks noisy, what may be missing, and what evidence each candidate needs next."
       },
       {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-219",
+        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-223",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2858,7 +2874,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-claim-discovery-spec-md-6",
-              "claim-docs-specs-user-claim-discovery-spec-md-219",
+              "claim-docs-specs-user-claim-discovery-spec-md-223",
               "claim-docs-specs-user-claim-discovery-spec-md-199"
             ]
           }
@@ -2869,7 +2885,7 @@
         "summary": "`discover claims status` owns the next-action summary over a saved discovery packet."
       },
       {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-259",
+        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-266",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2881,7 +2897,7 @@
               "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-claim-discovery-spec-md-6",
               "claim-docs-specs-user-claim-discovery-spec-md-160",
-              "claim-docs-specs-user-claim-discovery-spec-md-259"
+              "claim-docs-specs-user-claim-discovery-spec-md-266"
             ]
           }
         ],
@@ -2914,7 +2930,7 @@
         "summary": "The claim status summary keeps the candidate-not-proof boundary visible to users."
       },
       {
-        "claimId": "claim-docs-specs-user-ownership-spec-md-27",
+        "claimId": "claim-docs-specs-user-ownership-spec-md-31",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2924,7 +2940,7 @@
             "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-specs-user-evidence-gaps-spec-md-8",
-              "claim-docs-specs-user-ownership-spec-md-27",
+              "claim-docs-specs-user-ownership-spec-md-31",
               "claim-docs-specs-user-ownership-spec-md-45",
               "claim-docs-contracts-improvement-md-27",
               "claim-docs-contracts-improvement-md-34"
@@ -2937,7 +2953,7 @@
         "summary": "A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy."
       },
       {
-        "claimId": "claim-docs-specs-user-ownership-spec-md-49",
+        "claimId": "claim-docs-specs-user-ownership-spec-md-53",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2948,7 +2964,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-user-evidence-gaps-spec-md-8",
               "claim-docs-specs-user-ownership-spec-md-27",
-              "claim-docs-specs-user-ownership-spec-md-49",
+              "claim-docs-specs-user-ownership-spec-md-53",
               "claim-docs-contracts-improvement-md-27",
               "claim-docs-contracts-improvement-md-34"
             ]
@@ -3446,7 +3462,7 @@
       }
     ]
   },
-  "gitCommit": "82e6e2c65e8ac322450ccd17d7187b627d7a374f",
+  "gitCommit": "1d321cf297be1bd772d011a7af0a465705f987bb",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3458,10 +3474,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "82e6e2c65e8ac322450ccd17d7187b627d7a374f",
+    "currentGitCommit": "1d321cf297be1bd772d011a7af0a465705f987bb",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "82e6e2c65e8ac322450ccd17d7187b627d7a374f",
+    "packetGitCommit": "1d321cf297be1bd772d011a7af0a465705f987bb",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3486,8 +3502,8 @@
   ],
   "reviewReadinessSummary": {
     "heuristicClaimsReadyForReview": 182,
-    "needsAlignment": 42,
-    "needsScenario": 0
+    "needsAlignment": 41,
+    "needsScenario": 1
   },
   "sampleClaims": [
     {

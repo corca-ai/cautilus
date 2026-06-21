@@ -1,5 +1,22 @@
 {
   "entry": "docs/specs/index.spec.md",
+  "trace": {
+    "types": ["apex", "promise"],
+    "ignore": [
+      "docs/specs/old/**",
+      "docs/specs/archive/**",
+      "docs/specs/audit.spec.md",
+      "docs/specs/evidence/projected-claim-state.md",
+      "docs/specs/evidence/claim-evidence-state.md",
+      "charness-artifacts/**",
+      "node_modules/**",
+      ".git/**",
+      ".artifacts/**"
+    ],
+    "edges": {
+      "badges": { "from": "apex", "to": "promise", "count": "1 → 1..*" }
+    }
+  },
   "adapters": [
     {
       "name": "cautilus",

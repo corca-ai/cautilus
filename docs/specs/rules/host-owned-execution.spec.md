@@ -14,9 +14,3 @@ Key: `rule.host-owned-execution`.
 ## Evidence State
 
 Live invocation and consumer parity proof remain open gaps and should stay visible rather than being hidden behind the host-ownership wording.
-
-```run:shell
-# Verify the host-owned execution pages and maintainer route exist.
-test -f docs/specs/user/ownership.spec.md
-test -f docs/specs/contracts/adapter-host-ownership.spec.md
-```

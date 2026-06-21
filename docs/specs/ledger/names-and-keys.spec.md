@@ -22,15 +22,10 @@ the name carries meaning, and a rename is a concept change unless the surroundin
 
 ## Compact Keys
 
-Tables and packets may use compact keys such as `promise.readiness`, `rule.evidence-gaps`, or `gap.traceability-config`.
+Tables and packets may use compact keys such as `promise.readiness`, `rule.evidence-gaps`, or `gap.live-batch-fixture`.
 Those keys mirror the human names and should not become the primary product language.
 
 ## Rename Rule
 
 A rename moves the title, slug, machine key, prose, packets, tests, and view mappings together.
 When only reader wording changes, keep the stable name and add an alias in this file.
-
-```run:shell
-# Verify the named model and reading roots exist.
-node -e 'const fs = require("node:fs"); for (const path of ["docs/specs/ledger/promise-ledger.spec.md", "docs/specs/user/index.spec.md", "docs/specs/contracts/index.spec.md", "docs/specs/rules/index.spec.md", "docs/specs/evidence/index.spec.md"]) { if (!fs.existsSync(path)) throw new Error("missing " + path); }'
-```

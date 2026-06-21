@@ -1,3 +1,7 @@
+---
+type: promise
+---
+
 # Behavior Evaluation
 
 When deterministic checks pass but behavior is still uncertain, the user needs a bounded way to compare observed intentful behavior.
