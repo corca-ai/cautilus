@@ -26,7 +26,7 @@ import {
 export const APEX_PATH = "docs/specs/index.spec.md";
 export const REGISTRY_PATH = "docs/specs/audit/surface-registry.json";
 export const MANIFEST_PATH = ".cautilus/audit/surface-audit.json";
-export const AUDIT_PAGE_PATH = "docs/specs/audit.spec.md";
+export const AUDIT_PAGE_PATH = "docs/specs/generated/audit.spec.md";
 
 function usage(exitCode = 0) {
 	const text = [
@@ -34,7 +34,7 @@ function usage(exitCode = 0) {
 		"  node scripts/agent-runtime/build-surface-audit.mjs [--repo-root <dir>] [--json]",
 		"  node scripts/agent-runtime/build-surface-audit.mjs --check [--repo-root <dir>] [--json]",
 		"",
-		"Build regenerates the audit manifest and docs/specs/audit.spec.md from the apex",
+		"Build regenerates the audit manifest and docs/specs/generated/audit.spec.md from the apex",
 		"badges and proof-route registry. --check regenerates in memory and fails on drift",
 		"or when any apex badge over-claims relative to its proof route.",
 	].join("\n");
@@ -155,7 +155,7 @@ function buildCheckPayload(manifest, drift) {
 		dishonestReasons,
 		suggestion:
 			drift.length > 0
-				? "Run `npm run audit:surface` and commit the regenerated manifest and docs/specs/audit.spec.md."
+				? "Run `npm run audit:surface` and commit the regenerated manifest and docs/specs/generated/audit.spec.md."
 				: manifest.summary.honest
 					? null
 					: "An apex badge over-claims relative to its proof route. Fix the badge level in docs/specs/index.spec.md or repair the proof route.",

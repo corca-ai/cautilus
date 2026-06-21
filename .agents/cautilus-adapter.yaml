@@ -40,7 +40,7 @@ claim_discovery:
     - .cautilus/claims
   exclude:
     - docs/specs/old/**
-    - docs/specs/evidence/claim-evidence-state.md
+    - docs/specs/generated/claim-evidence-state.md
     - docs/claims/**
     - docs/maintainers/**
     - docs/internal/handoff.md
@@ -199,7 +199,7 @@ artifact_paths:
   - README.md
   - docs/guides/evaluation-process.md
   - docs/specs/user/index.spec.md
-  - docs/specs/evidence/claim-evidence-state.md
+  - docs/specs/generated/claim-evidence-state.md
   - .cautilus/claims/evidenced-typed-runners.json
   - .cautilus/claims/status-summary.json
   - .cautilus/claims/claim-status-report.md

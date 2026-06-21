@@ -25,4 +25,4 @@ Each contract page names the aligned claims or rules, the implementation promise
 - [Reporting And Review Variants](reporting-review-variants.spec.md)
 - [Scenario History And Proposal Normalization](scenario-history-normalization.spec.md)
 
-Which promise each contract implements, and which rules each promise carries, is the [Promise Ledger](../ledger/promise-ledger.spec.md) map generated from the `implemented-by::` / `governed-by::` trace edges.
+Which promise each contract implements, and which rules each promise carries, is the [Promise Ledger](../generated/promise-ledger.spec.md) map generated from the `implemented-by::` / `governed-by::` trace edges.

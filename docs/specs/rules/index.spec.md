@@ -3,7 +3,7 @@
 Read this when you need the rules that apply across several Cautilus workflow steps.
 These pages define reviewability, evidence visibility, ownership, vocabulary, freshness, cost, and resumability expectations so they do not get buried inside one workflow story.
 
-Which promises each rule governs is the [Promise Ledger](../ledger/promise-ledger.spec.md) map, generated from the `governed-by::` trace edges.
+Which promises each rule governs is the [Promise Ledger](../generated/promise-ledger.spec.md) map, generated from the `governed-by::` trace edges.
 Evidence state: [Evidence State](../evidence/index.spec.md).
 
 ## Rules

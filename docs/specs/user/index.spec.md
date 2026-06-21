@@ -8,7 +8,7 @@ Each workflow page names the user job, the Cautilus surface, the expected outcom
 
 Maintainer view: [Contracts](../contracts/index.spec.md).
 Full spec entry: [Cautilus Promise Specs](../index.spec.md).
-Cross-cutting rules and per-promise rule/contract map: [Cross-Cutting Rules](../rules/index.spec.md), [Promise Ledger](../ledger/promise-ledger.spec.md).
+Cross-cutting rules and per-promise rule/contract map: [Cross-Cutting Rules](../rules/index.spec.md), [Promise Ledger](../generated/promise-ledger.spec.md).
 
 ## Workflow Stories
 
@@ -19,7 +19,7 @@ Cross-cutting rules and per-promise rule/contract map: [Cross-Cutting Rules](../
 
 Read this index first when judging the product story.
 The main stories are ordered by the user's workflow.
-Shared concerns (reviewability, evidence gaps, ownership, freshness, resumability) are carried as `governed-by::` edges on each promise leaf and mapped in the [Promise Ledger](../ledger/promise-ledger.spec.md).
+Shared concerns (reviewability, evidence gaps, ownership, freshness, resumability) are carried as `governed-by::` edges on each promise leaf and mapped in the [Promise Ledger](../generated/promise-ledger.spec.md).
 
 > check:cautilus-command
 | args_json | stdout_includes |

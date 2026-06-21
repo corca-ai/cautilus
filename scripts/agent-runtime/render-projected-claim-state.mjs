@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Render the fingerprint-keyed claim inventory into the generated Projected Claim
-// State page (docs/specs/evidence/projected-claim-state.md) that the ledger and
+// State page (docs/specs/generated/projected-claim-state.md) that the ledger and
 // evidence surface read instead of restating tier/verdict/route state by hand.
 //
 // Build:  node scripts/agent-runtime/render-projected-claim-state.mjs [--repo-root <dir>]

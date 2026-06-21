@@ -3,7 +3,7 @@
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 393,
+    "matchedClaimCount": 395,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -3387,7 +3387,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:273736b44b9298264db7a89521c10296002de82e8204f006e43889c734a0fc08",
+      "claimFingerprint": "sha256:39513791f0993da9c5c8971002d728b2862814a3a685d36dcf3dab109fe38b67",
       "claimId": "claim-docs-specs-index-spec-md-16",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
@@ -3406,12 +3406,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "**proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):",
+          "excerpt": "**proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](generated/audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):",
           "line": 16,
           "path": "docs/specs/index.spec.md"
         }
       ],
-      "summary": "**proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):",
+      "summary": "**proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](generated/audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -13496,7 +13496,7 @@
         "audience:developer",
         "cautilus-eval",
         "dev/skill",
-        "linked-from:docs/specs/ledger/promise-ledger.spec.md",
+        "linked-from:docs/specs/generated/promise-ledger.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -13526,7 +13526,7 @@
       "groupHints": [
         "audience:developer",
         "human-auditable",
-        "linked-from:docs/specs/ledger/promise-ledger.spec.md",
+        "linked-from:docs/specs/generated/promise-ledger.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -13556,7 +13556,7 @@
       "groupHints": [
         "audience:developer",
         "human-auditable",
-        "linked-from:docs/specs/ledger/promise-ledger.spec.md",
+        "linked-from:docs/specs/generated/promise-ledger.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -14152,7 +14152,7 @@
       "artifacts/**",
       "charness-artifacts/**",
       "docs/specs/old/**",
-      "docs/specs/evidence/claim-evidence-state.md",
+      "docs/specs/generated/claim-evidence-state.md",
       "docs/claims/**",
       "docs/maintainers/**",
       "docs/internal/handoff.md",
@@ -14270,7 +14270,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "408eb8a6ce1742944c42e13dda6c544de3bdd723",
+  "gitCommit": "6b95b46f02c264ef401acad0bc317d6a518a8b76",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -15112,13 +15112,13 @@
       "depth": 2,
       "from": "docs/specs/contracts/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/index.spec.md"
+      "to": "docs/specs/generated/promise-ledger.spec.md"
     },
     {
       "depth": 2,
       "from": "docs/specs/contracts/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/ledger/promise-ledger.spec.md"
+      "to": "docs/specs/index.spec.md"
     },
     {
       "depth": 2,
@@ -15148,12 +15148,6 @@
       "depth": 2,
       "from": "docs/specs/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/audit.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/index.spec.md",
-      "kind": "markdown-link",
       "to": "docs/specs/contracts/index.spec.md"
     },
     {
@@ -15161,6 +15155,12 @@
       "from": "docs/specs/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/evidence/index.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/generated/audit.spec.md"
     },
     {
       "depth": 2,
@@ -15274,13 +15274,13 @@
       "depth": 2,
       "from": "docs/specs/user/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/index.spec.md"
+      "to": "docs/specs/generated/promise-ledger.spec.md"
     },
     {
       "depth": 2,
       "from": "docs/specs/user/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/ledger/promise-ledger.spec.md"
+      "to": "docs/specs/index.spec.md"
     },
     {
       "depth": 2,
@@ -15484,155 +15484,155 @@
       "depth": 3,
       "from": "docs/specs/evidence/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/evidence/projected-claim-state.md"
+      "to": "docs/specs/generated/projected-claim-state.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/active-run-workspace.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/adapter-host-ownership.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/binary-skill-boundary.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/claim-discovery-workflow.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/evaluation-surfaces-runners.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/improvement-loop.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/live-invocation-runtime.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/readiness-runtime-status.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/reporting-review-variants.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/scenario-history-normalization.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/agent-human-resumability.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/cost-and-proof-freshness.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/evidence-gaps.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/host-owned-execution.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/packet-freshness.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/reviewable-artifacts.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/vocabulary-consistency.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/a-testable-agent.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/claim-discovery.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/doctor-readiness.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/evaluation.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/improvement.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/ownership.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "from": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/reviewable-artifacts.spec.md"
     },
@@ -15652,7 +15652,7 @@
       "depth": 3,
       "from": "docs/specs/rules/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/ledger/promise-ledger.spec.md"
+      "to": "docs/specs/generated/promise-ledger.spec.md"
     },
     {
       "depth": 3,
@@ -15698,49 +15698,49 @@
     },
     {
       "depth": 3,
-      "from": "docs/specs/audit.spec.md",
+      "from": "docs/specs/generated/audit.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/index.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/audit.spec.md",
+      "from": "docs/specs/generated/audit.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/a-testable-agent.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/audit.spec.md",
+      "from": "docs/specs/generated/audit.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/claim-discovery.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/audit.spec.md",
+      "from": "docs/specs/generated/audit.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/doctor-readiness.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/audit.spec.md",
+      "from": "docs/specs/generated/audit.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/evaluation.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/audit.spec.md",
+      "from": "docs/specs/generated/audit.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/improvement.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/audit.spec.md",
+      "from": "docs/specs/generated/audit.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/ownership.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/audit.spec.md",
+      "from": "docs/specs/generated/audit.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/reviewable-artifacts.spec.md"
     },
@@ -15760,7 +15760,13 @@
       "depth": 3,
       "from": "docs/specs/ledger/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/evidence/projected-claim-state.md"
+      "to": "docs/specs/generated/projected-claim-state.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/generated/promise-ledger.spec.md"
     },
     {
       "depth": 3,
@@ -15773,12 +15779,6 @@
       "from": "docs/specs/ledger/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/ledger/names-and-keys.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/ledger/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/promise-ledger.spec.md"
     },
     {
       "depth": 3,
@@ -16213,7 +16213,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:ddd8988dede5d91ecec9d0df03ecb3f8f9c9150366976279264820c8b8052662",
+      "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -16223,7 +16223,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:beb66e92c09872f7caedd6e8c549b9df95830be77703a5540f0dada10aea6fc3",
+      "contentHash": "sha256:64eafc79e3c5cc0523b62f96727f9f4c45c701e6a7bdd2aabbe61be2351789f2",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -16243,7 +16243,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:45767d0f977f2fe9a3d583cec1d3274494a20f7b0d2a9b051f61889f436524df",
+      "contentHash": "sha256:f53c3201c880949f117d02dc2fa0aac49a9c468ce49d4110758b32389e5cc135",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -16358,16 +16358,6 @@
       "discoveredFrom": "docs/contracts/adapter-contract.md",
       "kind": "contract",
       "path": "docs/contracts/workbench-instance-discovery.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "contentHash": "sha256:4e7f6b2bb06e6e8992beab61e67b7ffc3e20290ffc091cc9e59605f704c6d932",
-      "depth": 2,
-      "discoveredFrom": "docs/specs/index.spec.md",
-      "kind": "spec",
-      "path": "docs/specs/audit.spec.md",
       "status": "read"
     },
     {
@@ -16493,7 +16483,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:07ca73cafa1b7d69d4e00405c9d4ff13d086ef3810d6d10dc3d54a3b75244f70",
+      "contentHash": "sha256:95b7b46cf26709dd7229e102be954b5a59217341ca9cbab0d5d1aebe4ff82ff4",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -16503,11 +16493,11 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:7fe9968cffd616ab0c3920dfd44b870043cf69c2b9fc67ecea6fc7e801362806",
+      "contentHash": "sha256:789c714c2bc489ae886be672442ccc44816827104422904dc512d11292b0c87f",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
-      "path": "docs/specs/ledger/index.spec.md",
+      "path": "docs/specs/generated/audit.spec.md",
       "status": "read"
     },
     {
@@ -16517,7 +16507,17 @@
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
-      "path": "docs/specs/ledger/promise-ledger.spec.md",
+      "path": "docs/specs/generated/promise-ledger.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "contentHash": "sha256:570b17b49a0b2ed93cb544c535ce000555e75ffb2374d29d07ddcae30151c935",
+      "depth": 2,
+      "discoveredFrom": "docs/specs/index.spec.md",
+      "kind": "spec",
+      "path": "docs/specs/ledger/index.spec.md",
       "status": "read"
     },
     {
@@ -16543,7 +16543,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:73d003ca31280c50871e98f170970549a38e106f10bb87ee78c060a314582d46",
+      "contentHash": "sha256:b503c0c0c049b7b36b1b837542487d60348b91fd0a0a283b569b3fa747ec91d6",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -16703,7 +16703,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:75a30a0924a86cfc810547f05d8fa7240899f409f6c1c1ff6d99e6374543b135",
+      "contentHash": "sha256:100b24dd1ccf605229e7ebdb1f5ed3b82fd014c5a90cd2d482d91f9a17ef543a",
       "depth": 3,
       "discoveredFrom": "docs/specs/evidence/index.spec.md",
       "kind": "spec",
@@ -16737,7 +16737,7 @@
       "depth": 3,
       "discoveredFrom": "docs/specs/evidence/index.spec.md",
       "kind": "spec",
-      "path": "docs/specs/evidence/projected-claim-state.md",
+      "path": "docs/specs/generated/projected-claim-state.md",
       "status": "read"
     },
     {
@@ -16755,7 +16755,7 @@
       "claimAudienceSource": "path-default",
       "contentHash": "sha256:d09b50603bdcbe45f36a88ef4f2b90f81edb2302e7271ae8a8d3763229622c2a",
       "depth": 3,
-      "discoveredFrom": "docs/specs/ledger/promise-ledger.spec.md",
+      "discoveredFrom": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "spec",
       "path": "docs/specs/rules/agent-human-resumability.spec.md",
       "status": "read"
@@ -16765,7 +16765,7 @@
       "claimAudienceSource": "path-default",
       "contentHash": "sha256:0ef855515af4284fb9313b86f1025f85c1295c6a65b524462193dbb2c830ba64",
       "depth": 3,
-      "discoveredFrom": "docs/specs/ledger/promise-ledger.spec.md",
+      "discoveredFrom": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "spec",
       "path": "docs/specs/rules/evidence-gaps.spec.md",
       "status": "read"
@@ -16775,7 +16775,7 @@
       "claimAudienceSource": "path-default",
       "contentHash": "sha256:21c5f50568a5f4b51b6a25cfad8dd6273d7220530d583fb51816fc7eeab2c0ea",
       "depth": 3,
-      "discoveredFrom": "docs/specs/ledger/promise-ledger.spec.md",
+      "discoveredFrom": "docs/specs/generated/promise-ledger.spec.md",
       "kind": "spec",
       "path": "docs/specs/rules/vocabulary-consistency.spec.md",
       "status": "read"

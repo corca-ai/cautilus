@@ -15,7 +15,7 @@
 // the drift check. The inventory is consumed read-only — this module never
 // recomputes the projection, it only presents it.
 
-export const PAGE_PATH = "docs/specs/evidence/projected-claim-state.md";
+export const PAGE_PATH = "docs/specs/generated/projected-claim-state.md";
 
 // Tier display order: headline first, then backing mechanisms, then cli detail.
 export const TIER_ORDER = ["T1", "T2", "T3"];

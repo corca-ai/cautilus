@@ -7,9 +7,9 @@ Spec entry: [Cautilus](../index.spec.md).
 
 ## Pages
 
-- [Promise Ledger](promise-ledger.spec.md): the promise → rules/contracts map, generated from the typed trace graph.
+- [Promise Ledger](../generated/promise-ledger.spec.md): the promise → rules/contracts map, generated from the typed trace graph.
 - [Names And Keys](names-and-keys.spec.md): naming rules, the stable-name/user-facing-name aliases, compact keys, and the rename rule.
-- [Projected Claim State](../evidence/projected-claim-state.md): the generated tier/verdict/route view of the ratified claim set.
+- [Projected Claim State](../generated/projected-claim-state.md): the generated tier/verdict/route view of the ratified claim set.
 
 ## Related Views
 

@@ -5,9 +5,7 @@
     "ignore": [
       "docs/specs/old/**",
       "docs/specs/archive/**",
-      "docs/specs/audit.spec.md",
-      "docs/specs/evidence/projected-claim-state.md",
-      "docs/specs/evidence/claim-evidence-state.md",
+      "docs/specs/generated/**",
       "charness-artifacts/**",
       "node_modules/**",
       ".git/**",

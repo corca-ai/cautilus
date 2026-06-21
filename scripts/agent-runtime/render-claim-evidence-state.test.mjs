@@ -252,7 +252,7 @@ test("refresh check mode tolerates generated artifact commit drift", () => {
 		changedFiles: [
 			".cautilus/claims/evidence-state.json",
 			".cautilus/claims/status-summary.json",
-			"docs/specs/evidence/claim-evidence-state.md",
+			"docs/specs/generated/claim-evidence-state.md",
 		],
 		changedSourceCount: 0,
 		changedSources: [],

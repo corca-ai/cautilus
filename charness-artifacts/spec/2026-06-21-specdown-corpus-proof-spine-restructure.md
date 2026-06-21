@@ -1,6 +1,6 @@
 # Spec: Specdown Corpus → Proof-Spine + Typed Traceability
 
-Status: Slice 1 landed (`010f8e2a`); Slice 2a (typed rule/contract nodes + edges) landed; Slice 2b (multi-view collapse, Hybrid) landed, verify green. Next is Slice 3 (structural moves), deferred. See "Slice 1/2a/2b Delivered" below.
+Status: Slice 1 landed (`010f8e2a`); Slice 2a (typed rule/contract nodes + edges) landed; Slice 2b (multi-view collapse, Hybrid) landed; Slice 3a (generated/ isolation) landed, verify green. Next is Slice 3b (promises/ directory move) then 3c (history exclusion). See the "Delivered" sections below.
 Decided axis (user, this session): full transition to proof-spine + typed traceability.
 
 ## Problem
@@ -199,6 +199,24 @@ Deviation from the approved DELETE list (surfaced, not silently resolved):
 Accepted minor loss: `how-views-relate.spec.md`'s "Context Map" newcomer-orientation table (which context owns what) has no verbatim home now; the surviving index-page intros and the generated ledger cover the navigational function. Recorded as an accepted trade, restorable if a reader-orientation gap shows up.
 
 Critique (full — fresh-eye general-purpose subagent, read-only, claims verified against the repo): A (information loss) PASS, B (keep decision) PASS, C (generator honesty / drift gate bites) PASS, D (trim honesty + reachability, 39 specs) PASS, E (consistency) — flagged this contract was not yet updated; fixed by this section + the Slice 1 Class B note above.
+
+## Slice 3a Delivered (2026-06-21)
+
+First of the three Slice 3 structural moves: isolate the generator-owned pages into a dedicated `docs/specs/generated/` directory so "machine-owned, do not hand-edit" is structural, not just a notice.
+
+Executed and verified (`npm run verify` all phases passed, honesty audit 7/7 honest, `specdown trace -strict` 26 typed docs / 45 edges exit 0, `check-specs` 39 specs reachable, `audit:surface:check` clean, `hooks:check` ready):
+
+- MOVED 4 generated pages via `git mv`: `docs/specs/audit.spec.md` → `generated/audit.spec.md`; `docs/specs/evidence/{projected-claim-state,claim-evidence-state}.md` → `generated/`; `docs/specs/ledger/promise-ledger.spec.md` → `generated/promise-ledger.spec.md`.
+- Generator output-path constants repointed: `AUDIT_PAGE_PATH` (build-surface-audit.mjs), `PAGE_PATH` (projected-claim-state-lib.mjs), `DEFAULT_OUTPUT_MD` (render-claim-evidence-state.mjs), `LEDGER_PAGE_PATH` (render-promise-ledger.mjs).
+- Depth fix (the only link-recomputation in the move): the audit page went from depth-0 (`docs/specs/`) to depth-1 (`docs/specs/generated/`), so `leafLink` and the two apex links in `surface-audit-lib.mjs` now step up one level (`../user/...`, `../index.spec.md`). The other three pages stayed depth-1 (`evidence/` and `ledger/` → `generated/`), so their internal links were unchanged (`relFromLedger`'s `docs/specs/` → `../` mapping still holds).
+- `specdown.json` `trace.ignore` consolidated the three per-page generated entries into a single `docs/specs/generated/**` prefix (also covering the moved `promise-ledger.spec.md`, which was previously an untyped passthrough; trace's typed-doc count is unchanged at 26).
+- `check-generated-artifact-drift.mjs` `DEFAULT_GENERATED_ARTIFACTS` and `.agents/cautilus-adapter.yaml` (the claim-discovery `exclude` of `claim-evidence-state.md` and the review `artifact_paths` entry) repointed to the `generated/` paths. The exclude repoint is load-bearing: had it been missed, claim discovery would have started scanning the 398-candidate backlog page as a claim source.
+- Inbound links updated in the apex + `evidence/index`, `evidence/evidence-map`, `ledger/index`, `contracts/index`, `rules/index`, `user/index`, `archive/index`. Test literals updated (render-promise-ledger.test, render-claim-evidence-state.test, check-generated-artifact-drift.test incl. its `initRepo` mkdir).
+- Claim chain refreshed (`npm run claims:refresh:all`): the moved generated pages are claim sources (audit + promise-ledger + projected-claim-state are scanned), so the chain was re-keyed to the new paths; the 7 promise buckets and the 7/7 honesty verdict held.
+
+Timing (the user's standing red-flag metric — specdown run wall-clock): `specdown run -quiet` 24.85s / 25.28s warm, `lint:specs` 28.26s — both match the pre-slice baseline, no regression. The move adds no `node --test`/heavy spawns to spec blocks.
+
+Behavior-preserving boundary (Non-Goal honored): 3a did NOT exclude `audit.spec.md` / `promise-ledger.spec.md` / `projected-claim-state.md` from claim discovery, even though they are now obviously machine-owned. Excluding generated pages from the claim set is a semantic change to the discovered claim population (drops ~49 candidates), not a structural move, so it is left as a noted candidate follow-up rather than bundled here. Only `claim-evidence-state.md` stayed excluded, preserving prior behavior.
 
 ## Migration Map (full target, for context)
 

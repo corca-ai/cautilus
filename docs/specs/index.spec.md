@@ -13,7 +13,7 @@ This page is Cautilus's own promises, proven on Cautilus itself.
 Each promise below gives you what you get in one line, how far it's proven today, and a link to the executable spec that proves it.
 The promise stays honest because the badge is earned by what that spec actually runs, not by what this page asserts.
 
-- **proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):
+- **proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](generated/audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):
   - *deterministic* — `npm run lint:specs` runs the command and file checks live on every run (Readiness, Claim Discovery, Reviewable Artifacts, A Testable Agent).
   - *cautilus-eval* — the default run replays an operator-witnessed live agent capture and a blind judge verdict; the live agent re-run is opt-in and costs a real agent run (Behavior Evaluation, Bounded Improvement).
   - *human-auditable* — an operator witnessed the live run and vouches for it; the default run replays the checked-in capture and the live re-run is opt-in, with no automated judge (accepted where a full deterministic or eval proof would be disproportionately costly).
@@ -21,7 +21,7 @@ The promise stays honest because the badge is earned by what that spec actually 
 - **promised** — stated, with no executable proof attached yet (named in Proof Debt)
 
 Today, all seven promises are proven, none are declared, and none are promised.
-That split is the point: this page shows the real state of the work, and the [Honesty Audit](audit.spec.md) binds each badge to its proof route so the split cannot quietly drift.
+That split is the point: this page shows the real state of the work, and the [Honesty Audit](generated/audit.spec.md) binds each badge to its proof route so the split cannot quietly drift.
 
 ## What Cautilus Does For You
 
@@ -98,7 +98,7 @@ CLI ↔ Agent: the CLI emits the readiness verdict and names the required runner
 ## Honesty Audit
 
 Every badge above is bound to its proof route, so a badge cannot claim more than its proof actually delivers.
-[Surface Honesty Audit](audit.spec.md) is the navigable, runnable per-badge map: for each promise it shows the level this page CLAIMS, the level the proof route is OBSERVED to deliver (recomputed by inspecting the leaf spec's checks and evidence files), the proof class, the command that runs it, and whether the two agree.
+[Surface Honesty Audit](generated/audit.spec.md) is the navigable, runnable per-badge map: for each promise it shows the level this page CLAIMS, the level the proof route is OBSERVED to deliver (recomputed by inspecting the leaf spec's checks and evidence files), the proof class, the command that runs it, and whether the two agree.
 The binding is semantic, not just structural: for every badge that declares evidence, each evidence file must actually be read by a `cautilus-json-file` check in its leaf spec, so a route cannot point at an unrelated spec or pad its evidence count with files the spec never asserts on.
 Run `npm run audit:surface` to regenerate it, or `npm run audit:surface:check` to fail on drift or over-claim; `npm run lint:specs` runs the leaf proofs plus the check block below.
 The check reads the generated audit manifest and fails specdown if any badge over-claims, if a badge's evidence is not referenced by its proof spec, or if this page and the proof-route registry disagree about which badges exist.

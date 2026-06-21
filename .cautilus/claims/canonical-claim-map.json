@@ -4,18 +4,18 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:072b489c7f612ddee2c4a1ef0765abdc09b38130b1146f5bd397975eb7f597d5"
+      "contentHash": "sha256:2e0f6777739581b092ea5937577bcdc83cb1b949d9ba5854a638c52b4921d355"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
-      "contentHash": "sha256:45767d0f977f2fe9a3d583cec1d3274494a20f7b0d2a9b051f61889f436524df"
+      "contentHash": "sha256:f53c3201c880949f117d02dc2fa0aac49a9c468ce49d4110758b32389e5cc135"
     },
     "maintainerCatalog": {
       "path": "docs/specs/contracts/index.spec.md",
-      "contentHash": "sha256:ddd8988dede5d91ecec9d0df03ecb3f8f9c9150366976279264820c8b8052662"
+      "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "408eb8a6ce1742944c42e13dda6c544de3bdd723",
+  "claimsPacketGitCommit": "6b95b46f02c264ef401acad0bc317d6a518a8b76",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 396,
   "catalogs": {
@@ -2322,7 +2322,7 @@
         },
         {
           "claimId": "claim-docs-specs-index-spec-md-16",
-          "claimFingerprint": "sha256:273736b44b9298264db7a89521c10296002de82e8204f006e43889c734a0fc08",
+          "claimFingerprint": "sha256:39513791f0993da9c5c8971002d728b2862814a3a685d36dcf3dab109fe38b67",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -7404,12 +7404,12 @@
     },
     {
       "claimId": "claim-docs-specs-index-spec-md-16",
-      "summary": "**proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):",
+      "summary": "**proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](generated/audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
           "line": 16,
-          "excerpt": "**proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):"
+          "excerpt": "**proven** — a checked-in executable spec asserts the behavior end-to-end, in one of three honest sub-kinds the [Honesty Audit](generated/audit.spec.md) keeps distinct (the same verdict-mode vocabulary Claim Discovery routes by):"
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -7419,7 +7419,7 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:273736b44b9298264db7a89521c10296002de82e8204f006e43889c734a0fc08",
+      "claimFingerprint": "sha256:39513791f0993da9c5c8971002d728b2862814a3a685d36dcf3dab109fe38b67",
       "canonicalClaimId": "M4",
       "score": 11,
       "runnerUpCanonicalClaimId": "M10",

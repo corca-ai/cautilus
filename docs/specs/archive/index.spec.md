@@ -1,7 +1,7 @@
 # Archived Specs
 
 Archived specs are retained as historical context for migration and review.
-Current promises live in the [Promise Ledger](../ledger/promise-ledger.spec.md).
+Current promises live in the [Promise Ledger](../generated/promise-ledger.spec.md).
 
 ## Historical Spec Set
 

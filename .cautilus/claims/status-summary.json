@@ -303,7 +303,7 @@
       "artifacts/**",
       "charness-artifacts/**",
       "docs/specs/old/**",
-      "docs/specs/evidence/claim-evidence-state.md",
+      "docs/specs/generated/claim-evidence-state.md",
       "docs/claims/**",
       "docs/maintainers/**",
       "docs/internal/handoff.md",
@@ -3414,7 +3414,7 @@
       }
     ]
   },
-  "gitCommit": "408eb8a6ce1742944c42e13dda6c544de3bdd723",
+  "gitCommit": "6b95b46f02c264ef401acad0bc317d6a518a8b76",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3426,10 +3426,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "408eb8a6ce1742944c42e13dda6c544de3bdd723",
+    "currentGitCommit": "6b95b46f02c264ef401acad0bc317d6a518a8b76",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "408eb8a6ce1742944c42e13dda6c544de3bdd723",
+    "packetGitCommit": "6b95b46f02c264ef401acad0bc317d6a518a8b76",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

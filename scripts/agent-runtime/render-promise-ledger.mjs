@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Render the Cautilus Promise Ledger page (docs/specs/ledger/promise-ledger.spec.md)
+// Render the Cautilus Promise Ledger page (docs/specs/generated/promise-ledger.spec.md)
 // from the typed Specdown trace graph. Each promise's governing cross-cutting
 // rules and implementing contracts are derived from the `governed-by::` /
 // `implemented-by::` edges on its leaf spec, so the human-readable map cannot
@@ -19,13 +19,14 @@ import { dirname, resolve } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
-export const LEDGER_PAGE_PATH = "docs/specs/ledger/promise-ledger.spec.md";
+export const LEDGER_PAGE_PATH = "docs/specs/generated/promise-ledger.spec.md";
 
 const GENERATED_NOTICE =
 	"<!-- GENERATED — do not edit by hand. Source: the typed Specdown trace graph in specdown.json. Regenerate: npm run specdown:ledger. -->";
 
 // Convert a repo-root-relative spec path (docs/specs/...) into a path relative
-// to the ledger page that links it (docs/specs/ledger/promise-ledger.spec.md).
+// to the ledger page that links it (docs/specs/generated/promise-ledger.spec.md).
+// The page lives one level under docs/specs/, so the docs/specs/ prefix maps to ../.
 function relFromLedger(repoRelPath) {
 	if (!repoRelPath.startsWith("docs/specs/")) {
 		throw new Error(`Unexpected spec path outside docs/specs: ${repoRelPath}`);

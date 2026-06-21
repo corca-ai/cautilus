@@ -117,7 +117,7 @@ test("render-promise-ledger build then check passes, and a mutated page fails ch
 		assert.equal(build.status, 0, build.stderr);
 		assert.match(build.stdout, /promise ledger rendered: 1 promise\(s\), 2 governed-by\/implemented-by edge\(s\)/);
 
-		const page = readFileSync(join(root, "docs/specs/ledger/promise-ledger.spec.md"), "utf-8");
+		const page = readFileSync(join(root, "docs/specs/generated/promise-ledger.spec.md"), "utf-8");
 		assert.match(page, /\| \[Promise P\]\(\.\.\/user\/p\.spec\.md\) \| \[Rule R\]\(\.\.\/rules\/r\.spec\.md\) \| \[Contract C\]\(\.\.\/contracts\/c\.spec\.md\) \|/);
 
 		const checkOk = spawnSync("node", [SCRIPT_PATH, "--check", "--repo-root", root], { cwd: root, encoding: "utf-8" });
@@ -125,7 +125,7 @@ test("render-promise-ledger build then check passes, and a mutated page fails ch
 		assert.match(checkOk.stdout, /OK: promise ledger rendered/);
 
 		// Drift: hand-edit the generated page and confirm --check fails.
-		writeFileSync(join(root, "docs/specs/ledger/promise-ledger.spec.md"), `${page}\nhand edit\n`, "utf-8");
+		writeFileSync(join(root, "docs/specs/generated/promise-ledger.spec.md"), `${page}\nhand edit\n`, "utf-8");
 		const checkStale = spawnSync("node", [SCRIPT_PATH, "--check", "--repo-root", root], { cwd: root, encoding: "utf-8" });
 		assert.equal(checkStale.status, 1);
 		assert.match(checkStale.stderr, /is stale — run npm run specdown:ledger/);
