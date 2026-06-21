@@ -2,9 +2,9 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — specdown 코퍼스 재구조화 Slice 1/2 착지. 계약 charness-artifacts/spec/2026-06-21-specdown-corpus-proof-spine-restructure.md 를 먼저 읽고, 먼저 아래 Discuss(D2)를 확정한 뒤 charness:impl 로 Slice 3 를 이어가세요.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — specdown 코퍼스 재구조화 Slice 1/2 착지. 계약 charness-artifacts/spec/2026-06-21-specdown-corpus-proof-spine-restructure.md 를 먼저 읽고, charness:impl 로 Slice 3 를 이어가세요.`
 
-첫 tool call = 계약 파일 read. doc 멘션만으로 픽업해도 재독에 그치지 말고 이 workflow를 실행하세요. Slice 3 진입 전 D2(아래) 한 건만 확정하면 됨.
+첫 tool call = 계약 파일 read → `charness:impl`. doc 멘션만으로 픽업해도 재독에 그치지 말고 이 workflow를 실행하세요. (D2는 아래에서 이미 결정됨 — 다시 묻지 말 것.)
 
 ## Current State
 
@@ -17,14 +17,14 @@
 
 ## Next Session
 
-1. **D2 확정 후 진행(아래 Discuss).** `evidence/evidence-map.spec.md`·`ledger/names-and-keys.spec.md`는 non-subsumed lens라 **유지**했음(approved Hybrid delete-list에서 의도적 이탈, critique가 유지 타당 확인). user가 trim/삭제를 원하면 그때 처리.
+1. **D2 결정됨(user, 유지):** `evidence/evidence-map.spec.md`·`ledger/names-and-keys.spec.md`는 non-subsumed lens라 그대로 둠. 재논의 불필요 — Slice 3 바로 진입.
 2. **Slice 3(다음, 규모 큼):** 구조 이동 — `promises/` 디렉토리(7 leaf), `generated/` 격리, history 그래프 분리. `docs/specs/audit/surface-registry.json`·`scripts/agent-runtime/build-surface-audit.mjs`(하드코딩 apex/leaf 경로)·projection·claim chain을 **lockstep** 업데이트. `check-specs.mjs`도 함께.
 3. **Slice 4(deferred):** Alloy 불변식(claim-state partition, badge↔route bijection), `.spec.md`→`.md` rename(check-specs/specdown entry/registry 결합).
 4. **Residual:** `user/claim-discovery.spec.md`가 live `.cautilus/claims` 버킷을 exact-assert(현재 7) → docs 편집마다 재churn 위험. structural(subset/floor) assert로 바꾸는 follow-up 권장. claim-source 편집 후 push 전 `npm run claims:refresh:all` 필수.
 
 ## Discuss
 
-- **D2(Slice 3 진입 전):** `evidence-map`·`names-and-keys` 두 페이지를 (a) 그대로 유지(현재, 권장 — non-subsumed) / (b) 부분 trim(중복 행 제거, 고유 lens만 유지) / (c) 삭제(고유 콘텐츠 손실 감수) 중 무엇으로 둘지.
+- (없음) D2는 (a) 유지로 결정됨. Slice 3 설계 결정이 생기면 여기에 추가.
 
 ## References
 
