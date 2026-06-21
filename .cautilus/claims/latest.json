@@ -1,9 +1,9 @@
 {
-  "candidateCount": 487,
+  "candidateCount": 488,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 476,
+    "matchedClaimCount": 486,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -3462,9 +3462,9 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:f44071d9a7eb92eb35cd3c15a0a1450226c89c51e14d3cb17bfaa20b45f394f1",
+      "claimFingerprint": "sha256:862486870933c2f77a6e870f56ecd39d3d61d0e1dc05327473b89897e5897be2",
       "claimId": "claim-docs-master-plan-md-181",
-      "claimSemanticGroup": "Agent and skill workflow",
+      "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -3479,12 +3479,41 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Per-facet routing has reached the agent-primary extraction template (R6/R12) and the maintainer override surface, but NOT the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population — which is therefore ~45% route-accurate against ratified ground truth and over-routes to `cautilus-eval` by ~3.4x (measured 2026-06-21, [charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md](../charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md)).",
+          "excerpt": "Per-facet routing is being brought into the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population. Progress (measured against the ratified answer-key overlap; agreeing count rising):",
           "line": 181,
           "path": "docs/master-plan.md"
         }
       ],
-      "summary": "Per-facet routing has reached the agent-primary extraction template (R6/R12) and the maintainer override surface, but NOT the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population — which is therefore ~45% route-accurate against ratified ground truth and over-routes to `cautilus-eval` by ~3.4x (measured 2026-06-21, [charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md](../charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md)).",
+      "summary": "Per-facet routing is being brought into the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population. Progress (measured against the ratified answer-key overlap; agreeing count rising):",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:1e1d3781f4946fb70586c315428377ac72b570373e576db85aa852ad118d001e",
+      "claimId": "claim-docs-master-plan-md-184",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "**Fork B (the deeper per-facet end-state) has started:** the `namedPacketEmissionClaim` discriminator routes named-packet/explicit-non-LLM shapes `deterministic` with an eval-judgment over-flip guard, no per-claim schema (slice 1, 2026-06-21).",
+          "line": 184,
+          "path": "docs/master-plan.md"
+        }
+      ],
+      "summary": "**Fork B (the deeper per-facet end-state) has started:** the `namedPacketEmissionClaim` discriminator routes named-packet/explicit-non-LLM shapes `deterministic` with an eval-judgment over-flip guard, no per-claim schema (slice 1, 2026-06-21).",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -3492,7 +3521,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-191",
+      "claimId": "claim-docs-master-plan-md-194",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3510,7 +3539,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
-          "line": 191,
+          "line": 194,
           "path": "docs/master-plan.md"
         }
       ],
@@ -15468,43 +15497,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 358,
+      "developer": 359,
       "user": 129
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 75,
-      "Agent and skill workflow": 116,
+      "Agent and skill workflow": 115,
       "Claim discovery and review": 74,
-      "Documentation and contracts": 94,
+      "Documentation and contracts": 95,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 39,
-      "Packets and reporting": 55,
+      "Packets and reporting": 56,
       "Quality gates": 30,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 420
+      "unknown": 421
     },
     "byLifecycle": {
-      "new": 487
+      "new": 488
     },
     "byRecommendedProof": {
       "cautilus-eval": 168,
-      "deterministic": 196,
+      "deterministic": 197,
       "human-auditable": 123
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 376
+      "heuristic": 377
     },
     "byVerificationReadiness": {
       "blocked": 15,
       "needs-alignment": 59,
       "needs-scenario": 10,
-      "ready-for-proof": 403
+      "ready-for-proof": 404
     }
   },
   "discoveryEngine": {
@@ -15535,7 +15564,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:d66ac6dbf8a1c29185052eb0c8f068d00f7e938c53210115b81fe4f44062ecde",
+    "implementationHash": "sha256:e0ddc8c7583f1b1f087ba6bee0356fef96ac7c82c618d98d07aa736204e9ecfc",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v5"
@@ -15703,7 +15732,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "acfc03fc5dc3eb7739d40877107180e60431d365",
+  "gitCommit": "5837798b280cdae3f169b5f73cb361816466e4a6",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -17499,7 +17528,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:d461eec37b1195fcb4e9f58e6742c4e38b5d812a0d60e18b640b27824f26a812",
+      "contentHash": "sha256:fe1a008c4f07ad5733c9c0c38ff4ac9d73a8a0c68b72e6eea982dcf291a7f760",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",

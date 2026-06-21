@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:5c919cee800506902b549766d989fdf495646745b015a5cf9aaaca5c363310b0"
+      "contentHash": "sha256:aaec258a39f181c41b1a306b4bf40bfc38ddeec4202ee1eb2a391ff252f2fea5"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "acfc03fc5dc3eb7739d40877107180e60431d365",
+  "claimsPacketGitCommit": "5837798b280cdae3f169b5f73cb361816466e4a6",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 487,
+  "claimsPacketCandidateCount": 488,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,33 +200,33 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 487,
+    "totalRawClaimCount": 488,
     "userRawClaimCount": 129,
     "userMappedToCanonicalCount": 0,
     "userUnmappedCount": 129,
-    "semanticReviewRecommendedCount": 412,
+    "semanticReviewRecommendedCount": 413,
     "userSemanticReviewRecommendedCount": 129,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 358,
+      "mapped-to-maintainer-canonical": 359,
       "user-review-needed": 129
     },
     "byAudience": {
-      "developer": 358,
+      "developer": 359,
       "user": 129
     },
     "byMappingConfidence": {
       "high": 75,
       "low": 148,
-      "medium": 264
+      "medium": 265
     },
     "byUserCanonicalClaimId": {},
     "byMaintainerCanonicalClaimId": {
       "M1": 5,
       "M10": 16,
-      "M11": 44,
+      "M11": 46,
       "M12": 10,
       "M2": 23,
-      "M3": 94,
+      "M3": 93,
       "M4": 81,
       "M5": 33,
       "M6": 11,
@@ -461,7 +461,8 @@
       "claim-docs-master-plan-md-80",
       "claim-docs-master-plan-md-91",
       "claim-docs-master-plan-md-181",
-      "claim-docs-master-plan-md-191",
+      "claim-docs-master-plan-md-184",
+      "claim-docs-master-plan-md-194",
       "claim-docs-specs-index-spec-md-16",
       "claim-docs-specs-index-spec-md-17",
       "claim-docs-specs-index-spec-md-33",
@@ -1031,7 +1032,7 @@
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 94,
+      "absorbedRawClaimCount": 93,
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
         "claim-agents-md-142",
@@ -1040,7 +1041,6 @@
         "claim-docs-internal-working-patterns-md-63",
         "claim-docs-master-plan-md-32",
         "claim-docs-master-plan-md-79",
-        "claim-docs-master-plan-md-181",
         "claim-docs-specs-index-spec-md-17",
         "claim-docs-specs-index-spec-md-33",
         "claim-docs-specs-index-spec-md-64",
@@ -1168,12 +1168,6 @@
         {
           "claimId": "claim-docs-master-plan-md-79",
           "claimFingerprint": "sha256:369242dab623a340040e48a7ba7b1b8e279514aaf0d83fc23ad2474c5509777b",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-master-plan-md-181",
-          "claimFingerprint": "sha256:f44071d9a7eb92eb35cd3c15a0a1450226c89c51e14d3cb17bfaa20b45f394f1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1696,21 +1690,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 76
+        "unknown": 75
       },
       "byReviewStatus": {
         "agent-reviewed": 27,
-        "heuristic": 67
+        "heuristic": 66
       },
       "byRecommendedProof": {
         "cautilus-eval": 27,
-        "deterministic": 51,
+        "deterministic": 50,
         "human-auditable": 16
       },
       "byMappingConfidence": {
         "high": 21,
         "low": 1,
-        "medium": 72
+        "medium": 71
       }
     },
     {
@@ -3177,7 +3171,7 @@
     {
       "canonicalClaimId": "M11",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 44,
+      "absorbedRawClaimCount": 46,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-234",
         "claim-docs-contracts-adapter-contract-md-452",
@@ -3185,7 +3179,9 @@
         "claim-docs-contracts-adapter-contract-md-504",
         "claim-docs-contracts-review-packet-md-3",
         "claim-docs-master-plan-md-30",
-        "claim-docs-master-plan-md-191",
+        "claim-docs-master-plan-md-181",
+        "claim-docs-master-plan-md-184",
+        "claim-docs-master-plan-md-194",
         "claim-docs-specs-index-spec-md-102",
         "claim-docs-specs-index-spec-md-160",
         "claim-docs-specs-index-spec-md-167",
@@ -3262,7 +3258,19 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-master-plan-md-191",
+          "claimId": "claim-docs-master-plan-md-181",
+          "claimFingerprint": "sha256:862486870933c2f77a6e870f56ecd39d3d61d0e1dc05327473b89897e5897be2",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-master-plan-md-184",
+          "claimFingerprint": "sha256:1e1d3781f4946fb70586c315428377ac72b570373e576db85aa852ad118d001e",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-master-plan-md-194",
           "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3492,21 +3500,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 27
+        "unknown": 29
       },
       "byReviewStatus": {
         "agent-reviewed": 19,
-        "heuristic": 25
+        "heuristic": 27
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
-        "deterministic": 27,
+        "deterministic": 29,
         "human-auditable": 13
       },
       "byMappingConfidence": {
         "high": 11,
         "low": 2,
-        "medium": 31
+        "medium": 33
       }
     },
     {
@@ -6896,12 +6904,12 @@
     },
     {
       "claimId": "claim-docs-master-plan-md-181",
-      "summary": "Per-facet routing has reached the agent-primary extraction template (R6/R12) and the maintainer override surface, but NOT the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population — which is therefore ~45% route-accurate against ratified ground truth and over-routes to `cautilus-eval` by ~3.4x (measured 2026-06-21, [charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md](../charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md)).",
+      "summary": "Per-facet routing is being brought into the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population. Progress (measured against the ratified answer-key overlap; agreeing count rising):",
       "sourceRefs": [
         {
           "path": "docs/master-plan.md",
           "line": 181,
-          "excerpt": "Per-facet routing has reached the agent-primary extraction template (R6/R12) and the maintainer override surface, but NOT the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population — which is therefore ~45% route-accurate against ratified ground truth and over-routes to `cautilus-eval` by ~3.4x (measured 2026-06-21, [charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md](../charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md))."
+          "excerpt": "Per-facet routing is being brought into the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population. Progress (measured against the ratified answer-key overlap; agreeing count rising):"
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -6911,37 +6919,74 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:f44071d9a7eb92eb35cd3c15a0a1450226c89c51e14d3cb17bfaa20b45f394f1",
-      "canonicalClaimId": "M3",
-      "score": 12,
-      "runnerUpCanonicalClaimId": "M11",
-      "runnerUpScore": 11,
-      "scoreMargin": 1,
+      "claimFingerprint": "sha256:862486870933c2f77a6e870f56ecd39d3d61d0e1dc05327473b89897e5897be2",
+      "canonicalClaimId": "M11",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 8,
+      "scoreMargin": 2,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "agent",
+        "add",
+        "being",
+        "build",
         "check",
+        "contract",
+        "count",
         "deterministic",
         "keep",
-        "lint",
-        "maintainer",
         "routing",
-        "schema",
-        "skill",
-        "surface",
-        "thi",
-        "workflow"
+        "schema"
       ]
     },
     {
-      "claimId": "claim-docs-master-plan-md-191",
+      "claimId": "claim-docs-master-plan-md-184",
+      "summary": "**Fork B (the deeper per-facet end-state) has started:** the `namedPacketEmissionClaim` discriminator routes named-packet/explicit-non-LLM shapes `deterministic` with an eval-judgment over-flip guard, no per-claim schema (slice 1, 2026-06-21).",
+      "sourceRefs": [
+        {
+          "path": "docs/master-plan.md",
+          "line": 184,
+          "excerpt": "**Fork B (the deeper per-facet end-state) has started:** the `namedPacketEmissionClaim` discriminator routes named-packet/explicit-non-LLM shapes `deterministic` with an eval-judgment over-flip guard, no per-claim schema (slice 1, 2026-06-21)."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:1e1d3781f4946fb70586c315428377ac72b570373e576db85aa852ad118d001e",
+      "canonicalClaimId": "M11",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 8,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "add",
+        "build",
+        "check",
+        "deterministic",
+        "keep",
+        "packet",
+        "reporting",
+        "route",
+        "schema",
+        "shape"
+      ]
+    },
+    {
+      "claimId": "claim-docs-master-plan-md-194",
       "summary": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
       "sourceRefs": [
         {
           "path": "docs/master-plan.md",
-          "line": 191,
+          "line": 194,
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first."
         }
       ],
