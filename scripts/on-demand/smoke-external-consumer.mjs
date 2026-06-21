@@ -7,7 +7,7 @@ import { pathToFileURL } from "node:url";
 
 // Canonical checked-in capture path. `npm run consumer:onboard:smoke` writes an
 // operator-witnessed capture here (volatile temp paths relativized, no timestamps
-// or costs) so docs/specs/user/ownership.spec.md can replay it deterministically
+// or costs) so docs/specs/promises/ownership.spec.md can replay it deterministically
 // in `npm run lint:specs`, and the live re-run regenerates it without drift.
 export const DEFAULT_CAPTURE_PATH = "fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json";
 

@@ -179,7 +179,7 @@ Proposed: dominant `deterministic`, verdict **exact**.
 
 ### claim-docs-specs-user-claim-discovery-spec-md-160
 
-`docs/specs/user/claim-discovery.spec.md:160` — heuristic tag: `deterministic`
+`docs/specs/promises/claim-discovery.spec.md:160` — heuristic tag: `deterministic`
 
 > `discover claims status` owns the next-action summary over a saved discovery packet.
 
@@ -189,7 +189,7 @@ Proposed: dominant `deterministic`, verdict **exact**.
 
 ### claim-docs-specs-user-reviewable-artifacts-spec-md-3
 
-`docs/specs/user/reviewable-artifacts.spec.md:3` — heuristic tag: `deterministic`
+`docs/specs/promises/reviewable-artifacts.spec.md:3` — heuristic tag: `deterministic`
 
 > After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory.
 
@@ -309,7 +309,7 @@ Note: A definition line; the enforceable part is a deterministic projection chec
 
 `docs/specs/ledger/promise-ledger.spec.md:15` — heuristic tag: `cautilus-eval`
 
-> [Behavior Evaluation](../../docs/specs/user/evaluation.spec.md): Cautilus evaluates intentful behavior across supported `dev` and `app` surfaces.
+> [Behavior Evaluation](../../docs/specs/promises/evaluation.spec.md): Cautilus evaluates intentful behavior across supported `dev` and `app` surfaces.
 
 - [deterministic] eval commands execute across dev and app surfaces
 - [cautilus-eval] the evaluation actually judges intentful behavior (semantic verdicts are sound)
@@ -320,7 +320,7 @@ Note: The flagship Behavior Evaluation promise; exactly the reasoning-soundness 
 
 ### claim-docs-specs-user-doctor-readiness-spec-md-222
 
-`docs/specs/user/doctor-readiness.spec.md:222` — heuristic tag: `cautilus-eval`
+`docs/specs/promises/doctor-readiness.spec.md:222` — heuristic tag: `cautilus-eval`
 
 > A user can get a safe next workflow branch before spending workflow budget.
 
@@ -454,7 +454,7 @@ Note: The renderer enforces the visibility rule deterministically.
 
 ### claim-docs-specs-user-doctor-readiness-spec-md-12
 
-`docs/specs/user/doctor-readiness.spec.md:12` — heuristic tag: `human-auditable`
+`docs/specs/promises/doctor-readiness.spec.md:12` — heuristic tag: `human-auditable`
 
 > Instead, it uses a repo-owned adapter so the user can declare how Cautilus should inspect and evaluate that repo.
 
@@ -465,7 +465,7 @@ Proposed: dominant `deterministic`, verdict **wrong**.
 
 ### claim-docs-specs-user-ownership-spec-md-4
 
-`docs/specs/user/ownership.spec.md:4` — heuristic tag: `human-auditable`
+`docs/specs/promises/ownership.spec.md:4` — heuristic tag: `human-auditable`
 
 > Using the `cautilus init adapter`, `cautilus doctor adapter`, and `cautilus doctor` CLI commands with the `cautilus-agent` skill, a user can keep host-owned execution in place while Cautilus standardizes workflow packets and boundaries.
 

@@ -51,7 +51,7 @@ cli_skill_surface_command_docs:
   - README.md
   - docs/guides/cli.md
   - docs/guides/consumer-adoption.md
-  - docs/specs/user/evaluation.spec.md
+  - docs/specs/promises/evaluation.spec.md
 cli_skill_surface_skill_paths:
   - skills/cautilus-agent/SKILL.md
   - plugins/cautilus/skills/cautilus-agent/SKILL.md
@@ -65,7 +65,7 @@ cli_skill_surface_change_globs:
   - plugins/cautilus/**
   - docs/guides/cli.md
   - docs/guides/consumer-adoption.md
-  - docs/specs/user/evaluation.spec.md
+  - docs/specs/promises/evaluation.spec.md
 canonical_markdown_surfaces:
   - AGENTS.md
   - CLAUDE.md

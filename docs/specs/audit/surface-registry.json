@@ -13,7 +13,7 @@
       "id": "readiness",
       "title": "Readiness",
       "proofClass": "deterministic",
-      "proofSpec": "docs/specs/user/doctor-readiness.spec.md",
+      "proofSpec": "docs/specs/promises/doctor-readiness.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
       "evidence": []
@@ -22,7 +22,7 @@
       "id": "claim-discovery",
       "title": "Claim Discovery",
       "proofClass": "deterministic",
-      "proofSpec": "docs/specs/user/claim-discovery.spec.md",
+      "proofSpec": "docs/specs/promises/claim-discovery.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
       "evidence": [
@@ -35,7 +35,7 @@
       "id": "behavior-evaluation",
       "title": "Behavior Evaluation",
       "proofClass": "cautilus-eval",
-      "proofSpec": "docs/specs/user/evaluation.spec.md",
+      "proofSpec": "docs/specs/promises/evaluation.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run proof:behavior-eval:live && npm run proof:skill-orientation:live",
       "evidence": [
@@ -51,7 +51,7 @@
       "id": "bounded-improvement",
       "title": "Bounded Improvement",
       "proofClass": "cautilus-eval",
-      "proofSpec": "docs/specs/user/improvement.spec.md",
+      "proofSpec": "docs/specs/promises/improvement.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run proof:improve:live",
       "evidence": [
@@ -64,7 +64,7 @@
       "id": "reviewable-artifacts",
       "title": "Reviewable Artifacts",
       "proofClass": "deterministic",
-      "proofSpec": "docs/specs/user/reviewable-artifacts.spec.md",
+      "proofSpec": "docs/specs/promises/reviewable-artifacts.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
       "evidence": []
@@ -73,7 +73,7 @@
       "id": "host-ownership",
       "title": "Host Ownership",
       "proofClass": "human-auditable",
-      "proofSpec": "docs/specs/user/ownership.spec.md",
+      "proofSpec": "docs/specs/promises/ownership.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run consumer:onboard:smoke",
       "evidence": [
@@ -84,7 +84,7 @@
       "id": "a-testable-agent",
       "title": "A Testable Agent",
       "proofClass": "deterministic",
-      "proofSpec": "docs/specs/user/a-testable-agent.spec.md",
+      "proofSpec": "docs/specs/promises/a-testable-agent.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
       "evidence": [

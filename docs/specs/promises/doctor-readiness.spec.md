@@ -8,7 +8,7 @@ Before a repo spends agent time on claim discovery, evaluation, or improvement, 
 Using the `cautilus doctor` CLI command and the `cautilus-agent` skill, a user can have an agent inspect setup, explain or fix blockers, choose whether to inspect claims or run a first eval, and stop before spending workflow budget on a repo that is not ready.
 
 Readiness means the repo has enough Cautilus setup to choose and run the next bounded workflow.
-It is not evidence that the repo's behavior promises are already true; proof status is handled by [Evidence Gaps](evidence-gaps.spec.md).
+It is not evidence that the repo's behavior promises are already true; proof status is handled by [Evidence Gaps](../user/evidence-gaps.spec.md).
 
 Governed by [governed-by::Evidence Gaps](../rules/evidence-gaps.spec.md), [governed-by::Vocabulary Consistency](../rules/vocabulary-consistency.spec.md), [governed-by::Agent-Human Resumability](../rules/agent-human-resumability.spec.md), and [governed-by::Host-Owned Execution](../rules/host-owned-execution.spec.md).
 Implemented by [implemented-by::Readiness And Runtime Status](../contracts/readiness-runtime-status.spec.md) and [implemented-by::Adapter And Host Ownership](../contracts/adapter-host-ownership.spec.md).

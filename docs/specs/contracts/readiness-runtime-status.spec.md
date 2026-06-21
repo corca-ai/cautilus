@@ -28,7 +28,7 @@ Readiness commands tell the operator what can run next, what is blocked, and whi
 
 - [internal/runtime/runner_readiness_test.go](../../../internal/runtime/runner_readiness_test.go) `TestDoctorAndAgentStatusShareRunnerReadinessFacts` directly asserts the parity of readiness verdicts between `doctor` and `doctor status`.
 - The shared runner-readiness assessment is implemented in [internal/runtime/runner_readiness.go](../../../internal/runtime/runner_readiness.go) and covered by the surrounding tests in the same file.
-- The user-facing readiness surface smoke is enforced by [docs/specs/user/doctor-readiness.spec.md](../user/doctor-readiness.spec.md) (specdown directives over `doctor --help` and `doctor status --json`).
+- The user-facing readiness surface smoke is enforced by [docs/specs/promises/doctor-readiness.spec.md](../promises/doctor-readiness.spec.md) (specdown directives over `doctor --help` and `doctor status --json`).
 
 ## Evidence Gaps
 

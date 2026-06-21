@@ -1,6 +1,6 @@
 # Spec: Specdown Corpus → Proof-Spine + Typed Traceability
 
-Status: Slice 1 landed (`010f8e2a`); Slice 2a (typed rule/contract nodes + edges) landed; Slice 2b (multi-view collapse, Hybrid) landed; Slice 3a (generated/ isolation) landed, verify green. Next is Slice 3b (promises/ directory move) then 3c (history exclusion). See the "Delivered" sections below.
+Status: Slice 1 landed (`010f8e2a`); Slice 2a (typed rule/contract nodes + edges) landed; Slice 2b (multi-view collapse, Hybrid) landed; Slice 3a (generated/ isolation) landed; Slice 3b (promises/ directory move) landed, verify green. Next is Slice 3c (history exclusion). See the "Delivered" sections below.
 Decided axis (user, this session): full transition to proof-spine + typed traceability.
 
 ## Problem
@@ -217,6 +217,22 @@ Executed and verified (`npm run verify` all phases passed, honesty audit 7/7 hon
 Timing (the user's standing red-flag metric — specdown run wall-clock): `specdown run -quiet` 24.85s / 25.28s warm, `lint:specs` 28.26s — both match the pre-slice baseline, no regression. The move adds no `node --test`/heavy spawns to spec blocks.
 
 Behavior-preserving boundary (Non-Goal honored): 3a did NOT exclude `audit.spec.md` / `promise-ledger.spec.md` / `projected-claim-state.md` from claim discovery, even though they are now obviously machine-owned. Excluding generated pages from the claim set is a semantic change to the discovered claim population (drops ~49 candidates), not a structural move, so it is left as a noted candidate follow-up rather than bundled here. Only `claim-evidence-state.md` stayed excluded, preserving prior behavior.
+
+## Slice 3b Delivered (2026-06-21)
+
+Second Slice 3 structural move: the 7 promise leaves moved `docs/specs/user/` → `docs/specs/promises/`, so the proof-spine directory names match the trace node types (`promises/` = `type: promise` nodes), completing the apex-reading story (`promises/`, `contracts/`, `rules/`, `evidence/`, `generated/`).
+
+D-leftover decision (user, this session): **keep `user/` as the user-workflow view.** The 2 non-promise residents stay: `user/index.spec.md` (the user-workflow nav + its `doctor commands` check block, referenced by README and the cautilus adapter `artifact_paths`) and `user/evidence-gaps.spec.md` (the user-facing view of the `evidence-gaps` rule, linked from `rules/*`). Conceptual split: `promises/` = typed promise nodes (the proof spine), `user/` = the user-facing workflow narrative/nav layer that points into `promises/`.
+
+Executed and verified (`npm run verify` all phases passed in 81s warm — the earlier 341s was a cold go-build/coverage cache, not a regression; honesty audit 7/7 honest, `specdown trace -strict` 26 typed docs / 45 edges exit 0 with all 7 promise paths now under `promises/`, `check-specs` 39 specs, `lint:links` 535 files ok, `claims:source-freshness:check` 69/69 fresh):
+
+- MOVED 7 leaves via `git mv`: `user/{doctor-readiness,claim-discovery,evaluation,improvement,reviewable-artifacts,ownership,a-testable-agent}.spec.md` → `promises/`.
+- Leaf INTERNALS needed no edits: `user/` and `promises/` are both depth-1 under `docs/specs/`, so each leaf's outgoing `governed-by::`/`implemented-by::` edges (`../rules/*`, `../contracts/*`), its `../index.spec.md`, and `../generated/*` links all still resolve unchanged. The one exception was a same-dir cross-ref: `doctor-readiness.spec.md` linked the (non-moved) `evidence-gaps.spec.md` as a sibling — repointed to `../user/evidence-gaps.spec.md`. (Its `ownership.spec.md` sibling link stayed valid — that leaf moved too.)
+- EXTERNAL inbound links repointed by a scoped `user/<leaf>.spec.md` → `promises/<leaf>.spec.md` transform over the 7 specific leaf basenames (so `user/evidence-gaps` and `user/index` were untouched). Blast radius was wider than docs/specs: apex badges edges; `surface-registry.json` 7 proofSpec; `evidence/evidence-map`, `ledger/names-and-keys`, `rules/*` (×7, preserving `../user/evidence-gaps`), `contracts/*` (×3); README (the 2 leaf links; the 2 `user/index` links kept); plus `docs/{guides,contracts,maintainers,master-plan}`, `examples/starters/*`, `internal/runtime/prototypes/README.md`, the 4 `.agents/*adapter*.yaml` artifact/source lists, and a comment in `scripts/on-demand/smoke-external-consumer.mjs`. `user/index.spec.md`'s 4 same-dir workflow-story links became `../promises/*`.
+- Historical/runtime records that the broken-link gate still scans were link-target-repointed (Slice 2b precedent, prose left intact): `charness-artifacts/eval-trust/2026-06-10-*.md` and `.charness/hitl/runtime/hitl-20260509-135850/hitl-scratchpad.md`.
+- Generated pages regenerated (audit leaf links now `../promises/*` via registry; promise-ledger via the trace badges edges; projected-claim-state + claim-evidence-state via the claim chain). Claim chain refreshed twice — once for the move, once after the `doctor-readiness` cross-ref edit (a claim-source SHA change) so `claims:source-freshness:check` stays green.
+
+`.agents/cautilus-adapter.yaml` claim_discovery needed NO leaf-path edit: it discovers by link-following from README/AGENTS/CLAUDE at `linked_doc_depth: 3`, so the leaves are reached at the new paths via README → `user/index` → `../promises/*` and the direct README leaf links.
 
 ## Migration Map (full target, for context)
 

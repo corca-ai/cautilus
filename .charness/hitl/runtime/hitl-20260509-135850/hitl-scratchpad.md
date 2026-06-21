@@ -37,7 +37,7 @@
 - Accepted At: 2026-05-09T15:12:18+00:00
 - Text:
   <md>
-  | [Agent-Human Resumability](../../../../docs/specs/rules/agent-human-resumability.spec.md) | `concern.agent-human-resumability` | A human or agent can resume from durable packets, next actions, source refs, and source-bound review feedback that can become reusable learning evidence instead of chat memory. | [Readiness](../../../../docs/specs/user/doctor-readiness.spec.md), [Claim Discovery](../../../../docs/specs/user/claim-discovery.spec.md), [Host Ownership](../../../../docs/specs/user/ownership.spec.md) | [Binary And Skill Boundary](../../../../docs/specs/contracts/binary-skill-boundary.spec.md), [Active Run And Workspace Lifecycle](../../../../docs/specs/contracts/active-run-workspace.spec.md), [Reporting And Review Variants](../../../../docs/specs/contracts/reporting-review-variants.spec.md) |
+  | [Agent-Human Resumability](../../../../docs/specs/rules/agent-human-resumability.spec.md) | `concern.agent-human-resumability` | A human or agent can resume from durable packets, next actions, source refs, and source-bound review feedback that can become reusable learning evidence instead of chat memory. | [Readiness](../../../../docs/specs/promises/doctor-readiness.spec.md), [Claim Discovery](../../../../docs/specs/promises/claim-discovery.spec.md), [Host Ownership](../../../../docs/specs/promises/ownership.spec.md) | [Binary And Skill Boundary](../../../../docs/specs/contracts/binary-skill-boundary.spec.md), [Active Run And Workspace Lifecycle](../../../../docs/specs/contracts/active-run-workspace.spec.md), [Reporting And Review Variants](../../../../docs/specs/contracts/reporting-review-variants.spec.md) |
   </md>
 
 ## Full Target Review

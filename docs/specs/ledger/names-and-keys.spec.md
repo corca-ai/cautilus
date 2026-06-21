@@ -10,7 +10,7 @@ the name carries meaning, and a rename is a concept change unless the surroundin
 
 | kind | examples | naming rule |
 | --- | --- | --- |
-| workflow promise | [Readiness](../user/doctor-readiness.spec.md), [Claim Discovery](../user/claim-discovery.spec.md), [Behavior Evaluation](../user/evaluation.spec.md), [Bounded Improvement](../user/improvement.spec.md) | name the user-visible job Cautilus supports |
+| workflow promise | [Readiness](../promises/doctor-readiness.spec.md), [Claim Discovery](../promises/claim-discovery.spec.md), [Behavior Evaluation](../promises/evaluation.spec.md), [Bounded Improvement](../promises/improvement.spec.md) | name the user-visible job Cautilus supports |
 | cross-cutting rule | [Evidence Gaps](../rules/evidence-gaps.spec.md), [Host-Owned Execution](../rules/host-owned-execution.spec.md), [Packet Freshness](../rules/packet-freshness.spec.md) | name the rule or risk that applies across workflows |
 | proof state | [Evidence Map](../evidence/evidence-map.spec.md), [Proof Gaps](../evidence/gaps.spec.md), [Latest Selected Evidence](../evidence/latest-selected-evidence.spec.md) | name what the reader can inspect |
 
@@ -18,7 +18,7 @@ the name carries meaning, and a rename is a concept change unless the surroundin
 
 | stable name | user-facing name | rule |
 | --- | --- | --- |
-| [Host-Owned Execution](../rules/host-owned-execution.spec.md) | [Host Ownership](../user/ownership.spec.md) | use the stable name in model and concern pages; use the user-facing name where the reader is choosing Cautilus boundaries |
+| [Host-Owned Execution](../rules/host-owned-execution.spec.md) | [Host Ownership](../promises/ownership.spec.md) | use the stable name in model and concern pages; use the user-facing name where the reader is choosing Cautilus boundaries |
 
 ## Compact Keys
 

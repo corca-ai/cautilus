@@ -39,7 +39,7 @@ Do not require all three in sequence before stopping.
 Pass one or more spec files after `--` to validate only those linked files and run each one as a focused temporary specdown entry:
 
 ```bash
-npm run lint:specs -- docs/specs/user/claim-discovery.spec.md
+npm run lint:specs -- docs/specs/promises/claim-discovery.spec.md
 ```
 
 Use `npm run specdown` when you want the full reporter output instead of the quiet standing gate.

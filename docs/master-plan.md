@@ -61,7 +61,7 @@ Current `product-owned helper surface`:
 - `evaluate fixture` with the `dev/skill` preset wraps adapter-owned local skill runners, including consensus-based repeated tests and output-review warning surfacing
 - `evaluate observation` packet summarizer dispatches to `cautilus.skill_evaluation_summary.v1` for trigger and execution behavior when the observed packet's schema is `cautilus.skill_evaluation_inputs.v1`
 - `eval live` commands expose the live app runner seam; it is not a fourth product job
-- `chatbot`, `skill`, and `workflow` `discover scenarios normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation.spec.md](./specs/user/evaluation.spec.md))
+- `chatbot`, `skill`, and `workflow` `discover scenarios normalize` helpers feeding the proposal-input pipeline; their archetype-shaped framing in evaluation no longer applies (see [evaluation.spec.md](./specs/promises/evaluation.spec.md))
 - scenario proposal packet assembly and proposal generation
 - scenario-adjacent conversation review packet and HTML surface over normalized chatbot threads plus proposal candidates
 - scenario-level telemetry summaries for cost and token transparency
@@ -80,7 +80,7 @@ The next claim-discovery workflow contract lives in [claim-discovery-workflow.md
 Direction decision (2026-06-10): claim extraction itself becomes agent-primary — the Cautilus Agent extracts claims against a product-owned template while the binary anchors verbatim excerpts, validates packets, and bounds re-extraction to git-diff-changed sources; the deterministic heuristic extractor remains an explicitly labeled baseline mode.
 The deterministic binary slice, first Cautilus Agent control-flow slice, deterministic review-input helper slice, possible-evidence preflight, guarded review-result application slice, review-to-eval branch proof, eval planning, fixture-authoring guidance, and first carried-evidence reconciliation slice are now implemented.
 The next claim-discovery hardening seam should come from fresh dogfood evidence rather than the old review-result application / evidence reconciliation backlog.
-The current reader-facing evaluation claim lives in [specs/user/evaluation.spec.md](./specs/user/evaluation.spec.md); the archived implementation-surface spec lives in [specs/old/evaluation-surfaces.spec.md](./specs/old/evaluation-surfaces.spec.md).
+The current reader-facing evaluation claim lives in [specs/promises/evaluation.spec.md](./specs/promises/evaluation.spec.md); the archived implementation-surface spec lives in [specs/old/evaluation-surfaces.spec.md](./specs/old/evaluation-surfaces.spec.md).
 The earlier first-class archetype boundary (chatbot / skill / workflow) was retired with that redesign.
 `npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.
 The runner readiness contract lives in [runner-readiness.md](./contracts/runner-readiness.md).

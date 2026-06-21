@@ -6,7 +6,7 @@ Copy this directory into your consumer repo, then gradually replace the smoke pl
 ## What this Normalization Family Covers
 
 Multi-turn conversational behavior inside a single session: follow-up handling, context recovery after ambiguous confirmations, and intent continuity across turns.
-The `scenario normalize chatbot` proposal-input lineage owns the input shape; see [chatbot-normalization.md](../../../docs/contracts/chatbot-normalization.md) and the evaluation claim in [evaluation.spec.md](../../../docs/specs/user/evaluation.spec.md).
+The `scenario normalize chatbot` proposal-input lineage owns the input shape; see [chatbot-normalization.md](../../../docs/contracts/chatbot-normalization.md) and the evaluation claim in [evaluation.spec.md](../../../docs/specs/promises/evaluation.spec.md).
 
 ## Setup
 

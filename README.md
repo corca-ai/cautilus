@@ -107,7 +107,7 @@ It is proof planning, not a verdict that the repo is correct.
 The Cautilus Agent curates false positives, likely missing promises, scan boundaries, and extraction and review budgets before any eval plan is trusted.
 
 Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.
-For the live reader-facing contract, read [docs/specs/user/evaluation.spec.md](./docs/specs/user/evaluation.spec.md).
+For the live reader-facing contract, read [docs/specs/promises/evaluation.spec.md](./docs/specs/promises/evaluation.spec.md).
 For the full command catalog, including claim review, scenario normalization, live targets, and improvement commands, read [docs/guides/cli.md](./docs/guides/cli.md).
 Sample normalization inputs live in [examples/starters/](./examples/starters/) and the checked-in fixture directories under [fixtures/](./fixtures/).
 
@@ -150,7 +150,7 @@ Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs
 
 The minimum host-repo shape is an adapter, an installed Cautilus Agent, and run artifacts such as `eval-cases.json`, `eval-observed.json`, and `eval-summary.json`.
 The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.
-See [docs/specs/user/reviewable-artifacts.spec.md](./docs/specs/user/reviewable-artifacts.spec.md) for the rendered-artifact claim.
+See [docs/specs/promises/reviewable-artifacts.spec.md](./docs/specs/promises/reviewable-artifacts.spec.md) for the rendered-artifact claim.
 
 Use `cautilus doctor --next-action` for the next onboarding step, `cautilus doctor --scope agent-surface` for agent-surface discoverability, and `cautilus doctor` for repo wiring readiness.
 From this repo, `npm run consumer:onboard:smoke` is an end-to-end adoption proof against a fresh consumer.

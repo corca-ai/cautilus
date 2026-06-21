@@ -25,7 +25,7 @@ The top-level evaluation surfaces are `dev` and `app`, the shipped presets are `
 
 ## Evidence
 
-- User-facing evaluation surface smoke is enforced by [docs/specs/user/evaluation.spec.md](../user/evaluation.spec.md) (specdown directives over `evaluate fixture --help`).
+- User-facing evaluation surface smoke is enforced by [docs/specs/promises/evaluation.spec.md](../promises/evaluation.spec.md) (specdown directives over `evaluate fixture --help`).
 - Per-preset fixture-backed summary packet evidence is preserved in [charness-artifacts/spec/evaluation-surfaces-runners-proof.md](../../../charness-artifacts/spec/evaluation-surfaces-runners-proof.md), which records selected fields and source hashes from the ignored self-dogfood output paths without making those generated paths direct spec links.
 - [internal/runtime/evaluation_input_test.go](../../../internal/runtime/evaluation_input_test.go) `TestNormalizeEvaluationInputRejectsCrossAxisCombo`, `RejectsUnsupportedSurface`, and `RejectsUnsupportedPreset` enforce that mismatched surface/preset declarations fail rather than silently routing.
 - `npm run lint:scenario-normalizers` proves runtime completeness of the surviving `discover scenarios normalize` helpers via [scripts/check-scenario-normalization-completeness.mjs](../../../scripts/check-scenario-normalization-completeness.mjs).

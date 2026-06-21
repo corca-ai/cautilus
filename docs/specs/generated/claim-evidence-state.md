@@ -7,12 +7,12 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:2e0f6777739581b092ea5937577bcdc83cb1b949d9ba5854a638c52b4921d355
+- Claims hash: sha256:d2c11687466dcc9499f5b5470762c804cd84c04ec4afb4fa40875afa4ff5e968
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:365bb58738f641ae7c91660238d0af232bf4c8cd21a84aba737132cc7f20ad3d
+- Status hash: sha256:dfd8c6a0ec56678522916dd2f6f5f63f55cc6693e7cd078c570bdb95d9110a55
 - Git state: fresh; stale=no
-- Snapshot inspected commit: 6b95b46f02c264ef401acad0bc317d6a518a8b76
-- Packet commit: 6b95b46f02c264ef401acad0bc317d6a518a8b76
+- Snapshot inspected commit: a7cbc22e68f70349b444fd132cef9c198f8932cd
+- Packet commit: a7cbc22e68f70349b444fd132cef9c198f8932cd
 - Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
 - Status snapshot role: derived command snapshot for git state, action buckets, and cross-cutting signals; its claimSummary must match the claim packet
@@ -64,7 +64,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 
 | Claim | Source | Surface | Readiness | Review | Summary |
 | --- | --- | --- | --- | --- | --- |
-| claim-docs-specs-user-ownership-spec-md-7 | docs/specs/user/ownership.spec.md:7 | surface undecided | needs scenario | agent-reviewed | Before Cautilus can evaluate behavior honestly, the user needs host-specific prompts, models, credentials, runtime wiring, and acceptance policy to stay in the host repo. |
+| claim-docs-specs-promises-ownership-spec-md-7 | docs/specs/promises/ownership.spec.md:7 | surface undecided | needs scenario | agent-reviewed | Before Cautilus can evaluate behavior honestly, the user needs host-specific prompts, models, credentials, runtime wiring, and acceptance policy to stay in the host repo. |
 
 ## Action Buckets
 

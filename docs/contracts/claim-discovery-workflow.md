@@ -366,7 +366,7 @@ The first valid-state rules are:
 {
   "refId": "evidence-spec-command-surfaces-1",
   "kind": "spec | test | fixture | eval-summary | eval-observed | report | human-note | cautilus-claim-evidence-bundle",
-  "path": "docs/specs/user/claim-discovery.spec.md",
+  "path": "docs/specs/promises/claim-discovery.spec.md",
   "line": 36,
   "artifactSchemaVersion": "cautilus.evaluation_summary.v1",
   "commit": "abc123",

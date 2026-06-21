@@ -10,7 +10,7 @@ Key: `rule.agent-human-resumability`.
 
 ## Where To Check This
 
-- User-facing attachments: [Readiness](../user/doctor-readiness.spec.md), [Claim Discovery](../user/claim-discovery.spec.md), [Host Ownership](../user/ownership.spec.md)
+- User-facing attachments: [Readiness](../promises/doctor-readiness.spec.md), [Claim Discovery](../promises/claim-discovery.spec.md), [Host Ownership](../promises/ownership.spec.md)
 - Maintainer evidence routes: [Evidence State And Review Artifacts](../contracts/evidence-state-artifacts.spec.md), [Binary And Skill Boundary](../contracts/binary-skill-boundary.spec.md), [Active Run And Workspace Lifecycle](../contracts/active-run-workspace.spec.md), [Reporting And Review Variants](../contracts/reporting-review-variants.spec.md)
 
 ## Link Checks

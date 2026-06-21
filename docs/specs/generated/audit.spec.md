@@ -24,13 +24,13 @@ A badge is honest only when `consistent` is true; the apex's own check block fai
 
 | | Badge | Claimed | Observed | Class | Proof command | Evidence | Freshness |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| ✅ | [Readiness](../user/doctor-readiness.spec.md) | proven | proven | deterministic | `npm run lint:specs` | live command checks | runs every gate |
-| ✅ | [Claim Discovery](../user/claim-discovery.spec.md) | proven | proven | deterministic | `npm run lint:specs` | 3 file(s) | runs every gate |
-| ✅ | [Behavior Evaluation](../user/evaluation.spec.md) | proven | proven | cautilus-eval | `npm run lint:specs` | 6 file(s) | replayed; live re-run `npm run proof:behavior-eval:live && npm run proof:skill-orientation:live` |
-| ✅ | [Bounded Improvement](../user/improvement.spec.md) | proven | proven | cautilus-eval | `npm run lint:specs` | 3 file(s) | replayed; live re-run `npm run proof:improve:live` |
-| ✅ | [Reviewable Artifacts](../user/reviewable-artifacts.spec.md) | proven | proven | deterministic | `npm run lint:specs` | live command checks | runs every gate |
-| ✅ | [Host Ownership](../user/ownership.spec.md) | proven | proven | human-auditable | `npm run lint:specs` | 1 file(s) | witnessed; live re-run `npm run consumer:onboard:smoke` |
-| ✅ | [A Testable Agent](../user/a-testable-agent.spec.md) | proven | proven | deterministic | `npm run lint:specs` | 4 file(s) | runs every gate |
+| ✅ | [Readiness](../promises/doctor-readiness.spec.md) | proven | proven | deterministic | `npm run lint:specs` | live command checks | runs every gate |
+| ✅ | [Claim Discovery](../promises/claim-discovery.spec.md) | proven | proven | deterministic | `npm run lint:specs` | 3 file(s) | runs every gate |
+| ✅ | [Behavior Evaluation](../promises/evaluation.spec.md) | proven | proven | cautilus-eval | `npm run lint:specs` | 6 file(s) | replayed; live re-run `npm run proof:behavior-eval:live && npm run proof:skill-orientation:live` |
+| ✅ | [Bounded Improvement](../promises/improvement.spec.md) | proven | proven | cautilus-eval | `npm run lint:specs` | 3 file(s) | replayed; live re-run `npm run proof:improve:live` |
+| ✅ | [Reviewable Artifacts](../promises/reviewable-artifacts.spec.md) | proven | proven | deterministic | `npm run lint:specs` | live command checks | runs every gate |
+| ✅ | [Host Ownership](../promises/ownership.spec.md) | proven | proven | human-auditable | `npm run lint:specs` | 1 file(s) | witnessed; live re-run `npm run consumer:onboard:smoke` |
+| ✅ | [A Testable Agent](../promises/a-testable-agent.spec.md) | proven | proven | deterministic | `npm run lint:specs` | 4 file(s) | runs every gate |
 
 ## Proof Class Meanings
 

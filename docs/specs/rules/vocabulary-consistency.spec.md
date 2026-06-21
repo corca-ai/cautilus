@@ -11,7 +11,7 @@ Key: `rule.vocabulary-consistency`.
 
 ## Where To Check This
 
-- User-facing attachments: [Readiness](../user/doctor-readiness.spec.md), [Claim Discovery](../user/claim-discovery.spec.md), [Host Ownership](../user/ownership.spec.md)
+- User-facing attachments: [Readiness](../promises/doctor-readiness.spec.md), [Claim Discovery](../promises/claim-discovery.spec.md), [Host Ownership](../promises/ownership.spec.md)
 - Maintainer evidence routes: [Binary And Skill Boundary](../contracts/binary-skill-boundary.spec.md), [Adapter And Host Ownership](../contracts/adapter-host-ownership.spec.md), [Evidence State And Review Artifacts](../contracts/evidence-state-artifacts.spec.md)
 - Durable operating rule: [Working Patterns](../../internal/working-patterns.md)
 

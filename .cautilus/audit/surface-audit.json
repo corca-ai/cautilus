@@ -40,7 +40,7 @@
       "claimedStatusPhrase": "proven",
       "proofClass": "deterministic",
       "proofClassMeaning": "`npm run lint:specs` runs the command/file checks live on every run.",
-      "proofSpec": "docs/specs/user/doctor-readiness.spec.md",
+      "proofSpec": "docs/specs/promises/doctor-readiness.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
       "evidence": [],
@@ -66,7 +66,7 @@
       "claimedStatusPhrase": "proven",
       "proofClass": "deterministic",
       "proofClassMeaning": "`npm run lint:specs` runs the command/file checks live on every run.",
-      "proofSpec": "docs/specs/user/claim-discovery.spec.md",
+      "proofSpec": "docs/specs/promises/claim-discovery.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
       "evidence": [
@@ -96,7 +96,7 @@
       "claimedStatusPhrase": "proven on the dev coding-agent surfaces; app-ship surfaces in Proof Debt",
       "proofClass": "cautilus-eval",
       "proofClassMeaning": "the default run replays an operator-witnessed live agent capture and a blind judge verdict from the Cautilus eval tier; the live agent re-run is opt-in and costs a real agent run.",
-      "proofSpec": "docs/specs/user/evaluation.spec.md",
+      "proofSpec": "docs/specs/promises/evaluation.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run proof:behavior-eval:live && npm run proof:skill-orientation:live",
       "evidence": [
@@ -129,7 +129,7 @@
       "claimedStatusPhrase": "proven on the dev/skill surface",
       "proofClass": "cautilus-eval",
       "proofClassMeaning": "the default run replays an operator-witnessed live agent capture and a blind judge verdict from the Cautilus eval tier; the live agent re-run is opt-in and costs a real agent run.",
-      "proofSpec": "docs/specs/user/improvement.spec.md",
+      "proofSpec": "docs/specs/promises/improvement.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run proof:improve:live",
       "evidence": [
@@ -159,7 +159,7 @@
       "claimedStatusPhrase": "proven",
       "proofClass": "deterministic",
       "proofClassMeaning": "`npm run lint:specs` runs the command/file checks live on every run.",
-      "proofSpec": "docs/specs/user/reviewable-artifacts.spec.md",
+      "proofSpec": "docs/specs/promises/reviewable-artifacts.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
       "evidence": [],
@@ -185,7 +185,7 @@
       "claimedStatusPhrase": "proven",
       "proofClass": "human-auditable",
       "proofClassMeaning": "an operator witnessed the live run and vouches for it; the default run replays the checked-in capture and the live re-run is opt-in. No automated judge — accepted where a full deterministic or eval proof would be disproportionately costly.",
-      "proofSpec": "docs/specs/user/ownership.spec.md",
+      "proofSpec": "docs/specs/promises/ownership.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": "npm run consumer:onboard:smoke",
       "evidence": [
@@ -213,7 +213,7 @@
       "claimedStatusPhrase": "proven",
       "proofClass": "deterministic",
       "proofClassMeaning": "`npm run lint:specs` runs the command/file checks live on every run.",
-      "proofSpec": "docs/specs/user/a-testable-agent.spec.md",
+      "proofSpec": "docs/specs/promises/a-testable-agent.spec.md",
       "proofCommand": "npm run lint:specs",
       "liveOptInCommand": null,
       "evidence": [

@@ -94,7 +94,7 @@
         "id": "agent-design-scenario",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-specs-user-ownership-spec-md-7"
+          "claim-docs-specs-promises-ownership-spec-md-7"
         ],
         "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
       },
@@ -131,7 +131,7 @@
         "sampleClaimIds": [
           "claim-readme-md-60",
           "claim-docs-specs-index-spec-md-168",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-68",
+          "claim-docs-specs-promises-reviewable-artifacts-spec-md-68",
           "claim-docs-contracts-claim-discovery-workflow-md-92",
           "claim-docs-contracts-claim-discovery-workflow-md-206"
         ],
@@ -176,8 +176,8 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 286,
-      "user": 110
+      "developer": 335,
+      "user": 61
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
@@ -1417,7 +1417,7 @@
         "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise."
       },
       {
-        "claimId": "claim-docs-specs-user-evaluation-spec-md-170",
+        "claimId": "claim-docs-specs-promises-evaluation-spec-md-170",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1426,7 +1426,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-user-evaluation-spec-md-170"
+              "claim-docs-specs-promises-evaluation-spec-md-170"
             ]
           }
         ],
@@ -1436,7 +1436,7 @@
         "summary": "A user can reopen observed behavior and summary packets after each eval."
       },
       {
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
+        "claimId": "claim-docs-specs-promises-reviewable-artifacts-spec-md-7",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1446,7 +1446,7 @@
             "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-specs-user-index-spec-md-26",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
+              "claim-docs-specs-promises-reviewable-artifacts-spec-md-7",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
             ]
@@ -1458,7 +1458,7 @@
         "summary": "After an agent runs a workflow, the user needs durable packets and readable views that another person or agent can reopen without trusting chat memory."
       },
       {
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-8",
+        "claimId": "claim-docs-specs-promises-reviewable-artifacts-spec-md-8",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1469,7 +1469,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-user-index-spec-md-26",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-8",
+              "claim-docs-specs-promises-reviewable-artifacts-spec-md-8",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
             ]
           }
@@ -1480,7 +1480,7 @@
         "summary": "Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review."
       },
       {
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-14",
+        "claimId": "claim-docs-specs-promises-reviewable-artifacts-spec-md-14",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1492,7 +1492,7 @@
               "claim-docs-specs-user-index-spec-md-26",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-14"
+              "claim-docs-specs-promises-reviewable-artifacts-spec-md-14"
             ]
           }
         ],
@@ -2797,6 +2797,118 @@
         "summary": "Cautilus preserves useful scenarios as durable candidates that can be reused for eval, held-out validation, and improvement loops, and normalizers produce inspectable proposal packets rather than hidden one-off shapers."
       },
       {
+        "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-10",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-promises-claim-discovery-spec-md-10",
+              "claim-docs-specs-user-claim-discovery-spec-md-160",
+              "claim-docs-specs-user-claim-discovery-spec-md-199"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Using the `cautilus discover claims` CLI command and the `cautilus-agent` skill, a user can turn scattered repo promises into a source-referenced worklist: what Cautilus found, what looks noisy, what may be missing, and what evidence each candidate needs next."
+      },
+      {
+        "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-226",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-user-claim-discovery-spec-md-6",
+              "claim-docs-specs-promises-claim-discovery-spec-md-226",
+              "claim-docs-specs-user-claim-discovery-spec-md-199"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`discover claims status` owns the next-action summary over a saved discovery packet."
+      },
+      {
+        "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-269",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-user-claim-discovery-spec-md-6",
+              "claim-docs-specs-user-claim-discovery-spec-md-160",
+              "claim-docs-specs-promises-claim-discovery-spec-md-269"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "`discover claims status` owns next-action summaries over that saved packet."
+      },
+      {
+        "claimId": "claim-docs-specs-promises-ownership-spec-md-34",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-evidence-gaps-spec-md-8",
+              "claim-docs-specs-promises-ownership-spec-md-34",
+              "claim-docs-specs-user-ownership-spec-md-45",
+              "claim-docs-contracts-improvement-md-27",
+              "claim-docs-contracts-improvement-md-34"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy."
+      },
+      {
+        "claimId": "claim-docs-specs-promises-ownership-spec-md-56",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+            "supportsClaimIds": [
+              "claim-docs-specs-user-evidence-gaps-spec-md-8",
+              "claim-docs-specs-user-ownership-spec-md-27",
+              "claim-docs-specs-promises-ownership-spec-md-56",
+              "claim-docs-contracts-improvement-md-27",
+              "claim-docs-contracts-improvement-md-34"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen."
+      },
+      {
         "claimId": "claim-docs-specs-rules-reviewable-artifacts-spec-md-7",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -2817,118 +2929,6 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "Every workflow should leave machine-readable packets and readable reports that another person or agent can reopen without trusting chat memory."
-      },
-      {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-10",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
-              "claim-docs-specs-user-claim-discovery-spec-md-10",
-              "claim-docs-specs-user-claim-discovery-spec-md-160",
-              "claim-docs-specs-user-claim-discovery-spec-md-199"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "Using the `cautilus discover claims` CLI command and the `cautilus-agent` skill, a user can turn scattered repo promises into a source-referenced worklist: what Cautilus found, what looks noisy, what may be missing, and what evidence each candidate needs next."
-      },
-      {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-226",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
-              "claim-docs-specs-user-claim-discovery-spec-md-6",
-              "claim-docs-specs-user-claim-discovery-spec-md-226",
-              "claim-docs-specs-user-claim-discovery-spec-md-199"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "`discover claims status` owns the next-action summary over a saved discovery packet."
-      },
-      {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-269",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:036459c282c85973ed73efc8dfad348fe37de589227900fece8fddde4676ed5e",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
-              "claim-docs-specs-user-claim-discovery-spec-md-6",
-              "claim-docs-specs-user-claim-discovery-spec-md-160",
-              "claim-docs-specs-user-claim-discovery-spec-md-269"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "`discover claims status` owns next-action summaries over that saved packet."
-      },
-      {
-        "claimId": "claim-docs-specs-user-ownership-spec-md-34",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-specs-user-evidence-gaps-spec-md-8",
-              "claim-docs-specs-user-ownership-spec-md-34",
-              "claim-docs-specs-user-ownership-spec-md-45",
-              "claim-docs-contracts-improvement-md-27",
-              "claim-docs-contracts-improvement-md-34"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy."
-      },
-      {
-        "claimId": "claim-docs-specs-user-ownership-spec-md-56",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-specs-user-evidence-gaps-spec-md-8",
-              "claim-docs-specs-user-ownership-spec-md-27",
-              "claim-docs-specs-user-ownership-spec-md-56",
-              "claim-docs-contracts-improvement-md-27",
-              "claim-docs-contracts-improvement-md-34"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen."
       },
       {
         "claimId": "claim-docs-contracts-improvement-md-27",
@@ -3414,7 +3414,7 @@
       }
     ]
   },
-  "gitCommit": "6b95b46f02c264ef401acad0bc317d6a518a8b76",
+  "gitCommit": "a7cbc22e68f70349b444fd132cef9c198f8932cd",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3426,10 +3426,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "6b95b46f02c264ef401acad0bc317d6a518a8b76",
+    "currentGitCommit": "a7cbc22e68f70349b444fd132cef9c198f8932cd",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "6b95b46f02c264ef401acad0bc317d6a518a8b76",
+    "packetGitCommit": "a7cbc22e68f70349b444fd132cef9c198f8932cd",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

@@ -11,7 +11,7 @@ Key: `rule.packet-freshness`.
 
 ## Where To Check This
 
-- User-facing attachments: [Reviewable Artifacts](../user/reviewable-artifacts.spec.md), [Evidence Gaps](../user/evidence-gaps.spec.md), [Behavior Evaluation](../user/evaluation.spec.md)
+- User-facing attachments: [Reviewable Artifacts](../promises/reviewable-artifacts.spec.md), [Evidence Gaps](../user/evidence-gaps.spec.md), [Behavior Evaluation](../promises/evaluation.spec.md)
 - Maintainer evidence routes: [Evidence State And Review Artifacts](../contracts/evidence-state-artifacts.spec.md), [Reporting And Review Variants](../contracts/reporting-review-variants.spec.md), [Active Run And Workspace Lifecycle](../contracts/active-run-workspace.spec.md)
 
 ## Link Checks
