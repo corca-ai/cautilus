@@ -2,37 +2,29 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — apex가 7/7 proven으로 "Cautilus, Proven On Itself"가 완성됐고 비증명 배지는 더 없습니다. 첫 행동으로 charness:ideation 을 호출해 다음 방향 결정 프레임(옵션·tradeoff·추천·다음 스텝)을 받으세요. 결정이 서면 그때 charness:impl 등 적절한 work skill로 이어가세요.` 방향 후보는 아래 Next Session 참고.
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행합시다 — specdown 코퍼스 재구조화(proof-spine + typed traceability) Slice 1이 착지했습니다. 계약 charness-artifacts/spec/2026-06-21-specdown-corpus-proof-spine-restructure.md 를 먼저 읽고, charness:impl 로 다음 슬라이스를 이어가세요.`
 
-첫 tool call = `charness:ideation`. doc 멘션만으로 픽업해도 파일 재독에 그치지 말고 이 workflow를 바로 실행하세요. (직접 impl로 가지 말 것 — 비증명 배지가 없어 다음 타깃은 자동 도출되지 않으며, 방향 결정이 선행돼야 함.)
+첫 tool call = 계약 파일 read → `charness:impl`. doc 멘션만으로 픽업해도 재독에 그치지 말고 이 workflow를 실행하세요. Slice 2에는 실제 설계 결정 1건(아래 Discuss D1)이 있어 impl 중 짧은 spec 터치가 필요할 수 있음.
 
 ## Current State
 
-- **A Testable Agent LANDED: promised→proven (deterministic). apex 이제 7 proven / 0 declared / 0 promised, 7/7 consistent, honest=true.** 마지막 비증명 배지가 닫혔고 "Proven On Itself" 명제 완성.
-  - Slice 1 `82e6e2c6`(① readiness 검증: doctor status runnerReadiness verdict + 3개 assessment fixture cautilus-json-file + claims plan requiredRunnerCapability + controlled stale 탐지). Slice 2 `3fb46b5f`(② agent-helps-build: `cautilus-agent` 스킬에 Runner Readiness 라우팅 + prepared dogfood fixture + 실행 audit test; apex flip).
-  - 기록 계약(landed notes 포함): `charness-artifacts/spec/2026-06-21-a-testable-agent-promised-to-proven.md`.
-- **이번 세션 커밋 미push(push는 user 몫):** `82e6e2c6`(Slice 1) + `3fb46b5f`(Slice 2). 직전 미push 6개(`2dd0cd5b`·`86ecc52b`·`9f27986e`·`170fcb5e`·`65e7f3fe`·`b75f1cfd`)도 함께 대기 중. 작업트리 clean, `npm run verify` green, `hooks:check` ready.
-- **남은 deferred(Proof Debt, 비차단):** Behavior Evaluation app/chat liveness + app/prompt product-runner; A Testable Agent live runner-building 에피소드(deterministic readiness+prepared-skill은 proven, live `cautilus-eval` 에피소드만 deferred). 모두 apex Proof Debt 표에 명시됨.
+- **방향 전환(user 결정):** apex가 7/7 proven으로 "Proven On Itself"는 완성. 이번 세션 user가 다음 무게중심을 **specdown 코퍼스 재구조화**로 잡음 — 옛 multi-view doc-site IA를 풀어 **하나의 proof-spine + specdown typed traceability**로. 제약: 소스 가드 최대한 지양, specdown run은 빨라야 함(느려지면 red flag).
+- **Slice 1 착지(`010f8e2a`):** `specdown.json`에 trace 설정(apex/promise type, apex→promise `badges` edge `1→1..*`, ignore=old/archive/generated/charness-artifacts/node_modules) + apex·7 promise leaf를 `type:`로 타이핑 + 7개 proof 링크에 `badges::` + `lint-specs.mjs`에 `specdown trace -strict` 결선(비공허성 가드 + 테스트 2개) + **Class A reachability 가드 17개 삭제**(Class B 내용검사·Class C !fail은 유지) + `gap.traceability-config` 닫음. `npm run verify` green, hooks ready, honesty audit 여전히 7/7.
+- **계약(SOT):** `charness-artifacts/spec/2026-06-21-specdown-corpus-proof-spine-restructure.md` — 전체 목표·Slice 맵·Slice 1 Delivered·deviation·residual risk 기록. specdown 도구 이해 자산: `charness-artifacts/gather/2026-06-21-specdown-tool-purpose-and-authoring.md`(핵심: `.spec.md`는 legacy no-op, trace+alloy 사용 가능).
+- **미push:** 이번 세션 `1d321cf2`+`010f8e2a` 포함 backlog 55개 대기(push는 user 몫). 작업트리 clean.
 
 ## Next Session
 
-1. 비증명 배지가 없으므로 "다음 헤드라인"은 자동 도출되지 않음 → **charness:ideation** 으로 결정 프레임(tradeoff·추천·다음 스텝). 방향 후보: (a) deferred Proof-Debt 항목을 live로 끌어올리기 — Behavior Evaluation app/chat liveness, app/prompt product-runner, A Testable Agent live runner-building 에피소드; (b) consumer adoption/릴리스 표면; (c) 그 외 사용자 지정. 모두 비차단이라 어느 것도 "명백한 필수 다음"이 아님 — user 결정 사항.
-2. (a) deferred를 live로: A Testable Agent live 에피소드라면 dogfood 어댑터 + `dogfood:cautilus-runner-readiness-flow:eval:*` 스크립트 추가 후 live cautilus-eval, route를 deterministic→cautilus-eval로 승급(① supporting). app surfaces는 runner-readiness 기판 위에서 in-process/live product-runner.
-3. claim-source(docs/specs/**, registry, README/AGENTS/CLAUDE, 링크 문서) 편집 시 push 전 `npm run claims:refresh:all`. `skills/cautilus-agent/` 편집 시 3사본(`skills/`·`.agents/skills/`·`plugins/`) byte-identical 유지(`npm run skills:sync-packaged` + `.agents/skills`는 수동 cp) + disclosure 게이트(core ≤185 non-empty).
+1. **Slice 2(다음):** `rule`/`contract` 노드 타입 + promise→rule `governed-by`, promise→contract `implemented-by` edge 추가 + **multi-view sprawl 정리**(같은 약속이 user/contracts/rules/evidence/ledger에 6번 반복; promise↔rule/contract 관계는 현재 ledger 페이지에 있음 → leaf edge로 옮기고 view/index 페이지 demote/생성화). 매핑 source = `ledger/promise-ledger.spec.md` Workflow Audit Matrix.
+2. **Slice 3:** 구조 이동(`promises/` 디렉토리, `generated/` 격리, history 그래프 분리) — `surface-registry.json`·`build-surface-audit.mjs`·projection·claim chain의 하드코딩 경로를 lockstep 업데이트. **Slice 4(deferred):** Alloy 불변식, `.spec.md`→`.md` rename(check-specs.mjs 결합).
+3. claim-source(docs/specs/** 등) 편집 시 push 전 `npm run claims:refresh:all`. **주의: `user/claim-discovery.spec.md`가 이 repo의 live `.cautilus/claims` 버킷을 exact-assert해서 docs 편집마다 깨질 수 있음**(residual risk) — Slice 2에서 structural assert(subset/floor)로 바꾸는 것 고려.
 
 ## Discuss
 
-- **D1:** A Testable Agent ② 증명은 prepared-skill(deterministic)로 닫고 live 에피소드는 deferred — user 기존 수용. live로 끌어올릴지는 ideation 결정 사항.
-- 비차단: `a-testable-agent`는 `no-t1-claim`(gold-set T1 없음) 유지 — Readiness와 동형, 비차단. T1 억지 생성 금지.
+- **D1(Slice 2 설계 결정):** view/index 페이지를 trace에서 **생성**(`specdown trace --format dot/matrix`)할지 vs 얇은 nav로 **trim**할지. edge가 관계를 derive하게 된 뒤 결정. impl 중 짧은 spec/ideation 터치 권장.
 
 ## References
 
-- **명제 완성 증거:** apex `docs/specs/index.spec.md`(7/7 proven) · leaf `docs/specs/user/a-testable-agent.spec.md` · 배경 `docs/contracts/runner-readiness.md`.
-- **이번 세션 계약(landed):** `charness-artifacts/spec/2026-06-21-a-testable-agent-promised-to-proven.md`.
-- **proof 머신:** `scripts/agent-runtime/surface-audit-lib.mjs`(evidence-binding) · 레지스트리 `docs/specs/audit/surface-registry.json` · disclosure 게이트 `scripts/check-cautilus-skill-disclosure.mjs`(core 185 상한 + Runner Readiness required fragments).
-- **prepared-skill 패턴 참고:** `docs/specs/user/claim-discovery.spec.md` + audit `scripts/agent-runtime/audit-cautilus-runner-readiness-flow-log.mjs`(+test).
-
-## 제약
-
-- **claim-source = docs/specs/** + README/AGENTS/CLAUDE + surface-registry.json + 링크 문서.** 편집 시 push 전 `npm run claims:refresh:all`(evidence-state alone 불충분). handoff·charness-artifacts/는 claim-source 아님.
-- critique/fresh-eye는 **포그라운드 Sonnet 서브에이전트**. bug/error/regression은 `charness:debug`. `lint:specs` ON 유지. `skills/cautilus-agent/` 편집은 freeze-intent + progressive-disclosure(`lint:skill-disclosure`) + 3사본 동기화.
+- 계약(SOT): `charness-artifacts/spec/2026-06-21-specdown-corpus-proof-spine-restructure.md`
+- specdown 자산: `charness-artifacts/gather/2026-06-21-specdown-tool-purpose-and-authoring.md`
+- 증명 머신 경로(이동 시 lockstep): `docs/specs/audit/surface-registry.json` · `scripts/agent-runtime/build-surface-audit.mjs` · `scripts/check-specs.mjs`(reachability, trace와 병행) · `scripts/lint-specs.mjs`(trace 게이트)
