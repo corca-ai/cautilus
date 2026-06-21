@@ -74,6 +74,8 @@
     "specdown:project:check": "node scripts/agent-runtime/build-goldset-projection.mjs --check --repo-root .",
     "specdown:claim-state": "node scripts/agent-runtime/render-projected-claim-state.mjs --repo-root .",
     "specdown:claim-state:check": "node scripts/agent-runtime/render-projected-claim-state.mjs --check --repo-root .",
+    "specdown:ledger": "node scripts/agent-runtime/render-promise-ledger.mjs --repo-root .",
+    "specdown:ledger:check": "node scripts/agent-runtime/render-promise-ledger.mjs --check --repo-root .",
     "security:govulncheck": "node scripts/run-govulncheck.mjs ./...",
     "security:secrets": "gitleaks detect --source . --no-banner --redact",
     "test:go": "go test ./cmd/... ./internal/...",

@@ -41,6 +41,7 @@ test("PHASES covers every npm run verify sub-phase", () => {
 		"lint:eslint",
 		"audit:surface:check",
 		"lint:specs",
+		"specdown:ledger:check",
 		"specdown:project:check",
 		"specdown:claim-state:check",
 		"lint:scenario-normalizers",

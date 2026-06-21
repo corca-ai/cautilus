@@ -1,9 +1,9 @@
 {
-  "candidateCount": 407,
+  "candidateCount": 405,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 407,
+    "matchedClaimCount": 405,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -12678,67 +12678,6 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:c5badcb7d0f0441ce41f1f95e1ef5b001cf034865a471bee5fd460261393374f",
-      "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-15",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:docs/specs/rules/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "[Behavior Evaluation](evaluation.spec.md): Cautilus evaluates intentful behavior across supported `dev` and `app` surfaces.",
-          "line": 15,
-          "path": "docs/specs/ledger/promise-ledger.spec.md"
-        }
-      ],
-      "summary": "[Behavior Evaluation](evaluation.spec.md): Cautilus evaluates intentful behavior across supported `dev` and `app` surfaces.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:a308d1eae66f89bd8fd43382d57e9951b1cd17f3bec7f1b9c152110bac7e8440",
-      "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-16",
-      "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "linked-from:docs/specs/rules/index.spec.md",
-        "needs-scenario",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "[Bounded Improvement](improvement.spec.md): Cautilus improves a selected behavior target under explicit budget, protected checks, and held-out evidence.",
-          "line": 16,
-          "path": "docs/specs/ledger/promise-ledger.spec.md"
-        }
-      ],
-      "summary": "[Bounded Improvement](improvement.spec.md): Cautilus improves a selected behavior target under explicit budget, protected checks, and held-out evidence.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:8845e73c8baa1168045998bd91688457e123495fd87321e8859dc6c4605223f7",
       "claimId": "claim-docs-specs-ledger-readiness-spec-md-5",
       "claimSemanticGroup": "Claim discovery and review",
@@ -13109,17 +13048,17 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 293,
+      "developer": 291,
       "user": 114
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
       "Agent and skill workflow": 94,
       "Claim discovery and review": 55,
-      "Documentation and contracts": 89,
+      "Documentation and contracts": 88,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 32,
+      "Improvement and improvement": 31,
       "Packets and reporting": 47,
       "Quality gates": 22,
       "Release and packaging": 1
@@ -13127,25 +13066,25 @@
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 340
+      "unknown": 338
     },
     "byLifecycle": {
-      "new": 407
+      "new": 405
     },
     "byRecommendedProof": {
-      "cautilus-eval": 152,
+      "cautilus-eval": 150,
       "deterministic": 143,
       "human-auditable": 112
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 296
+      "heuristic": 294
     },
     "byVerificationReadiness": {
       "blocked": 15,
       "needs-alignment": 55,
-      "needs-scenario": 12,
-      "ready-for-proof": 325
+      "needs-scenario": 11,
+      "ready-for-proof": 324
     }
   },
   "discoveryEngine": {
@@ -13341,7 +13280,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "f0c4e1b6464d56017876ba2aba3f1bdc792a0478",
+  "gitCommit": "daf24d18ae7bb4078397aed90776efe5d5d04ba7",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -15847,7 +15786,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:4a6b530953b09cc9240e85571408e86875bdb1ce1b1a4ff397b8e026242dd60c",
+      "contentHash": "sha256:313deb4bbb33d022cc96a4b1fdce4e4318c273a086969f6b07ed43ae317cf713",
       "depth": 3,
       "discoveredFrom": "docs/specs/rules/index.spec.md",
       "kind": "spec",

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:76fc06d7a89aad01d8b6e3dcb2d3591afff6a3575a593e49714054fdbf1171bd"
+      "contentHash": "sha256:2d001b9bf453b1273b403435717252f0180783e22449ed2d7707e6bf459a9d42"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72"
     }
   },
-  "claimsPacketGitCommit": "f0c4e1b6464d56017876ba2aba3f1bdc792a0478",
+  "claimsPacketGitCommit": "daf24d18ae7bb4078397aed90776efe5d5d04ba7",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 407,
+  "claimsPacketCandidateCount": 405,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -581,24 +581,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 407,
+    "totalRawClaimCount": 405,
     "userRawClaimCount": 114,
     "userMappedToCanonicalCount": 114,
     "userUnmappedCount": 0,
-    "semanticReviewRecommendedCount": 331,
+    "semanticReviewRecommendedCount": 329,
     "userSemanticReviewRecommendedCount": 42,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 293,
+      "mapped-to-maintainer-canonical": 291,
       "mapped-to-user-canonical": 114
     },
     "byAudience": {
-      "developer": 293,
+      "developer": 291,
       "user": 114
     },
     "byMappingConfidence": {
       "high": 76,
       "low": 20,
-      "medium": 311
+      "medium": 309
     },
     "byUserCanonicalClaimId": {
       "U1": 22,
@@ -618,9 +618,9 @@
       "M2": 21,
       "M3": 71,
       "M4": 68,
-      "M5": 30,
+      "M5": 29,
       "M6": 8,
-      "M7": 9,
+      "M7": 8,
       "M8": 17,
       "M9": 7
     },
@@ -944,8 +944,6 @@
       "claim-docs-specs-ledger-improvement-spec-md-16",
       "claim-docs-specs-ledger-names-and-keys-spec-md-4",
       "claim-docs-specs-ledger-names-and-keys-spec-md-26",
-      "claim-docs-specs-ledger-promise-ledger-spec-md-15",
-      "claim-docs-specs-ledger-promise-ledger-spec-md-16",
       "claim-docs-specs-ledger-readiness-spec-md-5",
       "claim-skills-cautilus-agent-skill-md-13",
       "claim-skills-cautilus-agent-skill-md-22",
@@ -3221,7 +3219,7 @@
     {
       "canonicalClaimId": "M5",
       "title": "Evaluation Surfaces And Runners",
-      "absorbedRawClaimCount": 30,
+      "absorbedRawClaimCount": 29,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-220",
         "claim-docs-contracts-adapter-contract-md-298",
@@ -3250,7 +3248,6 @@
         "claim-docs-contracts-runtime-fingerprint-improvement-md-42",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
         "claim-docs-specs-ledger-evaluation-spec-md-16",
-        "claim-docs-specs-ledger-promise-ledger-spec-md-15",
         "claim-docs-specs-ledger-readiness-spec-md-5",
         "claim-skills-cautilus-agent-skill-md-66"
       ],
@@ -3418,12 +3415,6 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-15",
-          "claimFingerprint": "sha256:c5badcb7d0f0441ce41f1f95e1ef5b001cf034865a471bee5fd460261393374f",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
           "claimId": "claim-docs-specs-ledger-readiness-spec-md-5",
           "claimFingerprint": "sha256:8845e73c8baa1168045998bd91688457e123495fd87321e8859dc6c4605223f7",
           "mappingConfidence": "medium",
@@ -3438,20 +3429,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 14,
-        "unknown": 16
+        "unknown": 15
       },
       "byReviewStatus": {
         "agent-reviewed": 14,
-        "heuristic": 16
+        "heuristic": 15
       },
       "byRecommendedProof": {
-        "cautilus-eval": 14,
+        "cautilus-eval": 13,
         "deterministic": 14,
         "human-auditable": 2
       },
       "byMappingConfidence": {
         "low": 1,
-        "medium": 29
+        "medium": 28
       }
     },
     {
@@ -3538,7 +3529,7 @@
     {
       "canonicalClaimId": "M7",
       "title": "Improvement Loop",
-      "absorbedRawClaimCount": 9,
+      "absorbedRawClaimCount": 8,
       "absorbedRawClaimIds": [
         "claim-agents-md-32",
         "claim-docs-contracts-claim-discovery-workflow-md-407",
@@ -3547,8 +3538,7 @@
         "claim-docs-contracts-runtime-fingerprint-improvement-md-47",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
         "claim-docs-specs-ledger-improvement-spec-md-5",
-        "claim-docs-specs-ledger-improvement-spec-md-16",
-        "claim-docs-specs-ledger-promise-ledger-spec-md-16"
+        "claim-docs-specs-ledger-improvement-spec-md-16"
       ],
       "absorbedRawClaims": [
         {
@@ -3598,30 +3588,24 @@
           "claimFingerprint": "sha256:84bfe2ea4eeda3033f0e6dcac825e0e0d32d292acb04c7639b082ed5aa3a765c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-16",
-          "claimFingerprint": "sha256:a308d1eae66f89bd8fd43382d57e9951b1cd17f3bec7f1b9c152110bac7e8440",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
         }
       ],
       "byEvidenceStatus": {
         "satisfied": 3,
-        "unknown": 6
+        "unknown": 5
       },
       "byReviewStatus": {
-        "agent-reviewed": 6,
+        "agent-reviewed": 5,
         "heuristic": 3
       },
       "byRecommendedProof": {
-        "cautilus-eval": 3,
+        "cautilus-eval": 2,
         "deterministic": 4,
         "human-auditable": 2
       },
       "byMappingConfidence": {
         "low": 2,
-        "medium": 7
+        "medium": 6
       }
     },
     {
@@ -20172,87 +20156,6 @@
         "key",
         "name",
         "product"
-      ]
-    },
-    {
-      "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-15",
-      "summary": "[Behavior Evaluation](evaluation.spec.md): Cautilus evaluates intentful behavior across supported `dev` and `app` surfaces.",
-      "sourceRefs": [
-        {
-          "path": "docs/specs/ledger/promise-ledger.spec.md",
-          "line": 15,
-          "excerpt": "[Behavior Evaluation](evaluation.spec.md): Cautilus evaluates intentful behavior across supported `dev` and `app` surfaces."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:c5badcb7d0f0441ce41f1f95e1ef5b001cf034865a471bee5fd460261393374f",
-      "canonicalClaimId": "M5",
-      "score": 11,
-      "runnerUpCanonicalClaimId": "M28",
-      "runnerUpScore": 11,
-      "scoreMargin": 0,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "acros",
-        "app",
-        "behavior",
-        "contract",
-        "dev",
-        "dev/repo",
-        "evaluate",
-        "evaluation",
-        "fixture",
-        "run",
-        "surface"
-      ]
-    },
-    {
-      "claimId": "claim-docs-specs-ledger-promise-ledger-spec-md-16",
-      "summary": "[Bounded Improvement](improvement.spec.md): Cautilus improves a selected behavior target under explicit budget, protected checks, and held-out evidence.",
-      "sourceRefs": [
-        {
-          "path": "docs/specs/ledger/promise-ledger.spec.md",
-          "line": 16,
-          "excerpt": "[Bounded Improvement](improvement.spec.md): Cautilus improves a selected behavior target under explicit budget, protected checks, and held-out evidence."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "agent-reviewed",
-      "claimFingerprint": "sha256:a308d1eae66f89bd8fd43382d57e9951b1cd17f3bec7f1b9c152110bac7e8440",
-      "canonicalClaimId": "M7",
-      "score": 14,
-      "runnerUpCanonicalClaimId": "M17",
-      "runnerUpScore": 14,
-      "scoreMargin": 0,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "behavior",
-        "bounded",
-        "budget",
-        "check",
-        "eval",
-        "evidence",
-        "explicit",
-        "held-out",
-        "improve",
-        "improvement",
-        "proposal",
-        "protected"
       ]
     },
     {
