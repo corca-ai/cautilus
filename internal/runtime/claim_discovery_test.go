@@ -3948,6 +3948,90 @@ func TestClaimLineLengthBoundsCountRunesNotBytes(t *testing.T) {
 	}
 }
 
+// The full README GEPA-seam capability sentence (280 runes) — the R12 archetype
+// that was dormant only because it exceeded the old 260-rune extraction bound.
+const gepaSeamCapabilityLine = "`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection."
+
+func TestClaimLineUpperBoundIsHighSanityCap(t *testing.T) {
+	// Frozen guard: the upper bound is a high pathological-input sanity cap, not a
+	// claim-length filter. Changing it must surface here and force a contract update.
+	// Contract: charness-artifacts/eval-trust/2026-06-21-rune-bound-recall.spec.md
+	if claimLineMaxRunes != 2000 {
+		t.Fatalf("claim rune sanity cap changed; update docs/contracts/claim-discovery-workflow.md and this golden together, got %d", claimLineMaxRunes)
+	}
+
+	// Recall: the 280-rune GEPA-seam capability claim is now accepted (it would
+	// have failed the old 260-rune bound) and classifies as R12 deterministic.
+	if rc := utf8.RuneCountInString(gepaSeamCapabilityLine); rc <= 260 || rc > claimLineMaxRunes {
+		t.Fatalf("GEPA-seam line must exercise the relaxed range (260 < runes <= cap), got %d runes", rc)
+	}
+	if useful, _ := claimLineLooksUseful(gepaSeamCapabilityLine, nil); !useful {
+		t.Fatalf("expected the 280-rune GEPA-seam capability claim to be useful after the bound relax")
+	}
+
+	// Sanity cap (G5): a block past the cap is rejected even though it is lexicon-matched.
+	huge := strings.Repeat("the system provides a capability and ", 80) // ~2960 runes, contains " provides "
+	if rc := utf8.RuneCountInString(huge); rc <= claimLineMaxRunes {
+		t.Fatalf("sanity-cap test input must exceed the cap, got %d runes", rc)
+	}
+	if useful, _ := claimLineLooksUseful(huge, nil); useful {
+		t.Fatalf("expected a block past the sanity cap to be rejected")
+	}
+
+	// Lower bound preserved: a <20-rune fragment is still dropped.
+	if useful, _ := claimLineLooksUseful("It runs.", nil); useful {
+		t.Fatalf("expected a sub-20-rune fragment to stay dropped")
+	}
+}
+
+func TestDiscoverClaimProofPlanRecoversLongCapabilityClaimAfterBoundRelax(t *testing.T) {
+	// G1 (dormant -> live): the full 280-rune GEPA-seam capability claim now
+	// extracts end-to-end and routes deterministic (R12). G4 (noise gate intact):
+	// a >260 route-unclassified fixture-path line is still dropped, proving the
+	// classifyClaimLine route filter — not the length bound — gates noise.
+	// Contract: charness-artifacts/eval-trust/2026-06-21-rune-bound-recall.spec.md
+	noiseLine := "completed result example at [fixtures/live-run-invocation/example-result-completed.json](../../fixtures/live-run-invocation/example-result-completed.json) validates against [fixtures/live-run-invocation/example-result.schema.json](../../fixtures/live-run-invocation/example-result.schema.json) for every recorded run."
+	if rc := utf8.RuneCountInString(noiseLine); rc <= 260 {
+		t.Fatalf("noise control line must exceed the old bound to prove length is not the gate, got %d runes", rc)
+	}
+	if _, ok := classifyClaimLine(noiseLine); ok {
+		t.Fatalf("noise control line must be route-unclassified for this test to prove the route filter gates it")
+	}
+
+	doc := strings.Join([]string{
+		"# Demo",
+		"",
+		gepaSeamCapabilityLine,
+		"",
+		noiseLine,
+		"",
+	}, "\n")
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), doc)
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	var gepa map[string]any
+	for _, raw := range candidates {
+		candidate := asMap(raw)
+		summary := stringFromAny(candidate["summary"])
+		if strings.Contains(summary, "GEPA-style bounded prompt search seam") {
+			gepa = candidate
+		}
+		if strings.Contains(summary, "example-result-completed.json") {
+			t.Fatalf("route-unclassified fixture-path noise line must stay dropped, got candidate %q", summary)
+		}
+	}
+	if gepa == nil {
+		t.Fatalf("expected the recovered GEPA-seam capability claim among %d candidates", len(candidates))
+	}
+	if gepa["recommendedProof"] != "deterministic" {
+		t.Fatalf("expected the recovered capability-existence claim to route deterministic (R12), got %#v", gepa["recommendedProof"])
+	}
+}
+
 func TestDiscoverClaimProofPlanFiltersDeferredDecisionsByDefault(t *testing.T) {
 	doc := strings.Join([]string{
 		"# Demo",
@@ -3991,6 +4075,7 @@ func TestClaimClassificationPortableDefaultsAreFrozen(t *testing.T) {
 		" must ", " should ", " can ", " will ", " owns ", " keeps ", " uses ", " emits ", " writes ", " runs ",
 		" routes ", " discovers ", " evaluates ", " improves ", " verifies ", " validates ", " proves ", " supports ",
 		" requires ", " guarantees ", " provides ", " belongs ", " remains ", " stays ", " installs ", " produces ",
+		" ships ",
 	}
 	if !reflect.DeepEqual(defaultClaimLexiconTerms, expectedLexicon) {
 		t.Fatalf("built-in claim lexicon changed; update docs/contracts/claim-discovery-workflow.md and this golden together, got %#v", defaultClaimLexiconTerms)

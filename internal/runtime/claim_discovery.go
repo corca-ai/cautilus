@@ -321,7 +321,7 @@ func claimDiscoveryHeuristics() []any {
 		map[string]any{
 			"id":                     "claim-shaped-line-filter",
 			"implementationFunction": "claimLineLooksUseful",
-			"summary":                "Keep lines that look like behavior promises via the built-in English verb lexicon plus adapter-declared classification_hints.claim_lexicon_terms (substring match), and drop prompt examples, open questions, definition labels, future placeholders, and very short or long text (rune-counted bounds).",
+			"summary":                "Keep lines that look like behavior promises via the built-in English verb lexicon plus adapter-declared classification_hints.claim_lexicon_terms (substring match), and drop prompt examples, open questions, definition labels, future placeholders, and fragments below the rune lower bound. The upper bound is only a high pathological-input sanity cap (high-recall Pass 1); length-correlated noise is gated by the route filter, not here.",
 		},
 		map[string]any{
 			"id":                     "next-work-classifier",
@@ -761,6 +761,11 @@ var defaultClaimLexiconTerms = []string{
 	" must ", " should ", " can ", " will ", " owns ", " keeps ", " uses ", " emits ", " writes ", " runs ",
 	" routes ", " discovers ", " evaluates ", " improves ", " verifies ", " validates ", " proves ", " supports ",
 	" requires ", " guarantees ", " provides ", " belongs ", " remains ", " stays ", " installs ", " produces ",
+	// " ships " is the capability-existence verb that classifyClaimLine's R12
+	// (capabilityExistenceClaim) keys on. Without it in the gate, every "ships X"
+	// capability claim is dropped before reaching the router, leaving R12 dead on
+	// the live path (debug 2026-06-21-r12-ships-lexicon-gate-dead).
+	" ships ",
 }
 
 func normalizeNonClaimSectionHeadings(values []string) []string {
@@ -1376,12 +1381,30 @@ func previousLineEndsClaimBlock(buffer []string) bool {
 	return strings.HasSuffix(previous, ".") || strings.HasSuffix(previous, "?") || strings.HasSuffix(previous, "!")
 }
 
+// claimLineMaxRunes is the high pathological-input sanity cap for a claim block
+// (see claimLineLooksUseful). It is ~2x the largest observed real single-sentence
+// claim (1089 runes) so it never threatens real prose; it only rejects runaway
+// block accumulation from malformed / non-prose input.
+const claimLineMaxRunes = 2000
+
 // claimLineLooksUseful reports whether a text block is claim-shaped, and
 // separately whether the match came from an adapter-owned lexicon term rather
 // than the built-in English defaults. Length bounds count runes, not bytes, so
 // multibyte scripts get the same sentence-length budget as ASCII. Adapter
 // terms use case-insensitive substring matching because agglutinative
 // predicates (e.g. Korean sentence-final endings) carry no space boundaries.
+//
+// The lower bound (< 20) drops fragments. The upper bound is a high
+// pathological-input sanity cap, not a claim-length filter: because
+// claimTextBlocks flushes on sentence-ending punctuation and prose uses
+// semantic line breaks (one sentence per line), a block is almost always a
+// single sentence, and a single sentence's length does not distinguish a real
+// claim from noise. The cap only rejects runaway block accumulation from
+// malformed / non-prose input (no sentence break to flush on). Pass 1 is
+// deliberately high-recall (claim-discovery.spec.md): genuine length-correlated
+// noise is gated downstream by the classifyClaimLine route filter, not here.
+// (measurement 2026-06-21: a 260-rune bound silently dropped 76 routable
+// promise/capability claims, the largest real one 1089 runes.)
 func claimLineLooksUseful(line string, adapterLexiconTerms []string) (bool, bool) {
 	if line == "" || strings.HasPrefix(line, "|") || strings.HasPrefix(line, "---") {
 		return false, false
@@ -1400,7 +1423,7 @@ func claimLineLooksUseful(line string, adapterLexiconTerms []string) (bool, bool
 		return false, false
 	}
 	runeCount := utf8.RuneCountInString(normalized)
-	if runeCount < 20 || runeCount > 260 {
+	if runeCount < 20 || runeCount > claimLineMaxRunes {
 		return false, false
 	}
 	lower := strings.ToLower(normalized)
