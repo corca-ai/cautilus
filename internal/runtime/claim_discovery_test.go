@@ -4257,6 +4257,64 @@ func TestCliFlagSemanticsClaimGuard(t *testing.T) {
 	}
 }
 
+func TestGateRouterCoherence(t *testing.T) {
+	// Coherence guard for the gate<->router invariant: a claim shape the router
+	// (classifyClaimLine) can route must also pass the upstream admission gate
+	// (claimLineLooksUseful), or it is dead on the live path. This is the
+	// class-level fix for the structural-death bug whose first instance was R12
+	// " ships " (debug 2026-06-21-r12-ships-lexicon-gate-dead) and whose audit
+	// found five more latent deaths (debug 2026-06-21-gate-router-verb-coverage-deaths).
+	//
+	// Every row asserts ok==true (the representative line really does match a
+	// router case). reachable rows additionally assert the gate admits them;
+	// knownLatentDeath rows assert the gate still drops them — a documented
+	// allowlist of current debt. If a death row flips to useful==true (someone
+	// admitted its verb), MOVE it to the reachable set in the same change; if a
+	// reachable row flips to useful==false, a gate/lexicon change silently killed
+	// a live route. When adding a new classifyClaimLine case, add a row here.
+	cases := []struct {
+		name             string
+		line             string
+		knownLatentDeath bool
+	}{
+		// --- reachable cases (gate admits; spans all three routes) ---
+		{"named-packet-emission", "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.", false},
+		{"cli-flag-semantics", "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home.", false},
+		{"r6-ownership-assignment", "The Cautilus Agent should own orchestration that depends on an agent.", false},
+		{"r12-capability-existence", "Cautilus also ships a GEPA-style bounded prompt search seam: multi-generation reflective mutation and bounded merge synthesis.", false},
+		{"deterministic-unit-test", "The repo keeps a unit test for every adapter contract surface.", false},
+		{"broad-eval-surface", "The agent should change behavior over multiple evaluated generations.", false},
+		{"human-auditable-inspect", "An operator can inspect the generated docs directly for the boundary.", false},
+		{"install-materialization", "The installer keeps a standalone binary checked into each host repo.", false},
+		{"ownership-boundary", "Routing should remain human-auditable until it is split or promoted into proof.", false},
+		{"deterministic-readiness", "Doctor should run a preflight readiness check before any bounded eval loop.", false},
+		// --- known latent deaths (router routes them, gate drops them today) ---
+		// debt allowlist; zero live-corpus impact at audit time (2026-06-21).
+		{"DEATH-cli-gating", "The doctor command is not gated behind any provider credential.", true},
+		{"DEATH-needs-scenario", "This behavior needs a protected scenario before it becomes a fixture.", true},
+		{"DEATH-provider-failover", "On primary outage the fallback provider takes over the runner automatically.", true},
+		{"DEATH-historical-observation", "Past sessions showed the operator skipped the bootstrap step entirely.", true},
+		{"DEATH-provider-caveat", "A codex exec failure prints to stderr while exit still looks successful.", true},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			useful, _ := claimLineLooksUseful(tc.line, nil)
+			if _, ok := classifyClaimLine(tc.line); !ok {
+				t.Fatalf("router does not classify the representative line (fix the line): %q", tc.line)
+			}
+			if tc.knownLatentDeath {
+				if useful {
+					t.Fatalf("known latent death is now gate-admitted — move %q to the reachable set: %q", tc.name, tc.line)
+				}
+				return
+			}
+			if !useful {
+				t.Fatalf("reachable router case is no longer gate-admitted (a gate/lexicon change killed a live route): %q -> %q", tc.name, tc.line)
+			}
+		})
+	}
+}
+
 func TestDiscoverClaimProofPlanAdapterProofRouteHintRoutesUnclassifiedLine(t *testing.T) {
 	doc := strings.Join([]string{
 		"# Demo",

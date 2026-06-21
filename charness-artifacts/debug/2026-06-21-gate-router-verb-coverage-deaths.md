@@ -113,6 +113,8 @@ Note: diagnosis only — no repair landed in this slice. Next step is a fix-scop
 ## Prevention
 
 The durable, class-level prevention is the gate↔router coherence meta-test (`follow-up: gate-router-coherence-test`): for each router case, a representative line must pass `claimLineLooksUseful`. This maps to the detection gap (no coherence check exists) and the structural sibling axis (one guard for the whole class), and it freezes coverage so any future router case with an unadmitted verb fails the build — exactly what would have caught ships.
+
+LANDED 2026-06-22: `TestGateRouterCoherence` (`internal/runtime/claim_discovery_test.go`) implements this — 10 reachable router cases assert gate admission, the 5 latent deaths are a documented allowlist asserting they stay dropped (so fixing one forces moving it to the reachable set). Per-verb dead-case repairs stay deferred as `follow-up: gate-router-deadcase-fixes` (blast-radius-scoped: ` needs ` must restructure the case to require a lexicon companion rather than be admitted; zero live-corpus impact means no current urgency).
 Per-verb admissions (`follow-up: gate-router-deadcase-fixes`) are scoped by blast radius: ` enforces `/` showed `/` not gated ` are low-blast; ` needs ` is very high-blast (a near-ubiquitous word) and should be handled by restructuring the case to require a lexicon companion rather than admitting the bare verb. These are deferred to the fix-scope decision, not taken in this diagnosis.
 
 ## Related Prior Incidents
