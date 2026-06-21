@@ -8,6 +8,9 @@ When a behavior target needs improvement, the user needs bounded search that pre
 Using the `cautilus improve` CLI command and the `cautilus-agent` skill, a user can improve a selected behavior target while preserving held-out evidence and revision artifacts.
 The bounded improve loop is proven live on the dev/skill surface: a degraded prompt is rewritten until it recovers a held-out scenario it was never tuned on, and the change is produced as a reviewable proposal you approve before applying.
 
+Governed by [governed-by::Reviewable Artifacts](../rules/reviewable-artifacts.spec.md), [governed-by::Evidence Gaps](../rules/evidence-gaps.spec.md), [governed-by::Cost And Proof Freshness](../rules/cost-and-proof-freshness.spec.md), and [governed-by::Host-Owned Execution](../rules/host-owned-execution.spec.md).
+Implemented by [implemented-by::Improvement Loop](../contracts/improvement-loop.spec.md), [implemented-by::Scenario History And Proposal Normalization](../contracts/scenario-history-normalization.spec.md), and [implemented-by::Active Run And Workspace Lifecycle](../contracts/active-run-workspace.spec.md).
+
 ## The bounded improve loop is proven live: a degraded prompt is rewritten until it recovers a held-out scenario it was never tuned on.
 
 This is not a projected bundle.

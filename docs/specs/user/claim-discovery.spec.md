@@ -30,6 +30,9 @@ Each candidate is routed toward the kind of evidence it needs next:
 | Curate the candidate list | `cautilus-agent` skill | false-positive reductions, possible false-negative questions, and grouped follow-up work |
 | Fill evidence gaps | `discover claims status`, deterministic tests, `cautilus evaluate`, or human review | proof status changes only after valid evidence or a recorded decision |
 
+Governed by [governed-by::Reviewable Artifacts](../rules/reviewable-artifacts.spec.md), [governed-by::Evidence Gaps](../rules/evidence-gaps.spec.md), [governed-by::Agent-Human Resumability](../rules/agent-human-resumability.spec.md), and [governed-by::Host-Owned Execution](../rules/host-owned-execution.spec.md).
+Implemented by [implemented-by::Claim Discovery Workflow](../contracts/claim-discovery-workflow.spec.md), [implemented-by::Evidence State And Review Artifacts](../contracts/evidence-state-artifacts.spec.md), and [implemented-by::Binary And Skill Boundary](../contracts/binary-skill-boundary.spec.md).
+
 ## A user can audit the source boundary.
 
 Claim discovery should make one question easy to answer: which docs were actually scanned before this candidate list was created?

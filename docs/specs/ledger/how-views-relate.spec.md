@@ -34,5 +34,5 @@ The model favors stable concepts and short commitments over explanation of past 
 ## Traceability
 
 The traceability contract is typed Specdown traceability, configured in `specdown.json` and validated by `specdown trace -strict`.
-Today the typed spine is the apex and the seven promises, joined by `badges::`-prefixed apex-to-promise edges; promise-to-rule and promise-to-contract edges are a later slice.
+Today the typed spine is the apex, the seven promises, the seven cross-cutting rules, and the contract evidence routes, joined by `badges::` apex-to-promise edges, `governed-by::` promise-to-rule edges, and `implemented-by::` promise-to-contract edges; `specdown trace -strict` also enforces that no typed rule or contract page is left without an incoming edge.
 Markdown reachability (`scripts/check-specs.mjs`) still runs alongside it until trace is proven equivalent.

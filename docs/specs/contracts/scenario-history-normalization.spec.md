@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Scenario History And Proposal Normalization
 
 Scenario history and proposal normalization keep protected checks reusable across tuning loops.

@@ -1,3 +1,7 @@
+---
+type: rule
+---
+
 # Agent-Human Resumability
 
 Cautilus should leave enough source refs, packets, next actions, source-bound review feedback, and readable reports that a human or agent can resume the workflow without relying on chat memory.

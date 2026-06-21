@@ -8,6 +8,8 @@ Before you can prove an agent's behavior, you need a clean headless runner for C
 Using the `cautilus` CLI and the checked-in runner-readiness fixtures, you can check how testable your agent is: the binary emits a runner-readiness verdict, names the runner capability each claim needs, and flags an assessment that has drifted out of date.
 Each subclaim below regenerates its packet live on every `npm run lint:specs` and asserts on the fresh output, except where it asserts on a checked-in assessment fixture that the Surface Honesty Audit also binds.
 
+Typed traceability: this promise carries no `governed-by` or `implemented-by` edge yet — its runner-readiness background lives in maintainer prose under `docs/contracts/`, not a typed contract node, so the typed edge is deferred to a later slice.
+
 ## You can check how testable your agent is.
 
 The binary reports runner readiness as a setup substrate under the `claim`, `eval`, and `improve` jobs: it reads this repo's runner assessment, preserves the proof class, names the required runner capability for each eval-ready claim, and detects when an assessment no longer matches the current adapter and runner files.

@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Binary And Skill Boundary
 
 The binary and Cautilus Agent own different parts of the workflow.

@@ -1,3 +1,7 @@
+---
+type: rule
+---
+
 # Cost And Proof Freshness
 
 Expensive Cautilus eval and improve evidence should be shown honestly.

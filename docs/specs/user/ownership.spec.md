@@ -7,6 +7,9 @@ type: promise
 Before Cautilus can evaluate behavior honestly, the user needs host-specific prompts, models, credentials, runtime wiring, and acceptance policy to stay in the host repo.
 Using the `cautilus init adapter`, `cautilus doctor adapter`, and `cautilus doctor` CLI commands with the `cautilus-agent` skill, a user can keep host-owned execution in place while Cautilus standardizes workflow packets and boundaries.
 
+Governed by [governed-by::Host-Owned Execution](../rules/host-owned-execution.spec.md), [governed-by::Vocabulary Consistency](../rules/vocabulary-consistency.spec.md), and [governed-by::Agent-Human Resumability](../rules/agent-human-resumability.spec.md).
+Implemented by [implemented-by::Adapter And Host Ownership](../contracts/adapter-host-ownership.spec.md), [implemented-by::Live Invocation Runtime](../contracts/live-invocation-runtime.spec.md), and [implemented-by::Binary And Skill Boundary](../contracts/binary-skill-boundary.spec.md).
+
 ## A user can keep behavior execution in the host repo.
 
 The current adapter evidence proves that adapter-owned claim discovery entries and explicit live instance definitions are validated and normalized without product-owned runtime guessing.

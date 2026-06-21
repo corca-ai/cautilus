@@ -3687,7 +3687,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f60d5bbbf8dadb92ca84c12402ad867b566df4bd2d9b928dd82735d498cbfdca",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-15",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-18",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3706,7 +3706,7 @@
       "sourceRefs": [
         {
           "excerpt": "The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the find-skills bootstrap.",
-          "line": 15,
+          "line": 18,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3718,7 +3718,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:56865e6b7d179b00c9ef3930b4fc4fb830e0cce4ce125e08fa4fac5c1f1d4b90",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-32",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-35",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3737,7 +3737,7 @@
       "sourceRefs": [
         {
           "excerpt": "The cautilus-agent skill is proven live: its no-input orientation runs the read-only status and holds.",
-          "line": 32,
+          "line": 35,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3749,7 +3749,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:5c24925bdf26dd23fdce627645bf9cb74517324dddaa9748802a522e1363786f",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-57",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-60",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3768,7 +3768,7 @@
       "sourceRefs": [
         {
           "excerpt": "The agent run itself is replayed from the production log rather than re-run live; the live app re-run stays in Proof Debt.",
-          "line": 57,
+          "line": 60,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3780,7 +3780,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0517842296e793d47cb2971efb5dd9a10e5692c313fb44555f79697cb9afd4a8",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-137",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-140",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3799,7 +3799,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can choose the behavior surface that matches the evaluation intent.",
-          "line": 137,
+          "line": 140,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3811,7 +3811,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:14a67a2548b2b02abf555ed0e63e7e0f8d039455c3ea20abbb2421357d26abfc",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-156",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-159",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3829,7 +3829,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
-          "line": 156,
+          "line": 159,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -3841,7 +3841,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:975ddb4b73f5d58343ad945ea52b461229f4ee82871c007140da3d50dd284a9e",
-      "claimId": "claim-docs-specs-user-evaluation-spec-md-167",
+      "claimId": "claim-docs-specs-user-evaluation-spec-md-170",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3858,7 +3858,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can reopen observed behavior and summary packets after each eval.",
-          "line": 167,
+          "line": 170,
           "path": "docs/specs/user/evaluation.spec.md"
         }
       ],
@@ -4079,7 +4079,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6f1d53b63c55437a8dba5e2715e79937723944de9c742996061a11766aea838f",
-      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-11",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-14",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4096,7 +4096,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user or agent can reopen JSON packets as the audit source of truth.",
-          "line": 11,
+          "line": 14,
           "path": "docs/specs/user/reviewable-artifacts.spec.md"
         }
       ],
@@ -4108,7 +4108,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fbeade814cdb79e38bc860b82568c0157823aa114fcd852ae78a6877150b3681",
-      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-65",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-68",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4125,7 +4125,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can read generated views without losing the packet source of truth.",
-          "line": 65,
+          "line": 68,
           "path": "docs/specs/user/reviewable-artifacts.spec.md"
         }
       ],
@@ -4137,7 +4137,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:93ef4fc3ee9b56a91a713fa0e2993e6a0a45ef23f8b36a64ad7a8a662e892150",
-      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-68",
+      "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-71",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -4154,7 +4154,7 @@
       "sourceRefs": [
         {
           "excerpt": "The checks below render two readable views live from the canonical packets and confirm each view states that the JSON packet remains the audit source, while the source packet stays a valid machine-readable proof plan.",
-          "line": 68,
+          "line": 71,
           "path": "docs/specs/user/reviewable-artifacts.spec.md"
         }
       ],
@@ -8553,7 +8553,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:543403c171f9e7b3ddfa9eba3d18f6552237e853c8b0d96792e24e5904eca4f7",
-      "claimId": "claim-docs-specs-contracts-active-run-workspace-spec-md-3",
+      "claimId": "claim-docs-specs-contracts-active-run-workspace-spec-md-7",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8572,7 +8572,7 @@
       "sourceRefs": [
         {
           "excerpt": "Active runs keep multi-command workflows resumable without hiding workspace ownership.",
-          "line": 3,
+          "line": 7,
           "path": "docs/specs/contracts/active-run-workspace.spec.md"
         }
       ],
@@ -8584,7 +8584,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c4c35b7c9f5f004954bd73b859149a249e97f73c456260efcf5c5d34ea5f8013",
-      "claimId": "claim-docs-specs-contracts-active-run-workspace-spec-md-13",
+      "claimId": "claim-docs-specs-contracts-active-run-workspace-spec-md-17",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8603,7 +8603,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cautilus can allocate and remember a per-run workspace for a workflow, but command artifacts own workflow metadata; the active-run marker resumes the same bounded workflow without turning local workspace contents into product-owned behavior.",
-          "line": 13,
+          "line": 17,
           "path": "docs/specs/contracts/active-run-workspace.spec.md"
         }
       ],
@@ -8615,7 +8615,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c26ee45a2c0003b1af74e8488f107159acc29a6aa1ef18af82df43dfa45a0976",
-      "claimId": "claim-docs-specs-contracts-adapter-host-ownership-spec-md-13",
+      "claimId": "claim-docs-specs-contracts-adapter-host-ownership-spec-md-17",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8633,7 +8633,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cautilus owns generic workflow contracts, packet shapes, readiness semantics, behavior-surface vocabulary, and normalization helpers, while host repos own prompts, runners, credentials, model or backend selection, fixtures, and policy.",
-          "line": 13,
+          "line": 17,
           "path": "docs/specs/contracts/adapter-host-ownership.spec.md"
         }
       ],
@@ -8645,7 +8645,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c49585c44656f9dc11cff8f9b5c9562554b4e87f4c987fec0e05a778b0b99c1a",
-      "claimId": "claim-docs-specs-contracts-adapter-host-ownership-spec-md-19",
+      "claimId": "claim-docs-specs-contracts-adapter-host-ownership-spec-md-23",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8664,7 +8664,7 @@
       "sourceRefs": [
         {
           "excerpt": "The same product workflow runs unchanged across two adapters because repo-specific behavior lives in adapters and fixtures.",
-          "line": 19,
+          "line": 23,
           "path": "docs/specs/contracts/adapter-host-ownership.spec.md"
         }
       ],
@@ -8676,7 +8676,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3711c893e299e508000942409da4c63ef2aac5700aa9c23282dfb234a8e7daf6",
-      "claimId": "claim-docs-specs-contracts-adapter-host-ownership-spec-md-26",
+      "claimId": "claim-docs-specs-contracts-adapter-host-ownership-spec-md-30",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8695,7 +8695,7 @@
       "sourceRefs": [
         {
           "excerpt": "[scripts/on-demand/smoke-external-consumer.test.mjs](../../../scripts/on-demand/smoke-external-consumer.test.mjs) bootstraps a temporary external consumer repo through `npm run consumer:onboard:smoke` and asserts the same product workflow runs unchanged.",
-          "line": 26,
+          "line": 30,
           "path": "docs/specs/contracts/adapter-host-ownership.spec.md"
         }
       ],
@@ -8707,7 +8707,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cd34e15bce32d678405ca65cb21575ec727061d9441c24e20b972a34f6aa8148",
-      "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-17",
+      "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-21",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8726,7 +8726,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary owns deterministic command execution, packet schemas, help text, and reusable artifacts.",
-          "line": 17,
+          "line": 21,
           "path": "docs/specs/contracts/binary-skill-boundary.spec.md"
         }
       ],
@@ -8741,7 +8741,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:5ec34014cc5c216ed5e5e8dfba0940fb12ce4cc39a605552ad1ba57d23db8ec5",
-      "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+      "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-22",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8758,7 +8758,7 @@
       "sourceRefs": [
         {
           "excerpt": "The Cautilus Agent owns sequencing, decision boundaries, review-budget explanation, and agent-driven claim curation.",
-          "line": 18,
+          "line": 22,
           "path": "docs/specs/contracts/binary-skill-boundary.spec.md"
         }
       ],
@@ -8770,7 +8770,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:712104f6267484242316cec1e4f9f001ab10f7e64aeb51c866dacb43731c209b",
-      "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+      "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-23",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8787,7 +8787,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary does not call an LLM provider directly for claim discovery or claim review; LLM work routes through Cautilus Agent or subagent surfaces.",
-          "line": 19,
+          "line": 23,
           "path": "docs/specs/contracts/binary-skill-boundary.spec.md"
         }
       ],
@@ -8799,7 +8799,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fa6f7d16785a8a4a2e2353a8b34dea11318a186591d14b09cc67ed15ec069a35",
-      "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
+      "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-24",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8816,7 +8816,7 @@
       "sourceRefs": [
         {
           "excerpt": "Progressive disclosure between the binary and the Cautilus Agent stays within a deterministically checkable contract.",
-          "line": 20,
+          "line": 24,
           "path": "docs/specs/contracts/binary-skill-boundary.spec.md"
         }
       ],
@@ -8828,7 +8828,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:03f83612c6d68ce73b20029d50c0b55fc6765880fe0e242b4b569a36e6761039",
-      "claimId": "claim-docs-specs-contracts-claim-discovery-workflow-spec-md-13",
+      "claimId": "claim-docs-specs-contracts-claim-discovery-workflow-spec-md-17",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8845,7 +8845,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims` emits source-ref-backed candidates from configured entry documents and the linked docs they reach, preferring recall and preserving the scan boundary so curation can distinguish binary false negatives from out-of-scope narrative gaps.",
-          "line": 13,
+          "line": 17,
           "path": "docs/specs/contracts/claim-discovery-workflow.spec.md"
         }
       ],
@@ -8857,7 +8857,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:502c787e72cc330f336039f03919077b77f3fe49d4105a1a75f851ae3f6c5517",
-      "claimId": "claim-docs-specs-contracts-claim-discovery-workflow-spec-md-17",
+      "claimId": "claim-docs-specs-contracts-claim-discovery-workflow-spec-md-21",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8874,7 +8874,7 @@
       "sourceRefs": [
         {
           "excerpt": "Discovery emits source-ref-backed candidates from configured entry documents and linked docs within the declared depth bounds.",
-          "line": 17,
+          "line": 21,
           "path": "docs/specs/contracts/claim-discovery-workflow.spec.md"
         }
       ],
@@ -8886,7 +8886,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7da51f85f8a091dd9eca69d7c36310b389884dca9d33a25ebdf32111d0b5acf1",
-      "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-13",
+      "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-17",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8905,7 +8905,7 @@
       "sourceRefs": [
         {
           "excerpt": "The top-level evaluation surfaces are `dev` and `app`, the shipped presets are `repo`, `skill`, `chat`, and `prompt`, and fixtures declare their surface and preset so the reader can tell what kind of behavior is under test.",
-          "line": 13,
+          "line": 17,
           "path": "docs/specs/contracts/evaluation-surfaces-runners.spec.md"
         }
       ],
@@ -8917,7 +8917,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e9f96e1fb87cb0fdb7c23393d21875c5433f65a570d4494549e0b9e0f46f1895",
-      "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+      "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-22",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8934,7 +8934,7 @@
       "sourceRefs": [
         {
           "excerpt": "Each shipped preset is fixture-backed so a reviewer can reopen the input, observed output, and summary packets.",
-          "line": 18,
+          "line": 22,
           "path": "docs/specs/contracts/evaluation-surfaces-runners.spec.md"
         }
       ],
@@ -8946,7 +8946,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d5a1105bb3e4622cd2e4d43216dad8c9f75a173633cfee7040fbdf3ef2c178d4",
-      "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+      "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-31",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8963,7 +8963,7 @@
       "sourceRefs": [
         {
           "excerpt": "`npm run lint:scenario-normalizers` proves runtime completeness of the surviving `discover scenarios normalize` helpers via [scripts/check-scenario-normalization-completeness.mjs](../../../scripts/check-scenario-normalization-completeness.mjs).",
-          "line": 27,
+          "line": 31,
           "path": "docs/specs/contracts/evaluation-surfaces-runners.spec.md"
         }
       ],
@@ -8975,7 +8975,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2026d397c4196f1701233741e72b784aa5829699c8127f561d466a07275a0016",
-      "claimId": "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+      "claimId": "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-26",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8992,7 +8992,7 @@
       "sourceRefs": [
         {
           "excerpt": "Stale packet state stays visible in `discover claims status`, `doctor status`, and rendered reports rather than masked behind cached labels.",
-          "line": 22,
+          "line": 26,
           "path": "docs/specs/contracts/evidence-state-artifacts.spec.md"
         }
       ],
@@ -9004,7 +9004,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b7830ceea5d648cb1e646e466297b1c679a78d1f3c8f0805afaf00d8255b7b28",
-      "claimId": "claim-docs-specs-contracts-live-invocation-runtime-spec-md-13",
+      "claimId": "claim-docs-specs-contracts-live-invocation-runtime-spec-md-17",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9022,7 +9022,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cautilus owns the generic request and result packet shape and the loop boundary, while the host-owned adapter still owns provider calls, backend flags, route layout, model choice, credentials, and product-specific response semantics.",
-          "line": 13,
+          "line": 17,
           "path": "docs/specs/contracts/live-invocation-runtime.spec.md"
         }
       ],
@@ -9034,7 +9034,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7a88e134a26a96a127f0dd4bf9719c5ae5666d0ed47ba236a994cbec64a92411",
-      "claimId": "claim-docs-specs-contracts-readiness-runtime-status-spec-md-14",
+      "claimId": "claim-docs-specs-contracts-readiness-runtime-status-spec-md-18",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9053,7 +9053,7 @@
       "sourceRefs": [
         {
           "excerpt": "Readiness commands tell the operator what can run next, what is blocked, and which command continues the loop; ready means the selected Cautilus surface can run, not that the repo's behavior promises are already proven.",
-          "line": 14,
+          "line": 18,
           "path": "docs/specs/contracts/readiness-runtime-status.spec.md"
         }
       ],
@@ -9065,7 +9065,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:63a198afaed8620295ed5d139b16c284c48b9c5d44bac7d01a6167aabca9fba0",
-      "claimId": "claim-docs-specs-contracts-readiness-runtime-status-spec-md-21",
+      "claimId": "claim-docs-specs-contracts-readiness-runtime-status-spec-md-25",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9084,7 +9084,7 @@
       "sourceRefs": [
         {
           "excerpt": "A ready doctor result means the selected Cautilus surface can run, not that the repo's behavior claims are proven.",
-          "line": 21,
+          "line": 25,
           "path": "docs/specs/contracts/readiness-runtime-status.spec.md"
         }
       ],
@@ -9096,7 +9096,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a49f4d036eaad3ffb34299ce52cef6bd565b91d58c3c897fd2461f7b92ef5e11",
-      "claimId": "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+      "claimId": "claim-docs-specs-contracts-reporting-review-variants-spec-md-17",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9113,7 +9113,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cautilus writes machine-readable review packets first and renders readable reports over the same data; variant review points both human and machine reviewers at the same durable artifacts.",
-          "line": 13,
+          "line": 17,
           "path": "docs/specs/contracts/reporting-review-variants.spec.md"
         }
       ],
@@ -9156,7 +9156,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:06d1b465aa6353aa05d1ed45d75e93b14d6d2f6e6cdd0823ef1cd4ed89fe7663",
-      "claimId": "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13",
+      "claimId": "claim-docs-specs-contracts-scenario-history-normalization-spec-md-17",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9173,7 +9173,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cautilus preserves useful scenarios as durable candidates that can be reused for eval, held-out validation, and improvement loops, and normalizers produce inspectable proposal packets rather than hidden one-off shapers.",
-          "line": 13,
+          "line": 17,
           "path": "docs/specs/contracts/scenario-history-normalization.spec.md"
         }
       ],
@@ -9185,7 +9185,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b46be530ff5413eabe14e6318aac2e62b2a94f0e2181a3a242eb3df71423e938",
-      "claimId": "claim-docs-specs-contracts-scenario-history-normalization-spec-md-17",
+      "claimId": "claim-docs-specs-contracts-scenario-history-normalization-spec-md-21",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9204,7 +9204,7 @@
       "sourceRefs": [
         {
           "excerpt": "Scenario proposals are stored as durable candidates that another agent or operator can reopen.",
-          "line": 17,
+          "line": 21,
           "path": "docs/specs/contracts/scenario-history-normalization.spec.md"
         }
       ],
@@ -9276,7 +9276,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:d8de65c1c98b693f344cbda914846c51ecf3d7840b152d658f7c87f8fd9629b8",
-      "claimId": "claim-docs-specs-rules-agent-human-resumability-spec-md-3",
+      "claimId": "claim-docs-specs-rules-agent-human-resumability-spec-md-7",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9295,7 +9295,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cautilus should leave enough source refs, packets, next actions, source-bound review feedback, and readable reports that a human or agent can resume the workflow without relying on chat memory.",
-          "line": 3,
+          "line": 7,
           "path": "docs/specs/rules/agent-human-resumability.spec.md"
         }
       ],
@@ -9307,7 +9307,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:67b1152dcb174c17cd998ff8d01cc5ad939a9fa30d1df7a56ab80012e6cfeddc",
-      "claimId": "claim-docs-specs-rules-cost-and-proof-freshness-spec-md-3",
+      "claimId": "claim-docs-specs-rules-cost-and-proof-freshness-spec-md-7",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9326,7 +9326,7 @@
       "sourceRefs": [
         {
           "excerpt": "Expensive Cautilus eval and improve evidence should be shown honestly.",
-          "line": 3,
+          "line": 7,
           "path": "docs/specs/rules/cost-and-proof-freshness.spec.md"
         }
       ],
@@ -9338,7 +9338,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:76de0ee17ca2f39e0c2e02dae735433d2b7720f0ddf8421dd631aa18743b1275",
-      "claimId": "claim-docs-specs-rules-evidence-gaps-spec-md-3",
+      "claimId": "claim-docs-specs-rules-evidence-gaps-spec-md-7",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9355,7 +9355,7 @@
       "sourceRefs": [
         {
           "excerpt": "Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.",
-          "line": 3,
+          "line": 7,
           "path": "docs/specs/rules/evidence-gaps.spec.md"
         }
       ],
@@ -9367,7 +9367,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:b6ca7b3acadd16c0a257a55e9fdfd4faa1dd362c66f88d26caf2fa22165676e2",
-      "claimId": "claim-docs-specs-rules-host-owned-execution-spec-md-4",
+      "claimId": "claim-docs-specs-rules-host-owned-execution-spec-md-8",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9385,7 +9385,7 @@
       "sourceRefs": [
         {
           "excerpt": "Cautilus owns generic workflow contracts, packet shapes, command boundaries, and evidence routes.",
-          "line": 4,
+          "line": 8,
           "path": "docs/specs/rules/host-owned-execution.spec.md"
         }
       ],
@@ -9397,7 +9397,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:f35959b1cb6fa834e064c5e99ee0a94d8e2eebcf66990163bc859600ec056c36",
-      "claimId": "claim-docs-specs-rules-host-owned-execution-spec-md-16",
+      "claimId": "claim-docs-specs-rules-host-owned-execution-spec-md-20",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9414,7 +9414,7 @@
       "sourceRefs": [
         {
           "excerpt": "Live invocation and consumer parity proof remain open gaps and should stay visible rather than being hidden behind the host-ownership wording.",
-          "line": 16,
+          "line": 20,
           "path": "docs/specs/rules/host-owned-execution.spec.md"
         }
       ],
@@ -9426,7 +9426,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:738ed0857588be975c5da6bea9e039846cf646d1477a5c687c194555cf3fae43",
-      "claimId": "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+      "claimId": "claim-docs-specs-rules-reviewable-artifacts-spec-md-7",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9443,7 +9443,7 @@
       "sourceRefs": [
         {
           "excerpt": "Every workflow should leave machine-readable packets and readable reports that another person or agent can reopen without trusting chat memory.",
-          "line": 3,
+          "line": 7,
           "path": "docs/specs/rules/reviewable-artifacts.spec.md"
         }
       ],
@@ -9455,7 +9455,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:67fd68d9d781f19a59337b4fd9122b69e9a59a7d4737485ba4b2ee0afe6ba906",
-      "claimId": "claim-docs-specs-rules-vocabulary-consistency-spec-md-3",
+      "claimId": "claim-docs-specs-rules-vocabulary-consistency-spec-md-7",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9472,7 +9472,7 @@
       "sourceRefs": [
         {
           "excerpt": "The same product concept should keep the same name in user-facing prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests.",
-          "line": 3,
+          "line": 7,
           "path": "docs/specs/rules/vocabulary-consistency.spec.md"
         }
       ],
@@ -9545,7 +9545,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:59ff3cbfc9f3ecfe715f85f783a00b5c41079e0dc3a0e17038acefc5cd3dba1d",
-      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-11",
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-13",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9564,7 +9564,7 @@
       "sourceRefs": [
         {
           "excerpt": "You can check how testable your agent is.",
-          "line": 11,
+          "line": 13,
           "path": "docs/specs/user/a-testable-agent.spec.md"
         }
       ],
@@ -9576,7 +9576,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:26cdf3fdc348b4457608e2c7e6c2a7c00e657a4f790f704a4e131c4c51f75341",
-      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-21",
+      "claimId": "claim-docs-specs-user-a-testable-agent-spec-md-23",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9595,7 +9595,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary emits a live runner-readiness verdict for this repo's agent.",
-          "line": 21,
+          "line": 23,
           "path": "docs/specs/user/a-testable-agent.spec.md"
         }
       ],
@@ -9670,7 +9670,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6345e4f54f011dc34c03786a516fbf534f2531d824875e2ce142ef4816bcf725",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-35",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-38",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9687,7 +9687,7 @@
       "sourceRefs": [
         {
           "excerpt": "Claim discovery should make one question easy to answer: which docs were actually scanned before this candidate list was created?",
-          "line": 35,
+          "line": 38,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9699,7 +9699,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7548f955d0e47e28b847f010067339572b1ec686b48d528fb4cafdd35c2a2cb8",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-41",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-44",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9717,7 +9717,7 @@
       "sourceRefs": [
         {
           "excerpt": "If an important behavior appears only outside that boundary, such as in code, transcripts, issues, or private operator memory, Cautilus Agent or a human can raise it as a documentation, catalog, or alignment gap.",
-          "line": 41,
+          "line": 44,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9729,7 +9729,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b8e93ea1d1fd38f35d0b029c7b786309c3200b789c91e6635e104e5d500bd3fe",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-70",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-73",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9748,7 +9748,7 @@
       "sourceRefs": [
         {
           "excerpt": "They show the behavior Cautilus must keep when it scans docs broadly: keep useful promises, filter obvious non-promises, choose a next evidence route, and merge duplicate source sentences without losing refs.",
-          "line": 70,
+          "line": 73,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9760,7 +9760,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b4c21a2188a15764454af1e6c6c8cffb47d91d3cfb8d4fc56901fc63893ecb9a",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-126",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-129",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9778,7 +9778,7 @@
       "sourceRefs": [
         {
           "excerpt": "Without the hint the same document yields zero candidates, which keeps the lexicon adapter-owned rather than hardcoded.",
-          "line": 126,
+          "line": 129,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9790,7 +9790,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cf023507e02387ffc86da8bc2708a4ee5fbb66979d0519899218185fe4dbe879",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-160",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-163",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9809,7 +9809,7 @@
       "sourceRefs": [
         {
           "excerpt": "Agent-primary extraction runs through a verifiable seam.",
-          "line": 160,
+          "line": 163,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9821,7 +9821,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e348331e8a685a21b700437abf830fca16d056e95763b7e9da3ac88d3de47b0b",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-162",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-165",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9838,7 +9838,7 @@
       "sourceRefs": [
         {
           "excerpt": "The heuristic scan above is the labeled baseline mode; the agent-primary path moves extraction itself to the Cautilus Agent while the binary keeps verification.",
-          "line": 162,
+          "line": 165,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9850,7 +9850,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f5c8eca03b62308d492f498480c133064802ed6bbdb974c7b530acd90f1d3983",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-163",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-166",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9867,7 +9867,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims extraction-input` emits a deterministic `cautilus.claim_extraction_input.v1` packet: sources with content hashes plus the embedded product-owned extraction template with version and hash.",
-          "line": 163,
+          "line": 166,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9879,7 +9879,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8df6d382126c2db553483936b1fb955ba4d47b831cf572fb543379dcb3b64599",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-194",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-197",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9896,7 +9896,7 @@
       "sourceRefs": [
         {
           "excerpt": "That means it should inspect the saved candidates, compare them with the repo, reduce false positives, raise possible false negatives, and preserve source refs when it asks the user what to do next.",
-          "line": 194,
+          "line": 197,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9908,7 +9908,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0c4ab653f7b1e02eaccfa00173062f5ec2afe2a77eca509019e274475abe05c0",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-223",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-226",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9925,7 +9925,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns the next-action summary over a saved discovery packet.",
-          "line": 223,
+          "line": 226,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9937,7 +9937,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-266",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-269",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9954,7 +9954,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet.",
-          "line": 266,
+          "line": 269,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -9966,7 +9966,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
-      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-269",
+      "claimId": "claim-docs-specs-user-claim-discovery-spec-md-272",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -9985,7 +9985,7 @@
       "sourceRefs": [
         {
           "excerpt": "This spec only verifies that the agent-run skill check is prepared.",
-          "line": 269,
+          "line": 272,
           "path": "docs/specs/user/claim-discovery.spec.md"
         }
       ],
@@ -10059,7 +10059,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:86a89b02a579ef1cb0c5d963ac9de30741d7b614283d8d6af21924d975a30a8f",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-16",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-19",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10076,7 +10076,7 @@
       "sourceRefs": [
         {
           "excerpt": "Instead, it uses a repo-owned adapter so the user can declare how Cautilus should inspect and evaluate that repo.",
-          "line": 16,
+          "line": 19,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -10088,7 +10088,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:afea9b4240e553c810a1ab6cef05bb88ded62f9ea5729505d266955f39f27ec6",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-18",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-21",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10107,7 +10107,7 @@
       "sourceRefs": [
         {
           "excerpt": "A repo becomes ready for Cautilus only after `cautilus doctor` can find and parse a valid adapter for the selected workflow.",
-          "line": 18,
+          "line": 21,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -10119,7 +10119,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:957d252be8bab15744fff28c1b4bad7bbae76e84d41bf96c61e31ce5d5afe4d7",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-51",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-54",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10138,7 +10138,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can see the exact setup checks before choosing the next Cautilus workflow.",
-          "line": 51,
+          "line": 54,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -10150,7 +10150,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:13b915b8e802a3e21c9a4cdd482ed3ac1e7e15fc52f3e671ec95458d3ff25925",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-55",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-58",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10167,7 +10167,7 @@
       "sourceRefs": [
         {
           "excerpt": "The tables verify the stable readiness contract through `id`, `ok`, and `meaning`; the folded raw packet keeps run-specific details such as resolved paths visible.",
-          "line": 55,
+          "line": 58,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -10179,7 +10179,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ee22b27f4e30d26accbca2e611086d6839a3a82bf8e32bb7bffb216291f71833",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-213",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-216",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10198,7 +10198,7 @@
       "sourceRefs": [
         {
           "excerpt": "For the generated sample adapter, `doctor` keeps the first bounded eval loop visible but first asks the user to create a runner assessment for the declared runner.",
-          "line": 213,
+          "line": 216,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -10210,7 +10210,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:41c3a5f18ab1db9e6b53d5fa93c350c80785675cef29be33ce9be43934685a06",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-226",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-229",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10229,7 +10229,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can get a safe next workflow branch before spending workflow budget.",
-          "line": 226,
+          "line": 229,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -10241,7 +10241,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ad8aab282e858212b0b60be1349737226fb31858cb7aa48b97d20ed2dc999cb0",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-229",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-232",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10258,7 +10258,7 @@
       "sourceRefs": [
         {
           "excerpt": "`doctor` gives the human-facing readiness result: whether setup is ready and what a user should fix or run next.",
-          "line": 229,
+          "line": 232,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -10270,7 +10270,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a8e492545ad5eb34d4c94495a551501b5983c3d9cc9bb7de5bb9064a977a1f89",
-      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-230",
+      "claimId": "claim-docs-specs-user-doctor-readiness-spec-md-233",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10289,7 +10289,7 @@
       "sourceRefs": [
         {
           "excerpt": "`doctor status --json` gives Cautilus Agent an orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.",
-          "line": 230,
+          "line": 233,
           "path": "docs/specs/user/doctor-readiness.spec.md"
         }
       ],
@@ -10392,7 +10392,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a6c921e241db204bb14aa9dcb5558e56b8fd7cda629056aa5b93932c7a112382",
-      "claimId": "claim-docs-specs-user-improvement-spec-md-15",
+      "claimId": "claim-docs-specs-user-improvement-spec-md-18",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10411,7 +10411,7 @@
       "sourceRefs": [
         {
           "excerpt": "The working-tree SKILL.md is restored before the proof exits, and neither the degraded seed nor the mutated candidate ever ships — the loop produces a reviewable proposal and revision artifact you approve before applying.",
-          "line": 15,
+          "line": 18,
           "path": "docs/specs/user/improvement.spec.md"
         }
       ],
@@ -10423,7 +10423,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3ac32edb3c002ee19619d433a92dfc4055d35fdde165e9fb3effdebb13f47006",
-      "claimId": "claim-docs-specs-user-improvement-spec-md-47",
+      "claimId": "claim-docs-specs-user-improvement-spec-md-50",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10441,7 +10441,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can improve behavior while preserving protected checks, held-out evidence, and explicit budget.",
-          "line": 47,
+          "line": 50,
           "path": "docs/specs/user/improvement.spec.md"
         }
       ],
@@ -10453,7 +10453,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:311c81292005b1a22ed14f5e9edaf547d6135b708feb80f89567ce4e10842d95",
-      "claimId": "claim-docs-specs-user-improvement-spec-md-65",
+      "claimId": "claim-docs-specs-user-improvement-spec-md-68",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10473,7 +10473,7 @@
       "sourceRefs": [
         {
           "excerpt": "Improvement produces a proposal and revision artifact that preserve source files, stop conditions, prioritized evidence, and follow-up checks.",
-          "line": 65,
+          "line": 68,
           "path": "docs/specs/user/improvement.spec.md"
         }
       ],
@@ -10546,7 +10546,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6a0c3428a080aefb565448085a32697d596c17d02e3dce34f8d8a06c94d70f85",
-      "claimId": "claim-docs-specs-user-ownership-spec-md-10",
+      "claimId": "claim-docs-specs-user-ownership-spec-md-13",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10565,7 +10565,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can keep behavior execution in the host repo.",
-          "line": 10,
+          "line": 13,
           "path": "docs/specs/user/ownership.spec.md"
         }
       ],
@@ -10577,7 +10577,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6b377595aa4629cdc1ff1b75e790cb7750b3c57a2d38f1c7856c7ffce52595b0",
-      "claimId": "claim-docs-specs-user-ownership-spec-md-31",
+      "claimId": "claim-docs-specs-user-ownership-spec-md-34",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10594,7 +10594,7 @@
       "sourceRefs": [
         {
           "excerpt": "A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy.",
-          "line": 31,
+          "line": 34,
           "path": "docs/specs/user/ownership.spec.md"
         }
       ],
@@ -10606,7 +10606,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b6e8f783eef78fb7de12d865929e7044095d64f4871dc46c6b2df281247716b2",
-      "claimId": "claim-docs-specs-user-ownership-spec-md-51",
+      "claimId": "claim-docs-specs-user-ownership-spec-md-54",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10625,7 +10625,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can rely on Cautilus for packets and workflow boundaries, not host policy.",
-          "line": 51,
+          "line": 54,
           "path": "docs/specs/user/ownership.spec.md"
         }
       ],
@@ -10637,7 +10637,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:85da31c828c4dbbb3a0dfa610157368d7b0b6c743405bf8512d48f5e28394853",
-      "claimId": "claim-docs-specs-user-ownership-spec-md-53",
+      "claimId": "claim-docs-specs-user-ownership-spec-md-56",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10654,7 +10654,7 @@
       "sourceRefs": [
         {
           "excerpt": "The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen.",
-          "line": 53,
+          "line": 56,
           "path": "docs/specs/user/ownership.spec.md"
         }
       ],
@@ -13341,7 +13341,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "1d321cf297be1bd772d011a7af0a465705f987bb",
+  "gitCommit": "f0c4e1b6464d56017876ba2aba3f1bdc792a0478",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14182,6 +14182,48 @@
     },
     {
       "depth": 2,
+      "from": "docs/specs/user/evaluation.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/evaluation-surfaces-runners.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/evaluation.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/live-invocation-runtime.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/evaluation.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/reporting-review-variants.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/evaluation.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/cost-and-proof-freshness.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/evaluation.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/host-owned-execution.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/evaluation.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/packet-freshness.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/evaluation.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/reviewable-artifacts.spec.md"
+    },
+    {
+      "depth": 2,
       "from": "docs/specs/user/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/index.spec.md"
@@ -14251,6 +14293,36 @@
       "from": "docs/specs/user/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/reviewable-artifacts.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/active-run-workspace.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/reporting-review-variants.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/packet-freshness.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/user/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/reviewable-artifacts.spec.md"
     },
     {
       "depth": 3,
@@ -14890,6 +14962,84 @@
     },
     {
       "depth": 3,
+      "from": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/binary-skill-boundary.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/claim-discovery-workflow.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/agent-human-resumability.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/evidence-gaps.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/host-owned-execution.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/claim-discovery.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/reviewable-artifacts.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/doctor-readiness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/adapter-host-ownership.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/doctor-readiness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/readiness-runtime-status.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/doctor-readiness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/agent-human-resumability.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/doctor-readiness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/evidence-gaps.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/doctor-readiness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/host-owned-execution.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/doctor-readiness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/vocabulary-consistency.spec.md"
+    },
+    {
+      "depth": 3,
       "from": "docs/specs/user/doctor-readiness.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/evidence-gaps.spec.md"
@@ -14902,9 +15052,87 @@
     },
     {
       "depth": 3,
+      "from": "docs/specs/user/improvement.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/active-run-workspace.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/improvement.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/improvement-loop.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/improvement.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/scenario-history-normalization.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/improvement.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/cost-and-proof-freshness.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/improvement.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/evidence-gaps.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/improvement.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/host-owned-execution.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/improvement.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/reviewable-artifacts.spec.md"
+    },
+    {
+      "depth": 3,
       "from": "docs/specs/user/ownership.spec.md",
       "kind": "markdown-link",
       "to": "docs/contracts/adapter-contract.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/ownership.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/adapter-host-ownership.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/ownership.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/binary-skill-boundary.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/ownership.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/live-invocation-runtime.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/ownership.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/agent-human-resumability.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/ownership.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/host-owned-execution.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/user/ownership.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/vocabulary-consistency.spec.md"
     }
   ],
   "sourceInventory": [
@@ -15029,7 +15257,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:acc98b0f7f0860fe1b5b8ba8f81ae27f6bcd5f6d7c19f6db18f0e94be6faa723",
+      "contentHash": "sha256:5ea24c68c7f3235897f701008bff32f3ac65684d2c08f0b2a531338b5215ee3f",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -15049,7 +15277,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:b34cf87074a029c3fbfee406035e4214af66baa73d9eab8b1594ffbb1db9c4c4",
+      "contentHash": "sha256:5722b35e0e6590fcf1662ff5f083d081853b988059f74be234d7a572744044b1",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -15169,7 +15397,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:e24818fa53c7fda07593b98b01e91b45365bb4e100a8633bb578a37778b18db8",
+      "contentHash": "sha256:29bbb209b141c14bbbcf70b92a2dce04a50f0efe233a2fce06522955dfc4596a",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15179,7 +15407,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:d9e1f6c4f1749776df203713854891debc65dc738cd30932be2bcb081858b7a6",
+      "contentHash": "sha256:2aeec07e1e7072a0b3da5610f8b721de4a1bf65ec577427c31f7e32202586a79",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15189,7 +15417,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:c198bfd83681f93b817103482e32ef3dde94ee2a302e07a116361862d7d682ff",
+      "contentHash": "sha256:cfcd6d3b94a6708fa7eafad7a97c4660dfbc237ec50645a6269e97e5e62732d3",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15199,7 +15427,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:8e60b29859e6a6bdc8c5b4544d3f851f49ce0cc722dacd35b5c7b2cb1cbc65ef",
+      "contentHash": "sha256:b0b10e8c573e207aee5968f060f6fc8ef463739964f055a0963850dd7f2baba7",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15209,7 +15437,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:53396c4407d945924b0d83eefe27f614daed169285d656435069259d73794c18",
+      "contentHash": "sha256:9ff8e29ceeca9c36b7b04585216e196979887910c43614e43bdb6e595b70aabb",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15219,7 +15447,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:90af24475873887e7bf3fe31bfa3d3adaff75e2d55f6455d9e716e992ccd3d5a",
+      "contentHash": "sha256:8e668dc8c04a597a01282923216a31e13fd5ec216f05a04cb80b75f62ac2c538",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15229,7 +15457,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:9c3ca32a76fb14996629d389ea43f2332075f5b5e7a6435801e46d64d63a0fb6",
+      "contentHash": "sha256:869286c2be48a8a5e7f823367cb57910d41f3d08e24bde5aa3926fa071857bc6",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15239,7 +15467,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:19642c7c2aadb1f5b3487a1769a0e95da55a83eb65cd84fd03e99634c16bfa4f",
+      "contentHash": "sha256:a94914c54bbdfc41230dea4fcf0f025e95a4034aac61e2ab98c8983be5f3f864",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15249,7 +15477,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:a37eafeef6ff44ae28665a9e7723f97647225abb88f2304d248100c9cb9cb762",
+      "contentHash": "sha256:72b60857ae489046811555719e6c4763330fe75d5f25789d54f07f01fd3bde1f",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15259,7 +15487,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:21f27b170d9086902ee8341fbc24812eac530c9710b4dbcfefd1f26027138db6",
+      "contentHash": "sha256:0170524f19a8013985eb095b548d55473ad7cff41c5a33255e1ff7a7712673c5",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15279,7 +15507,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:697bd3593890417e3b6128810ce5fe297d75d37c67a3953ef25b96b73e35d8f3",
+      "contentHash": "sha256:0fcc129bf895d5c39f8957c427ab62e48103af3200bf8dd2bb51cdb5cb58427b",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15309,7 +15537,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:b874ef4ccdb2564002612d07d30f6374bd7a4dcaf127c1abed091783c1c4b23e",
+      "contentHash": "sha256:d09b50603bdcbe45f36a88ef4f2b90f81edb2302e7271ae8a8d3763229622c2a",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15319,7 +15547,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:ed0faf29c17f0ab920370885276f3cb390911ff98c39338ad8556cdfeb18171a",
+      "contentHash": "sha256:bf0dcad8773e27377f2287e46e2d8e6daed387a5afafb42a9122c57f6f3d8504",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15329,7 +15557,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:3192324666053c34840caa6dab991eb7c9598623a1cb41639c081ed0299ab77b",
+      "contentHash": "sha256:6ced207103719ee706a93bbbf5e9f0bcbdc68e03ce2ca2011a748b54d2ba5c6f",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15339,7 +15567,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:000b2727ff7c1c10e18ed3f797286d757ab8031e78a1fe9eddcd21ae41229b6b",
+      "contentHash": "sha256:d888ef7922f4185d213fae604f53f67d95435c8a6a0b0c848ee6d1c4ae2acb74",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15359,7 +15587,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:938f2334a0756eff94e270149a3b38fa38ab8916c7a04ae928346effcb102e20",
+      "contentHash": "sha256:a855e9a1fbcf5501168a67fb644d02569c85e4ee6338bada296377a4a4cb3899",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15369,7 +15597,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:97dc1e0d38c0dd575666b076c72dc9a025aa8a0b22b566e1e8a38a83601335b7",
+      "contentHash": "sha256:11a85e2693543e15f0c00b408d533cd4336ce87d231d9777953e4db0f84487fe",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15379,7 +15607,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:c0f33c3ad78300e5ce0adb6ce815a93a603d3752b0fdfb31c7cae22a9d370c78",
+      "contentHash": "sha256:21c5f50568a5f4b51b6a25cfad8dd6273d7220530d583fb51816fc7eeab2c0ea",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -15389,7 +15617,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:d35c0583e7c6cbf3d12ebcd50dbda685c7f751d28a3e4c4d1ae903ad8cea6c8b",
+      "contentHash": "sha256:202f0ab254118ce9436477b39a5f944f9a6b8c1f671ef703ab5af7dd6e6e4da7",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -15399,7 +15627,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:91c2a547ad7a15f322f66c13deed1bba321c67ef4c564e9662be31fc10db3e28",
+      "contentHash": "sha256:165976237c3a76dcaf44525e4858b877e96b6b803f7c60b629fe0d0125ee7c14",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -15409,7 +15637,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:448fb95a08d67c9b25cf9ad25e576bf259a2a796140ab894fc75526feb1770b4",
+      "contentHash": "sha256:695328a0e0b4491c9369f82083fbb395d2ebe784dc9918f22816ed3622b44020",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -15429,7 +15657,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:48a656058db995aeab8fc49ac907f5abf93950c34037f96251ea989a23647f9d",
+      "contentHash": "sha256:7cf223eb7124bc6922017576d6c83be3a137dc5a6371845ad5bf2ac2c4c3d450",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -15439,7 +15667,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:79488bed67af8f27987fd2e98a1305e4e82c8f971364ea6e405a722dfdaf23fe",
+      "contentHash": "sha256:c22994597f18563aaa4feaf47bd27c2137e64399dc84b2bce2988619710d59b2",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -15589,7 +15817,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:7c9eca8e0658e53fac1763217c3fb592a9f6231a701412c41825501a65a51c3f",
+      "contentHash": "sha256:7fbaa0419446c24577863cdad50d92ef88390af8f02ff51bfff7b42ded710ac2",
       "depth": 3,
       "discoveredFrom": "docs/specs/ledger/index.spec.md",
       "kind": "spec",

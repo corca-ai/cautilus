@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Evidence State And Review Artifacts
 
 Review state and evidence state are separate transitions.

@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Active Run And Workspace Lifecycle
 
 Active runs keep multi-command workflows resumable without hiding workspace ownership.

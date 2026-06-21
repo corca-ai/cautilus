@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Reporting And Review Variants
 
 Reports and evaluate review variants keep evaluator-backed judgment inspectable.

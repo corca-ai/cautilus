@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Live Invocation Runtime
 
 Live invocation turns product-owned request packets into host-owned runtime calls.

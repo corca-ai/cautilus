@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Adapter And Host Ownership
 
 Host repos own runtime-specific behavior.

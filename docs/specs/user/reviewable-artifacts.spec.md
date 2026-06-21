@@ -8,6 +8,9 @@ After an agent runs a workflow, the user needs durable packets and readable view
 Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review.
 Each subclaim below regenerates its packet or view live on every `npm run lint:specs` and asserts on the fresh output, instead of projecting a saved evidence bundle.
 
+Governed by [governed-by::Reviewable Artifacts](../rules/reviewable-artifacts.spec.md) and [governed-by::Packet Freshness](../rules/packet-freshness.spec.md).
+Implemented by [implemented-by::Evidence State And Review Artifacts](../contracts/evidence-state-artifacts.spec.md), [implemented-by::Reporting And Review Variants](../contracts/reporting-review-variants.spec.md), and [implemented-by::Active Run And Workspace Lifecycle](../contracts/active-run-workspace.spec.md).
+
 ## A user or agent can reopen JSON packets as the audit source of truth.
 
 Core command surfaces emit schema-versioned packets with state summaries, next branches, git state, validation state, and eval planning state.

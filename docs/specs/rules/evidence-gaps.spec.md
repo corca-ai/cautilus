@@ -1,3 +1,7 @@
+---
+type: rule
+---
+
 # Evidence Gaps
 
 Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.

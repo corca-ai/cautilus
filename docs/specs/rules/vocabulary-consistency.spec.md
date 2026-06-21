@@ -1,3 +1,7 @@
+---
+type: rule
+---
+
 # Vocabulary Consistency
 
 The same product concept should keep the same name in user-facing prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests.

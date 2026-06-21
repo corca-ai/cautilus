@@ -1,3 +1,7 @@
+---
+type: rule
+---
+
 # Packet Freshness
 
 Readable views should show current packets and source artifacts instead of becoming independent truth sources.

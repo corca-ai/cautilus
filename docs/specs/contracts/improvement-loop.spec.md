@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Improvement Loop
 
 Improvement is a bounded behavior-improvement loop.

@@ -1,7 +1,7 @@
 {
   "entry": "docs/specs/index.spec.md",
   "trace": {
-    "types": ["apex", "promise"],
+    "types": ["apex", "promise", "rule", "contract"],
     "ignore": [
       "docs/specs/old/**",
       "docs/specs/archive/**",
@@ -14,7 +14,9 @@
       ".artifacts/**"
     ],
     "edges": {
-      "badges": { "from": "apex", "to": "promise", "count": "1 → 1..*" }
+      "badges": { "from": "apex", "to": "promise", "count": "1 → 1..*" },
+      "governed-by": { "from": "promise", "to": "rule", "count": "1..* → 0..*" },
+      "implemented-by": { "from": "promise", "to": "contract", "count": "1..* → 0..*" }
     }
   },
   "adapters": [

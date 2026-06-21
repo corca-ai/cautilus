@@ -12,6 +12,9 @@ That harvest is positive context whose raw responses live in session transcripts
 The `app/chat` surface is now evaluated on an anonymized private external product-log replay graded by a load-bearing blind intent judge (external validity and the intent judge, with the agent run replayed from the production log), and it includes natural sound secret-handling, memory-continuity, and clarification-first captures plus a natural unsound artifact-fidelity capture.
 `app/prompt` now has a fresh backend probe plus a load-bearing blind intent judge over that probe, but it still needs product-runner proof before it can be treated like product-path app evidence.
 
+Governed by [governed-by::Reviewable Artifacts](../rules/reviewable-artifacts.spec.md), [governed-by::Packet Freshness](../rules/packet-freshness.spec.md), [governed-by::Cost And Proof Freshness](../rules/cost-and-proof-freshness.spec.md), and [governed-by::Host-Owned Execution](../rules/host-owned-execution.spec.md).
+Implemented by [implemented-by::Evaluation Surfaces And Runners](../contracts/evaluation-surfaces-runners.spec.md), [implemented-by::Reporting And Review Variants](../contracts/reporting-review-variants.spec.md), and [implemented-by::Live Invocation Runtime](../contracts/live-invocation-runtime.spec.md).
+
 ## The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the find-skills bootstrap.
 
 This is not a projected bundle.

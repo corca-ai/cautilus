@@ -1,3 +1,7 @@
+---
+type: rule
+---
+
 # Host-Owned Execution
 
 Host repos own prompts, models, credentials, runtime wiring, fixtures, and acceptance policy.

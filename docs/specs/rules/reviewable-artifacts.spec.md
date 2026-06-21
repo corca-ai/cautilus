@@ -1,3 +1,7 @@
+---
+type: rule
+---
+
 # Reviewable Artifacts
 
 Every workflow should leave machine-readable packets and readable reports that another person or agent can reopen without trusting chat memory.

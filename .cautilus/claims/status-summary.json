@@ -132,7 +132,7 @@
           "claim-readme-md-60",
           "claim-docs-specs-index-spec-md-168",
           "claim-docs-specs-user-index-spec-md-27",
-          "claim-docs-specs-user-reviewable-artifacts-spec-md-65",
+          "claim-docs-specs-user-reviewable-artifacts-spec-md-68",
           "claim-docs-contracts-claim-discovery-workflow-md-92"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
@@ -1417,7 +1417,7 @@
         "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise."
       },
       {
-        "claimId": "claim-docs-specs-user-evaluation-spec-md-167",
+        "claimId": "claim-docs-specs-user-evaluation-spec-md-170",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1426,7 +1426,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-user-evaluation-reopen-packets-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-user-evaluation-spec-md-167"
+              "claim-docs-specs-user-evaluation-spec-md-170"
             ]
           }
         ],
@@ -1502,7 +1502,7 @@
         "summary": "Using Cautilus CLI packet outputs and the `cautilus-agent` skill, every workflow should leave machine-readable state and readable reports for later review."
       },
       {
-        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-11",
+        "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-14",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1514,7 +1514,7 @@
               "claim-docs-specs-user-index-spec-md-26",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-11"
+              "claim-docs-specs-user-reviewable-artifacts-spec-md-14"
             ]
           }
         ],
@@ -2641,7 +2641,7 @@
         "summary": "The product can read scenario-adjacent paths from typed packet fields instead of hardcoded route templates."
       },
       {
-        "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+        "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-22",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2650,7 +2650,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-22",
               "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
               "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
             ]
@@ -2662,7 +2662,7 @@
         "summary": "The Cautilus Agent owns sequencing, decision boundaries, review-budget explanation, and agent-driven claim curation."
       },
       {
-        "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+        "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-23",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2672,7 +2672,7 @@
             "path": ".cautilus/claims/evidence-spec-binary-skill-boundary-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
-              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-23",
               "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
             ]
           }
@@ -2683,7 +2683,7 @@
         "summary": "The binary does not call an LLM provider directly for claim discovery or claim review; LLM work routes through Cautilus Agent or subagent surfaces."
       },
       {
-        "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20",
+        "claimId": "claim-docs-specs-contracts-binary-skill-boundary-spec-md-24",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2694,7 +2694,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-contracts-binary-skill-boundary-spec-md-18",
               "claim-docs-specs-contracts-binary-skill-boundary-spec-md-19",
-              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-20"
+              "claim-docs-specs-contracts-binary-skill-boundary-spec-md-24"
             ]
           }
         ],
@@ -2704,7 +2704,7 @@
         "summary": "Progressive disclosure between the binary and the Cautilus Agent stays within a deterministically checkable contract."
       },
       {
-        "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+        "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-22",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2713,7 +2713,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-spec-reviewable-eval-surfaces-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
+              "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-22",
               "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
               "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
               "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
@@ -2727,7 +2727,7 @@
         "summary": "Each shipped preset is fixture-backed so a reviewer can reopen the input, observed output, and summary packets."
       },
       {
-        "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+        "claimId": "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-31",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2737,7 +2737,7 @@
             "path": ".cautilus/claims/evidence-spec-reviewable-eval-surfaces-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
-              "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
+              "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-31",
               "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
               "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
               "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
@@ -2750,7 +2750,7 @@
         "summary": "`npm run lint:scenario-normalizers` proves runtime completeness of the surviving `discover scenarios normalize` helpers via [scripts/check-scenario-normalization-completeness.mjs](../../../scripts/check-scenario-normalization-completeness.mjs)."
       },
       {
-        "claimId": "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+        "claimId": "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-26",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2761,7 +2761,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
               "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
-              "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
+              "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-26",
               "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
               "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
             ]
@@ -2773,7 +2773,7 @@
         "summary": "Stale packet state stays visible in `discover claims status`, `doctor status`, and rendered reports rather than masked behind cached labels."
       },
       {
-        "claimId": "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+        "claimId": "claim-docs-specs-contracts-reporting-review-variants-spec-md-17",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2785,7 +2785,7 @@
               "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-18",
               "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
               "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
-              "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
+              "claim-docs-specs-contracts-reporting-review-variants-spec-md-17",
               "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
             ]
           }
@@ -2796,7 +2796,7 @@
         "summary": "Cautilus writes machine-readable review packets first and renders readable reports over the same data; variant review points both human and machine reviewers at the same durable artifacts."
       },
       {
-        "claimId": "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13",
+        "claimId": "claim-docs-specs-contracts-scenario-history-normalization-spec-md-17",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2809,7 +2809,7 @@
               "claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-27",
               "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-22",
               "claim-docs-specs-contracts-reporting-review-variants-spec-md-13",
-              "claim-docs-specs-contracts-scenario-history-normalization-spec-md-13"
+              "claim-docs-specs-contracts-scenario-history-normalization-spec-md-17"
             ]
           }
         ],
@@ -2819,7 +2819,7 @@
         "summary": "Cautilus preserves useful scenarios as durable candidates that can be reused for eval, held-out validation, and improvement loops, and normalizers produce inspectable proposal packets rather than hidden one-off shapers."
       },
       {
-        "claimId": "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+        "claimId": "claim-docs-specs-rules-reviewable-artifacts-spec-md-7",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2828,7 +2828,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-user-claim-discovery-reviewable-artifacts-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
+              "claim-docs-specs-rules-reviewable-artifacts-spec-md-7",
               "claim-docs-specs-user-claim-discovery-spec-md-6",
               "claim-docs-specs-user-claim-discovery-spec-md-160",
               "claim-docs-specs-user-claim-discovery-spec-md-199"
@@ -2863,7 +2863,7 @@
         "summary": "Using the `cautilus discover claims` CLI command and the `cautilus-agent` skill, a user can turn scattered repo promises into a source-referenced worklist: what Cautilus found, what looks noisy, what may be missing, and what evidence each candidate needs next."
       },
       {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-223",
+        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-226",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2874,7 +2874,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-claim-discovery-spec-md-6",
-              "claim-docs-specs-user-claim-discovery-spec-md-223",
+              "claim-docs-specs-user-claim-discovery-spec-md-226",
               "claim-docs-specs-user-claim-discovery-spec-md-199"
             ]
           }
@@ -2885,7 +2885,7 @@
         "summary": "`discover claims status` owns the next-action summary over a saved discovery packet."
       },
       {
-        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-266",
+        "claimId": "claim-docs-specs-user-claim-discovery-spec-md-269",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2897,7 +2897,7 @@
               "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
               "claim-docs-specs-user-claim-discovery-spec-md-6",
               "claim-docs-specs-user-claim-discovery-spec-md-160",
-              "claim-docs-specs-user-claim-discovery-spec-md-266"
+              "claim-docs-specs-user-claim-discovery-spec-md-269"
             ]
           }
         ],
@@ -2930,7 +2930,7 @@
         "summary": "The claim status summary keeps the candidate-not-proof boundary visible to users."
       },
       {
-        "claimId": "claim-docs-specs-user-ownership-spec-md-31",
+        "claimId": "claim-docs-specs-user-ownership-spec-md-34",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2940,7 +2940,7 @@
             "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-specs-user-evidence-gaps-spec-md-8",
-              "claim-docs-specs-user-ownership-spec-md-31",
+              "claim-docs-specs-user-ownership-spec-md-34",
               "claim-docs-specs-user-ownership-spec-md-45",
               "claim-docs-contracts-improvement-md-27",
               "claim-docs-contracts-improvement-md-34"
@@ -2953,7 +2953,7 @@
         "summary": "A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy."
       },
       {
-        "claimId": "claim-docs-specs-user-ownership-spec-md-53",
+        "claimId": "claim-docs-specs-user-ownership-spec-md-56",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2964,7 +2964,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-user-evidence-gaps-spec-md-8",
               "claim-docs-specs-user-ownership-spec-md-27",
-              "claim-docs-specs-user-ownership-spec-md-53",
+              "claim-docs-specs-user-ownership-spec-md-56",
               "claim-docs-contracts-improvement-md-27",
               "claim-docs-contracts-improvement-md-34"
             ]
@@ -3462,7 +3462,7 @@
       }
     ]
   },
-  "gitCommit": "1d321cf297be1bd772d011a7af0a465705f987bb",
+  "gitCommit": "f0c4e1b6464d56017876ba2aba3f1bdc792a0478",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3474,10 +3474,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "1d321cf297be1bd772d011a7af0a465705f987bb",
+    "currentGitCommit": "f0c4e1b6464d56017876ba2aba3f1bdc792a0478",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "1d321cf297be1bd772d011a7af0a465705f987bb",
+    "packetGitCommit": "f0c4e1b6464d56017876ba2aba3f1bdc792a0478",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

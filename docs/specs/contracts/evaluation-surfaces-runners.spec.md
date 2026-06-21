@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Evaluation Surfaces And Runners
 
 Evaluation uses explicit surfaces, presets, fixtures, and runners.

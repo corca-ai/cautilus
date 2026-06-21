@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Readiness And Runtime Status
 
 Doctor and doctor status expose readiness without proving behavior claims.

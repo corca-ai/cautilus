@@ -10,6 +10,9 @@ Using the `cautilus doctor` CLI command and the `cautilus-agent` skill, a user c
 Readiness means the repo has enough Cautilus setup to choose and run the next bounded workflow.
 It is not evidence that the repo's behavior promises are already true; proof status is handled by [Evidence Gaps](evidence-gaps.spec.md).
 
+Governed by [governed-by::Evidence Gaps](../rules/evidence-gaps.spec.md), [governed-by::Vocabulary Consistency](../rules/vocabulary-consistency.spec.md), [governed-by::Agent-Human Resumability](../rules/agent-human-resumability.spec.md), and [governed-by::Host-Owned Execution](../rules/host-owned-execution.spec.md).
+Implemented by [implemented-by::Readiness And Runtime Status](../contracts/readiness-runtime-status.spec.md) and [implemented-by::Adapter And Host Ownership](../contracts/adapter-host-ownership.spec.md).
+
 ## A user can see that readiness starts from a valid repo-owned adapter.
 
 Cautilus does not guess a host repo's prompts, runners, baselines, or acceptance policy.

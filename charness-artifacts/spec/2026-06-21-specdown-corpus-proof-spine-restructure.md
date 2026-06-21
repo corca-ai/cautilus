@@ -1,6 +1,6 @@
 # Spec: Specdown Corpus → Proof-Spine + Typed Traceability
 
-Status: Slice 1 landed (`010f8e2a`), verify green; next is Slice 2. See "Slice 1 Delivered" below.
+Status: Slice 1 landed (`010f8e2a`); Slice 2a (typed rule/contract nodes + governed-by/implemented-by edges) landed, verify green; next is Slice 2b (multi-view collapse, pending user decision D1). See "Slice 1 Delivered" and "Slice 2a Delivered" below.
 Decided axis (user, this session): full transition to proof-spine + typed traceability.
 
 ## Problem
@@ -152,6 +152,33 @@ Deviations from the first draft (recorded so the next session does not re-discov
 - SCOPE NARROWED: Slice 1 delivers only the apex→promise `badges` spine. The `rule` and `contract` node types and the `governed-by` / `implemented-by` edges are deferred to a follow-on slice (with the multi-view collapse, since the promise↔rule/contract relationships currently live in the ledger/index pages). The Success Criteria line "a reader can trace any promise to its rules, contracts, and proof" is the FULL-restructure goal, not Slice 1's bar.
 - REGRESSION (understood, deterministic): editing claim-source docs (frontmatter) reclassified one `ownership.spec.md` candidate from `human-align-surfaces` to `agent-design-scenario`, taking the live status summary from 6 to 7 buckets. `user/claim-discovery.spec.md` asserts on this live bucketing, so its doctest + check table were synced to the true current 7-bucket state. This is honest current-state mirroring, not check-gaming.
 - RESIDUAL RISK: `user/claim-discovery.spec.md` (and any spec asserting on this repo's live `.cautilus/claims/*` aggregates) is brittle — every future `docs/specs/**` edit can perturb the bucketing and re-break it. The later slices should consider making such assertions structural (subset / count-floor) rather than exact-ordered, so the restructure does not keep tripping this coupling.
+
+## Slice 2a Delivered (2026-06-21)
+
+Executed and verified (`npm run verify` all phases passed, `npm run hooks:check` ready, honesty audit 7/7 honest, `specdown trace -strict` = 26 typed docs / 45 edges valid):
+
+- `specdown.json` `trace` gained node types `rule`, `contract`, and two edges: `governed-by` (promise→rule) and `implemented-by` (promise→contract), both with count `1..* → 0..*`.
+- 7 `rules/*.spec.md` are now `type: rule`; 11 `contracts/*.spec.md` are now `type: contract`. `contracts/rules-policy.spec.md` and `contracts/index.spec.md` are deliberately left untyped (rules-policy is a meta-policy about how rules attach to evidence routes, not a promise-implementing contract; index is a view page).
+- The promise→rule/contract relationships were moved out of the ledger matrix onto the leaves as typed edges: 6 of the 7 promise leaves carry `governed-by::`/`implemented-by::` prose edges (matched to the `promise-ledger.spec.md` Workflow Audit Matrix); `user/a-testable-agent.spec.md` carries an honest non-edge note instead (it has no typed contract — its runner-readiness background is maintainer prose under `docs/contracts/` — and no distinct cross-cutting rule).
+- Edge totals: badges 7, governed-by 21, implemented-by 17.
+
+Cardinality decision (resolves the residual probe in the Critique section — "can cardinality alone express the relationships, or is a complementary check needed"):
+
+- `1..* → 0..*` was chosen over a uniform `1..* → 1..*`. The left (to-side) `1..*` is the load-bearing invariant: **no typed rule or contract page may exist without an incoming edge from some promise** (negative-tested — a scratch orphan rule/contract makes `specdown trace -strict` fail with `has 0 incoming "<edge>" edges (expected 1..*)`). This is the anti-drift property, expressed as structure rather than as an `existsSync`/`test -f` source guard (honoring the user's "avoid source guards" constraint).
+- The right (from-side) `0..*` is intentionally permissive because the apex's seven promises do not map 1:1 onto the ledger's 4-workflow-promise model: `user/reviewable-artifacts` and `user/ownership` ARE the user-facing views of `rule.reviewable-artifacts` and `rule.host-owned-execution`, and `user/a-testable-agent` has no typed contract. A uniform "every promise governs ≥1 rule AND implements ≥1 contract" therefore cannot hold without either inventing edges or adding a complementary guard. We did NOT add a guard.
+- KNOWN LIMITATION (recorded, not a blocker): with `0..*` on the from-side, a future promise leaf that silently omits its rule/contract edges would not trip the gate. The one current 0-edge promise (`a-testable-agent`) is made explicit by its prose note; if more promises legitimately carry typed contracts later, revisit whether a per-promise minimum is worth a complementary structural check.
+
+Critique (full — fresh-eye general-purpose subagent, read-only, claims verified against the repo). Findings integrated:
+
+- FIXED (E, factual inconsistency): `ledger/how-views-relate.spec.md` still said promise→rule/contract edges were "a later slice"; updated to state they now exist and that `trace -strict` enforces no-orphan.
+- FIXED (B, mapping asymmetry): added the two self-mirror `governed-by` edges the matrix implied — `ownership → host-owned-execution` and `reviewable-artifacts → reviewable-artifacts` — so the mirror-promise governance is no longer silently omitted while same-name rules are governed by other promises.
+- PASS (C): rules-policy untyped is honest; the a-testable-agent note is factually accurate (`docs/contracts/runner-readiness.md` exists as prose, no typed node).
+- PASS (D): 7/7 verdict and the 7 claim buckets stayed stable; only claim-id line numbers shifted (frontmatter/edge prose inserted above existing claims). The edge prose is not picked up as a claim candidate.
+
+Deviations / residual risk:
+
+- SCOPE: Slice 2a delivers only the typed-graph extension. The multi-view COLLAPSE (demoting/merging the per-view index + ledger-restatement pages now that edges derive the relationships) is Slice 2b and is gated on user decision D1 (generate view pages from `specdown trace --format dot/matrix` vs. trim to thin nav). The ledger/index/view pages still restate relationships that the edges now also carry — that duplication is intentional-for-now and is exactly what 2b removes; nothing in 2a is left structurally broken if 2b is delayed.
+- RESIDUAL RISK (carried from Slice 1): editing claim-source docs re-churns `.cautilus/claims/evidenced-typed-runners.json` (line-number-driven fingerprint shifts; large keep/rewrite/drop counts) even though the buckets and 7/7 stay stable. The structural-assertion conversion for `user/claim-discovery.spec.md`'s live-bucket checks remains a good follow-up; it did not break this slice (buckets held at 7).
 
 ## Migration Map (full target, for context)
 

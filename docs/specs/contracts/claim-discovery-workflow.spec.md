@@ -1,3 +1,7 @@
+---
+type: contract
+---
+
 # Claim Discovery Workflow
 
 Claim discovery is a high-recall proof-planning pass, not a verdict.
