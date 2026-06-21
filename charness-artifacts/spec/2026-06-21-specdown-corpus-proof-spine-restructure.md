@@ -1,6 +1,6 @@
 # Spec: Specdown Corpus → Proof-Spine + Typed Traceability
 
-Status: Slice 1 landed (`010f8e2a`); Slice 2a (typed rule/contract nodes + edges) landed; Slice 2b (multi-view collapse, Hybrid) landed; Slice 3a (generated/ isolation) landed; Slice 3b (promises/ directory move) landed, verify green. Next is Slice 3c (history exclusion). See the "Delivered" sections below.
+Status: Slice 1 landed (`010f8e2a`); Slice 2a (typed rule/contract nodes + edges) landed; Slice 2b (multi-view collapse, Hybrid) landed; Slice 3a (generated/ isolation) landed; Slice 3b (promises/ directory move) landed; Slice 3c (history-exclusion uniformity + 3b audience follow-on) landed, verify green. Slice 3 (structural moves) is COMPLETE. Remaining is Slice 4 (deferred: Alloy + optional .spec.md→.md rename). See the "Delivered" sections below.
 Decided axis (user, this session): full transition to proof-spine + typed traceability.
 
 ## Problem
@@ -233,6 +233,23 @@ Executed and verified (`npm run verify` all phases passed in 81s warm — the ea
 - Generated pages regenerated (audit leaf links now `../promises/*` via registry; promise-ledger via the trace badges edges; projected-claim-state + claim-evidence-state via the claim chain). Claim chain refreshed twice — once for the move, once after the `doctor-readiness` cross-ref edit (a claim-source SHA change) so `claims:source-freshness:check` stays green.
 
 `.agents/cautilus-adapter.yaml` claim_discovery needed NO leaf-path edit: it discovers by link-following from README/AGENTS/CLAUDE at `linked_doc_depth: 3`, so the leaves are reached at the new paths via README → `user/index` → `../promises/*` and the direct README leaf links.
+
+## Slice 3c Delivered (2026-06-21)
+
+Third Slice 3 structural move: formalize the frozen-history (`old/` + `archive/`) exclusion. Investigation found the exclusion was ALREADY robustly formalized and enforced — the real structural formalization landed in Slice 1 — so 3c is the small consistency + follow-on slice, not a new mechanism (no big move invented, no new source guard added, per the user's standing constraints).
+
+Frozen-history exclusion is enforced by three already-in-place mechanisms (confirmed consistent):
+- `check-specs.mjs`: `listSpecFiles` skips `old`/`archive`, AND `archivedSpecsReachableFrom` is a load-bearing guard that FAILS the gate if any apex-reachable link pulls an `old/`/`archive/` page back into the graph (those pages carry live `run:shell` blocks that would then execute). This is the active enforcement.
+- `specdown.json` `trace.ignore`: `docs/specs/old/**`, `docs/specs/archive/**`.
+- Both trees are unreachable from the active graph (verified: zero active inbound links to `old/`/`archive/`), so claim discovery (which scans by link-following from README/AGENTS/CLAUDE at `linked_doc_depth: 3`) never reaches them regardless of the exclude list.
+
+Net 3c changes (`.agents/cautilus-adapter.yaml`):
+- UNIFORMITY (history exclusion): added `docs/specs/archive/**` next to the existing `docs/specs/old/**` in the claim-discovery `exclude:`. Currently moot (archive/ is unreachable, so it produced no claims), but it makes the two frozen-history trees listed consistently and future-proofs the exclude if `archive/` is ever linked from an active doc. Behavior-preserving (no observable claim-set change), so Non-Goal honored.
+- 3b AUDIENCE FOLLOW-ON (correctness fix): added `docs/specs/promises/**` to `audience_hints.user`. Moving the 7 promise leaves out of `docs/specs/user/**` in Slice 3b had silently reclassified all 49 promise claim candidates from `user` audience (matched `docs/specs/user/**`) to `developer` (via `path-default` fallback) — a real misclassification of the product's headline user-facing promises, invisible to the honesty audit (registry-based) so 3b's verify stayed green. This restores the pre-3b `user` classification (`claimAudienceSource: adapter-hint`); confirmed all 49 promise candidates are back to `user` audience after `claims:refresh:all`.
+
+Verified: `npm run verify` all phases passed; honesty audit 7/7 honest (`total=7, proven=7, inconsistent=0, orphanIssueCount=0`); `specdown trace -strict` 26 docs / 45 edges; `check-specs` 39 specs; `claims:source-freshness:check` 69/69 fresh; `lint:specs` 21.48s (standing-gate metric healthy, no regression). The leftover `existsSync`/`test -f` blocks INSIDE `old/`/`archive/` (e.g. `archive/index.spec.md:12`, `old/index.spec.md:16`) were intentionally left untouched: they are inert frozen-history records (never reachable, never run, trace-ignored), and editing frozen records for no functional gain would be revisionism.
+
+Noted follow-up (still deferred, NOT bundled — it is a semantic claim-set change, not a structural move): excluding the other generated pages (`generated/audit.spec.md`, `generated/promise-ledger.spec.md`, `generated/projected-claim-state.md`) from claim discovery. They are now obviously machine-owned but are still scanned as claim sources (~49 candidates). Worth a future slice with its own bucket-stability check; out of scope for the structural moves.
 
 ## Migration Map (full target, for context)
 

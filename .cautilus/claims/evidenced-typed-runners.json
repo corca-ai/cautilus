@@ -3939,8 +3939,8 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:386e6f9f7ad815db0d32be26c2ca779d10596749abb4a685ec01d92667fedad0",
       "claimId": "claim-docs-specs-promises-evaluation-spec-md-8",
       "claimSemanticGroup": "Adapter and portability",
@@ -3959,7 +3959,7 @@
       "evidenceStatus": "unknown",
       "evidenceStatusReason": "A concrete scenario proposal exists, but the cross-surface behavior has not yet been evaluated.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "linked-from:README.md",
         "needs-scenario",
@@ -3984,15 +3984,15 @@
       "whyThisLayer": "The claim spans evaluation behavior across dev and app surfaces; the scenario proposal decomposes it into a surface-routing and host-ownership eval target."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f60d5bbbf8dadb92ca84c12402ad867b566df4bd2d9b928dd82735d498cbfdca",
       "claimId": "claim-docs-specs-promises-evaluation-spec-md-18",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:README.md",
@@ -4015,15 +4015,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:56865e6b7d179b00c9ef3930b4fc4fb830e0cce4ce125e08fa4fac5c1f1d4b90",
       "claimId": "claim-docs-specs-promises-evaluation-spec-md-35",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/skill",
         "linked-from:README.md",
@@ -4046,15 +4046,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:5c24925bdf26dd23fdce627645bf9cb74517324dddaa9748802a522e1363786f",
       "claimId": "claim-docs-specs-promises-evaluation-spec-md-60",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:README.md",
@@ -4077,15 +4077,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0517842296e793d47cb2971efb5dd9a10e5692c313fb44555f79697cb9afd4a8",
       "claimId": "claim-docs-specs-promises-evaluation-spec-md-140",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:README.md",
@@ -4108,8 +4108,8 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:14a67a2548b2b02abf555ed0e63e7e0f8d039455c3ea20abbb2421357d26abfc",
       "claimId": "claim-docs-specs-promises-evaluation-spec-md-159",
       "claimSemanticGroup": "Documentation and contracts",
@@ -4128,7 +4128,7 @@
       "evidenceStatus": "unknown",
       "evidenceStatusReason": "A concrete scenario proposal exists, but the ownership-boundary behavior has not yet been evaluated.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "linked-from:README.md",
         "needs-scenario",
@@ -4153,8 +4153,8 @@
       "whyThisLayer": "The claim is an ownership-boundary behavior promise; the scenario proposal now gives it an eval target that checks Cautilus does not take over host-owned execution state."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:975ddb4b73f5d58343ad945ea52b461229f4ee82871c007140da3d50dd284a9e",
       "claimId": "claim-docs-specs-promises-evaluation-spec-md-170",
       "claimSemanticGroup": "Packets and reporting",
@@ -4172,7 +4172,7 @@
       "evidenceStatus": "satisfied",
       "evidenceStatusReason": "Verified by spec lint, selected eval-surface evidence, and present eval-summary/eval-observed packets for the recorded self-dogfood runs.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:README.md",
         "spec"
@@ -4194,8 +4194,8 @@
       "whyThisLayer": "The claim names packet reopenability and metadata that can be protected by deterministic spec checks and packet/file evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2fbd812914c2df271a3e305fabf2873543b0585f996f9611e59e1f8138d97881",
       "claimId": "claim-docs-specs-promises-reviewable-artifacts-spec-md-7",
       "claimSemanticGroup": "Agent and skill workflow",
@@ -4216,7 +4216,7 @@
       "evidenceStatus": "satisfied",
       "evidenceStatusReason": "Verified by command packet tests and readable projection tests showing durable packets and reopenable readable views without relying on chat memory.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:README.md",
         "spec"
@@ -4238,8 +4238,8 @@
       "whyThisLayer": "The claim names a cross-workflow artifact reviewability contract that is protected by deterministic packet and readable-projection tests."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a1bf9ad5b836c138012e5898ffc5eba7daa704ece8e346906fd5aa6e390ddd81",
       "claimId": "claim-docs-specs-promises-reviewable-artifacts-spec-md-8",
       "claimSemanticGroup": "Agent and skill workflow",
@@ -4260,7 +4260,7 @@
       "evidenceStatus": "satisfied",
       "evidenceStatusReason": "Verified by Cautilus CLI packet tests, the reviewable artifact projection matrix, and readable-view renderer tests for the current shipped Cautilus-owned workflow surfaces.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:README.md",
         "spec"
@@ -4282,8 +4282,8 @@
       "whyThisLayer": "The claim names CLI packet outputs and readable reports that can be validated by command packet tests and renderer tests."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6f1d53b63c55437a8dba5e2715e79937723944de9c742996061a11766aea838f",
       "claimId": "claim-docs-specs-promises-reviewable-artifacts-spec-md-14",
       "claimSemanticGroup": "Agent and skill workflow",
@@ -4304,7 +4304,7 @@
       "evidenceStatus": "satisfied",
       "evidenceStatusReason": "Verified by command packet outputs, status report tests, browser review tests, and HTML renderer tests that preserve JSON packets or declared source artifacts as the audit source.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:README.md",
         "spec"
@@ -4326,15 +4326,15 @@
       "whyThisLayer": "The claim names JSON packet audit-source behavior that is directly protected by deterministic packet and projection tests."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fbeade814cdb79e38bc860b82568c0157823aa114fcd852ae78a6877150b3681",
       "claimId": "claim-docs-specs-promises-reviewable-artifacts-spec-md-68",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:README.md",
         "spec"
@@ -4355,15 +4355,15 @@
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:93ef4fc3ee9b56a91a713fa0e2993e6a0a45ef23f8b36a64ad7a8a662e892150",
       "claimId": "claim-docs-specs-promises-reviewable-artifacts-spec-md-71",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:README.md",
         "spec"
@@ -10070,15 +10070,15 @@
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:5618379777e5e400210b07cfa81addc9b9e3ca50ebc76586d5a5e3d61de71d6e",
       "claimId": "claim-docs-specs-promises-a-testable-agent-spec-md-7",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10101,15 +10101,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:54ac82eb1cd956c4240b6be149eb1bae06910878485a26f0e810328cc0fe3d4a",
       "claimId": "claim-docs-specs-promises-a-testable-agent-spec-md-8",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:docs/specs/index.spec.md",
         "needs-alignment",
@@ -10131,15 +10131,15 @@
       "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:59ff3cbfc9f3ecfe715f85f783a00b5c41079e0dc3a0e17038acefc5cd3dba1d",
       "claimId": "claim-docs-specs-promises-a-testable-agent-spec-md-13",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10162,15 +10162,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:26cdf3fdc348b4457608e2c7e6c2a7c00e657a4f790f704a4e131c4c51f75341",
       "claimId": "claim-docs-specs-promises-a-testable-agent-spec-md-23",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10193,15 +10193,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0e0558ad3eeec05342602ae4e7f81aa9652b6b4296efa3d98ca82f57e67c2ff1",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-7",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10224,8 +10224,8 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2a8977ffbf9e63bf6e7035970e11a2be32155b92b317783492b41dbae10de45e",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-10",
       "claimSemanticGroup": "Claim discovery and review",
@@ -10246,7 +10246,7 @@
       "evidenceStatus": "satisfied",
       "evidenceStatusReason": "Verified by focused app/runtime claim-discovery tests and Cautilus Agent audit tests: the CLI produces source-referenced candidates and proof routes, while the agent-facing fixtures require false-positive curation, possible false-negative scanning, next-action grouping, and stop-before-review/eval boundaries.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:docs/specs/index.spec.md",
         "needs-scenario",
@@ -10269,15 +10269,15 @@
       "whyThisLayer": "The claim names the combined CLI and Cautilus Agent claim-discovery worklist path, which is covered by deterministic CLI tests plus agent-flow audit hooks."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6345e4f54f011dc34c03786a516fbf534f2531d824875e2ce142ef4816bcf725",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-38",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -10298,15 +10298,15 @@
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7548f955d0e47e28b847f010067339572b1ec686b48d528fb4cafdd35c2a2cb8",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-44",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:docs/specs/index.spec.md",
         "needs-alignment",
@@ -10328,15 +10328,15 @@
       "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b8e93ea1d1fd38f35d0b029c7b786309c3200b789c91e6635e104e5d500bd3fe",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-73",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10359,15 +10359,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b4c21a2188a15764454af1e6c6c8cffb47d91d3cfb8d4fc56901fc63893ecb9a",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-129",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:docs/specs/index.spec.md",
         "needs-alignment",
@@ -10389,15 +10389,15 @@
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cf023507e02387ffc86da8bc2708a4ee5fbb66979d0519899218185fe4dbe879",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-163",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10420,15 +10420,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e348331e8a685a21b700437abf830fca16d056e95763b7e9da3ac88d3de47b0b",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-165",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -10449,15 +10449,15 @@
       "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f5c8eca03b62308d492f498480c133064802ed6bbdb974c7b530acd90f1d3983",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-166",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -10478,15 +10478,15 @@
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8df6d382126c2db553483936b1fb955ba4d47b831cf572fb543379dcb3b64599",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-197",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -10507,8 +10507,8 @@
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0c4ab653f7b1e02eaccfa00173062f5ec2afe2a77eca509019e274475abe05c0",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-226",
       "claimSemanticGroup": "Claim discovery and review",
@@ -10529,7 +10529,7 @@
       "evidenceStatus": "satisfied",
       "evidenceStatusReason": "Verified by app/runtime status-summary tests and the claim status Markdown renderer tests: `discover claims status` reads saved packets and summarizes candidates by next action without rerunning discovery or launching review/eval work.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -10551,8 +10551,8 @@
       "whyThisLayer": "The claim names deterministic status-summary behavior over a saved discovery packet."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-269",
       "claimSemanticGroup": "Claim discovery and review",
@@ -10573,7 +10573,7 @@
       "evidenceStatus": "satisfied",
       "evidenceStatusReason": "Verified by claim status summary tests, renderer tests, and agent review-prepare flow audits showing that saved packets provide next-action summaries and that the prepared skill flow stops before review/eval execution.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -10595,15 +10595,15 @@
       "whyThisLayer": "The claim repeats the saved-packet next-action summary contract in the prepared skill-evaluation section, so the same deterministic status-summary and audit-hook evidence applies."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
       "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-272",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/skill",
         "linked-from:docs/specs/index.spec.md",
@@ -10626,15 +10626,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:894c346acbe9a5b7549775c49a729b15d40e2f2eb9cd5cc4acaef20d4da4a76a",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-7",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10657,15 +10657,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:497c07f988be95adc18afdf9e8f94d6c9af159dcf2f89b5c4384978f1cca3833",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-8",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/skill",
         "linked-from:docs/specs/index.spec.md",
@@ -10688,15 +10688,15 @@
       "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:86a89b02a579ef1cb0c5d963ac9de30741d7b614283d8d6af21924d975a30a8f",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-19",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -10717,15 +10717,15 @@
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:afea9b4240e553c810a1ab6cef05bb88ded62f9ea5729505d266955f39f27ec6",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-21",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10748,15 +10748,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:957d252be8bab15744fff28c1b4bad7bbae76e84d41bf96c61e31ce5d5afe4d7",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-54",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10779,15 +10779,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:13b915b8e802a3e21c9a4cdd482ed3ac1e7e15fc52f3e671ec95458d3ff25925",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-58",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -10808,15 +10808,15 @@
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ee22b27f4e30d26accbca2e611086d6839a3a82bf8e32bb7bffb216291f71833",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-216",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10839,15 +10839,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:41c3a5f18ab1db9e6b53d5fa93c350c80785675cef29be33ce9be43934685a06",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-229",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -10870,15 +10870,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ad8aab282e858212b0b60be1349737226fb31858cb7aa48b97d20ed2dc999cb0",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-232",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -10899,15 +10899,15 @@
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a8e492545ad5eb34d4c94495a551501b5983c3d9cc9bb7de5bb9064a977a1f89",
       "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-233",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/skill",
         "linked-from:docs/specs/index.spec.md",
@@ -10930,15 +10930,15 @@
       "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:76256dffb69ca4cf757bda91c5865bfc216478d85f31825025e832f51d2adee6",
       "claimId": "claim-docs-specs-promises-improvement-spec-md-8",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/skill",
         "linked-from:docs/specs/index.spec.md",
@@ -10961,15 +10961,15 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a6c921e241db204bb14aa9dcb5558e56b8fd7cda629056aa5b93932c7a112382",
       "claimId": "claim-docs-specs-promises-improvement-spec-md-18",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/skill",
         "linked-from:docs/specs/index.spec.md",
@@ -10992,8 +10992,8 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:3ac32edb3c002ee19619d433a92dfc4055d35fdde165e9fb3effdebb13f47006",
       "claimId": "claim-docs-specs-promises-improvement-spec-md-50",
       "claimSemanticGroup": "Improvement and improvement",
@@ -11014,7 +11014,7 @@
       "evidenceStatus": "unknown",
       "evidenceStatusReason": "A concrete improvement scenario proposal exists, but the improvement workflow has not yet been evaluated.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "linked-from:docs/specs/index.spec.md",
         "needs-scenario",
@@ -11039,8 +11039,8 @@
       "whyThisLayer": "The claim describes improvement workflow behavior; the scenario proposal now narrows it to an app/prompt improvement run with protected checks, held-out evidence, and explicit budget."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:311c81292005b1a22ed14f5e9edaf547d6135b708feb80f89567ce4e10842d95",
       "claimId": "claim-docs-specs-promises-improvement-spec-md-68",
       "claimSemanticGroup": "Improvement and improvement",
@@ -11062,7 +11062,7 @@
       "evidenceStatusReason": "A concrete improvement artifact scenario proposal exists, but proposal and revision artifact behavior has not yet been evaluated.",
       "groupHints": [
         "app/chat",
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "linked-from:docs/specs/index.spec.md",
         "needs-scenario",
@@ -11088,8 +11088,8 @@
       "whyThisLayer": "The claim names proposal and revision artifact behavior in the improvement workflow; the scenario proposal now gives those packet outputs a concrete eval target."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:449959464c1d8b3cd75614523e8b7a2fb8819020a2f4a246327632951d3e31b8",
       "claimId": "claim-docs-specs-promises-ownership-spec-md-7",
       "claimSemanticGroup": "Adapter and portability",
@@ -11097,7 +11097,7 @@
       "evidenceStatus": "unknown",
       "evidenceStatusReason": "The claim is an ownership boundary for honest evaluation, not a scenario candidate by itself.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "linked-from:docs/specs/index.spec.md",
         "needs-scenario",
@@ -11119,15 +11119,15 @@
       "whyThisLayer": "The claim names a broad behavior surface or reusable workflow; it needs a concrete scenario before an eval fixture can honestly prove it."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:80a45bf2d6ad2f78990718a4ce5b56c7ce6b9c39a4be9cea75db7bfb6a506835",
       "claimId": "claim-docs-specs-promises-ownership-spec-md-8",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "human-auditable",
         "linked-from:docs/specs/index.spec.md",
         "needs-alignment",
@@ -11149,15 +11149,15 @@
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6a0c3428a080aefb565448085a32697d596c17d02e3dce34f8d8a06c94d70f85",
       "claimId": "claim-docs-specs-promises-ownership-spec-md-13",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -11180,8 +11180,8 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:6b377595aa4629cdc1ff1b75e790cb7750b3c57a2d38f1c7856c7ffce52595b0",
       "claimId": "claim-docs-specs-promises-ownership-spec-md-34",
       "claimSemanticGroup": "Adapter and portability",
@@ -11203,7 +11203,7 @@
       "evidenceStatus": "satisfied",
       "evidenceStatusReason": "Verified by `npm run consumer:onboard:smoke -- --json` and the external smoke test: a temporary consumer repo installs the Cautilus Agent, initializes adapter wiring, reaches doctor ready, and completes one fixture-backed bounded eval run while runner proof readiness remains explicitly bounded.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -11225,15 +11225,15 @@
       "whyThisLayer": "The claim names standalone consumer onboarding through install, adapter init, doctor readiness, and a first bounded run without claiming ownership of host policy."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b6e8f783eef78fb7de12d865929e7044095d64f4871dc46c6b2df281247716b2",
       "claimId": "claim-docs-specs-promises-ownership-spec-md-54",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "cautilus-eval",
         "dev/repo",
         "linked-from:docs/specs/index.spec.md",
@@ -11256,8 +11256,8 @@
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:85da31c828c4dbbb3a0dfa610157368d7b0b6c743405bf8512d48f5e28394853",
       "claimId": "claim-docs-specs-promises-ownership-spec-md-56",
       "claimSemanticGroup": "Agent and skill workflow",
@@ -11279,7 +11279,7 @@
       "evidenceStatus": "satisfied",
       "evidenceStatusReason": "Verified by focused app tests and current status/evidence-state packets showing schema-versioned command, claim status, validation, eval-plan, and evidence-state outputs with repo-relative audit sources.",
       "groupHints": [
-        "audience:developer",
+        "audience:user",
         "deterministic",
         "linked-from:docs/specs/index.spec.md",
         "spec"
@@ -14038,8 +14038,8 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 335,
-      "user": 61
+      "developer": 286,
+      "user": 110
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
@@ -14131,6 +14131,7 @@
       ],
       "user": [
         "README.md",
+        "docs/specs/promises/**",
         "docs/specs/user/**",
         "docs/guides/**"
       ]
@@ -14152,6 +14153,7 @@
       "artifacts/**",
       "charness-artifacts/**",
       "docs/specs/old/**",
+      "docs/specs/archive/**",
       "docs/specs/generated/claim-evidence-state.md",
       "docs/claims/**",
       "docs/maintainers/**",
@@ -14270,7 +14272,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "a7cbc22e68f70349b444fd132cef9c198f8932cd",
+  "gitCommit": "c6d94e895a4187f18d9f5ee96a734820ff740c48",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -16231,8 +16233,8 @@
       "status": "read"
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:5ea24c68c7f3235897f701008bff32f3ac65684d2c08f0b2a531338b5215ee3f",
       "depth": 1,
       "discoveredFrom": "README.md",
@@ -16241,8 +16243,8 @@
       "status": "read"
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:5722b35e0e6590fcf1662ff5f083d081853b988059f74be234d7a572744044b1",
       "depth": 1,
       "discoveredFrom": "README.md",
@@ -16521,8 +16523,8 @@
       "status": "read"
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:202f0ab254118ce9436477b39a5f944f9a6b8c1f671ef703ab5af7dd6e6e4da7",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
@@ -16531,8 +16533,8 @@
       "status": "read"
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:165976237c3a76dcaf44525e4858b877e96b6b803f7c60b629fe0d0125ee7c14",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
@@ -16541,8 +16543,8 @@
       "status": "read"
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:525765a4b5e5a275cac0af7165bedac9940426a9f9f9685770d2d2a0af1d1e2f",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
@@ -16551,8 +16553,8 @@
       "status": "read"
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:7cf223eb7124bc6922017576d6c83be3a137dc5a6371845ad5bf2ac2c4c3d450",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
@@ -16561,8 +16563,8 @@
       "status": "read"
     },
     {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:c22994597f18563aaa4feaf47bd27c2137e64399dc84b2bce2988619710d59b2",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",

@@ -176,8 +176,8 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 335,
-      "user": 61
+      "developer": 286,
+      "user": 110
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
@@ -282,6 +282,7 @@
       ],
       "user": [
         "README.md",
+        "docs/specs/promises/**",
         "docs/specs/user/**",
         "docs/guides/**"
       ]
@@ -303,6 +304,7 @@
       "artifacts/**",
       "charness-artifacts/**",
       "docs/specs/old/**",
+      "docs/specs/archive/**",
       "docs/specs/generated/claim-evidence-state.md",
       "docs/claims/**",
       "docs/maintainers/**",
@@ -3414,7 +3416,7 @@
       }
     ]
   },
-  "gitCommit": "a7cbc22e68f70349b444fd132cef9c198f8932cd",
+  "gitCommit": "c6d94e895a4187f18d9f5ee96a734820ff740c48",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3426,10 +3428,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "a7cbc22e68f70349b444fd132cef9c198f8932cd",
+    "currentGitCommit": "c6d94e895a4187f18d9f5ee96a734820ff740c48",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "a7cbc22e68f70349b444fd132cef9c198f8932cd",
+    "packetGitCommit": "c6d94e895a4187f18d9f5ee96a734820ff740c48",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
