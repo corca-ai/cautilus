@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:3816f5fa9e0eb0ea39961af52cee5c0397c2258cdf62b06904cc5595ec24a171"
+      "contentHash": "sha256:0f306a6fabbb065798a40d8e43fa7044b5cf1d5841fd87ad570533c258d58c49"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "c6d94e895a4187f18d9f5ee96a734820ff740c48",
+  "claimsPacketGitCommit": "7f8d49462eaaba1b35aed069614349063ceb37f9",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 396,
+  "claimsPacketCandidateCount": 397,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,23 +200,23 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 396,
-    "userRawClaimCount": 110,
+    "totalRawClaimCount": 397,
+    "userRawClaimCount": 111,
     "userMappedToCanonicalCount": 0,
-    "userUnmappedCount": 110,
-    "semanticReviewRecommendedCount": 343,
-    "userSemanticReviewRecommendedCount": 110,
+    "userUnmappedCount": 111,
+    "semanticReviewRecommendedCount": 344,
+    "userSemanticReviewRecommendedCount": 111,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 286,
-      "user-review-needed": 110
+      "user-review-needed": 111
     },
     "byAudience": {
       "developer": 286,
-      "user": 110
+      "user": 111
     },
     "byMappingConfidence": {
       "high": 53,
-      "low": 130,
+      "low": 131,
       "medium": 213
     },
     "byUserCanonicalClaimId": {},
@@ -321,8 +321,9 @@
       "claim-docs-specs-promises-claim-discovery-spec-md-166",
       "claim-docs-specs-promises-claim-discovery-spec-md-197",
       "claim-docs-specs-promises-claim-discovery-spec-md-226",
-      "claim-docs-specs-promises-claim-discovery-spec-md-269",
-      "claim-docs-specs-promises-claim-discovery-spec-md-272",
+      "claim-docs-specs-promises-claim-discovery-spec-md-231",
+      "claim-docs-specs-promises-claim-discovery-spec-md-259",
+      "claim-docs-specs-promises-claim-discovery-spec-md-262",
       "claim-docs-specs-promises-doctor-readiness-spec-md-7",
       "claim-docs-specs-promises-doctor-readiness-spec-md-8",
       "claim-docs-specs-promises-doctor-readiness-spec-md-19",
@@ -595,8 +596,9 @@
       "claim-docs-specs-promises-claim-discovery-spec-md-166",
       "claim-docs-specs-promises-claim-discovery-spec-md-197",
       "claim-docs-specs-promises-claim-discovery-spec-md-226",
-      "claim-docs-specs-promises-claim-discovery-spec-md-269",
-      "claim-docs-specs-promises-claim-discovery-spec-md-272",
+      "claim-docs-specs-promises-claim-discovery-spec-md-231",
+      "claim-docs-specs-promises-claim-discovery-spec-md-259",
+      "claim-docs-specs-promises-claim-discovery-spec-md-262",
       "claim-docs-specs-promises-doctor-readiness-spec-md-7",
       "claim-docs-specs-promises-doctor-readiness-spec-md-8",
       "claim-docs-specs-promises-doctor-readiness-spec-md-19",
@@ -13597,12 +13599,40 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-269",
+      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-231",
+      "summary": "Empty buckets are dropped from the summary, so asserting the exact live count or a fixed per-index id would re-break this spec on every docs edit that shifts a single candidate between buckets; the gate stays structural instead.",
+      "sourceRefs": [
+        {
+          "path": "docs/specs/promises/claim-discovery.spec.md",
+          "line": 231,
+          "excerpt": "Empty buckets are dropped from the summary, so asserting the exact live count or a fixed per-index id would re-break this spec on every docs edit that shifts a single candidate between buckets; the gate stays structural instead."
+        }
+      ],
+      "disposition": "user-review-needed",
+      "mappingStatus": "needs-catalog-review",
+      "claimAudience": "user",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:bbdf2b2c01e8388fc0c5b1a63b077ea78794daaeadd5901706443dac1c55a96d",
+      "canonicalClaimId": null,
+      "score": 0,
+      "runnerUpCanonicalClaimId": null,
+      "runnerUpScore": 0,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": []
+    },
+    {
+      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-259",
       "summary": "`discover claims status` owns next-action summaries over that saved packet.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/claim-discovery.spec.md",
-          "line": 269,
+          "line": 259,
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet."
         }
       ],
@@ -13625,12 +13655,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-272",
+      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-262",
       "summary": "This spec only verifies that the agent-run skill check is prepared.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/claim-discovery.spec.md",
-          "line": 272,
+          "line": 262,
           "excerpt": "This spec only verifies that the agent-run skill check is prepared."
         }
       ],

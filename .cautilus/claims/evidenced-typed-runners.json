@@ -1,5 +1,5 @@
 {
-  "candidateCount": 396,
+  "candidateCount": 397,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
@@ -10553,8 +10553,37 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:bbdf2b2c01e8388fc0c5b1a63b077ea78794daaeadd5901706443dac1c55a96d",
+      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-231",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable",
+        "linked-from:docs/specs/index.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Empty buckets are dropped from the summary, so asserting the exact live count or a fixed per-index id would re-break this spec on every docs edit that shifts a single candidate between buckets; the gate stays structural instead.",
+          "line": 231,
+          "path": "docs/specs/promises/claim-discovery.spec.md"
+        }
+      ],
+      "summary": "Empty buckets are dropped from the summary, so asserting the exact live count or a fixed per-index id would re-break this spec on every docs edit that shifts a single candidate between buckets; the gate stays structural instead.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b5f34953e97915cce90c173e74316c449ce52124c45930e4af78f1068a1b42d5",
-      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-269",
+      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-259",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -10566,7 +10595,7 @@
             "claim-docs-specs-rules-reviewable-artifacts-spec-md-3",
             "claim-docs-specs-user-claim-discovery-spec-md-6",
             "claim-docs-specs-user-claim-discovery-spec-md-160",
-            "claim-docs-specs-promises-claim-discovery-spec-md-269"
+            "claim-docs-specs-promises-claim-discovery-spec-md-259"
           ]
         }
       ],
@@ -10585,7 +10614,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` owns next-action summaries over that saved packet.",
-          "line": 269,
+          "line": 259,
           "path": "docs/specs/promises/claim-discovery.spec.md"
         }
       ],
@@ -10598,7 +10627,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:97e5fe2324734143b1dd34434311d8b138e4a811ac1db5e1da5b45fdac186701",
-      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-272",
+      "claimId": "claim-docs-specs-promises-claim-discovery-spec-md-262",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10617,7 +10646,7 @@
       "sourceRefs": [
         {
           "excerpt": "This spec only verifies that the agent-run skill check is prepared.",
-          "line": 272,
+          "line": 262,
           "path": "docs/specs/promises/claim-discovery.spec.md"
         }
       ],
@@ -14039,7 +14068,7 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 286,
-      "user": 110
+      "user": 111
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
@@ -14049,32 +14078,32 @@
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 29,
-      "Packets and reporting": 45,
+      "Packets and reporting": 46,
       "Quality gates": 22,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
       "satisfied": 142,
-      "unknown": 254
+      "unknown": 255
     },
     "byLifecycle": {
-      "new": 396
+      "new": 397
     },
     "byRecommendedProof": {
       "cautilus-eval": 118,
       "deterministic": 173,
-      "human-auditable": 105
+      "human-auditable": 106
     },
     "byReviewStatus": {
       "agent-reviewed": 195,
-      "heuristic": 199,
+      "heuristic": 200,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 41,
       "needs-scenario": 1,
-      "ready-for-proof": 319
+      "ready-for-proof": 320
     }
   },
   "discoveryEngine": {
@@ -14272,7 +14301,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "c6d94e895a4187f18d9f5ee96a734820ff740c48",
+  "gitCommit": "7f8d49462eaaba1b35aed069614349063ceb37f9",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -16535,7 +16564,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:165976237c3a76dcaf44525e4858b877e96b6b803f7c60b629fe0d0125ee7c14",
+      "contentHash": "sha256:a450b48539d403e2abc62e13ce09e02332fe333e85eb7ecbd97e9130f4ac106a",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
