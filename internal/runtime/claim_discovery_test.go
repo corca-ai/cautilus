@@ -4393,8 +4393,11 @@ func TestCommandAbsenceClaimGuard(t *testing.T) {
 		{"no-backtick-not-fired", "The workflow should avoid a claim group command.", false},
 		// R12-inverse / no-absence control: a capability-EXISTENCE claim must not be swept.
 		{"r12-inverse-ships-not-fired", "Cautilus ships a `claim group` command for bundling.", false},
-		// Broad-negation danger-axis pin: "does not prove" (not "does not add") must NOT fire.
-		{"broad-negation-not-fired", "The result does not prove the `command` routing behaves.", false},
+		// Broad-negation danger-axis pin: "does not prove" (not "does not add") must NOT
+		// fire. Worded so the backtick and " command" arms BOTH pass (a leading-space
+		// "command routing" and a `cli` backtick token), isolating the absence arm as
+		// the sole reason for rejection (review followup, 2026-06-22).
+		{"broad-negation-not-fired", "The result does not prove the command routing of `cli` behaves.", false},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
