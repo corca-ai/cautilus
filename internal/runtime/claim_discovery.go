@@ -766,6 +766,17 @@ var defaultClaimLexiconTerms = []string{
 	// capability claim is dropped before reaching the router, leaving R12 dead on
 	// the live path (debug 2026-06-21-r12-ships-lexicon-gate-dead).
 	" ships ",
+	// gate-router-deadcase-fixes (2026-06-22, low-blast batch): admit the dead
+	// router shapes their verbs never reached. These are SPECIFIC phrases, not
+	// bare common verbs, so the gate blast stays low (measured). " not gated "/
+	// " not blocked " admit deterministicCLIGatingClaim (zero new candidates);
+	// " sessions showed "/" runs showed " admit historicalObservationClaim without
+	// admitting the ubiquitous bare " showed " (zero new candidates); " enforces "
+	// admits the verbless lint-gate variant and correctly RECOVERS two previously
+	// dropped deterministic lint-gate claims ("`npm run lint:X` enforces ...").
+	// " needs " and the provider-failover/caveat verbs stay deferred (debug
+	// 2026-06-21-gate-router-verb-coverage-deaths: high blast / ubiquitous).
+	" not gated ", " not blocked ", " sessions showed ", " runs showed ", " enforces ",
 }
 
 func normalizeNonClaimSectionHeadings(values []string) []string {
@@ -2140,8 +2151,17 @@ func deterministicCLIGatingClaim(lower string) bool {
 		containsAny(normalized, []string{" cli ", " command", " subcommand", " provider", " credential", " credentials", " configure", " configuration", " `"}) {
 		return true
 	}
-	return containsAny(normalized, []string{" work without credentials", " works without credentials", " must not require credentials", " does not require credentials", " do not require credentials", " can run without credentials", " can run without login", " must not require login", " does not require login", " do not require login"}) &&
-		containsAny(normalized, []string{" cli ", " command", " subcommand", " provider", " login", " configure", " configuration", " setup", " first-run"})
+	if containsAny(normalized, []string{" work without credentials", " works without credentials", " must not require credentials", " does not require credentials", " do not require credentials", " can run without credentials", " can run without login", " must not require login", " does not require login", " do not require login"}) &&
+		containsAny(normalized, []string{" cli ", " command", " subcommand", " provider", " login", " configure", " configuration", " setup", " first-run"}) {
+		return true
+	}
+	// Double-miss fix (gate-router-deadcase-fixes 2026-06-22): a lexicon-bearing
+	// rephrase like "the doctor command runs without any provider credential"
+	// passes the gate (via " runs ") but the exact-phrase branches above miss it,
+	// so it was admitted yet routed nowhere. Match the "runs/run without ...
+	// credential/login" shape, anchored on the credential/provider/login noun.
+	return containsAny(normalized, []string{" runs without ", " run without ", " running without "}) &&
+		containsAny(normalized, []string{" credential", " credentials", " login", " provider"})
 }
 
 func deterministicReadinessOrPreflightContract(lower string) bool {

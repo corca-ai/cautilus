@@ -7,12 +7,12 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:de88c694f31557cb76a10b55e16b9a30594d76192367fdc0632c7c077206dfa9
+- Claims hash: sha256:868eb9dad4d2da2b6b3c69b26c83d8d22f1bd67ab2a8bcfd38a356cc6ef4fe5e
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:f3f7d60d9e99d757f38d4455aabfaa2d2d72a33f4b86ffe2e1e2c348ddd05d67
+- Status hash: sha256:b52d21fb54158635c1c075f6866d5aa0f34110ea5e4420dd9490f38d59371a3f
 - Git state: fresh; stale=no
-- Snapshot inspected commit: ae369fa711da4d8ce590548795a9111fddd7899e
-- Packet commit: ae369fa711da4d8ce590548795a9111fddd7899e
+- Snapshot inspected commit: 12ce812839f464ae7636b739f1b64fe130ccfb79
+- Packet commit: 12ce812839f464ae7636b739f1b64fe130ccfb79
 - Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
 - Status snapshot role: derived command snapshot for git state, action buckets, and cross-cutting signals; its claimSummary must match the claim packet
@@ -21,17 +21,17 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 142, unknown: 350 |
-| Recommended proof | cautilus-eval: 139, deterministic: 233, human-auditable: 120 |
-| Proof readiness | blocked: 34, needs alignment: 49, needs scenario: 1, ready for proof: 408 |
-| Review | agent-reviewed: 193, heuristic: 297, human-reviewed: 2 |
+| Evidence | satisfied: 142, unknown: 353 |
+| Recommended proof | cautilus-eval: 141, deterministic: 235, human-auditable: 119 |
+| Proof readiness | blocked: 33, needs alignment: 49, needs scenario: 1, ready for proof: 412 |
+| Review | agent-reviewed: 192, heuristic: 302, human-reviewed: 1 |
 
 ## Cautilus Eval Backlog
 
 | Queue | Count |
 | --- | --- |
-| open Cautilus eval claims | 135 |
-| ready for proof | 134 |
+| open Cautilus eval claims | 137 |
+| ready for proof | 136 |
 | needs scenario | 1 |
 
 Ready for proof means the claim is concrete enough to attach or create the selected proof now; it does not mean a scenario fixture already exists.
@@ -45,7 +45,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | app/chat | 4 |
 | app/prompt | 11 |
 | dev/repo | 79 |
-| dev/skill | 36 |
+| dev/skill | 38 |
 
 ### Proof-Ready Samples
 
@@ -71,18 +71,18 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | Bucket | Actor | Count | Evidence | Review | Meaning |
 | --- | --- | --- | --- | --- | --- |
 | already-satisfied | none | 142 | satisfied: 142 | agent-reviewed: 142 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 93 | unknown: 93 | agent-reviewed: 2, heuristic: 89, human-reviewed: 2 | Add or connect unit, lint, build, schema, spec, or CI proof. |
-| agent-plan-cautilus-eval | agent | 134 | unknown: 134 | agent-reviewed: 6, heuristic: 128 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
+| agent-add-deterministic-proof | agent | 95 | unknown: 95 | agent-reviewed: 2, heuristic: 92, human-reviewed: 1 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| agent-plan-cautilus-eval | agent | 136 | unknown: 136 | agent-reviewed: 6, heuristic: 130 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
 | agent-design-scenario | agent | 1 | unknown: 1 | agent-reviewed: 1 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 49 | unknown: 49 | agent-reviewed: 15, heuristic: 34 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 39 | unknown: 39 | heuristic: 39 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
-| split-or-defer | human | 34 | unknown: 34 | agent-reviewed: 27, heuristic: 7 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
+| split-or-defer | human | 33 | unknown: 33 | agent-reviewed: 26, heuristic: 7 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
 ## Cross-Cutting Signals
 
 | Signal | Actor | Count | Meaning |
 | --- | --- | --- | --- |
-| heuristic-review-needed | agent | 297 | Review heuristic labels before spending proof or eval budget. |
+| heuristic-review-needed | agent | 302 | Review heuristic labels before spending proof or eval budget. |
 
 ## How This Avoids A Split SOT
 

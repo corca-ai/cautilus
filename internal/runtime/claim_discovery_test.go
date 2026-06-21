@@ -4076,6 +4076,7 @@ func TestClaimClassificationPortableDefaultsAreFrozen(t *testing.T) {
 		" routes ", " discovers ", " evaluates ", " improves ", " verifies ", " validates ", " proves ", " supports ",
 		" requires ", " guarantees ", " provides ", " belongs ", " remains ", " stays ", " installs ", " produces ",
 		" ships ",
+		" not gated ", " not blocked ", " sessions showed ", " runs showed ", " enforces ",
 	}
 	if !reflect.DeepEqual(defaultClaimLexiconTerms, expectedLexicon) {
 		t.Fatalf("built-in claim lexicon changed; update docs/contracts/claim-discovery-workflow.md and this golden together, got %#v", defaultClaimLexiconTerms)
@@ -4441,12 +4442,18 @@ func TestGateRouterCoherence(t *testing.T) {
 		{"install-materialization", "The installer keeps a standalone binary checked into each host repo.", false},
 		{"ownership-boundary", "Routing should remain human-auditable until it is split or promoted into proof.", false},
 		{"deterministic-readiness", "Doctor should run a preflight readiness check before any bounded eval loop.", false},
+		// --- gate-router-deadcase-fixes (2026-06-22, low-blast batch): these were
+		//     latent deaths until their shapes were admitted; now reachable. ---
+		{"cli-gating-not-gated", "The doctor command is not gated behind any provider credential.", false},
+		{"cli-gating-runs-without", "The doctor command runs without any provider credential.", false},
+		{"historical-observation", "Past sessions showed the operator skipped the bootstrap step entirely.", false},
+		{"lint-enforces", "A lint gate enforces the import boundary at build time.", false},
 		// --- known latent deaths (router routes them, gate drops them today) ---
-		// debt allowlist; zero live-corpus impact at audit time (2026-06-21).
-		{"DEATH-cli-gating", "The doctor command is not gated behind any provider credential.", true},
+		// debt allowlist; zero live-corpus impact at audit time. " needs " and the
+		// provider-failover/caveat verbs stay deferred (high blast / ubiquitous;
+		// debug 2026-06-21-gate-router-verb-coverage-deaths).
 		{"DEATH-needs-scenario", "This behavior needs a protected scenario before it becomes a fixture.", true},
 		{"DEATH-provider-failover", "On primary outage the fallback provider takes over the runner automatically.", true},
-		{"DEATH-historical-observation", "Past sessions showed the operator skipped the bootstrap step entirely.", true},
 		{"DEATH-provider-caveat", "A codex exec failure prints to stderr while exit still looks successful.", true},
 	}
 	for _, tc := range cases {
