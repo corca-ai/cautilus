@@ -10,7 +10,7 @@ the name carries meaning, and a rename is a concept change unless the surroundin
 
 | kind | examples | naming rule |
 | --- | --- | --- |
-| workflow promise | [Readiness](readiness.spec.md), [Claim Discovery](claim-discovery.spec.md), [Behavior Evaluation](evaluation.spec.md), [Bounded Improvement](improvement.spec.md) | name the user-visible job Cautilus supports |
+| workflow promise | [Readiness](../user/doctor-readiness.spec.md), [Claim Discovery](../user/claim-discovery.spec.md), [Behavior Evaluation](../user/evaluation.spec.md), [Bounded Improvement](../user/improvement.spec.md) | name the user-visible job Cautilus supports |
 | cross-cutting rule | [Evidence Gaps](../rules/evidence-gaps.spec.md), [Host-Owned Execution](../rules/host-owned-execution.spec.md), [Packet Freshness](../rules/packet-freshness.spec.md) | name the rule or risk that applies across workflows |
 | proof state | [Evidence Map](../evidence/evidence-map.spec.md), [Proof Gaps](../evidence/gaps.spec.md), [Latest Selected Evidence](../evidence/latest-selected-evidence.spec.md) | name what the reader can inspect |
 

@@ -309,7 +309,7 @@ Note: A definition line; the enforceable part is a deterministic projection chec
 
 `docs/specs/ledger/promise-ledger.spec.md:15` — heuristic tag: `cautilus-eval`
 
-> [Behavior Evaluation](../../docs/specs/ledger/evaluation.spec.md): Cautilus evaluates intentful behavior across supported `dev` and `app` surfaces.
+> [Behavior Evaluation](../../docs/specs/user/evaluation.spec.md): Cautilus evaluates intentful behavior across supported `dev` and `app` surfaces.
 
 - [deterministic] eval commands execute across dev and app surfaces
 - [cautilus-eval] the evaluation actually judges intentful behavior (semantic verdicts are sound)

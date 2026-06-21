@@ -1,6 +1,6 @@
 # Spec: Specdown Corpus → Proof-Spine + Typed Traceability
 
-Status: Slice 1 landed (`010f8e2a`); Slice 2a (typed rule/contract nodes + governed-by/implemented-by edges) landed, verify green; next is Slice 2b (multi-view collapse, pending user decision D1). See "Slice 1 Delivered" and "Slice 2a Delivered" below.
+Status: Slice 1 landed (`010f8e2a`); Slice 2a (typed rule/contract nodes + edges) landed; Slice 2b (multi-view collapse, Hybrid) landed, verify green. Next is Slice 3 (structural moves), deferred. See "Slice 1/2a/2b Delivered" below.
 Decided axis (user, this session): full transition to proof-spine + typed traceability.
 
 ## Problem
@@ -113,7 +113,7 @@ Blockers resolved:
 
 Should-fix resolved:
 - Guard count corrected (19 = 17 reachability + 2 `!fail`); only Class A deleted.
-- Class B guards (`user/claim-discovery.spec.md` YAML+`.mjs` greps, `ledger/improvement.spec.md` live-proof `.json`, `evidence/index.spec.md` `.cautilus/**` artifacts) are retained, not deleted — trace cannot express non-`.md` targets.
+- Class B guards (`user/claim-discovery.spec.md` YAML+`.mjs` greps, `ledger/improvement.spec.md` live-proof `.json`, `evidence/index.spec.md` `.cautilus/**` artifacts) are retained, not deleted — trace cannot express non-`.md` targets. (Slice 2b note: `ledger/improvement.spec.md` was later deleted in the multi-view collapse; its live-proof `.json` existence guard was superseded by the stronger `cautilus-json-file` field assertions already in the `user/improvement.spec.md` leaf, and `evidence/index.spec.md`'s `existsSync` block was removed for the same reason — see "Slice 2b Delivered".)
 - `specdown trace -strict` passes vacuously with zero typed docs; gate is committed only after the apex + ≥1 promise are typed, with the non-vacuity acceptance check.
 
 Confirmed over-worry (no change needed):
@@ -179,6 +179,26 @@ Deviations / residual risk:
 
 - SCOPE: Slice 2a delivers only the typed-graph extension. The multi-view COLLAPSE (demoting/merging the per-view index + ledger-restatement pages now that edges derive the relationships) is Slice 2b and is gated on user decision D1 (generate view pages from `specdown trace --format dot/matrix` vs. trim to thin nav). The ledger/index/view pages still restate relationships that the edges now also carry — that duplication is intentional-for-now and is exactly what 2b removes; nothing in 2a is left structurally broken if 2b is delayed.
 - RESIDUAL RISK (carried from Slice 1): editing claim-source docs re-churns `.cautilus/claims/evidenced-typed-runners.json` (line-number-driven fingerprint shifts; large keep/rewrite/drop counts) even though the buckets and 7/7 stay stable. The structural-assertion conversion for `user/claim-discovery.spec.md`'s live-bucket checks remains a good follow-up; it did not break this slice (buckets held at 7).
+
+## Slice 2b Delivered (2026-06-21)
+
+D1 decision (user, this session): **Hybrid** — delete the pure-restatement pages, trim the per-view index pages to thin navigation, and generate one SOT-derived overview from the trace graph.
+
+Executed and verified (`npm run verify` all phases passed, honesty audit 7/7, `specdown trace -strict` 26 typed docs / 45 edges, `lint:links` clean, `specdown:ledger:check` gating):
+
+- GENERATED overview (committed `408eb8a6`): `docs/specs/ledger/promise-ledger.spec.md` is now rendered from the trace graph by `scripts/agent-runtime/render-promise-ledger.mjs` (per-promise Promise Map + reverse Cross-Cutting Rule Coverage), with unit + fixture tests and a `specdown:ledger:check` verify phase that fails on drift. The page carries a "do not edit by hand" notice.
+- DELETED 5 pure-restatement pages (content fully subsumed by the leaf edges + the generated map): `ledger/{readiness,claim-discovery,evaluation,improvement}.spec.md` and `ledger/how-views-relate.spec.md`.
+- TRIMMED 5 index pages to thin navigation (removed the relationship-restatement tables, kept genuine nav and any real executable check): `user/index.spec.md` (kept its `doctor commands` check block), `contracts/index.spec.md` (kept the route list incl. the untyped `rules-policy`), `rules/index.spec.md`, `evidence/index.spec.md` (also removed a leftover `node -e existsSync` reachability guard), `ledger/index.spec.md`.
+- Inbound `../ledger/<promise>` links in `rules/evidence-gaps.spec.md`, `rules/reviewable-artifacts.spec.md`, and one historical `charness-artifacts/eval-trust/*` doc were repointed to the surviving `../user/<promise>` pages.
+- Class B migration: deleting `ledger/improvement.spec.md` removed its live-proof `.json` existence guard, which is superseded by the stronger `cautilus-json-file` field assertions already in the `user/improvement.spec.md` leaf — a coverage upgrade, not a loss.
+
+Deviation from the approved DELETE list (surfaced, not silently resolved):
+
+- The Hybrid preview listed `evidence/evidence-map.spec.md` and `ledger/names-and-keys.spec.md` for deletion, but a prior finding (`charness-artifacts/spec/2026-06-20-specdown-rewrite-goldset-projection.md`) flags both as carrying lenses NOT subsumed by the edges. On inspection that is correct: `evidence-map` is an `evidence.*`-keyed evidence-route ownership map with per-route freshness state and routes (e.g. `review-learning-*`, `host-boundary`) that have no trace-edge equivalent; `names-and-keys` carries the stable↔user-facing name aliases, the compact-key convention, and the rename rule. Per the CLAUDE.md conflict-surfacing rule, both were KEPT (stale `../ledger/*` links repointed to `../user/*`, reachability re-added from `evidence/index` and `ledger/index`) and the delete-vs-keep-vs-trim call was raised to the user rather than silently dropping non-subsumed content. The bounded critique independently confirmed both are rightly kept.
+
+Accepted minor loss: `how-views-relate.spec.md`'s "Context Map" newcomer-orientation table (which context owns what) has no verbatim home now; the surviving index-page intros and the generated ledger cover the navigational function. Recorded as an accepted trade, restorable if a reader-orientation gap shows up.
+
+Critique (full — fresh-eye general-purpose subagent, read-only, claims verified against the repo): A (information loss) PASS, B (keep decision) PASS, C (generator honesty / drift gate bites) PASS, D (trim honesty + reachability, 39 specs) PASS, E (consistency) — flagged this contract was not yet updated; fixed by this section + the Slice 1 Class B note above.
 
 ## Migration Map (full target, for context)
 

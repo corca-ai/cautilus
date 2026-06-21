@@ -11,7 +11,7 @@ Key: `rule.reviewable-artifacts`.
 ## Where To Check This
 
 - User-facing page: [Reviewable Artifacts](../user/reviewable-artifacts.spec.md)
-- Primary workflow attachments: [Claim Discovery](../ledger/claim-discovery.spec.md), [Behavior Evaluation](../ledger/evaluation.spec.md), [Bounded Improvement](../ledger/improvement.spec.md)
+- Primary workflow attachments: [Claim Discovery](../user/claim-discovery.spec.md), [Behavior Evaluation](../user/evaluation.spec.md), [Bounded Improvement](../user/improvement.spec.md)
 - Maintainer evidence routes: [Evidence State And Review Artifacts](../contracts/evidence-state-artifacts.spec.md), [Reporting And Review Variants](../contracts/reporting-review-variants.spec.md), [Active Run And Workspace Lifecycle](../contracts/active-run-workspace.spec.md)
 
 ## Link Checks

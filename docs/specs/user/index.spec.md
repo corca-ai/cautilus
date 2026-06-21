@@ -8,7 +8,7 @@ Each workflow page names the user job, the Cautilus surface, the expected outcom
 
 Maintainer view: [Contracts](../contracts/index.spec.md).
 Full spec entry: [Cautilus Promise Specs](../index.spec.md).
-Shared concerns: [Cross-Cutting Rules](../rules/index.spec.md).
+Cross-cutting rules and per-promise rule/contract map: [Cross-Cutting Rules](../rules/index.spec.md), [Promise Ledger](../ledger/promise-ledger.spec.md).
 
 ## Workflow Stories
 
@@ -19,18 +19,7 @@ Shared concerns: [Cross-Cutting Rules](../rules/index.spec.md).
 
 Read this index first when judging the product story.
 The main stories are ordered by the user's workflow.
-The shared-concern section keeps workflow-wide rules and risks visible.
-
-## Cross-Cutting Rules To Keep In View
-
-- [Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen.
-- [Evidence Gaps](evidence-gaps.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.
-- [Host Ownership](ownership.spec.md): prompts, models, credentials, runtime wiring, fixtures, and acceptance policy stay in the host repo while Cautilus standardizes workflow packets and boundaries.
-- [A Testable Agent](a-testable-agent.spec.md): before proving behavior you need a clean headless runner and an honest verdict on whether it fits the selected surface; the binary reports runner readiness as a setup substrate under claim, eval, and improve. Primary surfaces: `cautilus doctor status`, `cautilus evaluate claims plan`, and the `cautilus-agent` skill.
-- [Agent-Human Resumability](../rules/agent-human-resumability.spec.md): workflow packets and next actions should let a human or agent resume without relying on chat memory, while source-bound review feedback can become reusable learning evidence about which discovery or evaluation work was useful.
-
-Shared concerns should stay visible here and should also appear locally inside the main stories where they constrain the workflow.
-For example, readiness uses `meaning` and `detail` consistently in the `doctor` packet, while evaluation and improvement show latest evidence artifacts instead of hiding cost or proof state.
+Shared concerns (reviewability, evidence gaps, ownership, freshness, resumability) are carried as `governed-by::` edges on each promise leaf and mapped in the [Promise Ledger](../ledger/promise-ledger.spec.md).
 
 > check:cautilus-command
 | args_json | stdout_includes |

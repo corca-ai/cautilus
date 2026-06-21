@@ -1,9 +1,9 @@
 {
-  "candidateCount": 405,
+  "candidateCount": 396,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 405,
+    "matchedClaimCount": 393,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -4221,141 +4221,6 @@
         }
       ],
       "summary": "Use this page to answer four questions: is my repo ready, what promises did Cautilus find, can I evaluate behavior, and can I improve it safely?",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:6e0316804b72f36583b3b0b346f74cb1ad0cbc96973008f891dd426e2f7eeeb7",
-      "claimId": "claim-docs-specs-user-index-spec-md-22",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:README.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "The shared-concern section keeps workflow-wide rules and risks visible.",
-          "line": 22,
-          "path": "docs/specs/user/index.spec.md"
-        }
-      ],
-      "summary": "The shared-concern section keeps workflow-wide rules and risks visible.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:9313745952e5568f9cbcb2f58bd22cf7259212aab3ba1a7fa3d8fccd232e2931",
-      "claimId": "claim-docs-specs-user-index-spec-md-26",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [
-        {
-          "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
-          "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
-          "supportsClaimIds": [
-            "claim-docs-specs-user-index-spec-md-26",
-            "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
-            "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
-            "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
-          ]
-        }
-      ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by current reviewable-artifacts evidence covering schema-versioned packet outputs and readable projections that preserve JSON/source-artifact audit boundaries.",
-      "groupHints": [
-        "audience:user",
-        "deterministic",
-        "linked-from:README.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep the user workflow index aligned with reviewable-artifact packet and projection evidence when workflow stories change.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "[Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen.",
-          "line": 26,
-          "path": "docs/specs/user/index.spec.md"
-        }
-      ],
-      "summary": "[Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The user index cross-links the reviewable-artifacts workflow contract, which is protected by deterministic packet and renderer tests."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:75d46a105c3115d7cfc7165b168ec83e67bf13a8d6d9031aa3a91e20144b6200",
-      "claimId": "claim-docs-specs-user-index-spec-md-27",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "human-auditable",
-        "linked-from:README.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "[Evidence Gaps](evidence-gaps.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.",
-          "line": 27,
-          "path": "docs/specs/user/index.spec.md"
-        }
-      ],
-      "summary": "[Evidence Gaps](evidence-gaps.spec.md): discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:73885eb2c9399de0be6807fe9399da21adaa8b1db5e64394a16c0e9bf84af4d8",
-      "claimId": "claim-docs-specs-user-index-spec-md-32",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:README.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Shared concerns should stay visible here and should also appear locally inside the main stories where they constrain the workflow.",
-          "line": 32,
-          "path": "docs/specs/user/index.spec.md"
-        }
-      ],
-      "summary": "Shared concerns should stay visible here and should also appear locally inside the main stories where they constrain the workflow.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -10178,64 +10043,31 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:59085f0a637f5cf736fab8e40f2e9015a3e8379f8d890982a16a611a7a74b128",
-      "claimId": "claim-docs-specs-ledger-index-spec-md-4",
+      "claimFingerprint": "sha256:309f43c4243c6f0c6fad10e4d2f7d89e3585e8077905f01a8922a6cbc90e2e07",
+      "claimId": "claim-docs-specs-evidence-index-spec-md-8",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:docs/specs/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "The ledger shows which workflow, contract, cross-cutting rule, and evidence page owns each claim.",
-          "line": 4,
-          "path": "docs/specs/ledger/index.spec.md"
-        }
-      ],
-      "summary": "The ledger shows which workflow, contract, cross-cutting rule, and evidence page owns each claim.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:d8de65c1c98b693f344cbda914846c51ecf3d7840b152d658f7c87f8fd9629b8",
-      "claimId": "claim-docs-specs-rules-agent-human-resumability-spec-md-7",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "dev/skill",
+        "human-auditable",
         "linked-from:docs/specs/contracts/index.spec.md",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Cautilus should leave enough source refs, packets, next actions, source-bound review feedback, and readable reports that a human or agent can resume the workflow without relying on chat memory.",
-          "line": 7,
-          "path": "docs/specs/rules/agent-human-resumability.spec.md"
+          "excerpt": "[Evidence Map](evidence-map.spec.md): which durable evidence route supports each promise/rule, where to inspect it, and its freshness state.",
+          "line": 8,
+          "path": "docs/specs/evidence/index.spec.md"
         }
       ],
-      "summary": "Cautilus should leave enough source refs, packets, next actions, source-bound review feedback, and readable reports that a human or agent can resume the workflow without relying on chat memory.",
+      "summary": "[Evidence Map](evidence-map.spec.md): which durable evidence route supports each promise/rule, where to inspect it, and its freshness state.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
       "claimAudience": "developer",
@@ -10249,7 +10081,7 @@
         "audience:developer",
         "cautilus-eval",
         "dev/repo",
-        "linked-from:docs/specs/contracts/index.spec.md",
+        "linked-from:docs/specs/user/evaluation.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -10271,35 +10103,6 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:76de0ee17ca2f39e0c2e02dae735433d2b7720f0ddf8421dd631aa18743b1275",
-      "claimId": "claim-docs-specs-rules-evidence-gaps-spec-md-7",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "human-auditable",
-        "linked-from:docs/specs/contracts/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.",
-          "line": 7,
-          "path": "docs/specs/rules/evidence-gaps.spec.md"
-        }
-      ],
-      "summary": "Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:b6ca7b3acadd16c0a257a55e9fdfd4faa1dd362c66f88d26caf2fa22165676e2",
       "claimId": "claim-docs-specs-rules-host-owned-execution-spec-md-8",
       "claimSemanticGroup": "Packets and reporting",
@@ -10308,7 +10111,7 @@
       "groupHints": [
         "audience:developer",
         "human-auditable",
-        "linked-from:docs/specs/contracts/index.spec.md",
+        "linked-from:docs/specs/user/evaluation.spec.md",
         "needs-alignment",
         "spec"
       ],
@@ -10338,7 +10141,7 @@
       "groupHints": [
         "audience:developer",
         "human-auditable",
-        "linked-from:docs/specs/contracts/index.spec.md",
+        "linked-from:docs/specs/user/evaluation.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -10381,7 +10184,7 @@
       "groupHints": [
         "audience:developer",
         "deterministic",
-        "linked-from:docs/specs/contracts/index.spec.md",
+        "linked-from:docs/specs/user/evaluation.spec.md",
         "spec"
       ],
       "lifecycle": "new",
@@ -10399,39 +10202,6 @@
       "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The rule-level claim names a packet-first, readable-view workflow contract that is protected by deterministic renderer, projection-matrix, and link checks."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:67fd68d9d781f19a59337b4fd9122b69e9a59a7d4737485ba4b2ee0afe6ba906",
-      "claimId": "claim-docs-specs-rules-vocabulary-consistency-spec-md-7",
-      "claimSemanticGroup": "Quality gates",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Not marked satisfied: docs/specs/rules/vocabulary-consistency.spec.md points to `gap.vocabulary-evidence-bundle`, so the honest next step is to create or approve a dedicated vocabulary evidence bundle before attaching proof.",
-      "groupHints": [
-        "audience:developer",
-        "human-auditable",
-        "linked-from:docs/specs/contracts/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Resolve `gap.vocabulary-evidence-bundle` by defining the vocabulary probe scope across user prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests, then create `.cautilus/claims/evidence-vocabulary-consistency-current.json` or record an explicit waiver.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "The same product concept should keep the same name in user-facing prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests.",
-          "line": 7,
-          "path": "docs/specs/rules/vocabulary-consistency.spec.md"
-        }
-      ],
-      "summary": "The same product concept should keep the same name in user-facing prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests.",
-      "unresolvedQuestions": [
-        "Which vocabulary surface set should be authoritative for the first dedicated consistency bundle?"
-      ],
-      "verificationReadiness": "needs-alignment",
-      "whyThisLayer": "The rule-level claim names cross-surface product vocabulary consistency, and the current rule spec explicitly records the missing dedicated evidence bundle as `gap.vocabulary-evidence-bundle`."
     },
     {
       "claimAudience": "user",
@@ -11292,81 +11062,6 @@
       "summary": "`doctor status --json` gives Cautilus Agent an orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim says a skill, agent, or subagent should choose, show, merge, cite, or sequence workflow behavior, which needs skill-behavior evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:4c2869e4e3b80325611de1405c7b61535118ce7f18e2b3c33e22f61b61aaa938",
-      "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-8",
-      "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [
-        {
-          "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
-          "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
-          "supportsClaimIds": [
-            "claim-docs-specs-user-evidence-gaps-spec-md-8",
-            "claim-docs-specs-user-ownership-spec-md-27",
-            "claim-docs-specs-user-ownership-spec-md-45",
-            "claim-docs-contracts-improvement-md-27",
-            "claim-docs-contracts-improvement-md-34"
-          ]
-        }
-      ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by the current status-summary packet and renderer tests: `nonVerdictNotice` states that discovered claims are not verified until evidence is attached, and evidence-state/status report projections preserve open proof work.",
-      "groupHints": [
-        "audience:user",
-        "deterministic",
-        "linked-from:docs/specs/user/index.spec.md",
-        "needs-alignment",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep the candidate-not-proof notice and evidence-state projection checks current when status packet shape changes.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "The claim status summary keeps the candidate-not-proof boundary visible to users.",
-          "line": 8,
-          "path": "docs/specs/user/evidence-gaps.spec.md"
-        }
-      ],
-      "summary": "The claim status summary keeps the candidate-not-proof boundary visible to users.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names packet-visible candidate-not-proof status, which is directly covered by the current status summary packet and status report renderer tests."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:610711807261f74ef23c566ed7e582579a63845ed640c186d4acac6e89bebfdc",
-      "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-36",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "human-auditable",
-        "linked-from:docs/specs/user/index.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "A user can keep missing or weak evidence visible as next work.",
-          "line": 36,
-          "path": "docs/specs/user/evidence-gaps.spec.md"
-        }
-      ],
-      "summary": "A user can keep missing or weak evidence visible as next work.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
       "claimAudience": "user",
@@ -13732,161 +13427,6 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:78ce9427a5914fcbdd9f0731fa4f3c66028d320d30e4e789c30a0cdbdd96c28b",
-      "claimId": "claim-docs-specs-ledger-claim-discovery-spec-md-16",
-      "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [
-        {
-          "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
-          "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
-          "supportsClaimIds": [
-            "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
-            "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
-            "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
-            "claim-docs-contracts-scenario-proposal-sources-md-236",
-            "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
-            "claim-docs-specs-ledger-claim-discovery-spec-md-16",
-            "claim-skills-cautilus-agent-skill-md-13",
-            "claim-skills-cautilus-agent-skill-md-23"
-          ]
-        }
-      ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by claim-discovery curation and reviewer-launch audit tests plus selected evidence artifacts: deterministic discovery has executable proof, and the full curation/reviewer route remains prepared or fixture-backed with explicit stop boundaries instead of being claimed as a completed live verdict.",
-      "groupHints": [
-        "audience:developer",
-        "deterministic",
-        "linked-from:docs/specs/rules/evidence-gaps.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep claim-discovery ledger wording honest until a completed live Cautilus Agent curation proof exists.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "The deterministic `discover claims` surface has executable proof, while full Cautilus Agent curation proof remains prepared or fixture-backed rather than a completed live dogfood verdict.",
-          "line": 16,
-          "path": "docs/specs/ledger/claim-discovery.spec.md"
-        }
-      ],
-      "summary": "The deterministic `discover claims` surface has executable proof, while full Cautilus Agent curation proof remains prepared or fixture-backed rather than a completed live dogfood verdict.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names the current evidence-state boundary: deterministic claim discovery is proven while full Cautilus Agent curation remains prepared/open rather than completed live dogfood."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:7c0f37fe8f11b1b00b6d77a43e7893e04e3050704849f4ee34822dcaefd78c14",
-      "claimId": "claim-docs-specs-ledger-evaluation-spec-md-16",
-      "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "dev/repo",
-        "linked-from:docs/specs/rules/reviewable-artifacts.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Selected evidence bundles are shown in the user view without rerunning expensive eval loops, and maintainer routes own fixture and runner proof.",
-          "line": 16,
-          "path": "docs/specs/ledger/evaluation.spec.md"
-        }
-      ],
-      "summary": "Selected evidence bundles are shown in the user view without rerunning expensive eval loops, and maintainer routes own fixture and runner proof.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:3506e9f5cbc0175a547c31afdc6eb818bf20736601df0b8d0fca8d4fe8e1db26",
-      "claimId": "claim-docs-specs-ledger-improvement-spec-md-5",
-      "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [
-        {
-          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
-          "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "possible",
-          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
-          "supportsClaimIds": [
-            "claim-docs-specs-user-improvement-spec-md-23",
-            "claim-docs-specs-user-improvement-spec-md-41",
-            "claim-docs-specs-ledger-improvement-spec-md-5",
-            "claim-docs-specs-ledger-promise-ledger-spec-md-16"
-          ]
-        }
-      ],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "A concrete bounded-improvement scenario proposal exists, but the workflow has not yet been evaluated.",
-      "groupHints": [
-        "audience:developer",
-        "cautilus-eval",
-        "linked-from:docs/specs/rules/evidence-gaps.spec.md",
-        "needs-scenario",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Plan an app/prompt eval fixture from the `improve-preserves-protected-checks-budget-and-evidence` proposal.",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "agent-reviewed",
-      "sourceRefs": [
-        {
-          "excerpt": "Bounded Improvement improves a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.",
-          "line": 5,
-          "path": "docs/specs/ledger/improvement.spec.md"
-        }
-      ],
-      "summary": "Bounded Improvement improves a selected behavior target while preserving intent, explicit budget, protected checks, held-out evidence, and reviewable revision artifacts.",
-      "unresolvedQuestions": [
-        "Which protected scenario set should be used as the held-out side for this eval?"
-      ],
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The ledger claim summarizes bounded improvement behavior; the scenario proposal decomposes it into explicit budget, protected checks, held-out evidence, and artifact preservation."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:84bfe2ea4eeda3033f0e6dcac825e0e0d32d292acb04c7639b082ed5aa3a765c",
-      "claimId": "claim-docs-specs-ledger-improvement-spec-md-16",
-      "claimSemanticGroup": "Improvement and improvement",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "deterministic",
-        "linked-from:docs/specs/rules/evidence-gaps.spec.md",
-        "spec"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "The packet route is checked, and a live bounded improve cycle (`npm run proof:improve:live`) proves the loop recovers a held-out scenario it was never tuned on, with the operator-witnessed capture replayed deterministically.",
-          "line": 16,
-          "path": "docs/specs/ledger/improvement.spec.md"
-        }
-      ],
-      "summary": "The packet route is checked, and a live bounded improve cycle (`npm run proof:improve:live`) proves the loop recovers a held-out scenario it was never tuned on, with the operator-witnessed capture replayed deterministically.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
       "claimFingerprint": "sha256:1adbf232b44dd57e3ae1733bc9c2cf40c239479fe530dd29b96b2a751a1360fa",
       "claimId": "claim-docs-specs-ledger-names-and-keys-spec-md-4",
       "claimSemanticGroup": "Documentation and contracts",
@@ -13947,33 +13487,170 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "claimFingerprint": "sha256:8845e73c8baa1168045998bd91688457e123495fd87321e8859dc6c4605223f7",
-      "claimId": "claim-docs-specs-ledger-readiness-spec-md-5",
-      "claimSemanticGroup": "Claim discovery and review",
+      "claimFingerprint": "sha256:d8de65c1c98b693f344cbda914846c51ecf3d7840b152d658f7c87f8fd9629b8",
+      "claimId": "claim-docs-specs-rules-agent-human-resumability-spec-md-7",
+      "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
         "cautilus-eval",
-        "dev/repo",
-        "linked-from:docs/specs/rules/evidence-gaps.spec.md",
+        "dev/skill",
+        "linked-from:docs/specs/ledger/promise-ledger.spec.md",
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/skill",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Readiness means a user can tell whether Cautilus can safely operate in the selected repo and what setup is still missing before spending workflow budget.",
-          "line": 5,
-          "path": "docs/specs/ledger/readiness.spec.md"
+          "excerpt": "Cautilus should leave enough source refs, packets, next actions, source-bound review feedback, and readable reports that a human or agent can resume the workflow without relying on chat memory.",
+          "line": 7,
+          "path": "docs/specs/rules/agent-human-resumability.spec.md"
         }
       ],
-      "summary": "Readiness means a user can tell whether Cautilus can safely operate in the selected repo and what setup is still missing before spending workflow budget.",
+      "summary": "Cautilus should leave enough source refs, packets, next actions, source-bound review feedback, and readable reports that a human or agent can resume the workflow without relying on chat memory.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:76de0ee17ca2f39e0c2e02dae735433d2b7720f0ddf8421dd631aa18743b1275",
+      "claimId": "claim-docs-specs-rules-evidence-gaps-spec-md-7",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "human-auditable",
+        "linked-from:docs/specs/ledger/promise-ledger.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.",
+          "line": 7,
+          "path": "docs/specs/rules/evidence-gaps.spec.md"
+        }
+      ],
+      "summary": "Discovered or reviewed promises should not be treated as satisfied until valid evidence is attached, and missing or weak evidence should remain visible until the claim is proven, narrowed, deferred, or removed.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "claimFingerprint": "sha256:67fd68d9d781f19a59337b4fd9122b69e9a59a7d4737485ba4b2ee0afe6ba906",
+      "claimId": "claim-docs-specs-rules-vocabulary-consistency-spec-md-7",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "evidenceStatusReason": "Not marked satisfied: docs/specs/rules/vocabulary-consistency.spec.md points to `gap.vocabulary-evidence-bundle`, so the honest next step is to create or approve a dedicated vocabulary evidence bundle before attaching proof.",
+      "groupHints": [
+        "audience:developer",
+        "human-auditable",
+        "linked-from:docs/specs/ledger/promise-ledger.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Resolve `gap.vocabulary-evidence-bundle` by defining the vocabulary probe scope across user prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests, then create `.cautilus/claims/evidence-vocabulary-consistency-current.json` or record an explicit waiver.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The same product concept should keep the same name in user-facing prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests.",
+          "line": 7,
+          "path": "docs/specs/rules/vocabulary-consistency.spec.md"
+        }
+      ],
+      "summary": "The same product concept should keep the same name in user-facing prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests.",
+      "unresolvedQuestions": [
+        "Which vocabulary surface set should be authoritative for the first dedicated consistency bundle?"
+      ],
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The rule-level claim names cross-surface product vocabulary consistency, and the current rule spec explicitly records the missing dedicated evidence bundle as `gap.vocabulary-evidence-bundle`."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:4c2869e4e3b80325611de1405c7b61535118ce7f18e2b3c33e22f61b61aaa938",
+      "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-8",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
+          "supportsClaimIds": [
+            "claim-docs-specs-user-evidence-gaps-spec-md-8",
+            "claim-docs-specs-user-ownership-spec-md-27",
+            "claim-docs-specs-user-ownership-spec-md-45",
+            "claim-docs-contracts-improvement-md-27",
+            "claim-docs-contracts-improvement-md-34"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the current status-summary packet and renderer tests: `nonVerdictNotice` states that discovered claims are not verified until evidence is attached, and evidence-state/status report projections preserve open proof work.",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "linked-from:docs/specs/user/doctor-readiness.spec.md",
+        "needs-alignment",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep the candidate-not-proof notice and evidence-state projection checks current when status packet shape changes.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "agent-reviewed",
+      "sourceRefs": [
+        {
+          "excerpt": "The claim status summary keeps the candidate-not-proof boundary visible to users.",
+          "line": 8,
+          "path": "docs/specs/user/evidence-gaps.spec.md"
+        }
+      ],
+      "summary": "The claim status summary keeps the candidate-not-proof boundary visible to users.",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names packet-visible candidate-not-proof status, which is directly covered by the current status summary packet and status report renderer tests."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:610711807261f74ef23c566ed7e582579a63845ed640c186d4acac6e89bebfdc",
+      "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-36",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "human-auditable",
+        "linked-from:docs/specs/user/doctor-readiness.spec.md",
+        "spec"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A user can keep missing or weak evidence visible as next work.",
+          "line": 36,
+          "path": "docs/specs/user/evidence-gaps.spec.md"
+        }
+      ],
+      "summary": "A user can keep missing or weak evidence visible as next work.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
     {
       "claimAudience": "developer",
@@ -14361,43 +14038,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 291,
-      "user": 114
+      "developer": 286,
+      "user": 110
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 94,
+      "Agent and skill workflow": 93,
       "Claim discovery and review": 55,
-      "Documentation and contracts": 88,
+      "Documentation and contracts": 84,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 31,
-      "Packets and reporting": 47,
+      "Improvement and improvement": 29,
+      "Packets and reporting": 45,
       "Quality gates": 22,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
-      "satisfied": 144,
-      "unknown": 261
+      "satisfied": 142,
+      "unknown": 254
     },
     "byLifecycle": {
-      "new": 405
+      "new": 396
     },
     "byRecommendedProof": {
-      "cautilus-eval": 124,
-      "deterministic": 176,
+      "cautilus-eval": 118,
+      "deterministic": 173,
       "human-auditable": 105
     },
     "byReviewStatus": {
-      "agent-reviewed": 198,
-      "heuristic": 205,
+      "agent-reviewed": 195,
+      "heuristic": 199,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 41,
       "needs-scenario": 1,
-      "ready-for-proof": 328
+      "ready-for-proof": 319
     }
   },
   "discoveryEngine": {
@@ -14593,7 +14270,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "daf24d18ae7bb4078397aed90776efe5d5d04ba7",
+  "gitCommit": "408eb8a6ce1742944c42e13dda6c544de3bdd723",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -14793,9 +14470,9 @@
     ],
     "appliedResultCount": 103,
     "skippedResultCount": 37,
-    "keptUpdateCount": 278,
+    "keptUpdateCount": 275,
     "rewrittenUpdateCount": 140,
-    "droppedUpdateCount": 250,
+    "droppedUpdateCount": 253,
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
@@ -15123,7 +14800,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 74,
+  "sourceCount": 69,
   "sourceGraph": [
     {
       "depth": 1,
@@ -15441,49 +15118,13 @@
       "depth": 2,
       "from": "docs/specs/contracts/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/rules/agent-human-resumability.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/contracts/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/rules/cost-and-proof-freshness.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/contracts/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/rules/evidence-gaps.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/contracts/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/rules/host-owned-execution.spec.md"
+      "to": "docs/specs/ledger/promise-ledger.spec.md"
     },
     {
       "depth": 2,
       "from": "docs/specs/contracts/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/index.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/contracts/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/rules/packet-freshness.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/contracts/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/rules/reviewable-artifacts.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/contracts/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/rules/vocabulary-consistency.spec.md"
     },
     {
       "depth": 2,
@@ -15639,19 +15280,13 @@
       "depth": 2,
       "from": "docs/specs/user/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/rules/agent-human-resumability.spec.md"
+      "to": "docs/specs/ledger/promise-ledger.spec.md"
     },
     {
       "depth": 2,
       "from": "docs/specs/user/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/index.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/user/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/a-testable-agent.spec.md"
     },
     {
       "depth": 2,
@@ -15675,25 +15310,7 @@
       "depth": 2,
       "from": "docs/specs/user/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/user/evidence-gaps.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/user/index.spec.md",
-      "kind": "markdown-link",
       "to": "docs/specs/user/improvement.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/user/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/ownership.spec.md"
-    },
-    {
-      "depth": 2,
-      "from": "docs/specs/user/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/reviewable-artifacts.spec.md"
     },
     {
       "depth": 2,
@@ -15871,153 +15488,153 @@
     },
     {
       "depth": 3,
-      "from": "docs/specs/rules/agent-human-resumability.spec.md",
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/active-run-workspace.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/rules/agent-human-resumability.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/binary-skill-boundary.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/agent-human-resumability.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/agent-human-resumability.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/reporting-review-variants.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/agent-human-resumability.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/evidence/index.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/agent-human-resumability.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/claim-discovery.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/agent-human-resumability.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/doctor-readiness.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/agent-human-resumability.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/ownership.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/evaluation-surfaces-runners.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/improvement-loop.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/scenario-history-normalization.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/evaluation.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/improvement.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/improvement-loop.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/readiness-runtime-status.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/evidence/gaps.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/claim-discovery.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/improvement.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/readiness.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/evidence-gaps.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/host-owned-execution.spec.md",
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/adapter-host-ownership.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/rules/host-owned-execution.spec.md",
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/binary-skill-boundary.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/rules/host-owned-execution.spec.md",
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/claim-discovery-workflow.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/evaluation-surfaces-runners.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/improvement-loop.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/contracts/live-invocation-runtime.spec.md"
     },
     {
       "depth": 3,
-      "from": "docs/specs/rules/host-owned-execution.spec.md",
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/readiness-runtime-status.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/reporting-review-variants.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/scenario-history-normalization.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/agent-human-resumability.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/cost-and-proof-freshness.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/evidence-gaps.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/host-owned-execution.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/packet-freshness.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/reviewable-artifacts.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/rules/vocabulary-consistency.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/a-testable-agent.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/claim-discovery.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/doctor-readiness.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/evaluation.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/improvement.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/ownership.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/reviewable-artifacts.spec.md"
     },
     {
       "depth": 3,
@@ -16081,162 +15698,6 @@
     },
     {
       "depth": 3,
-      "from": "docs/specs/rules/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/evidence-gaps.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/ownership.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/reviewable-artifacts.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/packet-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/active-run-workspace.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/packet-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/packet-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/reporting-review-variants.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/packet-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/evidence/index.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/packet-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/evaluation.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/packet-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/evidence-gaps.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/packet-freshness.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/reviewable-artifacts.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/active-run-workspace.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/reporting-review-variants.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/evidence/index.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/claim-discovery.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/evaluation.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/improvement.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/reviewable-artifacts.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/vocabulary-consistency.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/internal/working-patterns.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/vocabulary-consistency.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/adapter-host-ownership.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/vocabulary-consistency.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/binary-skill-boundary.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/vocabulary-consistency.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/vocabulary-consistency.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/evidence/gaps.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/vocabulary-consistency.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/claim-discovery.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/vocabulary-consistency.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/doctor-readiness.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/rules/vocabulary-consistency.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/user/ownership.spec.md"
-    },
-    {
-      "depth": 3,
       "from": "docs/specs/audit.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/index.spec.md"
@@ -16287,6 +15748,12 @@
       "depth": 3,
       "from": "docs/specs/ledger/index.spec.md",
       "kind": "markdown-link",
+      "to": "docs/specs/contracts/index.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/ledger/index.spec.md",
+      "kind": "markdown-link",
       "to": "docs/specs/evidence/index.spec.md"
     },
     {
@@ -16305,30 +15772,6 @@
       "depth": 3,
       "from": "docs/specs/ledger/index.spec.md",
       "kind": "markdown-link",
-      "to": "docs/specs/ledger/claim-discovery.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/ledger/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/evaluation.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/ledger/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/how-views-relate.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/ledger/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/improvement.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/ledger/index.spec.md",
-      "kind": "markdown-link",
       "to": "docs/specs/ledger/names-and-keys.spec.md"
     },
     {
@@ -16336,18 +15779,6 @@
       "from": "docs/specs/ledger/index.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/ledger/promise-ledger.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/ledger/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/ledger/readiness.spec.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/specs/ledger/index.spec.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/rules/host-owned-execution.spec.md"
     },
     {
       "depth": 3,
@@ -16534,6 +15965,150 @@
       "from": "docs/specs/user/ownership.spec.md",
       "kind": "markdown-link",
       "to": "docs/specs/rules/vocabulary-consistency.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/evaluation-surfaces-runners.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/improvement-loop.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/scenario-history-normalization.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/evaluation.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/cost-and-proof-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/improvement.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/host-owned-execution.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/adapter-host-ownership.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/host-owned-execution.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/binary-skill-boundary.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/host-owned-execution.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/live-invocation-runtime.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/host-owned-execution.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/ownership.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/packet-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/active-run-workspace.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/packet-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/packet-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/reporting-review-variants.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/packet-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/evidence/index.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/packet-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/evaluation.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/packet-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/evidence-gaps.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/packet-freshness.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/reviewable-artifacts.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/active-run-workspace.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/evidence-state-artifacts.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/contracts/reporting-review-variants.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/evidence/index.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/claim-discovery.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/evaluation.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/improvement.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/specs/rules/reviewable-artifacts.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/user/reviewable-artifacts.spec.md"
     }
   ],
   "sourceInventory": [
@@ -16638,7 +16213,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:b9abc05d88c4840bd643edade705797a6848d34f9d9966ef9c787bfafba85b72",
+      "contentHash": "sha256:ddd8988dede5d91ecec9d0df03ecb3f8f9c9150366976279264820c8b8052662",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -16668,7 +16243,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:692347a7a164c7119d34cef165ff00d8b00920bb67bfa02701f5fda687399b49",
+      "contentHash": "sha256:45767d0f977f2fe9a3d583cec1d3274494a20f7b0d2a9b051f61889f436524df",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -16918,7 +16493,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:f9dae63670624a14ed0874dd01d189445f99651126e62467b29d316993f7b14a",
+      "contentHash": "sha256:07ca73cafa1b7d69d4e00405c9d4ff13d086ef3810d6d10dc3d54a3b75244f70",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -16928,7 +16503,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:711cf254970f2e2cf9ae33c2d2077ac0ad3f3a6e22ac8e2769f8485eb5042497",
+      "contentHash": "sha256:7fe9968cffd616ab0c3920dfd44b870043cf69c2b9fc67ecea6fc7e801362806",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
@@ -16938,11 +16513,11 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:d09b50603bdcbe45f36a88ef4f2b90f81edb2302e7271ae8a8d3763229622c2a",
+      "contentHash": "sha256:313deb4bbb33d022cc96a4b1fdce4e4318c273a086969f6b07ed43ae317cf713",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
-      "path": "docs/specs/rules/agent-human-resumability.spec.md",
+      "path": "docs/specs/ledger/promise-ledger.spec.md",
       "status": "read"
     },
     {
@@ -16950,7 +16525,7 @@
       "claimAudienceSource": "path-default",
       "contentHash": "sha256:bf0dcad8773e27377f2287e46e2d8e6daed387a5afafb42a9122c57f6f3d8504",
       "depth": 2,
-      "discoveredFrom": "docs/specs/contracts/index.spec.md",
+      "discoveredFrom": "docs/specs/user/evaluation.spec.md",
       "kind": "spec",
       "path": "docs/specs/rules/cost-and-proof-freshness.spec.md",
       "status": "read"
@@ -16958,19 +16533,9 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:6ced207103719ee706a93bbbf5e9f0bcbdc68e03ce2ca2011a748b54d2ba5c6f",
-      "depth": 2,
-      "discoveredFrom": "docs/specs/contracts/index.spec.md",
-      "kind": "spec",
-      "path": "docs/specs/rules/evidence-gaps.spec.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
       "contentHash": "sha256:d888ef7922f4185d213fae604f53f67d95435c8a6a0b0c848ee6d1c4ae2acb74",
       "depth": 2,
-      "discoveredFrom": "docs/specs/contracts/index.spec.md",
+      "discoveredFrom": "docs/specs/user/evaluation.spec.md",
       "kind": "spec",
       "path": "docs/specs/rules/host-owned-execution.spec.md",
       "status": "read"
@@ -16978,7 +16543,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:cea502c79bcb15b1e6503aea2b5226b951080e6f595bfb9183ab09df9731f305",
+      "contentHash": "sha256:73d003ca31280c50871e98f170970549a38e106f10bb87ee78c060a314582d46",
       "depth": 2,
       "discoveredFrom": "docs/specs/contracts/index.spec.md",
       "kind": "spec",
@@ -16990,7 +16555,7 @@
       "claimAudienceSource": "path-default",
       "contentHash": "sha256:a855e9a1fbcf5501168a67fb644d02569c85e4ee6338bada296377a4a4cb3899",
       "depth": 2,
-      "discoveredFrom": "docs/specs/contracts/index.spec.md",
+      "discoveredFrom": "docs/specs/user/evaluation.spec.md",
       "kind": "spec",
       "path": "docs/specs/rules/packet-freshness.spec.md",
       "status": "read"
@@ -16998,21 +16563,11 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:11a85e2693543e15f0c00b408d533cd4336ce87d231d9777953e4db0f84487fe",
+      "contentHash": "sha256:c0abf9f981b72de1dbffd2c61f74650a11bc1cec90b632ee0bf85cb21c25644c",
       "depth": 2,
-      "discoveredFrom": "docs/specs/contracts/index.spec.md",
+      "discoveredFrom": "docs/specs/user/evaluation.spec.md",
       "kind": "spec",
       "path": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "contentHash": "sha256:21c5f50568a5f4b51b6a25cfad8dd6273d7220530d583fb51816fc7eeab2c0ea",
-      "depth": 2,
-      "discoveredFrom": "docs/specs/contracts/index.spec.md",
-      "kind": "spec",
-      "path": "docs/specs/rules/vocabulary-consistency.spec.md",
       "status": "read"
     },
     {
@@ -17043,16 +16598,6 @@
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",
       "path": "docs/specs/user/doctor-readiness.spec.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:2b115ac5a39e4d96909557e63d9b81fd2334c80cee1088676519d2dda46b73cc",
-      "depth": 2,
-      "discoveredFrom": "docs/specs/user/index.spec.md",
-      "kind": "spec",
-      "path": "docs/specs/user/evidence-gaps.spec.md",
       "status": "read"
     },
     {
@@ -17158,7 +16703,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:93b965d80cf2536a2ec86899dd2bc880490b911431ed0202bbc023cff02ffc50",
+      "contentHash": "sha256:75a30a0924a86cfc810547f05d8fa7240899f409f6c1c1ff6d99e6374543b135",
       "depth": 3,
       "discoveredFrom": "docs/specs/evidence/index.spec.md",
       "kind": "spec",
@@ -17198,47 +16743,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:b4cd41e18bad35ffb307f5fca019185d5dc1bbef8582ddc0bdfb459351f97102",
-      "depth": 3,
-      "discoveredFrom": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "spec",
-      "path": "docs/specs/ledger/claim-discovery.spec.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "contentHash": "sha256:b91dcbede42f7af8fa24db7a6d919a8805476f80bb0ca2db1660a2db4f1f1f44",
-      "depth": 3,
-      "discoveredFrom": "docs/specs/rules/reviewable-artifacts.spec.md",
-      "kind": "spec",
-      "path": "docs/specs/ledger/evaluation.spec.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "contentHash": "sha256:7fbaa0419446c24577863cdad50d92ef88390af8f02ff51bfff7b42ded710ac2",
-      "depth": 3,
-      "discoveredFrom": "docs/specs/ledger/index.spec.md",
-      "kind": "spec",
-      "path": "docs/specs/ledger/how-views-relate.spec.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "contentHash": "sha256:fc58ee4d56c58858359b61d74afece1822cedd9f99210bd7596dfa47f5b83fb7",
-      "depth": 3,
-      "discoveredFrom": "docs/specs/rules/evidence-gaps.spec.md",
-      "kind": "spec",
-      "path": "docs/specs/ledger/improvement.spec.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "path-default",
-      "contentHash": "sha256:24e2328dd9ac45626c13daa9cd4b32ba1112878726917f0ffaf9728ab186bef3",
+      "contentHash": "sha256:83464671b07887bd1fbdccaef2186b7de4f721d297e14166235f78b0771134dd",
       "depth": 3,
       "discoveredFrom": "docs/specs/ledger/index.spec.md",
       "kind": "spec",
@@ -17248,21 +16753,41 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:313deb4bbb33d022cc96a4b1fdce4e4318c273a086969f6b07ed43ae317cf713",
+      "contentHash": "sha256:d09b50603bdcbe45f36a88ef4f2b90f81edb2302e7271ae8a8d3763229622c2a",
       "depth": 3,
-      "discoveredFrom": "docs/specs/rules/index.spec.md",
+      "discoveredFrom": "docs/specs/ledger/promise-ledger.spec.md",
       "kind": "spec",
-      "path": "docs/specs/ledger/promise-ledger.spec.md",
+      "path": "docs/specs/rules/agent-human-resumability.spec.md",
       "status": "read"
     },
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:3d84b7a04ea5681291b26577363eafbb81e0f198de18bd9b3c5ecc3625825ecb",
+      "contentHash": "sha256:0ef855515af4284fb9313b86f1025f85c1295c6a65b524462193dbb2c830ba64",
       "depth": 3,
-      "discoveredFrom": "docs/specs/rules/evidence-gaps.spec.md",
+      "discoveredFrom": "docs/specs/ledger/promise-ledger.spec.md",
       "kind": "spec",
-      "path": "docs/specs/ledger/readiness.spec.md",
+      "path": "docs/specs/rules/evidence-gaps.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "path-default",
+      "contentHash": "sha256:21c5f50568a5f4b51b6a25cfad8dd6273d7220530d583fb51816fc7eeab2c0ea",
+      "depth": 3,
+      "discoveredFrom": "docs/specs/ledger/promise-ledger.spec.md",
+      "kind": "spec",
+      "path": "docs/specs/rules/vocabulary-consistency.spec.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:2b115ac5a39e4d96909557e63d9b81fd2334c80cee1088676519d2dda46b73cc",
+      "depth": 3,
+      "discoveredFrom": "docs/specs/user/doctor-readiness.spec.md",
+      "kind": "spec",
+      "path": "docs/specs/user/evidence-gaps.spec.md",
       "status": "read"
     },
     {

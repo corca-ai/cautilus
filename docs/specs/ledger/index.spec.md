@@ -1,30 +1,19 @@
 # Cautilus Promise Ledger
 
-Read this when you need the current list of Cautilus behavior claims and the ownership map behind them.
-The ledger shows which workflow, contract, cross-cutting rule, and evidence page owns each claim.
-Start with the [User Workflow](../user/index.spec.md) when reading for the product story.
+Read this for the current Cautilus promise map: which cross-cutting rules govern and which contracts implement each promise.
+The relationships are carried by the typed trace edges on each promise leaf, so the ledger reads them instead of restating them by hand.
 
 Spec entry: [Cautilus](../index.spec.md).
 
-## Ledger Files
+## Pages
 
-- [Promise Ledger](promise-ledger.spec.md)
-- [How The Views Relate](how-views-relate.spec.md)
-- [Names And Keys](names-and-keys.spec.md)
-
-## Workflow Promises
-
-- [Readiness](readiness.spec.md)
-- [Claim Discovery](claim-discovery.spec.md)
-- [Behavior Evaluation](evaluation.spec.md)
-- [Bounded Improvement](improvement.spec.md)
-
-## Cross-Cutting Rules
-
-- [Host-Owned Execution](../rules/host-owned-execution.spec.md)
-- [Cross-Cutting Rules](../rules/index.spec.md)
-
-## Evidence State
-
-- [Evidence State](../evidence/index.spec.md)
+- [Promise Ledger](promise-ledger.spec.md): the promise → rules/contracts map, generated from the typed trace graph.
+- [Names And Keys](names-and-keys.spec.md): naming rules, the stable-name/user-facing-name aliases, compact keys, and the rename rule.
 - [Projected Claim State](../evidence/projected-claim-state.md): the generated tier/verdict/route view of the ratified claim set.
+
+## Related Views
+
+- [User Workflow](../user/index.spec.md)
+- [Contracts](../contracts/index.spec.md)
+- [Cross-Cutting Rules](../rules/index.spec.md)
+- [Evidence State](../evidence/index.spec.md)

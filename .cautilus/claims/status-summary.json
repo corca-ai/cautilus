@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 205
+          "unknown": 199
         },
         "byReviewStatus": {
-          "heuristic": 205
+          "heuristic": 199
         },
-        "count": 205,
+        "count": 199,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 144
+          "satisfied": 142
         },
         "byReviewStatus": {
-          "agent-reviewed": 144
+          "agent-reviewed": 142
         },
-        "count": 144,
+        "count": 142,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 34
+          "unknown": 33
         },
         "byReviewStatus": {
           "agent-reviewed": 1,
-          "heuristic": 32,
+          "heuristic": 31,
           "human-reviewed": 1
         },
-        "count": 34,
+        "count": 33,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -64,14 +64,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 119
+          "unknown": 113
         },
         "byReviewStatus": {
-          "agent-reviewed": 7,
-          "heuristic": 111,
+          "agent-reviewed": 6,
+          "heuristic": 106,
           "human-reviewed": 1
         },
-        "count": 119,
+        "count": 113,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -131,9 +131,9 @@
         "sampleClaimIds": [
           "claim-readme-md-60",
           "claim-docs-specs-index-spec-md-168",
-          "claim-docs-specs-user-index-spec-md-27",
           "claim-docs-specs-user-reviewable-artifacts-spec-md-68",
-          "claim-docs-contracts-claim-discovery-workflow-md-92"
+          "claim-docs-contracts-claim-discovery-workflow-md-92",
+          "claim-docs-contracts-claim-discovery-workflow-md-206"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
       },
@@ -159,7 +159,7 @@
       }
     ]
   },
-  "candidateCount": 405,
+  "candidateCount": 396,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -176,43 +176,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 291,
-      "user": 114
+      "developer": 286,
+      "user": 110
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 65,
-      "Agent and skill workflow": 94,
+      "Agent and skill workflow": 93,
       "Claim discovery and review": 55,
-      "Documentation and contracts": 88,
+      "Documentation and contracts": 84,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 31,
-      "Packets and reporting": 47,
+      "Improvement and improvement": 29,
+      "Packets and reporting": 45,
       "Quality gates": 22,
       "Release and packaging": 1
     },
     "byEvidenceStatus": {
-      "satisfied": 144,
-      "unknown": 261
+      "satisfied": 142,
+      "unknown": 254
     },
     "byLifecycle": {
-      "new": 405
+      "new": 396
     },
     "byRecommendedProof": {
-      "cautilus-eval": 124,
-      "deterministic": 176,
+      "cautilus-eval": 118,
+      "deterministic": 173,
       "human-auditable": 105
     },
     "byReviewStatus": {
-      "agent-reviewed": 198,
-      "heuristic": 205,
+      "agent-reviewed": 195,
+      "heuristic": 199,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 35,
       "needs-alignment": 41,
       "needs-scenario": 1,
-      "ready-for-proof": 328
+      "ready-for-proof": 319
     }
   },
   "discoveryBoundary": {
@@ -421,7 +421,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 144,
+    "satisfiedClaimCount": 142,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1434,28 +1434,6 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "A user can reopen observed behavior and summary packets after each eval."
-      },
-      {
-        "claimId": "claim-docs-specs-user-index-spec-md-26",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:7041033645ec309f0d34e93686e53e59ed107ab66afeb23d171e0552bd9a3b1b",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-reviewable-artifact-workflow-scope-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-specs-user-index-spec-md-26",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-3",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-4",
-              "claim-docs-specs-user-reviewable-artifacts-spec-md-6"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "[Reviewable Artifacts](reviewable-artifacts.spec.md): every workflow should leave machine-readable packets and readable views that another person or agent can reopen."
       },
       {
         "claimId": "claim-docs-specs-user-reviewable-artifacts-spec-md-7",
@@ -2907,29 +2885,6 @@
         "summary": "`discover claims status` owns next-action summaries over that saved packet."
       },
       {
-        "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-8",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-specs-user-evidence-gaps-spec-md-8",
-              "claim-docs-specs-user-ownership-spec-md-27",
-              "claim-docs-specs-user-ownership-spec-md-45",
-              "claim-docs-contracts-improvement-md-27",
-              "claim-docs-contracts-improvement-md-34"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "The claim status summary keeps the candidate-not-proof boundary visible to users."
-      },
-      {
         "claimId": "claim-docs-specs-user-ownership-spec-md-34",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -3345,30 +3300,27 @@
         "summary": "Expensive eval and improve loops should be represented by durable artifacts with enough provenance to reopen them."
       },
       {
-        "claimId": "claim-docs-specs-ledger-claim-discovery-spec-md-16",
+        "claimId": "claim-docs-specs-user-evidence-gaps-spec-md-8",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
-            "contentHash": "sha256:712888a2179bf3793cd2e76556cb7ed2dd067430707772a4ed113e246fc6b16d",
+            "contentHash": "sha256:dbea738dddc8a16579b85510c317197bc49024d7d063a4bad36f523a6c967418",
             "kind": "cautilus-claim-evidence-bundle",
             "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-final-deterministic-queue-2026-05-17.json",
+            "path": ".cautilus/claims/evidence-ownership-evidence-gaps-improvement-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
-              "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
-              "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
-              "claim-docs-contracts-scenario-proposal-sources-md-236",
-              "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
-              "claim-docs-specs-ledger-claim-discovery-spec-md-16",
-              "claim-skills-cautilus-agent-skill-md-13",
-              "claim-skills-cautilus-agent-skill-md-23"
+              "claim-docs-specs-user-evidence-gaps-spec-md-8",
+              "claim-docs-specs-user-ownership-spec-md-27",
+              "claim-docs-specs-user-ownership-spec-md-45",
+              "claim-docs-contracts-improvement-md-27",
+              "claim-docs-contracts-improvement-md-34"
             ]
           }
         ],
         "recommendedEvalSurface": null,
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
-        "summary": "The deterministic `discover claims` surface has executable proof, while full Cautilus Agent curation proof remains prepared or fixture-backed rather than a completed live dogfood verdict."
+        "summary": "The claim status summary keeps the candidate-not-proof boundary visible to users."
       },
       {
         "claimId": "claim-skills-cautilus-agent-skill-md-13",
@@ -3462,7 +3414,7 @@
       }
     ]
   },
-  "gitCommit": "daf24d18ae7bb4078397aed90776efe5d5d04ba7",
+  "gitCommit": "408eb8a6ce1742944c42e13dda6c544de3bdd723",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3474,17 +3426,17 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "daf24d18ae7bb4078397aed90776efe5d5d04ba7",
+    "currentGitCommit": "408eb8a6ce1742944c42e13dda6c544de3bdd723",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "daf24d18ae7bb4078397aed90776efe5d5d04ba7",
+    "packetGitCommit": "408eb8a6ce1742944c42e13dda6c544de3bdd723",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "gitStateSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
   "inputPath": ".cautilus/claims/evidenced-typed-runners.json",
   "inputSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "linkedMarkdownSourceCount": 72,
+  "linkedMarkdownSourceCount": 67,
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "recommendedNextActions": [
     {
@@ -3501,7 +3453,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 181,
+    "heuristicClaimsReadyForReview": 175,
     "needsAlignment": 41,
     "needsScenario": 1
   },
@@ -3531,6 +3483,6 @@
     }
   ],
   "schemaVersion": "cautilus.claim_status_summary.v1",
-  "sourceCount": 74,
+  "sourceCount": 69,
   "sourceRoot": "."
 }

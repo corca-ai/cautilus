@@ -25,14 +25,4 @@ Each contract page names the aligned claims or rules, the implementation promise
 - [Reporting And Review Variants](reporting-review-variants.spec.md)
 - [Scenario History And Proposal Normalization](scenario-history-normalization.spec.md)
 
-## Rule Mapping
-
-| cross-cutting rule | key | contract evidence routes |
-| --- | --- | --- |
-| [Reviewable Artifacts](../rules/reviewable-artifacts.spec.md) | `rule.reviewable-artifacts` | [Evidence State And Review Artifacts](evidence-state-artifacts.spec.md), [Reporting And Review Variants](reporting-review-variants.spec.md), [Active Run And Workspace Lifecycle](active-run-workspace.spec.md) |
-| [Evidence Gaps](../rules/evidence-gaps.spec.md) | `rule.evidence-gaps` | [Evidence State And Review Artifacts](evidence-state-artifacts.spec.md), [Improvement Loop](improvement-loop.spec.md), [Readiness And Runtime Status](readiness-runtime-status.spec.md) |
-| [Host-Owned Execution](../rules/host-owned-execution.spec.md) | `rule.host-owned-execution` | [Adapter And Host Ownership](adapter-host-ownership.spec.md), [Live Invocation Runtime](live-invocation-runtime.spec.md), [Binary And Skill Boundary](binary-skill-boundary.spec.md) |
-| [Vocabulary Consistency](../rules/vocabulary-consistency.spec.md) | `rule.vocabulary-consistency` | [Binary And Skill Boundary](binary-skill-boundary.spec.md), [Adapter And Host Ownership](adapter-host-ownership.spec.md), [Evidence State And Review Artifacts](evidence-state-artifacts.spec.md) |
-| [Packet Freshness](../rules/packet-freshness.spec.md) | `rule.packet-freshness` | [Evidence State And Review Artifacts](evidence-state-artifacts.spec.md), [Reporting And Review Variants](reporting-review-variants.spec.md), [Active Run And Workspace Lifecycle](active-run-workspace.spec.md) |
-| [Cost And Proof Freshness](../rules/cost-and-proof-freshness.spec.md) | `rule.cost-and-proof-freshness` | [Evaluation Surfaces And Runners](evaluation-surfaces-runners.spec.md), [Improvement Loop](improvement-loop.spec.md), [Scenario History And Proposal Normalization](scenario-history-normalization.spec.md) |
-| [Agent-Human Resumability](../rules/agent-human-resumability.spec.md) | `rule.agent-human-resumability` | [Evidence State And Review Artifacts](evidence-state-artifacts.spec.md), [Binary And Skill Boundary](binary-skill-boundary.spec.md), [Active Run And Workspace Lifecycle](active-run-workspace.spec.md), [Reporting And Review Variants](reporting-review-variants.spec.md) |
+Which promise each contract implements, and which rules each promise carries, is the [Promise Ledger](../ledger/promise-ledger.spec.md) map generated from the `implemented-by::` / `governed-by::` trace edges.
