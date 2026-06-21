@@ -127,6 +127,33 @@ Gate-admission note (critique S2): #10 is admitted by `claimLineLooksUseful` via
 
 Remaining (next Fork B slices): overlap eval→det is now **5** — the deferred shapes packet-emission prose #1, static-taxonomy #2, status-routing #4, R6-ish boundary #8, command-absence #9. **#9 command-absence is the next planned slice.** `human-auditable → deterministic` ×9 stays an R6/R12-scope question, not Fork B.
 
+## After: command-absence discriminator landed (2026-06-22, Fork B slice 4)
+
+Build contract: [2026-06-22-fork-b-command-absence.spec.md](./2026-06-22-fork-b-command-absence.spec.md).
+The clean routing measurement was taken on a code-only change; the contract realignment then self-extracted two candidates.
+
+| metric | before (Fork B slice 3) | after, routing-only (code change) | after realign + `claims:refresh:all` |
+| --- | --- | --- | --- |
+| overlap `cautilus-eval → deterministic` | 5 | **4** (#9 resolved) | 4 |
+| overlap agreeing count | 37 | **38** | 38 |
+| over-correction `deterministic → (key cautilus-eval)` | 5 | 5 (no new) | 5 |
+| over-correction `deterministic → (key human-auditable)` | 0 | 0 (no new) | 0 |
+| live `cautilus-eval` total | 164 | **163** (−1) | 164 (163 + 1 self-extracted) |
+| population | 490 | 490 (unchanged) | **492** (+2 self-extraction) |
+
+The `commandAbsenceClaim` discriminator — the inverse of R12 capability-existence — flipped exactly **one** live candidate on the routing-only measurement:
+- **#9** (`cf9b99…`, gold `deterministic`, T3) — "The workflow should avoid a `claim group` command." Source: `docs/contracts/claim-discovery-workflow.md`:576.
+
+The trigger is a command-addition absence phrasing (`avoid a`/`avoid the`/`avoid adding`/`should not add`/`should not introduce`/`does not add`) AND a backtick command token AND `command`/`subcommand`, with the shared judgment-verb guard. It deliberately avoids the bare negations `should not`/`does not`/`without` (the **danger axis**), which co-occur with `command` in genuine `cautilus-eval` claims (`ab43f0…` "should not mark …", `c2fd8b…` "does not prove …", `543403…` "without hiding …", `c4c35b…`). Across all 490 live candidates the full trigger — and even the absence-phrasing arm alone — matched only #9.
+
+Remaining overlap eval→det after the flip: **4** — exactly the deferred shapes `e1d40b…`, `65187b…`, `005c3b…`, `4755325…` (packet-emission prose #1, static-taxonomy #2, status-routing #4, R6-ish boundary #8). #9 is gone from the list.
+
+Gates met: **G1** #9 routes `deterministic` (frozen golden `TestClaimClassificationForkBCommandAbsenceRoutingIsFrozen`); **G2** the judgment-guard synthetic (carrying gate-lexicon `should`, admitted then routed `cautilus-eval` via the catch-all, not dropped) and the broad-negation `c2fd8b…` live line stay `cautilus-eval`, the unit guard table (`TestCommandAbsenceClaimGuard`) is green including the R12-inverse `ships a` pin and the `does not prove` danger-axis pin, and all prior frozen goldens + `TestGateRouterCoherence` (now with a reachable command-absence row) stay green; **G3** overlap eval→det dropped 5→4, agreeing rose 37→38, zero new over-correction; **G4** live eval dropped by exactly 1 (the #9 flip) on the routing-only measurement, no unrelated eval claim lost, routing-only population unchanged.
+
+Self-extraction note: the realignment prose added two deterministic-doc candidates, 490 → 492 — `2c14c5…` (the meta-sentence "slice 4 … added the `commandAbsenceClaim` discriminator … a claim that a named CLI command should NOT exist routes to deterministic", routed `cautilus-eval` via the catch-all) and `670695…` (the measurement sentence, routed `deterministic`). Notably the meta-sentence did NOT self-flip via the new discriminator: it says "should **NOT exist**", not "should not add", confirming the tight absence set holds even on meta-prose. The overlap accuracy metrics are unaffected (neither self-extracted candidate is in the answer key). The live `cautilus-eval` total reads 164 post-realign (163 routing-only minus #9, plus the one self-extracted meta-sentence).
+
+Remaining (next Fork B slices): overlap eval→det is now **4** — the deferred shapes packet-emission prose #1, static-taxonomy #2, status-routing #4. The R6-ish boundary #8 belongs to the R6/R12 family decision (alongside `human-auditable → deterministic` ×9), not a further Fork B discriminator.
+
 ## Reproduction
 
 ```

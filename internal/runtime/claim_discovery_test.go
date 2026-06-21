@@ -4332,6 +4332,79 @@ func TestSchemaFieldPersistenceClaimGuard(t *testing.T) {
 	}
 }
 
+func TestClaimClassificationForkBCommandAbsenceRoutingIsFrozen(t *testing.T) {
+	// Frozen golden for the 2026-06-22 Fork B command-absence discriminator (the
+	// inverse of R12 capability-existence). Any future broadening of
+	// commandAbsenceClaim (the absence-phrase set or the guard) must surface here
+	// as a diff and force gold-set review.
+	// Contract: charness-artifacts/eval-trust/2026-06-22-fork-b-command-absence.spec.md
+	cases := []struct {
+		name          string
+		line          string
+		wantProof     string
+		wantReadiness string
+	}{
+		// Intended flip (gold-confirmed deterministic, was over-assigned to cautilus-eval).
+		{"command-absence", "The workflow should avoid a `claim group` command.", "deterministic", "ready-for-proof"},
+		// Judgment-guard negative control (load-bearing): a behavior JUDGMENT that
+		// also says "avoid a `cmd` command", carrying a gate-lexicon verb (should) so
+		// it passes the live gate and routes cautilus-eval via the broad catch-all
+		// (via " agent") after the guard rejects it — not dropped.
+		{"negative-judge-avoid-command", "The judge should avoid a `rubric` command and grades the agent's runs better.", "cautilus-eval", ""},
+		// Broad-negation non-flip control (load-bearing, the danger axis): the real
+		// c2fd8b live line verbatim carries "does not" + backtick + "command" but NOT
+		// "does not add", so it stays cautilus-eval.
+		{"negative-broad-negation", "`fixture-smoke` means the product path and command routing can be exercised cheaply, but the result does not prove model or app behavior.", "cautilus-eval", ""},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got, ok := classifyClaimLine(tc.line)
+			if !ok {
+				t.Fatalf("expected a classification for %q, got none", tc.line)
+			}
+			if got.recommendedProof != tc.wantProof {
+				t.Fatalf("recommendedProof: want %q, got %q (%q)", tc.wantProof, got.recommendedProof, tc.line)
+			}
+			if tc.wantReadiness != "" && got.verificationReadiness != tc.wantReadiness {
+				t.Fatalf("verificationReadiness: want %q, got %q (%q)", tc.wantReadiness, got.verificationReadiness, tc.line)
+			}
+		})
+	}
+}
+
+func TestCommandAbsenceClaimGuard(t *testing.T) {
+	// Unit guard for commandAbsenceClaim: it fires only on a command-addition
+	// absence phrasing AND a backtick token AND command/subcommand, never on a
+	// judgment verb, never without a backtick token, never on a capability-EXISTENCE
+	// claim (the R12 inverse), and never on the bare-negation danger axis
+	// ("does not prove" / "should not mark"). Takes the space-padded lower form.
+	pad := func(line string) string { return " " + strings.ToLower(line) + " " }
+	cases := []struct {
+		name string
+		line string
+		want bool
+	}{
+		{"command-absence", "The workflow should avoid a `claim group` command.", true},
+		// Anchored-generalization positive: "should not add" + backtick + subcommand fires.
+		{"should-not-add-subcommand", "The CLI should not add a `claim group` subcommand.", true},
+		// Judgment-verb guard: a real judgment keeps the predicate false.
+		{"guard-judge-grades", "The judge should avoid a `rubric` command and grades the agent's runs better.", false},
+		// No-backtick control: the backtick command token is required.
+		{"no-backtick-not-fired", "The workflow should avoid a claim group command.", false},
+		// R12-inverse / no-absence control: a capability-EXISTENCE claim must not be swept.
+		{"r12-inverse-ships-not-fired", "Cautilus ships a `claim group` command for bundling.", false},
+		// Broad-negation danger-axis pin: "does not prove" (not "does not add") must NOT fire.
+		{"broad-negation-not-fired", "The result does not prove the `command` routing behaves.", false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := commandAbsenceClaim(pad(tc.line)); got != tc.want {
+				t.Fatalf("commandAbsenceClaim(%q) = %v, want %v", tc.line, got, tc.want)
+			}
+		})
+	}
+}
+
 func TestGateRouterCoherence(t *testing.T) {
 	// Coherence guard for the gate<->router invariant: a claim shape the router
 	// (classifyClaimLine) can route must also pass the upstream admission gate
@@ -4356,6 +4429,7 @@ func TestGateRouterCoherence(t *testing.T) {
 		{"named-packet-emission", "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.", false},
 		{"cli-flag-semantics", "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home.", false},
 		{"schema-field-persistence", "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics` (de-duplicated and led by `primaryEpic`), a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims.", false},
+		{"command-absence", "The workflow should avoid a `claim group` command.", false},
 		{"r6-ownership-assignment", "The Cautilus Agent should own orchestration that depends on an agent.", false},
 		{"r12-capability-existence", "Cautilus also ships a GEPA-style bounded prompt search seam: multi-generation reflective mutation and bounded merge synthesis.", false},
 		{"deterministic-unit-test", "The repo keeps a unit test for every adapter contract surface.", false},

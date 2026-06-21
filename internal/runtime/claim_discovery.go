@@ -1524,6 +1524,12 @@ var cliFlagOptionPattern = regexp.MustCompile(`--[a-z][a-z0-9-]+`)
 // before routing, which would otherwise destroy the camelCase signal.
 var schemaFieldCamelCasePattern = regexp.MustCompile("`[a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*`")
 
+// backtickTokenPattern matches any backtick-quoted token such as `claim group`.
+// It anchors a discriminator on a specifically NAMED entity (e.g. a command),
+// not generic prose. Lowercasing leaves backticks intact, so it is safe on the
+// space-padded lower form.
+var backtickTokenPattern = regexp.MustCompile("`[^`]+`")
+
 // namedPacketEmissionClaim recognizes the Fork B named-packet shape: a claim
 // whose dominant facet is emitting a named, versioned Cautilus packet, or that
 // explicitly does not call an LLM — both schema/golden-checkable deterministic
@@ -1648,6 +1654,45 @@ func schemaFieldPersistenceClaim(line string) bool {
 	return false
 }
 
+// commandAbsenceClaim recognizes the Fork B command-absence shape: a claim that a
+// named CLI command should NOT exist (e.g. "the workflow should avoid a `claim
+// group` command"). That a named command is absent from the registry is a static
+// repo-owned check — the exact inverse of R12 capabilityExistenceClaim — but the
+// broad noun catch-all would otherwise sweep it into cautilus-eval because the
+// line mentions a workflow/agent noun.
+//
+// The absence phrasing is tightly bound to command ADDITION ({avoid a/the/adding,
+// should not add, should not introduce, does not add}) and never the bare
+// negations {should not, does not, without}, which co-occur with "command" in
+// genuine eval behavior claims (the danger axis: "an agent should not mark ...",
+// "the result does not prove ...", "... without hiding workspace ownership").
+// A backtick token anchors a specifically named command, and the word
+// command/subcommand confirms the shape.
+//
+// The judgment-verb guard (shared with the other Fork B discriminators) keeps a
+// constructed behavior judgment that merely mentions avoiding a command in
+// cautilus-eval. Verbs match with surrounding spaces; do not bare-stem them.
+// Contract: charness-artifacts/eval-trust/2026-06-22-fork-b-command-absence.spec.md
+func commandAbsenceClaim(lower string) bool {
+	if containsAny(lower, []string{
+		" judges ", " judged ", " judgment", " verdict",
+		" grade ", " grades ", " graded ", " grading",
+		" score ", " scores ", " scored ", " scoring",
+		" rate ", " rates ", " rated ", " rating",
+		" better", " worse", " pass ", " passes ", " fail ", " fails ",
+		" sound ", " unsound ", " evaluates whether ", " assess ", " assesses ",
+	}) {
+		return false
+	}
+	if !containsAny(lower, []string{" avoid a ", " avoid the ", " avoid adding ", " should not add ", " should not introduce ", " does not add "}) {
+		return false
+	}
+	if !backtickTokenPattern.MatchString(lower) {
+		return false
+	}
+	return containsAny(lower, []string{" command", " subcommand"})
+}
+
 func classifyClaimLine(line string) (claimClassification, bool) {
 	lower := " " + strings.ToLower(line) + " "
 	switch {
@@ -1721,6 +1766,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "ready-for-proof",
 			why:                   "The claim's dominant facet is that named schema fields persist into a stored data structure (a multi-field backtick camelCase set with a persistence verb); that the field set exists with its documented shape is a schema/golden-checkable deterministic mechanism even when the line co-mentions an agent emitting them. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-22).",
 			next:                  "Keep or add deterministic schema-field or golden-output proof that the named fields persist into the applied candidate; route any behavior-quality subclaim to Cautilus eval separately.",
+		}, true
+	case commandAbsenceClaim(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-for-proof",
+			why:                   "The claim's dominant facet is that a named CLI command should not exist (a backtick command token with a command-addition absence phrasing); that a named command is absent from the registry is a static repo-owned check, the inverse of capability existence, even when the line co-mentions a workflow noun. Whether the surrounding behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-22).",
+			next:                  "Keep or add a deterministic check that the named command is absent from the CLI surface; route any behavior-quality subclaim to Cautilus eval separately.",
 		}, true
 	case reviewBudgetConfirmationClaim(lower):
 		return claimClassification{
