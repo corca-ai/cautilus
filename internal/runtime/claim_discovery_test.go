@@ -4123,6 +4123,69 @@ func TestClaimClassificationR6R12RoutingBoundaryIsFrozen(t *testing.T) {
 	}
 }
 
+func TestClaimClassificationForkBNamedPacketRoutingIsFrozen(t *testing.T) {
+	// Frozen golden for the 2026-06-21 Fork B named-packet routing discriminator.
+	// Any future broadening of namedPacketEmissionClaim (or its over-flip guard)
+	// must surface here as a diff and force gold-set review.
+	// Contract: charness-artifacts/eval-trust/2026-06-21-fork-b-named-packet-routing.spec.md
+	cases := []struct {
+		name          string
+		line          string
+		wantProof     string
+		wantReadiness string
+	}{
+		// Intended flips (gold-confirmed deterministic, were over-assigned to cautilus-eval).
+		{"named-packet-review-input", "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.", "deterministic", "ready-for-proof"},
+		{"named-packet-skill-report", "`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.", "deterministic", "ready-for-proof"},
+		// Over-flip guard (synthetic): a behavior JUDGMENT whose packet is the output stays cautilus-eval.
+		{"negative-judge-grades-emits", "The blind judge grades the agent's reasoning and emits `cautilus.eval_summary.v1`.", "cautilus-eval", ""},
+		{"negative-judge-rates-better", "The judge rates the agent's variant better than the baseline and writes `cautilus.eval_summary.v1`.", "cautilus-eval", ""},
+		// Collateral non-flip: an ownership-boundary line that emits a named packet stays
+		// human-auditable because ownershipBoundaryClaim sits above the insertion point.
+		{"collateral-ownership-eval-plan", "It emits `cautilus.claim_eval_plan.v1` from reviewed cautilus-eval claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.", "human-auditable", ""},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got, ok := classifyClaimLine(tc.line)
+			if !ok {
+				t.Fatalf("expected a classification for %q, got none", tc.line)
+			}
+			if got.recommendedProof != tc.wantProof {
+				t.Fatalf("recommendedProof: want %q, got %q (%q)", tc.wantProof, got.recommendedProof, tc.line)
+			}
+			if tc.wantReadiness != "" && got.verificationReadiness != tc.wantReadiness {
+				t.Fatalf("verificationReadiness: want %q, got %q (%q)", tc.wantReadiness, got.verificationReadiness, tc.line)
+			}
+		})
+	}
+}
+
+func TestNamedPacketEmissionClaimGuard(t *testing.T) {
+	// Unit guard for namedPacketEmissionClaim: it fires only on the named-packet /
+	// explicit-non-LLM shape and never when a judgment verb is present, and never
+	// without a versioned cautilus.<name>.vN token (no-version control).
+	pad := func(line string) string { return " " + strings.ToLower(line) + " " }
+	cases := []struct {
+		name string
+		line string
+		want bool
+	}{
+		{"named-packet-emit", "It emits `cautilus.claim_review_input.v1` and records bounded clusters.", true},
+		{"explicit-no-llm", "The command emits the candidates and does not call an LLM.", true},
+		{"rubric-field-not-excluded", "It emits `cautilus.skill_clone_experiment_report.v1` with rubric match and source coverage delta.", true},
+		{"guard-judge-grades", "The judge grades the reasoning and emits `cautilus.eval_summary.v1`.", false},
+		{"guard-rates-better", "The judge rates the variant better and writes `cautilus.run_result.v1`.", false},
+		{"no-version-not-flipped", "Cautilus emits a durable report for every run.", false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := namedPacketEmissionClaim(pad(tc.line)); got != tc.want {
+				t.Fatalf("namedPacketEmissionClaim(%q) = %v, want %v", tc.line, got, tc.want)
+			}
+		})
+	}
+}
+
 func TestDiscoverClaimProofPlanAdapterProofRouteHintRoutesUnclassifiedLine(t *testing.T) {
 	doc := strings.Join([]string{
 		"# Demo",

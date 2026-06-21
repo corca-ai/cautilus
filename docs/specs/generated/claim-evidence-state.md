@@ -7,12 +7,12 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 ## Source Of Truth
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
-- Claims hash: sha256:42a82b1e3dfb9733a62a088af54cf9218b342d90d463bf2c2fe43cb6d35df89f
+- Claims hash: sha256:5c919cee800506902b549766d989fdf495646745b015a5cf9aaaca5c363310b0
 - Status snapshot: .cautilus/claims/status-summary.json
-- Status hash: sha256:f92aaeaf7f190d9eb34450ac8b9376f2362f19cf8f76ac0c9e2cce8150489e29
+- Status hash: sha256:27db6aa0b71e99fe3e1c5c2ecf60d4f76a0049ac26f76bce1a192f6133526fcd
 - Git state: fresh; stale=no
-- Snapshot inspected commit: c3be9b9e0f4b22e833f24cbb43647a0484b6c543
-- Packet commit: c3be9b9e0f4b22e833f24cbb43647a0484b6c543
+- Snapshot inspected commit: acfc03fc5dc3eb7739d40877107180e60431d365
+- Packet commit: acfc03fc5dc3eb7739d40877107180e60431d365
 - Changed claim sources: 0
 - Claims packet role: audit source for candidates, labels, evidence status, and count totals
 - Status snapshot role: derived command snapshot for git state, action buckets, and cross-cutting signals; its claimSummary must match the claim packet
@@ -21,17 +21,17 @@ Raw claim evidence state stays in the claim packet; this page is the Evidence St
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 142, unknown: 334 |
-| Recommended proof | cautilus-eval: 143, deterministic: 213, human-auditable: 120 |
-| Proof readiness | blocked: 34, needs alignment: 49, needs scenario: 1, ready for proof: 392 |
-| Review | agent-reviewed: 193, heuristic: 281, human-reviewed: 2 |
+| Evidence | satisfied: 142, unknown: 345 |
+| Recommended proof | cautilus-eval: 142, deterministic: 225, human-auditable: 120 |
+| Proof readiness | blocked: 34, needs alignment: 49, needs scenario: 1, ready for proof: 403 |
+| Review | agent-reviewed: 193, heuristic: 292, human-reviewed: 2 |
 
 ## Cautilus Eval Backlog
 
 | Queue | Count |
 | --- | --- |
-| open Cautilus eval claims | 139 |
-| ready for proof | 138 |
+| open Cautilus eval claims | 138 |
+| ready for proof | 137 |
 | needs scenario | 1 |
 
 Ready for proof means the claim is concrete enough to attach or create the selected proof now; it does not mean a scenario fixture already exists.
@@ -45,7 +45,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | app/chat | 4 |
 | app/prompt | 11 |
 | dev/repo | 82 |
-| dev/skill | 37 |
+| dev/skill | 36 |
 
 ### Proof-Ready Samples
 
@@ -71,8 +71,8 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 | Bucket | Actor | Count | Evidence | Review | Meaning |
 | --- | --- | --- | --- | --- | --- |
 | already-satisfied | none | 142 | satisfied: 142 | agent-reviewed: 142 | Proof is already attached and valid under packet semantics. |
-| agent-add-deterministic-proof | agent | 73 | unknown: 73 | agent-reviewed: 2, heuristic: 69, human-reviewed: 2 | Add or connect unit, lint, build, schema, spec, or CI proof. |
-| agent-plan-cautilus-eval | agent | 138 | unknown: 138 | agent-reviewed: 6, heuristic: 132 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
+| agent-add-deterministic-proof | agent | 85 | unknown: 85 | agent-reviewed: 2, heuristic: 81, human-reviewed: 2 | Add or connect unit, lint, build, schema, spec, or CI proof. |
+| agent-plan-cautilus-eval | agent | 137 | unknown: 137 | agent-reviewed: 6, heuristic: 131 | Draft or select Cautilus eval scenarios for proof-ready eval claims. |
 | agent-design-scenario | agent | 1 | unknown: 1 | agent-reviewed: 1 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 49 | unknown: 49 | agent-reviewed: 15, heuristic: 34 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
 | human-confirm-or-decompose | human | 39 | unknown: 39 | heuristic: 39 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
@@ -82,7 +82,7 @@ Needs scenario means the claim is still too broad, abstract, or surface-ambiguou
 
 | Signal | Actor | Count | Meaning |
 | --- | --- | --- | --- |
-| heuristic-review-needed | agent | 281 | Review heuristic labels before spending proof or eval budget. |
+| heuristic-review-needed | agent | 292 | Review heuristic labels before spending proof or eval budget. |
 
 ## How This Avoids A Split SOT
 

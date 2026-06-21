@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:42a82b1e3dfb9733a62a088af54cf9218b342d90d463bf2c2fe43cb6d35df89f"
+      "contentHash": "sha256:5c919cee800506902b549766d989fdf495646745b015a5cf9aaaca5c363310b0"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "c3be9b9e0f4b22e833f24cbb43647a0484b6c543",
+  "claimsPacketGitCommit": "acfc03fc5dc3eb7739d40877107180e60431d365",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 476,
+  "claimsPacketCandidateCount": 487,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,36 +200,36 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 476,
-    "userRawClaimCount": 125,
+    "totalRawClaimCount": 487,
+    "userRawClaimCount": 129,
     "userMappedToCanonicalCount": 0,
-    "userUnmappedCount": 125,
-    "semanticReviewRecommendedCount": 404,
-    "userSemanticReviewRecommendedCount": 125,
+    "userUnmappedCount": 129,
+    "semanticReviewRecommendedCount": 412,
+    "userSemanticReviewRecommendedCount": 129,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 351,
-      "user-review-needed": 125
+      "mapped-to-maintainer-canonical": 358,
+      "user-review-needed": 129
     },
     "byAudience": {
-      "developer": 351,
-      "user": 125
+      "developer": 358,
+      "user": 129
     },
     "byMappingConfidence": {
-      "high": 72,
-      "low": 144,
-      "medium": 260
+      "high": 75,
+      "low": 148,
+      "medium": 264
     },
     "byUserCanonicalClaimId": {},
     "byMaintainerCanonicalClaimId": {
       "M1": 5,
-      "M10": 15,
-      "M11": 43,
+      "M10": 16,
+      "M11": 44,
       "M12": 10,
       "M2": 23,
-      "M3": 92,
-      "M4": 80,
+      "M3": 94,
+      "M4": 81,
       "M5": 33,
-      "M6": 9,
+      "M6": 11,
       "M7": 12,
       "M8": 21,
       "M9": 8
@@ -261,6 +261,7 @@
       "claim-docs-guides-cli-md-121",
       "claim-docs-guides-cli-md-132",
       "claim-docs-guides-cli-md-177",
+      "claim-docs-guides-cli-md-183",
       "claim-docs-guides-cli-md-184",
       "claim-docs-guides-cli-md-190",
       "claim-docs-guides-cli-md-192",
@@ -270,8 +271,11 @@
       "claim-docs-guides-cli-md-270",
       "claim-docs-guides-cli-md-274",
       "claim-docs-guides-cli-md-313",
+      "claim-docs-guides-cli-md-470",
       "claim-docs-guides-cli-md-471",
       "claim-docs-guides-cli-md-475",
+      "claim-docs-guides-cli-md-476",
+      "claim-docs-guides-cli-md-484",
       "claim-docs-guides-cli-md-507",
       "claim-docs-guides-cli-md-543",
       "claim-docs-guides-cli-md-561",
@@ -394,6 +398,7 @@
       "claim-docs-contracts-adapter-contract-md-237",
       "claim-docs-contracts-adapter-contract-md-304",
       "claim-docs-contracts-adapter-contract-md-343",
+      "claim-docs-contracts-adapter-contract-md-344",
       "claim-docs-contracts-adapter-contract-md-433",
       "claim-docs-contracts-adapter-contract-md-500",
       "claim-docs-contracts-adapter-contract-md-558",
@@ -407,6 +412,7 @@
       "claim-docs-guides-cli-md-121",
       "claim-docs-guides-cli-md-132",
       "claim-docs-guides-cli-md-177",
+      "claim-docs-guides-cli-md-183",
       "claim-docs-guides-cli-md-184",
       "claim-docs-guides-cli-md-190",
       "claim-docs-guides-cli-md-192",
@@ -416,8 +422,11 @@
       "claim-docs-guides-cli-md-270",
       "claim-docs-guides-cli-md-274",
       "claim-docs-guides-cli-md-313",
+      "claim-docs-guides-cli-md-470",
       "claim-docs-guides-cli-md-471",
       "claim-docs-guides-cli-md-475",
+      "claim-docs-guides-cli-md-476",
+      "claim-docs-guides-cli-md-484",
       "claim-docs-guides-cli-md-507",
       "claim-docs-guides-cli-md-543",
       "claim-docs-guides-cli-md-561",
@@ -551,7 +560,9 @@
       "claim-docs-contracts-claim-discovery-workflow-md-747",
       "claim-docs-contracts-claim-discovery-workflow-md-751",
       "claim-docs-contracts-claim-discovery-workflow-md-752",
+      "claim-docs-contracts-claim-discovery-workflow-md-756",
       "claim-docs-contracts-claim-discovery-workflow-md-760",
+      "claim-docs-contracts-claim-discovery-workflow-md-769",
       "claim-docs-contracts-eval-judge-collaboration-md-45",
       "claim-docs-contracts-eval-judge-collaboration-md-84",
       "claim-docs-contracts-eval-judge-collaboration-md-89",
@@ -570,8 +581,8 @@
       "claim-docs-contracts-facet-decomposition-md-59",
       "claim-docs-contracts-facet-decomposition-md-64",
       "claim-docs-contracts-facet-decomposition-md-65",
-      "claim-docs-contracts-facet-decomposition-md-69",
-      "claim-docs-contracts-facet-decomposition-md-71",
+      "claim-docs-contracts-facet-decomposition-md-73",
+      "claim-docs-contracts-facet-decomposition-md-75",
       "claim-docs-contracts-live-run-invocation-batch-md-28",
       "claim-docs-contracts-live-run-invocation-batch-md-77",
       "claim-docs-contracts-live-run-invocation-batch-md-166",
@@ -693,6 +704,7 @@
       "claim-docs-contracts-claim-extraction-template-md-39",
       "claim-docs-contracts-claim-extraction-template-md-69",
       "claim-docs-contracts-claim-extraction-template-md-77",
+      "claim-docs-contracts-claim-extraction-template-md-167",
       "claim-docs-contracts-claim-extraction-template-md-178",
       "claim-docs-contracts-claim-extraction-template-md-187",
       "claim-docs-contracts-claim-extraction-template-md-257",
@@ -1019,7 +1031,7 @@
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 92,
+      "absorbedRawClaimCount": 94,
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
         "claim-agents-md-142",
@@ -1070,6 +1082,7 @@
         "claim-docs-contracts-facet-decomposition-md-36",
         "claim-docs-contracts-facet-decomposition-md-56",
         "claim-docs-contracts-facet-decomposition-md-57",
+        "claim-docs-contracts-facet-decomposition-md-67",
         "claim-docs-contracts-live-run-invocation-batch-md-77",
         "claim-docs-contracts-reporting-md-48",
         "claim-docs-contracts-runner-readiness-md-29",
@@ -1090,6 +1103,7 @@
         "claim-docs-contracts-behavior-eval-live-proof-md-68",
         "claim-docs-contracts-claim-extraction-template-md-18",
         "claim-docs-contracts-claim-extraction-template-md-77",
+        "claim-docs-contracts-claim-extraction-template-md-167",
         "claim-docs-contracts-claim-extraction-template-md-187",
         "claim-docs-contracts-claim-extraction-template-md-299",
         "claim-docs-contracts-claim-extraction-template-md-357",
@@ -1410,6 +1424,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-facet-decomposition-md-67",
+          "claimFingerprint": "sha256:ac49da87dcb101f71eb0ffbdbb5359874730b20c31f77a240699f9ce9fdcd69e",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
           "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
           "claimFingerprint": "sha256:57c666ca6aca677b5b250c22b235e4a0d037aaaa07bb1c66151ad9947217cabf",
           "mappingConfidence": "medium",
@@ -1526,6 +1546,12 @@
         {
           "claimId": "claim-docs-contracts-claim-extraction-template-md-77",
           "claimFingerprint": "sha256:4b2dd72dd4baab0ba4020a0b5ae03163f8d3aaf99ad4490d3fbad5c22d9adc0e",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-extraction-template-md-167",
+          "claimFingerprint": "sha256:b3dfbc3976d7a847172b4edbb5ec4edfa599f79e07338891466a82750e0c2ff0",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1670,27 +1696,27 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 74
+        "unknown": 76
       },
       "byReviewStatus": {
         "agent-reviewed": 27,
-        "heuristic": 65
+        "heuristic": 67
       },
       "byRecommendedProof": {
         "cautilus-eval": 27,
-        "deterministic": 49,
+        "deterministic": 51,
         "human-auditable": 16
       },
       "byMappingConfidence": {
-        "high": 20,
+        "high": 21,
         "low": 1,
-        "medium": 71
+        "medium": 72
       }
     },
     {
       "canonicalClaimId": "M4",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 80,
+      "absorbedRawClaimCount": 81,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-29",
@@ -1701,6 +1727,7 @@
         "claim-docs-contracts-adapter-contract-md-224",
         "claim-docs-contracts-adapter-contract-md-237",
         "claim-docs-contracts-adapter-contract-md-343",
+        "claim-docs-contracts-adapter-contract-md-344",
         "claim-docs-contracts-adapter-contract-md-433",
         "claim-docs-master-plan-md-29",
         "claim-docs-master-plan-md-57",
@@ -1825,6 +1852,12 @@
         {
           "claimId": "claim-docs-contracts-adapter-contract-md-343",
           "claimFingerprint": "sha256:1470cdcbbe6feea4e845e3ac199d21c8e236a3363741f8ab2aa22919279ee094",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-adapter-contract-md-344",
+          "claimFingerprint": "sha256:4f3af8e33be0ad77a5a8cef04d8487bf7c23900788aa4064333e9c177c74c40a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2257,21 +2290,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 63
+        "unknown": 64
       },
       "byReviewStatus": {
         "agent-reviewed": 28,
-        "heuristic": 52
+        "heuristic": 53
       },
       "byRecommendedProof": {
         "cautilus-eval": 36,
-        "deterministic": 23,
+        "deterministic": 24,
         "human-auditable": 21
       },
       "byMappingConfidence": {
         "high": 10,
         "low": 3,
-        "medium": 67
+        "medium": 68
       }
     },
     {
@@ -2535,13 +2568,15 @@
     {
       "canonicalClaimId": "M6",
       "title": "Evidence State And Review Artifacts",
-      "absorbedRawClaimCount": 9,
+      "absorbedRawClaimCount": 11,
       "absorbedRawClaimIds": [
         "claim-docs-specs-index-spec-md-168",
         "claim-docs-contracts-claim-discovery-workflow-md-372",
         "claim-docs-contracts-claim-discovery-workflow-md-750",
         "claim-docs-contracts-claim-discovery-workflow-md-751",
         "claim-docs-contracts-claim-discovery-workflow-md-752",
+        "claim-docs-contracts-claim-discovery-workflow-md-756",
+        "claim-docs-contracts-claim-discovery-workflow-md-769",
         "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-26",
         "claim-docs-specs-evidence-index-spec-md-4",
         "claim-docs-contracts-skill-surface-judge-convergence-md-70",
@@ -2579,6 +2614,18 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-756",
+          "claimFingerprint": "sha256:35d3c94e17ac6e26dea9df92f91d63d0ce6acf535869cd80a36a24029565b2c7",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-claim-discovery-workflow-md-769",
+          "claimFingerprint": "sha256:0f7a6c59547e24743850249aa85a63104ca06991bcfb4b18e40a4094e6c38a11",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-specs-contracts-evidence-state-artifacts-spec-md-26",
           "claimFingerprint": "sha256:2026d397c4196f1701233741e72b784aa5829699c8127f561d466a07275a0016",
           "mappingConfidence": "high",
@@ -2605,20 +2652,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 3,
-        "unknown": 6
+        "unknown": 8
       },
       "byReviewStatus": {
         "agent-reviewed": 3,
-        "heuristic": 6
+        "heuristic": 8
       },
       "byRecommendedProof": {
-        "deterministic": 3,
+        "deterministic": 5,
         "human-auditable": 6
       },
       "byMappingConfidence": {
         "high": 3,
         "low": 2,
-        "medium": 4
+        "medium": 6
       }
     },
     {
@@ -2744,7 +2791,7 @@
         "claim-docs-contracts-claim-discovery-workflow-md-572",
         "claim-docs-contracts-claim-discovery-workflow-md-655",
         "claim-docs-contracts-eval-judge-collaboration-md-119",
-        "claim-docs-contracts-facet-decomposition-md-69",
+        "claim-docs-contracts-facet-decomposition-md-73",
         "claim-docs-contracts-live-run-invocation-md-12",
         "claim-docs-contracts-live-run-invocation-md-193",
         "claim-docs-contracts-runner-readiness-md-117",
@@ -2803,7 +2850,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-69",
+          "claimId": "claim-docs-contracts-facet-decomposition-md-73",
           "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2990,13 +3037,14 @@
     {
       "canonicalClaimId": "M10",
       "title": "Live Invocation Runtime",
-      "absorbedRawClaimCount": 15,
+      "absorbedRawClaimCount": 16,
       "absorbedRawClaimIds": [
         "claim-docs-master-plan-md-91",
         "claim-docs-specs-index-spec-md-48",
         "claim-docs-contracts-claim-discovery-workflow-md-229",
         "claim-docs-contracts-claim-discovery-workflow-md-304",
         "claim-docs-contracts-live-run-invocation-batch-md-3",
+        "claim-docs-contracts-live-run-invocation-batch-md-10",
         "claim-docs-contracts-live-run-invocation-batch-md-28",
         "claim-docs-contracts-live-run-invocation-batch-md-166",
         "claim-docs-contracts-live-run-invocation-md-58",
@@ -3036,6 +3084,12 @@
         {
           "claimId": "claim-docs-contracts-live-run-invocation-batch-md-3",
           "claimFingerprint": "sha256:6213818ed8ceaa59fc90dcc0ea81409ea471ff60125bf6d59feb17b05b13c946",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-contracts-live-run-invocation-batch-md-10",
+          "claimFingerprint": "sha256:bfc73d226a71e7dd8ff338101ab2485b9d419269dd45b9238b7db64c15ea4300",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
@@ -3102,20 +3156,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 2,
-        "unknown": 13
+        "unknown": 14
       },
       "byReviewStatus": {
         "agent-reviewed": 5,
-        "heuristic": 9,
+        "heuristic": 10,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
         "cautilus-eval": 7,
-        "deterministic": 4,
+        "deterministic": 5,
         "human-auditable": 4
       },
       "byMappingConfidence": {
-        "high": 3,
+        "high": 4,
         "low": 1,
         "medium": 11
       }
@@ -3123,7 +3177,7 @@
     {
       "canonicalClaimId": "M11",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 43,
+      "absorbedRawClaimCount": 44,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-234",
         "claim-docs-contracts-adapter-contract-md-452",
@@ -3144,7 +3198,7 @@
         "claim-docs-contracts-facet-decomposition-md-46",
         "claim-docs-contracts-facet-decomposition-md-64",
         "claim-docs-contracts-facet-decomposition-md-65",
-        "claim-docs-contracts-facet-decomposition-md-71",
+        "claim-docs-contracts-facet-decomposition-md-75",
         "claim-docs-contracts-reporting-md-123",
         "claim-docs-contracts-reporting-md-125",
         "claim-docs-contracts-reporting-md-129",
@@ -3167,6 +3221,7 @@
         "claim-docs-contracts-skill-surface-judge-convergence-md-173",
         "claim-docs-specs-evidence-latest-selected-evidence-spec-md-11",
         "claim-docs-specs-rules-agent-human-resumability-spec-md-7",
+        "claim-skills-cautilus-agent-skill-md-157",
         "claim-skills-cautilus-agent-skill-md-165"
       ],
       "absorbedRawClaims": [
@@ -3285,7 +3340,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-71",
+          "claimId": "claim-docs-contracts-facet-decomposition-md-75",
           "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3423,6 +3478,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-skills-cautilus-agent-skill-md-157",
+          "claimFingerprint": "sha256:bfdd169c5d200a90c3cdf012ebc3b3725a948767d5b6e045b46b4420c7e81148",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
           "claimId": "claim-skills-cautilus-agent-skill-md-165",
           "claimFingerprint": "sha256:031006e05a1e2c37d6f23d413085d3522ca1ab7679a44d9f4454587f14e4269a",
           "mappingConfidence": "high",
@@ -3431,19 +3492,19 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 26
+        "unknown": 27
       },
       "byReviewStatus": {
         "agent-reviewed": 19,
-        "heuristic": 24
+        "heuristic": 25
       },
       "byRecommendedProof": {
         "cautilus-eval": 4,
-        "deterministic": 26,
+        "deterministic": 27,
         "human-auditable": 13
       },
       "byMappingConfidence": {
-        "high": 10,
+        "high": 11,
         "low": 2,
         "medium": 31
       }
@@ -4674,6 +4735,47 @@
       ]
     },
     {
+      "claimId": "claim-docs-contracts-adapter-contract-md-344",
+      "summary": "When `consumer_evaluator_command_template` is present, `Cautilus` writes one `cautilus.live_run_evaluator_input.v1` packet and expects one `cautilus.live_run_evaluator_result.v1` packet back.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/adapter-contract.md",
+          "line": 344,
+          "excerpt": "When `consumer_evaluator_command_template` is present, `Cautilus` writes one `cautilus.live_run_evaluator_input.v1` packet and expects one `cautilus.live_run_evaluator_result.v1` packet back."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:4f3af8e33be0ad77a5a8cef04d8487bf7c23900788aa4064333e9c177c74c40a",
+      "canonicalClaimId": "M4",
+      "score": 12,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 10,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "adapter",
+        "any",
+        "cautilu",
+        "command",
+        "consumer",
+        "deterministic",
+        "keep",
+        "packet",
+        "proof",
+        "run",
+        "subclaim",
+        "template"
+      ]
+    },
+    {
       "claimId": "claim-docs-contracts-adapter-contract-md-433",
       "summary": "This keeps prompt benchmarking, code-quality benchmarking, and workflow smoke tests from collapsing into one overloaded adapter file.",
       "sourceRefs": [
@@ -5243,6 +5345,34 @@
       "matchedKeywords": []
     },
     {
+      "claimId": "claim-docs-guides-cli-md-183",
+      "summary": "`cautilus evaluate live scenarios` is the product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet.",
+      "sourceRefs": [
+        {
+          "path": "docs/guides/cli.md",
+          "line": 183,
+          "excerpt": "`cautilus evaluate live scenarios` is the product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet."
+        }
+      ],
+      "disposition": "user-review-needed",
+      "mappingStatus": "needs-catalog-review",
+      "claimAudience": "user",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:253f6e543d1d15d03d69487ac38e9fdec384d1bee5a7c5b4530fc4ecc2cd3951",
+      "canonicalClaimId": null,
+      "score": 0,
+      "runnerUpCanonicalClaimId": null,
+      "runnerUpScore": 0,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": []
+    },
+    {
       "claimId": "claim-docs-guides-cli-md-184",
       "summary": "The product owns the packet boundary and status semantics.",
       "sourceRefs": [
@@ -5479,11 +5609,39 @@
       "disposition": "user-review-needed",
       "mappingStatus": "needs-catalog-review",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:b28f7d01f52d258ce498f0d4c910a6dd3d7d8d2a7d7efa4b5501e7acda656369",
+      "canonicalClaimId": null,
+      "score": 0,
+      "runnerUpCanonicalClaimId": null,
+      "runnerUpScore": 0,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": []
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-470",
+      "summary": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.",
+      "sourceRefs": [
+        {
+          "path": "docs/guides/cli.md",
+          "line": 470,
+          "excerpt": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file."
+        }
+      ],
+      "disposition": "user-review-needed",
+      "mappingStatus": "needs-catalog-review",
+      "claimAudience": "user",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:ad85bc0dec9bb21b315a41c6d68ef1a302f9bf0edbb170a9d63c40141b99bbe0",
       "canonicalClaimId": null,
       "score": 0,
       "runnerUpCanonicalClaimId": null,
@@ -5540,6 +5698,62 @@
       "evidenceStatus": "satisfied",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
+      "canonicalClaimId": null,
+      "score": 0,
+      "runnerUpCanonicalClaimId": null,
+      "runnerUpScore": 0,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": []
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-476",
+      "summary": "This command answers: \"do multiple bounded reviewers agree with the current report, and what concrete reason codes or warnings survive that second pass?\" `review feedback build` writes `cautilus.review_feedback.v1`.",
+      "sourceRefs": [
+        {
+          "path": "docs/guides/cli.md",
+          "line": 476,
+          "excerpt": "This command answers: \"do multiple bounded reviewers agree with the current report, and what concrete reason codes or warnings survive that second pass?\" `review feedback build` writes `cautilus.review_feedback.v1`."
+        }
+      ],
+      "disposition": "user-review-needed",
+      "mappingStatus": "needs-catalog-review",
+      "claimAudience": "user",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:125956faadf4aa9e860d43fadd4b735a384d513e89000347577962118f605bab",
+      "canonicalClaimId": null,
+      "score": 0,
+      "runnerUpCanonicalClaimId": null,
+      "runnerUpScore": 0,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": []
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-484",
+      "summary": "This command answers: \"which discovery or evaluation method produced this source-reviewed proposal outcome?\" `review feedback summarize` writes `cautilus.review_feedback_summary.v1`.",
+      "sourceRefs": [
+        {
+          "path": "docs/guides/cli.md",
+          "line": 484,
+          "excerpt": "This command answers: \"which discovery or evaluation method produced this source-reviewed proposal outcome?\" `review feedback summarize` writes `cautilus.review_feedback_summary.v1`."
+        }
+      ],
+      "disposition": "user-review-needed",
+      "mappingStatus": "needs-catalog-review",
+      "claimAudience": "user",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:7e0a0010770812118cccb8288301f99c01da5d0ebdda533211abc11fd0db7b0a",
       "canonicalClaimId": null,
       "score": 0,
       "runnerUpCanonicalClaimId": null,
@@ -11057,6 +11271,47 @@
       ]
     },
     {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-756",
+      "summary": "It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 756,
+          "excerpt": "It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:35d3c94e17ac6e26dea9df92f91d63d0ce6acf535869cd80a36a24029565b2c7",
+      "canonicalClaimId": "M6",
+      "score": 14,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 12,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "deterministic",
+        "direct",
+        "evidence",
+        "keep",
+        "label",
+        "packet",
+        "ref",
+        "review",
+        "route",
+        "satisfied",
+        "separately",
+        "subclaim"
+      ]
+    },
+    {
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-760",
       "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
       "sourceRefs": [
@@ -11094,6 +11349,47 @@
         "prompt",
         "runner",
         "while"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-769",
+      "summary": "It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/claim-discovery-workflow.md",
+          "line": 769,
+          "excerpt": "It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:0f7a6c59547e24743850249aa85a63104ca06991bcfb4b18e40a4094e6c38a11",
+      "canonicalClaimId": "M6",
+      "score": 14,
+      "runnerUpCanonicalClaimId": "M12",
+      "runnerUpScore": 12,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "deterministic",
+        "doe",
+        "evidence",
+        "exit",
+        "invalid",
+        "keep",
+        "non-zero",
+        "packet",
+        "ref",
+        "route",
+        "separately",
+        "shape"
       ]
     },
     {
@@ -11870,12 +12166,53 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-69",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-67",
+      "summary": "Fork B (per-facet routing absorbed into the classifier, no per-claim schema) began 2026-06-21 with its first slice: the `namedPacketEmissionClaim` discriminator routes a claim whose dominant facet is emitting a named, versioned `cautilus.<name>.vN` packet (or that explicitly does not call an LLM) to `deterministic`, with an eval-judgment over-flip guard so a genuine eval that merely emits a result packet stays `cautilus-eval`.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/facet-decomposition.md",
+          "line": 67,
+          "excerpt": "Fork B (per-facet routing absorbed into the classifier, no per-claim schema) began 2026-06-21 with its first slice: the `namedPacketEmissionClaim` discriminator routes a claim whose dominant facet is emitting a named, versioned `cautilus.<name>.vN` packet (or that explicitly does not call an LLM) to `deterministic`, with an eval-judgment over-flip guard so a genuine eval that merely emits a result packet stays `cautilus-eval`."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:ac49da87dcb101f71eb0ffbdbb5359874730b20c31f77a240699f9ce9fdcd69e",
+      "canonicalClaimId": "M3",
+      "score": 14,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 11,
+      "scoreMargin": 3,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "any",
+        "call",
+        "cautilu",
+        "deterministic",
+        "doe",
+        "eval",
+        "keep",
+        "llm",
+        "packet",
+        "route",
+        "routing",
+        "schema"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-facet-decomposition-md-73",
       "summary": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
       "sourceRefs": [
         {
           "path": "docs/contracts/facet-decomposition.md",
-          "line": 69,
+          "line": 73,
           "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer."
         }
       ],
@@ -11909,12 +12246,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-71",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-75",
       "summary": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
       "sourceRefs": [
         {
           "path": "docs/contracts/facet-decomposition.md",
-          "line": 71,
+          "line": 75,
           "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only)."
         }
       ],
@@ -11987,6 +12324,47 @@
         "packet",
         "request",
         "result",
+        "run"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-live-run-invocation-batch-md-10",
+      "summary": "That prep command accepts either `cautilus.live_run_invocation_batch_prepare_input.v1` or `cautilus.live_run_invocation_batch_prepare_catalog_input.v1` and emits `cautilus.live_run_invocation_request_batch.v1`.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/live-run-invocation-batch.md",
+          "line": 10,
+          "excerpt": "That prep command accepts either `cautilus.live_run_invocation_batch_prepare_input.v1` or `cautilus.live_run_invocation_batch_prepare_catalog_input.v1` and emits `cautilus.live_run_invocation_request_batch.v1`."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:bfc73d226a71e7dd8ff338101ab2485b9d419269dd45b9238b7db64c15ea4300",
+      "canonicalClaimId": "M10",
+      "score": 13,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 10,
+      "scoreMargin": 3,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "add",
+        "batch",
+        "cautilu",
+        "command",
+        "contract",
+        "deterministic",
+        "docs/contracts/live-run-invocation-batch.md",
+        "invocation",
+        "proof",
+        "request",
+        "route",
         "run"
       ]
     },
@@ -17649,6 +18027,45 @@
       ]
     },
     {
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-167",
+      "summary": "`apply-extraction` emits a standard `cautilus.claim_proof_plan.v1` packet with these additions:",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/claim-extraction-template.md",
+          "line": 167,
+          "excerpt": "`apply-extraction` emits a standard `cautilus.claim_proof_plan.v1` packet with these additions:"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:b3dfbc3976d7a847172b4edbb5ec4edfa599f79e07338891466a82750e0c2ff0",
+      "canonicalClaimId": "M3",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M11",
+      "runnerUpScore": 9,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "any",
+        "cautilu",
+        "deterministic",
+        "discovery",
+        "eval",
+        "keep",
+        "packet",
+        "review",
+        "route",
+        "subclaim"
+      ]
+    },
+    {
       "claimId": "claim-docs-contracts-claim-extraction-template-md-178",
       "summary": "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics` (de-duplicated and led by `primaryEpic`), a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims.",
       "sourceRefs": [
@@ -20678,6 +21095,47 @@
       ]
     },
     {
+      "claimId": "claim-skills-cautilus-agent-skill-md-157",
+      "summary": "It ends when the selected reviewer lane writes the `cautilus.claim_review_result.v1` packet and reports the packet path, reviewed claim count, evidence label decisions, unresolved questions, and next branch choices.",
+      "sourceRefs": [
+        {
+          "path": "skills/cautilus-agent/SKILL.md",
+          "line": 157,
+          "excerpt": "It ends when the selected reviewer lane writes the `cautilus.claim_review_result.v1` packet and reports the packet path, reviewed claim count, evidence label decisions, unresolved questions, and next branch choices."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:bfdd169c5d200a90c3cdf012ebc3b3725a948767d5b6e045b46b4420c7e81148",
+      "canonicalClaimId": "M11",
+      "score": 18,
+      "runnerUpCanonicalClaimId": "M6",
+      "runnerUpScore": 15,
+      "scoreMargin": 3,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "add",
+        "cautilu",
+        "count",
+        "deterministic",
+        "discovery",
+        "evidence",
+        "keep",
+        "next",
+        "packet",
+        "path",
+        "question",
+        "report"
+      ]
+    },
+    {
       "claimId": "claim-skills-cautilus-agent-skill-md-165",
       "summary": "After a human review, HITL chunk, issue, pull request review, `review.json`, or `review-summary.json` produces a source review decision about a Cautilus proposal, use `\"$CAUTILUS_BIN\" review feedback build` to materialize `cautilus.review_feedback.v1`; include proposal evidence for `accepted`, `narrowed`, `reframed`, or `rejected`, reserve proposal-less packets for `missing_critical`, read the packet before reporting it, and do not treat it as eval pass/fail or source-ref verification; when comparing multiple explicitly selected review-feedback packets, use `\"$CAUTILUS_BIN\" review feedback summarize --input <packet> ...` to materialize `cautilus.review_feedback_summary.v1` without inventing active-run packet discovery or default packet placement.",
       "sourceRefs": [
@@ -20696,10 +21154,10 @@
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:031006e05a1e2c37d6f23d413085d3522ca1ab7679a44d9f4454587f14e4269a",
       "canonicalClaimId": "M11",
-      "score": 28,
+      "score": 29,
       "runnerUpCanonicalClaimId": "M6",
-      "runnerUpScore": 19,
-      "scoreMargin": 9,
+      "runnerUpScore": 21,
+      "scoreMargin": 8,
       "mappingConfidence": "high",
       "requiresSemanticReview": false,
       "matchedAnchors": [],

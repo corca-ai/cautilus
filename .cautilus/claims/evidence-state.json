@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:42a82b1e3dfb9733a62a088af54cf9218b342d90d463bf2c2fe43cb6d35df89f",
+    "claimsHash": "sha256:5c919cee800506902b549766d989fdf495646745b015a5cf9aaaca5c363310b0",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:f92aaeaf7f190d9eb34450ac8b9376f2362f19cf8f76ac0c9e2cce8150489e29",
+    "statusHash": "sha256:27db6aa0b71e99fe3e1c5c2ecf60d4f76a0049ac26f76bce1a192f6133526fcd",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,55 +22,55 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "c3be9b9e0f4b22e833f24cbb43647a0484b6c543",
+    "currentGitCommit": "acfc03fc5dc3eb7739d40877107180e60431d365",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "c3be9b9e0f4b22e833f24cbb43647a0484b6c543",
+    "packetGitCommit": "acfc03fc5dc3eb7739d40877107180e60431d365",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
-    "candidateCount": 476,
+    "candidateCount": 487,
     "sourceCount": 69,
     "byEvidenceStatus": {
       "satisfied": 142,
-      "unknown": 334
+      "unknown": 345
     },
     "byRecommendedProof": {
-      "cautilus-eval": 143,
-      "deterministic": 213,
+      "cautilus-eval": 142,
+      "deterministic": 225,
       "human-auditable": 120
     },
     "byVerificationReadiness": {
       "blocked": 34,
       "needs-alignment": 49,
       "needs-scenario": 1,
-      "ready-for-proof": 392
+      "ready-for-proof": 403
     },
     "byReviewStatus": {
       "agent-reviewed": 193,
-      "heuristic": 281,
+      "heuristic": 292,
       "human-reviewed": 2
     }
   },
   "openCautilusEval": {
-    "total": 139,
-    "readyForProof": 138,
+    "total": 138,
+    "readyForProof": 137,
     "needsScenario": 1,
     "bySurface": {
       "(none)": 5,
       "app/chat": 4,
       "app/prompt": 11,
       "dev/repo": 82,
-      "dev/skill": 37
+      "dev/skill": 36
     },
     "byReadiness": {
       "needs scenario": 1,
-      "ready for proof": 138
+      "ready for proof": 137
     },
     "rawByReadiness": {
       "needs-scenario": 1,
-      "ready-for-proof": 138
+      "ready-for-proof": 137
     },
     "proofReadySamples": [
       {
@@ -173,28 +173,28 @@
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 73,
+      "count": 85,
       "actor": "agent",
       "evidence": {
-        "unknown": 73
+        "unknown": 85
       },
       "review": {
         "agent-reviewed": 2,
-        "heuristic": 69,
+        "heuristic": 81,
         "human-reviewed": 2
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 138,
+      "count": 137,
       "actor": "agent",
       "evidence": {
-        "unknown": 138
+        "unknown": 137
       },
       "review": {
         "agent-reviewed": 6,
-        "heuristic": 132
+        "heuristic": 131
       },
       "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
     },
@@ -252,7 +252,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 281,
+      "count": 292,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [

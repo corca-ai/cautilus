@@ -1506,6 +1506,42 @@ func adapterLexiconFallbackClassification() claimClassification {
 	}
 }
 
+// cautilusPayloadVersionPattern matches a named, versioned Cautilus payload
+// identifier such as `cautilus.claim_review_input.v1`.
+var cautilusPayloadVersionPattern = regexp.MustCompile(`cautilus\.[a-z0-9_]+\.v[0-9]`)
+
+// namedPacketEmissionClaim recognizes the Fork B named-packet shape: a claim
+// whose dominant facet is emitting a named, versioned Cautilus packet, or that
+// explicitly does not call an LLM — both schema/golden-checkable deterministic
+// mechanisms that the broad noun catch-all would otherwise sweep into
+// cautilus-eval merely because they mention an eval/skill/LLM noun.
+//
+// The over-flip guard keeps a genuine behavior judgment (whose packet is merely
+// the output) in cautilus-eval. Its verb set is a superset of
+// reviewPromptModelJudgmentClaim's so a "judge rates X better … writes
+// cautilus.eval_summary.v1" line is not misrouted (spec critique 2026-06-21).
+// Contract: charness-artifacts/eval-trust/2026-06-21-fork-b-named-packet-routing.spec.md
+func namedPacketEmissionClaim(lower string) bool {
+	// Verbs match as substrings of the space-padded line, so a leading-space-only
+	// token (e.g. " scoring", " rating") is intentional; do not "tidy" these into
+	// trailing-space tokens, which would silently narrow the guard.
+	if containsAny(lower, []string{
+		" judge ", " judges ", " judged ", " judgment", " verdict",
+		" grade ", " grades ", " graded ", " grading",
+		" score ", " scores ", " scored ", " scoring",
+		" rate ", " rates ", " rating",
+		" better", " worse", " pass ", " passes ", " fail ", " fails ",
+		" sound ", " unsound ", " evaluates whether ", " assess ", " assesses ",
+	}) {
+		return false
+	}
+	if containsAny(lower, []string{" does not call an llm", " do not call an llm", " without calling an llm", " does not mark claims satisfied"}) {
+		return true
+	}
+	return cautilusPayloadVersionPattern.MatchString(lower) &&
+		containsAny(lower, []string{" emit", " produces ", " writes ", " outputs ", " output ", " records "})
+}
+
 func classifyClaimLine(line string) (claimClassification, bool) {
 	lower := " " + strings.ToLower(line) + " "
 	switch {
@@ -1558,6 +1594,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "needs-alignment",
 			why:                   "The claim is proof-routing policy rather than one concrete command, packet, runner, or readiness contract.",
 			next:                  "Keep this as routing policy or split it into narrower classifier, command, packet, runner, and readiness checks before attaching proof.",
+		}, true
+	case namedPacketEmissionClaim(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-for-proof",
+			why:                   "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21).",
+			next:                  "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
 		}, true
 	case reviewBudgetConfirmationClaim(lower):
 		return claimClassification{

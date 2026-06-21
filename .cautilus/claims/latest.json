@@ -1,9 +1,9 @@
 {
-  "candidateCount": 476,
+  "candidateCount": 487,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 1,
-    "matchedClaimCount": 474,
+    "evidenceSupportIdRewriteCount": 0,
+    "matchedClaimCount": 476,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -1145,7 +1145,36 @@
       ],
       "summary": "The command writes one `cautilus.live_run_invocation_result.v1` packet to `output_file`.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:4f3af8e33be0ad77a5a8cef04d8487bf7c23900788aa4064333e9c177c74c40a",
+      "claimId": "claim-docs-contracts-adapter-contract-md-344",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "When `consumer_evaluator_command_template` is present, `Cautilus` writes one `cautilus.live_run_evaluator_input.v1` packet and expects one `cautilus.live_run_evaluator_result.v1` packet back.",
+          "line": 344,
+          "path": "docs/contracts/adapter-contract.md"
+        }
+      ],
+      "summary": "When `consumer_evaluator_command_template` is present, `Cautilus` writes one `cautilus.live_run_evaluator_input.v1` packet and expects one `cautilus.live_run_evaluator_result.v1` packet back.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "developer",
@@ -1484,7 +1513,7 @@
       ],
       "summary": "It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -1665,15 +1694,13 @@
       "evidenceStatus": "satisfied",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/repo",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -1684,7 +1711,7 @@
       ],
       "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -1728,6 +1755,35 @@
       "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:253f6e543d1d15d03d69487ac38e9fdec384d1bee5a7c5b4530fc4ecc2cd3951",
+      "claimId": "claim-docs-guides-cli-md-183",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`cautilus evaluate live scenarios` is the product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet.",
+          "line": 183,
+          "path": "docs/guides/cli.md"
+        }
+      ],
+      "summary": "`cautilus evaluate live scenarios` is the product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -2006,15 +2062,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
-        "cautilus-eval",
-        "dev/skill",
+        "deterministic",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -2025,7 +2079,36 @@
       ],
       "summary": "`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:ad85bc0dec9bb21b315a41c6d68ef1a302f9bf0edbb170a9d63c40141b99bbe0",
+      "claimId": "claim-docs-guides-cli-md-470",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.",
+          "line": 470,
+          "path": "docs/guides/cli.md"
+        }
+      ],
+      "summary": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -2113,6 +2196,64 @@
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:125956faadf4aa9e860d43fadd4b735a384d513e89000347577962118f605bab",
+      "claimId": "claim-docs-guides-cli-md-476",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "This command answers: \"do multiple bounded reviewers agree with the current report, and what concrete reason codes or warnings survive that second pass?\" `review feedback build` writes `cautilus.review_feedback.v1`.",
+          "line": 476,
+          "path": "docs/guides/cli.md"
+        }
+      ],
+      "summary": "This command answers: \"do multiple bounded reviewers agree with the current report, and what concrete reason codes or warnings survive that second pass?\" `review feedback build` writes `cautilus.review_feedback.v1`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:7e0a0010770812118cccb8288301f99c01da5d0ebdda533211abc11fd0db7b0a",
+      "claimId": "claim-docs-guides-cli-md-484",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "deterministic",
+        "docs",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "This command answers: \"which discovery or evaluation method produced this source-reviewed proposal outcome?\" `review feedback summarize` writes `cautilus.review_feedback_summary.v1`.",
+          "line": 484,
+          "path": "docs/guides/cli.md"
+        }
+      ],
+      "summary": "This command answers: \"which discovery or evaluation method produced this source-reviewed proposal outcome?\" `review feedback summarize` writes `cautilus.review_feedback_summary.v1`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -6753,7 +6894,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6765,7 +6906,7 @@
       ],
       "summary": "`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "developer",
@@ -6813,7 +6954,7 @@
         "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -6825,7 +6966,7 @@
       ],
       "summary": "`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "developer",
@@ -6859,6 +7000,35 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:35d3c94e17ac6e26dea9df92f91d63d0ce6acf535869cd80a36a24029565b2c7",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-756",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.",
+          "line": 756,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "summary": "It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
       "claimId": "claim-docs-contracts-claim-discovery-workflow-md-760",
       "claimSemanticGroup": "Quality gates",
@@ -6886,6 +7056,35 @@
       "summary": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:0f7a6c59547e24743850249aa85a63104ca06991bcfb4b18e40a4094e6c38a11",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-769",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.",
+          "line": 769,
+          "path": "docs/contracts/claim-discovery-workflow.md"
+        }
+      ],
+      "summary": "It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "developer",
@@ -7483,8 +7682,37 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:ac49da87dcb101f71eb0ffbdbb5359874730b20c31f77a240699f9ce9fdcd69e",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-67",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Fork B (per-facet routing absorbed into the classifier, no per-claim schema) began 2026-06-21 with its first slice: the `namedPacketEmissionClaim` discriminator routes a claim whose dominant facet is emitting a named, versioned `cautilus.\u003cname\u003e.vN` packet (or that explicitly does not call an LLM) to `deterministic`, with an eval-judgment over-flip guard so a genuine eval that merely emits a result packet stays `cautilus-eval`.",
+          "line": 67,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "Fork B (per-facet routing absorbed into the classifier, no per-claim schema) began 2026-06-21 with its first slice: the `namedPacketEmissionClaim` discriminator routes a claim whose dominant facet is emitting a named, versioned `cautilus.\u003cname\u003e.vN` packet (or that explicitly does not call an LLM) to `deterministic`, with an eval-judgment over-flip guard so a genuine eval that merely emits a result packet stays `cautilus-eval`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-69",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-73",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7501,7 +7729,7 @@
       "sourceRefs": [
         {
           "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
-          "line": 69,
+          "line": 73,
           "path": "docs/contracts/facet-decomposition.md"
         }
       ],
@@ -7513,7 +7741,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-71",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-75",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7530,7 +7758,7 @@
       "sourceRefs": [
         {
           "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
-          "line": 71,
+          "line": 75,
           "path": "docs/contracts/facet-decomposition.md"
         }
       ],
@@ -7568,6 +7796,35 @@
       "summary": "Issue `#22` starts with the smallest honest batch primitive: `Cautilus` accepts either an explicit file of already-materialized live-run request packets or an agent-friendly batch-prepare packet for one selected instance, schedules the resulting requests in-process, and emits one aggregated result packet.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:bfc73d226a71e7dd8ff338101ab2485b9d419269dd45b9238b7db64c15ea4300",
+      "claimId": "claim-docs-contracts-live-run-invocation-batch-md-10",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "That prep command accepts either `cautilus.live_run_invocation_batch_prepare_input.v1` or `cautilus.live_run_invocation_batch_prepare_catalog_input.v1` and emits `cautilus.live_run_invocation_request_batch.v1`.",
+          "line": 10,
+          "path": "docs/contracts/live-run-invocation-batch.md"
+        }
+      ],
+      "summary": "That prep command accepts either `cautilus.live_run_invocation_batch_prepare_input.v1` or `cautilus.live_run_invocation_batch_prepare_catalog_input.v1` and emits `cautilus.live_run_invocation_request_batch.v1`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "developer",
@@ -10234,7 +10491,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -10246,7 +10503,7 @@
       ],
       "summary": "The binary does not call an LLM provider directly for claim discovery or claim review; LLM work routes through Cautilus Agent or subagent surfaces.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "developer",
@@ -11250,7 +11507,7 @@
         "spec"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -11262,7 +11519,7 @@
       ],
       "summary": "`discover claims extraction-input` emits a deterministic `cautilus.claim_extraction_input.v1` packet: sources with content hashes plus the embedded product-owned extraction template with version and hash.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "user",
@@ -12555,6 +12812,35 @@
       "summary": "**Uncertainty rule.** When the agent is unsure whether text is a claim, it emits the claim with `verificationReadiness: blocked` and an entry in `unresolvedQuestions` instead of silently dropping it.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:b3dfbc3976d7a847172b4edbb5ec4edfa599f79e07338891466a82750e0c2ff0",
+      "claimId": "claim-docs-contracts-claim-extraction-template-md-167",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/claim-discovery-workflow.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`apply-extraction` emits a standard `cautilus.claim_proof_plan.v1` packet with these additions:",
+          "line": 167,
+          "path": "docs/contracts/claim-extraction-template.md"
+        }
+      ],
+      "summary": "`apply-extraction` emits a standard `cautilus.claim_proof_plan.v1` packet with these additions:",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "developer",
@@ -15079,6 +15365,35 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:bfdd169c5d200a90c3cdf012ebc3b3725a948767d5b6e045b46b4420c7e81148",
+      "claimId": "claim-skills-cautilus-agent-skill-md-157",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "deterministic",
+        "linked-from:docs/contracts/scenario-history.md",
+        "skill-doc"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It ends when the selected reviewer lane writes the `cautilus.claim_review_result.v1` packet and reports the packet path, reviewed claim count, evidence label decisions, unresolved questions, and next branch choices.",
+          "line": 157,
+          "path": "skills/cautilus-agent/SKILL.md"
+        }
+      ],
+      "summary": "It ends when the selected reviewer lane writes the `cautilus.claim_review_result.v1` packet and reports the packet path, reviewed claim count, evidence label decisions, unresolved questions, and next branch choices.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:031006e05a1e2c37d6f23d413085d3522ca1ab7679a44d9f4454587f14e4269a",
       "claimId": "claim-skills-cautilus-agent-skill-md-165",
       "claimSemanticGroup": "Agent and skill workflow",
@@ -15091,7 +15406,7 @@
         "skill-doc"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
@@ -15103,7 +15418,7 @@
       ],
       "summary": "After a human review, HITL chunk, issue, pull request review, `review.json`, or `review-summary.json` produces a source review decision about a Cautilus proposal, use `\"$CAUTILUS_BIN\" review feedback build` to materialize `cautilus.review_feedback.v1`; include proposal evidence for `accepted`, `narrowed`, `reframed`, or `rejected`, reserve proposal-less packets for `missing_critical`, read the packet before reporting it, and do not treat it as eval pass/fail or source-ref verification; when comparing multiple explicitly selected review-feedback packets, use `\"$CAUTILUS_BIN\" review feedback summarize --input \u003cpacket\u003e ...` to materialize `cautilus.review_feedback_summary.v1` without inventing active-run packet discovery or default packet placement.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
     {
       "claimAudience": "developer",
@@ -15153,43 +15468,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 351,
-      "user": 125
+      "developer": 358,
+      "user": 129
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 74,
+      "Adapter and portability": 75,
       "Agent and skill workflow": 116,
-      "Claim discovery and review": 71,
-      "Documentation and contracts": 93,
+      "Claim discovery and review": 74,
+      "Documentation and contracts": 94,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 38,
-      "Packets and reporting": 50,
+      "Improvement and improvement": 39,
+      "Packets and reporting": 55,
       "Quality gates": 30,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 409
+      "unknown": 420
     },
     "byLifecycle": {
-      "new": 476
+      "new": 487
     },
     "byRecommendedProof": {
-      "cautilus-eval": 170,
-      "deterministic": 183,
+      "cautilus-eval": 168,
+      "deterministic": 196,
       "human-auditable": 123
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 365
+      "heuristic": 376
     },
     "byVerificationReadiness": {
       "blocked": 15,
       "needs-alignment": 59,
       "needs-scenario": 10,
-      "ready-for-proof": 392
+      "ready-for-proof": 403
     }
   },
   "discoveryEngine": {
@@ -15220,7 +15535,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:494e2475c065ce13b42063e0c4b7496836c2df1aa6494bba34cd3c8f1dfa10b7",
+    "implementationHash": "sha256:d66ac6dbf8a1c29185052eb0c8f068d00f7e938c53210115b81fe4f44062ecde",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v5"
@@ -15388,7 +15703,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "c3be9b9e0f4b22e833f24cbb43647a0484b6c543",
+  "gitCommit": "acfc03fc5dc3eb7739d40877107180e60431d365",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -17274,7 +17589,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:701c64b0c20dc04c39db06564c34208a7566f07864f4c235c3e4e0b0db1ba7f9",
+      "contentHash": "sha256:28ef82f282516c82e3c4facf8089c6fcbe267ce9bb2e5bfdb061d7fafd634fc7",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
