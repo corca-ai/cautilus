@@ -100,6 +100,33 @@ Overlap-denominator note: the fingerprint overlap denominator grew 54 → 56 acr
 
 Remaining (next Fork B slices): overlap eval→det is now **6** — the deferred shapes packet-emission prose #1, static-taxonomy #2, status-routing #4, R6-ish boundary #8, command-absence #9, schema-field-persistence #10. `human-auditable → deterministic` ×9 stays an R6/R12-scope question, not Fork B.
 
+## After: schema-field-persistence discriminator landed (2026-06-22, Fork B slice 3)
+
+Build contract: [2026-06-22-fork-b-schema-field-persistence.spec.md](./2026-06-22-fork-b-schema-field-persistence.spec.md).
+The clean routing measurement was taken on a code-only change (no claim-source edited yet), then the contract realignment added one self-extracted candidate (the same effect prior slices noted).
+
+| metric | before (Fork B slice 2) | after, routing-only (code change) | after realign + `claims:refresh:all` |
+| --- | --- | --- | --- |
+| overlap `cautilus-eval → deterministic` | 6 | **5** (#10 resolved) | 5 |
+| overlap agreeing count | 36 | **37** | 37 |
+| over-correction `deterministic → (key cautilus-eval)` | 5 | 5 (no new) | 5 |
+| over-correction `deterministic → (key human-auditable)` | 0 | 0 (no new) | 0 |
+| live `cautilus-eval` total | 165 | **164** (−1) | 164 |
+| population | 489 | 489 (unchanged) | **490** (+1 self-extraction) |
+
+The `schemaFieldPersistenceClaim` discriminator (a persistence verb `{persist, persists, persisted}` AND ≥2 distinct backtick camelCase field tokens, read from the ORIGINAL-case line because `classifyClaimLine` lowercases before routing, with the shared judgment-verb guard) flipped exactly **one** live candidate:
+- **#10** (`88ae4b…`, gold `deterministic`, T3) — "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, … `edgeRationale` …".
+
+The over-flip surface held (spec measurement, re-verified): the trigger is the two-axis intersection of `persist` (only `88ae4b…` and the human-auditable `a06299…`, which has zero backtick tokens) and ≥2 distinct camelCase fields (13 live candidates, only `88ae4b…` also has `persist`). The four real `cautilus-eval` field-list claims (`a99438…`, `d68b06…`, `c27f84…`, `513133…`) stayed `cautilus-eval` (no persistence verb), and `a06299…` stayed `human-auditable` (no field list). No second live flip appeared — `live cautilus-eval` dropped by exactly 1 and the routing-only population was unchanged at 489.
+
+Gates met: **G1** #10 routes `deterministic` (frozen golden `TestClaimClassificationForkBSchemaFieldPersistenceRoutingIsFrozen`); **G2** the judgment-guard synthetic (now carrying a gate-lexicon verb `keeps` so it is admitted then routed `cautilus-eval` via the catch-all, not dropped — critique B1 fix) and the field-list-only `a99438…` live line stay `cautilus-eval`, the unit guard table (`TestSchemaFieldPersistenceClaimGuard`) is green including the lowercase-`init`-not-camelCase pin, and all prior frozen goldens + `TestGateRouterCoherence` (now with a reachable schema-field-persistence row) stay green; **G3** overlap eval→det dropped 6→5, agreeing rose 36→37, zero new over-correction; **G4** live eval dropped by exactly 1 (the #10 flip), no unrelated eval claim lost, routing-only population unchanged.
+
+Self-extraction note: the realignment prose added one deterministic candidate (`d74d61…`, the slice-3 paragraph in `facet-decomposition.md`), 489 → 490 — and it is itself caught by the new discriminator (`persist` + `primaryEpic`/`supportingEpics`), routing `deterministic`, not eval. The live `cautilus-eval` total stayed 164 and every gate above held unchanged.
+
+Gate-admission note (critique S2): #10 is admitted by `claimLineLooksUseful` via ` emits ` (a lexicon verb), not via `persist` (not in the lexicon); the new reachable `TestGateRouterCoherence` row uses the live #10 line so the coverage guard re-fires if a future reword drops `emits`.
+
+Remaining (next Fork B slices): overlap eval→det is now **5** — the deferred shapes packet-emission prose #1, static-taxonomy #2, status-routing #4, R6-ish boundary #8, command-absence #9. **#9 command-absence is the next planned slice.** `human-auditable → deterministic` ×9 stays an R6/R12-scope question, not Fork B.
+
 ## Reproduction
 
 ```

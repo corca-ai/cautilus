@@ -1516,6 +1516,14 @@ var cautilusPayloadVersionPattern = regexp.MustCompile(`cautilus\.[a-z0-9_]+\.v[
 // "--- " (the dash is followed by a space) is intentionally not a flag.
 var cliFlagOptionPattern = regexp.MustCompile(`--[a-z][a-z0-9-]+`)
 
+// schemaFieldCamelCasePattern matches a backtick-quoted camelCase schema-field
+// identifier such as `primaryEpic` or `supportingEpics`: a lower-initial token
+// with at least one interior uppercase. A lowercase backtick token like `init`
+// or `doctor` is intentionally NOT a field-name match. This pattern must run
+// against the ORIGINAL-case line because classifyClaimLine lowercases its input
+// before routing, which would otherwise destroy the camelCase signal.
+var schemaFieldCamelCasePattern = regexp.MustCompile("`[a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*`")
+
 // namedPacketEmissionClaim recognizes the Fork B named-packet shape: a claim
 // whose dominant facet is emitting a named, versioned Cautilus packet, or that
 // explicitly does not call an LLM — both schema/golden-checkable deterministic
@@ -1587,6 +1595,59 @@ func cliFlagSemanticsClaim(lower string) bool {
 		containsAny(lower, []string{" keeps ", " copies ", " extracts "})
 }
 
+// schemaFieldPersistenceClaim recognizes the Fork B schema-field-persistence
+// shape: a claim whose dominant facet is that named schema fields persist into a
+// stored data structure (e.g. "claim-graph facets persist into the applied
+// candidate: `primaryEpic`, `supportingEpics`, ..."). That a named field set
+// persists with its documented shape is a schema/golden-checkable deterministic
+// mechanism; the "the agent emits them" clause is the incidental eval noun the
+// broad noun catch-all would otherwise sweep into cautilus-eval.
+//
+// Unlike the other Fork B discriminators this takes the ORIGINAL-case line, not
+// the space-padded lower form, because the load-bearing signal is the camelCase
+// field-name shape (`primaryEpic`), which classifyClaimLine's lowercasing
+// destroys. The verb/guard checks lowercase internally.
+//
+// Two precision arms, BOTH required (proven against the full over-flip surface):
+//   - a persistence verb from the tight gold-confirmed set {persist, persists,
+//     persisted}; this arm protects genuine eval claims that list camelCase
+//     fields but never say "persist" (e.g. a `byReviewStatus`/`byEvidenceStatus`
+//     bucket claim);
+//   - at least TWO DISTINCT backtick camelCase field tokens; this arm protects a
+//     "should also persist them as files" line that has the verb but names no
+//     field set.
+//
+// The judgment-verb guard (shared with cliFlagSemanticsClaim, bare " judge " not
+// excluded) keeps a behavior judgment that happens to mention persisted fields
+// in cautilus-eval. Verbs match with surrounding spaces, so conjugations outside
+// the set (" persisting", " persistence") intentionally do not match; do not
+// "tidy" these into bare stems, which would silently broaden the trigger.
+// Contract: charness-artifacts/eval-trust/2026-06-22-fork-b-schema-field-persistence.spec.md
+func schemaFieldPersistenceClaim(line string) bool {
+	lower := " " + strings.ToLower(line) + " "
+	if containsAny(lower, []string{
+		" judges ", " judged ", " judgment", " verdict",
+		" grade ", " grades ", " graded ", " grading",
+		" score ", " scores ", " scored ", " scoring",
+		" rate ", " rates ", " rated ", " rating",
+		" better", " worse", " pass ", " passes ", " fail ", " fails ",
+		" sound ", " unsound ", " evaluates whether ", " assess ", " assesses ",
+	}) {
+		return false
+	}
+	if !containsAny(lower, []string{" persist ", " persists ", " persisted "}) {
+		return false
+	}
+	distinct := map[string]bool{}
+	for _, token := range schemaFieldCamelCasePattern.FindAllString(line, -1) {
+		distinct[token] = true
+		if len(distinct) >= 2 {
+			return true
+		}
+	}
+	return false
+}
+
 func classifyClaimLine(line string) (claimClassification, bool) {
 	lower := " " + strings.ToLower(line) + " "
 	switch {
@@ -1653,6 +1714,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "ready-for-proof",
 			why:                   "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21).",
 			next:                  "Keep or add deterministic CLI flag-contract or golden-output proof for the named flag; route any behavior-quality subclaim to Cautilus eval separately.",
+		}, true
+	case schemaFieldPersistenceClaim(line):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-for-proof",
+			why:                   "The claim's dominant facet is that named schema fields persist into a stored data structure (a multi-field backtick camelCase set with a persistence verb); that the field set exists with its documented shape is a schema/golden-checkable deterministic mechanism even when the line co-mentions an agent emitting them. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-22).",
+			next:                  "Keep or add deterministic schema-field or golden-output proof that the named fields persist into the applied candidate; route any behavior-quality subclaim to Cautilus eval separately.",
 		}, true
 	case reviewBudgetConfirmationClaim(lower):
 		return claimClassification{

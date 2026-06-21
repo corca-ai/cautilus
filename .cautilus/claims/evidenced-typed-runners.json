@@ -1,5 +1,5 @@
 {
-  "candidateCount": 489,
+  "candidateCount": 490,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
@@ -8401,8 +8401,37 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:d74d6197505c2815956d20d82cd01419b193de657489f6a4dd6537ab5a53442c",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-76",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Fork B slice 3 (2026-06-22) added the `schemaFieldPersistenceClaim` discriminator: a claim whose dominant facet is that named schema fields persist into a stored data structure routes to `deterministic`. Its trigger is a two-arm conjunction — a persistence verb (`persist`/`persists`/`persisted`) AND at least two distinct backtick camelCase field tokens (`primaryEpic`, `supportingEpics`, …) — with the shared judgment-verb over-flip guard. Unlike the first two discriminators it reads the original-case line, because `classifyClaimLine` lowercases before routing and that would destroy the camelCase field-name signal.",
+          "line": 76,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "Fork B slice 3 (2026-06-22) added the `schemaFieldPersistenceClaim` discriminator: a claim whose dominant facet is that named schema fields persist into a stored data structure routes to `deterministic`. Its trigger is a two-arm conjunction — a persistence verb (`persist`/`persists`/`persisted`) AND at least two distinct backtick camelCase field tokens (`primaryEpic`, `supportingEpics`, …) — with the shared judgment-verb over-flip guard. Unlike the first two discriminators it reads the original-case line, because `classifyClaimLine` lowercases before routing and that would destroy the camelCase field-name signal.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-78",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-82",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8419,7 +8448,7 @@
       "sourceRefs": [
         {
           "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
-          "line": 78,
+          "line": 82,
           "path": "docs/contracts/facet-decomposition.md"
         }
       ],
@@ -8431,7 +8460,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-80",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-84",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8448,7 +8477,7 @@
       "sourceRefs": [
         {
           "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
-          "line": 80,
+          "line": 84,
           "path": "docs/contracts/facet-decomposition.md"
         }
       ],
@@ -13938,15 +13967,13 @@
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "dev/repo",
+        "deterministic",
         "linked-from:docs/contracts/claim-discovery-workflow.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic schema-field or golden-output proof that the named fields persist into the applied candidate; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
@@ -13957,7 +13984,7 @@
       ],
       "summary": "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics` (de-duplicated and led by `primaryEpic`), a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims.",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+      "whyThisLayer": "The claim's dominant facet is that named schema fields persist into a stored data structure (a multi-field backtick camelCase set with a persistence verb); that the field set exists with its documented shape is a schema/golden-checkable deterministic mechanism even when the line co-mentions an agent emitting them. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-22)."
     },
     {
       "claimAudience": "developer",
@@ -16773,14 +16800,14 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 360,
+      "developer": 361,
       "user": 129
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 75,
       "Agent and skill workflow": 115,
       "Claim discovery and review": 74,
-      "Documentation and contracts": 95,
+      "Documentation and contracts": 96,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 39,
@@ -16790,26 +16817,26 @@
     },
     "byEvidenceStatus": {
       "satisfied": 142,
-      "unknown": 347
+      "unknown": 348
     },
     "byLifecycle": {
-      "new": 489
+      "new": 490
     },
     "byRecommendedProof": {
-      "cautilus-eval": 140,
-      "deterministic": 229,
+      "cautilus-eval": 139,
+      "deterministic": 231,
       "human-auditable": 120
     },
     "byReviewStatus": {
       "agent-reviewed": 193,
-      "heuristic": 294,
+      "heuristic": 295,
       "human-reviewed": 2
     },
     "byVerificationReadiness": {
       "blocked": 34,
       "needs-alignment": 49,
       "needs-scenario": 1,
-      "ready-for-proof": 405
+      "ready-for-proof": 406
     }
   },
   "discoveryEngine": {
@@ -16840,7 +16867,7 @@
         "summary": "Merge identical normalized candidate text into one candidate with all source references preserved."
       }
     ],
-    "implementationHash": "sha256:d622c4366f3b93c48a528e3dd20e1ee8193961f9f9c69ef657d7e86d3000403b",
+    "implementationHash": "sha256:ad07f70f43d730e32d268c1604541e222a8b4eedc163711bfbab585c898385a6",
     "implementationPath": "internal/runtime/claim_discovery.go",
     "name": "cautilus.claim_discovery",
     "ruleset": "claim-discovery-rules.v5"
@@ -17008,7 +17035,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "8f8a01f9e60595871f7b0ca9c54b950328009ee4",
+  "gitCommit": "5587a191d1d61cd4a237f1df0e711ffc42ec955f",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19054,7 +19081,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:c8795b640afccf973dfa01af45630517c0215a20f735d69a430188fc5986126f",
+      "contentHash": "sha256:b56ca3e2849e7860ecbe5b22b683dd5f69538a46fef9529da788ead8ea714f3a",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

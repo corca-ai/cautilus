@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:615e39fe0b128142b1371c9fde06acc4251648ab321b8566467f7c75af6f7289"
+      "contentHash": "sha256:e73c9fd47e49194a5d61bcf0ee79e9d391cffc1e87551fa8298be19387f9d0dd"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "8f8a01f9e60595871f7b0ca9c54b950328009ee4",
+  "claimsPacketGitCommit": "5587a191d1d61cd4a237f1df0e711ffc42ec955f",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 489,
+  "claimsPacketCandidateCount": 490,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,30 +200,30 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 489,
+    "totalRawClaimCount": 490,
     "userRawClaimCount": 129,
     "userMappedToCanonicalCount": 0,
     "userUnmappedCount": 129,
-    "semanticReviewRecommendedCount": 414,
+    "semanticReviewRecommendedCount": 415,
     "userSemanticReviewRecommendedCount": 129,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 360,
+      "mapped-to-maintainer-canonical": 361,
       "user-review-needed": 129
     },
     "byAudience": {
-      "developer": 360,
+      "developer": 361,
       "user": 129
     },
     "byMappingConfidence": {
       "high": 75,
       "low": 148,
-      "medium": 266
+      "medium": 267
     },
     "byUserCanonicalClaimId": {},
     "byMaintainerCanonicalClaimId": {
       "M1": 5,
       "M10": 16,
-      "M11": 46,
+      "M11": 47,
       "M12": 10,
       "M2": 23,
       "M3": 94,
@@ -583,8 +583,9 @@
       "claim-docs-contracts-facet-decomposition-md-64",
       "claim-docs-contracts-facet-decomposition-md-65",
       "claim-docs-contracts-facet-decomposition-md-73",
-      "claim-docs-contracts-facet-decomposition-md-78",
-      "claim-docs-contracts-facet-decomposition-md-80",
+      "claim-docs-contracts-facet-decomposition-md-76",
+      "claim-docs-contracts-facet-decomposition-md-82",
+      "claim-docs-contracts-facet-decomposition-md-84",
       "claim-docs-contracts-live-run-invocation-batch-md-28",
       "claim-docs-contracts-live-run-invocation-batch-md-77",
       "claim-docs-contracts-live-run-invocation-batch-md-166",
@@ -2793,7 +2794,7 @@
         "claim-docs-contracts-claim-discovery-workflow-md-572",
         "claim-docs-contracts-claim-discovery-workflow-md-655",
         "claim-docs-contracts-eval-judge-collaboration-md-119",
-        "claim-docs-contracts-facet-decomposition-md-78",
+        "claim-docs-contracts-facet-decomposition-md-82",
         "claim-docs-contracts-live-run-invocation-md-12",
         "claim-docs-contracts-live-run-invocation-md-193",
         "claim-docs-contracts-runner-readiness-md-117",
@@ -2852,7 +2853,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-78",
+          "claimId": "claim-docs-contracts-facet-decomposition-md-82",
           "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3179,7 +3180,7 @@
     {
       "canonicalClaimId": "M11",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 46,
+      "absorbedRawClaimCount": 47,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-234",
         "claim-docs-contracts-adapter-contract-md-452",
@@ -3202,7 +3203,8 @@
         "claim-docs-contracts-facet-decomposition-md-46",
         "claim-docs-contracts-facet-decomposition-md-64",
         "claim-docs-contracts-facet-decomposition-md-65",
-        "claim-docs-contracts-facet-decomposition-md-80",
+        "claim-docs-contracts-facet-decomposition-md-76",
+        "claim-docs-contracts-facet-decomposition-md-84",
         "claim-docs-contracts-reporting-md-123",
         "claim-docs-contracts-reporting-md-125",
         "claim-docs-contracts-reporting-md-129",
@@ -3356,7 +3358,13 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-80",
+          "claimId": "claim-docs-contracts-facet-decomposition-md-76",
+          "claimFingerprint": "sha256:d74d6197505c2815956d20d82cd01419b193de657489f6a4dd6537ab5a53442c",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-facet-decomposition-md-84",
           "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3508,21 +3516,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 29
+        "unknown": 30
       },
       "byReviewStatus": {
         "agent-reviewed": 19,
-        "heuristic": 27
+        "heuristic": 28
       },
       "byRecommendedProof": {
-        "cautilus-eval": 4,
-        "deterministic": 29,
+        "cautilus-eval": 3,
+        "deterministic": 31,
         "human-auditable": 13
       },
       "byMappingConfidence": {
         "high": 11,
         "low": 2,
-        "medium": 33
+        "medium": 34
       }
     },
     {
@@ -12300,12 +12308,53 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-78",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-76",
+      "summary": "Fork B slice 3 (2026-06-22) added the `schemaFieldPersistenceClaim` discriminator: a claim whose dominant facet is that named schema fields persist into a stored data structure routes to `deterministic`. Its trigger is a two-arm conjunction — a persistence verb (`persist`/`persists`/`persisted`) AND at least two distinct backtick camelCase field tokens (`primaryEpic`, `supportingEpics`, …) — with the shared judgment-verb over-flip guard. Unlike the first two discriminators it reads the original-case line, because `classifyClaimLine` lowercases before routing and that would destroy the camelCase field-name signal.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/facet-decomposition.md",
+          "line": 76,
+          "excerpt": "Fork B slice 3 (2026-06-22) added the `schemaFieldPersistenceClaim` discriminator: a claim whose dominant facet is that named schema fields persist into a stored data structure routes to `deterministic`. Its trigger is a two-arm conjunction — a persistence verb (`persist`/`persists`/`persisted`) AND at least two distinct backtick camelCase field tokens (`primaryEpic`, `supportingEpics`, …) — with the shared judgment-verb over-flip guard. Unlike the first two discriminators it reads the original-case line, because `classifyClaimLine` lowercases before routing and that would destroy the camelCase field-name signal."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:d74d6197505c2815956d20d82cd01419b193de657489f6a4dd6537ab5a53442c",
+      "canonicalClaimId": "M11",
+      "score": 12,
+      "runnerUpCanonicalClaimId": "M8",
+      "runnerUpScore": 10,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "add",
+        "build",
+        "check",
+        "contract",
+        "data",
+        "deterministic",
+        "field",
+        "first",
+        "keep",
+        "route",
+        "routing",
+        "schema"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-facet-decomposition-md-82",
       "summary": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
       "sourceRefs": [
         {
           "path": "docs/contracts/facet-decomposition.md",
-          "line": 78,
+          "line": 82,
           "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer."
         }
       ],
@@ -12339,12 +12388,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-80",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-84",
       "summary": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
       "sourceRefs": [
         {
           "path": "docs/contracts/facet-decomposition.md",
-          "line": 80,
+          "line": 84,
           "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only)."
         }
       ],
@@ -18171,26 +18220,30 @@
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
+      "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
       "claimFingerprint": "sha256:88ae4b08fdb7538933f7cc3af97548a87918a4983c11d7603e50bac6a704ce88",
       "canonicalClaimId": "M11",
-      "score": 7,
+      "score": 11,
       "runnerUpCanonicalClaimId": "M3",
-      "runnerUpScore": 6,
+      "runnerUpScore": 10,
       "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "add",
         "cautilu",
+        "deterministic",
         "discovery",
-        "evaluate",
-        "fixture",
+        "field",
+        "keep",
         "normalized",
         "review",
+        "route",
+        "subclaim",
         "them"
       ]
     },

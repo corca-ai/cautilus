@@ -4257,6 +4257,81 @@ func TestCliFlagSemanticsClaimGuard(t *testing.T) {
 	}
 }
 
+func TestClaimClassificationForkBSchemaFieldPersistenceRoutingIsFrozen(t *testing.T) {
+	// Frozen golden for the 2026-06-22 Fork B schema-field-persistence discriminator.
+	// Any future broadening of schemaFieldPersistenceClaim (the persist-verb set,
+	// the camelCase field-list arm, or the judgment guard) must surface here as a
+	// diff and force gold-set review.
+	// Contract: charness-artifacts/eval-trust/2026-06-22-fork-b-schema-field-persistence.spec.md
+	cases := []struct {
+		name          string
+		line          string
+		wantProof     string
+		wantReadiness string
+	}{
+		// Intended flip (gold-confirmed deterministic, was over-assigned to cautilus-eval).
+		{"schema-field-persistence", "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics` (de-duplicated and led by `primaryEpic`), a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims.", "deterministic", "ready-for-proof"},
+		// Judgment-guard negative control (load-bearing): a behavior JUDGMENT carrying
+		// a persistence verb, two camelCase fields, AND a gate-lexicon verb (keeps) so
+		// it passes the live gate and routes cautilus-eval via the broad catch-all
+		// (via " agent") after the guard rejects it — not dropped.
+		{"negative-judge-grades-persist", "The blind judge grades whether `primaryEpic` and `supportingEpics` persist correctly and keeps the better agent transcripts.", "cautilus-eval", ""},
+		// Field-list non-flip control (load-bearing, the persist arm): the real a99438
+		// live line verbatim — two camelCase fields but NO persistence verb — stays
+		// cautilus-eval (reaches the broad catch-all via " agent").
+		{"negative-fieldlist-no-persist", "Each action bucket should include `byReviewStatus` and `byEvidenceStatus` counts so a human can tell whether the queue is already reviewed enough to spend time on or still needs agent triage first.", "cautilus-eval", ""},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got, ok := classifyClaimLine(tc.line)
+			if !ok {
+				t.Fatalf("expected a classification for %q, got none", tc.line)
+			}
+			if got.recommendedProof != tc.wantProof {
+				t.Fatalf("recommendedProof: want %q, got %q (%q)", tc.wantProof, got.recommendedProof, tc.line)
+			}
+			if tc.wantReadiness != "" && got.verificationReadiness != tc.wantReadiness {
+				t.Fatalf("verificationReadiness: want %q, got %q (%q)", tc.wantReadiness, got.verificationReadiness, tc.line)
+			}
+		})
+	}
+}
+
+func TestSchemaFieldPersistenceClaimGuard(t *testing.T) {
+	// Unit guard for schemaFieldPersistenceClaim: it fires only on a persistence
+	// verb {persist, persists, persisted} AND >=2 distinct backtick camelCase
+	// field tokens, never on a judgment verb, never with a single field, never
+	// without a persistence verb, never on a persist line with no backtick fields,
+	// and never on lowercase backtick tokens (the camelCase requirement is why the
+	// predicate reads the ORIGINAL-case line). This takes the original-case line,
+	// not the space-padded lower form.
+	cases := []struct {
+		name string
+		line string
+		want bool
+	}{
+		{"schema-field-persistence", "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics`, a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims.", true},
+		// Judgment-verb guard: a real judgment keeps the predicate false.
+		{"guard-judge-grades", "The judge grades whether `primaryEpic` and `supportingEpics` persist correctly.", false},
+		// Single-field control: one camelCase token is not a field LIST.
+		{"single-field-not-fired", "Cautilus persists `primaryEpic` for every applied candidate.", false},
+		// No-persist control: >=2 camelCase fields without a persistence verb does not fire.
+		{"no-persist-not-fired", "Each bucket includes `byReviewStatus` and `byEvidenceStatus` counts.", false},
+		// Persist-no-backtick control: a persistence verb with no backtick field set does not fire.
+		{"persist-no-backtick-not-fired", "A named adapter should also persist them as files for later inspection.", false},
+		// camelCase-required pin: lowercase backtick tokens are NOT camelCase fields;
+		// broadening the regex to bare backtick tokens must re-trigger gold review.
+		{"lowercase-backtick-not-fired", "Cautilus persists `init` and `doctor` state into the applied candidate.", false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := schemaFieldPersistenceClaim(tc.line); got != tc.want {
+				t.Fatalf("schemaFieldPersistenceClaim(%q) = %v, want %v", tc.line, got, tc.want)
+			}
+		})
+	}
+}
+
 func TestGateRouterCoherence(t *testing.T) {
 	// Coherence guard for the gate<->router invariant: a claim shape the router
 	// (classifyClaimLine) can route must also pass the upstream admission gate
@@ -4280,6 +4355,7 @@ func TestGateRouterCoherence(t *testing.T) {
 		// --- reachable cases (gate admits; spans all three routes) ---
 		{"named-packet-emission", "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.", false},
 		{"cli-flag-semantics", "For `codex_exec`, `--codex-home-mode isolated` keeps user config and session state out of the eval while `--codex-auth-mode inherit` copies only Codex auth into the isolated home.", false},
+		{"schema-field-persistence", "Claim-graph facets persist into the applied candidate when the agent emits them: `primaryEpic`, a normalized `supportingEpics` (de-duplicated and led by `primaryEpic`), a derived `multiEpic` boolean, and `edgeRationale` for multi-epic claims.", false},
 		{"r6-ownership-assignment", "The Cautilus Agent should own orchestration that depends on an agent.", false},
 		{"r12-capability-existence", "Cautilus also ships a GEPA-style bounded prompt search seam: multi-generation reflective mutation and bounded merge synthesis.", false},
 		{"deterministic-unit-test", "The repo keeps a unit test for every adapter contract surface.", false},
